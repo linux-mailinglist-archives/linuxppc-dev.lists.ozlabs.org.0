@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01C795C86
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:47:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122F295CBF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:58:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CSDn1ft2zDqcj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 20:47:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CSST2b6CzDqZw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 20:58:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,29 +19,26 @@ Received: from mx2.mailbox.org (mx2a.mailbox.org
  [IPv6:2001:67c:2050:104:0:2:25:2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CS6V5RnCzDqrm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 20:42:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CS6X05FZzDqvK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 20:42:27 +1000 (AEST)
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
  (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by mx2.mailbox.org (Postfix) with ESMTPS id B5A75A104E;
- Tue, 20 Aug 2019 05:36:13 +0200 (CEST)
+ by mx2.mailbox.org (Postfix) with ESMTPS id 48140A1638;
+ Tue, 20 Aug 2019 05:34:43 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de
- [80.241.56.122]) (amavisd-new, port 10030)
- with ESMTP id ZOr36I3E8IrG; Tue, 20 Aug 2019 05:36:03 +0200 (CEST)
+ by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
+ [80.241.56.123]) (amavisd-new, port 10030)
+ with ESMTP id N1m8x2icF4On; Tue, 20 Aug 2019 05:34:31 +0200 (CEST)
 From: Aleksa Sarai <cyphar@cyphar.com>
 To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
  "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
  David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
  Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH RESEND v11 6/8] namei: aggressively check for nd->root escape
- on ".." resolution
-Date: Tue, 20 Aug 2019 13:34:04 +1000
-Message-Id: <20190820033406.29796-7-cyphar@cyphar.com>
-In-Reply-To: <20190820033406.29796-1-cyphar@cyphar.com>
-References: <20190820033406.29796-1-cyphar@cyphar.com>
+Subject: [PATCH RESEND v11 0/8] openat2(2)
+Date: Tue, 20 Aug 2019 13:33:58 +1000
+Message-Id: <20190820033406.29796-1-cyphar@cyphar.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,181 +63,209 @@ Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
  Aleksa Sarai <cyphar@cyphar.com>, Andy Lutomirski <luto@kernel.org>,
  David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
  linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ linux-api@vger.kernel.org, containers@lists.linux-foundation.org,
  linux-kernel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>,
  linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+ Chanho Min <chanho.min@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch allows for LOOKUP_BENEATH and LOOKUP_IN_ROOT to safely permit
-".." resolution (in the case of LOOKUP_BENEATH the resolution will still
-fail if ".." resolution would resolve a path outside of the root --
-while LOOKUP_IN_ROOT will chroot(2)-style scope it). Magic-link jumps
-are still disallowed entirely because now they could result in
-inconsistent behaviour if resolution encounters a subsequent ".."[*].
+This patchset is being developed here:
+    <https://github.com/cyphar/linux/tree/resolveat/master>
 
-The need for this patch is explained by observing there is a fairly
-easy-to-exploit race condition with chroot(2) (and thus by extension
-LOOKUP_IN_ROOT and LOOKUP_BENEATH if ".." is allowed) where a rename(2)
-of a path can be used to "skip over" nd->root and thus escape to the
-filesystem above nd->root.
+Patch changelog:
+ v11: [RESEND: <https://lore.kernel.org/lkml/20190728010207.9781-1-cyphar@cyphar.com/>]
+    * Fix checkpatch.pl errors and warnings where reasonable.
+    * Minor cleanup to pr_warn logging for may_open_magiclink().
+    * Drop kselftests patch to handle %m formatting correctly, and send
+      it through the kselftests tree directly. [Shuah Khan]
+ v10: <https://lore.kernel.org/lkml/20190719164225.27083-1-cyphar@cyphar.com/>
+ v09: <https://lore.kernel.org/lkml/20190706145737.5299-1-cyphar@cyphar.com/>
+ v08: <https://lore.kernel.org/lkml/20190520133305.11925-1-cyphar@cyphar.com/>
+ v07: <https://lore.kernel.org/lkml/20190507164317.13562-1-cyphar@cyphar.com/>
+ v06: <https://lore.kernel.org/lkml/20190506165439.9155-1-cyphar@cyphar.com/>
+ v05: <https://lore.kernel.org/lkml/20190320143717.2523-1-cyphar@cyphar.com/>
+ v04: <https://lore.kernel.org/lkml/20181112142654.341-1-cyphar@cyphar.com/>
+ v03: <https://lore.kernel.org/lkml/20181009070230.12884-1-cyphar@cyphar.com/>
+ v02: <https://lore.kernel.org/lkml/20181009065300.11053-1-cyphar@cyphar.com/>
+ v01: <https://lore.kernel.org/lkml/20180929103453.12025-1-cyphar@cyphar.com/>
 
-  thread1 [attacker]:
-    for (;;)
-      renameat2(AT_FDCWD, "/a/b/c", AT_FDCWD, "/a/d", RENAME_EXCHANGE);
-  thread2 [victim]:
-    for (;;)
-      openat2(dirb, "b/c/../../etc/shadow",
-              { .flags = O_PATH, .resolve = RESOLVE_IN_ROOT } );
+The need for some sort of control over VFS's path resolution (to avoid
+malicious paths resulting in inadvertent breakouts) has been a very
+long-standing desire of many userspace applications. This patchset is a
+revival of Al Viro's old AT_NO_JUMPS[1,2] patchset (which was a variant
+of David Drysdale's O_BENEATH patchset[3] which was a spin-off of the
+Capsicum project[4]) with a few additions and changes made based on the
+previous discussion within [5] as well as others I felt were useful.
 
-With fairly significant regularity, thread2 will resolve to
-"/etc/shadow" rather than "/a/b/etc/shadow". There is also a similar
-(though somewhat more privileged) attack using MS_MOVE.
+In line with the conclusions of the original discussion of AT_NO_JUMPS,
+the flag has been split up into separate flags. However, instead of
+being an openat(2) flag it is provided through a new syscall openat2(2)
+which provides several other improvements to the openat(2) interface (see the
+patch description for more details). The following new LOOKUP_* flags are
+added:
 
-With this patch, such cases will be detected *during* ".." resolution
-(which is the weak point of chroot(2) -- since walking *into* a
-subdirectory tautologically cannot result in you walking *outside*
-nd->root -- except through a bind-mount or magic-link). By detecting
-this at ".." resolution (rather than checking only at the end of the
-entire resolution) we can both correct escapes by jumping back to the
-root (in the case of LOOKUP_IN_ROOT), as well as avoid revealing to
-attackers the structure of the filesystem outside of the root (through
-timing attacks for instance).
+  * LOOKUP_NO_XDEV blocks all mountpoint crossings (upwards, downwards,
+    or through absolute links). Absolute pathnames alone in openat(2) do
+    not trigger this.
 
-In order to avoid a quadratic lookup with each ".." entry, we only
-activate the slow path if a write through &rename_lock or &mount_lock
-has occurred during path resolution (&rename_lock and &mount_lock are
-re-taken to further optimise the lookup). Since the primary attack being
-protected against is MS_MOVE or rename(2), not doing additional checks
-unless a mount or rename have occurred avoids making the common case
-slow.
+  * LOOKUP_NO_MAGICLINKS blocks resolution through /proc/$pid/fd-style
+    links. This is done by blocking the usage of nd_jump_link() during
+    resolution in a filesystem. The term "magic-links" is used to match
+    with the only reference to these links in Documentation/, but I'm
+    happy to change the name.
 
-The use of path_is_under() here might seem suspect, but on further
-inspection of the most important race (a path was *inside* the root but
-is now *outside*), there appears to be no attack potential:
+    It should be noted that this is different to the scope of
+    ~LOOKUP_FOLLOW in that it applies to all path components. However,
+    you can do openat2(NO_FOLLOW|NO_MAGICLINKS) on a magic-link and it
+    will *not* fail (assuming that no parent component was a
+    magic-link), and you will have an fd for the magic-link.
 
-  * If path_is_under() occurs before the rename, then the path will be
-    resolved -- however the path was originally inside the root and thus
-    there is no escape (and to userspace it'd look like the rename
-    occurred after the path was resolved). If path_is_under() occurs
-    afterwards, the resolution is blocked.
+  * LOOKUP_BENEATH disallows escapes to outside the starting dirfd's
+    tree, using techniques such as ".." or absolute links. Absolute
+    paths in openat(2) are also disallowed. Conceptually this flag is to
+    ensure you "stay below" a certain point in the filesystem tree --
+    but this requires some additional to protect against various races
+    that would allow escape using "..".
 
-  * Subsequent ".." jumps are guaranteed to check path_is_under() -- by
-    construction, &rename_lock or &mount_lock must have been taken by
-    the attacker after path_is_under() returned in the victim. Thus ".."
-    will not be able to escape from the previously-inside-root path.
+    Currently LOOKUP_BENEATH implies LOOKUP_NO_MAGICLINKS, because it
+    can trivially beam you around the filesystem (breaking the
+    protection). In future, there might be similar safety checks done as
+    in LOOKUP_IN_ROOT, but that requires more discussion.
 
-  * Walking down in the moved path is still safe since the entire
-    subtree was moved (either by rename(2) or MS_MOVE) and because (as
-    discussed above) walking down is safe.
+In addition, two new flags are added that expand on the above ideas:
 
-A variant of the above attack is included in the selftests for
-openat2(2) later in this patch series. I've run this test on several
-machines for several days and no instances of a breakout were detected.
-While this is not concrete proof that this is safe, when combined with
-the above argument it should lend some trustworthiness to this
-construction.
+  * LOOKUP_NO_SYMLINKS does what it says on the tin. No symlink
+    resolution is allowed at all, including magic-links. Just as with
+    LOOKUP_NO_MAGICLINKS this can still be used with NOFOLLOW to open an
+    fd for the symlink as long as no parent path had a symlink
+    component.
 
-[*] It may be acceptable in the future to do a path_is_under() check
-    after resolving a magic-link and permit resolution if the
-    nd_jump_link() result is still within the dirfd. However this seems
-    unlikely to be a feature that people *really* need* -- it can be
-    added later if it turns out a lot of people want it.
+  * LOOKUP_IN_ROOT is an extension of LOOKUP_BENEATH that, rather than
+    blocking attempts to move past the root, forces all such movements
+    to be scoped to the starting point. This provides chroot(2)-like
+    protection but without the cost of a chroot(2) for each filesystem
+    operation, as well as being safe against race attacks that chroot(2)
+    is not.
+
+    If a race is detected (as with LOOKUP_BENEATH) then an error is
+    generated, and similar to LOOKUP_BENEATH it is not permitted to cross
+    magic-links with LOOKUP_IN_ROOT.
+
+    The primary need for this is from container runtimes, which
+    currently need to do symlink scoping in userspace[6] when opening
+    paths in a potentially malicious container. There is a long list of
+    CVEs that could have bene mitigated by having RESOLVE_THIS_ROOT
+    (such as CVE-2017-1002101, CVE-2017-1002102, CVE-2018-15664, and
+    CVE-2019-5736, just to name a few).
+
+And further, several semantics of file descriptor "re-opening" are now
+changed to prevent attacks like CVE-2019-5736 by restricting how
+magic-links can be resolved (based on their mode). This required some
+other changes to the semantics of the modes of O_PATH file descriptor's
+associated /proc/self/fd magic-links. openat2(2) has the ability to
+further restrict re-opening of its own O_PATH fds, so that users can
+make even better use of this feature.
+
+Finally, O_EMPTYPATH was added so that users can do /proc/self/fd-style
+re-opening without depending on procfs. The new restricted semantics for
+magic-links are applied here too.
+
+In order to make all of the above more usable, I'm working on
+libpathrs[7] which is a C-friendly library for safe path resolution. It
+features a userspace-emulated backend if the kernel doesn't support
+openat2(2). Hopefully we can get userspace to switch to using it, and
+thus get openat2(2) support for free once it's ready.
 
 Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
 Cc: Jann Horn <jannh@google.com>
+Cc: Christian Brauner <christian@brauner.io>
+Cc: David Drysdale <drysdale@google.com>
+Cc: Tycho Andersen <tycho@tycho.ws>
 Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
----
- fs/namei.c | 45 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 14 deletions(-)
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: <containers@lists.linux-foundation.org>
+Cc: <linux-fsdevel@vger.kernel.org>
+Cc: <linux-api@vger.kernel.org>
 
-diff --git a/fs/namei.c b/fs/namei.c
-index 0352d275bd13..fd1eb5ce8baa 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -491,7 +491,7 @@ struct nameidata {
- 	struct path	root;
- 	struct inode	*inode; /* path.dentry.d_inode */
- 	unsigned int	flags;
--	unsigned	seq, m_seq;
-+	unsigned	seq, m_seq, r_seq;
- 	int		last_type;
- 	unsigned	depth;
- 	int		total_link_count;
-@@ -1758,22 +1758,36 @@ static inline int handle_dots(struct nameidata *nd, int type)
- 	if (type == LAST_DOTDOT) {
- 		int error = 0;
- 
--		/*
--		 * LOOKUP_BENEATH resolving ".." is not currently safe -- races
--		 * can cause our parent to have moved outside of the root and
--		 * us to skip over it.
--		 */
--		if (unlikely(nd->flags & (LOOKUP_BENEATH | LOOKUP_IN_ROOT)))
--			return -EXDEV;
- 		if (!nd->root.mnt) {
- 			error = set_root(nd);
- 			if (error)
- 				return error;
- 		}
--		if (nd->flags & LOOKUP_RCU) {
--			return follow_dotdot_rcu(nd);
--		} else
--			return follow_dotdot(nd);
-+		if (nd->flags & LOOKUP_RCU)
-+			error = follow_dotdot_rcu(nd);
-+		else
-+			error = follow_dotdot(nd);
-+		if (error)
-+			return error;
-+
-+		if (unlikely(nd->flags & (LOOKUP_BENEATH | LOOKUP_IN_ROOT))) {
-+			bool m_retry = read_seqretry(&mount_lock, nd->m_seq);
-+			bool r_retry = read_seqretry(&rename_lock, nd->r_seq);
-+
-+			/*
-+			 * Don't bother checking unless there's a racing
-+			 * rename(2) or MS_MOVE.
-+			 */
-+			if (likely(!m_retry && !r_retry))
-+				return 0;
-+
-+			if (m_retry && !(nd->flags & LOOKUP_RCU))
-+				nd->m_seq = read_seqbegin(&mount_lock);
-+			if (r_retry)
-+				nd->r_seq = read_seqbegin(&rename_lock);
-+			if (!path_is_under(&nd->path, &nd->root))
-+				return -EXDEV;
-+		}
- 	}
- 	return 0;
- }
-@@ -2245,6 +2259,11 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
- 	nd->last_type = LAST_ROOT; /* if there are only slashes... */
- 	nd->flags = flags | LOOKUP_JUMPED | LOOKUP_PARENT;
- 	nd->depth = 0;
-+
-+	nd->m_seq = read_seqbegin(&mount_lock);
-+	if (flags & (LOOKUP_BENEATH | LOOKUP_IN_ROOT))
-+		nd->r_seq = read_seqbegin(&rename_lock);
-+
- 	if (flags & LOOKUP_ROOT) {
- 		struct dentry *root = nd->root.dentry;
- 		struct inode *inode = root->d_inode;
-@@ -2266,8 +2285,6 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
- 	nd->path.mnt = NULL;
- 	nd->path.dentry = NULL;
- 
--	nd->m_seq = read_seqbegin(&mount_lock);
--
- 	/* LOOKUP_IN_ROOT treats absolute paths as being relative-to-dirfd. */
- 	if (flags & LOOKUP_IN_ROOT)
- 		while (*s == '/')
+[1]: https://lwn.net/Articles/721443/
+[2]: https://lore.kernel.org/patchwork/patch/784221/
+[3]: https://lwn.net/Articles/619151/
+[4]: https://lwn.net/Articles/603929/
+[5]: https://lwn.net/Articles/723057/
+[6]: https://github.com/cyphar/filepath-securejoin
+[7]: https://github.com/openSUSE/libpathrs
+
+Aleksa Sarai (8):
+  namei: obey trailing magic-link DAC permissions
+  procfs: switch magic-link modes to be more sane
+  open: O_EMPTYPATH: procfs-less file descriptor re-opening
+  namei: O_BENEATH-style path resolution flags
+  namei: LOOKUP_IN_ROOT: chroot-like path resolution
+  namei: aggressively check for nd->root escape on ".." resolution
+  open: openat2(2) syscall
+  selftests: add openat2(2) selftests
+
+ Documentation/filesystems/path-lookup.rst     |  12 +-
+ arch/alpha/include/uapi/asm/fcntl.h           |   1 +
+ arch/alpha/kernel/syscalls/syscall.tbl        |   1 +
+ arch/arm/tools/syscall.tbl                    |   1 +
+ arch/arm64/include/asm/unistd.h               |   2 +-
+ arch/arm64/include/asm/unistd32.h             |   2 +
+ arch/ia64/kernel/syscalls/syscall.tbl         |   1 +
+ arch/m68k/kernel/syscalls/syscall.tbl         |   1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl   |   1 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl     |   1 +
+ arch/parisc/include/uapi/asm/fcntl.h          |  39 +-
+ arch/parisc/kernel/syscalls/syscall.tbl       |   1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl      |   1 +
+ arch/s390/kernel/syscalls/syscall.tbl         |   1 +
+ arch/sh/kernel/syscalls/syscall.tbl           |   1 +
+ arch/sparc/include/uapi/asm/fcntl.h           |   1 +
+ arch/sparc/kernel/syscalls/syscall.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_32.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_64.tbl        |   1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl       |   1 +
+ fs/fcntl.c                                    |   2 +-
+ fs/internal.h                                 |   1 +
+ fs/namei.c                                    | 270 ++++++++++--
+ fs/open.c                                     | 112 ++++-
+ fs/proc/base.c                                |  20 +-
+ fs/proc/fd.c                                  |  23 +-
+ fs/proc/namespaces.c                          |   2 +-
+ include/linux/fcntl.h                         |  17 +-
+ include/linux/fs.h                            |   8 +-
+ include/linux/namei.h                         |   9 +
+ include/linux/syscalls.h                      |  17 +-
+ include/uapi/asm-generic/fcntl.h              |   4 +
+ include/uapi/asm-generic/unistd.h             |   5 +-
+ include/uapi/linux/fcntl.h                    |  42 ++
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/memfd/memfd_test.c    |   7 +-
+ tools/testing/selftests/openat2/.gitignore    |   1 +
+ tools/testing/selftests/openat2/Makefile      |   8 +
+ tools/testing/selftests/openat2/helpers.c     | 162 +++++++
+ tools/testing/selftests/openat2/helpers.h     | 116 +++++
+ .../testing/selftests/openat2/linkmode_test.c | 333 +++++++++++++++
+ .../selftests/openat2/rename_attack_test.c    | 127 ++++++
+ .../testing/selftests/openat2/resolve_test.c  | 402 ++++++++++++++++++
+ 45 files changed, 1655 insertions(+), 107 deletions(-)
+ create mode 100644 tools/testing/selftests/openat2/.gitignore
+ create mode 100644 tools/testing/selftests/openat2/Makefile
+ create mode 100644 tools/testing/selftests/openat2/helpers.c
+ create mode 100644 tools/testing/selftests/openat2/helpers.h
+ create mode 100644 tools/testing/selftests/openat2/linkmode_test.c
+ create mode 100644 tools/testing/selftests/openat2/rename_attack_test.c
+ create mode 100644 tools/testing/selftests/openat2/resolve_test.c
+
 -- 
 2.22.0
 
