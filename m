@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD7B9667A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 18:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 587C096683
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 18:37:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Cbwn26JJzDrP7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 02:34:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Cc084jKRzDrKh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 02:37:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="eDe8D8mO"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jcEk1qot"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Cbqw5QBFzDrMJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 02:30:20 +1000 (AEST)
-Received: from localhost (wsip-184-188-36-2.sd.sd.cox.net [184.188.36.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9C9CD22CE3;
- Tue, 20 Aug 2019 16:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1566318617;
- bh=KymnAe727ILy87L8EAf1U8mLv+nBZNNdGy5iODp5MOM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=eDe8D8mOkxt6Kz0TpZGa8O/1CtWzHWy0JCS9J71kHEp4zEqh4FTOMlBS58n/d2Agm
- IV1vDDP+f1MMVB2ItdJkHXGpcR8dZvNBxSLPp/bvt4FA6OIsDYcacj62MjHGmr2TkB
- 3yctVmNKKcLVNmORtLwVOdDuVYwVJLTXKgrE91ek=
-Date: Tue, 20 Aug 2019 09:30:17 -0700
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Allow flush_(inval_)dcache_range to work across
- ranges >4GB
-Message-ID: <20190820163017.GG8214@kroah.com>
-References: <20190815045543.16325-1-alastair@au1.ibm.com>
- <20190815071924.GA26670@kroah.com>
- <87mug97uo1.fsf@concordia.ellerman.id.au>
- <20190816071412.GF1368@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Cbwv02RGzDrNr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 02:34:37 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46Cbwl6LzXz9v4gL;
+ Tue, 20 Aug 2019 18:34:31 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=jcEk1qot; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id w-gSiBqPQhSj; Tue, 20 Aug 2019 18:34:31 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46Cbwl5Fhpz9v4gJ;
+ Tue, 20 Aug 2019 18:34:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566318871; bh=M46pFD8QK6LkV0J4+q5kgptn6gTa2un+Xy7n4gfSJPo=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=jcEk1qotdlZhd4zqaMYy/nnRZxUswz6Zjf6uiA0CprsgxuhYKzPoQxK7JnX4ANWNE
+ TGCbsNci+cp8RyBoGzF0YwhusQH1pyG2Qp3BdBbhS/e+I9kewM/A0J7qHn+J/VH5UU
+ 9z/tMDOkjBWkNPObWfmtY1wE4BO2hHcU/XiEHLdk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4467E8B7DA;
+ Tue, 20 Aug 2019 18:34:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id o9cmSMSFdq5C; Tue, 20 Aug 2019 18:34:32 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B55248B7D5;
+ Tue, 20 Aug 2019 18:34:31 +0200 (CEST)
+Subject: Re: [PATCH v2 2/2] powerpc: support KASAN instrumentation of bitops
+To: Daniel Axtens <dja@axtens.net>, linux-s390@vger.kernel.org,
+ linux-arch@vger.kernel.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20190820024941.12640-1-dja@axtens.net>
+ <20190820024941.12640-2-dja@axtens.net>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <cb205dfa-bdea-8320-5aae-9d5d5bd98c91@c-s.fr>
+Date: Tue, 20 Aug 2019 18:34:31 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190816071412.GF1368@kroah.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190820024941.12640-2-dja@axtens.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,74 +79,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alastair D'Silva <alastair@au1.ibm.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- alastair@d-silva.org, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>, kasan-dev@googlegroups.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 16, 2019 at 09:14:12AM +0200, Greg Kroah-Hartman wrote:
-> On Fri, Aug 16, 2019 at 11:42:22AM +1000, Michael Ellerman wrote:
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> > > On Thu, Aug 15, 2019 at 02:55:42PM +1000, Alastair D'Silva wrote:
-> > >> From: Alastair D'Silva <alastair@d-silva.org>
-> > >> 
-> > >> Heads Up: This patch cannot be submitted to Linus's tree, as the affected
-> > >> assembler functions have already been converted to C.
-> > 
-> > That was done in upstream commit:
-> > 
-> > 22e9c88d486a ("powerpc/64: reuse PPC32 static inline flush_dcache_range()")
-> > 
-> > Which is a larger change that we don't want to backport. This patch is a
-> > minimal fix for stable trees.
-> > 
-> > 
-> > >> When calling flush_(inval_)dcache_range with a size >4GB, we were masking
-> > >> off the upper 32 bits, so we would incorrectly flush a range smaller
-> > >> than intended.
-> > >> 
-> > >> This patch replaces the 32 bit shifts with 64 bit ones, so that
-> > >> the full size is accounted for.
-> > >> 
-> > >> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> > >> ---
-> > >>  arch/powerpc/kernel/misc_64.S | 4 ++--
-> > >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-> > 
-> > > <formletter>
-> > >
-> > > This is not the correct way to submit patches for inclusion in the
-> > > stable kernel tree.  Please read:
-> > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > > for how to do this properly.
-> > >
-> > > </formletter>
-> > 
-> > Hi Greg,
-> > 
-> > This is "option 3", submit the patch directly, and the patch "deviates
-> > from the original upstream patch" because the upstream patch was a
-> > wholesale conversion from asm to C.
-> > 
-> > This patch applies cleanly to v4.14 and v4.19.
-> > 
-> > The change log should have mentioned which upstream patch it is not a
-> > backport of, is there anything else we should have done differently to
-> > avoid the formletter bot :)
+
+
+Le 20/08/2019 à 04:49, Daniel Axtens a écrit :
+> The powerpc-specific bitops are not being picked up by the KASAN
+> test suite.
 > 
-> That is exactly what you should have done.  It needs to be VERY explicit
-> as to why this is being submitted different from what upstream did, and
-> to what trees it needs to go to and who is going to be responsible for
-> when it breaks.  And it will break :)
+> Instrumentation is done via the bitops/instrumented-{atomic,lock}.h
+> headers. They require that arch-specific versions of bitop functions
+> are renamed to arch_*. Do this renaming.
+> 
+> For clear_bit_unlock_is_negative_byte, the current implementation
+> uses the PG_waiters constant. This works because it's a preprocessor
+> macro - so it's only actually evaluated in contexts where PG_waiters
+> is defined. With instrumentation however, it becomes a static inline
+> function, and all of a sudden we need the actual value of PG_waiters.
+> Because of the order of header includes, it's not available and we
+> fail to compile. Instead, manually specify that we care about bit 7.
+> This is still correct: bit 7 is the bit that would mark a negative
+> byte.
+> 
+> While we're at it, replace __inline__ with inline across the file.
+> 
+> Cc: Nicholas Piggin <npiggin@gmail.com> # clear_bit_unlock_negative_byte
+> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
 
-And it needs to be done before I can apply it, I've dropped this thread
-from my queue now.
+Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-thanks,
+Now, I only have two KASAN tests which do not trigger any message:
 
-greg k-h
+	kasan test: kasan_alloca_oob_left out-of-bounds to left on alloca
+	kasan test: kasan_alloca_oob_right out-of-bounds to right on alloca
+
+Christophe
+
+> 
+> --
+> v2: Address Christophe review
+> ---
+>   arch/powerpc/include/asm/bitops.h | 51 ++++++++++++++++++-------------
+>   1 file changed, 29 insertions(+), 22 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/bitops.h b/arch/powerpc/include/asm/bitops.h
+> index 603aed229af7..28dcf8222943 100644
+> --- a/arch/powerpc/include/asm/bitops.h
+> +++ b/arch/powerpc/include/asm/bitops.h
+> @@ -64,7 +64,7 @@
+>   
+>   /* Macro for generating the ***_bits() functions */
+>   #define DEFINE_BITOP(fn, op, prefix)		\
+> -static __inline__ void fn(unsigned long mask,	\
+> +static inline void fn(unsigned long mask,	\
+>   		volatile unsigned long *_p)	\
+>   {						\
+>   	unsigned long old;			\
+> @@ -86,22 +86,22 @@ DEFINE_BITOP(clear_bits, andc, "")
+>   DEFINE_BITOP(clear_bits_unlock, andc, PPC_RELEASE_BARRIER)
+>   DEFINE_BITOP(change_bits, xor, "")
+>   
+> -static __inline__ void set_bit(int nr, volatile unsigned long *addr)
+> +static inline void arch_set_bit(int nr, volatile unsigned long *addr)
+>   {
+>   	set_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
+>   }
+>   
+> -static __inline__ void clear_bit(int nr, volatile unsigned long *addr)
+> +static inline void arch_clear_bit(int nr, volatile unsigned long *addr)
+>   {
+>   	clear_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
+>   }
+>   
+> -static __inline__ void clear_bit_unlock(int nr, volatile unsigned long *addr)
+> +static inline void arch_clear_bit_unlock(int nr, volatile unsigned long *addr)
+>   {
+>   	clear_bits_unlock(BIT_MASK(nr), addr + BIT_WORD(nr));
+>   }
+>   
+> -static __inline__ void change_bit(int nr, volatile unsigned long *addr)
+> +static inline void arch_change_bit(int nr, volatile unsigned long *addr)
+>   {
+>   	change_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
+>   }
+> @@ -109,7 +109,7 @@ static __inline__ void change_bit(int nr, volatile unsigned long *addr)
+>   /* Like DEFINE_BITOP(), with changes to the arguments to 'op' and the output
+>    * operands. */
+>   #define DEFINE_TESTOP(fn, op, prefix, postfix, eh)	\
+> -static __inline__ unsigned long fn(			\
+> +static inline unsigned long fn(			\
+>   		unsigned long mask,			\
+>   		volatile unsigned long *_p)		\
+>   {							\
+> @@ -138,34 +138,34 @@ DEFINE_TESTOP(test_and_clear_bits, andc, PPC_ATOMIC_ENTRY_BARRIER,
+>   DEFINE_TESTOP(test_and_change_bits, xor, PPC_ATOMIC_ENTRY_BARRIER,
+>   	      PPC_ATOMIC_EXIT_BARRIER, 0)
+>   
+> -static __inline__ int test_and_set_bit(unsigned long nr,
+> -				       volatile unsigned long *addr)
+> +static inline int arch_test_and_set_bit(unsigned long nr,
+> +					volatile unsigned long *addr)
+>   {
+>   	return test_and_set_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
+>   }
+>   
+> -static __inline__ int test_and_set_bit_lock(unsigned long nr,
+> -				       volatile unsigned long *addr)
+> +static inline int arch_test_and_set_bit_lock(unsigned long nr,
+> +					     volatile unsigned long *addr)
+>   {
+>   	return test_and_set_bits_lock(BIT_MASK(nr),
+>   				addr + BIT_WORD(nr)) != 0;
+>   }
+>   
+> -static __inline__ int test_and_clear_bit(unsigned long nr,
+> -					 volatile unsigned long *addr)
+> +static inline int arch_test_and_clear_bit(unsigned long nr,
+> +					  volatile unsigned long *addr)
+>   {
+>   	return test_and_clear_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
+>   }
+>   
+> -static __inline__ int test_and_change_bit(unsigned long nr,
+> -					  volatile unsigned long *addr)
+> +static inline int arch_test_and_change_bit(unsigned long nr,
+> +					   volatile unsigned long *addr)
+>   {
+>   	return test_and_change_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
+>   }
+>   
+>   #ifdef CONFIG_PPC64
+> -static __inline__ unsigned long clear_bit_unlock_return_word(int nr,
+> -						volatile unsigned long *addr)
+> +static inline unsigned long
+> +clear_bit_unlock_return_word(int nr, volatile unsigned long *addr)
+>   {
+>   	unsigned long old, t;
+>   	unsigned long *p = (unsigned long *)addr + BIT_WORD(nr);
+> @@ -185,15 +185,18 @@ static __inline__ unsigned long clear_bit_unlock_return_word(int nr,
+>   	return old;
+>   }
+>   
+> -/* This is a special function for mm/filemap.c */
+> -#define clear_bit_unlock_is_negative_byte(nr, addr)			\
+> -	(clear_bit_unlock_return_word(nr, addr) & BIT_MASK(PG_waiters))
+> +/*
+> + * This is a special function for mm/filemap.c
+> + * Bit 7 corresponds to PG_waiters.
+> + */
+> +#define arch_clear_bit_unlock_is_negative_byte(nr, addr)		\
+> +	(clear_bit_unlock_return_word(nr, addr) & BIT_MASK(7))
+>   
+>   #endif /* CONFIG_PPC64 */
+>   
+>   #include <asm-generic/bitops/non-atomic.h>
+>   
+> -static __inline__ void __clear_bit_unlock(int nr, volatile unsigned long *addr)
+> +static inline void arch___clear_bit_unlock(int nr, volatile unsigned long *addr)
+>   {
+>   	__asm__ __volatile__(PPC_RELEASE_BARRIER "" ::: "memory");
+>   	__clear_bit(nr, addr);
+> @@ -215,14 +218,14 @@ static __inline__ void __clear_bit_unlock(int nr, volatile unsigned long *addr)
+>    * fls: find last (most-significant) bit set.
+>    * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
+>    */
+> -static __inline__ int fls(unsigned int x)
+> +static inline int fls(unsigned int x)
+>   {
+>   	return 32 - __builtin_clz(x);
+>   }
+>   
+>   #include <asm-generic/bitops/builtin-__fls.h>
+>   
+> -static __inline__ int fls64(__u64 x)
+> +static inline int fls64(__u64 x)
+>   {
+>   	return 64 - __builtin_clzll(x);
+>   }
+> @@ -239,6 +242,10 @@ unsigned long __arch_hweight64(__u64 w);
+>   
+>   #include <asm-generic/bitops/find.h>
+>   
+> +/* wrappers that deal with KASAN instrumentation */
+> +#include <asm-generic/bitops/instrumented-atomic.h>
+> +#include <asm-generic/bitops/instrumented-lock.h>
+> +
+>   /* Little-endian versions */
+>   #include <asm-generic/bitops/le.h>
+>   
+> 
