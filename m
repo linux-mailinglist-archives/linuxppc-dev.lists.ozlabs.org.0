@@ -1,42 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887BD961C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 15:58:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAFC96248
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 16:19:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CXSy0nkwzDqHm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 23:58:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CXwc5LsFzDr7C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 00:19:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="tKdSo6X6"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CVnT3MGvzDqdb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 22:42:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46CVnP0JhKz9s3Z;
- Tue, 20 Aug 2019 22:42:48 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 1/2] powerpc/time: Only set
- CONFIG_ARCH_HAS_SCALED_CPUTIME on PPC64
-In-Reply-To: <26969bb5-c01b-0674-5773-027f1851bd44@c-s.fr>
-References: <d9ac8da98f53debb4758b98d0227979aca9196f7.1528292284.git.christophe.leroy@c-s.fr>
- <20180607114304.327c4ab5@roar.ozlabs.ibm.com>
- <26969bb5-c01b-0674-5773-027f1851bd44@c-s.fr>
-Date: Tue, 20 Aug 2019 22:42:39 +1000
-Message-ID: <87imqs57pc.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CXfq6rS7zDr4D
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 00:07:12 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46CXfh3C4sz9v0Gb;
+ Tue, 20 Aug 2019 16:07:08 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=tKdSo6X6; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id e7Fkv2cRjIdr; Tue, 20 Aug 2019 16:07:08 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46CXfh26N8z9v0GZ;
+ Tue, 20 Aug 2019 16:07:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566310028; bh=c4WuXaiy+O/7ygfEz9bDe2ljT2i9s9DO0RcjXIG8wTE=;
+ h=From:Subject:To:Cc:Date:From;
+ b=tKdSo6X6yn/V8jh+fv8E374U5J+/MfK3JMFpYVI4DOfpXR4AoMYS78nqWl1sBIN30
+ zDEHUEkHBLT+U2xNEziKvJy7jEq5boP2VfF7RpDWfRCQHgINMs36OUhXuiGYX19spO
+ Q8Md0Hv56n/t5O2pNhJOQl7MTmfSymJyp9jWKIpM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A95948B7D0;
+ Tue, 20 Aug 2019 16:07:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HlwSrXBYzFH5; Tue, 20 Aug 2019 16:07:08 +0200 (CEST)
+Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 671B08B7C9;
+ Tue, 20 Aug 2019 16:07:08 +0200 (CEST)
+Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 277A56B734; Tue, 20 Aug 2019 14:07:08 +0000 (UTC)
+Message-Id: <cover.1566309262.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 00/12] powerpc/mm: cleanup and refactoring in ioremap
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com, hch@lst.de
+Date: Tue, 20 Aug 2019 14:07:08 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,45 +73,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Frederic Weisbecker <fweisbec@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> Hi Nick,
->
->
-> Le 07/06/2018 =C3=A0 03:43, Nicholas Piggin a =C3=A9crit=C2=A0:
->> On Wed,  6 Jun 2018 14:21:08 +0000 (UTC)
->> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
->>=20
->>> scaled cputime is only meaningfull when the processor has
->>> SPURR and/or PURR, which means only on PPC64.
->>>
->
-> [...]
->
->>=20
->> I wonder if we could make this depend on PPC_PSERIES or even
->> PPC_SPLPAR as well? (That would be for a later patch)
->
-> Can we go further on this ?
->
-> Do we know exactly which configuration support scaled cputime, in=20
-> extenso have SPRN_SPURR and/or SPRN_PURR ?
+The purpose of this series is to cleanup and refactor ioremap.
 
-PURR is Power5/6/7/8/9 and PA6T (pasemi). SPURR is Power6/7/8/9.
+At the time being, ioremap is duplicated in PPC32 and PPC64.
+In addition, some additional duplication also appear within PPC64.
 
-So we could easily flip PPC64 for PPC_BOOK3S_64, which would mean 64-bit
-Book3E CPUs don't get that overhead.
+First part of this series drops as much as unused functions.
+Then io-workaround is reworked to avoid indirect function call.
+Then common parts of PPC32 and PPC64 are regrouped into a new file
+called ioremap.c
+Then other parts linked to ioremap are respectively moved out of
+pgtable_32/64.c
+The last part of the series tries to refactor ioremap_range() and
+make use of ioremap_page_range() for all, then separates the early
+path from the regular ioremap.
 
-Beyond that is not so simple. We probably don't need that selected for
-bare metal kernels (powernv). But in practice all the distros build a
-multi platform kernel with powernv+pseries anyway.
+A future follow-up of this series will be to try and eliminate the
+early ioremap part and use the generic early_ioremap instead.
 
-We could turn it off on G5s (PPC970), by making it depend on POWERNV ||
-PSERIES || PPC_PASEMI, but I'm not sure if it's worth the trouble.
+v2:
+- dropped the change of ioremap_bot growing direction for PPC64 and
+  kept separate __ioremap_caller() and friends.
+- separating more clearly early_ioremap() from regular ioremap()
+- addressed received comments.
 
-cheers
+Christophe Leroy (12):
+  powerpc: remove the ppc44x ocm.c file
+  powerpc/ps3: replace __ioremap() by ioremap_prot()
+  powerpc/mm: drop ppc_md.iounmap() and __iounmap()
+  powerpc/mm: drop function __ioremap()
+  powerpc/mm: rework io-workaround invocation.
+  powerpc/mm: move common 32/64 bits ioremap functions into ioremap.c
+  powerpc/mm: move ioremap_prot() into ioremap.c
+  powerpc/mm: make ioremap_bot common to all
+  powerpc/mm: Move ioremap functions out of pgtable_32/64.c
+  powerpc/mm: refactor ioremap_range() and use ioremap_page_range()
+  powerpc/mm: refactor ioremap vm area setup.
+  powerpc/mm: split out early ioremap path.
+
+ arch/powerpc/configs/ppc40x_defconfig        |   1 -
+ arch/powerpc/include/asm/book3s/32/pgtable.h |   6 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h |   2 +-
+ arch/powerpc/include/asm/book3s/64/radix.h   |   3 -
+ arch/powerpc/include/asm/io-workarounds.h    |  20 ++
+ arch/powerpc/include/asm/io.h                |  16 +-
+ arch/powerpc/include/asm/machdep.h           |   4 -
+ arch/powerpc/include/asm/nohash/32/pgtable.h |   6 +-
+ arch/powerpc/include/asm/nohash/64/pgtable.h |   1 +
+ arch/powerpc/include/asm/pgtable.h           |   2 +
+ arch/powerpc/include/asm/ppc4xx_ocm.h        |  31 ---
+ arch/powerpc/kernel/io-workarounds.c         |  13 +-
+ arch/powerpc/mm/Makefile                     |   2 +-
+ arch/powerpc/mm/book3s64/pgtable.c           |  21 --
+ arch/powerpc/mm/book3s64/radix_pgtable.c     |  20 --
+ arch/powerpc/mm/ioremap.c                    |  99 +++++++
+ arch/powerpc/mm/ioremap_32.c                 |  92 +++++++
+ arch/powerpc/mm/ioremap_64.c                 | 113 ++++++++
+ arch/powerpc/mm/mmu_decl.h                   |   1 -
+ arch/powerpc/mm/nohash/tlb.c                 |   2 +
+ arch/powerpc/mm/pgtable_32.c                 | 153 -----------
+ arch/powerpc/mm/pgtable_64.c                 | 203 +-------------
+ arch/powerpc/platforms/44x/Kconfig           |   8 -
+ arch/powerpc/platforms/4xx/Makefile          |   1 -
+ arch/powerpc/platforms/4xx/ocm.c             | 390 ---------------------------
+ arch/powerpc/platforms/ps3/spu.c             |  10 +-
+ 26 files changed, 353 insertions(+), 867 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/ppc4xx_ocm.h
+ create mode 100644 arch/powerpc/mm/ioremap.c
+ create mode 100644 arch/powerpc/mm/ioremap_32.c
+ create mode 100644 arch/powerpc/mm/ioremap_64.c
+ delete mode 100644 arch/powerpc/platforms/4xx/ocm.c
+
+-- 
+2.13.3
+
