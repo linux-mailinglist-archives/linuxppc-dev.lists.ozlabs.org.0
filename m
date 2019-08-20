@@ -2,75 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D08D96833
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 19:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4993A96863
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 20:13:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CdqF2hxQzDrNS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 03:59:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Cf7K1bwCzDr22
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 04:13:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com;
- envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="QVijRt/p"; 
- dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CdnG57Y9zDrC8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 03:58:10 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id y8so13301069wrn.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 10:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=nL5wmWAkInloOmP6KaWDiP57TY5h/6kIVcxnHD5OgX8=;
- b=QVijRt/pnGOTOHQX6VTkjeE/TbK60axXWdIop2BpcoKc42w1qCd7cspYjzVfjYt0zS
- RYCBQ5WIs/X39vAQTeW9AAANKr5jZoLLfUBuIyX1QWXnAm/hS3DQWumiX9LiQsjeqVLq
- FAl67Zd3EOXUqJADiGNUF1lg1gdPjzFWnGHtPzVUURV4blAN+tE6PSJ+Z7cPNfkrgQ5T
- yRapVzzxr1O0N5FMUqZ+BnW88uSpH3hldsTGqR3C3mRGAlgwLMQbVaERzII+Evo2DQ43
- vSL+MNZB+kk+dNO00LZo8U8RELN/2Cm85vvf3r5NHP2WvvN02o1y3HJCCFWbsWKL/Mrm
- CiiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=nL5wmWAkInloOmP6KaWDiP57TY5h/6kIVcxnHD5OgX8=;
- b=AxVTUc9R8Zak4qtfHp68JGtoslVZsYOC2oGRrL6BowShtZrMGB6eZUg9vB9yDIfhAy
- +dB90cIHe1Z0q/GJ/+pHBeidnSYbUzEsWs3OAuoV0LaVBpXeAstPDrsVhs2t6Q7y7Jdq
- R9sMWPF2dG+0Vh4fNEHTBB+SyhWpNx7oiiEf43ePQbBXWMzcKAoRRFGeXrXHaKr0+unj
- N6CKsdYFmxwhYBUYx2/8RWl7kRaqIUfknHxEbKjVoKfz9hTN+4vk2XGASDwrLTNhkU2d
- aC13Jo6h9naDKzpgr/mlB4ap1JFEgEZ/AufPZM6iwlEa7gaNxRDcAMP2t2J2OQfwMw/f
- 8TAg==
-X-Gm-Message-State: APjAAAU4oObJFz8ZrzY8SrB2vgTilQIPaz8DdAp8ht3UsS5uMd3cTQWs
- 0eZttG8MRShwskPZbLIQQLs=
-X-Google-Smtp-Source: APXvYqy4oqKEPeEW3S9YLuOzS1IhOJ4LHvsVQvdsc4W4XSrb2bZ7wF632y8yvmgoGmz5KNzgZ2IMjg==
-X-Received: by 2002:adf:ecc3:: with SMTP id s3mr36531412wro.302.1566323884062; 
- Tue, 20 Aug 2019 10:58:04 -0700 (PDT)
-Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
- by smtp.gmail.com with ESMTPSA id i5sm20817729wrn.48.2019.08.20.10.58.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Aug 2019 10:58:03 -0700 (PDT)
-Date: Tue, 20 Aug 2019 10:58:01 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc: Don't add -mabi= flags when building with Clang
-Message-ID: <20190820175801.GA9420@archlinux-threadripper>
-References: <20190818191321.58185-1-natechancellor@gmail.com>
- <20190819091930.GZ31406@gate.crashing.org>
- <20190820031538.GC30221@archlinux-threadripper>
- <20190820124033.GQ31406@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Cf5Z6B4gzDqbG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 04:12:18 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 54DEFAEF5;
+ Tue, 20 Aug 2019 18:12:14 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH rebased] powerpc/fadump: when fadump is supported register the
+ fadump sysfs files.
+Date: Tue, 20 Aug 2019 20:12:11 +0200
+Message-Id: <20190820181211.14694-1-msuchanek@suse.de>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190820124033.GQ31406@gate.crashing.org>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,104 +44,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Yangtao Li <tiny.windzz@gmail.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Hari Bathini <hbathini@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Michal Suchanek <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 20, 2019 at 07:40:33AM -0500, Segher Boessenkool wrote:
-> On Mon, Aug 19, 2019 at 08:15:38PM -0700, Nathan Chancellor wrote:
-> > On Mon, Aug 19, 2019 at 04:19:31AM -0500, Segher Boessenkool wrote:
-> > > On Sun, Aug 18, 2019 at 12:13:21PM -0700, Nathan Chancellor wrote:
-> > > > When building pseries_defconfig, building vdso32 errors out:
-> > > > 
-> > > >   error: unknown target ABI 'elfv1'
-> > > > 
-> > > > Commit 4dc831aa8813 ("powerpc: Fix compiling a BE kernel with a
-> > > > powerpc64le toolchain") added these flags to fix building GCC but
-> > > > clang is multitargeted and does not need these flags. The ABI is
-> > > > properly set based on the target triple, which is derived from
-> > > > CROSS_COMPILE.
-> > > 
-> > > You mean that LLVM does not *allow* you to select a different ABI, or
-> > > different ABI options, you always have to use the default.  (Everything
-> > > else you say is true for GCC as well).
-> > 
-> > I need to improve the wording of the commit message as it is really that
-> > clang does not allow a different ABI to be selected for 32-bit PowerPC,
-> > as the setABI function is not overridden and it defaults to false.
-> 
-> > GCC appears to just silently ignores this flag (I think it is the
-> > SUBSUBTARGET_OVERRIDE_OPTIONS macro in gcc/config/rs6000/linux64.h).
-> 
-> What flag?  -mabi=elfv[12]?
+Currently it is not possible to distinguish the case when fadump is
+supported by firmware and disabled in kernel and completely unsupported
+using the kernel sysfs interface. User can investigate the devicetree
+but it is more reasonable to provide sysfs files in case we get some
+fadumpv2 in the future.
 
-Yes.
+With this patch sysfs files are available whenever fadump is supported
+by firmware.
 
-> (Only irrelevant things are ever ignored; otherwise, please do a bug
-> report).
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+Rebase on top of http://patchwork.ozlabs.org/patch/1150160/
+[v5,31/31] powernv/fadump: support holes in kernel boot memory area
+---
+ arch/powerpc/kernel/fadump.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-I believe that is the case here but looking at the GCC source gives me a
-headache.
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 4b1bb3c55cf9..7ad424729e9c 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1319,13 +1319,9 @@ static void fadump_init_files(void)
+  */
+ int __init setup_fadump(void)
+ {
+-	if (!fw_dump.fadump_enabled)
+-		return 0;
+-
+-	if (!fw_dump.fadump_supported) {
++	if (!fw_dump.fadump_supported && fw_dump.fadump_enabled) {
+ 		printk(KERN_ERR "Firmware-assisted dump is not supported on"
+ 			" this hardware\n");
+-		return 0;
+ 	}
+ 
+ 	fadump_show_config();
+@@ -1333,19 +1329,26 @@ int __init setup_fadump(void)
+ 	 * If dump data is available then see if it is valid and prepare for
+ 	 * saving it to the disk.
+ 	 */
+-	if (fw_dump.dump_active) {
++	if (fw_dump.fadump_enabled) {
++		if (fw_dump.dump_active) {
++			/*
++			 * if dump process fails then invalidate the
++			 * registration and release memory before proceeding
++			 * for re-registration.
++			 */
++			if (fw_dump.ops->fadump_process(&fw_dump) < 0)
++				fadump_invalidate_release_mem();
++		}
+ 		/*
+-		 * if dump process fails then invalidate the registration
+-		 * and release memory before proceeding for re-registration.
++		 * Initialize the kernel dump memory structure for FAD
++		 * registration.
+ 		 */
+-		if (fw_dump.ops->fadump_process(&fw_dump) < 0)
+-			fadump_invalidate_release_mem();
+-	}
+-	/* Initialize the kernel dump memory structure for FAD registration. */
+-	else if (fw_dump.reserve_dump_area_size)
+-		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
++		else if (fw_dump.reserve_dump_area_size)
++			fw_dump.ops->fadump_init_mem_struct(&fw_dump);
+ 
+-	fadump_init_files();
++	}
++	if (fw_dump.fadump_supported)
++		fadump_init_files();
+ 
+ 	return 1;
+ }
+-- 
+2.22.0
 
-> > It can be changed for 64-bit PowerPC it seems but it doesn't need to be
-> > with clang because everything is set properly internally (I'll find a
-> > better way to clearly word that as I am sure I'm not quite getting that
-> > subtlety right).
-> 
-> You can have elfv2 on BE, and e.g. the sysv ABI on LE.  Neither of those
-> is tested a lot.
-> 
-> > > (-mabi= does not set a "target ABI", fwiw, it is more subtle; please see
-> > > the documentation.  Unless LLVM is incompatible in that respect as well?)
-> > 
-> > Are you referring to the error message?
-> 
-> Yup.
-> 
-> > I suppose I could file an LLVM
-> > bug report on that but that message applies to all of the '-mabi='
-> > options, which may refer to a target ABI.
-> 
-> That depends on what you call "an ABI", I guess.  You can call any ABI
-> variant a separate ABI: you'll have to rebuild all of userland.  You can
-> also says ELFv1 and ELFv2 are pretty much the same thing, which is true
-> as well.  The way -mabi= is defined is the latter:
-> 
-> '-mabi=ABI-TYPE'
->      Extend the current ABI with a particular extension, or remove such
->      extension.  Valid values are 'altivec', 'no-altivec',
->      'ibmlongdouble', 'ieeelongdouble', 'elfv1', 'elfv2'.
-> 
-> 
-> Segher
-
-The GCC documentation also has this description for '-mabi=elfv1' and
-'-mabi=elfv2':
-
--mabi=elfv1:
-Change the current ABI to use the ELFv1 ABI. This is the default ABI for
-big-endian PowerPC 64-bit Linux. Overriding the default ABI requires
-special system support and is likely to fail in spectacular ways.
-
--mabi=elfv2:
-Change the current ABI to use the ELFv2 ABI. This is the default ABI for
-little-endian PowerPC 64-bit Linux. Overriding the default ABI requires
-special system support and is likely to fail in spectacular ways.
-
-https://gcc.gnu.org/onlinedocs/gcc/RS_002f6000-and-PowerPC-Options.html#index-mabi_003delfv1
-
-Thinking about this a little bit more, I think this patch is correct in
-the case that clang is cross compiling because the target triple will
-always be specified (so the default ABI doesn't need to be changed).
-However, I am not sure how native compiling would be affected by this
-change; in theory, if someone was on a little endian system and wanted
-to build a big endian kernel, they would probably need -mabi=elfv1
-like GCC would but I don't have any real way to test this nor am I sure
-that anyone actually natively compiles PowerPC kernels with clang. It's
-probably not worrying about at this point so I'll just move forward with
-a v2 rewording the commit message.
-
-Cheers,
-Nathan
