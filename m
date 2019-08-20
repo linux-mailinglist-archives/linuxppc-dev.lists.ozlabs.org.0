@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122F295CBF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9387595CA2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:53:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CSST2b6CzDqZw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 20:58:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CSM03Nn0zDqd7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 20:53:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,26 +19,30 @@ Received: from mx2.mailbox.org (mx2a.mailbox.org
  [IPv6:2001:67c:2050:104:0:2:25:2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CS6X05FZzDqvK
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CS6W5rPKzDqs1
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 20:42:27 +1000 (AEST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+Received: from smtp2.mailbox.org (smtp2.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:2:0])
  (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by mx2.mailbox.org (Postfix) with ESMTPS id 48140A1638;
- Tue, 20 Aug 2019 05:34:43 +0200 (CEST)
+ by mx2.mailbox.org (Postfix) with ESMTPS id 284FBA0C2B;
+ Tue, 20 Aug 2019 05:35:27 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
- [80.241.56.123]) (amavisd-new, port 10030)
- with ESMTP id N1m8x2icF4On; Tue, 20 Aug 2019 05:34:31 +0200 (CEST)
+ by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173])
+ (amavisd-new, port 10030)
+ with ESMTP id iPNXPGgi2zto; Tue, 20 Aug 2019 05:35:18 +0200 (CEST)
 From: Aleksa Sarai <cyphar@cyphar.com>
 To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
  "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
  David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
  Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH RESEND v11 0/8] openat2(2)
-Date: Tue, 20 Aug 2019 13:33:58 +1000
-Message-Id: <20190820033406.29796-1-cyphar@cyphar.com>
+Subject: [PATCH RESEND v11 3/8] open: O_EMPTYPATH: procfs-less file descriptor
+ re-opening
+Date: Tue, 20 Aug 2019 13:34:01 +1000
+Message-Id: <20190820033406.29796-4-cyphar@cyphar.com>
+In-Reply-To: <20190820033406.29796-1-cyphar@cyphar.com>
+References: <20190820033406.29796-1-cyphar@cyphar.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,209 +67,233 @@ Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
  Aleksa Sarai <cyphar@cyphar.com>, Andy Lutomirski <luto@kernel.org>,
  David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
  linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-api@vger.kernel.org, containers@lists.linux-foundation.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
  linux-kernel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>,
  linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- Chanho Min <chanho.min@lge.com>
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patchset is being developed here:
-    <https://github.com/cyphar/linux/tree/resolveat/master>
+Userspace has made use of /proc/self/fd very liberally to allow for
+descriptors to be re-opened. There are a wide variety of uses for this
+feature, but it has always required constructing a pathname and could
+not be done without procfs mounted. The obvious solution for this is to
+extend openat(2) to have an AT_EMPTY_PATH-equivalent -- O_EMPTYPATH.
 
-Patch changelog:
- v11: [RESEND: <https://lore.kernel.org/lkml/20190728010207.9781-1-cyphar@cyphar.com/>]
-    * Fix checkpatch.pl errors and warnings where reasonable.
-    * Minor cleanup to pr_warn logging for may_open_magiclink().
-    * Drop kselftests patch to handle %m formatting correctly, and send
-      it through the kselftests tree directly. [Shuah Khan]
- v10: <https://lore.kernel.org/lkml/20190719164225.27083-1-cyphar@cyphar.com/>
- v09: <https://lore.kernel.org/lkml/20190706145737.5299-1-cyphar@cyphar.com/>
- v08: <https://lore.kernel.org/lkml/20190520133305.11925-1-cyphar@cyphar.com/>
- v07: <https://lore.kernel.org/lkml/20190507164317.13562-1-cyphar@cyphar.com/>
- v06: <https://lore.kernel.org/lkml/20190506165439.9155-1-cyphar@cyphar.com/>
- v05: <https://lore.kernel.org/lkml/20190320143717.2523-1-cyphar@cyphar.com/>
- v04: <https://lore.kernel.org/lkml/20181112142654.341-1-cyphar@cyphar.com/>
- v03: <https://lore.kernel.org/lkml/20181009070230.12884-1-cyphar@cyphar.com/>
- v02: <https://lore.kernel.org/lkml/20181009065300.11053-1-cyphar@cyphar.com/>
- v01: <https://lore.kernel.org/lkml/20180929103453.12025-1-cyphar@cyphar.com/>
+Now that descriptor re-opening has been made safe through the new
+magic-link resolution restrictions, we can replicate these restrictions
+for O_EMPTYPATH. In particular, we only allow "upgrading" the file
+descriptor if the corresponding FMODE_PATH_* bit is set (or the
+FMODE_{READ,WRITE} cases for non-O_PATH file descriptors).
 
-The need for some sort of control over VFS's path resolution (to avoid
-malicious paths resulting in inadvertent breakouts) has been a very
-long-standing desire of many userspace applications. This patchset is a
-revival of Al Viro's old AT_NO_JUMPS[1,2] patchset (which was a variant
-of David Drysdale's O_BENEATH patchset[3] which was a spin-off of the
-Capsicum project[4]) with a few additions and changes made based on the
-previous discussion within [5] as well as others I felt were useful.
+When doing openat(O_EMPTYPATH|O_PATH), O_PATH takes precedence and
+O_EMPTYPATH is ignored. Very few users ever have a need to O_PATH
+re-open an existing file descriptor, and so accommodating them at the
+expense of further complicating O_PATH makes little sense. Ultimately,
+if users ask for this we can always add RESOLVE_EMPTY_PATH to
+resolveat(2) in the future.
 
-In line with the conclusions of the original discussion of AT_NO_JUMPS,
-the flag has been split up into separate flags. However, instead of
-being an openat(2) flag it is provided through a new syscall openat2(2)
-which provides several other improvements to the openat(2) interface (see the
-patch description for more details). The following new LOOKUP_* flags are
-added:
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+---
+ arch/alpha/include/uapi/asm/fcntl.h  |  1 +
+ arch/parisc/include/uapi/asm/fcntl.h | 39 ++++++++++++++--------------
+ arch/sparc/include/uapi/asm/fcntl.h  |  1 +
+ fs/fcntl.c                           |  2 +-
+ fs/namei.c                           | 20 ++++++++++++++
+ fs/open.c                            |  7 ++++-
+ include/linux/fcntl.h                |  2 +-
+ include/uapi/asm-generic/fcntl.h     |  4 +++
+ 8 files changed, 54 insertions(+), 22 deletions(-)
 
-  * LOOKUP_NO_XDEV blocks all mountpoint crossings (upwards, downwards,
-    or through absolute links). Absolute pathnames alone in openat(2) do
-    not trigger this.
-
-  * LOOKUP_NO_MAGICLINKS blocks resolution through /proc/$pid/fd-style
-    links. This is done by blocking the usage of nd_jump_link() during
-    resolution in a filesystem. The term "magic-links" is used to match
-    with the only reference to these links in Documentation/, but I'm
-    happy to change the name.
-
-    It should be noted that this is different to the scope of
-    ~LOOKUP_FOLLOW in that it applies to all path components. However,
-    you can do openat2(NO_FOLLOW|NO_MAGICLINKS) on a magic-link and it
-    will *not* fail (assuming that no parent component was a
-    magic-link), and you will have an fd for the magic-link.
-
-  * LOOKUP_BENEATH disallows escapes to outside the starting dirfd's
-    tree, using techniques such as ".." or absolute links. Absolute
-    paths in openat(2) are also disallowed. Conceptually this flag is to
-    ensure you "stay below" a certain point in the filesystem tree --
-    but this requires some additional to protect against various races
-    that would allow escape using "..".
-
-    Currently LOOKUP_BENEATH implies LOOKUP_NO_MAGICLINKS, because it
-    can trivially beam you around the filesystem (breaking the
-    protection). In future, there might be similar safety checks done as
-    in LOOKUP_IN_ROOT, but that requires more discussion.
-
-In addition, two new flags are added that expand on the above ideas:
-
-  * LOOKUP_NO_SYMLINKS does what it says on the tin. No symlink
-    resolution is allowed at all, including magic-links. Just as with
-    LOOKUP_NO_MAGICLINKS this can still be used with NOFOLLOW to open an
-    fd for the symlink as long as no parent path had a symlink
-    component.
-
-  * LOOKUP_IN_ROOT is an extension of LOOKUP_BENEATH that, rather than
-    blocking attempts to move past the root, forces all such movements
-    to be scoped to the starting point. This provides chroot(2)-like
-    protection but without the cost of a chroot(2) for each filesystem
-    operation, as well as being safe against race attacks that chroot(2)
-    is not.
-
-    If a race is detected (as with LOOKUP_BENEATH) then an error is
-    generated, and similar to LOOKUP_BENEATH it is not permitted to cross
-    magic-links with LOOKUP_IN_ROOT.
-
-    The primary need for this is from container runtimes, which
-    currently need to do symlink scoping in userspace[6] when opening
-    paths in a potentially malicious container. There is a long list of
-    CVEs that could have bene mitigated by having RESOLVE_THIS_ROOT
-    (such as CVE-2017-1002101, CVE-2017-1002102, CVE-2018-15664, and
-    CVE-2019-5736, just to name a few).
-
-And further, several semantics of file descriptor "re-opening" are now
-changed to prevent attacks like CVE-2019-5736 by restricting how
-magic-links can be resolved (based on their mode). This required some
-other changes to the semantics of the modes of O_PATH file descriptor's
-associated /proc/self/fd magic-links. openat2(2) has the ability to
-further restrict re-opening of its own O_PATH fds, so that users can
-make even better use of this feature.
-
-Finally, O_EMPTYPATH was added so that users can do /proc/self/fd-style
-re-opening without depending on procfs. The new restricted semantics for
-magic-links are applied here too.
-
-In order to make all of the above more usable, I'm working on
-libpathrs[7] which is a C-friendly library for safe path resolution. It
-features a userspace-emulated backend if the kernel doesn't support
-openat2(2). Hopefully we can get userspace to switch to using it, and
-thus get openat2(2) support for free once it's ready.
-
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Christian Brauner <christian@brauner.io>
-Cc: David Drysdale <drysdale@google.com>
-Cc: Tycho Andersen <tycho@tycho.ws>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <containers@lists.linux-foundation.org>
-Cc: <linux-fsdevel@vger.kernel.org>
-Cc: <linux-api@vger.kernel.org>
-
-[1]: https://lwn.net/Articles/721443/
-[2]: https://lore.kernel.org/patchwork/patch/784221/
-[3]: https://lwn.net/Articles/619151/
-[4]: https://lwn.net/Articles/603929/
-[5]: https://lwn.net/Articles/723057/
-[6]: https://github.com/cyphar/filepath-securejoin
-[7]: https://github.com/openSUSE/libpathrs
-
-Aleksa Sarai (8):
-  namei: obey trailing magic-link DAC permissions
-  procfs: switch magic-link modes to be more sane
-  open: O_EMPTYPATH: procfs-less file descriptor re-opening
-  namei: O_BENEATH-style path resolution flags
-  namei: LOOKUP_IN_ROOT: chroot-like path resolution
-  namei: aggressively check for nd->root escape on ".." resolution
-  open: openat2(2) syscall
-  selftests: add openat2(2) selftests
-
- Documentation/filesystems/path-lookup.rst     |  12 +-
- arch/alpha/include/uapi/asm/fcntl.h           |   1 +
- arch/alpha/kernel/syscalls/syscall.tbl        |   1 +
- arch/arm/tools/syscall.tbl                    |   1 +
- arch/arm64/include/asm/unistd.h               |   2 +-
- arch/arm64/include/asm/unistd32.h             |   2 +
- arch/ia64/kernel/syscalls/syscall.tbl         |   1 +
- arch/m68k/kernel/syscalls/syscall.tbl         |   1 +
- arch/microblaze/kernel/syscalls/syscall.tbl   |   1 +
- arch/mips/kernel/syscalls/syscall_n32.tbl     |   1 +
- arch/mips/kernel/syscalls/syscall_n64.tbl     |   1 +
- arch/mips/kernel/syscalls/syscall_o32.tbl     |   1 +
- arch/parisc/include/uapi/asm/fcntl.h          |  39 +-
- arch/parisc/kernel/syscalls/syscall.tbl       |   1 +
- arch/powerpc/kernel/syscalls/syscall.tbl      |   1 +
- arch/s390/kernel/syscalls/syscall.tbl         |   1 +
- arch/sh/kernel/syscalls/syscall.tbl           |   1 +
- arch/sparc/include/uapi/asm/fcntl.h           |   1 +
- arch/sparc/kernel/syscalls/syscall.tbl        |   1 +
- arch/x86/entry/syscalls/syscall_32.tbl        |   1 +
- arch/x86/entry/syscalls/syscall_64.tbl        |   1 +
- arch/xtensa/kernel/syscalls/syscall.tbl       |   1 +
- fs/fcntl.c                                    |   2 +-
- fs/internal.h                                 |   1 +
- fs/namei.c                                    | 270 ++++++++++--
- fs/open.c                                     | 112 ++++-
- fs/proc/base.c                                |  20 +-
- fs/proc/fd.c                                  |  23 +-
- fs/proc/namespaces.c                          |   2 +-
- include/linux/fcntl.h                         |  17 +-
- include/linux/fs.h                            |   8 +-
- include/linux/namei.h                         |   9 +
- include/linux/syscalls.h                      |  17 +-
- include/uapi/asm-generic/fcntl.h              |   4 +
- include/uapi/asm-generic/unistd.h             |   5 +-
- include/uapi/linux/fcntl.h                    |  42 ++
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/memfd/memfd_test.c    |   7 +-
- tools/testing/selftests/openat2/.gitignore    |   1 +
- tools/testing/selftests/openat2/Makefile      |   8 +
- tools/testing/selftests/openat2/helpers.c     | 162 +++++++
- tools/testing/selftests/openat2/helpers.h     | 116 +++++
- .../testing/selftests/openat2/linkmode_test.c | 333 +++++++++++++++
- .../selftests/openat2/rename_attack_test.c    | 127 ++++++
- .../testing/selftests/openat2/resolve_test.c  | 402 ++++++++++++++++++
- 45 files changed, 1655 insertions(+), 107 deletions(-)
- create mode 100644 tools/testing/selftests/openat2/.gitignore
- create mode 100644 tools/testing/selftests/openat2/Makefile
- create mode 100644 tools/testing/selftests/openat2/helpers.c
- create mode 100644 tools/testing/selftests/openat2/helpers.h
- create mode 100644 tools/testing/selftests/openat2/linkmode_test.c
- create mode 100644 tools/testing/selftests/openat2/rename_attack_test.c
- create mode 100644 tools/testing/selftests/openat2/resolve_test.c
-
+diff --git a/arch/alpha/include/uapi/asm/fcntl.h b/arch/alpha/include/uapi/asm/fcntl.h
+index 50bdc8e8a271..1f879bade68b 100644
+--- a/arch/alpha/include/uapi/asm/fcntl.h
++++ b/arch/alpha/include/uapi/asm/fcntl.h
+@@ -34,6 +34,7 @@
+ 
+ #define O_PATH		040000000
+ #define __O_TMPFILE	0100000000
++#define O_EMPTYPATH	0200000000
+ 
+ #define F_GETLK		7
+ #define F_SETLK		8
+diff --git a/arch/parisc/include/uapi/asm/fcntl.h b/arch/parisc/include/uapi/asm/fcntl.h
+index 03ce20e5ad7d..5d709058a76f 100644
+--- a/arch/parisc/include/uapi/asm/fcntl.h
++++ b/arch/parisc/include/uapi/asm/fcntl.h
+@@ -2,26 +2,27 @@
+ #ifndef _PARISC_FCNTL_H
+ #define _PARISC_FCNTL_H
+ 
+-#define O_APPEND	000000010
+-#define O_BLKSEEK	000000100 /* HPUX only */
+-#define O_CREAT		000000400 /* not fcntl */
+-#define O_EXCL		000002000 /* not fcntl */
+-#define O_LARGEFILE	000004000
+-#define __O_SYNC	000100000
++#define O_APPEND	0000000010
++#define O_BLKSEEK	0000000100 /* HPUX only */
++#define O_CREAT		0000000400 /* not fcntl */
++#define O_EXCL		0000002000 /* not fcntl */
++#define O_LARGEFILE	0000004000
++#define __O_SYNC	0000100000
+ #define O_SYNC		(__O_SYNC|O_DSYNC)
+-#define O_NONBLOCK	000200004 /* HPUX has separate NDELAY & NONBLOCK */
+-#define O_NOCTTY	000400000 /* not fcntl */
+-#define O_DSYNC		001000000 /* HPUX only */
+-#define O_RSYNC		002000000 /* HPUX only */
+-#define O_NOATIME	004000000
+-#define O_CLOEXEC	010000000 /* set close_on_exec */
+-
+-#define O_DIRECTORY	000010000 /* must be a directory */
+-#define O_NOFOLLOW	000000200 /* don't follow links */
+-#define O_INVISIBLE	004000000 /* invisible I/O, for DMAPI/XDSM */
+-
+-#define O_PATH		020000000
+-#define __O_TMPFILE	040000000
++#define O_NONBLOCK	0000200004 /* HPUX has separate NDELAY & NONBLOCK */
++#define O_NOCTTY	0000400000 /* not fcntl */
++#define O_DSYNC		0001000000 /* HPUX only */
++#define O_RSYNC		0002000000 /* HPUX only */
++#define O_NOATIME	0004000000
++#define O_CLOEXEC	0010000000 /* set close_on_exec */
++
++#define O_DIRECTORY	0000010000 /* must be a directory */
++#define O_NOFOLLOW	0000000200 /* don't follow links */
++#define O_INVISIBLE	0004000000 /* invisible I/O, for DMAPI/XDSM */
++
++#define O_PATH		0020000000
++#define __O_TMPFILE	0040000000
++#define O_EMPTYPATH	0100000000
+ 
+ #define F_GETLK64	8
+ #define F_SETLK64	9
+diff --git a/arch/sparc/include/uapi/asm/fcntl.h b/arch/sparc/include/uapi/asm/fcntl.h
+index 67dae75e5274..dc86c9eaf950 100644
+--- a/arch/sparc/include/uapi/asm/fcntl.h
++++ b/arch/sparc/include/uapi/asm/fcntl.h
+@@ -37,6 +37,7 @@
+ 
+ #define O_PATH		0x1000000
+ #define __O_TMPFILE	0x2000000
++#define O_EMPTYPATH	0x4000000
+ 
+ #define F_GETOWN	5	/*  for sockets. */
+ #define F_SETOWN	6	/*  for sockets. */
+diff --git a/fs/fcntl.c b/fs/fcntl.c
+index 3d40771e8e7c..4cf05a2fd162 100644
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -1031,7 +1031,7 @@ static int __init fcntl_init(void)
+ 	 * Exceptions: O_NONBLOCK is a two bit define on parisc; O_NDELAY
+ 	 * is defined as O_NONBLOCK on some platforms and not on others.
+ 	 */
+-	BUILD_BUG_ON(21 - 1 /* for O_RDONLY being 0 */ !=
++	BUILD_BUG_ON(22 - 1 /* for O_RDONLY being 0 */ !=
+ 		HWEIGHT32(
+ 			(VALID_OPEN_FLAGS & ~(O_NONBLOCK | O_NDELAY)) |
+ 			__FMODE_EXEC | __FMODE_NONOTIFY));
+diff --git a/fs/namei.c b/fs/namei.c
+index 54d57dad0f91..e39b573fcc4d 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -3571,6 +3571,24 @@ static int trailing_magiclink(struct nameidata *nd, int acc_mode,
+ 	return may_open_magiclink(upgrade_mask, acc_mode);
+ }
+ 
++static int do_emptypath(struct nameidata *nd, const struct open_flags *op,
++			struct file *file)
++{
++	int error;
++	/* We don't support AT_FDCWD (since O_PATH is disallowed here). */
++	struct fd f = fdget_raw(nd->dfd);
++
++	if (!f.file)
++		return -EBADF;
++
++	/* Apply trailing_magiclink()-like restrictions. */
++	error = may_open_magiclink(f.file->f_mode, op->acc_mode);
++	if (!error)
++		error = vfs_open(&f.file->f_path, file);
++	fdput(f);
++	return error;
++}
++
+ static struct file *path_openat(struct nameidata *nd,
+ 			const struct open_flags *op, unsigned flags)
+ {
+@@ -3583,6 +3601,8 @@ static struct file *path_openat(struct nameidata *nd,
+ 
+ 	if (unlikely(file->f_flags & __O_TMPFILE)) {
+ 		error = do_tmpfile(nd, flags, op, file);
++	} else if (unlikely(file->f_flags & O_EMPTYPATH)) {
++		error = do_emptypath(nd, op, file);
+ 	} else if (unlikely(file->f_flags & O_PATH)) {
+ 		/* Inlined path_lookupat() with a trailing_magiclink() check. */
+ 		fmode_t opath_mask = op->opath_mask;
+diff --git a/fs/open.c b/fs/open.c
+index 806a75d685e1..310b896eecf0 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1015,6 +1015,8 @@ static inline int build_open_flags(int flags, umode_t mode, struct open_flags *o
+ 		lookup_flags |= LOOKUP_DIRECTORY;
+ 	if (!(flags & O_NOFOLLOW))
+ 		lookup_flags |= LOOKUP_FOLLOW;
++	if (flags & O_EMPTYPATH)
++		lookup_flags |= LOOKUP_EMPTY;
+ 	op->lookup_flags = lookup_flags;
+ 	return 0;
+ }
+@@ -1076,14 +1078,17 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
+ {
+ 	struct open_flags op;
+ 	int fd = build_open_flags(flags, mode, &op);
++	int empty = 0;
+ 	struct filename *tmp;
+ 
+ 	if (fd)
+ 		return fd;
+ 
+-	tmp = getname(filename);
++	tmp = getname_flags(filename, op.lookup_flags, &empty);
+ 	if (IS_ERR(tmp))
+ 		return PTR_ERR(tmp);
++	if (!empty)
++		op.open_flag &= ~O_EMPTYPATH;
+ 
+ 	fd = get_unused_fd_flags(flags);
+ 	if (fd >= 0) {
+diff --git a/include/linux/fcntl.h b/include/linux/fcntl.h
+index d019df946cb2..2868ae6c8fc1 100644
+--- a/include/linux/fcntl.h
++++ b/include/linux/fcntl.h
+@@ -9,7 +9,7 @@
+ 	(O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC | \
+ 	 O_APPEND | O_NDELAY | O_NONBLOCK | O_NDELAY | __O_SYNC | O_DSYNC | \
+ 	 FASYNC	| O_DIRECT | O_LARGEFILE | O_DIRECTORY | O_NOFOLLOW | \
+-	 O_NOATIME | O_CLOEXEC | O_PATH | __O_TMPFILE)
++	 O_NOATIME | O_CLOEXEC | O_PATH | __O_TMPFILE | O_EMPTYPATH)
+ 
+ #ifndef force_o_largefile
+ #define force_o_largefile() (!IS_ENABLED(CONFIG_ARCH_32BIT_OFF_T))
+diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+index 9dc0bf0c5a6e..ae6862f69cc2 100644
+--- a/include/uapi/asm-generic/fcntl.h
++++ b/include/uapi/asm-generic/fcntl.h
+@@ -89,6 +89,10 @@
+ #define __O_TMPFILE	020000000
+ #endif
+ 
++#ifndef O_EMPTYPATH
++#define O_EMPTYPATH 040000000
++#endif
++
+ /* a horrid kludge trying to make sure that this will fail on old kernels */
+ #define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
+ #define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)      
 -- 
 2.22.0
 
