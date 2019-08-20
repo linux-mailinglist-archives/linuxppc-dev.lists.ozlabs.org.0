@@ -2,83 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7AE95493
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 04:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816FF95495
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 04:49:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CFZg1Yf6zDqXZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:47:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CFcN3RF3zDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:49:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=fossix.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="guJ49670"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CDrw478xzDqkg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 12:14:56 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7K2CcGS018760; Mon, 19 Aug 2019 22:14:51 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ug7cd10q1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2019 22:14:50 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7K2Cd4Z018868;
- Mon, 19 Aug 2019 22:14:49 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ug7cd10pb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2019 22:14:49 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7K29o9j031850;
- Tue, 20 Aug 2019 02:14:48 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01dal.us.ibm.com with ESMTP id 2ue976j245-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Aug 2019 02:14:48 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7K2EkIe36766152
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Aug 2019 02:14:46 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5D22C6059;
- Tue, 20 Aug 2019 02:14:46 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 497EBC6055;
- Tue, 20 Aug 2019 02:14:43 +0000 (GMT)
-Received: from morokweng.localdomain.com (unknown [9.85.220.248])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 20 Aug 2019 02:14:43 +0000 (GMT)
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 16/16] powerpc/configs: Enable secure guest support in
- pseries and ppc64 defconfigs
-Date: Mon, 19 Aug 2019 23:13:26 -0300
-Message-Id: <20190820021326.6884-17-bauerman@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CFCG4klrzDqFs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 12:30:50 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id w2so2374713pfi.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 19:30:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=fiKGSFpRWRgnKAP7tnNkcpeYiVKaOAm4fQcF7gj4fr8=;
+ b=guJ496705Q6aqBrwFoY5waliAhCh2UGjH4dxfgrzuoOYtOpqH07/OSTOY6HQaatAnS
+ IyReUj8uXN2wslagN5SM2qTeVqjY0WjTPj3/UI8veaQvmBJuYEWn2oIuoIPtjGrSIF1m
+ lASzMqI3biE7hjsnhp+uIzFHSN80nLstC6lyf6pnd94Ddy2kYm1JLSS7IC+eFhjPE91E
+ w8Hd4xosauy2pCWyOUB5768fypG38QTiQmWersRc9duzdO8SsfDEKlWNwal4jZ/hh2JQ
+ rcaQrNCgMnGyNFJUK/N2maCCHJ8WfDYV0cJ2aXG9R8od+OeQ1UKslcGIuWiP8LgSSBNt
+ 2oTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=fiKGSFpRWRgnKAP7tnNkcpeYiVKaOAm4fQcF7gj4fr8=;
+ b=SgQI8oadUF13yQMaMaguw5jiYkKt8qRYlJc7qsjt3CtiD3a+9xn2xLaPFRMtyyBvhW
+ bA7FLaBHfO0Q196zB/AYOgCYnhF/Hu4weLfjmbjf0duDvA9n8PudnoeEK48ak2AET2GH
+ 4RMeCo7bdK8PX5VRm9mXz3HZwbm4WwjJztT7q2M9mcbUSt69xnwKhb3ZtloskrsSfFmq
+ e6E0Eta9B+WHi9dNr6ygqXtSY6it4V2iw45ZAvwn9bsKu80oIz2l93Uz5AxKCzHVpf0h
+ rfaWjI+7wiJyYveOQ6iaYcRxhkORgYJiyjjVxWpNniVuFIwZDlIoqcybZOsdiN1nhgju
+ EibA==
+X-Gm-Message-State: APjAAAXw+viKRULnSzuGuDjtp366Im1tW27LRyOOlIdygpvVB7RcCIVb
+ XBMOUf2eVruAMjiqQ7ybJad+6JCQe5E=
+X-Google-Smtp-Source: APXvYqyFLmVvWVqE6oz6CPp+sfCpQ6n39sJpY/68UnFsdP/ErHw5efcMOQ0qmzSTDVKFSfnT0nwBew==
+X-Received: by 2002:aa7:9524:: with SMTP id c4mr28235090pfp.225.1566268246640; 
+ Mon, 19 Aug 2019 19:30:46 -0700 (PDT)
+Received: from santosiv.in.ibm.com ([49.205.218.65])
+ by smtp.gmail.com with ESMTPSA id j15sm17609220pfr.146.2019.08.19.19.30.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Aug 2019 19:30:45 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH 0/3] Add bad pmem bad blocks to bad range
+Date: Tue, 20 Aug 2019 08:00:27 +0530
+Message-Id: <20190820023030.18232-1-santosh@fossix.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190820021326.6884-1-bauerman@linux.ibm.com>
-References: <20190820021326.6884-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-20_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=963 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908200018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,49 +78,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Ryan Grimm <grimm@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Chandan Rajendra <chandan@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ryan Grimm <grimm@linux.vnet.ibm.com>
+This series, which should be based on top of the still un-merged
+"powerpc: implement machine check safe memcpy" series, adds support
+to add the bad blocks which generated an MCE to the NVDIMM bad blocks.
+The next access of the same memory will be blocked by the NVDIMM layer
+itself.
 
-Enables running as a secure guest in platforms with an Ultravisor.
-
-Signed-off-by: Ryan Grimm <grimm@linux.vnet.ibm.com>
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- arch/powerpc/configs/ppc64_defconfig   | 1 +
- arch/powerpc/configs/pseries_defconfig | 1 +
- 2 files changed, 2 insertions(+)
+Santosh Sivaraj (3):
+  powerpc/mce: Add MCE notification chain
+  of_pmem: Add memory ranges which took a mce to bad range
+  papr/scm: Add bad memory ranges to nvdimm bad ranges
 
-diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index dc83fefa04f7..b250e6f5a7ca 100644
---- a/arch/powerpc/configs/ppc64_defconfig
-+++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -29,6 +29,7 @@ CONFIG_DTL=y
- CONFIG_SCANLOG=m
- CONFIG_PPC_SMLPAR=y
- CONFIG_IBMEBUS=y
-+CONFIG_PPC_SVM=y
- CONFIG_PPC_MAPLE=y
- CONFIG_PPC_PASEMI=y
- CONFIG_PPC_PASEMI_IOMMU=y
-diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
-index 38abc9c1770a..26126b4d4de3 100644
---- a/arch/powerpc/configs/pseries_defconfig
-+++ b/arch/powerpc/configs/pseries_defconfig
-@@ -42,6 +42,7 @@ CONFIG_DTL=y
- CONFIG_SCANLOG=m
- CONFIG_PPC_SMLPAR=y
- CONFIG_IBMEBUS=y
-+CONFIG_PPC_SVM=y
- # CONFIG_PPC_PMAC is not set
- CONFIG_RTAS_FLASH=m
- CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ arch/powerpc/include/asm/mce.h            |   3 +
+ arch/powerpc/kernel/mce.c                 |  15 +++
+ arch/powerpc/platforms/pseries/papr_scm.c |  86 +++++++++++-
+ drivers/nvdimm/of_pmem.c                  | 151 +++++++++++++++++++---
+ 4 files changed, 234 insertions(+), 21 deletions(-)
+
+-- 
+2.21.0
+
