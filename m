@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBAF95F1E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 14:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4AD95F2D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 14:50:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CVvG54CzzDqnR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 22:47:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CVyT6mDYzDqZy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 22:50:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CTyz3WNgzDqwL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 22:06:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CTz56zm6zDqwg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 22:06:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46CTyy2xHvz8tFS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 22:06:02 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46CTz549Cgz8tFS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 22:06:09 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46CTyy0ZNHz9sDQ; Tue, 20 Aug 2019 22:06:02 +1000 (AEST)
+ id 46CTz51022z9sML; Tue, 20 Aug 2019 22:06:09 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
@@ -33,45 +33,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46CTyx2fTPz9sBF
- for <linuxppc-dev@ozlabs.org>; Tue, 20 Aug 2019 22:06:01 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7KC2BXd041398
- for <linuxppc-dev@ozlabs.org>; Tue, 20 Aug 2019 08:05:59 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ugeaepd56-1
+ by ozlabs.org (Postfix) with ESMTPS id 46CTz4349Gz9sDQ
+ for <linuxppc-dev@ozlabs.org>; Tue, 20 Aug 2019 22:06:08 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7KC1fBP097891
+ for <linuxppc-dev@ozlabs.org>; Tue, 20 Aug 2019 08:06:06 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ugg74s2v2-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 20 Aug 2019 08:05:59 -0400
+ for <linuxppc-dev@ozlabs.org>; Tue, 20 Aug 2019 08:06:05 -0400
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Tue, 20 Aug 2019 13:05:57 +0100
+ Tue, 20 Aug 2019 13:06:04 +0100
 Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 20 Aug 2019 13:05:54 +0100
+ Tue, 20 Aug 2019 13:06:01 +0100
 Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
  by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7KC5qER55312496
+ x7KC5xWf42336400
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Aug 2019 12:05:52 GMT
+ Tue, 20 Aug 2019 12:06:00 GMT
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9551F4203F;
- Tue, 20 Aug 2019 12:05:52 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id DA4EF42041;
+ Tue, 20 Aug 2019 12:05:59 +0000 (GMT)
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F72642042;
- Tue, 20 Aug 2019 12:05:51 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8947842049;
+ Tue, 20 Aug 2019 12:05:58 +0000 (GMT)
 Received: from hbathini.in.ibm.com (unknown [9.184.183.117])
  by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 20 Aug 2019 12:05:51 +0000 (GMT)
-Subject: [PATCH v5 14/31] powernv/fadump: define register/un-register
- callback functions
+ Tue, 20 Aug 2019 12:05:58 +0000 (GMT)
+Subject: [PATCH v5 15/31] powernv/fadump: support copying multiple kernel
+ boot memory regions
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@ozlabs.org>
-Date: Tue, 20 Aug 2019 17:35:50 +0530
+Date: Tue, 20 Aug 2019 17:35:57 +0530
 In-Reply-To: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
 References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
 User-Agent: StGit/0.17.1-dirty
@@ -79,10 +79,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19082012-0016-0000-0000-000002A0AFCD
+x-cbid: 19082012-0012-0000-0000-00000340AF03
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082012-0017-0000-0000-00003300DEE1
-Message-Id: <156630275043.8896.8993437371524687114.stgit@hbathini.in.ibm.com>
+x-cbparentid: 19082012-0013-0000-0000-0000217AD2E6
+Message-Id: <156630275779.8896.7854485220030978790.stgit@hbathini.in.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-20_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -110,119 +110,83 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make OPAL calls to register and un-register with firmware for MPIPL.
+Firmware uses 32-bit field for region size while copying/backing-up
+memory during MPIPL. So, the maximum copy size for a region would
+be a page less than 4GB (aligned to pagesize) but FADump capture
+kernel usually needs more memory than that to be preserved to avoid
+running into out of memory errors.
+
+So, request firmware to copy multiple kernel boot memory regions
+instead of just one (which worked fine for pseries as 64-bit field
+was used for size there).
 
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
- arch/powerpc/platforms/powernv/opal-fadump.c |   79 +++++++++++++++++++++++++-
- 1 file changed, 77 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/powernv/opal-fadump.c |   35 +++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/platforms/powernv/opal-fadump.c b/arch/powerpc/platforms/powernv/opal-fadump.c
-index e466f7e..91fb909 100644
+index 91fb909..a755705 100644
 --- a/arch/powerpc/platforms/powernv/opal-fadump.c
 +++ b/arch/powerpc/platforms/powernv/opal-fadump.c
-@@ -23,6 +23,22 @@
- 
- static struct opal_fadump_mem_struct *opal_fdm;
- 
-+static int opal_fadump_unregister(struct fw_dump *fadump_conf);
+@@ -28,6 +28,8 @@ static int opal_fadump_unregister(struct fw_dump *fadump_conf);
+ static void opal_fadump_update_config(struct fw_dump *fadump_conf,
+ 				      const struct opal_fadump_mem_struct *fdm)
+ {
++	pr_debug("Boot memory regions count: %d\n", fdm->region_cnt);
 +
-+static void opal_fadump_update_config(struct fw_dump *fadump_conf,
-+				      const struct opal_fadump_mem_struct *fdm)
-+{
+ 	/*
+ 	 * The destination address of the first boot memory region is the
+ 	 * destination address of boot memory regions.
+@@ -50,16 +52,35 @@ static void opal_fadump_init_metadata(struct opal_fadump_mem_struct *fdm)
+ 
+ static ulong opal_fadump_init_mem_struct(struct fw_dump *fadump_conf)
+ {
+-	ulong addr = fadump_conf->reserve_dump_area_start;
++	ulong src_addr, dest_addr;
++	int max_copy_size, cur_size, size;
+ 
+ 	opal_fdm = __va(fadump_conf->kernel_metadata);
+ 	opal_fadump_init_metadata(opal_fdm);
+ 
+-	opal_fdm->region_cnt = 1;
+-	opal_fdm->rgn[0].src	= RMA_START;
+-	opal_fdm->rgn[0].dest	= addr;
+-	opal_fdm->rgn[0].size	= fadump_conf->boot_memory_size;
+-	addr += fadump_conf->boot_memory_size;
 +	/*
-+	 * The destination address of the first boot memory region is the
-+	 * destination address of boot memory regions.
++	 * Firmware currently supports only 32-bit value for size,
++	 * align it to pagesize and request firmware to copy multiple
++	 * kernel boot memory regions.
 +	 */
-+	fadump_conf->boot_mem_dest_addr = fdm->rgn[0].dest;
-+	pr_debug("Destination address of boot memory regions: %#016lx\n",
-+		 fadump_conf->boot_mem_dest_addr);
++	max_copy_size = _ALIGN_DOWN(U32_MAX, PAGE_SIZE);
 +
-+	fadump_conf->fadumphdr_addr = fdm->fadumphdr_addr;
-+}
++	/* Boot memory regions */
++	src_addr = RMA_START;
++	dest_addr = fadump_conf->reserve_dump_area_start;
++	size = fadump_conf->boot_memory_size;
++	while (size) {
++		cur_size = size > max_copy_size ? max_copy_size : size;
 +
- /* Initialize kernel metadata */
- static void opal_fadump_init_metadata(struct opal_fadump_mem_struct *fdm)
- {
-@@ -52,6 +68,8 @@ static ulong opal_fadump_init_mem_struct(struct fw_dump *fadump_conf)
- 	opal_fdm->fadumphdr_addr = (opal_fdm->rgn[0].dest +
- 				    fadump_conf->boot_memory_size);
++		opal_fdm->rgn[opal_fdm->region_cnt].src  = src_addr;
++		opal_fdm->rgn[opal_fdm->region_cnt].dest = dest_addr;
++		opal_fdm->rgn[opal_fdm->region_cnt].size = cur_size;
++
++		opal_fdm->region_cnt++;
++		dest_addr	+= cur_size;
++		src_addr	+= cur_size;
++		size		-= cur_size;
++	}
  
-+	opal_fadump_update_config(fadump_conf, opal_fdm);
-+
- 	return addr;
+ 	/*
+ 	 * Kernel metadata is passed to f/w and retrieved in capture kerenl.
+@@ -70,7 +91,7 @@ static ulong opal_fadump_init_mem_struct(struct fw_dump *fadump_conf)
+ 
+ 	opal_fadump_update_config(fadump_conf, opal_fdm);
+ 
+-	return addr;
++	return dest_addr;
  }
  
-@@ -97,12 +115,69 @@ static int opal_fadump_setup_metadata(struct fw_dump *fadump_conf)
- 
- static int opal_fadump_register(struct fw_dump *fadump_conf)
- {
--	return -EIO;
-+	int i, err = -EIO;
-+	s64 rc;
-+
-+	for (i = 0; i < opal_fdm->region_cnt; i++) {
-+		rc = opal_mpipl_update(OPAL_MPIPL_ADD_RANGE,
-+				       opal_fdm->rgn[i].src,
-+				       opal_fdm->rgn[i].dest,
-+				       opal_fdm->rgn[i].size);
-+		if (rc != OPAL_SUCCESS)
-+			break;
-+
-+		opal_fdm->registered_regions++;
-+	}
-+
-+	switch (rc) {
-+	case OPAL_SUCCESS:
-+		pr_info("Registration is successful!\n");
-+		fadump_conf->dump_registered = 1;
-+		err = 0;
-+		break;
-+	case OPAL_RESOURCE:
-+		/* If MAX regions limit in f/w is hit, warn and proceed. */
-+		pr_warn("%d regions could not be registered for MPIPL as MAX limit is reached!\n",
-+			(opal_fdm->region_cnt - opal_fdm->registered_regions));
-+		fadump_conf->dump_registered = 1;
-+		err = 0;
-+		break;
-+	case OPAL_PARAMETER:
-+		pr_err("Failed to register. Parameter Error(%lld).\n", rc);
-+		break;
-+	case OPAL_HARDWARE:
-+		pr_err("Support not available.\n");
-+		fadump_conf->fadump_supported = 0;
-+		fadump_conf->fadump_enabled = 0;
-+		break;
-+	default:
-+		pr_err("Failed to register. Unknown Error(%lld).\n", rc);
-+		break;
-+	}
-+
-+	/*
-+	 * If some regions were registered before OPAL_MPIPL_ADD_RANGE
-+	 * OPAL call failed, unregister all regions.
-+	 */
-+	if ((err < 0) && (opal_fdm->registered_regions > 0))
-+		opal_fadump_unregister(fadump_conf);
-+
-+	return err;
- }
- 
- static int opal_fadump_unregister(struct fw_dump *fadump_conf)
- {
--	return -EIO;
-+	s64 rc;
-+
-+	rc = opal_mpipl_update(OPAL_MPIPL_REMOVE_ALL, 0, 0, 0);
-+	if (rc) {
-+		pr_err("Failed to un-register - unexpected Error(%lld).\n", rc);
-+		return -EIO;
-+	}
-+
-+	opal_fdm->registered_regions = 0;
-+	fadump_conf->dump_registered = 0;
-+	return 0;
- }
- 
- static int opal_fadump_invalidate(struct fw_dump *fadump_conf)
+ static ulong opal_fadump_get_metadata_size(void)
 
