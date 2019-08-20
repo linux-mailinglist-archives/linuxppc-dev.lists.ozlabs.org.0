@@ -1,69 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC52E963AB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 17:04:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F92D963C1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 17:09:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CYx90ggnzDqQW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 01:04:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CZ225HX6zDq6y
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 01:08:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="kGBZWl+J"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CYG30wCnzDr15
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 00:34:18 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46CYFz3CfDz9vBmf;
- Tue, 20 Aug 2019 16:34:15 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=kGBZWl+J; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 9hx3uDPH-qLC; Tue, 20 Aug 2019 16:34:15 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46CYFz1xgBz9vBmb;
- Tue, 20 Aug 2019 16:34:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566311655; bh=xOUVOtxYdJqJ3lo0s/K+hdItwxr4U4urlUl4yvu2T/M=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=kGBZWl+JnleiXlG+LHURLi+OPtWDSRbVUSnzLjKQ1sbaN2GTpvnbF34ln/Ct/WiKe
- GXNstE4yxtQFd01gBhbjf1c9s96TuJYmzycCnsG2hYQ1pfrXS9D59Us5E//ZKZFCvT
- p/IA2oXJuxbZA/jXoqiJXtuRYYn/oQUesSruMMj8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A85DB8B7C9;
- Tue, 20 Aug 2019 16:34:15 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 4x1NYA1kjwKS; Tue, 20 Aug 2019 16:34:15 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C9728B7D3;
- Tue, 20 Aug 2019 16:34:15 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C73756B735; Tue, 20 Aug 2019 14:34:14 +0000 (UTC)
-Message-Id: <bad41ed02531bb0382420cbab50a0d7153b71767.1566311636.git.christophe.leroy@c-s.fr>
-In-Reply-To: <d60ce8dd3a383c7adbfc322bf1d53d81724a6000.1566311636.git.christophe.leroy@c-s.fr>
-References: <d60ce8dd3a383c7adbfc322bf1d53d81724a6000.1566311636.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v4 3/3] powerpc/64: optimise LOAD_REG_IMMEDIATE_SYM()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- segher@kernel.crashing.org
-Date: Tue, 20 Aug 2019 14:34:14 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CYp60HckzDr5J
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 00:58:35 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 3DB25AE42;
+ Tue, 20 Aug 2019 14:58:29 +0000 (UTC)
+From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To: catalin.marinas@arm.com, hch@lst.de, wahrenst@gmx.net,
+ marc.zyngier@arm.com, robh+dt@kernel.org,
+ Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+ iommu@lists.linux-foundation.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org
+Subject: [PATCH v2 00/11] Raspberry Pi 4 DMA addressing support
+Date: Tue, 20 Aug 2019 16:58:08 +0200
+Message-Id: <20190820145821.27214-1-nsaenzjulienne@suse.de>
+X-Mailer: git-send-email 2.22.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,115 +48,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: phill@raspberryi.org, linux-s390@vger.kernel.org, f.fainelli@gmail.com,
+ frowand.list@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, eric@anholt.net, mbrugger@suse.com,
+ linux-rpi-kernel@lists.infradead.org, akpm@linux-foundation.org,
+ will@kernel.org, nsaenzjulienne@suse.de, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Optimise LOAD_REG_IMMEDIATE_SYM() using a temporary register to
-parallelise operations.
+Hi all,
+this series attempts to address some issues we found while bringing up
+the new Raspberry Pi 4 in arm64 and it's intended to serve as a follow
+up of these discussions:
+v1: https://lkml.org/lkml/2019/7/31/922
+RFC: https://lkml.org/lkml/2019/7/17/476
 
-It reduces the path from 5 to 3 instructions.
+The new Raspberry Pi 4 has up to 4GB of memory but most peripherals can
+only address the first GB: their DMA address range is
+0xc0000000-0xfc000000 which is aliased to the first GB of physical
+memory 0x00000000-0x3c000000. Note that only some peripherals have these
+limitations: the PCIe, V3D, GENET, and 40-bit DMA channels have a wider
+view of the address space by virtue of being hooked up trough a second
+interconnect.
 
-Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Part of this is solved in arm32 by setting up the machine specific
+'.dma_zone_size = SZ_1G', which takes care of reserving the coherent
+memory area at the right spot. That said no buffer bouncing (needed for
+dma streaming) is available at the moment, but that's a story for
+another series.
+
+Unfortunately there is no such thing as 'dma_zone_size' in arm64. Only
+ZONE_DMA32 is created which is interpreted by dma-direct and the arm64
+arch code as if all peripherals where be able to address the first 4GB
+of memory.
+
+In the light of this, the series implements the following changes:
+
+- Create generic 'dma_zone_size' in order for hardware description code
+  to set it up when needed.
+
+- Add a function in early_init_dt_scan() to setup 'dma_zone_size' for
+  the RPi4.
+
+- Create both DMA zones in arm64, ZONE_DMA will contain the area
+  addressable by all peripherals and ZONE_DMA32 the rest of the 32 bit
+  addressable memory. ZONE_DMA32 might be left empty.
+
+- Reserve the CMA area in a place suitable for all peripherals.
+
+- Inform dma-direct of the new runtime calculated min_mask.
+
+This series has been tested on multiple devices both by checking the
+zones setup matches the expectations and by double-checking physical
+addresses on pages allocated on the three relevant areas GFP_DMA,
+GFP_DMA32, GFP_KERNEL:
+
+- On an RPi4 with variations on the ram memory size. But also forcing
+  the situation where all three memory zones are nonempty by setting a 3G
+  ZONE_DMA32 ceiling on a 4G setup. Both with and without NUMA support.
+
+- On a Synquacer box[1] with 32G of memory.
+
+- On an ACPI based Huawei TaiShan server[2] with 256G of memory.
+
+- On a QEMU virtual machine running arm64's OpenSUSE Tumbleweed.
+
+That's all.
+
+Regards,
+Nicolas
+
+[1] https://www.96boards.org/product/developerbox/
+[2] https://e.huawei.com/en/products/cloud-computing-dc/servers/taishan-server/taishan-2280-v2
 
 ---
-v3: new
-v4: fixed the registers of lis/ori to match rldimi args (tmp is upper part, reg is lower part)
----
- arch/powerpc/include/asm/ppc_asm.h   | 12 ++++++------
- arch/powerpc/kernel/exceptions-64e.S | 22 +++++++++++++---------
- arch/powerpc/kernel/head_64.S        |  2 +-
- 3 files changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index 20a00209c965..dd3b191bdcea 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -347,12 +347,12 @@ GLUE(.,name):
- 
- #define LOAD_REG_IMMEDIATE(reg, expr) __LOAD_REG_IMMEDIATE reg, expr
- 
--#define LOAD_REG_IMMEDIATE_SYM(reg,expr)	\
--	lis     reg,(expr)@highest;		\
--	ori     reg,reg,(expr)@higher;	\
--	rldicr  reg,reg,32,31;		\
--	oris    reg,reg,(expr)@__AS_ATHIGH;	\
--	ori     reg,reg,(expr)@l;
-+#define LOAD_REG_IMMEDIATE_SYM(reg, tmp, expr)	\
-+	lis	tmp, (expr)@highest;		\
-+	lis	reg, (expr)@__AS_ATHIGH;	\
-+	ori	tmp, tmp, (expr)@higher;	\
-+	ori	reg, reg, (expr)@l;		\
-+	rldimi	reg, tmp, 32, 0
- 
- #define LOAD_REG_ADDR(reg,name)			\
- 	ld	reg,name@got(r2)
-diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index 898aae6da167..829950b96d29 100644
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -750,12 +750,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
- 	ld	r15,PACATOC(r13)
- 	ld	r14,interrupt_base_book3e@got(r15)
- 	ld	r15,__end_interrupts@got(r15)
--#else
--	LOAD_REG_IMMEDIATE_SYM(r14,interrupt_base_book3e)
--	LOAD_REG_IMMEDIATE_SYM(r15,__end_interrupts)
--#endif
- 	cmpld	cr0,r10,r14
- 	cmpld	cr1,r10,r15
-+#else
-+	LOAD_REG_IMMEDIATE_SYM(r14, r15, interrupt_base_book3e)
-+	cmpld	cr0, r10, r14
-+	LOAD_REG_IMMEDIATE_SYM(r14, r15, __end_interrupts)
-+	cmpld	cr1, r10, r14
-+#endif
- 	blt+	cr0,1f
- 	bge+	cr1,1f
- 
-@@ -820,12 +822,14 @@ kernel_dbg_exc:
- 	ld	r15,PACATOC(r13)
- 	ld	r14,interrupt_base_book3e@got(r15)
- 	ld	r15,__end_interrupts@got(r15)
--#else
--	LOAD_REG_IMMEDIATE_SYM(r14,interrupt_base_book3e)
--	LOAD_REG_IMMEDIATE_SYM(r15,__end_interrupts)
--#endif
- 	cmpld	cr0,r10,r14
- 	cmpld	cr1,r10,r15
-+#else
-+	LOAD_REG_IMMEDIATE_SYM(r14, r15, interrupt_base_book3e)
-+	cmpld	cr0, r10, r14
-+	LOAD_REG_IMMEDIATE_SYM(r14, r15,__end_interrupts)
-+	cmpld	cr1, r10, r14
-+#endif
- 	blt+	cr0,1f
- 	bge+	cr1,1f
- 
-@@ -1449,7 +1453,7 @@ a2_tlbinit_code_start:
- a2_tlbinit_after_linear_map:
- 
- 	/* Now we branch the new virtual address mapped by this entry */
--	LOAD_REG_IMMEDIATE_SYM(r3,1f)
-+	LOAD_REG_IMMEDIATE_SYM(r3, r5, 1f)
- 	mtctr	r3
- 	bctr
- 
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index 1fd44761e997..0f2d61af47cc 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -635,7 +635,7 @@ __after_prom_start:
- 	sub	r5,r5,r11
- #else
- 	/* just copy interrupts */
--	LOAD_REG_IMMEDIATE_SYM(r5, FIXED_SYMBOL_ABS_ADDR(__end_interrupts))
-+	LOAD_REG_IMMEDIATE_SYM(r5, r11, FIXED_SYMBOL_ABS_ADDR(__end_interrupts))
- #endif
- 	b	5f
- 3:
+Changes in v2:
+- More in depth testing.
+- Create new global 'dma_zone_size'.
+- New approach to getting the dma_zone_size, instead of parsing the dts
+  we hardcode it conditionally to the machine compatible name.
+- Fix ZONE_DMA and ZONE_DMA32 split, now ZONE_DMA32 remains empty if
+  ZONE_DMA fits the whole 32 bit addressable space.
+- Take into account devices with DMA offset.
+- Rename new dma-direct variable to zone_dma_bits.
+- Try new approach by merging both ZONE_DMA and ZONE_DMA32 comments
+  in mmzone.h, add new up to date examples.
+
+Nicolas Saenz Julienne (11):
+  asm-generic: add dma_zone_size
+  arm: use generic dma_zone_size
+  of/fdt: add of_fdt_machine_is_compatible function
+  of/fdt: add early_init_dt_get_dma_zone_size()
+  arm64: mm: use arm64_dma_phys_limit instead of calling
+    max_zone_dma_phys()
+  arm64: rename variables used to calculate ZONE_DMA32's size
+  arm64: re-introduce max_zone_dma_phys()
+  arm64: use both ZONE_DMA and ZONE_DMA32
+  dma-direct: turn ARCH_ZONE_DMA_BITS into a variable
+  arm64: edit zone_dma_bits to fine tune dma-direct min mask
+  mm: refresh ZONE_DMA and ZONE_DMA32 comments in 'enum zone_type'
+
+ arch/arm/include/asm/dma.h      |  8 ++--
+ arch/arm/mm/init.c              | 12 ++----
+ arch/arm64/Kconfig              |  4 ++
+ arch/arm64/mm/init.c            | 73 +++++++++++++++++++++++++--------
+ arch/powerpc/include/asm/page.h |  9 ----
+ arch/powerpc/mm/mem.c           | 16 +++++---
+ arch/s390/include/asm/page.h    |  2 -
+ arch/s390/mm/init.c             |  1 +
+ drivers/of/fdt.c                | 15 +++++++
+ include/asm-generic/dma.h       |  8 +++-
+ include/linux/dma-direct.h      |  2 +
+ include/linux/mmzone.h          | 46 ++++++++++++---------
+ kernel/dma/direct.c             | 13 +++---
+ mm/page_alloc.c                 |  3 ++
+ 14 files changed, 140 insertions(+), 72 deletions(-)
+
 -- 
-2.13.3
+2.22.0
 
