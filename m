@@ -1,68 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CEB1954B3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 04:59:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B8F954BE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 05:02:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CFrm5k3NzDqhS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:59:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CFvc57g5zDqdP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 13:02:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
  envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="BeBnmjO7"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="PsibIzx5"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CFdP0B6BzDrDJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 12:50:00 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id v12so2389279pfn.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 19:50:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CFdg5KxDzDrJ7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 12:50:15 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id h3so1939089pls.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 19:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=vxgmNxuTZeoSTH1hR3AySpOGIla0OX2TTxWnwSuTK0U=;
- b=BeBnmjO7WI+9Fvo8tj/9Pxfdamdax/e5nhs1sBbNjXUvmmzyDY71pt46ooCbvd5JaJ
- JNYLupygj3EstPJgce6BMMvrKHbZgYgkCRsyBxWTWm6AzkXZzb2Hz+1NPgILy5Fftr+O
- M2J70gHejj77rCgfRy9gK6QtovlO9RAwLbv1E=
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=+Ljr2InsBtzDAS9Drpe0kzrEUQvzHekKKA+vOfzzLGA=;
+ b=PsibIzx5rTlBR2htkZaC14SZ+TyjHDX4IFClJIdwueYX3BOfqve7g8GUtouBZ1PEC9
+ XgmL2bkcGiVdms2gBulf9tWzN/Cn1147xOsrary4sNqlrYhrtpZgf65btsrxT4QD5z7j
+ R5/dYAaMfF91u5K1Z6pjvdC1CuO2GQgWMSJJk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=vxgmNxuTZeoSTH1hR3AySpOGIla0OX2TTxWnwSuTK0U=;
- b=gQ2eNjP6478g7WcsZ0mHB9OinHPgnrBR3zf7MFXKlsJxpXYtnZbMj/fn0YaICe37m7
- 7ywrfVrRtqKOb8rEBz+3E5E0Fcx1bOqD5B984ddvnRHa6I5y1i33kxoUEZMpcEDgsBxf
- kZhsTwLq2eTYTF6cibxxLdiPnEV4TqEJxV4ydNg9S08Fm9aoTKiemcDu3sB5sVBZpqhh
- 71MDlS3TgYIJjYEi+RUhF8x89pIiIaxMYr7u51LawPVoD/koc7XieGwJ/z3gVvZwkvfN
- 8JuLDMohwj63vb0sT9SZpBy906HtvUGEYCSmFKhQSymKpnjJjXh4Y6VdoAy4td4NiN11
- S6FQ==
-X-Gm-Message-State: APjAAAUwGTFbtdW6gNW0ds1wIM2vICQbrSw52iKitETGCT0ogWTgfSLx
- 01n1SQdqMGmyzJ4nbpjS8kRbXA==
-X-Google-Smtp-Source: APXvYqwRK87eubTuLsv2IeZgdC11DkP55Zt3kVrzInMBg41OvdXIqpdi8Hf1srmNjF2Vo8PZZD5P5w==
-X-Received: by 2002:a62:e401:: with SMTP id r1mr28514131pfh.193.1566269397968; 
- Mon, 19 Aug 2019 19:49:57 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=+Ljr2InsBtzDAS9Drpe0kzrEUQvzHekKKA+vOfzzLGA=;
+ b=sp4hrVGlwfqZPLFLbWhhiJBcln0kcfmXqmtsUsgtSJv5mM65w2cqNFzXZeTpSrgfQN
+ DP9fr5Q3vQSe6jfa0DyB6C48sJsh6FQQEMiaVPiHJuaFlicPHl2vq1xDd5xopAI274yy
+ Fd2P3bZlOb7vA9ISImjh5npMmMEJFgGBxQJIMLvrs3VHKAi/r0qnYHAszzQNmhxE0yce
+ eOO+Bvsr5KVcHTKrSa4UNn0q2xs/83uQg6AO2QMBjQRT1D8d7Be+ODAhDMhLDvxhm4cv
+ l0qBke3FANyNYwRrnksLFnyx4Y4p+7F3QFXOc69Is0tdddKwgHP4IxXeF0hCUb5berhx
+ ZAzQ==
+X-Gm-Message-State: APjAAAVwA5Di93gAbr5AB4DTXLl8HV+crC+hNH7kONk2QoeqI1VxQrEE
+ I3yT2/YjzTgrrdfvoAAgc2JPCA==
+X-Google-Smtp-Source: APXvYqystm3jdzymp+1rMFPxd1ITjgesZk8LVWVIqs910yEXCDW7YMtttcl8wr0UuWWDizjPOMIKeQ==
+X-Received: by 2002:a17:902:e2:: with SMTP id
+ a89mr26250902pla.210.1566269411763; 
+ Mon, 19 Aug 2019 19:50:11 -0700 (PDT)
 Received: from localhost (ppp167-251-205.static.internode.on.net.
  [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id z68sm15059447pgz.88.2019.08.19.19.49.53
+ by smtp.gmail.com with ESMTPSA id v15sm18777348pfn.69.2019.08.19.19.50.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Aug 2019 19:49:57 -0700 (PDT)
+ Mon, 19 Aug 2019 19:50:11 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: christophe.leroy@c-s.fr, linux-s390@vger.kernel.org,
  linux-arch@vger.kernel.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/2] kasan: support instrumented bitops combined with
- generic bitops
-Date: Tue, 20 Aug 2019 12:49:40 +1000
-Message-Id: <20190820024941.12640-1-dja@axtens.net>
+Subject: [PATCH v2 2/2] powerpc: support KASAN instrumentation of bitops
+Date: Tue, 20 Aug 2019 12:49:41 +1000
+Message-Id: <20190820024941.12640-2-dja@axtens.net>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190820024941.12640-1-dja@axtens.net>
+References: <20190820024941.12640-1-dja@axtens.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,684 +78,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kasan-dev@googlegroups.com, Daniel Axtens <dja@axtens.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>, kasan-dev@googlegroups.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently bitops-instrumented.h assumes that the architecture provides
-atomic, non-atomic and locking bitops (e.g. both set_bit and __set_bit).
-This is true on x86 and s390, but is not always true: there is a
-generic bitops/non-atomic.h header that provides generic non-atomic
-operations, and also a generic bitops/lock.h for locking operations.
+The powerpc-specific bitops are not being picked up by the KASAN
+test suite.
 
-powerpc uses the generic non-atomic version, so it does not have it's
-own e.g. __set_bit that could be renamed arch___set_bit.
+Instrumentation is done via the bitops/instrumented-{atomic,lock}.h
+headers. They require that arch-specific versions of bitop functions
+are renamed to arch_*. Do this renaming.
 
-Split up bitops-instrumented.h to mirror the atomic/non-atomic/lock
-split. This allows arches to only include the headers where they
-have arch-specific versions to rename. Update x86 and s390.
+For clear_bit_unlock_is_negative_byte, the current implementation
+uses the PG_waiters constant. This works because it's a preprocessor
+macro - so it's only actually evaluated in contexts where PG_waiters
+is defined. With instrumentation however, it becomes a static inline
+function, and all of a sudden we need the actual value of PG_waiters.
+Because of the order of header includes, it's not available and we
+fail to compile. Instead, manually specify that we care about bit 7.
+This is still correct: bit 7 is the bit that would mark a negative
+byte.
 
-(The generic operations are automatically instrumented because they're
-written in C, not asm.)
+While we're at it, replace __inline__ with inline across the file.
 
-Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Nicholas Piggin <npiggin@gmail.com> # clear_bit_unlock_negative_byte
 Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Signed-off-by: Daniel Axtens <dja@axtens.net>
----
- Documentation/core-api/kernel-api.rst         |  17 +-
- arch/s390/include/asm/bitops.h                |   4 +-
- arch/x86/include/asm/bitops.h                 |   4 +-
- include/asm-generic/bitops-instrumented.h     | 263 ------------------
- .../asm-generic/bitops/instrumented-atomic.h  | 100 +++++++
- .../asm-generic/bitops/instrumented-lock.h    |  81 ++++++
- .../bitops/instrumented-non-atomic.h          | 114 ++++++++
- 7 files changed, 317 insertions(+), 266 deletions(-)
- delete mode 100644 include/asm-generic/bitops-instrumented.h
- create mode 100644 include/asm-generic/bitops/instrumented-atomic.h
- create mode 100644 include/asm-generic/bitops/instrumented-lock.h
- create mode 100644 include/asm-generic/bitops/instrumented-non-atomic.h
 
-diff --git a/Documentation/core-api/kernel-api.rst b/Documentation/core-api/kernel-api.rst
-index 08af5caf036d..2e21248277e3 100644
---- a/Documentation/core-api/kernel-api.rst
-+++ b/Documentation/core-api/kernel-api.rst
-@@ -54,7 +54,22 @@ The Linux kernel provides more basic utility functions.
- Bit Operations
- --------------
+--
+v2: Address Christophe review
+---
+ arch/powerpc/include/asm/bitops.h | 51 ++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/bitops.h b/arch/powerpc/include/asm/bitops.h
+index 603aed229af7..28dcf8222943 100644
+--- a/arch/powerpc/include/asm/bitops.h
++++ b/arch/powerpc/include/asm/bitops.h
+@@ -64,7 +64,7 @@
  
--.. kernel-doc:: include/asm-generic/bitops-instrumented.h
-+Atomic Operations
-+~~~~~~~~~~~~~~~~~
-+
-+.. kernel-doc:: include/asm-generic/bitops/instrumented-atomic.h
-+   :internal:
-+
-+Non-atomic Operations
-+~~~~~~~~~~~~~~~~~~~~~
-+
-+.. kernel-doc:: include/asm-generic/bitops/instrumented-non-atomic.h
-+   :internal:
-+
-+Locking Operations
-+~~~~~~~~~~~~~~~~~~
-+
-+.. kernel-doc:: include/asm-generic/bitops/instrumented-lock.h
-    :internal:
+ /* Macro for generating the ***_bits() functions */
+ #define DEFINE_BITOP(fn, op, prefix)		\
+-static __inline__ void fn(unsigned long mask,	\
++static inline void fn(unsigned long mask,	\
+ 		volatile unsigned long *_p)	\
+ {						\
+ 	unsigned long old;			\
+@@ -86,22 +86,22 @@ DEFINE_BITOP(clear_bits, andc, "")
+ DEFINE_BITOP(clear_bits_unlock, andc, PPC_RELEASE_BARRIER)
+ DEFINE_BITOP(change_bits, xor, "")
  
- Bitmap Operations
-diff --git a/arch/s390/include/asm/bitops.h b/arch/s390/include/asm/bitops.h
-index b8833ac983fa..0ceb12593a68 100644
---- a/arch/s390/include/asm/bitops.h
-+++ b/arch/s390/include/asm/bitops.h
-@@ -241,7 +241,9 @@ static inline void arch___clear_bit_unlock(unsigned long nr,
- 	arch___clear_bit(nr, ptr);
+-static __inline__ void set_bit(int nr, volatile unsigned long *addr)
++static inline void arch_set_bit(int nr, volatile unsigned long *addr)
+ {
+ 	set_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
  }
  
--#include <asm-generic/bitops-instrumented.h>
+-static __inline__ void clear_bit(int nr, volatile unsigned long *addr)
++static inline void arch_clear_bit(int nr, volatile unsigned long *addr)
+ {
+ 	clear_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
+ }
+ 
+-static __inline__ void clear_bit_unlock(int nr, volatile unsigned long *addr)
++static inline void arch_clear_bit_unlock(int nr, volatile unsigned long *addr)
+ {
+ 	clear_bits_unlock(BIT_MASK(nr), addr + BIT_WORD(nr));
+ }
+ 
+-static __inline__ void change_bit(int nr, volatile unsigned long *addr)
++static inline void arch_change_bit(int nr, volatile unsigned long *addr)
+ {
+ 	change_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
+ }
+@@ -109,7 +109,7 @@ static __inline__ void change_bit(int nr, volatile unsigned long *addr)
+ /* Like DEFINE_BITOP(), with changes to the arguments to 'op' and the output
+  * operands. */
+ #define DEFINE_TESTOP(fn, op, prefix, postfix, eh)	\
+-static __inline__ unsigned long fn(			\
++static inline unsigned long fn(			\
+ 		unsigned long mask,			\
+ 		volatile unsigned long *_p)		\
+ {							\
+@@ -138,34 +138,34 @@ DEFINE_TESTOP(test_and_clear_bits, andc, PPC_ATOMIC_ENTRY_BARRIER,
+ DEFINE_TESTOP(test_and_change_bits, xor, PPC_ATOMIC_ENTRY_BARRIER,
+ 	      PPC_ATOMIC_EXIT_BARRIER, 0)
+ 
+-static __inline__ int test_and_set_bit(unsigned long nr,
+-				       volatile unsigned long *addr)
++static inline int arch_test_and_set_bit(unsigned long nr,
++					volatile unsigned long *addr)
+ {
+ 	return test_and_set_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
+ }
+ 
+-static __inline__ int test_and_set_bit_lock(unsigned long nr,
+-				       volatile unsigned long *addr)
++static inline int arch_test_and_set_bit_lock(unsigned long nr,
++					     volatile unsigned long *addr)
+ {
+ 	return test_and_set_bits_lock(BIT_MASK(nr),
+ 				addr + BIT_WORD(nr)) != 0;
+ }
+ 
+-static __inline__ int test_and_clear_bit(unsigned long nr,
+-					 volatile unsigned long *addr)
++static inline int arch_test_and_clear_bit(unsigned long nr,
++					  volatile unsigned long *addr)
+ {
+ 	return test_and_clear_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
+ }
+ 
+-static __inline__ int test_and_change_bit(unsigned long nr,
+-					  volatile unsigned long *addr)
++static inline int arch_test_and_change_bit(unsigned long nr,
++					   volatile unsigned long *addr)
+ {
+ 	return test_and_change_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
+ }
+ 
+ #ifdef CONFIG_PPC64
+-static __inline__ unsigned long clear_bit_unlock_return_word(int nr,
+-						volatile unsigned long *addr)
++static inline unsigned long
++clear_bit_unlock_return_word(int nr, volatile unsigned long *addr)
+ {
+ 	unsigned long old, t;
+ 	unsigned long *p = (unsigned long *)addr + BIT_WORD(nr);
+@@ -185,15 +185,18 @@ static __inline__ unsigned long clear_bit_unlock_return_word(int nr,
+ 	return old;
+ }
+ 
+-/* This is a special function for mm/filemap.c */
+-#define clear_bit_unlock_is_negative_byte(nr, addr)			\
+-	(clear_bit_unlock_return_word(nr, addr) & BIT_MASK(PG_waiters))
++/*
++ * This is a special function for mm/filemap.c
++ * Bit 7 corresponds to PG_waiters.
++ */
++#define arch_clear_bit_unlock_is_negative_byte(nr, addr)		\
++	(clear_bit_unlock_return_word(nr, addr) & BIT_MASK(7))
+ 
+ #endif /* CONFIG_PPC64 */
+ 
+ #include <asm-generic/bitops/non-atomic.h>
+ 
+-static __inline__ void __clear_bit_unlock(int nr, volatile unsigned long *addr)
++static inline void arch___clear_bit_unlock(int nr, volatile unsigned long *addr)
+ {
+ 	__asm__ __volatile__(PPC_RELEASE_BARRIER "" ::: "memory");
+ 	__clear_bit(nr, addr);
+@@ -215,14 +218,14 @@ static __inline__ void __clear_bit_unlock(int nr, volatile unsigned long *addr)
+  * fls: find last (most-significant) bit set.
+  * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
+  */
+-static __inline__ int fls(unsigned int x)
++static inline int fls(unsigned int x)
+ {
+ 	return 32 - __builtin_clz(x);
+ }
+ 
+ #include <asm-generic/bitops/builtin-__fls.h>
+ 
+-static __inline__ int fls64(__u64 x)
++static inline int fls64(__u64 x)
+ {
+ 	return 64 - __builtin_clzll(x);
+ }
+@@ -239,6 +242,10 @@ unsigned long __arch_hweight64(__u64 w);
+ 
+ #include <asm-generic/bitops/find.h>
+ 
++/* wrappers that deal with KASAN instrumentation */
 +#include <asm-generic/bitops/instrumented-atomic.h>
-+#include <asm-generic/bitops/instrumented-non-atomic.h>
 +#include <asm-generic/bitops/instrumented-lock.h>
- 
- /*
-  * Functions which use MSB0 bit numbering.
-diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
-index ba15d53c1ca7..4a2e2432238f 100644
---- a/arch/x86/include/asm/bitops.h
-+++ b/arch/x86/include/asm/bitops.h
-@@ -389,7 +389,9 @@ static __always_inline int fls64(__u64 x)
- 
- #include <asm-generic/bitops/const_hweight.h>
- 
--#include <asm-generic/bitops-instrumented.h>
-+#include <asm-generic/bitops/instrumented-atomic.h>
-+#include <asm-generic/bitops/instrumented-non-atomic.h>
-+#include <asm-generic/bitops/instrumented-lock.h>
- 
++
+ /* Little-endian versions */
  #include <asm-generic/bitops/le.h>
  
-diff --git a/include/asm-generic/bitops-instrumented.h b/include/asm-generic/bitops-instrumented.h
-deleted file mode 100644
-index ddd1c6d9d8db..000000000000
---- a/include/asm-generic/bitops-instrumented.h
-+++ /dev/null
-@@ -1,263 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--
--/*
-- * This file provides wrappers with sanitizer instrumentation for bit
-- * operations.
-- *
-- * To use this functionality, an arch's bitops.h file needs to define each of
-- * the below bit operations with an arch_ prefix (e.g. arch_set_bit(),
-- * arch___set_bit(), etc.).
-- */
--#ifndef _ASM_GENERIC_BITOPS_INSTRUMENTED_H
--#define _ASM_GENERIC_BITOPS_INSTRUMENTED_H
--
--#include <linux/kasan-checks.h>
--
--/**
-- * set_bit - Atomically set a bit in memory
-- * @nr: the bit to set
-- * @addr: the address to start counting from
-- *
-- * This is a relaxed atomic operation (no implied memory barriers).
-- *
-- * Note that @nr may be almost arbitrarily large; this function is not
-- * restricted to acting on a single-word quantity.
-- */
--static inline void set_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch_set_bit(nr, addr);
--}
--
--/**
-- * __set_bit - Set a bit in memory
-- * @nr: the bit to set
-- * @addr: the address to start counting from
-- *
-- * Unlike set_bit(), this function is non-atomic. If it is called on the same
-- * region of memory concurrently, the effect may be that only one operation
-- * succeeds.
-- */
--static inline void __set_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch___set_bit(nr, addr);
--}
--
--/**
-- * clear_bit - Clears a bit in memory
-- * @nr: Bit to clear
-- * @addr: Address to start counting from
-- *
-- * This is a relaxed atomic operation (no implied memory barriers).
-- */
--static inline void clear_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch_clear_bit(nr, addr);
--}
--
--/**
-- * __clear_bit - Clears a bit in memory
-- * @nr: the bit to clear
-- * @addr: the address to start counting from
-- *
-- * Unlike clear_bit(), this function is non-atomic. If it is called on the same
-- * region of memory concurrently, the effect may be that only one operation
-- * succeeds.
-- */
--static inline void __clear_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch___clear_bit(nr, addr);
--}
--
--/**
-- * clear_bit_unlock - Clear a bit in memory, for unlock
-- * @nr: the bit to set
-- * @addr: the address to start counting from
-- *
-- * This operation is atomic and provides release barrier semantics.
-- */
--static inline void clear_bit_unlock(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch_clear_bit_unlock(nr, addr);
--}
--
--/**
-- * __clear_bit_unlock - Clears a bit in memory
-- * @nr: Bit to clear
-- * @addr: Address to start counting from
-- *
-- * This is a non-atomic operation but implies a release barrier before the
-- * memory operation. It can be used for an unlock if no other CPUs can
-- * concurrently modify other bits in the word.
-- */
--static inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch___clear_bit_unlock(nr, addr);
--}
--
--/**
-- * change_bit - Toggle a bit in memory
-- * @nr: Bit to change
-- * @addr: Address to start counting from
-- *
-- * This is a relaxed atomic operation (no implied memory barriers).
-- *
-- * Note that @nr may be almost arbitrarily large; this function is not
-- * restricted to acting on a single-word quantity.
-- */
--static inline void change_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch_change_bit(nr, addr);
--}
--
--/**
-- * __change_bit - Toggle a bit in memory
-- * @nr: the bit to change
-- * @addr: the address to start counting from
-- *
-- * Unlike change_bit(), this function is non-atomic. If it is called on the same
-- * region of memory concurrently, the effect may be that only one operation
-- * succeeds.
-- */
--static inline void __change_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	arch___change_bit(nr, addr);
--}
--
--/**
-- * test_and_set_bit - Set a bit and return its old value
-- * @nr: Bit to set
-- * @addr: Address to count from
-- *
-- * This is an atomic fully-ordered operation (implied full memory barrier).
-- */
--static inline bool test_and_set_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch_test_and_set_bit(nr, addr);
--}
--
--/**
-- * __test_and_set_bit - Set a bit and return its old value
-- * @nr: Bit to set
-- * @addr: Address to count from
-- *
-- * This operation is non-atomic. If two instances of this operation race, one
-- * can appear to succeed but actually fail.
-- */
--static inline bool __test_and_set_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch___test_and_set_bit(nr, addr);
--}
--
--/**
-- * test_and_set_bit_lock - Set a bit and return its old value, for lock
-- * @nr: Bit to set
-- * @addr: Address to count from
-- *
-- * This operation is atomic and provides acquire barrier semantics if
-- * the returned value is 0.
-- * It can be used to implement bit locks.
-- */
--static inline bool test_and_set_bit_lock(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch_test_and_set_bit_lock(nr, addr);
--}
--
--/**
-- * test_and_clear_bit - Clear a bit and return its old value
-- * @nr: Bit to clear
-- * @addr: Address to count from
-- *
-- * This is an atomic fully-ordered operation (implied full memory barrier).
-- */
--static inline bool test_and_clear_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch_test_and_clear_bit(nr, addr);
--}
--
--/**
-- * __test_and_clear_bit - Clear a bit and return its old value
-- * @nr: Bit to clear
-- * @addr: Address to count from
-- *
-- * This operation is non-atomic. If two instances of this operation race, one
-- * can appear to succeed but actually fail.
-- */
--static inline bool __test_and_clear_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch___test_and_clear_bit(nr, addr);
--}
--
--/**
-- * test_and_change_bit - Change a bit and return its old value
-- * @nr: Bit to change
-- * @addr: Address to count from
-- *
-- * This is an atomic fully-ordered operation (implied full memory barrier).
-- */
--static inline bool test_and_change_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch_test_and_change_bit(nr, addr);
--}
--
--/**
-- * __test_and_change_bit - Change a bit and return its old value
-- * @nr: Bit to change
-- * @addr: Address to count from
-- *
-- * This operation is non-atomic. If two instances of this operation race, one
-- * can appear to succeed but actually fail.
-- */
--static inline bool __test_and_change_bit(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch___test_and_change_bit(nr, addr);
--}
--
--/**
-- * test_bit - Determine whether a bit is set
-- * @nr: bit number to test
-- * @addr: Address to start counting from
-- */
--static inline bool test_bit(long nr, const volatile unsigned long *addr)
--{
--	kasan_check_read(addr + BIT_WORD(nr), sizeof(long));
--	return arch_test_bit(nr, addr);
--}
--
--#if defined(arch_clear_bit_unlock_is_negative_byte)
--/**
-- * clear_bit_unlock_is_negative_byte - Clear a bit in memory and test if bottom
-- *                                     byte is negative, for unlock.
-- * @nr: the bit to clear
-- * @addr: the address to start counting from
-- *
-- * This operation is atomic and provides release barrier semantics.
-- *
-- * This is a bit of a one-trick-pony for the filemap code, which clears
-- * PG_locked and tests PG_waiters,
-- */
--static inline bool
--clear_bit_unlock_is_negative_byte(long nr, volatile unsigned long *addr)
--{
--	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
--	return arch_clear_bit_unlock_is_negative_byte(nr, addr);
--}
--/* Let everybody know we have it. */
--#define clear_bit_unlock_is_negative_byte clear_bit_unlock_is_negative_byte
--#endif
--
--#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_H */
-diff --git a/include/asm-generic/bitops/instrumented-atomic.h b/include/asm-generic/bitops/instrumented-atomic.h
-new file mode 100644
-index 000000000000..18ce3c9e8eec
---- /dev/null
-+++ b/include/asm-generic/bitops/instrumented-atomic.h
-@@ -0,0 +1,100 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+/*
-+ * This file provides wrappers with sanitizer instrumentation for atomic bit
-+ * operations.
-+ *
-+ * To use this functionality, an arch's bitops.h file needs to define each of
-+ * the below bit operations with an arch_ prefix (e.g. arch_set_bit(),
-+ * arch___set_bit(), etc.).
-+ */
-+#ifndef _ASM_GENERIC_BITOPS_INSTRUMENTED_ATOMIC_H
-+#define _ASM_GENERIC_BITOPS_INSTRUMENTED_ATOMIC_H
-+
-+#include <linux/kasan-checks.h>
-+
-+/**
-+ * set_bit - Atomically set a bit in memory
-+ * @nr: the bit to set
-+ * @addr: the address to start counting from
-+ *
-+ * This is a relaxed atomic operation (no implied memory barriers).
-+ *
-+ * Note that @nr may be almost arbitrarily large; this function is not
-+ * restricted to acting on a single-word quantity.
-+ */
-+static inline void set_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch_set_bit(nr, addr);
-+}
-+
-+/**
-+ * clear_bit - Clears a bit in memory
-+ * @nr: Bit to clear
-+ * @addr: Address to start counting from
-+ *
-+ * This is a relaxed atomic operation (no implied memory barriers).
-+ */
-+static inline void clear_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch_clear_bit(nr, addr);
-+}
-+
-+/**
-+ * change_bit - Toggle a bit in memory
-+ * @nr: Bit to change
-+ * @addr: Address to start counting from
-+ *
-+ * This is a relaxed atomic operation (no implied memory barriers).
-+ *
-+ * Note that @nr may be almost arbitrarily large; this function is not
-+ * restricted to acting on a single-word quantity.
-+ */
-+static inline void change_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch_change_bit(nr, addr);
-+}
-+
-+/**
-+ * test_and_set_bit - Set a bit and return its old value
-+ * @nr: Bit to set
-+ * @addr: Address to count from
-+ *
-+ * This is an atomic fully-ordered operation (implied full memory barrier).
-+ */
-+static inline bool test_and_set_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch_test_and_set_bit(nr, addr);
-+}
-+
-+/**
-+ * test_and_clear_bit - Clear a bit and return its old value
-+ * @nr: Bit to clear
-+ * @addr: Address to count from
-+ *
-+ * This is an atomic fully-ordered operation (implied full memory barrier).
-+ */
-+static inline bool test_and_clear_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch_test_and_clear_bit(nr, addr);
-+}
-+
-+/**
-+ * test_and_change_bit - Change a bit and return its old value
-+ * @nr: Bit to change
-+ * @addr: Address to count from
-+ *
-+ * This is an atomic fully-ordered operation (implied full memory barrier).
-+ */
-+static inline bool test_and_change_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch_test_and_change_bit(nr, addr);
-+}
-+
-+#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
-diff --git a/include/asm-generic/bitops/instrumented-lock.h b/include/asm-generic/bitops/instrumented-lock.h
-new file mode 100644
-index 000000000000..ec53fdeea9ec
---- /dev/null
-+++ b/include/asm-generic/bitops/instrumented-lock.h
-@@ -0,0 +1,81 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+/*
-+ * This file provides wrappers with sanitizer instrumentation for bit
-+ * locking operations.
-+ *
-+ * To use this functionality, an arch's bitops.h file needs to define each of
-+ * the below bit operations with an arch_ prefix (e.g. arch_set_bit(),
-+ * arch___set_bit(), etc.).
-+ */
-+#ifndef _ASM_GENERIC_BITOPS_INSTRUMENTED_LOCK_H
-+#define _ASM_GENERIC_BITOPS_INSTRUMENTED_LOCK_H
-+
-+#include <linux/kasan-checks.h>
-+
-+/**
-+ * clear_bit_unlock - Clear a bit in memory, for unlock
-+ * @nr: the bit to set
-+ * @addr: the address to start counting from
-+ *
-+ * This operation is atomic and provides release barrier semantics.
-+ */
-+static inline void clear_bit_unlock(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch_clear_bit_unlock(nr, addr);
-+}
-+
-+/**
-+ * __clear_bit_unlock - Clears a bit in memory
-+ * @nr: Bit to clear
-+ * @addr: Address to start counting from
-+ *
-+ * This is a non-atomic operation but implies a release barrier before the
-+ * memory operation. It can be used for an unlock if no other CPUs can
-+ * concurrently modify other bits in the word.
-+ */
-+static inline void __clear_bit_unlock(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch___clear_bit_unlock(nr, addr);
-+}
-+
-+/**
-+ * test_and_set_bit_lock - Set a bit and return its old value, for lock
-+ * @nr: Bit to set
-+ * @addr: Address to count from
-+ *
-+ * This operation is atomic and provides acquire barrier semantics if
-+ * the returned value is 0.
-+ * It can be used to implement bit locks.
-+ */
-+static inline bool test_and_set_bit_lock(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch_test_and_set_bit_lock(nr, addr);
-+}
-+
-+#if defined(arch_clear_bit_unlock_is_negative_byte)
-+/**
-+ * clear_bit_unlock_is_negative_byte - Clear a bit in memory and test if bottom
-+ *                                     byte is negative, for unlock.
-+ * @nr: the bit to clear
-+ * @addr: the address to start counting from
-+ *
-+ * This operation is atomic and provides release barrier semantics.
-+ *
-+ * This is a bit of a one-trick-pony for the filemap code, which clears
-+ * PG_locked and tests PG_waiters,
-+ */
-+static inline bool
-+clear_bit_unlock_is_negative_byte(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch_clear_bit_unlock_is_negative_byte(nr, addr);
-+}
-+/* Let everybody know we have it. */
-+#define clear_bit_unlock_is_negative_byte clear_bit_unlock_is_negative_byte
-+#endif
-+
-+#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_LOCK_H */
-diff --git a/include/asm-generic/bitops/instrumented-non-atomic.h b/include/asm-generic/bitops/instrumented-non-atomic.h
-new file mode 100644
-index 000000000000..95ff28d128a1
---- /dev/null
-+++ b/include/asm-generic/bitops/instrumented-non-atomic.h
-@@ -0,0 +1,114 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+/*
-+ * This file provides wrappers with sanitizer instrumentation for non-atomic
-+ * bit operations.
-+ *
-+ * To use this functionality, an arch's bitops.h file needs to define each of
-+ * the below bit operations with an arch_ prefix (e.g. arch_set_bit(),
-+ * arch___set_bit(), etc.).
-+ */
-+#ifndef _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H
-+#define _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H
-+
-+#include <linux/kasan-checks.h>
-+
-+/**
-+ * __set_bit - Set a bit in memory
-+ * @nr: the bit to set
-+ * @addr: the address to start counting from
-+ *
-+ * Unlike set_bit(), this function is non-atomic. If it is called on the same
-+ * region of memory concurrently, the effect may be that only one operation
-+ * succeeds.
-+ */
-+static inline void __set_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch___set_bit(nr, addr);
-+}
-+
-+/**
-+ * __clear_bit - Clears a bit in memory
-+ * @nr: the bit to clear
-+ * @addr: the address to start counting from
-+ *
-+ * Unlike clear_bit(), this function is non-atomic. If it is called on the same
-+ * region of memory concurrently, the effect may be that only one operation
-+ * succeeds.
-+ */
-+static inline void __clear_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch___clear_bit(nr, addr);
-+}
-+
-+/**
-+ * __change_bit - Toggle a bit in memory
-+ * @nr: the bit to change
-+ * @addr: the address to start counting from
-+ *
-+ * Unlike change_bit(), this function is non-atomic. If it is called on the same
-+ * region of memory concurrently, the effect may be that only one operation
-+ * succeeds.
-+ */
-+static inline void __change_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	arch___change_bit(nr, addr);
-+}
-+
-+/**
-+ * __test_and_set_bit - Set a bit and return its old value
-+ * @nr: Bit to set
-+ * @addr: Address to count from
-+ *
-+ * This operation is non-atomic. If two instances of this operation race, one
-+ * can appear to succeed but actually fail.
-+ */
-+static inline bool __test_and_set_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch___test_and_set_bit(nr, addr);
-+}
-+
-+/**
-+ * __test_and_clear_bit - Clear a bit and return its old value
-+ * @nr: Bit to clear
-+ * @addr: Address to count from
-+ *
-+ * This operation is non-atomic. If two instances of this operation race, one
-+ * can appear to succeed but actually fail.
-+ */
-+static inline bool __test_and_clear_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch___test_and_clear_bit(nr, addr);
-+}
-+
-+/**
-+ * __test_and_change_bit - Change a bit and return its old value
-+ * @nr: Bit to change
-+ * @addr: Address to count from
-+ *
-+ * This operation is non-atomic. If two instances of this operation race, one
-+ * can appear to succeed but actually fail.
-+ */
-+static inline bool __test_and_change_bit(long nr, volatile unsigned long *addr)
-+{
-+	kasan_check_write(addr + BIT_WORD(nr), sizeof(long));
-+	return arch___test_and_change_bit(nr, addr);
-+}
-+
-+/**
-+ * test_bit - Determine whether a bit is set
-+ * @nr: bit number to test
-+ * @addr: Address to start counting from
-+ */
-+static inline bool test_bit(long nr, const volatile unsigned long *addr)
-+{
-+	kasan_check_read(addr + BIT_WORD(nr), sizeof(long));
-+	return arch_test_bit(nr, addr);
-+}
-+
-+#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
 -- 
 2.20.1
 
