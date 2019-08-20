@@ -2,37 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4993A96863
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 20:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4308696BA3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 23:44:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Cf7K1bwCzDr22
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 04:13:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CkpV1L8DzDr95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 07:44:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=julietk@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Cf5Z6B4gzDqbG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 04:12:18 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 54DEFAEF5;
- Tue, 20 Aug 2019 18:12:14 +0000 (UTC)
-From: Michal Suchanek <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH rebased] powerpc/fadump: when fadump is supported register the
- fadump sysfs files.
-Date: Tue, 20 Aug 2019 20:12:11 +0200
-Message-Id: <20190820181211.14694-1-msuchanek@suse.de>
-X-Mailer: git-send-email 2.22.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Ckmm6DfQzDr8q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 07:42:57 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7KLg9vX086283; Tue, 20 Aug 2019 17:42:55 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ugqat4400-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Aug 2019 17:42:54 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7KLe5bc025851;
+ Tue, 20 Aug 2019 21:42:54 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 2ue976yp80-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Aug 2019 21:42:54 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7KLgrmd42795496
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Aug 2019 21:42:53 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 182FAAE062;
+ Tue, 20 Aug 2019 21:42:53 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B8307AE060;
+ Tue, 20 Aug 2019 21:42:52 +0000 (GMT)
+Received: from ltcfleet2-lp9.aus.stglabs.ibm.com (unknown [9.40.195.116])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 20 Aug 2019 21:42:52 +0000 (GMT)
+From: Juliet Kim <julietk@linux.vnet.ibm.com>
+To: netdev@vger.kernel.org
+Subject: [PATCH 1/2] net/ibmvnic: unlock rtnl_lock in reset so linkwatch_event
+ can run
+Date: Tue, 20 Aug 2019 17:31:19 -0400
+Message-Id: <20190820213120.19880-1-julietk@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.16.4
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-20_10:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908200198
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,87 +78,340 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yangtao Li <tiny.windzz@gmail.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Hari Bathini <hbathini@linux.vnet.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Michal Suchanek <msuchanek@suse.de>
+Cc: julietk@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently it is not possible to distinguish the case when fadump is
-supported by firmware and disabled in kernel and completely unsupported
-using the kernel sysfs interface. User can investigate the devicetree
-but it is more reasonable to provide sysfs files in case we get some
-fadumpv2 in the future.
+Commit a5681e20b541 ("net/ibmnvic: Fix deadlock problem in reset") 
+made the change to hold the RTNL lock during a reset to avoid deadlock 
+but linkwatch_event is fired during the reset and needs the RTNL lock.  
+That keeps linkwatch_event process from proceeding until the reset 
+is complete. The reset process cannot tolerate the linkwatch_event 
+processing after reset completes, so release the RTNL lock during the 
+process to allow a chance for linkwatch_event to run during reset. 
+This does not guarantee that the linkwatch_event will be processed as 
+soon as link state changes, but is an improvement over the current code
+where linkwatch_event processing is always delayed, which prevents 
+transmissions on the device from being deactivated leading transmit 
+watchdog timer to time-out. 
 
-With this patch sysfs files are available whenever fadump is supported
-by firmware.
+Release the RTNL lock before link state change and re-acquire after 
+the link state change to allow linkwatch_event to grab the RTNL lock 
+and run during the reset.
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Fixes: a5681e20b541 ("net/ibmnvic: Fix deadlock problem in reset")
+
+Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
 ---
-Rebase on top of http://patchwork.ozlabs.org/patch/1150160/
-[v5,31/31] powernv/fadump: support holes in kernel boot memory area
----
- arch/powerpc/kernel/fadump.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 144 +++++++++++++++++++++++++++----------
+ 1 file changed, 108 insertions(+), 36 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 4b1bb3c55cf9..7ad424729e9c 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1319,13 +1319,9 @@ static void fadump_init_files(void)
-  */
- int __init setup_fadump(void)
- {
--	if (!fw_dump.fadump_enabled)
--		return 0;
--
--	if (!fw_dump.fadump_supported) {
-+	if (!fw_dump.fadump_supported && fw_dump.fadump_enabled) {
- 		printk(KERN_ERR "Firmware-assisted dump is not supported on"
- 			" this hardware\n");
--		return 0;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index cebd20f3128d..a3e2fbb9c5db 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1733,11 +1733,21 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 	u64 old_num_rx_queues, old_num_tx_queues;
+ 	u64 old_num_rx_slots, old_num_tx_slots;
+ 	struct net_device *netdev = adapter->netdev;
++	bool we_lock_rtnl = false;
+ 	int i, rc;
+ 
+ 	netdev_dbg(adapter->netdev, "Re-setting driver (%d)\n",
+ 		   rwi->reset_reason);
+ 
++	/* netif_set_real_num_xx_queues needs to take rtnl lock here
++	 * unless wait_for_reset is set, in which case the rtnl lock
++	 * has already been taken before initializing the reset
++	 */
++	if (!adapter->wait_for_reset && !we_lock_rtnl) {
++		rtnl_lock();
++		we_lock_rtnl = true;
++	}
++
+ 	netif_carrier_off(netdev);
+ 	adapter->reset_reason = rwi->reset_reason;
+ 
+@@ -1751,9 +1761,27 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 	if (reset_state == VNIC_OPEN &&
+ 	    adapter->reset_reason != VNIC_RESET_MOBILITY &&
+ 	    adapter->reset_reason != VNIC_RESET_FAILOVER) {
+-		rc = __ibmvnic_close(netdev);
++		adapter->state = VNIC_CLOSING;
++		if (!adapter->wait_for_reset && we_lock_rtnl) {
++			we_lock_rtnl = false;
++			rtnl_unlock();
++		}
++
++		rc = set_link_state(adapter, IBMVNIC_LOGICAL_LNK_DN);
+ 		if (rc)
+-			return rc;
++			goto out;
++
++		if (!adapter->wait_for_reset && !we_lock_rtnl) {
++			rtnl_lock();
++			we_lock_rtnl = true;
++		}
++
++		if (adapter->state != VNIC_CLOSING) {
++			rc = -1;
++			goto out;
++		}
++
++		adapter->state = VNIC_CLOSED;
  	}
  
- 	fadump_show_config();
-@@ -1333,19 +1329,26 @@ int __init setup_fadump(void)
- 	 * If dump data is available then see if it is valid and prepare for
- 	 * saving it to the disk.
- 	 */
--	if (fw_dump.dump_active) {
-+	if (fw_dump.fadump_enabled) {
-+		if (fw_dump.dump_active) {
-+			/*
-+			 * if dump process fails then invalidate the
-+			 * registration and release memory before proceeding
-+			 * for re-registration.
-+			 */
-+			if (fw_dump.ops->fadump_process(&fw_dump) < 0)
-+				fadump_invalidate_release_mem();
+ 	if (adapter->reset_reason == VNIC_RESET_CHANGE_PARAM ||
+@@ -1783,30 +1811,34 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 		if (rc) {
+ 			netdev_err(adapter->netdev,
+ 				   "Couldn't initialize crq. rc=%d\n", rc);
+-			return rc;
++			goto out;
+ 		}
+ 
+ 		rc = ibmvnic_reset_init(adapter);
+-		if (rc)
+-			return IBMVNIC_INIT_FAILED;
++		if (rc) {
++			rc = IBMVNIC_INIT_FAILED;
++			goto out;
 +		}
- 		/*
--		 * if dump process fails then invalidate the registration
--		 * and release memory before proceeding for re-registration.
-+		 * Initialize the kernel dump memory structure for FAD
-+		 * registration.
+ 
+ 		/* If the adapter was in PROBE state prior to the reset,
+ 		 * exit here.
  		 */
--		if (fw_dump.ops->fadump_process(&fw_dump) < 0)
--			fadump_invalidate_release_mem();
--	}
--	/* Initialize the kernel dump memory structure for FAD registration. */
--	else if (fw_dump.reserve_dump_area_size)
--		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
-+		else if (fw_dump.reserve_dump_area_size)
-+			fw_dump.ops->fadump_init_mem_struct(&fw_dump);
+-		if (reset_state == VNIC_PROBED)
+-			return 0;
++		if (reset_state == VNIC_PROBED) {
++			rc = 0;
++			goto out;
++		}
  
--	fadump_init_files();
+ 		rc = ibmvnic_login(netdev);
+ 		if (rc) {
+ 			adapter->state = reset_state;
+-			return rc;
++			goto out;
+ 		}
+ 
+ 		if (adapter->reset_reason == VNIC_RESET_CHANGE_PARAM ||
+ 		    adapter->wait_for_reset) {
+ 			rc = init_resources(adapter);
+ 			if (rc)
+-				return rc;
++				goto out;
+ 		} else if (adapter->req_rx_queues != old_num_rx_queues ||
+ 			   adapter->req_tx_queues != old_num_tx_queues ||
+ 			   adapter->req_rx_add_entries_per_subcrq !=
+@@ -1820,23 +1852,25 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 
+ 			rc = init_resources(adapter);
+ 			if (rc)
+-				return rc;
++				goto out;
+ 
+ 		} else {
+ 			rc = reset_tx_pools(adapter);
+ 			if (rc)
+-				return rc;
++				goto out;
+ 
+ 			rc = reset_rx_pools(adapter);
+ 			if (rc)
+-				return rc;
++				goto out;
+ 		}
+ 		ibmvnic_disable_irqs(adapter);
+ 	}
+ 	adapter->state = VNIC_CLOSED;
+ 
+-	if (reset_state == VNIC_CLOSED)
+-		return 0;
++	if (reset_state == VNIC_CLOSED) {
++		rc = 0;
++		goto out;
 +	}
-+	if (fw_dump.fadump_supported)
-+		fadump_init_files();
  
- 	return 1;
+ 	rc = __ibmvnic_open(netdev);
+ 	if (rc) {
+@@ -1845,7 +1879,8 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 		else
+ 			adapter->state = reset_state;
+ 
+-		return 0;
++		rc = 0;
++		goto out;
+ 	}
+ 
+ 	/* refresh device's multicast list */
+@@ -1859,18 +1894,42 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 	    adapter->reset_reason != VNIC_RESET_CHANGE_PARAM)
+ 		call_netdevice_notifiers(NETDEV_NOTIFY_PEERS, netdev);
+ 
++	if (!adapter->wait_for_reset && we_lock_rtnl) {
++		rtnl_unlock();
++		we_lock_rtnl = false;
++	}
++
+ 	return 0;
++
++out:
++	if (!adapter->wait_for_reset && we_lock_rtnl) {
++		rtnl_unlock();
++		we_lock_rtnl = false;
++	}
++
++	return rc;
  }
+ 
+ static int do_hard_reset(struct ibmvnic_adapter *adapter,
+ 			 struct ibmvnic_rwi *rwi, u32 reset_state)
+ {
+ 	struct net_device *netdev = adapter->netdev;
++	bool we_lock_rtnl = false;
+ 	int rc;
+ 
+ 	netdev_dbg(adapter->netdev, "Hard resetting driver (%d)\n",
+ 		   rwi->reset_reason);
+ 
++	/* netif_set_real_num_xx_queues needs to take rtnl lock here
++	 * unless wait_for_reset is set, in which case the rtnl lock
++	 * has already been taken before initializing the reset
++	 */
++	if (!adapter->wait_for_reset && !we_lock_rtnl) {
++		rtnl_lock();
++		we_lock_rtnl = true;
++	}
++
++	adapter->force_reset_recovery = false;
+ 	netif_carrier_off(netdev);
+ 	adapter->reset_reason = rwi->reset_reason;
+ 
+@@ -1889,34 +1948,39 @@ static int do_hard_reset(struct ibmvnic_adapter *adapter,
+ 	if (rc) {
+ 		netdev_err(adapter->netdev,
+ 			   "Couldn't initialize crq. rc=%d\n", rc);
+-		return rc;
++		goto out;
+ 	}
+ 
+ 	rc = ibmvnic_init(adapter);
+ 	if (rc)
+-		return rc;
++		goto out;
+ 
+ 	/* If the adapter was in PROBE state prior to the reset,
+ 	 * exit here.
+ 	 */
+-	if (reset_state == VNIC_PROBED)
+-		return 0;
++	if (reset_state == VNIC_PROBED) {
++		rc = 0;
++		goto out;
++	}
+ 
+ 	rc = ibmvnic_login(netdev);
+ 	if (rc) {
+ 		adapter->state = VNIC_PROBED;
+-		return 0;
++		rc = 0;
++		goto out;
+ 	}
+ 
+ 	rc = init_resources(adapter);
+ 	if (rc)
+-		return rc;
++		goto out;
+ 
+ 	ibmvnic_disable_irqs(adapter);
+ 	adapter->state = VNIC_CLOSED;
+ 
+-	if (reset_state == VNIC_CLOSED)
+-		return 0;
++	if (reset_state == VNIC_CLOSED) {
++		rc = 0;
++		goto out;
++	}
+ 
+ 	rc = __ibmvnic_open(netdev);
+ 	if (rc) {
+@@ -1925,10 +1989,25 @@ static int do_hard_reset(struct ibmvnic_adapter *adapter,
+ 		else
+ 			adapter->state = reset_state;
+ 
+-		return 0;
++		rc = 0;
++		goto out;
++	}
++
++	if (!adapter->wait_for_reset && we_lock_rtnl) {
++		rtnl_unlock();
++		we_lock_rtnl = false;
+ 	}
+ 
+ 	return 0;
++
++out:
++	if (!adapter->wait_for_reset && we_lock_rtnl) {
++		rtnl_unlock();
++		we_lock_rtnl = false;
++	}
++
++	return rc;
++
+ }
+ 
+ static struct ibmvnic_rwi *get_next_rwi(struct ibmvnic_adapter *adapter)
+@@ -1965,26 +2044,16 @@ static void __ibmvnic_reset(struct work_struct *work)
+ {
+ 	struct ibmvnic_rwi *rwi;
+ 	struct ibmvnic_adapter *adapter;
+-	bool we_lock_rtnl = false;
+ 	u32 reset_state;
+ 	int rc = 0;
+ 
+ 	adapter = container_of(work, struct ibmvnic_adapter, ibmvnic_reset);
+ 
+-	/* netif_set_real_num_xx_queues needs to take rtnl lock here
+-	 * unless wait_for_reset is set, in which case the rtnl lock
+-	 * has already been taken before initializing the reset
+-	 */
+-	if (!adapter->wait_for_reset) {
+-		rtnl_lock();
+-		we_lock_rtnl = true;
+-	}
+ 	reset_state = adapter->state;
+ 
+ 	rwi = get_next_rwi(adapter);
+ 	while (rwi) {
+ 		if (adapter->force_reset_recovery) {
+-			adapter->force_reset_recovery = false;
+ 			rc = do_hard_reset(adapter, rwi, reset_state);
+ 		} else {
+ 			rc = do_reset(adapter, rwi, reset_state);
+@@ -1995,6 +2064,11 @@ static void __ibmvnic_reset(struct work_struct *work)
+ 			break;
+ 
+ 		rwi = get_next_rwi(adapter);
++
++		if (rwi && (rwi->reset_reason == VNIC_RESET_FAILOVER ||
++			    rwi->reset_reason == VNIC_RESET_MOBILITY) &&
++			!adapter->force_reset_recovery)
++			adapter->force_reset_recovery = true;
+ 	}
+ 
+ 	if (adapter->wait_for_reset) {
+@@ -2009,8 +2083,6 @@ static void __ibmvnic_reset(struct work_struct *work)
+ 	}
+ 
+ 	adapter->resetting = false;
+-	if (we_lock_rtnl)
+-		rtnl_unlock();
+ }
+ 
+ static int ibmvnic_reset(struct ibmvnic_adapter *adapter,
 -- 
-2.22.0
+2.16.4
 
