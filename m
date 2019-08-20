@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F92D963C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 17:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95096963E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 17:13:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CZ225HX6zDq6y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 01:08:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CZ7N6FYZzDqYk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 01:13:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,26 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CYp60HckzDr5J
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 00:58:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CYpH4qtjzDqWT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 00:58:47 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 3DB25AE42;
- Tue, 20 Aug 2019 14:58:29 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id F00BBAE42;
+ Tue, 20 Aug 2019 14:58:41 +0000 (UTC)
 From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 To: catalin.marinas@arm.com, hch@lst.de, wahrenst@gmx.net,
  marc.zyngier@arm.com, robh+dt@kernel.org,
  Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org,
  devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
  iommu@lists.linux-foundation.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org
-Subject: [PATCH v2 00/11] Raspberry Pi 4 DMA addressing support
-Date: Tue, 20 Aug 2019 16:58:08 +0200
-Message-Id: <20190820145821.27214-1-nsaenzjulienne@suse.de>
+ linux-riscv@lists.infradead.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH v2 09/11] dma-direct: turn ARCH_ZONE_DMA_BITS into a variable
+Date: Tue, 20 Aug 2019 16:58:17 +0200
+Message-Id: <20190820145821.27214-10-nsaenzjulienne@suse.de>
 X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190820145821.27214-1-nsaenzjulienne@suse.de>
+References: <20190820145821.27214-1-nsaenzjulienne@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -49,123 +52,173 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: phill@raspberryi.org, linux-s390@vger.kernel.org, f.fainelli@gmail.com,
- frowand.list@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, frowand.list@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
  linux-kernel@vger.kernel.org, eric@anholt.net, mbrugger@suse.com,
- linux-rpi-kernel@lists.infradead.org, akpm@linux-foundation.org,
- will@kernel.org, nsaenzjulienne@suse.de, m.szyprowski@samsung.com
+ Paul Mackerras <paulus@samba.org>, linux-rpi-kernel@lists.infradead.org,
+ akpm@linux-foundation.org, will@kernel.org, nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
-this series attempts to address some issues we found while bringing up
-the new Raspberry Pi 4 in arm64 and it's intended to serve as a follow
-up of these discussions:
-v1: https://lkml.org/lkml/2019/7/31/922
-RFC: https://lkml.org/lkml/2019/7/17/476
+Some architectures, notably arm64, are interested in tweaking this
+depending on their runtime dma addressing limitations.
 
-The new Raspberry Pi 4 has up to 4GB of memory but most peripherals can
-only address the first GB: their DMA address range is
-0xc0000000-0xfc000000 which is aliased to the first GB of physical
-memory 0x00000000-0x3c000000. Note that only some peripherals have these
-limitations: the PCIe, V3D, GENET, and 40-bit DMA channels have a wider
-view of the address space by virtue of being hooked up trough a second
-interconnect.
-
-Part of this is solved in arm32 by setting up the machine specific
-'.dma_zone_size = SZ_1G', which takes care of reserving the coherent
-memory area at the right spot. That said no buffer bouncing (needed for
-dma streaming) is available at the moment, but that's a story for
-another series.
-
-Unfortunately there is no such thing as 'dma_zone_size' in arm64. Only
-ZONE_DMA32 is created which is interpreted by dma-direct and the arm64
-arch code as if all peripherals where be able to address the first 4GB
-of memory.
-
-In the light of this, the series implements the following changes:
-
-- Create generic 'dma_zone_size' in order for hardware description code
-  to set it up when needed.
-
-- Add a function in early_init_dt_scan() to setup 'dma_zone_size' for
-  the RPi4.
-
-- Create both DMA zones in arm64, ZONE_DMA will contain the area
-  addressable by all peripherals and ZONE_DMA32 the rest of the 32 bit
-  addressable memory. ZONE_DMA32 might be left empty.
-
-- Reserve the CMA area in a place suitable for all peripherals.
-
-- Inform dma-direct of the new runtime calculated min_mask.
-
-This series has been tested on multiple devices both by checking the
-zones setup matches the expectations and by double-checking physical
-addresses on pages allocated on the three relevant areas GFP_DMA,
-GFP_DMA32, GFP_KERNEL:
-
-- On an RPi4 with variations on the ram memory size. But also forcing
-  the situation where all three memory zones are nonempty by setting a 3G
-  ZONE_DMA32 ceiling on a 4G setup. Both with and without NUMA support.
-
-- On a Synquacer box[1] with 32G of memory.
-
-- On an ACPI based Huawei TaiShan server[2] with 256G of memory.
-
-- On a QEMU virtual machine running arm64's OpenSUSE Tumbleweed.
-
-That's all.
-
-Regards,
-Nicolas
-
-[1] https://www.96boards.org/product/developerbox/
-[2] https://e.huawei.com/en/products/cloud-computing-dc/servers/taishan-server/taishan-2280-v2
-
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 ---
 
 Changes in v2:
-- More in depth testing.
-- Create new global 'dma_zone_size'.
-- New approach to getting the dma_zone_size, instead of parsing the dts
-  we hardcode it conditionally to the machine compatible name.
-- Fix ZONE_DMA and ZONE_DMA32 split, now ZONE_DMA32 remains empty if
-  ZONE_DMA fits the whole 32 bit addressable space.
-- Take into account devices with DMA offset.
-- Rename new dma-direct variable to zone_dma_bits.
-- Try new approach by merging both ZONE_DMA and ZONE_DMA32 comments
-  in mmzone.h, add new up to date examples.
+- Rename new variable to zone_dma_bits
+- Update comment with Christoph's suggestion
+- Remove old powerpc comment
 
-Nicolas Saenz Julienne (11):
-  asm-generic: add dma_zone_size
-  arm: use generic dma_zone_size
-  of/fdt: add of_fdt_machine_is_compatible function
-  of/fdt: add early_init_dt_get_dma_zone_size()
-  arm64: mm: use arm64_dma_phys_limit instead of calling
-    max_zone_dma_phys()
-  arm64: rename variables used to calculate ZONE_DMA32's size
-  arm64: re-introduce max_zone_dma_phys()
-  arm64: use both ZONE_DMA and ZONE_DMA32
-  dma-direct: turn ARCH_ZONE_DMA_BITS into a variable
-  arm64: edit zone_dma_bits to fine tune dma-direct min mask
-  mm: refresh ZONE_DMA and ZONE_DMA32 comments in 'enum zone_type'
-
- arch/arm/include/asm/dma.h      |  8 ++--
- arch/arm/mm/init.c              | 12 ++----
- arch/arm64/Kconfig              |  4 ++
- arch/arm64/mm/init.c            | 73 +++++++++++++++++++++++++--------
- arch/powerpc/include/asm/page.h |  9 ----
- arch/powerpc/mm/mem.c           | 16 +++++---
- arch/s390/include/asm/page.h    |  2 -
+ arch/powerpc/include/asm/page.h |  9 ---------
+ arch/powerpc/mm/mem.c           | 16 +++++++++++-----
+ arch/s390/include/asm/page.h    |  2 --
  arch/s390/mm/init.c             |  1 +
- drivers/of/fdt.c                | 15 +++++++
- include/asm-generic/dma.h       |  8 +++-
- include/linux/dma-direct.h      |  2 +
- include/linux/mmzone.h          | 46 ++++++++++++---------
- kernel/dma/direct.c             | 13 +++---
- mm/page_alloc.c                 |  3 ++
- 14 files changed, 140 insertions(+), 72 deletions(-)
+ include/linux/dma-direct.h      |  2 ++
+ kernel/dma/direct.c             | 13 ++++++-------
+ 6 files changed, 20 insertions(+), 23 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index 0d52f57fca04..73668a21ae78 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -319,13 +319,4 @@ struct vm_area_struct;
+ #endif /* __ASSEMBLY__ */
+ #include <asm/slice.h>
+ 
+-/*
+- * Allow 30-bit DMA for very limited Broadcom wifi chips on many powerbooks.
+- */
+-#ifdef CONFIG_PPC32
+-#define ARCH_ZONE_DMA_BITS 30
+-#else
+-#define ARCH_ZONE_DMA_BITS 31
+-#endif
+-
+ #endif /* _ASM_POWERPC_PAGE_H */
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index 9191a66b3bc5..2a69f87585df 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -31,6 +31,7 @@
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
+ #include <linux/memremap.h>
++#include <linux/dma-direct.h>
+ 
+ #include <asm/pgalloc.h>
+ #include <asm/prom.h>
+@@ -201,10 +202,10 @@ static int __init mark_nonram_nosave(void)
+  * everything else. GFP_DMA32 page allocations automatically fall back to
+  * ZONE_DMA.
+  *
+- * By using 31-bit unconditionally, we can exploit ARCH_ZONE_DMA_BITS to
+- * inform the generic DMA mapping code.  32-bit only devices (if not handled
+- * by an IOMMU anyway) will take a first dip into ZONE_NORMAL and get
+- * otherwise served by ZONE_DMA.
++ * By using 31-bit unconditionally, we can exploit zone_dma_bits to inform the
++ * generic DMA mapping code.  32-bit only devices (if not handled by an IOMMU
++ * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
++ * ZONE_DMA.
+  */
+ static unsigned long max_zone_pfns[MAX_NR_ZONES];
+ 
+@@ -237,9 +238,14 @@ void __init paging_init(void)
+ 	printk(KERN_DEBUG "Memory hole size: %ldMB\n",
+ 	       (long int)((top_of_ram - total_ram) >> 20));
+ 
++	if (IS_ENABLED(CONFIG_PPC32))
++		zone_dma_bits = 30;
++	else
++		zone_dma_bits = 31;
++
+ #ifdef CONFIG_ZONE_DMA
+ 	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+-				      1UL << (ARCH_ZONE_DMA_BITS - PAGE_SHIFT));
++				      1UL << (zone_dma_bits - PAGE_SHIFT));
+ #endif
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+ #ifdef CONFIG_HIGHMEM
+diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
+index 823578c6b9e2..a4d38092530a 100644
+--- a/arch/s390/include/asm/page.h
++++ b/arch/s390/include/asm/page.h
+@@ -177,8 +177,6 @@ static inline int devmem_is_allowed(unsigned long pfn)
+ #define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
+ 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+ 
+-#define ARCH_ZONE_DMA_BITS	31
+-
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/getorder.h>
+ 
+diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+index 20340a03ad90..bd98465b8b9f 100644
+--- a/arch/s390/mm/init.c
++++ b/arch/s390/mm/init.c
+@@ -118,6 +118,7 @@ void __init paging_init(void)
+ 
+ 	sparse_memory_present_with_active_regions(MAX_NUMNODES);
+ 	sparse_init();
++	zone_dma_bits = 31;
+ 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+ 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(MAX_DMA_ADDRESS);
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+index adf993a3bd58..d03af3605460 100644
+--- a/include/linux/dma-direct.h
++++ b/include/linux/dma-direct.h
+@@ -5,6 +5,8 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/mem_encrypt.h>
+ 
++extern unsigned int zone_dma_bits;
++
+ #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
+ #include <asm/dma-direct.h>
+ #else
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 795c9b095d75..b23cd65f26e0 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -16,12 +16,11 @@
+ #include <linux/swiotlb.h>
+ 
+ /*
+- * Most architectures use ZONE_DMA for the first 16 Megabytes, but
+- * some use it for entirely different regions:
++ * Most architectures use ZONE_DMA for the first 16 Megabytes, but some use it
++ * it for entirely different regions. In that case the arch code needs to
++ * override the variable below for dma-direct to work properly.
+  */
+-#ifndef ARCH_ZONE_DMA_BITS
+-#define ARCH_ZONE_DMA_BITS 24
+-#endif
++unsigned int zone_dma_bits __ro_after_init = 24;
+ 
+ static void report_addr(struct device *dev, dma_addr_t dma_addr, size_t size)
+ {
+@@ -69,7 +68,7 @@ static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
+ 	 * Note that GFP_DMA32 and GFP_DMA are no ops without the corresponding
+ 	 * zones.
+ 	 */
+-	if (*phys_mask <= DMA_BIT_MASK(ARCH_ZONE_DMA_BITS))
++	if (*phys_mask <= DMA_BIT_MASK(zone_dma_bits))
+ 		return GFP_DMA;
+ 	if (*phys_mask <= DMA_BIT_MASK(32))
+ 		return GFP_DMA32;
+@@ -387,7 +386,7 @@ int dma_direct_supported(struct device *dev, u64 mask)
+ 	u64 min_mask;
+ 
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA))
+-		min_mask = DMA_BIT_MASK(ARCH_ZONE_DMA_BITS);
++		min_mask = DMA_BIT_MASK(zone_dma_bits);
+ 	else
+ 		min_mask = DMA_BIT_MASK(32);
+ 
 -- 
 2.22.0
 
