@@ -2,38 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DCF952B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 02:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63121952B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 02:23:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CBKF2vlTzDqrZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 10:20:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CBN13YlfzDqtl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 10:23:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CBG64FDSzDqpd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 10:18:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CBJh4sLJzDqq8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 10:20:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46CBG53TVsz9s4Y;
- Tue, 20 Aug 2019 10:18:05 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46CBJg0XFkz9sNC;
+ Tue, 20 Aug 2019 10:20:18 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
+To: Nicholas Piggin <npiggin@gmail.com>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com
-Subject: Re: [PATCH v1 08/10] powerpc/mm: move __ioremap_at() and
- __iounmap_at() into ioremap.c
-In-Reply-To: <84bab66e7afc4b35e2bd460a87b5911c1b0830d2.1565726867.git.christophe.leroy@c-s.fr>
+ Christophe Leroy <christophe.leroy@c-s.fr>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v1 05/10] powerpc/mm: Do early ioremaps from top to bottom
+ on PPC64 too.
+In-Reply-To: <1566221500.6f5zxv68dm.astroid@bobo.none>
 References: <6bc35eca507359075528bc0e55938bc1ce8ee485.1565726867.git.christophe.leroy@c-s.fr>
- <84bab66e7afc4b35e2bd460a87b5911c1b0830d2.1565726867.git.christophe.leroy@c-s.fr>
-Date: Tue, 20 Aug 2019 10:18:00 +1000
-Message-ID: <87tvac666f.fsf@concordia.ellerman.id.au>
+ <019c5d90f7027ccff00e38a3bcd633d290f6af59.1565726867.git.christophe.leroy@c-s.fr>
+ <1566221500.6f5zxv68dm.astroid@bobo.none>
+Date: Tue, 20 Aug 2019 10:20:16 +1000
+Message-ID: <87r25g662n.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -52,45 +53,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Christophe Leroy's on August 14, 2019 6:11 am:
+>> Until vmalloc system is up and running, ioremap basically
+>> allocates addresses at the border of the IOREMAP area.
+>> 
+>> On PPC32, addresses are allocated down from the top of the area
+>> while on PPC64, addresses are allocated up from the base of the
+>> area.
+>  
+> This series looks pretty good to me, but I'm not sure about this patch.
+>
+> It seems like quite a small divergence in terms of code, and it looks
+> like the final result still has some ifdefs in these functions. Maybe
+> you could just keep existing behaviour for this cleanup series so it
+> does not risk triggering some obscure regression?
 
-> diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
-> index 57d742509cec..889ee656cf64 100644
-> --- a/arch/powerpc/mm/ioremap.c
-> +++ b/arch/powerpc/mm/ioremap.c
-> @@ -103,3 +103,46 @@ void iounmap(volatile void __iomem *token)
->  	vunmap(addr);
->  }
->  EXPORT_SYMBOL(iounmap);
-> +
-> +#ifdef CONFIG_PPC64
-> +/**
-> + * __ioremap_at - Low level function to establish the page tables
-> + *                for an IO mapping
-> + */
-> +void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
-> +{
-> +	/* We don't support the 4K PFN hack with ioremap */
-> +	if (pgprot_val(prot) & H_PAGE_4K_PFN)
-> +		return NULL;
-> +
-> +	if ((ea + size) >= (void *)IOREMAP_END) {
-> +		pr_warn("Outside the supported range\n");
-> +		return NULL;
-> +	}
-> +
-> +	WARN_ON(pa & ~PAGE_MASK);
-> +	WARN_ON(((unsigned long)ea) & ~PAGE_MASK);
-> +	WARN_ON(size & ~PAGE_MASK);
-> +
-> +	if (ioremap_range((unsigned long)ea, pa, size, prot, NUMA_NO_NODE))
+Yeah that is also my feeling. Changing it *should* work, and I haven't
+found anything that breaks yet, but it's one of those things that's
+bound to break something for some obscure reason.
 
-This doesn't build.
-
-Adding ...
-
-extern int ioremap_range(unsigned long ea, phys_addr_t pa, unsigned long size, pgprot_t prot, int nid);
-
-... above, until the next patch, fixes it.
+Christophe do you think you can rework it to retain the different
+allocation directions at least for now?
 
 cheers
