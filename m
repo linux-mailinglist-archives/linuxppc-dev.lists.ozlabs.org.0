@@ -1,68 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7470295A04
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 10:43:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C677F95C81
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:46:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CPTK2w2wzDqxl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 18:43:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CSC21mnLzDqyh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 20:46:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=80.241.60.215; helo=mx2.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Fud3MqWV"; 
- dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx2.mailbox.org (mx2.mailbox.org [80.241.60.215])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CPQv1G1GzDqg3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 18:41:25 +1000 (AEST)
-Received: by mail-io1-xd41.google.com with SMTP id o9so10498949iom.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 01:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=zdfPVCpQKbOB6BWB1KnP3j6I+X4+4oR2rukvo6YVs7E=;
- b=Fud3MqWVJzIcbSDdvAgLseOwaSEiZ/+3odadDhcdApXZYMppL8Um2VXLTEjaJ43tZO
- tfS2PDfXZXBYMGxRgz0ar6cY7E1yUB6Jx19ULyNsKy3msVQ+iE4YBtKBid7wlE7L7Dtq
- IYXZwUHZ/csV2+2m6xIsLdoFfjImUWiBLB0NnlAIJWSRmoOYg0y6uBlh0AttsBvnlRTj
- of27H2vEXrYOi+Z0YIWb9U1RK5coV7o09yVMehIXJQfEMS5CsDDTKcIYK4cdsoBR1i2O
- AvDzaTgeVwTu01n8zgfJZkNsFyLXhmGfIavBU5+Skq3rU+HwSpF5e2S1UPJlxDhdAI/h
- q6Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=zdfPVCpQKbOB6BWB1KnP3j6I+X4+4oR2rukvo6YVs7E=;
- b=CLloOWtHVPn2EGx2vhljzRICnyuZF0x5jMYVLO7gRgj3KlvHxWuDm0LhwZJxj2z5Q/
- yw/hLa1k0JANcDpVPlTa1UdPAc2jDhb5VeoEwC8pTzwfl4p++qs70APRI4voMCwjCR7M
- 7ezW9Ar6OynZo4iqojFoH0iIlQ59VXiZjE15Gh+daNrQpaH1hjOlcLKEYZDPtdBUlk9g
- ziEjjYoq6mTae00iwCG4dVoicwAueNup7GXG1qs7IcWuf4Hzv8Otaw/LDzUNwqSOa30V
- KIdiY6z96dN3SRFOi7TJkvUEZzHmAIqaeV8GtBCdZNUvvzOtvCvtOWRnuvtqaEXK5xvE
- GufQ==
-X-Gm-Message-State: APjAAAUpyZdHBJR9G4Yf4pgAPOpDEfR1PCyX6FnUp3wLdQlOBSA4GYgr
- C5vFJi0w7N5iUQVM3ZeBqN1Zbc8r895fHi4Do3I=
-X-Google-Smtp-Source: APXvYqzRaJ7XDDJD1NW0/Nvdeg4AhNIo8VinQ7yGHcODmufB0O9qxvneOP6SzcAbn8IEqU8+L2jfE4gUjBfvokmzFgY=
-X-Received: by 2002:a6b:fb10:: with SMTP id h16mr29478708iog.195.1566290479829; 
- Tue, 20 Aug 2019 01:41:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CS6R2pvgzDqs1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 20:42:20 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:2:0])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx2.mailbox.org (Postfix) with ESMTPS id 59A24A139E;
+ Tue, 20 Aug 2019 05:34:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+ by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173])
+ (amavisd-new, port 10030)
+ with ESMTP id Q5gKBY4kPf3S; Tue, 20 Aug 2019 05:34:47 +0200 (CEST)
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
+ "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
+ David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH RESEND v11 1/8] namei: obey trailing magic-link DAC permissions
+Date: Tue, 20 Aug 2019 13:33:59 +1000
+Message-Id: <20190820033406.29796-2-cyphar@cyphar.com>
+In-Reply-To: <20190820033406.29796-1-cyphar@cyphar.com>
+References: <20190820033406.29796-1-cyphar@cyphar.com>
 MIME-Version: 1.0
-References: <20190820023030.18232-1-santosh@fossix.org>
- <20190820023030.18232-3-santosh@fossix.org>
-In-Reply-To: <20190820023030.18232-3-santosh@fossix.org>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 20 Aug 2019 18:41:08 +1000
-Message-ID: <CAOSf1CEYqY5O2RUmvh-nJwouhVZP0A3EW+_kQcz6h9d7cM8UYg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] of_pmem: Add memory ranges which took a mce to bad
- range
-To: Santosh Sivaraj <santosh@fossix.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,248 +54,357 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- Chandan Rajendra <chandan@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ Aleksa Sarai <cyphar@cyphar.com>, Andy Lutomirski <luto@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ linux-kernel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>,
+ linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 20, 2019 at 12:30 PM Santosh Sivaraj <santosh@fossix.org> wrote:
->
-> Subscribe to the MCE notification and add the physical address which
-> generated a memory error to nvdimm bad range.
+The ability for userspace to "re-open" file descriptors through
+/proc/self/fd has been a very useful tool for all sorts of usecases
+(container runtimes are one common example). However, the current
+interface for doing this has resulted in some pretty subtle security
+holes. Userspace can re-open a file descriptor with more permissions
+than the original, which can result in cases such as /proc/$pid/exe
+being re-opened O_RDWR at a later date even though (by definition)
+/proc/$pid/exe cannot be opened for writing. When combined with O_PATH
+the results can get even more confusing.
 
-Uh... I should have looked a bit closer at this on v1.
+We cannot block this outright. Aside from userspace already depending on
+it, it's a useful feature which can actually increase the security of
+userspace. For instance, LXC keeps an O_PATH of the container's
+/dev/pts/ptmx that gets re-opened to create new ptys and then uses
+TIOCGPTPEER to get the slave end. This allows for pty allocation without
+resolving paths inside an (untrusted) container's rootfs. There isn't a
+trivial way of doing this that is as straight-forward and safe as O_PATH
+re-opening.
 
-a) of_pmem.c isn't part of the powerpc tree. You should have CCed this
-to the nvdimm list since you'll need an Ack from Dan Williams.
-b) of_pmem isn't powerpc specific. Adding a pile of powerpc specific
-machine check parsing means it's not going to compile on other DT
-platforms.
-c) all this appears to be copied and pasted from the papr_scm version of this.
+Instead we have to restrict it in such a way that it doesn't break
+(good) users but does block potential attackers. The solution applied in
+this patch is to restrict *re-opening* (not resolution through)
+magic-links by requiring that mode of the link be obeyed. Normal
+symlinks have modes of a+rwx but magic-links have other modes. These
+magic-link modes were historically ignored during path resolution, but
+they've now been re-purposed for more useful ends.
 
-Considering this is pretty similar in spirit to what's done on x86
-today (drivers/acpi/nfit/mce.c) I think you would get more milage out
-of moving the address matching into libnvdimm itself. Machine check
-handling is always going to be arch specific, but memory errors could
-be re-emitted by the arch code into a more generic notifier chain that
-libnvdimm use. There's probably other uses in mm/ for such a chain
-too.
+It is also necessary to define semantics for the mode of an O_PATH
+descriptor, since re-opening a magic-link through an O_PATH needs to be
+just as restricted as the corresponding magic-link -- otherwise the
+above protection can be bypassed. There are two distinct cases:
 
-Oliver
+ 1. The target is a regular file (not a magic-link). Userspace depends
+    on being able to re-open the O_PATH of a regular file, so we must
+    define the mode to be a+rwx.
 
+ 2. The target is a magic-link. In this case, we simply copy the mode of
+    the magic-link. This results in an O_PATH of a magic-link
+    effectively acting as a no-op in terms of how much re-opening
+    privileges a process has.
 
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> ---
->  drivers/nvdimm/of_pmem.c | 151 +++++++++++++++++++++++++++++++++------
->  1 file changed, 131 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-> index a0c8dcfa0bf9..155e56862fdf 100644
-> --- a/drivers/nvdimm/of_pmem.c
-> +++ b/drivers/nvdimm/of_pmem.c
-> @@ -8,6 +8,9 @@
->  #include <linux/module.h>
->  #include <linux/ioport.h>
->  #include <linux/slab.h>
-> +#include <linux/string.h>
-> +#include <linux/nd.h>
-> +#include <asm/mce.h>
->
->  static const struct attribute_group *region_attr_groups[] = {
->         &nd_region_attribute_group,
-> @@ -25,11 +28,77 @@ struct of_pmem_private {
->         struct nvdimm_bus *bus;
->  };
->
-> +struct of_pmem_region {
-> +       struct of_pmem_private *priv;
-> +       struct nd_region_desc *region_desc;
-> +       struct nd_region *region;
-> +       struct list_head region_list;
-> +};
-> +
-> +LIST_HEAD(pmem_regions);
-> +DEFINE_MUTEX(pmem_region_lock);
-> +
-> +static int handle_mce_ue(struct notifier_block *nb, unsigned long val,
-> +                        void *data)
-> +{
-> +       struct machine_check_event *evt = data;
-> +       struct of_pmem_region *pmem_region;
-> +       u64 aligned_addr, phys_addr;
-> +       bool found = false;
-> +
-> +       if (evt->error_type != MCE_ERROR_TYPE_UE)
-> +               return NOTIFY_DONE;
-> +
-> +       if (list_empty(&pmem_regions))
-> +               return NOTIFY_DONE;
-> +
-> +       phys_addr = evt->u.ue_error.physical_address +
-> +               (evt->u.ue_error.effective_address & ~PAGE_MASK);
-> +
-> +       if (!evt->u.ue_error.physical_address_provided ||
-> +           !is_zone_device_page(pfn_to_page(phys_addr >> PAGE_SHIFT)))
-> +               return NOTIFY_DONE;
-> +
-> +       mutex_lock(&pmem_region_lock);
-> +       list_for_each_entry(pmem_region, &pmem_regions, region_list) {
-> +               struct resource *res = pmem_region->region_desc->res;
-> +
-> +               if (phys_addr >= res->start && phys_addr <= res->end) {
-> +                       found = true;
-> +                       break;
-> +               }
-> +       }
-> +       mutex_unlock(&pmem_region_lock);
-> +
-> +       if (!found)
-> +               return NOTIFY_DONE;
-> +
-> +       aligned_addr = ALIGN_DOWN(phys_addr, L1_CACHE_BYTES);
-> +
-> +       if (nvdimm_bus_add_badrange(pmem_region->priv->bus, aligned_addr,
-> +                                   L1_CACHE_BYTES))
-> +               return NOTIFY_DONE;
-> +
-> +       pr_debug("Add memory range (0x%llx -- 0x%llx) as bad range\n",
-> +                aligned_addr, aligned_addr + L1_CACHE_BYTES);
-> +
-> +
-> +       nvdimm_region_notify(pmem_region->region, NVDIMM_REVALIDATE_POISON);
-> +
-> +       return NOTIFY_OK;
-> +}
-> +
-> +static struct notifier_block mce_ue_nb = {
-> +       .notifier_call = handle_mce_ue
-> +};
-> +
->  static int of_pmem_region_probe(struct platform_device *pdev)
->  {
->         struct of_pmem_private *priv;
->         struct device_node *np;
->         struct nvdimm_bus *bus;
-> +       struct of_pmem_region *pmem_region;
-> +       struct nd_region_desc *ndr_desc;
->         bool is_volatile;
->         int i;
->
-> @@ -58,32 +127,49 @@ static int of_pmem_region_probe(struct platform_device *pdev)
->                         is_volatile ? "volatile" : "non-volatile",  np);
->
->         for (i = 0; i < pdev->num_resources; i++) {
-> -               struct nd_region_desc ndr_desc;
->                 struct nd_region *region;
->
-> -               /*
-> -                * NB: libnvdimm copies the data from ndr_desc into it's own
-> -                * structures so passing a stack pointer is fine.
-> -                */
-> -               memset(&ndr_desc, 0, sizeof(ndr_desc));
-> -               ndr_desc.attr_groups = region_attr_groups;
-> -               ndr_desc.numa_node = dev_to_node(&pdev->dev);
-> -               ndr_desc.target_node = ndr_desc.numa_node;
-> -               ndr_desc.res = &pdev->resource[i];
-> -               ndr_desc.of_node = np;
-> -               set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
-> +               ndr_desc = kzalloc(sizeof(struct nd_region_desc), GFP_KERNEL);
-> +               if (!ndr_desc) {
-> +                       nvdimm_bus_unregister(priv->bus);
-> +                       kfree(priv);
-> +                       return -ENOMEM;
-> +               }
-> +
-> +               ndr_desc->attr_groups = region_attr_groups;
-> +               ndr_desc->numa_node = dev_to_node(&pdev->dev);
-> +               ndr_desc->target_node = ndr_desc->numa_node;
-> +               ndr_desc->res = &pdev->resource[i];
-> +               ndr_desc->of_node = np;
-> +               set_bit(ND_REGION_PAGEMAP, &ndr_desc->flags);
->
->                 if (is_volatile)
-> -                       region = nvdimm_volatile_region_create(bus, &ndr_desc);
-> +                       region = nvdimm_volatile_region_create(bus, ndr_desc);
->                 else
-> -                       region = nvdimm_pmem_region_create(bus, &ndr_desc);
-> +                       region = nvdimm_pmem_region_create(bus, ndr_desc);
->
-> -               if (!region)
-> +               if (!region) {
->                         dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
-> -                                       ndr_desc.res, np);
-> -               else
-> -                       dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
-> -                                       ndr_desc.res, np);
-> +                                       ndr_desc->res, np);
-> +                       continue;
-> +               }
-> +
-> +               dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
-> +                       ndr_desc->res, np);
-> +
-> +               pmem_region = kzalloc(sizeof(struct of_pmem_region),
-> +                                     GFP_KERNEL);
-> +               if (!pmem_region)
-> +                       continue;
-> +
-> +               pmem_region->region_desc = ndr_desc;
-> +               pmem_region->region = region;
-> +               pmem_region->priv = priv;
-> +
-> +               /* Save regions registered for use by the notification code */
-> +               mutex_lock(&pmem_region_lock);
-> +               list_add_tail(&pmem_region->region_list, &pmem_regions);
-> +               mutex_unlock(&pmem_region_lock);
->         }
->
->         return 0;
-> @@ -92,6 +178,13 @@ static int of_pmem_region_probe(struct platform_device *pdev)
->  static int of_pmem_region_remove(struct platform_device *pdev)
->  {
->         struct of_pmem_private *priv = platform_get_drvdata(pdev);
-> +       struct of_pmem_region *r, *t;
-> +
-> +       list_for_each_entry_safe(r, t, &pmem_regions, region_list) {
-> +               list_del(&(r->region_list));
-> +               kfree(r->region_desc);
-> +               kfree(r);
-> +       }
->
->         nvdimm_bus_unregister(priv->bus);
->         kfree(priv);
-> @@ -113,7 +206,25 @@ static struct platform_driver of_pmem_region_driver = {
->         },
->  };
->
-> -module_platform_driver(of_pmem_region_driver);
-> +static int __init of_pmem_init(void)
-> +{
-> +       int ret;
-> +
-> +       ret = platform_driver_register(&of_pmem_region_driver);
-> +       if (!ret)
-> +               mce_register_notifier(&mce_ue_nb);
-> +
-> +       return ret;
-> +}
-> +module_init(of_pmem_init);
-> +
-> +static void __exit of_pmem_exit(void)
-> +{
-> +       mce_unregister_notifier(&mce_ue_nb);
-> +       platform_driver_unregister(&of_pmem_region_driver);
-> +}
-> +module_exit(of_pmem_exit);
-> +
->  MODULE_DEVICE_TABLE(of, of_pmem_region_match);
->  MODULE_LICENSE("GPL");
->  MODULE_AUTHOR("IBM Corporation");
-> --
-> 2.21.0
->
+CAP_DAC_OVERRIDE can be used to override all of these restrictions, but
+we only permit &init_userns's capabilities to affect these semantics.
+The reason for this is that there isn't a clear way to track what
+user_ns is the original owner of a given O_PATH chain -- thus an
+unprivileged user could create a new userns and O_PATH the file
+descriptor, owning it. All signs would indicate that the user really
+does have CAP_DAC_OVERRIDE over the new descriptor and the protection
+would be bypassed. We thus opt for the more conservative approach.
+
+I have run this patch on several machines for several days. So far, the
+only processes which have hit this case ("loadkeys" and "kbd_mode" from
+the kbd package[1]) gracefully handle the permission error and do not
+cause any user-visible problems. In order to give users a heads-up, a
+warning is output to dmesg whenever may_open_magiclink() refuses access.
+
+[1]: http://git.altlinux.org/people/legion/packages/kbd.git
+
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Suggested-by: Christian Brauner <christian@brauner.io>
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+---
+ Documentation/filesystems/path-lookup.rst |  12 +--
+ fs/internal.h                             |   1 +
+ fs/namei.c                                | 105 +++++++++++++++++++---
+ fs/open.c                                 |   3 +-
+ fs/proc/fd.c                              |  23 ++++-
+ include/linux/fs.h                        |   4 +
+ include/linux/namei.h                     |   1 +
+ 7 files changed, 130 insertions(+), 19 deletions(-)
+
+diff --git a/Documentation/filesystems/path-lookup.rst b/Documentation/filesystems/path-lookup.rst
+index 434a07b0002b..a57d78ec8bee 100644
+--- a/Documentation/filesystems/path-lookup.rst
++++ b/Documentation/filesystems/path-lookup.rst
+@@ -1310,12 +1310,14 @@ longer needed.
+ ``LOOKUP_JUMPED`` means that the current dentry was chosen not because
+ it had the right name but for some other reason.  This happens when
+ following "``..``", following a symlink to ``/``, crossing a mount point
+-or accessing a "``/proc/$PID/fd/$FD``" symlink.  In this case the
+-filesystem has not been asked to revalidate the name (with
+-``d_revalidate()``).  In such cases the inode may still need to be
+-revalidated, so ``d_op->d_weak_revalidate()`` is called if
++or accessing a "``/proc/$PID/fd/$FD``" symlink (also known as a "magic
++link"). In this case the filesystem has not been asked to revalidate the
++name (with ``d_revalidate()``).  In such cases the inode may still need
++to be revalidated, so ``d_op->d_weak_revalidate()`` is called if
+ ``LOOKUP_JUMPED`` is set when the look completes - which may be at the
+-final component or, when creating, unlinking, or renaming, at the penultimate component.
++final component or, when creating, unlinking, or renaming, at the
++penultimate component. ``LOOKUP_MAGICLINK_JUMPED`` is set alongside
++``LOOKUP_JUMPED`` if a magic-link was traversed.
+ 
+ Final-component flags
+ ~~~~~~~~~~~~~~~~~~~~~
+diff --git a/fs/internal.h b/fs/internal.h
+index 315fcd8d237c..f48449a43626 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -119,6 +119,7 @@ struct open_flags {
+ 	int acc_mode;
+ 	int intent;
+ 	int lookup_flags;
++	fmode_t opath_mask;
+ };
+ extern struct file *do_filp_open(int dfd, struct filename *pathname,
+ 		const struct open_flags *op);
+diff --git a/fs/namei.c b/fs/namei.c
+index 209c51a5226c..54d57dad0f91 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -872,7 +872,7 @@ void nd_jump_link(struct path *path)
+ 
+ 	nd->path = *path;
+ 	nd->inode = nd->path.dentry->d_inode;
+-	nd->flags |= LOOKUP_JUMPED;
++	nd->flags |= LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
+ }
+ 
+ static inline void put_link(struct nameidata *nd)
+@@ -1066,6 +1066,7 @@ const char *get_link(struct nameidata *nd)
+ 		return ERR_PTR(error);
+ 
+ 	nd->last_type = LAST_BIND;
++	nd->flags &= ~LOOKUP_MAGICLINK_JUMPED;
+ 	res = READ_ONCE(inode->i_link);
+ 	if (!res) {
+ 		const char * (*get)(struct dentry *, struct inode *,
+@@ -3501,16 +3502,73 @@ static int do_tmpfile(struct nameidata *nd, unsigned flags,
+ 	return error;
+ }
+ 
+-static int do_o_path(struct nameidata *nd, unsigned flags, struct file *file)
++/**
++ * may_reopen_magiclink - Check permissions for opening a trailing magic-link
++ * @upgrade_mask: the upgrade-mask of the magic-link
++ * @acc_mode: ACC_MODE which the user is attempting
++ *
++ * We block magic-link re-opening if the @upgrade_mask is more strict than the
++ * @acc_mode being requested, unless the user is capable(CAP_DAC_OVERRIDE).
++ *
++ * Returns 0 if successful, -EACCES on error.
++ */
++static int may_open_magiclink(fmode_t upgrade_mask, int acc_mode)
+ {
+-	struct path path;
+-	int error = path_lookupat(nd, flags, &path);
+-	if (!error) {
+-		audit_inode(nd->name, path.dentry, 0);
+-		error = vfs_open(&path, file);
+-		path_put(&path);
+-	}
+-	return error;
++	/*
++	 * We only allow for init_userns to be able to override magic-links.
++	 * This is done to avoid cases where an unprivileged userns could take
++	 * an O_PATH of the fd, resulting in it being very unclear whether
++	 * CAP_DAC_OVERRIDE should work on the new O_PATH fd (given that it
++	 * pipes through to the underlying file).
++	 */
++	if (capable(CAP_DAC_OVERRIDE))
++		return 0;
++
++	if ((acc_mode & MAY_READ) &&
++	    !(upgrade_mask & (FMODE_READ | FMODE_PATH_READ)))
++		goto err;
++	if ((acc_mode & MAY_WRITE) &&
++	    !(upgrade_mask & (FMODE_WRITE | FMODE_PATH_WRITE)))
++		goto err;
++
++	return 0;
++
++err:
++	pr_warn_ratelimited("%s[%d]: magic-link re-open blocked ('%s%s%s' requested with an upgrade-mask of '%s%s%s%s')",
++		current->comm, task_pid_nr(current),
++		(acc_mode & MAY_READ) ? "r" : "",
++		(acc_mode & MAY_WRITE) ? "w" : "",
++		(acc_mode & MAY_EXEC) ? "x" : "",
++		(upgrade_mask & FMODE_READ) ? "r" : "",
++		(upgrade_mask & FMODE_PATH_READ) ? "R" : "",
++		(upgrade_mask & FMODE_WRITE) ? "w" : "",
++		(upgrade_mask & FMODE_PATH_WRITE) ? "W" : "");
++	return -EACCES;
++}
++
++static int trailing_magiclink(struct nameidata *nd, int acc_mode,
++			      fmode_t *opath_mask)
++{
++	struct inode *inode = nd->link_inode;
++	fmode_t upgrade_mask = 0;
++
++	/* Was the trailing_symlink() a magic-link? */
++	if (!(nd->flags & LOOKUP_MAGICLINK_JUMPED))
++		return 0;
++
++	/*
++	 * Figure out the upgrade-mask of the link_inode. Since these aren't
++	 * strictly POSIX semantics we don't do an acl_permission_check() here,
++	 * so we only care that at least one bit is set for each upgrade-mode.
++	 */
++	if (inode->i_mode & S_IRUGO)
++		upgrade_mask |= FMODE_PATH_READ;
++	if (inode->i_mode & S_IWUGO)
++		upgrade_mask |= FMODE_PATH_WRITE;
++	/* Restrict the O_PATH upgrade-mask of the caller. */
++	if (opath_mask)
++		*opath_mask &= upgrade_mask;
++	return may_open_magiclink(upgrade_mask, acc_mode);
+ }
+ 
+ static struct file *path_openat(struct nameidata *nd,
+@@ -3526,13 +3584,38 @@ static struct file *path_openat(struct nameidata *nd,
+ 	if (unlikely(file->f_flags & __O_TMPFILE)) {
+ 		error = do_tmpfile(nd, flags, op, file);
+ 	} else if (unlikely(file->f_flags & O_PATH)) {
+-		error = do_o_path(nd, flags, file);
++		/* Inlined path_lookupat() with a trailing_magiclink() check. */
++		fmode_t opath_mask = op->opath_mask;
++		const char *s = path_init(nd, flags);
++
++		while (!(error = link_path_walk(s, nd))
++			&& ((error = lookup_last(nd)) > 0)) {
++			s = trailing_symlink(nd);
++			error = trailing_magiclink(nd, op->acc_mode, &opath_mask);
++			if (error)
++				s = ERR_PTR(error);
++		}
++		if (!error)
++			error = complete_walk(nd);
++
++		if (!error && nd->flags & LOOKUP_DIRECTORY)
++			if (!d_can_lookup(nd->path.dentry))
++				error = -ENOTDIR;
++		if (!error) {
++			audit_inode(nd->name, nd->path.dentry, 0);
++			error = vfs_open(&nd->path, file);
++			file->f_mode |= opath_mask;
++		}
++		terminate_walk(nd);
+ 	} else {
+ 		const char *s = path_init(nd, flags);
+ 		while (!(error = link_path_walk(s, nd)) &&
+ 			(error = do_last(nd, file, op)) > 0) {
+ 			nd->flags &= ~(LOOKUP_OPEN|LOOKUP_CREATE|LOOKUP_EXCL);
+ 			s = trailing_symlink(nd);
++			error = trailing_magiclink(nd, op->acc_mode, NULL);
++			if (error)
++				s = ERR_PTR(error);
+ 		}
+ 		terminate_walk(nd);
+ 	}
+diff --git a/fs/open.c b/fs/open.c
+index a59abe3c669a..806a75d685e1 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1001,8 +1001,9 @@ static inline int build_open_flags(int flags, umode_t mode, struct open_flags *o
+ 		acc_mode |= MAY_APPEND;
+ 
+ 	op->acc_mode = acc_mode;
+-
+ 	op->intent = flags & O_PATH ? 0 : LOOKUP_OPEN;
++	/* For O_PATH backwards-compatibility we default to an all-set mask. */
++	op->opath_mask = FMODE_PATH_READ | FMODE_PATH_WRITE;
+ 
+ 	if (flags & O_CREAT) {
+ 		op->intent |= LOOKUP_CREATE;
+diff --git a/fs/proc/fd.c b/fs/proc/fd.c
+index 81882a13212d..9b7d8becb002 100644
+--- a/fs/proc/fd.c
++++ b/fs/proc/fd.c
+@@ -104,11 +104,30 @@ static void tid_fd_update_inode(struct task_struct *task, struct inode *inode,
+ 	task_dump_owner(task, 0, &inode->i_uid, &inode->i_gid);
+ 
+ 	if (S_ISLNK(inode->i_mode)) {
++		/*
++		 * Always set +x (depending on the fmode type), since there
++		 * currently aren't FMODE_PATH_EXEC restrictions and there is
++		 * no O_MAYEXEC yet. This might change in the future, in which
++		 * case we will restrict +x.
++		 */
+ 		unsigned i_mode = S_IFLNK;
++		if (f_mode & FMODE_PATH)
++			i_mode |= S_IXGRP;
++		else
++			i_mode |= S_IXUSR;
++		/*
++		 * Construct the mode bits based on the open-mode. The u+rwx
++		 * bits are for "ordinary" open modes while g+rwx are for
++		 * O_PATH modes.
++		 */
+ 		if (f_mode & FMODE_READ)
+-			i_mode |= S_IRUSR | S_IXUSR;
++			i_mode |= S_IRUSR;
+ 		if (f_mode & FMODE_WRITE)
+-			i_mode |= S_IWUSR | S_IXUSR;
++			i_mode |= S_IWUSR;
++		if (f_mode & FMODE_PATH_READ)
++			i_mode |= S_IRGRP;
++		if (f_mode & FMODE_PATH_WRITE)
++			i_mode |= S_IWGRP;
+ 		inode->i_mode = i_mode;
+ 	}
+ 	security_task_to_inode(task, inode);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 997a530ff4e9..a9ad596b28e2 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -173,6 +173,10 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
+ /* File does not contribute to nr_files count */
+ #define FMODE_NOACCOUNT		((__force fmode_t)0x20000000)
+ 
++/* File is an O_PATH descriptor which can be upgraded to (read, write). */
++#define FMODE_PATH_READ		((__force fmode_t)0x40000000)
++#define FMODE_PATH_WRITE	((__force fmode_t)0x80000000)
++
+ /*
+  * Flag for rw_copy_check_uvector and compat_rw_copy_check_uvector
+  * that indicates that they should check the contents of the iovec are
+diff --git a/include/linux/namei.h b/include/linux/namei.h
+index 9138b4471dbf..bd6d3eb7764d 100644
+--- a/include/linux/namei.h
++++ b/include/linux/namei.h
+@@ -49,6 +49,7 @@ enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
+ #define LOOKUP_ROOT		0x2000
+ #define LOOKUP_EMPTY		0x4000
+ #define LOOKUP_DOWN		0x8000
++#define LOOKUP_MAGICLINK_JUMPED	0x10000
+ 
+ extern int path_pts(struct path *path);
+ 
+-- 
+2.22.0
+
