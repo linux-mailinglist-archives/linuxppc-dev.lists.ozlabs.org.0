@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BEA95478
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 04:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1FE9547D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 04:37:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CFJC667TzDqVQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:35:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CFLk3cKwzDqZG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 12:37:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,58 +19,60 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CDrN71YNzDqlW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 12:14:28 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7K2Cdfv018888; Mon, 19 Aug 2019 22:14:21 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ug7cd10b1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2019 22:14:21 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7K2CwvG019224;
- Mon, 19 Aug 2019 22:14:21 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ug7cd10an-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2019 22:14:21 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7K29qN2014635;
- Tue, 20 Aug 2019 02:14:20 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma05wdc.us.ibm.com with ESMTP id 2ue975v0n4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Aug 2019 02:14:20 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CDrR2sMGzDqlB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 12:14:31 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7K2Ceeg109627
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 22:14:28 -0400
+Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ug66635jy-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 22:14:28 -0400
+Received: from localhost
+ by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Tue, 20 Aug 2019 03:14:28 +0100
+Received: from b03cxnp07028.gho.boulder.ibm.com (9.17.130.15)
+ by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 20 Aug 2019 03:14:24 +0100
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7K2EJ9Z39715280
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7K2ENfZ27328852
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Aug 2019 02:14:19 GMT
+ Tue, 20 Aug 2019 02:14:23 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 41BA8C6055;
+ by IMSVA (Postfix) with ESMTP id 1F5D5C6057;
+ Tue, 20 Aug 2019 02:14:23 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B73FAC605A;
  Tue, 20 Aug 2019 02:14:19 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5447FC6057;
- Tue, 20 Aug 2019 02:14:15 +0000 (GMT)
 Received: from morokweng.localdomain.com (unknown [9.85.220.248])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 20 Aug 2019 02:14:15 +0000 (GMT)
+ Tue, 20 Aug 2019 02:14:19 +0000 (GMT)
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 09/16] powerpc/pseries/svm: Use shared memory for Debug
- Trace Log (DTL)
-Date: Mon, 19 Aug 2019 23:13:19 -0300
-Message-Id: <20190820021326.6884-10-bauerman@linux.ibm.com>
+Subject: [PATCH v4 10/16] powerpc/pseries/svm: Unshare all pages before
+ kexecing a new kernel
+Date: Mon, 19 Aug 2019 23:13:20 -0300
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190820021326.6884-1-bauerman@linux.ibm.com>
 References: <20190820021326.6884-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
+x-cbid: 19082002-0012-0000-0000-0000175D2AA0
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011621; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01249321; UDB=6.00659504; IPR=6.01030858; 
+ MB=3.00028240; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-20 02:14:26
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082002-0013-0000-0000-0000588B06C1
+Message-Id: <20190820021326.6884-11-bauerman@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-20_01:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -94,128 +96,81 @@ Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
  Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
  Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
  Claudio Carvalho <cclaudio@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+ Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+From: Ram Pai <linuxram@us.ibm.com>
 
-Secure guests need to share the DTL buffers with the hypervisor. To that
-end, use a kmem_cache constructor which converts the underlying buddy
-allocated SLUB cache pages into shared memory.
+A new kernel deserves a clean slate. Any pages shared with the hypervisor
+is unshared before invoking the new kernel. However there are exceptions.
+If the new kernel is invoked to dump the current kernel, or if there is a
+explicit request to preserve the state of the current kernel, unsharing
+of pages is skipped.
 
-Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+NOTE: While testing crashkernel, make sure at least 256M is reserved for
+crashkernel. Otherwise SWIOTLB allocation will fail and crash kernel will
+fail to boot.
+
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- arch/powerpc/include/asm/svm.h          |  5 ++++
- arch/powerpc/platforms/pseries/Makefile |  1 +
- arch/powerpc/platforms/pseries/setup.c  |  5 +++-
- arch/powerpc/platforms/pseries/svm.c    | 40 +++++++++++++++++++++++++
- 4 files changed, 50 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/ultravisor-api.h | 1 +
+ arch/powerpc/include/asm/ultravisor.h     | 5 +++++
+ arch/powerpc/kernel/machine_kexec_64.c    | 9 +++++++++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/svm.h b/arch/powerpc/include/asm/svm.h
-index 2689d8d841f8..85580b30aba4 100644
---- a/arch/powerpc/include/asm/svm.h
-+++ b/arch/powerpc/include/asm/svm.h
-@@ -15,6 +15,9 @@ static inline bool is_secure_guest(void)
- 	return mfmsr() & MSR_S;
+diff --git a/arch/powerpc/include/asm/ultravisor-api.h b/arch/powerpc/include/asm/ultravisor-api.h
+index 142b0576b89f..7e69c364bde0 100644
+--- a/arch/powerpc/include/asm/ultravisor-api.h
++++ b/arch/powerpc/include/asm/ultravisor-api.h
+@@ -24,5 +24,6 @@
+ #define UV_ESM				0xF110
+ #define UV_SHARE_PAGE			0xF130
+ #define UV_UNSHARE_PAGE			0xF134
++#define UV_UNSHARE_ALL_PAGES		0xF140
+ 
+ #endif /* _ASM_POWERPC_ULTRAVISOR_API_H */
+diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
+index a930aec8c1e3..e6f8a2b96694 100644
+--- a/arch/powerpc/include/asm/ultravisor.h
++++ b/arch/powerpc/include/asm/ultravisor.h
+@@ -21,4 +21,9 @@ static inline int uv_unshare_page(u64 pfn, u64 npages)
+ 	return ucall_norets(UV_UNSHARE_PAGE, pfn, npages);
  }
  
-+void dtl_cache_ctor(void *addr);
-+#define get_dtl_cache_ctor()	(is_secure_guest() ? dtl_cache_ctor : NULL)
++static inline int uv_unshare_all_pages(void)
++{
++	return ucall_norets(UV_UNSHARE_ALL_PAGES);
++}
 +
- #else /* CONFIG_PPC_SVM */
- 
- static inline bool is_secure_guest(void)
-@@ -22,5 +25,7 @@ static inline bool is_secure_guest(void)
- 	return false;
- }
- 
-+#define get_dtl_cache_ctor() NULL
-+
- #endif /* CONFIG_PPC_SVM */
- #endif /* _ASM_POWERPC_SVM_H */
-diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-index ab3d59aeacca..a420ef4c9d8e 100644
---- a/arch/powerpc/platforms/pseries/Makefile
-+++ b/arch/powerpc/platforms/pseries/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_IBMVIO)		+= vio.o
- obj-$(CONFIG_IBMEBUS)		+= ibmebus.o
- obj-$(CONFIG_PAPR_SCM)		+= papr_scm.o
- obj-$(CONFIG_PPC_SPLPAR)	+= vphn.o
-+obj-$(CONFIG_PPC_SVM)		+= svm.o
- 
- ifdef CONFIG_PPC_PSERIES
- obj-$(CONFIG_SUSPEND)		+= suspend.o
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index f5940cc71c37..d8930c3a8a11 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -69,6 +69,7 @@
- #include <asm/security_features.h>
- #include <asm/asm-const.h>
- #include <asm/swiotlb.h>
+ #endif	/* _ASM_POWERPC_ULTRAVISOR_H */
+diff --git a/arch/powerpc/kernel/machine_kexec_64.c b/arch/powerpc/kernel/machine_kexec_64.c
+index 18481b0e2788..04a7cba58eff 100644
+--- a/arch/powerpc/kernel/machine_kexec_64.c
++++ b/arch/powerpc/kernel/machine_kexec_64.c
+@@ -29,6 +29,8 @@
+ #include <asm/smp.h>
+ #include <asm/hw_breakpoint.h>
+ #include <asm/asm-prototypes.h>
 +#include <asm/svm.h>
- 
- #include "pseries.h"
- #include "../../../../drivers/pci/pci.h"
-@@ -297,8 +298,10 @@ static inline int alloc_dispatch_logs(void)
- 
- static int alloc_dispatch_log_kmem_cache(void)
- {
-+	void (*ctor)(void *) = get_dtl_cache_ctor();
-+
- 	dtl_cache = kmem_cache_create("dtl", DISPATCH_LOG_BYTES,
--						DISPATCH_LOG_BYTES, 0, NULL);
-+						DISPATCH_LOG_BYTES, 0, ctor);
- 	if (!dtl_cache) {
- 		pr_warn("Failed to create dispatch trace log buffer cache\n");
- 		pr_warn("Stolen time statistics will be unreliable\n");
-diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
-new file mode 100644
-index 000000000000..2b2b1a77ca1e
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/svm.c
-@@ -0,0 +1,40 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Secure VM platform
-+ *
-+ * Copyright 2018 IBM Corporation
-+ * Author: Anshuman Khandual <khandual@linux.vnet.ibm.com>
-+ */
-+
-+#include <linux/mm.h>
 +#include <asm/ultravisor.h>
+ 
+ int default_machine_kexec_prepare(struct kimage *image)
+ {
+@@ -327,6 +329,13 @@ void default_machine_kexec(struct kimage *image)
+ #ifdef CONFIG_PPC_PSERIES
+ 	kexec_paca.lppaca_ptr = NULL;
+ #endif
 +
-+/* There's one dispatch log per CPU. */
-+#define NR_DTL_PAGE (DISPATCH_LOG_BYTES * CONFIG_NR_CPUS / PAGE_SIZE)
-+
-+static struct page *dtl_page_store[NR_DTL_PAGE];
-+static long dtl_nr_pages;
-+
-+static bool is_dtl_page_shared(struct page *page)
-+{
-+	long i;
-+
-+	for (i = 0; i < dtl_nr_pages; i++)
-+		if (dtl_page_store[i] == page)
-+			return true;
-+
-+	return false;
-+}
-+
-+void dtl_cache_ctor(void *addr)
-+{
-+	unsigned long pfn = PHYS_PFN(__pa(addr));
-+	struct page *page = pfn_to_page(pfn);
-+
-+	if (!is_dtl_page_shared(page)) {
-+		dtl_page_store[dtl_nr_pages] = page;
-+		dtl_nr_pages++;
-+		WARN_ON(dtl_nr_pages >= NR_DTL_PAGE);
-+		uv_share_page(pfn, 1);
++	if (is_secure_guest() && !(image->preserve_context ||
++				   image->type == KEXEC_TYPE_CRASH)) {
++		uv_unshare_all_pages();
++		printk("kexec: Unshared all shared pages.\n");
 +	}
-+}
++
+ 	paca_ptrs[kexec_paca.paca_index] = &kexec_paca;
+ 
+ 	setup_paca(&kexec_paca);
+
