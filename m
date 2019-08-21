@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7914397997
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 14:38:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A46979A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 14:40:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46D6df2xmMzDqKf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 22:38:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46D6hH4VpRzDqGN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 22:40:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="I2WSNXV5"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="K6iAM+Iu"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46D6Jr0QsMzDqlW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 22:23:39 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id x15so1224150pgg.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 05:23:39 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46D6Js493DzDqpd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 22:23:41 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id 4so1244481pld.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 05:23:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=SEWi5XMt/RVO3qLXVyRzgJGBxcGIyAZJqvOg4InEPVo=;
- b=I2WSNXV5Utk5Uw3okuY8/K4DkIIlMZnshc3ApUXfP/ij2UHmFfZziUDnFP1Pnp2rlb
- YJtRWUd2bmVZifgr23+E50hcAg32hyHOyO/3Wx7yy75Ort+c5bjw21qaar69UHk2kVXb
- k1SrPk4s0l5mDIw92KFHY3xtz0Vp8MeIXKd8tZLRPwT8GSvB1SZtGqxDcuvTy8aQJxLi
- ULtMGeKQlh8IRtW3pe9JSuL4QVkOxB7ovyVgbVkpBP2x5ewJe6JDxUFbIR0xZhuGh1qI
- G83EcGlm0aA/yfYzv5ChnyCTHQiFdmnjzBBgw5b3yNEiesrRr45N1gkfGSCkjm7GMUVF
- IpNA==
+ bh=vr5bmlSG0JDPGelEINSIphu9ptTS46paStf/oqk6fOw=;
+ b=K6iAM+Iu+OdVpN8b539AC6B0BhY8/Q9d+IrY4onEt7EMIp+C3e7nxuK5qRU+CGhgtc
+ d07YCjMQJBSe5KF8S8Iv1eZOZ58krjhPc0tFnXpqE/0E8z0Btfe3NcKZHdRRzgUPpR1Z
+ djE+Kz8xszYhp+O6h1md5eK9nBbrMbXDf+Psmw7ST7MpUWGEhdw87OLJ8XsLRyu4ySVG
+ gCO7sUawXG7RCY8wAxlZUlq5+8W8zLKtypLhbpZplaPKcPnMbVMJ3UR6Bnk2iQULPAFn
+ pmjcxP9MNi6Co2PNvKapR6TW6iuAscKl3qxYUhbI/dSzl+V1xpF58G2LgEaiaIlUz6g4
+ T4Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=SEWi5XMt/RVO3qLXVyRzgJGBxcGIyAZJqvOg4InEPVo=;
- b=sE9PC1nzk7K6zGN792zg8lMJ6Cc8q+KtnTnFvrAQi57lFBiBqIquJpEmsi5EX80TY+
- 2P6uRIROOligB8PaP06BFkgSETfv14HwuPd8WKvg7wPN/FRNqTljfP8SzLJgzGQ5Y9X9
- +IiGpq8dCWKnV00tgdRngnReZNoF/ztepVxgKfwXKHVAPXWVOHnzHTrHE9wEhVti5XTT
- dnk8QMrXYocGp0HUNodJeV53WPRIgd0u35FkIYSl/yen54fMH62ObHeqR4w5PHP0wuYa
- WtzNmCUTN5uScxh5DQLEEBUzivG/kcZ+zpSOA7IyL0zZt6jqQ2Nmz5oK0LO+ZZnFjnod
- nqKQ==
-X-Gm-Message-State: APjAAAXs+rsj9yYRSWej+Q1hCGFakeJbzNcUB5M5BssB0aa5+g/HSGj+
- vM2PXnh5qorqs+/GpDLhFXezVthd
-X-Google-Smtp-Source: APXvYqzIoEb7n/4iA5WRk9EeNtmnrbyZP7NPWKif42f96hFfUAe2PmNdzgviMRkY01jftycupjt1Gw==
-X-Received: by 2002:a17:90a:8c01:: with SMTP id
- a1mr4740958pjo.82.1566390216857; 
- Wed, 21 Aug 2019 05:23:36 -0700 (PDT)
+ bh=vr5bmlSG0JDPGelEINSIphu9ptTS46paStf/oqk6fOw=;
+ b=NMOXcCJbqkKzY5SYyQDzWzOQ8cyrUfbCwMI7hQs5toewe49njLK226L3BnDk0ThJXU
+ S7YSrBCwRIvonfDj5zZEzgn8EJhWsfyrzNVTRWlsG/Ym34Uvd+6dITqNWI2MX6ajqM25
+ +NDH6J71q+ddbq5cq767p/V2NOOu0TvpERTRHiqDBhuDrE0GwuB3N2KkbFXduw6TWcwU
+ bZlZp3xf1jcP1aBb5ZRpV6mrFn2WBx8WbjrPdIhLuFtWX7fp1QeVRQ3cs/T6YqCmeCNm
+ uBeU1l0R9Pfczu2FWRPAGHHrM0PCejDAItJK6hynnFL58wAKgbdBxJJbEUfYeeHoue47
+ 8Sbw==
+X-Gm-Message-State: APjAAAWeQAuGiGL+3SHgoBE7XiOEs16i7Lz/NGqUL1awXUFngpF/k/ld
+ UCM+MNq56Q1B4w0dK6vbyLGmo9vd
+X-Google-Smtp-Source: APXvYqw5daD9Sf1vBrtPqlH+Qo5RsSX6C+NB7IeUXu/q7p3+Bo3tx+jPa24fZn+nLkxs/VouvFf2Qg==
+X-Received: by 2002:a17:902:f082:: with SMTP id
+ go2mr35170818plb.25.1566390219135; 
+ Wed, 21 Aug 2019 05:23:39 -0700 (PDT)
 Received: from bobo.local0.net ([193.114.104.176])
- by smtp.gmail.com with ESMTPSA id a3sm23657819pfc.70.2019.08.21.05.23.34
+ by smtp.gmail.com with ESMTPSA id a3sm23657819pfc.70.2019.08.21.05.23.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Aug 2019 05:23:36 -0700 (PDT)
+ Wed, 21 Aug 2019 05:23:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 05/10] powerpc/64s/exception: remove confusing IEARLY option
-Date: Wed, 21 Aug 2019 22:23:10 +1000
-Message-Id: <20190821122315.9535-6-npiggin@gmail.com>
+Subject: [PATCH 06/10] powerpc/64s/exception: remove the SPR saving patch code
+ macros
+Date: Wed, 21 Aug 2019 22:23:11 +1000
+Message-Id: <20190821122315.9535-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190821122315.9535-1-npiggin@gmail.com>
 References: <20190821122315.9535-1-npiggin@gmail.com>
@@ -84,168 +85,170 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace IEARLY=1 and IEARLY=2 with IBRANCH_COMMON, which controls if
-the entry code branches to a common handler; and IREALMODE_COMMON,
-which controls whether the common handler should remain in real mode.
-
-These special cases no longer avoid loading the SRR registers, there
-is no point as most of them load the registers immediately anyway.
+These are used infrequently enough they don't provide much help, so
+inline them.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 48 ++++++++++++++--------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 82 ++++++++++------------------
+ 1 file changed, 28 insertions(+), 54 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index e5d5d81d6107..705cca95e03c 100644
+index 705cca95e03c..14351e1b27df 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -174,7 +174,8 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- #define IDAR		.L_IDAR_\name\()
- #define IDSISR		.L_IDSISR_\name\()
- #define ISET_RI		.L_ISET_RI_\name\()
--#define IEARLY		.L_IEARLY_\name\()
-+#define IBRANCH_COMMON	.L_IBRANCH_COMMON_\name\()
-+#define IREALMODE_COMMON	.L_IREALMODE_COMMON_\name\()
- #define IMASK		.L_IMASK_\name\()
- #define IKVM_SKIP	.L_IKVM_SKIP_\name\()
- #define IKVM_REAL	.L_IKVM_REAL_\name\()
-@@ -218,8 +219,15 @@ do_define_int n
- 	.ifndef ISET_RI
- 		ISET_RI=1
- 	.endif
--	.ifndef IEARLY
--		IEARLY=0
-+	.ifndef IBRANCH_COMMON
-+		IBRANCH_COMMON=1
-+	.endif
-+	.ifndef IREALMODE_COMMON
-+		IREALMODE_COMMON=0
-+	.else
-+		.if ! IBRANCH_COMMON
-+			.error "IREALMODE_COMMON=1 but IBRANCH_COMMON=0"
-+		.endif
- 	.endif
- 	.ifndef IMASK
- 		IMASK=0
-@@ -356,6 +364,11 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- #define GEN_OOL		1
+@@ -110,46 +110,6 @@ name:
+ #define EXC_HV		1
+ #define EXC_STD		0
  
- .macro GEN_BRANCH_TO_COMMON name virt
-+	.if IREALMODE_COMMON
-+	LOAD_HANDLER(r10, \name\()_common)
-+	mtctr	r10
-+	bctr
-+	.else
- 	.if \virt
- #ifndef CONFIG_RELOCATABLE
- 	b	\name\()_common_virt
-@@ -369,6 +382,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	mtctr	r10
- 	bctr
- 	.endif
-+	.endif
- .endm
- 
- .macro GEN_INT_ENTRY name virt ool=0
-@@ -424,11 +438,6 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	stw	r10,IAREA+EX_DSISR(r13)
- 	.endif
- 
--	.if IEARLY == 2
--	/* nothing more */
--	.elseif IEARLY
--	BRANCH_TO_C000(r11, \name\()_common)
--	.else
- 	.if IHSRR == EXC_HV_OR_STD
- 	BEGIN_FTR_SECTION
- 	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
-@@ -444,6 +453,8 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	mfspr	r11,SPRN_SRR0		/* save SRR0 */
- 	mfspr	r12,SPRN_SRR1		/* and SRR1 */
- 	.endif
-+
-+	.if IBRANCH_COMMON
- 	GEN_BRANCH_TO_COMMON \name \virt
- 	.endif
- 
-@@ -923,6 +934,7 @@ INT_DEFINE_BEGIN(machine_check_early)
- 	IHSRR=EXC_STD
- 	IAREA=PACA_EXMC
- 	IVIRT=0 /* no virt entry point */
-+	IREALMODE_COMMON=1
- 	/*
- 	 * MSR_RI is not enabled, because PACA_EXMC is being used, so a
- 	 * nested machine check corrupts it. machine_check_common enables
-@@ -930,7 +942,6 @@ INT_DEFINE_BEGIN(machine_check_early)
- 	 */
- 	ISET_RI=0
- 	ISTACK=0
--	IEARLY=1
- 	IDAR=1
- 	IDSISR=1
- 	IRECONCILE=0
-@@ -971,9 +982,6 @@ TRAMP_REAL_BEGIN(machine_check_fwnmi)
- 	EXCEPTION_RESTORE_REGS EXC_STD
- 
- EXC_COMMON_BEGIN(machine_check_early_common)
--	mfspr	r11,SPRN_SRR0
--	mfspr	r12,SPRN_SRR1
+-/*
+- * PPR save/restore macros used in exceptions-64s.S
+- * Used for P7 or later processors
+- */
+-#define SAVE_PPR(area, ra)						\
+-BEGIN_FTR_SECTION_NESTED(940)						\
+-	ld	ra,area+EX_PPR(r13);	/* Read PPR from paca */	\
+-	std	ra,_PPR(r1);						\
+-END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,940)
 -
- 	/*
- 	 * Switch to mc_emergency stack and handle re-entrancy (we limit
- 	 * the nested MCE upto level 4 to avoid stack overflow).
-@@ -1849,7 +1857,7 @@ INT_DEFINE_BEGIN(hmi_exception_early)
- 	IHSRR=EXC_HV
- 	IAREA=PACA_EXGEN
- 	IVIRT=0 /* no virt entry point */
--	IEARLY=1
-+	IREALMODE_COMMON=1
- 	ISTACK=0
- 	IRECONCILE=0
- 	IKUAP=0 /* We don't touch AMR here, we never go to virtual mode */
-@@ -1871,8 +1879,6 @@ EXC_REAL_END(hmi_exception, 0xe60, 0x20)
- EXC_VIRT_NONE(0x4e60, 0x20)
+-#define RESTORE_PPR_PACA(area, ra)					\
+-BEGIN_FTR_SECTION_NESTED(941)						\
+-	ld	ra,area+EX_PPR(r13);					\
+-	mtspr	SPRN_PPR,ra;						\
+-END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,941)
+-
+-/*
+- * Get an SPR into a register if the CPU has the given feature
+- */
+-#define OPT_GET_SPR(ra, spr, ftr)					\
+-BEGIN_FTR_SECTION_NESTED(943)						\
+-	mfspr	ra,spr;							\
+-END_FTR_SECTION_NESTED(ftr,ftr,943)
+-
+-/*
+- * Set an SPR from a register if the CPU has the given feature
+- */
+-#define OPT_SET_SPR(ra, spr, ftr)					\
+-BEGIN_FTR_SECTION_NESTED(943)						\
+-	mtspr	spr,ra;							\
+-END_FTR_SECTION_NESTED(ftr,ftr,943)
+-
+-/*
+- * Save a register to the PACA if the CPU has the given feature
+- */
+-#define OPT_SAVE_REG_TO_PACA(offset, ra, ftr)				\
+-BEGIN_FTR_SECTION_NESTED(943)						\
+-	std	ra,offset(r13);						\
+-END_FTR_SECTION_NESTED(ftr,ftr,943)
+-
+ /*
+  * Branch to label using its 0xC000 address. This results in instruction
+  * address suitable for MSR[IR]=0 or 1, which allows relocation to be turned
+@@ -278,18 +238,18 @@ do_define_int n
+ 	cmpwi	r10,KVM_GUEST_MODE_SKIP
+ 	beq	89f
+ 	.else
+-BEGIN_FTR_SECTION_NESTED(947)
++BEGIN_FTR_SECTION
+ 	ld	r10,IAREA+EX_CFAR(r13)
+ 	std	r10,HSTATE_CFAR(r13)
+-END_FTR_SECTION_NESTED(CPU_FTR_CFAR,CPU_FTR_CFAR,947)
++END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	.endif
  
- EXC_COMMON_BEGIN(hmi_exception_early_common)
--	mfspr	r11,SPRN_HSRR0		/* Save HSRR0 */
--	mfspr	r12,SPRN_HSRR1		/* Save HSRR1 */
- 	mr	r10,r1			/* Save r1 */
- 	ld	r1,PACAEMERGSP(r13)	/* Use emergency stack for realmode */
- 	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame		*/
-@@ -2213,29 +2219,23 @@ INT_DEFINE_BEGIN(denorm_exception)
- 	IVEC=0x1500
- 	IHSRR=EXC_HV
- 	IAREA=PACA_EXGEN
--	IEARLY=2
-+	IBRANCH_COMMON=0
- 	IKVM_REAL=1
- INT_DEFINE_END(denorm_exception)
+ 	ld	r10,PACA_EXGEN+EX_CTR(r13)
+ 	mtctr	r10
+-BEGIN_FTR_SECTION_NESTED(948)
++BEGIN_FTR_SECTION
+ 	ld	r10,IAREA+EX_PPR(r13)
+ 	std	r10,HSTATE_PPR(r13)
+-END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
++END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	ld	r11,IAREA+EX_R11(r13)
+ 	ld	r12,IAREA+EX_R12(r13)
+ 	std	r12,HSTATE_SCRATCH0(r13)
+@@ -389,10 +349,14 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	SET_SCRATCH0(r13)			/* save r13 */
+ 	GET_PACA(r13)
+ 	std	r9,IAREA+EX_R9(r13)		/* save r9 */
+-	OPT_GET_SPR(r9, SPRN_PPR, CPU_FTR_HAS_PPR)
++BEGIN_FTR_SECTION
++	mfspr	r9,SPRN_PPR
++END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	HMT_MEDIUM
+ 	std	r10,IAREA+EX_R10(r13)		/* save r10 - r12 */
+-	OPT_GET_SPR(r10, SPRN_CFAR, CPU_FTR_CFAR)
++BEGIN_FTR_SECTION
++	mfspr	r10,SPRN_CFAR
++END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	.if \ool
+ 	.if !\virt
+ 	b	tramp_real_\name
+@@ -405,8 +369,12 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	.endif
+ 	.endif
  
- EXC_REAL_BEGIN(denorm_exception, 0x1500, 0x100)
- 	GEN_INT_ENTRY denorm_exception, GEN_REAL
- #ifdef CONFIG_PPC_DENORMALISATION
--	mfspr	r10,SPRN_HSRR1
--	andis.	r10,r10,(HSRR1_DENORM)@h /* denorm? */
-+	andis.	r10,r12,(HSRR1_DENORM)@h /* denorm? */
- 	bne+	denorm_assist
- #endif
--	mfspr	r11,SPRN_HSRR0
--	mfspr	r12,SPRN_HSRR1
- 	GEN_BRANCH_TO_COMMON denorm_exception, GEN_REAL
- EXC_REAL_END(denorm_exception, 0x1500, 0x100)
- #ifdef CONFIG_PPC_DENORMALISATION
- EXC_VIRT_BEGIN(denorm_exception, 0x5500, 0x100)
- 	GEN_INT_ENTRY denorm_exception, GEN_VIRT
--	mfspr	r10,SPRN_HSRR1
--	andis.	r10,r10,(HSRR1_DENORM)@h /* denorm? */
-+	andis.	r10,r12,(HSRR1_DENORM)@h /* denorm? */
- 	bne+	denorm_assist
--	mfspr	r11,SPRN_HSRR0
--	mfspr	r12,SPRN_HSRR1
- 	GEN_BRANCH_TO_COMMON denorm_exception, GEN_VIRT
- EXC_VIRT_END(denorm_exception, 0x5500, 0x100)
- #else
+-	OPT_SAVE_REG_TO_PACA(IAREA+EX_PPR, r9, CPU_FTR_HAS_PPR)
+-	OPT_SAVE_REG_TO_PACA(IAREA+EX_CFAR, r10, CPU_FTR_CFAR)
++BEGIN_FTR_SECTION
++	std	r9,IAREA+EX_PPR(r13)
++END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
++BEGIN_FTR_SECTION
++	std	r10,IAREA+EX_CFAR(r13)
++END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	INTERRUPT_TO_KERNEL
+ 	mfctr	r10
+ 	std	r10,IAREA+EX_CTR(r13)
+@@ -553,7 +521,10 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
+ 	.endif
+ 	beq	101f			/* if from kernel mode		*/
+ 	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10)
+-	SAVE_PPR(IAREA, r9)
++BEGIN_FTR_SECTION
++	ld	r9,IAREA+EX_PPR(r13)	/* Read PPR from paca		*/
++	std	r9,_PPR(r1)
++END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 101:
+ 	.else
+ 	.if IKUAP
+@@ -593,10 +564,10 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
+ 	std	r10,_DSISR(r1)
+ 	.endif
+ 
+-BEGIN_FTR_SECTION_NESTED(66)
++BEGIN_FTR_SECTION
+ 	ld	r10,IAREA+EX_CFAR(r13)
+ 	std	r10,ORIG_GPR3(r1)
+-END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66)
++END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	ld	r10,IAREA+EX_CTR(r13)
+ 	std	r10,_CTR(r1)
+ 	std	r2,GPR2(r1)		/* save r2 in stackframe	*/
+@@ -1716,10 +1687,10 @@ TRAMP_REAL_BEGIN(system_call_kvm)
+ 	  * HMT_MEDIUM. That allows the KVM code to save that value into the
+ 	  * guest state (it is the guest's PPR value).
+ 	  */
+-BEGIN_FTR_SECTION_NESTED(948)
++BEGIN_FTR_SECTION
+ 	mfspr	r10,SPRN_PPR
+ 	std	r10,HSTATE_PPR(r13)
+-END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
++END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	HMT_MEDIUM
+ 	mfctr	r10
+ 	SET_SCRATCH0(r10)
+@@ -2298,7 +2269,10 @@ denorm_done:
+ 	mtspr	SPRN_HSRR0,r11
+ 	mtcrf	0x80,r9
+ 	ld	r9,PACA_EXGEN+EX_R9(r13)
+-	RESTORE_PPR_PACA(PACA_EXGEN, r10)
++BEGIN_FTR_SECTION
++	ld	r10,PACA_EXGEN+EX_PPR(r13)
++	mtspr	SPRN_PPR,r10
++END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ BEGIN_FTR_SECTION
+ 	ld	r10,PACA_EXGEN+EX_CFAR(r13)
+ 	mtspr	SPRN_CFAR,r10
 -- 
 2.22.0
 
