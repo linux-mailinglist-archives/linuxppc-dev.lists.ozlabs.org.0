@@ -2,37 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D130E97927
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 14:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF27397937
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 14:28:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46D6GP0mbwzDr4g
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 22:21:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46D6Px6yBYzDqr6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 22:28:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="IbTSzTb4"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46D6CG26qJzDqLh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 22:18:50 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46D6CD705Gz9sBp;
- Wed, 21 Aug 2019 22:18:48 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 21/44] powerpc/64s/exception: remove 0xb00 handler
-In-Reply-To: <20190802105709.27696-22-npiggin@gmail.com>
-References: <20190802105709.27696-1-npiggin@gmail.com>
- <20190802105709.27696-22-npiggin@gmail.com>
-Date: Wed, 21 Aug 2019 22:18:44 +1000
-Message-ID: <87a7c267a3.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46D6Jd06KszDqlW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 22:23:28 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id f17so1334022pfn.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 05:23:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bPye4d8RG2c6z9hipNZjTeLXU1+VAjbq1J4TzWoDnNE=;
+ b=IbTSzTb4zI4yp4a1ORxnuiTkHKpmVktnxWQlw613DJZcgq3113UcAxkOyLhGohcrJI
+ CmVS2wYoRTdfjOnPzH5U73j8AnKhLy0cgxnu2bEmGz4GkMi9NxD3ywy+7fnXl15LT3jy
+ DsB2cdgngLcNLAEdm1Q0mWF3vf1mXGSErGa41Sa9GWKAjNXGd2/FV7PDmXg2dJsmN+H2
+ ezezTi4BiznWlVIyHwpFZQsulEQZjeFbWbGzv2V4bMisBDYI1z4XADuCTSEqMsTuiRLi
+ YsbsPUzvl+GIJ35OXVr3xUYMtXcg8erQgYc54jGikbVwUYYM8PrTYeT/1CBujZWXDE01
+ ixCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bPye4d8RG2c6z9hipNZjTeLXU1+VAjbq1J4TzWoDnNE=;
+ b=JoOx1hfj3C3bQi6/1jYJKZVSrsI8rtBqnCb/0dfi3O05GMh8hlYn6JLARFijVqSvaS
+ Z7ojwpHqQ9Sn/b/21Vcy1QoOQ+rZecw9ptmk3DvUn+u/IMrpB/GVbnNmVrt9yjJaHN+Y
+ kF4Qt24Dm/4ssEfZkjgrRvbnqAXLNt3JCoHNiRuw3QnWiDqXKpSjZpktPNhmTLEcC+rp
+ SVkrXoHHArzBRN85Iz5F2tYi+LjXCFhnWP8ATckhMKdVKBIgawUSPViK0bobCySSppUL
+ eAyVG2XwEt85O+h6DyB97XRRDXoC+tMQWNa69eE4Vaa8I7pvzL5021DkJtSnmtN7Cco8
+ czlg==
+X-Gm-Message-State: APjAAAX+ix4BXDoltcX393z5iEVJNeq2sXs5Mp8T2Ec7Le7jT02dFCfg
+ 89tLqjbHP31WV8mwz1orrlcnHyH1
+X-Google-Smtp-Source: APXvYqwKFv3PloQLu/uAs4EtcCAu0/pKCOK4KR7+Y04cWns6Qyi9k6ngxc5SoEYvuEE9STppZyZaZA==
+X-Received: by 2002:aa7:93aa:: with SMTP id x10mr35962894pff.83.1566390204598; 
+ Wed, 21 Aug 2019 05:23:24 -0700 (PDT)
+Received: from bobo.local0.net ([193.114.104.176])
+ by smtp.gmail.com with ESMTPSA id a3sm23657819pfc.70.2019.08.21.05.23.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Aug 2019 05:23:23 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 00/10] powerpc/64s/exception: initial reworking of
+Date: Wed, 21 Aug 2019 22:23:05 +1000
+Message-Id: <20190821122315.9535-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,48 +81,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> This vector is not used by any supported processor, and has been
-> implemented as an unknown exception going back to 2.6. There is
-> nothing special about 0xb00, so remove it like other unused
-> vectors.
+This applies on top of the previous exception series.
 
-Actually it goes back to the original ppc64 submission.
+Until now the focus was on making the code generation macros sane,
+ironing out irregularities and needless differences in handlers,
+and sharing code. Some change of generated code was required, but
+minimised as much as possible.
 
-See (takes a while to load):
-  https://github.com/mpe/linux-fullhistory/commit/c3aa9878533e724f639852c3d951e6a169e04081#diff-c7b0adae374819e9003279ff5f69226fR340
+This series begins to change generated code in a bigger way. This is
+an assortment of changes, one of the big goals goals is really moving
+code and especially branches and logic and conditional compilation
+out of "unrelocated" interrupt entry points, with the hope of making
+KASLR more effective when it is implemented.
 
+After this is a more significant rework of the instruction sequences
+with the aim of improving performance, but I will stop here for the
+next merge window.
 
-That commit had handlers for all the vectors from 0x100 through 0xf00,
-with stubs for 0xa00, 0xb00 and 0xe00. But it's not at all clear why it
-needed the stubs, possibly it was just being verbose.
+Thanks,
+Nick
 
-0xa00 eventually became doorbell_super and 0xe00 became h_data_storage.
-Leaving just 0xb00 as the lone relic.
+Nicholas Piggin (10):
+  powerpc/64s/exception: Add ISIDE option
+  powerpc/64s/exception: move real->virt switch into the common handler
+  powerpc/64s/exception: move soft-mask test to common code
+  powerpc/64s/exception: move KVM test to common code
+  powerpc/64s/exception: remove confusing IEARLY option
+  powerpc/64s/exception: remove the SPR saving patch code macros
+  powerpc/64s/exception: trim unused arguments from KVMTEST macro
+  powerpc/64s/exception: hdecrementer avoid touching the stack
+  powerpc/64s/exception: re-inline some handlers
+  powerpc/64s/exception: add more comments for interrupt handlers
 
-</irrelevant-history>
+ arch/powerpc/include/asm/exception-64s.h |    4 -
+ arch/powerpc/include/asm/time.h          |    1 -
+ arch/powerpc/kernel/exceptions-64s.S     | 1151 ++++++++++++++--------
+ arch/powerpc/kernel/time.c               |    9 -
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S  |   11 -
+ arch/powerpc/kvm/book3s_segment.S        |    7 -
+ 6 files changed, 716 insertions(+), 467 deletions(-)
 
-Patch looks good.
+-- 
+2.22.0
 
-cheers
-
-
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> index 723c37f3da17..9c407392774c 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -1563,10 +1563,8 @@ EXC_COMMON_ASYNC(doorbell_super_common, 0xa00, unknown_exception)
->  #endif
->  
->  
-> -EXC_REAL(trap_0b, 0xb00, 0x100)
-> -EXC_VIRT(trap_0b, 0x4b00, 0x100, 0xb00)
-> -TRAMP_KVM(PACA_EXGEN, 0xb00)
-> -EXC_COMMON(trap_0b_common, 0xb00, unknown_exception)
-> +EXC_REAL_NONE(0xb00, 0x100)
-> +EXC_VIRT_NONE(0x4b00, 0x100)
->  
->  /*
->   * system call / hypercall (0xc00, 0x4c00)
-> -- 
-> 2.22.0
