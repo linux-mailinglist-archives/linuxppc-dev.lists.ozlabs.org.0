@@ -1,73 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1CB98599
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 22:28:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CB0986E2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 23:53:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46DK4d5hTMzDqTW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 06:28:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46DLy46DflzDr8R
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 07:53:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=netronome.com
+ (client-ip=2a00:1450:4864:20::343; helo=mail-wm1-x343.google.com;
+ envelope-from=jiong.wang@netronome.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="UEGX7GLD"; 
+ dmarc=none (p=none dis=none) header.from=netronome.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=netronome-com.20150623.gappssmtp.com
+ header.i=@netronome-com.20150623.gappssmtp.com header.b="cSapzLOb"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DK2h5vnmzDq67
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 06:27:08 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46DK2d1nKsz9txLD;
- Wed, 21 Aug 2019 22:27:05 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=UEGX7GLD; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id omHAs3bIZtOR; Wed, 21 Aug 2019 22:27:05 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46DK2d0ct3z9txLC;
- Wed, 21 Aug 2019 22:27:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566419225; bh=enIzX4gTmPO57E1bMI8/3i3N4dyfDt6FfgzQCgdsq8c=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=UEGX7GLD3G7m5UQVeRbUtXvlSn3u2/0mfAA/bWVbpbl0amwzLCj/Bvno6MzlW48Ht
- fvD6s2zS7bjFRsNBLRNLJ/wy5O1Rw3WjXClo/3zfsZTXDjbGtB7n+jUN2kqpO1McrW
- biIyhp/gI7U8HwthutgxFHrgzMNbYHdvaeSySXp4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D27A8B7FA;
- Wed, 21 Aug 2019 22:27:05 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eD9Vv9KqC7Og; Wed, 21 Aug 2019 22:27:05 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C6A958B7F9;
- Wed, 21 Aug 2019 22:27:04 +0200 (CEST)
-Subject: Re: [RFC PATCH] powerpc: Convert ____flush_dcache_icache_phys() to C
-To: Alastair D'Silva <alastair@au1.ibm.com>,
- Segher Boessenkool <segher@kernel.crashing.org>
-References: <de7a813c71c4823797bb351bea8be15acae83be2.1565970465.git.christophe.leroy@c-s.fr>
- <9887dada07278cb39051941d1a47d50349d9fde0.camel@au1.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <a0ad8dd8-2f5d-256d-9e88-e9c236335bb8@c-s.fr>
-Date: Wed, 21 Aug 2019 22:27:04 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46DLwF1nFNzDr1X
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 07:51:40 +1000 (AEST)
+Received: by mail-wm1-x343.google.com with SMTP id l2so3655880wmg.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 14:51:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=netronome-com.20150623.gappssmtp.com; s=20150623;
+ h=references:user-agent:from:to:cc:subject:in-reply-to:date
+ :message-id:mime-version;
+ bh=tzs0xL7F6e4DYv0KKXWstcIwevn1IeV2WU1eJYUjfUc=;
+ b=cSapzLObrFhl9WiOnkT1Yt3qMrv+d9JGVzxCP0RCrg4HDDoOq9rDy26FxLVG1MUZWU
+ Tb3wG8LMVh2xbjCriUATkhMeVZCg4a4IaoE0La8xSVXj2Vj55w0A4Jb6KQFbsbDaT0lq
+ RbjwbjviHSBy9Ih21aDFJiuNnLLsa8FprO2LzTBYqg3pWDKz1Lk86wy/DzYpt2mxi+0M
+ agenDEbadExsbz/tlANeVWRO5zI1fm2U9mK3oimhQdlChq+5WojjnsV0IxhasGg54NzQ
+ PeE/BQUGj2ZarJ43yyiKHKL6xiB7I8ASK50mlaQGzkhcyI0fDVH97/iYsutzOeOjPXkd
+ zkpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:references:user-agent:from:to:cc:subject
+ :in-reply-to:date:message-id:mime-version;
+ bh=tzs0xL7F6e4DYv0KKXWstcIwevn1IeV2WU1eJYUjfUc=;
+ b=YJX/kAZvHWuhYdV4p6C8DK7GexiVEcR+7iz07ZuW4je/NXjlKKy9L/04mPhvysGwoA
+ emdrrXTn/LjWWv8+u/PoZMk3koVyQPxsJsdDeXVwTfYcyPtsXoc4j2z1zdTZ4hrbL5g0
+ WkIsIJO56yiHD3XJJeyVEn6/paauRXe8PwhgHh/2Wb8h7H0kwZ4lHU3uo+yJ+4OAvRer
+ YynWjGs4PUE/+8fACS5+D8LsRtRA76+goq6lPi/m/b7bqwmw9CDBYuK649GwoBH/SKpA
+ PSiaFkGz8irQ4KRBqhcVyCBc3gmU+hvClVoEROoFbumw/0s0Xk5s6+KtwOz6z/c3Y7WT
+ zAhQ==
+X-Gm-Message-State: APjAAAWR+j/hMeFGygvXXxUK2qsGTVIUn23lfdNM48iMi+aDNAlUOFp3
+ F9tT7+fs4X8qA3UiEGa1HwBFrg==
+X-Google-Smtp-Source: APXvYqy2LFveaB3xNaCXGpcvOKttC8dJWdS9RQtFwtlXe9SG6QFy84en6i34jTXyo21MVdAelxHMqA==
+X-Received: by 2002:a1c:7d08:: with SMTP id y8mr2441435wmc.50.1566424298379;
+ Wed, 21 Aug 2019 14:51:38 -0700 (PDT)
+Received: from LAPTOP-V3S7NLPL (cpc1-cmbg19-2-0-cust104.5-4.cable.virginm.net.
+ [82.27.180.105])
+ by smtp.gmail.com with ESMTPSA id r15sm38044110wrj.68.2019.08.21.14.51.37
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 21 Aug 2019 14:51:37 -0700 (PDT)
+References: <20190821192358.31922-1-naveen.n.rao@linux.vnet.ibm.com>
+User-agent: mu4e 0.9.18; emacs 25.2.2
+From: Jiong Wang <jiong.wang@netronome.com>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] bpf: handle 32-bit zext during constant blinding
+In-reply-to: <20190821192358.31922-1-naveen.n.rao@linux.vnet.ibm.com>
+Date: Wed, 21 Aug 2019 22:51:35 +0100
+Message-ID: <87zhk2faqg.fsf@netronome.com>
 MIME-Version: 1.0
-In-Reply-To: <9887dada07278cb39051941d1a47d50349d9fde0.camel@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,92 +81,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
+ Jiong Wang <jiong.wang@netronome.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+Naveen N. Rao writes:
 
-Le 20/08/2019 à 06:36, Alastair D'Silva a écrit :
-> On Fri, 2019-08-16 at 15:52 +0000, Christophe Leroy wrote:
+> Since BPF constant blinding is performed after the verifier pass, the
+> ALU32 instructions inserted for doubleword immediate loads don't have a
+> corresponding zext instruction. This is causing a kernel oops on powerpc
+> and can be reproduced by running 'test_cgroup_storage' with
+> bpf_jit_harden=2.
+>
+> Fix this by emitting BPF_ZEXT during constant blinding if
+> prog->aux->verifier_zext is set.
+>
+> Fixes: a4b1d3c1ddf6cb ("bpf: verifier: insert zero extension according to analysis result")
+> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 
-[...]
+Thanks for the fix.
 
-> 
-> 
-> Thanks Christophe,
-> 
-> I'm trying a somewhat different approach that requires less knowledge
-> of assembler. Handling of CPU_FTR_COHERENT_ICACHE is outside this
-> function. The code below is not a patch as my tree is a bit messy,
-> sorry:
+Reviewed-by: Jiong Wang <jiong.wang@netronome.com>
 
-Can we be 100% sure that GCC won't add any code accessing some global 
-data or stack while the Data MMU is OFF ?
+Just two other comments during review in case I am wrong on somewhere.
 
-Christophe
+  - Use verifier_zext instead of bpf_jit_needs_zext() seems better, even
+    though the latter could avoid extending function argument.
 
+    Because JIT back-ends look at verifier_zext, true means zext inserted
+    by verifier so JITs won't do the code-gen.
 
-> 
-> /**
->   * flush_dcache_icache_phys() - Flush a page by it's physical address
->   * @addr: the physical address of the page
->   */
-> static void flush_dcache_icache_phys(unsigned long addr)
-> {
-> 	register unsigned long msr;
-> 	register unsigned long dlines = PAGE_SIZE >> l1_dcache_shift();
-> 	register unsigned long dbytes = l1_dcache_bytes();
-> 	register unsigned long ilines = PAGE_SIZE >> l1_icache_shift();
-> 	register unsigned long ibytes = l1_icache_bytes();
-> 	register unsigned long i;
-> 	register unsigned long address = addr;
-> 
-> 	/*
-> 	 * Clear the DR bit so that we operate on physical
-> 	 * rather than virtual addresses
-> 	 */
-> 	msr = mfmsr();
-> 	mtmsr(msr & ~(MSR_DR));
-> 
-> 	/* Write out the data cache */
-> 	for (i = 0; i < dlines; i++, address += dbytes)
-> 		dcbst((void *)address);
-> 
-> 	/* Invalidate the instruction cache */
-> 	address = addr;
-> 	for (i = 0; i < ilines; i++, address += ibytes)
-> 		icbi((void *)address);
-> 
-> 	mtmsr(msr);
-> }
-> 
-> void test_flush_phys(unsigned long addr)
-> {
-> 	flush_dcache_icache_phys(addr);
-> }
-> 
-> 
-> This gives the following assembler (using pmac32_defconfig):
-> 000003cc <test_flush_phys>:
->   3cc:   94 21 ff f0     stwu    r1,-16(r1)
->   3d0:   7d 00 00 a6     mfmsr   r8
->   3d4:   55 09 07 34     rlwinm  r9,r8,0,28,26
->   3d8:   7d 20 01 24     mtmsr   r9
->   3dc:   39 20 00 80     li      r9,128
->   3e0:   7d 29 03 a6     mtctr   r9
->   3e4:   39 43 10 00     addi    r10,r3,4096
->   3e8:   7c 69 1b 78     mr      r9,r3
->   3ec:   7c 00 48 6c     dcbst   0,r9
->   3f0:   39 29 00 20     addi    r9,r9,32
->   3f4:   42 00 ff f8     bdnz    3ec <test_flush_phys+0x20>
->   3f8:   7c 00 1f ac     icbi    0,r3
->   3fc:   38 63 00 20     addi    r3,r3,32
->   400:   7f 8a 18 40     cmplw   cr7,r10,r3
->   404:   40 9e ff f4     bne     cr7,3f8 <test_flush_phys+0x2c>
->   408:   7d 00 01 24     mtmsr   r8
->   40c:   38 21 00 10     addi    r1,r1,16
->   410:   4e 80 00 20     blr
-> 
-> 
+    Use verifier_zext is sort of keeping JIT blinding the same behaviour
+    has verifier even though blinding doesn't belong to verifier, but for
+    such insn patching, it could be seen as a extension of verifier,
+    therefore use verifier_zext seems better than bpf_jit_needs_zext() to
+    me.
+   
+  - JIT blinding is also escaping the HI32 randomization which happens
+    inside verifier, otherwise x86-64 regression should have caught this issue.
+
+Regards,
+Jiong
+
+> ---
+> Changes since RFC:
+> - Removed changes to ALU32 and JMP32 ops since those don't alter program 
+>   execution, and the verifier would have already accounted for them.  
+>
+>
+>  kernel/bpf/core.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+> index 8191a7db2777..66088a9e9b9e 100644
+> --- a/kernel/bpf/core.c
+> +++ b/kernel/bpf/core.c
+> @@ -890,7 +890,8 @@ int bpf_jit_get_func_addr(const struct bpf_prog *prog,
+>  
+>  static int bpf_jit_blind_insn(const struct bpf_insn *from,
+>  			      const struct bpf_insn *aux,
+> -			      struct bpf_insn *to_buff)
+> +			      struct bpf_insn *to_buff,
+> +			      bool emit_zext)
+>  {
+>  	struct bpf_insn *to = to_buff;
+>  	u32 imm_rnd = get_random_int();
+> @@ -1005,6 +1006,8 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
+>  	case 0: /* Part 2 of BPF_LD | BPF_IMM | BPF_DW. */
+>  		*to++ = BPF_ALU32_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^ aux[0].imm);
+>  		*to++ = BPF_ALU32_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+> +		if (emit_zext)
+> +			*to++ = BPF_ZEXT_REG(BPF_REG_AX);
+>  		*to++ = BPF_ALU64_REG(BPF_OR,  aux[0].dst_reg, BPF_REG_AX);
+>  		break;
+>  
+> @@ -1088,7 +1091,8 @@ struct bpf_prog *bpf_jit_blind_constants(struct bpf_prog *prog)
+>  		    insn[1].code == 0)
+>  			memcpy(aux, insn, sizeof(aux));
+>  
+> -		rewritten = bpf_jit_blind_insn(insn, aux, insn_buff);
+> +		rewritten = bpf_jit_blind_insn(insn, aux, insn_buff,
+> +						clone->aux->verifier_zext);
+>  		if (!rewritten)
+>  			continue;
+
