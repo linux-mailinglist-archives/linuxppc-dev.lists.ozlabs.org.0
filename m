@@ -2,83 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2759496EB2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 03:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D027A96EB9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 03:15:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CqNg0wVyzDqN9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 11:10:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CqVP2h2YzDqdX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 11:15:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CqDL3jK2zDqfP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 11:03:46 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CqPQ4NczzDqyY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 11:11:38 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7L11r3U118666; Tue, 20 Aug 2019 21:03:42 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ugskxvsdc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Aug 2019 21:03:41 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7L11wXP119162;
- Tue, 20 Aug 2019 21:03:41 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ugskxvsd1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Aug 2019 21:03:41 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7L0uQh9020596;
- Wed, 21 Aug 2019 01:03:40 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma05wdc.us.ibm.com with ESMTP id 2ue9761dus-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Aug 2019 01:03:40 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7L13dhI53150206
+ x7L170JO030151
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 21:11:35 -0400
+Received: from e16.ny.us.ibm.com (e16.ny.us.ibm.com [129.33.205.206])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ugnuqpkmg-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 21:11:35 -0400
+Received: from localhost
+ by e16.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Wed, 21 Aug 2019 02:11:34 +0100
+Received: from b01cxnp22033.gho.pok.ibm.com (9.57.198.23)
+ by e16.ny.us.ibm.com (146.89.104.203) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 21 Aug 2019 02:11:31 +0100
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7L1BUJl41812260
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Aug 2019 01:03:40 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D026BBE054;
- Wed, 21 Aug 2019 01:03:39 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 568F7BE051;
- Wed, 21 Aug 2019 01:03:38 +0000 (GMT)
+ Wed, 21 Aug 2019 01:11:30 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2767A112064;
+ Wed, 21 Aug 2019 01:11:30 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E59EB112063;
+ Wed, 21 Aug 2019 01:11:28 +0000 (GMT)
 Received: from morokweng.localdomain (unknown [9.85.187.8])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 21 Aug 2019 01:03:38 +0000 (GMT)
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Wed, 21 Aug 2019 01:11:28 +0000 (GMT)
 References: <20190715082702.27308-1-svens@stackframe.org>
- <20190715082702.27308-8-svens@stackframe.org>
 User-agent: mu4e 1.2.0; emacs 26.2
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: kexec@lists.infradead.org
-Subject: Re: [PATCH v4 7/7] kexec_elf: support 32 bit ELF files
-In-reply-to: <20190715082702.27308-8-svens@stackframe.org>
-Date: Tue, 20 Aug 2019 22:03:34 -0300
-Message-ID: <87r25fmis9.fsf@morokweng.localdomain>
+Subject: Re: [PATCH v4 0/7] kexec: add generic support for elf kernel images
+In-reply-to: <20190715082702.27308-1-svens@stackframe.org>
+Date: Tue, 20 Aug 2019 22:11:25 -0300
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
+x-cbid: 19082101-0072-0000-0000-00000453F8BF
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011626; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01249763; UDB=6.00659776; IPR=6.01031312; 
+ MB=3.00028251; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-21 01:11:32
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082101-0073-0000-0000-00004CC51A18
+Message-Id: <87pnkzmif6.fsf@morokweng.localdomain>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-21_01:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=13 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908210006
+ mlxlogscore=916 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908210007
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,15 +100,52 @@ Sender: "Linuxppc-dev"
 
 Sven Schnelle <svens@stackframe.org> writes:
 
-> The powerpc version only supported 64 bit. Add some
-> code to switch decoding of fields during runtime so
-> we can kexec a 32 bit kernel from a 64 bit kernel and
-> vice versa.
+> Changes to v3:
+>  - add support for 32-bit ELF files
 >
-> Signed-off-by: Sven Schnelle <svens@stackframe.org>
+> Changes to v2:
+>  - use git format-patch -C
+>
+> Changes to v1:
+>  - split up patch into smaller pieces
+>  - rebase onto powerpc/next
+>  - remove unused variable in kexec_elf_load()
+>
+> Changes to RFC version:
+>  - remove unused Elf_Rel macro
+>  - remove section header parsing
+>  - remove PURGATORY_STACK_SIZE
+>  - change order of elf_*_to_cpu() functions
+>  - remove elf_addr_to_cpu macro
+>
+> Sven Schnelle (7):
+>   kexec: add KEXEC_ELF
+>   kexec_elf: change order of elf_*_to_cpu() functions
+>   kexec_elf: remove parsing of section headers
+>   kexec_elf: remove PURGATORY_STACK_SIZE
+>   kexec_elf: remove Elf_Rel macro
+>   kexec_elf: remove unused variable in kexec_elf_load()
+>   kexec_elf: support 32 bit ELF files
+>
+>  arch/Kconfig                       |   3 +
+>  arch/powerpc/Kconfig               |   1 +
+>  arch/powerpc/kernel/kexec_elf_64.c | 551 +----------------------------
+>  include/linux/kexec.h              |  23 ++
+>  kernel/Makefile                    |   1 +
+>  kernel/kexec_elf.c                 | 418 ++++++++++++++++++++++
+>  6 files changed, 456 insertions(+), 541 deletions(-)
+>  create mode 100644 kernel/kexec_elf.c
 
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+The series applies on v5.1 but not newer kernels, so it needs to be
+rebased.
 
--- 
+I tested with v5.1 in ppc64le kexecing to both little-endian and
+big-endian kernels, and also in ppc64 kexecing to both big-endian and
+little-endian kernels so:
+
+Tested-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+
+--
 Thiago Jung Bauermann
 IBM Linux Technology Center
+
