@@ -2,73 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1DA96DCE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 01:31:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AF996E06
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 02:06:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CnBG6JrVzDrCN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 09:31:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Cnxv5yK0zDrFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 10:06:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com;
- envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="qL9WYEAm"; 
- dkim-atps=neutral
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Cn8M4YvwzDqB5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 09:30:11 +1000 (AEST)
-Received: by mail-wm1-x341.google.com with SMTP id c5so51203wmb.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 16:30:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=3E0fEKA3bxpvm4KYV/1/j8Enrv4yxANJ69KlmVGSvq8=;
- b=qL9WYEAmRF2OA5tOc2hmXmPINV9AHY6IJjQG3CkcZW3MErZefGZnVpDuoKZlUnklSz
- Y3OEcvim5+8jgXIoV377MUTKW0p3G1Wsdz/23x2jaTKVEsnajuZEQPiyXjfozpbK5nVh
- usCo8wrDRKRnqhlZuuH+aIc4G1Ssn6acvhnGhpp5Ee8rMQsIwvqyBiETmghdBtg59HDN
- 43kRFVDbyTxL8oH6n673ADgxGh/EHhA7EcUEUAjg5afDtDb1UzzUpeL436Qjg5Y+2dDp
- V9oy1ayM7HyApVOLLJ33QeWST99pKGLaqaKa6mg4w5IaEaHNhF0aLFpvLALrSBaR6L6H
- tZpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=3E0fEKA3bxpvm4KYV/1/j8Enrv4yxANJ69KlmVGSvq8=;
- b=UAsHZYQvN0KbBywcyTGZKj943XbQOvof6CY1fqAwmZSYR9Md8rQI3W8dVgjVUEpB9k
- 73drjFrhcISh5p/SKo3g5Tl49fRLpoqLlaHTtG+7RYnhqJdWU5UGaanuZTyp1bWJvMbO
- pnLIUxMW9qvV8t93Szu//L1yPxkHDEJ7uP40gcH1+pRGui82xfwV99NSe7NTP5j0W1do
- muw+oWbc0Ymj3Y+VdS26vLwCrioFX0B3Tg8/D3rwjk9XtNKk2geFHTpzGRXpaxbpJ8Ap
- VjFenOs0gxNRQItUwWVKzWQRwIn/ZYeWlSxXmyKp+rK8k0neqyM5ICnacpyEzR++IGUK
- iJTQ==
-X-Gm-Message-State: APjAAAUJXPAQWLkKEmkJmzH3fwsq/nS1vol7U8mvLdGbM3CNC8CzQ2cs
- PcbXMfTG5RoNhAVBEmAqDSU=
-X-Google-Smtp-Source: APXvYqwLy12XGcq+Wokg8S4AmGmnxAD1uhS8zQhSmBUYtZdz5flW02Zh/pEiXqkfah0Vjuf5p/b7zg==
-X-Received: by 2002:a1c:790d:: with SMTP id l13mr2185240wme.49.1566343807239; 
- Tue, 20 Aug 2019 16:30:07 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:4f8:222:2f1b::2])
- by smtp.gmail.com with ESMTPSA id u7sm15703259wrp.96.2019.08.20.16.30.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Aug 2019 16:30:06 -0700 (PDT)
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc: Don't add -mabi= flags when building with Clang
-Date: Tue, 20 Aug 2019 16:29:22 -0700
-Message-Id: <20190820232921.102673-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190818191321.58185-1-natechancellor@gmail.com>
-References: <20190818191321.58185-1-natechancellor@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Cnw65yZgzDr3p
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 10:04:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46Cnw62GzRz8tFS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 10:04:38 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46Cnw61VZnz9sBp; Wed, 21 Aug 2019 10:04:38 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sukadev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46Cnw55KwYz9s7T;
+ Wed, 21 Aug 2019 10:04:36 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7L01t3S102596; Tue, 20 Aug 2019 20:04:33 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ugshjb5ep-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Aug 2019 20:04:33 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7KNxXYL002059;
+ Wed, 21 Aug 2019 00:04:32 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma05wdc.us.ibm.com with ESMTP id 2ue97615e5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Aug 2019 00:04:32 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7L04VCA35062050
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Aug 2019 00:04:31 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5D2D3C6059;
+ Wed, 21 Aug 2019 00:04:31 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33AA0C6055;
+ Wed, 21 Aug 2019 00:04:31 +0000 (GMT)
+Received: from suka-w540.localdomain (unknown [9.70.94.45])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 21 Aug 2019 00:04:31 +0000 (GMT)
+Received: by suka-w540.localdomain (Postfix, from userid 1000)
+ id 7CDA02E1100; Tue, 20 Aug 2019 17:04:29 -0700 (PDT)
+Date: Tue, 20 Aug 2019 17:04:29 -0700
+From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v5 4/7] powerpc/mm: Use UV_WRITE_PATE ucall to register a
+ PATE
+Message-ID: <20190821000429.GA16695@us.ibm.com>
+References: <20190808040555.2371-1-cclaudio@linux.ibm.com>
+ <20190808040555.2371-5-cclaudio@linux.ibm.com>
+ <871rxo7zif.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <871rxo7zif.fsf@concordia.ellerman.id.au>
+X-Operating-System: Linux 2.0.32 on an i486
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-20_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908200219
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,112 +103,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Daniel Axtens <dja@axtens.net>
+Cc: Ryan Grimm <grimm@linux.vnet.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ Ryan Grimm <grimm@linux.ibm.com>, Guerney Hunt <gdhh@linux.ibm.com>,
+ Thiago Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When building pseries_defconfig, building vdso32 errors out:
+Michael Ellerman [mpe@ellerman.id.au] wrote:
 
-  error: unknown target ABI 'elfv1'
+> Hi Claudio,
+> 
+> Claudio Carvalho <cclaudio@linux.ibm.com> writes:
+> > From: Michael Anderson <andmike@linux.ibm.com>
+> >
+> > In ultravisor enabled systems, the ultravisor creates and maintains the
+> > partition table in secure memory where the hypervisor cannot access, and
+>                                    ^
+>                                    which?
+> 
+> > therefore, the hypervisor have to do the UV_WRITE_PATE ucall whenever it
+>                             ^          ^
+>                             has        a
+> > wants to set a partition table entry (PATE).
+> >
+> > This patch adds the UV_WRITE_PATE ucall and uses it to set a PATE if
+> > ultravisor is enabled. Additionally, this also also keeps a copy of the
+> > partition table because the nestMMU does not have access to secure
+> > memory. Such copy has entries for nonsecure and hypervisor partition.
+> 
+> I'm having trouble parsing the last sentence there.
+> 
+> Or at least it doesn't seem to match the code, or I don't understand
+> either the code or the comment. More below.
 
-This happens because -m32 in clang changes the target to 32-bit,
-which does not allow the ABI to be changed, as the setABI virtual
-function is not overridden:
+Yes, good catch. We could drop the last sentence. Or maybe change the
+last para to:
 
-https://github.com/llvm/llvm-project/blob/llvmorg-9.0.0-rc2/clang/include/clang/Basic/TargetInfo.h#L1073-L1078
+	This patch adds the UV_WRITE_PATE ucall which is used to update
+	the partition table entry (PATE) for a VM (both normal and secure).
 
-https://github.com/llvm/llvm-project/blob/llvmorg-9.0.0-rc2/clang/lib/Basic/Targets/PPC.h#L327-L365
+	When UV is enabled, the partition table is stored in secure memory
+	and can only be accessed via the UV. The HV however maintains a
+	copy of the partition table in normal memory to allow NMMU
+	translations to occur (for normal VMs). The HV copy includes PATEs
+	for secure VMs which would currently be unused (NMMU translations
+	cannot access secure memory) but they would be needed as we add
+	functionality.
 
-Commit 4dc831aa8813 ("powerpc: Fix compiling a BE kernel with a
-powerpc64le toolchain") added these flags to fix building big endian
-kernels with a little endian GCC.
+Basically, with UV, PTCR is controlled by the UV and address translations
+occur based on the UV's copy of the partition table. (See also:
+try_set_ptcr() in "PATCH 5/7 powerpc/mm: Write to PTCR only if ultravisor
+disabled")
 
-Clang doesn't need -mabi because the target triple controls the default
-value. -mlittle-endian and -mbig-endian manipulate the triple into
-either powerpc64-* or powerpc64le-*, which properly sets the default
-ABI:
+> 
+> > diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> > index 85bc81abd286..033731f5dbaa 100644
+> > --- a/arch/powerpc/mm/book3s64/pgtable.c
+> > +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> > @@ -213,34 +223,50 @@ void __init mmu_partition_table_init(void)
+> >  	powernv_set_nmmu_ptcr(ptcr);
+> >  }
+> >  
+> > -void mmu_partition_table_set_entry(unsigned int lpid, unsigned long dw0,
+> > -				   unsigned long dw1)
+> > +/*
+> > + * Global flush of TLBs and partition table caches for this lpid. The type of
+> > + * flush (hash or radix) depends on what the previous use of this partition ID
+> > + * was, not the new use.
+> > + */
+> > +static void flush_partition(unsigned int lpid, unsigned long old_patb0)
+> 
+> A nicer API would be for the 2nd param to be a "bool radix", and have
+> the caller worry about the fact that it comes from (patb0 & PATB_HR).
 
-https://github.com/llvm/llvm-project/blob/llvmorg-9.0.0-rc2/clang/lib/Driver/Driver.cpp#L450-L463
+Agree
 
-https://github.com/llvm/llvm-project/blob/llvmorg-9.0.0-rc2/llvm/lib/Support/Triple.cpp#L1432-L1516
+> 
+> >  {
+> > -	unsigned long old = be64_to_cpu(partition_tb[lpid].patb0);
+> > -
+> > -	partition_tb[lpid].patb0 = cpu_to_be64(dw0);
+> > -	partition_tb[lpid].patb1 = cpu_to_be64(dw1);
+> > -
+> > -	/*
+> > -	 * Global flush of TLBs and partition table caches for this lpid.
+> > -	 * The type of flush (hash or radix) depends on what the previous
+> > -	 * use of this partition ID was, not the new use.
+> > -	 */
+> >  	asm volatile("ptesync" : : : "memory");
+> > -	if (old & PATB_HR) {
+> > -		asm volatile(PPC_TLBIE_5(%0,%1,2,0,1) : :
+> > +	if (old_patb0 & PATB_HR) {
+> > +		asm volatile(PPC_TLBIE_5(%0, %1, 2, 0, 1) : :
+> >  			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> > -		asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
+> > +		asm volatile(PPC_TLBIE_5(%0, %1, 2, 1, 1) : :
+> 
+> That looks like an unrelated whitespace change.
+> 
+> >  			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> >  		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 1);
+> >  	} else {
+> > -		asm volatile(PPC_TLBIE_5(%0,%1,2,0,0) : :
+> > +		asm volatile(PPC_TLBIE_5(%0, %1, 2, 0, 0) : :
+> 
+> Ditto.
+> 
+> >  			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> >  		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 0);
+> >  	}
+> >  	/* do we need fixup here ?*/
+> >  	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+> >  }
+> > +
+> > +void mmu_partition_table_set_entry(unsigned int lpid, unsigned long dw0,
+> > +				  unsigned long dw1)
+> > +{
+> > +	unsigned long old = be64_to_cpu(partition_tb[lpid].patb0);
+> > +
+> > +	partition_tb[lpid].patb0 = cpu_to_be64(dw0);
+> > +	partition_tb[lpid].patb1 = cpu_to_be64(dw1);
+> 
+> ie. here we always update the copy of the partition table, regardless of
+> whether we're running under an ultravisor or not. So the copy is a
+> complete copy isn't it?
 
-https://github.com/llvm/llvm-project/blob/llvmorg-9.0.0-rc2/clang/lib/Basic/Targets/PPC.h#L377-L383
+Yes.
+> 
+> > +	/*
+> > +	 * In ultravisor enabled systems, the ultravisor maintains the partition
+> > +	 * table in secure memory where we don't have access, therefore, we have
+> > +	 * to do a ucall to set an entry.
+> > +	 */
+> > +	if (firmware_has_feature(FW_FEATURE_ULTRAVISOR)) {
+> > +		uv_register_pate(lpid, dw0, dw1);
+> > +		pr_info("PATE registered by ultravisor: dw0 = 0x%lx, dw1 = 0x%lx\n",
+> > +			dw0, dw1);
+> > +	} else {
+> > +		flush_partition(lpid, old);
+> > +	}
+> 
+> What is different is whether we flush or not.
 
-Adding a debug print out in the PPC64TargetInfo constructor after line
-383 above shows this:
+only differences are where the partition table used by hardware is stored
+(secure memory) and updated (in UV, with higher privilege).
 
-$ echo | ./clang -E --target=powerpc64-linux -mbig-endian -o /dev/null -
-Default ABI: elfv1
+> 
+> And don't we still need to do the flush for the nestMMU? I assume we're
+> saying the ultravisor will broadcast a flush for us, which will also
+> handle the nestMMU case?
 
-$ echo | ./clang -E --target=powerpc64-linux -mlittle-endian -o /dev/null -
-Default ABI: elfv2
+The same sequence of instructions (as HV) are used in uv_register_pate()
+to flush partition and process scoped entries (so nest MMU would also be
+covered when NMMU sees the tlbie?)
 
-$ echo | ./clang -E --target=powerpc64le-linux -mbig-endian -o /dev/null -
-Default ABI: elfv1
+Thanks,
 
-$ echo | ./clang -E --target=powerpc64le-linux -mlittle-endian -o /dev/null -
-Default ABI: elfv2
-
-Don't specify -mabi when building with clang to avoid the build error
-with -m32 and not change any code generation.
-
--mcall-aixdesc is not an implemented flag in clang so it can be
-safely excluded as well, see commit 238abecde8ad ("powerpc: Don't
-use gcc specific options on clang").
-
-pseries_defconfig successfully builds after this patch and
-powernv_defconfig and ppc44x_defconfig don't regress.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/240
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
-
-v1 -> v2:
-
-* Improve commit message wording and explanation.
-* Add Daniel's reviewed-by.
-
- arch/powerpc/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index c345b79414a9..971b04bc753d 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -93,11 +93,13 @@ MULTIPLEWORD	:= -mmultiple
- endif
- 
- ifdef CONFIG_PPC64
-+ifndef CONFIG_CC_IS_CLANG
- cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
- cflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mcall-aixdesc)
- aflags-$(CONFIG_CPU_BIG_ENDIAN)		+= $(call cc-option,-mabi=elfv1)
- aflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mabi=elfv2
- endif
-+endif
- 
- ifndef CONFIG_CC_IS_CLANG
-   cflags-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -mno-strict-align
-@@ -144,6 +146,7 @@ endif
- endif
- 
- CFLAGS-$(CONFIG_PPC64)	:= $(call cc-option,-mtraceback=no)
-+ifndef CONFIG_CC_IS_CLANG
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2,$(call cc-option,-mcall-aixdesc))
- AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv2)
-@@ -152,6 +155,7 @@ CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcall-aixdesc)
- AFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mabi=elfv1)
- endif
-+endif
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mcmodel=medium,$(call cc-option,-mminimal-toc))
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
- 
--- 
-2.23.0
-
+Sukadev
