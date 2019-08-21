@@ -1,69 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2426C971E7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 08:10:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF2F9723E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 08:28:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Cy2454X5zDr1X
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 16:10:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CyR72rfzzDqjl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 16:28:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="reHp+aUs"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dg9s5b7r"; 
  dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Cy0L0p52zDqS7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 16:08:49 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id x4so2190875iog.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 23:08:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CyPV2kh1zDqP2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 16:27:09 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id o70so740219pfg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 23:27:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=S5NqQrU2lGJm2TfELqtdloWg5/NpdZQt47xr5cHEQRg=;
- b=reHp+aUs9+YZfbATtvNdcdngvAETHTwDLNMn7jQVMNcWEgIWr2SikrGaGccp+aosUR
- nDNC2RnlZMc4ltynztvcNmLNLDIYvHaxp1MXTdQlR/FNnHXsWH9KdZrOBZgP9FIqWgVW
- IqmBS7tl4WyEng+ICppMwDrMAQEohMHC3PFztbA+VH9j79Vz/SqGDExPVgqZFLfAKIq6
- 844DEq/PyJEpJ031kNj9p2YvLifMqCKG4/WdgXerEEqn3HkIFk3BqJiOdGy1X1dFt3w/
- quvtQes0DxJF85G3WdpLqu9ypwmTfqCflJcvkvwp78R1Ybo3WaSgZLdBBoaLoDkMnQIP
- 001g==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Gn10+3SqpCmyRBAvFi5/AgyLnuNqA/4EEBKTPhN5g40=;
+ b=dg9s5b7rHwxOWxAdAj+2Pn58PE3+mi4ar8IEQLM9GS+bRxTvsEU2tjvZpo5HXuEq/l
+ 3n1sGsr/j/airWx8sZjQqtnZhfO1jsN0pAecDUl3PO8IB3iRe75knStG0l0//MvkUyen
+ LLNN1o3q8hB5mLIc/zbMVE08LlilFiblpNCQJn1IvcjSN843swXo+fmapKiDhFDTyRxo
+ OFCaFDrRxzFp9QlfrsQx/qeAYEiEyyb88QfvjKCFxmKnneOyIE7CA5afvhJXJwm06q4F
+ ep/chT7dAz08ChOYpt887CUupVV6aPFOP15S1quPzPJTZJK482ZG3RaSc0iqAs6MpY96
+ C6gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=S5NqQrU2lGJm2TfELqtdloWg5/NpdZQt47xr5cHEQRg=;
- b=TkYaUmrUD9513Xp/+WnOvZ+bEXaU+4ySAtxHtTP+wdaMYrn7bDhRA4ynPNkoaUejhJ
- 0uGu68BDOfALlO1EO6t1VBIrX6cotIcOf6jnyEkjqdqmiaILH5JxVvPWY2Q6Xj9tJcZM
- vLehH/b9A1aZ1iFYyQjnbMvuxGHoUYDFBiPhjk4Pmu9r+kA6DyyAh4sCvUT0hYvQSyxJ
- /3EK46GUZomXNsMoAWewfrco8wwMg5cdalUypf/p6SGCqYFgbTBp3a0RE5mxE4Pe4mfH
- 24C2vauI1PApGHkfYr8KXeiQeF/fHWdXuvD7FdsYxsgn4nKHhHxkLGVD0moucLQDKyQr
- 6kxg==
-X-Gm-Message-State: APjAAAVu3IpnZn5EqKmYFbf0pto38AAOjaiRSBNX2VaiNTL4Qibmbq3c
- gava5eDP98ophkRVgbXbQ3fQvikrjEF0mFG8+ZhNM6H3
-X-Google-Smtp-Source: APXvYqxsJv34SH9hH2POroilaR4MD4UXOfV4Pq8jaGwZncUOvz6LSGgbs3x7XTGWaVtYBFxWVlWtAhb8bUpOwPbgEQI=
-X-Received: by 2002:a02:ac84:: with SMTP id x4mr8062206jan.2.1566367726357;
- Tue, 20 Aug 2019 23:08:46 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Gn10+3SqpCmyRBAvFi5/AgyLnuNqA/4EEBKTPhN5g40=;
+ b=Ok4/NQdF0ZENWiycbVgy4N66TjAPE3545VbufmJa6cudFDU6aKpTRxqc+DqAyAv4Xd
+ s0PoLm53eNUDdG4/q8Baeq8j6Y85ipTagkPk7JP5+yc1qcLQvu0g+NpnibctJ0XcC7UE
+ hkQXWykTZtLM52PpHObsifJVy8ZYdIOpkAluGEYbbG3O7S9AewqU3P0cz6EPYNpD6EuR
+ 4Qb8ZX0oHASF73DWuoGC+gSg2jjuogg+GbcwvMbmViRwvlrsaxFUAqegqAQ9vnVJ6wS7
+ zSy7kUoKWIBgVem5Tlrf3x2nvehXGCe7lbbdPzMdT75ZpuAG7Ns2Eeq0fcCFRc6bDPuK
+ D6vg==
+X-Gm-Message-State: APjAAAXMBZOKn6VnIrL/yaYfqqa5BNZy2iRsgNEipBwgdGLfQL8nGgIj
+ o5blOAi6R+/9LiMZMnrRGRMC+9vS
+X-Google-Smtp-Source: APXvYqw877aA32Ur0s/I1cP9/VEVeTVHZP5cJsdMfqCxzQxRmtnu55t0xIYWnP4E5hN0CUTtZ0fquA==
+X-Received: by 2002:aa7:8559:: with SMTP id y25mr33456308pfn.260.1566368827875; 
+ Tue, 20 Aug 2019 23:27:07 -0700 (PDT)
+Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id v27sm34694103pgn.76.2019.08.20.23.27.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Aug 2019 23:27:07 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/3] powerpc/sriov: Remove VF eeh_dev state when disabling
+ SR-IOV
+Date: Wed, 21 Aug 2019 16:26:53 +1000
+Message-Id: <20190821062655.19735-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190821040935.13071-1-anju@linux.vnet.ibm.com>
- <CAOSf1CGj1k3nmfBYp9-TWo+V4sbLRXBcFzrbq25hm2YWtW4MWA@mail.gmail.com>
- <94672ed1-59fc-3a51-658d-364481418d8c@linux.vnet.ibm.com>
-In-Reply-To: <94672ed1-59fc-3a51-658d-364481418d8c@linux.vnet.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 21 Aug 2019 16:08:35 +1000
-Message-ID: <CAOSf1CFPrhJoXYmV6E4rHZSSeFbYO3bYV7=r4v1x4Vwz19=0KA@mail.gmail.com>
-Subject: Re: [PATCH] platform/powernv: Avoid re-registration of imc debugfs
- directory
-To: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,47 +77,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: sbobroff@linux.ibm.com, Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 21, 2019 at 3:37 PM Anju T Sudhakar <anju@linux.vnet.ibm.com> wrote:
->
-> Hi,
->
-> On 8/21/19 10:16 AM, Oliver O'Halloran wrote:
-> > Is there a reason why we create the debugfs directory here and not in
-> > opal_imc_counters_probe()? There's logic to remove the debugfs
-> > directory in _probe() already so it seems like a more natural place to
-> > it.
-> >
-> Good point. But we can only create the parent directory,
-> i.e 'imc' directory in `_probe()` function and the entries can be
-> created only here.
+When disabling virtual functions on an SR-IOV adapter we currently do not
+correctly remove the EEH state for the now-dead virtual functions. When
+removing the pci_dn that was created for the VF when SR-IOV was enabled
+we free the corresponding eeh_dev without removing it from the child device
+list of the eeh_pe that contained it. This can result in crashes due to the
+use-after-free.
 
-I know the entries can't be added in the probe function and I'm not
-suggesting they should be.
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+No Fixes: here since I'm not sure if the commit that added this actually
+introduced the bug. EEH is amazing.
 
-> The reason is, this debugfs entries are only for
-> IMC nest units. So, to get the imc mode and command values from
-> the nest memory region we need the relevant offsets from the control
-> block structure.
->
-> Since imc_get_mem_addr_nest() function reads this address
-> for each chip, we invoke the function to create the debugfs
-> entries after this values are populated(i.e export_imc_mode_and_cmd() in
-> invoked by imc_get_mem_addr_nest()).
->
-> Also, if we create the parent directory in `_probe()` function,
-> we need to track whether the entries(i.e imc_cmd and imc_mode) are
-> created or not.
+I suspect backporting this would cause more problems than it solves since
+reliably replicating the crash required enabling memory poisoning and
+hacking a device driver to remove the PCI error handling callbacks so
+the EEH fallback path (which removes and re-probes PCI devices)
+would be used.
+---
+ arch/powerpc/kernel/pci_dn.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-I think you should be tracking this anyway so you can do proper
-cleanup if a debugfs entry can't be added. The current approach of
-nuking the entire debugfs directory is pretty questionable.
+diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+index 6556b57..795c4e3 100644
+--- a/arch/powerpc/kernel/pci_dn.c
++++ b/arch/powerpc/kernel/pci_dn.c
+@@ -244,9 +244,22 @@ void remove_dev_pci_data(struct pci_dev *pdev)
+ 				continue;
+ 
+ #ifdef CONFIG_EEH
+-			/* Release EEH device for the VF */
++			/*
++			 * Release EEH state for this VF. The PCI core
++			 * has already torn down the pci_dev for this VF, but
++			 * we're responsible to removing the eeh_dev since it
++			 * has the same lifetime as the pci_dn that spawned it.
++			 */
+ 			edev = pdn_to_eeh_dev(pdn);
+ 			if (edev) {
++				/*
++				 * We allocate pci_dn's for the totalvfs count,
++				 * but only only the vfs that were activated
++				 * have a configured PE.
++				 */
++				if (edev->pe)
++					eeh_rmv_from_parent_pe(edev);
++
+ 				pdn->edev = NULL;
+ 				kfree(edev);
+ 			}
+-- 
+2.9.5
 
-> Regards,
->
-> Anju
->
