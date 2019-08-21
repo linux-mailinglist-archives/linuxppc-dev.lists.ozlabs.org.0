@@ -1,87 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B69296EC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 03:17:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0084A96F0C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 03:51:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CqXH01B9zDr41
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 11:17:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CrGy5v8WzDrFK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 11:51:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+8278da87f424520a76ac+5841+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="MQBLmHoe"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CqRG3mg5zDrQd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 11:13:14 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7L1CRa8057474
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 21:13:12 -0400
-Received: from e34.co.us.ibm.com (e34.co.us.ibm.com [32.97.110.152])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ugqbfaffj-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 21:13:12 -0400
-Received: from localhost
- by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
- Wed, 21 Aug 2019 02:13:11 +0100
-Received: from b03cxnp08026.gho.boulder.ibm.com (9.17.130.18)
- by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 21 Aug 2019 02:13:08 +0100
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7L1D7E835062186
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Aug 2019 01:13:07 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 16B88C6057;
- Wed, 21 Aug 2019 01:13:07 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BDA45C6055;
- Wed, 21 Aug 2019 01:13:05 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.187.8])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 21 Aug 2019 01:13:05 +0000 (GMT)
-References: <20190715082702.27308-1-svens@stackframe.org>
- <20190715082702.27308-5-svens@stackframe.org>
- <87v9urmixq.fsf@morokweng.localdomain>
-User-agent: mu4e 1.2.0; emacs 26.2
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: kexec@lists.infradead.org
-Subject: Re: [PATCH v4 4/7] kexec_elf: remove PURGATORY_STACK_SIZE
-In-reply-to: <87v9urmixq.fsf@morokweng.localdomain>
-Date: Tue, 20 Aug 2019 22:13:01 -0300
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CrDv6SH5zDqhs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 11:49:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=SGtyDfOk7ztf7e1zq8UPqa3xUIMnaYAeWahTWcEr7d4=; b=MQBLmHoexH6YgdK4vldQKz4da
+ 8RAZW2Yi8DxJxQAlpwgczYaEaHM1c41vT1AnkpoCnNqXbGnGTNghSk0fVikznf0kIEi0v+5N5r8g1
+ /6oblkV7iXrJ3a45Axj84aDQZSNiq8kQRjY+HUCF8V1Py56nJy0hBCl9/lpFyn+yndcDaRZqJkzVt
+ bIi8Pv29Kk3FsfaRxdzwIJpj8AfPIsMMPyFdhswi9/+xmIhUaAbFj+F5czW5zAlG2znKGKTxCbpT/
+ UF3RHjXmL4RitId7QozMvfJ4mmRlqlKtKIA6x7b3LDsgzeXJblkyLmEfssdO0Km6aGAzq3az5/zkW
+ SJ4UIFkeA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1i0FkA-0003gm-R5; Wed, 21 Aug 2019 01:48:58 +0000
+Date: Tue, 20 Aug 2019 18:48:58 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH] btrfs: fix allocation of bitmap pages.
+Message-ID: <20190821014858.GA9158@infradead.org>
+References: <20190817074439.84C6C1056A3@localhost.localdomain>
+ <20190819174600.GN24086@twin.jikos.cz>
+ <20190820023031.GC9594@infradead.org>
+ <6f99b73c-db8f-8135-b827-0a135734d7da@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19082101-0016-0000-0000-000009DD7DFE
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011626; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01249764; UDB=6.00659776; IPR=6.01031313; 
- MB=3.00028251; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-21 01:13:09
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082101-0017-0000-0000-0000447D6993
-Message-Id: <87o90jmici.fsf@morokweng.localdomain>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-21_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=884 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908210008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f99b73c-db8f-8135-b827-0a135734d7da@suse.cz>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,45 +67,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, deller@gmx.de,
- Sven Schnelle <svens@stackframe.org>
+Cc: erhard_f@mailbox.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Dave Chinner <david@fromorbit.com>, Josef Bacik <josef@toxicpanda.com>,
+ stable@vger.kernel.org, dsterba@suse.cz, Christoph Hellwig <hch@infradead.org>,
+ Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Aug 20, 2019 at 01:06:25PM +0200, Vlastimil Babka wrote:
+> > The whole point of copy_page is to copy exactly one page and it makes
+> > sense to assume that is aligned.  A sane memcpy would use the same
+> > underlying primitives as well after checking they fit.  So I think the
+> > prime issue here is btrfs' use of copy_page instead of memcpy.  The
+> > secondary issue is slub fucking up alignments for no good reason.  We
+> > just got bitten by that crap again in XFS as well :(
+> 
+> Meh, I should finally get back to https://lwn.net/Articles/787740/ right
 
-Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
+Yes.  For now Dave came up with an idea for a workaround that will
+be forward-compatible with that:
 
-> Sven Schnelle <svens@stackframe.org> writes:
->
->> It's not used anywhere so just drop it.
->>
->> Signed-off-by: Sven Schnelle <svens@stackframe.org>
->> ---
->>  kernel/kexec_elf.c | 2 --
->>  1 file changed, 2 deletions(-)
->>
->> diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
->> index effe9dc0b055..70d31b8feeae 100644
->> --- a/kernel/kexec_elf.c
->> +++ b/kernel/kexec_elf.c
->> @@ -8,8 +8,6 @@
->>  #include <linux/slab.h>
->>  #include <linux/types.h>
->>  
->> -#define PURGATORY_STACK_SIZE	(16 * 1024)
->> -
->>  #define elf_addr_to_cpu	elf64_to_cpu
->>  
->>  #ifndef Elf_Rel
->
-> Can you remove it from the file in arch/powerpc as well?
-
-Sorry, forgot to add:
-
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
-
+https://www.spinics.net/lists/linux-xfs/msg30521.html
