@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B8C96EAE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 03:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F287196EB4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 03:12:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46CqLZ6xRRzDqbs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 11:09:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46CqQt69L4zDqcT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 11:12:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,66 +19,62 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46CqBf3KpzzDrBm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 11:02:18 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7L11sve077442
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 21:02:15 -0400
-Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ugtf7k1bb-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 21:02:15 -0400
-Received: from localhost
- by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
- Wed, 21 Aug 2019 02:02:14 +0100
-Received: from b03cxnp07029.gho.boulder.ibm.com (9.17.130.16)
- by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 21 Aug 2019 02:02:12 +0100
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7L12BJf60424694
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46CqDM45YjzDqN5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 11:03:47 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7L11xVs115062; Tue, 20 Aug 2019 21:03:42 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ugu9csd5x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Aug 2019 21:03:42 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7L122q1115444;
+ Tue, 20 Aug 2019 21:03:42 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ugu9csd5g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Aug 2019 21:03:42 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7L0uQdC020596;
+ Wed, 21 Aug 2019 00:58:41 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma05wdc.us.ibm.com with ESMTP id 2ue9761cyn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Aug 2019 00:58:41 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7L0wfG122348276
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Aug 2019 01:02:11 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C1B8078060;
- Wed, 21 Aug 2019 01:02:11 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25F537805E;
- Wed, 21 Aug 2019 01:02:10 +0000 (GMT)
+ Wed, 21 Aug 2019 00:58:41 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 09B5EAE05C;
+ Wed, 21 Aug 2019 00:58:41 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DC2F8AE062;
+ Wed, 21 Aug 2019 00:58:39 +0000 (GMT)
 Received: from morokweng.localdomain (unknown [9.85.187.8])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 21 Aug 2019 01:02:09 +0000 (GMT)
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Wed, 21 Aug 2019 00:58:39 +0000 (GMT)
 References: <20190715082702.27308-1-svens@stackframe.org>
- <20190715082702.27308-7-svens@stackframe.org>
+ <20190715082702.27308-2-svens@stackframe.org>
 User-agent: mu4e 1.2.0; emacs 26.2
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: kexec@lists.infradead.org
-Subject: Re: [PATCH v4 6/7] kexec_elf: remove unused variable in
- kexec_elf_load()
-In-reply-to: <20190715082702.27308-7-svens@stackframe.org>
-Date: Tue, 20 Aug 2019 22:02:06 -0300
+Subject: Re: [PATCH v4 1/7] kexec: add KEXEC_ELF
+In-reply-to: <20190715082702.27308-2-svens@stackframe.org>
+Date: Tue, 20 Aug 2019 21:58:35 -0300
+Message-ID: <87zhk3mj0k.fsf@morokweng.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
-x-cbid: 19082101-0004-0000-0000-000015374ADE
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011626; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01249760; UDB=6.00659774; IPR=6.01031309; 
- MB=3.00028251; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-21 01:02:14
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082101-0005-0000-0000-00008CF3BF72
-Message-Id: <87sgpvmiup.fsf@morokweng.localdomain>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-21_01:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=13 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1908210006
@@ -100,52 +96,103 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Sven Schnelle <svens@stackframe.org> writes:
+Hello Sven,
 
-> base was never assigned, so we can remove it.
->
-> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Sven Schnelle <svens@stackframe.org>
-> ---
->  kernel/kexec_elf.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
-> index e346659af324..9421eebbacf0 100644
-> --- a/kernel/kexec_elf.c
-> +++ b/kernel/kexec_elf.c
-> @@ -350,7 +350,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
->  			 struct kexec_buf *kbuf,
->  			 unsigned long *lowest_load_addr)
->  {
-> -	unsigned long base = 0, lowest_addr = UINT_MAX;
-> +	unsigned long lowest_addr = UINT_MAX;
->  	int ret;
->  	size_t i;
->  
-> @@ -372,7 +372,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
->  		kbuf->bufsz = size;
->  		kbuf->memsz = phdr->p_memsz;
->  		kbuf->buf_align = phdr->p_align;
-> -		kbuf->buf_min = phdr->p_paddr + base;
-> +		kbuf->buf_min = phdr->p_paddr;
->  		ret = kexec_add_buffer(kbuf);
->  		if (ret)
->  			goto out;
-> @@ -382,9 +382,6 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
->  			lowest_addr = load_addr;
->  	}
->  
-> -	/* Update entry point to reflect new load address. */
-> -	ehdr->e_entry += base;
-> -
->  	*lowest_load_addr = lowest_addr;
->  	ret = 0;
->   out:
+Just a few small comments below. Regardless of them:
 
 Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
--- 
+Sven Schnelle <svens@stackframe.org> writes:
+
+> Right now powerpc provides an implementation to read elf files
+> with the kexec_file() syscall. Make that available as a public
+
+Nit: the syscall is kexec_file_load()
+
+> kexec interface so it can be re-used on other architectures.
+>
+> Signed-off-by: Sven Schnelle <svens@stackframe.org>
+> ---
+>  arch/Kconfig                                  |   3 +
+>  arch/powerpc/Kconfig                          |   1 +
+>  arch/powerpc/kernel/kexec_elf_64.c            | 551 +-----------------
+>  include/linux/kexec.h                         |  24 +
+>  kernel/Makefile                               |   1 +
+>  .../kexec_elf_64.c => kernel/kexec_elf.c      | 199 ++-----
+>  6 files changed, 75 insertions(+), 704 deletions(-)
+>  copy arch/powerpc/kernel/kexec_elf_64.c => kernel/kexec_elf.c (71%)
+
+<snip>
+
+> diff --git a/arch/powerpc/kernel/kexec_elf_64.c b/arch/powerpc/kernel/kexec_elf_64.c
+> index ba4f18a43ee8..30bd57a93c17 100644
+> --- a/arch/powerpc/kernel/kexec_elf_64.c
+> +++ b/arch/powerpc/kernel/kexec_elf_64.c
+> @@ -1,3 +1,4 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+>  /*
+>   * Load ELF vmlinux file for the kexec_file_load syscall.
+>   *
+> @@ -10,15 +11,6 @@
+>   * Based on kexec-tools' kexec-elf-exec.c and kexec-elf-ppc64.c.
+>   * Heavily modified for the kernel by
+>   * Thiago Jung Bauermann <bauerman@linux.vnet.ibm.com>.
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License as published by
+> - * the Free Software Foundation (version 2 of the License).
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+>   */
+>
+>  #define pr_fmt(fmt)	"kexec_elf: " fmt
+> @@ -39,532 +31,6 @@
+>  #define Elf_Rel		Elf64_Rel
+>  #endif /* Elf_Rel */
+
+Perhaps this patch could remove the #define for elf_addr_to_cpu since
+it's not used anymore in this file?
+
+> diff --git a/arch/powerpc/kernel/kexec_elf_64.c b/kernel/kexec_elf.c
+> similarity index 71%
+> copy from arch/powerpc/kernel/kexec_elf_64.c
+> copy to kernel/kexec_elf.c
+> index ba4f18a43ee8..6e9f52171ede 100644
+> --- a/arch/powerpc/kernel/kexec_elf_64.c
+> +++ b/kernel/kexec_elf.c
+> @@ -1,33 +1,10 @@
+> -/*
+> - * Load ELF vmlinux file for the kexec_file_load syscall.
+> - *
+> - * Copyright (C) 2004  Adam Litke (agl@us.ibm.com)
+> - * Copyright (C) 2004  IBM Corp.
+> - * Copyright (C) 2005  R Sharada (sharada@in.ibm.com)
+> - * Copyright (C) 2006  Mohan Kumar M (mohan@in.ibm.com)
+> - * Copyright (C) 2016  IBM Corporation
+> - *
+> - * Based on kexec-tools' kexec-elf-exec.c and kexec-elf-ppc64.c.
+> - * Heavily modified for the kernel by
+> - * Thiago Jung Bauermann <bauerman@linux.vnet.ibm.com>.
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License as published by
+> - * the Free Software Foundation (version 2 of the License).
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - */
+> +// SPDX-License-Identifier: GPL-2.0-only
+
+I may be wrong, but my understanding of the SPDX license identifier is
+that it substitutes the license text (i.e., the last two paragraphs
+above), but not the copyright statements. Is it ok to have a file with a
+SPDX license identifier but no copyright statement?
+
+--
 Thiago Jung Bauermann
 IBM Linux Technology Center
-
