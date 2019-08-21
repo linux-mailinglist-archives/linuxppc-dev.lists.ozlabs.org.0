@@ -1,67 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA15197714
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 12:25:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2C897722
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 12:28:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46D3hf1PXhzDr6Z
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 20:25:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46D3m24w0FzDqQn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 20:28:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="kx7OwaVt"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46D3bC145szDqsN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 20:20:55 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46D3b56w75z9v00k;
- Wed, 21 Aug 2019 12:20:49 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=kx7OwaVt; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 5mxKnH78Nl8v; Wed, 21 Aug 2019 12:20:49 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46D3b55tB3z9v00j;
- Wed, 21 Aug 2019 12:20:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566382849; bh=N68GV62YPUP85s+ntUba1TxmZ6DCcu8UBUiNuPYWgF8=;
- h=From:Subject:To:Cc:Date:From;
- b=kx7OwaVtbU13+k4R8hFKFj7L3+ERcqPtEnofI7l+KTcRB2lBCew3WZ6KyXIT5bjLd
- rRiLtKj4lPRh98+ZGiTwlFHrcarZane7eQLeBTzbHXKm/AIsP+Sc9kQCIw140I7oW8
- jiQGwGaCBiGRlBVrwxmIvoLy7szqOwW3XcvHVpuU=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BBA808B7E2;
- Wed, 21 Aug 2019 12:20:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CtQxMFt3XWIt; Wed, 21 Aug 2019 12:20:51 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9E9458B7E0;
- Wed, 21 Aug 2019 12:20:51 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 59EB96B73E; Wed, 21 Aug 2019 10:20:51 +0000 (UTC)
-Message-Id: <54f67bb7ac486c1350f2fa8905cd279f94b9dfb1.1566382841.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/8xx: set STACK_END_MAGIC earlier on the init_stack
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 21 Aug 2019 10:20:51 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46D3hf1GT5zDr5k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 20:25:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46D3hP6b02z9sN4;
+ Wed, 21 Aug 2019 20:25:24 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jiong Wang <jiong.wang@netronome.com>
+Subject: Regression fix for bpf in v5.3 (was Re: [RFC PATCH] bpf: handle
+ 32-bit zext during constant blinding)
+In-Reply-To: <20190813171018.28221-1-naveen.n.rao@linux.vnet.ibm.com>
+References: <20190813171018.28221-1-naveen.n.rao@linux.vnet.ibm.com>
+Date: Wed, 21 Aug 2019 20:25:17 +1000
+Message-ID: <87d0gy6cj6.fsf@concordia.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,43 +46,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today, the STACK_END_MAGIC is set on init_stack in start_kernel().
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Since BPF constant blinding is performed after the verifier pass, there
+> are certain ALU32 instructions inserted which don't have a corresponding
+> zext instruction inserted after. This is causing a kernel oops on
+> powerpc and can be reproduced by running 'test_cgroup_storage' with
+> bpf_jit_harden=2.
+>
+> Fix this by emitting BPF_ZEXT during constant blinding if
+> prog->aux->verifier_zext is set.
+>
+> Fixes: a4b1d3c1ddf6cb ("bpf: verifier: insert zero extension according to analysis result")
+> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> ---
+> This approach (the location where zext is being introduced below, in 
+> particular) works for powerpc, but I am not entirely sure if this is 
+> sufficient for other architectures as well. This is broken on v5.3-rc4.
 
-To avoid a false 'Thread overran stack, or stack corrupted' message
-on early Oopses, setup STACK_END_MAGIC as soon as possible.
+Any comment on this?
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/kernel/head_8xx.S | 4 ++++
- 1 file changed, 4 insertions(+)
+This is a regression in v5.3, which results in a kernel crash, it would
+be nice to get it fixed before the release please?
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 5ab9178c2347..b8ca5b43e587 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -15,6 +15,7 @@
-  */
- 
- #include <linux/init.h>
-+#include <linux/magic.h>
- #include <asm/processor.h>
- #include <asm/page.h>
- #include <asm/mmu.h>
-@@ -741,6 +742,9 @@ start_here:
- 	/* stack */
- 	lis	r1,init_thread_union@ha
- 	addi	r1,r1,init_thread_union@l
-+	lis	r0, STACK_END_MAGIC@h
-+	ori	r0, r0, STACK_END_MAGIC@l
-+	stw	r0, 0(r1)
- 	li	r0,0
- 	stwu	r0,THREAD_SIZE-STACK_FRAME_OVERHEAD(r1)
- 
--- 
-2.13.3
+cheers
 
+> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+> index 8191a7db2777..d84146e6fd9e 100644
+> --- a/kernel/bpf/core.c
+> +++ b/kernel/bpf/core.c
+> @@ -890,7 +890,8 @@ int bpf_jit_get_func_addr(const struct bpf_prog *prog,
+>  
+>  static int bpf_jit_blind_insn(const struct bpf_insn *from,
+>  			      const struct bpf_insn *aux,
+> -			      struct bpf_insn *to_buff)
+> +			      struct bpf_insn *to_buff,
+> +			      bool emit_zext)
+>  {
+>  	struct bpf_insn *to = to_buff;
+>  	u32 imm_rnd = get_random_int();
+> @@ -939,6 +940,8 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
+>  		*to++ = BPF_ALU32_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^ from->imm);
+>  		*to++ = BPF_ALU32_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+>  		*to++ = BPF_ALU32_REG(from->code, from->dst_reg, BPF_REG_AX);
+> +		if (emit_zext)
+> +			*to++ = BPF_ZEXT_REG(from->dst_reg);
+>  		break;
+>  
+>  	case BPF_ALU64 | BPF_ADD | BPF_K:
+> @@ -992,6 +995,10 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
+>  			off -= 2;
+>  		*to++ = BPF_ALU32_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^ from->imm);
+>  		*to++ = BPF_ALU32_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+> +		if (emit_zext) {
+> +			*to++ = BPF_ZEXT_REG(BPF_REG_AX);
+> +			off--;
+> +		}
+>  		*to++ = BPF_JMP32_REG(from->code, from->dst_reg, BPF_REG_AX,
+>  				      off);
+>  		break;
+> @@ -1005,6 +1012,8 @@ static int bpf_jit_blind_insn(const struct bpf_insn *from,
+>  	case 0: /* Part 2 of BPF_LD | BPF_IMM | BPF_DW. */
+>  		*to++ = BPF_ALU32_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^ aux[0].imm);
+>  		*to++ = BPF_ALU32_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+> +		if (emit_zext)
+> +			*to++ = BPF_ZEXT_REG(BPF_REG_AX);
+>  		*to++ = BPF_ALU64_REG(BPF_OR,  aux[0].dst_reg, BPF_REG_AX);
+>  		break;
+>  
+> @@ -1088,7 +1097,8 @@ struct bpf_prog *bpf_jit_blind_constants(struct bpf_prog *prog)
+>  		    insn[1].code == 0)
+>  			memcpy(aux, insn, sizeof(aux));
+>  
+> -		rewritten = bpf_jit_blind_insn(insn, aux, insn_buff);
+> +		rewritten = bpf_jit_blind_insn(insn, aux, insn_buff,
+> +						clone->aux->verifier_zext);
+>  		if (!rewritten)
+>  			continue;
+>  
+> -- 
+> 2.22.0
