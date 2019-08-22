@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EF199763
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 16:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF5099780
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 16:57:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46DnZc4GWFzDqvH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 00:52:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46DnhB1ygPzDqPK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 00:57:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,53 +19,53 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DnMG4fZWzDqZQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 00:43:06 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46DnMJ0bCjzDqZQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 00:43:07 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7MEeIh7137096
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 10:43:03 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uhuesvyjj-1
+ x7MEdo3N117556
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 10:43:06 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uhv9wteqs-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 10:43:03 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 10:43:05 -0400
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Thu, 22 Aug 2019 15:43:01 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Thu, 22 Aug 2019 15:43:03 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 22 Aug 2019 15:42:58 +0100
+ Thu, 22 Aug 2019 15:43:01 +0100
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7MEgvPb63176876
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7MEh0lm40894658
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Aug 2019 14:42:57 GMT
+ Thu, 22 Aug 2019 14:43:00 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87DFB4C040;
- Thu, 22 Aug 2019 14:42:57 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A193C4C04E;
+ Thu, 22 Aug 2019 14:43:00 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 891844C044;
- Thu, 22 Aug 2019 14:42:56 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A23334C052;
+ Thu, 22 Aug 2019 14:42:59 +0000 (GMT)
 Received: from srikart450.in.ibm.com (unknown [9.122.211.52])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 22 Aug 2019 14:42:56 +0000 (GMT)
+ Thu, 22 Aug 2019 14:42:59 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/3] powerpc/vphn: Check for error from hcall_vphn
-Date: Thu, 22 Aug 2019 20:12:33 +0530
+Subject: [PATCH 2/3] powerpc/numa: Early request for home node associativity
+Date: Thu, 22 Aug 2019 20:12:34 +0530
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190822144235.19398-1-srikar@linux.vnet.ibm.com>
 References: <20190822144235.19398-1-srikar@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19082214-0028-0000-0000-0000039286AA
+x-cbid: 19082214-0008-0000-0000-0000030BE21C
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082214-0029-0000-0000-00002454B253
-Message-Id: <20190822144235.19398-2-srikar@linux.vnet.ibm.com>
+x-cbparentid: 19082214-0009-0000-0000-00004A2A1132
+Message-Id: <20190822144235.19398-3-srikar@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-22_09:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -92,11 +92,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no point in unpacking associativity, if
-H_HOME_NODE_ASSOCIATIVITY hcall has returned an error.
+Currently the kernel detects if its running on a shared lpar platform
+and requests home node associativity before the scheduler sched_domains
+are setup. However between the time NUMA setup is initialized and the
+request for home node associativity, workqueue initializes its per node
+cpumask. The per node workqueue possible cpumask may turn invalid
+after home node associativity resulting in weird situations like
+workqueue possible cpumask being a subset of workqueue online cpumask.
 
-Also added error messages for H_PARAMETER and default case in
-vphn_get_associativity.
+This can be fixed by requesting home node associativity earlier just
+before NUMA setup. However at the NUMA setup time, kernel may not be in
+a position to detect if its running on a shared lpar platform. So
+request for home node associativity and if the request fails, fallback
+on the device tree property.
+
+However home node associativity requires cpu's hwid which is set in
+smp_setup_pacas. Hence call smp_setup_pacas before numa_setup_cpus.
 
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
@@ -106,58 +117,79 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Reported-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
 Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
 ---
- arch/powerpc/mm/numa.c                | 16 +++++++++++++---
- arch/powerpc/platforms/pseries/vphn.c |  3 ++-
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/setup-common.c |  5 +++--
+ arch/powerpc/mm/numa.c             | 28 +++++++++++++++++++++++++++-
+ 2 files changed, 30 insertions(+), 3 deletions(-)
 
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 1f8db66..9135dba 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -888,6 +888,9 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Check the SMT related command line arguments (ppc64). */
+ 	check_smt_enabled();
+ 
++#ifdef CONFIG_SMP
++	smp_setup_pacas();
++#endif
+ 	/* Parse memory topology */
+ 	mem_topology_setup();
+ 
+@@ -899,8 +902,6 @@ void __init setup_arch(char **cmdline_p)
+ 	 * so smp_release_cpus() does nothing for them.
+ 	 */
+ #ifdef CONFIG_SMP
+-	smp_setup_pacas();
+-
+ 	/* On BookE, setup per-core TLB data structures. */
+ 	setup_tlb_core_data();
+ 
 diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 50d68d2..88b5157 100644
+index 88b5157..7965d3b 100644
 --- a/arch/powerpc/mm/numa.c
 +++ b/arch/powerpc/mm/numa.c
-@@ -1191,6 +1191,10 @@ static long vphn_get_associativity(unsigned long cpu,
- 				VPHN_FLAG_VCPU, associativity);
+@@ -461,6 +461,21 @@ static int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+ 	return nid;
+ }
  
- 	switch (rc) {
-+	case H_SUCCESS:
-+		dbg("VPHN hcall succeeded. Reset polling...\n");
-+		timed_topology_update(0);
-+		break;
- 	case H_FUNCTION:
- 		printk_once(KERN_INFO
- 			"VPHN is not supported. Disabling polling...\n");
-@@ -1202,9 +1206,15 @@ static long vphn_get_associativity(unsigned long cpu,
- 			"preventing VPHN. Disabling polling...\n");
- 		stop_topology_update();
- 		break;
--	case H_SUCCESS:
--		dbg("VPHN hcall succeeded. Reset polling...\n");
--		timed_topology_update(0);
-+	case H_PARAMETER:
-+		printk(KERN_ERR
-+			"hcall_vphn() was passed an invalid parameter."
-+			"Disabling polling...\n");
-+		break;
-+	default:
-+		printk(KERN_ERR
-+			"hcall_vphn() returned %ld. Disabling polling \n", rc);
-+		stop_topology_update();
- 		break;
++static int vphn_get_nid(unsigned long cpu)
++{
++	__be32 associativity[VPHN_ASSOC_BUFSIZE] = {0};
++	long rc;
++
++	/* Use associativity from first thread for all siblings */
++	rc = hcall_vphn(get_hard_smp_processor_id(cpu),
++				VPHN_FLAG_VCPU, associativity);
++
++	if (rc == H_SUCCESS)
++		return  associativity_to_nid(associativity);
++
++	return NUMA_NO_NODE;
++}
++
+ /*
+  * Figure out to which domain a cpu belongs and stick it there.
+  * Return the id of the domain used.
+@@ -490,7 +505,18 @@ static int numa_setup_cpu(unsigned long lcpu)
+ 			goto out;
  	}
  
-diff --git a/arch/powerpc/platforms/pseries/vphn.c b/arch/powerpc/platforms/pseries/vphn.c
-index 3f07bf6..cca474a 100644
---- a/arch/powerpc/platforms/pseries/vphn.c
-+++ b/arch/powerpc/platforms/pseries/vphn.c
-@@ -82,7 +82,8 @@ long hcall_vphn(unsigned long cpu, u64 flags, __be32 *associativity)
- 	long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
+-	nid = of_node_to_nid_single(cpu);
++	/*
++	 * On a shared lpar, the device tree might not have the correct node
++	 * associativity.  At this time lppaca, or its __old_status field
++	 * may not be updated. Hence request an explicit associativity
++	 * irrespective of whether the lpar is shared or dedicated.  Use the
++	 * device tree property as a fallback.
++	 */
++	if (firmware_has_feature(FW_FEATURE_VPHN))
++		nid = vphn_get_nid(lcpu);
++
++	if (nid == NUMA_NO_NODE)
++		nid = of_node_to_nid_single(cpu);
  
- 	rc = plpar_hcall9(H_HOME_NODE_ASSOCIATIVITY, retbuf, flags, cpu);
--	vphn_unpack_associativity(retbuf, associativity);
-+	if (rc == H_SUCCESS)
-+		vphn_unpack_associativity(retbuf, associativity);
- 
- 	return rc;
- }
+ out_present:
+ 	if (nid < 0 || !node_possible(nid))
 -- 
 1.8.3.1
 
