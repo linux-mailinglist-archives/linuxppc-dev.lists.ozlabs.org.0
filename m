@@ -2,33 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E94199566
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 15:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B25B99573
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 15:50:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Dm7J37XQzDqLT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 23:47:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46DmC35RzLzDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 23:50:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DlGm0cJCzDrQ2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 23:09:04 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46DlGn2MzZzDrQ3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 23:09:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46DlGl5D8rz9sPW; Thu, 22 Aug 2019 23:09:03 +1000 (AEST)
+ id 46DlGn0WwZz9sPX; Thu, 22 Aug 2019 23:09:04 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 7c7a532ba3fc51bf9527d191fb410786c1fdc73c
-In-Reply-To: <eb4d626514e22f85814830012642329018ef6af9.1565786091.git.christophe.leroy@c-s.fr>
+X-powerpc-patch-commit: ad628a34ec4e3558bf838195f60bbaa4c2b68f2a
+In-Reply-To: <f6267226038cb25a839b567319e240576e3f8565.1565793287.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH 1/5] powerpc/ptdump: fix addresses display on PPC32
-Message-Id: <46DlGl5D8rz9sPW@ozlabs.org>
-Date: Thu, 22 Aug 2019 23:09:03 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/mm: don't display empty early ioremap area
+Message-Id: <46DlGn0WwZz9sPX@ozlabs.org>
+Date: Thu, 22 Aug 2019 23:09:04 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,20 +45,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-08-14 at 12:36:09 UTC, Christophe Leroy wrote:
-> Commit 453d87f6a8ae ("powerpc/mm: Warn if W+X pages found on boot")
-> wrongly changed KERN_VIRT_START from 0 to PAGE_OFFSET, leading to a
-> shift in the displayed addresses.
+On Wed, 2019-08-14 at 14:36:10 UTC, Christophe Leroy wrote:
+> On the 8xx, the layout displayed at boot is:
 > 
-> Lets revert that change to resync walk_pagetables()'s addr val and
-> pgd_t pointer for PPC32.
+> [    0.000000] Memory: 121856K/131072K available (5728K kernel code, 592K rwdata, 1248K rodata, 560K init, 448K bss, 9216K reserved, 0K cma-reserved)
+> [    0.000000] Kernel virtual memory layout:
+> [    0.000000]   * 0xffefc000..0xffffc000  : fixmap
+> [    0.000000]   * 0xffefc000..0xffefc000  : early ioremap
+> [    0.000000]   * 0xc9000000..0xffefc000  : vmalloc & ioremap
+> [    0.000000] SLUB: HWalign=16, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
 > 
-> Fixes: 453d87f6a8ae ("powerpc/mm: Warn if W+X pages found on boot")
-> Cc: stable@vger.kernel.org
+> Remove display of an empty early ioremap.
+> 
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Series applied to powerpc next, thanks.
+Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/7c7a532ba3fc51bf9527d191fb410786c1fdc73c
+https://git.kernel.org/powerpc/c/ad628a34ec4e3558bf838195f60bbaa4c2b68f2a
 
 cheers
