@@ -2,70 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F549999D9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 19:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B3099A8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 19:14:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46DrYl3KzmzDrfM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 03:07:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Drjq0rzMzDrNG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 03:14:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kalray.eu
- (client-ip=92.103.151.219; helo=zimbra2.kalray.eu;
- envelope-from=mrybczyn@kalray.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=kalray.eu
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kalray.eu header.i=@kalray.eu header.b="bQHqxiTt"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="YgpviCCu"; 
  dkim-atps=neutral
-X-Greylist: delayed 482 seconds by postgrey-1.36 at bilbo;
- Thu, 22 Aug 2019 22:46:09 AEST
-Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [92.103.151.219])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DkmK2NgfzDrPr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 22:46:08 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id CD98627E65B3;
- Thu, 22 Aug 2019 14:37:59 +0200 (CEST)
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id T1iT1EPvEIoG; Thu, 22 Aug 2019 14:37:59 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 5F90927E666C;
- Thu, 22 Aug 2019 14:37:59 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 5F90927E666C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1566477479;
- bh=aQw9A1g9cI3XUpS8jFSOKdXpFdrtxIkLZL7+5zjNWQw=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=bQHqxiTtjUjcVlq87ck/i4HrMC1cZMLAPt+wSXhifDKwGWfkWyiK0QMj0Ccm0I7Ds
- /X+oCb+mrqw0cibbGWNAJFWQc9HwmLCJjsM/56f4SjAh0j9rHZjf0FeW7fVN++WNpa
- NsIsiNgvL+3xhuq6V2A6+dRgRq8xl4PNEhh9Vyg8=
-X-Virus-Scanned: amavisd-new at zimbra2.kalray.eu
-Received: from zimbra2.kalray.eu ([127.0.0.1])
- by localhost (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id woZOGyPyypH8; Thu, 22 Aug 2019 14:37:59 +0200 (CEST)
-Received: from zimbra2.kalray.eu (zimbra2.kalray.eu [192.168.40.202])
- by zimbra2.kalray.eu (Postfix) with ESMTP id 47D0927E65B3;
- Thu, 22 Aug 2019 14:37:59 +0200 (CEST)
-Date: Thu, 22 Aug 2019 14:37:59 +0200 (CEST)
-From: Marta Rybczynska <mrybczyn@kalray.eu>
-To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-Message-ID: <1907682156.57687176.1566477479224.JavaMail.zimbra@kalray.eu>
-In-Reply-To: <20190816165101.911-2-s.miroshnichenko@yadro.com>
-References: <20190816165101.911-1-s.miroshnichenko@yadro.com>
- <20190816165101.911-2-s.miroshnichenko@yadro.com>
-Subject: Re: [PATCH v5 01/23] PCI: Fix race condition in
- pci_enable/disable_device()
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Drf729GqzDqtG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 03:11:11 +1000 (AEST)
+Received: from localhost (wsip-184-188-36-2.sd.sd.cox.net [184.188.36.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 821062089E;
+ Thu, 22 Aug 2019 17:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1566493868;
+ bh=Eu5zYHsgZr/DzgkYZtrV8Xf3yPbZrB6F/5Aa3SVutiA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=YgpviCCuEYOqne1wsEWgd6l+Gzkw+5xYBwggmYQtDll2PjCPqB1qmScWDXN1P/B5K
+ B/RNg/icssWR6AjcDPdeqSlGGxWCAS2rl4YBtOQnalt5AVfZm3e4ze3if6d5gFRY2x
+ +KvCpV/lo8jNDpZObQ1PLinLdtTKiva/GCEIEsL4=
+Date: Thu, 22 Aug 2019 10:11:08 -0700
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: next take at setting up a dma mask by default for platform
+ devices v2
+Message-ID: <20190822171108.GA17471@kroah.com>
+References: <20190816062435.881-1-hch@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.40.202]
-X-Mailer: Zimbra 8.8.12_GA_3794 (ZimbraWebClient - FF57 (Linux)/8.8.12_GA_3794)
-Thread-Topic: Fix race condition in pci_enable/disable_device()
-Thread-Index: O9C5qKK+P1vDneELlQbdEqY2P5q12A==
-X-Mailman-Approved-At: Fri, 23 Aug 2019 03:03:19 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190816062435.881-1-hch@lst.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,89 +58,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci <linux-pci@vger.kernel.org>,
- Srinath Mannam <srinath.mannam@broadcom.com>,
- Bjorn Helgaas <helgaas@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux@yadro.com
+Cc: linux-arch@vger.kernel.org, Gavin Li <git@thegavinli.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Mathias Nyman <mathias.nyman@intel.com>, Geoff Levand <geoff@infradead.org>,
+ Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ linux-usb@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>,
+ iommu@lists.linux-foundation.org,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ linux-m68k@lists.linux-m68k.org, Alan Stern <stern@rowland.harvard.edu>,
+ NXP Linux Team <linux-imx@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Minas Harutyunyan <hminas@synopsys.com>, Shawn Guo <shawnguo@kernel.org>,
+ Bin Liu <b-liu@ti.com>, linux-arm-kernel@lists.infradead.org,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Aug 16, 2019 at 08:24:29AM +0200, Christoph Hellwig wrote:
+> Hi all,
+> 
+> this is another attempt to make sure the dma_mask pointer is always
+> initialized for platform devices.  Not doing so lead to lots of
+> boilerplate code, and makes platform devices different from all our
+> major busses like PCI where we always set up a dma_mask.  In the long
+> run this should also help to eventually make dma_mask a scalar value
+> instead of a pointer and remove even more cruft.
+> 
+> The bigger blocker for this last time was the fact that the usb
+> subsystem uses the presence or lack of a dma_mask to check if the core
+> should do dma mapping for the driver, which is highly unusual.  So we
+> fix this first.  Note that this has some overlap with the pending
+> desire to use the proper dma_mmap_coherent helper for mapping usb
+> buffers.  The first two patches have already been queued up by Greg
+> and are only included for completeness.
 
+Note to everyone.  The first two patches in this series is already in
+5.3-rc5.
 
------ On 16 Aug, 2019, at 18:50, Sergey Miroshnichenko s.miroshnichenko@yadro.com wrote:
+I've applied the rest of the series to my usb-next branch (with the 6th
+patch landing there later today.)  They are scheduled to be merge to
+Linus in 5.4-rc1.
 
-> This is a yet another approach to fix an old [1-2] concurrency issue, when:
-> - two or more devices are being hot-added into a bridge which was
->   initially empty;
-> - a bridge with two or more devices is being hot-added;
-> - during boot, if BIOS/bootloader/firmware doesn't pre-enable bridges.
-> 
-> The problem is that a bridge is reported as enabled before the MEM/IO bits
-> are actually written to the PCI_COMMAND register, so another driver thread
-> starts memory requests through the not-yet-enabled bridge:
-> 
-> CPU0                                        CPU1
-> 
-> pci_enable_device_mem()                     pci_enable_device_mem()
->   pci_enable_bridge()                         pci_enable_bridge()
->     pci_is_enabled()
->       return false;
->     atomic_inc_return(enable_cnt)
->     Start actual enabling the bridge
->     ...                                         pci_is_enabled()
->     ...                                           return true;
->     ...                                     Start memory requests <-- FAIL
->     ...
->     Set the PCI_COMMAND_MEMORY bit <-- Must wait for this
-> 
-> Protect the pci_enable/disable_device() and pci_enable_bridge(), which is
-> similar to the previous solution from commit 40f11adc7cd9 ("PCI: Avoid race
-> while enabling upstream bridges"), but adding a per-device mutexes and
-> preventing the dev->enable_cnt from from incrementing early.
-> 
-> CC: Srinath Mannam <srinath.mannam@broadcom.com>
-> CC: Marta Rybczynska <mrybczyn@kalray.eu>
-> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-> 
-> [1]
-> https://lore.kernel.org/linux-pci/1501858648-22228-1-git-send-email-srinath.mannam@broadcom.com/T/#u
->    [RFC PATCH v3] pci: Concurrency issue during pci enable bridge
-> 
-> [2]
-> https://lore.kernel.org/linux-pci/744877924.5841545.1521630049567.JavaMail.zimbra@kalray.eu/T/#u
->    [RFC PATCH] nvme: avoid race-conditions when enabling devices
-> ---
-> drivers/pci/pci.c   | 26 ++++++++++++++++++++++----
-> drivers/pci/probe.c |  1 +
-> include/linux/pci.h |  1 +
-> 3 files changed, 24 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 1b27b5af3d55..e7f8c354e644 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -1645,6 +1645,8 @@ static void pci_enable_bridge(struct pci_dev *dev)
-> 	struct pci_dev *bridge;
-> 	int retval;
-> 
-> +	mutex_lock(&dev->enable_mutex);
-> +
-> 	bridge = pci_upstream_bridge(dev);
-> 	if (bridge)
-> 		pci_enable_bridge(bridge);
-> @@ -1652,6 +1654,7 @@ static void pci_enable_bridge(struct pci_dev *dev)
-> 	if (pci_is_enabled(dev)) {
-> 		if (!dev->is_busmaster)
-> 			pci_set_master(dev);
-> +		mutex_unlock(&dev->enable_mutex);
-> 		return;
-> 	}
-> 
+Christoph, thanks so much for these cleanups.
 
-This code is used by numerous drivers and when we've seen that issue I was wondering
-if there are some use-cases when this (or pci_disable_device) is called with interrupts
-disabled. It seems that it shouldn't be, but a BUG_ON or error when someone calls
-it this way would be helpful when debugging.
-
-Marta
+greg k-h
