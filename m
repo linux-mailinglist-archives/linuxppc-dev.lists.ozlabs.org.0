@@ -1,94 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7EF98768
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 00:32:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C639887D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 02:29:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46DMqM663ZzDqlK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 08:32:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46DQPm4sMqzDqj4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 10:29:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DMnb66bkzDqvp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 08:30:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46DMnb32Rcz8t9F
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 08:30:59 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46DMnb2lSQz9sBF; Thu, 22 Aug 2019 08:30:59 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
  (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+ envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46DMnZ16tNz9s4Y;
- Thu, 22 Aug 2019 08:30:57 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7LMQZmB054981; Wed, 21 Aug 2019 18:30:53 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uhdksa90y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Aug 2019 18:30:52 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7LMUqs7014363;
- Wed, 21 Aug 2019 22:30:52 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 2ue976urkd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Aug 2019 22:30:52 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7LMUph053281208
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46DQMq0ckgzDqdw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 10:27:18 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7M0NTse138093
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 20:27:14 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2uhdkm532r-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 20:27:13 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Thu, 22 Aug 2019 01:27:12 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 22 Aug 2019 01:27:10 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x7M0R9lu33816988
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Aug 2019 22:30:51 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7BABDAE064;
- Wed, 21 Aug 2019 22:30:51 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E4006AE05F;
- Wed, 21 Aug 2019 22:30:47 +0000 (GMT)
-Received: from [9.80.203.17] (unknown [9.80.203.17])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 21 Aug 2019 22:30:47 +0000 (GMT)
-Subject: Re: [PATCH v5 1/7] Documentation/powerpc: Ultravisor API
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20190808040555.2371-1-cclaudio@linux.ibm.com>
- <20190808040555.2371-2-cclaudio@linux.ibm.com>
- <87v9v6se14.fsf@concordia.ellerman.id.au>
-From: Claudio Carvalho <cclaudio@linux.ibm.com>
-Message-ID: <f6790e3a-c827-4fbe-78c6-eb5d5e4c53c8@linux.ibm.com>
-Date: Wed, 21 Aug 2019 19:30:46 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.0
+ Thu, 22 Aug 2019 00:27:09 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C54EC42049;
+ Thu, 22 Aug 2019 00:27:09 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C1BF42047;
+ Thu, 22 Aug 2019 00:27:09 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 22 Aug 2019 00:27:09 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 04713A021A;
+ Thu, 22 Aug 2019 10:27:08 +1000 (AEST)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Segher Boessenkool
+ <segher@kernel.crashing.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu, 22 Aug 2019 10:27:07 +1000
+In-Reply-To: <a0ad8dd8-2f5d-256d-9e88-e9c236335bb8@c-s.fr>
+References: <de7a813c71c4823797bb351bea8be15acae83be2.1565970465.git.christophe.leroy@c-s.fr>
+ <9887dada07278cb39051941d1a47d50349d9fde0.camel@au1.ibm.com>
+ <a0ad8dd8-2f5d-256d-9e88-e9c236335bb8@c-s.fr>
+Organization: IBM Australia
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
-In-Reply-To: <87v9v6se14.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 X-TM-AS-GCONF: 00
+x-cbid: 19082200-0008-0000-0000-0000030BA0E9
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082200-0009-0000-0000-00004A29CD79
+Message-Id: <fcc94e7f347c3759a1698444239a7250b22cde7d.camel@au1.ibm.com>
+Subject: RE: [RFC PATCH] powerpc: Convert ____flush_dcache_icache_phys() to C
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-21_07:, , signatures=0
+ definitions=2019-08-21_08:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908210221
+ mlxlogscore=959 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908220002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,1157 +96,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Ryan Grimm <grimm@linux.ibm.com>, Ram Pai <linuxram@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Guerney Hunt <gdhh@linux.ibm.com>, Thiago Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, 2019-08-21 at 22:27 +0200, Christophe Leroy wrote:
+> 
+> Le 20/08/2019 à 06:36, Alastair D'Silva a écrit :
+> > On Fri, 2019-08-16 at 15:52 +0000, Christophe Leroy wrote:
+> 
+> [...]
+> 
+> > 
+> > Thanks Christophe,
+> > 
+> > I'm trying a somewhat different approach that requires less
+> > knowledge
+> > of assembler. Handling of CPU_FTR_COHERENT_ICACHE is outside this
+> > function. The code below is not a patch as my tree is a bit messy,
+> > sorry:
+> 
+> Can we be 100% sure that GCC won't add any code accessing some
+> global 
+> data or stack while the Data MMU is OFF ?
+> 
+> Christophe
+> 
 
-On 8/9/19 9:45 AM, Michael Ellerman wrote:
-> Claudio Carvalho <cclaudio@linux.ibm.com> writes:
->> From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
->>
->> POWER9 processor includes support for Protected Execution Facility (PEF).
++mpe
 
->> Which POWER9? Please be more precise.
->>
->> It's public knowledge that some versions of Power9 don't have PEF (or
->> have it broken / fused off).
->>
->> People are going to try and test this on various chip revisions that are
->> out in the wild, we need to make it clear where it's expected to work
->> and where it's not.
+I'm not sure how we would go about making such a guarantee, but I've
+tied every variable used to a register and addr is passed in a
+register, so there is no stack usage, and every call in there only
+operates on it's operands.
 
-Updated this part of the commit message to:
-
-    Protected Execution Facility (PEF) is an architectural change for
-    POWER 9 that enables Secure Virtual Machines (SVMs). When enabled,
-    PEF adds a new higher privileged mode, called Ultravisor mode, to POWER
-    architecture. Along with the new mode there is new firmware called the
-    Protected Execution Ultravisor (or Ultravisor for short).
-   
-    POWER 9 DD2.3 chips (PVR=0x004e1203) or greater will be PEF-capable.
-
-    Attached documentation ...
+The calls to the inline cache helpers (for the PPC32 case) are all
+constants, so I can't see a reasonable scenario where there would be a
+function call and reordered to after the DR bit is turned off, but I
+guess if we want to be paranoid, we could always add an mb() call
+before the DR bit is manipulated to prevent the compiler from
+reordering across the section where the data MMU is disabled.
 
 
->
->> Attached documentation provides an overview of PEF and defines the API
->> for various interfaces that must be implemented in the Ultravisor
->> firmware as well as in the KVM Hypervisor.
->>
->> Based on input from Mike Anderson, Thiago Bauermann, Claudio Carvalho,
->> Ben Herrenschmidt, Guerney Hunt, Paul Mackerras.
->>
->> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
->> Signed-off-by: Ram Pai <linuxram@linux.ibm.com>
->> Signed-off-by: Guerney Hunt <gdhh@linux.ibm.com>
->> Reviewed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> Reviewed-by: Michael Anderson <andmike@linux.ibm.com>
->> Reviewed-by: Thiago Bauermann <bauerman@linux.ibm.com>
->> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> ---
->>  Documentation/powerpc/ultravisor.rst | 1055 ++++++++++++++++++++++++++
->>  1 file changed, 1055 insertions(+)
->>  create mode 100644 Documentation/powerpc/ultravisor.rst
->>
->> diff --git a/Documentation/powerpc/ultravisor.rst b/Documentation/powerpc/ultravisor.rst
->> new file mode 100644
->> index 000000000000..8d5246585b66
->> --- /dev/null
->> +++ b/Documentation/powerpc/ultravisor.rst
->> @@ -0,0 +1,1055 @@
->> +.. SPDX-License-Identifier: GPL-2.0
->> +﻿.. _ultravisor:
->> +
->> +============================
->> +Protected Execution Facility
->> +============================
->> +
->> +.. contents::
->> +    :depth: 3
->> +
->> +.. sectnum::
->> +    :depth: 3
->> +
->> +Protected Execution Facility
->> +############################
->> +
->> +    Protected Execution Facility (PEF) is an architectural change for
->> +    POWER 9 that enables Secure Virtual Machines (SVMs). When enabled,
-> Ditto here.
->
-> Also you don't mention which ISA version PEF is (will be) documented in.
-> Do we know? Or can we at least reference the RFC number so folks can
-> find it.
->
-> Otherwise this looks really good. I'll try and find time to proof read
-> it thoroughly.
->
-> cheers
->
->> +    PEF adds a new higher privileged mode, called Ultravisor mode, to
->> +    POWER architecture. Along with the new mode there is new firmware
->> +    called the Protected Execution Ultravisor (or Ultravisor for short).
->> +    Ultravisor mode is the highest privileged mode in POWER architecture.
+> 
+> > /**
+> >   * flush_dcache_icache_phys() - Flush a page by it's physical
+> > address
+> >   * @addr: the physical address of the page
+> >   */
+> > static void flush_dcache_icache_phys(unsigned long addr)
+> > {
+> > 	register unsigned long msr;
+> > 	register unsigned long dlines = PAGE_SIZE >> l1_dcache_shift();
+> > 	register unsigned long dbytes = l1_dcache_bytes();
+> > 	register unsigned long ilines = PAGE_SIZE >> l1_icache_shift();
+> > 	register unsigned long ibytes = l1_icache_bytes();
+> > 	register unsigned long i;
+> > 	register unsigned long address = addr;
+> > 
+> > 	/*
+> > 	 * Clear the DR bit so that we operate on physical
+> > 	 * rather than virtual addresses
+> > 	 */
+> > 	msr = mfmsr();
+> > 	mtmsr(msr & ~(MSR_DR));
+> > 
+> > 	/* Write out the data cache */
+> > 	for (i = 0; i < dlines; i++, address += dbytes)
+> > 		dcbst((void *)address);
+> > 
+> > 	/* Invalidate the instruction cache */
+> > 	address = addr;
+> > 	for (i = 0; i < ilines; i++, address += ibytes)
+> > 		icbi((void *)address);
+> > 
+> > 	mtmsr(msr);
+> > }
+> > 
+> > void test_flush_phys(unsigned long addr)
+> > {
+> > 	flush_dcache_icache_phys(addr);
+> > }
+> > 
+> > 
+> > This gives the following assembler (using pmac32_defconfig):
+> > 000003cc <test_flush_phys>:
+> >   3cc:   94 21 ff f0     stwu    r1,-16(r1)
+> >   3d0:   7d 00 00 a6     mfmsr   r8
+> >   3d4:   55 09 07 34     rlwinm  r9,r8,0,28,26
+> >   3d8:   7d 20 01 24     mtmsr   r9
+> >   3dc:   39 20 00 80     li      r9,128
+> >   3e0:   7d 29 03 a6     mtctr   r9
+> >   3e4:   39 43 10 00     addi    r10,r3,4096
+> >   3e8:   7c 69 1b 78     mr      r9,r3
+> >   3ec:   7c 00 48 6c     dcbst   0,r9
+> >   3f0:   39 29 00 20     addi    r9,r9,32
+> >   3f4:   42 00 ff f8     bdnz    3ec <test_flush_phys+0x20>
+> >   3f8:   7c 00 1f ac     icbi    0,r3
+> >   3fc:   38 63 00 20     addi    r3,r3,32
+> >   400:   7f 8a 18 40     cmplw   cr7,r10,r3
+> >   404:   40 9e ff f4     bne     cr7,3f8 <test_flush_phys+0x2c>
+> >   408:   7d 00 01 24     mtmsr   r8
+> >   40c:   38 21 00 10     addi    r1,r1,16
+> >   410:   4e 80 00 20     blr
+> > 
+> > 
+-- 
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
 
-Updated this part to:
-
-    Protected Execution Facility (PEF) is an architectural change for
-    POWER 9 that enables Secure Virtual Machines (SVMs). DD2.3 chips
-    (PVR=0x004e1203) or greater will be PEF-capable. A new ISA release
-    will include the PEF RFC02487 changes.
-        
-    When enabled, PEF adds a new higher privileged mode, called Ultravisor
-    mode, to POWER architecture. Along with the new mode there is new
-    firmware called the Protected Execution Ultravisor (or Ultravisor
-    for short). Ultravisor mode is the highest privileged mode in POWER
-    architecture.
-
-Followed by the original table below.
-
-Thanks Michael
-
-Claudio.
-
->> +
->> +	+------------------+
->> +	| Privilege States |
->> +	+==================+
->> +	|  Problem         |
->> +	+------------------+
->> +	|  Supervisor      |
->> +	+------------------+
->> +	|  Hypervisor      |
->> +	+------------------+
->> +	|  Ultravisor      |
->> +	+------------------+
->> +
->> +    PEF protects SVMs from the hypervisor, privileged users, and other
->> +    VMs in the system. SVMs are protected while at rest and can only be
->> +    executed by an authorized machine. All virtual machines utilize
->> +    hypervisor services. The Ultravisor filters calls between the SVMs
->> +    and the hypervisor to assure that information does not accidentally
->> +    leak. All hypercalls except H_RANDOM are reflected to the hypervisor.
->> +    H_RANDOM is not reflected to prevent the hypervisor from influencing
->> +    random values in the SVM.
->> +
->> +    To support this there is a refactoring of the ownership of resources
->> +    in the CPU. Some of the resources which were previously hypervisor
->> +    privileged are now ultravisor privileged.
->> +
->> +Hardware
->> +========
->> +
->> +    The hardware changes include the following:
->> +
->> +    * There is a new bit in the MSR that determines whether the current
->> +      process is running in secure mode, MSR(S) bit 41. MSR(S)=1, process
->> +      is in secure mode, MSR(s)=0 process is in normal mode.
->> +
->> +    * The MSR(S) bit can only be set by the Ultravisor.
->> +
->> +    * HRFID cannot be used to set the MSR(S) bit. If the hypervisor needs
->> +      to return to a SVM it must use an ultracall. It can determine if
->> +      the VM it is returning to is secure.
->> +
->> +    * There is a new Ultravisor privileged register, SMFCTRL, which has an
->> +      enable/disable bit SMFCTRL(E).
->> +
->> +    * The privilege of a process is now determined by three MSR bits,
->> +      MSR(S, HV, PR). In each of the tables below the modes are listed
->> +      from least privilege to highest privilege. The higher privilege
->> +      modes can access all the resources of the lower privilege modes.
->> +
->> +      **Secure Mode MSR Settings**
->> +
->> +      +---+---+---+---------------+
->> +      | S | HV| PR|Privilege      |
->> +      +===+===+===+===============+
->> +      | 1 | 0 | 1 | Problem       |
->> +      +---+---+---+---------------+
->> +      | 1 | 0 | 0 | Privileged(OS)|
->> +      +---+---+---+---------------+
->> +      | 1 | 1 | 0 | Ultravisor    |
->> +      +---+---+---+---------------+
->> +      | 1 | 1 | 1 | Reserved      |
->> +      +---+---+---+---------------+
->> +
->> +      **Normal Mode MSR Settings**
->> +
->> +      +---+---+---+---------------+
->> +      | S | HV| PR|Privilege      |
->> +      +===+===+===+===============+
->> +      | 0 | 0 | 1 | Problem       |
->> +      +---+---+---+---------------+
->> +      | 0 | 0 | 0 | Privileged(OS)|
->> +      +---+---+---+---------------+
->> +      | 0 | 1 | 0 | Hypervisor    |
->> +      +---+---+---+---------------+
->> +      | 0 | 1 | 1 | Problem (HV)  |
->> +      +---+---+---+---------------+
->> +
->> +    * Memory is partitioned into secure and normal memory. Only processes
->> +      that are running in secure mode can access secure memory.
->> +
->> +    * The hardware does not allow anything that is not running secure to
->> +      access secure memory. This means that the Hypervisor cannot access
->> +      the memory of the SVM without using an ultracall (asking the
->> +      Ultravisor). The Ultravisor will only allow the hypervisor to see
->> +      the SVM memory encrypted.
->> +
->> +    * I/O systems are not allowed to directly address secure memory. This
->> +      limits the SVMs to virtual I/O only.
->> +
->> +    * The architecture allows the SVM to share pages of memory with the
->> +      hypervisor that are not protected with encryption. However, this
->> +      sharing must be initiated by the SVM.
->> +
->> +    * When a process is running in secure mode all hypercalls
->> +      (syscall lev=1) are reflected to the Ultravisor.
->> +
->> +    * When a process is in secure mode all interrupts go to the
->> +      Ultravisor.
->> +
->> +    * The following resources have become Ultravisor privileged and
->> +      require an Ultravisor interface to manipulate:
->> +
->> +      * Processor configurations registers (SCOMs).
->> +
->> +      * Stop state information.
->> +
->> +      * The debug registers CIABR, DAWR, and DAWRX become Ultravisor
->> +        resources when SMFCTRL(D) is set. If SMFCTRL(D) is not set they do
->> +        not work in secure mode. When set, reading and writing requires
->> +        an Ultravisor call, otherwise that will cause a Hypervisor Emulation
->> +        Assistance interrupt.
->> +
->> +      * PTCR and partition table entries (partition table is in secure
->> +        memory). An attempt to write to PTCR will cause a Hypervisor
->> +        Emulation Assitance interrupt.
->> +
->> +      * LDBAR (LD Base Address Register) and IMC (In-Memory Collection)
->> +        non-architected registers. An attempt to write to them will cause a
->> +        Hypervisor Emulation Assistance interrupt.
->> +
->> +      * Paging for an SVM, sharing of memory with Hypervisor for an SVM.
->> +        (Including Virtual Processor Area (VPA) and virtual I/O).
->> +
->> +
->> +Software/Microcode
->> +==================
->> +
->> +    The software changes include:
->> +
->> +    * SVMs are created from normal VM using (open source) tooling supplied
->> +      by IBM.
->> +
->> +    * All SVMs start as normal VMs and utilize an ultracall, UV_ESM
->> +      (Enter Secure Mode), to make the transition.
->> +
->> +    * When the UV_ESM ultracall is made the Ultravisor copies the VM into
->> +      secure memory, decrypts the verification information, and checks the
->> +      integrity of the SVM. If the integrity check passes the Ultravisor
->> +      passes control in secure mode.
->> +
->> +    * For external interrupts the Ultravisor saves the state of the SVM,
->> +      and reflects the interrupt to the hypervisor for processing.
->> +      For hypercalls, the Ultravisor inserts neutral state into all
->> +      registers not needed for the hypercall then reflects the call to
->> +      the hypervisor for processing. The H_RANDOM hypercall is performed
->> +      by the Ultravisor and not reflected.
->> +
->> +    * The verification information includes the pass phrase for the
->> +      encrypted disk associated with the SVM. This pass phrase is given
->> +      to the SVM when requested.
->> +
->> +    * The Ultravisor is not involved in protecting the encrypted disk of
->> +      the SVM while at rest.
->> +
->> +    * For virtual I/O to work bounce buffering must be done.
->> +
->> +    * The Ultravisor uses AES (IAPM) for protection of SVM memory. IAPM
->> +      is a mode of AES that provides integrity and secrecy concurrently.
->> +
->> +    * The movement of data between normal and secure pages is coordinated
->> +      with the Ultravisor by a new HMM plug-in in the Hypervisor.
->> +
->> +    The Ultravisor offers new services to the hypervisor and SVMs. These
->> +    are accessed through ultracalls.
->> +
->> +Terminology
->> +===========
->> +
->> +    * Hypercalls: special system calls used to request services from
->> +      Hypervisor.
->> +
->> +    * Normal memory: Memory that is accessible to Hypervisor.
->> +
->> +    * Normal page: Page backed by normal memory and available to
->> +      Hypervisor.
->> +
->> +    * Shared page: A page backed by normal memory and available to both
->> +      the Hypervisor/QEMU and the SVM (i.e page has mappings in SVM and
->> +      Hypervisor/QEMU).
->> +
->> +    * Secure memory: Memory that is accessible only to Ultravisor and
->> +      SVMs.
->> +
->> +    * Secure page: Page backed by secure memory and only available to
->> +      Ultravisor and SVM.
->> +
->> +    * SVM: Secure Virtual Machine.
->> +
->> +    * Ultracalls: special system calls used to request services from
->> +      Ultravisor.
->> +
->> +
->> +Ultravisor calls API
->> +####################
->> +
->> +    This section describes Ultravisor calls (ultracalls) needed to
->> +    support Secure Virtual Machines (SVM)s and Paravirtalized KVM. The
->> +    ultracalls allow the SVMs and Hypervisor to request services from the
->> +    Ultravisor such as accessing a register or memory region that can only
->> +    be accessed when running in Ultravisor-privileged mode.
->> +
->> +    The specific service needed from an ultracall is specified in register
->> +    R3 (the first parameter to the ultracall). Other parameters to the
->> +    ultracall, if any, are specified in registers R4 through R12.
->> +
->> +    Return value of all ultracalls is in register R3. Other output values
->> +    from the ultracall, if any, are returned in registers R4 through R12.
->> +    The only exception to this register usage is the ``UV_RETURN``
->> +    ultracall described below.
->> +
->> +    Each ultracall returns specific error codes, applicable in the context
->> +    of the ultracall. However, like with the PowerPC Architecture Platform
->> +    Reference (PAPR), if no specific error code is defined for a
->> +    particular situation, then the ultracall will fallback to an erroneous
->> +    parameter-position based code. i.e U_PARAMETER, U_P2, U_P3 etc
->> +    depending on the ultracall parameter that may have caused the error.
->> +
->> +    Some ultracalls involve transferring a page of data between Ultravisor
->> +    and Hypervisor.  Secure pages that are transferred from secure memory
->> +    to normal memory may be encrypted using dynamically generated keys.
->> +    When the secure pages are transferred back to secure memory, they may
->> +    be decrypted using the same dynamically generated keys. Generation and
->> +    management of these keys will be covered in a separate document.
->> +
->> +    For now this only covers ultracalls currently implemented and being
->> +    used by Hypervisor and SVMs but others can be added here when it
->> +    makes sense.
->> +
->> +    The full specification for all hypercalls/ultracalls will eventually
->> +    be made available in the public/OpenPower version of the PAPR
->> +    specification.
->> +
->> +    **Note**
->> +
->> +    If PEF is not enabled, the ultracalls will be redirected to the
->> +    Hypervisor which must handle/fail the calls.
->> +
->> +Ultracalls used by Hypervisor
->> +=============================
->> +
->> +    This section describes the virtual memory management ultracalls used
->> +    by the Hypervisor to manage SVMs.
->> +
->> +UV_PAGE_OUT
->> +-----------
->> +
->> +    Encrypt and move the contents of a page from secure memory to normal
->> +    memory.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_PAGE_OUT,
->> +		uint16_t lpid,		/* LPAR ID */
->> +		uint64_t dest_ra,	/* real address of destination page */
->> +		uint64_t src_gpa,	/* source guest-physical-address */
->> +		uint8_t  flags,		/* flags */
->> +		uint64_t order)		/* page size order */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_PARAMETER	if ``lpid`` is invalid.
->> +	* U_P2 		if ``dest_ra`` is invalid.
->> +	* U_P3		if the ``src_gpa`` address is invalid.
->> +	* U_P4		if any bit in the ``flags`` is unrecognized
->> +	* U_P5		if the ``order`` parameter is unsupported.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_BUSY	if page cannot be currently paged-out.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Encrypt the contents of a secure-page and make it available to
->> +    Hypervisor in a normal page.
->> +
->> +    By default, the source page is unmapped from the SVM's partition-
->> +    scoped page table. But the Hypervisor can provide a hint to the
->> +    Ultravisor to retain the page mapping by setting the ``UV_SNAPSHOT``
->> +    flag in ``flags`` parameter.
->> +
->> +    If the source page is already a shared page the call returns
->> +    U_SUCCESS, without doing anything.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. QEMU attempts to access an address belonging to the SVM but the
->> +       page frame for that address is not mapped into QEMU's address
->> +       space. In this case, the Hypervisor will allocate a page frame,
->> +       map it into QEMU's address space and issue the ``UV_PAGE_OUT``
->> +       call to retrieve the encrypted contents of the page.
->> +
->> +    #. When Ultravisor runs low on secure memory and it needs to page-out
->> +       an LRU page. In this case, Ultravisor will issue the
->> +       ``H_SVM_PAGE_OUT`` hypercall to the Hypervisor. The Hypervisor will
->> +       then allocate a normal page and issue the ``UV_PAGE_OUT`` ultracall
->> +       and the Ultravisor will encrypt and move the contents of the secure
->> +       page into the normal page.
->> +
->> +
->> +UV_PAGE_IN
->> +----------
->> +
->> +    Move the contents of a page from normal memory to secure memory.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_PAGE_IN,
->> +		uint16_t lpid,		/* the LPAR ID */
->> +		uint64_t src_ra,	/* source real address of page */
->> +		uint64_t dest_gpa,	/* destination guest physical address */
->> +		uint64_t flags,		/* flags */
->> +		uint64_t order)		/* page size order */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_BUSY	if page cannot be currently paged-in.
->> +	* U_FUNCTION	if functionality is not supported
->> +	* U_PARAMETER	if ``lpid`` is invalid.
->> +	* U_P2 		if ``src_ra`` is invalid.
->> +	* U_P3		if the ``dest_gpa`` address is invalid.
->> +	* U_P4		if any bit in the ``flags`` is unrecognized
->> +	* U_P5		if the ``order`` parameter is unsupported.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Move the contents of the page identified by ``src_ra`` from normal
->> +    memory to secure memory and map it to the guest physical address
->> +    ``dest_gpa``.
->> +
->> +    If `dest_gpa` refers to a shared address, map the page into the
->> +    partition-scoped page-table of the SVM.  If `dest_gpa` is not shared,
->> +    copy the contents of the page into the corresponding secure page.
->> +    Depending on the context, decrypt the page before being copied.
->> +
->> +    The caller provides the attributes of the page through the ``flags``
->> +    parameter. Valid values for ``flags`` are:
->> +
->> +	* CACHE_INHIBITED
->> +	* CACHE_ENABLED
->> +	* WRITE_PROTECTION
->> +
->> +    The Hypervisor must pin the page in memory before making
->> +    ``UV_PAGE_IN`` ultracall.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. When a normal VM switches to secure mode, all its pages residing
->> +       in normal memory, are moved into secure memory.
->> +
->> +    #. When an SVM requests to share a page with Hypervisor the Hypervisor
->> +       allocates a page and informs the Ultravisor.
->> +
->> +    #. When an SVM accesses a secure page that has been paged-out,
->> +       Ultravisor invokes the Hypervisor to locate the page. After
->> +       locating the page, the Hypervisor uses UV_PAGE_IN to make the
->> +       page available to Ultravisor.
->> +
->> +    #. When Hypervisor accesses SVM data, the Hypervisor requests the
->> +       Ultravisor to transfer the corresponding page into a insecure page,
->> +       which the Hypervisor can access. The data in the normal page will
->> +       be encrypted though.
->> +
->> +UV_PAGE_INVAL
->> +-------------
->> +
->> +    Invalidate the Ultravisor mapping of a page.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_PAGE_INVAL,
->> +		uint16_t lpid,		/* the LPAR ID */
->> +		uint64_t guest_pa,	/* destination guest-physical-address */
->> +		uint64_t order)		/* page size order */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_PARAMETER	if ``lpid`` is invalid.
->> +	* U_P2 		if ``guest_pa`` is invalid (or corresponds to a secure
->> +                        page mapping).
->> +	* U_P3		if the ``order`` is invalid.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_BUSY	if page cannot be currently invalidated.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    This ultracall informs Ultravisor that the page mapping in Hypervisor
->> +    corresponding to the given guest physical address has been invalidated
->> +    and that the Ultravisor should not access the page. If the specified
->> +    ``guest_pa`` corresponds to a secure page, Ultravisor will ignore the
->> +    attempt to invalidate the page and return U_P2.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. When a shared page is unmapped from the QEMU's page table, possibly
->> +       because it is paged-out to disk, Ultravisor needs to know that the
->> +       page should not be accessed from its side too.
->> +
->> +
->> +UV_WRITE_PATE
->> +-------------
->> +
->> +    Validate and write the partition table entry (PATE) for a given
->> +    partition.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_WRITE_PATE,
->> +		uint32_t lpid,		/* the LPAR ID */
->> +		uint64_t dw0		/* the first double word to write */
->> +		uint64_t dw1)		/* the second double word to write */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_BUSY	if PATE cannot be currently written to.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_PARAMETER	if ``lpid`` is invalid.
->> +	* U_P2 		if ``dw0`` is invalid.
->> +	* U_P3		if the ``dw1`` address is invalid.
->> +	* U_PERMISSION	if the Hypervisor is attempting to change the PATE
->> +			of a secure virtual machine or if called from a
->> +			context other than Hypervisor.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Validate and write a LPID and its partition-table-entry for the given
->> +    LPID.  If the LPID is already allocated and initialized, this call
->> +    results in changing the partition table entry.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. The Partition table resides in Secure memory and its entries,
->> +       called PATE (Partition Table Entries), point to the partition-
->> +       scoped page tables for the Hypervisor as well as each of the
->> +       virtual machines (both secure and normal). The Hypervisor
->> +       operates in partition 0 and its partition-scoped page tables
->> +       reside in normal memory.
->> +
->> +    #. This ultracall allows the Hypervisor to register the partition-
->> +       scoped and process-scoped page table entries for the Hypervisor
->> +       and other partitions (virtual machines) with the Ultravisor.
->> +
->> +    #. If the value of the PATE for an existing partition (VM) changes,
->> +       the TLB cache for the partition is flushed.
->> +
->> +    #. The Hypervisor is responsible for allocating LPID. The LPID and
->> +       its PATE entry are registered together.  The Hypervisor manages
->> +       the PATE entries for a normal VM and can change the PATE entry
->> +       anytime. Ultravisor manages the PATE entries for an SVM and
->> +       Hypervisor is not allowed to modify them.
->> +
->> +UV_RETURN
->> +---------
->> +
->> +    Return control from the Hypervisor back to the Ultravisor after
->> +    processing an hypercall or interrupt that was forwarded (aka
->> +    *reflected*) to the Hypervisor.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_RETURN)
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +     This call never returns to Hypervisor on success.  It returns
->> +     U_INVALID if ultracall is not made from a Hypervisor context.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    When an SVM makes an hypercall or incurs some other exception, the
->> +    Ultravisor usually forwards (aka *reflects*) the exceptions to the
->> +    Hypervisor.  After processing the exception, Hypervisor uses the
->> +    ``UV_RETURN`` ultracall to return control back to the SVM.
->> +
->> +    The expected register state on entry to this ultracall is:
->> +
->> +    * Non-volatile registers are restored to their original values.
->> +    * If returning from an hypercall, register R0 contains the return
->> +      value (**unlike other ultracalls**) and, registers R4 through R12
->> +      contain any output values of the hypercall.
->> +    * R3 contains the ultracall number, i.e UV_RETURN.
->> +    * If returning with a synthesized interrupt, R2 contains the
->> +      synthesized interrupt number.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. Ultravisor relies on the Hypervisor to provide several services to
->> +       the SVM such as processing hypercall and other exceptions. After
->> +       processing the exception, Hypervisor uses UV_RETURN to return
->> +       control back to the Ultravisor.
->> +
->> +    #. Hypervisor has to use this ultracall to return control to the SVM.
->> +
->> +
->> +UV_REGISTER_MEM_SLOT
->> +--------------------
->> +
->> +    Register an SVM address-range with specified properties.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_REGISTER_MEM_SLOT,
->> +		uint64_t lpid,		/* LPAR ID of the SVM */
->> +		uint64_t start_gpa,	/* start guest physical address */
->> +		uint64_t size,		/* size of address range in bytes */
->> +		uint64_t flags		/* reserved for future expansion */
->> +		uint16_t slotid)	/* slot identifier */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_PARAMETER	if ``lpid`` is invalid.
->> +	* U_P2 		if ``start_gpa`` is invalid.
->> +	* U_P3		if ``size`` is invalid.
->> +	* U_P4		if any bit in the ``flags`` is unrecognized.
->> +	* U_P5		if the ``slotid`` parameter is unsupported.
->> +	* U_PERMISSION	if called from context other than Hypervisor.
->> +	* U_FUNCTION	if functionality is not supported.
->> +
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Register a memory range for an SVM.  The memory range starts at the
->> +    guest physical address ``start_gpa`` and is ``size`` bytes long.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +
->> +    #. When a virtual machine goes secure, all the memory slots managed by
->> +       the Hypervisor move into secure memory. The Hypervisor iterates
->> +       through each of memory slots, and registers the slot with
->> +       Ultravisor.  Hypervisor may discard some slots such as those used
->> +       for firmware (SLOF).
->> +
->> +    #. When new memory is hot-plugged, a new memory slot gets registered.
->> +
->> +
->> +UV_UNREGISTER_MEM_SLOT
->> +----------------------
->> +
->> +    Unregister an SVM address-range that was previously registered using
->> +    UV_REGISTER_MEM_SLOT.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_UNREGISTER_MEM_SLOT,
->> +		uint64_t lpid,		/* LPAR ID of the SVM */
->> +		uint64_t slotid)	/* reservation slotid */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_PARAMETER	if ``lpid`` is invalid.
->> +	* U_P2 		if ``slotid`` is invalid.
->> +	* U_PERMISSION	if called from context other than Hypervisor.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Release the memory slot identified by ``slotid`` and free any
->> +    resources allocated towards the reservation.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. Memory hot-remove.
->> +
->> +
->> +UV_SVM_TERMINATE
->> +----------------
->> +
->> +    Terminate an SVM and release its resources.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_SVM_TERMINATE,
->> +		uint64_t lpid,		/* LPAR ID of the SVM */)
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_PARAMETER	if ``lpid`` is invalid.
->> +	* U_INVALID	if VM is not secure.
->> +	* U_PERMISSION  if not called from a Hypervisor context.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Terminate an SVM and release all its resources.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. Called by Hypervisor when terminating an SVM.
->> +
->> +
->> +Ultracalls used by SVM
->> +======================
->> +
->> +UV_SHARE_PAGE
->> +-------------
->> +
->> +    Share a set of guest physical pages with the Hypervisor.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_SHARE_PAGE,
->> +		uint64_t gfn,	/* guest page frame number */
->> +		uint64_t num)	/* number of pages of size PAGE_SIZE */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_INVALID	if the VM is not secure.
->> +	* U_PARAMETER	if ``gfn`` is invalid.
->> +	* U_P2 		if ``num`` is invalid.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Share the ``num`` pages starting at guest physical frame number ``gfn``
->> +    with the Hypervisor. Assume page size is PAGE_SIZE bytes. Zero the
->> +    pages before returning.
->> +
->> +    If the address is already backed by a secure page, unmap the page and
->> +    back it with an insecure page, with the help of the Hypervisor. If it
->> +    is not backed by any page yet, mark the PTE as insecure and back it
->> +    with an insecure page when the address is accessed. If it is already
->> +    backed by an insecure page, zero the page and return.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. The Hypervisor cannot access the SVM pages since they are backed by
->> +       secure pages. Hence an SVM must explicitly request Ultravisor for
->> +       pages it can share with Hypervisor.
->> +
->> +    #. Shared pages are needed to support virtio and Virtual Processor Area
->> +       (VPA) in SVMs.
->> +
->> +
->> +UV_UNSHARE_PAGE
->> +---------------
->> +
->> +    Restore a shared SVM page to its initial state.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_UNSHARE_PAGE,
->> +		uint64_t gfn,	/* guest page frame number */
->> +		uint73 num)	/* number of pages of size PAGE_SIZE*/
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_INVALID	if VM is not secure.
->> +	* U_PARAMETER	if ``gfn`` is invalid.
->> +	* U_P2 		if ``num`` is invalid.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Stop sharing ``num`` pages starting at ``gfn`` with the Hypervisor.
->> +    Assume that the page size is PAGE_SIZE. Zero the pages before
->> +    returning.
->> +
->> +    If the address is already backed by an insecure page, unmap the page
->> +    and back it with a secure page. Inform the Hypervisor to release
->> +    reference to its shared page. If the address is not backed by a page
->> +    yet, mark the PTE as secure and back it with a secure page when that
->> +    address is accessed. If it is already backed by an secure page zero
->> +    the page and return.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. The SVM may decide to unshare a page from the Hypervisor.
->> +
->> +
->> +UV_UNSHARE_ALL_PAGES
->> +--------------------
->> +
->> +    Unshare all pages the SVM has shared with Hypervisor.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_UNSHARE_ALL_PAGES)
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success.
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_INVAL	if VM is not secure.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Unshare all shared pages from the Hypervisor. All unshared pages are
->> +    zeroed on return. Only pages explicitly shared by the SVM with the
->> +    Hypervisor (using UV_SHARE_PAGE ultracall) are unshared. Ultravisor
->> +    may internally share some pages with the Hypervisor without explicit
->> +    request from the SVM.  These pages will not be unshared by this
->> +    ultracall.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. This call is needed when ``kexec`` is used to boot a different
->> +       kernel. It may also be needed during SVM reset.
->> +
->> +UV_ESM
->> +------
->> +
->> +    Secure the virtual machine (*enter secure mode*).
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t ultracall(const uint64_t UV_ESM,
->> +		uint64_t esm_blob_addr,	/* location of the ESM blob */
->> +		unint64_t fdt)		/* Flattened device tree */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* U_SUCCESS	on success (including if VM is already secure).
->> +	* U_FUNCTION	if functionality is not supported.
->> +	* U_INVALID	if VM is not secure.
->> +	* U_PARAMETER	if ``esm_blob_addr`` is invalid.
->> +	* U_P2 		if ``fdt`` is invalid.
->> +	* U_PERMISSION	if any integrity checks fail.
->> +	* U_RETRY	insufficient memory to create SVM.
->> +	* U_NO_KEY	symmetric key unavailable.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Secure the virtual machine. On successful completion, return
->> +    control to the virtual machine at the address specified in the
->> +    ESM blob.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. A normal virtual machine can choose to switch to a secure mode.
->> +
->> +Hypervisor Calls API
->> +####################
->> +
->> +    This document describes the Hypervisor calls (hypercalls) that are
->> +    needed to support the Ultravisor. Hypercalls are services provided by
->> +    the Hypervisor to virtual machines and Ultravisor.
->> +
->> +    Register usage for these hypercalls is identical to that of the other
->> +    hypercalls defined in the Power Architecture Platform Reference (PAPR)
->> +    document.  i.e on input, register R3 identifies the specific service
->> +    that is being requested and registers R4 through R11 contain
->> +    additional parameters to the hypercall, if any. On output, register
->> +    R3 contains the return value and registers R4 through R9 contain any
->> +    other output values from the hypercall.
->> +
->> +    This document only covers hypercalls currently implemented/planned
->> +    for Ultravisor usage but others can be added here when it makes sense.
->> +
->> +    The full specification for all hypercalls/ultracalls will eventually
->> +    be made available in the public/OpenPower version of the PAPR
->> +    specification.
->> +
->> +Hypervisor calls to support Ultravisor
->> +======================================
->> +
->> +    Following are the set of hypercalls needed to support Ultravisor.
->> +
->> +H_SVM_INIT_START
->> +----------------
->> +
->> +    Begin the process of converting a normal virtual machine into an SVM.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t hypercall(const uint64_t H_SVM_INIT_START)
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* H_SUCCESS	 on success.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Initiate the process of securing a virtual machine. This involves
->> +    coordinating with the Ultravisor, using ultracalls, to allocate
->> +    resources in the Ultravisor for the new SVM, transferring the VM's
->> +    pages from normal to secure memory etc. When the process is
->> +    completed, Ultravisor issues the H_SVM_INIT_DONE hypercall.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +     #. Ultravisor uses this hypercall to inform Hypervisor that a VM
->> +        has initiated the process of switching to secure mode.
->> +
->> +
->> +H_SVM_INIT_DONE
->> +---------------
->> +
->> +    Complete the process of securing an SVM.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t hypercall(const uint64_t H_SVM_INIT_DONE)
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* H_SUCCESS 		on success.
->> +	* H_UNSUPPORTED		if called from the wrong context (e.g.
->> +				from an SVM or before an H_SVM_INIT_START
->> +				hypercall).
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Complete the process of securing a virtual machine. This call must
->> +    be made after a prior call to ``H_SVM_INIT_START`` hypercall.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    On successfully securing a virtual machine, the Ultravisor informs
->> +    Hypervisor about it. Hypervisor can use this call to finish setting
->> +    up its internal state for this virtual machine.
->> +
->> +
->> +H_SVM_PAGE_IN
->> +-------------
->> +
->> +    Move the contents of a page from normal memory to secure memory.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t hypercall(const uint64_t H_SVM_PAGE_IN,
->> +		uint64_t guest_pa,	/* guest-physical-address */
->> +		uint64_t flags,		/* flags */
->> +		uint64_t order)		/* page size order */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* H_SUCCESS	on success.
->> +	* H_PARAMETER	if ``guest_pa`` is invalid.
->> +	* H_P2		if ``flags`` is invalid.
->> +	* H_P3		if ``order`` of page is invalid.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Retrieve the content of the page, belonging to the VM at the specified
->> +    guest physical address.
->> +
->> +    Only valid value(s) in ``flags`` are:
->> +
->> +        * H_PAGE_IN_SHARED which indicates that the page is to be shared
->> +	  with the Ultravisor.
->> +
->> +	* H_PAGE_IN_NONSHARED indicates that the UV is not anymore
->> +          interested in the page. Applicable if the page is a shared page.
->> +
->> +    The ``order`` parameter must correspond to the configured page size.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. When a normal VM becomes a secure VM (using the UV_ESM ultracall),
->> +       the Ultravisor uses this hypercall to move contents of each page of
->> +       the VM from normal memory to secure memory.
->> +
->> +    #. Ultravisor uses this hypercall to ask Hypervisor to provide a page
->> +       in normal memory that can be shared between the SVM and Hypervisor.
->> +
->> +    #. Ultravisor uses this hypercall to page-in a paged-out page. This
->> +       can happen when the SVM touches a paged-out page.
->> +
->> +    #. If SVM wants to disable sharing of pages with Hypervisor, it can
->> +       inform Ultravisor to do so. Ultravisor will then use this hypercall
->> +       and inform Hypervisor that it has released access to the normal
->> +       page.
->> +
->> +H_SVM_PAGE_OUT
->> +---------------
->> +
->> +    Move the contents of the page to normal memory.
->> +
->> +Syntax
->> +~~~~~~
->> +
->> +.. code-block:: c
->> +
->> +	uint64_t hypercall(const uint64_t H_SVM_PAGE_OUT,
->> +		uint64_t guest_pa,	/* guest-physical-address */
->> +		uint64_t flags,		/* flags (currently none) */
->> +		uint64_t order)		/* page size order */
->> +
->> +Return values
->> +~~~~~~~~~~~~~
->> +
->> +    One of the following values:
->> +
->> +	* H_SUCCESS	on success.
->> +	* H_PARAMETER	if ``guest_pa`` is invalid.
->> +	* H_P2		if ``flags`` is invalid.
->> +	* H_P3		if ``order`` is invalid.
->> +
->> +Description
->> +~~~~~~~~~~~
->> +
->> +    Move the contents of the page identified by ``guest_pa`` to normal
->> +    memory.
->> +
->> +    Currently ``flags`` is unused and must be set to 0. The ``order``
->> +    parameter must correspond to the configured page size.
->> +
->> +Use cases
->> +~~~~~~~~~
->> +
->> +    #. If Ultravisor is running low on secure pages, it can move the
->> +       contents of some secure pages, into normal pages using this
->> +       hypercall. The content will be encrypted.
->> +
->> +References
->> +##########
->> +
->> +.. [1] `Supporting Protected Computing on IBM Power Architecture <https://developer.ibm.com/articles/l-support-protected-computing/>`_
->> -- 
->> 2.20.1
