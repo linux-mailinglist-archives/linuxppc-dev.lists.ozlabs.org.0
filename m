@@ -1,51 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99CA99B10
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 19:20:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0257B99B24
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 19:24:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Drrr1Qk1zDrJv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 03:20:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46DrxQ56CFzDrfW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 03:24:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="NLvw4ONs"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Drnc2Y4nzDqfD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 03:17:40 +1000 (AEST)
-Received: from localhost (unknown [40.117.208.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DD2D1233FD;
- Thu, 22 Aug 2019 17:17:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1566494258;
- bh=0AIk+vAFwsc7eHqkj5iiHthwp5ajAdvd9MibhV6Q2/k=;
- h=Date:From:To:To:To:To:Cc:Cc:Cc:Cc:Cc:Cc:Subject:In-Reply-To:
- References:From;
- b=NLvw4ONsu9vrmi4Dt/4DYgOdm++fIjFCx+kWWNspQaedu6Hr0zve7rHFo3x3fI/S1
- WLANyt4CKEPv8cvDsiAFMA8SMOnnIZJ1DvKmBhj8tf5QGtPI59wyMVvXBCzHoS7MvI
- g0L+YUI0rP1CQuWa3gGLNs/6tDcJZi4M0ZfhnpLs=
-Date: Thu, 22 Aug 2019 17:17:37 +0000
-From: Sasha Levin <sashal@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Vincenzo Frascino <vincenzo.frascino@arm.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-Subject: Re: [PATCH v2 3/8] powerpc: Fix vDSO clock_getres()
-In-Reply-To: <4a609ab9f76ebeb01742ea09b42e2ec3d7cb2418.1566491310.git.christophe.leroy@c-s.fr>
-References: <4a609ab9f76ebeb01742ea09b42e2ec3d7cb2418.1566491310.git.christophe.leroy@c-s.fr>
-Message-Id: <20190822171737.DD2D1233FD@mail.kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Drnx3FfdzDrFH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 03:17:57 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7MHHdN7062331; Thu, 22 Aug 2019 13:17:50 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2uhvrc7dxj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Aug 2019 13:17:50 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7MHHncP063137;
+ Thu, 22 Aug 2019 13:17:49 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2uhvrc7dwx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Aug 2019 13:17:49 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7MHG2li005540;
+ Thu, 22 Aug 2019 17:17:49 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma03wdc.us.ibm.com with ESMTP id 2ug0ckj2sp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Aug 2019 17:17:49 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7MHHmNM35979532
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 22 Aug 2019 17:17:48 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AB90028058;
+ Thu, 22 Aug 2019 17:17:48 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D3372805E;
+ Thu, 22 Aug 2019 17:17:48 +0000 (GMT)
+Received: from localhost (unknown [9.41.101.192])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 22 Aug 2019 17:17:48 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/3] powerpc/numa: Early request for home node
+ associativity
+In-Reply-To: <20190822144235.19398-3-srikar@linux.vnet.ibm.com>
+References: <20190822144235.19398-1-srikar@linux.vnet.ibm.com>
+ <20190822144235.19398-3-srikar@linux.vnet.ibm.com>
+Date: Thu, 22 Aug 2019 12:17:48 -0500
+Message-ID: <87ftltruf7.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-22_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908220157
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,61 +90,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Hi Srikar,
 
-[This is an automated email]
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> Currently the kernel detects if its running on a shared lpar platform
+> and requests home node associativity before the scheduler sched_domains
+> are setup. However between the time NUMA setup is initialized and the
+> request for home node associativity, workqueue initializes its per node
+> cpumask. The per node workqueue possible cpumask may turn invalid
+> after home node associativity resulting in weird situations like
+> workqueue possible cpumask being a subset of workqueue online cpumask.
+>
+> This can be fixed by requesting home node associativity earlier just
+> before NUMA setup. However at the NUMA setup time, kernel may not be in
+> a position to detect if its running on a shared lpar platform. So
+> request for home node associativity and if the request fails, fallback
+> on the device tree property.
 
-This commit has been processed because it contains a "Fixes:" tag,
-fixing commit: a7f290dad32e [PATCH] powerpc: Merge vdso's and add vdso support to 32 bits kernel.
-
-The bot has tested the following trees: v5.2.9, v4.19.67, v4.14.139, v4.9.189, v4.4.189.
-
-v5.2.9: Build OK!
-v4.19.67: Build OK!
-v4.14.139: Failed to apply! Possible dependencies:
-    5c929885f1bb ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
-    b5b4453e7912 ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
-
-v4.9.189: Failed to apply! Possible dependencies:
-    454656155110 ("powerpc/asm: Use OFFSET macro in asm-offsets.c")
-    5c929885f1bb ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
-    5d451a87e5eb ("powerpc/64: Retrieve number of L1 cache sets from device-tree")
-    7c5b06cadf27 ("KVM: PPC: Book3S HV: Adapt TLB invalidations to work on POWER9")
-    83677f551e0a ("KVM: PPC: Book3S HV: Adjust host/guest context switch for POWER9")
-    902e06eb86cd ("powerpc/32: Change the stack protector canary value per task")
-    b5b4453e7912 ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
-    bd067f83b084 ("powerpc/64: Fix naming of cache block vs. cache line")
-    e2827fe5c156 ("powerpc/64: Clean up ppc64_caches using a struct per cache")
-    e9cf1e085647 ("KVM: PPC: Book3S HV: Add new POWER9 guest-accessible SPRs")
-    f4c51f841d2a ("KVM: PPC: Book3S HV: Modify guest entry/exit paths to handle radix guests")
-
-v4.4.189: Failed to apply! Possible dependencies:
-    153086644fd1 ("powerpc/ftrace: Add support for -mprofile-kernel ftrace ABI")
-    3eb5d5888dc6 ("powerpc: Add ppc_strict_facility_enable boot option")
-    454656155110 ("powerpc/asm: Use OFFSET macro in asm-offsets.c")
-    579e633e764e ("powerpc: create flush_all_to_thread()")
-    5c929885f1bb ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
-    70fe3d980f5f ("powerpc: Restore FPU/VEC/VSX if previously used")
-    85baa095497f ("powerpc/livepatch: Add live patching support on ppc64le")
-    902e06eb86cd ("powerpc/32: Change the stack protector canary value per task")
-    b5b4453e7912 ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
-    bf76f73c5f65 ("powerpc: enable UBSAN support")
-    c208505900b2 ("powerpc: create giveup_all()")
-    d1e1cf2e38de ("powerpc: clean up asm/switch_to.h")
-    dc4fbba11e46 ("powerpc: Create disable_kernel_{fp,altivec,vsx,spe}()")
-    f17c4e01e906 ("powerpc/module: Mark module stubs with a magic value")
+I think this is generally sound at the conceptual level.
 
 
-NOTE: The patch will not be queued to stable trees until it is upstream.
+> However home node associativity requires cpu's hwid which is set in
+> smp_setup_pacas. Hence call smp_setup_pacas before numa_setup_cpus.
 
-How should we proceed with this patch?
+But this seems like it would negatively affect pacas' NUMA placements?
 
---
-Thanks,
-Sasha
+Would it be less risky to figure out a way to do "early" VPHN hcalls
+before mem_topology_setup, getting the hwids from the cpu_to_phys_id
+array perhaps?
+
+
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index 88b5157..7965d3b 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -461,6 +461,21 @@ static int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+>  	return nid;
+>  }
+>  
+> +static int vphn_get_nid(unsigned long cpu)
+> +{
+> +	__be32 associativity[VPHN_ASSOC_BUFSIZE] = {0};
+> +	long rc;
+> +
+> +	/* Use associativity from first thread for all siblings */
+
+I don't understand how this comment corresponds to the code it
+accompanies.
+
+
+> +	rc = hcall_vphn(get_hard_smp_processor_id(cpu),
+> +				VPHN_FLAG_VCPU, associativity);
+> +
+> +	if (rc == H_SUCCESS)
+> +		return  associativity_to_nid(associativity);
+                      ^^ extra space
+
+> @@ -490,7 +505,18 @@ static int numa_setup_cpu(unsigned long lcpu)
+>  			goto out;
+>  	}
+>  
+> -	nid = of_node_to_nid_single(cpu);
+> +	/*
+> +	 * On a shared lpar, the device tree might not have the correct node
+> +	 * associativity.  At this time lppaca, or its __old_status field
+
+Sorry but I'm going to quibble with this phrasing a bit. On SPLPAR the
+CPU nodes have no affinity information in the device tree at all. This
+comment implies that they may have incorrect information, which is
+AFAIK not the case.
+
