@@ -1,80 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E4A99906
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 18:21:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998859994F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 18:36:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46DqXG715gzDrTY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 02:21:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Dqt91v3DzDrYj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 02:36:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=fossix.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="y7h9TcYZ"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="AuHgMn3E"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DqV24y1LzDrS1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 02:19:04 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id q139so4260164pfc.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 09:19:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=/6q7rQtYmpPu07UC23pGOkomFto6j4I/xA2pjDJO2mQ=;
- b=y7h9TcYZOVPiGAt8F/vf6zbILNSX9wmoS6pg/sLSZ9ZcU0pNR+1Y615HSw4o0OohoR
- h8tQLrpSgt/X0IWIbFKdFxxmfr+TuIAAl13fqoR8PPyLWA+sZPYJbl4vZVA4xZFKlWfO
- sXhtdmRh7U8xGHOH6vrWeRsox/ubvhxLddd2S0sjP2CdvVKJ3dAU12xB9wS3/GPiEyy0
- D+DglZmA7xcYzuevoL0j9r5Gl9ZbTcs84dIv4ROF6MvKnJB6pvq1KovntH1FF5rKYJ87
- 1JOBG0jdNRuLb7WAkzJ7xYQlCZRibRI9K7SYpqvcXLOZ3Xsh073f5eVYHsP66b2n5gns
- 9L8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=/6q7rQtYmpPu07UC23pGOkomFto6j4I/xA2pjDJO2mQ=;
- b=nUSwomyihcCU4+w1A+/so3wIdAm1JrfQ2SNOX6RJwPtvHvjkQkc8syUdmLRohbwi2B
- mvkkDucy3BWXPnW3ta1OYSbu00U4vwn8aU5Va0s9s7hLC0PD7Aju/V6CWB/jbEnbLlix
- oxU4oCVDUNjmKPoHWs23WbiZ52zYCtW5+H7uTqJEx/mh/mQ790UQvkELapAiI6VZsaZt
- QvrZRumm+Cg3U6a5gpVTMsZRq1YtxhS0Er/9BDKciHw/vRH6iumAxpscikQiecr7csZ3
- rjLRb22jYp3dyeUhXb3ogfgLfTnFJHx7zSAVbeOuy1typ040KlL+DYLINGmoGQ1nBe4u
- OXRw==
-X-Gm-Message-State: APjAAAUDqFN2Tp5HrpM+7Kzntqtbzept0cQE+auFOnY9BdhOnNcpVMPQ
- KykdHP0KenyT0ghArrJoPfShFWUbJ74=
-X-Google-Smtp-Source: APXvYqyQBqqbKxNGtiSB9T5rxQTgMEhE0sfxASBReeOffp1QhjFhWie2sbpbba5JlM/xfwpMabHb+g==
-X-Received: by 2002:a65:690b:: with SMTP id s11mr100488pgq.10.1566490740563;
- Thu, 22 Aug 2019 09:19:00 -0700 (PDT)
-Received: from localhost ([183.82.16.115])
- by smtp.gmail.com with ESMTPSA id s125sm35793920pfc.133.2019.08.22.09.18.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Aug 2019 09:18:59 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc/vdso64: inline __get_datapage()
-In-Reply-To: <6108a7ed-b4f9-f02f-ca63-1d663bda4990@c-s.fr>
-References: <6662919bd80773aaf339e85b14af1ea1ddbfd841.camel@kernel.crashing.org>
- <20190821092959.16066-1-santosh@fossix.org>
- <20190821114423.GC31406@gate.crashing.org>
- <b7cc5d77-dfca-1cf7-f316-636a4f603b04@c-s.fr>
- <20190821121517.GD31406@gate.crashing.org>
- <6108a7ed-b4f9-f02f-ca63-1d663bda4990@c-s.fr>
-Date: Thu, 22 Aug 2019 21:48:56 +0530
-Message-ID: <87mug1i367.fsf@santosiv.in.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46DqqM0XVYzDrTs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 02:34:06 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46DqqD5hQ5z9v0d4;
+ Thu, 22 Aug 2019 18:34:00 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=AuHgMn3E; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id h7-JEQ1_YdzJ; Thu, 22 Aug 2019 18:34:00 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46DqqD4B4cz9v0d3;
+ Thu, 22 Aug 2019 18:34:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566491640; bh=AZa/Vbvz2vvSVzzKeKFOlBKQpBBPn8tg+lwWM3PrWDc=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=AuHgMn3EpxpfK/UFHqy+4eLdJtouvkAQBSMlMaQTMvjy6oeYIltxrUihevcztCJvk
+ zYpR+L6mCOds06RU9e0cZRRWZrc/1RarxGZsy8uUn2w16s7PLppVeHxTbwGdtxftqL
+ kO9s3jOsU/fgZWZQ/LPUfB2za4uJLPVvDkjq/FxI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A5078B84C;
+ Thu, 22 Aug 2019 18:34:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id of7VOhm9eGeG; Thu, 22 Aug 2019 18:34:02 +0200 (CEST)
+Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F15948B81D;
+ Thu, 22 Aug 2019 18:34:01 +0200 (CEST)
+Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id CEE776B730; Thu, 22 Aug 2019 16:34:01 +0000 (UTC)
+Message-Id: <27d699092118ee8d21741c08a6ff7e4c65effdf2.1566491310.git.christophe.leroy@c-s.fr>
+In-Reply-To: <cover.1566491310.git.christophe.leroy@c-s.fr>
+References: <cover.1566491310.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 1/8] powerpc/32: Add VDSO version of getcpu
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu, 22 Aug 2019 16:34:01 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,31 +74,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+Commit 18ad51dd342a ("powerpc: Add VDSO version of getcpu") added
+getcpu() for PPC64 only, by making use of a user readable general
+purpose SPR.
 
-> Le 21/08/2019 =C3=A0 14:15, Segher Boessenkool a =C3=A9crit=C2=A0:
->> On Wed, Aug 21, 2019 at 01:50:52PM +0200, Christophe Leroy wrote:
->>> Do you have any idea on how to avoid that bcl/mflr stuff ?
->>=20
->> Do a load from some fixed address?  Maybe an absolute address, even?
->> lwz r3,-12344(0)  or similar (that address is in kernel space...)
->>=20
->> There aren't many options, and certainly not many *good* options!
->>=20
->
-> IIUC, the VDSO is seen by apps the same way as a dynamic lib. Couldn't=20
-> the relocation be done only once when the app loads the VDSO as for a=20
-> regular .so lib ?
+PPC32 doesn't have any such SPR, a full system call can still be
+avoided by implementing a fast system call which reads the CPU id
+in the task struct and returns immediately without going back in
+virtual mode.
 
-How does address space randomization work for .so libs?
+Before the patch, vdsotest reported:
+getcpu: syscall: 1572 nsec/call
+getcpu:    libc: 1787 nsec/call
+getcpu:    vdso: not tested
 
->
-> It looks like it is what others do, at least x86 and arm64, unless I=20
-> misunderstood their code.
->
-> Christophe
+Now, vdsotest reports:
+getcpu: syscall: 1582 nsec/call
+getcpu:    libc: 667 nsec/call
+getcpu:    vdso: 368 nsec/call
+
+For non SMP, just return CPU id 0 from the VDSO directly.
+
+PPC32 doesn't support CONFIG_NUMA so NUMA node is always 0.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
+---
+v2: fixed build error in getcpu.S
+---
+ arch/powerpc/include/asm/vdso.h         |  2 ++
+ arch/powerpc/kernel/head_32.h           | 13 +++++++++++++
+ arch/powerpc/kernel/head_booke.h        | 11 +++++++++++
+ arch/powerpc/kernel/vdso32/Makefile     |  4 +---
+ arch/powerpc/kernel/vdso32/getcpu.S     |  7 +++++++
+ arch/powerpc/kernel/vdso32/vdso32.lds.S |  2 --
+ 6 files changed, 34 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
+index b5e1f8f8a05c..adb54782df5f 100644
+--- a/arch/powerpc/include/asm/vdso.h
++++ b/arch/powerpc/include/asm/vdso.h
+@@ -16,6 +16,8 @@
+ /* Define if 64 bits VDSO has procedure descriptors */
+ #undef VDS64_HAS_DESCRIPTORS
+ 
++#define NR_MAGIC_FAST_VDSO_SYSCALL	0x789a
++
+ #ifndef __ASSEMBLY__
+ 
+ /* Offsets relative to thread->vdso_base */
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 4a692553651f..a2e38b59785a 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -3,6 +3,8 @@
+ #define __HEAD_32_H__
+ 
+ #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
++#include <asm/vdso.h>
++#include <asm/asm-offsets.h>
+ 
+ /*
+  * MSR_KERNEL is > 0x8000 on 4xx/Book-E since it include MSR_CE.
+@@ -74,7 +76,13 @@
+ .endm
+ 
+ .macro SYSCALL_ENTRY trapno
++#ifdef CONFIG_SMP
++	cmplwi	cr0, r0, NR_MAGIC_FAST_VDSO_SYSCALL
++#endif
+ 	mfspr	r12,SPRN_SPRG_THREAD
++#ifdef CONFIG_SMP
++	beq-	1f
++#endif
+ 	mfcr	r10
+ 	lwz	r11,TASK_STACK-THREAD(r12)
+ 	mflr	r9
+@@ -152,6 +160,11 @@
+ 	mtspr	SPRN_SRR0,r11
+ 	SYNC
+ 	RFI				/* jump to handler, enable MMU */
++#ifdef CONFIG_SMP
++1:
++	lwz	r5, TASK_CPU - THREAD(r12)
++	RFI
++#endif
+ .endm
+ 
+ /*
+diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
+index 2ae635df9026..c534e87cac84 100644
+--- a/arch/powerpc/kernel/head_booke.h
++++ b/arch/powerpc/kernel/head_booke.h
+@@ -3,6 +3,8 @@
+ #define __HEAD_BOOKE_H__
+ 
+ #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
++#include <asm/vdso.h>
++#include <asm/asm-offsets.h>
+ #include <asm/kvm_asm.h>
+ #include <asm/kvm_booke_hv_asm.h>
+ 
+@@ -104,6 +106,10 @@ FTR_SECTION_ELSE
+ #ifdef CONFIG_KVM_BOOKE_HV
+ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+ #endif
++#ifdef CONFIG_SMP
++	cmplwi	cr0, r0, NR_MAGIC_FAST_VDSO_SYSCALL
++	beq-	1f
++#endif
+ 	BOOKE_CLEAR_BTB(r11)
+ 	lwz	r11, TASK_STACK - THREAD(r10)
+ 	rlwinm	r12,r12,0,4,2	/* Clear SO bit in CR */
+@@ -176,6 +182,11 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+ 	mtspr	SPRN_SRR0,r11
+ 	SYNC
+ 	RFI				/* jump to handler, enable MMU */
++#ifdef CONFIG_SMP
++1:
++	lwz	r5, TASK_CPU - THREAD(r10)
++	RFI
++#endif
+ .endm
+ 
+ /* To handle the additional exception priority levels on 40x and Book-E
+diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vdso32/Makefile
+index 06f54d947057..e147bbdc12cd 100644
+--- a/arch/powerpc/kernel/vdso32/Makefile
++++ b/arch/powerpc/kernel/vdso32/Makefile
+@@ -2,9 +2,7 @@
+ 
+ # List of files in the vdso, has to be asm only for now
+ 
+-obj-vdso32-$(CONFIG_PPC64) = getcpu.o
+-obj-vdso32 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o \
+-		$(obj-vdso32-y)
++obj-vdso32 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o getcpu.o
+ 
+ # Build rules
+ 
+diff --git a/arch/powerpc/kernel/vdso32/getcpu.S b/arch/powerpc/kernel/vdso32/getcpu.S
+index 63e914539e1a..bde226ad904d 100644
+--- a/arch/powerpc/kernel/vdso32/getcpu.S
++++ b/arch/powerpc/kernel/vdso32/getcpu.S
+@@ -17,7 +17,14 @@
+  */
+ V_FUNCTION_BEGIN(__kernel_getcpu)
+   .cfi_startproc
++#if defined(CONFIG_PPC64)
+ 	mfspr	r5,SPRN_SPRG_VDSO_READ
++#elif defined(CONFIG_SMP)
++	li	r0, NR_MAGIC_FAST_VDSO_SYSCALL
++	sc	/* returns cpuid in r5, clobbers cr0 and r10-r13 */
++#else
++	li	r5, 0
++#endif
+ 	cmpwi	cr0,r3,0
+ 	cmpwi	cr1,r4,0
+ 	clrlwi  r6,r5,16
+diff --git a/arch/powerpc/kernel/vdso32/vdso32.lds.S b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+index 099a6db14e67..663880671e20 100644
+--- a/arch/powerpc/kernel/vdso32/vdso32.lds.S
++++ b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+@@ -152,9 +152,7 @@ VERSION
+ 		__kernel_sync_dicache_p5;
+ 		__kernel_sigtramp32;
+ 		__kernel_sigtramp_rt32;
+-#ifdef CONFIG_PPC64
+ 		__kernel_getcpu;
+-#endif
+ 		__kernel_time;
+ 
+ 	local: *;
+-- 
+2.13.3
+
