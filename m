@@ -1,52 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE70C98B37
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 08:06:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9456998B4D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 08:19:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46DYvD1YGmzDqkd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 16:06:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46DZ9s3XpVzDr2J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 16:19:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sbobroff@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DYmB1ml2zDqQC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 16:00:26 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.b="L6ft1CCH"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46DYm94dvXz9s00;
- Thu, 22 Aug 2019 16:00:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1566453625;
- bh=VFotkBeoQnghfR8tH06nrgVXHITRs+NJzJpLHEvDidI=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=L6ft1CCHZbEPcpYc1MaIaZGnmK/0OHRuaD3UwTqiYMsYPDtLykbR75qGc4Sefsbyp
- h1nnEl9JMD6P04QQDEV5gBUQxGQk4XAa95AFy/znQOzrYYkTEdwR2qhOWQlDoTAgVj
- l7DN1dJ8TQ3lwIaHQnngGcXtL7oRvw15Mhvn98g0tokHJsHv9oMx4x4xofVK4PGgOB
- igGL+u4rxmZ4au+mF+pt7kJty3l7CPW3tm1sTTBeOtF6iqQM/HlsGorhbH80IRypnU
- +0ePvYjC63h8GXt26rf3ZBmh47wPwBSLpZ0VB7wfeGH0OQP4MGROrtT3EeQXsXmBi0
- RTSPxnpfn+qcQ==
-Date: Thu, 22 Aug 2019 16:00:24 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-Subject: Re: [linux-next][PPC][bisected c7d8b7][gcc 6.4.1] build error at
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c:1471
-Message-ID: <20190822155953.79f01e54@canb.auug.org.au>
-In-Reply-To: <1566452811.526.7.camel@abdul.in.ibm.com>
-References: <1566452811.526.7.camel@abdul.in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46DZ7r1tK1zDr0m
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 16:17:28 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7M6CWtY100912
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 02:17:24 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uhmdfabas-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 02:17:24 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Thu, 22 Aug 2019 07:17:21 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 22 Aug 2019 07:17:18 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7M6HHhg39977068
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 22 Aug 2019 06:17:17 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 80C1252051;
+ Thu, 22 Aug 2019 06:17:17 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 3091E5204F;
+ Thu, 22 Aug 2019 06:17:17 +0000 (GMT)
+Received: from tungsten.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D6CAAA021A;
+ Thu, 22 Aug 2019 16:17:13 +1000 (AEST)
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/eeh: Fixup EEH for pSeries hotplug
+Date: Thu, 22 Aug 2019 16:17:13 +1000
+X-Mailer: git-send-email 2.22.0.216.g00a2a96fc9
+In-Reply-To: <87ftlv5h9u.fsf@concordia.ellerman.id.au>
+References: <87ftlv5h9u.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/XrmJ+4XahkVTA+0CD=Bp1ls";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19082206-0020-0000-0000-000003625A82
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082206-0021-0000-0000-000021B793E5
+Message-Id: <880562c45fc1658d8d1fb22dff616b56c2e051b5.1566451243.git.sbobroff@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-22_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908220066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,60 +89,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcampbell@nvidia.com, jgg@mellanox.com,
- linux-next <linux-next@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: aik@ozlabs.ru, oohall@gmail.com, tyreld@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/XrmJ+4XahkVTA+0CD=Bp1ls
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
+---
+Let's move the test into eeh_add_device_tree_late().
 
-Hi Abdul,
+Thanks,
+Sam.
 
-On Thu, 22 Aug 2019 11:16:51 +0530 Abdul Haleem <abdhalee@linux.vnet.ibm.co=
-m> wrote:
->
-> Today's linux-next kernel 5.3.0-rc5-next-20190820 failed to build on my
-> powerpc machine
->=20
-> Build errors:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c: In function amdgpu_exit:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c:1471:2: error: implicit
-> declaration of function mmu_notifier_synchronize
-> [-Werror=3Dimplicit-function-declaration]
->   mmu_notifier_synchronize();
->   ^~~~~~~~~~~~~~~~~~~~~~~~=20
-> cc1: some warnings being treated as errors
-> make[4]: *** [drivers/gpu/drm/amd/amdgpu/amdgpu_drv.o] Error 1
-> make[3]: *** [drivers/gpu/drm/amd/amdgpu] Error 2
->=20
-> It was introduced with commit c7d8b7 (hmm: use mmu_notifier_get/put for
-> 'struct hmm')
+ arch/powerpc/kernel/eeh.c         | 2 ++
+ arch/powerpc/kernel/of_platform.c | 3 +--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-This should have been fixed in next-20190821.
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 87edac6f2fd9..e95a7a3c9037 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1328,6 +1328,8 @@ void eeh_add_device_tree_late(struct pci_bus *bus)
+ {
+ 	struct pci_dev *dev;
+ 
++	if (eeh_has_flag(EEH_FORCE_DISABLED))
++		return;
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+ 		eeh_add_device_late(dev);
+ 		if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE) {
+diff --git a/arch/powerpc/kernel/of_platform.c b/arch/powerpc/kernel/of_platform.c
+index 11c807468ab5..427fc22f72b6 100644
+--- a/arch/powerpc/kernel/of_platform.c
++++ b/arch/powerpc/kernel/of_platform.c
+@@ -81,8 +81,7 @@ static int of_pci_phb_probe(struct platform_device *dev)
+ 	pcibios_claim_one_bus(phb->bus);
+ 
+ 	/* Finish EEH setup */
+-	if (!eeh_has_flag(EEH_FORCE_DISABLED))
+-		eeh_add_device_tree_late(phb->bus);
++	eeh_add_device_tree_late(phb->bus);
+ 
+ 	/* Add probed PCI devices to the device model */
+ 	pci_bus_add_devices(phb->bus);
+-- 
+2.22.0.216.g00a2a96fc9
 
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/XrmJ+4XahkVTA+0CD=Bp1ls
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl1eL3kACgkQAVBC80lX
-0GzB2gf+KEISnntYC1xlRdG6xsqu3zj1kkSNXSw5wvXZfw5GsjNgADkRGD9WO4rw
-6QBAuxPbdgnp0EtpspqQ8ZFhPfT41MH/NBKRYFTzDs4r6BilnWVUfa6sLK4RA1u/
-RkKoy14dluF2c5QE5bqrUTeHPl9CtAELyD1n82c8gX9sCsLqQbEcc+hFJG+V5FPa
-0ceqZhcvCOxtSFMDzZsAbLzZFx+7EYaZRoXrmwtv/ufucmuYxOS/BPRakw1EuFY2
-4Pkz1bKht8aaFPkl6G8PMV2NT8L1Q9WVuf6xUrB5pZ7XNMVXKqDj/gBFp/QMGPvj
-4ZXWp5MjokdY4SV5OxLliFeBsVOv0g==
-=lUpR
------END PGP SIGNATURE-----
-
---Sig_/XrmJ+4XahkVTA+0CD=Bp1ls--
