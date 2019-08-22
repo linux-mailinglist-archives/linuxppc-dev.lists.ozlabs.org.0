@@ -2,76 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3DF98A0D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 05:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B44A198A13
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 05:56:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46DVyt3wrBzDrF4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 13:54:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46DW0s19czzDr6Y
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2019 13:56:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46DVrX02jfzDr4L
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 13:49:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46DVrd0kCszDqyZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 13:49:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46DVrW51zHz8x0x
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 13:48:59 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46DVrZ2csTz8x0x
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2019 13:49:02 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46DVrW2zK9z9sNF; Thu, 22 Aug 2019 13:48:59 +1000 (AEST)
+ id 46DVrZ1Nbsz9sDQ; Thu, 22 Aug 2019 13:49:02 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46DVrV3625z9sBp;
- Thu, 22 Aug 2019 13:48:58 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7M3kc0A148533; Wed, 21 Aug 2019 23:48:56 -0400
+ by ozlabs.org (Postfix) with ESMTPS id 46DVrY5B1kz9sPS;
+ Thu, 22 Aug 2019 13:49:01 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7M3mjm0082173; Wed, 21 Aug 2019 23:48:59 -0400
 Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
  [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2uhj6qj5t9-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uhg1fdshh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Aug 2019 23:48:55 -0400
+ Wed, 21 Aug 2019 23:48:59 -0400
 Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7M3iQ73011780;
- Thu, 22 Aug 2019 03:48:55 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02dal.us.ibm.com with ESMTP id 2ue976kgf9-1
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7M3iQ77011780;
+ Thu, 22 Aug 2019 03:48:58 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02dal.us.ibm.com with ESMTP id 2ue976kgft-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Aug 2019 03:48:55 +0000
+ Thu, 22 Aug 2019 03:48:58 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7M3mruK40174040
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7M3mu2558196452
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Aug 2019 03:48:53 GMT
+ Thu, 22 Aug 2019 03:48:56 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 115B0C6055;
+ by IMSVA (Postfix) with ESMTP id D1AB6C6055;
+ Thu, 22 Aug 2019 03:48:56 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 85B66C6057;
  Thu, 22 Aug 2019 03:48:53 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86D45C6057;
- Thu, 22 Aug 2019 03:48:49 +0000 (GMT)
 Received: from rino.ibm.com (unknown [9.80.203.17])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 22 Aug 2019 03:48:49 +0000 (GMT)
+ Thu, 22 Aug 2019 03:48:53 +0000 (GMT)
 From: Claudio Carvalho <cclaudio@linux.ibm.com>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v6 2/7] powerpc/kernel: Add ucall_norets() ultravisor call
- handler
-Date: Thu, 22 Aug 2019 00:48:33 -0300
-Message-Id: <20190822034838.27876-3-cclaudio@linux.ibm.com>
+Subject: [PATCH v6 3/7] powerpc/powernv: Introduce FW_FEATURE_ULTRAVISOR
+Date: Thu, 22 Aug 2019 00:48:34 -0300
+Message-Id: <20190822034838.27876-4-cclaudio@linux.ibm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190822034838.27876-1-cclaudio@linux.ibm.com>
 References: <20190822034838.27876-1-cclaudio@linux.ibm.com>
@@ -107,145 +106,136 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ultracalls (ucalls for short) allow the Secure Virtual Machines
-(SVM)s and hypervisor to request services from the ultravisor such as
-accessing a register or memory region that can only be accessed when
-running in ultravisor-privileged mode.
+In PEF enabled systems, some of the resources which were previously
+hypervisor privileged are now ultravisor privileged and controlled by
+the ultravisor firmware.
 
-This patch adds the ucall_norets() ultravisor call handler.
+This adds FW_FEATURE_ULTRAVISOR to indicate if PEF is enabled.
 
-The specific service needed from an ucall is specified in register
-R3 (the first parameter to the ucall). Other parameters to the
-ucall, if any, are specified in registers R4 through R12.
-
-Return value of all ucalls is in register R3. Other output values
-from the ucall, if any, are returned in registers R4 through R12.
-
-Each ucall returns specific error codes, applicable in the context
-of the ucall. However, like with the PowerPC Architecture Platform
-Reference (PAPR), if no specific error code is defined for a particular
-situation, then the ucall will fallback to an erroneous
-parameter-position based code. i.e U_PARAMETER, U_P2, U_P3 etc depending
-on the ucall parameter that may have caused the error.
-
-Every host kernel (powernv) needs to be able to do ucalls in case it
-ends up being run in a machine with ultravisor enabled. Otherwise, the
-kernel may crash early in boot trying to access ultravisor resources,
-for instance, trying to set the partition table entry 0. Secure guests
-also need to be able to do ucalls and its kernel may not have
-CONFIG_PPC_POWERNV=y. For that reason, the ucall.S file is placed under
-arch/powerpc/kernel.
-
-If ultravisor is not enabled, the ucalls will be redirected to the
-hypervisor which must handle/fail the call.
-
-Thanks to inputs from Ram Pai and Michael Anderson.
+The host kernel can use FW_FEATURE_ULTRAVISOR, for instance, to skip
+accessing resources (e.g. PTCR and LDBAR) in case PEF is enabled.
 
 Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-
+[ andmike: Device node name to "ibm,ultravisor" ]
+Signed-off-by: Michael Anderson <andmike@linux.ibm.com>
 ---
-Ultravisor call support for secure guests is being proposed as part of
-the patchset "Secure Virtual Machine Enablement" posted by Thiago
-Bauermann.
----
- arch/powerpc/include/asm/asm-prototypes.h | 11 +++++++++++
- arch/powerpc/include/asm/ultravisor-api.h | 23 +++++++++++++++++++++++
- arch/powerpc/kernel/Makefile              |  1 +
- arch/powerpc/kernel/ucall.S               | 14 ++++++++++++++
- 4 files changed, 49 insertions(+)
- create mode 100644 arch/powerpc/include/asm/ultravisor-api.h
- create mode 100644 arch/powerpc/kernel/ucall.S
+ arch/powerpc/include/asm/firmware.h         |  5 +++--
+ arch/powerpc/include/asm/ultravisor.h       | 14 ++++++++++++
+ arch/powerpc/kernel/prom.c                  |  4 ++++
+ arch/powerpc/platforms/powernv/Makefile     |  1 +
+ arch/powerpc/platforms/powernv/ultravisor.c | 24 +++++++++++++++++++++
+ 5 files changed, 46 insertions(+), 2 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/ultravisor.h
+ create mode 100644 arch/powerpc/platforms/powernv/ultravisor.c
 
-diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-index ec1c97a8e8cb..e698f48cbc6d 100644
---- a/arch/powerpc/include/asm/asm-prototypes.h
-+++ b/arch/powerpc/include/asm/asm-prototypes.h
-@@ -15,6 +15,7 @@
- #include <asm/epapr_hcalls.h>
- #include <asm/dcr.h>
- #include <asm/mmu_context.h>
-+#include <asm/ultravisor-api.h>
+diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
+index faeca8b76c8c..b3e214a97f3a 100644
+--- a/arch/powerpc/include/asm/firmware.h
++++ b/arch/powerpc/include/asm/firmware.h
+@@ -50,6 +50,7 @@
+ #define FW_FEATURE_DRC_INFO	ASM_CONST(0x0000000800000000)
+ #define FW_FEATURE_BLOCK_REMOVE ASM_CONST(0x0000001000000000)
+ #define FW_FEATURE_PAPR_SCM 	ASM_CONST(0x0000002000000000)
++#define FW_FEATURE_ULTRAVISOR	ASM_CONST(0x0000004000000000)
  
- #include <uapi/asm/ucontext.h>
+ #ifndef __ASSEMBLY__
  
-@@ -34,6 +35,16 @@ extern struct static_key hcall_tracepoint_key;
- void __trace_hcall_entry(unsigned long opcode, unsigned long *args);
- void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf);
- 
-+/* Ultravisor */
-+#ifdef CONFIG_PPC_POWERNV
-+long ucall_norets(unsigned long opcode, ...);
-+#else
-+static inline long ucall_norets(unsigned long opcode, ...)
-+{
-+	return U_NOT_AVAILABLE;
-+}
-+#endif
-+
- /* OPAL */
- int64_t __opal_call(int64_t a0, int64_t a1, int64_t a2, int64_t a3,
- 		    int64_t a4, int64_t a5, int64_t a6, int64_t a7,
-diff --git a/arch/powerpc/include/asm/ultravisor-api.h b/arch/powerpc/include/asm/ultravisor-api.h
+@@ -68,9 +69,9 @@ enum {
+ 		FW_FEATURE_TYPE1_AFFINITY | FW_FEATURE_PRRN |
+ 		FW_FEATURE_HPT_RESIZE | FW_FEATURE_DRMEM_V2 |
+ 		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
+-		FW_FEATURE_PAPR_SCM,
++		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR,
+ 	FW_FEATURE_PSERIES_ALWAYS = 0,
+-	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL,
++	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL | FW_FEATURE_ULTRAVISOR,
+ 	FW_FEATURE_POWERNV_ALWAYS = 0,
+ 	FW_FEATURE_PS3_POSSIBLE = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
+ 	FW_FEATURE_PS3_ALWAYS = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
+diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
 new file mode 100644
-index 000000000000..88ffa78f9d61
+index 000000000000..dc6e1ea198f2
 --- /dev/null
-+++ b/arch/powerpc/include/asm/ultravisor-api.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Ultravisor API.
-+ *
-+ * Copyright 2019, IBM Corporation.
-+ *
-+ */
-+#ifndef _ASM_POWERPC_ULTRAVISOR_API_H
-+#define _ASM_POWERPC_ULTRAVISOR_API_H
-+
-+#include <asm/hvcall.h>
-+
-+/* Return codes */
-+#define U_FUNCTION		H_FUNCTION
-+#define U_NOT_AVAILABLE		H_NOT_AVAILABLE
-+#define U_P2			H_P2
-+#define U_P3			H_P3
-+#define U_P4			H_P4
-+#define U_P5			H_P5
-+#define U_PARAMETER		H_PARAMETER
-+#define U_SUCCESS		H_SUCCESS
-+
-+#endif /* _ASM_POWERPC_ULTRAVISOR_API_H */
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index ea0c69236789..c6c4ea240b2a 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -156,6 +156,7 @@ endif
- 
- obj-$(CONFIG_EPAPR_PARAVIRT)	+= epapr_paravirt.o epapr_hcalls.o
- obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvm_emul.o
-+obj-$(CONFIG_PPC_POWERNV)	+= ucall.o
- 
- # Disable GCOV, KCOV & sanitizers in odd or sensitive code
- GCOV_PROFILE_prom_init.o := n
-diff --git a/arch/powerpc/kernel/ucall.S b/arch/powerpc/kernel/ucall.S
-new file mode 100644
-index 000000000000..07296bc39166
---- /dev/null
-+++ b/arch/powerpc/kernel/ucall.S
++++ b/arch/powerpc/include/asm/ultravisor.h
 @@ -0,0 +1,14 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * Generic code to perform an ultravisor call.
++ * Ultravisor definitions
 + *
 + * Copyright 2019, IBM Corporation.
 + *
 + */
-+#include <asm/ppc_asm.h>
-+#include <asm/export.h>
++#ifndef _ASM_POWERPC_ULTRAVISOR_H
++#define _ASM_POWERPC_ULTRAVISOR_H
 +
-+_GLOBAL(ucall_norets)
-+EXPORT_SYMBOL_GPL(ucall_norets)
-+	sc	2	/* Invoke the ultravisor */
-+	blr		/* Return r3 = status */
++int early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
++				  int depth, void *data);
++
++#endif	/* _ASM_POWERPC_ULTRAVISOR_H */
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 7159e791a70d..5828f1c81dc9 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -55,6 +55,7 @@
+ #include <asm/firmware.h>
+ #include <asm/dt_cpu_ftrs.h>
+ #include <asm/drmem.h>
++#include <asm/ultravisor.h>
+ 
+ #include <mm/mmu_decl.h>
+ 
+@@ -702,6 +703,9 @@ void __init early_init_devtree(void *params)
+ #ifdef CONFIG_PPC_POWERNV
+ 	/* Some machines might need OPAL info for debugging, grab it now. */
+ 	of_scan_flat_dt(early_init_dt_scan_opal, NULL);
++
++	/* Scan tree for ultravisor feature */
++	of_scan_flat_dt(early_init_dt_scan_ultravisor, NULL);
+ #endif
+ 
+ #ifdef CONFIG_FA_DUMP
+diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
+index 69a3aefa905b..49186f0985a4 100644
+--- a/arch/powerpc/platforms/powernv/Makefile
++++ b/arch/powerpc/platforms/powernv/Makefile
+@@ -4,6 +4,7 @@ obj-y			+= idle.o opal-rtc.o opal-nvram.o opal-lpc.o opal-flash.o
+ obj-y			+= rng.o opal-elog.o opal-dump.o opal-sysparam.o opal-sensor.o
+ obj-y			+= opal-msglog.o opal-hmi.o opal-power.o opal-irqchip.o
+ obj-y			+= opal-kmsg.o opal-powercap.o opal-psr.o opal-sensor-groups.o
++obj-y			+= ultravisor.o
+ 
+ obj-$(CONFIG_SMP)	+= smp.o subcore.o subcore-asm.o
+ obj-$(CONFIG_PCI)	+= pci.o pci-ioda.o npu-dma.o pci-ioda-tce.o
+diff --git a/arch/powerpc/platforms/powernv/ultravisor.c b/arch/powerpc/platforms/powernv/ultravisor.c
+new file mode 100644
+index 000000000000..02ac57b4bded
+--- /dev/null
++++ b/arch/powerpc/platforms/powernv/ultravisor.c
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Ultravisor high level interfaces
++ *
++ * Copyright 2019, IBM Corporation.
++ *
++ */
++#include <linux/init.h>
++#include <linux/printk.h>
++#include <linux/of_fdt.h>
++
++#include <asm/ultravisor.h>
++#include <asm/firmware.h>
++
++int __init early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
++					 int depth, void *data)
++{
++	if (!of_flat_dt_is_compatible(node, "ibm,ultravisor"))
++		return 0;
++
++	powerpc_firmware_features |= FW_FEATURE_ULTRAVISOR;
++	pr_debug("Ultravisor detected!\n");
++	return 1;
++}
 -- 
 2.20.1
 
