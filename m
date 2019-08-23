@@ -1,38 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370F09AE94
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 13:59:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691E19AF88
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 14:31:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46FKhR1475zDrqQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 21:59:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46FLPH455mzDrqC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 22:31:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46FKdt6d1WzDrNN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 21:57:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46FLLC23yczDrQl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 22:29:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46FKds2Qn9z9s00;
- Fri, 23 Aug 2019 21:57:37 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46FLLB6F8Cz9s7T; Fri, 23 Aug 2019 22:29:06 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 46FLLB5djwz9sN6; Fri, 23 Aug 2019 22:29:06 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Paul Mackerras <paulus@ozlabs.org>, Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v7 0/7] KVMPPC driver to manage secure guest pages
-In-Reply-To: <20190823041747.ctquda5uwvy2eiqz@oak.ozlabs.ibm.com>
-References: <20190822102620.21897-1-bharata@linux.ibm.com>
- <20190823041747.ctquda5uwvy2eiqz@oak.ozlabs.ibm.com>
-Date: Fri, 23 Aug 2019 21:57:32 +1000
-Message-ID: <87wof43xhv.fsf@concordia.ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/64: Fix stacktrace on BE when function_graph is
+ enabled
+Date: Fri, 23 Aug 2019 22:29:01 +1000
+Message-Id: <20190823122901.32667-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,55 +42,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Mackerras <paulus@ozlabs.org> writes:
-> On Thu, Aug 22, 2019 at 03:56:13PM +0530, Bharata B Rao wrote:
->> A pseries guest can be run as a secure guest on Ultravisor-enabled
->> POWER platforms. On such platforms, this driver will be used to manage
->> the movement of guest pages between the normal memory managed by
->> hypervisor(HV) and secure memory managed by Ultravisor(UV).
->> 
->> Private ZONE_DEVICE memory equal to the amount of secure memory
->> available in the platform for running secure guests is created.
->> Whenever a page belonging to the guest becomes secure, a page from
->> this private device memory is used to represent and track that secure
->> page on the HV side. The movement of pages between normal and secure
->> memory is done via migrate_vma_pages(). The reverse movement is driven
->> via pagemap_ops.migrate_to_ram().
->> 
->> The page-in or page-out requests from UV will come to HV as hcalls and
->> HV will call back into UV via uvcalls to satisfy these page requests.
->> 
->> These patches are against hmm.git
->> (https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git/log/?h=hmm)
->> 
->> plus
->> 
->> Claudio Carvalho's base ultravisor enablement patchset v6
->> (https://lore.kernel.org/linuxppc-dev/20190822034838.27876-1-cclaudio@linux.ibm.com/T/#t)
->
-> How are you thinking these patches will go upstream?  Are you going to
-> send them via the hmm tree?
->
-> I assume you need Claudio's patchset as a prerequisite for your series
-> to compile, which means the hmm maintainers would need to pull in a
-> topic branch from Michael Ellerman's powerpc tree, or something like
-> that.
+Currently if we oops or warn while function_graph is active the stack
+trace looks like:
+  .trace_graph_return+0xac/0x100
+  .ftrace_return_to_handler+0x98/0x140
+  .return_to_handler+0x20/0x40
+  .return_to_handler+0x0/0x40
+  .return_to_handler+0x0/0x40
+  .return_to_handler+0x0/0x40
+  .return_to_handler+0x0/0x40
+  .return_to_handler+0x0/0x40
+  .return_to_handler+0x0/0x40
+  .cpu_startup_entry+0x34/0x40
+  .start_secondary+0x680/0x6f0
+  start_secondary_prolog+0x10/0x14
 
-I think more workable would be for me to make a topic branch based on
-the hmm tree (or some commit from the hmm tree), which I then apply the
-patches on top of, and merge any required powerpc changes into that. I
-can then ask Linus to merge that branch late in the merge window once
-the hmm changes have gone in.
+Notice the multiple entries that just show .return_to_handler.
 
-The bigger problem at the moment is the lack of reviews or acks on the
-bulk of the series.
+There is logic in show_stack() to detect this case and print the
+traced function, but we inadvertently broke it in commit
+7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler") (2014),
+because that commit accidentally removed the dereference of rth which
+gets the text address from the function descriptor. Hence this is only
+broken on big endian (or technically ELFv1).
 
-cheers
+Fix it by using the proper accessor, which is ppc_function_entry().
+Result is we get a stack trace such as:
+
+  .trace_graph_return+0x134/0x160
+  .ftrace_return_to_handler+0x94/0x140
+  .return_to_handler+0x20/0x40
+  .return_to_handler+0x0/0x40 (.shared_cede_loop+0x48/0x130)
+  .return_to_handler+0x0/0x40 (.cpuidle_enter_state+0xa0/0x690)
+  .return_to_handler+0x0/0x40 (.cpuidle_enter+0x44/0x70)
+  .return_to_handler+0x0/0x40 (.call_cpuidle+0x68/0xc0)
+  .return_to_handler+0x0/0x40 (.do_idle+0x37c/0x400)
+  .return_to_handler+0x0/0x40 (.cpu_startup_entry+0x30/0x50)
+  .rest_init+0x224/0x348
+
+Fixes: 7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 8fc4de0d22b4..1601d7cfe45e 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -2048,7 +2048,7 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ 	struct ftrace_ret_stack *ret_stack;
+ 	extern void return_to_handler(void);
+-	unsigned long rth = (unsigned long)return_to_handler;
++	unsigned long rth = ppc_function_entry(return_to_handler);
+ 	int curr_frame = 0;
+ #endif
+ 
+-- 
+2.21.0
+
