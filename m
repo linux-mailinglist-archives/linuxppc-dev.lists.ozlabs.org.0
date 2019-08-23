@@ -1,42 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4910F9B205
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 16:31:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3319B253
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 16:42:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46FP3N39w9zDrFH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2019 00:31:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46FPJ10jc9zDsTL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2019 00:42:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=andrew.murray@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=alex.williamson@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46FNzR3gNszDrCS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2019 00:28:01 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 631C628;
- Fri, 23 Aug 2019 07:27:59 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.20])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF57E3F718;
- Fri, 23 Aug 2019 07:27:58 -0700 (PDT)
-Date: Fri, 23 Aug 2019 15:27:57 +0100
-From: Andrew Murray <andrew.murray@arm.com>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCH v2 08/10] PCI: layerscape: Add EP mode support for
- ls1088a and ls2088a
-Message-ID: <20190823142756.GI14582@e119886-lin.cambridge.arm.com>
-References: <20190822112242.16309-1-xiaowei.bao@nxp.com>
- <20190822112242.16309-8-xiaowei.bao@nxp.com>
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46FPFc68GczDrgp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2019 00:40:16 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 8663C309175F;
+ Fri, 23 Aug 2019 14:40:14 +0000 (UTC)
+Received: from x1.home (ovpn-116-99.phx2.redhat.com [10.3.116.99])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 515BE5F9D2;
+ Fri, 23 Aug 2019 14:40:13 +0000 (UTC)
+Date: Fri, 23 Aug 2019 08:40:12 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH kernel] vfio/spapr_tce: Fix incorrect tce_iommu_group
+ memory free
+Message-ID: <20190823084012.202ba70f@x1.home>
+In-Reply-To: <20190823053241.hogc44em2ccwdwq4@oak.ozlabs.ibm.com>
+References: <20190819015117.94878-1-aik@ozlabs.ru>
+ <20190823053241.hogc44em2ccwdwq4@oak.ozlabs.ibm.com>
+Organization: Red Hat
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190822112242.16309-8-xiaowei.bao@nxp.com>
-User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.41]); Fri, 23 Aug 2019 14:40:14 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,186 +56,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, roy.zang@nxp.com, lorenzo.pieralisi@arm.co,
- arnd@arndb.de, devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, kishon@ti.com, minghuan.Lian@nxp.com,
- robh+dt@kernel.org, gustavo.pimentel@synopsys.com, jingoohan1@gmail.com,
- bhelgaas@google.com, leoyang.li@nxp.com, shawnguo@kernel.org,
- mingkai.hu@nxp.com, linux-arm-kernel@lists.infradead.org
+Cc: kvm@vger.kernel.org, Jose Ricardo Ziviani <joserz@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 22, 2019 at 07:22:40PM +0800, Xiaowei Bao wrote:
-> Add PCIe EP mode support for ls1088a and ls2088a, there are some
-> difference between LS1 and LS2 platform, so refactor the code of
-> the EP driver.
+On Fri, 23 Aug 2019 15:32:41 +1000
+Paul Mackerras <paulus@ozlabs.org> wrote:
+
+> On Mon, Aug 19, 2019 at 11:51:17AM +1000, Alexey Kardashevskiy wrote:
+> > The @tcegrp variable is used in 1) a loop over attached groups
+> > 2) it stores a pointer to a newly allocated tce_iommu_group if 1) found
+> > nothing. However the error handler does not distinguish how we got there
+> > and incorrectly releases memory for a found+incompatible group.
+> > 
+> > This fixes it by adding another error handling case.
+> > 
+> > Fixes: 0bd971676e68 ("powerpc/powernv/npu: Add compound IOMMU groups")
+> > Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>  
 > 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> ---
-> v2:
->  - New mechanism for layerscape EP driver.
-
-Was there a v1 of this patch?
-
+> Good catch.  This is potentially nasty since it is a double free.
+> Alex, are you going to take this, or would you prefer it goes via
+> Michael Ellerman's tree?
 > 
->  drivers/pci/controller/dwc/pci-layerscape-ep.c | 76 ++++++++++++++++++++------
->  1 file changed, 58 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 7ca5fe8..2a66f07 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -20,27 +20,29 @@
->  
->  #define PCIE_DBI2_OFFSET		0x1000	/* DBI2 base address*/
->  
-> -struct ls_pcie_ep {
-> -	struct dw_pcie		*pci;
-> -	struct pci_epc_features	*ls_epc;
-> +#define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
-> +
-> +struct ls_pcie_ep_drvdata {
-> +	u32				func_offset;
-> +	const struct dw_pcie_ep_ops	*ops;
-> +	const struct dw_pcie_ops	*dw_pcie_ops;
->  };
->  
-> -#define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
-> +struct ls_pcie_ep {
-> +	struct dw_pcie			*pci;
-> +	struct pci_epc_features		*ls_epc;
-> +	const struct ls_pcie_ep_drvdata *drvdata;
-> +};
->  
->  static int ls_pcie_establish_link(struct dw_pcie *pci)
->  {
->  	return 0;
->  }
->  
-> -static const struct dw_pcie_ops ls_pcie_ep_ops = {
-> +static const struct dw_pcie_ops dw_ls_pcie_ep_ops = {
->  	.start_link = ls_pcie_establish_link,
->  };
->  
-> -static const struct of_device_id ls_pcie_ep_of_match[] = {
-> -	{ .compatible = "fsl,ls-pcie-ep",},
-> -	{ },
-> -};
-> -
->  static const struct pci_epc_features*
->  ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
->  {
-> @@ -82,10 +84,44 @@ static int ls_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	}
->  }
->  
-> -static const struct dw_pcie_ep_ops pcie_ep_ops = {
-> +static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
-> +						u8 func_no)
-> +{
-> +	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> +	struct ls_pcie_ep *pcie = to_ls_pcie_ep(pci);
-> +	u8 header_type;
-> +
-> +	header_type = ioread8(pci->dbi_base + PCI_HEADER_TYPE);
-> +
-> +	if (header_type & (1 << 7))
-> +		return pcie->drvdata->func_offset * func_no;
-> +	else
-> +		return 0;
+> Reviewed-by: Paul Mackerras <paulus@ozlabs.org>
 
-It looks like there isn't a PCI define for multi function, the nearest I
-could find was PCI_HEADER_TYPE_MULTIDEVICE in hotplug/ibmphp.h. A comment
-above the test might be helpful to explain the test.
-
-As the ls_pcie_ep_drvdata structures are static, the unset .func_offset
-will be initialised to 0, so you could just drop the test above.
-
-However something to the effect of the following may help spot
-misconfiguration:
-
-WARN_ON(func_no && !pcie->drvdata->func_offset);
-return pcie->drvdata->func_offset * func_no;
-
-The WARN is probably quite useful as if you are attempting to use
-non-zero functions and func_offset isn't set - then things may appear to work
-normally but actually will break horribly.
-
+I can take it, I've got it queued, but was hoping for an ack/review by
+you or David.  I'll add the R-b and push it out to my next branch.
 Thanks,
 
-Andrew Murray
-
-> +}
-> +
-> +static const struct dw_pcie_ep_ops ls_pcie_ep_ops = {
->  	.ep_init = ls_pcie_ep_init,
->  	.raise_irq = ls_pcie_ep_raise_irq,
->  	.get_features = ls_pcie_ep_get_features,
-> +	.func_conf_select = ls_pcie_ep_func_conf_select,
-> +};
-> +
-> +static const struct ls_pcie_ep_drvdata ls1_ep_drvdata = {
-> +	.ops = &ls_pcie_ep_ops,
-> +	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
-> +};
-> +
-> +static const struct ls_pcie_ep_drvdata ls2_ep_drvdata = {
-> +	.func_offset = 0x20000,
-> +	.ops = &ls_pcie_ep_ops,
-> +	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
-> +};
-> +
-> +static const struct of_device_id ls_pcie_ep_of_match[] = {
-> +	{ .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
-> +	{ .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
-> +	{ .compatible = "fsl,ls2088a-pcie-ep", .data = &ls2_ep_drvdata },
-> +	{ },
->  };
->  
->  static int __init ls_add_pcie_ep(struct ls_pcie_ep *pcie,
-> @@ -98,7 +134,7 @@ static int __init ls_add_pcie_ep(struct ls_pcie_ep *pcie,
->  	int ret;
->  
->  	ep = &pci->ep;
-> -	ep->ops = &pcie_ep_ops;
-> +	ep->ops = pcie->drvdata->ops;
->  
->  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
->  	if (!res)
-> @@ -137,14 +173,11 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	if (!ls_epc)
->  		return -ENOMEM;
->  
-> -	dbi_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
-> -	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
-> -	if (IS_ERR(pci->dbi_base))
-> -		return PTR_ERR(pci->dbi_base);
-> +	pcie->drvdata = of_device_get_match_data(dev);
->  
-> -	pci->dbi_base2 = pci->dbi_base + PCIE_DBI2_OFFSET;
->  	pci->dev = dev;
-> -	pci->ops = &ls_pcie_ep_ops;
-> +	pci->ops = pcie->drvdata->dw_pcie_ops;
-> +
->  	pcie->pci = pci;
->  
->  	ls_epc->linkup_notifier = false,
-> @@ -152,6 +185,13 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  
->  	pcie->ls_epc = ls_epc;
->  
-> +	dbi_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
-> +	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
-> +	if (IS_ERR(pci->dbi_base))
-> +		return PTR_ERR(pci->dbi_base);
-> +
-> +	pci->dbi_base2 = pci->dbi_base + PCIE_DBI2_OFFSET;
-> +
->  	platform_set_drvdata(pdev, pcie);
->  
->  	ret = ls_add_pcie_ep(pcie, pdev);
-> -- 
-> 2.9.5
-> 
+Alex
