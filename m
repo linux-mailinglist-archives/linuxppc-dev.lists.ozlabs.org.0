@@ -1,36 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691E19AF88
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 14:31:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D613D9AFEF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 14:51:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46FLPH455mzDrqC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 22:31:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46FLqV4PRZzDrVV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 22:51:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46FLLC23yczDrQl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 22:29:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46FLm75dxvzDr2p
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 22:48:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 46FLLB6F8Cz9s7T; Fri, 23 Aug 2019 22:29:06 +1000 (AEST)
+ id 46FLm71L5gz9sDQ; Fri, 23 Aug 2019 22:48:07 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 46FLLB5djwz9sN6; Fri, 23 Aug 2019 22:29:06 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46FLm659cnz9s7T;
+ Fri, 23 Aug 2019 22:48:06 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/64: Fix stacktrace on BE when function_graph is
- enabled
-Date: Fri, 23 Aug 2019 22:29:01 +1000
-Message-Id: <20190823122901.32667-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
+To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v2] powerpc/powernv: Add ultravisor message log interface
+In-Reply-To: <20190823060654.28842-1-cclaudio@linux.ibm.com>
+References: <20190823060654.28842-1-cclaudio@linux.ibm.com>
+Date: Fri, 23 Aug 2019 22:48:03 +1000
+Message-ID: <87o90g3v5o.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,67 +46,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Ryan Grimm <grimm@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently if we oops or warn while function_graph is active the stack
-trace looks like:
-  .trace_graph_return+0xac/0x100
-  .ftrace_return_to_handler+0x98/0x140
-  .return_to_handler+0x20/0x40
-  .return_to_handler+0x0/0x40
-  .return_to_handler+0x0/0x40
-  .return_to_handler+0x0/0x40
-  .return_to_handler+0x0/0x40
-  .return_to_handler+0x0/0x40
-  .return_to_handler+0x0/0x40
-  .cpu_startup_entry+0x34/0x40
-  .start_secondary+0x680/0x6f0
-  start_secondary_prolog+0x10/0x14
+Hi Claudio,
 
-Notice the multiple entries that just show .return_to_handler.
+Claudio Carvalho <cclaudio@linux.ibm.com> writes:
+> Ultravisor (UV) provides an in-memory console which follows the OPAL
+> in-memory console structure.
+>
+> This patch extends the OPAL msglog code to also initialize the UV memory
+> console and provide a sysfs interface (uv_msglog) for userspace to view
+> the UV message log.
+>
+> CC: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> CC: Oliver O'Halloran <oohall@gmail.com>
+> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> ---
+> This patch depends on the "kvmppc: Paravirtualize KVM to support
+> ultravisor" patchset submitted by Claudio Carvalho.
+> ---
+>  arch/powerpc/platforms/powernv/opal-msglog.c | 99 ++++++++++++++------
+>  1 file changed, 72 insertions(+), 27 deletions(-)
 
-There is logic in show_stack() to detect this case and print the
-traced function, but we inadvertently broke it in commit
-7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler") (2014),
-because that commit accidentally removed the dereference of rth which
-gets the text address from the function descriptor. Hence this is only
-broken on big endian (or technically ELFv1).
+I think the code changes look mostly OK here.
 
-Fix it by using the proper accessor, which is ppc_function_entry().
-Result is we get a stack trace such as:
+But I'm not sure about the end result in sysfs.
 
-  .trace_graph_return+0x134/0x160
-  .ftrace_return_to_handler+0x94/0x140
-  .return_to_handler+0x20/0x40
-  .return_to_handler+0x0/0x40 (.shared_cede_loop+0x48/0x130)
-  .return_to_handler+0x0/0x40 (.cpuidle_enter_state+0xa0/0x690)
-  .return_to_handler+0x0/0x40 (.cpuidle_enter+0x44/0x70)
-  .return_to_handler+0x0/0x40 (.call_cpuidle+0x68/0xc0)
-  .return_to_handler+0x0/0x40 (.do_idle+0x37c/0x400)
-  .return_to_handler+0x0/0x40 (.cpu_startup_entry+0x30/0x50)
-  .rest_init+0x224/0x348
+If I'm reading it right this will create:
 
-Fixes: 7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/process.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ /sys/firmware/opal/uv_msglog
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 8fc4de0d22b4..1601d7cfe45e 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2048,7 +2048,7 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- 	struct ftrace_ret_stack *ret_stack;
- 	extern void return_to_handler(void);
--	unsigned long rth = (unsigned long)return_to_handler;
-+	unsigned long rth = ppc_function_entry(return_to_handler);
- 	int curr_frame = 0;
- #endif
- 
--- 
-2.21.0
+Which I think is a little weird, because the UV is not OPAL.
 
+So I guess I wonder if the file should be created elsewhere to avoid any
+confusion and keep things nicely separated.
+
+Possibly /sys/firmware/ultravisor/msglog ?
+
+cheers
