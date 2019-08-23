@@ -2,66 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F0A9AC4E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 12:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 370F09AE94
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 13:59:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46FH2c064FzDqg9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 20:00:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46FKhR1475zDrqQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 21:59:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="eZyNYRwp"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46FGy66TJwzDrhK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 19:56:28 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46FGxy0Vp8zB09ZS;
- Fri, 23 Aug 2019 11:56:22 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=eZyNYRwp; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id YUt6v_gbV4Wj; Fri, 23 Aug 2019 11:56:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46FGxx6Zp7zB09ZC;
- Fri, 23 Aug 2019 11:56:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566554181; bh=B0WBywasRW5laCP5+OtduhELcOJZgjbVfcLeOQEIejI=;
- h=From:Subject:To:Cc:Date:From;
- b=eZyNYRwpZnyeVpktNH4cOFC8KNu/rWb3CEp2Li0YANIRcMiWUGaAsLZ+J3ZA7htfH
- YZwg9dV16d6iF548HMLorc6v4XvsedBtu/fc5bNJ+2dFud5NluU9hAZqwN4J9PML4f
- Z8OkcVunUR4NjxJQ2IM5avNDxKWZ083SIiOgfY6Q=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 219ED8B874;
- Fri, 23 Aug 2019 11:56:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id vWghA6AXK_RC; Fri, 23 Aug 2019 11:56:23 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 07A138B866;
- Fri, 23 Aug 2019 11:56:23 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id F18C56B735; Fri, 23 Aug 2019 09:56:22 +0000 (UTC)
-Message-Id: <ad9d45119a48a92bf122781d0c79c9407baa12d7.1566554026.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/8xx: Fix permanently mapped IMMR region.
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 23 Aug 2019 09:56:22 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46FKdt6d1WzDrNN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2019 21:57:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46FKds2Qn9z9s00;
+ Fri, 23 Aug 2019 21:57:37 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Paul Mackerras <paulus@ozlabs.org>, Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v7 0/7] KVMPPC driver to manage secure guest pages
+In-Reply-To: <20190823041747.ctquda5uwvy2eiqz@oak.ozlabs.ibm.com>
+References: <20190822102620.21897-1-bharata@linux.ibm.com>
+ <20190823041747.ctquda5uwvy2eiqz@oak.ozlabs.ibm.com>
+Date: Fri, 23 Aug 2019 21:57:32 +1000
+Message-ID: <87wof43xhv.fsf@concordia.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,90 +44,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
+ paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When not using large TLBs, the IMMR region is still
-mapped as a whole block in the FIXMAP area.
+Paul Mackerras <paulus@ozlabs.org> writes:
+> On Thu, Aug 22, 2019 at 03:56:13PM +0530, Bharata B Rao wrote:
+>> A pseries guest can be run as a secure guest on Ultravisor-enabled
+>> POWER platforms. On such platforms, this driver will be used to manage
+>> the movement of guest pages between the normal memory managed by
+>> hypervisor(HV) and secure memory managed by Ultravisor(UV).
+>> 
+>> Private ZONE_DEVICE memory equal to the amount of secure memory
+>> available in the platform for running secure guests is created.
+>> Whenever a page belonging to the guest becomes secure, a page from
+>> this private device memory is used to represent and track that secure
+>> page on the HV side. The movement of pages between normal and secure
+>> memory is done via migrate_vma_pages(). The reverse movement is driven
+>> via pagemap_ops.migrate_to_ram().
+>> 
+>> The page-in or page-out requests from UV will come to HV as hcalls and
+>> HV will call back into UV via uvcalls to satisfy these page requests.
+>> 
+>> These patches are against hmm.git
+>> (https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git/log/?h=hmm)
+>> 
+>> plus
+>> 
+>> Claudio Carvalho's base ultravisor enablement patchset v6
+>> (https://lore.kernel.org/linuxppc-dev/20190822034838.27876-1-cclaudio@linux.ibm.com/T/#t)
+>
+> How are you thinking these patches will go upstream?  Are you going to
+> send them via the hmm tree?
+>
+> I assume you need Claudio's patchset as a prerequisite for your series
+> to compile, which means the hmm maintainers would need to pull in a
+> topic branch from Michael Ellerman's powerpc tree, or something like
+> that.
 
-Do not remove pages mapped in the FIXMAP region when
-initialising paging.
+I think more workable would be for me to make a topic branch based on
+the hmm tree (or some commit from the hmm tree), which I then apply the
+patches on top of, and merge any required powerpc changes into that. I
+can then ask Linus to merge that branch late in the merge window once
+the hmm changes have gone in.
 
-Properly report that the IMMR region is block-mapped even
-when not using large TLBs.
+The bigger problem at the moment is the lack of reviews or acks on the
+bulk of the series.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/mm/mem.c        |  8 --------
- arch/powerpc/mm/nohash/8xx.c | 13 +++++++------
- 2 files changed, 7 insertions(+), 14 deletions(-)
-
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 69f99128a8d6..8e221d8744ba 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -216,14 +216,6 @@ void __init paging_init(void)
- 	unsigned long long total_ram = memblock_phys_mem_size();
- 	phys_addr_t top_of_ram = memblock_end_of_DRAM();
- 
--#ifdef CONFIG_PPC32
--	unsigned long v = __fix_to_virt(__end_of_fixed_addresses - 1);
--	unsigned long end = __fix_to_virt(FIX_HOLE);
--
--	for (; v < end; v += PAGE_SIZE)
--		map_kernel_page(v, 0, __pgprot(0)); /* XXX gross */
--#endif
--
- #ifdef CONFIG_HIGHMEM
- 	map_kernel_page(PKMAP_BASE, 0, __pgprot(0));	/* XXX gross */
- 	pkmap_page_table = virt_to_kpte(PKMAP_BASE);
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 4a06cb342da2..e6918235fe04 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -21,33 +21,34 @@ extern int __map_without_ltlbs;
- static unsigned long block_mapped_ram;
- 
- /*
-- * Return PA for this VA if it is in an area mapped with LTLBs.
-+ * Return PA for this VA if it is in an area mapped with LTLBs or fixmap.
-  * Otherwise, returns 0
-  */
- phys_addr_t v_block_mapped(unsigned long va)
- {
- 	unsigned long p = PHYS_IMMR_BASE;
- 
--	if (__map_without_ltlbs)
--		return 0;
- 	if (va >= VIRT_IMMR_BASE && va < VIRT_IMMR_BASE + IMMR_SIZE)
- 		return p + va - VIRT_IMMR_BASE;
-+	if (__map_without_ltlbs)
-+		return 0;
- 	if (va >= PAGE_OFFSET && va < PAGE_OFFSET + block_mapped_ram)
- 		return __pa(va);
- 	return 0;
- }
- 
- /*
-- * Return VA for a given PA mapped with LTLBs or 0 if not mapped
-+ * Return VA for a given PA mapped with LTLBs or fixmap
-+ * Return 0 if not mapped
-  */
- unsigned long p_block_mapped(phys_addr_t pa)
- {
- 	unsigned long p = PHYS_IMMR_BASE;
- 
--	if (__map_without_ltlbs)
--		return 0;
- 	if (pa >= p && pa < p + IMMR_SIZE)
- 		return VIRT_IMMR_BASE + pa - p;
-+	if (__map_without_ltlbs)
-+		return 0;
- 	if (pa < block_mapped_ram)
- 		return (unsigned long)__va(pa);
- 	return 0;
--- 
-2.13.3
-
+cheers
