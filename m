@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D665E9B7E4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 22:51:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCC79B7F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2019 22:56:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46FYTr4PNRzDqTl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2019 06:51:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46FYbL6yHvzDrDg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2019 06:56:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=stackframe.org
- (client-ip=2001:470:70c5:1111::170; helo=smtp.duncanthrax.net;
- envelope-from=svens@stackframe.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=stackframe.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=duncanthrax.net header.i=@duncanthrax.net
- header.b="Z42gmiAU"; dkim-atps=neutral
-Received: from smtp.duncanthrax.net (smtp.duncanthrax.net
- [IPv6:2001:470:70c5:1111::170])
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=alex.williamson@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46FYCy3kJPzDqww
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2019 06:39:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From;
- bh=H4eOft3mmhMmM4qIstVdgVIAgDkeI6V05OnxkDQA5RQ=; b=Z42gmiAU84qIhJsbBCXC7B6km8
- ft1liMbGsKfaXHl9j1+f4Kl3o9APmEsyQtDfQGpnzF6FvqhVwnjpRZjg6qGaVpQQfMdpvGw7uTzO2
- YYBH0sy4ue0FVkDyY37mMaEpESlaPZzC1n8uJmq+ZG4fDG67rjam7JYjBlbzBreZUad4=;
-Received: from [134.3.44.134] (helo=x280.stackframe.org)
- by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.86_2) (envelope-from <svens@stackframe.org>)
- id 1i1FZ3-00071n-Ej; Fri, 23 Aug 2019 21:49:37 +0200
-From: Sven Schnelle <svens@stackframe.org>
-To: kexec@lists.infradead.org
-Subject: [PATCH v5 7/7] kexec_elf: support 32 bit ELF files
-Date: Fri, 23 Aug 2019 21:49:19 +0200
-Message-Id: <20190823194919.30916-8-svens@stackframe.org>
-X-Mailer: git-send-email 2.23.0.rc1
-In-Reply-To: <20190823194919.30916-1-svens@stackframe.org>
-References: <20190823194919.30916-1-svens@stackframe.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46FYL85pPXzDqTl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2019 06:44:48 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 1D268A2892A;
+ Fri, 23 Aug 2019 20:44:45 +0000 (UTC)
+Received: from x1.home (ovpn-116-99.phx2.redhat.com [10.3.116.99])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5D08B5D6B2;
+ Fri, 23 Aug 2019 20:44:44 +0000 (UTC)
+Date: Fri, 23 Aug 2019 14:44:38 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel] vfio/spapr_tce: Fix incorrect tce_iommu_group
+ memory free
+Message-ID: <20190823144438.03238f16@x1.home>
+In-Reply-To: <20190819015117.94878-1-aik@ozlabs.ru>
+References: <20190819015117.94878-1-aik@ozlabs.ru>
+Organization: Red Hat
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
+ (mx1.redhat.com [10.5.110.68]); Fri, 23 Aug 2019 20:44:45 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,121 +55,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
- linuxppc-dev@lists.ozlabs.org, Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Jose Ricardo Ziviani <joserz@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The powerpc version only supported 64 bit. Add some
-code to switch decoding of fields during runtime so
-we can kexec a 32 bit kernel from a 64 bit kernel and
-vice versa.
+On Mon, 19 Aug 2019 11:51:17 +1000
+Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
----
- kernel/kexec_elf.c | 57 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 42 insertions(+), 15 deletions(-)
+> The @tcegrp variable is used in 1) a loop over attached groups
+> 2) it stores a pointer to a newly allocated tce_iommu_group if 1) found
+> nothing. However the error handler does not distinguish how we got there
+> and incorrectly releases memory for a found+incompatible group.
+> 
+> This fixes it by adding another error handling case.
+> 
+> Fixes: 0bd971676e68 ("powerpc/powernv/npu: Add compound IOMMU groups")
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> ---
 
-diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
-index 85f2bd177d6e..d3689632e8b9 100644
---- a/kernel/kexec_elf.c
-+++ b/kernel/kexec_elf.c
-@@ -21,8 +21,6 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- 
--#define elf_addr_to_cpu	elf64_to_cpu
--
- static inline bool elf_is_elf_file(const struct elfhdr *ehdr)
- {
- 	return memcmp(ehdr->e_ident, ELFMAG, SELFMAG) == 0;
-@@ -152,9 +150,6 @@ static int elf_read_ehdr(const char *buf, size_t len, struct elfhdr *ehdr)
- 	ehdr->e_type      = elf16_to_cpu(ehdr, buf_ehdr->e_type);
- 	ehdr->e_machine   = elf16_to_cpu(ehdr, buf_ehdr->e_machine);
- 	ehdr->e_version   = elf32_to_cpu(ehdr, buf_ehdr->e_version);
--	ehdr->e_entry     = elf_addr_to_cpu(ehdr, buf_ehdr->e_entry);
--	ehdr->e_phoff     = elf_addr_to_cpu(ehdr, buf_ehdr->e_phoff);
--	ehdr->e_shoff     = elf_addr_to_cpu(ehdr, buf_ehdr->e_shoff);
- 	ehdr->e_flags     = elf32_to_cpu(ehdr, buf_ehdr->e_flags);
- 	ehdr->e_phentsize = elf16_to_cpu(ehdr, buf_ehdr->e_phentsize);
- 	ehdr->e_phnum     = elf16_to_cpu(ehdr, buf_ehdr->e_phnum);
-@@ -162,6 +157,24 @@ static int elf_read_ehdr(const char *buf, size_t len, struct elfhdr *ehdr)
- 	ehdr->e_shnum     = elf16_to_cpu(ehdr, buf_ehdr->e_shnum);
- 	ehdr->e_shstrndx  = elf16_to_cpu(ehdr, buf_ehdr->e_shstrndx);
- 
-+	switch (ehdr->e_ident[EI_CLASS]) {
-+	case ELFCLASS64:
-+		ehdr->e_entry = elf64_to_cpu(ehdr, buf_ehdr->e_entry);
-+		ehdr->e_phoff = elf64_to_cpu(ehdr, buf_ehdr->e_phoff);
-+		ehdr->e_shoff = elf64_to_cpu(ehdr, buf_ehdr->e_shoff);
-+		break;
-+
-+	case ELFCLASS32:
-+		ehdr->e_entry = elf32_to_cpu(ehdr, buf_ehdr->e_entry);
-+		ehdr->e_phoff = elf32_to_cpu(ehdr, buf_ehdr->e_phoff);
-+		ehdr->e_shoff = elf32_to_cpu(ehdr, buf_ehdr->e_shoff);
-+		break;
-+
-+	default:
-+		pr_debug("Unknown ELF class.\n");
-+		return -EINVAL;
-+	}
-+
- 	return elf_is_ehdr_sane(ehdr, len) ? 0 : -ENOEXEC;
- }
- 
-@@ -192,6 +205,7 @@ static int elf_read_phdr(const char *buf, size_t len,
- {
- 	/* Override the const in proghdrs, we are the ones doing the loading. */
- 	struct elf_phdr *phdr = (struct elf_phdr *) &elf_info->proghdrs[idx];
-+	const struct elfhdr *ehdr = elf_info->ehdr;
- 	const char *pbuf;
- 	struct elf_phdr *buf_phdr;
- 
-@@ -199,18 +213,31 @@ static int elf_read_phdr(const char *buf, size_t len,
- 	buf_phdr = (struct elf_phdr *) pbuf;
- 
- 	phdr->p_type   = elf32_to_cpu(elf_info->ehdr, buf_phdr->p_type);
--	phdr->p_offset = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_offset);
--	phdr->p_paddr  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_paddr);
--	phdr->p_vaddr  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_vaddr);
- 	phdr->p_flags  = elf32_to_cpu(elf_info->ehdr, buf_phdr->p_flags);
- 
--	/*
--	 * The following fields have a type equivalent to Elf_Addr
--	 * both in 32 bit and 64 bit ELF.
--	 */
--	phdr->p_filesz = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_filesz);
--	phdr->p_memsz  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_memsz);
--	phdr->p_align  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_align);
-+	switch (ehdr->e_ident[EI_CLASS]) {
-+	case ELFCLASS64:
-+		phdr->p_offset = elf64_to_cpu(ehdr, buf_phdr->p_offset);
-+		phdr->p_paddr  = elf64_to_cpu(ehdr, buf_phdr->p_paddr);
-+		phdr->p_vaddr  = elf64_to_cpu(ehdr, buf_phdr->p_vaddr);
-+		phdr->p_filesz = elf64_to_cpu(ehdr, buf_phdr->p_filesz);
-+		phdr->p_memsz  = elf64_to_cpu(ehdr, buf_phdr->p_memsz);
-+		phdr->p_align  = elf64_to_cpu(ehdr, buf_phdr->p_align);
-+		break;
-+
-+	case ELFCLASS32:
-+		phdr->p_offset = elf32_to_cpu(ehdr, buf_phdr->p_offset);
-+		phdr->p_paddr  = elf32_to_cpu(ehdr, buf_phdr->p_paddr);
-+		phdr->p_vaddr  = elf32_to_cpu(ehdr, buf_phdr->p_vaddr);
-+		phdr->p_filesz = elf32_to_cpu(ehdr, buf_phdr->p_filesz);
-+		phdr->p_memsz  = elf32_to_cpu(ehdr, buf_phdr->p_memsz);
-+		phdr->p_align  = elf32_to_cpu(ehdr, buf_phdr->p_align);
-+		break;
-+
-+	default:
-+		pr_debug("Unknown ELF class.\n");
-+		return -EINVAL;
-+	}
- 
- 	return elf_is_phdr_sane(phdr, len) ? 0 : -ENOEXEC;
- }
--- 
-2.23.0.rc1
+Applied to vfio next branch with Paul's R-b.  Thanks,
+
+Alex
+
+> 
+> The bug is there since 2157e7b82f3b but it would not appear in practice
+> before 0bd971676e68, hence that "Fixes". Or it still should be
+> 157e7b82f3b ("vfio: powerpc/spapr: Register memory and define IOMMU v2")
+> ?
+> 
+> Found it when tried adding a "compound PE" (GPU + NPUs) to a container
+> with a passed through xHCI host. The compatibility test (->create_table
+> should be equal) treats them as incompatible which might a bug (or
+> we are just suboptimal here) on its own.
+> 
+> ---
+>  drivers/vfio/vfio_iommu_spapr_tce.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
+> index 8ce9ad21129f..babef8b00daf 100644
+> --- a/drivers/vfio/vfio_iommu_spapr_tce.c
+> +++ b/drivers/vfio/vfio_iommu_spapr_tce.c
+> @@ -1234,7 +1234,7 @@ static long tce_iommu_take_ownership_ddw(struct tce_container *container,
+>  static int tce_iommu_attach_group(void *iommu_data,
+>  		struct iommu_group *iommu_group)
+>  {
+> -	int ret;
+> +	int ret = 0;
+>  	struct tce_container *container = iommu_data;
+>  	struct iommu_table_group *table_group;
+>  	struct tce_iommu_group *tcegrp = NULL;
+> @@ -1287,13 +1287,13 @@ static int tce_iommu_attach_group(void *iommu_data,
+>  			!table_group->ops->release_ownership) {
+>  		if (container->v2) {
+>  			ret = -EPERM;
+> -			goto unlock_exit;
+> +			goto free_exit;
+>  		}
+>  		ret = tce_iommu_take_ownership(container, table_group);
+>  	} else {
+>  		if (!container->v2) {
+>  			ret = -EPERM;
+> -			goto unlock_exit;
+> +			goto free_exit;
+>  		}
+>  		ret = tce_iommu_take_ownership_ddw(container, table_group);
+>  		if (!tce_groups_attached(container) && !container->tables[0])
+> @@ -1305,10 +1305,11 @@ static int tce_iommu_attach_group(void *iommu_data,
+>  		list_add(&tcegrp->next, &container->group_list);
+>  	}
+>  
+> -unlock_exit:
+> +free_exit:
+>  	if (ret && tcegrp)
+>  		kfree(tcegrp);
+>  
+> +unlock_exit:
+>  	mutex_unlock(&container->lock);
+>  
+>  	return ret;
 
