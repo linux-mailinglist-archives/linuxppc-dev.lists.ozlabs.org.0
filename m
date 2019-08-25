@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD479C420
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 15:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 069E39C434
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 15:55:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Gc3t5z8bzDqRW
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 23:51:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Gc8b1wdkzDqjQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 23:55:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=changbin.du@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="I/UiMy2R"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="XlOYWrX8"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46GbTM1HGCzDqdp
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 23:24:39 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id z3so8499242pln.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 06:24:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46GbTT3DtSzDqfc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 23:24:45 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id o13so8737663pgp.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 06:24:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=2pTVuNmqzcV3Op0lr/NM5GfDOg6CKox2DhhefWfSKJA=;
- b=I/UiMy2RRPAPvoKy0t7HkHjN2MpeaAd6rZsrJIBNtVbPYCLfqfqP9wnn0PZ2SmIe6p
- Bk8ibbvIlhXpzVLG/hou/A2kBOhmQSlhGhN7rZk+9DEqMpludfcVVfdbTIdga06mwYCJ
- GVfRE8TvzxhuP1uKOUgGU3wr4QMbG7PfwGgNhSX1hpgonK0EaRH174VYFDovga9YevWC
- nT214rTNH1dZBi647hDH7iko9v1XQU4Osegpd4WDi8uSwE33Sm5ejsO6/uaKsra4Mc0Y
- OsAuU2FA0NyR4DEil46tNmKFj7vzQxuusnSu5Yr2XjrZZYzNXIpN7r2t//WW8drnxQV0
- v14g==
+ bh=ABqbUOb9yTlWBycLA+vVgy10aa3RFNPi90+kbWnXnj4=;
+ b=XlOYWrX84QfUGfxVujtYSDLQjkO2n+X/V1vEeWQMWM0vBDv5dZmYayL7ewK9/lbe5f
+ puws9gxnBBL3ZtW3KScqzRc6gHb1KEsyl2y4yQhDyRG12zSj06u/4BhqS6ynaWZhcInC
+ Jp4HYYwgNMLWg2Ghh9y1+QkLbuG/aRj1cGJLC2LO3yJRuIkfwU5za3pe3qi4aGcuhY2k
+ 7OebOSPIuR/+smUIR4lMDKkb/t7HmfEDAj3+b1z7UddF8v1iR7b851xb4Zpfzt15eWOb
+ SR2YAFMULehg2fpkKPwipTt84L1s26e4zUxtTuEXMUwo8IfVPP0ODxn+3EWkpC+gdOC1
+ eAuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=2pTVuNmqzcV3Op0lr/NM5GfDOg6CKox2DhhefWfSKJA=;
- b=SNIS88rzKw+XizFWs2mrju08uluXk9Su/PM4rLGDBo3yQTUD5DBLtK4cwCvOqVTFA7
- XLHGT4yVoiKl3VI+tNYna94sAtHIS1ILiGL5pDS39b5axYRHok4cxeBqTxgrmndTp3J6
- KbhwHPYVCk3FaS/kyE8mU4m05hwIEqDrle6vs3UCNybU71sd9aMrPp6sA/hg00SstBd+
- kbl8ho+4Fjutn9IT8YJLzGYkRDSlpiNkBSGjrqykPyaZpQBxH1FZ7cKjN1+zL0fjrGeU
- Kl/bn0ZP2y4C4NYPkK3eQxH6mEGQBGtvOs95aXl5u4Ftv1hAdf5dTlMMfWsitp9z+i1a
- QN6w==
-X-Gm-Message-State: APjAAAXD/75rCjMOPLw4l60sxj4u6dvy/N4JXlCXp1KfPR0pcYjkx+Gi
- ZzGXx1vdnQQtlaCeoDoE0Yk=
-X-Google-Smtp-Source: APXvYqwW5vgalEvzXbNDzG8Sy2C+nrBmYuDxURknm4QUVr63S8vbHRcx35z28SMC7WZypbpFAxEGaA==
-X-Received: by 2002:a17:902:b593:: with SMTP id
- a19mr14240906pls.110.1566739474770; 
- Sun, 25 Aug 2019 06:24:34 -0700 (PDT)
+ bh=ABqbUOb9yTlWBycLA+vVgy10aa3RFNPi90+kbWnXnj4=;
+ b=Z1whNR7BE477E52r6w+hn/rOvAsx99INPaxtTWrqkYpCazNNy1CesE9aQlp4+U+2tT
+ RDeex9omsud+J1dV4a9QfjnrUz9q+PXvvuKmOHiHkfAVhx65rblcyZiRATdL3Oarok9L
+ YcbwDcrHpL0hG+/IKXxZvRnfbCVvsWAjARy0NwnMt05oalH1hGQMIv3A2lyzUiwYUKFC
+ FUK883JXzZR1OzD+ma8jh59zELtkb1TzYuAFT1pekhZZGDayRTvMeRDVve207mCT2F2j
+ oz6aX8SAqkCi/CnCe+1PGDoS/niv1gKut/KiLOMVXpSOdG8ryh6z+DdYQVEGI1XuYtWh
+ c2gA==
+X-Gm-Message-State: APjAAAX9s0xAYK9xwJhdKeVlCrr4rTAFvFliL8MXiuhcjdD7lklpIDvp
+ RNTOdjsw0HvAGmbYKe3FlOE=
+X-Google-Smtp-Source: APXvYqyBC/JTyOCCBr2L81Di8jkyCQ7yEHU7nHNyqfLhe02b3ofAjzg1rsOUutsL2IFiJsmTOyG3Yg==
+X-Received: by 2002:a63:69c1:: with SMTP id
+ e184mr11615522pgc.198.1566739482405; 
+ Sun, 25 Aug 2019 06:24:42 -0700 (PDT)
 Received: from localhost.localdomain ([149.28.153.17])
- by smtp.gmail.com with ESMTPSA id y23sm11076562pfr.86.2019.08.25.06.24.27
+ by smtp.gmail.com with ESMTPSA id y23sm11076562pfr.86.2019.08.25.06.24.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Aug 2019 06:24:34 -0700 (PDT)
+ Sun, 25 Aug 2019 06:24:42 -0700 (PDT)
 From: Changbin Du <changbin.du@gmail.com>
 To: Steven Rostedt <rostedt@goodmis.org>,
 	Ingo Molnar <mingo@redhat.com>
-Subject: [PATCH 06/11] ftrace: process function prototype data in vmlinux and
- modules
-Date: Sun, 25 Aug 2019 21:23:25 +0800
-Message-Id: <20190825132330.5015-7-changbin.du@gmail.com>
+Subject: [PATCH 07/11] ftrace: prepare arch specific interfaces for function
+ prototype feature
+Date: Sun, 25 Aug 2019 21:23:26 +0800
+Message-Id: <20190825132330.5015-8-changbin.du@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190825132330.5015-1-changbin.du@gmail.com>
 References: <20190825132330.5015-1-changbin.du@gmail.com>
@@ -93,294 +93,378 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Walk through the '__funcproto' section in vmlinux and kernel modules.
-For each item we add it to a new ftrace hash table ftrace_prototype_hash.
-When unloading a module, its items are removed from hash table.
+To record function parameter and return value, we need the arch specific
+code to pass the saved register context. It is only valid if the
+CONFIG_FTRACE_FUNC_PROTOTYPE feature is enabled. This patch only changes
+the interfaces, real implementation will be added later.
 
 Signed-off-by: Changbin Du <changbin.du@gmail.com>
 ---
- include/asm-generic/vmlinux.lds.h | 18 ++++++++
- include/linux/ftrace.h            | 18 ++++++++
- include/linux/module.h            |  4 ++
- kernel/module.c                   | 25 ++++++++--
- kernel/trace/ftrace.c             | 76 ++++++++++++++++++++++++++++++-
- kernel/trace/trace.h              |  4 ++
- 6 files changed, 140 insertions(+), 5 deletions(-)
+ arch/arm/kernel/ftrace.c             |  2 +-
+ arch/arm64/kernel/ftrace.c           |  2 +-
+ arch/csky/kernel/ftrace.c            |  2 +-
+ arch/microblaze/kernel/ftrace.c      |  2 +-
+ arch/mips/kernel/ftrace.c            |  2 +-
+ arch/nds32/kernel/ftrace.c           |  5 +++--
+ arch/parisc/kernel/ftrace.c          |  2 +-
+ arch/powerpc/kernel/trace/ftrace.c   |  2 +-
+ arch/riscv/kernel/ftrace.c           |  2 +-
+ arch/s390/kernel/ftrace.c            |  2 +-
+ arch/sh/kernel/ftrace.c              |  2 +-
+ arch/sparc/kernel/ftrace.c           |  2 +-
+ arch/x86/kernel/ftrace.c             |  2 +-
+ include/linux/ftrace.h               | 10 +++++++---
+ kernel/trace/fgraph.c                | 21 +++++++++++++++------
+ kernel/trace/ftrace.c                |  4 +++-
+ kernel/trace/trace.h                 |  2 +-
+ kernel/trace/trace_functions_graph.c |  2 +-
+ kernel/trace/trace_irqsoff.c         |  3 ++-
+ kernel/trace/trace_sched_wakeup.c    |  3 ++-
+ 20 files changed, 46 insertions(+), 28 deletions(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index cd28f63bfbc7..3b0a10cbf0ca 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -125,6 +125,23 @@
- #define MCOUNT_REC()
- #endif
+diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
+index bda949fd84e8..fd01c08b2dcb 100644
+--- a/arch/arm/kernel/ftrace.c
++++ b/arch/arm/kernel/ftrace.c
+@@ -191,7 +191,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+ 	old = *parent;
+ 	*parent = return_hooker;
  
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+#define FUNC_PROTOTYPE							\
-+	. = ALIGN(8);							\
-+	__funcprotostr : AT(ADDR(__funcprotostr) - LOAD_OFFSET) {	\
-+		KEEP(*(__funcprotostr)) 				\
-+	}								\
-+									\
-+	. = ALIGN(8);							\
-+	__funcproto : AT(ADDR(__funcproto) - LOAD_OFFSET) {		\
-+		__start_funcproto = .;					\
-+		KEEP(*(__funcproto))					\
-+		__stop_funcproto = .;					\
-+	}
-+#else
-+#define	FUNC_PROTOTYPE
-+#endif
-+
- #ifdef CONFIG_TRACE_BRANCH_PROFILING
- #define LIKELY_PROFILE()	__start_annotated_branch_profile = .;	\
- 				KEEP(*(_ftrace_annotated_branch))	\
-@@ -396,6 +413,7 @@
- 	}								\
- 									\
- 	TRACEDATA							\
-+	FUNC_PROTOTYPE							\
- 									\
- 	/* Kernel symbol table: Normal symbols */			\
- 	__ksymtab         : AT(ADDR(__ksymtab) - LOAD_OFFSET) {		\
+-	if (function_graph_enter(old, self_addr, frame_pointer, NULL))
++	if (function_graph_enter(old, self_addr, frame_pointer, NULL, NULL))
+ 		*parent = old;
+ }
+ 
+diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
+index 171773257974..dc8cc516c00a 100644
+--- a/arch/arm64/kernel/ftrace.c
++++ b/arch/arm64/kernel/ftrace.c
+@@ -233,7 +233,7 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent,
+ 	 */
+ 	old = *parent;
+ 
+-	if (!function_graph_enter(old, self_addr, frame_pointer, NULL))
++	if (!function_graph_enter(old, self_addr, frame_pointer, NULL, NULL))
+ 		*parent = return_hooker;
+ }
+ 
+diff --git a/arch/csky/kernel/ftrace.c b/arch/csky/kernel/ftrace.c
+index 44f4880179b7..5bc67f447e78 100644
+--- a/arch/csky/kernel/ftrace.c
++++ b/arch/csky/kernel/ftrace.c
+@@ -148,7 +148,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+ 	old = *parent;
+ 
+ 	if (!function_graph_enter(old, self_addr,
+-			*(unsigned long *)frame_pointer, parent)) {
++			*(unsigned long *)frame_pointer, parent, NULL)) {
+ 		/*
+ 		 * For csky-gcc function has sub-call:
+ 		 * subi	sp,	sp, 8
+diff --git a/arch/microblaze/kernel/ftrace.c b/arch/microblaze/kernel/ftrace.c
+index 224eea40e1ee..9722e98cd01d 100644
+--- a/arch/microblaze/kernel/ftrace.c
++++ b/arch/microblaze/kernel/ftrace.c
+@@ -62,7 +62,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr)
+ 		return;
+ 	}
+ 
+-	if (function_graph_enter(old, self_addr, 0, NULL))
++	if (function_graph_enter(old, self_addr, 0, NULL, NULL))
+ 		*parent = old;
+ }
+ #endif /* CONFIG_FUNCTION_GRAPH_TRACER */
+diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+index 2625232bfe52..24668bf079d2 100644
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -378,7 +378,7 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+ 	insns = core_kernel_text(self_ra) ? 2 : MCOUNT_OFFSET_INSNS + 1;
+ 	self_ra -= (MCOUNT_INSN_SIZE * insns);
+ 
+-	if (function_graph_enter(old_parent_ra, self_ra, fp, NULL))
++	if (function_graph_enter(old_parent_ra, self_ra, fp, NULL, NULL))
+ 		*parent_ra_addr = old_parent_ra;
+ 	return;
+ out:
+diff --git a/arch/nds32/kernel/ftrace.c b/arch/nds32/kernel/ftrace.c
+index fd2a54b8cd57..3dbf0017dfdf 100644
+--- a/arch/nds32/kernel/ftrace.c
++++ b/arch/nds32/kernel/ftrace.c
+@@ -217,7 +217,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+ 
+ 	old = *parent;
+ 
+-	if (!function_graph_enter(old, self_addr, frame_pointer, NULL))
++	if (!function_graph_enter(old, self_addr, frame_pointer, NULL, NULL))
+ 		*parent = return_hooker;
+ }
+ 
+@@ -235,7 +235,8 @@ noinline void ftrace_graph_caller(void)
+ 	prepare_ftrace_return(parent_ip, selfpc, frame_pointer);
+ }
+ 
+-extern unsigned long ftrace_return_to_handler(unsigned long frame_pointer);
++extern unsigned long ftrace_return_to_handler(unsigned long frame_pointer,
++					      unsigned long retval);
+ void __naked return_to_handler(void)
+ {
+ 	__asm__ __volatile__ (
+diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+index b6fb30f2e4bf..ea02f36e4f84 100644
+--- a/arch/parisc/kernel/ftrace.c
++++ b/arch/parisc/kernel/ftrace.c
+@@ -40,7 +40,7 @@ static void __hot prepare_ftrace_return(unsigned long *parent,
+ 
+ 	old = *parent;
+ 
+-	if (!function_graph_enter(old, self_addr, 0, NULL))
++	if (!function_graph_enter(old, self_addr, 0, NULL, NULL))
+ 		/* activate parisc_return_to_handler() as return point */
+ 		*parent = (unsigned long) &parisc_return_to_handler;
+ }
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index be1ca98fce5c..78174bbb257e 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -956,7 +956,7 @@ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip)
+ 
+ 	return_hooker = ppc_function_entry(return_to_handler);
+ 
+-	if (!function_graph_enter(parent, ip, 0, NULL))
++	if (!function_graph_enter(parent, ip, 0, NULL, NULL))
+ 		parent = return_hooker;
+ out:
+ 	return parent;
+diff --git a/arch/riscv/kernel/ftrace.c b/arch/riscv/kernel/ftrace.c
+index b94d8db5ddcc..18f836727950 100644
+--- a/arch/riscv/kernel/ftrace.c
++++ b/arch/riscv/kernel/ftrace.c
+@@ -142,7 +142,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+ 	 */
+ 	old = *parent;
+ 
+-	if (function_graph_enter(old, self_addr, frame_pointer, parent))
++	if (function_graph_enter(old, self_addr, frame_pointer, parent, NULL))
+ 		*parent = return_hooker;
+ }
+ 
+diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
+index 1bb85f60c0dd..5021a23c5089 100644
+--- a/arch/s390/kernel/ftrace.c
++++ b/arch/s390/kernel/ftrace.c
+@@ -209,7 +209,7 @@ unsigned long prepare_ftrace_return(unsigned long ra, unsigned long sp,
+ 	if (unlikely(atomic_read(&current->tracing_graph_pause)))
+ 		goto out;
+ 	ip -= MCOUNT_INSN_SIZE;
+-	if (!function_graph_enter(ra, ip, 0, (void *) sp))
++	if (!function_graph_enter(ra, ip, 0, (void *) sp), NULL)
+ 		ra = (unsigned long) return_to_handler;
+ out:
+ 	return ra;
+diff --git a/arch/sh/kernel/ftrace.c b/arch/sh/kernel/ftrace.c
+index 1b04270e5460..3a8271993e9c 100644
+--- a/arch/sh/kernel/ftrace.c
++++ b/arch/sh/kernel/ftrace.c
+@@ -364,7 +364,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr)
+ 		return;
+ 	}
+ 
+-	if (function_graph_enter(old, self_addr, 0, NULL))
++	if (function_graph_enter(old, self_addr, 0, NULL, NULL))
+ 		__raw_writel(old, parent);
+ }
+ #endif /* CONFIG_FUNCTION_GRAPH_TRACER */
+diff --git a/arch/sparc/kernel/ftrace.c b/arch/sparc/kernel/ftrace.c
+index 684b84ce397f..2783185719ba 100644
+--- a/arch/sparc/kernel/ftrace.c
++++ b/arch/sparc/kernel/ftrace.c
+@@ -130,7 +130,7 @@ unsigned long prepare_ftrace_return(unsigned long parent,
+ 	if (unlikely(atomic_read(&current->tracing_graph_pause)))
+ 		return parent + 8UL;
+ 
+-	if (function_graph_enter(parent, self_addr, frame_pointer, NULL))
++	if (function_graph_enter(parent, self_addr, frame_pointer, NULL, NULL))
+ 		return parent + 8UL;
+ 
+ 	return return_hooker;
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index 024c3053dbba..a044734167af 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -1072,7 +1072,7 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent,
+ 		return;
+ 	}
+ 
+-	if (function_graph_enter(old, self_addr, frame_pointer, parent))
++	if (function_graph_enter(old, self_addr, frame_pointer, parent, NULL))
+ 		*parent = old;
+ }
+ #endif /* CONFIG_FUNCTION_GRAPH_TRACER */
 diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
-index 8a8cb3c401b2..f5aab37a8c34 100644
+index f5aab37a8c34..e615b5e639aa 100644
 --- a/include/linux/ftrace.h
 +++ b/include/linux/ftrace.h
-@@ -361,6 +361,24 @@ struct dyn_ftrace {
- 	struct dyn_arch_ftrace	arch;
- };
+@@ -757,9 +757,12 @@ struct ftrace_graph_ret {
  
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+struct func_param {
-+	char *name;
-+	uint8_t type;
-+	uint8_t loc[2];
-+} __packed;
-+
-+struct func_prototype {
-+	unsigned long ip;
-+	uint8_t ret_type;
-+	uint8_t nr_param;
-+	struct func_param params[0];
-+} __packed;
-+
-+#define FTRACE_PROTOTYPE_SIGNED(t)	(t & BIT(7))
-+#define FTRACE_PROTOTYPE_SIZE(t)	(t & GENMASK(6, 0))
-+#endif
-+
- int ftrace_force_update(void);
- int ftrace_set_filter_ip(struct ftrace_ops *ops, unsigned long ip,
- 			 int remove, int reset);
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 1455812dd325..516062dfe567 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -477,6 +477,10 @@ struct module {
- 	unsigned int num_ftrace_callsites;
- 	unsigned long *ftrace_callsites;
- #endif
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+	struct func_prototype *funcproto_start;
-+	size_t funcproto_sec_size;
-+#endif
+ /* Type of the callback handlers for tracing function graph*/
+ typedef void (*trace_func_graph_ret_t)(struct ftrace_graph_ret *); /* return */
+-typedef int (*trace_func_graph_ent_t)(struct ftrace_graph_ent *); /* entry */
++/* @pt_regs is only available for CONFIG_FTRACE_FUNC_PROTOTYPE. */
++typedef int (*trace_func_graph_ent_t)(struct ftrace_graph_ent *,
++				      struct pt_regs *); /* entry */
  
- #ifdef CONFIG_LIVEPATCH
- 	bool klp; /* Is this a livepatch module? */
-diff --git a/kernel/module.c b/kernel/module.c
-index 9ee93421269c..1c5eea7b6a28 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -360,17 +360,30 @@ static void *section_addr(const struct load_info *info, const char *name)
- 	return (void *)info->sechdrs[find_sec(info, name)].sh_addr;
+-extern int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace);
++int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace,
++			    struct pt_regs *pt_regs);
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ 
+@@ -797,7 +800,8 @@ extern void return_to_handler(void);
+ 
+ extern int
+ function_graph_enter(unsigned long ret, unsigned long func,
+-		     unsigned long frame_pointer, unsigned long *retp);
++		     unsigned long frame_pointer, unsigned long *retp,
++		     struct pt_regs *pt_regs);
+ 
+ struct ftrace_ret_stack *
+ ftrace_graph_get_ret_stack(struct task_struct *task, int idx);
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 8dfd5021b933..7451dba84fee 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -96,8 +96,13 @@ ftrace_push_return_trace(unsigned long ret, unsigned long func,
+ 	return 0;
  }
  
-+/* Get info of a module section. */
-+static void *section_info(const struct load_info *info,
-+			  const char *name,
-+			  size_t *size)
-+{
-+	unsigned int sec = find_sec(info, name);
-+
-+	/* Section 0 has sh_addr 0 and sh_size 0. */
-+	*size = info->sechdrs[sec].sh_size;
-+	return (void *)info->sechdrs[sec].sh_addr;
-+}
-+
- /* Find a module section, or NULL.  Fill in number of "objects" in section. */
- static void *section_objs(const struct load_info *info,
- 			  const char *name,
- 			  size_t object_size,
- 			  unsigned int *num)
++/*
++ * Called from arch specific code. @pt_regs is only available for
++ * CONFIG_FTRACE_FUNC_PROTOTYPE.
++ */
+ int function_graph_enter(unsigned long ret, unsigned long func,
+-			 unsigned long frame_pointer, unsigned long *retp)
++			 unsigned long frame_pointer, unsigned long *retp,
++			 struct pt_regs *pt_regs)
  {
--	unsigned int sec = find_sec(info, name);
-+	void *addr;
-+	size_t sz;
+ 	struct ftrace_graph_ent trace;
  
--	/* Section 0 has sh_addr 0 and sh_size 0. */
--	*num = info->sechdrs[sec].sh_size / object_size;
--	return (void *)info->sechdrs[sec].sh_addr;
-+	addr = section_info(info, name, &sz);
-+	*num = sz / object_size;
-+	return addr;
+@@ -108,7 +113,7 @@ int function_graph_enter(unsigned long ret, unsigned long func,
+ 		goto out;
+ 
+ 	/* Only trace if the calling function expects to */
+-	if (!ftrace_graph_entry(&trace))
++	if (!ftrace_graph_entry(&trace, pt_regs))
+ 		goto out_ret;
+ 
+ 	return 0;
+@@ -204,9 +209,11 @@ static struct notifier_block ftrace_suspend_notifier = {
+ 
+ /*
+  * Send the trace to the ring-buffer.
++ * @retval is only available for CONFIG_FTRACE_FUNC_PROTOTYPE.
+  * @return the original return address.
+  */
+-unsigned long ftrace_return_to_handler(unsigned long frame_pointer)
++unsigned long ftrace_return_to_handler(unsigned long frame_pointer,
++				       unsigned long retval)
+ {
+ 	struct ftrace_graph_ret trace;
+ 	unsigned long ret;
+@@ -327,7 +334,8 @@ void ftrace_graph_sleep_time_control(bool enable)
+ 	fgraph_sleep_time = enable;
  }
  
- /* Provided by the linker */
-@@ -3140,6 +3153,10 @@ static int find_module_sections(struct module *mod, struct load_info *info)
- 					     sizeof(*mod->ftrace_callsites),
- 					     &mod->num_ftrace_callsites);
- #endif
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+	mod->funcproto_start = section_info(info, "__funcproto",
-+					    &mod->funcproto_sec_size);
-+#endif
- #ifdef CONFIG_FUNCTION_ERROR_INJECTION
- 	mod->ei_funcs = section_objs(info, "_error_injection_whitelist",
- 					    sizeof(*mod->ei_funcs),
+-int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace)
++int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace,
++			    struct pt_regs *pt_regs)
+ {
+ 	return 0;
+ }
+@@ -417,11 +425,12 @@ ftrace_graph_probe_sched_switch(void *ignore, bool preempt,
+ 		next->ret_stack[index].calltime += timestamp;
+ }
+ 
+-static int ftrace_graph_entry_test(struct ftrace_graph_ent *trace)
++static int ftrace_graph_entry_test(struct ftrace_graph_ent *trace,
++				   struct pt_regs *pt_regs)
+ {
+ 	if (!ftrace_ops_test(&global_ops, trace->func, NULL))
+ 		return 0;
+-	return __ftrace_graph_entry(trace);
++	return __ftrace_graph_entry(trace, pt_regs);
+ }
+ 
+ /*
 diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index cfcb8dad93ea..438b8b47198f 100644
+index 438b8b47198f..a1683cc55838 100644
 --- a/kernel/trace/ftrace.c
 +++ b/kernel/trace/ftrace.c
-@@ -5060,6 +5060,9 @@ static DEFINE_MUTEX(graph_lock);
- 
- struct ftrace_hash *ftrace_graph_hash = EMPTY_HASH;
- struct ftrace_hash *ftrace_graph_notrace_hash = EMPTY_HASH;
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+struct ftrace_hash *ftrace_prototype_hash = EMPTY_HASH;
-+#endif
- 
- enum graph_filter_type {
- 	GRAPH_FILTER_NOTRACE	= 0,
-@@ -5615,6 +5618,46 @@ static int ftrace_process_locs(struct module *mod,
- 	return ret;
+@@ -794,7 +794,9 @@ void ftrace_graph_graph_time_control(bool enable)
+ 	fgraph_graph_time = enable;
  }
  
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+static int ftrace_process_funcproto(struct module *mod,
-+			       struct func_prototype *start,
-+			       struct func_prototype *end,
-+			       bool remove)
-+{
-+	struct ftrace_func_entry *ent;
-+	struct func_prototype *proto;
-+	int ret = 0;
-+
-+	mutex_lock(&ftrace_lock);
-+
-+restart:
-+	proto = start;
-+	while (proto < end) {
-+		if (remove) {
-+			ent = ftrace_lookup_ip(ftrace_prototype_hash,
-+					       proto->ip);
-+			if (ent)
-+				free_hash_entry(ftrace_prototype_hash, ent);
-+		} else {
-+			ret = add_hash_entry(ftrace_prototype_hash,
-+					     proto->ip, proto);
-+			if (ret < 0) {
-+				end = proto;
-+				remove = 1;
-+				goto restart;
-+			}
-+		}
-+		proto = (struct func_prototype *)((char *)proto +
-+			sizeof(*proto) +
-+			sizeof(proto->params[0]) * proto->nr_param);
-+	}
-+
-+	mutex_unlock(&ftrace_lock);
-+
-+	return ret;
-+}
-+#endif
-+
- struct ftrace_mod_func {
- 	struct list_head	list;
- 	char			*name;
-@@ -5707,7 +5750,7 @@ static void ftrace_free_mod_map(struct rcu_head *rcu)
- 	kfree(mod_map);
- }
- 
--void ftrace_release_mod(struct module *mod)
-+void ftrace_release_dyn(struct module *mod)
+-static int profile_graph_entry(struct ftrace_graph_ent *trace)
++/* @pt_regs is only available for CONFIG_FTRACE_FUNC_PROTOTYPE. */
++static int profile_graph_entry(struct ftrace_graph_ent *trace,
++			       struct pt_regs *pt_regs)
  {
- 	struct ftrace_mod_map *mod_map;
- 	struct ftrace_mod_map *n;
-@@ -5773,6 +5816,17 @@ void ftrace_release_mod(struct module *mod)
- 	}
- }
+ 	struct ftrace_ret_stack *ret_stack;
  
-+void ftrace_release_mod(struct module *mod)
-+{
-+	ftrace_release_dyn(mod);
-+
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+	ftrace_process_funcproto(mod, mod->funcproto_start,
-+			(void *)mod->funcproto_start + mod->funcproto_sec_size,
-+			true);
-+#endif
-+}
-+
- void ftrace_module_enable(struct module *mod)
- {
- 	struct dyn_ftrace *rec;
-@@ -5852,6 +5906,11 @@ void ftrace_module_init(struct module *mod)
- 
- 	ftrace_process_locs(mod, mod->ftrace_callsites,
- 			    mod->ftrace_callsites + mod->num_ftrace_callsites);
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+	ftrace_process_funcproto(mod, mod->funcproto_start,
-+			(void *)mod->funcproto_start + mod->funcproto_sec_size,
-+			false);
-+#endif
- }
- 
- static void save_ftrace_mod_rec(struct ftrace_mod_map *mod_map,
-@@ -6146,6 +6205,10 @@ void __init ftrace_init(void)
- {
- 	extern unsigned long __start_mcount_loc[];
- 	extern unsigned long __stop_mcount_loc[];
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+	extern struct func_prototype __start_funcproto[];
-+	extern struct func_prototype __stop_funcproto[];
-+#endif
- 	unsigned long count, flags;
- 	int ret;
- 
-@@ -6179,6 +6242,17 @@ void __init ftrace_init(void)
- 				  __start_mcount_loc,
- 				  __stop_mcount_loc);
- 
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+	ftrace_prototype_hash = alloc_ftrace_hash(FTRACE_HASH_DEFAULT_BITS);
-+	if (WARN_ON(!ftrace_prototype_hash))
-+		goto failed;
-+
-+	ftrace_process_funcproto(NULL,
-+				 __start_funcproto,
-+				 __stop_funcproto,
-+				 false);
-+#endif
-+
- 	set_ftrace_early_filters();
- 
- 	return;
 diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index ad619c73a505..22433a15e340 100644
+index 22433a15e340..4b31176d443e 100644
 --- a/kernel/trace/trace.h
 +++ b/kernel/trace/trace.h
-@@ -940,6 +940,10 @@ extern void __trace_graph_return(struct trace_array *tr,
- extern struct ftrace_hash *ftrace_graph_hash;
- extern struct ftrace_hash *ftrace_graph_notrace_hash;
+@@ -737,7 +737,7 @@ void print_trace_header(struct seq_file *m, struct trace_iterator *iter);
+ int trace_empty(struct trace_iterator *iter);
  
-+#ifdef CONFIG_FTRACE_FUNC_PROTOTYPE
-+extern struct ftrace_hash *ftrace_prototype_hash;
-+#endif
-+
- static inline int ftrace_graph_addr(struct ftrace_graph_ent *trace)
+ void trace_graph_return(struct ftrace_graph_ret *trace);
+-int trace_graph_entry(struct ftrace_graph_ent *trace);
++int trace_graph_entry(struct ftrace_graph_ent *trace, struct pt_regs *pt_regs);
+ void set_graph_array(struct trace_array *tr);
+ 
+ void tracing_start_cmdline_record(void);
+diff --git a/kernel/trace/trace_functions_graph.c b/kernel/trace/trace_functions_graph.c
+index 78af97163147..f331a9ba946d 100644
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -124,7 +124,7 @@ static inline int ftrace_graph_ignore_irqs(void)
+ 	return in_irq();
+ }
+ 
+-int trace_graph_entry(struct ftrace_graph_ent *trace)
++int trace_graph_entry(struct ftrace_graph_ent *trace, struct pt_regs *pt_regs)
  {
- 	unsigned long addr = trace->func;
+ 	struct trace_array *tr = graph_array;
+ 	struct trace_array_cpu *data;
+diff --git a/kernel/trace/trace_irqsoff.c b/kernel/trace/trace_irqsoff.c
+index a745b0cee5d3..513e3544a45a 100644
+--- a/kernel/trace/trace_irqsoff.c
++++ b/kernel/trace/trace_irqsoff.c
+@@ -172,7 +172,8 @@ static int irqsoff_display_graph(struct trace_array *tr, int set)
+ 	return start_irqsoff_tracer(irqsoff_trace, set);
+ }
+ 
+-static int irqsoff_graph_entry(struct ftrace_graph_ent *trace)
++static int irqsoff_graph_entry(struct ftrace_graph_ent *trace,
++			       struct pt_regs *pt_regs)
+ {
+ 	struct trace_array *tr = irqsoff_trace;
+ 	struct trace_array_cpu *data;
+diff --git a/kernel/trace/trace_sched_wakeup.c b/kernel/trace/trace_sched_wakeup.c
+index 743b2b520d34..ce18f679930c 100644
+--- a/kernel/trace/trace_sched_wakeup.c
++++ b/kernel/trace/trace_sched_wakeup.c
+@@ -112,7 +112,8 @@ static int wakeup_display_graph(struct trace_array *tr, int set)
+ 	return start_func_tracer(tr, set);
+ }
+ 
+-static int wakeup_graph_entry(struct ftrace_graph_ent *trace)
++static int wakeup_graph_entry(struct ftrace_graph_ent *trace,
++			      struct pt_regs *pt_regs)
+ {
+ 	struct trace_array *tr = wakeup_trace;
+ 	struct trace_array_cpu *data;
 -- 
 2.20.1
 
