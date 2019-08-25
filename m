@@ -2,105 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7756F9C15F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 05:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C923A9C3FE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 15:30:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46GKqR3YWhzDqxX
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 13:09:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46GbcP0d2rzDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Aug 2019 23:30:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.3.46; helo=eur03-am5-obe.outbound.protection.outlook.com;
- envelope-from=xiaowei.bao@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ envelope-from=changbin.du@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="kNHyjPX/"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="jg+bXQmH"; 
  dkim-atps=neutral
-Received: from EUR03-AM5-obe.outbound.protection.outlook.com
- (mail-eopbgr30046.outbound.protection.outlook.com [40.107.3.46])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46GKnW0xZszDqv3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 13:07:39 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dvQOt/bVW8P0jcPyXvP0pboXn6lqNMmBJqXHDJNtjS80Z6lP3yPF/RReMWXAG5Cn2yXeXePnv978/ZVPKSePa5jSe29A1Au/bBDJOG4sAEeNyUxecb12F1wY2z1s5ciiK4JL92PgXDnB676iVTDOOCe4wYZFcpK3lgEDgEGCQi9uIlvMQjLrIY7IitfZDFe7r07qxlJvroM/Sag1I9uQYJuAUeodGkvusYRLoF1Pha+ludeEitDDpmnFJyPJgWvrnYNyjrPrYfC2jzpDHCNArk1WnN5PbIFuRfBDVEAfrggwAyhJJCFydot/fYDSszKZnlvjv79O62GlAuGlotigmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d270TYYENVlDNfJYHad4F5SfHp+nubojtjhPh1gAmOY=;
- b=Y2Ad9xHSINgwQx8e4vwT9kSMahLluAMACqpYo43I5qzGkUQoHdkarx/Y7Gt/yzp4oyrcme3hd2tg3B3Mjyej/GMpZoyiQJMcjwJiGz5Jl300cGztWpLdl/o0w7Pqux0106SBRaIPzVlf/2pdmxKATMYXjZigJ6+ZJ6Bk/Bxy+mTqk3c1WDIiPtzpblf+r36XQmCBaKvXyZobyeGB3d+5DFUiTzqqbRFhjJwDb0ce/6UNghS2zqGwayoXWLP5MH3GQPOIVs+yLh4hPNz5Z8rNu/LH6Kx/sOLbomk3IBdpxkLes1TOzXTnndA5fhvZgWkV0BYyObIUvCEPwoOJBjh3Bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d270TYYENVlDNfJYHad4F5SfHp+nubojtjhPh1gAmOY=;
- b=kNHyjPX/4X8yTQ0c2HUow+s70p/EGO12uK9ZfkVXT9RzgTYNU8xF5fvNavupgP67DPLmzi5xHYZuO3Yxczvwv0dVwDZo2z8ad39lOQ+KLBdUyl3WCgV7sT1e45awkEwPI+VWTEfioMuQTxAnq4cw9Fsj5IBFdJQCbBFojYgepec=
-Received: from AM5PR04MB3299.eurprd04.prod.outlook.com (10.173.255.158) by
- AM5PR04MB3057.eurprd04.prod.outlook.com (10.175.229.143) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Sun, 25 Aug 2019 03:07:32 +0000
-Received: from AM5PR04MB3299.eurprd04.prod.outlook.com
- ([fe80::1ce8:464b:3edf:4043]) by AM5PR04MB3299.eurprd04.prod.outlook.com
- ([fe80::1ce8:464b:3edf:4043%7]) with mapi id 15.20.2178.023; Sun, 25 Aug 2019
- 03:07:32 +0000
-From: Xiaowei Bao <xiaowei.bao@nxp.com>
-To: christophe leroy <christophe.leroy@c-s.fr>, Andrew Murray
- <andrew.murray@arm.com>
-Subject: RE: [PATCH v2 08/10] PCI: layerscape: Add EP mode support for ls1088a
- and ls2088a
-Thread-Topic: [PATCH v2 08/10] PCI: layerscape: Add EP mode support for
- ls1088a and ls2088a
-Thread-Index: AQHVWN1gKEkcDc/BT0q+LkXHF2Gt76cIzC+AgACiVVCAAG7HgIABVMJQ
-Date: Sun, 25 Aug 2019 03:07:32 +0000
-Message-ID: <AM5PR04MB3299EBADE7BC04C3465B7DB7F5A60@AM5PR04MB3299.eurprd04.prod.outlook.com>
-References: <20190822112242.16309-1-xiaowei.bao@nxp.com>
- <20190822112242.16309-8-xiaowei.bao@nxp.com>
- <20190823142756.GI14582@e119886-lin.cambridge.arm.com>
- <AM5PR04MB32990473D4AD65354B5B2235F5A70@AM5PR04MB3299.eurprd04.prod.outlook.com>
- <89c90732-5e42-f87e-73b1-8d615355afc4@c-s.fr>
-In-Reply-To: <89c90732-5e42-f87e-73b1-8d615355afc4@c-s.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=xiaowei.bao@nxp.com; 
-x-originating-ip: [119.31.174.68]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: cd66637c-27c8-4d7a-441f-08d729095f51
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:AM5PR04MB3057; 
-x-ms-traffictypediagnostic: AM5PR04MB3057:
-x-ms-exchange-purlcount: 2
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <AM5PR04MB30572B29404ACD5AE3FCDEE9F5A60@AM5PR04MB3057.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 01401330D1
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(39860400002)(376002)(366004)(136003)(346002)(396003)(199004)(189003)(13464003)(229853002)(55016002)(9686003)(186003)(66476007)(66574012)(64756008)(66446008)(66556008)(76116006)(6436002)(33656002)(74316002)(86362001)(66946007)(6306002)(53936002)(44832011)(11346002)(446003)(6246003)(8936002)(26005)(486006)(71200400001)(71190400001)(476003)(5660300002)(76176011)(3846002)(81166006)(25786009)(99286004)(81156014)(8676002)(4326008)(6506007)(53546011)(7416002)(2906002)(102836004)(256004)(66066001)(7736002)(478600001)(14454004)(966005)(45080400002)(52536014)(305945005)(110136005)(6116002)(54906003)(7696005)(316002);
- DIR:OUT; SFP:1101; SCL:1; SRVR:AM5PR04MB3057;
- H:AM5PR04MB3299.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 2z1Am+T9Zd/5M1nQZtt9IPzE1c9wTqWL+Sa2SEo+20YE0eDHTCVXRFw8DErI9nJwdaIpAywyx7iY/BIM61AG048M+K5o8rfNbl2cqOXaQFq2LYx50RqkKd6wcYIoTWYazBEwQMBiLfRIY9HSXMfHXPV84UwLiD9/AtDgDOhKwvHeeEro0/ksYtcFoD956/l6pKY959iJUzcK+kkdZYJMV6Rh7+MCNGRoxieGVd7juYyqkZhkvoqAdpHC4WRkjFleS7120f6/yAhZ5+1RFtdSscCQKruEwJQaiqUQWVN2Fct3QBPmoWTrOFAkPZMEgigmPaU/JP4GJK6j7iJ+ysy5g24R5s5075gBqOsNRiPgYQjliL7Ji3PgcvVuofDWm/+OdR6jpI7pjwOju9ZNeeemhkpslhwH9tTWBPgBAdFJQHU=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46GbSW377RzDqcg
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 23:23:51 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id t14so8458452plr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 06:23:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=TjceYrmvXTLazK4qmfRPF5eEKi6XicxtX5Qtj+7xm3s=;
+ b=jg+bXQmHqguYB9XXKwWLY8S5g82O8eXWTKHot7+lb9IjZaGSkBlBPLnUdo1oyF4DWC
+ +DdexSPWnfmPn/pjwb6jP0Yfdv5FR0UBZi9VDauS/w+ihe/2aNMciqIVwkxzlYGYe5a8
+ whnexfx6Bn1mvw3pyH73xAJO8BkW2J6y02pohikwhCXA53I5KGWCniEe1L7TRdKxOdKx
+ nAy3jtjyKE8zZZsiA+ld8V6Ch6cmHGuqzT16q55SFZn0W6Oi/GGl3mmaAIl00snA49X+
+ mhhYG6kfWrjhVeK70PT+MPhkXvSoCWkVfxAaSWqBNnUGWhhrM4moWDgcJuGrn8wwpDUc
+ YTdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=TjceYrmvXTLazK4qmfRPF5eEKi6XicxtX5Qtj+7xm3s=;
+ b=pXcVUsKLdy0qIyzULe37EfJXKmKHJ0njNzp5OS94dSTHopSxQea0916T1MCmtDZPpv
+ CiWCivBR5csdz+Ox/qregoBei7DXNtrajcuFDLQTD/eSemy7uqy87Gqwd80y+uwy0ueb
+ ooOVpulAF8XBq91CMl1Csjg186UYu13Gvk8en4ON4+Dwmgsmh93/3SJAVSq4vSd/D3Su
+ g19GbK3TaNgCqjhUplQXFBRrwln/rCQbMXm7dt8p883vGmswrb2pREozD/soRgy2InoI
+ lGhGiL3BNpa7uQ4k30IfA59+/MtPlUtB3qo93YoNQC9rjIkrnwgNGYZ5rYRB2+S45luG
+ zrGw==
+X-Gm-Message-State: APjAAAWHnjUR/9oSye+T/Tr/7pDtx8WPVAEHIuPg/jgsPac+SHBtcg1r
+ rDAW6Qowz0CJdwlIdh4tIF0=
+X-Google-Smtp-Source: APXvYqzYopH/Yp2whT8fTAbzmTdRsst0X9ruJcAY20hb68xqq8g6g2BcAOFEG34UycgCXdZZc5o+dA==
+X-Received: by 2002:a17:902:100c:: with SMTP id
+ b12mr14431985pla.40.1566739426477; 
+ Sun, 25 Aug 2019 06:23:46 -0700 (PDT)
+Received: from localhost.localdomain ([149.28.153.17])
+ by smtp.gmail.com with ESMTPSA id y23sm11076562pfr.86.2019.08.25.06.23.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 25 Aug 2019 06:23:45 -0700 (PDT)
+From: Changbin Du <changbin.du@gmail.com>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Ingo Molnar <mingo@redhat.com>
+Subject: [PATCH 00/11] ftrace: add support for recording function parameters
+ and return value
+Date: Sun, 25 Aug 2019 21:23:19 +0800
+Message-Id: <20190825132330.5015-1-changbin.du@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd66637c-27c8-4d7a-441f-08d729095f51
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Aug 2019 03:07:32.5041 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: J8Y5Z/KhXyNFDxYUdSdg7+WN/Nf20omIIP4t2sJKdYD/kIteYA5t/gYvfwe9922+34NTlmFfKJxvykSFLjKZfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR04MB3057
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,189 +79,179 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, Roy Zang <roy.zang@nxp.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "lorenzo.pieralisi@arm.co" <lorenzo.pieralisi@arm.co>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- Leo Li <leoyang.li@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kishon@ti.com" <kishon@ti.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "gustavo.pimentel@synopsys.com" <gustavo.pimentel@synopsys.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Mingkai Hu <mingkai.hu@nxp.com>
+Cc: linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ linux-parisc@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ Jessica Yu <jeyu@kernel.org>, sparclinux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, Changbin Du <changbin.du@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogY2hyaXN0b3BoZSBsZXJv
-eSA8Y2hyaXN0b3BoZS5sZXJveUBjLXMuZnI+DQo+IFNlbnQ6IDIwMTnlubQ45pyIMjTml6UgMTQ6
-NDUNCj4gVG86IFhpYW93ZWkgQmFvIDx4aWFvd2VpLmJhb0BueHAuY29tPjsgQW5kcmV3IE11cnJh
-eQ0KPiA8YW5kcmV3Lm11cnJheUBhcm0uY29tPg0KPiBDYzogbWFyay5ydXRsYW5kQGFybS5jb207
-IFJveSBaYW5nIDxyb3kuemFuZ0BueHAuY29tPjsNCj4gbG9yZW56by5waWVyYWxpc2lAYXJtLmNv
-OyBhcm5kQGFybmRiLmRlOyBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZzsNCj4gZ3JlZ2toQGxp
-bnV4Zm91bmRhdGlvbi5vcmc7IGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnOw0KPiBsaW51
-eC1wY2lAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBraXNo
-b25AdGkuY29tOyBNLmguDQo+IExpYW4gPG1pbmdodWFuLmxpYW5AbnhwLmNvbT47IHJvYmgrZHRA
-a2VybmVsLm9yZzsNCj4gZ3VzdGF2by5waW1lbnRlbEBzeW5vcHN5cy5jb207IGppbmdvb2hhbjFA
-Z21haWwuY29tOw0KPiBiaGVsZ2Fhc0Bnb29nbGUuY29tOyBMZW8gTGkgPGxlb3lhbmcubGlAbnhw
-LmNvbT47IHNoYXduZ3VvQGtlcm5lbC5vcmc7DQo+IE1pbmdrYWkgSHUgPG1pbmdrYWkuaHVAbnhw
-LmNvbT47IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiBTdWJqZWN0OiBS
-ZTogW1BBVENIIHYyIDA4LzEwXSBQQ0k6IGxheWVyc2NhcGU6IEFkZCBFUCBtb2RlIHN1cHBvcnQg
-Zm9yDQo+IGxzMTA4OGEgYW5kIGxzMjA4OGENCj4gDQo+IA0KPiANCj4gTGUgMjQvMDgvMjAxOSDD
-oCAwMjoxOCwgWGlhb3dlaSBCYW8gYSDDqWNyaXTCoDoNCj4gPg0KPiA+DQo+ID4+IC0tLS0tT3Jp
-Z2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IEFuZHJldyBNdXJyYXkgPGFuZHJldy5tdXJy
-YXlAYXJtLmNvbT4NCj4gPj4gU2VudDogMjAxOeW5tDjmnIgyM+aXpSAyMjoyOA0KPiA+PiBUbzog
-WGlhb3dlaSBCYW8gPHhpYW93ZWkuYmFvQG54cC5jb20+DQo+ID4+IENjOiBiaGVsZ2Fhc0Bnb29n
-bGUuY29tOyByb2JoK2R0QGtlcm5lbC5vcmc7IG1hcmsucnV0bGFuZEBhcm0uY29tOw0KPiA+PiBz
-aGF3bmd1b0BrZXJuZWwub3JnOyBMZW8gTGkgPGxlb3lhbmcubGlAbnhwLmNvbT47IGtpc2hvbkB0
-aS5jb207DQo+ID4+IGxvcmVuem8ucGllcmFsaXNpQGFybS5jbzsgYXJuZEBhcm5kYi5kZTsgZ3Jl
-Z2toQGxpbnV4Zm91bmRhdGlvbi5vcmc7DQo+IE0uaC4NCj4gPj4gTGlhbiA8bWluZ2h1YW4ubGlh
-bkBueHAuY29tPjsgTWluZ2thaSBIdSA8bWluZ2thaS5odUBueHAuY29tPjsgUm95DQo+ID4+IFph
-bmcgPHJveS56YW5nQG54cC5jb20+OyBqaW5nb29oYW4xQGdtYWlsLmNvbTsNCj4gPj4gZ3VzdGF2
-by5waW1lbnRlbEBzeW5vcHN5cy5jb207IGxpbnV4LXBjaUB2Z2VyLmtlcm5lbC5vcmc7DQo+ID4+
-IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
-Ow0KPiA+PiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4cHBjLWRl
-dkBsaXN0cy5vemxhYnMub3JnDQo+ID4+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjIgMDgvMTBdIFBD
-STogbGF5ZXJzY2FwZTogQWRkIEVQIG1vZGUgc3VwcG9ydA0KPiA+PiBmb3IgbHMxMDg4YSBhbmQg
-bHMyMDg4YQ0KPiA+Pg0KPiA+PiBPbiBUaHUsIEF1ZyAyMiwgMjAxOSBhdCAwNzoyMjo0MFBNICsw
-ODAwLCBYaWFvd2VpIEJhbyB3cm90ZToNCj4gPj4+IEFkZCBQQ0llIEVQIG1vZGUgc3VwcG9ydCBm
-b3IgbHMxMDg4YSBhbmQgbHMyMDg4YSwgdGhlcmUgYXJlIHNvbWUNCj4gPj4+IGRpZmZlcmVuY2Ug
-YmV0d2VlbiBMUzEgYW5kIExTMiBwbGF0Zm9ybSwgc28gcmVmYWN0b3IgdGhlIGNvZGUgb2YgdGhl
-DQo+ID4+PiBFUCBkcml2ZXIuDQo+ID4+Pg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogWGlhb3dlaSBC
-YW8gPHhpYW93ZWkuYmFvQG54cC5jb20+DQo+ID4+PiAtLS0NCj4gPj4+IHYyOg0KPiA+Pj4gICAt
-IE5ldyBtZWNoYW5pc20gZm9yIGxheWVyc2NhcGUgRVAgZHJpdmVyLg0KPiA+Pg0KPiA+PiBXYXMg
-dGhlcmUgYSB2MSBvZiB0aGlzIHBhdGNoPw0KPiA+DQo+ID4gWWVzLCBidXQgSSBkb24ndCBrbm93
-IGhvdyB0byBjb21tZW50cywgXl9eDQo+IA0KPiBBcyBmYXIgYXMgSSBjYW4gc2VlLCBpbiB0aGUg
-cHJldmlvdXMgdmVyc2lvbiBvZiB0aGUgc2VyaWVzDQo+IChodHRwczovL2V1cjAxLnNhZmVsaW5r
-cy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZwYXRjaA0KPiB3b3Jr
-Lm96bGFicy5vcmclMkZwcm9qZWN0JTJGbGludXhwcGMtZGV2JTJGbGlzdCUyRiUzRnNlcmllcyUz
-RDEyNTMxNQ0KPiAlMjZzdGF0ZSUzRComYW1wO2RhdGE9MDIlN0MwMSU3Q3hpYW93ZWkuYmFvJTQw
-bnhwLmNvbSU3QzFiZWZlOQ0KPiBhNjdjODA0NmY5NTM1ZTA4ZDcyODVlYWFiNiU3QzY4NmVhMWQz
-YmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1JQ0KPiA3QzAlN0MwJTdDNjM3MDIyMjU5Mzg3MTM5MDIw
-JmFtcDtzZGF0YT1wNHdieWNkMDRaN3FSVWZBb1p0d2MNCj4gVVA3cFIlMkZ1QTMlMkZqVmNXTXo2
-WXlRVlElM0QmYW1wO3Jlc2VydmVkPTApLA0KPiB0aGUgOC8xMCB3YXMgc29tZXRoaW5nIGNvbXBs
-ZXRlbHkgZGlmZmVyZW50LCBhbmQgSSBjYW4ndCBmaW5kIGFueSBvdGhlciBwYXRjaA0KPiBpbiB0
-aGUgc2VyaWVzIHRoYXQgY291bGQgaGF2ZSBiZWVuIHRoZSB2MSBvZiB0aGlzIHBhdGNoLg0KDQpU
-aGFua3MsIEkgd2lsbCBjb3JyZWN0IGl0IHRvIHYxIGluIG5leHQgdmVyc2lvbiBwYXRjaC4NCg0K
-PiANCj4gQ2hyaXN0b3BoZQ0KPiANCj4gPg0KPiA+Pg0KPiA+Pj4NCj4gPj4+ICAgZHJpdmVycy9w
-Y2kvY29udHJvbGxlci9kd2MvcGNpLWxheWVyc2NhcGUtZXAuYyB8IDc2DQo+ID4+PiArKysrKysr
-KysrKysrKysrKysrKy0tLS0tLQ0KPiA+Pj4gICAxIGZpbGUgY2hhbmdlZCwgNTggaW5zZXJ0aW9u
-cygrKSwgMTggZGVsZXRpb25zKC0pDQo+ID4+Pg0KPiA+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-cGNpL2NvbnRyb2xsZXIvZHdjL3BjaS1sYXllcnNjYXBlLWVwLmMNCj4gPj4+IGIvZHJpdmVycy9w
-Y2kvY29udHJvbGxlci9kd2MvcGNpLWxheWVyc2NhcGUtZXAuYw0KPiA+Pj4gaW5kZXggN2NhNWZl
-OC4uMmE2NmYwNyAxMDA2NDQNCj4gPj4+IC0tLSBhL2RyaXZlcnMvcGNpL2NvbnRyb2xsZXIvZHdj
-L3BjaS1sYXllcnNjYXBlLWVwLmMNCj4gPj4+ICsrKyBiL2RyaXZlcnMvcGNpL2NvbnRyb2xsZXIv
-ZHdjL3BjaS1sYXllcnNjYXBlLWVwLmMNCj4gPj4+IEBAIC0yMCwyNyArMjAsMjkgQEANCj4gPj4+
-DQo+ID4+PiAgICNkZWZpbmUgUENJRV9EQkkyX09GRlNFVAkJMHgxMDAwCS8qIERCSTIgYmFzZSBh
-ZGRyZXNzKi8NCj4gPj4+DQo+ID4+PiAtc3RydWN0IGxzX3BjaWVfZXAgew0KPiA+Pj4gLQlzdHJ1
-Y3QgZHdfcGNpZQkJKnBjaTsNCj4gPj4+IC0Jc3RydWN0IHBjaV9lcGNfZmVhdHVyZXMJKmxzX2Vw
-YzsNCj4gPj4+ICsjZGVmaW5lIHRvX2xzX3BjaWVfZXAoeCkJZGV2X2dldF9kcnZkYXRhKCh4KS0+
-ZGV2KQ0KPiA+Pj4gKw0KPiA+Pj4gK3N0cnVjdCBsc19wY2llX2VwX2RydmRhdGEgew0KPiA+Pj4g
-Kwl1MzIJCQkJZnVuY19vZmZzZXQ7DQo+ID4+PiArCWNvbnN0IHN0cnVjdCBkd19wY2llX2VwX29w
-cwkqb3BzOw0KPiA+Pj4gKwljb25zdCBzdHJ1Y3QgZHdfcGNpZV9vcHMJKmR3X3BjaWVfb3BzOw0K
-PiA+Pj4gICB9Ow0KPiA+Pj4NCj4gPj4+IC0jZGVmaW5lIHRvX2xzX3BjaWVfZXAoeCkJZGV2X2dl
-dF9kcnZkYXRhKCh4KS0+ZGV2KQ0KPiA+Pj4gK3N0cnVjdCBsc19wY2llX2VwIHsNCj4gPj4+ICsJ
-c3RydWN0IGR3X3BjaWUJCQkqcGNpOw0KPiA+Pj4gKwlzdHJ1Y3QgcGNpX2VwY19mZWF0dXJlcwkJ
-KmxzX2VwYzsNCj4gPj4+ICsJY29uc3Qgc3RydWN0IGxzX3BjaWVfZXBfZHJ2ZGF0YSAqZHJ2ZGF0
-YTsgfTsNCj4gPj4+DQo+ID4+PiAgIHN0YXRpYyBpbnQgbHNfcGNpZV9lc3RhYmxpc2hfbGluayhz
-dHJ1Y3QgZHdfcGNpZSAqcGNpKSAgew0KPiA+Pj4gICAJcmV0dXJuIDA7DQo+ID4+PiAgIH0NCj4g
-Pj4+DQo+ID4+PiAtc3RhdGljIGNvbnN0IHN0cnVjdCBkd19wY2llX29wcyBsc19wY2llX2VwX29w
-cyA9IHsNCj4gPj4+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGR3X3BjaWVfb3BzIGR3X2xzX3BjaWVf
-ZXBfb3BzID0gew0KPiA+Pj4gICAJLnN0YXJ0X2xpbmsgPSBsc19wY2llX2VzdGFibGlzaF9saW5r
-LCAgfTsNCj4gPj4+DQo+ID4+PiAtc3RhdGljIGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgbHNf
-cGNpZV9lcF9vZl9tYXRjaFtdID0gew0KPiA+Pj4gLQl7IC5jb21wYXRpYmxlID0gImZzbCxscy1w
-Y2llLWVwIix9LA0KPiA+Pj4gLQl7IH0sDQo+ID4+PiAtfTsNCj4gPj4+IC0NCj4gPj4+ICAgc3Rh
-dGljIGNvbnN0IHN0cnVjdCBwY2lfZXBjX2ZlYXR1cmVzKg0KPiA+Pj4gbHNfcGNpZV9lcF9nZXRf
-ZmVhdHVyZXMoc3RydWN0IGR3X3BjaWVfZXAgKmVwKSAgeyBAQCAtODIsMTAgKzg0LDQ0DQo+ID4+
-PiBAQCBzdGF0aWMgaW50IGxzX3BjaWVfZXBfcmFpc2VfaXJxKHN0cnVjdCBkd19wY2llX2VwICpl
-cCwgdTggZnVuY19ubywNCj4gPj4+ICAgCX0NCj4gPj4+ICAgfQ0KPiA+Pj4NCj4gPj4+IC1zdGF0
-aWMgY29uc3Qgc3RydWN0IGR3X3BjaWVfZXBfb3BzIHBjaWVfZXBfb3BzID0gew0KPiA+Pj4gK3N0
-YXRpYyB1bnNpZ25lZCBpbnQgbHNfcGNpZV9lcF9mdW5jX2NvbmZfc2VsZWN0KHN0cnVjdCBkd19w
-Y2llX2VwICplcCwNCj4gPj4+ICsJCQkJCQl1OCBmdW5jX25vKQ0KPiA+Pj4gK3sNCj4gPj4+ICsJ
-c3RydWN0IGR3X3BjaWUgKnBjaSA9IHRvX2R3X3BjaWVfZnJvbV9lcChlcCk7DQo+ID4+PiArCXN0
-cnVjdCBsc19wY2llX2VwICpwY2llID0gdG9fbHNfcGNpZV9lcChwY2kpOw0KPiA+Pj4gKwl1OCBo
-ZWFkZXJfdHlwZTsNCj4gPj4+ICsNCj4gPj4+ICsJaGVhZGVyX3R5cGUgPSBpb3JlYWQ4KHBjaS0+
-ZGJpX2Jhc2UgKyBQQ0lfSEVBREVSX1RZUEUpOw0KPiA+Pj4gKw0KPiA+Pj4gKwlpZiAoaGVhZGVy
-X3R5cGUgJiAoMSA8PCA3KSkNCj4gPj4+ICsJCXJldHVybiBwY2llLT5kcnZkYXRhLT5mdW5jX29m
-ZnNldCAqIGZ1bmNfbm87DQo+ID4+PiArCWVsc2UNCj4gPj4+ICsJCXJldHVybiAwOw0KPiA+Pg0K
-PiA+PiBJdCBsb29rcyBsaWtlIHRoZXJlIGlzbid0IGEgUENJIGRlZmluZSBmb3IgbXVsdGkgZnVu
-Y3Rpb24sIHRoZQ0KPiA+PiBuZWFyZXN0IEkgY291bGQgZmluZCB3YXMgUENJX0hFQURFUl9UWVBF
-X01VTFRJREVWSUNFIGluDQo+ID4+IGhvdHBsdWcvaWJtcGhwLmguIEEgY29tbWVudCBhYm92ZSB0
-aGUgdGVzdCBtaWdodCBiZSBoZWxwZnVsIHRvIGV4cGxhaW4NCj4gdGhlIHRlc3QuDQo+ID4NCj4g
-PiBZZXMsIEkgaGF2ZSBub3QgZmluZCB0aGUgUENJX0hFQURFUl9UWVBFX01VTFRJREVWSUNFIGRl
-ZmluZS4gT0ssIEkNCj4gPiB3aWxsIGFkZCBUaGUgY29tbWVudHMgaW4gbmV4dCB2ZXJzaW9uIHBh
-dGNoLg0KPiA+DQo+ID4+DQo+ID4+IEFzIHRoZSBsc19wY2llX2VwX2RydmRhdGEgc3RydWN0dXJl
-cyBhcmUgc3RhdGljLCB0aGUgdW5zZXQNCj4gPj4gLmZ1bmNfb2Zmc2V0IHdpbGwgYmUgaW5pdGlh
-bGlzZWQgdG8gMCwgc28geW91IGNvdWxkIGp1c3QgZHJvcCB0aGUgdGVzdCBhYm92ZS4NCj4gPg0K
-PiA+IE9LLCB0aGFua3MNCj4gPg0KPiA+Pg0KPiA+PiBIb3dldmVyIHNvbWV0aGluZyB0byB0aGUg
-ZWZmZWN0IG9mIHRoZSBmb2xsb3dpbmcgbWF5IGhlbHAgc3BvdA0KPiA+PiBtaXNjb25maWd1cmF0
-aW9uOg0KPiA+Pg0KPiA+PiBXQVJOX09OKGZ1bmNfbm8gJiYgIXBjaWUtPmRydmRhdGEtPmZ1bmNf
-b2Zmc2V0KTsgcmV0dXJuDQo+ID4+IHBjaWUtPmRydmRhdGEtPmZ1bmNfb2Zmc2V0ICogZnVuY19u
-bzsNCj4gPg0KPiA+IFRoYW5rcyBhIGxvdCwgdGhpcyBsb29rcyBiZXR0ZXIuDQo+ID4NCj4gPj4N
-Cj4gPj4gVGhlIFdBUk4gaXMgcHJvYmFibHkgcXVpdGUgdXNlZnVsIGFzIGlmIHlvdSBhcmUgYXR0
-ZW1wdGluZyB0byB1c2UNCj4gPj4gbm9uLXplcm8gZnVuY3Rpb25zIGFuZCBmdW5jX29mZnNldCBp
-c24ndCBzZXQgLSB0aGVuIHRoaW5ncyBtYXkgYXBwZWFyDQo+ID4+IHRvIHdvcmsgbm9ybWFsbHkg
-YnV0IGFjdHVhbGx5IHdpbGwgYnJlYWsgaG9ycmlibHkuDQo+ID4NCj4gPiBnb3QgaXQsIHRoYW5r
-cy4NCj4gPg0KPiA+Pg0KPiA+PiBUaGFua3MsDQo+ID4+DQo+ID4+IEFuZHJldyBNdXJyYXkNCj4g
-Pj4NCj4gPj4+ICt9DQo+ID4+PiArDQo+ID4+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBkd19wY2ll
-X2VwX29wcyBsc19wY2llX2VwX29wcyA9IHsNCj4gPj4+ICAgCS5lcF9pbml0ID0gbHNfcGNpZV9l
-cF9pbml0LA0KPiA+Pj4gICAJLnJhaXNlX2lycSA9IGxzX3BjaWVfZXBfcmFpc2VfaXJxLA0KPiA+
-Pj4gICAJLmdldF9mZWF0dXJlcyA9IGxzX3BjaWVfZXBfZ2V0X2ZlYXR1cmVzLA0KPiA+Pj4gKwku
-ZnVuY19jb25mX3NlbGVjdCA9IGxzX3BjaWVfZXBfZnVuY19jb25mX3NlbGVjdCwgfTsNCj4gPj4+
-ICsNCj4gPj4+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGxzX3BjaWVfZXBfZHJ2ZGF0YSBsczFfZXBf
-ZHJ2ZGF0YSA9IHsNCj4gPj4+ICsJLm9wcyA9ICZsc19wY2llX2VwX29wcywNCj4gPj4+ICsJLmR3
-X3BjaWVfb3BzID0gJmR3X2xzX3BjaWVfZXBfb3BzLCB9Ow0KPiA+Pj4gKw0KPiA+Pj4gK3N0YXRp
-YyBjb25zdCBzdHJ1Y3QgbHNfcGNpZV9lcF9kcnZkYXRhIGxzMl9lcF9kcnZkYXRhID0gew0KPiA+
-Pj4gKwkuZnVuY19vZmZzZXQgPSAweDIwMDAwLA0KPiA+Pj4gKwkub3BzID0gJmxzX3BjaWVfZXBf
-b3BzLA0KPiA+Pj4gKwkuZHdfcGNpZV9vcHMgPSAmZHdfbHNfcGNpZV9lcF9vcHMsIH07DQo+ID4+
-PiArDQo+ID4+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgbHNfcGNpZV9lcF9v
-Zl9tYXRjaFtdID0gew0KPiA+Pj4gKwl7IC5jb21wYXRpYmxlID0gImZzbCxsczEwNDZhLXBjaWUt
-ZXAiLCAuZGF0YSA9ICZsczFfZXBfZHJ2ZGF0YSB9LA0KPiA+Pj4gKwl7IC5jb21wYXRpYmxlID0g
-ImZzbCxsczEwODhhLXBjaWUtZXAiLCAuZGF0YSA9ICZsczJfZXBfZHJ2ZGF0YSB9LA0KPiA+Pj4g
-Kwl7IC5jb21wYXRpYmxlID0gImZzbCxsczIwODhhLXBjaWUtZXAiLCAuZGF0YSA9ICZsczJfZXBf
-ZHJ2ZGF0YSB9LA0KPiA+Pj4gKwl7IH0sDQo+ID4+PiAgIH07DQo+ID4+Pg0KPiA+Pj4gICBzdGF0
-aWMgaW50IF9faW5pdCBsc19hZGRfcGNpZV9lcChzdHJ1Y3QgbHNfcGNpZV9lcCAqcGNpZSwgQEAg
-LTk4LDcNCj4gPj4+ICsxMzQsNyBAQCBzdGF0aWMgaW50IF9faW5pdCBsc19hZGRfcGNpZV9lcChz
-dHJ1Y3QgbHNfcGNpZV9lcCAqcGNpZSwNCj4gPj4+ICAgCWludCByZXQ7DQo+ID4+Pg0KPiA+Pj4g
-ICAJZXAgPSAmcGNpLT5lcDsNCj4gPj4+IC0JZXAtPm9wcyA9ICZwY2llX2VwX29wczsNCj4gPj4+
-ICsJZXAtPm9wcyA9IHBjaWUtPmRydmRhdGEtPm9wczsNCj4gPj4+DQo+ID4+PiAgIAlyZXMgPSBw
-bGF0Zm9ybV9nZXRfcmVzb3VyY2VfYnluYW1lKHBkZXYsIElPUkVTT1VSQ0VfTUVNLA0KPiA+PiAi
-YWRkcl9zcGFjZSIpOw0KPiA+Pj4gICAJaWYgKCFyZXMpDQo+ID4+PiBAQCAtMTM3LDE0ICsxNzMs
-MTEgQEAgc3RhdGljIGludCBfX2luaXQgbHNfcGNpZV9lcF9wcm9iZShzdHJ1Y3QNCj4gPj4gcGxh
-dGZvcm1fZGV2aWNlICpwZGV2KQ0KPiA+Pj4gICAJaWYgKCFsc19lcGMpDQo+ID4+PiAgIAkJcmV0
-dXJuIC1FTk9NRU07DQo+ID4+Pg0KPiA+Pj4gLQlkYmlfYmFzZSA9IHBsYXRmb3JtX2dldF9yZXNv
-dXJjZV9ieW5hbWUocGRldiwNCj4gSU9SRVNPVVJDRV9NRU0sDQo+ID4+ICJyZWdzIik7DQo+ID4+
-PiAtCXBjaS0+ZGJpX2Jhc2UgPSBkZXZtX3BjaV9yZW1hcF9jZmdfcmVzb3VyY2UoZGV2LCBkYmlf
-YmFzZSk7DQo+ID4+PiAtCWlmIChJU19FUlIocGNpLT5kYmlfYmFzZSkpDQo+ID4+PiAtCQlyZXR1
-cm4gUFRSX0VSUihwY2ktPmRiaV9iYXNlKTsNCj4gPj4+ICsJcGNpZS0+ZHJ2ZGF0YSA9IG9mX2Rl
-dmljZV9nZXRfbWF0Y2hfZGF0YShkZXYpOw0KPiA+Pj4NCj4gPj4+IC0JcGNpLT5kYmlfYmFzZTIg
-PSBwY2ktPmRiaV9iYXNlICsgUENJRV9EQkkyX09GRlNFVDsNCj4gPj4+ICAgCXBjaS0+ZGV2ID0g
-ZGV2Ow0KPiA+Pj4gLQlwY2ktPm9wcyA9ICZsc19wY2llX2VwX29wczsNCj4gPj4+ICsJcGNpLT5v
-cHMgPSBwY2llLT5kcnZkYXRhLT5kd19wY2llX29wczsNCj4gPj4+ICsNCj4gPj4+ICAgCXBjaWUt
-PnBjaSA9IHBjaTsNCj4gPj4+DQo+ID4+PiAgIAlsc19lcGMtPmxpbmt1cF9ub3RpZmllciA9IGZh
-bHNlLA0KPiA+Pj4gQEAgLTE1Miw2ICsxODUsMTMgQEAgc3RhdGljIGludCBfX2luaXQgbHNfcGNp
-ZV9lcF9wcm9iZShzdHJ1Y3QNCj4gPj4+IHBsYXRmb3JtX2RldmljZSAqcGRldikNCj4gPj4+DQo+
-ID4+PiAgIAlwY2llLT5sc19lcGMgPSBsc19lcGM7DQo+ID4+Pg0KPiA+Pj4gKwlkYmlfYmFzZSA9
-IHBsYXRmb3JtX2dldF9yZXNvdXJjZV9ieW5hbWUocGRldiwNCj4gSU9SRVNPVVJDRV9NRU0sDQo+
-ID4+ICJyZWdzIik7DQo+ID4+PiArCXBjaS0+ZGJpX2Jhc2UgPSBkZXZtX3BjaV9yZW1hcF9jZmdf
-cmVzb3VyY2UoZGV2LCBkYmlfYmFzZSk7DQo+ID4+PiArCWlmIChJU19FUlIocGNpLT5kYmlfYmFz
-ZSkpDQo+ID4+PiArCQlyZXR1cm4gUFRSX0VSUihwY2ktPmRiaV9iYXNlKTsNCj4gPj4+ICsNCj4g
-Pj4+ICsJcGNpLT5kYmlfYmFzZTIgPSBwY2ktPmRiaV9iYXNlICsgUENJRV9EQkkyX09GRlNFVDsN
-Cj4gPj4+ICsNCj4gPj4+ICAgCXBsYXRmb3JtX3NldF9kcnZkYXRhKHBkZXYsIHBjaWUpOw0KPiA+
-Pj4NCj4gPj4+ICAgCXJldCA9IGxzX2FkZF9wY2llX2VwKHBjaWUsIHBkZXYpOw0KPiA+Pj4gLS0N
-Cj4gPj4+IDIuOS41DQo+ID4+Pg0KPiANCj4gLS0tDQo+IEwnYWJzZW5jZSBkZSB2aXJ1cyBkYW5z
-IGNlIGNvdXJyaWVyIMOpbGVjdHJvbmlxdWUgYSDDqXTDqSB2w6lyaWZpw6llIHBhciBsZSBsb2dp
-Y2llbA0KPiBhbnRpdmlydXMgQXZhc3QuDQo+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3Rl
-Y3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRnd3dy4NCj4gYXZhc3QuY29tJTJG
-YW50aXZpcnVzJmFtcDtkYXRhPTAyJTdDMDElN0N4aWFvd2VpLmJhbyU0MG54cC5jb20lNw0KPiBD
-MWJlZmU5YTY3YzgwNDZmOTUzNWUwOGQ3Mjg1ZWFhYjYlN0M2ODZlYTFkM2JjMmI0YzZmYTkyY2Q5
-OWM1YzMNCj4gMDE2MzUlN0MwJTdDMCU3QzYzNzAyMjI1OTM4NzEzOTAyMCZhbXA7c2RhdGE9SkFZ
-ZHM3WCUyRkhWeGd0cmcNCj4gZSUyRiUyRnZuUDg0emRiMnlSZVhjY3RRVWlTTEMxMUklM0QmYW1w
-O3Jlc2VydmVkPTANCg0K
+This series introduces a new ftrace feature CONFIG_FTRACE_FUNC_PROTOTYPE to
+record function parameters and return value. It can be enabled/disabled at
+runtime by a new trace option "record-funcproto".
+
+To achieve this, we need the function prototype infomation and the location of
+parameters. A new tool scripts/ftrace/funcprototype is provided to collect such
+necessary infomation and put them into kernel. It walks through the DWARF debug
+sections in each object file and output assembly code which defines the function
+prototype data. Then the assembly code is built into the original object file.
+
+Here is an example of memremap() function:
+            .section __funcprotostr, "a"
+    .P_memremap_0:
+            .string "offset"
+    .P_memremap_1:
+            .string "size"
+    .P_memremap_2:
+            .string "flags"
+    
+            .section __funcproto,  "a"
+            .quad memremap
+            .byte 0x8
+            .byte 0x3
+            .quad .P_memremap_0
+            .byte 0x8
+            .byte 0x55
+            .byte 0x0
+            .quad .P_memremap_1
+            .byte 0x8
+            .byte 0x54
+            .byte 0x0
+            .quad .P_memremap_2
+            .byte 0x8
+            .byte 0x51
+            .byte 0x0
+
+Note that currently funcprototype only support global functions. Local functions
+can also be supported by using the idea described in recordmcount.pl - temporary
+change local functions to global.
+
+The C ABI is arch specific. For arch which supports this feature must
+implement a new  arch-specific interface arch_fgraph_record_params() and
+deliver the return value of function to ftrace core part.
+
+This series only add support for x86_64 platform. Other platforms can be
+supported in the future.
+
+Here is an example of the graph trace of function pick_next_task_fair().
+Note that we only record the parameter and return value of global
+functions.
+    
+     2)               |  pick_next_task_fair() {
+     2)               |    update_blocked_averages() {
+     2)   0.765 us    |      _raw_spin_lock_irqsave(lock=0xffff88807da2b100); /* ret=0x0000000000000082 */
+     2)   0.944 us    |      update_rq_clock(rq=0xffff88807da2b100);
+     2)   0.612 us    |      __update_load_avg_cfs_rq(now=0x000000251b8516ee, cfs_rq=0xffff8880754f7488); /* ret=0 */
+     2)   0.654 us    |      __update_load_avg_se(now=0x000000251b8516ee, cfs_rq=0xffff88807da2b180, se=0xffff88807be2e0d8); /* ret=0 */
+     2)   0.206 us    |      __update_load_avg_cfs_rq(now=0x000000251b8516ee, cfs_rq=0xffff88807da2b180); /* ret=0 */
+     2)               |      __update_load_avg_cfs_rq(now=0x000000251b8516ee, cfs_rq=0xffff888079b5fb18) {
+     2)   2.410 us    |        __accumulate_pelt_segments();
+     2)   3.103 us    |      } /* ret=1 */
+     2)   0.193 us    |      __update_load_avg_cfs_rq(now=0x000000251b8516ee, cfs_rq=0xffff88807da2b180); /* ret=0 */
+     2)               |      update_rt_rq_load_avg(now=0x000000251b8516ee, rq=0xffff88807da2b100, running=0) {
+     2)   0.258 us    |        __accumulate_pelt_segments();
+     2)   1.617 us    |      } /* ret=1 */
+     2)               |      update_dl_rq_load_avg(now=0x000000251b8516ee, rq=0xffff88807da2b100, running=0) {
+     2)   0.230 us    |        __accumulate_pelt_segments();
+     2)   1.511 us    |      } /* ret=1 */
+     2)   1.040 us    |      _raw_spin_unlock_irqrestore(lock=0xffff88807da2b100, flags=0x0000000000000082);
+     2) + 14.739 us   |    }
+     2)               |    load_balance() {
+     2)               |      find_busiest_group() {
+     2)   0.874 us    |        update_group_capacity(sd=0xffff88807c1d37d0, cpu=2);
+     2)   1.761 us    |        idle_cpu();
+     2)   0.262 us    |        idle_cpu();
+     2)   0.217 us    |        idle_cpu();
+     2)   6.338 us    |      }
+     2)   8.442 us    |    }
+     2)   1.823 us    |    __msecs_to_jiffies(m=0x00000006); /* ret=0x0000000000000002 */
+     2)               |    load_balance() {
+     2)               |      find_busiest_group() {
+     2)   0.434 us    |        idle_cpu();
+     2)   0.233 us    |        idle_cpu();
+     2)   0.210 us    |        idle_cpu();
+     2)   2.308 us    |      }
+     2)   2.821 us    |    }
+     2)   0.263 us    |    __msecs_to_jiffies(m=0x00000008); /* ret=0x0000000000000002 */
+     2)   0.977 us    |    _raw_spin_lock(lock=0xffff88807da2b100);
+     2) + 32.262 us   |  }
+    
+The printing rules of each value is:
+   o For signed value, it is always printed as decimal number.
+   o For unsigned value,
+     - For value has size great than 8, it is printed as '{..}'.
+     - For value has size of 1,2,4,8, it is printed as hexadecimal number.
+     - If failed to record a parameter, it is printed as '?'.
+
+
+Changbin Du (11):
+  ftrace: move recordmcount tools to scripts/ftrace
+  ftrace: introduce new building tool funcprototype
+  asm-generic: add generic dwarf definition
+  ftrace/hash: add private data field
+  ftrace: create memcache for hash entries
+  ftrace: process function prototype data in vmlinux and modules
+  ftrace: prepare arch specific interfaces for function prototype
+    feature
+  ftrace: introduce core part of function prototype recording
+  x86_64: add function prototype recording support
+  ftrace: add doc for new option record-funcproto
+  MAINTAINERS: make scripts/ftrace/ maintained
+
+ Documentation/trace/ftrace.rst       |   6 +
+ MAINTAINERS                          |   2 +
+ arch/arm/kernel/ftrace.c             |   2 +-
+ arch/arm64/kernel/ftrace.c           |   2 +-
+ arch/csky/kernel/ftrace.c            |   2 +-
+ arch/microblaze/kernel/ftrace.c      |   2 +-
+ arch/mips/kernel/ftrace.c            |   2 +-
+ arch/nds32/kernel/ftrace.c           |   5 +-
+ arch/parisc/kernel/ftrace.c          |   2 +-
+ arch/powerpc/kernel/trace/ftrace.c   |   2 +-
+ arch/riscv/kernel/ftrace.c           |   2 +-
+ arch/s390/kernel/ftrace.c            |   2 +-
+ arch/sh/kernel/ftrace.c              |   2 +-
+ arch/sparc/kernel/ftrace.c           |   2 +-
+ arch/x86/Kconfig                     |   1 +
+ arch/x86/kernel/ftrace.c             |  84 +++-
+ arch/x86/kernel/ftrace_64.S          |   4 +-
+ include/asm-generic/dwarf.h          | 199 +++++++++
+ include/asm-generic/vmlinux.lds.h    |  18 +
+ include/linux/ftrace.h               |  55 ++-
+ include/linux/module.h               |   4 +
+ kernel/module.c                      |  25 +-
+ kernel/trace/Kconfig                 |  19 +
+ kernel/trace/fgraph.c                |  26 +-
+ kernel/trace/ftrace.c                | 164 +++++++-
+ kernel/trace/trace.h                 |  20 +-
+ kernel/trace/trace_entries.h         |  10 +
+ kernel/trace/trace_functions_graph.c | 108 ++++-
+ kernel/trace/trace_irqsoff.c         |   3 +-
+ kernel/trace/trace_sched_wakeup.c    |   3 +-
+ scripts/.gitignore                   |   1 -
+ scripts/Makefile                     |   2 +-
+ scripts/Makefile.build               |  28 +-
+ scripts/ftrace/.gitignore            |   6 +
+ scripts/ftrace/Makefile              |   9 +
+ scripts/ftrace/funcprototype.c       | 576 +++++++++++++++++++++++++++
+ scripts/{ => ftrace}/recordmcount.c  |   0
+ scripts/{ => ftrace}/recordmcount.h  |   0
+ scripts/{ => ftrace}/recordmcount.pl |   0
+ 39 files changed, 1340 insertions(+), 60 deletions(-)
+ create mode 100644 include/asm-generic/dwarf.h
+ create mode 100644 scripts/ftrace/.gitignore
+ create mode 100644 scripts/ftrace/Makefile
+ create mode 100644 scripts/ftrace/funcprototype.c
+ rename scripts/{ => ftrace}/recordmcount.c (100%)
+ rename scripts/{ => ftrace}/recordmcount.h (100%)
+ rename scripts/{ => ftrace}/recordmcount.pl (100%)
+ mode change 100755 => 100644
+
+-- 
+2.20.1
+
