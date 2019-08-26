@@ -1,51 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925E09D45E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 18:48:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BF49D482
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 18:52:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HHxw18znzDqkm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:48:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HJ2l5v14zDqWp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:52:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=dsterba@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="cch9Lkn0"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HHvm36BkzDqWw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 02:46:26 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 9B23DAE47;
- Mon, 26 Aug 2019 16:46:23 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
- id 1DFFCDA98E; Mon, 26 Aug 2019 18:46:47 +0200 (CEST)
-Date: Mon, 26 Aug 2019 18:46:47 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [PATCH v2] btrfs: fix allocation of bitmap pages.
-Message-ID: <20190826164646.GX2752@twin.jikos.cz>
-Mail-Followup-To: dsterba@suse.cz, Nikolay Borisov <nborisov@suse.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>, erhard_f@mailbox.org,
- Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
- David Sterba <dsterba@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org
-References: <c3157c8e8e0e7588312b40c853f65c02fe6c957a.1566399731.git.christophe.leroy@c-s.fr>
- <20190826153757.GW2752@twin.jikos.cz>
- <a096d653-8b64-be15-3e81-581536a88e8a@suse.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HJ0L1WrWzDqDr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 02:50:26 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8115420850;
+ Mon, 26 Aug 2019 16:50:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1566838224;
+ bh=/JWCSqfQ4tLkHWbblH7A3gEnEXo0rRv/7eaJXLeukvg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=cch9Lkn060b3M5FmvtgVjdEu4sANIukuEaOsZW26nUjq2HQapBYq+Lq5Gz3ePW+yE
+ R11lIuSM3MdvIDMwXgn1YKD38sgh5DhwgH/GD8aReh8qV2Jq3RFmW0FSslu6OJEGuv
+ V1w9lMprNWO+JqHsnsGBcFfzYceoq0Fo4Qpnw5Jo=
+Date: Mon, 26 Aug 2019 18:50:21 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alastair D'Silva <alastair@au1.ibm.com>
+Subject: Re: [PATCH v2] powerpc: Allow flush_(inval_)dcache_range to work
+ across ranges >4GB
+Message-ID: <20190826165021.GB9305@kroah.com>
+References: <20190821001929.4253-1-alastair@au1.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a096d653-8b64-be15-3e81-581536a88e8a@suse.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+In-Reply-To: <20190821001929.4253-1-alastair@au1.ibm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,42 +59,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: dsterba@suse.cz
-Cc: erhard_f@mailbox.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org, dsterba@suse.cz,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- linux-btrfs@vger.kernel.org
+Cc: alastair@d-silva.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 26, 2019 at 06:40:24PM +0300, Nikolay Borisov wrote:
-> >> Link: https://bugzilla.kernel.org/show_bug.cgi?id=204371
-> >> Fixes: 69d2480456d1 ("btrfs: use copy_page for copying pages instead of memcpy")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> >> ---
-> >> v2: Using kmem_cache instead of get_zeroed_page() in order to benefit from SLAB debugging features like redzone.
-> > 
-> > I'll take this version, thanks. Though I'm not happy about the allocator
-> > behaviour. The kmem cache based fix can be backported independently to
-> > 4.19 regardless of the SL*B fixes.
-> > 
-> >> +extern struct kmem_cache *btrfs_bitmap_cachep;
-> > 
-> > I've renamed the cache to btrfs_free_space_bitmap_cachep
-> > 
-> > Reviewed-by: David Sterba <dsterba@suse.com>
+On Wed, Aug 21, 2019 at 10:19:27AM +1000, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> Isn't this obsoleted by
+> The upstream commit:
+> 22e9c88d486a ("powerpc/64: reuse PPC32 static inline flush_dcache_range()")
+> has a similar effect, but since it is a rewrite of the assembler to C, is
+> too invasive for stable. This patch is a minimal fix to address the issue in
+> assembler.
 > 
-> '[PATCH v2 0/2] guarantee natural alignment for kmalloc()' ?
+> This patch applies cleanly to v5.2, v4.19 & v4.14.
+> 
+> When calling flush_(inval_)dcache_range with a size >4GB, we were masking
+> off the upper 32 bits, so we would incorrectly flush a range smaller
+> than intended.
+> 
+> This patch replaces the 32 bit shifts with 64 bit ones, so that
+> the full size is accounted for.
+> 
+> Changelog:
+> v2
+>   - Add related upstream commit
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
+>  arch/powerpc/kernel/misc_64.S | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+> index 1ad4089dd110..d4d096f80f4b 100644
+> --- a/arch/powerpc/kernel/misc_64.S
+> +++ b/arch/powerpc/kernel/misc_64.S
+> @@ -130,7 +130,7 @@ _GLOBAL_TOC(flush_dcache_range)
+>  	subf	r8,r6,r4		/* compute length */
+>  	add	r8,r8,r5		/* ensure we get enough */
+>  	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of dcache block size */
+> -	srw.	r8,r8,r9		/* compute line count */
+> +	srd.	r8,r8,r9		/* compute line count */
+>  	beqlr				/* nothing to do? */
+>  	mtctr	r8
+>  0:	dcbst	0,r6
+> @@ -148,7 +148,7 @@ _GLOBAL(flush_inval_dcache_range)
+>  	subf	r8,r6,r4		/* compute length */
+>  	add	r8,r8,r5		/* ensure we get enough */
+>  	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)/* Get log-2 of dcache block size */
+> -	srw.	r8,r8,r9		/* compute line count */
+> +	srd.	r8,r8,r9		/* compute line count */
+>  	beqlr				/* nothing to do? */
+>  	sync
+>  	isync
 
-Yeah, but this would add maybe another whole dev cycle to merge and
-release. The reporters of the bug seem to care enough to identify the
-problem and propose the fix so I feel like adding the btrfs-specific fix
-now is a little favor we can afford.
+I need an ack from the powerpc maintainer(s) before I can take this.
 
-The bug is reproduced on an architecture that's not widely tested so
-from practical POV I think this adds more coverage which is desirable.
+thanks,
+
+greg k-h
