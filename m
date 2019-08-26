@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11F79D91A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3950D9D947
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:37:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HRSx4sfWzDqng
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:27:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HRhC4F83zDqTZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:36:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=changbin.du@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="a0zMmyWB"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="V4Yj/mgK"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HRQv1R9fzDqRv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 08:25:25 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id e11so11428147pga.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 15:25:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HRfD2p5WzDqc8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 08:35:16 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id w2so12735726pfi.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 15:35:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=NdrKt952AuvDe+QMynjr4iuarcTkuNP/kAs8J0u4A+s=;
- b=a0zMmyWBK90UYJtyoqynyxpcCWQ63iFelFOAu2wf9q+P7tEGrAMDTLQ7ns9kTHCAvV
- zOtTYGjAxNvaMG4PH070aBsaBC17H9ftkGmoEi1jbpZFGywLt3QZL7gqqDvhtYn2QJAj
- HSQU1nyy/xAx7EGwqSnb5+oUhOiY0vilM355IeRksUhMIXlBU+ac4G4LkEY6hh/lQJqH
- TCnArxvquzzcbANPftPtDewlrkSUrPpD/afdr91bwf897Kd0DnHeETaJ3blnDHKXuHRK
- pv4PbuZrnheVZVo5X1lDBWaTzlVchp+wBfR+mBKzN+vI9AKQDusQD89Py284sXkk9381
- 0sVQ==
+ bh=ZTtLxIEFBiFvvirLNk7rJCpHyKJsG3UuT12vwumOc6c=;
+ b=V4Yj/mgKIET0UoJp2BRwZVUfM8V2AmczCU0x1SnvT/ZOx56IgJ9BD2GVGSi/vhq8VT
+ fCApXRmB4ctSw9Qja4Kg0K+GcJl8Q6DdxLSq+q61/ftTv9i5CG6gwcSj3xiWeRzQ1qWl
+ KifPe7A7QjANncPafKhoJI2VCx5usWEIbMg0ZGE/I7ZdFFUTesd1FXWT2Q07SZVnGF/Y
+ 1IDGhaTKkYwZyw0MpgLx9S1ru+lG8BGfGNGS/7INVWaXjpxI9Pp2t+OVu436nKa8238G
+ oNqZKQK8uVFD/nAamPO86nU17D7TwmRoXDUF53i42+GF5eIES6p9m9cXmSCrdSiQLsco
+ z2KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=NdrKt952AuvDe+QMynjr4iuarcTkuNP/kAs8J0u4A+s=;
- b=Ls+hoYlT/INJ/xGLO9CSML0j7ax6vNeU8axS2kBVa3+Xf3h/4+7wAGgA4kUQUopMJa
- 6j9i1gpZcohELIexGEN1l4e6I36SZhF/pZnuv6bAuULKpw1O1W7zZjHQuaBSms2X9ijn
- 44HiDWUdwkKZ100uOTSeNcjcUvQ47u9A8a7D+E/yFjaBTqSYbHzz4lUs8ZClq4HxP6nR
- 1JUuYb1jHyABMz+a2dnCGVmvE/OaRFSeq5zJezMPlpZi/eFRAXyzM5FZqrJNfWMx3Vwx
- iZakawmWGux8Rmc10DpHm9ZfbhUBMDhrTE0AWAU76UfiB74xkjIk2RVcqjyiv+4jhoyd
- 0Oaw==
-X-Gm-Message-State: APjAAAXTSnpUtzciKvdONjTOffusq1Y3ohBwSGddQzqLVM53I2Y7JFjk
- nVXcnT97qf2oX3rZ2nSDMJM=
-X-Google-Smtp-Source: APXvYqy681ZUL1/GOI1ZqNuttC4tPBoxw38R2Hiki+GEnFDGGEOPoegEj5VFS0OPFx5JUD/3pSIIpA==
-X-Received: by 2002:a65:6108:: with SMTP id z8mr8200381pgu.289.1566858322037; 
- Mon, 26 Aug 2019 15:25:22 -0700 (PDT)
+ bh=ZTtLxIEFBiFvvirLNk7rJCpHyKJsG3UuT12vwumOc6c=;
+ b=RPACD83dl7I/pifs4DNxtRtXtBJMvlAdnIgMoUlKOTugKb+tMlpec1F4IPutAs3MxH
+ UDwPJm3QKmNZulwVYwHsTTMF+2jmR09Ids00VF6AhZa28sTh0EP7YOWuTcu/KAOVib7e
+ ZBD3bnbGbqeYhXZ5wxeqYU52mJtynwH+ofoijsKY05y9qmph9gWQxEOCTly7+iIMehF9
+ 5ps3Y+oIAhoIXkzLnd/YDXGo76r66rmpoejljsTeB8iZehInAaQfBCbWjUVVkWCEFq6x
+ AFnY+tdkVQRFjeBJIXR5pBnb4uKhD7IVhVzBSWiFahPK2/ocwlmmcIBRg20XZxYJFwls
+ VEOQ==
+X-Gm-Message-State: APjAAAXxgd+w2M1Rfy2zFkYk5qKDxk8K8uWVk8jIULqsoTLTsxq/fXNC
+ dSeHAhCJB9zi8g8/nX4Sq88=
+X-Google-Smtp-Source: APXvYqx9fB2zz3reQwDJm1c/UTcOst3U1UlmTMEEGuwoeB+hHpMqnGwoyiFnFyuGEv6PeBIfrwI1hg==
+X-Received: by 2002:a65:62d7:: with SMTP id m23mr18488160pgv.358.1566858912811; 
+ Mon, 26 Aug 2019 15:35:12 -0700 (PDT)
 Received: from mail.google.com ([149.28.153.17])
- by smtp.gmail.com with ESMTPSA id t6sm449041pjy.18.2019.08.26.15.25.14
+ by smtp.gmail.com with ESMTPSA id s5sm474687pjo.26.2019.08.26.15.35.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Aug 2019 15:25:21 -0700 (PDT)
-Date: Tue, 27 Aug 2019 06:25:12 +0800
+ Mon, 26 Aug 2019 15:35:12 -0700 (PDT)
+Date: Tue, 27 Aug 2019 06:35:02 +0800
 From: Changbin Du <changbin.du@gmail.com>
 To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 03/11] asm-generic: add generic dwarf definition
-Message-ID: <20190826222510.6m2k3puwflnr52b7@mail.google.com>
+Subject: Re: [PATCH 05/11] ftrace: create memcache for hash entries
+Message-ID: <20190826223501.ymj3g4ftrf5eqhzq@mail.google.com>
 References: <20190825132330.5015-1-changbin.du@gmail.com>
- <20190825132330.5015-4-changbin.du@gmail.com>
- <20190826074215.GL2369@hirez.programming.kicks-ass.net>
+ <20190825132330.5015-6-changbin.du@gmail.com>
+ <20190826074437.GM2369@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190826074215.GL2369@hirez.programming.kicks-ass.net>
+In-Reply-To: <20190826074437.GM2369@hirez.programming.kicks-ass.net>
 User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,48 +94,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, Peter,
-
-On Mon, Aug 26, 2019 at 09:42:15AM +0200, Peter Zijlstra wrote:
-> On Sun, Aug 25, 2019 at 09:23:22PM +0800, Changbin Du wrote:
-> > Add generic DWARF constant definitions. We will use it later.
+On Mon, Aug 26, 2019 at 09:44:37AM +0200, Peter Zijlstra wrote:
+> On Sun, Aug 25, 2019 at 09:23:24PM +0800, Changbin Du wrote:
+> > When CONFIG_FTRACE_FUNC_PROTOTYPE is enabled, thousands of
+> > ftrace_func_entry instances are created. So create a dedicated
+> > memcache to enhance performance.
 > > 
 > > Signed-off-by: Changbin Du <changbin.du@gmail.com>
 > > ---
-> >  include/asm-generic/dwarf.h | 199 ++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 199 insertions(+)
-> >  create mode 100644 include/asm-generic/dwarf.h
+> >  kernel/trace/ftrace.c | 17 ++++++++++++++++-
+> >  1 file changed, 16 insertions(+), 1 deletion(-)
 > > 
-> > diff --git a/include/asm-generic/dwarf.h b/include/asm-generic/dwarf.h
-> > new file mode 100644
-> > index 000000000000..c705633c2a8f
-> > --- /dev/null
-> > +++ b/include/asm-generic/dwarf.h
-> > @@ -0,0 +1,199 @@
-> > +/* SPDX-License-Identifier: GPL-2.0
-> > + *
-> > + * Architecture independent definitions of DWARF.
-> > + *
-> > + * Copyright (C) 2019 Changbin Du <changbin.du@gmail.com>
+> > diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> > index a314f0768b2c..cfcb8dad93ea 100644
+> > --- a/kernel/trace/ftrace.c
+> > +++ b/kernel/trace/ftrace.c
+> > @@ -94,6 +94,8 @@ struct ftrace_ops *function_trace_op __read_mostly = &ftrace_list_end;
+> >  /* What to set function_trace_op to */
+> >  static struct ftrace_ops *set_function_trace_op;
+> >  
+> > +struct kmem_cache *hash_entry_cache;
+> > +
+> >  static bool ftrace_pids_enabled(struct ftrace_ops *ops)
+> >  {
+> >  	struct trace_array *tr;
+> > @@ -1169,7 +1171,7 @@ static int add_hash_entry(struct ftrace_hash *hash, unsigned long ip,
+> >  {
+> >  	struct ftrace_func_entry *entry;
+> >  
+> > -	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
+> > +	entry = kmem_cache_alloc(hash_entry_cache, GFP_KERNEL);
+> >  	if (!entry)
+> >  		return -ENOMEM;
+> >  
+> > @@ -6153,6 +6155,15 @@ void __init ftrace_init(void)
+> >  	if (ret)
+> >  		goto failed;
+> >  
+> > +	hash_entry_cache = kmem_cache_create("ftrace-hash",
+> > +					     sizeof(struct ftrace_func_entry),
+> > +					     sizeof(struct ftrace_func_entry),
+> > +					     0, NULL);
+> > +	if (!hash_entry_cache) {
+> > +		pr_err("failed to create ftrace hash entry cache\n");
+> > +		goto failed;
+> > +	}
 > 
-> You're claiming copyright on dwarf definitions? ;-)
-> 
-> I'm thinking only Oracle was daft enough to think stuff like that was
-> copyrightable.
-> 
-ok, let me remove copyright line. I think SPDX claim is okay, right?
-
-> Also; I think it would be very good to not use/depend on DWARF for this.
+> Wait what; you already have then in the binary image, now you're
+> allocating extra memory for each of them?
 >
-It only includes the DWARF expersion opcodes, not all of dwarf stuffs.
+No, here we only allocate ftrace hash entries. The prototype data is not copied.
+The entry->priv points to prototype data in binary.
 
-> You really don't need all of DWARF; I'm thikning you only need a few
-> types; for location we already have regs_get_kernel_argument() which
-> has all the logic to find the n-th argument.
-> 
-regs_get_kernel_argument() can handle most cases, but if the size of one paramater
-exceeds 64bit (it is rare in kernel), we must recalculate the locations. So I think
-dwarf location descriptor is the most accurate one.
+> Did you look at what ORC does? Is the binary search really not fast
+> enough?
+For ftrace, binary search is not enough. Just like the hash tables
+(ftrace_graph_notrace_hash, ftrace_graph_hash) we already have which is used to
+filter traced functions.
+
 
 -- 
 Cheers,
