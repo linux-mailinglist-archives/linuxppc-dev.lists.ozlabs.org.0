@@ -2,34 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF6A9C967
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 08:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B9A9C9B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 08:59:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46H2B56gZ9zDqLg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 16:27:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46H2t13BmkzDqdp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 16:59:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
- by lists.ozlabs.org (Postfix) with ESMTP id 46H1yY5MQ9zDqbW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 16:17:57 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id BD4BBAE805A5;
- Mon, 26 Aug 2019 02:17:03 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hegdevasant@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46H2r93nhNzDqTn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 16:57:29 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7Q6r8aI081939
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 02:57:26 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2um81pcs73-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 02:57:25 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <hegdevasant@linux.vnet.ibm.com>;
+ Mon, 26 Aug 2019 07:57:23 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 26 Aug 2019 07:57:21 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7Q6vKs024248452
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Aug 2019 06:57:20 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9A470A404D;
+ Mon, 26 Aug 2019 06:57:20 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60484A4040;
+ Mon, 26 Aug 2019 06:57:19 +0000 (GMT)
+Received: from hegdevasant.in.ibm.com (unknown [9.204.201.122])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Aug 2019 06:57:19 +0000 (GMT)
+From: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v2 4/4] powerpc/powernv/ioda: Remove obsolete
- iommu_table_ops::exchange callbacks
-Date: Mon, 26 Aug 2019 16:17:05 +1000
-Message-Id: <20190826061705.92048-5-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190826061705.92048-1-aik@ozlabs.ru>
-References: <20190826061705.92048-1-aik@ozlabs.ru>
+Subject: [PATCH v4 2/2] powerpc/powernv: Add new opal message type
+Date: Mon, 26 Aug 2019 12:27:01 +0530
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190826065701.8853-1-hegdevasant@linux.vnet.ibm.com>
+References: <20190826065701.8853-1-hegdevasant@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19082606-0016-0000-0000-000002A2FEC6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082606-0017-0000-0000-0000330342F2
+Message-Id: <20190826065701.8853-2-hegdevasant@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-26_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908260076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,171 +87,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
- kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Alistair Popple <alistair@popple.id.au>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, oohall@gmail.com,
+ Jeremy Kerr <jk@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As now we have xchg_no_kill/tce_kill, these are not used anymore so
-remove them.
+We have OPAL_MSG_PRD message type to pass prd related messages from OPAL
+to `opal-prd`. It can handle messages upto 64 bytes. We have a requirement
+to send bigger than 64 bytes of data from OPAL to `opal-prd`. Lets add new
+message type (OPAL_MSG_PRD2) to pass bigger data.
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Cc: Jeremy Kerr <jk@ozlabs.org>
+Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
 ---
- arch/powerpc/include/asm/iommu.h          | 10 -----
- arch/powerpc/kernel/iommu.c               | 26 +-----------
- arch/powerpc/platforms/powernv/pci-ioda.c | 50 -----------------------
- 3 files changed, 1 insertion(+), 85 deletions(-)
+ arch/powerpc/include/asm/opal-api.h       | 1 +
+ arch/powerpc/platforms/powernv/opal-prd.c | 9 ++++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index 837b5122f257..350101e11ddb 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -48,16 +48,6 @@ struct iommu_table_ops {
- 	 * returns old TCE and DMA direction mask.
- 	 * @tce is a physical address.
- 	 */
--	int (*exchange)(struct iommu_table *tbl,
--			long index,
--			unsigned long *hpa,
--			enum dma_data_direction *direction);
--	/* Real mode */
--	int (*exchange_rm)(struct iommu_table *tbl,
--			long index,
--			unsigned long *hpa,
--			enum dma_data_direction *direction);
--
- 	int (*xchg_no_kill)(struct iommu_table *tbl,
- 			long index,
- 			unsigned long *hpa,
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 070492f9b46e..9704f3f76e63 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -1013,30 +1013,6 @@ int iommu_tce_check_gpa(unsigned long page_shift, unsigned long gpa)
- }
- EXPORT_SYMBOL_GPL(iommu_tce_check_gpa);
+diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
+index 383242eb0dea..1cad413e1e0e 100644
+--- a/arch/powerpc/include/asm/opal-api.h
++++ b/arch/powerpc/include/asm/opal-api.h
+@@ -453,6 +453,7 @@ enum opal_msg_type {
+ 	OPAL_MSG_DPO		= 5,
+ 	OPAL_MSG_PRD		= 6,
+ 	OPAL_MSG_OCC		= 7,
++	OPAL_MSG_PRD2		= 8,
+ 	OPAL_MSG_TYPE_MAX,
+ };
  
--long iommu_tce_xchg(struct mm_struct *mm, struct iommu_table *tbl,
--		unsigned long entry, unsigned long *hpa,
--		enum dma_data_direction *direction)
--{
--	long ret;
--	unsigned long size = 0;
--
--	ret = tbl->it_ops->exchange(tbl, entry, hpa, direction);
--
--	if (!ret && ((*direction == DMA_FROM_DEVICE) ||
--			(*direction == DMA_BIDIRECTIONAL)) &&
--			!mm_iommu_is_devmem(mm, *hpa, tbl->it_page_shift,
--					&size))
--		SetPageDirty(pfn_to_page(*hpa >> PAGE_SHIFT));
--
--	/* if (unlikely(ret))
--		pr_err("iommu_tce: %s failed on hwaddr=%lx ioba=%lx kva=%lx ret=%d\n",
--			__func__, hwaddr, entry << tbl->it_page_shift,
--				hwaddr, ret); */
--
--	return ret;
--}
--EXPORT_SYMBOL_GPL(iommu_tce_xchg);
--
- extern long iommu_tce_xchg_no_kill(struct mm_struct *mm,
- 		struct iommu_table *tbl,
- 		unsigned long entry, unsigned long *hpa,
-@@ -1076,7 +1052,7 @@ int iommu_take_ownership(struct iommu_table *tbl)
- 	 * requires exchange() callback defined so if it is not
- 	 * implemented, we disallow taking ownership over the table.
- 	 */
--	if (!tbl->it_ops->exchange)
-+	if (!tbl->it_ops->xchg_no_kill)
- 		return -EINVAL;
+diff --git a/arch/powerpc/platforms/powernv/opal-prd.c b/arch/powerpc/platforms/powernv/opal-prd.c
+index e072bf157d62..50a735d77192 100644
+--- a/arch/powerpc/platforms/powernv/opal-prd.c
++++ b/arch/powerpc/platforms/powernv/opal-prd.c
+@@ -342,7 +342,7 @@ static int opal_prd_msg_notifier(struct notifier_block *nb,
+ 	int msg_size, item_size;
+ 	unsigned long flags;
  
- 	spin_lock_irqsave(&tbl->large_pool.lock, flags);
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 4e56b2c620ec..c28d0d9b7ee0 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1946,28 +1946,6 @@ static int pnv_ioda_tce_xchg_no_kill(struct iommu_table *tbl, long index,
- {
- 	return pnv_tce_xchg(tbl, index, hpa, direction, !realmode);
- }
--
--static int pnv_ioda1_tce_xchg(struct iommu_table *tbl, long index,
--		unsigned long *hpa, enum dma_data_direction *direction)
--{
--	long ret = pnv_tce_xchg(tbl, index, hpa, direction, true);
--
--	if (!ret)
--		pnv_pci_p7ioc_tce_invalidate(tbl, index, 1, false);
--
--	return ret;
--}
--
--static int pnv_ioda1_tce_xchg_rm(struct iommu_table *tbl, long index,
--		unsigned long *hpa, enum dma_data_direction *direction)
--{
--	long ret = pnv_tce_xchg(tbl, index, hpa, direction, false);
--
--	if (!ret)
--		pnv_pci_p7ioc_tce_invalidate(tbl, index, 1, true);
--
--	return ret;
--}
- #endif
+-	if (msg_type != OPAL_MSG_PRD)
++	if (msg_type != OPAL_MSG_PRD && msg_type != OPAL_MSG_PRD2)
+ 		return 0;
  
- static void pnv_ioda1_tce_free(struct iommu_table *tbl, long index,
-@@ -1981,8 +1959,6 @@ static void pnv_ioda1_tce_free(struct iommu_table *tbl, long index,
- static struct iommu_table_ops pnv_ioda1_iommu_ops = {
- 	.set = pnv_ioda1_tce_build,
- #ifdef CONFIG_IOMMU_API
--	.exchange = pnv_ioda1_tce_xchg,
--	.exchange_rm = pnv_ioda1_tce_xchg_rm,
- 	.xchg_no_kill = pnv_ioda_tce_xchg_no_kill,
- 	.tce_kill = pnv_pci_p7ioc_tce_invalidate,
- 	.useraddrptr = pnv_tce_useraddrptr,
-@@ -2113,30 +2089,6 @@ static int pnv_ioda2_tce_build(struct iommu_table *tbl, long index,
- 	return ret;
- }
+ 	/* Calculate total size of the message and item we need to store. The
+@@ -393,6 +393,13 @@ static int opal_prd_probe(struct platform_device *pdev)
+ 		return rc;
+ 	}
  
--#ifdef CONFIG_IOMMU_API
--static int pnv_ioda2_tce_xchg(struct iommu_table *tbl, long index,
--		unsigned long *hpa, enum dma_data_direction *direction)
--{
--	long ret = pnv_tce_xchg(tbl, index, hpa, direction, true);
--
--	if (!ret)
--		pnv_pci_ioda2_tce_invalidate(tbl, index, 1, false);
--
--	return ret;
--}
--
--static int pnv_ioda2_tce_xchg_rm(struct iommu_table *tbl, long index,
--		unsigned long *hpa, enum dma_data_direction *direction)
--{
--	long ret = pnv_tce_xchg(tbl, index, hpa, direction, false);
--
--	if (!ret)
--		pnv_pci_ioda2_tce_invalidate(tbl, index, 1, true);
--
--	return ret;
--}
--#endif
--
- static void pnv_ioda2_tce_free(struct iommu_table *tbl, long index,
- 		long npages)
- {
-@@ -2148,8 +2100,6 @@ static void pnv_ioda2_tce_free(struct iommu_table *tbl, long index,
- static struct iommu_table_ops pnv_ioda2_iommu_ops = {
- 	.set = pnv_ioda2_tce_build,
- #ifdef CONFIG_IOMMU_API
--	.exchange = pnv_ioda2_tce_xchg,
--	.exchange_rm = pnv_ioda2_tce_xchg_rm,
- 	.xchg_no_kill = pnv_ioda_tce_xchg_no_kill,
- 	.tce_kill = pnv_pci_ioda2_tce_invalidate,
- 	.useraddrptr = pnv_tce_useraddrptr,
++	rc = opal_message_notifier_register(OPAL_MSG_PRD2, &opal_prd_event_nb);
++	if (rc) {
++		pr_err("%s: Couldn't register event notifier (%d)\n",
++		       __func__, OPAL_MSG_PRD2);
++		return rc;
++	}
++
+ 	rc = misc_register(&opal_prd_dev);
+ 	if (rc) {
+ 		pr_err("failed to register miscdev\n");
 -- 
-2.17.1
+2.21.0
 
