@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8E79D379
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 17:56:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2419D390
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 17:58:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HGnq0QwMzDqHL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 01:56:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HGrM3WQ4zDqXm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 01:58:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ZwvJaEqp"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Nd2im0rt"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HGjH6dVJzDqHL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 01:52:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HGjJ2ZfczDqJP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 01:52:20 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46HGj653fGz9v7Dn;
- Mon, 26 Aug 2019 17:52:10 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46HGj75Ds8z9v7Dp;
+ Mon, 26 Aug 2019 17:52:11 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=ZwvJaEqp; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=Nd2im0rt; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xVqEVQSEPeck; Mon, 26 Aug 2019 17:52:10 +0200 (CEST)
+ with ESMTP id E-DYmznNiS5L; Mon, 26 Aug 2019 17:52:11 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46HGj63sfpz9v7Dl;
- Mon, 26 Aug 2019 17:52:10 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46HGj746wGz9v7Dl;
+ Mon, 26 Aug 2019 17:52:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566834730; bh=Xv6+9QqPtWytKj9Xmtl06i4NAzwUuTtxeQmPUPzQgb4=;
+ t=1566834731; bh=xGfRFNUMTh5YwdmtE2IADQHaONTmVZYYYLcDCSSJPM4=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=ZwvJaEqpcUMOlM1aSxPr7ddJWf0LPdwMnkem4azGdhTOdLyAbO+IQDySmwaOdJpJ8
- vdAWbJN8L7ApZIGNkY4T3gUhSpfI402tGUyWEaXOhAgUylT6JxXHlVR1SocucIbFHz
- Y9PgfcsYpOFd+HoXw+DYdZPtxtPYKpizMEA55wZM=
+ b=Nd2im0rtwtcL2e3eCdFQAuN/G7XB2kFC9FpBCj+Wai0iJonI2XEHFAuf6uHjrx76Y
+ rSO7dNPYE+PGk/JeYnjR3bYjyt5LACCAW9t9j/z+jHItSLHR4QNunAg47LogBfEarC
+ 7DO7XjnOLXQTPnb+xuDfV9N5wClwYmOSMLQgiJY8=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A99B08B7F0;
- Mon, 26 Aug 2019 17:52:15 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CC1158B7EF;
+ Mon, 26 Aug 2019 17:52:16 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id axHiljQSDne1; Mon, 26 Aug 2019 17:52:15 +0200 (CEST)
+ with ESMTP id jc_yYpavvVJ1; Mon, 26 Aug 2019 17:52:16 +0200 (CEST)
 Received: from pc16032vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4DF7B8B7E1;
- Mon, 26 Aug 2019 17:52:15 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B3058B7E1;
+ Mon, 26 Aug 2019 17:52:16 +0200 (CEST)
 Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 026B2696D5; Mon, 26 Aug 2019 15:52:14 +0000 (UTC)
-Message-Id: <ecdb7194a17dbfa01865df6a82979533adc2c70b.1566834712.git.christophe.leroy@c-s.fr>
+ id 0815E696D5; Mon, 26 Aug 2019 15:52:16 +0000 (UTC)
+Message-Id: <170411e2360861f4a95c21faad43519a08bc4040.1566834712.git.christophe.leroy@c-s.fr>
 In-Reply-To: <d644eaf7dff8cc149260066802af230bdf34fded.1566834712.git.christophe.leroy@c-s.fr>
 References: <d644eaf7dff8cc149260066802af230bdf34fded.1566834712.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH 2/6] powerpc/32s: get rid of CPU_FTR_601 feature
+Subject: [PATCH 3/6] powerpc/32s: drop CPU_FTR_USE_RTC feature
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 26 Aug 2019 15:52:14 +0000 (UTC)
+Date: Mon, 26 Aug 2019 15:52:16 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,390 +80,133 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that 601 is exclusive from other 6xx, CPU_FTR_601 and
-associated fixups are useless.
+CPU_FTR_USE_RTC feature only applies to powerpc601.
 
-Drop this feature and use #ifdefs instead.
+Drop this feature and replace it with tests on CONFIG_PPC_BOOK3S_601.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/configs/pmac32_defconfig |  1 -
- arch/powerpc/include/asm/cputable.h   | 14 ++++++++------
- arch/powerpc/include/asm/ppc_asm.h    | 28 +++++++---------------------
- arch/powerpc/include/asm/ptrace.h     |  6 +++++-
- arch/powerpc/include/asm/timex.h      | 34 +++-------------------------------
- arch/powerpc/kernel/cputable.c        |  6 ++++--
- arch/powerpc/kernel/entry_32.S        | 22 ++++++++++++++++------
- arch/powerpc/mm/book3s32/mmu.c        | 15 ++++++---------
- arch/powerpc/mm/ptdump/bats.c         |  2 +-
- arch/powerpc/platforms/Kconfig        |  3 ++-
- 10 files changed, 52 insertions(+), 79 deletions(-)
+ arch/powerpc/include/asm/cputable.h     |  3 +--
+ arch/powerpc/include/asm/time.h         |  6 +-----
+ arch/powerpc/kernel/vdso.c              | 22 ----------------------
+ arch/powerpc/kernel/vdso32/datapage.S   |  2 ++
+ arch/powerpc/kernel/vdso32/vdso32.lds.S |  4 +++-
+ 5 files changed, 7 insertions(+), 30 deletions(-)
 
-diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
-index 7e6654848531..4e6e95f92646 100644
---- a/arch/powerpc/configs/pmac32_defconfig
-+++ b/arch/powerpc/configs/pmac32_defconfig
-@@ -20,7 +20,6 @@ CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_GOV_POWERSAVE=y
- CONFIG_CPU_FREQ_GOV_USERSPACE=y
- CONFIG_CPU_FREQ_PMAC=y
--CONFIG_PPC601_SYNC_FIX=y
- CONFIG_GEN_RTC=y
- CONFIG_HIGHMEM=y
- CONFIG_BINFMT_MISC=m
 diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index d05f0c28e515..0aad095896d6 100644
+index 0aad095896d6..fac1b81bbbd9 100644
 --- a/arch/powerpc/include/asm/cputable.h
 +++ b/arch/powerpc/include/asm/cputable.h
-@@ -145,7 +145,6 @@ static inline void cpu_feature_keys_init(void) { }
- 
- /* Definitions for features that only exist on 32-bit chips */
- #ifdef CONFIG_PPC32
--#define CPU_FTR_601			ASM_CONST(0x00001000)
- #define CPU_FTR_L2CR			ASM_CONST(0x00002000)
+@@ -149,7 +149,6 @@ static inline void cpu_feature_keys_init(void) { }
  #define CPU_FTR_SPEC7450		ASM_CONST(0x00004000)
  #define CPU_FTR_TAU			ASM_CONST(0x00008000)
-@@ -167,7 +166,6 @@ static inline void cpu_feature_keys_init(void) { }
- 
- #else	/* CONFIG_PPC32 */
- /* Define these to 0 for the sake of tests in common code */
--#define CPU_FTR_601			(0)
- #define CPU_FTR_PPC_LE			(0)
+ #define CPU_FTR_CAN_DOZE		ASM_CONST(0x00010000)
+-#define CPU_FTR_USE_RTC			ASM_CONST(0x00020000)
+ #define CPU_FTR_L3CR			ASM_CONST(0x00040000)
+ #define CPU_FTR_L3_DISABLE_NAP		ASM_CONST(0x00080000)
+ #define CPU_FTR_NAP_DISABLE_L2_PR	ASM_CONST(0x00100000)
+@@ -293,7 +292,7 @@ static inline void cpu_feature_keys_init(void) { }
  #endif
  
-@@ -294,7 +292,7 @@ static inline void cpu_feature_keys_init(void) { }
- #define CPU_FTR_MAYBE_CAN_NAP	0
- #endif
- 
--#define CPU_FTRS_PPC601	(CPU_FTR_COMMON | CPU_FTR_601 | \
-+#define CPU_FTRS_PPC601	(CPU_FTR_COMMON | \
- 	CPU_FTR_COHERENT_ICACHE | CPU_FTR_UNIFIED_ID_CACHE | CPU_FTR_USE_RTC)
+ #define CPU_FTRS_PPC601	(CPU_FTR_COMMON | \
+-	CPU_FTR_COHERENT_ICACHE | CPU_FTR_UNIFIED_ID_CACHE | CPU_FTR_USE_RTC)
++	CPU_FTR_COHERENT_ICACHE | CPU_FTR_UNIFIED_ID_CACHE)
  #define CPU_FTRS_603	(CPU_FTR_COMMON | CPU_FTR_MAYBE_CAN_DOZE | \
  	    CPU_FTR_MAYBE_CAN_NAP | CPU_FTR_PPC_LE | CPU_FTR_NOEXECUTE)
-@@ -498,7 +496,9 @@ static inline void cpu_feature_keys_init(void) { }
- #else
- enum {
- 	CPU_FTRS_POSSIBLE =
--#ifdef CONFIG_PPC_BOOK3S_32
-+#ifdef CONFIG_PPC_BOOK3S_601
-+	    CPU_FTRS_PPC601 |
-+#elif defined(CONFIG_PPC_BOOK3S_32)
- 	    CPU_FTRS_PPC601 | CPU_FTRS_603 | CPU_FTRS_604 | CPU_FTRS_740_NOTAU |
- 	    CPU_FTRS_740 | CPU_FTRS_750 | CPU_FTRS_750FX1 |
- 	    CPU_FTRS_750FX2 | CPU_FTRS_750FX | CPU_FTRS_750GX |
-@@ -574,8 +574,10 @@ enum {
- #else
- enum {
- 	CPU_FTRS_ALWAYS =
--#ifdef CONFIG_PPC_BOOK3S_32
--	    CPU_FTRS_PPC601 & CPU_FTRS_603 & CPU_FTRS_604 & CPU_FTRS_740_NOTAU &
-+#ifdef CONFIG_PPC_BOOK3S_601
-+	    CPU_FTRS_PPC601 &
-+#elif defined(CONFIG_PPC_BOOK3S_32)
-+	    CPU_FTRS_603 & CPU_FTRS_604 & CPU_FTRS_740_NOTAU &
- 	    CPU_FTRS_740 & CPU_FTRS_750 & CPU_FTRS_750FX1 &
- 	    CPU_FTRS_750FX2 & CPU_FTRS_750FX & CPU_FTRS_750GX &
- 	    CPU_FTRS_7400_NOTAU & CPU_FTRS_7400 & CPU_FTRS_7450_20 &
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index e0637730a8e7..94279e611c98 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -351,19 +351,9 @@ GLUE(.,name):
+ #define CPU_FTRS_604	(CPU_FTR_COMMON | CPU_FTR_PPC_LE)
+diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
+index 54f4ec1f9fab..08dbe3e6831c 100644
+--- a/arch/powerpc/include/asm/time.h
++++ b/arch/powerpc/include/asm/time.h
+@@ -41,11 +41,7 @@ struct div_result {
  
- /* various errata or part fixups */
- #ifdef CONFIG_PPC601_SYNC_FIX
--#define SYNC				\
--BEGIN_FTR_SECTION			\
--	sync;				\
--	isync;				\
--END_FTR_SECTION_IFSET(CPU_FTR_601)
--#define SYNC_601			\
--BEGIN_FTR_SECTION			\
--	sync;				\
--END_FTR_SECTION_IFSET(CPU_FTR_601)
--#define ISYNC_601			\
--BEGIN_FTR_SECTION			\
--	isync;				\
--END_FTR_SECTION_IFSET(CPU_FTR_601)
-+#define SYNC		sync; isync
-+#define SYNC_601	sync
-+#define ISYNC_601	isync
- #else
- #define	SYNC
- #define SYNC_601
-@@ -389,15 +379,11 @@ END_FTR_SECTION_NESTED(CPU_FTR_CELL_TB_BUG, CPU_FTR_CELL_TB_BUG, 96)
- #define MFTBU(dest)			mfspr dest, SPRN_TBRU
- #endif
- 
--#ifndef CONFIG_SMP
--#define TLBSYNC
--#else /* CONFIG_SMP */
- /* tlbsync is not implemented on 601 */
--#define TLBSYNC				\
--BEGIN_FTR_SECTION			\
--	tlbsync;			\
--	sync;				\
--END_FTR_SECTION_IFCLR(CPU_FTR_601)
-+#if !defined(CONFIG_SMP) || defined(CONFIG_PPC_BOOK3S_601)
-+#define TLBSYNC
-+#else
-+#define TLBSYNC		tlbsync; sync
- #endif
+ /* Accessor functions for the timebase (RTC on 601) registers. */
+ /* If one day CONFIG_POWER is added just define __USE_RTC as 1 */
+-#ifdef CONFIG_PPC_BOOK3S_32
+-#define __USE_RTC()	(cpu_has_feature(CPU_FTR_USE_RTC))
+-#else
+-#define __USE_RTC()	0
+-#endif
++#define __USE_RTC()	(IS_ENABLED(CONFIG_PPC_BOOK3S_601))
  
  #ifdef CONFIG_PPC64
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index feee1b21bbd5..ee3ada66deb5 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -203,7 +203,11 @@ do {									      \
- #endif /* __powerpc64__ */
  
- #define arch_has_single_step()	(1)
--#define arch_has_block_step()	(!cpu_has_feature(CPU_FTR_601))
-+#ifndef CONFIG_BOOK3S_601
-+#define arch_has_block_step()	(true)
-+#else
-+#define arch_has_block_step()	(false)
-+#endif
- #define ARCH_HAS_USER_SINGLE_STEP_REPORT
+diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+index d60598113a9f..eae9ddaecbcf 100644
+--- a/arch/powerpc/kernel/vdso.c
++++ b/arch/powerpc/kernel/vdso.c
+@@ -94,28 +94,6 @@ static struct vdso_patch_def vdso_patches[] = {
+ 		CPU_FTR_COHERENT_ICACHE, CPU_FTR_COHERENT_ICACHE,
+ 		"__kernel_sync_dicache", "__kernel_sync_dicache_p5"
+ 	},
+-#ifdef CONFIG_PPC32
+-	{
+-		CPU_FTR_USE_RTC, CPU_FTR_USE_RTC,
+-		"__kernel_gettimeofday", NULL
+-	},
+-	{
+-		CPU_FTR_USE_RTC, CPU_FTR_USE_RTC,
+-		"__kernel_clock_gettime", NULL
+-	},
+-	{
+-		CPU_FTR_USE_RTC, CPU_FTR_USE_RTC,
+-		"__kernel_clock_getres", NULL
+-	},
+-	{
+-		CPU_FTR_USE_RTC, CPU_FTR_USE_RTC,
+-		"__kernel_get_tbfreq", NULL
+-	},
+-	{
+-		CPU_FTR_USE_RTC, CPU_FTR_USE_RTC,
+-		"__kernel_time", NULL
+-	},
+-#endif
+ };
  
  /*
-diff --git a/arch/powerpc/include/asm/timex.h b/arch/powerpc/include/asm/timex.h
-index 926b9f91a3ef..d2d2c4bd8435 100644
---- a/arch/powerpc/include/asm/timex.h
-+++ b/arch/powerpc/include/asm/timex.h
-@@ -17,38 +17,10 @@ typedef unsigned long cycles_t;
- 
- static inline cycles_t get_cycles(void)
- {
--#ifdef __powerpc64__
-+	if (IS_ENABLED(CONFIG_BOOK3S_601))
-+		return 0;
-+
- 	return mftb();
--#else
--	cycles_t ret;
--
--	/*
--	 * For the "cycle" counter we use the timebase lower half.
--	 * Currently only used on SMP.
--	 */
--
--	ret = 0;
--
--	__asm__ __volatile__(
--#ifdef CONFIG_PPC_8xx
--		"97:	mftb %0\n"
--#else
--		"97:	mfspr %0, %2\n"
--#endif
--		"99:\n"
--		".section __ftr_fixup,\"a\"\n"
--		".align 2\n"
--		"98:\n"
--		"	.long %1\n"
--		"	.long 0\n"
--		"	.long 97b-98b\n"
--		"	.long 99b-98b\n"
--		"	.long 0\n"
--		"	.long 0\n"
--		".previous"
--		: "=r" (ret) : "i" (CPU_FTR_601), "i" (SPRN_TBRL));
--	return ret;
--#endif
- }
- 
- #endif	/* __KERNEL__ */
-diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
-index bfe5f4a2886b..e745abc5457a 100644
---- a/arch/powerpc/kernel/cputable.c
-+++ b/arch/powerpc/kernel/cputable.c
-@@ -569,7 +569,7 @@ static struct cpu_spec __initdata cpu_specs[] = {
- #endif	/* CONFIG_PPC_BOOK3S_64 */
- 
- #ifdef CONFIG_PPC32
--#ifdef CONFIG_PPC_BOOK3S_32
-+#ifdef CONFIG_PPC_BOOK3S_601
- 	{	/* 601 */
- 		.pvr_mask		= 0xffff0000,
- 		.pvr_value		= 0x00010000,
-@@ -583,6 +583,8 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc601",
- 	},
-+#endif /* CONFIG_PPC_BOOK3S_601 */
-+#ifdef CONFIG_PPC_BOOK3S_6xx
- 	{	/* 603 */
- 		.pvr_mask		= 0xffff0000,
- 		.pvr_value		= 0x00030000,
-@@ -1212,7 +1214,7 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc603",
- 	},
--#endif /* CONFIG_PPC_BOOK3S_32 */
-+#endif /* CONFIG_PPC_BOOK3S_6xx */
- #ifdef CONFIG_PPC_8xx
- 	{	/* 8xx */
- 		.pvr_mask		= 0xffff0000,
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 54fab22c9a43..0365d1afbfa5 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -777,11 +777,19 @@ fast_exception_return:
- 1:	lis	r3,exc_exit_restart_end@ha
- 	addi	r3,r3,exc_exit_restart_end@l
- 	cmplw	r12,r3
-+#if CONFIG_PPC_BOOK3S_601
-+	bge	2b
-+#else
- 	bge	3f
-+#endif
- 	lis	r4,exc_exit_restart@ha
- 	addi	r4,r4,exc_exit_restart@l
- 	cmplw	r12,r4
-+#if CONFIG_PPC_BOOK3S_601
-+	blt	2b
-+#else
- 	blt	3f
-+#endif
- 	lis	r3,fee_restarts@ha
- 	tophys(r3,r3)
- 	lwz	r5,fee_restarts@l(r3)
-@@ -800,9 +808,6 @@ fee_restarts:
- /* aargh, we don't know which trap this is */
- /* but the 601 doesn't implement the RI bit, so assume it's OK */
- 3:
--BEGIN_FTR_SECTION
--	b	2b
--END_FTR_SECTION_IFSET(CPU_FTR_601)
- 	li	r10,-1
- 	stw	r10,_TRAP(r11)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
-@@ -1270,11 +1275,19 @@ nonrecoverable:
- 	lis	r10,exc_exit_restart_end@ha
- 	addi	r10,r10,exc_exit_restart_end@l
- 	cmplw	r12,r10
-+#ifdef CONFIG_PPC_BOOK3S_601
-+	bgelr
-+#else
- 	bge	3f
-+#endif
- 	lis	r11,exc_exit_restart@ha
- 	addi	r11,r11,exc_exit_restart@l
- 	cmplw	r12,r11
-+#ifdef CONFIG_PPC_BOOK3S_601
-+	bltlr
-+#else
- 	blt	3f
-+#endif
- 	lis	r10,ee_restarts@ha
- 	lwz	r12,ee_restarts@l(r10)
- 	addi	r12,r12,1
-@@ -1283,9 +1296,6 @@ nonrecoverable:
- 	blr
- 3:	/* OK, we can't recover, kill this process */
- 	/* but the 601 doesn't implement the RI bit, so assume it's OK */
--BEGIN_FTR_SECTION
--	blr
--END_FTR_SECTION_IFSET(CPU_FTR_601)
- 	lwz	r3,_TRAP(r1)
- 	andi.	r0,r3,1
- 	beq	5f
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index 50a1991d257f..84d5fab94f8f 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -74,7 +74,7 @@ static int find_free_bat(void)
- {
- 	int b;
- 
--	if (cpu_has_feature(CPU_FTR_601)) {
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601)) {
- 		for (b = 0; b < 4; b++) {
- 			struct ppc_bat *bat = BATS[b];
- 
-@@ -106,7 +106,7 @@ static int find_free_bat(void)
+diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
+index 6984125b9fc0..6c7401bd284e 100644
+--- a/arch/powerpc/kernel/vdso32/datapage.S
++++ b/arch/powerpc/kernel/vdso32/datapage.S
+@@ -70,6 +70,7 @@ V_FUNCTION_END(__kernel_get_syscall_map)
+  *
+  * returns the timebase frequency in HZ
   */
- static unsigned int block_size(unsigned long base, unsigned long top)
- {
--	unsigned int max_size = (cpu_has_feature(CPU_FTR_601) ? 8 : 256) << 20;
-+	unsigned int max_size = IS_ENABLED(CONFIG_PPC_BOOK3S_601) ? SZ_8M : SZ_256M;
- 	unsigned int base_shift = (ffs(base) - 1) & 31;
- 	unsigned int block_shift = (fls(top - base) - 1) & 31;
++#ifndef CONFIG_PPC_BOOK3S_601
+ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
+   .cfi_startproc
+ 	mflr	r12
+@@ -82,3 +83,4 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
+ 	blr
+   .cfi_endproc
+ V_FUNCTION_END(__kernel_get_tbfreq)
++#endif
+diff --git a/arch/powerpc/kernel/vdso32/vdso32.lds.S b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+index 099a6db14e67..00c025ba4a92 100644
+--- a/arch/powerpc/kernel/vdso32/vdso32.lds.S
++++ b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+@@ -144,10 +144,13 @@ VERSION
+ 		__kernel_datapage_offset;
  
-@@ -189,7 +189,7 @@ void mmu_mark_initmem_nx(void)
- 	unsigned long top = (unsigned long)_etext - PAGE_OFFSET;
- 	unsigned long size;
+ 		__kernel_get_syscall_map;
++#ifndef CONFIG_PPC_BOOK3S_601
+ 		__kernel_gettimeofday;
+ 		__kernel_clock_gettime;
+ 		__kernel_clock_getres;
++		__kernel_time;
+ 		__kernel_get_tbfreq;
++#endif
+ 		__kernel_sync_dicache;
+ 		__kernel_sync_dicache_p5;
+ 		__kernel_sigtramp32;
+@@ -155,7 +158,6 @@ VERSION
+ #ifdef CONFIG_PPC64
+ 		__kernel_getcpu;
+ #endif
+-		__kernel_time;
  
--	if (cpu_has_feature(CPU_FTR_601))
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
- 		return;
- 
- 	for (i = 0; i < nb - 1 && base < top && top - base > (128 << 10);) {
-@@ -227,7 +227,7 @@ void mmu_mark_rodata_ro(void)
- 	int nb = mmu_has_feature(MMU_FTR_USE_HIGH_BATS) ? 8 : 4;
- 	int i;
- 
--	if (cpu_has_feature(CPU_FTR_601))
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
- 		return;
- 
- 	for (i = 0; i < nb; i++) {
-@@ -259,7 +259,7 @@ void __init setbat(int index, unsigned long virt, phys_addr_t phys,
- 		flags &= ~_PAGE_COHERENT;
- 
- 	bl = (size >> 17) - 1;
--	if (PVR_VER(mfspr(SPRN_PVR)) != 1) {
-+	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_601)) {
- 		/* 603, 604, etc. */
- 		/* Do DBAT first */
- 		wimgxpp = flags & (_PAGE_WRITETHRU | _PAGE_NO_CACHE
-@@ -441,7 +441,7 @@ void setup_initial_memory_limit(phys_addr_t first_memblock_base,
- 	BUG_ON(first_memblock_base != 0);
- 
- 	/* 601 can only access 16MB at the moment */
--	if (PVR_VER(mfspr(SPRN_PVR)) == 1)
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
- 		memblock_set_current_limit(min_t(u64, first_memblock_size, 0x01000000));
- 	else /* Anything else has 256M mapped */
- 		memblock_set_current_limit(min_t(u64, first_memblock_size, 0x10000000));
-@@ -459,9 +459,6 @@ void __init setup_kuep(bool disabled)
- {
- 	pr_info("Activating Kernel Userspace Execution Prevention\n");
- 
--	if (cpu_has_feature(CPU_FTR_601))
--		pr_warn("KUEP is not working on powerpc 601 (No NX bit in Seg Regs)\n");
--
- 	if (disabled)
- 		pr_warn("KUEP cannot be disabled yet on 6xx when compiled in\n");
- }
-diff --git a/arch/powerpc/mm/ptdump/bats.c b/arch/powerpc/mm/ptdump/bats.c
-index a0d23e96e841..4154feac1da3 100644
---- a/arch/powerpc/mm/ptdump/bats.c
-+++ b/arch/powerpc/mm/ptdump/bats.c
-@@ -149,7 +149,7 @@ static int bats_show_603(struct seq_file *m, void *v)
- 
- static int bats_open(struct inode *inode, struct file *file)
- {
--	if (cpu_has_feature(CPU_FTR_601))
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
- 		return single_open(file, bats_show_601, NULL);
- 
- 	return single_open(file, bats_show_603, NULL);
-diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-index f3fb79fccc72..d82e3664ffdf 100644
---- a/arch/powerpc/platforms/Kconfig
-+++ b/arch/powerpc/platforms/Kconfig
-@@ -197,7 +197,8 @@ endmenu
- 
- config PPC601_SYNC_FIX
- 	bool "Workarounds for PPC601 bugs"
--	depends on PPC_BOOK3S_32 && PPC_PMAC
-+	depends on PPC_BOOK3S_601 && PPC_PMAC
-+	default y
- 	help
- 	  Some versions of the PPC601 (the first PowerPC chip) have bugs which
- 	  mean that extra synchronization instructions are required near
+ 	local: *;
+ 	};
 -- 
 2.13.3
 
