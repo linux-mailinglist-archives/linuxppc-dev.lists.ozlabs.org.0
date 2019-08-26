@@ -1,66 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEEA9CF46
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 14:16:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF059CFD4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 14:50:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46H9w42KZZzDqXg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 22:16:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HBfx2nQBzDqg3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 22:50:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.167.194; helo=mail-oi1-f194.google.com;
+ envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=debian.org
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
+ [209.85.167.194])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46H9sY4J57zDqTd
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 22:14:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46H9sY3BCMz8svw
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 22:14:09 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46H9sY30Jlz9sDB; Mon, 26 Aug 2019 22:14:09 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=87.98.172.249; helo=8.mo3.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 7805 seconds by postgrey-1.36 at bilbo;
- Mon, 26 Aug 2019 22:14:08 AEST
-Received: from 8.mo3.mail-out.ovh.net (8.mo3.mail-out.ovh.net [87.98.172.249])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46H9sX6s8Qz9s7T
- for <linuxppc-dev@ozlabs.org>; Mon, 26 Aug 2019 22:14:04 +1000 (AEST)
-Received: from player692.ha.ovh.net (unknown [10.109.143.208])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id BBBAF2255B8
- for <linuxppc-dev@ozlabs.org>; Mon, 26 Aug 2019 11:08:45 +0200 (CEST)
-Received: from kaod.org (lfbn-ren-1-123-36.w83-205.abo.wanadoo.fr
- [83.205.208.36]) (Authenticated sender: clg@kaod.org)
- by player692.ha.ovh.net (Postfix) with ESMTPSA id 8581F8FD28C2;
- Mon, 26 Aug 2019 09:08:39 +0000 (UTC)
-Subject: Re: [PATCH] KVM: PPC: Book3S: Enable XIVE native capability only if
- OPAL has required functions
-To: Paul Mackerras <paulus@ozlabs.org>, kvm@vger.kernel.org,
- linuxppc-dev@ozlabs.org
-References: <20190826081455.GA7402@blackberry>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <4d31ae7f-9653-9552-ab4f-0c71afee61b7@kaod.org>
-Date: Mon, 26 Aug 2019 11:08:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HBcL4Z8wzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 22:47:44 +1000 (AEST)
+Received: by mail-oi1-f194.google.com with SMTP id y8so11957733oih.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 05:47:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=2lOXZ8wFRW/YuaXxzTqaFqe/74prYF5RHRz56ehVnGE=;
+ b=h0vFeQ6wzTvXt1p2xnE/9WPzysxYX5h/1kyYpE1eIjdA9HIHhgbwPv6QOFvKmpEuyN
+ Vmrjsi12mq021yBhaDMM4igWmn462cY4oW64idSmAmbv2Aa/nsobwvIqp+7AByH1xWQa
+ 1oep8VAkTUpzxbHbk1pidRpSZ8VHjbNZ12E6qoBAUS0rLv/OwS13ZGmKbFZXKGtF9k5N
+ URpx1yBX9KPNM4NIBXnZP2icxZiSotSNW0nvESVtO0u1F4Y2xtkQ5jdWRxrlkF/Otf25
+ tUQB6dW/n4KoCtwI61CKIqaDSUwTqtYyn44BIQJHujbVl5VnEF3ARZOj3LgY2JKHeIOX
+ huGQ==
+X-Gm-Message-State: APjAAAVMCePyGSy0hFhRK0Dix1xzINrRbxfHerKIMDPYiGLpWYYkEQfM
+ Zz5Nizhn9ZefnA+ChOyfKlgbaPY5YBORZ/lwzEc=
+X-Google-Smtp-Source: APXvYqwQsnWsz/uUt3lKfonI6Y7AJ0n1GRj3J3qaJWXf5hQldprWVAhc5qe2LLw8A+wikNSRbxl2eIRuhJwLN2u1DJk=
+X-Received: by 2002:aca:fd41:: with SMTP id b62mr12547417oii.96.1566823662073; 
+ Mon, 26 Aug 2019 05:47:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190826081455.GA7402@blackberry>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 11645464212932168678
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudehgedgudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+References: <87mugdtf08.fsf@christian.marillat.net>
+ <CA+7wUsw5eTdwJG3UytWr9CajVhpUkyOGufmvUvqQJoEWq4nWhQ@mail.gmail.com>
+ <a84c86b3-4c6c-f7a2-ad3f-6e075e6ebe25@c-s.fr>
+ <87a7cal3pd.fsf@christian.marillat.net>
+ <e582fcf0-a311-07f7-5445-c3471ec5c783@c-s.fr>
+ <87zhk9tgdb.fsf__22033.2117214397$1565960670$gmane$org@christian.marillat.net>
+ <87ef1ljjct.fsf@igel.home> <87o90ptb6q.fsf@christian.marillat.net>
+In-Reply-To: <87o90ptb6q.fsf@christian.marillat.net>
+From: Mathieu Malaterre <malat@debian.org>
+Date: Mon, 26 Aug 2019 14:47:30 +0200
+Message-ID: <CA+7wUsx4y4ZQKzsuvFAKob9t4Mo299CpsM3m82bfL+63WLJJGg@mail.gmail.com>
+Subject: Re: 5.2.7 kernel doesn't boot on G5
+To: Christian Marillat <marillat@debian.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,135 +67,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Andreas Schwab <schwab@linux-m68k.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 26/08/2019 10:14, Paul Mackerras wrote:
-> There are some POWER9 machines where the OPAL firmware does not support
-> the OPAL_XIVE_GET_QUEUE_STATE and OPAL_XIVE_SET_QUEUE_STATE calls.
-> The impact of this is that a guest using XIVE natively will not be able
-> to be migrated successfully.  On the source side, the get_attr operation
-> on the KVM native device for the KVM_DEV_XIVE_GRP_EQ_CONFIG attribute
-> will fail; on the destination side, the set_attr operation for the same
-> attribute will fail.
-> 
-> This adds tests for the existence of the OPAL get/set queue state
-> functions, and if they are not supported, the XIVE-native KVM device
-> is not created and the KVM_CAP_PPC_IRQ_XIVE capability returns false.
-> Userspace can then either provide a software emulation of XIVE, or
-> else tell the guest that it does not have a XIVE controller available
-> to it.
-> 
-> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Christian,
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+On Fri, Aug 16, 2019 at 4:52 PM Christian Marillat <marillat@debian.org> wr=
+ote:
+>
+> On 16 ao=C3=BBt 2019 16:05, Andreas Schwab <schwab@linux-m68k.org> wrote:
+>
+> > On Aug 16 2019, Christian Marillat <marillat@debian.org> wrote:
+> >
+> >> On 15 ao=C3=BBt 2019 19:50, christophe leroy <christophe.leroy@c-s.fr>=
+ wrote:
+> >>
+> >> [...]
+> >>
+> >>> Can you test with latest stable version, ie 5.2.8 ?
+> >>
+> >> Built from my G5 with make-kpkg and still doesn't boot :
+> >
+> > FWIW, 5.2.0 is working fine on my G5 (PowerMac7,3).
+>
+> Mine is a PowerMac11,2 "Quadcore" and / is on a RAID0
+>
+> As 4.19.5 boot I don't think is a hardware problem.
 
-Thanks,
+Since no wild guess seems to be possible. Can you do a git bisect on
+your side. Using a git clone of the linux kernel, I usually do from my
+amd64 box:
 
-C.
+When doing git bisect I compile from my amd64 machine using:
 
+$ make O=3Dg4 ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-gnu- my_defconfi=
+g
+$ make -j8 O=3Dg4 ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-gnu- bindeb-=
+pkg
+$ scp *image*.deb macminig4:
 
-> ---
->  arch/powerpc/include/asm/kvm_ppc.h    | 1 +
->  arch/powerpc/include/asm/xive.h       | 1 +
->  arch/powerpc/kvm/book3s.c             | 8 +++++---
->  arch/powerpc/kvm/book3s_xive_native.c | 5 +++++
->  arch/powerpc/kvm/powerpc.c            | 3 ++-
->  arch/powerpc/sysdev/xive/native.c     | 7 +++++++
->  6 files changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> index 2484e6a..8e8514e 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -598,6 +598,7 @@ extern int kvmppc_xive_native_get_vp(struct kvm_vcpu *vcpu,
->  				     union kvmppc_one_reg *val);
->  extern int kvmppc_xive_native_set_vp(struct kvm_vcpu *vcpu,
->  				     union kvmppc_one_reg *val);
-> +extern bool kvmppc_xive_native_supported(void);
->  
->  #else
->  static inline int kvmppc_xive_set_xive(struct kvm *kvm, u32 irq, u32 server,
-> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
-> index efb0e59..818989e 100644
-> --- a/arch/powerpc/include/asm/xive.h
-> +++ b/arch/powerpc/include/asm/xive.h
-> @@ -135,6 +135,7 @@ extern int xive_native_get_queue_state(u32 vp_id, uint32_t prio, u32 *qtoggle,
->  extern int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
->  				       u32 qindex);
->  extern int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
-> +extern bool xive_native_has_queue_state_support(void);
->  
->  #else
->  
-> diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-> index 9524d92..d7fcdfa 100644
-> --- a/arch/powerpc/kvm/book3s.c
-> +++ b/arch/powerpc/kvm/book3s.c
-> @@ -1083,9 +1083,11 @@ static int kvmppc_book3s_init(void)
->  	if (xics_on_xive()) {
->  		kvmppc_xive_init_module();
->  		kvm_register_device_ops(&kvm_xive_ops, KVM_DEV_TYPE_XICS);
-> -		kvmppc_xive_native_init_module();
-> -		kvm_register_device_ops(&kvm_xive_native_ops,
-> -					KVM_DEV_TYPE_XIVE);
-> +		if (kvmppc_xive_native_supported()) {
-> +			kvmppc_xive_native_init_module();
-> +			kvm_register_device_ops(&kvm_xive_native_ops,
-> +						KVM_DEV_TYPE_XIVE);
-> +		}
->  	} else
->  #endif
->  		kvm_register_device_ops(&kvm_xics_ops, KVM_DEV_TYPE_XICS);
-> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-> index f0cab43..248c1ea 100644
-> --- a/arch/powerpc/kvm/book3s_xive_native.c
-> +++ b/arch/powerpc/kvm/book3s_xive_native.c
-> @@ -1179,6 +1179,11 @@ int kvmppc_xive_native_set_vp(struct kvm_vcpu *vcpu, union kvmppc_one_reg *val)
->  	return 0;
->  }
->  
-> +bool kvmppc_xive_native_supported(void)
-> +{
-> +	return xive_native_has_queue_state_support();
-> +}
-> +
->  static int xive_native_debug_show(struct seq_file *m, void *private)
->  {
->  	struct kvmppc_xive *xive = m->private;
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 0dba7eb..7012dd7 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -566,7 +566,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->  		 * a POWER9 processor) and the PowerNV platform, as
->  		 * nested is not yet supported.
->  		 */
-> -		r = xive_enabled() && !!cpu_has_feature(CPU_FTR_HVMODE);
-> +		r = xive_enabled() && !!cpu_has_feature(CPU_FTR_HVMODE) &&
-> +			kvmppc_xive_native_supported();
->  		break;
->  #endif
->  
-> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-> index 2f26b74..37987c8 100644
-> --- a/arch/powerpc/sysdev/xive/native.c
-> +++ b/arch/powerpc/sysdev/xive/native.c
-> @@ -800,6 +800,13 @@ int xive_native_set_queue_state(u32 vp_id, u32 prio, u32 qtoggle, u32 qindex)
->  }
->  EXPORT_SYMBOL_GPL(xive_native_set_queue_state);
->  
-> +bool xive_native_has_queue_state_support(void)
-> +{
-> +	return opal_check_token(OPAL_XIVE_GET_QUEUE_STATE) &&
-> +		opal_check_token(OPAL_XIVE_SET_QUEUE_STATE);
-> +}
-> +EXPORT_SYMBOL_GPL(xive_native_has_queue_state_support);
-> +
->  int xive_native_get_vp_state(u32 vp_id, u64 *out_state)
->  {
->  	__be64 state;
-> 
-
+The bindeb-pkg target is handy to generate a deb package. You may need
+to adapt this for your g5.
