@@ -2,74 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D609C8C5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 07:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22A59C91F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 08:19:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46H1Fc0dznzDqVF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 15:45:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46H1zw189ZzDqcP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 16:19:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=fossix.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="EsDD65hF"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46H1Cn1B3BzDqTy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 15:44:20 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id n190so9902266pgn.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2019 22:44:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=Z1hdU2Yt4yMcOaxjcgx3DKsgaNU+yDVYevEsakRJRMA=;
- b=EsDD65hFHvF1GuYjro3Ps8YGBOVVKnFL8H3mwXLkIOd5wHhCoEb2J4LcwA7ICIZmaQ
- fwQ5BJ+H2v05avOW5Zh4tAKlpGpAfCjW8bKnGON6phpmMPPKi0ulg5IzXjgsMVyR+nH8
- dHrEsDAsMVcGy9mFbtvzkDVw6PdYEqvKPyWNpgQL8dcy5KZE0q+6kGdbLIUoYa8NJ/kZ
- CL0XpQ3VMxjEOW9BhJGvjhZzoNTAaOA46Ip69sEsoF0usCIwC7TEFLhaqFClH/DYINWL
- P9HnEtwqBhfoJv8riV23xjYXs3aODlJokIKb7/stHNv7tMZ2oPNMR4YgC5oft8Dp+wWd
- 2L2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=Z1hdU2Yt4yMcOaxjcgx3DKsgaNU+yDVYevEsakRJRMA=;
- b=q6oRXFKYiUreadxewD6YnI5rIFjxuOJ9vXw9+dKDeJI7+2UZzlPgySspGn9V2opniu
- di6+qsmBrXEaXlNypm4WtwAjKOnElLWOyM925pPrDunYoSCcnpCs7lerqt8TjFsaf8QR
- Q7B7m8oCWF4Y5OLDnc+DVW7FkFf/TbM77OC6yS/C912eYZYX0Kn/zLMDFOYyrKyOzZg0
- V1zeD6TDZ6omwUoKLUZXFrJ+nL8yvkviANzr9WD2ERgmPl5Wk+r2epRUePb/lZ8keNSG
- w0oIVdRaprFcKBknIrWlnsocOfOOTbfGRTU6/FSo2vRoh/jcjAX1Oo13iNEsw+AMKpoG
- XpLA==
-X-Gm-Message-State: APjAAAWR+l1nYQqh15eYReDDMJn6TupmKFvCdBCWTFVblABgGmJndoDz
- 1CDqB9zaHQXkaxC/SjkvrcXFBg==
-X-Google-Smtp-Source: APXvYqx6egldOzC3ik1adhTGZ3XM2qk/7RBvK875E1okkIdsa/6okNXYC7t2RAyjNG+1Nr1UIshLCw==
-X-Received: by 2002:a62:144f:: with SMTP id 76mr18366896pfu.62.1566798257497; 
- Sun, 25 Aug 2019 22:44:17 -0700 (PDT)
-Received: from localhost ([129.41.84.75])
- by smtp.gmail.com with ESMTPSA id i9sm17875663pgo.46.2019.08.25.22.44.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Aug 2019 22:44:16 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 4/8] powerpc/vdso32: inline __get_datapage()
-In-Reply-To: <194fb7bc973ef2ce43016c97dd32f2b2dcbae4e7.1566491310.git.christophe.leroy@c-s.fr>
-References: <cover.1566491310.git.christophe.leroy@c-s.fr>
- <194fb7bc973ef2ce43016c97dd32f2b2dcbae4e7.1566491310.git.christophe.leroy@c-s.fr>
-Date: Mon, 26 Aug 2019 11:14:14 +0530
-Message-ID: <87h864iiq9.fsf@santosiv.in.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46H1xs0hNgzDqZy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 16:17:20 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 9A820AE801D4;
+ Mon, 26 Aug 2019 02:16:56 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel v2 1/4] powerpc/powernv/ioda: Split out TCE
+ invalidation from TCE updates
+Date: Mon, 26 Aug 2019 16:17:02 +1000
+Message-Id: <20190826061705.92048-2-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190826061705.92048-1-aik@ozlabs.ru>
+References: <20190826061705.92048-1-aik@ozlabs.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,214 +41,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Alistair Popple <alistair@popple.id.au>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+At the moment updates in a TCE table are made by iommu_table_ops::exchange
+which update one TCE and invalidates an entry in the PHB/NPU TCE cache
+via set of registers called "TCE Kill" (hence the naming).
+Writing a TCE is a simple xchg() but invalidating the TCE cache is
+a relatively expensive OPAL call. Mapping a 100GB guest with PCI+NPU
+passed through devices takes about 20s.
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+Thankfully we can do better. Since such big mappings happen at the boot
+time and when memory is plugged/onlined (i.e. not often), these requests
+come in 512 pages so we call call OPAL 512 times less which brings 20s
+from the above to less than 10s. Also, since TCE caches can be flushed
+entirely, calling OPAL for 512 TCEs helps skiboot [1] to decide whether
+to flush the entire cache or not.
 
-> __get_datapage() is only a few instructions to retrieve the
-> address of the page where the kernel stores data to the VDSO.
->
-> By inlining this function into its users, a bl/blr pair and
-> a mflr/mtlr pair is avoided, plus a few reg moves.
->
-> The improvement is noticeable (about 55 nsec/call on an 8xx)
->
-> vdsotest before the patch:
-> gettimeofday:    vdso: 731 nsec/call
-> clock-gettime-realtime-coarse:    vdso: 668 nsec/call
-> clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
->
-> vdsotest after the patch:
-> gettimeofday:    vdso: 677 nsec/call
-> clock-gettime-realtime-coarse:    vdso: 613 nsec/call
-> clock-gettime-monotonic-coarse:    vdso: 690 nsec/call
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->  arch/powerpc/kernel/vdso32/cacheflush.S   | 10 +++++-----
->  arch/powerpc/kernel/vdso32/datapage.S     | 29 ++++-------------------------
->  arch/powerpc/kernel/vdso32/datapage.h     | 11 +++++++++++
->  arch/powerpc/kernel/vdso32/gettimeofday.S | 13 ++++++-------
->  4 files changed, 26 insertions(+), 37 deletions(-)
->  create mode 100644 arch/powerpc/kernel/vdso32/datapage.h
+This implements 2 new iommu_table_ops callbacks:
+- xchg_no_kill() to update a single TCE with no TCE invalidation;
+- tce_kill() to invalidate multiple TCEs.
+This uses the same xchg_no_kill() callback for IODA1/2.
 
-The datapage.h file should ideally be moved under include/asm, then we can use
-the same for powerpc64 too.
+This implements 2 new wrappers on top of the new callbacks similar to
+the existing iommu_tce_xchg().
 
-Santosh
+This does not use the new callbacks yet, the next patches will;
+so this should not cause any behavioral change.
 
->
-> diff --git a/arch/powerpc/kernel/vdso32/cacheflush.S b/arch/powerpc/kernel/vdso32/cacheflush.S
-> index 7f882e7b9f43..e9453837e4ee 100644
-> --- a/arch/powerpc/kernel/vdso32/cacheflush.S
-> +++ b/arch/powerpc/kernel/vdso32/cacheflush.S
-> @@ -10,6 +10,8 @@
->  #include <asm/vdso.h>
->  #include <asm/asm-offsets.h>
->  
-> +#include "datapage.h"
-> +
->  	.text
->  
->  /*
-> @@ -24,14 +26,12 @@ V_FUNCTION_BEGIN(__kernel_sync_dicache)
->    .cfi_startproc
->  	mflr	r12
->    .cfi_register lr,r12
-> -	mr	r11,r3
-> -	bl	__get_datapage@local
-> +	get_datapage	r10, r0
->  	mtlr	r12
-> -	mr	r10,r3
->  
->  	lwz	r7,CFG_DCACHE_BLOCKSZ(r10)
->  	addi	r5,r7,-1
-> -	andc	r6,r11,r5		/* round low to line bdy */
-> +	andc	r6,r3,r5		/* round low to line bdy */
->  	subf	r8,r6,r4		/* compute length */
->  	add	r8,r8,r5		/* ensure we get enough */
->  	lwz	r9,CFG_DCACHE_LOGBLOCKSZ(r10)
-> @@ -48,7 +48,7 @@ V_FUNCTION_BEGIN(__kernel_sync_dicache)
->  
->  	lwz	r7,CFG_ICACHE_BLOCKSZ(r10)
->  	addi	r5,r7,-1
-> -	andc	r6,r11,r5		/* round low to line bdy */
-> +	andc	r6,r3,r5		/* round low to line bdy */
->  	subf	r8,r6,r4		/* compute length */
->  	add	r8,r8,r5
->  	lwz	r9,CFG_ICACHE_LOGBLOCKSZ(r10)
-> diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
-> index 6984125b9fc0..d480d2d4a3fe 100644
-> --- a/arch/powerpc/kernel/vdso32/datapage.S
-> +++ b/arch/powerpc/kernel/vdso32/datapage.S
-> @@ -11,34 +11,13 @@
->  #include <asm/unistd.h>
->  #include <asm/vdso.h>
->  
-> +#include "datapage.h"
-> +
->  	.text
->  	.global	__kernel_datapage_offset;
->  __kernel_datapage_offset:
->  	.long	0
->  
-> -V_FUNCTION_BEGIN(__get_datapage)
-> -  .cfi_startproc
-> -	/* We don't want that exposed or overridable as we want other objects
-> -	 * to be able to bl directly to here
-> -	 */
-> -	.protected __get_datapage
-> -	.hidden __get_datapage
-> -
-> -	mflr	r0
-> -  .cfi_register lr,r0
-> -
-> -	bcl	20,31,data_page_branch
-> -data_page_branch:
-> -	mflr	r3
-> -	mtlr	r0
-> -	addi	r3, r3, __kernel_datapage_offset-data_page_branch
-> -	lwz	r0,0(r3)
-> -  .cfi_restore lr
-> -	add	r3,r0,r3
-> -	blr
-> -  .cfi_endproc
-> -V_FUNCTION_END(__get_datapage)
-> -
->  /*
->   * void *__kernel_get_syscall_map(unsigned int *syscall_count) ;
->   *
-> @@ -53,7 +32,7 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
->  	mflr	r12
->    .cfi_register lr,r12
->  	mr	r4,r3
-> -	bl	__get_datapage@local
-> +	get_datapage	r3, r0
->  	mtlr	r12
->  	addi	r3,r3,CFG_SYSCALL_MAP32
->  	cmpli	cr0,r4,0
-> @@ -74,7 +53,7 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
->    .cfi_startproc
->  	mflr	r12
->    .cfi_register lr,r12
-> -	bl	__get_datapage@local
-> +	get_datapage	r3, r0
->  	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
->  	lwz	r3,CFG_TB_TICKS_PER_SEC(r3)
->  	mtlr	r12
-> diff --git a/arch/powerpc/kernel/vdso32/datapage.h b/arch/powerpc/kernel/vdso32/datapage.h
-> new file mode 100644
-> index 000000000000..74f4f57c2da8
-> --- /dev/null
-> +++ b/arch/powerpc/kernel/vdso32/datapage.h
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +
-> +.macro get_datapage ptr, tmp
-> +	bcl	20,31,.+4
-> +	mflr	\ptr
-> +	addi	\ptr, \ptr, __kernel_datapage_offset - (.-4)
-> +	lwz	\tmp, 0(\ptr)
-> +	add	\ptr, \tmp, \ptr
-> +.endm
-> +
-> +
-> diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> index 355b537d327a..3e55cba19f44 100644
-> --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-> +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> @@ -12,6 +12,8 @@
->  #include <asm/asm-offsets.h>
->  #include <asm/unistd.h>
->  
-> +#include "datapage.h"
-> +
->  /* Offset for the low 32-bit part of a field of long type */
->  #ifdef CONFIG_PPC64
->  #define LOPART	4
-> @@ -35,8 +37,7 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
->  
->  	mr	r10,r3			/* r10 saves tv */
->  	mr	r11,r4			/* r11 saves tz */
-> -	bl	__get_datapage@local	/* get data page */
-> -	mr	r9, r3			/* datapage ptr in r9 */
-> +	get_datapage	r9, r0
->  	cmplwi	r10,0			/* check if tv is NULL */
->  	beq	3f
->  	lis	r7,1000000@ha		/* load up USEC_PER_SEC */
-> @@ -82,8 +83,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
->  	mflr	r12			/* r12 saves lr */
->    .cfi_register lr,r12
->  	mr	r11,r4			/* r11 saves tp */
-> -	bl	__get_datapage@local	/* get data page */
-> -	mr	r9,r3			/* datapage ptr in r9 */
-> +	get_datapage	r9, r0
->  	lis	r7,NSEC_PER_SEC@h	/* want nanoseconds */
->  	ori	r7,r7,NSEC_PER_SEC@l
->  	beq	cr5, .Lcoarse_clocks
-> @@ -208,7 +208,7 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
->  
->  	mflr	r12
->    .cfi_register lr,r12
-> -	bl	__get_datapage@local	/* get data page */
-> +	get_datapage	r3, r0
->  	lwz	r5, CLOCK_HRTIMER_RES(r3)
->  	mtlr	r12
->  	li	r3,0
-> @@ -242,8 +242,7 @@ V_FUNCTION_BEGIN(__kernel_time)
->    .cfi_register lr,r12
->  
->  	mr	r11,r3			/* r11 holds t */
-> -	bl	__get_datapage@local
-> -	mr	r9, r3			/* datapage ptr in r9 */
-> +	get_datapage	r9, r0
->  
->  	lwz	r3,STAMP_XTIME+TSPEC_TV_SEC(r9)
->  
-> -- 
-> 2.13.3
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+ arch/powerpc/include/asm/iommu.h          | 17 ++++++++++++++
+ arch/powerpc/kernel/iommu.c               | 27 +++++++++++++++++++++++
+ arch/powerpc/platforms/powernv/pci-ioda.c | 12 ++++++++++
+ 3 files changed, 56 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+index d7bf1f104c15..837b5122f257 100644
+--- a/arch/powerpc/include/asm/iommu.h
++++ b/arch/powerpc/include/asm/iommu.h
+@@ -58,6 +58,17 @@ struct iommu_table_ops {
+ 			unsigned long *hpa,
+ 			enum dma_data_direction *direction);
+ 
++	int (*xchg_no_kill)(struct iommu_table *tbl,
++			long index,
++			unsigned long *hpa,
++			enum dma_data_direction *direction,
++			bool realmode);
++
++	void (*tce_kill)(struct iommu_table *tbl,
++			unsigned long index,
++			unsigned long pages,
++			bool realmode);
++
+ 	__be64 *(*useraddrptr)(struct iommu_table *tbl, long index, bool alloc);
+ #endif
+ 	void (*clear)(struct iommu_table *tbl,
+@@ -209,6 +220,12 @@ extern void iommu_del_device(struct device *dev);
+ extern long iommu_tce_xchg(struct mm_struct *mm, struct iommu_table *tbl,
+ 		unsigned long entry, unsigned long *hpa,
+ 		enum dma_data_direction *direction);
++extern long iommu_tce_xchg_no_kill(struct mm_struct *mm,
++		struct iommu_table *tbl,
++		unsigned long entry, unsigned long *hpa,
++		enum dma_data_direction *direction);
++extern void iommu_tce_kill(struct iommu_table *tbl,
++		unsigned long entry, unsigned long pages);
+ #else
+ static inline void iommu_register_group(struct iommu_table_group *table_group,
+ 					int pci_domain_number,
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index e7a2b160d4c6..070492f9b46e 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -1037,6 +1037,33 @@ long iommu_tce_xchg(struct mm_struct *mm, struct iommu_table *tbl,
+ }
+ EXPORT_SYMBOL_GPL(iommu_tce_xchg);
+ 
++extern long iommu_tce_xchg_no_kill(struct mm_struct *mm,
++		struct iommu_table *tbl,
++		unsigned long entry, unsigned long *hpa,
++		enum dma_data_direction *direction)
++{
++	long ret;
++	unsigned long size = 0;
++
++	ret = tbl->it_ops->xchg_no_kill(tbl, entry, hpa, direction, false);
++	if (!ret && ((*direction == DMA_FROM_DEVICE) ||
++			(*direction == DMA_BIDIRECTIONAL)) &&
++			!mm_iommu_is_devmem(mm, *hpa, tbl->it_page_shift,
++					&size))
++		SetPageDirty(pfn_to_page(*hpa >> PAGE_SHIFT));
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(iommu_tce_xchg_no_kill);
++
++void iommu_tce_kill(struct iommu_table *tbl,
++		unsigned long entry, unsigned long pages)
++{
++	if (tbl->it_ops->tce_kill)
++		tbl->it_ops->tce_kill(tbl, entry, pages, false);
++}
++EXPORT_SYMBOL_GPL(iommu_tce_kill);
++
+ int iommu_take_ownership(struct iommu_table *tbl)
+ {
+ 	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index ec48ea25a674..4e56b2c620ec 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1939,6 +1939,14 @@ static int pnv_ioda1_tce_build(struct iommu_table *tbl, long index,
+ }
+ 
+ #ifdef CONFIG_IOMMU_API
++/* Common for IODA1 and IODA2 */
++static int pnv_ioda_tce_xchg_no_kill(struct iommu_table *tbl, long index,
++		unsigned long *hpa, enum dma_data_direction *direction,
++		bool realmode)
++{
++	return pnv_tce_xchg(tbl, index, hpa, direction, !realmode);
++}
++
+ static int pnv_ioda1_tce_xchg(struct iommu_table *tbl, long index,
+ 		unsigned long *hpa, enum dma_data_direction *direction)
+ {
+@@ -1975,6 +1983,8 @@ static struct iommu_table_ops pnv_ioda1_iommu_ops = {
+ #ifdef CONFIG_IOMMU_API
+ 	.exchange = pnv_ioda1_tce_xchg,
+ 	.exchange_rm = pnv_ioda1_tce_xchg_rm,
++	.xchg_no_kill = pnv_ioda_tce_xchg_no_kill,
++	.tce_kill = pnv_pci_p7ioc_tce_invalidate,
+ 	.useraddrptr = pnv_tce_useraddrptr,
+ #endif
+ 	.clear = pnv_ioda1_tce_free,
+@@ -2140,6 +2150,8 @@ static struct iommu_table_ops pnv_ioda2_iommu_ops = {
+ #ifdef CONFIG_IOMMU_API
+ 	.exchange = pnv_ioda2_tce_xchg,
+ 	.exchange_rm = pnv_ioda2_tce_xchg_rm,
++	.xchg_no_kill = pnv_ioda_tce_xchg_no_kill,
++	.tce_kill = pnv_pci_ioda2_tce_invalidate,
+ 	.useraddrptr = pnv_tce_useraddrptr,
+ #endif
+ 	.clear = pnv_ioda2_tce_free,
+-- 
+2.17.1
+
