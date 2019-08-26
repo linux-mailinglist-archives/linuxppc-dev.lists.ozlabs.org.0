@@ -2,68 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1689D3C2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 18:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29E69D3C8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 18:15:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HH8y2XRQzDqRh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:12:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HHCt18tkzDqC7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:15:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HGqt3BgRzDqXm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 01:58:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="QPQFocRC"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="GBnmuK7P"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46HGqt0cpxz8swG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 01:58:02 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46HGqs6hKLz9sN1; Tue, 27 Aug 2019 01:58:01 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="GBnmuK7P"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HGjP0s4nzDqLd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 01:52:23 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46HGjB736vz9v7Ds;
- Mon, 26 Aug 2019 17:52:14 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=QPQFocRC; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id tXU2UAFMcW1P; Mon, 26 Aug 2019 17:52:14 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46HGjB5wxxz9v7Dq;
- Mon, 26 Aug 2019 17:52:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566834734; bh=6sNSQr2yvtmoqhGOgyrT1eVzNmPbrIKUsIKFncboTF8=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=QPQFocRC3m6T81XTYxQYlX97rYcLb17h27M+OGbJ1TiMPtDOyHu5gd8iyXIjRbUpt
- 2eT551qhXz2tiVEy/OneITf5243NqRrK+B3o0biwGcnZpI4ZnZ86eCSrQ98pvLjMHM
- pNAS6fRy5IR/mpkSJHfuhK1cZJ6biK0ggM1td5Ug=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C527C8B7E1;
- Mon, 26 Aug 2019 17:52:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id hUJJWwA4wCBp; Mon, 26 Aug 2019 17:52:19 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 541178B7EF;
- Mon, 26 Aug 2019 17:52:19 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 1B407696D5; Mon, 26 Aug 2019 15:52:19 +0000 (UTC)
-Message-Id: <5f3e92ccd64d06477b27626f6007a9da3b8da157.1566834712.git.christophe.leroy@c-s.fr>
-In-Reply-To: <d644eaf7dff8cc149260066802af230bdf34fded.1566834712.git.christophe.leroy@c-s.fr>
-References: <d644eaf7dff8cc149260066802af230bdf34fded.1566834712.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH 6/6] powerpc/32: don't use CPU_FTR_COHERENT_ICACHE
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 26 Aug 2019 15:52:19 +0000 (UTC)
+ by ozlabs.org (Postfix) with ESMTPS id 46HGqs0xcsz9sBF;
+ Tue, 27 Aug 2019 01:57:59 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C369620828;
+ Mon, 26 Aug 2019 15:57:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1566835077;
+ bh=blUYG8ZxI4V85CCdRu6wwyVrWFwoe8m7ktk5ZMl8OdU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=GBnmuK7Pv1FZCHS+Livxfezz4rL3sDkZZ+RwyLnRlwoMa56BTxvqZOBdxs42Yh5op
+ S7+MjUjLraULqNWCgT8f0CmoKTO/dSXf0J4YVUptakeIlhn5aaHGbrE7EvuvmMJgGo
+ Gm1Oj30vyfO98acaBe7IC1QYe6ai1wJhWrAZVl5A=
+Date: Mon, 26 Aug 2019 17:57:54 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nayna <nayna@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 2/4] powerpc: expose secure variables to userspace via
+ sysfs
+Message-ID: <20190826155754.GA489@kroah.com>
+References: <1566825818-9731-1-git-send-email-nayna@linux.ibm.com>
+ <1566825818-9731-3-git-send-email-nayna@linux.ibm.com>
+ <20190826145649.GA27342@kroah.com>
+ <2c5b8ba3-e5a3-5c80-a291-ea9965db2019@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c5b8ba3-e5a3-5c80-a291-ea9965db2019@linux.vnet.ibm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,95 +79,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linux-integrity@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Only 601 and E200 have CPU_FTR_COHERENT_ICACHE.
+On Mon, Aug 26, 2019 at 11:46:11AM -0400, Nayna wrote:
+> 
+> 
+> On 08/26/2019 10:56 AM, Greg Kroah-Hartman wrote:
+> > On Mon, Aug 26, 2019 at 09:23:36AM -0400, Nayna Jain wrote:
+> > > +static struct kobj_attribute size_attr = __ATTR_RO(size);
+> > Wait, why not just normal ATTR_RO()?
+> 
+> Oh!! Sorry. I am not seeing this macro in sysfs.h. am I missing something ?
 
-Just use #ifdefs instead of feature fixup.
+Ugh, no, you are right, I thought it was there as the BIN_ATTR_RO() one
+was there :)
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/kernel/misc_32.S | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+> > > +static struct bin_attribute data_attr = __BIN_ATTR_RO(data, VARIABLE_MAX_SIZE);
+> > And BIN_ATTR_RO() here?
+> 
+> This would have worked. I think I just thought to use the same way as
+> __ATTR_RO().
 
-diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
-index 3d21fb110797..82df4b09e79f 100644
---- a/arch/powerpc/kernel/misc_32.S
-+++ b/arch/powerpc/kernel/misc_32.S
-@@ -324,10 +324,10 @@ EXPORT_SYMBOL(flush_instruction_cache)
-  * flush_icache_range(unsigned long start, unsigned long stop)
-  */
- _GLOBAL(flush_icache_range)
--BEGIN_FTR_SECTION
-+#if defined(CONFIG_PPC_BOOK3S_601) || defined(CONFIG_E200)
- 	PURGE_PREFETCHED_INS
--	blr				/* for 601, do nothing */
--END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
-+	blr				/* for 601 and e200, do nothing */
-+#else
- 	rlwinm	r3,r3,0,0,31 - L1_CACHE_SHIFT
- 	subf	r4,r3,r4
- 	addi	r4,r4,L1_CACHE_BYTES - 1
-@@ -353,6 +353,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
- 	sync				/* additional sync needed on g4 */
- 	isync
- 	blr
-+#endif
- _ASM_NOKPROBE_SYMBOL(flush_icache_range)
- EXPORT_SYMBOL(flush_icache_range)
- 
-@@ -360,15 +361,15 @@ EXPORT_SYMBOL(flush_icache_range)
-  * Flush a particular page from the data cache to RAM.
-  * Note: this is necessary because the instruction cache does *not*
-  * snoop from the data cache.
-- * This is a no-op on the 601 which has a unified cache.
-+ * This is a no-op on the 601 and e200 which have a unified cache.
-  *
-  *	void __flush_dcache_icache(void *page)
-  */
- _GLOBAL(__flush_dcache_icache)
--BEGIN_FTR_SECTION
-+#if defined(CONFIG_PPC_BOOK3S_601) || defined(CONFIG_E200)
- 	PURGE_PREFETCHED_INS
- 	blr
--END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
-+#else
- 	rlwinm	r3,r3,0,0,31-PAGE_SHIFT		/* Get page base address */
- 	li	r4,PAGE_SIZE/L1_CACHE_BYTES	/* Number of lines in a page */
- 	mtctr	r4
-@@ -396,6 +397,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_44x)
- 	sync
- 	isync
- 	blr
-+#endif
- 
- #ifndef CONFIG_BOOKE
- /*
-@@ -407,10 +409,10 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_44x)
-  *	void __flush_dcache_icache_phys(unsigned long physaddr)
-  */
- _GLOBAL(__flush_dcache_icache_phys)
--BEGIN_FTR_SECTION
-+#if defined(CONFIG_PPC_BOOK3S_601) || defined(CONFIG_E200)
- 	PURGE_PREFETCHED_INS
--	blr					/* for 601, do nothing */
--END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
-+	blr					/* for 601 and e200, do nothing */
-+#else
- 	mfmsr	r10
- 	rlwinm	r0,r10,0,28,26			/* clear DR */
- 	mtmsr	r0
-@@ -431,6 +433,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
- 	mtmsr	r10				/* restore DR */
- 	isync
- 	blr
-+#endif
- #endif /* CONFIG_BOOKE */
- 
- /*
--- 
-2.13.3
+Yes, that's fine to use, sorry for the noise.
 
+greg k-h
