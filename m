@@ -1,58 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C747A9DA94
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:23:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C931A9DA99
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:25:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HV2r54PKzDqZD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:23:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HV4w38D7zDqLD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:25:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HNfP4WxkzDqWQ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 06:20:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=catern.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46HNfN4nNYz8vhn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 06:20:12 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46HNfN2PHsz9sMr; Tue, 27 Aug 2019 06:20:12 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=m.gmane.org
- (client-ip=195.159.176.226; helo=blaine.gmane.org;
- envelope-from=glppd-linuxppc64-dev@m.gmane.org; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=catern.com
-X-Greylist: delayed 903 seconds by postgrey-1.36 at bilbo;
- Tue, 27 Aug 2019 06:20:11 AEST
-Received: from blaine.gmane.org (195-159-176-226.customer.powertech.no
- [195.159.176.226])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46HNfM5sfxz9sML
- for <linuxppc-dev@ozlabs.org>; Tue, 27 Aug 2019 06:20:11 +1000 (AEST)
-Received: from list by blaine.gmane.org with local (Exim 4.89)
- (envelope-from <glppd-linuxppc64-dev@m.gmane.org>)
- id 1i2LEc-000X1s-An
- for linuxppc-dev@ozlabs.org; Mon, 26 Aug 2019 22:05:02 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To: linuxppc-dev@ozlabs.org
-From: sbaugh@catern.com
-Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
-Date: Mon, 26 Aug 2019 19:50:50 +0000
-Message-ID: <854l2366zp.fsf@catern.com>
-References: <20190820033406.29796-1-cyphar@cyphar.com>
- <20190820033406.29796-8-cyphar@cyphar.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Cancel-Lock: sha1:ym8TD2+JE56rxevrCvTf9T8Ptcg=
+ spf=pass (mailfrom) smtp.mailfrom=linux.microsoft.com
+ (client-ip=13.77.154.182; helo=linux.microsoft.com;
+ envelope-from=jorhand@linux.microsoft.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.microsoft.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46HRvq2kWrzDqRx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 08:47:00 +1000 (AEST)
+Received: from [10.91.6.157] (unknown [167.220.2.157])
+ by linux.microsoft.com (Postfix) with ESMTPSA id D15B720B7186;
+ Mon, 26 Aug 2019 15:46:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D15B720B7186
+Subject: Re: [PATCH v12 00/11] Appended signatures support for IMA appraisal
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ linux-integrity@vger.kernel.org
+References: <20190628021934.4260-1-bauerman@linux.ibm.com>
+From: Jordan Hand <jorhand@linux.microsoft.com>
+Message-ID: <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
+Date: Mon, 26 Aug 2019 15:46:57 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190628021934.4260-1-bauerman@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Tue, 27 Aug 2019 10:19:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,41 +48,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@ozlabs.org,
- sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-doc@vger.kernel.org,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ James Morris <jmorris@namei.org>, David Howells <dhowells@redhat.com>, "AKASHI,
+ Takahiro" <takahiro.akashi@linaro.org>, linux-security-module@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ Jessica Yu <jeyu@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ David Woodhouse <dwmw2@infradead.org>, "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Aleksa Sarai <cyphar@cyphar.com> writes:
-> To this end, we introduce the openat2(2) syscall. It provides all of the
-> features of openat(2) through the @how->flags argument, but also
-> also provides a new @how->resolve argument which exposes RESOLVE_* flags
-> that map to our new LOOKUP_* flags. It also eliminates the long-standing
-> ugliness of variadic-open(2) by embedding it in a struct.
+On 6/27/19 7:19 PM, Thiago Jung Bauermann wrote:
+> On the OpenPOWER platform, secure boot and trusted boot are being
+> implemented using IMA for taking measurements and verifying signatures.
+> Since the kernel image on Power servers is an ELF binary, kernels are
+> signed using the scripts/sign-file tool and thus use the same signature
+> format as signed kernel modules.
+> 
+> This patch series adds support in IMA for verifying those signatures.
+> It adds flexibility to OpenPOWER secure boot, because it allows it to boot
+> kernels with the signature appended to them as well as kernels where the
+> signature is stored in the IMA extended attribute.
 
-I don't like this usage of a structure in memory to pass arguments that
-would fit in registers. This would be quite inconvenient for me as a
-userspace developer.
+I know this is pretty late, but I just wanted to let you know that I
+tested this patch set on x86_64 with QEMU.
 
-Others have brought up issues with this: the issue of seccomp, and the
-issue of mismatch between the userspace interface and the kernel
-interface, are the most important for me. I want to add another,
-admittedly somewhat niche, concern.
+That is, I enrolled a key to _ima keyring, signed my kernel and modules
+with appended signatures (with scripts/sign-file), set the IMA policy to
+appraise and measure my kernel and modules. Also tested kexec appraisal.
 
-This interfaces requires a program to allocate memory (even on the
-stack) just to pass arguments to the kernel which could be passed
-without allocating that memory. That makes it more difficult and less
-efficient to use this syscall in any case where memory is not so easily
-allocatable: such as early program startup or assembly, where the stack
-may be limited in size or not even available yet, or when injecting a
-syscall while ptracing.
+You can add my tested-by if you'd like.
 
-A struct-passing interface was needed for clone, since we ran out of
-registers; but we have not run out of registers yet for openat, so it
-would be nice to avoid this if we can. We can always expand later...
-
+-Jordan
