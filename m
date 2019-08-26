@@ -2,74 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3950D9D947
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E25CA9D96E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:46:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HRhC4F83zDqTZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:36:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HRvQ1C3jzDqcx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:46:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=changbin.du@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=a6zo=ww=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="V4Yj/mgK"; 
- dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=goodmis.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HRfD2p5WzDqc8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 08:35:16 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id w2so12735726pfi.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 15:35:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=ZTtLxIEFBiFvvirLNk7rJCpHyKJsG3UuT12vwumOc6c=;
- b=V4Yj/mgKIET0UoJp2BRwZVUfM8V2AmczCU0x1SnvT/ZOx56IgJ9BD2GVGSi/vhq8VT
- fCApXRmB4ctSw9Qja4Kg0K+GcJl8Q6DdxLSq+q61/ftTv9i5CG6gwcSj3xiWeRzQ1qWl
- KifPe7A7QjANncPafKhoJI2VCx5usWEIbMg0ZGE/I7ZdFFUTesd1FXWT2Q07SZVnGF/Y
- 1IDGhaTKkYwZyw0MpgLx9S1ru+lG8BGfGNGS/7INVWaXjpxI9Pp2t+OVu436nKa8238G
- oNqZKQK8uVFD/nAamPO86nU17D7TwmRoXDUF53i42+GF5eIES6p9m9cXmSCrdSiQLsco
- z2KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=ZTtLxIEFBiFvvirLNk7rJCpHyKJsG3UuT12vwumOc6c=;
- b=RPACD83dl7I/pifs4DNxtRtXtBJMvlAdnIgMoUlKOTugKb+tMlpec1F4IPutAs3MxH
- UDwPJm3QKmNZulwVYwHsTTMF+2jmR09Ids00VF6AhZa28sTh0EP7YOWuTcu/KAOVib7e
- ZBD3bnbGbqeYhXZ5wxeqYU52mJtynwH+ofoijsKY05y9qmph9gWQxEOCTly7+iIMehF9
- 5ps3Y+oIAhoIXkzLnd/YDXGo76r66rmpoejljsTeB8iZehInAaQfBCbWjUVVkWCEFq6x
- AFnY+tdkVQRFjeBJIXR5pBnb4uKhD7IVhVzBSWiFahPK2/ocwlmmcIBRg20XZxYJFwls
- VEOQ==
-X-Gm-Message-State: APjAAAXxgd+w2M1Rfy2zFkYk5qKDxk8K8uWVk8jIULqsoTLTsxq/fXNC
- dSeHAhCJB9zi8g8/nX4Sq88=
-X-Google-Smtp-Source: APXvYqx9fB2zz3reQwDJm1c/UTcOst3U1UlmTMEEGuwoeB+hHpMqnGwoyiFnFyuGEv6PeBIfrwI1hg==
-X-Received: by 2002:a65:62d7:: with SMTP id m23mr18488160pgv.358.1566858912811; 
- Mon, 26 Aug 2019 15:35:12 -0700 (PDT)
-Received: from mail.google.com ([149.28.153.17])
- by smtp.gmail.com with ESMTPSA id s5sm474687pjo.26.2019.08.26.15.35.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Aug 2019 15:35:12 -0700 (PDT)
-Date: Tue, 27 Aug 2019 06:35:02 +0800
-From: Changbin Du <changbin.du@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 05/11] ftrace: create memcache for hash entries
-Message-ID: <20190826223501.ymj3g4ftrf5eqhzq@mail.google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HRsH1l4lzDqVZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 08:44:50 +1000 (AEST)
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 186C020644;
+ Mon, 26 Aug 2019 22:44:46 +0000 (UTC)
+Date: Mon, 26 Aug 2019 18:44:44 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Changbin Du <changbin.du@gmail.com>
+Subject: Re: [PATCH 01/11] ftrace: move recordmcount tools to scripts/ftrace
+Message-ID: <20190826184444.09334ae9@gandalf.local.home>
+In-Reply-To: <20190825132330.5015-2-changbin.du@gmail.com>
 References: <20190825132330.5015-1-changbin.du@gmail.com>
- <20190825132330.5015-6-changbin.du@gmail.com>
- <20190826074437.GM2369@hirez.programming.kicks-ass.net>
+ <20190825132330.5015-2-changbin.du@gmail.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190826074437.GM2369@hirez.programming.kicks-ass.net>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,78 +49,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-parisc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- linux-sh@vger.kernel.org, x86@kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- linux-mips@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Jessica Yu <jeyu@kernel.org>, sparclinux@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, Changbin Du <changbin.du@gmail.com>
+Cc: linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ linux-parisc@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
+ "John F . Reiser" <jreiser@BitWagon.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Jessica Yu <jeyu@kernel.org>,
+ sparclinux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Matt Helsley <mhelsley@vmware.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 26, 2019 at 09:44:37AM +0200, Peter Zijlstra wrote:
-> On Sun, Aug 25, 2019 at 09:23:24PM +0800, Changbin Du wrote:
-> > When CONFIG_FTRACE_FUNC_PROTOTYPE is enabled, thousands of
-> > ftrace_func_entry instances are created. So create a dedicated
-> > memcache to enhance performance.
-> > 
-> > Signed-off-by: Changbin Du <changbin.du@gmail.com>
-> > ---
-> >  kernel/trace/ftrace.c | 17 ++++++++++++++++-
-> >  1 file changed, 16 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> > index a314f0768b2c..cfcb8dad93ea 100644
-> > --- a/kernel/trace/ftrace.c
-> > +++ b/kernel/trace/ftrace.c
-> > @@ -94,6 +94,8 @@ struct ftrace_ops *function_trace_op __read_mostly = &ftrace_list_end;
-> >  /* What to set function_trace_op to */
-> >  static struct ftrace_ops *set_function_trace_op;
-> >  
-> > +struct kmem_cache *hash_entry_cache;
-> > +
-> >  static bool ftrace_pids_enabled(struct ftrace_ops *ops)
-> >  {
-> >  	struct trace_array *tr;
-> > @@ -1169,7 +1171,7 @@ static int add_hash_entry(struct ftrace_hash *hash, unsigned long ip,
-> >  {
-> >  	struct ftrace_func_entry *entry;
-> >  
-> > -	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
-> > +	entry = kmem_cache_alloc(hash_entry_cache, GFP_KERNEL);
-> >  	if (!entry)
-> >  		return -ENOMEM;
-> >  
-> > @@ -6153,6 +6155,15 @@ void __init ftrace_init(void)
-> >  	if (ret)
-> >  		goto failed;
-> >  
-> > +	hash_entry_cache = kmem_cache_create("ftrace-hash",
-> > +					     sizeof(struct ftrace_func_entry),
-> > +					     sizeof(struct ftrace_func_entry),
-> > +					     0, NULL);
-> > +	if (!hash_entry_cache) {
-> > +		pr_err("failed to create ftrace hash entry cache\n");
-> > +		goto failed;
-> > +	}
+On Sun, 25 Aug 2019 21:23:20 +0800
+Changbin Du <changbin.du@gmail.com> wrote:
+
+> Move ftrace tools to its own directory. We will add another tool later.
 > 
-> Wait what; you already have then in the binary image, now you're
-> allocating extra memory for each of them?
->
-No, here we only allocate ftrace hash entries. The prototype data is not copied.
-The entry->priv points to prototype data in binary.
+> Cc: John F. Reiser <jreiser@BitWagon.com>
+> Signed-off-by: Changbin Du <changbin.du@gmail.com>
+> ---
+>  scripts/.gitignore                   |  1 -
+>  scripts/Makefile                     |  2 +-
+>  scripts/Makefile.build               | 10 +++++-----
+>  scripts/ftrace/.gitignore            |  4 ++++
+>  scripts/ftrace/Makefile              |  4 ++++
+>  scripts/{ => ftrace}/recordmcount.c  |  0
+>  scripts/{ => ftrace}/recordmcount.h  |  0
+>  scripts/{ => ftrace}/recordmcount.pl |  0
+>  8 files changed, 14 insertions(+), 7 deletions(-)
+>  create mode 100644 scripts/ftrace/.gitignore
+>  create mode 100644 scripts/ftrace/Makefile
+>  rename scripts/{ => ftrace}/recordmcount.c (100%)
+>  rename scripts/{ => ftrace}/recordmcount.h (100%)
+>  rename scripts/{ => ftrace}/recordmcount.pl (100%)
+>  mode change 100755 => 100644
 
-> Did you look at what ORC does? Is the binary search really not fast
-> enough?
-For ftrace, binary search is not enough. Just like the hash tables
-(ftrace_graph_notrace_hash, ftrace_graph_hash) we already have which is used to
-filter traced functions.
+Note, we are in the process of merging recordmcount with objtool. It
+would be better to continue from that work.
 
+ http://lkml.kernel.org/r/2767f55f4a5fbf30ba0635aed7a9c5ee92ac07dd.1563992889.git.mhelsley@vmware.com
 
--- 
-Cheers,
-Changbin Du
+-- Steve
+
+> 
+> diff --git a/scripts/.gitignore b/scripts/.gitignore
+> index 17f8cef88fa8..1b5b5d595d80 100644
+> --- a/scripts/.gitignore
+> +++ b/scripts/.gitignore
+> @@ -6,7 +6,6 @@ conmakehash
+>  kallsyms
+>  pnmtologo
+>  unifdef
+> -recordmcount
+>  sortextable
+>  asn1_compiler
+>  extract-cert
+> diff --git a/scripts/Makefile b/scripts/Makefile
+> index 16bcb8087899..d5992def49a8 100644
+> --- a/scripts/Makefile
+> +++ b/scripts/Makefile
+> @@ -14,7 +14,6 @@ hostprogs-$(CONFIG_BUILD_BIN2C)  += bin2c
+>  hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
+>  hostprogs-$(CONFIG_LOGO)         += pnmtologo
+>  hostprogs-$(CONFIG_VT)           += conmakehash
+> -hostprogs-$(BUILD_C_RECORDMCOUNT) += recordmcount
+>  hostprogs-$(CONFIG_BUILDTIME_EXTABLE_SORT) += sortextable
+>  hostprogs-$(CONFIG_ASN1)	 += asn1_compiler
+>  hostprogs-$(CONFIG_MODULE_SIG)	 += sign-file
+> @@ -34,6 +33,7 @@ hostprogs-y += unifdef
+>  subdir-$(CONFIG_GCC_PLUGINS) += gcc-plugins
+>  subdir-$(CONFIG_MODVERSIONS) += genksyms
+>  subdir-$(CONFIG_SECURITY_SELINUX) += selinux
+> +subdir-$(CONFIG_FTRACE) += ftrace
+>  
+>  # Let clean descend into subdirs
+>  subdir-	+= basic dtc gdb kconfig mod package
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 2f66ed388d1c..67558983c518 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -188,18 +188,18 @@ endif
+>  # files, including recordmcount.
+>  sub_cmd_record_mcount =					\
+>  	if [ $(@) != "scripts/mod/empty.o" ]; then	\
+> -		$(objtree)/scripts/recordmcount $(RECORDMCOUNT_FLAGS) "$(@)";	\
+> +		$(objtree)/scripts/ftrace/recordmcount $(RECORDMCOUNT_FLAGS) "$(@)"; \
+>  	fi;
+> -recordmcount_source := $(srctree)/scripts/recordmcount.c \
+> -		    $(srctree)/scripts/recordmcount.h
+> +recordmcount_source := $(srctree)/scripts/ftrace/recordmcount.c \
+> +		       $(srctree)/scripts/ftrace/recordmcount.h
+>  else
+> -sub_cmd_record_mcount = perl $(srctree)/scripts/recordmcount.pl "$(ARCH)" \
+> +sub_cmd_record_mcount = perl $(srctree)/scripts/ftrace/recordmcount.pl "$(ARCH)" \
+>  	"$(if $(CONFIG_CPU_BIG_ENDIAN),big,little)" \
+>  	"$(if $(CONFIG_64BIT),64,32)" \
+>  	"$(OBJDUMP)" "$(OBJCOPY)" "$(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS)" \
+>  	"$(LD) $(KBUILD_LDFLAGS)" "$(NM)" "$(RM)" "$(MV)" \
+>  	"$(if $(part-of-module),1,0)" "$(@)";
+> -recordmcount_source := $(srctree)/scripts/recordmcount.pl
+> +recordmcount_source := $(srctree)/scripts/ftrace/recordmcount.pl
+>  endif # BUILD_C_RECORDMCOUNT
+>  cmd_record_mcount = $(if $(findstring $(strip $(CC_FLAGS_FTRACE)),$(_c_flags)),	\
+>  	$(sub_cmd_record_mcount))
+> diff --git a/scripts/ftrace/.gitignore b/scripts/ftrace/.gitignore
+> new file mode 100644
+> index 000000000000..54d582c8faad
+> --- /dev/null
+> +++ b/scripts/ftrace/.gitignore
+> @@ -0,0 +1,4 @@
+> +#
+> +# Generated files
+> +#
+> +recordmcount
+> diff --git a/scripts/ftrace/Makefile b/scripts/ftrace/Makefile
+> new file mode 100644
+> index 000000000000..6797e51473e5
+> --- /dev/null
+> +++ b/scripts/ftrace/Makefile
+> @@ -0,0 +1,4 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +hostprogs-$(BUILD_C_RECORDMCOUNT) += recordmcount
+> +always         := $(hostprogs-y)
+> diff --git a/scripts/recordmcount.c b/scripts/ftrace/recordmcount.c
+> similarity index 100%
+> rename from scripts/recordmcount.c
+> rename to scripts/ftrace/recordmcount.c
+> diff --git a/scripts/recordmcount.h b/scripts/ftrace/recordmcount.h
+> similarity index 100%
+> rename from scripts/recordmcount.h
+> rename to scripts/ftrace/recordmcount.h
+> diff --git a/scripts/recordmcount.pl b/scripts/ftrace/recordmcount.pl
+> old mode 100755
+> new mode 100644
+> similarity index 100%
+> rename from scripts/recordmcount.pl
+> rename to scripts/ftrace/recordmcount.pl
+
