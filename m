@@ -2,60 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF059CFD4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 14:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDF19D035
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 15:17:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HBfx2nQBzDqg3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 22:50:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HCGM3Jx2zDqgN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 23:17:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.167.194; helo=mail-oi1-f194.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
- [209.85.167.194])
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="S0Qm85v5"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HBcL4Z8wzDqQy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 22:47:44 +1000 (AEST)
-Received: by mail-oi1-f194.google.com with SMTP id y8so11957733oih.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 05:47:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=2lOXZ8wFRW/YuaXxzTqaFqe/74prYF5RHRz56ehVnGE=;
- b=h0vFeQ6wzTvXt1p2xnE/9WPzysxYX5h/1kyYpE1eIjdA9HIHhgbwPv6QOFvKmpEuyN
- Vmrjsi12mq021yBhaDMM4igWmn462cY4oW64idSmAmbv2Aa/nsobwvIqp+7AByH1xWQa
- 1oep8VAkTUpzxbHbk1pidRpSZ8VHjbNZ12E6qoBAUS0rLv/OwS13ZGmKbFZXKGtF9k5N
- URpx1yBX9KPNM4NIBXnZP2icxZiSotSNW0nvESVtO0u1F4Y2xtkQ5jdWRxrlkF/Otf25
- tUQB6dW/n4KoCtwI61CKIqaDSUwTqtYyn44BIQJHujbVl5VnEF3ARZOj3LgY2JKHeIOX
- huGQ==
-X-Gm-Message-State: APjAAAVMCePyGSy0hFhRK0Dix1xzINrRbxfHerKIMDPYiGLpWYYkEQfM
- Zz5Nizhn9ZefnA+ChOyfKlgbaPY5YBORZ/lwzEc=
-X-Google-Smtp-Source: APXvYqwQsnWsz/uUt3lKfonI6Y7AJ0n1GRj3J3qaJWXf5hQldprWVAhc5qe2LLw8A+wikNSRbxl2eIRuhJwLN2u1DJk=
-X-Received: by 2002:aca:fd41:: with SMTP id b62mr12547417oii.96.1566823662073; 
- Mon, 26 Aug 2019 05:47:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HCBR6FZnzDqQ9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:13:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=urDTYQxxHpDLHKYV3DkLPJyBgIdOzd8vbZl6Cfapxyc=; b=S0Qm85v5u+mC94Z+1NTp3zLxy
+ RVikWlbB8+mD7D3i6pKW1vaRh6+mpvdmY0hZwt7QeNMOfDK4v1mKu4uLruFJY+80WEeNiclw0bMni
+ VgFWVa4FMxmnuDh4DG/NHs34XNaySiBjcLQotEzPIlKfk98LzJOfOfATotjcOvgRsK0BvJg1vvrY6
+ PC3VQkaRupcuqt52WqBPC5JvmCjmjjLmU1rbYgod7HJ/IZrUNwVg/kxESAnrEZvrP/71g/C/cTVL3
+ KSmHw9glYY9tQdIrKjhRnF9olVe6RlSSQh43S7mnoLe1VnIU+Q8j9tFnodpiFcOU1xeFxRbNIYZHd
+ 4Bsb3y2yA==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
+ Hat Linux)) id 1i2Eo0-0002Mw-Mf; Mon, 26 Aug 2019 13:13:08 +0000
+Date: Mon, 26 Aug 2019 06:13:08 -0700
+From: Matthew Wilcox <willy@infradead.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
+ table helpers
+Message-ID: <20190826131308.GA15933@bombadil.infradead.org>
+References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
+ <20190809101632.GM5482@bombadil.infradead.org>
+ <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
+ <20190809135202.GN5482@bombadil.infradead.org>
+ <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
 MIME-Version: 1.0
-References: <87mugdtf08.fsf@christian.marillat.net>
- <CA+7wUsw5eTdwJG3UytWr9CajVhpUkyOGufmvUvqQJoEWq4nWhQ@mail.gmail.com>
- <a84c86b3-4c6c-f7a2-ad3f-6e075e6ebe25@c-s.fr>
- <87a7cal3pd.fsf@christian.marillat.net>
- <e582fcf0-a311-07f7-5445-c3471ec5c783@c-s.fr>
- <87zhk9tgdb.fsf__22033.2117214397$1565960670$gmane$org@christian.marillat.net>
- <87ef1ljjct.fsf@igel.home> <87o90ptb6q.fsf@christian.marillat.net>
-In-Reply-To: <87o90ptb6q.fsf@christian.marillat.net>
-From: Mathieu Malaterre <malat@debian.org>
-Date: Mon, 26 Aug 2019 14:47:30 +0200
-Message-ID: <CA+7wUsx4y4ZQKzsuvFAKob9t4Mo299CpsM3m82bfL+63WLJJGg@mail.gmail.com>
-Subject: Re: 5.2.7 kernel doesn't boot on G5
-To: Christian Marillat <marillat@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,47 +66,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Andreas Schwab <schwab@linux-m68k.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Steven Price <Steven.Price@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christian,
-
-On Fri, Aug 16, 2019 at 4:52 PM Christian Marillat <marillat@debian.org> wr=
-ote:
->
-> On 16 ao=C3=BBt 2019 16:05, Andreas Schwab <schwab@linux-m68k.org> wrote:
->
-> > On Aug 16 2019, Christian Marillat <marillat@debian.org> wrote:
-> >
-> >> On 15 ao=C3=BBt 2019 19:50, christophe leroy <christophe.leroy@c-s.fr>=
- wrote:
+On Mon, Aug 26, 2019 at 08:07:13AM +0530, Anshuman Khandual wrote:
+> On 08/09/2019 07:22 PM, Matthew Wilcox wrote:
+> > On Fri, Aug 09, 2019 at 04:05:07PM +0530, Anshuman Khandual wrote:
+> >> On 08/09/2019 03:46 PM, Matthew Wilcox wrote:
+> >>> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
+> >>>> Should alloc_gigantic_page() be made available as an interface for general
+> >>>> use in the kernel. The test module here uses very similar implementation from
+> >>>> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
+> >>>> needs to be exported through a header.
+> >>>
+> >>> Why are you allocating memory at all instead of just using some
+> >>> known-to-exist PFNs like I suggested?
 > >>
-> >> [...]
-> >>
-> >>> Can you test with latest stable version, ie 5.2.8 ?
-> >>
-> >> Built from my G5 with make-kpkg and still doesn't boot :
-> >
-> > FWIW, 5.2.0 is working fine on my G5 (PowerMac7,3).
->
-> Mine is a PowerMac11,2 "Quadcore" and / is on a RAID0
->
-> As 4.19.5 boot I don't think is a hardware problem.
+> >> We needed PFN to be PUD aligned for pfn_pud() and PMD aligned for mk_pmd().
+> >> Now walking the kernel page table for a known symbol like kernel_init()
+> > 
+> > I didn't say to walk the kernel page table.  I said to call virt_to_pfn()
+> > for a known symbol like kernel_init().
+> > 
+> >> as you had suggested earlier we might encounter page table page entries at PMD
+> >> and PUD which might not be PMD or PUD aligned respectively. It seemed to me
+> >> that alignment requirement is applicable only for mk_pmd() and pfn_pud()
+> >> which create large mappings at those levels but that requirement does not
+> >> exist for page table pages pointing to next level. Is not that correct ? Or
+> >> I am missing something here ?
+> > 
+> > Just clear the bottom bits off the PFN until you get a PMD or PUD aligned
+> > PFN.  It's really not hard.
+> 
+> As Mark pointed out earlier that might end up being just a synthetic PFN
+> which might not even exist on a given system.
 
-Since no wild guess seems to be possible. Can you do a git bisect on
-your side. Using a git clone of the linux kernel, I usually do from my
-amd64 box:
-
-When doing git bisect I compile from my amd64 machine using:
-
-$ make O=3Dg4 ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-gnu- my_defconfi=
-g
-$ make -j8 O=3Dg4 ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-gnu- bindeb-=
-pkg
-$ scp *image*.deb macminig4:
-
-The bindeb-pkg target is handy to generate a deb package. You may need
-to adapt this for your g5.
+And why would that matter?
