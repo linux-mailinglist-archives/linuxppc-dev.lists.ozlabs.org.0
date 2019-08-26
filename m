@@ -1,60 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDF19D035
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 15:17:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A239D086
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 15:28:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HCGM3Jx2zDqgN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 23:17:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HCVv31k7zDqXG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 23:28:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="S0Qm85v5"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HCBR6FZnzDqQ9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:13:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=urDTYQxxHpDLHKYV3DkLPJyBgIdOzd8vbZl6Cfapxyc=; b=S0Qm85v5u+mC94Z+1NTp3zLxy
- RVikWlbB8+mD7D3i6pKW1vaRh6+mpvdmY0hZwt7QeNMOfDK4v1mKu4uLruFJY+80WEeNiclw0bMni
- VgFWVa4FMxmnuDh4DG/NHs34XNaySiBjcLQotEzPIlKfk98LzJOfOfATotjcOvgRsK0BvJg1vvrY6
- PC3VQkaRupcuqt52WqBPC5JvmCjmjjLmU1rbYgod7HJ/IZrUNwVg/kxESAnrEZvrP/71g/C/cTVL3
- KSmHw9glYY9tQdIrKjhRnF9olVe6RlSSQh43S7mnoLe1VnIU+Q8j9tFnodpiFcOU1xeFxRbNIYZHd
- 4Bsb3y2yA==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
- Hat Linux)) id 1i2Eo0-0002Mw-Mf; Mon, 26 Aug 2019 13:13:08 +0000
-Date: Mon, 26 Aug 2019 06:13:08 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
- table helpers
-Message-ID: <20190826131308.GA15933@bombadil.infradead.org>
-References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
- <20190809101632.GM5482@bombadil.infradead.org>
- <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
- <20190809135202.GN5482@bombadil.infradead.org>
- <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HCQH2GB9zDqG0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:24:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46HCQG2LD9z8swq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:24:06 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46HCQG19pJz9sP6; Mon, 26 Aug 2019 23:24:06 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nayna@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46HCQF3jFtz9sNF
+ for <linuxppc-dev@ozlabs.org>; Mon, 26 Aug 2019 23:24:04 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7QDM1VD013775
+ for <linuxppc-dev@ozlabs.org>; Mon, 26 Aug 2019 09:24:02 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2umg7dg3fu-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 26 Aug 2019 09:24:02 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
+ Mon, 26 Aug 2019 14:23:57 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 26 Aug 2019 14:23:52 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x7QDNoqY31654366
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Aug 2019 13:23:50 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B327742047;
+ Mon, 26 Aug 2019 13:23:50 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3117442042;
+ Mon, 26 Aug 2019 13:23:48 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.85.199.141])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Aug 2019 13:23:48 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: [PATCH v3 0/4] powerpc: expose secure variables to the kernel and
+ userspace 
+Date: Mon, 26 Aug 2019 09:23:34 -0400
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 19082613-4275-0000-0000-0000035D89E3
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082613-4276-0000-0000-0000386FB754
+Message-Id: <1566825818-9731-1-git-send-email-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-26_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908260145
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,63 +99,163 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Steven Price <Steven.Price@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 26, 2019 at 08:07:13AM +0530, Anshuman Khandual wrote:
-> On 08/09/2019 07:22 PM, Matthew Wilcox wrote:
-> > On Fri, Aug 09, 2019 at 04:05:07PM +0530, Anshuman Khandual wrote:
-> >> On 08/09/2019 03:46 PM, Matthew Wilcox wrote:
-> >>> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
-> >>>> Should alloc_gigantic_page() be made available as an interface for general
-> >>>> use in the kernel. The test module here uses very similar implementation from
-> >>>> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
-> >>>> needs to be exported through a header.
-> >>>
-> >>> Why are you allocating memory at all instead of just using some
-> >>> known-to-exist PFNs like I suggested?
-> >>
-> >> We needed PFN to be PUD aligned for pfn_pud() and PMD aligned for mk_pmd().
-> >> Now walking the kernel page table for a known symbol like kernel_init()
-> > 
-> > I didn't say to walk the kernel page table.  I said to call virt_to_pfn()
-> > for a known symbol like kernel_init().
-> > 
-> >> as you had suggested earlier we might encounter page table page entries at PMD
-> >> and PUD which might not be PMD or PUD aligned respectively. It seemed to me
-> >> that alignment requirement is applicable only for mk_pmd() and pfn_pud()
-> >> which create large mappings at those levels but that requirement does not
-> >> exist for page table pages pointing to next level. Is not that correct ? Or
-> >> I am missing something here ?
-> > 
-> > Just clear the bottom bits off the PFN until you get a PMD or PUD aligned
-> > PFN.  It's really not hard.
-> 
-> As Mark pointed out earlier that might end up being just a synthetic PFN
-> which might not even exist on a given system.
+In order to verify the OS kernel on PowerNV systems, secure boot requires
+X.509 certificates trusted by the platform. These are stored in secure
+variables controlled by OPAL, called OPAL secure variables. In order to
+enable users to manage the keys, the secure variables need to be exposed
+to userspace.
 
-And why would that matter?
+OPAL provides the runtime services for the kernel to be able to access the
+secure variables[1]. This patchset defines the kernel interface for the
+OPAL APIs. These APIs are used by the hooks, which load these variables
+to the keyring and expose them to the userspace for reading/writing.
+
+The previous version[2] of the patchset added support only for the sysfs
+interface. This patch adds two more patches that involves loading of
+the firmware trusted keys to the kernel keyring. This patchset is
+dependent on the base CONFIG PPC_SECURE_BOOT added by ima arch specific
+patches for POWER[3]
+
+Overall, this patchset adds the following support:
+
+* expose secure variables to the kernel via OPAL Runtime API interface
+* expose secure variables to the userspace via kernel sysfs interface
+* load kernel verification and revocation keys to .platform and
+.blacklist keyring respectively.
+
+The secure variables can be read/written using simple linux utilities
+cat/hexdump.
+
+For example:
+Path to the secure variables is:
+/sys/firmware/secvar/vars
+
+Each secure variable is listed as directory. 
+$ ls -l
+total 0
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 db
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 KEK
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 PK
+
+The attributes of each of the secure variables are(for example: PK):
+[PK]$ ls -l
+total 0
+-r--r--r--. 1 root root 32000 Aug 21 08:28 data
+-r--r--r--. 1 root root 65536 Aug 21 08:28 size
+--w-------. 1 root root 32000 Aug 21 08:28 update
+
+The "data" is used to read the existing variable value using hexdump. The
+data is stored in ESL format.
+The "update" is used to write a new value using cat. The update is
+to be submitted as AUTH file.
+
+[1] Depends on skiboot OPAL API changes which removes metadata from
+the API. The new version with the changes are going to be posted soon.
+[2] https://lkml.org/lkml/2019/6/13/1644
+[3] https://lkml.org/lkml/2019/8/19/402
+
+Changelog:
+v3:
+* includes Greg's feedbacks:
+ * fixes in Patch 2/4
+   * updates the Documentation.
+   * fixes code feedbacks
+    * adds SYSFS Kconfig dependency for SECVAR_SYSFS
+    * fixes mixed tabs and spaces
+    * removes "name" attribute for each of the variable name based
+    directories
+    * fixes using __ATTR_RO() and __BIN_ATTR_RO() and statics and const
+    * fixes the racing issue by using kobj_type default groups. Also,
+    fixes the kobject leakage.
+    * removes extra print messages
+  * updates patch description for Patch 3/4
+  * removes file name from Patch 4/4 file header comment and removed
+  def_bool y from the LOAD_PPC_KEYS Kconfig
+
+* includes Oliver's feedbacks:
+  * fixes Patch 1/2
+   * moves OPAL API wrappers after opal_nx_proc_init(), fixed the
+   naming, types and removed extern.
+   * fixes spaces
+   * renames get_variable() to get(), get_next_variable() to get_next()
+   and set_variable() to set()
+   * removed get_secvar_ops() and defined secvar_ops as global
+   * fixes consts and statics
+   * removes generic secvar_init() and defined platform specific
+   opal_secar_init()
+   * updates opal_secvar_supported() to check for secvar support even
+   before checking the OPAL APIs support and also fixed the error codes.
+   * addes function that converts OPAL return codes to linux errno
+   * moves secvar check support in the opal_secvar_init() and defined its
+   prototype in opal.h
+  * fixes Patch 2/2
+   * fixes static/const
+   * defines macro for max name size
+   * replaces OPAL error codes with linux errno and also updated error
+   handling
+   * moves secvar support check before creating sysfs kobjects in 
+   secvar_sysfs_init()
+   * fixes spaces  
+
+v2:
+* removes complete efi-sms from the sysfs implementation and is simplified
+* includes Greg's and Oliver's feedbacks:
+ * adds sysfs documentation
+ * moves sysfs code to arch/powerpc
+ * other code related feedbacks.
+* adds two new patches to load keys to .platform and .blacklist keyring.
+These patches are added to this series as they are also dependent on
+OPAL APIs.
+
+Nayna Jain (4):
+  powerpc/powernv: Add OPAL API interface to access secure variable
+  powerpc: expose secure variables to userspace via sysfs
+  x86/efi: move common keyring handler functions to new file
+  powerpc: load firmware trusted keys/hashes into kernel keyring
+
+ Documentation/ABI/testing/sysfs-secvar        |  37 ++++
+ arch/powerpc/Kconfig                          |  10 +
+ arch/powerpc/include/asm/opal-api.h           |   5 +-
+ arch/powerpc/include/asm/opal.h               |   7 +-
+ arch/powerpc/include/asm/powernv.h            |   2 +
+ arch/powerpc/include/asm/secvar.h             |  35 +++
+ arch/powerpc/kernel/Makefile                  |   3 +-
+ arch/powerpc/kernel/secvar-ops.c              |  19 ++
+ arch/powerpc/kernel/secvar-sysfs.c            | 200 ++++++++++++++++++
+ arch/powerpc/platforms/powernv/Kconfig        |   6 +
+ arch/powerpc/platforms/powernv/Makefile       |   1 +
+ arch/powerpc/platforms/powernv/opal-call.c    |   3 +
+ arch/powerpc/platforms/powernv/opal-secvar.c  | 138 ++++++++++++
+ arch/powerpc/platforms/powernv/opal.c         |   5 +
+ security/integrity/Kconfig                    |   8 +
+ security/integrity/Makefile                   |   6 +-
+ .../platform_certs/keyring_handler.c          |  80 +++++++
+ .../platform_certs/keyring_handler.h          |  32 +++
+ .../integrity/platform_certs/load_powerpc.c   |  88 ++++++++
+ security/integrity/platform_certs/load_uefi.c |  67 +-----
+ 20 files changed, 682 insertions(+), 70 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-secvar
+ create mode 100644 arch/powerpc/include/asm/secvar.h
+ create mode 100644 arch/powerpc/kernel/secvar-ops.c
+ create mode 100644 arch/powerpc/kernel/secvar-sysfs.c
+ create mode 100644 arch/powerpc/platforms/powernv/opal-secvar.c
+ create mode 100644 security/integrity/platform_certs/keyring_handler.c
+ create mode 100644 security/integrity/platform_certs/keyring_handler.h
+ create mode 100644 security/integrity/platform_certs/load_powerpc.c
+
+-- 
+2.20.1
+
