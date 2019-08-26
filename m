@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAC29D172
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 16:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 860729D179
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 16:15:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HDSz6Vw1zDqfY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:11:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HDYF3dmbzDqJP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:15:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="ZD925U8X"; dkim-atps=neutral
+ header.b="R1nk6Id6"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HCSt5CpxzDqSB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:26:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HCSv2wt6zDqVF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:26:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=s8uhaJqsOcGF/SKSL+I3KAUlAQpFkAzt8ZT3wgEstOs=; b=ZD925U8Xsf7UH1KyQz76ALQdIS
- SndVG4q8OW5Hhpe4j7vRakMGz08iaFziOXEy559vBCxny2zRx8yFnnK90/OyHCvFJro4mzyGmvMWW
- BMxOQGhy8rHjo80/YuB31SbqDjpsg02J9pcP32KFbAgNrWevoRN9rqt27iMQN6FISPNGDSEbv9XLL
- Y7EiwHpX7JToyc7htoZkhmc4c9ocs0IkdfQE8/QlovxRfRBQI/+UyEc80MPYKh56rDXdyym1FyPFV
- 5dPVHAkgJbgpvSDZEcRsFvEVY/2/nRaD8mFkppzeqL70AuNTHqZSLOHgFpDtuEbjC38mPtFCR9dGT
- cZfrSISA==;
+ bh=93/+ko3Du/V64K+y2AaxEF8szX3mmmGeAKtqr4Af7n4=; b=R1nk6Id6AuYtIvOixwysSYYVYv
+ g2Rrk60htrPfir2WYJFC1xWJ8kvN38zfbjvdWoIopyGaW3UyghRTi9EzVNPxrrCcy9GA3tIBG+QZD
+ 0LNXUW6ojAEyTjbjVMr8BZcA2B8JG5WQsnUj0aEs/JL+VhIVmNbzGGU9xmxcz9MeXUCwF8HgUlHQS
+ /+kqiBoR3I5ZG5XWusc9Bif/aS/mr7RnkiLP4wgBf5QX4eVSdpSpT2XyN1bW6rfat3lV/v8NwZCLn
+ /KwkHL8QEbZEZBSnQ+Xe7iFshVP4DbSHe+hl1c9r5Iy0JC2SaFZCr9Njcu2gJMAyeQW8RqbtXjSq7
+ qMRTVd6w==;
 Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1i2F0X-0007v0-9r; Mon, 26 Aug 2019 13:26:06 +0000
+ id 1i2F0a-0007wK-Gk; Mon, 26 Aug 2019 13:26:09 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 3/6] dma-mapping: remove arch_dma_mmap_pgprot
-Date: Mon, 26 Aug 2019 15:25:50 +0200
-Message-Id: <20190826132553.4116-4-hch@lst.de>
+Subject: [PATCH 4/6] dma-mapping: make dma_atomic_pool_init self-contained
+Date: Mon, 26 Aug 2019 15:25:51 +0200
+Message-Id: <20190826132553.4116-5-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190826132553.4116-1-hch@lst.de>
 References: <20190826132553.4116-1-hch@lst.de>
@@ -75,263 +75,145 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch_dma_mmap_pgprot is used for two things:
-
- 1) to override the "normal" uncached page attributes for mapping
-    memory coherent to devices that can't snoop the CPU caches
- 2) to provide the special DMA_ATTR_WRITE_COMBINE semantics on older
-    arm systems and some mips platforms
-
-Replace one with the pgprot_dmacoherent macro that is already provided
-by arm and much simpler to use, and lift the DMA_ATTR_WRITE_COMBINE
-handling to common code with an explicit arch opt-in.
+The memory allocated for the atomic pool needs to have the same
+mapping attributes that we use for remapping, so use
+pgprot_dmacoherent instead of open coding it.  Also deduct a
+suitable zone to allocate the memory from based on the presence
+of the DMA zones.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- arch/arm/Kconfig                   |  2 +-
- arch/arm/mm/dma-mapping.c          |  6 ------
- arch/arm64/Kconfig                 |  1 -
- arch/arm64/include/asm/pgtable.h   |  4 ++++
- arch/arm64/mm/dma-mapping.c        |  6 ------
- arch/m68k/Kconfig                  |  1 -
- arch/m68k/include/asm/pgtable_mm.h |  3 +++
- arch/m68k/kernel/dma.c             |  3 +--
- arch/mips/Kconfig                  |  2 +-
- arch/mips/mm/dma-noncoherent.c     |  8 --------
- include/linux/dma-noncoherent.h    | 13 +++++++++++--
- kernel/dma/Kconfig                 | 12 +++++++++---
- kernel/dma/mapping.c               |  8 +++++---
- 13 files changed, 35 insertions(+), 34 deletions(-)
+ arch/arc/mm/dma.c           |  6 ------
+ arch/arm64/mm/dma-mapping.c |  6 ------
+ arch/csky/mm/dma-mapping.c  |  6 ------
+ arch/nds32/kernel/dma.c     |  6 ------
+ include/linux/dma-mapping.h |  1 -
+ kernel/dma/remap.c          | 17 ++++++++++++++---
+ 6 files changed, 14 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 24360211534a..217083caeabd 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -8,7 +8,7 @@ config ARM
- 	select ARCH_HAS_DEBUG_VIRTUAL if MMU
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_DMA_COHERENT_TO_PFN if SWIOTLB
--	select ARCH_HAS_DMA_MMAP_PGPROT if SWIOTLB
-+	select ARCH_HAS_DMA_WRITE_COMBINE if !ARM_DMA_MEM_BUFFERABLE
- 	select ARCH_HAS_ELF_RANDOMIZE
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_KEEPINITRD
-diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-index d42557ee69c2..d27b12f61737 100644
---- a/arch/arm/mm/dma-mapping.c
-+++ b/arch/arm/mm/dma-mapping.c
-@@ -2402,12 +2402,6 @@ long arch_dma_coherent_to_pfn(struct device *dev, void *cpu_addr,
- 	return dma_to_pfn(dev, dma_addr);
+diff --git a/arch/arc/mm/dma.c b/arch/arc/mm/dma.c
+index 62c210e7ee4c..ff4a5752f8cc 100644
+--- a/arch/arc/mm/dma.c
++++ b/arch/arc/mm/dma.c
+@@ -104,9 +104,3 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+ 	dev_info(dev, "use %sncoherent DMA ops\n",
+ 		 dev->dma_coherent ? "" : "non");
  }
- 
--pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
--		unsigned long attrs)
--{
--	return __get_dma_pgprot(attrs, prot);
--}
 -
- void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 		gfp_t gfp, unsigned long attrs)
- {
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 3adcec05b1f6..dab9dda34206 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -13,7 +13,6 @@ config ARM64
- 	select ARCH_HAS_DEBUG_VIRTUAL
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_DMA_COHERENT_TO_PFN
--	select ARCH_HAS_DMA_MMAP_PGPROT
- 	select ARCH_HAS_DMA_PREP_COHERENT
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE if ACPI
- 	select ARCH_HAS_ELF_RANDOMIZE
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index e09760ece844..6700371227d1 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -435,6 +435,10 @@ static inline pmd_t pmd_mkdevmap(pmd_t pmd)
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
- #define pgprot_device(prot) \
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRE) | PTE_PXN | PTE_UXN)
-+#define pgprot_dmacoherent(prot) \
-+	__pgprot_modify(prot, PTE_ATTRINDX_MASK, \
-+			PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
-+
- #define __HAVE_PHYS_MEM_ACCESS_PROT
- struct file;
- extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+-static int __init atomic_pool_init(void)
+-{
+-	return dma_atomic_pool_init(GFP_KERNEL, pgprot_noncached(PAGE_KERNEL));
+-}
+-postcore_initcall(atomic_pool_init);
 diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-index bd2b039f43a6..676efcda51e6 100644
+index 676efcda51e6..a1d05f669f67 100644
 --- a/arch/arm64/mm/dma-mapping.c
 +++ b/arch/arm64/mm/dma-mapping.c
-@@ -11,12 +11,6 @@
+@@ -28,12 +28,6 @@ void arch_dma_prep_coherent(struct page *page, size_t size)
+ 	__dma_flush_area(page_address(page), size);
+ }
  
- #include <asm/cacheflush.h>
- 
--pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
--		unsigned long attrs)
+-static int __init arm64_dma_init(void)
 -{
--	return pgprot_writecombine(prot);
+-	return dma_atomic_pool_init(GFP_DMA32, __pgprot(PROT_NORMAL_NC));
 -}
+-arch_initcall(arm64_dma_init);
 -
- void arch_sync_dma_for_device(struct device *dev, phys_addr_t paddr,
- 		size_t size, enum dma_data_direction dir)
+ #ifdef CONFIG_IOMMU_DMA
+ void arch_teardown_dma_ops(struct device *dev)
  {
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index c518d695c376..a9e564306d3e 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -4,7 +4,6 @@ config M68K
- 	default y
- 	select ARCH_32BIT_OFF_T
- 	select ARCH_HAS_BINFMT_FLAT
--	select ARCH_HAS_DMA_MMAP_PGPROT if MMU && !COLDFIRE
- 	select ARCH_HAS_DMA_PREP_COHERENT if HAS_DMA && MMU && !COLDFIRE
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
- 	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
-diff --git a/arch/m68k/include/asm/pgtable_mm.h b/arch/m68k/include/asm/pgtable_mm.h
-index fe3ddd73a0cc..fde4534b974f 100644
---- a/arch/m68k/include/asm/pgtable_mm.h
-+++ b/arch/m68k/include/asm/pgtable_mm.h
-@@ -169,6 +169,9 @@ static inline void update_mmu_cache(struct vm_area_struct *vma,
- 	    ? (__pgprot((pgprot_val(prot) & _CACHEMASK040) | _PAGE_NOCACHE_S))	\
- 	    : (prot)))
+diff --git a/arch/csky/mm/dma-mapping.c b/arch/csky/mm/dma-mapping.c
+index 80783bb71c5c..602a60d47a94 100644
+--- a/arch/csky/mm/dma-mapping.c
++++ b/arch/csky/mm/dma-mapping.c
+@@ -14,12 +14,6 @@
+ #include <linux/version.h>
+ #include <asm/cache.h>
  
-+pgprot_t pgprot_dmacoherent(pgprot_t prot);
-+#define pgprot_dmacoherent(prot)	pgprot_dmacoherent(prot)
-+
- #endif /* CONFIG_COLDFIRE */
- #include <asm-generic/pgtable.h>
- #endif /* !__ASSEMBLY__ */
-diff --git a/arch/m68k/kernel/dma.c b/arch/m68k/kernel/dma.c
-index 30cd59caf037..35064150e348 100644
---- a/arch/m68k/kernel/dma.c
-+++ b/arch/m68k/kernel/dma.c
-@@ -23,8 +23,7 @@ void arch_dma_prep_coherent(struct page *page, size_t size)
- 	cache_push(page_to_phys(page), size);
- }
- 
--pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
--		unsigned long attrs)
-+pgprot_t pgprot_dmacoherent(pgprot_t prot)
- {
- 	if (CPU_IS_040_OR_060) {
- 		pgprot_val(prot) &= ~_PAGE_CACHE040;
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index d50fafd7bf3a..fc88f68ea1ee 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1119,7 +1119,7 @@ config DMA_PERDEV_COHERENT
- 
- config DMA_NONCOHERENT
- 	bool
--	select ARCH_HAS_DMA_MMAP_PGPROT
-+	select ARCH_HAS_DMA_WRITE_COMBINE
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select ARCH_HAS_UNCACHED_SEGMENT
- 	select NEED_DMA_MAP_STATE
-diff --git a/arch/mips/mm/dma-noncoherent.c b/arch/mips/mm/dma-noncoherent.c
-index ed56c6fa7be2..1d4d57dd9acf 100644
---- a/arch/mips/mm/dma-noncoherent.c
-+++ b/arch/mips/mm/dma-noncoherent.c
-@@ -65,14 +65,6 @@ long arch_dma_coherent_to_pfn(struct device *dev, void *cpu_addr,
- 	return page_to_pfn(virt_to_page(cached_kernel_address(cpu_addr)));
- }
- 
--pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
--		unsigned long attrs)
+-static int __init atomic_pool_init(void)
 -{
--	if (attrs & DMA_ATTR_WRITE_COMBINE)
--		return pgprot_writecombine(prot);
--	return pgprot_noncached(prot);
+-	return dma_atomic_pool_init(GFP_KERNEL, pgprot_noncached(PAGE_KERNEL));
 -}
+-postcore_initcall(atomic_pool_init);
 -
- static inline void dma_sync_virt(void *addr, size_t size,
- 		enum dma_data_direction dir)
+ void arch_dma_prep_coherent(struct page *page, size_t size)
  {
-diff --git a/include/linux/dma-noncoherent.h b/include/linux/dma-noncoherent.h
-index 0bff3d7fac92..dd3de6d88fc0 100644
---- a/include/linux/dma-noncoherent.h
-+++ b/include/linux/dma-noncoherent.h
-@@ -3,6 +3,7 @@
- #define _LINUX_DMA_NONCOHERENT_H 1
- 
- #include <linux/dma-mapping.h>
-+#include <asm/pgtable.h>
- 
- #ifdef CONFIG_ARCH_HAS_DMA_COHERENCE_H
- #include <asm/dma-coherence.h>
-@@ -42,10 +43,18 @@ void arch_dma_free(struct device *dev, size_t size, void *cpu_addr,
- 		dma_addr_t dma_addr, unsigned long attrs);
- long arch_dma_coherent_to_pfn(struct device *dev, void *cpu_addr,
- 		dma_addr_t dma_addr);
--pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
--		unsigned long attrs);
- 
- #ifdef CONFIG_MMU
-+/*
-+ * Page protection so that devices that can't snoop CPU caches can use the
-+ * memory coherently.  We default to pgprot_noncached which is usually used
-+ * for ioremap as a safe bet, but architectures can override this with less
-+ * strict semantics if possible.
-+ */
-+#ifndef pgprot_dmacoherent
-+#define pgprot_dmacoherent(prot)	pgprot_noncached(prot)
-+#endif
-+
- pgprot_t dma_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs);
- #else
- static inline pgprot_t dma_pgprot(struct device *dev, pgprot_t prot,
-diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
-index 9decbba255fc..73c5c2b8e824 100644
---- a/kernel/dma/Kconfig
-+++ b/kernel/dma/Kconfig
-@@ -20,6 +20,15 @@ config ARCH_HAS_DMA_COHERENCE_H
- config ARCH_HAS_DMA_SET_MASK
- 	bool
- 
-+#
-+# Select this option if the architecture needs special handling for
-+# DMA_ATTR_WRITE_COMBINE.  Normally the "uncached" mapping should be what
-+# people thing of when saying write combine, so very few platforms should
-+# need to enable this.
-+#
-+config ARCH_HAS_DMA_WRITE_COMBINE
-+	bool
-+
- config DMA_DECLARE_COHERENT
- 	bool
- 
-@@ -45,9 +54,6 @@ config ARCH_HAS_DMA_PREP_COHERENT
- config ARCH_HAS_DMA_COHERENT_TO_PFN
- 	bool
- 
--config ARCH_HAS_DMA_MMAP_PGPROT
--	bool
--
- config ARCH_HAS_FORCE_DMA_UNENCRYPTED
- 	bool
- 
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index b0038ca3aa92..1b96616c9f20 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -161,9 +161,11 @@ pgprot_t dma_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs)
- 	    (IS_ENABLED(CONFIG_DMA_NONCOHERENT_CACHE_SYNC) &&
-              (attrs & DMA_ATTR_NON_CONSISTENT)))
- 		return prot;
--	if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_MMAP_PGPROT))
--		return arch_dma_mmap_pgprot(dev, prot, attrs);
--	return pgprot_noncached(prot);
-+#ifdef CONFIG_ARCH_HAS_DMA_WRITE_COMBINE
-+	if (attrs & DMA_ATTR_WRITE_COMBINE)
-+		return pgprot_writecombine(prot);
-+#endif
-+	return pgprot_dmacoherent(prot);
+ 	if (PageHighMem(page)) {
+diff --git a/arch/nds32/kernel/dma.c b/arch/nds32/kernel/dma.c
+index 490e3720d694..4206d4b6c8ce 100644
+--- a/arch/nds32/kernel/dma.c
++++ b/arch/nds32/kernel/dma.c
+@@ -80,9 +80,3 @@ void arch_dma_prep_coherent(struct page *page, size_t size)
+ {
+ 	cache_op(page_to_phys(page), size, cpu_dma_wbinval_range);
  }
- #endif /* CONFIG_MMU */
+-
+-static int __init atomic_pool_init(void)
+-{
+-	return dma_atomic_pool_init(GFP_KERNEL, pgprot_noncached(PAGE_KERNEL));
+-}
+-postcore_initcall(atomic_pool_init);
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index f7d1eea32c78..48ebe8295987 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -624,7 +624,6 @@ void *dma_common_pages_remap(struct page **pages, size_t size,
+ 			const void *caller);
+ void dma_common_free_remap(void *cpu_addr, size_t size, unsigned long vm_flags);
  
+-int __init dma_atomic_pool_init(gfp_t gfp, pgprot_t prot);
+ bool dma_in_atomic_pool(void *start, size_t size);
+ void *dma_alloc_from_pool(size_t size, struct page **ret_page, gfp_t flags);
+ bool dma_free_from_pool(void *start, size_t size);
+diff --git a/kernel/dma/remap.c b/kernel/dma/remap.c
+index ffe78f0b2fe4..838123f79639 100644
+--- a/kernel/dma/remap.c
++++ b/kernel/dma/remap.c
+@@ -105,7 +105,16 @@ static int __init early_coherent_pool(char *p)
+ }
+ early_param("coherent_pool", early_coherent_pool);
+ 
+-int __init dma_atomic_pool_init(gfp_t gfp, pgprot_t prot)
++static gfp_t dma_atomic_pool_gfp(void)
++{
++	if (IS_ENABLED(CONFIG_ZONE_DMA))
++		return GFP_DMA;
++	if (IS_ENABLED(CONFIG_ZONE_DMA32))
++		return GFP_DMA32;
++	return GFP_KERNEL;
++}
++
++static int __init dma_atomic_pool_init(void)
+ {
+ 	unsigned int pool_size_order = get_order(atomic_pool_size);
+ 	unsigned long nr_pages = atomic_pool_size >> PAGE_SHIFT;
+@@ -117,7 +126,7 @@ int __init dma_atomic_pool_init(gfp_t gfp, pgprot_t prot)
+ 		page = dma_alloc_from_contiguous(NULL, nr_pages,
+ 						 pool_size_order, false);
+ 	else
+-		page = alloc_pages(gfp, pool_size_order);
++		page = alloc_pages(dma_atomic_pool_gfp(), pool_size_order);
+ 	if (!page)
+ 		goto out;
+ 
+@@ -128,7 +137,8 @@ int __init dma_atomic_pool_init(gfp_t gfp, pgprot_t prot)
+ 		goto free_page;
+ 
+ 	addr = dma_common_contiguous_remap(page, atomic_pool_size, VM_USERMAP,
+-					   prot, __builtin_return_address(0));
++					   pgprot_dmacoherent(PAGE_KERNEL),
++					   __builtin_return_address(0));
+ 	if (!addr)
+ 		goto destroy_genpool;
+ 
+@@ -155,6 +165,7 @@ int __init dma_atomic_pool_init(gfp_t gfp, pgprot_t prot)
+ 		atomic_pool_size / 1024);
+ 	return -ENOMEM;
+ }
++postcore_initcall(dma_atomic_pool_init);
+ 
+ bool dma_in_atomic_pool(void *start, size_t size)
+ {
 -- 
 2.20.1
 
