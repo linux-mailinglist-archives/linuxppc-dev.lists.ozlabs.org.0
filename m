@@ -2,61 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BE39CAD8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 09:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAA99CAEA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 09:46:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46H3tR0R46zDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 17:44:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46H3x85c1RzDqNp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 17:46:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
  envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="bdX927/h"; dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46H3rJ74R7zDqKV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 17:42:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46H3v43GlBzDqKV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 17:45:03 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lIut4B8w/K6qaNO5//JKDXgxZBzz15ddgNf2zVVfQ1E=; b=f6XJLfxeBVv9Hyb0B1vtj9oxL
- i8iw5LMMkKhG+T6Xu47kb2+iCLpMrKBQjXS1NBw74AP7B3pgxUBsbndSWQGizhRtNCAgW99j5+OeI
- c+T+1uJAk4oCoRSmOm0NE/wm6iL8VH+qSfESDzvXkGeSKy+GyCJWsD5r3LnItvz8EK4g8tAXBgRgi
- JMSMaRtxN+OddwD4UaHD/oWS7Za8/f15E/5LTf3nBtMiL8X2OQpSYRhvIozCuZOKt/2bBeTu5XD5k
- MSr7q1wHFvaw9hwCCzoDKZY0xDJWDWNsCSapSfqxfwjWoZuh5bxf2qBIOtw+RF3Jx2EN1us7T239k
- nCed49xqA==;
+ bh=FqJ6xvyn0LHQ16MKsazT2HhX3KxiVzyDvsY2B23Ctso=; b=bdX927/h7yS5b1qg30jd4ATTN
+ X998dcLFf2XLF3GhMdnEPUlpSbM/iRxAGrhpx+yvAcP6BXLmbwDijPz2wcP/JwkDHBUjSbZxoDB+3
+ YQ57G9VNts3H7N7la3on6VnVzaxdmSveaKRWl58IAtaq38KY9/FnISbhc9828VnPKrpWSuveuwCsf
+ LLkKN5ECiFgMtCQvCGf3g2FcMbmezoDuCh0pBTcRFNTS/Q3Cy+gP7YmApuR0lGoAMiLT59cXHHtB4
+ IueRhEqDIVavy7Y4upqvIZAVIkf6Nx08E5ArJ5fpMQa79c0XUnLbHIWxJnMajZebul2t7vd6teTi+
+ wxeuxTAhA==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100]
  helo=noisy.programming.kicks-ass.net)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1i29dr-0004v1-6h; Mon, 26 Aug 2019 07:42:19 +0000
+ by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1i29g9-00028n-7H; Mon, 26 Aug 2019 07:44:41 +0000
 Received: from hirez.programming.kicks-ass.net
  (hirez.programming.kicks-ass.net [192.168.1.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3BB083075FE;
- Mon, 26 Aug 2019 09:41:42 +0200 (CEST)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4A7803070F4;
+ Mon, 26 Aug 2019 09:44:04 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 9740120B33552; Mon, 26 Aug 2019 09:42:15 +0200 (CEST)
-Date: Mon, 26 Aug 2019 09:42:15 +0200
+ id A84BA20B33552; Mon, 26 Aug 2019 09:44:37 +0200 (CEST)
+Date: Mon, 26 Aug 2019 09:44:37 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Changbin Du <changbin.du@gmail.com>
-Subject: Re: [PATCH 03/11] asm-generic: add generic dwarf definition
-Message-ID: <20190826074215.GL2369@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH 05/11] ftrace: create memcache for hash entries
+Message-ID: <20190826074437.GM2369@hirez.programming.kicks-ass.net>
 References: <20190825132330.5015-1-changbin.du@gmail.com>
- <20190825132330.5015-4-changbin.du@gmail.com>
+ <20190825132330.5015-6-changbin.du@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190825132330.5015-4-changbin.du@gmail.com>
+In-Reply-To: <20190825132330.5015-6-changbin.du@gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,35 +85,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 25, 2019 at 09:23:22PM +0800, Changbin Du wrote:
-> Add generic DWARF constant definitions. We will use it later.
+On Sun, Aug 25, 2019 at 09:23:24PM +0800, Changbin Du wrote:
+> When CONFIG_FTRACE_FUNC_PROTOTYPE is enabled, thousands of
+> ftrace_func_entry instances are created. So create a dedicated
+> memcache to enhance performance.
 > 
 > Signed-off-by: Changbin Du <changbin.du@gmail.com>
 > ---
->  include/asm-generic/dwarf.h | 199 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 199 insertions(+)
->  create mode 100644 include/asm-generic/dwarf.h
+>  kernel/trace/ftrace.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/asm-generic/dwarf.h b/include/asm-generic/dwarf.h
-> new file mode 100644
-> index 000000000000..c705633c2a8f
-> --- /dev/null
-> +++ b/include/asm-generic/dwarf.h
-> @@ -0,0 +1,199 @@
-> +/* SPDX-License-Identifier: GPL-2.0
-> + *
-> + * Architecture independent definitions of DWARF.
-> + *
-> + * Copyright (C) 2019 Changbin Du <changbin.du@gmail.com>
+> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> index a314f0768b2c..cfcb8dad93ea 100644
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -94,6 +94,8 @@ struct ftrace_ops *function_trace_op __read_mostly = &ftrace_list_end;
+>  /* What to set function_trace_op to */
+>  static struct ftrace_ops *set_function_trace_op;
+>  
+> +struct kmem_cache *hash_entry_cache;
+> +
+>  static bool ftrace_pids_enabled(struct ftrace_ops *ops)
+>  {
+>  	struct trace_array *tr;
+> @@ -1169,7 +1171,7 @@ static int add_hash_entry(struct ftrace_hash *hash, unsigned long ip,
+>  {
+>  	struct ftrace_func_entry *entry;
+>  
+> -	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
+> +	entry = kmem_cache_alloc(hash_entry_cache, GFP_KERNEL);
+>  	if (!entry)
+>  		return -ENOMEM;
+>  
+> @@ -6153,6 +6155,15 @@ void __init ftrace_init(void)
+>  	if (ret)
+>  		goto failed;
+>  
+> +	hash_entry_cache = kmem_cache_create("ftrace-hash",
+> +					     sizeof(struct ftrace_func_entry),
+> +					     sizeof(struct ftrace_func_entry),
+> +					     0, NULL);
+> +	if (!hash_entry_cache) {
+> +		pr_err("failed to create ftrace hash entry cache\n");
+> +		goto failed;
+> +	}
 
-You're claiming copyright on dwarf definitions? ;-)
+Wait what; you already have then in the binary image, now you're
+allocating extra memory for each of them?
 
-I'm thinking only Oracle was daft enough to think stuff like that was
-copyrightable.
-
-Also; I think it would be very good to not use/depend on DWARF for this.
-
-You really don't need all of DWARF; I'm thikning you only need a few
-types; for location we already have regs_get_kernel_argument() which
-has all the logic to find the n-th argument.
-
+Did you look at what ORC does? Is the binary search really not fast
+enough?
