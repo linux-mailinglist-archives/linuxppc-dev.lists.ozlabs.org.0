@@ -1,46 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E8A9C752
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 04:38:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4096E9C7E7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 05:23:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Gx5m3MTjzDqdn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 12:38:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Gy4n4Bc8zDqfq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 13:23:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46Gx431rGmzDqbF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 12:37:21 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19249344;
- Sun, 25 Aug 2019 19:37:20 -0700 (PDT)
-Received: from [10.162.43.136] (p8cg001049571a15.blr.arm.com [10.162.43.136])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- E19513F718; Sun, 25 Aug 2019 19:37:09 -0700 (PDT)
-Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
- table helpers
-To: Matthew Wilcox <willy@infradead.org>
-References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
- <20190809101632.GM5482@bombadil.infradead.org>
- <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
- <20190809135202.GN5482@bombadil.infradead.org>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
-Date: Mon, 26 Aug 2019 08:07:13 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Gy2s4dmxzDqc1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 13:21:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 46Gy2r3xn6z9sMr; Mon, 26 Aug 2019 13:21:24 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46Gy2q45Bxz9sDB;
+ Mon, 26 Aug 2019 13:21:23 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v2] powerpc/powernv: Add ultravisor message log interface
+In-Reply-To: <4e577a36-4ce1-410b-3ceb-d31bbf564b3d@linux.ibm.com>
+References: <20190823060654.28842-1-cclaudio@linux.ibm.com>
+ <87o90g3v5o.fsf@concordia.ellerman.id.au>
+ <4e577a36-4ce1-410b-3ceb-d31bbf564b3d@linux.ibm.com>
+Date: Mon, 26 Aug 2019 13:21:20 +1000
+Message-ID: <87lfvg4nnz.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20190809135202.GN5482@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,62 +48,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Steven Price <Steven.Price@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ kvm-ppc@vger.kernel.org, Ryan Grimm <grimm@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 08/09/2019 07:22 PM, Matthew Wilcox wrote:
-> On Fri, Aug 09, 2019 at 04:05:07PM +0530, Anshuman Khandual wrote:
->> On 08/09/2019 03:46 PM, Matthew Wilcox wrote:
->>> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
->>>> Should alloc_gigantic_page() be made available as an interface for general
->>>> use in the kernel. The test module here uses very similar implementation from
->>>> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
->>>> needs to be exported through a header.
+Claudio Carvalho <cclaudio@linux.ibm.com> writes:
+> On 8/23/19 9:48 AM, Michael Ellerman wrote:
+>> Claudio Carvalho <cclaudio@linux.ibm.com> writes:
+>>> Ultravisor (UV) provides an in-memory console which follows the OPAL
+>>> in-memory console structure.
 >>>
->>> Why are you allocating memory at all instead of just using some
->>> known-to-exist PFNs like I suggested?
+>>> This patch extends the OPAL msglog code to also initialize the UV memory
+>>> console and provide a sysfs interface (uv_msglog) for userspace to view
+>>> the UV message log.
+>>>
+>>> CC: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+>>> CC: Oliver O'Halloran <oohall@gmail.com>
+>>> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+>>> ---
+>>> This patch depends on the "kvmppc: Paravirtualize KVM to support
+>>> ultravisor" patchset submitted by Claudio Carvalho.
+>>> ---
+>>>  arch/powerpc/platforms/powernv/opal-msglog.c | 99 ++++++++++++++------
+>>>  1 file changed, 72 insertions(+), 27 deletions(-)
+>> I think the code changes look mostly OK here.
 >>
->> We needed PFN to be PUD aligned for pfn_pud() and PMD aligned for mk_pmd().
->> Now walking the kernel page table for a known symbol like kernel_init()
-> 
-> I didn't say to walk the kernel page table.  I said to call virt_to_pfn()
-> for a known symbol like kernel_init().
-> 
->> as you had suggested earlier we might encounter page table page entries at PMD
->> and PUD which might not be PMD or PUD aligned respectively. It seemed to me
->> that alignment requirement is applicable only for mk_pmd() and pfn_pud()
->> which create large mappings at those levels but that requirement does not
->> exist for page table pages pointing to next level. Is not that correct ? Or
->> I am missing something here ?
-> 
-> Just clear the bottom bits off the PFN until you get a PMD or PUD aligned
-> PFN.  It's really not hard.
+>> But I'm not sure about the end result in sysfs.
+>>
+>> If I'm reading it right this will create:
+>>
+>>  /sys/firmware/opal/uv_msglog
+>>
+>> Which I think is a little weird, because the UV is not OPAL.
+>>
+>> So I guess I wonder if the file should be created elsewhere to avoid any
+>> confusion and keep things nicely separated.
+>>
+>> Possibly /sys/firmware/ultravisor/msglog ?
+>
+>
+> Yes, makes sense. I will do that.
 
-As Mark pointed out earlier that might end up being just a synthetic PFN
-which might not even exist on a given system.
+Thanks.
+
+> Currently, the ultravisor memory console DT property is in
+> /ibm,opal/ibm,opal-uv-memcons. I think we should move it to
+> /ibm,ultravisor/ibm,uv-firmware/ibm,uv-memcons. What do you think?
+
+Yes that looks better.
+
+As an aside, you don't really need to namespace every node and property
+under ibm,ultravisor, the top-level ibm,ultravisor is already a
+namespace of sorts.
+
+ie. it could just be: /ibm,ultravisor/firmware/memcons
+
+But if it's too late to change those paths it doesn't really matter.
+
+cheers
