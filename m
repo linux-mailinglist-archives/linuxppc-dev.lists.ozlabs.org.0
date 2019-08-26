@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D7E9D1B5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 16:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A90869D1C2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 16:37:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HDyR3BKzzDq77
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:33:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HF2s4RgVzDqWb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:37:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HCS75XMYzDqQv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:25:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HCTt0t6gzDqTW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:27:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46HCS665Zjz8swb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:25:42 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46HCTs1ybLz8svw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 23:27:13 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46HCS62Dgpz9sP6; Mon, 26 Aug 2019 23:25:42 +1000 (AEST)
+ id 46HCTq6MqSz9sP7; Mon, 26 Aug 2019 23:27:11 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
@@ -33,62 +33,63 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46HCS53sXLz9sNy;
- Mon, 26 Aug 2019 23:25:41 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7QDLsM5121543; Mon, 26 Aug 2019 09:25:31 -0400
+ by ozlabs.org (Postfix) with ESMTPS id 46HCTn2w7Xz9sNf;
+ Mon, 26 Aug 2019 23:27:09 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7QDLqPA061470; Mon, 26 Aug 2019 09:26:58 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2umemwm55t-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2umfqpsm55-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Aug 2019 09:25:31 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7QDMWPZ124369;
- Mon, 26 Aug 2019 09:25:30 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2umemwm554-1
+ Mon, 26 Aug 2019 09:26:58 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7QDNKeT066203;
+ Mon, 26 Aug 2019 09:26:57 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2umfqpsm44-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Aug 2019 09:25:30 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7QDOWhK006749;
- Mon, 26 Aug 2019 13:25:29 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma05wdc.us.ibm.com with ESMTP id 2ujvv6w14m-1
+ Mon, 26 Aug 2019 09:26:57 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7QDOTGx025358;
+ Mon, 26 Aug 2019 13:26:56 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02wdc.us.ibm.com with ESMTP id 2ujvv6d0ja-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Aug 2019 13:25:29 +0000
+ Mon, 26 Aug 2019 13:26:56 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7QDPSUP57016662
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7QDQtNR29294876
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 26 Aug 2019 13:25:28 GMT
+ Mon, 26 Aug 2019 13:26:55 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0F87DC6065;
- Mon, 26 Aug 2019 13:25:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id EFB8DC6055;
+ Mon, 26 Aug 2019 13:26:54 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE507C6057;
- Mon, 26 Aug 2019 13:25:25 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 729E6C6057;
+ Mon, 26 Aug 2019 13:26:52 +0000 (GMT)
 Received: from swastik.ibm.com (unknown [9.85.199.141])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 26 Aug 2019 13:25:25 +0000 (GMT)
+ Mon, 26 Aug 2019 13:26:52 +0000 (GMT)
 From: Nayna <nayna@linux.vnet.ibm.com>
 Subject: Re: [PATCH v2 2/4] powerpc: expose secure variables to userspace via
  sysfs
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nayna Jain <nayna@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>, Nayna Jain <nayna@linux.ibm.com>, 
+ linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+ linux-integrity@vger.kernel.org
 References: <1566400103-18201-1-git-send-email-nayna@linux.ibm.com>
  <1566400103-18201-3-git-send-email-nayna@linux.ibm.com>
- <20190821163018.GA28571@kroah.com>
-Message-ID: <c12fdf7c-a717-60f2-5d64-8e77db7fd4e6@linux.vnet.ibm.com>
-Date: Mon, 26 Aug 2019 09:25:25 -0400
+ <23135466fc524a13cd76532ec59f84de51152a1c.camel@gmail.com>
+Message-ID: <feb76649-a233-7e7e-2005-53049dfda06b@linux.vnet.ibm.com>
+Date: Mon, 26 Aug 2019 09:26:51 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20190821163018.GA28571@kroah.com>
+In-Reply-To: <23135466fc524a13cd76532ec59f84de51152a1c.camel@gmail.com>
 Content-Type: multipart/alternative;
- boundary="------------EBEEC4AFFD0EEB170C618A67"
+ boundary="------------5CC9181B5501ADD5352FD98D"
 Content-Language: en-US
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
@@ -96,10 +97,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1908260145
-X-Mailman-Approved-At: Tue, 27 Aug 2019 00:29:33 +1000
+X-Mailman-Approved-At: Tue, 27 Aug 2019 00:29:34 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,26 +112,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
  Eric Ricther <erichte@linux.ibm.com>, linux-kernel@vger.kernel.org,
  Mimi Zohar <zohar@linux.ibm.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- linux-integrity@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>
+ Elaine Palmer <erpalmer@us.ibm.com>, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This is a multi-part message in MIME format.
---------------EBEEC4AFFD0EEB170C618A67
+--------------5CC9181B5501ADD5352FD98D
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
-> On Wed, Aug 21, 2019 at 11:08:21AM -0400, Nayna Jain wrote:
+On 08/22/2019 01:18 AM, Oliver O'Halloran wrote:
+> On Wed, 2019-08-21 at 11:08 -0400, Nayna Jain wrote:
+>> PowerNV secure variables, which store the keys used for OS kernel
+>> verification, are managed by the firmware. These secure variables need to
+>> be accessed by the userspace for addition/deletion of the certificates.
+>>
+>> This patch adds the sysfs interface to expose secure variables for PowerNV
+>> secureboot. The users shall use this interface for manipulating
+>> the keys stored in the secure variables.
+>>
+>> Signed-off-by: Nayna Jain<nayna@linux.ibm.com>
+>> ---
+>>   Documentation/ABI/testing/sysfs-secvar |  27 ++++
+>>   arch/powerpc/Kconfig                   |   9 ++
+>>   arch/powerpc/kernel/Makefile           |   1 +
+>>   arch/powerpc/kernel/secvar-sysfs.c     | 210 +++++++++++++++++++++++++
+>>   4 files changed, 247 insertions(+)
+>>   create mode 100644 Documentation/ABI/testing/sysfs-secvar
+>>   create mode 100644 arch/powerpc/kernel/secvar-sysfs.c
+>>
+>> diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
+>> new file mode 100644
+>> index 000000000000..68f0e03d873d
 >> --- /dev/null
 >> +++ b/Documentation/ABI/testing/sysfs-secvar
 >> @@ -0,0 +1,27 @@
@@ -161,12 +183,6 @@ On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
 >> +				represents the size of the data
 >> +		update:		A write-only file that is used to submit the new
 >> +				value for the variable.
-> Can you break this out into one-entry-per-file like most other entries
-> are defined?  That makes it easier for tools to parse (specifically the
-> tool in the tree right now...)
->
->
->
 >> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
 >> index 42109682b727..b4bdf77837b2 100644
 >> --- a/arch/powerpc/Kconfig
@@ -178,15 +194,11 @@ On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
 >> +config SECVAR_SYSFS
 >> +        tristate "Enable sysfs interface for POWER secure variables"
 >> +        depends on PPC_SECURE_BOOT
-> No depends on SYSFS?
->
 >> +        help
 >> +          POWER secure variables are managed and controlled by firmware.
 >> +          These variables are exposed to userspace via sysfs to enable
 >> +          read/write operations on these variables. Say Y if you have
 >> +	  secure boot enabled and want to expose variables to userspace.
-> Mix of tabs and spaces :(
->
 >> +
 >>   endmenu
 >>   
@@ -200,8 +212,6 @@ On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
 >>   
 >>   obj-$(CONFIG_PPC_SECURE_BOOT)	+= secboot.o ima_arch.o secvar-ops.o
 >> +obj-$(CONFIG_SECVAR_SYSFS)     += secvar-sysfs.o
-> No tab?
->
 >>   
 >>   # Disable GCOV, KCOV & sanitizers in odd or sensitive code
 >>   GCOV_PROFILE_prom_init.o := n
@@ -226,23 +236,32 @@ On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
 >> +#include <asm/secvar.h>
 >> +
 >> +//Approximating it for now, it is bound to change.
-> " " before "A" here please.
->
 >> +#define VARIABLE_MAX_SIZE  32000
+> this needs to be communicated from the secvar backend, maybe via a
+> field in the ops structure?
+
+Thanks Oliver, I have just posted v3 version which includes yours and 
+Greg's feedbacks.
+And giving some of the responses here.
+Yes for this one,  thinking of doing it via device-tree as they will be 
+fixed values for a particular platform
+
 >> +
 >> +static struct kobject *powerpc_kobj;
+> Call it secvar_kobj or something.
+>
 >> +static struct secvar_operations *secvarops;
+> Ah, the old I-can't-believe-it's-not-global trick.
+>
 >> +struct kset *secvar_kset;
+> shouldn't that be static too?
+>
 >> +
 >> +static ssize_t name_show(struct kobject *kobj, struct kobj_attribute *attr,
 >> +			 char *buf)
 >> +{
 >> +	return sprintf(buf, "%s", kobj->name);
 >> +}
-> Why do you need this entry as it is the directory name?  Userspace
-> already "knows" it if they can open this file.
->
->
 >> +
 >> +static ssize_t size_show(struct kobject *kobj, struct kobj_attribute *attr,
 >> +			 char *buf)
@@ -315,21 +334,21 @@ On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
 >> +
 >> +static struct kobj_attribute name_attr =
 >> +__ATTR(name, 0444, name_show, NULL);
-> __ATTR_RO()?
->
 >> +
 >> +static struct kobj_attribute size_attr =
 >> +__ATTR(size, 0444, size_show, NULL);
-> __ATTR_RO()?
->
 >> +
 >> +static struct bin_attribute data_attr = {
 >> +	.attr = {.name = "data", .mode = 0444},
 >> +	.size = VARIABLE_MAX_SIZE,
 >> +	.read = data_read,
 >> +};
-> __BIN_ATTR_RO()?
->
+> Should they be globally readable? If efivars is globally readable I'm
+> happy to follow that example, but mpe might have opinions.
+
+efivars are globally readable.
+
+
 >> +
 >> +
 >> +static struct bin_attribute update_attr = {
@@ -337,9 +356,6 @@ On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
 >> +	.size = VARIABLE_MAX_SIZE,
 >> +	.write = update_write,
 >> +};
-> __BIN_ATTR_RO()?
->
->
 >> +
 >> +static struct bin_attribute  *secvar_bin_attrs[] = {
 >> +	&data_attr,
@@ -357,103 +373,29 @@ On 08/21/2019 12:30 PM, Greg Kroah-Hartman wrote:
 >> +	.attrs = secvar_attrs,
 >> +	.bin_attrs = secvar_bin_attrs,
 >> +};
-> static?
->
 >> +
 >> +int secvar_sysfs_load(void)
 >> +{
 >> +
 >> +	char *name;
-> No blank line.  You didn't run this this through checkpatch, did you :(
->
->
 >> +	unsigned long namesize;
 >> +	struct kobject *kobj;
 >> +	int status;
 >> +	int rc = 0;
 >> +
 >> +	name = kzalloc(1024, GFP_KERNEL);
-> Why 1024?
->
 >> +	if (!name)
 >> +		return -ENOMEM;
->> +
->> +	do {
->> +
->> +		status = secvarops->get_next_variable(name, &namesize, 1024);
->> +		if (status != OPAL_SUCCESS)
->> +			break;
->> +
->> +		pr_info("name is %s\n", name);
-> Please delete debugging messages.
->
->> +		kobj = kobject_create_and_add(name, &(secvar_kset->kobj));
->> +		if (kobj) {
->> +			rc = sysfs_create_group(kobj, &secvar_attr_group);
-> You just raced userspace and lost :(
->
-> If you set your kobj_type to have the attribute group you will not race
-> and loose, the core will handle it for you.
->
->
->> +			if (rc)
->> +				pr_err("Error creating attributes for %s variable\n",
->> +				name);
->> +		} else {
->> +			pr_err("Error creating sysfs entry for %s variable\n",
->> +				name);
->> +			rc = -EINVAL;
->> +		}
->> +
->> +	} while ((status == OPAL_SUCCESS) && (rc == 0));
->> +
->> +	kfree(name);
->> +	return rc;
->> +}
->> +
->> +int secvar_sysfs_init(void)
->> +{
->> +	powerpc_kobj = kobject_create_and_add("secvar", firmware_kobj);
->> +	if (!powerpc_kobj) {
->> +		pr_err("secvar: Failed to create firmware kobj\n");
->> +		return -ENODEV;
->> +	}
->> +
->> +	secvar_kset = kset_create_and_add("vars", NULL, powerpc_kobj);
->> +	if (!secvar_kset) {
->> +		pr_err("secvar: sysfs kobject registration failed.\n");
-> You juat leaked a kobject :(
->
->> +		return -ENODEV;
->> +	}
->> +
->> +	secvarops = get_secvar_ops();
->> +	if (!secvarops) {
->> +		kobject_put(powerpc_kobj);
->> +		pr_err("secvar: failed to retrieve secvar operations.\n");
->> +		return -ENODEV;
-> You just leaked 2 things from above :(
->
->> +	}
->> +
->> +	secvar_sysfs_load();
->> +	pr_info("Secure variables sysfs initialized");
-> Do not be noisy when all goes just fine.  The kernel log should be quiet
-> when all goes well.
->
+> Where'd the 1024 restriction on the length of the variable name come
+> from? is that enforced by firmware? If so, how does firmware
+> communicate the limited key length?
 
-Thanks Greg for feedback. I just posted v3 version with the fixes 
-suggested by you and Oliver.
-
-Currently, the name length as 1024 is taken from examples of efivars. 
-Probably a smaller one is fine.
-In v3 version, it is still 1024 but made it #define.
-
-Thanks & Regards,
-       - Nayna
+It is not enforced by the firmware. Currently, it is sort of agreed upon 
+value between the firmware and the kernel, and taken from the examples 
+of efivars. Probably it can be reduced.
 
 
---------------EBEEC4AFFD0EEB170C618A67
+--------------5CC9181B5501ADD5352FD98D
 Content-Type: text/html; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
@@ -465,14 +407,36 @@ Content-Transfer-Encoding: 8bit
     <p><br>
     </p>
     <br>
-    <div class="moz-cite-prefix">On 08/21/2019 12:30 PM, Greg
-      Kroah-Hartman wrote:<br>
+    <div class="moz-cite-prefix">On 08/22/2019 01:18 AM, Oliver
+      O'Halloran wrote:<br>
     </div>
-    <blockquote type="cite" cite="mid:20190821163018.GA28571@kroah.com">
-      <pre wrap="">On Wed, Aug 21, 2019 at 11:08:21AM -0400, Nayna Jain wrote:
+    <blockquote type="cite"
+      cite="mid:23135466fc524a13cd76532ec59f84de51152a1c.camel@gmail.com">
+      <pre wrap="">On Wed, 2019-08-21 at 11:08 -0400, Nayna Jain wrote:
 </pre>
       <blockquote type="cite">
-        <pre wrap="">--- /dev/null
+        <pre wrap="">PowerNV secure variables, which store the keys used for OS kernel
+verification, are managed by the firmware. These secure variables need to
+be accessed by the userspace for addition/deletion of the certificates.
+
+This patch adds the sysfs interface to expose secure variables for PowerNV
+secureboot. The users shall use this interface for manipulating
+the keys stored in the secure variables.
+
+Signed-off-by: Nayna Jain <a class="moz-txt-link-rfc2396E" href="mailto:nayna@linux.ibm.com">&lt;nayna@linux.ibm.com&gt;</a>
+---
+ Documentation/ABI/testing/sysfs-secvar |  27 ++++
+ arch/powerpc/Kconfig                   |   9 ++
+ arch/powerpc/kernel/Makefile           |   1 +
+ arch/powerpc/kernel/secvar-sysfs.c     | 210 +++++++++++++++++++++++++
+ 4 files changed, 247 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-secvar
+ create mode 100644 arch/powerpc/kernel/secvar-sysfs.c
+
+diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
+new file mode 100644
+index 000000000000..68f0e03d873d
+--- /dev/null
 +++ b/Documentation/ABI/testing/sysfs-secvar
 @@ -0,0 +1,27 @@
 +What:		/sys/firmware/secvar
@@ -502,17 +466,7 @@ Content-Transfer-Encoding: 8bit
 +				represents the size of the data
 +		update:		A write-only file that is used to submit the new
 +				value for the variable.
-</pre>
-      </blockquote>
-      <pre wrap="">Can you break this out into one-entry-per-file like most other entries
-are defined?  That makes it easier for tools to parse (specifically the
-tool in the tree right now...)
-
-
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
 index 42109682b727..b4bdf77837b2 100644
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
@@ -523,24 +477,12 @@ index 42109682b727..b4bdf77837b2 100644
 +config SECVAR_SYSFS
 +        tristate "Enable sysfs interface for POWER secure variables"
 +        depends on PPC_SECURE_BOOT
-</pre>
-      </blockquote>
-      <pre wrap="">No depends on SYSFS?
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+        help
++        help
 +          POWER secure variables are managed and controlled by firmware.
 +          These variables are exposed to userspace via sysfs to enable
 +          read/write operations on these variables. Say Y if you have
 +	  secure boot enabled and want to expose variables to userspace.
-</pre>
-      </blockquote>
-      <pre wrap="">Mix of tabs and spaces :(
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+
++
  endmenu
  
  config ISA_DMA_API
@@ -553,13 +495,7 @@ index 9041563f1c74..4ea7b738c3a3 100644
  
  obj-$(CONFIG_PPC_SECURE_BOOT)	+= secboot.o ima_arch.o secvar-ops.o
 +obj-$(CONFIG_SECVAR_SYSFS)     += secvar-sysfs.o
-</pre>
-      </blockquote>
-      <pre wrap="">No tab?
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap=""> 
+ 
  # Disable GCOV, KCOV &amp; sanitizers in odd or sensitive code
  GCOV_PROFILE_prom_init.o := n
 diff --git a/arch/powerpc/kernel/secvar-sysfs.c b/arch/powerpc/kernel/secvar-sysfs.c
@@ -583,32 +519,52 @@ index 000000000000..e46986bb29a0
 +#include &lt;asm/secvar.h&gt;
 +
 +//Approximating it for now, it is bound to change.
++#define VARIABLE_MAX_SIZE  32000
 </pre>
       </blockquote>
-      <pre wrap="">" " before "A" here please.
+      <pre wrap="">this needs to be communicated from the secvar backend, maybe via a
+field in the ops structure?
+</pre>
+    </blockquote>
+    <br>
+    Thanks Oliver, I have just posted v3 version which includes yours
+    and Greg's feedbacks.<br>
+    And giving some of the responses here.<br>
+    Yes for this one,  thinking of doing it via device-tree as they will
+    be fixed values for a particular platform<br>
+    <br>
+    <blockquote type="cite"
+      cite="mid:23135466fc524a13cd76532ec59f84de51152a1c.camel@gmail.com">
+      <blockquote type="cite">
+        <pre wrap="">+
++static struct kobject *powerpc_kobj;
+</pre>
+      </blockquote>
+      <pre wrap="">Call it secvar_kobj or something.
 
 </pre>
       <blockquote type="cite">
-        <pre wrap="">+#define VARIABLE_MAX_SIZE  32000
-+
-+static struct kobject *powerpc_kobj;
-+static struct secvar_operations *secvarops;
-+struct kset *secvar_kset;
-+
+        <pre wrap="">+static struct secvar_operations *secvarops;
+</pre>
+      </blockquote>
+      <pre wrap="">Ah, the old I-can't-believe-it's-not-global trick.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">+struct kset *secvar_kset;
+</pre>
+      </blockquote>
+      <pre wrap="">shouldn't that be static too?
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">+
 +static ssize_t name_show(struct kobject *kobj, struct kobj_attribute *attr,
 +			 char *buf)
 +{
 +	return sprintf(buf, "%s", kobj-&gt;name);
 +}
-</pre>
-      </blockquote>
-      <pre wrap="">Why do you need this entry as it is the directory name?  Userspace
-already "knows" it if they can open this file.
-
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+
++
 +static ssize_t size_show(struct kobject *kobj, struct kobj_attribute *attr,
 +			 char *buf)
 +{
@@ -680,31 +636,30 @@ already "knows" it if they can open this file.
 +
 +static struct kobj_attribute name_attr =
 +__ATTR(name, 0444, name_show, NULL);
-</pre>
-      </blockquote>
-      <pre wrap="">__ATTR_RO()?
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+
++
 +static struct kobj_attribute size_attr =
 +__ATTR(size, 0444, size_show, NULL);
++
 </pre>
       </blockquote>
-      <pre wrap="">__ATTR_RO()?
-
-</pre>
       <blockquote type="cite">
-        <pre wrap="">+
-+static struct bin_attribute data_attr = {
+        <pre wrap="">+static struct bin_attribute data_attr = {
 +	.attr = {.name = "data", .mode = 0444},
 +	.size = VARIABLE_MAX_SIZE,
 +	.read = data_read,
 +};
 </pre>
       </blockquote>
-      <pre wrap="">__BIN_ATTR_RO()?
-
+      <pre wrap="">Should they be globally readable? If efivars is globally readable I'm
+happy to follow that example, but mpe might have opinions.</pre>
+    </blockquote>
+    <br>
+    efivars are globally readable.<br>
+    <br>
+    <br>
+    <blockquote type="cite"
+      cite="mid:23135466fc524a13cd76532ec59f84de51152a1c.camel@gmail.com">
+      <pre wrap="">
 </pre>
       <blockquote type="cite">
         <pre wrap="">+
@@ -714,14 +669,7 @@ already "knows" it if they can open this file.
 +	.size = VARIABLE_MAX_SIZE,
 +	.write = update_write,
 +};
-</pre>
-      </blockquote>
-      <pre wrap="">__BIN_ATTR_RO()?
-
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+
++
 +static struct bin_attribute  *secvar_bin_attrs[] = {
 +	&amp;data_attr,
 +	&amp;update_attr,
@@ -738,135 +686,32 @@ already "knows" it if they can open this file.
 +	.attrs = secvar_attrs,
 +	.bin_attrs = secvar_bin_attrs,
 +};
-</pre>
-      </blockquote>
-      <pre wrap="">static?
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+
++
 +int secvar_sysfs_load(void)
 +{
 +
 +	char *name;
-</pre>
-      </blockquote>
-      <pre wrap="">No blank line.  You didn't run this this through checkpatch, did you :(
-
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+	unsigned long namesize;
++	unsigned long namesize;
 +	struct kobject *kobj;
 +	int status;
 +	int rc = 0;
 +
 +	name = kzalloc(1024, GFP_KERNEL);
-</pre>
-      </blockquote>
-      <pre wrap="">Why 1024?
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+	if (!name)
++	if (!name)
 +		return -ENOMEM;
-+
-+	do {
-+
-+		status = secvarops-&gt;get_next_variable(name, &amp;namesize, 1024);
-+		if (status != OPAL_SUCCESS)
-+			break;
-+
-+		pr_info("name is %s\n", name);
 </pre>
       </blockquote>
-      <pre wrap="">Please delete debugging messages.
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+		kobj = kobject_create_and_add(name, &amp;(secvar_kset-&gt;kobj));
-+		if (kobj) {
-+			rc = sysfs_create_group(kobj, &amp;secvar_attr_group);
-</pre>
-      </blockquote>
-      <pre wrap="">You just raced userspace and lost :(
-
-If you set your kobj_type to have the attribute group you will not race
-and loose, the core will handle it for you.
-
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+			if (rc)
-+				pr_err("Error creating attributes for %s variable\n",
-+				name);
-+		} else {
-+			pr_err("Error creating sysfs entry for %s variable\n",
-+				name);
-+			rc = -EINVAL;
-+		}
-+
-+	} while ((status == OPAL_SUCCESS) &amp;&amp; (rc == 0));
-+
-+	kfree(name);
-+	return rc;
-+}
-+
-+int secvar_sysfs_init(void)
-+{
-+	powerpc_kobj = kobject_create_and_add("secvar", firmware_kobj);
-+	if (!powerpc_kobj) {
-+		pr_err("secvar: Failed to create firmware kobj\n");
-+		return -ENODEV;
-+	}
-+
-+	secvar_kset = kset_create_and_add("vars", NULL, powerpc_kobj);
-+	if (!secvar_kset) {
-+		pr_err("secvar: sysfs kobject registration failed.\n");
-</pre>
-      </blockquote>
-      <pre wrap="">You juat leaked a kobject :(
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+		return -ENODEV;
-+	}
-+
-+	secvarops = get_secvar_ops();
-+	if (!secvarops) {
-+		kobject_put(powerpc_kobj);
-+		pr_err("secvar: failed to retrieve secvar operations.\n");
-+		return -ENODEV;
-</pre>
-      </blockquote>
-      <pre wrap="">You just leaked 2 things from above :(
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">+	}
-+
-+	secvar_sysfs_load();
-+	pr_info("Secure variables sysfs initialized");
-</pre>
-      </blockquote>
-      <pre wrap="">Do not be noisy when all goes just fine.  The kernel log should be quiet
-when all goes well.
-
-</pre>
+      <pre wrap="">Where'd the 1024 restriction on the length of the variable name come
+from? is that enforced by firmware? If so, how does firmware
+communicate the limited key length?</pre>
     </blockquote>
     <br>
-    Thanks Greg for feedback. I just posted v3 version with the fixes
-    suggested by you and Oliver.<br>
-    <br>
-    Currently, the name length as 1024 is taken from examples of
-    efivars. Probably a smaller one is fine.<br>
-    In v3 version, it is still 1024 but made it #define.<br>
-    <br>
-    Thanks &amp; Regards,<br>
-          - Nayna<br>
+    It is not enforced by the firmware. Currently, it is sort of agreed
+    upon value between the firmware and the kernel, and taken from the
+    examples of efivars. Probably it can be reduced.<br>
     <br>
   </body>
 </html>
 
---------------EBEEC4AFFD0EEB170C618A67--
+--------------5CC9181B5501ADD5352FD98D--
 
