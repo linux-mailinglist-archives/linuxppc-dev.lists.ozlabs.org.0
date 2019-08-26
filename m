@@ -2,52 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832749D8BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 23:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F11F79D91A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 00:27:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HQnV5YqrzDqll
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 07:56:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HRSx4sfWzDqng
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:27:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=iogearbox.net
- (client-ip=213.133.104.62; helo=www62.your-server.de;
- envelope-from=daniel@iogearbox.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=changbin.du@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=iogearbox.net
-X-Greylist: delayed 1226 seconds by postgrey-1.36 at bilbo;
- Tue, 27 Aug 2019 07:54:51 AEST
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="a0zMmyWB"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HQlb1qWxzDqht
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 07:54:51 +1000 (AEST)
-Received: from sslproxy05.your-server.de ([78.46.172.2])
- by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
- (Exim 4.89_1) (envelope-from <daniel@iogearbox.net>)
- id 1i2Mcw-0003JB-Am; Mon, 26 Aug 2019 23:34:14 +0200
-Received: from [178.197.249.36] (helo=pc-63.home)
- by sslproxy05.your-server.de with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.89)
- (envelope-from <daniel@iogearbox.net>)
- id 1i2Mcw-000BMQ-3A; Mon, 26 Aug 2019 23:34:14 +0200
-Subject: Re: [PATCH] bpf: handle 32-bit zext during constant blinding
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Jiong Wang <jiong.wang@netronome.com>
-References: <20190821192358.31922-1-naveen.n.rao@linux.vnet.ibm.com>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <776c3058-ebd4-f30d-7392-03a4a94c2483@iogearbox.net>
-Date: Mon, 26 Aug 2019 23:34:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HRQv1R9fzDqRv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 08:25:25 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id e11so11428147pga.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 15:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=NdrKt952AuvDe+QMynjr4iuarcTkuNP/kAs8J0u4A+s=;
+ b=a0zMmyWBK90UYJtyoqynyxpcCWQ63iFelFOAu2wf9q+P7tEGrAMDTLQ7ns9kTHCAvV
+ zOtTYGjAxNvaMG4PH070aBsaBC17H9ftkGmoEi1jbpZFGywLt3QZL7gqqDvhtYn2QJAj
+ HSQU1nyy/xAx7EGwqSnb5+oUhOiY0vilM355IeRksUhMIXlBU+ac4G4LkEY6hh/lQJqH
+ TCnArxvquzzcbANPftPtDewlrkSUrPpD/afdr91bwf897Kd0DnHeETaJ3blnDHKXuHRK
+ pv4PbuZrnheVZVo5X1lDBWaTzlVchp+wBfR+mBKzN+vI9AKQDusQD89Py284sXkk9381
+ 0sVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=NdrKt952AuvDe+QMynjr4iuarcTkuNP/kAs8J0u4A+s=;
+ b=Ls+hoYlT/INJ/xGLO9CSML0j7ax6vNeU8axS2kBVa3+Xf3h/4+7wAGgA4kUQUopMJa
+ 6j9i1gpZcohELIexGEN1l4e6I36SZhF/pZnuv6bAuULKpw1O1W7zZjHQuaBSms2X9ijn
+ 44HiDWUdwkKZ100uOTSeNcjcUvQ47u9A8a7D+E/yFjaBTqSYbHzz4lUs8ZClq4HxP6nR
+ 1JUuYb1jHyABMz+a2dnCGVmvE/OaRFSeq5zJezMPlpZi/eFRAXyzM5FZqrJNfWMx3Vwx
+ iZakawmWGux8Rmc10DpHm9ZfbhUBMDhrTE0AWAU76UfiB74xkjIk2RVcqjyiv+4jhoyd
+ 0Oaw==
+X-Gm-Message-State: APjAAAXTSnpUtzciKvdONjTOffusq1Y3ohBwSGddQzqLVM53I2Y7JFjk
+ nVXcnT97qf2oX3rZ2nSDMJM=
+X-Google-Smtp-Source: APXvYqy681ZUL1/GOI1ZqNuttC4tPBoxw38R2Hiki+GEnFDGGEOPoegEj5VFS0OPFx5JUD/3pSIIpA==
+X-Received: by 2002:a65:6108:: with SMTP id z8mr8200381pgu.289.1566858322037; 
+ Mon, 26 Aug 2019 15:25:22 -0700 (PDT)
+Received: from mail.google.com ([149.28.153.17])
+ by smtp.gmail.com with ESMTPSA id t6sm449041pjy.18.2019.08.26.15.25.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Aug 2019 15:25:21 -0700 (PDT)
+Date: Tue, 27 Aug 2019 06:25:12 +0800
+From: Changbin Du <changbin.du@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 03/11] asm-generic: add generic dwarf definition
+Message-ID: <20190826222510.6m2k3puwflnr52b7@mail.google.com>
+References: <20190825132330.5015-1-changbin.du@gmail.com>
+ <20190825132330.5015-4-changbin.du@gmail.com>
+ <20190826074215.GL2369@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-In-Reply-To: <20190821192358.31922-1-naveen.n.rao@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.100.3/25553/Mon Aug 26 10:32:22 2019)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190826074215.GL2369@hirez.programming.kicks-ass.net>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,24 +81,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ linux-sh@vger.kernel.org, x86@kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ linux-mips@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Jessica Yu <jeyu@kernel.org>, sparclinux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, Changbin Du <changbin.du@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/21/19 9:23 PM, Naveen N. Rao wrote:
-> Since BPF constant blinding is performed after the verifier pass, the
-> ALU32 instructions inserted for doubleword immediate loads don't have a
-> corresponding zext instruction. This is causing a kernel oops on powerpc
-> and can be reproduced by running 'test_cgroup_storage' with
-> bpf_jit_harden=2.
-> 
-> Fix this by emitting BPF_ZEXT during constant blinding if
-> prog->aux->verifier_zext is set.
-> 
-> Fixes: a4b1d3c1ddf6cb ("bpf: verifier: insert zero extension according to analysis result")
-> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Hi, Peter,
 
-LGTM, applied to bpf, thanks!
+On Mon, Aug 26, 2019 at 09:42:15AM +0200, Peter Zijlstra wrote:
+> On Sun, Aug 25, 2019 at 09:23:22PM +0800, Changbin Du wrote:
+> > Add generic DWARF constant definitions. We will use it later.
+> > 
+> > Signed-off-by: Changbin Du <changbin.du@gmail.com>
+> > ---
+> >  include/asm-generic/dwarf.h | 199 ++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 199 insertions(+)
+> >  create mode 100644 include/asm-generic/dwarf.h
+> > 
+> > diff --git a/include/asm-generic/dwarf.h b/include/asm-generic/dwarf.h
+> > new file mode 100644
+> > index 000000000000..c705633c2a8f
+> > --- /dev/null
+> > +++ b/include/asm-generic/dwarf.h
+> > @@ -0,0 +1,199 @@
+> > +/* SPDX-License-Identifier: GPL-2.0
+> > + *
+> > + * Architecture independent definitions of DWARF.
+> > + *
+> > + * Copyright (C) 2019 Changbin Du <changbin.du@gmail.com>
+> 
+> You're claiming copyright on dwarf definitions? ;-)
+> 
+> I'm thinking only Oracle was daft enough to think stuff like that was
+> copyrightable.
+> 
+ok, let me remove copyright line. I think SPDX claim is okay, right?
+
+> Also; I think it would be very good to not use/depend on DWARF for this.
+>
+It only includes the DWARF expersion opcodes, not all of dwarf stuffs.
+
+> You really don't need all of DWARF; I'm thikning you only need a few
+> types; for location we already have regs_get_kernel_argument() which
+> has all the logic to find the n-th argument.
+> 
+regs_get_kernel_argument() can handle most cases, but if the size of one paramater
+exceeds 64bit (it is rare in kernel), we must recalculate the locations. So I think
+dwarf location descriptor is the most accurate one.
+
+-- 
+Cheers,
+Changbin Du
