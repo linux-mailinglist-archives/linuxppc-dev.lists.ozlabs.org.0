@@ -2,48 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2879CB65
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 10:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE9A9CC4A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 11:11:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46H4bn4D9pzDqbt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 18:16:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46H5ph0GKCzDqdq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2019 19:11:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46H4Yc11J7zDqZW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 18:15:00 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="aUeXEFmQ"; 
- dkim-atps=neutral
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46H5mF3vS4zDqSr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 19:09:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46H5mF0btVz8t0m
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 19:09:17 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46H4Yb2p7Zz9sN4; Mon, 26 Aug 2019 18:14:59 +1000 (AEST)
+ id 46H5mD6xtkz9sNF; Mon, 26 Aug 2019 19:09:16 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 46H4Yb1nHqz9sBF; Mon, 26 Aug 2019 18:14:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1566807299; bh=4YBpWCa0qHZ3ULuoBl2RuWy1RhuSnNm3HEuyOK5cDew=;
- h=Date:From:To:Cc:Subject:From;
- b=aUeXEFmQEuUNsMdxMjs+42Tyu4AuTeSMYdo18sG0oRt37GyCIGUl2MOKsTWpNBQXj
- gUGtvIUodNo6Mu9nhv/3LqkYbwKVAMj1l9H0824UQGOAv0tEjIv6fIv6d48fHlglYt
- VcVu6/Bwpmfq5x93Ip4HDvXQvxkEqxLgGUMBPytr7hVHp//BehN2zC5akkfF1AyzHc
- Rb7VIgF1KpfPfVY9l0+lQeTUa9RUO0AW9BKbhRZGNQ80PLkZZJsKT7PTetqt0hlol2
- CJwSKpRh+U2YvhbzlZi3d5++HtXuZ0sbRdmVPTc7C+4NijCPXiChgKxfYpW0erOC14
- KOC1N/tiMipsQ==
-Date: Mon, 26 Aug 2019 18:14:55 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: kvm@vger.kernel.org, linuxppc-dev@ozlabs.org
-Subject: [PATCH] KVM: PPC: Book3S: Enable XIVE native capability only if OPAL
- has required functions
-Message-ID: <20190826081455.GA7402@blackberry>
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ego@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46H5mD1GRQz9s7T
+ for <linuxppc-dev@ozlabs.org>; Mon, 26 Aug 2019 19:09:14 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7Q970i9010236; Mon, 26 Aug 2019 05:09:11 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2umbsy1ney-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Aug 2019 05:09:11 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7Q95F2F025282;
+ Mon, 26 Aug 2019 09:09:10 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma04wdc.us.ibm.com with ESMTP id 2ujvv6bxrt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Aug 2019 09:09:10 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7Q999lt43909422
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Aug 2019 09:09:09 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4BFD378063;
+ Mon, 26 Aug 2019 09:09:09 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 01A7878060;
+ Mon, 26 Aug 2019 09:09:08 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.124.31.156])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Aug 2019 09:09:08 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 7BDCE2E3C81; Mon, 26 Aug 2019 14:39:05 +0530 (IST)
+Date: Mon, 26 Aug 2019 14:39:05 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Subject: Re: [powerpc]WARN : arch/powerpc/platforms/powernv/smp.c:160
+Message-ID: <20190826090905.GA1792@in.ibm.com>
+References: <AB1A20B4-523B-491E-AB89-124AD2810C17@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AB1A20B4-523B-491E-AB89-124AD2810C17@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-26_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=955 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908260102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,128 +100,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, kvm-ppc@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: linuxppc-dev@ozlabs.org, linux-next@vger.kernel.org, ego@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are some POWER9 machines where the OPAL firmware does not support
-the OPAL_XIVE_GET_QUEUE_STATE and OPAL_XIVE_SET_QUEUE_STATE calls.
-The impact of this is that a guest using XIVE natively will not be able
-to be migrated successfully.  On the source side, the get_attr operation
-on the KVM native device for the KVM_DEV_XIVE_GRP_EQ_CONFIG attribute
-will fail; on the destination side, the set_attr operation for the same
-attribute will fail.
+Hello Sachin,
 
-This adds tests for the existence of the OPAL get/set queue state
-functions, and if they are not supported, the XIVE-native KVM device
-is not created and the KVM_CAP_PPC_IRQ_XIVE capability returns false.
-Userspace can then either provide a software emulation of XIVE, or
-else tell the guest that it does not have a XIVE controller available
-to it.
 
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
----
- arch/powerpc/include/asm/kvm_ppc.h    | 1 +
- arch/powerpc/include/asm/xive.h       | 1 +
- arch/powerpc/kvm/book3s.c             | 8 +++++---
- arch/powerpc/kvm/book3s_xive_native.c | 5 +++++
- arch/powerpc/kvm/powerpc.c            | 3 ++-
- arch/powerpc/sysdev/xive/native.c     | 7 +++++++
- 6 files changed, 21 insertions(+), 4 deletions(-)
+On Sat, Aug 24, 2019 at 09:34:41PM +0530, Sachin Sant wrote:
+> linux-next is currently broken on POWER8 non virtualized. Kernel
+> fails to reach login prompt with following kernel warning
+> repeatedly shown during boot.
+> 
+> The problem dates back atleast till next-20190816. 
+> 
+> [   40.285606] WARNING: CPU: 1 PID: 0 at arch/powerpc/platforms/powernv/smp.c:160 pnv_smp_cpu_kill_self+0x50/0x2d0
+> [   40.285609] Modules linked in: kvm_hv kvm sunrpc dm_mirror dm_region_hash dm_log dm_mod ses enclosure scsi_transport_sas sg ipmi_powernv ipmi_devintf powernv_rng uio_pdrv_genirq uio leds_powernv ipmi_msghandler powernv_op_panel ibmpowernv ip_tables ext4 mbcache jbd2 sd_mod ipr tg3 libata ptp pps_core
+> [   40.285643] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.3.0-rc5-next-20190823-autotest-autotest #1
+> [   40.285644] NIP:  c0000000000b5f40 LR: c000000000055498 CTR: c0000000000b5ef0
+> [   40.285646] REGS: c0000007f5527980 TRAP: 0700   Not tainted  (5.3.0-rc5-next-20190823-autotest-autotest)
+> [   40.285646] MSR:  9000000000029033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 24004028  XER: 00000000
+> [   40.285650] CFAR: c000000000055494 IRQMASK: 1 
+> [   40.285650] GPR00: c000000000055498 c0000007f5527c10 c00000000148b200 0000000000000000 
+> [   40.285650] GPR04: 0000000000000000 c0000007fa897d80 c0000007fa90c800 00000007f9980000 
+> [   40.285650] GPR08: 0000000000000000 0000000000000001 0000000000000000 c0000007fa90c800 
+> [   40.285650] GPR12: c0000000000b5ef0 c0000007ffffee00 0000000000000800 c000000ffffc11d0 
+> [   40.285650] GPR16: 0000000000000001 c000000001035280 0000000000000000 c0000000015303c0 
+> [   40.285650] GPR20: c000000000052d60 0000000000000001 c0000007f54cd800 c0000007f54cd880 
+> [   40.285650] GPR24: 0000000000080000 c0000007f54cd800 c0000000014bdf78 c0000000014c20d8 
+> [   40.285650] GPR28: 0000000000000002 c0000000014c2538 0000000000000001 c0000007f54cd800 
+> [   40.285662] NIP [c0000000000b5f40] pnv_smp_cpu_kill_self+0x50/0x2d0
+> [   40.285664] LR [c000000000055498] cpu_die+0x48/0x64
+> [   40.285665] Call Trace:
+> [   40.285667] [c0000007f5527c10] [c000000000f85f10] ppc64_tlb_batch+0x0/0x1220 (unreliable)
+> [   40.285669] [c0000007f5527df0] [c000000000055498] cpu_die+0x48/0x64
+> [   40.285672] [c0000007f5527e10] [c0000000000226a0] arch_cpu_idle_dead+0x20/0x40
+> [   40.285674] [c0000007f5527e30] [c00000000016bd2c] do_idle+0x37c/0x3f0
+> [   40.285676] [c0000007f5527ed0] [c00000000016bfac] cpu_startup_entry+0x3c/0x50
+> [   40.285678] [c0000007f5527f00] [c000000000055198] start_secondary+0x638/0x680
+> [   40.285680] [c0000007f5527f90] [c00000000000ac5c] start_secondary_prolog+0x10/0x14
+> [   40.285680] Instruction dump:
+> [   40.285681] fb61ffd8 fb81ffe0 fba1ffe8 fbc1fff0 fbe1fff8 f8010010 f821fe21 e90d1178 
+> [   40.285684] f9010198 39000000 892d0988 792907e0 <0b090000> 39200002 7d210164 39200003 
+> [   40.285687] ---[ end trace 72c90a064122d9e4 ]—
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 2484e6a..8e8514e 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -598,6 +598,7 @@ extern int kvmppc_xive_native_get_vp(struct kvm_vcpu *vcpu,
- 				     union kvmppc_one_reg *val);
- extern int kvmppc_xive_native_set_vp(struct kvm_vcpu *vcpu,
- 				     union kvmppc_one_reg *val);
-+extern bool kvmppc_xive_native_supported(void);
- 
- #else
- static inline int kvmppc_xive_set_xive(struct kvm *kvm, u32 irq, u32 server,
-diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
-index efb0e59..818989e 100644
---- a/arch/powerpc/include/asm/xive.h
-+++ b/arch/powerpc/include/asm/xive.h
-@@ -135,6 +135,7 @@ extern int xive_native_get_queue_state(u32 vp_id, uint32_t prio, u32 *qtoggle,
- extern int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
- 				       u32 qindex);
- extern int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
-+extern bool xive_native_has_queue_state_support(void);
- 
- #else
- 
-diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index 9524d92..d7fcdfa 100644
---- a/arch/powerpc/kvm/book3s.c
-+++ b/arch/powerpc/kvm/book3s.c
-@@ -1083,9 +1083,11 @@ static int kvmppc_book3s_init(void)
- 	if (xics_on_xive()) {
- 		kvmppc_xive_init_module();
- 		kvm_register_device_ops(&kvm_xive_ops, KVM_DEV_TYPE_XICS);
--		kvmppc_xive_native_init_module();
--		kvm_register_device_ops(&kvm_xive_native_ops,
--					KVM_DEV_TYPE_XIVE);
-+		if (kvmppc_xive_native_supported()) {
-+			kvmppc_xive_native_init_module();
-+			kvm_register_device_ops(&kvm_xive_native_ops,
-+						KVM_DEV_TYPE_XIVE);
-+		}
- 	} else
- #endif
- 		kvm_register_device_ops(&kvm_xics_ops, KVM_DEV_TYPE_XICS);
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-index f0cab43..248c1ea 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -1179,6 +1179,11 @@ int kvmppc_xive_native_set_vp(struct kvm_vcpu *vcpu, union kvmppc_one_reg *val)
- 	return 0;
- }
- 
-+bool kvmppc_xive_native_supported(void)
-+{
-+	return xive_native_has_queue_state_support();
-+}
-+
- static int xive_native_debug_show(struct seq_file *m, void *private)
- {
- 	struct kvmppc_xive *xive = m->private;
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 0dba7eb..7012dd7 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -566,7 +566,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		 * a POWER9 processor) and the PowerNV platform, as
- 		 * nested is not yet supported.
- 		 */
--		r = xive_enabled() && !!cpu_has_feature(CPU_FTR_HVMODE);
-+		r = xive_enabled() && !!cpu_has_feature(CPU_FTR_HVMODE) &&
-+			kvmppc_xive_native_supported();
- 		break;
- #endif
- 
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index 2f26b74..37987c8 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -800,6 +800,13 @@ int xive_native_set_queue_state(u32 vp_id, u32 prio, u32 qtoggle, u32 qindex)
- }
- EXPORT_SYMBOL_GPL(xive_native_set_queue_state);
- 
-+bool xive_native_has_queue_state_support(void)
-+{
-+	return opal_check_token(OPAL_XIVE_GET_QUEUE_STATE) &&
-+		opal_check_token(OPAL_XIVE_SET_QUEUE_STATE);
-+}
-+EXPORT_SYMBOL_GPL(xive_native_has_queue_state_support);
-+
- int xive_native_get_vp_state(u32 vp_id, u64 *out_state)
- {
- 	__be64 state;
--- 
-2.7.4
+Could you please share the test-case that you were running and the
+command line parameter ?
 
+
+> 
+> Relevant code snippet :
+> 156         /*
+> 157          * This hard disables local interurpts, ensuring we have no lazy
+> 158          * irqs pending.
+> 159          */
+> 160         WARN_ON(irqs_disabled());  <<===
+> 161         hard_irq_disable();
+> 162         WARN_ON(lazy_irq_pending());
+> 
+> Thanks
+> -Sachin
+> 
