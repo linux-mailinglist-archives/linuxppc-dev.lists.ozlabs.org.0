@@ -1,85 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7528D9DE4E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:59:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026A29DE88
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 09:16:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HfqZ0XxqzDqbD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:59:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HgCB6WDdzDqtS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 17:16:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Hfng26fQzDqYS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 16:57:26 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7R6uumI113614
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 02:57:24 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2umvee6583-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 02:57:23 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Tue, 27 Aug 2019 07:57:21 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 27 Aug 2019 07:57:19 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7R6vIXV51642488
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Aug 2019 06:57:18 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BEDC2AE051;
- Tue, 27 Aug 2019 06:57:18 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BB033AE053;
- Tue, 27 Aug 2019 06:57:17 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 27 Aug 2019 06:57:17 +0000 (GMT)
-Date: Tue, 27 Aug 2019 12:27:17 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/3] powerpc/numa: Early request for home node
- associativity
-References: <20190822144235.19398-1-srikar@linux.vnet.ibm.com>
- <20190822144235.19398-3-srikar@linux.vnet.ibm.com>
- <20190823071632.GA10037@sathnaga86>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Hg8r21H0zDqmT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 17:14:04 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 20944307D962;
+ Tue, 27 Aug 2019 07:14:02 +0000 (UTC)
+Received: from [10.36.117.50] (ovpn-117-50.ams2.redhat.com [10.36.117.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C9CAA5D6B7;
+ Tue, 27 Aug 2019 07:13:59 +0000 (UTC)
+Subject: Re: [PATCH] powerpc: Perform a bounds check in arch_add_memory
+To: Alastair D'Silva <alastair@au1.ibm.com>, Michal Hocko <mhocko@kernel.org>
+References: <20190827052047.31547-1-alastair@au1.ibm.com>
+ <20190827062844.GQ7538@dhcp22.suse.cz>
+ <ea9e43fff6b6531af0620f9df62e015af66d4535.camel@au1.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <1f2d967a-57a1-d3a3-4eb7-306b43709fee@redhat.com>
+Date: Tue, 27 Aug 2019 09:13:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20190823071632.GA10037@sathnaga86>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19082706-0016-0000-0000-000002A36217
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082706-0017-0000-0000-00003303AB39
-Message-Id: <20190827065717.GA18467@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-26_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908270077
+In-Reply-To: <ea9e43fff6b6531af0620f9df62e015af66d4535.camel@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.48]); Tue, 27 Aug 2019 07:14:02 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,63 +103,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Satheesh,
-
-> > Currently the kernel detects if its running on a shared lpar platform
-> > and requests home node associativity before the scheduler sched_domains
-> > are setup. However between the time NUMA setup is initialized and the
-> > request for home node associativity, workqueue initializes its per node
-> > cpumask. The per node workqueue possible cpumask may turn invalid
-> > after home node associativity resulting in weird situations like
-> > workqueue possible cpumask being a subset of workqueue online cpumask.
+On 27.08.19 08:39, Alastair D'Silva wrote:
+> On Tue, 2019-08-27 at 08:28 +0200, Michal Hocko wrote:
+>> On Tue 27-08-19 15:20:46, Alastair D'Silva wrote:
+>>> From: Alastair D'Silva <alastair@d-silva.org>
+>>>
+>>> It is possible for firmware to allocate memory ranges outside
+>>> the range of physical memory that we support (MAX_PHYSMEM_BITS).
+>>
+>> Doesn't that count as a FW bug? Do you have any evidence of that in
+>> the
+>> field? Just wondering...
+>>
 > 
-> Env:
-> HW: Power8
-> Host/Guest Kernel: 5.3.0-rc5-00172-g13e3f1076e29 (linux master + this series)
-> Qemu: 4.0.90 (v4.1.0-rc3)
+> Not outside our lab, but OpenCAPI attached LPC memory is assigned
+> addresses based on the slot/NPU it is connected to. These addresses
+> prior to:
+> 4ffe713b7587 ("powerpc/mm: Increase the max addressable memory to 2PB")
+> were inaccessible and resulted in bogus sections - see our discussion
+> on 'mm: Trigger bug on if a section is not found in __section_nr'.
+> Doing this check here was your suggestion :)
 > 
-> Guest Config:
-> ..
->  <vcpu placement='static' current='2'>4</vcpu>
-> ...
->     <kernel>/home/kvmci/linux/vmlinux</kernel>
->     <cmdline>root=/dev/sda2 rw console=tty0 console=ttyS0,115200 init=/sbin/init  initcall_debug numa=debug crashkernel=1024M selinux=0</cmdline>
-> ...
->   <topology sockets='1' cores='2' threads='2'/>
->     <numa>
->       <cell id='0' cpus='0-1' memory='2097152' unit='KiB'/>
->       <cell id='1' cpus='2-3' memory='2097152' unit='KiB'/>
->     </numa>
-> 
-> Event: 
-> vcpu hotplug
-> 
-> [root@atest-guest ~]# [   41.447170] random: crng init done
-> [   41.448153] random: 7 urandom warning(s) missed due to ratelimiting
-> [   51.727256] VPHN hcall succeeded. Reset polling...
-> [   51.826301] adding cpu 2 to node 1
-> [   51.856238] WARNING: workqueue cpumask: online intersect > possible intersect
-> [   51.916297] VPHN hcall succeeded. Reset polling...
-> [   52.036272] adding cpu 3 to node 1
+> It's entirely possible that a similar problem will occur in the future,
+> and it's cheap to guard against, which is why I've added this.
 > 
 
-Thanks for testing.
+If you keep it here, I guess this should be wrapped by a WARN_ON_ONCE().
 
-The fix for this patch series was to make sure per node workqueue possible
-cpus is updated correctly at boot. However Node hotplug on KVM guests and
-dlpar on PowerVM lpars aren't covered by this patch series. On systems that
-support shared processor, the associativity of the possible cpus is not
-known at boot time. Hence we will not be able to update the per node
-workquque possible cpumask.
+If we move it to common code (e.g., __add_pages() or add_memory()), then
+probably not. I can see that s390x allows to configure MAX_PHYSMEM_BITS,
+so the check could actually make sense.
 
 -- 
-Thanks and Regards
-Srikar Dronamraju
 
+Thanks,
+
+David / dhildenb
