@@ -2,42 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246639DB95
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 04:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C539DBF8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 05:21:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HXXV4lwHzDqdh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 12:15:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HZ0T1vvjzDqpk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 13:21:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HXVR4gwjzDqXS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 12:13:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HYyN1Xq2zDqnK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 13:19:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46HXVR3PjFz9s7T;
- Tue, 27 Aug 2019 12:13:51 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46HYyL5HWHz9sBF;
+ Tue, 27 Aug 2019 13:19:38 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH] powerpc/time: use feature fixup in __USE_RTC() instead of
- cpu feature.
-In-Reply-To: <ba2a7a1f-8dcc-ec44-81d4-ef11a9e29377@c-s.fr>
-References: <55c267ac6e0cd289970accfafbf9dda11a324c2e.1566802736.git.christophe.leroy@c-s.fr>
- <87blwc40i4.fsf@concordia.ellerman.id.au>
- <ba2a7a1f-8dcc-ec44-81d4-ef11a9e29377@c-s.fr>
-Date: Tue, 27 Aug 2019 12:13:51 +1000
-Message-ID: <87v9uj2w4g.fsf@concordia.ellerman.id.au>
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: Re: [PATCH v3] powerpc/fadump: sysfs for fadump memory reservation
+In-Reply-To: <f8e9cbdd-1926-081d-c8e6-f9d55408fe51@linux.ibm.com>
+References: <20190810175905.7761-1-sourabhjain@linux.ibm.com>
+ <53311fa4-2cce-1eb6-1aae-0c835e06eb24@linux.ibm.com>
+ <cf4fdb60-438c-bc4e-d759-1fbb27364c50@linux.ibm.com>
+ <f53e4cfe-57cb-d8a6-385a-fa6243940573@linux.ibm.com>
+ <f8e9cbdd-1926-081d-c8e6-f9d55408fe51@linux.ibm.com>
+Date: Tue, 27 Aug 2019 13:19:35 +1000
+Message-ID: <87sgpn2t2w.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,52 +48,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> Le 26/08/2019 =C3=A0 13:41, Michael Ellerman a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>> sched_clock(), used by printk(), calls __USE_RTC() to know
->>> whether to use realtime clock or timebase.
->>>
->>> __USE_RTC() uses cpu_has_feature() which is initialised by
->>> machine_init(). Before machine_init(), __USE_RTC() returns true,
->>> leading to a program check exception on CPUs not having realtime
->>> clock.
->>>
->>> In order to be able to use printk() earlier, use feature fixup.
->>> Feature fixups are applies in early_init(), enabling the use of
->>> printk() earlier.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>> ---
->>>   arch/powerpc/include/asm/time.h | 9 ++++++++-
->>>   1 file changed, 8 insertions(+), 1 deletion(-)
->>=20
->> The other option would be just to make this a compile time decision, eg.
->> add CONFIG_PPC_601 and use that to gate whether we use RTC.
+Hari Bathini <hbathini@linux.ibm.com> writes:
+> On 26/08/19 4:14 PM, Sourabh Jain wrote:
+>> On 8/26/19 3:46 PM, Sourabh Jain wrote:
+>>> On 8/26/19 3:29 PM, Hari Bathini wrote:
+>>>> On 10/08/19 11:29 PM, Sourabh Jain wrote:
+>>>>> Add a sys interface to allow querying the memory reserved by
+>>>>> fadump for saving the crash dump.
+>>>>>
+>>>>> Add an ABI doc entry for new sysfs interface.
+>>>>>    - /sys/kernel/fadump_mem_reserved
+>>>>>
+>>>>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>>>>> ---
+>>>>> Changelog:
+>>>>> v1 -> v2:
+>>>>>   - Added ABI doc for new sysfs interface.
+>>>>>
+>>>>> v2 -> v3:
+>>>>>   - Updated the ABI documentation.
+>>>>> ---
+>>>>>
+>>>>>  Documentation/ABI/testing/sysfs-kernel-fadump    |  6 ++++++
+>>>>
+>>>> Shouldn't this be Documentation/ABI/testing/sysfs-kernel-fadump_mem_reserved?
+>> 
+>> How about documenting fadump_mem_reserved and other sysfs attributes suggested
+>> by you in a single file Documentation/ABI/testing/sysfs-kernel-fadump?
 >
-> Euh ... yes OK, why not. And that would help simplify many places in the=
-=20
-> code. I can propose something in that direction, but it will be a bigger=
-=20
-> change.
+> I wouldn't mind that but please do check if it is breaking a convention..
 
-Thanks.
+AIUI a file named like that would hold the documentation for the files
+inside a directory called /sys/kernel/fadump.
 
->> Given how many 601 users there are, maybe 1?, I think that would be a
->> simpler option and avoids complicating the code / binary for everyone
->> else.
->
-> However this patch doesn't complicate things more than it was with=20
-> cpu_has_feature() which does exactly the same but using static keys,=20
-> does it ?
-
-It's more complicated in that it's not using cpu_has_feature() it's
-doing some custom thing that is not used anywhere else. But yeah I guess
-it's not much extra complication.
+And in fact that's probably where these files should live, rather than
+just dropped directly into /sys/kernel.
 
 cheers
