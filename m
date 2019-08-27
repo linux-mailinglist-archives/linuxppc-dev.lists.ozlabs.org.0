@@ -1,85 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BF69F0CD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 18:54:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A2D9F113
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 19:04:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Hw215PWqzDqx4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 02:54:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HwFz0LP1zDqyZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 03:04:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ldufour@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="gVWWO6Ic"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Hw004QXBzDqWL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 02:52:16 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7RFqsHN009568
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 11:53:03 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2un6t42eps-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 11:53:03 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ldufour@linux.vnet.ibm.com>;
- Tue, 27 Aug 2019 16:53:00 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 27 Aug 2019 16:52:58 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x7RFquxZ40436144
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Aug 2019 15:52:56 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3A9F1AE057;
- Tue, 27 Aug 2019 15:52:56 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DDB6CAE045;
- Tue, 27 Aug 2019 15:52:55 +0000 (GMT)
-Received: from pomme.lab.toulouse-stg.fr.ibm.com (unknown [9.101.4.33])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 27 Aug 2019 15:52:55 +0000 (GMT)
-Subject: Re: [DOC][PATCH] powerpc: Provide initial documentation for PAPR
- hcalls
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20190827152326.2784-1-vaibhav@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.vnet.ibm.com>
-Date: Tue, 27 Aug 2019 17:52:55 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190827152326.2784-1-vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19082715-0028-0000-0000-0000039488B4
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082715-0029-0000-0000-00002456C22E
-Message-Id: <be5dc005-dfa5-31ad-87e2-54cef8e70508@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-27_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908270158
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Hw675nbrzDqv3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 02:57:34 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46Hw5z6vG9z9txt1;
+ Tue, 27 Aug 2019 18:57:27 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=gVWWO6Ic; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id AE3RAvWcKv5D; Tue, 27 Aug 2019 18:57:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46Hw5z5PW7z9txsv;
+ Tue, 27 Aug 2019 18:57:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566925047; bh=ubHkbneok8K2cTYT/jQrBsXkaZGXihrm+aatYILFw2I=;
+ h=From:Subject:To:Cc:Date:From;
+ b=gVWWO6IcTMnvIj39ktT9tiPESnFDEQ0WhT3Xpm6aktoOi2R6+6fGoyFguDAxdmJBy
+ zEdtfwOipOahid/G69xheHIBQiYtTmi49UEolD3hsqI1j2d9dA/j2DiMa5Y2mY8hWy
+ +CeBVXNOtF5Jd4dmCIwKpIDu6/P/gCISNN8H4ZGk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 72E3B8B842;
+ Tue, 27 Aug 2019 18:57:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id g4EpfJcQhBIs; Tue, 27 Aug 2019 18:57:29 +0200 (CEST)
+Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CB608B847;
+ Tue, 27 Aug 2019 18:57:29 +0200 (CEST)
+Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id CF443696EA; Tue, 27 Aug 2019 16:57:28 +0000 (UTC)
+Message-Id: <b1142845c040b9702d1609d5ec473d97595dc0c3.1566925029.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH 1/2] powerpc: permanently include 8xx registers in reg.h
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ ravi.bangoria@linux.ibm.com
+Date: Tue, 27 Aug 2019 16:57:28 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,283 +73,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, msuchanek@suse.de,
- Oliver O'Halloran <oohall@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 27/08/2019 à 17:23, Vaibhav Jain a écrit :
-> This doc patch provides an initial description of the hcall op-codes
-> that are used by Linux kernel running as a guest (LPAR) on top of
-> PowerVM or any other sPAPR compliant hyper-visor (e.g qemu).
-> 
-> Apart from documenting the hcalls the doc-patch also provides a
-> rudimentary overview of how hcall ABI, how they are issued with the
-> Linux kernel and how information/control flows between the guest and
-> hypervisor.
-> 
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Most 8xx registers have specific names, so just include
+reg_8xx.h all the time in reg.h in order to have them defined
+even when CONFIG_PPC_8xx is not selected. This will avoid
+the need for #ifdefs in C code.
 
-Hi Vaibhav,
+Guard SPRN_ICTRL in an #ifdef CONFIG_PPC_8xx as this register
+has same name but different meaning and different spr number as
+another register in the mpc7450.
 
-Thanks for documenting this.
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/reg.h     | 2 --
+ arch/powerpc/include/asm/reg_8xx.h | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Besides my few remarks below, please consider:
-
-Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
-
-> ---
-> Change-log:
-> 
-> Initial version of this doc-patch was posted and reviewed as part of
-> the patch-series "[PATCH v5 0/4] powerpc/papr_scm: Workaround for
-> failure of drc bind after kexec"
-> https://patchwork.ozlabs.org/patch/1136022/. Changes introduced on top
-> the original patch:
-> 
-> * Replaced the of term PHYP with Hypervisor to indicate both
-> PowerVM/Qemu [Laurent]
-> * Emphasized that In/Out arguments to hcalls are in Big-endian format
-> [Laurent]
-> * Fixed minor word repetition, spell issues and grammatical error
-> [Michal, Mpe]
-> * Replaced various variant of term 'hcall' with a single
-> variant. [Mpe]
-> * Changed the documentation format from txt to ReST. [Mpe]
-> * Changed the name of documentation file to papr_hcalls.rst. [Mpe]
-> * Updated the section describing privileged operation by hypervisor
-> to be more accurate [Mpe].
-> * Fixed up mention of register notation used for describing
-> hcalls. [Mpe]
-> * s/NVDimm/NVDIMM [Mpe]
-> * Added section on return values from hcall [Mpe]
-> * Described H_CONTINUE return-value for long running hcalls.
-> ---
->   Documentation/powerpc/papr_hcalls.rst | 200 ++++++++++++++++++++++++++
->   1 file changed, 200 insertions(+)
->   create mode 100644 Documentation/powerpc/papr_hcalls.rst
-> 
-> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
-> new file mode 100644
-> index 000000000000..7afc0310de29
-> --- /dev/null
-> +++ b/Documentation/powerpc/papr_hcalls.rst
-> @@ -0,0 +1,200 @@
-> +===========================
-> +Hypercall Op-codes (hcalls)
-> +===========================
-> +
-> +Overview
-> +=========
-> +
-> +Virtualization on 64-bit Power Book3S Platforms is based on the PAPR
-> +specification [1]_ which describes the run-time environment for a guest
-> +operating system and how it should interact with the hypervisor for
-> +privileged operations. Currently there are two PAPR compliant hypervisors:
-> +
-> +- **IBM PowerVM (PHYP)**: IBM's proprietary hypervisor that supports AIX,
-> +  IBM-i and  Linux as supported guests (termed as Logical Partitions
-> +  or LPARS). It supports the full PAPR specification.
-> +
-> +- **Qemu/KVM**: Supports PPC64 linux guests running on a PPC64 linux host.
-> +  Though it only implements a subset of PAPR specification called LoPAPR [2]_.
-> +
-> +On PPC64 arch a guest kernel running on top of a PAPR hypervisor is called
-> +a *pSeries guest*. A pseries guest runs in a supervisor mode (HV=0) and must
-> +issue hypercalls to the hypervisor whenever it needs to perform an action
-> +that is hypervisor priviledged [3]_ or for other services managed by the
-> +hypervisor.
-> +
-> +Hence a Hypercall (hcall) is essentially a request by the pSeries guest
-> +asking hypervisor to perform a privileged operation on behalf of the guest. The
-> +guest issues a with necessary input operands. The hypervisor after performing
-                  ^ hcall ?
-
-> +the privilege operation returns a status code and output operands back to the
-> +guest.
-> +
-> +HCALL ABI
-> +=========
-> +The ABI specification for a hcall between a pSeries guest and PAPR hypervisor
-> +is covered in section 14.5.3 of ref [2]_. Switch to the  Hypervisor context is
-> +done via the instruction **HVCS** that expects the Opcode for hcall is set in *r3*
-> +and any in-arguments for the hcall are provided in registers *r4-r12* in
-> +Big-endian byte order.
-Indeed, register valuer are not byte ordered, only values passed through 
-buffer in memory are byte ordered.
-
-Should it be explicitly said that Big-endian order is only concerning data 
-stored in memory?
-What about something like that:
-"...any in-arguments for the hcall are provided in registers *r4-r12*. If 
-values have to be passed through a memory buffer, the data stored in that 
-buffer are in Big-endian order."
-
-> +
-> +Once control is returns back to the guest after hypervisor has serviced the
-> +'HVCS' instruction the return value of the hcall is available in *r3* and any
-> +out values are returned in registers *r4-r12*. Again like in-arguments, all the
-> +out value are in Big-endian byte order.
-Same would apply here.
-
-> +
-> +Powerpc arch code provides convenient wrappers named **plpar_hcall_xxx** defined
-> +in a arch specific header [4]_ to issue hcalls from the linux kernel
-> +running as pseries guest.
-> +
-> +DRC & DRC Indexes
-> +=================
-> +::
-> +
-> +     DR1                                  Guest
-> +     +--+        +------------+         +---------+
-> +     |  | <----> |            |         |  User   |
-> +     +--+  DRC1  |            |   DRC   |  Space  |
-> +                 |    PAPR    |  Index  +---------+
-> +     DR2         | Hypervisor |         |         |
-> +     +--+        |            | <-----> |  Kernel |
-> +     |  | <----> |            |  Hcall  |         |
-> +     +--+  DRC2  +------------+         +---------+
-> +
-> +PAPR hypervisor terms shared hardware resources like PCI devices, NVDIMMs etc
-> +available for use by LPARs as Dynamic Resource (DR). When a DR is allocated to
-> +an LPAR, PHYP creates a data-structure called Dynamic Resource Connector (DRC)
-> +to manage LPAR access. An LPAR refers to a DRC via an opaque 32-bit number
-> +called DRC-Index. The DRC-index value is provided to the LPAR via device-tree
-> +where its present as an attribute in the device tree node associated with the
-> +DR.
-> +
-> +HCALL Return-values
-> +===================
-> +
-> +After servicing the hcall, hypervisor sets the return-value in *r3* indicating
-> +success or failure of the hcall. In case of a failure an error code indicates
-> +the cause for error. These codes are defined and documented in arch specific
-> +header [4]_.
-> +
-> +In some cases a hcall can potentially take a long time and need to be issued
-> +multiple times in order to be completely serviced. These hcalls will usually
-> +accept an opaque value *continue-token* within there argument list and a
-> +return value of *H_CONTINUE* indicates that hypervisor hasn't still finished
-> +servicing the hcall yet.
-> +
-> +To make such hcalls the guest need to set *continue-token == 0* for the
-> +initial call and use the hypervisor returned value of *continue-token*
-> +for each subsequent hcall until hypervisor returns a non *H_CONTINUE*
-> +return value.
-> +
-> +HCALL Op-codes
-> +==============
-> +
-> +Below is a partial list of HCALLs that are supported by PHYP. For the
-> +corresponding opcode values please look into the arch specific header [4]_:
-> +
-> +**H_SCM_READ_METADATA**
-> +
-> +| Input: *drcIndex, offset, buffer-address, numBytesToRead*
-> +| Out: *numBytesRead*
-> +| Return Value: *H_Success, H_Parameter, H_P2, H_P3, H_Hardware*
-> +
-> +Given a DRC Index of an NVDIMM, read N-bytes from the the metadata area
-> +associated with it, at a specified offset and copy it to provided buffer.
-> +The metadata area stores configuration information such as label information,
-> +bad-blocks etc. The metadata area is located out-of-band of NVDIMM storage
-> +area hence a separate access semantics is provided.
-> +
-> +**H_SCM_WRITE_METADATA**
-> +
-> +| Input: *drcIndex, offset, data, numBytesToWrite*
-> +| Out: *None*
-> +| Return Value: *H_Success, H_Parameter, H_P2, H_P4, H_Hardware*
-> +
-> +Given a DRC Index of an NVDIMM, write N-bytes to the metadata area
-> +associated with it, at the specified offset and from the provided buffer.
-> +
-> +**H_SCM_BIND_MEM**
-> +
-> +| Input: *drcIndex, startingScmBlockIndex, numScmBlocksToBind,*
-> +| *targetLogicalMemoryAddress, continue-token*
-> +| Out: *continue-token, targetLogicalMemoryAddress, numScmBlocksToBound*
-> +| Return Value: *H_Success, H_Parameter, H_P2, H_P3, H_P4, H_Overlap,*
-> +| *H_Too_Big, H_P5, H_Busy*
-> +
-> +Given a DRC-Index of an NVDIMM, map a continuous SCM blocks range
-> +*(startingScmBlockIndex, startingScmBlockIndex+numScmBlocksToBind)* to the guest
-> +at *targetLogicalMemoryAddress* within guest physical address space. In
-> +case *targetLogicalMemoryAddress == 0xFFFFFFFF_FFFFFFFF* then hypervisor
-> +assigns a target address to the guest. The HCALL can fail if the Guest has
-> +an active PTE entry to the SCM block being bound.
-> +
-> +**H_SCM_UNBIND_MEM**
-> +| Input: drcIndex, startingScmLogicalMemoryAddress, numScmBlocksToUnbind
-> +| Out: numScmBlocksUnbound
-> +| Return Value: *H_Success, H_Parameter, H_P2, H_P3, H_In_Use, H_Overlap,*
-> +| *H_Busy, H_LongBusyOrder1mSec, H_LongBusyOrder10mSec*
-> +
-> +Given a DRC-Index of an NVDimm, unmap *numScmBlocksToUnbind* SCM blocks starting
-> +at *startingScmLogicalMemoryAddress* from guest physical address space. The
-> +HCALL can fail if the Guest has an active PTE entry to the SCM block being
-> +unbound.
-> +
-> +**H_SCM_QUERY_BLOCK_MEM_BINDING**
-> +
-> +| Input: *drcIndex, scmBlockIndex*
-> +| Out: *Guest-Physical-Address*
-> +| Return Value: *H_Success, H_Parameter, H_P2, H_NotFound*
-> +
-> +Given a DRC-Index and an SCM Block index return the guest physical address to
-> +which the SCM block is mapped to.
-> +
-> +**H_SCM_QUERY_LOGICAL_MEM_BINDING**
-> +
-> +| Input: *Guest-Physical-Address*
-> +| Out: *drcIndex, scmBlockIndex*
-> +| Return Value: *H_Success, H_Parameter, H_P2, H_NotFound*
-> +
-> +Given a guest physical address return which DRC Index and SCM block is mapped
-> +to that address.
-> +
-> +**H_SCM_UNBIND_ALL**
-> +
-> +| Input: *scmTargetScope, drcIndex*
-> +| Out: *None*
-> +| Return Value: *H_Success, H_Parameter, H_P2, H_P3, H_In_Use, H_Busy,*
-> +| *H_LongBusyOrder1mSec, H_LongBusyOrder10mSec*
-> +
-> +Depending on the Target scope unmap all SCM blocks belonging to all NVDIMMs
-> +or all SCM blocks belonging to a single NVDIMM identified by its drcIndex
-> +from the LPAR memory.
-> +
-> +**H_SCM_HEALTH**
-> +
-> +| Input: drcIndex
-> +| Out: *health-bitmap, health-bit-valid-bitmap*
-> +| Return Value: *H_Success, H_Parameter, H_Hardware*
-> +
-> +Given a DRC Index return the info on predictive failure and overall health of
-> +the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
-> +failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
-> +valid.
-> +
-> +**H_SCM_PERFORMANCE_STATS**
-> +
-> +| Input: drcIndex, resultBuffer Addr
-> +| Out: None
-> +| Return Value:  *H_Success, H_Parameter, H_Unsupported, H_Hardware, H_Authority, H_Privilege*
-> +
-> +Given a DRC Index collect the performance statistics for NVDIMM and copy them
-> +to the resultBuffer.
-> +
-> +References
-> +==========
-> +.. [1] "Power Architecture Platform Reference"
-> +       https://en.wikipedia.org/wiki/Power_Architecture_Platform_Reference
-> +.. [2] "Linux on Power Architecture Platform Reference"
-> +       https://members.openpowerfoundation.org/document/dl/469
-> +.. [3] "Definitions and Notation" Book III-Section 14.5.3
-> +       https://openpowerfoundation.org/?resource_lib=power-isa-version-3-0
-> +.. [4] arch/powerpc/include/asm/hvcall.h
-> 
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 10caa145f98b..b17ee25df226 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -25,9 +25,7 @@
+ #include <asm/reg_fsl_emb.h>
+ #endif
+ 
+-#ifdef CONFIG_PPC_8xx
+ #include <asm/reg_8xx.h>
+-#endif /* CONFIG_PPC_8xx */
+ 
+ #define MSR_SF_LG	63              /* Enable 64 bit mode */
+ #define MSR_ISF_LG	61              /* Interrupt 64b mode valid on 630 */
+diff --git a/arch/powerpc/include/asm/reg_8xx.h b/arch/powerpc/include/asm/reg_8xx.h
+index 7192eece6c3e..abc663c0f1db 100644
+--- a/arch/powerpc/include/asm/reg_8xx.h
++++ b/arch/powerpc/include/asm/reg_8xx.h
+@@ -38,7 +38,9 @@
+ #define SPRN_CMPF	153
+ #define SPRN_LCTRL1	156
+ #define SPRN_LCTRL2	157
++#ifdef CONFIG_PPC_8xx
+ #define SPRN_ICTRL	158
++#endif
+ #define SPRN_BAR	159
+ 
+ /* Commands.  Only the first few are available to the instruction cache.
+-- 
+2.13.3
 
