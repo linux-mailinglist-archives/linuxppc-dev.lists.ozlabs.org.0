@@ -2,75 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478D29E5FB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 12:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253679E626
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 12:51:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Hlpq3YG7zDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 20:43:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Hlzc60RbzDr0N
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 20:51:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="nalX0/t8"; 
- dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Hlmp4LXlzDq9Q
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 20:42:01 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id i30so13856080pfk.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 03:42:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
- :message-id:content-transfer-encoding;
- bh=VWiw7Lb+HCIlUzBtXkd7EsakEG5gSdvS6oqUctzBf+w=;
- b=nalX0/t8kSqnxcBx6R7ohuy9dntZjBEg76RjxynHaNjZyXU6xh/XCG1LR4luU71iNp
- c74iDLUO/4b5yXiFK7/A229hriXoEK3ATMsziuOKRMw6tMbgtZqqe0lvxGJBgNNL9v0X
- FyffkXfEyhyO7P/+ge0vy/9vVjVRgzLeUiK2m+3unR7uwc1JQWATH7kXGDrNsZmUkj/e
- LIHSQjxR/1GpEswWx2jVqOlXXqN5e80WSsyJc/iixZ7JNmrDZqZ0XZ26do5r/xUl4x6z
- QSmSsXUu0bS4LsqJtSpZzxnOf3Q11EhLab9mKUCXQ+KXSNmSvFALRmDRI0s8Bz3O47h7
- Ii4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=VWiw7Lb+HCIlUzBtXkd7EsakEG5gSdvS6oqUctzBf+w=;
- b=LCtwEMQ7o/AgGbNrg7yl7ISEv2wZJIVu4dOb80K+LgXSuClJ06hmmJMNEU6M6qDI0E
- 6DZa+yHWYlOWqLuZmyZY4fc4ibD2g+5AG5j9ZHDJBWlj/UIkbIi7RHS2SH3goCQBn1WI
- pEYunwkiBm/WwCcX4bXiXu0uYxZODRxDKbqYH5weRdHA2Y3X91orQ9o0B8LRohF7xQTi
- GZEW4Ng+Mn+0dItoyyIKASZnBVMZLOT1x+fKx5w2OPDATBBPetiDjY3l5COs0UsS6o43
- b4vSWAVzh7lIYrQA3fTRx5rWOjeXr4XZplPgGdd4oct1eLdLhe3uaygLKA2ijot8XqvU
- 27GA==
-X-Gm-Message-State: APjAAAVi3cjc3sinqPSbRvmFpl897MxPpm7xQZneSdiV/1kdI32GbxOe
- ZxpWJwom8CY8XQDOW7IqmCk=
-X-Google-Smtp-Source: APXvYqxhrJGK6PClSFOs28AWXATmci6ohSHZWYtL/z2MK5dWtkDoDgmD6f5aeIL5lq7hz5EYVvfzjQ==
-X-Received: by 2002:a65:4505:: with SMTP id n5mr18502823pgq.301.1566902519729; 
- Tue, 27 Aug 2019 03:41:59 -0700 (PDT)
-Received: from localhost (14-202-91-55.tpgi.com.au. [14.202.91.55])
- by smtp.gmail.com with ESMTPSA id r4sm16283122pfl.127.2019.08.27.03.41.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2019 03:41:59 -0700 (PDT)
-Date: Tue, 27 Aug 2019 20:41:20 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/4] powerpc/64: remove support for kernel-mode syscalls
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
-References: <20190827033010.28090-1-npiggin@gmail.com>
- <20190827033010.28090-3-npiggin@gmail.com>
- <4bcfa6ed-07f7-f162-664f-134b40124dda@c-s.fr>
- <1566900842.ttf5qhpflv.astroid@bobo.none>
-In-Reply-To: <1566900842.ttf5qhpflv.astroid@bobo.none>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46HlxM467JzDqMV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 20:49:25 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C39F328;
+ Tue, 27 Aug 2019 03:49:22 -0700 (PDT)
+Received: from [10.1.197.57] (e110467-lin.cambridge.arm.com [10.1.197.57])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7D3FC3F718;
+ Tue, 27 Aug 2019 03:49:14 -0700 (PDT)
+Subject: Re: [PATCH v2 6/6] mm/memory_hotplug: Pass nid instead of zone to
+ __remove_pages()
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+References: <20190826101012.10575-1-david@redhat.com>
+ <20190826101012.10575-7-david@redhat.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <3caaf386-a2fa-fbee-8159-fb32fdc57555@arm.com>
+Date: Tue, 27 Aug 2019 11:49:13 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1566902428.f4rgy4icjs.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190826101012.10575-7-david@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,41 +50,332 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-s390@vger.kernel.org,
+ Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Tom Lendacky <thomas.lendacky@amd.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Michal Hocko <mhocko@suse.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Yu Zhao <yuzhao@google.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-sh@vger.kernel.org, x86@kernel.org,
+ "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Jun Yao <yaojun8558363@gmail.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Ira Weiny <ira.weiny@intel.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, linuxppc-dev@lists.ozlabs.org,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Oscar Salvador <osalvador@suse.de>, Tony Luck <tony.luck@intel.com>,
+ Steve Capper <steve.capper@arm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Qian Cai <cai@lca.pw>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Logan Gunthorpe <logang@deltatee.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin's on August 27, 2019 8:20 pm:
-> Christophe Leroy's on August 27, 2019 4:13 pm:
->>=20
->>=20
->> Le 27/08/2019 =C3=A0 05:30, Nicholas Piggin a =C3=A9crit=C2=A0:
->>> There is support for the kernel to execute the 'sc 0' instruction and
->>> make a system call to itself. This is a relic that is unused in the
->>> tree, therefore untested. It's also highly questionable for modules to
->>> be doing this.
->>=20
->> I like it.
->>=20
->> I dropped support for that in PPC32 when I added fast-path syscalls.
->=20
-> Good, then we'll match again.
->=20
->>> -	beq	2f			/* if from kernel mode */
->>>   #ifdef CONFIG_PPC_FSL_BOOK3E
->>>   START_BTB_FLUSH_SECTION
->>>   	BTB_FLUSH(r10)
->>>   END_BTB_FLUSH_SECTION
->>>   #endif
->>>   	ACCOUNT_CPU_USER_ENTRY(r13, r10, r11)
->>> -2:	std	r2,GPR2(r1)
->=20
-> Btw. there is a hunk which restores this optimisation but it leaked
-> into a later patch, I'll move it back here.
+On 26/08/2019 11:10, David Hildenbrand wrote:
+> The zone parameter is no longer in use. Replace it with the nid, which
+> we can now use the nid to limit the number of zones we have to process
+> (vie for_each_zone_nid()). The function signature of __remove_pages() now
+> looks much more similar to the one of __add_pages().
 
-I'm wrong. Now I look at it again, the hunk should be removed
-completely of course.
+FWIW I recall this being trivially easy to hit when first playing with 
+hotremove development for arm64 - since we only have 3 zones, the page 
+flags poison would cause page_zone() to dereference past the end of 
+node_zones[] and go all kinds of wrong. This looks like a definite 
+improvement in API terms.
 
-Thanks,
-Nick
-=
+For arm64,
+
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+
+Cheers,
+Robin.
+
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: x86@kernel.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Steve Capper <steve.capper@arm.com>
+> Cc: Mike Rapoport <rppt@linux.ibm.com>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Yu Zhao <yuzhao@google.com>
+> Cc: Jun Yao <yaojun8558363@gmail.com>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+> Cc: Halil Pasic <pasic@linux.ibm.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Qian Cai <cai@lca.pw>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Logan Gunthorpe <logang@deltatee.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   arch/arm64/mm/mmu.c            |  4 +---
+>   arch/ia64/mm/init.c            |  4 +---
+>   arch/powerpc/mm/mem.c          |  3 +--
+>   arch/s390/mm/init.c            |  4 +---
+>   arch/sh/mm/init.c              |  4 +---
+>   arch/x86/mm/init_32.c          |  4 +---
+>   arch/x86/mm/init_64.c          |  4 +---
+>   include/linux/memory_hotplug.h |  2 +-
+>   mm/memory_hotplug.c            | 17 +++++++++--------
+>   mm/memremap.c                  |  3 +--
+>   10 files changed, 18 insertions(+), 31 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index e67bab4d613e..9a2d388314f3 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1080,7 +1080,6 @@ void arch_remove_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	struct zone *zone;
+>   
+>   	/*
+>   	 * FIXME: Cleanup page tables (also in arch_add_memory() in case
+> @@ -1089,7 +1088,6 @@ void arch_remove_memory(int nid, u64 start, u64 size,
+>   	 * unplug. ARCH_ENABLE_MEMORY_HOTREMOVE must not be
+>   	 * unlocked yet.
+>   	 */
+> -	zone = page_zone(pfn_to_page(start_pfn));
+> -	__remove_pages(zone, start_pfn, nr_pages, altmap);
+> +	__remove_pages(nid, start_pfn, nr_pages, altmap);
+>   }
+>   #endif
+> diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+> index bf9df2625bc8..ae6a3e718aa0 100644
+> --- a/arch/ia64/mm/init.c
+> +++ b/arch/ia64/mm/init.c
+> @@ -689,9 +689,7 @@ void arch_remove_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	struct zone *zone;
+>   
+> -	zone = page_zone(pfn_to_page(start_pfn));
+> -	__remove_pages(zone, start_pfn, nr_pages, altmap);
+> +	__remove_pages(nid, start_pfn, nr_pages, altmap);
+>   }
+>   #endif
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index 9191a66b3bc5..af21e13529ce 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -130,10 +130,9 @@ void __ref arch_remove_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	struct page *page = pfn_to_page(start_pfn) + vmem_altmap_offset(altmap);
+>   	int ret;
+>   
+> -	__remove_pages(page_zone(page), start_pfn, nr_pages, altmap);
+> +	__remove_pages(nid, start_pfn, nr_pages, altmap);
+>   
+>   	/* Remove htab bolted mappings for this section of memory */
+>   	start = (unsigned long)__va(start);
+> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+> index 20340a03ad90..2a7373ed6ded 100644
+> --- a/arch/s390/mm/init.c
+> +++ b/arch/s390/mm/init.c
+> @@ -296,10 +296,8 @@ void arch_remove_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	struct zone *zone;
+>   
+> -	zone = page_zone(pfn_to_page(start_pfn));
+> -	__remove_pages(zone, start_pfn, nr_pages, altmap);
+> +	__remove_pages(nid, start_pfn, nr_pages, altmap);
+>   	vmem_remove_mapping(start, size);
+>   }
+>   #endif /* CONFIG_MEMORY_HOTPLUG */
+> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+> index dfdbaa50946e..32441b59297d 100644
+> --- a/arch/sh/mm/init.c
+> +++ b/arch/sh/mm/init.c
+> @@ -434,9 +434,7 @@ void arch_remove_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = PFN_DOWN(start);
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	struct zone *zone;
+>   
+> -	zone = page_zone(pfn_to_page(start_pfn));
+> -	__remove_pages(zone, start_pfn, nr_pages, altmap);
+> +	__remove_pages(nid, start_pfn, nr_pages, altmap);
+>   }
+>   #endif /* CONFIG_MEMORY_HOTPLUG */
+> diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
+> index 4068abb9427f..2760e4bfbc56 100644
+> --- a/arch/x86/mm/init_32.c
+> +++ b/arch/x86/mm/init_32.c
+> @@ -865,10 +865,8 @@ void arch_remove_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	struct zone *zone;
+>   
+> -	zone = page_zone(pfn_to_page(start_pfn));
+> -	__remove_pages(zone, start_pfn, nr_pages, altmap);
+> +	__remove_pages(nid, start_pfn, nr_pages, altmap);
+>   }
+>   #endif
+>   
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index a6b5c653727b..99d92297f1cf 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1212,10 +1212,8 @@ void __ref arch_remove_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	struct page *page = pfn_to_page(start_pfn) + vmem_altmap_offset(altmap);
+> -	struct zone *zone = page_zone(page);
+>   
+> -	__remove_pages(zone, start_pfn, nr_pages, altmap);
+> +	__remove_pages(nid, start_pfn, nr_pages, altmap);
+>   	kernel_physical_mapping_remove(start, start + size);
+>   }
+>   #endif /* CONFIG_MEMORY_HOTPLUG */
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index f46ea71b4ffd..c5b38e7dc8aa 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -125,7 +125,7 @@ static inline bool movable_node_is_enabled(void)
+>   
+>   extern void arch_remove_memory(int nid, u64 start, u64 size,
+>   			       struct vmem_altmap *altmap);
+> -extern void __remove_pages(struct zone *zone, unsigned long start_pfn,
+> +extern void __remove_pages(int nid, unsigned long start_pfn,
+>   			   unsigned long nr_pages, struct vmem_altmap *altmap);
+>   
+>   /* reasonably generic interface to expand the physical pages */
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index e88c96cf9d77..49ca3364eb70 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -514,7 +514,7 @@ static void __remove_zone(struct zone *zone, unsigned long start_pfn,
+>   	pgdat_resize_unlock(zone->zone_pgdat, &flags);
+>   }
+>   
+> -static void __remove_section(unsigned long pfn, unsigned long nr_pages,
+> +static void __remove_section(int nid, unsigned long pfn, unsigned long nr_pages,
+>   			     unsigned long map_offset,
+>   			     struct vmem_altmap *altmap)
+>   {
+> @@ -525,14 +525,14 @@ static void __remove_section(unsigned long pfn, unsigned long nr_pages,
+>   		return;
+>   
+>   	/* TODO: move zone handling out of memory removal path */
+> -	for_each_zone(zone)
+> +	for_each_zone_nid(zone, nid)
+>   		__remove_zone(zone, pfn, nr_pages);
+>   	sparse_remove_section(ms, pfn, nr_pages, map_offset, altmap);
+>   }
+>   
+>   /**
+>    * __remove_pages() - remove sections of pages from a zone
+> - * @zone: zone from which pages need to be removed
+> + * @nid: the nid all pages were added to
+>    * @pfn: starting pageframe (must be aligned to start of a section)
+>    * @nr_pages: number of pages to remove (must be multiple of section size)
+>    * @altmap: alternative device page map or %NULL if default memmap is used
+> @@ -542,12 +542,13 @@ static void __remove_section(unsigned long pfn, unsigned long nr_pages,
+>    * sure that pages are marked reserved and zones are adjust properly by
+>    * calling offline_pages().
+>    */
+> -void __remove_pages(struct zone *zone, unsigned long pfn,
+> -		    unsigned long nr_pages, struct vmem_altmap *altmap)
+> +void __remove_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+> +		    struct vmem_altmap *altmap)
+>   {
+>   	const unsigned long end_pfn = pfn + nr_pages;
+>   	unsigned long cur_nr_pages;
+>   	unsigned long map_offset = 0;
+> +	struct zone *zone;
+>   
+>   	if (check_pfn_span(pfn, nr_pages, "remove"))
+>   		return;
+> @@ -555,7 +556,7 @@ void __remove_pages(struct zone *zone, unsigned long pfn,
+>   	map_offset = vmem_altmap_offset(altmap);
+>   
+>   	/* TODO: move zone handling out of memory removal path */
+> -	for_each_zone(zone)
+> +	for_each_zone_nid(zone, nid)
+>   		if (zone_intersects(zone, pfn, nr_pages))
+>   			clear_zone_contiguous(zone);
+>   
+> @@ -563,12 +564,12 @@ void __remove_pages(struct zone *zone, unsigned long pfn,
+>   		cond_resched();
+>   		/* Select all remaining pages up to the next section boundary */
+>   		cur_nr_pages = min(end_pfn - pfn, -(pfn | PAGE_SECTION_MASK));
+> -		__remove_section(pfn, cur_nr_pages, map_offset, altmap);
+> +		__remove_section(nid, pfn, cur_nr_pages, map_offset, altmap);
+>   		map_offset = 0;
+>   	}
+>   
+>   	/* TODO: move zone handling out of memory removal path */
+> -	for_each_zone(zone)
+> +	for_each_zone_nid(zone, nid)
+>   		set_zone_contiguous(zone);
+>   }
+>   
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 8a394552b5bd..292ef4c6b447 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -138,8 +138,7 @@ static void devm_memremap_pages_release(void *data)
+>   	mem_hotplug_begin();
+>   	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
+>   		pfn = PHYS_PFN(res->start);
+> -		__remove_pages(page_zone(pfn_to_page(pfn)), pfn,
+> -				 PHYS_PFN(resource_size(res)), NULL);
+> +		__remove_pages(nid, pfn, PHYS_PFN(resource_size(res)), NULL);
+>   	} else {
+>   		arch_remove_memory(nid, res->start, resource_size(res),
+>   				pgmap_altmap(pgmap));
+> 
