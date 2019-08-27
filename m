@@ -1,62 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576479F625
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 00:28:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1995C9F6C1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 01:19:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46J3RZ0BPDzDqSj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 08:28:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46J4ZC4NxrzDqtt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 09:18:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.167.196; helo=mail-oi1-f196.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com
- [209.85.167.196])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="wp2G22s2"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46J3PW1s4KzDqqK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 08:26:22 +1000 (AEST)
-Received: by mail-oi1-f196.google.com with SMTP id k22so518781oiw.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 15:26:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=RsXxLyUlV4lqdtFyyPSn3Dwod1DhrS1XN9CvxX7CGqs=;
- b=Ta6xKypHA+Iinlnp0ZY3wh+J+g03b1pL2gzuP2/tjHYeem4pE5KEw4FAdAwNBFHwpw
- /I4AwngtluGMl9Z5iuegnilVUCo2ry1MkRYns/3KWk5OBZ/5Hz15xXxPCu1uqlpvs5dT
- dSkfJIefBP0cjb/Rn0zYkpT8gIUckNWnEpVdrH2ikHaT3zl8c81zy+LeEBk5P16Zu2L4
- LzMjKq4KbFZyYkamEhydQbJD8iNCxzHn9csYzgBC528D8f4t+F+2dIM4+GWd1baeHba+
- duEyauK3B0R+dA2fqzjKqTGdhgu8T1SmQfC9MMIrygXWxS+y6jvF6QfxNjRg6RCJfFDl
- VSNA==
-X-Gm-Message-State: APjAAAWmpSdW617q9ixOmX7X/ARZ0IhD2p8ZfB32bscrG42k+uD2GX+P
- wctYx+nzO6sO/9wvCoM1gw==
-X-Google-Smtp-Source: APXvYqy3XTy77RRAsfzmCAwhDWWJujML7UeMVZxJl+o+X2Va2w3R8MESfCjhk2TLGcKIC236QGmbgA==
-X-Received: by 2002:aca:4b83:: with SMTP id y125mr712264oia.25.1566944779068; 
- Tue, 27 Aug 2019 15:26:19 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net.
- [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id k12sm170734oij.21.2019.08.27.15.26.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2019 15:26:18 -0700 (PDT)
-Date: Tue, 27 Aug 2019 17:26:18 -0500
-From: Rob Herring <robh@kernel.org>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCH v2 04/10] dt-bindings: pci: layerscape-pci: add
- compatible strings for ls1088a and ls2088a
-Message-ID: <20190827222617.GA16361@bogus>
-References: <20190822112242.16309-1-xiaowei.bao@nxp.com>
- <20190822112242.16309-4-xiaowei.bao@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46J4XC3HWMzDqdc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 09:17:14 +1000 (AEST)
+Received: from localhost (unknown [69.71.4.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id F35DA20856;
+ Tue, 27 Aug 2019 23:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1566947832;
+ bh=LHYP3wO1EM0CN7MZnuQ9uyPpTSuaC669PEWoJvNcjA4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=wp2G22s2JiRw967LPOtC7TV8P1ym933f60GQCuP9jTKdhOqTI6+p5eZAJ0ic5NX6J
+ 6mH+po7knLNM01dxN+2SAHO5hLA6asmWU0K7y+bFR6YVV+IX0UL+xFzf9QXIKCKS0E
+ LKK8hS8bnaKMHqrjAQF1xXI9iqvvNL0h0qE3zUUc=
+Date: Tue, 27 Aug 2019 18:17:10 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Krzysztof Wilczynski <kw@linux.com>
+Subject: Re: [PATCH] PCI: hotplug: Remove surplus return from a void function
+Message-ID: <20190827231710.GH9987@google.com>
+References: <20190826095143.21353-1-kw@linux.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190822112242.16309-4-xiaowei.bao@nxp.com>
+In-Reply-To: <20190826095143.21353-1-kw@linux.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,48 +57,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, roy.zang@nxp.com, lorenzo.pieralisi@arm.co,
- arnd@arndb.de, devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, kishon@ti.com, minghuan.Lian@nxp.com,
- gustavo.pimentel@synopsys.com, jingoohan1@gmail.com, bhelgaas@google.com,
- andrew.murray@arm.com, leoyang.li@nxp.com, shawnguo@kernel.org,
- mingkai.hu@nxp.com, linux-arm-kernel@lists.infradead.org
+Cc: Scott Murray <scott@spiteful.org>, YueHaibing <yuehaibing@huawei.com>,
+ Sebastian Ott <sebott@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Lukas Wunner <lukas@wunner.de>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 22, 2019 at 07:22:36PM +0800, Xiaowei Bao wrote:
-> Add compatible strings for ls1088a and ls2088a.
+On Mon, Aug 26, 2019 at 11:51:43AM +0200, Krzysztof Wilczynski wrote:
+> Remove unnecessary empty return statement at the end of a void
+> function in the following:
 > 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+>   - drivers/pci/hotplug/cpci_hotplug_core.c: cleanup_slots()
+>   - drivers/pci/hotplug/cpqphp_core.c: pci_print_IRQ_route()
+>   - drivers/pci/hotplug/cpqphp_ctrl.c: cpqhp_pushbutton_thread()
+>   - drivers/pci/hotplug/cpqphp_ctrl.c: interrupt_event_handler()
+>   - drivers/pci/hotplug/cpqphp_nvram.h: compaq_nvram_init()
+>   - drivers/pci/hotplug/rpadlpar_core.c: rpadlpar_io_init()
+>   - drivers/pci/hotplug/rpaphp_core.c: cleanup_slots()
+> 
+> Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
+
+Applied to pci/trivial for v5.4, thanks!
+
+I squashed the mediatek patch into this since they're both trivial.
+
 > ---
-> v2:
->  - No change.
+>  drivers/pci/hotplug/cpci_hotplug_core.c | 1 -
+>  drivers/pci/hotplug/cpqphp_core.c       | 1 -
+>  drivers/pci/hotplug/cpqphp_ctrl.c       | 4 ----
+>  drivers/pci/hotplug/cpqphp_nvram.h      | 5 +----
+>  drivers/pci/hotplug/rpadlpar_core.c     | 1 -
+>  drivers/pci/hotplug/rpaphp_core.c       | 1 -
+>  6 files changed, 1 insertion(+), 12 deletions(-)
 > 
->  Documentation/devicetree/bindings/pci/layerscape-pci.txt | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/pci/layerscape-pci.txt b/Documentation/devicetree/bindings/pci/layerscape-pci.txt
-> index e20ceaa..16f592e 100644
-> --- a/Documentation/devicetree/bindings/pci/layerscape-pci.txt
-> +++ b/Documentation/devicetree/bindings/pci/layerscape-pci.txt
-> @@ -22,7 +22,10 @@ Required properties:
->          "fsl,ls1043a-pcie"
->          "fsl,ls1012a-pcie"
->    EP mode:
-> -	"fsl,ls1046a-pcie-ep", "fsl,ls-pcie-ep"
-> +	"fsl,ls-pcie-ep"
-
-Wasn't this a fallback? Each line should be one valid combination of 
-compatible strings.
-
-> +	"fsl,ls1046a-pcie-ep"
-> +	"fsl,ls1088a-pcie-ep"
-> +	"fsl,ls2088a-pcie-ep"
->  - reg: base addresses and lengths of the PCIe controller register blocks.
->  - interrupts: A list of interrupt outputs of the controller. Must contain an
->    entry for each entry in the interrupt-names property.
+> diff --git a/drivers/pci/hotplug/cpci_hotplug_core.c b/drivers/pci/hotplug/cpci_hotplug_core.c
+> index 603eadf3d965..d0559d2faf50 100644
+> --- a/drivers/pci/hotplug/cpci_hotplug_core.c
+> +++ b/drivers/pci/hotplug/cpci_hotplug_core.c
+> @@ -563,7 +563,6 @@ cleanup_slots(void)
+>  	}
+>  cleanup_null:
+>  	up_write(&list_rwsem);
+> -	return;
+>  }
+>  
+>  int
+> diff --git a/drivers/pci/hotplug/cpqphp_core.c b/drivers/pci/hotplug/cpqphp_core.c
+> index 16bbb183695a..b8aacb41a83c 100644
+> --- a/drivers/pci/hotplug/cpqphp_core.c
+> +++ b/drivers/pci/hotplug/cpqphp_core.c
+> @@ -173,7 +173,6 @@ static void pci_print_IRQ_route(void)
+>  		dbg("%d %d %d %d\n", tbus, tdevice >> 3, tdevice & 0x7, tslot);
+>  
+>  	}
+> -	return;
+>  }
+>  
+>  
+> diff --git a/drivers/pci/hotplug/cpqphp_ctrl.c b/drivers/pci/hotplug/cpqphp_ctrl.c
+> index b7f4e1f099d9..68de958a9be8 100644
+> --- a/drivers/pci/hotplug/cpqphp_ctrl.c
+> +++ b/drivers/pci/hotplug/cpqphp_ctrl.c
+> @@ -1872,8 +1872,6 @@ static void interrupt_event_handler(struct controller *ctrl)
+>  			}
+>  		}		/* End of FOR loop */
+>  	}
+> -
+> -	return;
+>  }
+>  
+>  
+> @@ -1943,8 +1941,6 @@ void cpqhp_pushbutton_thread(struct timer_list *t)
+>  
+>  		p_slot->state = STATIC_STATE;
+>  	}
+> -
+> -	return;
+>  }
+>  
+>  
+> diff --git a/drivers/pci/hotplug/cpqphp_nvram.h b/drivers/pci/hotplug/cpqphp_nvram.h
+> index 918ff8dbfe62..70e879b6a23f 100644
+> --- a/drivers/pci/hotplug/cpqphp_nvram.h
+> +++ b/drivers/pci/hotplug/cpqphp_nvram.h
+> @@ -16,10 +16,7 @@
+>  
+>  #ifndef CONFIG_HOTPLUG_PCI_COMPAQ_NVRAM
+>  
+> -static inline void compaq_nvram_init(void __iomem *rom_start)
+> -{
+> -	return;
+> -}
+> +static inline void compaq_nvram_init(void __iomem *rom_start) { }
+>  
+>  static inline int compaq_nvram_load(void __iomem *rom_start, struct controller *ctrl)
+>  {
+> diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
+> index 182f9e3443ee..977946e4e613 100644
+> --- a/drivers/pci/hotplug/rpadlpar_core.c
+> +++ b/drivers/pci/hotplug/rpadlpar_core.c
+> @@ -473,7 +473,6 @@ int __init rpadlpar_io_init(void)
+>  void rpadlpar_io_exit(void)
+>  {
+>  	dlpar_sysfs_exit();
+> -	return;
+>  }
+>  
+>  module_init(rpadlpar_io_init);
+> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
+> index c3899ee1db99..18627bb21e9e 100644
+> --- a/drivers/pci/hotplug/rpaphp_core.c
+> +++ b/drivers/pci/hotplug/rpaphp_core.c
+> @@ -408,7 +408,6 @@ static void __exit cleanup_slots(void)
+>  		pci_hp_deregister(&slot->hotplug_slot);
+>  		dealloc_slot_struct(slot);
+>  	}
+> -	return;
+>  }
+>  
+>  static int __init rpaphp_init(void)
 > -- 
-> 2.9.5
+> 2.22.1
 > 
