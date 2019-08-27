@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C358B9F289
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 20:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C369F295
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 20:44:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HyQd5mwhzDqSL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 04:42:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HyTR6gZ8zDqcx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 04:44:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,52 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="BbRmSYYe"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="CxBixA0e"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HyNB4484zDqWc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 04:39:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HyNB5kqvzDqWh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 04:39:54 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46HyN60RWjz9tyVK;
- Tue, 27 Aug 2019 20:39:50 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46HyN70NBmz9tyVL;
+ Tue, 27 Aug 2019 20:39:51 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=BbRmSYYe; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=CxBixA0e; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id WFLIWcemWyoq; Tue, 27 Aug 2019 20:39:49 +0200 (CEST)
+ with ESMTP id Wu4KtlgcBwsA; Tue, 27 Aug 2019 20:39:50 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46HyN56Q8jz9tyVG;
- Tue, 27 Aug 2019 20:39:49 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46HyN66NMhz9tyVG;
+ Tue, 27 Aug 2019 20:39:50 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566931189; bh=gbTdZZUEM4dYfdN/z9H+CPNs7FFPw8gO2bAdbVyB4Lw=;
- h=From:Subject:To:Cc:Date:From;
- b=BbRmSYYeylPErAIhEF79/tIKpW8s9or49MxJESVKAjBW/Q+pxKMLBxg/hfLTuDsgy
- ADirKPfRBj6hcxyKq/LccQ+WaWszXDCchH5XC6Lb3TfgJOZ11ERSaZuUkJMqJvEHaY
- 7nQpAjpNFsxOodV8Czod2c0/naVelMy/N4tzGveQ=
+ t=1566931190; bh=17tbpyVj9VI5V631rnzPs87H9HbK2uc1RN6kFnPGn1o=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=CxBixA0eU9SvHnDr/oPRXRbOvnhhlrM4/ahX/Q0wtrV5HNUqVU53DU4R9RAV0TdnA
+ xuOttiQbkbTJtD89uim+ONLb2c55F6uh4DoJmguDI4VMGsh58ogrA/tFBJzQozTJ7k
+ RjS+3akIrMmO0A25LIHsNrN1kXuJCYeK5iak63Fs=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D96848B847;
- Tue, 27 Aug 2019 20:39:49 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E2FEC8B847;
+ Tue, 27 Aug 2019 20:39:50 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YSBB_GfZP5P4; Tue, 27 Aug 2019 20:39:49 +0200 (CEST)
+ with ESMTP id dCEOzBdSZjMS; Tue, 27 Aug 2019 20:39:50 +0200 (CEST)
 Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A37FA8B842;
- Tue, 27 Aug 2019 20:39:49 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A1C508B842;
+ Tue, 27 Aug 2019 20:39:50 +0200 (CEST)
 Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 77308696EA; Tue, 27 Aug 2019 18:39:49 +0000 (UTC)
-Message-Id: <e3de2a60198c1b648a5da19ba29938a1e365d1f3.1566931178.git.christophe.leroy@c-s.fr>
+ id 7D6AB696EA; Tue, 27 Aug 2019 18:39:50 +0000 (UTC)
+Message-Id: <97c95772ccf4a1fc5fc092c664996d08efca3d73.1566931178.git.christophe.leroy@c-s.fr>
+In-Reply-To: <e3de2a60198c1b648a5da19ba29938a1e365d1f3.1566931178.git.christophe.leroy@c-s.fr>
+References: <e3de2a60198c1b648a5da19ba29938a1e365d1f3.1566931178.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2 1/2] powerpc: permanently include 8xx registers in reg.h
+Subject: [PATCH v2 2/2] powerpc: cleanup hw_irq.h
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  segher@kernel.crashing.org, npiggin@gmail.com
-Date: Tue, 27 Aug 2019 18:39:49 +0000 (UTC)
+Date: Tue, 27 Aug 2019 18:39:50 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,52 +80,138 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most 8xx registers have specific names, so just include
-reg_8xx.h all the time in reg.h in order to have them defined
-even when CONFIG_PPC_8xx is not selected. This will avoid
-the need for #ifdefs in C code.
+SET_MSR_EE() is just use in this file and doesn't provide
+any added value compared to mtmsr(). Drop it.
 
-Guard SPRN_ICTRL in an #ifdef CONFIG_PPC_8xx as this register
-has same name but different meaning and different spr number as
-another register in the mpc7450.
+Add a wrtee() inline function to use wrtee/wrteei insn.
+
+Replace #ifdefs by IS_ENABLED()
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 ---
-v2: no change
+v2: Changed wrtee()/wrteei() to a single wrtee() inline which uses wrtee
+    or wrteei depending on the constness of the argument (Nick's idea).
 ---
- arch/powerpc/include/asm/reg.h     | 2 --
- arch/powerpc/include/asm/reg_8xx.h | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/hw_irq.h | 57 ++++++++++++++++++---------------------
+ arch/powerpc/include/asm/reg.h    |  8 ++++++
+ 2 files changed, 34 insertions(+), 31 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+index 32a18f2f49bc..e3a905e3d573 100644
+--- a/arch/powerpc/include/asm/hw_irq.h
++++ b/arch/powerpc/include/asm/hw_irq.h
+@@ -226,8 +226,8 @@ static inline bool arch_irqs_disabled(void)
+ #endif /* CONFIG_PPC_BOOK3S */
+ 
+ #ifdef CONFIG_PPC_BOOK3E
+-#define __hard_irq_enable()	asm volatile("wrteei 1" : : : "memory")
+-#define __hard_irq_disable()	asm volatile("wrteei 0" : : : "memory")
++#define __hard_irq_enable()	wrtee(MSR_EE)
++#define __hard_irq_disable()	wrtee(0)
+ #else
+ #define __hard_irq_enable()	__mtmsrd(MSR_EE|MSR_RI, 1)
+ #define __hard_irq_disable()	__mtmsrd(MSR_RI, 1)
+@@ -280,8 +280,6 @@ extern void force_external_irq_replay(void);
+ 
+ #else /* CONFIG_PPC64 */
+ 
+-#define SET_MSR_EE(x)	mtmsr(x)
+-
+ static inline unsigned long arch_local_save_flags(void)
+ {
+ 	return mfmsr();
+@@ -289,47 +287,44 @@ static inline unsigned long arch_local_save_flags(void)
+ 
+ static inline void arch_local_irq_restore(unsigned long flags)
+ {
+-#if defined(CONFIG_BOOKE)
+-	asm volatile("wrtee %0" : : "r" (flags) : "memory");
+-#else
+-	mtmsr(flags);
+-#endif
++	if (IS_ENABLED(CONFIG_BOOKE))
++		wrtee(flags);
++	else
++		mtmsr(flags);
+ }
+ 
+ static inline unsigned long arch_local_irq_save(void)
+ {
+ 	unsigned long flags = arch_local_save_flags();
+-#ifdef CONFIG_BOOKE
+-	asm volatile("wrteei 0" : : : "memory");
+-#elif defined(CONFIG_PPC_8xx)
+-	wrtspr(SPRN_EID);
+-#else
+-	SET_MSR_EE(flags & ~MSR_EE);
+-#endif
++
++	if (IS_ENABLED(CONFIG_BOOKE))
++		wrtee(0);
++	else if (IS_ENABLED(CONFIG_PPC_8xx))
++		wrtspr(SPRN_EID);
++	else
++		mtmsr(flags & ~MSR_EE);
++
+ 	return flags;
+ }
+ 
+ static inline void arch_local_irq_disable(void)
+ {
+-#ifdef CONFIG_BOOKE
+-	asm volatile("wrteei 0" : : : "memory");
+-#elif defined(CONFIG_PPC_8xx)
+-	wrtspr(SPRN_EID);
+-#else
+-	arch_local_irq_save();
+-#endif
++	if (IS_ENABLED(CONFIG_BOOKE))
++		wrtee(0);
++	else if (IS_ENABLED(CONFIG_PPC_8xx))
++		wrtspr(SPRN_EID);
++	else
++		mtmsr(mfmsr() & ~MSR_EE);
+ }
+ 
+ static inline void arch_local_irq_enable(void)
+ {
+-#ifdef CONFIG_BOOKE
+-	asm volatile("wrteei 1" : : : "memory");
+-#elif defined(CONFIG_PPC_8xx)
+-	wrtspr(SPRN_EIE);
+-#else
+-	unsigned long msr = mfmsr();
+-	SET_MSR_EE(msr | MSR_EE);
+-#endif
++	if (IS_ENABLED(CONFIG_BOOKE))
++		wrtee(MSR_EE);
++	else if (IS_ENABLED(CONFIG_PPC_8xx))
++		wrtspr(SPRN_EIE);
++	else
++		mtmsr(mfmsr() | MSR_EE);
+ }
+ 
+ static inline bool arch_irqs_disabled_flags(unsigned long flags)
 diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 10caa145f98b..b17ee25df226 100644
+index b17ee25df226..a18e629d9951 100644
 --- a/arch/powerpc/include/asm/reg.h
 +++ b/arch/powerpc/include/asm/reg.h
-@@ -25,9 +25,7 @@
- #include <asm/reg_fsl_emb.h>
- #endif
+@@ -1362,6 +1362,14 @@ static inline void mtmsr_isync(unsigned long val)
+ #define wrtspr(rn)	asm volatile("mtspr " __stringify(rn) ",0" : \
+ 				     : : "memory")
  
--#ifdef CONFIG_PPC_8xx
- #include <asm/reg_8xx.h>
--#endif /* CONFIG_PPC_8xx */
- 
- #define MSR_SF_LG	63              /* Enable 64 bit mode */
- #define MSR_ISF_LG	61              /* Interrupt 64b mode valid on 630 */
-diff --git a/arch/powerpc/include/asm/reg_8xx.h b/arch/powerpc/include/asm/reg_8xx.h
-index 7192eece6c3e..abc663c0f1db 100644
---- a/arch/powerpc/include/asm/reg_8xx.h
-+++ b/arch/powerpc/include/asm/reg_8xx.h
-@@ -38,7 +38,9 @@
- #define SPRN_CMPF	153
- #define SPRN_LCTRL1	156
- #define SPRN_LCTRL2	157
-+#ifdef CONFIG_PPC_8xx
- #define SPRN_ICTRL	158
-+#endif
- #define SPRN_BAR	159
- 
- /* Commands.  Only the first few are available to the instruction cache.
++static inline void wrtee(unsigned long val)
++{
++	if (__builtin_constant_p(val))
++		asm volatile("wrteei %0" : : "i" ((val & MSR_EE) ? 1 : 0) : "memory");
++	else
++		asm volatile("wrtee %0" : : "r" (val) : "memory");
++}
++
+ extern unsigned long msr_check_and_set(unsigned long bits);
+ extern bool strict_msr_control;
+ extern void __msr_check_and_clear(unsigned long bits);
 -- 
 2.13.3
 
