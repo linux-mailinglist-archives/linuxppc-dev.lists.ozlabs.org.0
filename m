@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA4C9DD75
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:14:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6BFD9DD7C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:17:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HdrS5mQXzDqn4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:14:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HdvM4VWkzDqF5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:17:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="gqm/pfOT"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="M3TPyS1k"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Hdpg553WzDqX0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 16:13:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HdrL008XzDqft
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 16:14:41 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46HdpZ6xPRz9ty3x;
- Tue, 27 Aug 2019 08:13:10 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46HdrF3TF9z9ty3x;
+ Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=gqm/pfOT; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=M3TPyS1k; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7RCfrGdFo3JX; Tue, 27 Aug 2019 08:13:10 +0200 (CEST)
+ with ESMTP id jDh0Innae-QX; Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46HdpZ5tfzz9ty3l;
- Tue, 27 Aug 2019 08:13:10 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46HdrF2DFmz9ty3l;
+ Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566886390; bh=tQ91XhC/Z1eYqVSoup6hU+eTKm/H6WfJ/U46hQ8udbQ=;
+ t=1566886477; bh=tU2ZQbP9hJaX/GbmjNnXjFPIxJbvvQnAJNlh0E15Vd0=;
  h=Subject:To:References:From:Date:In-Reply-To:From;
- b=gqm/pfOTip4eeH645hOMnUD9bRdkeCnVj7KvsPpdpNkr4fJMru44atyMDvCJzeIMr
- BJ51udRgtLtsRW85tkFFyLE9D/pwSiCx/0Z7S/hVBAxgj7DeGmYl5p/ysnwKb7XEde
- SAnCo32DLWrmULM5PYnknryIycI1KQTLDstBm0p0=
+ b=M3TPyS1kg/M4Ue75ZmfAFNGr3t+ZaMNc0oFbjnLFWNTrGzrUtLQ7pBX9US9wmPRdE
+ HjV61Zev6KFkYWbvr19TWs0H9600094D9273JSIdnBBI+/lBJpcSvMwkeIxvLe2Bbd
+ Q0BV5LU1gOmsrEBtnh0Sxujh27pyoBnwIQ8vFtj8=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B4A398B793;
- Tue, 27 Aug 2019 08:13:11 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 39BC38B793;
+ Tue, 27 Aug 2019 08:14:38 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id C3XKqg2K7TZJ; Tue, 27 Aug 2019 08:13:11 +0200 (CEST)
+ with ESMTP id pbvmdsRKVqzP; Tue, 27 Aug 2019 08:14:38 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 674158B74C;
- Tue, 27 Aug 2019 08:13:11 +0200 (CEST)
-Subject: Re: [PATCH 2/4] powerpc/64: remove support for kernel-mode syscalls
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E1C7E8B74C;
+ Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
+Subject: Re: [PATCH 2/4] powerpc/64s: remove support for kernel-mode syscalls
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20190827033010.28090-1-npiggin@gmail.com>
- <20190827033010.28090-3-npiggin@gmail.com>
+ <20190827033010.28090-4-npiggin@gmail.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <4bcfa6ed-07f7-f162-664f-134b40124dda@c-s.fr>
-Date: Tue, 27 Aug 2019 08:13:11 +0200
+Message-ID: <b6f8ab88-75ec-560d-6d35-9ee7bfdf5e65@c-s.fr>
+Date: Tue, 27 Aug 2019 08:14:37 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190827033010.28090-3-npiggin@gmail.com>
+In-Reply-To: <20190827033010.28090-4-npiggin@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -82,18 +82,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
+Euh ... That's a duplicate of [PATCH 2/4] "powerpc/64: remove support 
+for kernel-mode syscalls" ?
 
 Le 27/08/2019 à 05:30, Nicholas Piggin a écrit :
 > There is support for the kernel to execute the 'sc 0' instruction and
 > make a system call to itself. This is a relic that is unused in the
 > tree, therefore untested. It's also highly questionable for modules to
 > be doing this.
-
-I like it.
-
-I dropped support for that in PPC32 when I added fast-path syscalls.
-
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
@@ -147,11 +143,6 @@ I dropped support for that in PPC32 when I added fast-path syscalls.
 > -	beq+	cr1,33f
 > +	cmpd	r11,r10
 > +	beq+	33f
-
-Any need to do this change ? Why not keep it as is ?
-
-Christophe
-
 >   	bl	accumulate_stolen_time
 >   	REST_GPR(0,r1)
 >   	REST_4GPRS(3,r1)
