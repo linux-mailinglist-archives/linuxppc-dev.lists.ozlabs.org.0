@@ -1,42 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C931A9DA99
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:25:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C074F9DAB1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 02:34:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HV4w38D7zDqLD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:25:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HVHj72p4zDqVB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:34:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HVFQ1VpdzDqNB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 10:32:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.microsoft.com
- (client-ip=13.77.154.182; helo=linux.microsoft.com;
- envelope-from=jorhand@linux.microsoft.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.microsoft.com
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 46HRvq2kWrzDqRx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 08:47:00 +1000 (AEST)
-Received: from [10.91.6.157] (unknown [167.220.2.157])
- by linux.microsoft.com (Postfix) with ESMTPSA id D15B720B7186;
- Mon, 26 Aug 2019 15:46:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D15B720B7186
-Subject: Re: [PATCH v12 00/11] Appended signatures support for IMA appraisal
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- linux-integrity@vger.kernel.org
-References: <20190628021934.4260-1-bauerman@linux.ibm.com>
-From: Jordan Hand <jorhand@linux.microsoft.com>
-Message-ID: <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
-Date: Mon, 26 Aug 2019 15:46:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="tySe8v7x"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 46HVFP6JL1z9sDB; Tue, 27 Aug 2019 10:32:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1566865945; bh=n0WxmvwSK65oIhBS+QjYk4vyDjy+iy/5wXOF3pY69BE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=tySe8v7xb2A12sBylV8i+NhlV0mc10CpEDBz0n7H/JCr3kE9j08T0vStfZB5ufA7l
+ TH/4ypJDcenroG30bKoL/y8GWQa8dt1j6LtPQB+my1R880OLAdipZCryf7aF3Ms4qE
+ T3jVD07yBHleSv2v8cQk31filyT+jRNKK81E8o1427a71xtyoJHzO/WVNX5JJ0Ix66
+ nrKpJi4mX/IvmFI/Ix48hY43BIQ6aHzAhQwkxfemOKLCG9l3OeuQtHwomOZCJxTf7v
+ TqyoFpRYKQWORL21E2Cz5r8He3OvZ7sy0dS7qk0X2zchu8UyBOFwj2T9nlHaqouE0C
+ 0ynQ2eD0KPNvQ==
+Date: Tue, 27 Aug 2019 10:32:20 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel v2 2/4] KVM: PPC: Invalidate multiple TCEs at once
+Message-ID: <20190827003220.GA16075@blackberry>
+References: <20190826061705.92048-1-aik@ozlabs.ru>
+ <20190826061705.92048-3-aik@ozlabs.ru>
 MIME-Version: 1.0
-In-Reply-To: <20190628021934.4260-1-bauerman@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 27 Aug 2019 10:19:41 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190826061705.92048-3-aik@ozlabs.ru>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,38 +54,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-doc@vger.kernel.org,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- James Morris <jmorris@namei.org>, David Howells <dhowells@redhat.com>, "AKASHI,
- Takahiro" <takahiro.akashi@linaro.org>, linux-security-module@vger.kernel.org,
- keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
- Jessica Yu <jeyu@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- David Woodhouse <dwmw2@infradead.org>, "Serge E. Hallyn" <serge@hallyn.com>
+Cc: kvm@vger.kernel.org, Alistair Popple <alistair@popple.id.au>,
+ kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/27/19 7:19 PM, Thiago Jung Bauermann wrote:
-> On the OpenPOWER platform, secure boot and trusted boot are being
-> implemented using IMA for taking measurements and verifying signatures.
-> Since the kernel image on Power servers is an ELF binary, kernels are
-> signed using the scripts/sign-file tool and thus use the same signature
-> format as signed kernel modules.
+On Mon, Aug 26, 2019 at 04:17:03PM +1000, Alexey Kardashevskiy wrote:
+> Invalidating a TCE cache entry for each updated TCE is quite expensive.
+> This makes use of the new iommu_table_ops::xchg_no_kill()/tce_kill()
+> callbacks to bring down the time spent in mapping a huge guest DMA window;
+> roughly 20s to 10s for each guest's 100GB of DMA space.
 > 
-> This patch series adds support in IMA for verifying those signatures.
-> It adds flexibility to OpenPOWER secure boot, because it allows it to boot
-> kernels with the signature appended to them as well as kernels where the
-> signature is stored in the IMA extended attribute.
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-I know this is pretty late, but I just wanted to let you know that I
-tested this patch set on x86_64 with QEMU.
+With the addition of "Book3S" to the patch title,
 
-That is, I enrolled a key to _ima keyring, signed my kernel and modules
-with appended signatures (with scripts/sign-file), set the IMA policy to
-appraise and measure my kernel and modules. Also tested kexec appraisal.
-
-You can add my tested-by if you'd like.
-
--Jordan
+Acked-by: Paul Mackerras <paulus@ozlabs.org>
