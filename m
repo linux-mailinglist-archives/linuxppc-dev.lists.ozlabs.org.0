@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20EC9DDB0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2F79DDDA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:29:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Hf5l4t0czDqMh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:26:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Hf8v6q1VzDqLh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:29:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,36 +16,36 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="uslV9/dN"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Tw6jp9c4"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HdyD3lqjzDqb9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 16:19:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Hdyd2nZ9zDqgd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 16:20:09 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 216F0206BB;
- Tue, 27 Aug 2019 06:19:44 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 024CC206BB;
+ Tue, 27 Aug 2019 06:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1566886785;
- bh=8d8NAxokmvfnbK4bI2UJw9gc4mJfnpfhrj7QxKJbuZA=;
+ s=default; t=1566886803;
+ bh=RWLJSWF4lz8dfwmIL1t8xMAMhNp8DJHJVObQNXYgEuI=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=uslV9/dNTLOPZsKrQL7Sh9xeK2Pxk7Yksysm+oCuuUjDDiavodELfUthKlDow0ysU
- SmCgWmuGuaFejOvgcmZ+F7/ayvbF6tjs4RBqDo1vu7zjysJZm/vU1DP5i4hI/ta0Cn
- JIg4R+mB4oMtgm/qvIBx4pQyG+AKBYPegXJ4f3Po=
+ b=Tw6jp9c4rmvYOFD+bQw6RAXSM66DWvk6FkoYsmq88vquEBCtUEbrfY0bu805hS+ps
+ bEXBsVR7QsTZOdKP1QIeA9WpZppmSEUe0gWXV8mjxANlIO1jMlcwnKFPXTsdrj9j+Q
+ 80B+KNCEPabRk3zyNsbw5zXefxXBhgk9FuyX+b5Q=
 Subject: Patch "powerpc: Allow flush_(inval_)dcache_range to work across
- ranges >4GB" has been added to the 4.19-stable tree
+ ranges >4GB" has been added to the 5.2-stable tree
 To: alastair@au1.ibm.com, alastair@d-silva.org, allison@lohutok.net,
  benh@kernel.crashing.org, gregkh@linuxfoundation.org,
  linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, paulus@samba.org,
  tglx@linutronix.de
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 Aug 2019 08:19:43 +0200
+Date: Tue, 27 Aug 2019 08:20:01 +0200
 In-Reply-To: <20190821001929.4253-1-alastair@au1.ibm.com>
-Message-ID: <1566886783145100@kroah.com>
+Message-ID: <1566886801246241@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -72,12 +72,12 @@ This is a note to let you know that I've just added the patch titled
 
     powerpc: Allow flush_(inval_)dcache_range to work across ranges >4GB
 
-to the 4.19-stable tree which can be found at:
+to the 5.2-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      powerpc-allow-flush_-inval_-dcache_range-to-work-across-ranges-4gb.patch
-and it can be found in the queue-4.19 subdirectory.
+and it can be found in the queue-5.2 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -119,7 +119,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/powerpc/kernel/misc_64.S
 +++ b/arch/powerpc/kernel/misc_64.S
-@@ -135,7 +135,7 @@ _GLOBAL_TOC(flush_dcache_range)
+@@ -130,7 +130,7 @@ _GLOBAL_TOC(flush_dcache_range)
  	subf	r8,r6,r4		/* compute length */
  	add	r8,r8,r5		/* ensure we get enough */
  	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of dcache block size */
@@ -128,7 +128,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	beqlr				/* nothing to do? */
  	mtctr	r8
  0:	dcbst	0,r6
-@@ -153,7 +153,7 @@ _GLOBAL(flush_inval_dcache_range)
+@@ -148,7 +148,7 @@ _GLOBAL(flush_inval_dcache_range)
  	subf	r8,r6,r4		/* compute length */
  	add	r8,r8,r5		/* ensure we get enough */
  	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)/* Get log-2 of dcache block size */
@@ -141,4 +141,4 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from alastair@au1.ibm.com are
 
-queue-4.19/powerpc-allow-flush_-inval_-dcache_range-to-work-across-ranges-4gb.patch
+queue-5.2/powerpc-allow-flush_-inval_-dcache_range-to-work-across-ranges-4gb.patch
