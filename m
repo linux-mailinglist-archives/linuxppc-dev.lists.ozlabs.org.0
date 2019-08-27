@@ -2,83 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9829DAE8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 03:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186AD9DB15
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 03:35:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HW0w6wdPzDqhn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 11:06:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HWfb0FBMzDqnx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 11:35:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HVz02H8FzDqgB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 11:04:59 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7R11gCh144808; Mon, 26 Aug 2019 21:04:54 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2umt9qrf5t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Aug 2019 21:04:54 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7R11p2Z145462;
- Mon, 26 Aug 2019 21:04:54 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2umt9qrf58-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Aug 2019 21:04:54 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7R11Nsm012160;
- Tue, 27 Aug 2019 01:04:53 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma01dal.us.ibm.com with ESMTP id 2ujvv7388v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Aug 2019 01:04:53 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7R14qdo51642862
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Aug 2019 01:04:52 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E7707BE053;
- Tue, 27 Aug 2019 01:04:51 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 34129BE059;
- Tue, 27 Aug 2019 01:04:46 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.159.67])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Tue, 27 Aug 2019 01:04:45 +0000 (GMT)
-References: <20190628021934.4260-1-bauerman@linux.ibm.com>
- <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
-User-agent: mu4e 1.2.0; emacs 26.2
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Jordan Hand <jorhand@linux.microsoft.com>
-Subject: Re: [PATCH v12 00/11] Appended signatures support for IMA appraisal
-In-reply-to: <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
-Date: Mon, 26 Aug 2019 22:04:43 -0300
-Message-ID: <87k1azpges.fsf@morokweng.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HWcL12qdzDqkG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 11:33:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46HWcH4NZ4z9s00;
+ Tue, 27 Aug 2019 11:33:51 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Scott Wood <oss@buserror.net>
+Subject: Re: [PATCH v6 00/12] implement KASLR for powerpc/fsl_booke/32
+In-Reply-To: <529fd908-42d6-f96f-daa2-9010f3035879@huawei.com>
+References: <20190809100800.5426-1-yanaijie@huawei.com>
+ <ed96199d-715c-3f1c-39db-10a569ba6601@huawei.com>
+ <529fd908-42d6-f96f-daa2-9010f3035879@huawei.com>
+Date: Tue, 27 Aug 2019 11:33:51 +1000
+Message-ID: <878srf4cjk.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-26_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908270008
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,48 +46,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-doc@vger.kernel.org,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- James Morris <jmorris@namei.org>, David Howells <dhowells@redhat.com>, "AKASHI,
- Takahiro" <takahiro.akashi@linaro.org>, linux-security-module@vger.kernel.org,
- keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
- Jessica Yu <jeyu@kernel.org>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, David Woodhouse <dwmw2@infradead.org>,
- "Serge E. Hallyn" <serge@hallyn.com>
+Cc: wangkefeng.wang@huawei.com, keescook@chromium.org,
+ Jason Yan <yanaijie@huawei.com>, kernel-hardening@lists.openwall.com,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, jingxiangfeng@huawei.com,
+ diana.craciun@nxp.com, paulus@samba.org, zhaohongjiang@huawei.com,
+ thunder.leizhen@huawei.com, fanchengyang@huawei.com,
+ linuxppc-dev@lists.ozlabs.org, yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Hello Jordan,
-
-Jordan Hand <jorhand@linux.microsoft.com> writes:
-
-> On 6/27/19 7:19 PM, Thiago Jung Bauermann wrote:
->> On the OpenPOWER platform, secure boot and trusted boot are being
->> implemented using IMA for taking measurements and verifying signatures.
->> Since the kernel image on Power servers is an ELF binary, kernels are
->> signed using the scripts/sign-file tool and thus use the same signature
->> format as signed kernel modules.
->> 
->> This patch series adds support in IMA for verifying those signatures.
->> It adds flexibility to OpenPOWER secure boot, because it allows it to boot
->> kernels with the signature appended to them as well as kernels where the
->> signature is stored in the IMA extended attribute.
+Jason Yan <yanaijie@huawei.com> writes:
+> A polite ping :)
 >
-> I know this is pretty late, but I just wanted to let you know that I
-> tested this patch set on x86_64 with QEMU.
->
-> That is, I enrolled a key to _ima keyring, signed my kernel and modules
-> with appended signatures (with scripts/sign-file), set the IMA policy to
-> appraise and measure my kernel and modules. Also tested kexec appraisal.
->
-> You can add my tested-by if you'd like.
+> What else should I do now?
 
-Thanks for testing!
+That's a good question.
 
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+Scott, are you still maintaining FSL bits, and if so any comments? Or
+should I take this.
+
+cheers
+
+> On 2019/8/19 14:12, Jason Yan wrote:
+>> Hi Michael,
+>>=20
+>> Is there anything more I should do to get this feature meeting the=20
+>> requirements of the mainline?
+>>=20
+>> Thanks,
+>> Jason
+>>=20
+>> On 2019/8/9 18:07, Jason Yan wrote:
+>>> This series implements KASLR for powerpc/fsl_booke/32, as a security
+>>> feature that deters exploit attempts relying on knowledge of the locati=
+on
+>>> of kernel internals.
+>>>
+>>> Since CONFIG_RELOCATABLE has already supported, what we need to do is
+>>> map or copy kernel to a proper place and relocate. Freescale Book-E
+>>> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
+>>> entries are not suitable to map the kernel directly in a randomized
+>>> region, so we chose to copy the kernel to a proper place and restart to
+>>> relocate.
+>>>
+>>> Entropy is derived from the banner and timer base, which will change=20
+>>> every
+>>> build and boot. This not so much safe so additionally the bootloader may
+>>> pass entropy via the /chosen/kaslr-seed node in device tree.
+>>>
+>>> We will use the first 512M of the low memory to randomize the kernel
+>>> image. The memory will be split in 64M zones. We will use the lower 8
+>>> bit of the entropy to decide the index of the 64M zone. Then we chose a
+>>> 16K aligned offset inside the 64M zone to put the kernel in.
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 KERNELBASE
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |-->=C2=A0=C2=A0 64M=
+=C2=A0=C2=A0 <--|
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=
+=A0=C2=A0=C2=A0 +----------------+---------------+
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |....|=C2=
+=A0=C2=A0=C2=A0 |kernel|=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=
+=A0=C2=A0=C2=A0 +----------------+---------------+
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |----->=C2=A0=C2=A0 of=
+fset=C2=A0=C2=A0=C2=A0 <-----|
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernstart_virt_addr
+>>>
+>>> We also check if we will overlap with some areas like the dtb area, the
+>>> initrd area or the crashkernel area. If we cannot find a proper area,
+>>> kaslr will be disabled and boot from the original kernel.
+>>>
+>>> Changes since v5:
+>>> =C2=A0 - Rename M_IF_NEEDED to MAS2_M_IF_NEEDED
+>>> =C2=A0 - Define some global variable as __ro_after_init
+>>> =C2=A0 - Replace kimage_vaddr with kernstart_virt_addr
+>>> =C2=A0 - Depend on RELOCATABLE, not select it
+>>> =C2=A0 - Modify the comment block below the SPDX tag
+>>> =C2=A0 - Remove some useless headers in kaslr_booke.c and move is_secon=
+d_reloc
+>>> =C2=A0=C2=A0=C2=A0 declarationto mmu_decl.h
+>>> =C2=A0 - Remove DBG() and use pr_debug() and rewrite comment above=20
+>>> get_boot_seed().
+>>> =C2=A0 - Add a patch to document the KASLR implementation.
+>>> =C2=A0 - Split a patch from patch #10 which exports kaslr offset in=20
+>>> VMCOREINFO ELF notes.
+>>> =C2=A0 - Remove extra logic around finding nokaslr string in cmdline.
+>>> =C2=A0 - Make regions static global and __initdata
+>>>
+>>> Changes since v4:
+>>> =C2=A0 - Add Reviewed-by tag from Christophe
+>>> =C2=A0 - Remove an unnecessary cast
+>>> =C2=A0 - Remove unnecessary parenthesis
+>>> =C2=A0 - Fix checkpatch warning
+>>>
+>>> Changes since v3:
+>>> =C2=A0 - Add Reviewed-by and Tested-by tag from Diana
+>>> =C2=A0 - Change the comment in fsl_booke_entry_mapping.S to be consiste=
+nt
+>>> =C2=A0=C2=A0=C2=A0 with the new code.
+>>>
+>>> Changes since v2:
+>>> =C2=A0 - Remove unnecessary #ifdef
+>>> =C2=A0 - Use SZ_64M instead of0x4000000
+>>> =C2=A0 - Call early_init_dt_scan_chosen() to init boot_command_line
+>>> =C2=A0 - Rename kaslr_second_init() to kaslr_late_init()
+>>>
+>>> Changes since v1:
+>>> =C2=A0 - Remove some useless 'extern' keyword.
+>>> =C2=A0 - Replace EXPORT_SYMBOL with EXPORT_SYMBOL_GPL
+>>> =C2=A0 - Improve some assembly code
+>>> =C2=A0 - Use memzero_explicit instead of memset
+>>> =C2=A0 - Use boot_command_line and remove early_command_line
+>>> =C2=A0 - Do not print kaslr offset if kaslr is disabled
+>>>
+>>> Jason Yan (12):
+>>> =C2=A0=C2=A0 powerpc: unify definition of M_IF_NEEDED
+>>> =C2=A0=C2=A0 powerpc: move memstart_addr and kernstart_addr to init-com=
+mon.c
+>>> =C2=A0=C2=A0 powerpc: introduce kernstart_virt_addr to store the kernel=
+ base
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/32: introduce create_tlb_entry() helper
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/32: implement KASLR infrastructure
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/32: randomize the kernel image offset
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/kaslr: clear the original kernel if rand=
+omized
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/kaslr: dump out kernel offset informatio=
+n on panic
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/kaslr: export offset in VMCOREINFO ELF n=
+otes
+>>> =C2=A0=C2=A0 powerpc/fsl_booke/32: Document KASLR implementation
+>>>
+>>> =C2=A0 Documentation/powerpc/kaslr-booke32.rst=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0 42 ++
+>>> =C2=A0 arch/powerpc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 11 +
+>>> =C2=A0 arch/powerpc/include/asm/nohash/mmu-book3e.h=C2=A0 |=C2=A0 10 +
+>>> =C2=A0 arch/powerpc/include/asm/page.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 7 +
+>>> =C2=A0 arch/powerpc/kernel/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+=C2=A0 1 +
+>>> =C2=A0 arch/powerpc/kernel/early_32.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +-
+>>> =C2=A0 arch/powerpc/kernel/exceptions-64e.S=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 12 +-
+>>> =C2=A0 arch/powerpc/kernel/fsl_booke_entry_mapping.S |=C2=A0 27 +-
+>>> =C2=A0 arch/powerpc/kernel/head_fsl_booke.S=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 55 ++-
+>>> =C2=A0 arch/powerpc/kernel/kaslr_booke.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 393 ++++++++++++++++++
+>>> =C2=A0 arch/powerpc/kernel/machine_kexec.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+>>> =C2=A0 arch/powerpc/kernel/misc_64.S=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0 7 +-
+>>> =C2=A0 arch/powerpc/kernel/setup-common.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 20 +
+>>> =C2=A0 arch/powerpc/mm/init-common.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0 7 +
+>>> =C2=A0 arch/powerpc/mm/init_32.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0 5 -
+>>> =C2=A0 arch/powerpc/mm/init_64.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0 5 -
+>>> =C2=A0 arch/powerpc/mm/mmu_decl.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 11 +
+>>> =C2=A0 arch/powerpc/mm/nohash/fsl_booke.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 8 +-
+>>> =C2=A0 18 files changed, 572 insertions(+), 52 deletions(-)
+>>> =C2=A0 create mode 100644 Documentation/powerpc/kaslr-booke32.rst
+>>> =C2=A0 create mode 100644 arch/powerpc/kernel/kaslr_booke.c
+>>>
