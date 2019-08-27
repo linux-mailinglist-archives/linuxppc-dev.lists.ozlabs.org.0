@@ -1,71 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE42E9EAEF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:27:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 359389EB0B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:30:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Hrmj3RcyzDqt3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 00:27:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Hrrj3fzGzDqx9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 00:30:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="f+5hfHZV"; 
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HrH14kTkzDqt3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 00:05:01 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id c2so11853027plz.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 07:05:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=t9xctO/WP/vM2N5V7/AvRgZTobzXsqkZj3kzkKzY+c8=;
- b=f+5hfHZV3TLUfwm18/n69YUcml42uyWVJgGc8yRGKvJ6GLp8HQG9luHFUXoEWzxjW0
- O+XZZG7YHbCih0Dy6sejyDN6Z6kupVnFkKcRAermqU4rEN0pwLnKx+WS9sM/p6T7fmmU
- L6JE3W2OMSlkM5Q39iwan4bJ/4NGnt+ah1qkE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=t9xctO/WP/vM2N5V7/AvRgZTobzXsqkZj3kzkKzY+c8=;
- b=jelDFMfr0Zb3XHZituHFKOW7yVg4w2TnYHnIODWnikgspAcXMaD6vYE0HGy2rIzTWS
- 73nnDMPCYvjOCJaKDw0ZCSGHIuP9oPtjJ09Mjfv/g1vUS++c0MCyLYw3Rp6vI4oArgYz
- IAP1rQM+g2bE1iCYUh7ST1SDqtRmRCK19tjwLRiwhdmAKbuhBV+Wl/Jce31IcOaM4S16
- xQ8Swk6DKcka4g9Y/SfEa4B3JCNCTcqsxpHFA4k7xQrPTKBcabkyyzB9iWTSUtNbBp+e
- Mx7j1/HrfJWJqzwB8J6AbD+3CoV/1GMaNQpPI0MeN+ZeEDqYNmTXC5/cwuLMUstp9995
- T0Tg==
-X-Gm-Message-State: APjAAAVqCzUjQ65jo8kCyCMKoKoRy1gAMEWGGrFtPQw8sFBoeIpdYp12
- 3ty0KVrmdF5EnzNPKVnYfv+pKQ==
-X-Google-Smtp-Source: APXvYqyj0rYfewcCj6c1ycF9gMEuwWvzV9FIgo+OumVuJdxKjZsukAJMiIcCF0D+WMeg/csHRIWD2A==
-X-Received: by 2002:a17:902:7d8b:: with SMTP id
- a11mr24484244plm.306.1566914697754; 
- Tue, 27 Aug 2019 07:04:57 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id r61sm2282367pjb.7.2019.08.27.07.04.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2019 07:04:56 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Masahiro Yamada <yamada.masahiro@socionext.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: powerpc asm-prototypes.h seems odd
-In-Reply-To: <CAK7LNATg7O0ZQQ4fe2maNqf0ascHU8b2Mfnqkrxzpzj8D_X7pQ@mail.gmail.com>
-References: <CAK7LNATg7O0ZQQ4fe2maNqf0ascHU8b2Mfnqkrxzpzj8D_X7pQ@mail.gmail.com>
-Date: Wed, 28 Aug 2019 00:04:38 +1000
-Message-ID: <871rx64scp.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Hrlv1CTLzDqts
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 00:26:34 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7REIen3072268; Tue, 27 Aug 2019 10:26:22 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2un5cxu2ua-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Aug 2019 10:26:21 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7REJ5qK074678;
+ Tue, 27 Aug 2019 10:26:21 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2un5cxu2ty-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Aug 2019 10:26:21 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7REKVtU025745;
+ Tue, 27 Aug 2019 14:26:20 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02wdc.us.ibm.com with ESMTP id 2ujvv6g42b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Aug 2019 14:26:20 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7REQKqX52756946
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Aug 2019 14:26:20 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B1F712405B;
+ Tue, 27 Aug 2019 14:26:20 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BE4E9124053;
+ Tue, 27 Aug 2019 14:26:19 +0000 (GMT)
+Received: from localhost (unknown [9.85.181.53])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Aug 2019 14:26:19 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Subject: Re: [PATCH 1/2] powerpc/pseries: Delete an unnecessary kfree() call
+ in dlpar_store()
+In-Reply-To: <b46cc4ff-a14c-0c10-0c0c-95573a960178@web.de>
+References: <db28c84d-ac07-6d9a-a371-c97ab72bf763@web.de>
+ <b46cc4ff-a14c-0c10-0c0c-95573a960178@web.de>
+Date: Tue, 27 Aug 2019 09:26:19 -0500
+Message-ID: <878sresn04.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-27_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=796 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908270153
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,90 +90,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Oliver O'Halloran <oohall@gmail.com>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Frank Rowand <frank.rowand@sony.com>,
+ Gen Zhang <blackgod016574@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <yamada.masahiro@socionext.com> writes:
-
-> Hi.
+Markus Elfring <Markus.Elfring@web.de> writes:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 27 Aug 2019 13:34:02 +0200
 >
-> Lots of powerpc files include <asm/asm-prototypes.h>,
-> and powerpc is the only architecture that does this.
+> A null pointer would be passed to a call of the function =E2=80=9Ckfree=
+=E2=80=9D
+> immediately after a call of the function =E2=80=9Ckstrdup=E2=80=9D failed=
+ at one place.
+> Remove this superfluous function call.
 >
-> <asm/asm-prototypes.h> exists to support modversion for asm.
-> So, it is supposed to be parsed by genksysms, not to be
-> included from other files.  Right?
-
-It exists to support sparse, squashing a bunch of sparse warnings.
-
-From the commit where I introduced it:
-
-commit 42f5b4cacd783faf05e3ff8bf85e8be31f3dfa9d
-Author: Daniel Axtens <dja@axtens.net>
-Date:   Wed May 18 11:16:50 2016 +1000
-
-    powerpc: Introduce asm-prototypes.h
-    
-    Sparse picked up a number of functions that are implemented in C and
-    then only referred to in asm code.
-    
-    This introduces asm-prototypes.h, which provides a place for
-    prototypes of these functions.
-    
-    This silences some sparse warnings.
-    
-    Signed-off-by: Daniel Axtens <dja@axtens.net>
-    [mpe: Add include guards, clean up copyright & GPL text]
-    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-
-Regards,
-Daniel
-
+> This issue was detected by using the Coccinelle software.
 >
->
-> $  git grep  asm/asm-prototypes.h
-> arch/arm64/include/asm/asm-prototypes.h: * ... kbuild will
-> automatically pick these up from <asm/asm-prototypes.h> and
-> arch/powerpc/kernel/early_32.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/irq.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/machine_kexec_64.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/process.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/prom_init.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/ptrace.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/security.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/setup_32.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/signal_32.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/signal_64.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/smp.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/syscalls.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/tau_6xx.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/time.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/trace/ftrace.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kernel/traps.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kvm/book3s_emulate.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kvm/book3s_hv.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kvm/book3s_hv_builtin.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kvm/book3s_hv_rm_xive.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/kvm/book3s_pr.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/lib/vmx-helper.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/mm/book3s64/hash_utils.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/mm/book3s64/slb.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/platforms/powernv/idle.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/platforms/powernv/opal-call.c:#include <asm/asm-prototypes.h>
-> arch/powerpc/platforms/powernv/opal-tracepoints.c:#include
-> <asm/asm-prototypes.h>
-> arch/powerpc/platforms/pseries/lpar.c:#include <asm/asm-prototypes.h>
-> scripts/Makefile.build:# .S file exports must have their C prototypes
-> defined in asm/asm-prototypes.h
-> scripts/Makefile.build:     echo "\#include <asm/asm-prototypes.h>" ;
->                             \
-> scripts/Makefile.build:ASM_PROTOTYPES := $(wildcard
-> $(srctree)/arch/$(SRCARCH)/include/asm/asm-prototypes.h)
->
->
->
-> -- 
-> Best Regards
-> Masahiro Yamada
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+
+Acked-by: Nathan Lynch <nathanl@linux.ibm.com>
