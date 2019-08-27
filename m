@@ -1,66 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454C59E23D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:21:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E819F9E253
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:24:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HhfC2ZxSzDqWL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 18:21:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HhkG0GbNzDqZL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 18:24:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="N58Mo1kB"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="pgDzoRmB"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HhT75rB1zDqbD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 18:13:14 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46HhSz6dDWzB09Zp;
- Tue, 27 Aug 2019 10:13:07 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=N58Mo1kB; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ibmxAVV2Dw-J; Tue, 27 Aug 2019 10:13:07 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46HhSz5PB6zB09Zn;
- Tue, 27 Aug 2019 10:13:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566893587; bh=ubHkbneok8K2cTYT/jQrBsXkaZGXihrm+aatYILFw2I=;
- h=From:Subject:To:Cc:Date:From;
- b=N58Mo1kBbG+y/ju35+KRtvnTi3QC2IqmKwRtxxKrVECVOpB7TQ9U/D/hiJhSGsQs/
- vvGrlsSy2dZLG+f06Z+pb9vC9OWOvgluUXq6cvTglnruNzXRRPlAlHUyWry1pdSdBN
- BkLhBUWJ8cfScwRiVDa3GePPFTdEAV9PB6lMvHTQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C737E8B7F6;
- Tue, 27 Aug 2019 10:13:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QfE1rjn32BdN; Tue, 27 Aug 2019 10:13:08 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 93D128B74C;
- Tue, 27 Aug 2019 10:13:08 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id DC623696D8; Tue, 27 Aug 2019 08:13:07 +0000 (UTC)
-Message-Id: <0f7e164afb5d1b022441559fe5a999bb6d3c0a23.1566893505.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH 1/2] powerpc: permanently include 8xx registers in reg.h
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 27 Aug 2019 08:13:07 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HhYr3NrmzDqws
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 18:17:19 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id q139so13607946pfc.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 01:17:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
+ :message-id:content-transfer-encoding;
+ bh=CEOf0nLY5lE/dBUnLidCi1FFv0rRk45f4HDPBb+0ltM=;
+ b=pgDzoRmBycZ+4c89QIixN160GULFWde3fPzE/AV0y3eL8+4mR/OO+Ro4GDiqxbysCp
+ tCyXYZsAVPMSf8tyedGSMUvbIw1L5yREQn5KEYFnpnc9Ql57FQO8QynC1TWVVN3HyCJV
+ 2xei4N0WpsoWLyh1QLoY1NPamfHMPRlvAbnj0TAdcPldq/EOV3Zad6zS+1BlhUEYcgIs
+ 7HTe+uS+3ffAH5j2I4sETeRXSl4XJxE/1oxjLcZtBODQ169MQb4HLmor0lTYhXS7V9Kj
+ t+3sx8t/hjO8uniwZYI0KgLVNENOD3s8wKrrPEssN7ctu2+JLuIJH/6pWtj5EoiJAkd5
+ /58w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=CEOf0nLY5lE/dBUnLidCi1FFv0rRk45f4HDPBb+0ltM=;
+ b=RHh2uCB1wLe02/Y25357BzPCum/fkXSJCwHyNrD2V3czgFiqaObsEe1dnsYsniQr3Q
+ AhJnnNFVxe0p/gSKVrRFbBjzuKkxUpUtG8XSTlVn5GZL4usBZuYAoWsu0MB2SIxqqqTH
+ 2KCLBqWw43sXOY6Ph/YAUaXFyDfXHeX0nsz5rJ8yAWICzyUzwCZ9ct9xklxpn5RTCsOV
+ f5kej3qKW8gSlmkZr6HXBL3TzDpTxdjPYj5bzf+z2AQNcb2Ip3Zq33mg3qBq8iPn/Xao
+ yMgoVwoXjwfUH/ZLFmgIw6b7xdLLHt0Lmo7SEnMukBTPoQ+w7RE3odYUXG3mwLVs9Klc
+ WGew==
+X-Gm-Message-State: APjAAAWETkXP9vG7N7u+w4oTW2d4HgSTZJ15AoGNSS7MLTQGsMKIuN2g
+ WjNWZcEQ5WsdIpDYH8tqqnQ=
+X-Google-Smtp-Source: APXvYqwGdhAwdMHg+CjxhpKDmM633BIyjSauA2RTMlKTxDgzTRnPC0zVHfu5ciKIpJqaZ4K2wpQTmw==
+X-Received: by 2002:a62:8343:: with SMTP id h64mr23828111pfe.170.1566893831604; 
+ Tue, 27 Aug 2019 01:17:11 -0700 (PDT)
+Received: from localhost (14-202-91-55.tpgi.com.au. [14.202.91.55])
+ by smtp.gmail.com with ESMTPSA id 143sm13795812pgc.6.2019.08.27.01.17.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Aug 2019 01:17:11 -0700 (PDT)
+Date: Tue, 27 Aug 2019 18:16:38 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/3] powerpc/64: __ioremap_at clean up in the error case
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+References: <20190610030818.17965-1-npiggin@gmail.com>
+ <c11ab8b7-86ef-c5c6-1392-b5c20fc8e185@c-s.fr>
+In-Reply-To: <c11ab8b7-86ef-c5c6-1392-b5c20fc8e185@c-s.fr>
+MIME-Version: 1.0
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1566893767.4ybhdme9jr.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,54 +80,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most 8xx registers have specific names, so just include
-reg_8xx.h all the time in reg.h in order to have them defined
-even when CONFIG_PPC_8xx is not selected. This will avoid
-the need for #ifdefs in C code.
+Christophe Leroy's on August 20, 2019 5:44 pm:
+> Hi Nick,
+>=20
+> Le 10/06/2019 =C3=A0 05:08, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> __ioremap_at error handling is wonky, it requires caller to clean up
+>> after it. Implement a helper that does the map and error cleanup and
+>> remove the requirement from the caller.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>=20
+>> This series is a different approach to the problem, using the generic
+>> ioremap_page_range directly which reduces added code, and moves
+>> the radix specific code into radix files. Thanks to Christophe for
+>> pointing out various problems with the previous patch.
+>>=20
+>>   arch/powerpc/mm/pgtable_64.c | 27 ++++++++++++++++++++-------
+>>   1 file changed, 20 insertions(+), 7 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
+>> index d2d976ff8a0e..6bd3660388aa 100644
+>> --- a/arch/powerpc/mm/pgtable_64.c
+>> +++ b/arch/powerpc/mm/pgtable_64.c
+>=20
+> [...]
+>=20
+>> @@ -182,8 +197,6 @@ void __iomem * __ioremap_caller(phys_addr_t addr, un=
+signed long size,
+>>  =20
+>>   		area->phys_addr =3D paligned;
+>>   		ret =3D __ioremap_at(paligned, area->addr, size, prot);
+>> -		if (!ret)
+>> -			vunmap(area->addr);
+>=20
+> AFAICS, ioremap_range() calls unmap_kernel_range() in the error case,
+> but I can't see that that function does the vunmap(), does it ?. If not,=20
+> who frees the area allocated by __get_vm_area_caller() ?
 
-Guard SPRN_ICTRL in an #ifdef CONFIG_PPC_8xx as this register
-has same name but different meaning and different spr number as
-another register in the mpc7450.
+Oh good catch, I guess we need to keep a free_vm_area here.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/reg.h     | 2 --
- arch/powerpc/include/asm/reg_8xx.h | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 10caa145f98b..b17ee25df226 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -25,9 +25,7 @@
- #include <asm/reg_fsl_emb.h>
- #endif
- 
--#ifdef CONFIG_PPC_8xx
- #include <asm/reg_8xx.h>
--#endif /* CONFIG_PPC_8xx */
- 
- #define MSR_SF_LG	63              /* Enable 64 bit mode */
- #define MSR_ISF_LG	61              /* Interrupt 64b mode valid on 630 */
-diff --git a/arch/powerpc/include/asm/reg_8xx.h b/arch/powerpc/include/asm/reg_8xx.h
-index 7192eece6c3e..abc663c0f1db 100644
---- a/arch/powerpc/include/asm/reg_8xx.h
-+++ b/arch/powerpc/include/asm/reg_8xx.h
-@@ -38,7 +38,9 @@
- #define SPRN_CMPF	153
- #define SPRN_LCTRL1	156
- #define SPRN_LCTRL2	157
-+#ifdef CONFIG_PPC_8xx
- #define SPRN_ICTRL	158
-+#endif
- #define SPRN_BAR	159
- 
- /* Commands.  Only the first few are available to the instruction cache.
--- 
-2.13.3
-
+Thanks,
+Nick
+=
