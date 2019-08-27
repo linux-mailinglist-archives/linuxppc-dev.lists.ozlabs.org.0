@@ -2,43 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C019E8CF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 15:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBFA9E950
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 15:28:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Hq7b71J8zDqTW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 23:13:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HqT85CGFzDqd9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 23:28:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=andrew.murray@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
+ envelope-from=arnaldo.melo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46Hq4b2fL9zDq7W
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 23:10:53 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8166360;
- Tue, 27 Aug 2019 06:10:50 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.20])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1C5513F246;
- Tue, 27 Aug 2019 06:10:50 -0700 (PDT)
-Date: Tue, 27 Aug 2019 14:10:48 +0100
-From: Andrew Murray <andrew.murray@arm.com>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCH v2 01/10] PCI: designware-ep: Add multiple PFs support
- for DWC
-Message-ID: <20190827131048.GK14582@e119886-lin.cambridge.arm.com>
-References: <20190822112242.16309-1-xiaowei.bao@nxp.com>
- <20190823132526.GD14582@e119886-lin.cambridge.arm.com>
- <AM5PR04MB32997FFCD08E2C34541D2F9BF5A40@AM5PR04MB3299.eurprd04.prod.outlook.com>
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="qYfEAi38"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
+ [IPv6:2607:f8b0:4864:20::842])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HqP35Hc2zDqd9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 23:25:07 +1000 (AEST)
+Received: by mail-qt1-x842.google.com with SMTP id v38so21261341qtb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 06:25:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:date:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=diB9QR+fjAYcqnIfXIkXcRUq1U2FSgAV8l7GeX/ce9M=;
+ b=qYfEAi38itlyzUaW5Cxd2p9zJeX1LDqmFHLncGFl1Uwjtab9nGt5zWvFxztbL2Ns2J
+ nygs6N1ZTAOPJwswH7dwzn2yB/A5tzxihTvZpN8qytcKS0KlyIokcZW3VTjSA5O9Cil6
+ r3U/HPwKG6Fr1fC1xP96nA5jzIgVjmsVoKfbFFqMGUueyesEAispnupDTwaj2Wgv3q2Y
+ J+YCxfIXjCDd+jF5aexHwOU+bXFxHrHOzODIrsgKcOSHj4YkznWbrGTih+WReq4ivIze
+ Qd/KzySr9LQ/FQve0w3ppITv0VZrP/WhkwcJH83jhuJmD1eh25R+JPf1WEmPdSbTWzDV
+ FtBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=diB9QR+fjAYcqnIfXIkXcRUq1U2FSgAV8l7GeX/ce9M=;
+ b=iun5DnzwRFlvvYHjuifOmYC37HmhTNRGJ7cRmVdjayMB+MCrwn8+xT/Nf6jqDhzn5r
+ TfqyRxVOjyGHqfi3dYGnchu0CyuQHzsKtIyIdCAYlKTKrgADlvhDECXBOJM4dIdFeVt+
+ ZGXcPVV8EfewvKIE4z5LarFvcHGwUmuj/6OX3IDGJ1YmleYj/oXNDTMKMQZ++WEclLJ/
+ UZ8LAGHgC9B1TtRN2iZ/6wSOJIRfViPVYExSatsxLqD6V/JQ/T2XL16GSWa5NH8HNYqR
+ Y1CJYIgAjy8uNH417uLSPSF4UuoXuxHjVROn0GX9TYixt0ILo0L7rPNUKuGyjEnUBIB2
+ THEA==
+X-Gm-Message-State: APjAAAUGlIs45n64o32RwOQuKgEkJpRglnzs541CHyCet97fbS/cqCDE
+ 0wpZP7nFIhMpo9qbGSjJ6eQ=
+X-Google-Smtp-Source: APXvYqzHnkejo7iXyMOPs2PrKR1R1hd26MiUI3X1WtNAeIfrFJxJDzJO+agxAifPrwiHnkopsZ4K8A==
+X-Received: by 2002:aed:3363:: with SMTP id u90mr22634111qtd.7.1566912303567; 
+ Tue, 27 Aug 2019 06:25:03 -0700 (PDT)
+Received: from quaco.ghostprotocols.net ([179.97.35.50])
+ by smtp.gmail.com with ESMTPSA id h4sm8075921qtq.82.2019.08.27.06.25.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Aug 2019 06:25:02 -0700 (PDT)
+From: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
+X-Google-Original-From: Arnaldo Carvalho de Melo <acme@kernel.org>
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+ id C903840916; Tue, 27 Aug 2019 10:24:59 -0300 (-03)
+Date: Tue, 27 Aug 2019 10:24:59 -0300
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] perf arch powerpc: Sync powerpc syscall.tbl
+Message-ID: <20190827132459.GA20877@kernel.org>
+References: <20190827071458.19897-1-naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AM5PR04MB32997FFCD08E2C34541D2F9BF5A40@AM5PR04MB3299.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
+In-Reply-To: <20190827071458.19897-1-naveen.n.rao@linux.vnet.ibm.com>
+X-Url: http://acmel.wordpress.com
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,442 +83,312 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, Roy Zang <roy.zang@nxp.com>,
- "lorenzo.pieralisi@arm.co" <lorenzo.pieralisi@arm.co>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kishon@ti.com" <kishon@ti.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "gustavo.pimentel@synopsys.com" <gustavo.pimentel@synopsys.com>,
- "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>, Leo Li <leoyang.li@nxp.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>, Mingkai Hu <mingkai.hu@nxp.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 23, 2019 at 11:50:20PM +0000, Xiaowei Bao wrote:
+Em Tue, Aug 27, 2019 at 12:44:58PM +0530, Naveen N. Rao escreveu:
+> Copy over powerpc syscall.tbl to grab changes from the below commits:
+>   commit cee3536d24a1 ("powerpc: Wire up clone3 syscall")
+>   commit 1a271a68e030 ("arch: mark syscall number 435 reserved for clone3")
+>   commit 7615d9e1780e ("arch: wire-up pidfd_open()")
+>   commit d8076bdb56af ("uapi: Wire up the mount API syscalls on non-x86 arches [ver #2]")
+>   commit 39036cd27273 ("arch: add pidfd and io_uring syscalls everywhere")
+>   commit 48166e6ea47d ("y2038: add 64-bit time_t syscalls to all 32-bit architectures")
+>   commit d33c577cccd0 ("y2038: rename old time and utime syscalls")
+>   commit 00bf25d693e7 ("y2038: use time32 syscall names on 32-bit")
+>   commit 8dabe7245bbc ("y2038: syscalls: rename y2038 compat syscalls")
+>   commit 0d6040d46817 ("arch: add split IPC system calls where needed")
 > 
+> Reported-by: Nicholas Piggin <npiggin@gmail.com>
+
+Thanks, applied to perf/core.
+
+- Arnaldo
+
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> ---
+>  .../arch/powerpc/entry/syscalls/syscall.tbl   | 146 ++++++++++++++----
+>  1 file changed, 119 insertions(+), 27 deletions(-)
 > 
-> > -----Original Message-----
-> > From: Andrew Murray <andrew.murray@arm.com>
-> > Sent: 2019年8月23日 21:25
-> > To: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > Cc: bhelgaas@google.com; robh+dt@kernel.org; mark.rutland@arm.com;
-> > shawnguo@kernel.org; Leo Li <leoyang.li@nxp.com>; kishon@ti.com;
-> > lorenzo.pieralisi@arm.co; arnd@arndb.de; gregkh@linuxfoundation.org; M.h.
-> > Lian <minghuan.lian@nxp.com>; Mingkai Hu <mingkai.hu@nxp.com>; Roy
-> > Zang <roy.zang@nxp.com>; jingoohan1@gmail.com;
-> > gustavo.pimentel@synopsys.com; linux-pci@vger.kernel.org;
-> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; linuxppc-dev@lists.ozlabs.org
-> > Subject: Re: [PATCH v2 01/10] PCI: designware-ep: Add multiple PFs support
-> > for DWC
-> > 
-> > On Thu, Aug 22, 2019 at 07:22:33PM +0800, Xiaowei Bao wrote:
-> > > Add multiple PFs support for DWC, different PF have different config
-> > > space we use pf-offset property which get from the DTS to access the
-> > > different pF config space.
-> > 
-> > It looks like you're missing a --cover-letter again.
-> > 
-> > >
-> > > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > > ---
-> > > v2:
-> > >  - Remove duplicate redundant code.
-> > >  - Reimplement the PF config space access way.
-> > >
-> > >  drivers/pci/controller/dwc/pcie-designware-ep.c | 122
-> > ++++++++++++++++--------
-> > >  drivers/pci/controller/dwc/pcie-designware.c    |  59 ++++++++----
-> > >  drivers/pci/controller/dwc/pcie-designware.h    |  11 ++-
-> > >  3 files changed, 134 insertions(+), 58 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > index 2bf5a35..3e2b740 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > @@ -19,12 +19,17 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
-> > >  	pci_epc_linkup(epc);
-> > >  }
-> > >
-> > > -static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno
-> > bar,
-> > > -				   int flags)
-> > > +static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
-> > > +				   enum pci_barno bar, int flags)
-> > >  {
-> > >  	u32 reg;
-> > > +	unsigned int func_offset = 0;
-> > > +	struct dw_pcie_ep *ep = &pci->ep;
-> > >
-> > > -	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
-> > > +	if (ep->ops->func_conf_select)
-> > > +		func_offset = ep->ops->func_conf_select(ep, func_no);
-> > > +
-> > > +	reg = func_offset + PCI_BASE_ADDRESS_0 + (4 * bar);
-> > 
-> > This pattern of checking if func_conf_select exists and using it to get an offset
-> > is repeated a lot throughout this file. You could move this functionality into a
-> > new function (similar to dw_pcie_read_dbi etc). Or perhaps a new variant of
-> > dw_pcie_writel_ should be created that writes takes a func_no argument.
-> 
-> Thanks for your comments, I thought about this method before, but there is a issue
-> about the method of access the different func config space, due to our platform use
-> this method that different func have different offset from dbi_base to access the
-> different config space, but others platform maybe use the way that write a register
-> to implement different func config space access, so I think reserve a callback function 
+> diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> index db3bbb8744af..43f736ed47f2 100644
+> --- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> +++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> @@ -20,7 +20,9 @@
+>  10	common	unlink				sys_unlink
+>  11	nospu	execve				sys_execve			compat_sys_execve
+>  12	common	chdir				sys_chdir
+> -13	common	time				sys_time			compat_sys_time
+> +13	32	time				sys_time32
+> +13	64	time				sys_time
+> +13	spu	time				sys_time
+>  14	common	mknod				sys_mknod
+>  15	common	chmod				sys_chmod
+>  16	common	lchown				sys_lchown
+> @@ -36,14 +38,17 @@
+>  22	spu	umount				sys_ni_syscall
+>  23	common	setuid				sys_setuid
+>  24	common	getuid				sys_getuid
+> -25	common	stime				sys_stime			compat_sys_stime
+> +25	32	stime				sys_stime32
+> +25	64	stime				sys_stime
+> +25	spu	stime				sys_stime
+>  26	nospu	ptrace				sys_ptrace			compat_sys_ptrace
+>  27	common	alarm				sys_alarm
+>  28	32	oldfstat			sys_fstat			sys_ni_syscall
+>  28	64	oldfstat			sys_ni_syscall
+>  28	spu	oldfstat			sys_ni_syscall
+>  29	nospu	pause				sys_pause
+> -30	nospu	utime				sys_utime			compat_sys_utime
+> +30	32	utime				sys_utime32
+> +30	64	utime				sys_utime
+>  31	common	stty				sys_ni_syscall
+>  32	common	gtty				sys_ni_syscall
+>  33	common	access				sys_access
+> @@ -157,7 +162,9 @@
+>  121	common	setdomainname			sys_setdomainname
+>  122	common	uname				sys_newuname
+>  123	common	modify_ldt			sys_ni_syscall
+> -124	common	adjtimex			sys_adjtimex			compat_sys_adjtimex
+> +124	32	adjtimex			sys_adjtimex_time32
+> +124	64	adjtimex			sys_adjtimex
+> +124	spu	adjtimex			sys_adjtimex
+>  125	common	mprotect			sys_mprotect
+>  126	32	sigprocmask			sys_sigprocmask			compat_sys_sigprocmask
+>  126	64	sigprocmask			sys_ni_syscall
+> @@ -198,8 +205,12 @@
+>  158	common	sched_yield			sys_sched_yield
+>  159	common	sched_get_priority_max		sys_sched_get_priority_max
+>  160	common	sched_get_priority_min		sys_sched_get_priority_min
+> -161	common	sched_rr_get_interval		sys_sched_rr_get_interval	compat_sys_sched_rr_get_interval
+> -162	common	nanosleep			sys_nanosleep			compat_sys_nanosleep
+> +161	32	sched_rr_get_interval		sys_sched_rr_get_interval_time32
+> +161	64	sched_rr_get_interval		sys_sched_rr_get_interval
+> +161	spu	sched_rr_get_interval		sys_sched_rr_get_interval
+> +162	32	nanosleep			sys_nanosleep_time32
+> +162	64	nanosleep			sys_nanosleep
+> +162	spu	nanosleep			sys_nanosleep
+>  163	common	mremap				sys_mremap
+>  164	common	setresuid			sys_setresuid
+>  165	common	getresuid			sys_getresuid
+> @@ -213,7 +224,8 @@
+>  173	nospu	rt_sigaction			sys_rt_sigaction		compat_sys_rt_sigaction
+>  174	nospu	rt_sigprocmask			sys_rt_sigprocmask		compat_sys_rt_sigprocmask
+>  175	nospu	rt_sigpending			sys_rt_sigpending		compat_sys_rt_sigpending
+> -176	nospu	rt_sigtimedwait			sys_rt_sigtimedwait		compat_sys_rt_sigtimedwait
+> +176	32	rt_sigtimedwait			sys_rt_sigtimedwait_time32	compat_sys_rt_sigtimedwait_time32
+> +176	64	rt_sigtimedwait			sys_rt_sigtimedwait
+>  177	nospu 	rt_sigqueueinfo			sys_rt_sigqueueinfo		compat_sys_rt_sigqueueinfo
+>  178	nospu 	rt_sigsuspend			sys_rt_sigsuspend		compat_sys_rt_sigsuspend
+>  179	common	pread64				sys_pread64			compat_sys_pread64
+> @@ -260,7 +272,9 @@
+>  218	common	removexattr			sys_removexattr
+>  219	common	lremovexattr			sys_lremovexattr
+>  220	common	fremovexattr			sys_fremovexattr
+> -221	common	futex				sys_futex			compat_sys_futex
+> +221	32	futex				sys_futex_time32
+> +221	64	futex				sys_futex
+> +221	spu	futex				sys_futex
+>  222	common	sched_setaffinity		sys_sched_setaffinity		compat_sys_sched_setaffinity
+>  223	common	sched_getaffinity		sys_sched_getaffinity		compat_sys_sched_getaffinity
+>  # 224 unused
+> @@ -268,7 +282,9 @@
+>  226	32	sendfile64			sys_sendfile64			compat_sys_sendfile64
+>  227	common	io_setup			sys_io_setup			compat_sys_io_setup
+>  228	common	io_destroy			sys_io_destroy
+> -229	common	io_getevents			sys_io_getevents		compat_sys_io_getevents
+> +229	32	io_getevents			sys_io_getevents_time32
+> +229	64	io_getevents			sys_io_getevents
+> +229	spu	io_getevents			sys_io_getevents
+>  230	common	io_submit			sys_io_submit			compat_sys_io_submit
+>  231	common	io_cancel			sys_io_cancel
+>  232	nospu	set_tid_address			sys_set_tid_address
+> @@ -280,19 +296,33 @@
+>  238	common	epoll_wait			sys_epoll_wait
+>  239	common	remap_file_pages		sys_remap_file_pages
+>  240	common	timer_create			sys_timer_create		compat_sys_timer_create
+> -241	common	timer_settime			sys_timer_settime		compat_sys_timer_settime
+> -242	common	timer_gettime			sys_timer_gettime		compat_sys_timer_gettime
+> +241	32	timer_settime			sys_timer_settime32
+> +241	64	timer_settime			sys_timer_settime
+> +241	spu	timer_settime			sys_timer_settime
+> +242	32	timer_gettime			sys_timer_gettime32
+> +242	64	timer_gettime			sys_timer_gettime
+> +242	spu	timer_gettime			sys_timer_gettime
+>  243	common	timer_getoverrun		sys_timer_getoverrun
+>  244	common	timer_delete			sys_timer_delete
+> -245	common	clock_settime			sys_clock_settime		compat_sys_clock_settime
+> -246	common	clock_gettime			sys_clock_gettime		compat_sys_clock_gettime
+> -247	common	clock_getres			sys_clock_getres		compat_sys_clock_getres
+> -248	common	clock_nanosleep			sys_clock_nanosleep		compat_sys_clock_nanosleep
+> +245	32	clock_settime			sys_clock_settime32
+> +245	64	clock_settime			sys_clock_settime
+> +245	spu	clock_settime			sys_clock_settime
+> +246	32	clock_gettime			sys_clock_gettime32
+> +246	64	clock_gettime			sys_clock_gettime
+> +246	spu	clock_gettime			sys_clock_gettime
+> +247	32	clock_getres			sys_clock_getres_time32
+> +247	64	clock_getres			sys_clock_getres
+> +247	spu	clock_getres			sys_clock_getres
+> +248	32	clock_nanosleep			sys_clock_nanosleep_time32
+> +248	64	clock_nanosleep			sys_clock_nanosleep
+> +248	spu	clock_nanosleep			sys_clock_nanosleep
+>  249	32	swapcontext			ppc_swapcontext			ppc32_swapcontext
+>  249	64	swapcontext			ppc64_swapcontext
+>  249	spu	swapcontext			sys_ni_syscall
+>  250	common	tgkill				sys_tgkill
+> -251	common	utimes				sys_utimes			compat_sys_utimes
+> +251	32	utimes				sys_utimes_time32
+> +251	64	utimes				sys_utimes
+> +251	spu	utimes				sys_utimes
+>  252	common	statfs64			sys_statfs64			compat_sys_statfs64
+>  253	common	fstatfs64			sys_fstatfs64			compat_sys_fstatfs64
+>  254	32	fadvise64_64			ppc_fadvise64_64
+> @@ -308,8 +338,10 @@
+>  261	nospu	set_mempolicy			sys_set_mempolicy		compat_sys_set_mempolicy
+>  262	nospu	mq_open				sys_mq_open			compat_sys_mq_open
+>  263	nospu	mq_unlink			sys_mq_unlink
+> -264	nospu	mq_timedsend			sys_mq_timedsend		compat_sys_mq_timedsend
+> -265	nospu	mq_timedreceive			sys_mq_timedreceive		compat_sys_mq_timedreceive
+> +264	32	mq_timedsend			sys_mq_timedsend_time32
+> +264	64	mq_timedsend			sys_mq_timedsend
+> +265	32	mq_timedreceive			sys_mq_timedreceive_time32
+> +265	64	mq_timedreceive			sys_mq_timedreceive
+>  266	nospu	mq_notify			sys_mq_notify			compat_sys_mq_notify
+>  267	nospu	mq_getsetattr			sys_mq_getsetattr		compat_sys_mq_getsetattr
+>  268	nospu	kexec_load			sys_kexec_load			compat_sys_kexec_load
+> @@ -324,8 +356,10 @@
+>  277	nospu	inotify_rm_watch		sys_inotify_rm_watch
+>  278	nospu	spu_run				sys_spu_run
+>  279	nospu	spu_create			sys_spu_create
+> -280	nospu	pselect6			sys_pselect6			compat_sys_pselect6
+> -281	nospu	ppoll				sys_ppoll			compat_sys_ppoll
+> +280	32	pselect6			sys_pselect6_time32		compat_sys_pselect6_time32
+> +280	64	pselect6			sys_pselect6
+> +281	32	ppoll				sys_ppoll_time32		compat_sys_ppoll_time32
+> +281	64	ppoll				sys_ppoll
+>  282	common	unshare				sys_unshare
+>  283	common	splice				sys_splice
+>  284	common	tee				sys_tee
+> @@ -334,7 +368,9 @@
+>  287	common	mkdirat				sys_mkdirat
+>  288	common	mknodat				sys_mknodat
+>  289	common	fchownat			sys_fchownat
+> -290	common	futimesat			sys_futimesat			compat_sys_futimesat
+> +290	32	futimesat			sys_futimesat_time32
+> +290	64	futimesat			sys_futimesat
+> +290	spu	utimesat			sys_futimesat
+>  291	32	fstatat64			sys_fstatat64
+>  291	64	newfstatat			sys_newfstatat
+>  291	spu	newfstatat			sys_newfstatat
+> @@ -350,15 +386,21 @@
+>  301	common	move_pages			sys_move_pages			compat_sys_move_pages
+>  302	common	getcpu				sys_getcpu
+>  303	nospu	epoll_pwait			sys_epoll_pwait			compat_sys_epoll_pwait
+> -304	common	utimensat			sys_utimensat			compat_sys_utimensat
+> +304	32	utimensat			sys_utimensat_time32
+> +304	64	utimensat			sys_utimensat
+> +304	spu	utimensat			sys_utimensat
+>  305	common	signalfd			sys_signalfd			compat_sys_signalfd
+>  306	common	timerfd_create			sys_timerfd_create
+>  307	common	eventfd				sys_eventfd
+>  308	common	sync_file_range2		sys_sync_file_range2		compat_sys_sync_file_range2
+>  309	nospu	fallocate			sys_fallocate			compat_sys_fallocate
+>  310	nospu	subpage_prot			sys_subpage_prot
+> -311	common	timerfd_settime			sys_timerfd_settime		compat_sys_timerfd_settime
+> -312	common	timerfd_gettime			sys_timerfd_gettime		compat_sys_timerfd_gettime
+> +311	32	timerfd_settime			sys_timerfd_settime32
+> +311	64	timerfd_settime			sys_timerfd_settime
+> +311	spu	timerfd_settime			sys_timerfd_settime
+> +312	32	timerfd_gettime			sys_timerfd_gettime32
+> +312	64	timerfd_gettime			sys_timerfd_gettime
+> +312	spu	timerfd_gettime			sys_timerfd_gettime
+>  313	common	signalfd4			sys_signalfd4			compat_sys_signalfd4
+>  314	common	eventfd2			sys_eventfd2
+>  315	common	epoll_create1			sys_epoll_create1
+> @@ -389,11 +431,15 @@
+>  340	common	getsockopt			sys_getsockopt			compat_sys_getsockopt
+>  341	common	sendmsg				sys_sendmsg			compat_sys_sendmsg
+>  342	common	recvmsg				sys_recvmsg			compat_sys_recvmsg
+> -343	common	recvmmsg			sys_recvmmsg			compat_sys_recvmmsg
+> +343	32	recvmmsg			sys_recvmmsg_time32		compat_sys_recvmmsg_time32
+> +343	64	recvmmsg			sys_recvmmsg
+> +343	spu	recvmmsg			sys_recvmmsg
+>  344	common	accept4				sys_accept4
+>  345	common	name_to_handle_at		sys_name_to_handle_at
+>  346	common	open_by_handle_at		sys_open_by_handle_at		compat_sys_open_by_handle_at
+> -347	common	clock_adjtime			sys_clock_adjtime		compat_sys_clock_adjtime
+> +347	32	clock_adjtime			sys_clock_adjtime32
+> +347	64	clock_adjtime			sys_clock_adjtime
+> +347	spu	clock_adjtime			sys_clock_adjtime
+>  348	common	syncfs				sys_syncfs
+>  349	common	sendmmsg			sys_sendmmsg			compat_sys_sendmmsg
+>  350	common	setns				sys_setns
+> @@ -414,6 +460,7 @@
+>  363	spu	switch_endian			sys_ni_syscall
+>  364	common	userfaultfd			sys_userfaultfd
+>  365	common	membarrier			sys_membarrier
+> +# 366-377 originally left for IPC, now unused
+>  378	nospu	mlock2				sys_mlock2
+>  379	nospu	copy_file_range			sys_copy_file_range
+>  380	common	preadv2				sys_preadv2			compat_sys_preadv2
+> @@ -424,4 +471,49 @@
+>  385	nospu	pkey_free			sys_pkey_free
+>  386	nospu	pkey_mprotect			sys_pkey_mprotect
+>  387	nospu	rseq				sys_rseq
+> -388	nospu	io_pgetevents			sys_io_pgetevents		compat_sys_io_pgetevents
+> +388	32	io_pgetevents			sys_io_pgetevents_time32	compat_sys_io_pgetevents
+> +388	64	io_pgetevents			sys_io_pgetevents
+> +# room for arch specific syscalls
+> +392	64	semtimedop			sys_semtimedop
+> +393	common	semget				sys_semget
+> +394	common	semctl				sys_semctl			compat_sys_semctl
+> +395	common	shmget				sys_shmget
+> +396	common	shmctl				sys_shmctl			compat_sys_shmctl
+> +397	common	shmat				sys_shmat			compat_sys_shmat
+> +398	common	shmdt				sys_shmdt
+> +399	common	msgget				sys_msgget
+> +400	common	msgsnd				sys_msgsnd			compat_sys_msgsnd
+> +401	common	msgrcv				sys_msgrcv			compat_sys_msgrcv
+> +402	common	msgctl				sys_msgctl			compat_sys_msgctl
+> +403	32	clock_gettime64			sys_clock_gettime		sys_clock_gettime
+> +404	32	clock_settime64			sys_clock_settime		sys_clock_settime
+> +405	32	clock_adjtime64			sys_clock_adjtime		sys_clock_adjtime
+> +406	32	clock_getres_time64		sys_clock_getres		sys_clock_getres
+> +407	32	clock_nanosleep_time64		sys_clock_nanosleep		sys_clock_nanosleep
+> +408	32	timer_gettime64			sys_timer_gettime		sys_timer_gettime
+> +409	32	timer_settime64			sys_timer_settime		sys_timer_settime
+> +410	32	timerfd_gettime64		sys_timerfd_gettime		sys_timerfd_gettime
+> +411	32	timerfd_settime64		sys_timerfd_settime		sys_timerfd_settime
+> +412	32	utimensat_time64		sys_utimensat			sys_utimensat
+> +413	32	pselect6_time64			sys_pselect6			compat_sys_pselect6_time64
+> +414	32	ppoll_time64			sys_ppoll			compat_sys_ppoll_time64
+> +416	32	io_pgetevents_time64		sys_io_pgetevents		sys_io_pgetevents
+> +417	32	recvmmsg_time64			sys_recvmmsg			compat_sys_recvmmsg_time64
+> +418	32	mq_timedsend_time64		sys_mq_timedsend		sys_mq_timedsend
+> +419	32	mq_timedreceive_time64		sys_mq_timedreceive		sys_mq_timedreceive
+> +420	32	semtimedop_time64		sys_semtimedop			sys_semtimedop
+> +421	32	rt_sigtimedwait_time64		sys_rt_sigtimedwait		compat_sys_rt_sigtimedwait_time64
+> +422	32	futex_time64			sys_futex			sys_futex
+> +423	32	sched_rr_get_interval_time64	sys_sched_rr_get_interval	sys_sched_rr_get_interval
+> +424	common	pidfd_send_signal		sys_pidfd_send_signal
+> +425	common	io_uring_setup			sys_io_uring_setup
+> +426	common	io_uring_enter			sys_io_uring_enter
+> +427	common	io_uring_register		sys_io_uring_register
+> +428	common	open_tree			sys_open_tree
+> +429	common	move_mount			sys_move_mount
+> +430	common	fsopen				sys_fsopen
+> +431	common	fsconfig			sys_fsconfig
+> +432	common	fsmount				sys_fsmount
+> +433	common	fspick				sys_fspick
+> +434	common	pidfd_open			sys_pidfd_open
+> +435	nospu	clone3				ppc_clone3
+> -- 
+> 2.23.0
 
-My point here was really to move out duplicated code to its own small function.
-I wasn't making any comment about (removing) the callback, just that the test and
-callback could be in one function.
+-- 
 
-> to different platform to implement the own method, my point is that, if use register 
-> method they can implement the code in this function and return offset is 0, if use 
-> offset method, they can return the offset value which can be use by dw_pcie_ep driver.
-
-By the way, I haven't looked to see how many of the dw_pcie_write_xxx functions
-would benefit from a func_no argument - if there were many calls to
-dw_pcie_write_xxx that all used a reg value originated from func_conf_select
-then an approach similar to the implementation of dw_pcie_write_dbi could
-probably be justified (i.e. rather than change the value of reg) for writing to
-functions.
-
->  
-> > 
-> > 
-> > >  	dw_pcie_dbi_ro_wr_en(pci);
-> > >  	dw_pcie_writel_dbi2(pci, reg, 0x0);
-> > >  	dw_pcie_writel_dbi(pci, reg, 0x0);
-> > 
-> > 
-> > > @@ -235,7 +257,7 @@ static int dw_pcie_ep_map_addr(struct pci_epc
-> > *epc, u8 func_no,
-> > >  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
-> > >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > >
-> > > -	ret = dw_pcie_ep_outbound_atu(ep, addr, pci_addr, size);
-> > > +	ret = dw_pcie_ep_outbound_atu(ep, func_no, addr, pci_addr, size);
-> > >  	if (ret) {
-> > >  		dev_err(pci->dev, "Failed to enable address\n");
-> > >  		return ret;
-> > > @@ -249,11 +271,15 @@ static int dw_pcie_ep_get_msi(struct pci_epc
-> > *epc, u8 func_no)
-> > >  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
-> > >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > >  	u32 val, reg;
-> > > +	unsigned int func_offset = 0;
-> > > +
-> > > +	if (ep->ops->func_conf_select)
-> > > +		func_offset = ep->ops->func_conf_select(ep, func_no);
-> > >
-> > >  	if (!ep->msi_cap)
-> > >  		return -EINVAL;
-> > >
-> > > -	reg = ep->msi_cap + PCI_MSI_FLAGS;
-> > > +	reg = ep->msi_cap + func_offset + PCI_MSI_FLAGS;
-> > 
-> > This makes me nervous.
-> > 
-> > From a PCI viewpoint, each function has it's own capability structure and
-> > within each function there may exist a MSI capability. Yet what we're doing
-> > here is using dw_pcie_ep_find_capability to get the list of capabilities for
-> > function 0, and then applying offsets from that for subsequent functions. I.e.
-> > we're applying DW specific knowledge to find the correct capability, rather
-> > than following the general PCI approach.
-> > 
-> > I think the above hunk shouldn't be required - but instead
-> > dw_pcie_ep_find_capability is updated to take a func_no parameter.
-> > 
-> > Have I understood this correctly?
-> 
-> Yes, this is a issue, I think the different func maybe have different capability,
-> but the dw_pcie_ep_find_capability function is called by dw_pcie_ep_init 
-> function, we can't add func_no parameter to dw_pcie_ep_find_capability,
-
-Why not?
-
-Given that 'struct dw_pcie' represents a controller - and thus potentially
-multiple functions - then the _find_capability function should be able to
-provide the correct offset for the given function. Surely it needs to know
-which function number? Unless there is some reason why we can assume that all
-functions share the same capability offset.
-
-Also the 'struct dw_pcie_ep' which represents an endpoint controller - this
-has msi_cap and msix_cap fields - given this may be a multifunction device
-what do these fields actually refer to?
-
-Perhaps Jungoo/Gustavo can comment.
-
-
-> I will try to fix it use a new patch, I think move this function to ep_init callback
-> function If better, thanks. 
-> 
-> 
-> > 
-> > >  	val = dw_pcie_readw_dbi(pci, reg);
-> > >  	if (!(val & PCI_MSI_FLAGS_ENABLE))
-> > >  		return -EINVAL;
-> > > @@ -268,11 +294,15 @@ static int dw_pcie_ep_set_msi(struct pci_epc
-> > *epc, u8 func_no, u8 interrupts)
-> > >  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
-> > >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > >  	u32 val, reg;
-> > > +	unsigned int func_offset = 0;
-> > > +
-> > > +	if (ep->ops->func_conf_select)
-> > > +		func_offset = ep->ops->func_conf_select(ep, func_no);
-> > >
-> > >  	if (!ep->msi_cap)
-> > >  		return -EINVAL;
-> > >
-> > > -	reg = ep->msi_cap + PCI_MSI_FLAGS;
-> > > +	reg = ep->msi_cap + func_offset + PCI_MSI_FLAGS;
-> > >  	val = dw_pcie_readw_dbi(pci, reg);
-> > >  	val &= ~PCI_MSI_FLAGS_QMASK;
-> > >  	val |= (interrupts << 1) & PCI_MSI_FLAGS_QMASK; @@ -288,11 +318,15
-> > > @@ static int dw_pcie_ep_get_msix(struct pci_epc *epc, u8 func_no)
-> > >  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
-> > >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > >  	u32 val, reg;
-> > > +	unsigned int func_offset = 0;
-> > > +
-> > > +	if (ep->ops->func_conf_select)
-> > > +		func_offset = ep->ops->func_conf_select(ep, func_no);
-> > >
-> > >  	if (!ep->msix_cap)
-> > >  		return -EINVAL;
-> > >
-> > > -	reg = ep->msix_cap + PCI_MSIX_FLAGS;
-> > > +	reg = ep->msix_cap + func_offset + PCI_MSIX_FLAGS;
-> > 
-> > Same for MSIX.
-> 
-> Yes.
-> 
-> > 
-> > >  	val = dw_pcie_readw_dbi(pci, reg);
-> > >  	if (!(val & PCI_MSIX_FLAGS_ENABLE))
-> > >  		return -EINVAL;
-> > > @@ -307,11 +341,15 @@ static int dw_pcie_ep_set_msix(struct pci_epc
-> > *epc, u8 func_no, u16 interrupts)
-> > >  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
-> > >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > >  	u32 val, reg;
-> > > +	unsigned int func_offset = 0;
-> > > +
-> > > +	if (ep->ops->func_conf_select)
-> > > +		func_offset = ep->ops->func_conf_select(ep, func_no);
-> > >
-> > >  	if (!ep->msix_cap)
-> > >  		return -EINVAL;
-> > >
-> > > -	reg = ep->msix_cap + PCI_MSIX_FLAGS;
-> > > +	reg = ep->msix_cap + func_offset + PCI_MSIX_FLAGS;
-> > >  	val = dw_pcie_readw_dbi(pci, reg);
-> > >  	val &= ~PCI_MSIX_FLAGS_QSIZE;
-> > >  	val |= interrupts;
-> > > @@ -398,29 +436,33 @@ int dw_pcie_ep_raise_msi_irq(struct
-> > dw_pcie_ep *ep, u8 func_no,
-> > >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > >  	struct pci_epc *epc = ep->epc;
-> > >  	unsigned int aligned_offset;
-> > > +	unsigned int func_offset = 0;
-> > >  	u16 msg_ctrl, msg_data;
-> > >  	u32 msg_addr_lower, msg_addr_upper, reg;
-> > >  	u64 msg_addr;
-> > >  	bool has_upper;
-> > >  	int ret;
-> > >
-> > > +	if (ep->ops->func_conf_select)
-> > > +		func_offset = ep->ops->func_conf_select(ep, func_no);
-> > > +
-> > 
-> > You could probably move this hunk below the test for msi_cap to save some
-> > cycles.
-> 
-> Sorry, I didn't understand the means, please explain it detailly, thanks a lot, ^_^
-
-If you insert the call to func_conf_select *after* the test for
-!msi_cap below - then in the case where msi_cap is NULL then you will
-save some CPU cycles by not bothering to call func_conf_select.
-
-
-> > 
-> > >  	if (!ep->msi_cap)
-> > >  		return -EINVAL;
-> > >
-> > >  	/* Raise MSI per the PCI Local Bus Specification Revision 3.0, 6.8.1. */
-> > > -	reg = ep->msi_cap + PCI_MSI_FLAGS;
-> > > +	reg = ep->msi_cap + func_offset + PCI_MSI_FLAGS;
-> > >  	msg_ctrl = dw_pcie_readw_dbi(pci, reg);
-> > >  	has_upper = !!(msg_ctrl & PCI_MSI_FLAGS_64BIT);
-> > > -	reg = ep->msi_cap + PCI_MSI_ADDRESS_LO;
-> > > +	reg = ep->msi_cap + func_offset + PCI_MSI_ADDRESS_LO;
-> > >  	msg_addr_lower = dw_pcie_readl_dbi(pci, reg);
-> > >  	if (has_upper) {
-> > > -		reg = ep->msi_cap + PCI_MSI_ADDRESS_HI;
-> > > +		reg = ep->msi_cap + func_offset + PCI_MSI_ADDRESS_HI;
-> > >  		msg_addr_upper = dw_pcie_readl_dbi(pci, reg);
-> > > -		reg = ep->msi_cap + PCI_MSI_DATA_64;
-> > > +		reg = ep->msi_cap + func_offset + PCI_MSI_DATA_64;
-> > >  		msg_data = dw_pcie_readw_dbi(pci, reg);
-> > >  	} else {
-> > >  		msg_addr_upper = 0;
-> > > -		reg = ep->msi_cap + PCI_MSI_DATA_32;
-> > > +		reg = ep->msi_cap + func_offset + PCI_MSI_DATA_32;
-> > >  		msg_data = dw_pcie_readw_dbi(pci, reg);
-> > >  	}
-> > >  	aligned_offset = msg_addr_lower & (epc->mem->page_size - 1);
-> > 
-> > 
-> > 
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.c
-> > > b/drivers/pci/controller/dwc/pcie-designware.c
-> > > index 7d25102..305e73d 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.c
-> > > @@ -158,9 +158,10 @@ static void dw_pcie_writel_ob_unroll(struct
-> > dw_pcie *pci, u32 index, u32 reg,
-> > >  	dw_pcie_writel_atu(pci, offset + reg, val);  }
-> > >
-> > > -static void dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, int
-> > index,
-> > > -					     int type, u64 cpu_addr,
-> > > -					     u64 pci_addr, u32 size)
-> > > +static void dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, u8
-> > func_no,
-> > > +					     int index, int type,
-> > > +					     u64 cpu_addr, u64 pci_addr,
-> > > +					     u32 size)
-> > >  {
-> > >  	u32 retries, val;
-> > >
-> > > @@ -175,7 +176,7 @@ static void
-> > dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, int index,
-> > >  	dw_pcie_writel_ob_unroll(pci, index, PCIE_ATU_UNR_UPPER_TARGET,
-> > >  				 upper_32_bits(pci_addr));
-> > >  	dw_pcie_writel_ob_unroll(pci, index, PCIE_ATU_UNR_REGION_CTRL1,
-> > > -				 type);
-> > > +				 type | PCIE_ATU_FUNC_NUM(func_no));
-> > 
-> > Much better :)
-> 
-> Do you mean that use the expression "a? b:c"
-> 
-> > 
-> > >  	dw_pcie_writel_ob_unroll(pci, index, PCIE_ATU_UNR_REGION_CTRL2,
-> > >  				 PCIE_ATU_ENABLE);
-> > >
-> > > @@ -194,8 +195,9 @@ static void
-> > dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, int index,
-> > >  	dev_err(pci->dev, "Outbound iATU is not being enabled\n");  }
-> > >
-> > > -void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index, int type,
-> > > -			       u64 cpu_addr, u64 pci_addr, u32 size)
-> > > +static void __dw_pcie_prog_outbound_atu(struct dw_pcie *pci, u8
-> > func_no,
-> > > +					int index, int type, u64 cpu_addr,
-> > > +					u64 pci_addr, u32 size)
-> > >  {
-> > >  	u32 retries, val;
-> > >
-> > > @@ -203,8 +205,8 @@ void dw_pcie_prog_outbound_atu(struct dw_pcie
-> > *pci, int index, int type,
-> > >  		cpu_addr = pci->ops->cpu_addr_fixup(pci, cpu_addr);
-> > >
-> > >  	if (pci->iatu_unroll_enabled) {
-> > > -		dw_pcie_prog_outbound_atu_unroll(pci, index, type, cpu_addr,
-> > > -						 pci_addr, size);
-> > > +		dw_pcie_prog_outbound_atu_unroll(pci, func_no, index, type,
-> > > +						 cpu_addr, pci_addr, size);
-> > >  		return;
-> > >  	}
-> > >
-> > 
-> > 
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h
-> > > b/drivers/pci/controller/dwc/pcie-designware.h
-> > > index ffed084..a0fdbf7 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > > @@ -71,9 +71,11 @@
-> > >  #define PCIE_ATU_TYPE_IO		0x2
-> > >  #define PCIE_ATU_TYPE_CFG0		0x4
-> > >  #define PCIE_ATU_TYPE_CFG1		0x5
-> > > +#define PCIE_ATU_FUNC_NUM(pf)           (pf << 20)
-> > 
-> > "Macro argument 'pf' may be better as '(pf)' to avoid precedence issues"
-> > 
-> > >  #define PCIE_ATU_CR2			0x908
-> > >  #define PCIE_ATU_ENABLE			BIT(31)
-> > >  #define PCIE_ATU_BAR_MODE_ENABLE	BIT(30)
-> > > +#define PCIE_ATU_FUNC_NUM_MATCH_EN      BIT(19)
-> > >  #define PCIE_ATU_LOWER_BASE		0x90C
-> > >  #define PCIE_ATU_UPPER_BASE		0x910
-> > >  #define PCIE_ATU_LIMIT			0x914
-> > > @@ -197,6 +199,7 @@ struct dw_pcie_ep_ops {
-> > >  	int	(*raise_irq)(struct dw_pcie_ep *ep, u8 func_no,
-> > >  			     enum pci_epc_irq_type type, u16 interrupt_num);
-> > >  	const struct pci_epc_features* (*get_features)(struct dw_pcie_ep
-> > > *ep);
-> > > +	unsigned int (*func_conf_select)(struct dw_pcie_ep *ep, u8 func_no);
-> > 
-> > Given that this function will return an offset, I'm not sure the name you have
-> > is suitable. Something like get_pf_offset or similar is more descriptive.
-> 
-> As above explain, my initial view is that this function can return 0 or offset depends on
-> the platform implement mechanism, so I named it func_conf_select, I think add a
-> comment for this function, like this:
-> /*
->  * provide a method to implement the method of different func config space access,
->  * if use offset method, return the offset from dbi_base, if your register method, implement
->  * the code in this callback function and return 0.
->  */
-> How about it?
-
-This means that func_conf_select can never (easily) indicate an error to the
-caller as this would change the offset. Where func_conf_select doesn't change
-the offset there probably isn't much else it can do instead (unless it was
-responsible for doing the write as well). So I'm not sure how well this approach
-works.
-
-Thanks,
-
-Andrew Murray
-
-> 
-> > 
-> > Thanks,
-> > 
-> > Andrew Murray
-> > 
-> > >  };
-> > >
-> > >  struct dw_pcie_ep {
-> > > @@ -265,8 +268,12 @@ int dw_pcie_wait_for_link(struct dw_pcie *pci);
-> > > void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index,
-> > >  			       int type, u64 cpu_addr, u64 pci_addr,
-> > >  			       u32 size);
-> > > -int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, int index, int bar,
-> > > -			     u64 cpu_addr, enum dw_pcie_as_type as_type);
-> > > +void dw_pcie_prog_ep_outbound_atu(struct dw_pcie *pci, u8 func_no, int
-> > index,
-> > > +				  int type, u64 cpu_addr, u64 pci_addr,
-> > > +				  u32 size);
-> > > +int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, u8 func_no, int index,
-> > > +			     int bar, u64 cpu_addr,
-> > > +			     enum dw_pcie_as_type as_type);
-> > >  void dw_pcie_disable_atu(struct dw_pcie *pci, int index,
-> > >  			 enum dw_pcie_region_type type);
-> > >  void dw_pcie_setup(struct dw_pcie *pci);
-> > > --
-> > > 2.9.5
-> > >
+- Arnaldo
