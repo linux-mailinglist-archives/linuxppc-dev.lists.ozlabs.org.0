@@ -2,38 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207229E837
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 14:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFBD9E847
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 14:47:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HpTK5bQvzDqK5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 22:43:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HpY51PC6zDqJY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 22:47:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=web.de
- (client-ip=212.227.17.12; helo=mout.web.de;
+ (client-ip=217.72.192.78; helo=mout.web.de;
  envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=web.de header.i=@web.de header.b="Z5MuYxsb"; 
+ secure) header.d=web.de header.i=@web.de header.b="pwG+CVZu"; 
  dkim-atps=neutral
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HpQr41qdzDqmq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 22:41:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HpSW1cDKzDqWN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 22:43:06 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=dbaedf251592; t=1566909655;
- bh=sljqHy1iT8wDeq/FieHO424nJ0qcdwXpNPoCFzDQxZA=;
- h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
- b=Z5MuYxsb/t3lxh70q84ilGUZ5PnsgRo8ZKUANZEW8Uib8YeICzNxnr+eV7ZevxKy+
- cw7cCZXwSOASkgG9/M/F4NnLEkAuC/P+cNYJbSt4MCMSVHw2lNJ/wlTeLnK/nYZu7S
- zNrMdfQNsm6hckRI8A9LfLz28bBLyXkMhrGliwqc=
+ s=dbaedf251592; t=1566909753;
+ bh=VC2QvdrCbaIt/LdFIIg3zDvmOueJw0EM+bO6qh1H3L4=;
+ h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+ b=pwG+CVZucPG8JjqlnehbcRjJozmGGyTXoTkiP99gnoddZAl9GFkv/6lOpCHCKZM1E
+ 3avbZof5rDBOJ3VExrH127oMHHoQLL3XQgGaGT1L9zHOe5FS6uMEvPq42KYcWlxYAh
+ /MCv3BUSJ45+XccYI82z9wG7p5ph0DNrgo7gQ15o=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lx7Ab-1iHukI2Aaf-016cmA; Tue, 27
- Aug 2019 14:40:55 +0200
+Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MfYj1-1hrxpq0FXX-00P4Oc; Tue, 27
+ Aug 2019 14:42:33 +0200
+Subject: [PATCH 1/2] powerpc/pseries: Delete an unnecessary kfree() call in
+ dlpar_store()
+From: Markus Elfring <Markus.Elfring@web.de>
 To: linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Frank Rowand <frank.rowand@sony.com>, Gen Zhang <blackgod016574@gmail.com>,
@@ -42,8 +45,7 @@ To: linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>,
  Nathan Fontenot <nfont@linux.vnet.ibm.com>,
  Nathan Lynch <nathanl@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
  Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH 0/2] PowerPC-pSeries: Adjustments for dlpar_store()
+References: <db28c84d-ac07-6d9a-a371-c97ab72bf763@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -88,37 +90,38 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <db28c84d-ac07-6d9a-a371-c97ab72bf763@web.de>
-Date: Tue, 27 Aug 2019 14:40:42 +0200
+Message-ID: <b46cc4ff-a14c-0c10-0c0c-95573a960178@web.de>
+Date: Tue, 27 Aug 2019 14:42:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <db28c84d-ac07-6d9a-a371-c97ab72bf763@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:oTsH/DEt6X/0F9zv7bGbHxNwZ0bjYrijS2DP38xVB6eZlvFss2k
- qX70p2NNWaP9q3ck8qr2w9yJaeW7dL8fMBDt3jp+GRdm7ztkMDjFNMC7TVdRXPcQEw6QVLK
- YhIMyqdJ7L2CqUR/R7de8k5ng1GMcJ18zG0VgJKDbNwZVsz1D4jGSOF2eZIhc3Vsmli2Bj3
- al9ZtAfaco+RqR+2Q/XOA==
+X-Provags-ID: V03:K1:4WbKfj3BMvlzyZRPacSeaIx1Hkpgixn4uWiCQuxbneWkPrJ3uyx
+ TOTDWsRUPVY9da5sgdHIjVoAwfYoxYUexRity68kBdvVFVHA5NIt3XrfuUpFMQgk8FcXN3Q
+ mc/NVjFTFEOECc/PPRDTND9T0QyG9bV6Hgc7BkZlXMZIUQBK6QSVmM+AqZqSbxPNuwLSAoh
+ SlqY/s0fgHYK2n6sjG2gw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Jduo0XaI+b0=:q36t37oyGOoiLEMbH5EGN6
- +tjm+3oFeyZUjaqIKrqSXefSB0iN442nJr76wr2K2FqJ75ARR1/ntKS/9233P+U0fvavtsSug
- lv7Qaf+9kC4E4hG8kduaq7k5okwai0Od704/3Qqf6lblIYCeYYRoUn07bvN0PguwoLhgzwKEJ
- w1lKShUZBl/rI9fs7JndkGras+9Zpraz7KznzWF+zz7SJkXqrSvuXeFwarOp2Bcqv3ZlhY4gh
- K5S180RGdIcOlt/2ufcfMYRLebOsaAhIloeGuuwprj8JYDhYAAaIx9beRp9U5eRSe1UylTDYw
- qr/cxxuDssNH0HEBF0SMDsflQzUTIKTDmk6eoM9HZElmST4SWxTt2fbIERDYkLndXINT/dTr/
- i7Bcqderc1113SADIN22PSxZnSG+c0thKp3jtGNQ4HtB8U9Tvm2SCC91DtNpwVo99hiuJ7cpt
- 4j0kaXRc+KblY/k+B5lMhqr9Jj62Jm0ae63O+TavIyB22AolIAg8f/1GqRFXdd8+EJO/jg9E1
- AsDhqDiWc7JR8w/JBVzTJ6ASRZSNdVycOwqVuIrrpI5RGBO7BFS9y1XSywiAs9ds1vZG8AFhI
- ielmH5OwsomTZSX0TGXsz36EHLSpqFHS7Fo9ZPmxJhdOBrqfyMnWP/UwXeoteG0J33af6hLQr
- EkChbYc0rRP3zkj9zQE6CHATxvUVhRMI0xj/EeRJAYQ7DSlGeISFRZj7Imab34gdSCFpDphbL
- cXS9G0hPaub7UdJHKHg3KNDvX7RGpPLZzzL71Ns0OhU4eAoqE46wFD3etpeg1LoRlHrzC+iss
- zHKkdCo1nlV7bkiCmTUHK27BAqX+8jrCZun92IKEJTtikF1OGCNuj2uvkgdQl02TeGhmEJ7wq
- bd2TWO7iEUTcQxQeRTxRr4UydAyj7TR2sq0l1QCmc60rEOgmt9aMusEoE0xtQvXePgnPlyzHq
- tglzLpvx5KKuQG7m7ijWFn37pCKq4C+qqJGCnDzNaANXo1ABtO9W6673lLWq9G1cT25/fJTZq
- f3q4pKvD4bwosNQXsiWKksnSu86i3N6QhPm0Gt9Z2jYL2hF/xL8gJxTQ9WiTbgE5JEEa1asIe
- xG5QZxDX8bNfuL/NQ3GIxPiExA8vIYcDCx2tuPbgt5cUHb3v2qU3KOTCdckZuApbeHqqNaysZ
- Y4HhU=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:oWUI2J2XIEU=:n++pVAsRItNYxnfeygvcpy
+ jG0XfKVcVv3MGWR69K/EGv320erIJuow9YxFCL8kqY7qfm4YQpI79sXnFts+EDhkR41q6fKjI
+ xvGtViLhvFjLPVfI1i8aIJ8/gKhbE1QrIYqjNfJkPKQJTTmmQHq19Z+l7f5aSwEJe35L1Reb6
+ 0PeanOV6rEUVSnChLJM/CXHJ/aKFA1W5gu90L43bf2x4MPb4bTC0OvBi1xdhGw/f2AZyo6Lvd
+ 0S74StwA0lYwM2TIwC6cl5lKtzW6i0NKGs138+sa4P79c7kMeTyZaWxdMjnZfDlJv/x0IPlxd
+ 1NvDDRP3iHh2T5PxCKefLLX86bNQ9L4JII3x+gXxsjg1NDW9v/D5wpiCTUUb/3RoPyzgCykOL
+ hbPVkMAqYKlyc0tIuW56NOdE7A7AFHyGan7SuWM/kuA41qs/bgiVKiPnEiNm3V8uaM8lpFz6m
+ 6oiHDNEVf1czEsYEq66+kVCaJ+AmaIqH2XGIQk5cC7fYS/e5FLtJdwbILOx/Lvg+vqQhNPk9d
+ KN8wgDocNR2Q3Ri58i+ip05mz0+DpANoADaB53X+nivjUNvouASWfGS5Vykk+AO9BI37W1ICv
+ hK4Y4NnLGoJ5MnpjgQmCLuwdLtmuIwfcKuUlGaIsgr6o6palbs1WcbWS1wCOcj0EWts3M7CTC
+ a333n302rgMslW/6JqNDN0T8WG735zg/PrM8Cuf7eUUDBKldJYFlzGO/+TN+odcVDTgy1EqHC
+ qiFd3CV5uEV9NjwztzPKFcqFaeczHnZJkF+nObATsFS44AS/XbCi+Rf/DR36RWgKXigP+nvkO
+ yL0zaBlagjgMOn+HybOn23Nfdp8W1Fwl+TFbbJkODYxWtBp9M+Ng1LLX5glHJMi7QNSBhHiFp
+ ZLMgrHV012tiGf17Dcljfe2QSkC6TwMhbnSe1rDKuBfqaUxMoclPRHm/6RLN8YV8js/a0Nf5v
+ QOF3rmHRg5yFT13UUswp7hx4ipCfAFtBnziSQ9Lz1KVf7oKvmr/+JSBTapAtRf9fegDmTXUgC
+ IsKyFq4fUzYgddNK24DFV3pnVMrYaP0IjcExW8HAr1nQPW2NnQQ16uvGHlp0T8eo1Ukk+dSbk
+ DI5r2tpEXIY3ADnjPx2dQtwUqAMdvKWlvhpbNrIme5sp9hwgN4WpGZIeqSVzWsyZflOipjp59
+ nRW1A=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,17 +139,34 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 27 Aug 2019 14:33:21 +0200
+Date: Tue, 27 Aug 2019 13:34:02 +0200
 
-Two update suggestions were taken into account
-from static source code analysis.
+A null pointer would be passed to a call of the function =E2=80=9Ckfree=E2=
+=80=9D
+immediately after a call of the function =E2=80=9Ckstrdup=E2=80=9D failed =
+at one place.
+Remove this superfluous function call.
 
-Markus Elfring (2):
-  Delete an unnecessary kfree() call
-  Delete an error message for a failed string duplication
+This issue was detected by using the Coccinelle software.
 
- arch/powerpc/platforms/pseries/dlpar.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ arch/powerpc/platforms/pseries/dlpar.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platfor=
+ms/pseries/dlpar.c
+index 16e86ba8aa20..2a783dc0cfa7 100644
+=2D-- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -523,7 +523,6 @@ static ssize_t dlpar_store(struct class *class, struct=
+ class_attribute *attr,
+ 	args =3D argbuf =3D kstrdup(buf, GFP_KERNEL);
+ 	if (!argbuf) {
+ 		pr_info("Could not allocate resources for DLPAR operation\n");
+-		kfree(argbuf);
+ 		return -ENOMEM;
+ 	}
 
 =2D-
 2.23.0
