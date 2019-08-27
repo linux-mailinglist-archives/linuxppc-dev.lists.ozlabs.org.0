@@ -2,71 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6BFD9DD7C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6FB9DD85
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 08:19:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HdvM4VWkzDqF5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:17:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HdyM3q9ZzDqjg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:19:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="M3TPyS1k"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="xc0Nj5Ef"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HdrL008XzDqft
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 16:14:41 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46HdrF3TF9z9ty3x;
- Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=M3TPyS1k; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id jDh0Innae-QX; Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46HdrF2DFmz9ty3l;
- Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566886477; bh=tU2ZQbP9hJaX/GbmjNnXjFPIxJbvvQnAJNlh0E15Vd0=;
- h=Subject:To:References:From:Date:In-Reply-To:From;
- b=M3TPyS1kg/M4Ue75ZmfAFNGr3t+ZaMNc0oFbjnLFWNTrGzrUtLQ7pBX9US9wmPRdE
- HjV61Zev6KFkYWbvr19TWs0H9600094D9273JSIdnBBI+/lBJpcSvMwkeIxvLe2Bbd
- Q0BV5LU1gOmsrEBtnh0Sxujh27pyoBnwIQ8vFtj8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 39BC38B793;
- Tue, 27 Aug 2019 08:14:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id pbvmdsRKVqzP; Tue, 27 Aug 2019 08:14:38 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E1C7E8B74C;
- Tue, 27 Aug 2019 08:14:37 +0200 (CEST)
-Subject: Re: [PATCH 2/4] powerpc/64s: remove support for kernel-mode syscalls
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20190827033010.28090-1-npiggin@gmail.com>
- <20190827033010.28090-4-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b6f8ab88-75ec-560d-6d35-9ee7bfdf5e65@c-s.fr>
-Date: Tue, 27 Aug 2019 08:14:37 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HdwM60bYzDqDW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 16:18:11 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 704F7206BB;
+ Tue, 27 Aug 2019 06:18:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1566886689;
+ bh=P+7c+SOkIcjtW+gFnv22eSWwVM7bOePpYYZ/INu5lX0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=xc0Nj5EfIp0aLHYqY+GHhZLjgmFSXOIUEPvDDea0dSSdEz6UGYlOFRfi5Pzxjy0oH
+ h/oHfa8zw5Wi8Zb5VLLuVUTKTFYfdKuYXQ0VqRWsHN3/KqHFajwo3Gl+vlYQP6CsAn
+ Mtce2q3AJYQZArzo/28uzaNX3RN2AcvoD6zde+8M=
+Date: Tue, 27 Aug 2019 08:18:06 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v2] powerpc: Allow flush_(inval_)dcache_range to work
+ across ranges >4GB
+Message-ID: <20190827061806.GA29034@kroah.com>
+References: <20190821001929.4253-1-alastair@au1.ibm.com>
+ <20190826165021.GB9305@kroah.com>
+ <bae6de93-f135-68c5-9118-a0732e6de301@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <20190827033010.28090-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <bae6de93-f135-68c5-9118-a0732e6de301@c-s.fr>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,105 +62,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Alastair D'Silva <alastair@au1.ibm.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ alastair@d-silva.org, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Euh ... That's a duplicate of [PATCH 2/4] "powerpc/64: remove support 
-for kernel-mode syscalls" ?
+On Mon, Aug 26, 2019 at 10:08:26PM +0200, Christophe Leroy wrote:
+> 
+> 
+> Le 26/08/2019 à 18:50, Greg Kroah-Hartman a écrit :
+> > On Wed, Aug 21, 2019 at 10:19:27AM +1000, Alastair D'Silva wrote:
+> > > From: Alastair D'Silva <alastair@d-silva.org>
+> > > 
+> > > The upstream commit:
+> > > 22e9c88d486a ("powerpc/64: reuse PPC32 static inline flush_dcache_range()")
+> > > has a similar effect, but since it is a rewrite of the assembler to C, is
+> > > too invasive for stable. This patch is a minimal fix to address the issue in
+> > > assembler.
+> > > 
+> > > This patch applies cleanly to v5.2, v4.19 & v4.14.
+> > > 
+> > > When calling flush_(inval_)dcache_range with a size >4GB, we were masking
+> > > off the upper 32 bits, so we would incorrectly flush a range smaller
+> > > than intended.
+> > > 
+> > > This patch replaces the 32 bit shifts with 64 bit ones, so that
+> > > the full size is accounted for.
+> > > 
+> > > Changelog:
+> > > v2
+> > >    - Add related upstream commit
+> > > 
+> > > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> > > ---
+> > >   arch/powerpc/kernel/misc_64.S | 4 ++--
+> > >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+> > > index 1ad4089dd110..d4d096f80f4b 100644
+> > > --- a/arch/powerpc/kernel/misc_64.S
+> > > +++ b/arch/powerpc/kernel/misc_64.S
+> > > @@ -130,7 +130,7 @@ _GLOBAL_TOC(flush_dcache_range)
+> > >   	subf	r8,r6,r4		/* compute length */
+> > >   	add	r8,r8,r5		/* ensure we get enough */
+> > >   	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of dcache block size */
+> > > -	srw.	r8,r8,r9		/* compute line count */
+> > > +	srd.	r8,r8,r9		/* compute line count */
+> > >   	beqlr				/* nothing to do? */
+> > >   	mtctr	r8
+> > >   0:	dcbst	0,r6
+> > > @@ -148,7 +148,7 @@ _GLOBAL(flush_inval_dcache_range)
+> > >   	subf	r8,r6,r4		/* compute length */
+> > >   	add	r8,r8,r5		/* ensure we get enough */
+> > >   	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)/* Get log-2 of dcache block size */
+> > > -	srw.	r8,r8,r9		/* compute line count */
+> > > +	srd.	r8,r8,r9		/* compute line count */
+> > >   	beqlr				/* nothing to do? */
+> > >   	sync
+> > >   	isync
+> > 
+> > I need an ack from the powerpc maintainer(s) before I can take this.
+> 
+> I think you already got an ack (on v1). See
+> https://patchwork.ozlabs.org/patch/1147403/#2239663
 
-Le 27/08/2019 Ã  05:30, Nicholas Piggin a Ã©critÂ :
-> There is support for the kernel to execute the 'sc 0' instruction and
-> make a system call to itself. This is a relic that is unused in the
-> tree, therefore untested. It's also highly questionable for modules to
-> be doing this.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/kernel/entry_64.S       | 21 ++++++---------------
->   arch/powerpc/kernel/exceptions-64s.S |  2 --
->   2 files changed, 6 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-> index 0a0b5310f54a..6467bdab8d40 100644
-> --- a/arch/powerpc/kernel/entry_64.S
-> +++ b/arch/powerpc/kernel/entry_64.S
-> @@ -69,24 +69,20 @@ BEGIN_FTR_SECTION
->   	bne	.Ltabort_syscall
->   END_FTR_SECTION_IFSET(CPU_FTR_TM)
->   #endif
-> -	andi.	r10,r12,MSR_PR
->   	mr	r10,r1
-> -	addi	r1,r1,-INT_FRAME_SIZE
-> -	beq-	1f
->   	ld	r1,PACAKSAVE(r13)
-> -1:	std	r10,0(r1)
-> +	std	r10,0(r1)
->   	std	r11,_NIP(r1)
->   	std	r12,_MSR(r1)
->   	std	r0,GPR0(r1)
->   	std	r10,GPR1(r1)
-> -	beq	2f			/* if from kernel mode */
->   #ifdef CONFIG_PPC_FSL_BOOK3E
->   START_BTB_FLUSH_SECTION
->   	BTB_FLUSH(r10)
->   END_BTB_FLUSH_SECTION
->   #endif
->   	ACCOUNT_CPU_USER_ENTRY(r13, r10, r11)
-> -2:	std	r2,GPR2(r1)
-> +	std	r2,GPR2(r1)
->   	std	r3,GPR3(r1)
->   	mfcr	r2
->   	std	r4,GPR4(r1)
-> @@ -122,14 +118,13 @@ END_BTB_FLUSH_SECTION
->   
->   #if defined(CONFIG_VIRT_CPU_ACCOUNTING_NATIVE) && defined(CONFIG_PPC_SPLPAR)
->   BEGIN_FW_FTR_SECTION
-> -	beq	33f
-> -	/* if from user, see if there are any DTL entries to process */
-> +	/* see if there are any DTL entries to process */
->   	ld	r10,PACALPPACAPTR(r13)	/* get ptr to VPA */
->   	ld	r11,PACA_DTL_RIDX(r13)	/* get log read index */
->   	addi	r10,r10,LPPACA_DTLIDX
->   	LDX_BE	r10,0,r10		/* get log write index */
-> -	cmpd	cr1,r11,r10
-> -	beq+	cr1,33f
-> +	cmpd	r11,r10
-> +	beq+	33f
->   	bl	accumulate_stolen_time
->   	REST_GPR(0,r1)
->   	REST_4GPRS(3,r1)
-> @@ -203,6 +198,7 @@ system_call:			/* label this so stack traces look sane */
->   	mtctr   r12
->   	bctrl			/* Call handler */
->   
-> +	/* syscall_exit can exit to kernel mode, via ret_from_kernel_thread */
->   .Lsyscall_exit:
->   	std	r3,RESULT(r1)
->   
-> @@ -216,11 +212,6 @@ system_call:			/* label this so stack traces look sane */
->   	ld	r12, PACA_THREAD_INFO(r13)
->   
->   	ld	r8,_MSR(r1)
-> -#ifdef CONFIG_PPC_BOOK3S
-> -	/* No MSR:RI on BookE */
-> -	andi.	r10,r8,MSR_RI
-> -	beq-	.Lunrecov_restore
-> -#endif
->   
->   /*
->    * This is a few instructions into the actual syscall exit path (which actually
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> index 6ba3cc2ef8ab..768f133de4f1 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -1521,8 +1521,6 @@ EXC_COMMON(trap_0b_common, 0xb00, unknown_exception)
->    * system call / hypercall (0xc00, 0x4c00)
->    *
->    * The system call exception is invoked with "sc 0" and does not alter HV bit.
-> - * There is support for kernel code to invoke system calls but there are no
-> - * in-tree users.
->    *
->    * The hypercall is invoked with "sc 1" and sets HV=1.
->    *
-> 
+How am I supposed to remember that?  :)
+
+greg k-h
