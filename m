@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC22C9EA5B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:05:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD70C9EA70
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 16:10:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HrHH0587zDqV6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 00:05:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HrNl1FRQzDqR5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 00:09:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="JknwB+nW"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="gHWHGJAD"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Hr5P6nnyzDqg7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 23:56:41 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id w16so14170563pfn.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 06:56:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Hr5R6nBLzDqg7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 23:56:43 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id i18so12736540pgl.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 06:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=aR6kO2pHZRpNBgzuCIodgHd8b9J+evVZ/8gKmqxD7sw=;
- b=JknwB+nWgRgDckujx8oGtvaKTkra+qD/txTy0rZmlG3kjBG8W2UAnaJl0+cY0K7Ej2
- bA7kKdL9NLqOinldt7e0R+D3bO6VCuHPo92jNad5ob5uSG2dJd7xOMwBFK9NUs05h2E/
- fHao44zNNuNuEGMwPQQ4yXxfRz17Uug1IHLpSinKYDlin5bTE25GJfjVxITbH6QyAAU/
- iycaQCeOt0e4tjd3/IDhDaFonr+7lbmoycU7UuGUXDBAVK6ZcDJIdHtdWb8rd/0mpLg8
- uh2cahrcMWmpDfd8AC5Kh87ex3s8XGR/EMHg8GySPC6LD8w29bC+nt6qvALGPHE0Avb2
- pAyg==
+ bh=sFZb4EA0fEWLF7VLx9m/vpxnIu0Y6aN1B98r05rB6Pw=;
+ b=gHWHGJAD3wUECLNyhcJunU2qHdhbMJH8qoqXiRyiBBh3dzorOemP267eP9qwveDbEv
+ 1mnBzHCL7BTte/EiZYVlqFbsFyX5j4COWwO3mxJTJRYKjgov3XzU1hUAM8PAqeuAD5Hc
+ hg3znaAjI6+y4ZL4EYkCJ0KUQJRRWTHoTH4rOCvziChunNaed27bMz7ewnkHSv59c4X1
+ 4r0cPcdN3JtclPibVAu3JDZ+Y8jmTaopaglB6aHE8WxOBm8dAas8qF7kz29V0RBKn000
+ gX8Ck7uqDdz/44pcq5ece0wNpvCFDexCBvOouMTd/OlUkxOTyEherH6rpHk43dJJHl1X
+ 4zmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=aR6kO2pHZRpNBgzuCIodgHd8b9J+evVZ/8gKmqxD7sw=;
- b=Gdg3VAFxrnQqmIWvdr2s+BOESAphb8cES4gjd1ThK++9nar21txfOKN+zMVHl3aonX
- Yo6e61FGQrgwIJiHrURUBTc4oaw763iaJsTdY+q7wnnJbGBoIm32nGoIvmotPBWeJazX
- QiqUP/yka7xiFXqDJfvdlXM+nGUhRxUEMCVAe3IG0MfClDFvzksuzzE50CaYzqvWaDdY
- hteAAwqtgUtczAQLOrwBE6iVvzDsjSDJUljIR8LkJapKlmx5ULpZLJn7jV0n8iwblgf2
- AfZe0GRCy3ewRcMLF2CIsIPzht78yQU1neICjKm5HIL2AIaoi0kJOqwk5CHN1LoiQRog
- EzgA==
-X-Gm-Message-State: APjAAAVJKDud2v5CgkqamNs9+oywuN5Jyf8HbAY4Uc/rWDh9lhaJXORb
- Ib36agg8Cuty7xmVGNG7CVhBQ+9d
-X-Google-Smtp-Source: APXvYqyroZ2Vmuam+wBUj1CkTm+ZllL+sq87O9t4qPKv5ioXJPi8EWPGqZD32/HX+J1B29bnTOxanw==
-X-Received: by 2002:a17:90a:3646:: with SMTP id
- s64mr25800668pjb.44.1566914198622; 
- Tue, 27 Aug 2019 06:56:38 -0700 (PDT)
+ bh=sFZb4EA0fEWLF7VLx9m/vpxnIu0Y6aN1B98r05rB6Pw=;
+ b=tsb/yxD5uKElq4F4ZIQ/H1xSE5dPsPDc5eG0/2L25NmVo7cvgRVb+45Ok76x9XQOuX
+ /CZQbbnJJiwtVH/QezxulhCUuGq5rqGyRNm+ezCC0KmsXAsQ9AnQ0fckyhajr8RiJskm
+ MzXxzgrsyL8sP/vF5fJym2asZJonGeXH7ptWxBdqr9WgIAXhpLE2oeMyqiQbRnCxc4RO
+ Yg5Ip2fFXED13XzaauqN97XMiesR8RFrG90bV7gZzINqiUDBGEao8kpo5+ZJerv20OpK
+ Dj0NtJeevqHgG3jaWQVedRl7h4bs9LQnQJTFosuGsLD73gUefi7uvZ3n6dcUkx2qsBh/
+ 82VQ==
+X-Gm-Message-State: APjAAAWzK/3515Z+4aa63xlWBZK70K4QpyoJDTzMaUsTeHQZBL0eUmfx
+ 9r/dAAhc8Z73572dqEJHWDky9aaR
+X-Google-Smtp-Source: APXvYqxUqt/eETvXKdGhlZhQ6TEB4OkvWj0My9kp5/DkF889hxkZb80FmiF9Th8lk7fc+ta397YxYA==
+X-Received: by 2002:a65:6497:: with SMTP id e23mr20575425pgv.89.1566914201496; 
+ Tue, 27 Aug 2019 06:56:41 -0700 (PDT)
 Received: from bobo.local0.net (14-202-91-55.tpgi.com.au. [14.202.91.55])
- by smtp.gmail.com with ESMTPSA id m9sm15988764pfh.84.2019.08.27.06.56.36
+ by smtp.gmail.com with ESMTPSA id m9sm15988764pfh.84.2019.08.27.06.56.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2019 06:56:38 -0700 (PDT)
+ Tue, 27 Aug 2019 06:56:40 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/4] powerpc: convert to copy_thread_tls
-Date: Tue, 27 Aug 2019 23:55:45 +1000
-Message-Id: <20190827135548.21457-2-npiggin@gmail.com>
+Subject: [PATCH v2 2/4] powerpc/64: remove support for kernel-mode syscalls
+Date: Tue, 27 Aug 2019 23:55:46 +1000
+Message-Id: <20190827135548.21457-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190827135548.21457-1-npiggin@gmail.com>
 References: <20190827135548.21457-1-npiggin@gmail.com>
@@ -84,60 +83,101 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 3033f14ab78c3 ("clone: support passing tls argument via C rather
-than pt_regs magic") introduced the HAVE_COPY_THREAD_TLS option. Use it
-to avoid a subtle assumption about the argument ordering of clone type
-syscalls.
+There is support for the kernel to execute the 'sc 0' instruction and
+make a system call to itself. This is a relic that is unused in the
+tree, therefore untested. It's also highly questionable for modules to
+be doing this.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
 No change since v1.
 
- arch/powerpc/Kconfig          | 1 +
- arch/powerpc/kernel/process.c | 9 +++++----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/entry_64.S       | 21 ++++++---------------
+ arch/powerpc/kernel/exceptions-64s.S |  2 --
+ 2 files changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index d8dcd8820369..7477a3263225 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -182,6 +182,7 @@ config PPC
- 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
- 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
- 	select HAVE_CONTEXT_TRACKING		if PPC64
-+	select HAVE_COPY_THREAD_TLS
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DEBUG_STACKOVERFLOW
- 	select HAVE_DYNAMIC_FTRACE
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 8fc4de0d22b4..24621e7e5033 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1600,8 +1600,9 @@ static void setup_ksp_vsid(struct task_struct *p, unsigned long sp)
- /*
-  * Copy architecture-specific thread state
-  */
--int copy_thread(unsigned long clone_flags, unsigned long usp,
--		unsigned long kthread_arg, struct task_struct *p)
-+int copy_thread_tls(unsigned long clone_flags, unsigned long usp,
-+		unsigned long kthread_arg, struct task_struct *p,
-+		unsigned long tls)
- {
- 	struct pt_regs *childregs, *kregs;
- 	extern void ret_from_fork(void);
-@@ -1642,10 +1643,10 @@ int copy_thread(unsigned long clone_flags, unsigned long usp,
- 		if (clone_flags & CLONE_SETTLS) {
- #ifdef CONFIG_PPC64
- 			if (!is_32bit_task())
--				childregs->gpr[13] = childregs->gpr[6];
-+				childregs->gpr[13] = tls;
- 			else
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index 0a0b5310f54a..6467bdab8d40 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -69,24 +69,20 @@ BEGIN_FTR_SECTION
+ 	bne	.Ltabort_syscall
+ END_FTR_SECTION_IFSET(CPU_FTR_TM)
  #endif
--				childregs->gpr[2] = childregs->gpr[6];
-+				childregs->gpr[2] = tls;
- 		}
+-	andi.	r10,r12,MSR_PR
+ 	mr	r10,r1
+-	addi	r1,r1,-INT_FRAME_SIZE
+-	beq-	1f
+ 	ld	r1,PACAKSAVE(r13)
+-1:	std	r10,0(r1)
++	std	r10,0(r1)
+ 	std	r11,_NIP(r1)
+ 	std	r12,_MSR(r1)
+ 	std	r0,GPR0(r1)
+ 	std	r10,GPR1(r1)
+-	beq	2f			/* if from kernel mode */
+ #ifdef CONFIG_PPC_FSL_BOOK3E
+ START_BTB_FLUSH_SECTION
+ 	BTB_FLUSH(r10)
+ END_BTB_FLUSH_SECTION
+ #endif
+ 	ACCOUNT_CPU_USER_ENTRY(r13, r10, r11)
+-2:	std	r2,GPR2(r1)
++	std	r2,GPR2(r1)
+ 	std	r3,GPR3(r1)
+ 	mfcr	r2
+ 	std	r4,GPR4(r1)
+@@ -122,14 +118,13 @@ END_BTB_FLUSH_SECTION
  
- 		f = ret_from_fork;
+ #if defined(CONFIG_VIRT_CPU_ACCOUNTING_NATIVE) && defined(CONFIG_PPC_SPLPAR)
+ BEGIN_FW_FTR_SECTION
+-	beq	33f
+-	/* if from user, see if there are any DTL entries to process */
++	/* see if there are any DTL entries to process */
+ 	ld	r10,PACALPPACAPTR(r13)	/* get ptr to VPA */
+ 	ld	r11,PACA_DTL_RIDX(r13)	/* get log read index */
+ 	addi	r10,r10,LPPACA_DTLIDX
+ 	LDX_BE	r10,0,r10		/* get log write index */
+-	cmpd	cr1,r11,r10
+-	beq+	cr1,33f
++	cmpd	r11,r10
++	beq+	33f
+ 	bl	accumulate_stolen_time
+ 	REST_GPR(0,r1)
+ 	REST_4GPRS(3,r1)
+@@ -203,6 +198,7 @@ system_call:			/* label this so stack traces look sane */
+ 	mtctr   r12
+ 	bctrl			/* Call handler */
+ 
++	/* syscall_exit can exit to kernel mode, via ret_from_kernel_thread */
+ .Lsyscall_exit:
+ 	std	r3,RESULT(r1)
+ 
+@@ -216,11 +212,6 @@ system_call:			/* label this so stack traces look sane */
+ 	ld	r12, PACA_THREAD_INFO(r13)
+ 
+ 	ld	r8,_MSR(r1)
+-#ifdef CONFIG_PPC_BOOK3S
+-	/* No MSR:RI on BookE */
+-	andi.	r10,r8,MSR_RI
+-	beq-	.Lunrecov_restore
+-#endif
+ 
+ /*
+  * This is a few instructions into the actual syscall exit path (which actually
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 6ba3cc2ef8ab..768f133de4f1 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1521,8 +1521,6 @@ EXC_COMMON(trap_0b_common, 0xb00, unknown_exception)
+  * system call / hypercall (0xc00, 0x4c00)
+  *
+  * The system call exception is invoked with "sc 0" and does not alter HV bit.
+- * There is support for kernel code to invoke system calls but there are no
+- * in-tree users.
+  *
+  * The hypercall is invoked with "sc 1" and sets HV=1.
+  *
 -- 
 2.22.0
 
