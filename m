@@ -2,41 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404829E2C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5AA9E2E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 10:43:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HhxP0bLxzDqwy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 18:34:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Hj8K3196zDq9C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 18:43:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=web.de
- (client-ip=212.227.17.11; helo=mout.web.de;
+ (client-ip=212.227.17.12; helo=mout.web.de;
  envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=web.de header.i=@web.de header.b="BpaLbBhG"; 
+ secure) header.d=web.de header.i=@web.de header.b="jxiN9Ffc"; 
  dkim-atps=neutral
-X-Greylist: delayed 500 seconds by postgrey-1.36 at bilbo;
- Tue, 27 Aug 2019 18:32:27 AEST
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HhvH4m6czDqPm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 18:32:27 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Hj610BNdzDqg7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 18:41:44 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=dbaedf251592; t=1566894734;
- bh=Q3RzmFGlafLwrZMdhMfy6OReR7/knZfbcIt381IISEQ=;
+ s=dbaedf251592; t=1566895289;
+ bh=Kijz/kNQrJoEsdqYzBMm40EhNGYcSH4U5H2MUF6P01U=;
  h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
- b=BpaLbBhGK9k73DK6c8wYIi/rexKDAphCQjb5Rcrf2+eWprfmD06edGZfF674McLaO
- dnJiQL/CHlux/FU/GkvjoHjidjh43is3ErBCoHgDsI1j8bMcJXhtzehPQI3qtPrHWf
- SKsE+uSVhQX0Pt5HLGzyCFhw2YqbEpY5wllgx4Mk=
+ b=jxiN9FfcytJHptbCIi8q2EYt4EZRjcziynfjjlOkT5gaR4WCDkusyHVybURRJOQ/Y
+ elSeliIZdQom16SSLOUct+LdSLpNMpgNgh921o1ILXb2yVHSoqTGf7A7XEovQlL1vw
+ smaMJhPLivSWErO289lkEccUJOGuFRLxgz2kf24c=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LkyIj-1ialdK33pt-00anjT; Tue, 27
- Aug 2019 10:26:47 +0200
-Subject: [PATCH 1/2] powerpc/82xx: Delete an unnecessary of_node_put() call in
+Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Ltnmz-1iAGVq2oLN-0117Zr; Tue, 27
+ Aug 2019 10:28:19 +0200
+Subject: [PATCH 2/2] powerpc/82xx: Use common error handling code in
  pq2ads_pci_init_irq()
 From: Markus Elfring <Markus.Elfring@web.de>
 To: linuxppc-dev@lists.ozlabs.org,
@@ -90,8 +88,8 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9c060a41-438b-6fb8-d549-37c72fae4898@web.de>
-Date: Tue, 27 Aug 2019 10:26:43 +0200
+Message-ID: <1a4bafee-562f-5eb4-d2bd-34704f8c5ab3@web.de>
+Date: Tue, 27 Aug 2019 10:28:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
@@ -99,29 +97,29 @@ In-Reply-To: <6dc7d70e-8a40-46ab-897b-d2eaf9a87d77@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GSUID08LZurS7CQHIu10OnBtmTflRlh+77SCgRUzkqFza7LvP3P
- l6NdK9cjnWOYY4NtA9h2c5Lo9ghp6rGbB3eby/PaNOj5DCxi09EgmvKxuiLVvXvPo1WYReg
- LaQJ933/gQYL+QctiYNtCMKvgeTggzu3I3HRhjSQ4FN57apMcpAd3jXa0ORVM0wZnGGpVL9
- HdyX5XRR3MGF5pCHJYvTQ==
+X-Provags-ID: V03:K1:gK7A+dxt3fKGGpm2M9nJ9fvVY/qb+NE7oESdQhsqt33simYig0U
+ IOgihCH6cngODXnxWog/jvQrwp3bW4mjk4e9ClqHj8p61aqmMqH6Thpxi4nV7rbqpP3i9/b
+ Ve5pwUYOYjJFawKhDfHJ41AAB0gcfyCz/cu04O/Zex9ib+ACC396ukX57NB199W9s8mZj9i
+ KyKrAETJLhWjDjPf5bJ/A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cs99ByO+2XU=:u88BWFo6V8WAwPAUzh+tVh
- Osvj0l6BpBqbLNTMx0OHFBWkKGzSC464pPnIKfS1UGQc4dExXOcJ0Xt3g6X5r2R1th4R82t34
- RMRSIZfDaVBdDKYEjyCj8JKdt6gKnXAFFUoKY6Dv48qeI9S1/ksFYCdzLmHXlj2WhCk7Fwihd
- R7E9rvpGCODmEOl++NOga74Z4M89dc8NJ97F9Tyvuwhtp/uyzO5UpKZx3kYbvDHkV0B4hQVL0
- 9np4l+HI28QU1uWfpf/oNyQhfBMtM592a27ufmQCmHoyJrJlsQa7hLlhUd0oE+XpYe5y09Mep
- DLB77vrXdF2okUKDKG+t4/psG7BD/fsIwvf+L0NIzzL/8edkBP+kNWviw5iQlcC6jSkqNhhFT
- L5OpwqGgXQU2R5yj4q2L1rUvyla2JIWk2jD2vWPpWsbeFGJVNjbGYp25iQFFvM8IjpqsrP1W2
- paQvf54XXs3J4VVQHv3g9kttvJor7KFAfa9uqm8oCu5xE6pO1bG4W4aqNm3YSE9y3qYjqdVZ4
- gW43JeBnJlGMGrEpwc04YCuOmO5ebqc9NpxFXCYr66ew+l1GBowEnKLjU5PgyKYKZZlv2OU+r
- GmqBNF2eYLYCvSNx8nze9k3LzdbsFFp97UAHaKWUJdLkhClRy/9rlGiHt41vwYTi2XIxeLGju
- Py0SUCoxl8jub+vkMWa4ZPE+bCmgG1usoPMFNSSoyJxmFD+RYXbhPHxMLWld4VOcGMuRRpRyt
- R1ohzejTgV11/2kR/7hEwpLBg+WCc8ckb0msuwR/G1sWTUgBn7h+LStKyTYSTPX9pr9MD8nJ2
- IbyJ8hRBlnqu7LZVSH/yaAWLXDYPORbSw+t6EeEqNq3//Mfe33PVHcYuMVJ/r+kwLEx3p6W29
- dQwQOE7/TxTrY5I5MXb1Y3b3p9xH+KAZLSV0ttDJ3H/gDBOuRCmKOgAcl3mEdWyT6XioBe07v
- GWgfRcG4SIa4PDF5X3YHQCNxRu5cdIaFJyPtSEFxZ/LE7fDnPkJWin46f5FPS2n4qD2neu7en
- NGdPlvnUqHHmKRaxmVp9D2lA0BKyu8MGdDB6w81uO287TB+iJODluC1QwfL2JE9Xc3dPBWbuI
- N9kkDuzq0rOOJSBf3zsSjdD/ZdIkO/RYAqySb8rK3qVOLNFz2J8+NwhhRYQXdmxwKf7J9VLpQ
- 5mGWKRZHCUs+cZHOF51NgJgmit9MggoGwjhycGiTAsLkFNUQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0kDVrIJ8rYI=:YFa144bNXGHBaF4z/3ygpu
+ nYhcoi9q8HPMEscJa4n2UlCv9+W3Kbe3MEwFey1+6iIk9aAO/zp4ae32IIpvQCEUVxTJz3dt1
+ j/5wfA5m3fpPOefLFuyNLqD65TH6S+lMamfFRqbKjsGfPaCZ6nIZxibtzHA0M+WXFIIxzyEPc
+ 7Xf73VhXh1glO3pfw9rwH6LZSKWFO/pNotLxh5N7FEkJMCvbx7m9JwrIDwUb6dvuG3euG8Lyv
+ mKN04fL3Ff8vCd6ZAuncIlp3LvwGm6wz/GbJwxRRrw6x5Yrlg/aIqKnAEhuHSeRIQUx05jW6/
+ P1KANuO53kRPE6SlzuRjr652XpudViQWqg5vlxrA//0xwQAtxVS02XHvIpV6eUcLNZW6EgoWU
+ FmjqYGyfunxz7xj1TAhoZUTh8fzj1qgFBS2bIkpCq5xQIyb16jMSqZzUtEoAa/sHEyMs9XEyz
+ yt1S66wTDwk1mP4KqK4T8cf3P701P2zEGKTo5Zr0t7E8FUKvtjAhGjWeY8F7YwvThrW3jtwn0
+ RtMDh8oUGE77Af4gPtu4RPFM026UsmecsEGJaNlw/PTUpR1Rzklvsp7kqfDqOwaGc9Zh+eTHC
+ DOLHlw3CZfIPLSkCoy7cweFYq5BmkUqVNa4SRean9iFEy4DnbH7CQgNnxr+11pRmtWpeRtWbf
+ WIfMMvlBJAmZkLH0JsbsimcQ7oCK4f0I26BGC/varfzDDQamhdp7iAIv1UJt0U43mgt/DkcVY
+ NdFWKeq87klitcXST7twYeqF6OCOp5CRqp6XCkCuLkjMDs975drDc1acIbES2nTcXsk2UZiEh
+ oy67acKfCQkuzHqGkobeax1ulLLDWFjEyckLYLDLrDJW80ZpbqrUhsDrnXYBaTWtJtfthRXUz
+ rmM9OyPRvL+HmsmV1VePiETTIIW+HtHN45yKhsuNtgTA8hqLC2XAjeuptjFnvAjXXk48l5fWk
+ CEuZhHeN/u+gf3CffOC6nGWXFQ/p+/n8OcW/LxocUCPfAO/Q+Qq1xdHCLqsFy6hjStqx3UWB/
+ kIfDWf6DCF9b3z2iiDJMxC1oaVxaxIcIaTtQjt9+g10xvtBBMVABRL6P2/sWY793VCl3f67Gr
+ +YLr0aIAni2RNLH3HGMWX45/qLPhotSOZWW0r1buvqdGJ4KbKRZv545wGF/izPwVPRQCvGFjk
+ x3/SI=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,35 +137,60 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 27 Aug 2019 08:44:20 +0200
+Date: Tue, 27 Aug 2019 09:19:32 +0200
 
-A null pointer would be passed to a call of the function =E2=80=9Cof_node_=
-put=E2=80=9D
-immediately after a call of the function =E2=80=9Cof_find_compatible_node=
-=E2=80=9D failed
-at one place.
-Remove this superfluous function call.
+Adjust jump targets so that a bit of exception handling can be better
+reused at the end of this function.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- arch/powerpc/platforms/82xx/pq2ads-pci-pic.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/platforms/82xx/pq2ads-pci-pic.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c b/arch/powerpc/p=
 latforms/82xx/pq2ads-pci-pic.c
-index 096cc0d59fd8..6cc054db7043 100644
+index 6cc054db7043..f82f75a6085c 100644
 =2D-- a/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c
 +++ b/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c
-@@ -123,7 +123,6 @@ int __init pq2ads_pci_init_irq(void)
- 	np =3D of_find_compatible_node(NULL, NULL, "fsl,pq2ads-pci-pic");
- 	if (!np) {
- 		printk(KERN_ERR "No pci pic node in device tree.\n");
+@@ -129,13 +129,11 @@ int __init pq2ads_pci_init_irq(void)
+ 	irq =3D irq_of_parse_and_map(np, 0);
+ 	if (!irq) {
+ 		printk(KERN_ERR "No interrupt in pci pic node.\n");
 -		of_node_put(np);
- 		goto out;
+-		goto out;
++		goto out_put_node;
  	}
 
+ 	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv) {
+-		of_node_put(np);
+ 		ret =3D -ENOMEM;
+ 		goto out_unmap_irq;
+ 	}
+@@ -160,17 +158,17 @@ int __init pq2ads_pci_init_irq(void)
+ 	priv->host =3D host;
+ 	irq_set_handler_data(irq, priv);
+ 	irq_set_chained_handler(irq, pq2ads_pci_irq_demux);
+-
+-	of_node_put(np);
+-	return 0;
++	ret =3D 0;
++	goto out_put_node;
+
+ out_unmap_regs:
+ 	iounmap(priv->regs);
+ out_free_kmalloc:
+ 	kfree(priv);
+-	of_node_put(np);
+ out_unmap_irq:
+ 	irq_dispose_mapping(irq);
++out_put_node:
++	of_node_put(np);
+ out:
+ 	return ret;
+ }
 =2D-
 2.23.0
 
