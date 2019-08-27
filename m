@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B31D9DC09
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 05:35:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7DE9DC0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 05:37:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HZK51LrWzDq6Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 13:35:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HZM62D0PzDqY0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 13:37:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="SludPViT"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="EY0IubGE"; 
  dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HZCF2MhBzDqnT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 13:30:49 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id go14so11039566plb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 20:30:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46HZCG6KtBzDqnT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 13:30:50 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id d3so11074575plr.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2019 20:30:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
  bh=4MQv1fZDmpeZG9L25IANzqdKccZIl5dLjm+wLh5C3Oc=;
- b=SludPViT/8QbNF8i+i3WJud4H8ekVirxX5D1dmT++cZlnqPD/C12/61pUjZgso79oq
- fTzvEUnqv+6kLZqdLYOTOh7YiWxoBLnyDGphrXSdLgrsW/smBc7a5Vofo5Chd4QdCG/r
- g7cd7kzTXFoAptjGG7giTQPZj+n7XumzZwAq70yG69li9Skg/iUwoyP4c0Y+C5Jc1eGi
- GnisBsxtyAApZCd+NFqu63EYdZJ8zEMGk0n7ddF6WQkVLmrrCygxWJv8KXaV+TlaH51r
- rCU/2u+M5cvVdO1V6dSfKon5Rhouw/omeyyG0kxU2mMFfBMTk8zxc6bpWeF/99AM+YAE
- RBJQ==
+ b=EY0IubGE0vPR4Q9Y3SSvRGjRT4zUvTZyZdQkskTRd4tNV4V6c84ElpaLz1kzDCICil
+ TEAqBkyRhmSWFLPR1+JCqWTftF1MY1fJzCv3GaoSyRgZzQsm460qqrrEbtQIGPaOmzN+
+ lylK7fp+YTb+zn+j4TYBMLPmW19aACuPqRikJAdqnjtZDD9yvMh+NJ9+SuXtMXATqLDJ
+ 5NIa5dJSmV4gFoeQ3nkK7oQHjmJTzOVsTRAmikKP6V2fTJhEZOD8ZWd0WR+Jfukma8ya
+ UuKt0YaEtxRQugSUV07gDke3meKP++VIcnEnLtuvB4otgfQ4jnXmq16QlyUeqrELikoN
+ ULxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
  bh=4MQv1fZDmpeZG9L25IANzqdKccZIl5dLjm+wLh5C3Oc=;
- b=ozbGXzZozxO5B0b3If7EMF/qXZs/YeCVHWZLQ3rR7Ew5obUhe+ssSmf2pJMppJ+R0A
- jgyquuHinMU/oRnVDOqKjjmrJobNgrE+BmN+RHZufNFwt79gPT+jCHjKvOZqmbBe04LX
- JHTVXb0donlWna8zjICEsAJjlC2PKPp23MKluT2MrDI8sc2aGUcu98l6c7UZNds22eiV
- BOPGgwx7uIPYCUCazTOXRuKN7+3Vk77sO0ahJoR51qeDxx2YwyDJ0NjUN0hmJHZypUv0
- ndqAilzEkOvnWQaPMudWXUkDTAhoCIOexynllIcVvQo3HLI/qPDpsyDWhd2xIcp/fZ0P
- WnaA==
-X-Gm-Message-State: APjAAAWJTwGNsaZ1l7vnUdY/Nhcd6bcu2PqtzrukbNE1Ke/ngRkWKfJf
- AeIAbM0dSq96Z5XKaqALqpUfFvyI
-X-Google-Smtp-Source: APXvYqxjTOHPRa04u9UMalH6dFvJClzwK+QhPMEt2sk7oJnngBFau9m9PHIQNHjThjITjQ7LXoa7Vg==
-X-Received: by 2002:a17:902:b702:: with SMTP id
- d2mr10406427pls.259.1566876646630; 
- Mon, 26 Aug 2019 20:30:46 -0700 (PDT)
+ b=n3vQdTEPiFx1gtA4iypD+Kv2xkBkfMGR+KLlF42Iez5EtdzZanzRNdO1PVDZeK+EOd
+ xazhK3sty/ZoAdJxhqjkvaQVGralim3UjCvyqXp8B/7xrDFhJ3WWI17bzR3KNeO5k7ro
+ wl1z2mP53bRhTy2fX/SJL4DMCXQeqGsXs7PoudPH9+B2TEvEGqtG3KJjsdBces4ytFpj
+ 2ewtzKU18YCyMevbmbp7qiYL2XSupnuF4vPXYe1GcCP0VdBVdjfkb8F1ObnXjD7Lsu9D
+ OwphoT5Ihe7DHcKYphcMJurYHXM9Tbo89lJj6RU9nSypS3d6SH7lZivPoOwIMSTGugsK
+ yI7g==
+X-Gm-Message-State: APjAAAWm1zrF2F/WCnbQsXjE/ZppEzs480iRBVz27PD3dQgcDtQ9er9W
+ OzSt0CkSCU+gXfSmm5Lg0RvNlVFr
+X-Google-Smtp-Source: APXvYqxvupdxnBcXiNHvz+qHKhvOrfjuYI8RyPpp/o5mqgE5hVkIVlg+gLKSU3vxpYHILt3kcqcmqw==
+X-Received: by 2002:a17:902:9a8d:: with SMTP id
+ w13mr21888788plp.157.1566876648807; 
+ Mon, 26 Aug 2019 20:30:48 -0700 (PDT)
 Received: from bobo.local0.net (14-202-91-55.tpgi.com.au. [14.202.91.55])
- by smtp.gmail.com with ESMTPSA id x24sm11383984pgl.84.2019.08.26.20.30.44
+ by smtp.gmail.com with ESMTPSA id x24sm11383984pgl.84.2019.08.26.20.30.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Aug 2019 20:30:46 -0700 (PDT)
+ Mon, 26 Aug 2019 20:30:48 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/4] powerpc/64: remove support for kernel-mode syscalls
-Date: Tue, 27 Aug 2019 13:30:07 +1000
-Message-Id: <20190827033010.28090-3-npiggin@gmail.com>
+Subject: [PATCH 2/4] powerpc/64s: remove support for kernel-mode syscalls
+Date: Tue, 27 Aug 2019 13:30:08 +1000
+Message-Id: <20190827033010.28090-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190827033010.28090-1-npiggin@gmail.com>
 References: <20190827033010.28090-1-npiggin@gmail.com>
