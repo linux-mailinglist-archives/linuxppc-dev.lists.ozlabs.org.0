@@ -2,60 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F45C9E670
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 13:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 721B69E6CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 13:31:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46HmL42ghtzDqqJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 21:07:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46HmsN0n0zzDqss
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2019 21:31:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=socionext.com
- (client-ip=210.131.2.91; helo=conssluserg-06.nifty.com;
- envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="Smo7xVDM"; 
- dkim-atps=neutral
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com
- [210.131.2.91])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Hmq41khzzDqc6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 21:29:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46Hmq31g4Lz8syQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 21:29:03 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46Hmq30dJ5z9sDB; Tue, 27 Aug 2019 21:29:03 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sachinp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46HmJF3yjxzDqlf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 21:05:48 +1000 (AEST)
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com
- [209.85.221.173]) (authenticated)
- by conssluserg-06.nifty.com with ESMTP id x7RB5Jpb018051
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 20:05:20 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x7RB5Jpb018051
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1566903920;
- bh=dWxuqD4YJcRMD9twhfib+BopSFdJKxF8FxvMFpBbUHc=;
- h=From:Date:Subject:To:Cc:From;
- b=Smo7xVDM1saSAc9FhwvktzLiJpBycJ+sjNW1E5H88MtL6GaRaUW3b2mZzyz9yNp3o
- ON5wteDwVWexvg3jkSIdjcjt7KXVoqLeu07mCJrbhZbQ/Fapo2w1P7OsGinbQvBLrM
- FcY/alQrWHC8V9s7qhZr+WEohEuzyjCHNJSw8vcNgmWK8H4xgoJvdF+kYX6hzcrZEI
- PftcTuJqmgMqiFKTy+8du0t/VFew1CMrHkrv3Or9jXK308QkD6AFTMmK72RAIru1Z+
- BVhRtlDlChWkOSWsiR1Am0tK7rWlw6rF0zLbiQ962A5IRUxsiHooYuBqGzwQ1C7jIM
- annZ+aZsorbvw==
-X-Nifty-SrcIP: [209.85.221.173]
-Received: by mail-vk1-f173.google.com with SMTP id p5so2708889vkm.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 04:05:19 -0700 (PDT)
-X-Gm-Message-State: APjAAAWPBtK6IusFTeWxmCyWxPll9JlZz21YekOK1bnm3z2yXUU1UpEc
- IHcZ6bPiGim3Uy9y0lFUREOGpbAOLYf+2NkqrXY=
-X-Google-Smtp-Source: APXvYqyledIhqfWe+gAo4mMvwSREWvj02FyonTP3pC7GC3fqLFZMC32WbLnqBuyPj2Xf3LXKNxpFogQPsn8yCWi5NfU=
-X-Received: by 2002:a1f:7c0e:: with SMTP id x14mr10777661vkc.0.1566903918828; 
- Tue, 27 Aug 2019 04:05:18 -0700 (PDT)
-MIME-Version: 1.0
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Tue, 27 Aug 2019 20:04:43 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATg7O0ZQQ4fe2maNqf0ascHU8b2Mfnqkrxzpzj8D_X7pQ@mail.gmail.com>
-Message-ID: <CAK7LNATg7O0ZQQ4fe2maNqf0ascHU8b2Mfnqkrxzpzj8D_X7pQ@mail.gmail.com>
-Subject: powerpc asm-prototypes.h seems odd
-To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+ by ozlabs.org (Postfix) with ESMTPS id 46Hmq24GmFz9sNC
+ for <linuxppc-dev@ozlabs.org>; Tue, 27 Aug 2019 21:29:01 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7RBIVJ5098846
+ for <linuxppc-dev@ozlabs.org>; Tue, 27 Aug 2019 07:28:58 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2un0s1f47x-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 27 Aug 2019 07:28:58 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
+ Tue, 27 Aug 2019 12:28:56 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 27 Aug 2019 12:28:53 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7RBSq0O53346356
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Aug 2019 11:28:52 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 11646AE051;
+ Tue, 27 Aug 2019 11:28:52 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4917EAE04D;
+ Tue, 27 Aug 2019 11:28:51 +0000 (GMT)
+Received: from [9.199.196.173] (unknown [9.199.196.173])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Aug 2019 11:28:51 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [powerpc]WARN : arch/powerpc/platforms/powernv/smp.c:160
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <B641A885-76DF-4976-81AE-73D41AD71BAF@linux.vnet.ibm.com>
+Date: Tue, 27 Aug 2019 16:58:50 +0530
+Content-Transfer-Encoding: quoted-printable
+References: <AB1A20B4-523B-491E-AB89-124AD2810C17@linux.vnet.ibm.com>
+ <87imqk4nad.fsf@concordia.ellerman.id.au>
+ <B641A885-76DF-4976-81AE-73D41AD71BAF@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3445.104.11)
+X-TM-AS-GCONF: 00
+x-cbid: 19082711-0020-0000-0000-0000036474C9
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082711-0021-0000-0000-000021B9C14C
+Message-Id: <42157B13-A906-4F0F-90F8-CA88A5A829BE@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-27_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908270129
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,62 +105,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@ozlabs.org, linux-next@vger.kernel.org, ego@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi.
-
-Lots of powerpc files include <asm/asm-prototypes.h>,
-and powerpc is the only architecture that does this.
-
-<asm/asm-prototypes.h> exists to support modversion for asm.
-So, it is supposed to be parsed by genksysms, not to be
-included from other files.  Right?
 
 
-$  git grep  asm/asm-prototypes.h
-arch/arm64/include/asm/asm-prototypes.h: * ... kbuild will
-automatically pick these up from <asm/asm-prototypes.h> and
-arch/powerpc/kernel/early_32.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/irq.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/machine_kexec_64.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/process.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/prom_init.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/ptrace.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/security.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/setup_32.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/signal_32.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/signal_64.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/smp.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/syscalls.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/tau_6xx.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/time.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/trace/ftrace.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kernel/traps.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kvm/book3s_emulate.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kvm/book3s_hv.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kvm/book3s_hv_builtin.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kvm/book3s_hv_rm_xive.c:#include <asm/asm-prototypes.h>
-arch/powerpc/kvm/book3s_pr.c:#include <asm/asm-prototypes.h>
-arch/powerpc/lib/vmx-helper.c:#include <asm/asm-prototypes.h>
-arch/powerpc/mm/book3s64/hash_utils.c:#include <asm/asm-prototypes.h>
-arch/powerpc/mm/book3s64/slb.c:#include <asm/asm-prototypes.h>
-arch/powerpc/platforms/powernv/idle.c:#include <asm/asm-prototypes.h>
-arch/powerpc/platforms/powernv/opal-call.c:#include <asm/asm-prototypes.h>
-arch/powerpc/platforms/powernv/opal-tracepoints.c:#include
-<asm/asm-prototypes.h>
-arch/powerpc/platforms/pseries/lpar.c:#include <asm/asm-prototypes.h>
-scripts/Makefile.build:# .S file exports must have their C prototypes
-defined in asm/asm-prototypes.h
-scripts/Makefile.build:     echo "\#include <asm/asm-prototypes.h>" ;
-                            \
-scripts/Makefile.build:ASM_PROTOTYPES := $(wildcard
-$(srctree)/arch/$(SRCARCH)/include/asm/asm-prototypes.h)
+> On 26-Aug-2019, at 3:42 PM, Sachin Sant <sachinp@linux.vnet.ibm.com> =
+wrote:
+>=20
+>> On 26-Aug-2019, at 8:59 AM, Michael Ellerman <mpe@ellerman.id.au> =
+wrote:
+>>=20
+>> Sachin Sant <sachinp@linux.vnet.ibm.com> writes:
+>>> linux-next is currently broken on POWER8 non virtualized. Kernel
+>>> fails to reach login prompt with following kernel warning
+>>> repeatedly shown during boot.
+>>=20
+>> I don't see it on my test systems.
+>>=20
+>> The backtrace makes it look like you're doing CPU hot_un_plug during
+>> boot, which seems a bit odd.
+>>=20
+> There is no explicit hot un plug operation being done. This happens
+> during boot.
+>=20
+> For some reason cpu=E2=80=99s are being off lined. =20
 
+So this machine was configured as a KVM host. Hence the SMT=3D1
+configuration at boot. Removing QEMU/libvirt packages and unloading
+kvm module gets me to SMT 8 config.
 
+Disabling kvm also allows me to boot next kernels without the warning.
+The warning is only seen with kvm configured.
 
--- 
-Best Regards
-Masahiro Yamada
+Thanks
+-Sachin
+
