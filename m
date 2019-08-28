@@ -2,57 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A97C9F8DF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 05:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED029F903
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 05:59:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JBVd6Sp8zDqvh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 13:46:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JBnC6NtNzDqTl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 13:58:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JBQj0WRpzDqSM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 13:42:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JBky0ZcGzDqkX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 13:56:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46JBQh4spNz8wB9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 13:42:52 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46JBkx74XVz8sxb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 13:56:57 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46JBQh4Mbrz9sBF; Wed, 28 Aug 2019 13:42:52 +1000 (AEST)
+ id 46JBkx6fltz9sN1; Wed, 28 Aug 2019 13:56:57 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=68.65.122.29; helo=mta-09-4.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from MTA-09-4.privateemail.com (mta-09-4.privateemail.com
- [68.65.122.29])
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46JBQg5Tqcz9sN1
- for <linuxppc-dev@ozlabs.org>; Wed, 28 Aug 2019 13:42:50 +1000 (AEST)
-Received: from MTA-09.privateemail.com (localhost [127.0.0.1])
- by MTA-09.privateemail.com (Postfix) with ESMTP id B091F60045;
- Tue, 27 Aug 2019 23:42:47 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.235])
- by MTA-09.privateemail.com (Postfix) with ESMTPA id 4DD0860034;
- Wed, 28 Aug 2019 03:42:47 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org,
-	kernel-hardening@lists.openwall.com
-Subject: [PATCH v5 2/2] powerpc/xmon: Restrict when kernel is locked down
-Date: Tue, 27 Aug 2019 22:46:13 -0500
-Message-Id: <20190828034613.14750-3-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190828034613.14750-1-cmr@informatik.wtf>
-References: <20190828034613.14750-1-cmr@informatik.wtf>
+ by ozlabs.org (Postfix) with ESMTPS id 46JBkx17Llz9s7T;
+ Wed, 28 Aug 2019 13:56:56 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7S3q1mB105118; Tue, 27 Aug 2019 23:56:53 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2unhmbh3pw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Aug 2019 23:56:52 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7S3t8VK021443;
+ Wed, 28 Aug 2019 03:56:52 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03wdc.us.ibm.com with ESMTP id 2ujvv6knqn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Aug 2019 03:56:52 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7S3uopK51446128
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Aug 2019 03:56:50 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BED4D78063;
+ Wed, 28 Aug 2019 03:56:50 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C288B7805F;
+ Wed, 28 Aug 2019 03:56:47 +0000 (GMT)
+Received: from rino.ibm.com (unknown [9.85.147.103])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Aug 2019 03:56:47 +0000 (GMT)
+From: Claudio Carvalho <cclaudio@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v3 1/2] powerpc/powernv/opal-msglog: Refactor memcons code
+Date: Wed, 28 Aug 2019 00:56:45 -0300
+Message-Id: <20190828035646.907-1-cclaudio@linux.ibm.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-28_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908280039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,272 +94,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Ryan Grimm <grimm@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xmon should be either fully or partially disabled depending on the
-kernel lockdown state.
+This patch refactors the code in opal-msglog that operates on the OPAL
+memory console in order to make it cleaner and also allow the reuse of
+the new memcons_* functions.
 
-Put xmon into read-only mode for lockdown=integrity and prevent user
-entry into xmon when lockdown=confidentiality. Xmon checks the lockdown
-state on every attempted entry:
-
- (1) during early xmon'ing
-
- (2) when triggered via sysrq
-
- (3) when toggled via debugfs
-
- (4) when triggered via a previously enabled breakpoint
-
-The following lockdown state transitions are handled:
-
- (1) lockdown=none -> lockdown=integrity
-     set xmon read-only mode
-
- (2) lockdown=none -> lockdown=confidentiality
-     clear all breakpoints, set xmon read-only mode,
-     prevent user re-entry into xmon
-
- (3) lockdown=integrity -> lockdown=confidentiality
-     clear all breakpoints, set xmon read-only mode,
-     prevent user re-entry into xmon
-
-Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
 ---
- arch/powerpc/xmon/xmon.c     | 85 ++++++++++++++++++++++++++++--------
- include/linux/security.h     |  2 +
- security/lockdown/lockdown.c |  2 +
- 3 files changed, 72 insertions(+), 17 deletions(-)
+ arch/powerpc/platforms/powernv/opal-msglog.c | 61 ++++++++++++++------
+ 1 file changed, 42 insertions(+), 19 deletions(-)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index a98a354d46ac..94a5fada3034 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -25,6 +25,7 @@
- #include <linux/nmi.h>
- #include <linux/ctype.h>
- #include <linux/highmem.h>
-+#include <linux/security.h>
+diff --git a/arch/powerpc/platforms/powernv/opal-msglog.c b/arch/powerpc/platforms/powernv/opal-msglog.c
+index dc51d03c6370..0e8eb62c8afe 100644
+--- a/arch/powerpc/platforms/powernv/opal-msglog.c
++++ b/arch/powerpc/platforms/powernv/opal-msglog.c
+@@ -29,23 +29,24 @@ struct memcons {
  
- #include <asm/debugfs.h>
- #include <asm/ptrace.h>
-@@ -187,6 +188,8 @@ static void dump_tlb_44x(void);
- static void dump_tlb_book3e(void);
- #endif
+ static struct memcons *opal_memcons = NULL;
  
-+static void clear_all_bpt(void);
-+
- #ifdef CONFIG_PPC64
- #define REG		"%.16lx"
- #else
-@@ -283,10 +286,38 @@ Commands:\n\
- "  U	show uptime information\n"
- "  ?	help\n"
- "  # n	limit output to n lines per page (for dp, dpa, dl)\n"
--"  zr	reboot\n\
--  zh	halt\n"
-+"  zr	reboot\n"
-+"  zh	halt\n"
- ;
- 
-+#ifdef CONFIG_SECURITY
-+static bool xmon_is_locked_down(void)
-+{
-+	static bool lockdown;
-+
-+	if (!lockdown) {
-+		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
-+		if (lockdown) {
-+			printf("xmon: Disabled due to kernel lockdown\n");
-+			xmon_is_ro = true;
-+		}
-+	}
-+
-+	if (!xmon_is_ro) {
-+		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
-+		if (xmon_is_ro)
-+			printf("xmon: Read-only due to kernel lockdown\n");
-+	}
-+
-+	return lockdown;
-+}
-+#else /* CONFIG_SECURITY */
-+static inline bool xmon_is_locked_down(void)
-+{
-+	return false;
-+}
-+#endif
-+
- static struct pt_regs *xmon_regs;
- 
- static inline void sync(void)
-@@ -438,7 +469,10 @@ static bool wait_for_other_cpus(int ncpus)
- 
- 	return false;
- }
--#endif /* CONFIG_SMP */
-+#else /* CONFIG_SMP */
-+static inline void get_output_lock(void) {}
-+static inline void release_output_lock(void) {}
-+#endif
- 
- static inline int unrecoverable_excp(struct pt_regs *regs)
+-ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
++static ssize_t memcons_copy(struct memcons *mc, char *to, loff_t pos,
++			   size_t count)
  {
-@@ -455,6 +489,7 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 	int cmd = 0;
- 	struct bpt *bp;
- 	long recurse_jmp[JMP_BUF_LEN];
-+	bool locked_down;
- 	unsigned long offset;
- 	unsigned long flags;
- #ifdef CONFIG_SMP
-@@ -465,6 +500,8 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 	local_irq_save(flags);
- 	hard_irq_disable();
+ 	const char *conbuf;
+ 	ssize_t ret;
+ 	size_t first_read = 0;
+ 	uint32_t out_pos, avail;
  
-+	locked_down = xmon_is_locked_down();
-+
- 	tracing_enabled = tracing_is_on();
- 	tracing_off();
+-	if (!opal_memcons)
++	if (!mc)
+ 		return -ENODEV;
  
-@@ -516,7 +553,8 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
+-	out_pos = be32_to_cpu(READ_ONCE(opal_memcons->out_pos));
++	out_pos = be32_to_cpu(READ_ONCE(mc->out_pos));
  
- 	if (!fromipi) {
- 		get_output_lock();
--		excprint(regs);
-+		if (!locked_down)
-+			excprint(regs);
- 		if (bp) {
- 			printf("cpu 0x%x stopped at breakpoint 0x%tx (",
- 			       cpu, BP_NUM(bp));
-@@ -568,10 +606,14 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 		}
- 		remove_bpts();
- 		disable_surveillance();
--		/* for breakpoint or single step, print the current instr. */
--		if (bp || TRAP(regs) == 0xd00)
--			ppc_inst_dump(regs->nip, 1, 0);
--		printf("enter ? for help\n");
-+
-+		if (!locked_down) {
-+			/* for breakpoint or single step, print curr insn */
-+			if (bp || TRAP(regs) == 0xd00)
-+				ppc_inst_dump(regs->nip, 1, 0);
-+			printf("enter ? for help\n");
-+		}
-+
- 		mb();
- 		xmon_gate = 1;
- 		barrier();
-@@ -595,8 +637,9 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 			spin_cpu_relax();
- 			touch_nmi_watchdog();
- 		} else {
--			cmd = cmds(regs);
--			if (cmd != 0) {
-+			if (!locked_down)
-+				cmd = cmds(regs);
-+			if (locked_down || cmd != 0) {
- 				/* exiting xmon */
- 				insert_bpts();
- 				xmon_gate = 0;
-@@ -633,13 +676,16 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 			       "can't continue\n");
- 		remove_bpts();
- 		disable_surveillance();
--		/* for breakpoint or single step, print the current instr. */
--		if (bp || TRAP(regs) == 0xd00)
--			ppc_inst_dump(regs->nip, 1, 0);
--		printf("enter ? for help\n");
-+		if (!locked_down) {
-+			/* for breakpoint or single step, print current insn */
-+			if (bp || TRAP(regs) == 0xd00)
-+				ppc_inst_dump(regs->nip, 1, 0);
-+			printf("enter ? for help\n");
-+		}
+ 	/* Now we've read out_pos, put a barrier in before reading the new
+ 	 * data it points to in conbuf. */
+ 	smp_rmb();
+ 
+-	conbuf = phys_to_virt(be64_to_cpu(opal_memcons->obuf_phys));
++	conbuf = phys_to_virt(be64_to_cpu(mc->obuf_phys));
+ 
+ 	/* When the buffer has wrapped, read from the out_pos marker to the end
+ 	 * of the buffer, and then read the remaining data as in the un-wrapped
+@@ -53,7 +54,7 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
+ 	if (out_pos & MEMCONS_OUT_POS_WRAP) {
+ 
+ 		out_pos &= MEMCONS_OUT_POS_MASK;
+-		avail = be32_to_cpu(opal_memcons->obuf_size) - out_pos;
++		avail = be32_to_cpu(mc->obuf_size) - out_pos;
+ 
+ 		ret = memory_read_from_buffer(to, count, &pos,
+ 				conbuf + out_pos, avail);
+@@ -71,7 +72,7 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
  	}
  
--	cmd = cmds(regs);
-+	if (!locked_down)
-+		cmd = cmds(regs);
- 
- 	insert_bpts();
- 	in_xmon = 0;
-@@ -668,7 +714,10 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 		}
+ 	/* Sanity check. The firmware should not do this to us. */
+-	if (out_pos > be32_to_cpu(opal_memcons->obuf_size)) {
++	if (out_pos > be32_to_cpu(mc->obuf_size)) {
+ 		pr_err("OPAL: memory console corruption. Aborting read.\n");
+ 		return -EINVAL;
  	}
- #endif
--	insert_cpu_bpts();
-+	if (locked_down)
-+		clear_all_bpt();
-+	else
-+		insert_cpu_bpts();
- 
- 	touch_nmi_watchdog();
- 	local_irq_restore(flags);
-@@ -3767,7 +3816,6 @@ static int __init setup_xmon_sysrq(void)
- device_initcall(setup_xmon_sysrq);
- #endif /* CONFIG_MAGIC_SYSRQ */
- 
--#ifdef CONFIG_DEBUG_FS
- static void clear_all_bpt(void)
- {
- 	int i;
-@@ -3786,9 +3834,12 @@ static void clear_all_bpt(void)
- 		dabr.enabled = 0;
- 	}
- 
-+	get_output_lock();
- 	printf("xmon: All breakpoints cleared\n");
-+	release_output_lock();
+@@ -86,11 +87,16 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
+ 	return ret;
  }
  
-+#ifdef CONFIG_DEBUG_FS
- static int xmon_dbgfs_set(void *data, u64 val)
++ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
++{
++	return memcons_copy(opal_memcons, to, pos, count);
++}
++
+ static ssize_t opal_msglog_read(struct file *file, struct kobject *kobj,
+ 				struct bin_attribute *bin_attr, char *to,
+ 				loff_t pos, size_t count)
  {
- 	xmon_on = !!val;
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 429f9f03372b..ba9d308689b6 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -116,12 +116,14 @@ enum lockdown_reason {
- 	LOCKDOWN_MODULE_PARAMETERS,
- 	LOCKDOWN_MMIOTRACE,
- 	LOCKDOWN_DEBUGFS,
-+	LOCKDOWN_XMON_WR,
- 	LOCKDOWN_INTEGRITY_MAX,
- 	LOCKDOWN_KCORE,
- 	LOCKDOWN_KPROBES,
- 	LOCKDOWN_BPF_READ,
- 	LOCKDOWN_PERF,
- 	LOCKDOWN_TRACEFS,
-+	LOCKDOWN_XMON_RW,
- 	LOCKDOWN_CONFIDENTIALITY_MAX,
+-	return opal_msglog_copy(to, pos, count);
++	return memcons_copy(opal_memcons, to, pos, count);
+ }
+ 
+ static struct bin_attribute opal_msglog_attr = {
+@@ -98,32 +104,49 @@ static struct bin_attribute opal_msglog_attr = {
+ 	.read = opal_msglog_read
  };
  
-diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index 0068cec77c05..db85182d3f11 100644
---- a/security/lockdown/lockdown.c
-+++ b/security/lockdown/lockdown.c
-@@ -31,12 +31,14 @@ static char *lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
- 	[LOCKDOWN_MODULE_PARAMETERS] = "unsafe module parameters",
- 	[LOCKDOWN_MMIOTRACE] = "unsafe mmio",
- 	[LOCKDOWN_DEBUGFS] = "debugfs access",
-+	[LOCKDOWN_XMON_WR] = "xmon write access",
- 	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
- 	[LOCKDOWN_KCORE] = "/proc/kcore access",
- 	[LOCKDOWN_KPROBES] = "use of kprobes",
- 	[LOCKDOWN_BPF_READ] = "use of bpf to read kernel RAM",
- 	[LOCKDOWN_PERF] = "unsafe use of perf",
- 	[LOCKDOWN_TRACEFS] = "use of tracefs",
-+	[LOCKDOWN_XMON_RW] = "xmon read and write access",
- 	[LOCKDOWN_CONFIDENTIALITY_MAX] = "confidentiality",
- };
+-void __init opal_msglog_init(void)
++static struct memcons *memcons_load_from_dt(struct device_node *node,
++					    const char *mc_prop_name)
+ {
+ 	u64 mcaddr;
+ 	struct memcons *mc;
  
+-	if (of_property_read_u64(opal_node, "ibm,opal-memcons", &mcaddr)) {
+-		pr_warn("OPAL: Property ibm,opal-memcons not found, no message log\n");
+-		return;
++	if (of_property_read_u64(node, mc_prop_name, &mcaddr)) {
++		pr_warn("%s property not found, no message log\n",
++			mc_prop_name);
++		goto out_err;
+ 	}
+ 
+ 	mc = phys_to_virt(mcaddr);
+ 	if (!mc) {
+-		pr_warn("OPAL: memory console address is invalid\n");
+-		return;
++		pr_warn("memory console address is invalid\n");
++		goto out_err;
+ 	}
+ 
+ 	if (be64_to_cpu(mc->magic) != MEMCONS_MAGIC) {
+-		pr_warn("OPAL: memory console version is invalid\n");
+-		return;
++		pr_warn("memory console version is invalid\n");
++		goto out_err;
+ 	}
+ 
+-	/* Report maximum size */
+-	opal_msglog_attr.size =  be32_to_cpu(mc->ibuf_size) +
+-		be32_to_cpu(mc->obuf_size);
++	return mc;
++
++out_err:
++	return NULL;
++}
++
++static u32 memcons_get_size(struct memcons *mc)
++{
++	return be32_to_cpu(mc->ibuf_size) + be32_to_cpu(mc->obuf_size);
++}
++
++void __init opal_msglog_init(void)
++{
++	opal_memcons = memcons_load_from_dt(opal_node, "ibm,opal-memcons");
++	if (!opal_memcons) {
++		pr_warn("OPAL: memcons failed to load from ibm,opal-memcons\n");
++		return;
++	}
+ 
+-	opal_memcons = mc;
++	opal_msglog_attr.size = memcons_get_size(opal_memcons);
+ }
+ 
+ void __init opal_msglog_sysfs_init(void)
 -- 
-2.23.0
+2.20.1
 
