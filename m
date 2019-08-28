@@ -1,47 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044C59FDD3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:05:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08EC9FDDB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:07:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JKZl26pbzDqLH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:05:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JKd76vLMzDr6f
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:07:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=andrew.murray@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46JKV43Gx5zDr3m
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:01:13 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 17F56337;
- Wed, 28 Aug 2019 02:01:11 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.20])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6455C3F59C;
- Wed, 28 Aug 2019 02:01:10 -0700 (PDT)
-Date: Wed, 28 Aug 2019 10:01:08 +0100
-From: Andrew Murray <andrew.murray@arm.com>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCH v2 08/10] PCI: layerscape: Add EP mode support for
- ls1088a and ls2088a
-Message-ID: <20190828090105.GR14582@e119886-lin.cambridge.arm.com>
-References: <20190822112242.16309-1-xiaowei.bao@nxp.com>
- <20190822112242.16309-8-xiaowei.bao@nxp.com>
- <20190823142756.GI14582@e119886-lin.cambridge.arm.com>
- <AM5PR04MB3299B100D1029E90945CF7DDF5A10@AM5PR04MB3299.eurprd04.prod.outlook.com>
- <20190827133429.GM14582@e119886-lin.cambridge.arm.com>
- <VI1PR04MB3310F78C86F775BB1F5B7E0CF5A30@VI1PR04MB3310.eurprd04.prod.outlook.com>
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="wN1YuG8s"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JKX55bfBzDqN7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:03:00 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46JKWv1brfz9tyhj;
+ Wed, 28 Aug 2019 11:02:51 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=wN1YuG8s; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id u5dsNTY73UfT; Wed, 28 Aug 2019 11:02:51 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46JKWv0Rjsz9tyhc;
+ Wed, 28 Aug 2019 11:02:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566982971; bh=japZNXUXijb+/L6RjGTAO9kiWJVY+MqWjZntNP2L0VI=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=wN1YuG8s/+zIDCMcfG5yF48xpww91bDd54Pa3mBrjD4z+11I8p/XrTbXMuXPeJ6dm
+ rD0hsopY9wvm8p1fmPHf8Iu2rWsn4929gi/f9ewXbuBsGxUnwI48cLs/wneC4TPQBF
+ eVaAxKd/w04AP9vDc6BUZgyDIdOODDJ5xAriuCPs=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2F1B28B856;
+ Wed, 28 Aug 2019 11:02:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id unzhHBicQNrx; Wed, 28 Aug 2019 11:02:52 +0200 (CEST)
+Received: from [172.25.230.105] (po15451.idsi0.si.c-s.fr [172.25.230.105])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EA8188B877;
+ Wed, 28 Aug 2019 11:02:51 +0200 (CEST)
+Subject: Re: [PATCH v2 3/4] powerpc/64: system call remove non-volatile GPR
+ save optimisation
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190827135548.21457-1-npiggin@gmail.com>
+ <20190827135548.21457-4-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <3f91c62a-6d77-d34c-9477-3077afa5f4e8@c-s.fr>
+Date: Wed, 28 Aug 2019 11:02:51 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20190827135548.21457-4-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <VI1PR04MB3310F78C86F775BB1F5B7E0CF5A30@VI1PR04MB3310.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,375 +79,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, Roy Zang <roy.zang@nxp.com>,
- "lorenzo.pieralisi@arm.co" <lorenzo.pieralisi@arm.co>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kishon@ti.com" <kishon@ti.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "gustavo.pimentel@synopsys.com" <gustavo.pimentel@synopsys.com>,
- "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>, Leo Li <leoyang.li@nxp.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>, Mingkai Hu <mingkai.hu@nxp.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 28, 2019 at 04:29:32AM +0000, Xiaowei Bao wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Andrew Murray <andrew.murray@arm.com>
-> > Sent: 2019年8月27日 21:34
-> > To: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > Cc: bhelgaas@google.com; robh+dt@kernel.org; mark.rutland@arm.com;
-> > shawnguo@kernel.org; Leo Li <leoyang.li@nxp.com>; kishon@ti.com;
-> > lorenzo.pieralisi@arm.co; arnd@arndb.de; gregkh@linuxfoundation.org; M.h.
-> > Lian <minghuan.lian@nxp.com>; Mingkai Hu <mingkai.hu@nxp.com>; Roy
-> > Zang <roy.zang@nxp.com>; jingoohan1@gmail.com;
-> > gustavo.pimentel@synopsys.com; linux-pci@vger.kernel.org;
-> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; linuxppc-dev@lists.ozlabs.org
-> > Subject: Re: [PATCH v2 08/10] PCI: layerscape: Add EP mode support for
-> > ls1088a and ls2088a
-> > 
-> > On Mon, Aug 26, 2019 at 09:49:35AM +0000, Xiaowei Bao wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Andrew Murray <andrew.murray@arm.com>
-> > > > Sent: 2019年8月23日 22:28
-> > > > To: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > > > Cc: bhelgaas@google.com; robh+dt@kernel.org; mark.rutland@arm.com;
-> > > > shawnguo@kernel.org; Leo Li <leoyang.li@nxp.com>; kishon@ti.com;
-> > > > lorenzo.pieralisi@arm.co; arnd@arndb.de; gregkh@linuxfoundation.org;
-> > M.h.
-> > > > Lian <minghuan.lian@nxp.com>; Mingkai Hu <mingkai.hu@nxp.com>; Roy
-> > > > Zang <roy.zang@nxp.com>; jingoohan1@gmail.com;
-> > > > gustavo.pimentel@synopsys.com; linux-pci@vger.kernel.org;
-> > > > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > > > linux-arm-kernel@lists.infradead.org; linuxppc-dev@lists.ozlabs.org
-> > > > Subject: Re: [PATCH v2 08/10] PCI: layerscape: Add EP mode support
-> > > > for ls1088a and ls2088a
-> > > >
-> > > > On Thu, Aug 22, 2019 at 07:22:40PM +0800, Xiaowei Bao wrote:
-> > > > > Add PCIe EP mode support for ls1088a and ls2088a, there are some
-> > > > > difference between LS1 and LS2 platform, so refactor the code of
-> > > > > the EP driver.
-> > > > >
-> > > > > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > > > > ---
-> > > > > v2:
-> > > > >  - New mechanism for layerscape EP driver.
-> > > >
-> > > > Was there a v1 of this patch?
-> > > >
-> > > > >
-> > > > >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 76
-> > > > > ++++++++++++++++++++------
-> > > > >  1 file changed, 58 insertions(+), 18 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > > > b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > > > index 7ca5fe8..2a66f07 100644
-> > > > > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > > > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > > > @@ -20,27 +20,29 @@
-> > > > >
-> > > > >  #define PCIE_DBI2_OFFSET		0x1000	/* DBI2 base address*/
-> > > > >
-> > > > > -struct ls_pcie_ep {
-> > > > > -	struct dw_pcie		*pci;
-> > > > > -	struct pci_epc_features	*ls_epc;
-> > > > > +#define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
-> > > > > +
-> > > > > +struct ls_pcie_ep_drvdata {
-> > > > > +	u32				func_offset;
-> > > > > +	const struct dw_pcie_ep_ops	*ops;
-> > > > > +	const struct dw_pcie_ops	*dw_pcie_ops;
-> > > > >  };
-> > > > >
-> > > > > -#define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
-> > > > > +struct ls_pcie_ep {
-> > > > > +	struct dw_pcie			*pci;
-> > > > > +	struct pci_epc_features		*ls_epc;
-> > > > > +	const struct ls_pcie_ep_drvdata *drvdata; };
-> > > > >
-> > > > >  static int ls_pcie_establish_link(struct dw_pcie *pci)  {
-> > > > >  	return 0;
-> > > > >  }
-> > > > >
-> > > > > -static const struct dw_pcie_ops ls_pcie_ep_ops = {
-> > > > > +static const struct dw_pcie_ops dw_ls_pcie_ep_ops = {
-> > > > >  	.start_link = ls_pcie_establish_link,  };
-> > > > >
-> > > > > -static const struct of_device_id ls_pcie_ep_of_match[] = {
-> > > > > -	{ .compatible = "fsl,ls-pcie-ep",},
-> > > > > -	{ },
-> > > > > -};
-> > > > > -
-> > > > >  static const struct pci_epc_features*
-> > > > > ls_pcie_ep_get_features(struct dw_pcie_ep *ep)  { @@ -82,10 +84,44
-> > > > > @@ static int ls_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
-> > > > >  	}
-> > > > >  }
-> > > > >
-> > > > > -static const struct dw_pcie_ep_ops pcie_ep_ops = {
-> > > > > +static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep
-> > *ep,
-> > > > > +						u8 func_no)
-> > > > > +{
-> > > > > +	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > > > > +	struct ls_pcie_ep *pcie = to_ls_pcie_ep(pci);
-> > > > > +	u8 header_type;
-> > > > > +
-> > > > > +	header_type = ioread8(pci->dbi_base + PCI_HEADER_TYPE);
-> > > > > +
-> > > > > +	if (header_type & (1 << 7))
-> > > > > +		return pcie->drvdata->func_offset * func_no;
-> > > > > +	else
-> > > > > +		return 0;
-> > > >
-> > > > It looks like there isn't a PCI define for multi function, the
-> > > > nearest I could find was PCI_HEADER_TYPE_MULTIDEVICE in
-> > > > hotplug/ibmphp.h. A comment above the test might be helpful to explain
-> > the test.
-> > >
-> > > OK, I will add a comment above this code.
-> > >
-> > > >
-> > > > As the ls_pcie_ep_drvdata structures are static, the unset
-> > > > .func_offset will be initialised to 0, so you could just drop the test above.
-> > >
-> > > Due to the different PCIe controller have different property, e.g.
-> > > PCIe controller1 support multiple function feature, but PCIe
-> > > controller2 don't support this feature, so I need to check which
-> > > controller support it and return the correct offset value, but each board only
-> > have one ls_pcie_ep_drvdata, ^_^.
-> > 
-> > Yes but if they don't support the feature then func_offset will be 0.
-> > 
-> > >
-> > > >
-> > > > However something to the effect of the following may help spot
-> > > > misconfiguration:
-> > > >
-> > > > WARN_ON(func_no && !pcie->drvdata->func_offset); return
-> > > > pcie->drvdata->func_offset * func_no;
-> > > >
-> > > > The WARN is probably quite useful as if you are attempting to use
-> > > > non-zero functions and func_offset isn't set - then things may
-> > > > appear to work normally but actually will break horribly.
-> > >
-> > > As discussion before, I think the func_offset should not depends on
-> > > the function number, even if other platforms of NXP may be use write
-> > > registers way to access the different function config space.
-> > 
-> > I agree that func_offset is an optional parameter. But if you are attempting to
-> > determine the offset of a function and you are given a non-zero function
-> > number - then something has gone wrong if func_offset is 0.
-> 
-> I have understood you means, maybe I need to set a flag in the driver_data struct,
-> because I may add other platform of NXP, these platform use the write register 
-> method to access different function, e.g. 
-> write func_num to register, then we can access this func_num config space.
-> 
-> I will modify the code like this? Do you have better advice?
-> Case1:
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 004a7e8..8a0d6df 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -23,6 +23,7 @@
->  #define to_ls_pcie_ep(x)       dev_get_drvdata((x)->dev)
-> 
->  struct ls_pcie_ep_drvdata {
-> +       u8                              func_config_flag;
->         u32                             func_offset;
->         const struct dw_pcie_ep_ops     *ops;
->         const struct dw_pcie_ops        *dw_pcie_ops;
-> @@ -97,8 +98,14 @@ static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
->          * Read the Header Type register of config space to check
->          * whether this PCI device support the multiple function.
->          */
-> -       if (header_type & (1 << 7))
-> -               return pcie->drvdata->func_offset * func_no;
-> +       if (header_type & (1 << 7)) {
-> +               if (pcie->drvdata->func_config_flag) {
-> +                       iowrite32((func_num << n), pci->dbi_base + PCI_XXXX_XXX);
-> +               } else {
-> +                       WARN_ON(func_no && !pcie->drvdata->func_offset);
-> +                       return pcie->drvdata->func_offset * func_no;
-> +               }
-> +       }
-> 
->         return 0;
->  }
-> 
-> Of course, I don't need to set the flag this time, because I don't use the second method(write
-> register method), so the code like this:
-> case2:
-> +static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
->                                                u8 func_no) {
->        struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->        struct ls_pcie_ep *pcie = to_ls_pcie_ep(pci);
->        u8 header_type;
-> 
-> 	   of course, this code is not requied, due to the 
-> 	   pcie->drvdata->func_offset is 0, but I think this is more clear
-> 	   if use this code.
->        header_type = ioread8(pci->dbi_base + PCI_HEADER_TYPE);
-> 
->        /*
->         * Read the Header Type register of config space to check
->         * whether this PCI device support the multiple function.
->         */
->        if (header_type & (1 << 7)) {
-> 			   WARN_ON(func_no && !pcie->drvdata->func_offset);
->                return pcie->drvdata->func_offset * func_no; 
-> 		}
-> 		
->        return 0;
-> }
-> 
-> Or like this:
-> Case3:
-> +static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
->                                                u8 func_no) {
->        struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->        struct ls_pcie_ep *pcie = to_ls_pcie_ep(pci);
-> 
-> 	   WARN_ON(func_no && !pcie->drvdata->func_offset);
->        return pcie->drvdata->func_offset * func_no;
 
-This is better. Given there is only currently one method of calculating
-an offset for layerscape, I'd recommend you add additional methods when
-the need arises.
 
-Thanks,
+Le 27/08/2019 à 15:55, Nicholas Piggin a écrit :
+> powerpc has an optimisation where interrupts avoid saving the
+> non-volatile (or callee saved) registers to the interrupt stack frame if
+> they are not required.
+> 
+> Two problems with this are that an interrupt does not always know
+> whether it will need non-volatiles; and if it does need them, they can
+> only be saved from the entry-scoped asm code (because we don't control
+> what the C compiler does with these registers).
+> 
+> system calls are the most difficult: some system calls always require
+> all registers (e.g., fork, to copy regs into the child).  Sometimes
+> registers are only required under certain conditions (e.g., tracing,
+> signal delivery). These cases require ugly logic in the call chains
+> (e.g., ppc_fork), and require a lot of logic to be implemented in asm.
 
-Andrew Murray
+Do you really find it ugly to just call function nvgprs() before calling 
+sys_fork() ? I guess there are things a lot uglier.
 
 > 
-> }
-> Of course, we can return a -1 by adjuring the (func_no && !pcie->drvdata->func_offset) 
-> Valu in case1
+> So remove the optimisation for system calls, and always save NVGPRs on
+> entry. Modern high performance CPUs are not so sensitive, because the
+> stores are dense in cache and can be hidden by other expensive work in
+> the syscall path -- the null syscall selftests benchmark on POWER9 is
+> not slowed (124.40ns before and 123.64ns after, i.e., within the noise).
+
+I did the test on PPC32:
+
+On an 885, null_syscall reports 2227ns (132MHz)
+If saving non-volatile regs, it goes to 2419, ie +8.6%
+
+On an 8321, null_syscall reports 1021ns (333MHz)
+If saving non-volatile regs, it goes to 1100, ie +7.7%
+
+So unless going to C compensates this degradation, I guess it is not 
+worth it on PPC32.
+
 > 
-> Thanks 
-> Xiaowei
+> Other interrupts retain the NVGPR optimisation for now.
 > 
-> > 
-> > Thanks,
-> > 
-> > Andrew Murray
-> > 
-> > >
-> > > I have added the comments above the code, as follow, do you have any
-> > advice?
-> > > +static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
-> > > +                                               u8 func_no) {
-> > > +       struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > > +       struct ls_pcie_ep *pcie = to_ls_pcie_ep(pci);
-> > > +       u8 header_type;
-> > > +
-> > > +       header_type = ioread8(pci->dbi_base + PCI_HEADER_TYPE);
-> > > +
-> > > +       /*
-> > > +        * Read the Header Type register of config space to check
-> > > +        * whether this PCI device support the multiple function.
-> > > +        */
-> > > +       if (header_type & (1 << 7))
-> > > +               return pcie->drvdata->func_offset * func_no;
-> > > +
-> > > +       return 0;
-> > > +}
-> > >
-> > > Thanks a lot for your detail comments.
-> > >
-> > > >
-> > > > Thanks,
-> > > >
-> > > > Andrew Murray
-> > > >
-> > > > > +}
-> > > > > +
-> > > > > +static const struct dw_pcie_ep_ops ls_pcie_ep_ops = {
-> > > > >  	.ep_init = ls_pcie_ep_init,
-> > > > >  	.raise_irq = ls_pcie_ep_raise_irq,
-> > > > >  	.get_features = ls_pcie_ep_get_features,
-> > > > > +	.func_conf_select = ls_pcie_ep_func_conf_select, };
-> > > > > +
-> > > > > +static const struct ls_pcie_ep_drvdata ls1_ep_drvdata = {
-> > > > > +	.ops = &ls_pcie_ep_ops,
-> > > > > +	.dw_pcie_ops = &dw_ls_pcie_ep_ops, };
-> > > > > +
-> > > > > +static const struct ls_pcie_ep_drvdata ls2_ep_drvdata = {
-> > > > > +	.func_offset = 0x20000,
-> > > > > +	.ops = &ls_pcie_ep_ops,
-> > > > > +	.dw_pcie_ops = &dw_ls_pcie_ep_ops, };
-> > > > > +
-> > > > > +static const struct of_device_id ls_pcie_ep_of_match[] = {
-> > > > > +	{ .compatible = "fsl,ls1046a-pcie-ep", .data = &ls1_ep_drvdata },
-> > > > > +	{ .compatible = "fsl,ls1088a-pcie-ep", .data = &ls2_ep_drvdata },
-> > > > > +	{ .compatible = "fsl,ls2088a-pcie-ep", .data = &ls2_ep_drvdata },
-> > > > > +	{ },
-> > > > >  };
-> > > > >
-> > > > >  static int __init ls_add_pcie_ep(struct ls_pcie_ep *pcie, @@
-> > > > > -98,7
-> > > > > +134,7 @@ static int __init ls_add_pcie_ep(struct ls_pcie_ep
-> > > > > +*pcie,
-> > > > >  	int ret;
-> > > > >
-> > > > >  	ep = &pci->ep;
-> > > > > -	ep->ops = &pcie_ep_ops;
-> > > > > +	ep->ops = pcie->drvdata->ops;
-> > > > >
-> > > > >  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-> > > > "addr_space");
-> > > > >  	if (!res)
-> > > > > @@ -137,14 +173,11 @@ static int __init ls_pcie_ep_probe(struct
-> > > > platform_device *pdev)
-> > > > >  	if (!ls_epc)
-> > > > >  		return -ENOMEM;
-> > > > >
-> > > > > -	dbi_base = platform_get_resource_byname(pdev,
-> > IORESOURCE_MEM,
-> > > > "regs");
-> > > > > -	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
-> > > > > -	if (IS_ERR(pci->dbi_base))
-> > > > > -		return PTR_ERR(pci->dbi_base);
-> > > > > +	pcie->drvdata = of_device_get_match_data(dev);
-> > > > >
-> > > > > -	pci->dbi_base2 = pci->dbi_base + PCIE_DBI2_OFFSET;
-> > > > >  	pci->dev = dev;
-> > > > > -	pci->ops = &ls_pcie_ep_ops;
-> > > > > +	pci->ops = pcie->drvdata->dw_pcie_ops;
-> > > > > +
-> > > > >  	pcie->pci = pci;
-> > > > >
-> > > > >  	ls_epc->linkup_notifier = false, @@ -152,6 +185,13 @@ static int
-> > > > > __init ls_pcie_ep_probe(struct platform_device *pdev)
-> > > > >
-> > > > >  	pcie->ls_epc = ls_epc;
-> > > > >
-> > > > > +	dbi_base = platform_get_resource_byname(pdev,
-> > IORESOURCE_MEM,
-> > > > "regs");
-> > > > > +	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
-> > > > > +	if (IS_ERR(pci->dbi_base))
-> > > > > +		return PTR_ERR(pci->dbi_base);
-> > > > > +
-> > > > > +	pci->dbi_base2 = pci->dbi_base + PCIE_DBI2_OFFSET;
-> > > > > +
-> > > > >  	platform_set_drvdata(pdev, pcie);
-> > > > >
-> > > > >  	ret = ls_add_pcie_ep(pcie, pdev);
-> > > > > --
-> > > > > 2.9.5
-> > > > >
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Changes since v1:
+> - Improve changelog
+> - Fix clone3 spu table entry (Segher)
+> 
+>   arch/powerpc/kernel/entry_64.S           | 72 +++++-------------------
+>   arch/powerpc/kernel/syscalls/syscall.tbl | 22 +++++---
+>   2 files changed, 28 insertions(+), 66 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+> index 6467bdab8d40..5a3e0b5c9ad1 100644
+> --- a/arch/powerpc/kernel/entry_64.S
+> +++ b/arch/powerpc/kernel/entry_64.S
+> @@ -98,13 +98,14 @@ END_BTB_FLUSH_SECTION
+>   	std	r11,_XER(r1)
+>   	std	r11,_CTR(r1)
+>   	std	r9,GPR13(r1)
+> +	SAVE_NVGPRS(r1)
+>   	mflr	r10
+>   	/*
+>   	 * This clears CR0.SO (bit 28), which is the error indication on
+>   	 * return from this system call.
+>   	 */
+>   	rldimi	r2,r11,28,(63-28)
+> -	li	r11,0xc01
+> +	li	r11,0xc00
+>   	std	r10,_LINK(r1)
+>   	std	r11,_TRAP(r1)
+>   	std	r3,ORIG_GPR3(r1)
+> @@ -323,7 +324,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>   
+>   /* Traced system call support */
+>   .Lsyscall_dotrace:
+> -	bl	save_nvgprs
+>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>   	bl	do_syscall_trace_enter
+>   
+> @@ -408,7 +408,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>   	mtmsrd	r10,1
+>   #endif /* CONFIG_PPC_BOOK3E */
+>   
+> -	bl	save_nvgprs
+>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>   	bl	do_syscall_trace_leave
+>   	b	ret_from_except
+> @@ -442,62 +441,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>   _ASM_NOKPROBE_SYMBOL(system_call_common);
+>   _ASM_NOKPROBE_SYMBOL(system_call_exit);
+>   
+> -/* Save non-volatile GPRs, if not already saved. */
+> -_GLOBAL(save_nvgprs)
+> -	ld	r11,_TRAP(r1)
+> -	andi.	r0,r11,1
+> -	beqlr-
+> -	SAVE_NVGPRS(r1)
+> -	clrrdi	r0,r11,1
+> -	std	r0,_TRAP(r1)
+> -	blr
+> -_ASM_NOKPROBE_SYMBOL(save_nvgprs);
+
+I see it is added back somewhere below. Why don't you leave it where it is ?
+
+> -
+> -	
+> -/*
+> - * The sigsuspend and rt_sigsuspend system calls can call do_signal
+> - * and thus put the process into the stopped state where we might
+> - * want to examine its user state with ptrace.  Therefore we need
+> - * to save all the nonvolatile registers (r14 - r31) before calling
+> - * the C code.  Similarly, fork, vfork and clone need the full
+> - * register state on the stack so that it can be copied to the child.
+> - */
+> -
+> -_GLOBAL(ppc_fork)
+> -	bl	save_nvgprs
+> -	bl	sys_fork
+> -	b	.Lsyscall_exit
+> -
+> -_GLOBAL(ppc_vfork)
+> -	bl	save_nvgprs
+> -	bl	sys_vfork
+> -	b	.Lsyscall_exit
+> -
+> -_GLOBAL(ppc_clone)
+> -	bl	save_nvgprs
+> -	bl	sys_clone
+> -	b	.Lsyscall_exit
+> -
+> -_GLOBAL(ppc_clone3)
+> -       bl      save_nvgprs
+> -       bl      sys_clone3
+> -       b       .Lsyscall_exit
+> -
+> -_GLOBAL(ppc32_swapcontext)
+> -	bl	save_nvgprs
+> -	bl	compat_sys_swapcontext
+> -	b	.Lsyscall_exit
+> -
+> -_GLOBAL(ppc64_swapcontext)
+> -	bl	save_nvgprs
+> -	bl	sys_swapcontext
+> -	b	.Lsyscall_exit
+> -
+> -_GLOBAL(ppc_switch_endian)
+> -	bl	save_nvgprs
+> -	bl	sys_switch_endian
+> -	b	.Lsyscall_exit
+> -
+>   _GLOBAL(ret_from_fork)
+>   	bl	schedule_tail
+>   	REST_NVGPRS(r1)
+> @@ -516,6 +459,17 @@ _GLOBAL(ret_from_kernel_thread)
+>   	li	r3,0
+>   	b	.Lsyscall_exit
+>   
+> +/* Save non-volatile GPRs, if not already saved. */
+> +_GLOBAL(save_nvgprs)
+> +	ld	r11,_TRAP(r1)
+> +	andi.	r0,r11,1
+> +	beqlr-
+> +	SAVE_NVGPRS(r1)
+> +	clrrdi	r0,r11,1
+> +	std	r0,_TRAP(r1)
+> +	blr
+> +_ASM_NOKPROBE_SYMBOL(save_nvgprs);
+> +
+
+Moved here.
+
+>   #ifdef CONFIG_PPC_BOOK3S_64
+>   
+>   #define FLUSH_COUNT_CACHE	\
+
+Christophe
+
