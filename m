@@ -2,58 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA5DA0632
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 17:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0502DA0643
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 17:26:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JTy56pF5zDqQg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 01:22:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JV2V4VMmzDqsW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 01:26:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+49d2e20b56fbda768dd7+5848+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="pWWEOSGT"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JTpP47SxzDrCG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:15:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=8K7w75RPW6v4R35r6JmgUfk3dHW0nTr/NpQB6sJf4qo=; b=pWWEOSGTyudk/6A10hR6Rlhjw
- A4Sphe4p05lJ/Hb8GVFUvYM1J6Jd9a+5Nsc4/cOPgWOGDKCeIMBRHYi6Is72mY5VWXV7d/+EG1nh7
- uMdv+ItX2xYd6/5PvNkTgEuRCp56CX+LySr6Y2AgZ87P4cmObrP9U0L15xxANZr/uKRJlC73WP6oX
- nMqlGIWRngHtKm7S+mfZ1p3YdpzPuTr+nyl8Ui4PbkslY7s+e1rS0bWwBeA+P4UY10THQRCzLRrwZ
- iWQDqh0cG3c0OqOwh53z3Tvoj/ml9ig9cP2h39LohZszaL18S5oYgdA1y/3trV8EeMZYE0eLe7Z5r
- OgCLEFGZQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1i2zfs-0000aY-9Y; Wed, 28 Aug 2019 15:15:52 +0000
-Date: Wed, 28 Aug 2019 08:15:52 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Michal Suchanek <msuchanek@suse.de>
-Subject: Re: [PATCH 1/4] fs: always build llseek.
-Message-ID: <20190828151552.GA16855@infradead.org>
-References: <cover.1566936688.git.msuchanek@suse.de>
- <80b1955b86fb81e4642881d498068b5a540ef029.1566936688.git.msuchanek@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80b1955b86fb81e4642881d498068b5a540ef029.1566936688.git.msuchanek@suse.de>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JTvP56d8zDqG6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:20:17 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7SFIFlq164848
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 11:20:13 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2umpb3bt4w-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 11:20:11 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <zohar@linux.ibm.com>;
+ Wed, 28 Aug 2019 16:20:05 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 28 Aug 2019 16:20:01 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7SFK0Zv24510654
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Aug 2019 15:20:00 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7D25411C054;
+ Wed, 28 Aug 2019 15:20:00 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 26EF411C04A;
+ Wed, 28 Aug 2019 15:19:59 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.129.156])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Aug 2019 15:19:59 +0000 (GMT)
+Subject: Re: [PATCH] sefltest/ima: support appended signatures (modsig)
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: shuah <shuah@kernel.org>, linux-integrity@vger.kernel.org
+Date: Wed, 28 Aug 2019 11:19:58 -0400
+In-Reply-To: <2f89d09f-1b69-3d77-6846-01bef7d20f39@kernel.org>
+References: <1566995946-6582-1-git-send-email-zohar@linux.ibm.com>
+ <2f89d09f-1b69-3d77-6846-01bef7d20f39@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19082815-0016-0000-0000-000002A3EF99
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082815-0017-0000-0000-0000330440F8
+Message-Id: <1567005598.6115.40.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-28_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908280157
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,25 +89,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Michael Neuling <mikey@neuling.org>, David Hildenbrand <david@redhat.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org,
- Allison Randal <allison@lohutok.net>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, "Dmitry V. Levin" <ldv@altlinux.org>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Joel Stanley <joel@jms.id.au>, Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
- Breno Leitao <leitao@debian.org>, Firoz Khan <firoz.khan@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Hari Bathini <hbathini@linux.ibm.com>,
- "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Dave Young <dyoung@redhat.com>, linux-kernel@vger.kernel.org,
+ Petr Vorel <pvorel@suse.cz>, linux-kselftest@vger.kernel.org,
+ Jessica Yu <jeyu@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 27, 2019 at 10:21:06PM +0200, Michal Suchanek wrote:
-> 64bit !COMPAT does not build because the llseek syscall is in the tables.
+On Wed, 2019-08-28 at 08:45 -0600, shuah wrote:
+> Hi Mimi,
+> 
+> On 8/28/19 6:39 AM, Mimi Zohar wrote:
+> > Detect and allow appended signatures.
+> > 
+> 
+> Can you please add a couple of more sentences on the feature
+> and what happens without it? I know this is a test for the
+> feature, however, it will be useful for users and testers to
+> know more about this test and the feature it is testing.
 
-Well, this will bloat thinkgs like 64-bit RISC-V for no good reason.
-Please introduce a WANT_LSEEK like symbol that ppc64 can select instead.
+I've updated the patch description as requested.  
+
+> Also, are there test skip conditions to be concerned about?
+
+The kexec selftests tests the coordination of the different methods of
+verifying the kexec kernel image.  As the appended signature support
+is part of IMA, there is no new skip conditions.
+
+> Is there a dependency on another tree or would like me to take
+> this through kselftest tree?
+
+I would prefer upstreaming this test with the rest of IMA support for
+appended signatures.
+
+thanks,
+
+Mimi
+
