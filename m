@@ -1,63 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FAC9F9BB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 07:10:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508999F9C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 07:23:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JDMg0x1BzDqsX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:10:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JDfF1zykzDr5Z
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:23:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JDKq25MRzDqjb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 15:08:47 +1000 (AEST)
-Received: from [2601:449:8400:7293:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1i2qCA-0007Ui-Om; Wed, 28 Aug 2019 00:08:35 -0500
-Message-ID: <827cc152757906a0ebc04bbe56cdf44683721eb4.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 28 Aug 2019 00:08:33 -0500
-In-Reply-To: <878srf4cjk.fsf@concordia.ellerman.id.au>
-References: <20190809100800.5426-1-yanaijie@huawei.com>
- <ed96199d-715c-3f1c-39db-10a569ba6601@huawei.com>
- <529fd908-42d6-f96f-daa2-9010f3035879@huawei.com>
- <878srf4cjk.fsf@concordia.ellerman.id.au>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8400:7293:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, linux-kernel@vger.kernel.org,
- wangkefeng.wang@huawei.com, yebin10@huawei.com, thunder.leizhen@huawei.com,
- jingxiangfeng@huawei.com, fanchengyang@huawei.com, zhaohongjiang@huawei.com,
- yanaijie@huawei.com, linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
- christophe.leroy@c-s.fr, benh@kernel.crashing.org, paulus@samba.org,
- npiggin@gmail.com, keescook@chromium.org, kernel-hardening@lists.openwall.com
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH v6 00/12] implement KASLR for powerpc/fsl_booke/32
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JDcT5HwBzDqtp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 15:21:26 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D581C200274;
+ Wed, 28 Aug 2019 07:21:21 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 595BD2001A9;
+ Wed, 28 Aug 2019 07:21:16 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 65E74402C0;
+ Wed, 28 Aug 2019 13:21:09 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_ssi: Fix clock control issue in master mode
+Date: Wed, 28 Aug 2019 13:20:17 -0400
+Message-Id: <1567012817-12625-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,31 +52,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, keescook@chromium.org,
- Jason Yan <yanaijie@huawei.com>, kernel-hardening@lists.openwall.com,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, jingxiangfeng@huawei.com,
- diana.craciun@nxp.com, paulus@samba.org, zhaohongjiang@huawei.com,
- thunder.leizhen@huawei.com, fanchengyang@huawei.com,
- linuxppc-dev@lists.ozlabs.org, yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-08-27 at 11:33 +1000, Michael Ellerman wrote:
-> Jason Yan <yanaijie@huawei.com> writes:
-> > A polite ping :)
-> > 
-> > What else should I do now?
-> 
-> That's a good question.
-> 
-> Scott, are you still maintaining FSL bits, 
+The test case is
+arecord -Dhw:0 -d 10 -f S16_LE -r 48000 -c 2 temp.wav &
+aplay -Dhw:0 -d 30 -f S16_LE -r 48000 -c 2 test.wav
 
-Sort of... now that it's become very low volume, it's easy to forget when
-something does show up (or miss it if I'm not CCed).  It'd probably help if I
-were to just ack patches instead of thinking "I'll do a pull request for this
-later" when it's just one or two patches per cycle.
+There will be error after end of arecord:
+aplay: pcm_write:2051: write error: Input/output error
 
--Scott
+Capture and Playback work in parallel in master mode, one
+substream stops, the other substream is impacted, the
+reason is that clock is disabled wrongly.
 
+The clock's reference count is not increased when second
+substream starts, the hw_param() function returns in the
+beginning because first substream is enabled, then in end
+of first substream, the hw_free() disables the clock.
+
+This patch is to move the clock enablement to the place
+before checking of the device enablement in hw_param().
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_ssi.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
+index b0a6fead1a6a..537dc69256f0 100644
+--- a/sound/soc/fsl/fsl_ssi.c
++++ b/sound/soc/fsl/fsl_ssi.c
+@@ -799,15 +799,6 @@ static int fsl_ssi_hw_params(struct snd_pcm_substream *substream,
+ 	u32 wl = SSI_SxCCR_WL(sample_size);
+ 	int ret;
+ 
+-	/*
+-	 * SSI is properly configured if it is enabled and running in
+-	 * the synchronous mode; Note that AC97 mode is an exception
+-	 * that should set separate configurations for STCCR and SRCCR
+-	 * despite running in the synchronous mode.
+-	 */
+-	if (ssi->streams && ssi->synchronous)
+-		return 0;
+-
+ 	if (fsl_ssi_is_i2s_master(ssi)) {
+ 		ret = fsl_ssi_set_bclk(substream, dai, hw_params);
+ 		if (ret)
+@@ -823,6 +814,15 @@ static int fsl_ssi_hw_params(struct snd_pcm_substream *substream,
+ 		}
+ 	}
+ 
++	/*
++	 * SSI is properly configured if it is enabled and running in
++	 * the synchronous mode; Note that AC97 mode is an exception
++	 * that should set separate configurations for STCCR and SRCCR
++	 * despite running in the synchronous mode.
++	 */
++	if (ssi->streams && ssi->synchronous)
++		return 0;
++
+ 	if (!fsl_ssi_is_ac97(ssi)) {
+ 		/*
+ 		 * Keep the ssi->i2s_net intact while having a local variable
+-- 
+2.21.0
 
