@@ -1,70 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B99CA0B5A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 22:26:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911E7A0D55
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 00:15:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Jcht0cb7zDrJ1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 06:26:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Jg6v2bm1zDrBh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 08:15:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Jcdy5Qq6zDrHn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 06:24:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Jg4l3fSLzDqXQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 08:13:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=catern.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=catern.com header.i=@catern.com header.b="REuwdRN9"; 
- dkim-atps=neutral
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46Jcdy3vBnz8tTC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 06:24:06 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46Jg4l34gGz8svv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 08:13:59 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46Jcdy397Vz9sDB; Thu, 29 Aug 2019 06:24:06 +1000 (AEST)
+ id 46Jg4l2vpXz9sNk; Thu, 29 Aug 2019 08:13:59 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=catern.com
- (client-ip=68.183.49.163; helo=venus.catern.com;
- envelope-from=sbaugh@catern.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=catern.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=catern.com header.i=@catern.com header.b="REuwdRN9"; 
- dkim-atps=neutral
-X-Greylist: delayed 405 seconds by postgrey-1.36 at bilbo;
- Thu, 29 Aug 2019 06:24:04 AEST
-Received: from venus.catern.com (venus.catern.com [68.183.49.163])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46Jcdw5g9Xz9sN6
- for <linuxppc-dev@ozlabs.org>; Thu, 29 Aug 2019 06:24:04 +1000 (AEST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=34.206.19.101;
- helo=localhost; envelope-from=sbaugh@catern.com; receiver=<UNKNOWN> 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=catern.com; s=mail;
- t=1567023434; bh=0ywMFKjMwE/uBXqaIPb34y8Q/aLLCmGU3C97TLkQvwo=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date;
- b=REuwdRN9P9zoh6DHSLiK1nqu3i2wNZqBJCILEt+4b0yiKxgb0XYUJwKX2wRNDyDWc
- JukKo1pvC54OaIX4CqMGz3OuGJLGPRfZ0csrkVnGcnxMd6oby8HYrRP9EeNU+sPgW7
- McVdUazYCiNEMo/74xDeTcyWeiOv6iN9cpLaK4n8=
-Received: from localhost (ec2-34-206-19-101.compute-1.amazonaws.com
- [34.206.19.101])
- by venus.catern.com (Postfix) with ESMTPSA id 0564E2C2971;
- Wed, 28 Aug 2019 20:17:13 +0000 (UTC)
-From: Spencer Baugh <sbaugh@catern.com>
-To: Jeff Layton <jlayton@kernel.org>, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
-In-Reply-To: <4da231cd52880991d8a038adb8fbb2ef3d724db9.camel@kernel.org>
-References: <20190820033406.29796-1-cyphar@cyphar.com>
- <20190820033406.29796-8-cyphar@cyphar.com> <854l2366zp.fsf@catern.com>
- <4da231cd52880991d8a038adb8fbb2ef3d724db9.camel@kernel.org>
-Date: Wed, 28 Aug 2019 20:17:07 +0000
-Message-ID: <85y2zd3v0c.fsf@catern.com>
+ by ozlabs.org (Postfix) with ESMTPS id 46Jg4k60rFz9sNC;
+ Thu, 29 Aug 2019 08:13:58 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7SMCdVW018230; Wed, 28 Aug 2019 18:13:56 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2up27400qv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Aug 2019 18:13:56 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7SM9h5B015389;
+ Wed, 28 Aug 2019 22:13:55 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 2unb3t0kvj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Aug 2019 22:13:55 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7SMDs7B44302696
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Aug 2019 22:13:54 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A07CCAC133;
+ Wed, 28 Aug 2019 22:13:54 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 17EFEAC117;
+ Wed, 28 Aug 2019 22:13:54 +0000 (GMT)
+Received: from [9.85.164.95] (unknown [9.85.164.95])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Aug 2019 22:13:53 +0000 (GMT)
+Subject: Re: [PATCH v4 1/2] powerpc/powernv/opal-msglog: Refactor memcons code
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+References: <20190828130521.26764-1-mpe@ellerman.id.au>
+From: Claudio Carvalho <cclaudio@linux.ibm.com>
+Message-ID: <7fb68a9a-65b5-2ac6-105b-2603bd75af28@linux.ibm.com>
+Date: Wed, 28 Aug 2019 19:13:52 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20190828130521.26764-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-28_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908280214
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,59 +98,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@ozlabs.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jeff Layton <jlayton@kernel.org> writes:
-> On Mon, 2019-08-26 at 19:50 +0000, sbaugh@catern.com wrote:
->> Aleksa Sarai <cyphar@cyphar.com> writes:
->> > To this end, we introduce the openat2(2) syscall. It provides all of the
->> > features of openat(2) through the @how->flags argument, but also
->> > also provides a new @how->resolve argument which exposes RESOLVE_* flags
->> > that map to our new LOOKUP_* flags. It also eliminates the long-standing
->> > ugliness of variadic-open(2) by embedding it in a struct.
->> 
->> I don't like this usage of a structure in memory to pass arguments that
->> would fit in registers. This would be quite inconvenient for me as a
->> userspace developer.
->> 
->> Others have brought up issues with this: the issue of seccomp, and the
->> issue of mismatch between the userspace interface and the kernel
->> interface, are the most important for me. I want to add another,
->> admittedly somewhat niche, concern.
->> 
->> This interfaces requires a program to allocate memory (even on the
->> stack) just to pass arguments to the kernel which could be passed
->> without allocating that memory. That makes it more difficult and less
->> efficient to use this syscall in any case where memory is not so easily
->> allocatable: such as early program startup or assembly, where the stack
->> may be limited in size or not even available yet, or when injecting a
->> syscall while ptracing.
->> 
->> A struct-passing interface was needed for clone, since we ran out of
->> registers; but we have not run out of registers yet for openat, so it
->> would be nice to avoid this if we can. We can always expand later...
->> 
->
-> We can't really expand later like you suggest.
->
-> Suppose in a couple of years that we need to add some new argument to
-> openat2 that isn't just a new flag. If all these values are passed by
-> individual arguments, you can't add one later without adding yet another
-> syscall.
 
-Sure we can. This new syscall doesn't need to use all 6 available
-arguments. It can enforce that the unused ones are 0. Then if we
-eventually run out of flags and need to switch to pass arguments via
-struct, we can just use one of the unused arguments for that purpose.
+On 8/28/19 10:05 AM, Michael Ellerman wrote:
+> From: Claudio Carvalho <cclaudio@linux.ibm.com>
+>
+> This patch refactors the code in opal-msglog that operates on the OPAL
+> memory console in order to make it cleaner and also allow the reuse of
+> the new memcons_* functions.
 
-Even if we used all 6 arguments, in the worst-case scenario, the last
-flag we add could change the interpretation of some other argument so it
-can be used to pass a pointer to a struct.
+Tested-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+
+Thanks,
+Claudio
+
+> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+> v4: mpe: Rename memcons_load_from_dt() to memcons_init().
+>          Make memcons_init() and memcons_get_size() non-static.
+> 	 Continue to use opal_msglog_copy() in opal_msglog_read().
+> ---
+>  arch/powerpc/platforms/powernv/opal-msglog.c | 57 +++++++++++++-------
+>  1 file changed, 39 insertions(+), 18 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/powernv/opal-msglog.c b/arch/powerpc/platforms/powernv/opal-msglog.c
+> index dc51d03c6370..d26da19a611f 100644
+> --- a/arch/powerpc/platforms/powernv/opal-msglog.c
+> +++ b/arch/powerpc/platforms/powernv/opal-msglog.c
+> @@ -29,23 +29,23 @@ struct memcons {
+>  
+>  static struct memcons *opal_memcons = NULL;
+>  
+> -ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
+> +ssize_t memcons_copy(struct memcons *mc, char *to, loff_t pos, size_t count)
+>  {
+>  	const char *conbuf;
+>  	ssize_t ret;
+>  	size_t first_read = 0;
+>  	uint32_t out_pos, avail;
+>  
+> -	if (!opal_memcons)
+> +	if (!mc)
+>  		return -ENODEV;
+>  
+> -	out_pos = be32_to_cpu(READ_ONCE(opal_memcons->out_pos));
+> +	out_pos = be32_to_cpu(READ_ONCE(mc->out_pos));
+>  
+>  	/* Now we've read out_pos, put a barrier in before reading the new
+>  	 * data it points to in conbuf. */
+>  	smp_rmb();
+>  
+> -	conbuf = phys_to_virt(be64_to_cpu(opal_memcons->obuf_phys));
+> +	conbuf = phys_to_virt(be64_to_cpu(mc->obuf_phys));
+>  
+>  	/* When the buffer has wrapped, read from the out_pos marker to the end
+>  	 * of the buffer, and then read the remaining data as in the un-wrapped
+> @@ -53,7 +53,7 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
+>  	if (out_pos & MEMCONS_OUT_POS_WRAP) {
+>  
+>  		out_pos &= MEMCONS_OUT_POS_MASK;
+> -		avail = be32_to_cpu(opal_memcons->obuf_size) - out_pos;
+> +		avail = be32_to_cpu(mc->obuf_size) - out_pos;
+>  
+>  		ret = memory_read_from_buffer(to, count, &pos,
+>  				conbuf + out_pos, avail);
+> @@ -71,7 +71,7 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
+>  	}
+>  
+>  	/* Sanity check. The firmware should not do this to us. */
+> -	if (out_pos > be32_to_cpu(opal_memcons->obuf_size)) {
+> +	if (out_pos > be32_to_cpu(mc->obuf_size)) {
+>  		pr_err("OPAL: memory console corruption. Aborting read.\n");
+>  		return -EINVAL;
+>  	}
+> @@ -86,6 +86,11 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
+>  	return ret;
+>  }
+>  
+> +ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
+> +{
+> +	return memcons_copy(opal_memcons, to, pos, count);
+> +}
+> +
+>  static ssize_t opal_msglog_read(struct file *file, struct kobject *kobj,
+>  				struct bin_attribute *bin_attr, char *to,
+>  				loff_t pos, size_t count)
+> @@ -98,32 +103,48 @@ static struct bin_attribute opal_msglog_attr = {
+>  	.read = opal_msglog_read
+>  };
+>  
+> -void __init opal_msglog_init(void)
+> +struct memcons *memcons_init(struct device_node *node, const char *mc_prop_name)
+>  {
+>  	u64 mcaddr;
+>  	struct memcons *mc;
+>  
+> -	if (of_property_read_u64(opal_node, "ibm,opal-memcons", &mcaddr)) {
+> -		pr_warn("OPAL: Property ibm,opal-memcons not found, no message log\n");
+> -		return;
+> +	if (of_property_read_u64(node, mc_prop_name, &mcaddr)) {
+> +		pr_warn("%s property not found, no message log\n",
+> +			mc_prop_name);
+> +		goto out_err;
+>  	}
+>  
+>  	mc = phys_to_virt(mcaddr);
+>  	if (!mc) {
+> -		pr_warn("OPAL: memory console address is invalid\n");
+> -		return;
+> +		pr_warn("memory console address is invalid\n");
+> +		goto out_err;
+>  	}
+>  
+>  	if (be64_to_cpu(mc->magic) != MEMCONS_MAGIC) {
+> -		pr_warn("OPAL: memory console version is invalid\n");
+> -		return;
+> +		pr_warn("memory console version is invalid\n");
+> +		goto out_err;
+>  	}
+>  
+> -	/* Report maximum size */
+> -	opal_msglog_attr.size =  be32_to_cpu(mc->ibuf_size) +
+> -		be32_to_cpu(mc->obuf_size);
+> +	return mc;
+> +
+> +out_err:
+> +	return NULL;
+> +}
+> +
+> +u32 memcons_get_size(struct memcons *mc)
+> +{
+> +	return be32_to_cpu(mc->ibuf_size) + be32_to_cpu(mc->obuf_size);
+> +}
+> +
+> +void __init opal_msglog_init(void)
+> +{
+> +	opal_memcons = memcons_init(opal_node, "ibm,opal-memcons");
+> +	if (!opal_memcons) {
+> +		pr_warn("OPAL: memcons failed to load from ibm,opal-memcons\n");
+> +		return;
+> +	}
+>  
+> -	opal_memcons = mc;
+> +	opal_msglog_attr.size = memcons_get_size(opal_memcons);
+>  }
+>  
+>  void __init opal_msglog_sysfs_init(void)
