@@ -2,82 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0502DA0643
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 17:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDA6A0653
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 17:30:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JV2V4VMmzDqsW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 01:26:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JV7G0Mw7zDr2c
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 01:30:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=jsmart2021@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="GFysR3J8"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JTvP56d8zDqG6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:20:17 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7SFIFlq164848
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 11:20:13 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2umpb3bt4w-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 11:20:11 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <zohar@linux.ibm.com>;
- Wed, 28 Aug 2019 16:20:05 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 28 Aug 2019 16:20:01 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7SFK0Zv24510654
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 Aug 2019 15:20:00 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7D25411C054;
- Wed, 28 Aug 2019 15:20:00 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 26EF411C04A;
- Wed, 28 Aug 2019 15:19:59 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.129.156])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 28 Aug 2019 15:19:59 +0000 (GMT)
-Subject: Re: [PATCH] sefltest/ima: support appended signatures (modsig)
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: shuah <shuah@kernel.org>, linux-integrity@vger.kernel.org
-Date: Wed, 28 Aug 2019 11:19:58 -0400
-In-Reply-To: <2f89d09f-1b69-3d77-6846-01bef7d20f39@kernel.org>
-References: <1566995946-6582-1-git-send-email-zohar@linux.ibm.com>
- <2f89d09f-1b69-3d77-6846-01bef7d20f39@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19082815-0016-0000-0000-000002A3EF99
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082815-0017-0000-0000-0000330440F8
-Message-Id: <1567005598.6115.40.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-28_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908280157
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JV4n5XTyzDr2c
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:28:22 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id m3so1637334pgv.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 08:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=K1Wo1uryMad+JJHaOOhI3eSiwsKm2WkRf/8nzV4iG5o=;
+ b=GFysR3J8M2/ErxWakUhYzi+sSNmBeOJsqfZEFYbxE1KjTRbEdMgPJwDSY2sfWBF4M7
+ m554SzdeYG0q9h/3O3YP6S2ney8bZM6NSUhhOs+BcEYtnRmLb27/zrn1sJZtev1TbNe8
+ Ai8qsV+khBr3j4Yeyz+kBWE8P0eeENZ+6OFFzS80tsvOSrP0xUaSlO1uH6C13cFJ1009
+ cxRzDP706pd2EsdANnd/MK7GNAPYq8p3tpJ8PjWaOCxXwYlQQGvYBgvVjchn42TnWe65
+ 11Wwhjjeaz6joh+i8Sr2d4JPadlNYYU7M2Bgrc23JlOSFDz4XSx0ovXC/EBXU/ZO9zLX
+ +74A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=K1Wo1uryMad+JJHaOOhI3eSiwsKm2WkRf/8nzV4iG5o=;
+ b=SuNc+af5egwjPwO0eX4d2pr87Mr2OuP6MEa8sX+q4zCVEto6g03ifWO+OBiTmwGzKC
+ jb1tMl/2CYZX6fgXmxq2Tt6cBYN0WsVUvhSCikTXqrh4wHQcWVgRKSYAtd8l6V6VkBLU
+ E7VD3xvCmGW237z/6NGvbuZcM0Qr/6vIkvhZKuMhkV/9IYb8cm4zJA9zROzv5Q9X2gnX
+ /6OViXjTpeHsUuirbq7UvyVQ++vmrIy8f9lJl6RSyIRG/g1YUg3u1ybKt4m6BmIMFl9a
+ 0D3y/i5tY+BdEf89FUB2vJJATtLlGa1G8A3xi6S0OxJnQQfUlisGDTbFcUnCMzwn2Pg1
+ a3hw==
+X-Gm-Message-State: APjAAAUm7Xb6a6ce+oxg8Q4IEbfC9t6QIunK5p/EAx1PpjmSZdlFDGvL
+ JCTuFnxNpjmufn53XySfS/I=
+X-Google-Smtp-Source: APXvYqwMulwQmSKyJYZ5XStrF/EheQfqT2YR1ENZMg7+TqRcL/vGToHCYNsXooYGBikFTAvDL3sR0g==
+X-Received: by 2002:a17:90a:bc06:: with SMTP id
+ w6mr5002407pjr.130.1567005743009; 
+ Wed, 28 Aug 2019 08:22:23 -0700 (PDT)
+Received: from [10.69.69.102] ([192.19.223.252])
+ by smtp.gmail.com with ESMTPSA id g1sm3330822pgg.27.2019.08.28.08.22.18
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 28 Aug 2019 08:22:22 -0700 (PDT)
+Subject: Re: [linux-next][BUG][driver/scsi/lpfc][10541f] Kernel panics when
+ booting next kernel on my Power 9 box
+To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <1566968536.23670.9.camel@abdul>
+From: James Smart <jsmart2021@gmail.com>
+Message-ID: <601365f6-c753-96f6-5d61-481f54d95440@gmail.com>
+Date: Wed, 28 Aug 2019 08:22:17 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <1566968536.23670.9.camel@abdul>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,41 +85,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Young <dyoung@redhat.com>, linux-kernel@vger.kernel.org,
- Petr Vorel <pvorel@suse.cz>, linux-kselftest@vger.kernel.org,
- Jessica Yu <jeyu@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: sachinp <sachinp@linux.vnet.ibm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, dick.kennedy@broadcom.com,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ linux-scsi <linux-scsi@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linux-next <linux-next@vger.kernel.org>,
+ dougmill <dougmill@linux.vnet.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
+ manvanth <manvanth@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-08-28 at 08:45 -0600, shuah wrote:
-> Hi Mimi,
+On 8/27/2019 10:02 PM, Abdul Haleem wrote:
+> Greetings,
 > 
-> On 8/28/19 6:39 AM, Mimi Zohar wrote:
-> > Detect and allow appended signatures.
-> > 
+> linux-next kernel 5.3.0-rc1 failed to boot with kernel Oops on Power 9
+> box
 > 
-> Can you please add a couple of more sentences on the feature
-> and what happens without it? I know this is a test for the
-> feature, however, it will be useful for users and testers to
-> know more about this test and the feature it is testing.
+> I see a recent changes to lpfc code was from commit
+> 10541f03 scsi: lpfc: Update lpfc version to 12.4.0.0
+> 
+> Recent boot logs:
+> 
+> [..snip..]
 
-I've updated the patch description as requested.  
+see  https://www.spinics.net/lists/linux-scsi/msg133343.html
 
-> Also, are there test skip conditions to be concerned about?
+It hasn't been tested yet, but appears to be the issue.
 
-The kexec selftests tests the coordination of the different methods of
-verifying the kexec kernel image.  As the appended signature support
-is part of IMA, there is no new skip conditions.
-
-> Is there a dependency on another tree or would like me to take
-> this through kselftest tree?
-
-I would prefer upstreaming this test with the rest of IMA support for
-appended signatures.
-
-thanks,
-
-Mimi
-
+-- james
