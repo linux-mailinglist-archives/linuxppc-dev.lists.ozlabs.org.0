@@ -2,30 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE2D9F95F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9712F9F96F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:30:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JCPJ4zRQzDqyZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:26:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JCTW6YxwzDqVj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:30:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM33JTDzDqsr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM323X3zDqqJ
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 14:24:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 46JCM30cbJz9sDB; Wed, 28 Aug 2019 14:24:47 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46JCM32Km6z9sN6; Wed, 28 Aug 2019 14:24:47 +1000 (AEST)
+ id 46JCM30MgNz9sDQ; Wed, 28 Aug 2019 14:24:47 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 7e04a46d84f73ef0f21d2257d6ba2a194c0f1511
-In-Reply-To: <20190627053008.29315-1-dja@axtens.net>
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: d8f0e0b073e1ec52a05f0c2a56318b47387d2f10
+In-Reply-To: <20190524024647.381-1-cmr@informatik.wtf>
+To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/configs: Disable /dev/port in skiroot defconfig
-Message-Id: <46JCM32Km6z9sN6@ozlabs.org>
+Subject: Re: [PATCH v5] powerpc/64s: support nospectre_v2 cmdline option
+Message-Id: <46JCM30MgNz9sDQ@ozlabs.org>
 Date: Wed, 28 Aug 2019 14:24:47 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -38,21 +41,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Axtens <dja@axtens.net>
+Cc: "Christopher M. Riedl" <cmr@informatik.wtf>,
+ Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-06-27 at 05:30:08 UTC, Daniel Axtens wrote:
-> While reviewing lockdown patches, I discovered that we still enable
-> /dev/port (CONFIG_DEVPORT) in skiroot.
+On Fri, 2019-05-24 at 02:46:48 UTC, "Christopher M. Riedl" wrote:
+> Add support for disabling the kernel implemented spectre v2 mitigation
+> (count cache flush on context switch) via the nospectre_v2 and
+> mitigations=off cmdline options.
 > 
-> We don't need it. Deselect CONFIG_DEVPORT for skiroot.
-> 
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/7e04a46d84f73ef0f21d2257d6ba2a194c0f1511
+https://git.kernel.org/powerpc/c/d8f0e0b073e1ec52a05f0c2a56318b47387d2f10
 
 cheers
