@@ -1,70 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C8BA06FD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 18:10:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C30A0703
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 18:12:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JW0z0sHQzDrHY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 02:10:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JW3b1ZpszDrJ1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 02:12:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::244; helo=mail-lj1-x244.google.com;
+ envelope-from=festevam@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="t82bo+7n"; 
+ dkim-atps=neutral
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JVhX2PlDzDr81
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:55:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="pqTccn5J"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46JVhS6wXXz8x6w
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:55:52 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46JVhS4WGBz9sDB; Thu, 29 Aug 2019 01:55:52 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jlayton@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="pqTccn5J"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46JVhR5FpQz9sBF
- for <linuxppc-dev@ozlabs.org>; Thu, 29 Aug 2019 01:55:51 +1000 (AEST)
-Received: from tleilax.poochiereds.net
- (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 765322064A;
- Wed, 28 Aug 2019 15:55:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567007749;
- bh=tm23iPOHz5qNiVmbKBRthv6o0H14qpr8dY7bd4MTQKs=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=pqTccn5JcnucNCAhPvukewbhK7LnqfZiA1JhrrT1FDFY4mCrVB8AZyQ8GN7mLjP8y
- 7s9EDdOPkKuIVFWDEaVrPbihjrm8teyPYUCsz+WciUJXkEpW4kr0ySk55f/ASUGrn8
- zpEFoJeA5Hy5XDMtaE0vrkdWUVKHa2wWQhJO2xxg=
-Message-ID: <4da231cd52880991d8a038adb8fbb2ef3d724db9.camel@kernel.org>
-Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
-From: Jeff Layton <jlayton@kernel.org>
-To: sbaugh@catern.com, linux-fsdevel@vger.kernel.org
-Date: Wed, 28 Aug 2019 11:55:47 -0400
-In-Reply-To: <854l2366zp.fsf@catern.com>
-References: <20190820033406.29796-1-cyphar@cyphar.com>
- <20190820033406.29796-8-cyphar@cyphar.com> <854l2366zp.fsf@catern.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JVq92zyzzDr9W
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 02:01:37 +1000 (AEST)
+Received: by mail-lj1-x244.google.com with SMTP id t14so57458lji.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 09:01:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=yR3tqYiTxpppS/HN0rTYfpt0BO2DjSod+qzn1YFlyUY=;
+ b=t82bo+7nReRN8qUwONp3FOyUNOQe+SJmGjj43nMjkurkeSF72Pd1VV3hRf1OgE66RR
+ KDWoG2kZQnBVJzkM8KDZCFy7mqz9bcKdJSmmEx2dYdkoTRZLvN6pnCl8E0pBhjwKdkJ4
+ sf49qG2yOviuQ4Fu1Tm1UKeNFc43o8A1iRxF9LdpIDyvUrr/EXGEZPFdILgnN8BLCa2n
+ KW3jLLC38MeV3yMp6xS8/rl6fTmU4XS6EpBjg41uqXmYE0AhDM2igs87zJIiHIANDVPC
+ XsI6R22UTUjfppFtkbsj92qJogfUbp92F2UjpP47UJCKAq9rZ+NXm3mNfnDYXCPxjkdA
+ RFnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=yR3tqYiTxpppS/HN0rTYfpt0BO2DjSod+qzn1YFlyUY=;
+ b=o/Xjf3uZAlhq+St9JYrk/VyWYhbwR6RKIA1GDJ0ptR5zYpYfjUFpaixinoFJ4Mdj/v
+ sPMsfLxltDVZIsfV1otZ1pRlVa0mz/IVZXK7lTwtbpslo8fqpbH2dydD5WCHQOCNuQqK
+ K0CWDdi98PMV1WOT+NT6GsWW0488ri8uywX6bO/bUL1ln6axUPmFX86y2vmc2oGYRwOt
+ pZuuZwZljeB5Ah2LSbIFwaQBOtmc1yv8V1/YNZJH/laDVvX+WG36+HTmmFNpd96C8cg+
+ METNmZ0kAvg6A7fprC8OIf962uxguCk2Gw2Tnpm5KNHaavVhDPuEObixjFCMTMos6hgu
+ tsDQ==
+X-Gm-Message-State: APjAAAVtXdQQL93bTtOysIj67bbyymjTRHHKl0S21Yrt41EvvOn6ttON
+ Ki5qCk+3Dm0mu6ocrh/0lavX4KQuNeH6d8IN0ak=
+X-Google-Smtp-Source: APXvYqyOP2EB8a83ZtqOJPUj3xY7/goLSp49RDBCXTtxODlPCxl+xIBbp0pHHEXIFG32IeOGVr0WeRsO6J9J5w8UT1g=
+X-Received: by 2002:a2e:978e:: with SMTP id y14mr2524405lji.10.1567008091865; 
+ Wed, 28 Aug 2019 09:01:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <1567012817-12625-1-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1567012817-12625-1-git-send-email-shengjiu.wang@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 28 Aug 2019 13:02:32 -0300
+Message-ID: <CAOMZO5BF6M4McwGTuNU8jM41+N3jeaJp+U2ST5JY7e+yv8GO_A@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_ssi: Fix clock control issue in master mode
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,56 +72,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@ozlabs.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-08-26 at 19:50 +0000, sbaugh@catern.com wrote:
-> Aleksa Sarai <cyphar@cyphar.com> writes:
-> > To this end, we introduce the openat2(2) syscall. It provides all of the
-> > features of openat(2) through the @how->flags argument, but also
-> > also provides a new @how->resolve argument which exposes RESOLVE_* flags
-> > that map to our new LOOKUP_* flags. It also eliminates the long-standing
-> > ugliness of variadic-open(2) by embedding it in a struct.
-> 
-> I don't like this usage of a structure in memory to pass arguments that
-> would fit in registers. This would be quite inconvenient for me as a
-> userspace developer.
-> 
-> Others have brought up issues with this: the issue of seccomp, and the
-> issue of mismatch between the userspace interface and the kernel
-> interface, are the most important for me. I want to add another,
-> admittedly somewhat niche, concern.
-> 
-> This interfaces requires a program to allocate memory (even on the
-> stack) just to pass arguments to the kernel which could be passed
-> without allocating that memory. That makes it more difficult and less
-> efficient to use this syscall in any case where memory is not so easily
-> allocatable: such as early program startup or assembly, where the stack
-> may be limited in size or not even available yet, or when injecting a
-> syscall while ptracing.
-> 
-> A struct-passing interface was needed for clone, since we ran out of
-> registers; but we have not run out of registers yet for openat, so it
-> would be nice to avoid this if we can. We can always expand later...
-> 
+Hi Shengjiu,
 
-We can't really expand later like you suggest.
+On Wed, Aug 28, 2019 at 2:21 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+>
+> The test case is
+> arecord -Dhw:0 -d 10 -f S16_LE -r 48000 -c 2 temp.wav &
+> aplay -Dhw:0 -d 30 -f S16_LE -r 48000 -c 2 test.wav
+>
+> There will be error after end of arecord:
+> aplay: pcm_write:2051: write error: Input/output error
+>
+> Capture and Playback work in parallel in master mode, one
+> substream stops, the other substream is impacted, the
+> reason is that clock is disabled wrongly.
+>
+> The clock's reference count is not increased when second
+> substream starts, the hw_param() function returns in the
+> beginning because first substream is enabled, then in end
+> of first substream, the hw_free() disables the clock.
+>
+> This patch is to move the clock enablement to the place
+> before checking of the device enablement in hw_param().
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Suppose in a couple of years that we need to add some new argument to
-openat2 that isn't just a new flag. If all these values are passed by
-individual arguments, you can't add one later without adding yet another
-syscall.
-
-Using a struct for this allows this to be extended later, OTOH. You can
-extend it, and add a flag that tells the kernel that it can access the
-new field. No new syscall required.
--- 
-Jeff Layton <jlayton@kernel.org>
-
+It would be nice if you could add a Fixes tag as well.
