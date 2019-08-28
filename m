@@ -1,33 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A695A02B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:10:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A485CA02BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:12:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JR1T3Sq2zDr84
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 23:10:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JR492HGQzDr9w
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 23:12:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JQvq2hZBzDq9b
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 23:05:27 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JQvw6kG6zDqDs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 23:05:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 46JQvq0KZ3z9sNf; Wed, 28 Aug 2019 23:05:27 +1000 (AEST)
+ id 46JQvt0Vpzz9sBF; Wed, 28 Aug 2019 23:05:30 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46JQvp66Zkz9sN1; Wed, 28 Aug 2019 23:05:26 +1000 (AEST)
+ id 46JQvr6gL6z9sN6; Wed, 28 Aug 2019 23:05:28 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v4 1/2] powerpc/powernv/opal-msglog: Refactor memcons code
-Date: Wed, 28 Aug 2019 23:05:20 +1000
-Message-Id: <20190828130521.26764-1-mpe@ellerman.id.au>
+Subject: [PATCH v4 2/2] powerpc/powernv: Add ultravisor message log interface
+Date: Wed, 28 Aug 2019 23:05:21 +1000
+Message-Id: <20190828130521.26764-2-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190828130521.26764-1-mpe@ellerman.id.au>
+References: <20190828130521.26764-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -48,143 +50,104 @@ Sender: "Linuxppc-dev"
 
 From: Claudio Carvalho <cclaudio@linux.ibm.com>
 
-This patch refactors the code in opal-msglog that operates on the OPAL
-memory console in order to make it cleaner and also allow the reuse of
-the new memcons_* functions.
+The ultravisor (UV) provides an in-memory console which follows the
+OPAL in-memory console structure.
+
+This patch extends the OPAL msglog code to initialize the UV memory
+console and provide the "/sys/firmware/ultravisor/msglog" interface
+for userspace to view the UV message log.
 
 Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
-v4: mpe: Rename memcons_load_from_dt() to memcons_init().
-         Make memcons_init() and memcons_get_size() non-static.
-	 Continue to use opal_msglog_copy() in opal_msglog_read().
+v4: mpe: Move all the code into ultravisor.c.
+    Consistently use "uv_" as the prefix not "ultra_".
+    Use powernv.h for routines that are shared within the platform.
+    Rather than bloating the kernel with strings for every rare error
+    case, return error codes from the init routine which can be
+    seen with initcall_debug.
 ---
- arch/powerpc/platforms/powernv/opal-msglog.c | 57 +++++++++++++-------
- 1 file changed, 39 insertions(+), 18 deletions(-)
+ arch/powerpc/platforms/powernv/powernv.h    |  5 +++
+ arch/powerpc/platforms/powernv/ultravisor.c | 45 +++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-msglog.c b/arch/powerpc/platforms/powernv/opal-msglog.c
-index dc51d03c6370..d26da19a611f 100644
---- a/arch/powerpc/platforms/powernv/opal-msglog.c
-+++ b/arch/powerpc/platforms/powernv/opal-msglog.c
-@@ -29,23 +29,23 @@ struct memcons {
+diff --git a/arch/powerpc/platforms/powernv/powernv.h b/arch/powerpc/platforms/powernv/powernv.h
+index fd4a1c5a6369..1aa51c4fa904 100644
+--- a/arch/powerpc/platforms/powernv/powernv.h
++++ b/arch/powerpc/platforms/powernv/powernv.h
+@@ -30,4 +30,9 @@ extern void opal_event_shutdown(void);
  
- static struct memcons *opal_memcons = NULL;
+ bool cpu_core_split_required(void);
  
--ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
-+ssize_t memcons_copy(struct memcons *mc, char *to, loff_t pos, size_t count)
- {
- 	const char *conbuf;
- 	ssize_t ret;
- 	size_t first_read = 0;
- 	uint32_t out_pos, avail;
++struct memcons;
++ssize_t memcons_copy(struct memcons *mc, char *to, loff_t pos, size_t count);
++u32 memcons_get_size(struct memcons *mc);
++struct memcons *memcons_init(struct device_node *node, const char *mc_prop_name);
++
+ #endif /* _POWERNV_H */
+diff --git a/arch/powerpc/platforms/powernv/ultravisor.c b/arch/powerpc/platforms/powernv/ultravisor.c
+index 02ac57b4bded..e4a00ad06f9d 100644
+--- a/arch/powerpc/platforms/powernv/ultravisor.c
++++ b/arch/powerpc/platforms/powernv/ultravisor.c
+@@ -8,9 +8,15 @@
+ #include <linux/init.h>
+ #include <linux/printk.h>
+ #include <linux/of_fdt.h>
++#include <linux/of.h>
  
--	if (!opal_memcons)
-+	if (!mc)
- 		return -ENODEV;
+ #include <asm/ultravisor.h>
+ #include <asm/firmware.h>
++#include <asm/machdep.h>
++
++#include "powernv.h"
++
++static struct kobject *ultravisor_kobj;
  
--	out_pos = be32_to_cpu(READ_ONCE(opal_memcons->out_pos));
-+	out_pos = be32_to_cpu(READ_ONCE(mc->out_pos));
- 
- 	/* Now we've read out_pos, put a barrier in before reading the new
- 	 * data it points to in conbuf. */
- 	smp_rmb();
- 
--	conbuf = phys_to_virt(be64_to_cpu(opal_memcons->obuf_phys));
-+	conbuf = phys_to_virt(be64_to_cpu(mc->obuf_phys));
- 
- 	/* When the buffer has wrapped, read from the out_pos marker to the end
- 	 * of the buffer, and then read the remaining data as in the un-wrapped
-@@ -53,7 +53,7 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
- 	if (out_pos & MEMCONS_OUT_POS_WRAP) {
- 
- 		out_pos &= MEMCONS_OUT_POS_MASK;
--		avail = be32_to_cpu(opal_memcons->obuf_size) - out_pos;
-+		avail = be32_to_cpu(mc->obuf_size) - out_pos;
- 
- 		ret = memory_read_from_buffer(to, count, &pos,
- 				conbuf + out_pos, avail);
-@@ -71,7 +71,7 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
- 	}
- 
- 	/* Sanity check. The firmware should not do this to us. */
--	if (out_pos > be32_to_cpu(opal_memcons->obuf_size)) {
-+	if (out_pos > be32_to_cpu(mc->obuf_size)) {
- 		pr_err("OPAL: memory console corruption. Aborting read.\n");
- 		return -EINVAL;
- 	}
-@@ -86,6 +86,11 @@ ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
- 	return ret;
+ int __init early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
+ 					 int depth, void *data)
+@@ -22,3 +28,42 @@ int __init early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
+ 	pr_debug("Ultravisor detected!\n");
+ 	return 1;
  }
- 
-+ssize_t opal_msglog_copy(char *to, loff_t pos, size_t count)
++
++static struct memcons *uv_memcons;
++
++static ssize_t uv_msglog_read(struct file *file, struct kobject *kobj,
++			      struct bin_attribute *bin_attr, char *to,
++			      loff_t pos, size_t count)
 +{
-+	return memcons_copy(opal_memcons, to, pos, count);
++	return memcons_copy(uv_memcons, to, pos, count);
 +}
 +
- static ssize_t opal_msglog_read(struct file *file, struct kobject *kobj,
- 				struct bin_attribute *bin_attr, char *to,
- 				loff_t pos, size_t count)
-@@ -98,32 +103,48 @@ static struct bin_attribute opal_msglog_attr = {
- 	.read = opal_msglog_read
- };
- 
--void __init opal_msglog_init(void)
-+struct memcons *memcons_init(struct device_node *node, const char *mc_prop_name)
- {
- 	u64 mcaddr;
- 	struct memcons *mc;
- 
--	if (of_property_read_u64(opal_node, "ibm,opal-memcons", &mcaddr)) {
--		pr_warn("OPAL: Property ibm,opal-memcons not found, no message log\n");
--		return;
-+	if (of_property_read_u64(node, mc_prop_name, &mcaddr)) {
-+		pr_warn("%s property not found, no message log\n",
-+			mc_prop_name);
-+		goto out_err;
- 	}
- 
- 	mc = phys_to_virt(mcaddr);
- 	if (!mc) {
--		pr_warn("OPAL: memory console address is invalid\n");
--		return;
-+		pr_warn("memory console address is invalid\n");
-+		goto out_err;
- 	}
- 
- 	if (be64_to_cpu(mc->magic) != MEMCONS_MAGIC) {
--		pr_warn("OPAL: memory console version is invalid\n");
--		return;
-+		pr_warn("memory console version is invalid\n");
-+		goto out_err;
- 	}
- 
--	/* Report maximum size */
--	opal_msglog_attr.size =  be32_to_cpu(mc->ibuf_size) +
--		be32_to_cpu(mc->obuf_size);
-+	return mc;
++static struct bin_attribute uv_msglog_attr = {
++	.attr = {.name = "msglog", .mode = 0400},
++	.read = uv_msglog_read
++};
 +
-+out_err:
-+	return NULL;
-+}
-+
-+u32 memcons_get_size(struct memcons *mc)
++static int __init uv_init(void)
 +{
-+	return be32_to_cpu(mc->ibuf_size) + be32_to_cpu(mc->obuf_size);
-+}
++	struct device_node *node;
 +
-+void __init opal_msglog_init(void)
-+{
-+	opal_memcons = memcons_init(opal_node, "ibm,opal-memcons");
-+	if (!opal_memcons) {
-+		pr_warn("OPAL: memcons failed to load from ibm,opal-memcons\n");
-+		return;
-+	}
- 
--	opal_memcons = mc;
-+	opal_msglog_attr.size = memcons_get_size(opal_memcons);
- }
- 
- void __init opal_msglog_sysfs_init(void)
++	if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
++		return 0;
++
++	node = of_find_compatible_node(NULL, NULL, "ibm,uv-firmware");
++	if (!node)
++		return -ENODEV;
++
++	uv_memcons = memcons_init(node, "memcons");
++	if (!uv_memcons)
++		return -ENOENT;
++
++	uv_msglog_attr.size = memcons_get_size(uv_memcons);
++
++	ultravisor_kobj = kobject_create_and_add("ultravisor", firmware_kobj);
++	if (!ultravisor_kobj)
++		return -ENOMEM;
++
++	return sysfs_create_bin_file(ultravisor_kobj, &uv_msglog_attr);
++}
++machine_subsys_initcall(powernv, uv_init);
 -- 
 2.21.0
 
