@@ -1,35 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3091F9F980
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:41:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653979F987
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:45:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JCkH04mZzDr39
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:41:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JCpY6lcYzDqrW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:45:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM6242HzDqtK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM71ZlczDqtK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 14:24:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46JCM570Xkz9sP6; Wed, 28 Aug 2019 14:24:49 +1000 (AEST)
+ id 46JCM65tstz9sP9; Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: c691b4b83b6a348f7b9d13c36916e73c2e1d85e4
-In-Reply-To: <d60ce8dd3a383c7adbfc322bf1d53d81724a6000.1566311636.git.christophe.leroy@c-s.fr>
+X-powerpc-patch-commit: b4645ffc49cfe34f67feda20c34bd7a859c78312
+In-Reply-To: <a8b567c569aa521a7cf1beb061d43d79070e850c.1566492229.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, segher@kernel.crashing.org
+ Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v4 1/3] powerpc: rewrite LOAD_REG_IMMEDIATE() as an
- intelligent macro
-Message-Id: <46JCM570Xkz9sP6@ozlabs.org>
-Date: Wed, 28 Aug 2019 14:24:49 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/64: don't select ARCH_HAS_SCALED_CPUTIME on book3E
+Message-Id: <46JCM65tstz9sP9@ozlabs.org>
+Date: Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,37 +45,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-08-20 at 14:34:12 UTC, Christophe Leroy wrote:
-> Today LOAD_REG_IMMEDIATE() is a basic #define which loads all
-> parts on a value into a register, including the parts that are NUL.
+On Thu, 2019-08-22 at 16:44:05 UTC, Christophe Leroy wrote:
+> Book3E doesn't have SPRN_SPURR/SPRN_PURR.
 > 
-> This means always 2 instructions on PPC32 and always 5 instructions
-> on PPC64. And those instructions cannot run in parallele as they are
-> updating the same register.
-> 
-> Ex: LOAD_REG_IMMEDIATE(r1,THREAD_SIZE) in head_64.S results in:
-> 
-> 3c 20 00 00     lis     r1,0
-> 60 21 00 00     ori     r1,r1,0
-> 78 21 07 c6     rldicr  r1,r1,32,31
-> 64 21 00 00     oris    r1,r1,0
-> 60 21 40 00     ori     r1,r1,16384
-> 
-> Rewrite LOAD_REG_IMMEDIATE() with GAS macro in order to skip
-> the parts that are NUL.
-> 
-> Rename existing LOAD_REG_IMMEDIATE() as LOAD_REG_IMMEDIATE_SYM()
-> and use that one for loading value of symbols which are not known
-> at compile time.
-> 
-> Now LOAD_REG_IMMEDIATE(r1,THREAD_SIZE) in head_64.S results in:
-> 
-> 38 20 40 00     li      r1,16384
+> Activating ARCH_HAS_SCALED_CPUTIME is just wasting CPU time.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Link: https://github.com/linuxppc/issues/issues/171
 
-Series applied to powerpc next, thanks.
+Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/c691b4b83b6a348f7b9d13c36916e73c2e1d85e4
+https://git.kernel.org/powerpc/c/b4645ffc49cfe34f67feda20c34bd7a859c78312
 
 cheers
