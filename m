@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABA39FFFA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 12:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 769719FFFC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 12:35:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JMX83b21zDr8r
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 20:33:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JMZR0ZbpzDqpq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 20:35:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,18 +18,20 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JMTJ6bP3zDqNL
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JMTJ6Y0jzDq9F
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 20:30:43 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 4298BAFBE;
- Wed, 28 Aug 2019 10:30:39 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 351D6B07B;
+ Wed, 28 Aug 2019 10:30:40 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 0/4] Disable compat cruft on ppc64le v2
-Date: Wed, 28 Aug 2019 12:30:25 +0200
-Message-Id: <cover.1566987936.git.msuchanek@suse.de>
+Subject: [PATCH v2 1/4] fs: always build llseek.
+Date: Wed, 28 Aug 2019 12:30:26 +0200
+Message-Id: <7cba5495a65307478877c2654e90535e606f45d3.1566987936.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.22.0
+In-Reply-To: <cover.1566987936.git.msuchanek@suse.de>
+References: <cover.1566987936.git.msuchanek@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,44 +61,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With endian switch disabled by default the ppc64le compat supports
-ppc32le only which is something next to nobody has binaries for.
+64bit !COMPAT does not build because the llseek syscall is in the tables.
 
-Less code means less bugs so drop the compat stuff.
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ fs/read_write.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-I am not particularly sure about the best way to resolve the llseek
-situation. I don't see anything in the syscal tables making it
-32bit-only so I suppose it should be available on 64bit as well.
-
-This is tested on ppc64le top of
-
-https://patchwork.ozlabs.org/cover/1153556/
-
-Changes in v2: saner CONFIG_COMPAT ifdefs
-
-Thanks
-
-Michal
-
-Michal Suchanek (4):
-  fs: always build llseek.
-  powerpc: move common register copy functions from signal_32.c to
-    signal.c
-  powerpc/64: make buildable without CONFIG_COMPAT
-  powerpc/64: Disable COMPAT if littleendian.
-
- arch/powerpc/Kconfig               |   2 +-
- arch/powerpc/include/asm/syscall.h |   2 +
- arch/powerpc/kernel/Makefile       |  15 ++-
- arch/powerpc/kernel/entry_64.S     |   2 +
- arch/powerpc/kernel/signal.c       | 146 ++++++++++++++++++++++++++++-
- arch/powerpc/kernel/signal_32.c    | 140 ---------------------------
- arch/powerpc/kernel/syscall_64.c   |   5 +-
- arch/powerpc/kernel/vdso.c         |   4 +-
- arch/powerpc/perf/callchain.c      |  14 ++-
- fs/read_write.c                    |   2 -
- 10 files changed, 177 insertions(+), 155 deletions(-)
-
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 5bbf587f5bc1..9db56931eb26 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -331,7 +331,6 @@ COMPAT_SYSCALL_DEFINE3(lseek, unsigned int, fd, compat_off_t, offset, unsigned i
+ }
+ #endif
+ 
+-#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT)
+ SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+ 		unsigned long, offset_low, loff_t __user *, result,
+ 		unsigned int, whence)
+@@ -360,7 +359,6 @@ SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+ 	fdput_pos(f);
+ 	return retval;
+ }
+-#endif
+ 
+ int rw_verify_area(int read_write, struct file *file, const loff_t *ppos, size_t count)
+ {
 -- 
 2.22.0
 
