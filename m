@@ -1,51 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1995C9F6C1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 01:19:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C0B9F7AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 03:11:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46J4ZC4NxrzDqtt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 09:18:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46J74V3FPYzDqyS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:11:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="wp2G22s2"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="u/ExOsRv"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46J4XC3HWMzDqdc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 09:17:14 +1000 (AEST)
-Received: from localhost (unknown [69.71.4.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id F35DA20856;
- Tue, 27 Aug 2019 23:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1566947832;
- bh=LHYP3wO1EM0CN7MZnuQ9uyPpTSuaC669PEWoJvNcjA4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=wp2G22s2JiRw967LPOtC7TV8P1ym933f60GQCuP9jTKdhOqTI6+p5eZAJ0ic5NX6J
- 6mH+po7knLNM01dxN+2SAHO5hLA6asmWU0K7y+bFR6YVV+IX0UL+xFzf9QXIKCKS0E
- LKK8hS8bnaKMHqrjAQF1xXI9iqvvNL0h0qE3zUUc=
-Date: Tue, 27 Aug 2019 18:17:10 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Krzysztof Wilczynski <kw@linux.com>
-Subject: Re: [PATCH] PCI: hotplug: Remove surplus return from a void function
-Message-ID: <20190827231710.GH9987@google.com>
-References: <20190826095143.21353-1-kw@linux.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46J72X6tS1zDqvr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 11:10:11 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id d85so536730pfd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2019 18:10:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=Cm4+sco0s6cYO4zUw4CliySd8ssk90JOxUd9/4P8t0w=;
+ b=u/ExOsRvJEn2d/9UAiNlynHeGF996rWJzn0OLqeRtUwx2BUqjrpl6oM1uqGeZDN2f0
+ oJ9C0czvZHgju7vQNShs19muk4xzCaj2OX9WzC1VihK92fgEmYJisR2U8sosfDj6p/hg
+ QX0AtoLxIhyZfUVR/Bfji98w6oH7guv0qwYMxGvgQZXCinN5tY+IZO0klr9pcjNWu8md
+ M88fipOpPYhW8xuw9WqvlpHQzzVYt9LTpPZrHS5pFhqocAb2WIcje21NXyxbMHwTaL62
+ 7ArPRqLKGlYwKl0GSW4+z6KgK+GtO86ckVhIpVkClyUdaY3GdzbvDabJTLJA7QEDu2jR
+ 3lSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=Cm4+sco0s6cYO4zUw4CliySd8ssk90JOxUd9/4P8t0w=;
+ b=YymMEqukjR1h/ItePC25v6Uxwoje9JEzcwhgfpJxEbh3kJW2892WKoKecIpbgEhKs5
+ FwW2IJ3aL89o2Ue1PPn/8ZbxZOLM6jl2EWLBm09B5gcHUfiMzRUxsoXVhMiUZ7rjE2DB
+ BmiRSScAgRPmthvEogUJRTWvKroMXgauA8FvRYsGibJE/OpH15aA85Cbff/wFJeUXad/
+ UGUdwkMDIzaHkp563TvJDG0AIW+SbScNqfa+1RJfWHsPtZW1Wf0ofD2XiUwBBjiRDpqV
+ e6OVnyFvPdIo3VkWILsBQKG6DKfSKoQlGZOfU1cmL6pFVdYMmEvaJr/urB0LXZwb1rnL
+ EJ7Q==
+X-Gm-Message-State: APjAAAUo9sSHiJhguXv8/onjpOAm9Ck9nYFdDqhLa/vsXhBq4sPykG7e
+ mKIwOQOKgw3c4EIafQ0qW/UpDzTz
+X-Google-Smtp-Source: APXvYqzyVq7hABUvAVTU6nEoo1MMTdSj9IQZpG5pK0rX9Ns3tEJwxpqDAhcf0EHiADtq5MvZbOsCiA==
+X-Received: by 2002:aa7:9e0a:: with SMTP id y10mr1626539pfq.93.1566954608772; 
+ Tue, 27 Aug 2019 18:10:08 -0700 (PDT)
+Received: from localhost (14-202-91-55.tpgi.com.au. [14.202.91.55])
+ by smtp.gmail.com with ESMTPSA id v145sm570114pfc.31.2019.08.27.18.10.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Aug 2019 18:10:08 -0700 (PDT)
+Date: Wed, 28 Aug 2019 11:09:14 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [DOC][PATCH] powerpc: Provide initial documentation for PAPR
+ hcalls
+To: linuxppc-dev@lists.ozlabs.org, Vaibhav Jain <vaibhav@linux.ibm.com>
+References: <20190827152326.2784-1-vaibhav@linux.ibm.com>
+In-Reply-To: <20190827152326.2784-1-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190826095143.21353-1-kw@linux.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1566953985.jpf4ea1x9i.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,129 +80,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Murray <scott@spiteful.org>, YueHaibing <yuehaibing@huawei.com>,
- Sebastian Ott <sebott@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-kernel@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>,
- Lukas Wunner <lukas@wunner.de>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: msuchanek@suse.de, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 26, 2019 at 11:51:43AM +0200, Krzysztof Wilczynski wrote:
-> Remove unnecessary empty return statement at the end of a void
-> function in the following:
-> 
->   - drivers/pci/hotplug/cpci_hotplug_core.c: cleanup_slots()
->   - drivers/pci/hotplug/cpqphp_core.c: pci_print_IRQ_route()
->   - drivers/pci/hotplug/cpqphp_ctrl.c: cpqhp_pushbutton_thread()
->   - drivers/pci/hotplug/cpqphp_ctrl.c: interrupt_event_handler()
->   - drivers/pci/hotplug/cpqphp_nvram.h: compaq_nvram_init()
->   - drivers/pci/hotplug/rpadlpar_core.c: rpadlpar_io_init()
->   - drivers/pci/hotplug/rpaphp_core.c: cleanup_slots()
-> 
-> Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
-
-Applied to pci/trivial for v5.4, thanks!
-
-I squashed the mediatek patch into this since they're both trivial.
-
+Vaibhav Jain's on August 28, 2019 1:23 am:
+> This doc patch provides an initial description of the hcall op-codes
+> that are used by Linux kernel running as a guest (LPAR) on top of
+> PowerVM or any other sPAPR compliant hyper-visor (e.g qemu).
+>=20
+> Apart from documenting the hcalls the doc-patch also provides a
+> rudimentary overview of how hcall ABI, how they are issued with the
+> Linux kernel and how information/control flows between the guest and
+> hypervisor.
+>=20
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 > ---
->  drivers/pci/hotplug/cpci_hotplug_core.c | 1 -
->  drivers/pci/hotplug/cpqphp_core.c       | 1 -
->  drivers/pci/hotplug/cpqphp_ctrl.c       | 4 ----
->  drivers/pci/hotplug/cpqphp_nvram.h      | 5 +----
->  drivers/pci/hotplug/rpadlpar_core.c     | 1 -
->  drivers/pci/hotplug/rpaphp_core.c       | 1 -
->  6 files changed, 1 insertion(+), 12 deletions(-)
-> 
-> diff --git a/drivers/pci/hotplug/cpci_hotplug_core.c b/drivers/pci/hotplug/cpci_hotplug_core.c
-> index 603eadf3d965..d0559d2faf50 100644
-> --- a/drivers/pci/hotplug/cpci_hotplug_core.c
-> +++ b/drivers/pci/hotplug/cpci_hotplug_core.c
-> @@ -563,7 +563,6 @@ cleanup_slots(void)
->  	}
->  cleanup_null:
->  	up_write(&list_rwsem);
-> -	return;
->  }
->  
->  int
-> diff --git a/drivers/pci/hotplug/cpqphp_core.c b/drivers/pci/hotplug/cpqphp_core.c
-> index 16bbb183695a..b8aacb41a83c 100644
-> --- a/drivers/pci/hotplug/cpqphp_core.c
-> +++ b/drivers/pci/hotplug/cpqphp_core.c
-> @@ -173,7 +173,6 @@ static void pci_print_IRQ_route(void)
->  		dbg("%d %d %d %d\n", tbus, tdevice >> 3, tdevice & 0x7, tslot);
->  
->  	}
-> -	return;
->  }
->  
->  
-> diff --git a/drivers/pci/hotplug/cpqphp_ctrl.c b/drivers/pci/hotplug/cpqphp_ctrl.c
-> index b7f4e1f099d9..68de958a9be8 100644
-> --- a/drivers/pci/hotplug/cpqphp_ctrl.c
-> +++ b/drivers/pci/hotplug/cpqphp_ctrl.c
-> @@ -1872,8 +1872,6 @@ static void interrupt_event_handler(struct controller *ctrl)
->  			}
->  		}		/* End of FOR loop */
->  	}
-> -
-> -	return;
->  }
->  
->  
-> @@ -1943,8 +1941,6 @@ void cpqhp_pushbutton_thread(struct timer_list *t)
->  
->  		p_slot->state = STATIC_STATE;
->  	}
-> -
-> -	return;
->  }
->  
->  
-> diff --git a/drivers/pci/hotplug/cpqphp_nvram.h b/drivers/pci/hotplug/cpqphp_nvram.h
-> index 918ff8dbfe62..70e879b6a23f 100644
-> --- a/drivers/pci/hotplug/cpqphp_nvram.h
-> +++ b/drivers/pci/hotplug/cpqphp_nvram.h
-> @@ -16,10 +16,7 @@
->  
->  #ifndef CONFIG_HOTPLUG_PCI_COMPAQ_NVRAM
->  
-> -static inline void compaq_nvram_init(void __iomem *rom_start)
-> -{
-> -	return;
-> -}
-> +static inline void compaq_nvram_init(void __iomem *rom_start) { }
->  
->  static inline int compaq_nvram_load(void __iomem *rom_start, struct controller *ctrl)
->  {
-> diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
-> index 182f9e3443ee..977946e4e613 100644
-> --- a/drivers/pci/hotplug/rpadlpar_core.c
-> +++ b/drivers/pci/hotplug/rpadlpar_core.c
-> @@ -473,7 +473,6 @@ int __init rpadlpar_io_init(void)
->  void rpadlpar_io_exit(void)
->  {
->  	dlpar_sysfs_exit();
-> -	return;
->  }
->  
->  module_init(rpadlpar_io_init);
-> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
-> index c3899ee1db99..18627bb21e9e 100644
-> --- a/drivers/pci/hotplug/rpaphp_core.c
-> +++ b/drivers/pci/hotplug/rpaphp_core.c
-> @@ -408,7 +408,6 @@ static void __exit cleanup_slots(void)
->  		pci_hp_deregister(&slot->hotplug_slot);
->  		dealloc_slot_struct(slot);
->  	}
-> -	return;
->  }
->  
->  static int __init rpaphp_init(void)
-> -- 
-> 2.22.1
-> 
+> Change-log:
+>=20
+> Initial version of this doc-patch was posted and reviewed as part of
+> the patch-series "[PATCH v5 0/4] powerpc/papr_scm: Workaround for
+> failure of drc bind after kexec"
+> https://patchwork.ozlabs.org/patch/1136022/. Changes introduced on top
+> the original patch:
+>=20
+> * Replaced the of term PHYP with Hypervisor to indicate both
+> PowerVM/Qemu [Laurent]
+> * Emphasized that In/Out arguments to hcalls are in Big-endian format
+> [Laurent]
+> * Fixed minor word repetition, spell issues and grammatical error
+> [Michal, Mpe]
+> * Replaced various variant of term 'hcall' with a single
+> variant. [Mpe]
+> * Changed the documentation format from txt to ReST. [Mpe]
+> * Changed the name of documentation file to papr_hcalls.rst. [Mpe]
+> * Updated the section describing privileged operation by hypervisor
+> to be more accurate [Mpe].
+> * Fixed up mention of register notation used for describing
+> hcalls. [Mpe]
+> * s/NVDimm/NVDIMM [Mpe]
+> * Added section on return values from hcall [Mpe]
+> * Described H_CONTINUE return-value for long running hcalls.
+> ---
+>  Documentation/powerpc/papr_hcalls.rst | 200 ++++++++++++++++++++++++++
+>  1 file changed, 200 insertions(+)
+>  create mode 100644 Documentation/powerpc/papr_hcalls.rst
+>=20
+> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerp=
+c/papr_hcalls.rst
+> new file mode 100644
+> index 000000000000..7afc0310de29
+> --- /dev/null
+> +++ b/Documentation/powerpc/papr_hcalls.rst
+> @@ -0,0 +1,200 @@
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+> +Hypercall Op-codes (hcalls)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+> +
+> +Overview
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +Virtualization on 64-bit Power Book3S Platforms is based on the PAPR
+> +specification [1]_ which describes the run-time environment for a guest
+> +operating system and how it should interact with the hypervisor for
+> +privileged operations. Currently there are two PAPR compliant hypervisor=
+s:
+> +
+> +- **IBM PowerVM (PHYP)**: IBM's proprietary hypervisor that supports AIX=
+,
+> +  IBM-i and  Linux as supported guests (termed as Logical Partitions
+> +  or LPARS). It supports the full PAPR specification.
+> +
+> +- **Qemu/KVM**: Supports PPC64 linux guests running on a PPC64 linux hos=
+t.
+> +  Though it only implements a subset of PAPR specification called LoPAPR=
+ [2]_.
+> +
+> +On PPC64 arch a guest kernel running on top of a PAPR hypervisor is call=
+ed
+> +a *pSeries guest*. A pseries guest runs in a supervisor mode (HV=3D0) an=
+d must
+> +issue hypercalls to the hypervisor whenever it needs to perform an actio=
+n
+> +that is hypervisor priviledged [3]_ or for other services managed by the
+> +hypervisor.
+> +
+> +Hence a Hypercall (hcall) is essentially a request by the pSeries guest
+> +asking hypervisor to perform a privileged operation on behalf of the gue=
+st. The
+> +guest issues a with necessary input operands. The hypervisor after perfo=
+rming
+> +the privilege operation returns a status code and output operands back t=
+o the
+> +guest.
+> +
+> +HCALL ABI
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +The ABI specification for a hcall between a pSeries guest and PAPR hyper=
+visor
+> +is covered in section 14.5.3 of ref [2]_. Switch to the  Hypervisor cont=
+ext is
+> +done via the instruction **HVCS** that expects the Opcode for hcall is s=
+et in *r3*
+> +and any in-arguments for the hcall are provided in registers *r4-r12* in
+> +Big-endian byte order.
+> +
+> +Once control is returns back to the guest after hypervisor has serviced =
+the
+> +'HVCS' instruction the return value of the hcall is available in *r3* an=
+d any
+> +out values are returned in registers *r4-r12*. Again like in-arguments, =
+all the
+> +out value are in Big-endian byte order.
+> +
+> +Powerpc arch code provides convenient wrappers named **plpar_hcall_xxx**=
+ defined
+> +in a arch specific header [4]_ to issue hcalls from the linux kernel
+> +running as pseries guest.
+
+Thanks for this. Any chance you could replace the hcall convention in
+exception-64s.S with a link to this document, and add it in here? It
+needs a small fix or two as well, I think I put an ePAPR convention of
+r11 for number in there.
+
+Thanks,
+Nick
+=
