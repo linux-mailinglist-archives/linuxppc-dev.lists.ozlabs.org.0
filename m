@@ -1,76 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74C2A09E9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 20:47:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0C5A0A2B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 21:06:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JZVw11lBzDqBv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 04:47:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JZwY66fGzDrLb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 05:06:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
- envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=xmission.com
+ (client-ip=166.70.13.233; helo=out03.mta.xmission.com;
+ envelope-from=ebiederm@xmission.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="JZb7Xt/l"; 
- dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JZSK2HHMzDrCB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 04:45:37 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id s18so868330wrn.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 11:45:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=uzb7erekU8g2iYVyP5gycVR/YMGgpJBA2pn7vNp581E=;
- b=JZb7Xt/l4fzTVyq93q6g8wGivNG1U7RglbzIf1zZBaafcZVV1Sf3O1e+CCrfxZGWAU
- QpMkYRRpANt4ruc23Ey5+H70EYPq2nm7buGcCdMD6vo/K3ZYREdZjfF8dbRc6l8bTWuU
- TjQJiasEYcfyQgmOcqadV0klVf/TtB3ZuMODVSMto3VdhZUdDMkWdYnbPfbHJYSRpXPC
- /CV1p+bC25/oYdeFfaofr7vDRQBrOLl71d8mjWBIuurGQjhA7O3N8cy6yi5n5gUYttbt
- uSX4Wz31KAdqWvF7Zaizgc7l0pkliJPNXocX8H0lwOPwYDpZECU4AD7Sy76br5JIbryk
- rnCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=uzb7erekU8g2iYVyP5gycVR/YMGgpJBA2pn7vNp581E=;
- b=N4gS3KqbZ4btjwnWdOA9YHgbI3XZQGiAJZhIELdBpe/o1O7wtAls6AFWWfxszxEhBc
- z7GxyFoeG83fFH8ZQb3yqO3ivEvVaCT+V+e7yDFFCvsbDBy2VNrR1ZonFfFhCBKkzvnq
- YfTNEjekzMk9Hd4L+Kz4Kbuh/Q1aI3tUByZCrYtCiQhoYAECuXNSH8aoOkKImvni9cv0
- UzyNdrQG5XJq/LLX7WHtuwx+v5zmn2gjNyW5uf7/x0YgXwohXBEfR0DE3M3X4gw/lZPf
- VRUmmn4z+kWsfuGQMYC3zEH919jhtwSby3Ot4Fzc179P/UJqXhoCyRO/VVnZ41xV3xtn
- 3k2w==
-X-Gm-Message-State: APjAAAVTyCOlCRTzc57tuSwPKreiSI1/4KYMC/KjjUwdaS3hyNuCj1r/
- ZoEtoDTf2i0M0WHlhx2AKTU=
-X-Google-Smtp-Source: APXvYqzWvg1GBLeEX4emZimu3Krf58MHoihlarAwr3/DVkXxtPrZhV+yGFdEkV4Rbdn4ezwjfYwxjw==
-X-Received: by 2002:a5d:4211:: with SMTP id n17mr5917722wrq.137.1567017932509; 
- Wed, 28 Aug 2019 11:45:32 -0700 (PDT)
-Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
- by smtp.gmail.com with ESMTPSA id g65sm298385wma.21.2019.08.28.11.45.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2019 11:45:31 -0700 (PDT)
-Date: Wed, 28 Aug 2019 11:45:29 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
-Message-ID: <20190828184529.GC127646@archlinux-threadripper>
-References: <20190812023214.107817-1-natechancellor@gmail.com>
- <878srdv206.fsf@mpe.ellerman.id.au>
- <20190828175322.GA121833@archlinux-threadripper>
- <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
+ dmarc=pass (p=none dis=none) header.from=xmission.com
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JZtL3QpRzDrGt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 05:04:41 +1000 (AEST)
+Received: from in01.mta.xmission.com ([166.70.13.51])
+ by out03.mta.xmission.com with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.87)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1i32Rc-00046B-Eb; Wed, 28 Aug 2019 12:13:20 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]
+ helo=x220.xmission.com) by in01.mta.xmission.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.87)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1i32Ra-0000CA-T6; Wed, 28 Aug 2019 12:13:20 -0600
+From: ebiederm@xmission.com (Eric W. Biederman)
+To: Michal Suchanek <msuchanek@suse.de>
+References: <cover.1566936688.git.msuchanek@suse.de>
+ <80b1955b86fb81e4642881d498068b5a540ef029.1566936688.git.msuchanek@suse.de>
+Date: Wed, 28 Aug 2019 13:13:08 -0500
+In-Reply-To: <80b1955b86fb81e4642881d498068b5a540ef029.1566936688.git.msuchanek@suse.de>
+ (Michal Suchanek's message of "Tue, 27 Aug 2019 22:21:06 +0200")
+Message-ID: <8736hlyx8r.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
+X-XM-SPF: eid=1i32Ra-0000CA-T6; ; ; mid=<8736hlyx8r.fsf@x220.int.ebiederm.org>;
+ ; ; hst=in01.mta.xmission.com; ; ; ip=68.227.160.95; ; ;
+ frm=ebiederm@xmission.com; ; ; spf=neutral
+X-XM-AID: U2FsdGVkX19tJ+0ygLXYYSaWSDzqRpX5AB+XRHVKmoo=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa07.xmission.com
+X-Spam-Level: **
+X-Spam-Status: No, score=2.3 required=8.0 tests=ALL_TRUSTED,BAYES_50,
+ DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
+ T_XMDrugObfuBody_08,XMNoVowels autolearn=disabled version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+ *      [score: 0.4699]
+ *  1.5 XMNoVowels Alpha-numberic number with no vowels
+ *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+ * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+ *      [sa07 1397; Body=1 Fuz1=1 Fuz2=1]
+ *  0.0 T_TooManySym_01 4+ unique symbols in subject
+ *  1.0 T_XMDrugObfuBody_08 obfuscated drug references
+X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: **;Michal Suchanek <msuchanek@suse.de>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 1058 ms - load_scoreonly_sql: 0.05 (0.0%),
+ signal_user_changed: 4.7 (0.4%), b_tie_ro: 3.8 (0.4%), parse: 0.92
+ (0.1%), extract_message_metadata: 11 (1.1%), get_uri_detail_list: 1.05
+ (0.1%), tests_pri_-1000: 13 (1.2%), tests_pri_-950: 1.32 (0.1%),
+ tests_pri_-900: 1.17 (0.1%), tests_pri_-90: 26 (2.5%), check_bayes: 25
+ (2.3%), b_tokenize: 9 (0.8%), b_tok_get_all: 7 (0.7%), b_comp_prob:
+ 2.1 (0.2%), b_tok_touch_all: 3.8 (0.4%), b_finish: 1.28 (0.1%),
+ tests_pri_0: 230 (21.7%), check_dkim_signature: 1.02 (0.1%),
+ check_dkim_adsp: 4.1 (0.4%), poll_dns_idle: 754 (71.3%), tests_pri_10:
+ 2.4 (0.2%), tests_pri_500: 764 (72.2%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 1/4] fs: always build llseek.
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,80 +89,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: David Hildenbrand <david@redhat.com>, "Dmitry V. Levin" <ldv@altlinux.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Firoz Khan <firoz.khan@linaro.org>, Hari Bathini <hbathini@linux.ibm.com>,
+ Joel Stanley <joel@jms.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 28, 2019 at 11:01:14AM -0700, Nick Desaulniers wrote:
-> On Wed, Aug 28, 2019 at 10:53 AM Nathan Chancellor
-> <natechancellor@gmail.com> wrote:
-> >
-> > On Wed, Aug 28, 2019 at 11:43:53PM +1000, Michael Ellerman wrote:
-> > > Nathan Chancellor <natechancellor@gmail.com> writes:
-> > >
-> > > > Commit aea447141c7e ("powerpc: Disable -Wbuiltin-requires-header when
-> > > > setjmp is used") disabled -Wbuiltin-requires-header because of a warning
-> > > > about the setjmp and longjmp declarations.
-> > > >
-> > > > r367387 in clang added another diagnostic around this, complaining that
-> > > > there is no jmp_buf declaration.
-> > > >
-> > > > In file included from ../arch/powerpc/xmon/xmon.c:47:
-> > > > ../arch/powerpc/include/asm/setjmp.h:10:13: error: declaration of
-> > > > built-in function 'setjmp' requires the declaration of the 'jmp_buf'
-> > > > type, commonly provided in the header <setjmp.h>.
-> > > > [-Werror,-Wincomplete-setjmp-declaration]
-> > > > extern long setjmp(long *);
-> > > >             ^
-> > > > ../arch/powerpc/include/asm/setjmp.h:11:13: error: declaration of
-> > > > built-in function 'longjmp' requires the declaration of the 'jmp_buf'
-> > > > type, commonly provided in the header <setjmp.h>.
-> > > > [-Werror,-Wincomplete-setjmp-declaration]
-> > > > extern void longjmp(long *, long);
-> > > >             ^
-> > > > 2 errors generated.
-> > > >
-> > > > Take the same approach as the above commit by disabling the warning for
-> > > > the same reason, we provide our own longjmp/setjmp function.
-> > > >
-> > > > Cc: stable@vger.kernel.org # 4.19+
-> > > > Link: https://github.com/ClangBuiltLinux/linux/issues/625
-> > > > Link: https://github.com/llvm/llvm-project/commit/3be25e79477db2d31ac46493d97eca8c20592b07
-> > > > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> > > > ---
-> > > >
-> > > > It may be worth using -fno-builtin-setjmp and -fno-builtin-longjmp
-> > > > instead as it makes it clear to clang that we are not using the builtin
-> > > > longjmp and setjmp functions, which I think is why these warnings are
-> > > > appearing (at least according to the commit that introduced this waring).
-> > > >
-> > > > Sample patch:
-> > > > https://github.com/ClangBuiltLinux/linux/issues/625#issuecomment-519251372
-> > >
-> > > Couldn't we just add those flags to CFLAGS for the whole kernel? Rather
-> > > than making them per-file.
-> >
-> > Yes, I don't think this would be unreasonable. Are you referring to the
-> > cc-disable-warning flags or the -fno-builtin flags? I personally think
-> > the -fno-builtin flags convey to clang what the kernel is intending to
-> > do better than disabling the warnings outright.
-> 
-> The `-f` family of flags have dire implications for codegen, I'd
-> really prefer we think long and hard before adding/removing them to
-> suppress warnings.  I don't think it's a solution for this particular
-> problem.
+Michal Suchanek <msuchanek@suse.de> writes:
 
-I am fine with whatever approach gets this warning fixed to the
-maintainer's satisfaction...
+> 64bit !COMPAT does not build because the llseek syscall is in the
+> tables.
 
-However, I think that -fno-builtin-* would be appropriate here because
-we are providing our own setjmp implementation, meaning clang should not
-be trying to do anything with the builtin implementation like building a
-declaration for it.
+Do I read this right you have a 128 bit offset to llseek on ppc64?
 
-Cheers,
-Nathan
+Looking at the signature it does not appear to make sense to build this
+function on any 64bit platform.
+
+Perhaps the proper fix to to take llseek out of your syscall tables?
+
+Eric
+
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+>  fs/read_write.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> index 5bbf587f5bc1..9db56931eb26 100644
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
+> @@ -331,7 +331,6 @@ COMPAT_SYSCALL_DEFINE3(lseek, unsigned int, fd, compat_off_t, offset, unsigned i
+>  }
+>  #endif
+>  
+> -#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT)
+>  SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+>  		unsigned long, offset_low, loff_t __user *, result,
+>  		unsigned int, whence)
+> @@ -360,7 +359,6 @@ SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+>  	fdput_pos(f);
+>  	return retval;
+>  }
+> -#endif
+>  
+>  int rw_verify_area(int read_write, struct file *file, const loff_t *ppos, size_t count)
+>  {
