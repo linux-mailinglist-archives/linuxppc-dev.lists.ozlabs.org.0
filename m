@@ -1,33 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653979F987
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:45:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5374E9F982
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:43:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JCpY6lcYzDqrW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:45:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JCmc4MXDzDqc5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:43:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM71ZlczDqtK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 14:24:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM64NcjzDqqJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46JCM65tstz9sP9; Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
+ id 46JCM63Rz7z9sP8; Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: b4645ffc49cfe34f67feda20c34bd7a859c78312
-In-Reply-To: <a8b567c569aa521a7cf1beb061d43d79070e850c.1566492229.git.christophe.leroy@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
+X-powerpc-patch-commit: 6652bf6408895b09d31fd4128a1589a1a0672823
+In-Reply-To: <1566341651-19747-1-git-send-email-gromero@linux.vnet.ibm.com>
+To: Gustavo Romero <gromero@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64: don't select ARCH_HAS_SCALED_CPUTIME on book3E
-Message-Id: <46JCM65tstz9sP9@ozlabs.org>
+Subject: Re: [PATCH] selftests/powerpc: Retry on host facility unavailable
+Message-Id: <46JCM63Rz7z9sP8@ozlabs.org>
 Date: Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -40,21 +38,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: desnesn@linux.ibm.com, mikey@neuling.org, gromero@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-08-22 at 16:44:05 UTC, Christophe Leroy wrote:
-> Book3E doesn't have SPRN_SPURR/SPRN_PURR.
+On Tue, 2019-08-20 at 22:54:11 UTC, Gustavo Romero wrote:
+> TM test tm-unavailable must take into account aborts due to host aborting
+> a transactin because of a facility unavailable exception, just like it
+> already does for aborts on reschedules (TM_CAUSE_KVM_RESCHED).
 > 
-> Activating ARCH_HAS_SCALED_CPUTIME is just wasting CPU time.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Link: https://github.com/linuxppc/issues/issues/171
+> Reported-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+> Tested-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+> Signed-off-by: Gustavo Romero <gromero@linux.vnet.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/b4645ffc49cfe34f67feda20c34bd7a859c78312
+https://git.kernel.org/powerpc/c/6652bf6408895b09d31fd4128a1589a1a0672823
 
 cheers
