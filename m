@@ -2,84 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417BCA08D5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B85D3A0908
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:55:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JY6Q00wzzDrFY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 03:45:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JYLF6Qd5zDrJp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 03:55:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=abdhalee@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com;
+ envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="gkbV6uEU"; 
+ dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JY4K0Mk5zDrFY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 03:43:12 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7SHbmDR042508; Wed, 28 Aug 2019 13:43:04 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2unuxk5ap3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Aug 2019 13:43:03 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7SHdaVT058445;
- Wed, 28 Aug 2019 13:43:03 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2unuxk5anh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Aug 2019 13:43:03 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7SHdUP2030957;
- Wed, 28 Aug 2019 17:43:02 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma05wdc.us.ibm.com with ESMTP id 2ujvv7799e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Aug 2019 17:43:02 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7SHh1iW48103852
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 Aug 2019 17:43:01 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D9710112063;
- Wed, 28 Aug 2019 17:43:01 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2DBF112062;
- Wed, 28 Aug 2019 17:42:56 +0000 (GMT)
-Received: from [9.85.111.211] (unknown [9.85.111.211])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 28 Aug 2019 17:42:56 +0000 (GMT)
-Message-ID: <1567014175.5082.6.camel@abdul>
-Subject: Re: [linux-next][BUG][driver/scsi/lpfc][c00f62e6] Kernel panics
- when booting next kernel on my Power 9 box
-From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-To: James Smart <jsmart2021@gmail.com>
-Date: Wed, 28 Aug 2019 23:12:55 +0530
-In-Reply-To: <601365f6-c753-96f6-5d61-481f54d95440@gmail.com>
-References: <1566968536.23670.9.camel@abdul>
- <601365f6-c753-96f6-5d61-481f54d95440@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-28_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908280172
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JYJC16BbzDr0d
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 03:53:30 +1000 (AEST)
+Received: by mail-wr1-x441.google.com with SMTP id j11so647421wrp.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 10:53:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=ctwr+81XjxtZjBI+RKeebPhdkGvaIWpze3WikDHHYro=;
+ b=gkbV6uEU80/diE3++JDNmX1wcMIg3kYn/u9jPDs8Lhf5QPmsb5N6z0ooqMV3C+kpM8
+ 8FtT53NgimT5aZUXjLp1BwSgHcC7Q2cHRXkXYjV0j8NKoNsI0tGqWcE7eQJMoShNIjJ8
+ LDFsg7n9maVJZnMFor0FW0veP3QDr/0xKq0qRPSBoFp2W5UnMs1SyKUHGYiAhP1HNXxk
+ c94GVISeezBd/TmOpNFCv9Jgye3BlaMNBceUSmyYvBWlKxVHsoi11aRaRosRvWM4tDnV
+ hE5x8uQ/TyqHmLMw2a4ULrvqtKy4zkP2WzHNAThRIeZ3/7fQx12SVS0jzSK8V8XRC0yK
+ B0xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=ctwr+81XjxtZjBI+RKeebPhdkGvaIWpze3WikDHHYro=;
+ b=BeEj/6QKvHLLGfdmqUsvMwjvDTYotEt89IRsKyOed/aglZcirb0uSgGWdwgVGlo6s8
+ UPg1IFs61g4iQaRXE+FO/mKqA5Zf4Q9f6+EQZ6Ls0Wz3K71Xb1Lc5tNNjKTPkLH5BTMs
+ OS158R7r7ELk75LWofdaFzohaDPJgDfw6LPHQFkYdLptGROsE7WO2uB21pncx8X5hYro
+ sqemZHpg9BjDG63cVT1vdE5/d4ZXlje8WlfF1YbjAyhNauyvk0ibqtiNODo1YDHAsWU4
+ 4gloIJPs9J+Y4Wp1f+DHJp7/9aw/ipPcOuMl4ZLsANydsLsxebYoC17dFvFfOYsXEQC/
+ wWVQ==
+X-Gm-Message-State: APjAAAXdi9MSK/0wkMdGpehmcpv8GF3vme4xhxubuY6QOi92xQCbx6Ck
+ 26VDUG+GmQCmwxGQAvPdFfM=
+X-Google-Smtp-Source: APXvYqxvNmDaH1yjem5r4S/83Vg1D2RbeIF+UfqytUPsvepRWyCtZKp6p6ALBQ0zWevb7HBr1Ivsog==
+X-Received: by 2002:adf:c803:: with SMTP id d3mr6529921wrh.130.1567014804807; 
+ Wed, 28 Aug 2019 10:53:24 -0700 (PDT)
+Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
+ by smtp.gmail.com with ESMTPSA id w8sm10456031wmc.1.2019.08.28.10.53.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Aug 2019 10:53:23 -0700 (PDT)
+Date: Wed, 28 Aug 2019 10:53:22 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+Message-ID: <20190828175322.GA121833@archlinux-threadripper>
+References: <20190812023214.107817-1-natechancellor@gmail.com>
+ <878srdv206.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878srdv206.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,58 +80,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp <sachinp@linux.vnet.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, dick.kennedy@broadcom.com, "Martin
- K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi <linux-scsi@vger.kernel.org>,
- manvanth <manvanth@linux.vnet.ibm.com>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linux-next <linux-next@vger.kernel.org>,
- dougmill <dougmill@linux.vnet.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-08-28 at 08:22 -0700, James Smart wrote:
-> On 8/27/2019 10:02 PM, Abdul Haleem wrote:
-> > Greetings,
-> > 
-> > linux-next kernel 5.3.0-rc1 failed to boot with kernel Oops on Power 9
-> > box
-> > 
-> > I see a recent changes to lpfc code was from commit
-> > 10541f03 scsi: lpfc: Update lpfc version to 12.4.0.0
-> > 
-> > Recent boot logs:
-> > 
-> > [..snip..]
+On Wed, Aug 28, 2019 at 11:43:53PM +1000, Michael Ellerman wrote:
+> Nathan Chancellor <natechancellor@gmail.com> writes:
 > 
-> see  https://www.spinics.net/lists/linux-scsi/msg133343.html
+> > Commit aea447141c7e ("powerpc: Disable -Wbuiltin-requires-header when
+> > setjmp is used") disabled -Wbuiltin-requires-header because of a warning
+> > about the setjmp and longjmp declarations.
+> >
+> > r367387 in clang added another diagnostic around this, complaining that
+> > there is no jmp_buf declaration.
+> >
+> > In file included from ../arch/powerpc/xmon/xmon.c:47:
+> > ../arch/powerpc/include/asm/setjmp.h:10:13: error: declaration of
+> > built-in function 'setjmp' requires the declaration of the 'jmp_buf'
+> > type, commonly provided in the header <setjmp.h>.
+> > [-Werror,-Wincomplete-setjmp-declaration]
+> > extern long setjmp(long *);
+> >             ^
+> > ../arch/powerpc/include/asm/setjmp.h:11:13: error: declaration of
+> > built-in function 'longjmp' requires the declaration of the 'jmp_buf'
+> > type, commonly provided in the header <setjmp.h>.
+> > [-Werror,-Wincomplete-setjmp-declaration]
+> > extern void longjmp(long *, long);
+> >             ^
+> > 2 errors generated.
+> >
+> > Take the same approach as the above commit by disabling the warning for
+> > the same reason, we provide our own longjmp/setjmp function.
+> >
+> > Cc: stable@vger.kernel.org # 4.19+
+> > Link: https://github.com/ClangBuiltLinux/linux/issues/625
+> > Link: https://github.com/llvm/llvm-project/commit/3be25e79477db2d31ac46493d97eca8c20592b07
+> > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> > ---
+> >
+> > It may be worth using -fno-builtin-setjmp and -fno-builtin-longjmp
+> > instead as it makes it clear to clang that we are not using the builtin
+> > longjmp and setjmp functions, which I think is why these warnings are
+> > appearing (at least according to the commit that introduced this waring).
+> >
+> > Sample patch:
+> > https://github.com/ClangBuiltLinux/linux/issues/625#issuecomment-519251372
 > 
-> It hasn't been tested yet, but appears to be the issue.
+> Couldn't we just add those flags to CFLAGS for the whole kernel? Rather
+> than making them per-file.
 
-Ah, commit c00f62e6 (scsi: lpfc: Merge per-protocol...) is the bad one
-and Yes the patch fixes it, System booted fine with below code change
+Yes, I don't think this would be unreasonable. Are you referring to the
+cc-disable-warning flags or the -fno-builtin flags? I personally think
+the -fno-builtin flags convey to clang what the kernel is intending to
+do better than disabling the warnings outright.
 
---- a/drivers/scsi/lpfc/lpfc_sli.c    2019-08-23 13:55:18.253546775 -0700
-+++ b/drivers/scsi/lpfc_sli.c    2019-08-27 17:04:51.095330056 -0700
-@@ -5553,7 +5553,7 @@ lpfc_sli4_arm_cqeq_intr(struct lpfc_hba
-         for (qidx = 0; qidx < phba->cfg_hdw_queue; qidx++) {
-             qp = &sli4_hba->hdwq[qidx];
-             /* ARM the corresponding CQ */
--            sli4_hba->sli4_write_cq_db(phba, qp[qidx].io_cq, 0,
-+            sli4_hba->sli4_write_cq_db(phba, qp->io_cq, 0,
-                         LPFC_QUEUE_REARM);
+> I mean there's no kernel code that wants to use clang's builtin
+> setjmp/longjmp implementation at all right?
+> 
+> cheers
 
+I did a quick search of the tree and it looks like powerpc and x86/um
+are the only architectures that do anything with setjmp/longjmp. x86/um
+avoids this by using a define flag to change setjmp to kernel_setjmp:
 
-Tested-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+arch/um/Makefile: -Dlongjmp=kernel_longjmp -Dsetjmp=kernel_setjmp \
 
--- 
-Regard's
+Seems like adding those flags should be safe.
 
-Abdul Haleem
-IBM Linux Technology Centre
-
-
-
+Cheers,
+Nathan
