@@ -2,38 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E7D8A03C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7BAA03CD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:57:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JRzt6nqGzDr34
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 23:54:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JS3l68x1zDr1N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 23:57:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ZQWMq8Ck"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JRmS5x3KzDqDD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 23:44:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46JRmQ3ct3z9sNm;
- Wed, 28 Aug 2019 23:44:04 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Chancellor <natechancellor@gmail.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
-In-Reply-To: <20190812023214.107817-1-natechancellor@gmail.com>
-References: <20190812023214.107817-1-natechancellor@gmail.com>
-Date: Wed, 28 Aug 2019 23:43:53 +1000
-Message-ID: <878srdv206.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JS0P1nQnzDqmj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 23:54:28 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46JS0H3pR7z9txMB;
+ Wed, 28 Aug 2019 15:54:23 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ZQWMq8Ck; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id i-mO06ZEAh35; Wed, 28 Aug 2019 15:54:23 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46JS0H2SSxz9txM6;
+ Wed, 28 Aug 2019 15:54:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1567000463; bh=evGdDhmtcmpDnSsk3iceD1vmrWqXPGo+SIfjTrzR0kU=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ZQWMq8Ck/WAqYTiDY444GgfjNhOdOAdeFIUH8PVZqCCmXdA1CpzJV2htjUdYfKObO
+ GMFVNBDqMIolPq2H7T4eJWKyYRhTfYYtqsRo1HGaH/Ay6SyqGpGqjykLf7Y9wUomMt
+ Eu60nO5DW39QHF45ZjbWkaZGxSMQx41tWaRFg60Y=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C7D328B89B;
+ Wed, 28 Aug 2019 15:54:24 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HVeHaSZBb0c3; Wed, 28 Aug 2019 15:54:24 +0200 (CEST)
+Received: from [172.25.230.105] (po15451.idsi0.si.c-s.fr [172.25.230.105])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A32AE8B885;
+ Wed, 28 Aug 2019 15:54:24 +0200 (CEST)
+Subject: Re: [PATCH v2] powerpc/mm: Implement STRICT_MODULE_RWX
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+References: <20190614055013.21014-1-ruscur@russell.cc>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <6bf5e5e3-1dfe-05fe-d736-7c846b8ac6f6@c-s.fr>
+Date: Wed, 28 Aug 2019 15:54:24 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20190614055013.21014-1-ruscur@russell.cc>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,58 +77,207 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: kernel-hardening@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Chancellor <natechancellor@gmail.com> writes:
+Any plan to getting this applied soon ?
 
-> Commit aea447141c7e ("powerpc: Disable -Wbuiltin-requires-header when
-> setjmp is used") disabled -Wbuiltin-requires-header because of a warning
-> about the setjmp and longjmp declarations.
->
-> r367387 in clang added another diagnostic around this, complaining that
-> there is no jmp_buf declaration.
->
-> In file included from ../arch/powerpc/xmon/xmon.c:47:
-> ../arch/powerpc/include/asm/setjmp.h:10:13: error: declaration of
-> built-in function 'setjmp' requires the declaration of the 'jmp_buf'
-> type, commonly provided in the header <setjmp.h>.
-> [-Werror,-Wincomplete-setjmp-declaration]
-> extern long setjmp(long *);
->             ^
-> ../arch/powerpc/include/asm/setjmp.h:11:13: error: declaration of
-> built-in function 'longjmp' requires the declaration of the 'jmp_buf'
-> type, commonly provided in the header <setjmp.h>.
-> [-Werror,-Wincomplete-setjmp-declaration]
-> extern void longjmp(long *, long);
->             ^
-> 2 errors generated.
->
-> Take the same approach as the above commit by disabling the warning for
-> the same reason, we provide our own longjmp/setjmp function.
->
-> Cc: stable@vger.kernel.org # 4.19+
-> Link: https://github.com/ClangBuiltLinux/linux/issues/625
-> Link: https://github.com/llvm/llvm-project/commit/3be25e79477db2d31ac46493d97eca8c20592b07
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Christophe
+
+Le 14/06/2019 à 07:50, Russell Currey a écrit :
+> Strict module RWX is just like strict kernel RWX, but for modules - so
+> loadable modules aren't marked both writable and executable at the same
+> time.  This is handled by the generic code in kernel/module.c, and
+> simply requires the architecture to implement the set_memory() set of
+> functions, declared with ARCH_HAS_SET_MEMORY.
+> 
+> There's nothing other than these functions required to turn
+> ARCH_HAS_STRICT_MODULE_RWX on, so turn that on too.
+> 
+> With STRICT_MODULE_RWX enabled, there are as many W+X pages at runtime
+> as there are with CONFIG_MODULES=n (none), so in Russel's testing it works
+> well on both Hash and Radix book3s64.
+> 
+> There's a TODO in the code for also applying the page permission changes
+> to the backing pages in the linear mapping: this is pretty simple for
+> Radix and (seemingly) a lot harder for Hash, so I've left it for now
+> since there's still a notable security benefit for the patch as-is.
+> 
+> Technically can be enabled without STRICT_KERNEL_RWX, but
+> that doesn't gets you a whole lot, so we should leave it off by default
+> until we can get STRICT_KERNEL_RWX to the point where it's enabled by
+> default.
+> 
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 > ---
->
-> It may be worth using -fno-builtin-setjmp and -fno-builtin-longjmp
-> instead as it makes it clear to clang that we are not using the builtin
-> longjmp and setjmp functions, which I think is why these warnings are
-> appearing (at least according to the commit that introduced this waring).
->
-> Sample patch:
-> https://github.com/ClangBuiltLinux/linux/issues/625#issuecomment-519251372
-
-Couldn't we just add those flags to CFLAGS for the whole kernel? Rather
-than making them per-file.
-
-I mean there's no kernel code that wants to use clang's builtin
-setjmp/longjmp implementation at all right?
-
-cheers
+> Changes from v1 (sent by Christophe):
+>   - return if VM_FLUSH_RESET_PERMS is set
+> 
+>   arch/powerpc/Kconfig                  |  2 +
+>   arch/powerpc/include/asm/set_memory.h | 32 ++++++++++
+>   arch/powerpc/mm/Makefile              |  2 +-
+>   arch/powerpc/mm/pageattr.c            | 85 +++++++++++++++++++++++++++
+>   4 files changed, 120 insertions(+), 1 deletion(-)
+>   create mode 100644 arch/powerpc/include/asm/set_memory.h
+>   create mode 100644 arch/powerpc/mm/pageattr.c
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 8c1c636308c8..3d98240ce965 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -131,7 +131,9 @@ config PPC
+>   	select ARCH_HAS_PTE_SPECIAL
+>   	select ARCH_HAS_MEMBARRIER_CALLBACKS
+>   	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC64
+> +	select ARCH_HAS_SET_MEMORY
+>   	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
+> +	select ARCH_HAS_STRICT_MODULE_RWX	if PPC_BOOK3S_64 || PPC32
+>   	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+>   	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
+>   	select ARCH_HAS_UBSAN_SANITIZE_ALL
+> diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
+> new file mode 100644
+> index 000000000000..4b9683f3b3dd
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/set_memory.h
+> @@ -0,0 +1,32 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +#ifndef _ASM_POWERPC_SET_MEMORY_H
+> +#define _ASM_POWERPC_SET_MEMORY_H
+> +
+> +#define SET_MEMORY_RO	1
+> +#define SET_MEMORY_RW	2
+> +#define SET_MEMORY_NX	3
+> +#define SET_MEMORY_X	4
+> +
+> +int change_memory(unsigned long addr, int numpages, int action);
+> +
+> +static inline int set_memory_ro(unsigned long addr, int numpages)
+> +{
+> +	return change_memory(addr, numpages, SET_MEMORY_RO);
+> +}
+> +
+> +static inline int set_memory_rw(unsigned long addr, int numpages)
+> +{
+> +	return change_memory(addr, numpages, SET_MEMORY_RW);
+> +}
+> +
+> +static inline int set_memory_nx(unsigned long addr, int numpages)
+> +{
+> +	return change_memory(addr, numpages, SET_MEMORY_NX);
+> +}
+> +
+> +static inline int set_memory_x(unsigned long addr, int numpages)
+> +{
+> +	return change_memory(addr, numpages, SET_MEMORY_X);
+> +}
+> +
+> +#endif
+> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
+> index 0f499db315d6..b683d1c311b3 100644
+> --- a/arch/powerpc/mm/Makefile
+> +++ b/arch/powerpc/mm/Makefile
+> @@ -7,7 +7,7 @@ ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
+>   
+>   obj-y				:= fault.o mem.o pgtable.o mmap.o \
+>   				   init_$(BITS).o pgtable_$(BITS).o \
+> -				   pgtable-frag.o \
+> +				   pgtable-frag.o pageattr.o \
+>   				   init-common.o mmu_context.o drmem.o
+>   obj-$(CONFIG_PPC_MMU_NOHASH)	+= nohash/
+>   obj-$(CONFIG_PPC_BOOK3S_32)	+= book3s32/
+> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+> new file mode 100644
+> index 000000000000..41baf92f632b
+> --- /dev/null
+> +++ b/arch/powerpc/mm/pageattr.c
+> @@ -0,0 +1,85 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +
+> +/*
+> + * Page attribute and set_memory routines
+> + *
+> + * Derived from the arm64 implementation.
+> + *
+> + * Author: Russell Currey <ruscur@russell.cc>
+> + *
+> + * Copyright 2019, IBM Corporation.
+> + *
+> + */
+> +
+> +#include <linux/mm.h>
+> +#include <linux/set_memory.h>
+> +#include <linux/vmalloc.h>
+> +
+> +#include <asm/mmu.h>
+> +#include <asm/page.h>
+> +#include <asm/pgtable.h>
+> +
+> +static int change_page_ro(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
+> +{
+> +	set_pte_at(&init_mm, addr, ptep, pte_wrprotect(READ_ONCE(*ptep)));
+> +	return 0;
+> +}
+> +
+> +static int change_page_rw(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
+> +{
+> +	set_pte_at(&init_mm, addr, ptep, pte_mkwrite(READ_ONCE(*ptep)));
+> +	return 0;
+> +}
+> +
+> +static int change_page_nx(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
+> +{
+> +	set_pte_at(&init_mm, addr, ptep, pte_exprotect(READ_ONCE(*ptep)));
+> +	return 0;
+> +}
+> +
+> +static int change_page_x(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
+> +{
+> +	set_pte_at(&init_mm, addr, ptep, pte_mkexec(READ_ONCE(*ptep)));
+> +	return 0;
+> +}
+> +
+> +int change_memory(unsigned long addr, int numpages, int action)
+> +{
+> +	unsigned long size = numpages * PAGE_SIZE;
+> +	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
+> +	unsigned long end = start + size;
+> +	struct vm_struct *area;
+> +	int ret;
+> +
+> +	if (!numpages)
+> +		return 0;
+> +
+> +	// only operate on VM areas for now
+> +	area = find_vm_area((void *)addr);
+> +	if (!area || end > (unsigned long)area->addr + area->size ||
+> +	    !(area->flags & VM_ALLOC) || (area->flags & VM_FLUSH_RESET_PERMS))
+> +		return -EINVAL;
+> +
+> +	// TODO: also apply change to the backing pages in the linear mapping
+> +
+> +	switch (action) {
+> +	case SET_MEMORY_RO:
+> +		ret = apply_to_page_range(&init_mm, start, size, change_page_ro, NULL);
+> +		break;
+> +	case SET_MEMORY_RW:
+> +		ret = apply_to_page_range(&init_mm, start, size, change_page_rw, NULL);
+> +		break;
+> +	case SET_MEMORY_NX:
+> +		ret = apply_to_page_range(&init_mm, start, size, change_page_nx, NULL);
+> +		break;
+> +	case SET_MEMORY_X:
+> +		ret = apply_to_page_range(&init_mm, start, size, change_page_x, NULL);
+> +		break;
+> +	default:
+> +		WARN_ON(true);
+> +		return -EINVAL;
+> +	}
+> +
+> +	flush_tlb_kernel_range(start, end);
+> +	return ret;
+> +}
+> 
