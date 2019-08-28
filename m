@@ -2,66 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4AE3A03A7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E01FA03B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 15:51:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JRs749HxzDr7l
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 23:48:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JRwS0BbkzDqmj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 23:51:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="McnM47Sw"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JRk61tmrzDql6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 23:42:06 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46JRk12DWFz9txgl;
- Wed, 28 Aug 2019 15:42:01 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=McnM47Sw; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id EbMeLWH2Bh5V; Wed, 28 Aug 2019 15:42:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46JRk10cSKz9txgf;
- Wed, 28 Aug 2019 15:42:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566999721; bh=WlF/NSltuPx4PM3qTDCqQGZT8tc/4RbHenX+NeVwbvY=;
- h=From:Subject:To:Cc:Date:From;
- b=McnM47SwSpPMO6QuYvKKyyQZ648H4n+/LV51JTu8o3Xibt98fpDBFMT5U6czyfLJh
- k6E89dZM4kQUGZKK6cfnEXvNHz8PP9ehnwwMAnbA1LFoHYp1fgP3O0k7SAdQ7ScGdD
- x8vQDatxay1Us4HZnxp6IUnDo1ZQR+eNalwEyMcE=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 86B838B89B;
- Wed, 28 Aug 2019 15:42:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id guMCPJ6UOkHP; Wed, 28 Aug 2019 15:42:02 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.105])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6AF798B885;
- Wed, 28 Aug 2019 15:42:02 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 13C5B69728; Wed, 28 Aug 2019 13:42:01 +0000 (UTC)
-Message-Id: <ac19713826fa55e9e7bfe3100c5a7b1712ab9526.1566999711.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/reg: use ASM_FTR_IFSET() instead of opencoding fixup.
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 28 Aug 2019 13:42:01 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JRmF48bCzDqTX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 23:43:57 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7SDcogK059722
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 09:43:54 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2unqfnyq4v-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 09:43:53 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <zohar@linux.ibm.com>;
+ Wed, 28 Aug 2019 14:43:51 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 28 Aug 2019 14:43:46 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7SDhjxr37879864
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Aug 2019 13:43:45 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D0A311C052;
+ Wed, 28 Aug 2019 13:43:45 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A6C111C05C;
+ Wed, 28 Aug 2019 13:43:42 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.129.156])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Aug 2019 13:43:42 +0000 (GMT)
+Subject: Re: [PATCH v12 00/11] Appended signatures support for IMA appraisal
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Jordan Hand <jorhand@linux.microsoft.com>, Thiago Jung Bauermann
+ <bauerman@linux.ibm.com>, linux-integrity@vger.kernel.org
+Date: Wed, 28 Aug 2019 09:43:41 -0400
+In-Reply-To: <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
+References: <20190628021934.4260-1-bauerman@linux.ibm.com>
+ <9682b5d0-1634-2dd0-2cbb-eb1fa8ba7423@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19082813-4275-0000-0000-0000035E558B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082813-4276-0000-0000-0000387089DF
+Message-Id: <1566999821.6115.14.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-28_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=896 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908280144
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,48 +90,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-doc@vger.kernel.org,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, James Morris <jmorris@namei.org>,
+ David Howells <dhowells@redhat.com>, "AKASHI,
+ Takahiro" <takahiro.akashi@linaro.org>, linux-security-module@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ Jessica Yu <jeyu@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ David Woodhouse <dwmw2@infradead.org>, "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mftb() includes a feature fixup for CELL ppc.
+Hi Jordan,
 
-Use ASM_FTR_IFSET() macro instead of opencoding the setup
-of the fixup sections.
+On Mon, 2019-08-26 at 15:46 -0700, Jordan Hand wrote:
+> On 6/27/19 7:19 PM, Thiago Jung Bauermann wrote:
+> > On the OpenPOWER platform, secure boot and trusted boot are being
+> > implemented using IMA for taking measurements and verifying signatures.
+> > Since the kernel image on Power servers is an ELF binary, kernels are
+> > signed using the scripts/sign-file tool and thus use the same signature
+> > format as signed kernel modules.
+> > 
+> > This patch series adds support in IMA for verifying those signatures.
+> > It adds flexibility to OpenPOWER secure boot, because it allows it to boot
+> > kernels with the signature appended to them as well as kernels where the
+> > signature is stored in the IMA extended attribute.
+> 
+> I know this is pretty late, but I just wanted to let you know that I
+> tested this patch set on x86_64 with QEMU.
+> 
+> That is, I enrolled a key to _ima keyring, signed my kernel and modules
+> with appended signatures (with scripts/sign-file), set the IMA policy to
+> appraise and measure my kernel and modules. Also tested kexec appraisal.
+> 
+> You can add my tested-by if you'd like.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/reg.h | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+I really appreciate your testing.  Based on the recent
+Documentation/maintainer/rebasing-and-merging.rst,  I'm trying not to
+rebase patches already staged in linux-next.  Patches are first being
+staged in the next-queued-testing branch.
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 10caa145f98b..7acce24ace49 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1378,19 +1378,9 @@ static inline void msr_check_and_clear(unsigned long bits)
- #define mftb()		({unsigned long rval;				\
- 			asm volatile(					\
- 				"90:	mfspr %0, %2;\n"		\
--				"97:	cmpwi %0,0;\n"			\
--				"	beq- 90b;\n"			\
--				"99:\n"					\
--				".section __ftr_fixup,\"a\"\n"		\
--				".align 3\n"				\
--				"98:\n"					\
--				"	.8byte %1\n"			\
--				"	.8byte %1\n"			\
--				"	.8byte 97b-98b\n"		\
--				"	.8byte 99b-98b\n"		\
--				"	.8byte 0\n"			\
--				"	.8byte 0\n"			\
--				".previous"				\
-+				ASM_FTR_IFSET(				\
-+					"97:	cmpwi %0,0;\n"		\
-+					"	beq- 90b;\n", "", %1)	\
- 			: "=r" (rval) \
- 			: "i" (CPU_FTR_CELL_TB_BUG), "i" (SPRN_TBRL) : "cr0"); \
- 			rval;})
--- 
-2.13.3
+FYI, I just posted a patch that adds IMA appended signature support to
+test_kexec_file_load.sh.
+
+thanks,
+
+Mimi
 
