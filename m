@@ -1,48 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDDC9FE6E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:26:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE46B9FE7D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:30:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JL3R1KWRzDr1m
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:26:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JL7h1cSvzDr1b
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:30:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46JKzC4ydDzDr0D
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:23:02 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC682337;
- Wed, 28 Aug 2019 02:23:00 -0700 (PDT)
-Received: from [10.162.40.83] (p8cg001049571a15.blr.arm.com [10.162.40.83])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BCFF3F59C;
- Wed, 28 Aug 2019 02:22:50 -0700 (PDT)
-Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
- table helpers
-To: Matthew Wilcox <willy@infradead.org>
-References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
- <20190809101632.GM5482@bombadil.infradead.org>
- <a5aab7ff-f7fd-9cc1-6e37-e4185eee65ac@arm.com>
- <20190809135202.GN5482@bombadil.infradead.org>
- <7a88f6bb-e8c7-3ac7-2f92-1de752a01f33@arm.com>
- <20190826131308.GA15933@bombadil.infradead.org>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <504f891e-7346-7328-74b0-7df3acc230e8@arm.com>
-Date: Wed, 28 Aug 2019 14:52:54 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Ul/44ofX"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JL5f0z1QzDr1G
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:28:36 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46JL5X2c16z9v031;
+ Wed, 28 Aug 2019 11:28:32 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Ul/44ofX; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Ls7tMgLEHoMY; Wed, 28 Aug 2019 11:28:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46JL5X1T8Xz9v030;
+ Wed, 28 Aug 2019 11:28:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566984512; bh=3hfjeQ0iHm/0/GKl3TzSdJ5YO+4hBp1jT9/FRCQ9WKE=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=Ul/44ofXp6FQAtmujmWBww76qFFB1uuPFSbdJox3zYv2ngn2JJXuOF8QlMKSBA9Ao
+ oCHfhOSyVpyUESlUnIJSOOJsvshqCpVIz1zpNBgr3caDPuRES1Qco92T2sOBvf6XqK
+ SQjrdYznO0owpeorww4QTbC5+6HtOWWx4v7YI0iA=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5A9238B87B;
+ Wed, 28 Aug 2019 11:28:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id PHPBVcJno5ce; Wed, 28 Aug 2019 11:28:33 +0200 (CEST)
+Received: from [172.25.230.105] (po15451.idsi0.si.c-s.fr [172.25.230.105])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CB748B856;
+ Wed, 28 Aug 2019 11:28:33 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/64: interrupt return in C
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190828090606.5028-1-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <33052597-ce23-780d-bb38-f50ecd78ff3a@c-s.fr>
+Date: Wed, 28 Aug 2019 11:28:33 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190826131308.GA15933@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20190828090606.5028-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,87 +77,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Steven Price <Steven.Price@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 08/26/2019 06:43 PM, Matthew Wilcox wrote:
-> On Mon, Aug 26, 2019 at 08:07:13AM +0530, Anshuman Khandual wrote:
->> On 08/09/2019 07:22 PM, Matthew Wilcox wrote:
->>> On Fri, Aug 09, 2019 at 04:05:07PM +0530, Anshuman Khandual wrote:
->>>> On 08/09/2019 03:46 PM, Matthew Wilcox wrote:
->>>>> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
->>>>>> Should alloc_gigantic_page() be made available as an interface for general
->>>>>> use in the kernel. The test module here uses very similar implementation from
->>>>>> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
->>>>>> needs to be exported through a header.
->>>>>
->>>>> Why are you allocating memory at all instead of just using some
->>>>> known-to-exist PFNs like I suggested?
->>>>
->>>> We needed PFN to be PUD aligned for pfn_pud() and PMD aligned for mk_pmd().
->>>> Now walking the kernel page table for a known symbol like kernel_init()
->>>
->>> I didn't say to walk the kernel page table.  I said to call virt_to_pfn()
->>> for a known symbol like kernel_init().
->>>
->>>> as you had suggested earlier we might encounter page table page entries at PMD
->>>> and PUD which might not be PMD or PUD aligned respectively. It seemed to me
->>>> that alignment requirement is applicable only for mk_pmd() and pfn_pud()
->>>> which create large mappings at those levels but that requirement does not
->>>> exist for page table pages pointing to next level. Is not that correct ? Or
->>>> I am missing something here ?
->>>
->>> Just clear the bottom bits off the PFN until you get a PMD or PUD aligned
->>> PFN.  It's really not hard.
->>
->> As Mark pointed out earlier that might end up being just a synthetic PFN
->> which might not even exist on a given system.
-> 
-> And why would that matter?
-> 
+Le 28/08/2019 à 11:06, Nicholas Piggin a écrit :
+> This is a work in progress that goes on top of the syscalls in C patch.
+> It's not quite complete, 64e low level exit is not taken care of, and
+> the new return is hacked into the existing interrupt handlers pretty
+> quickly (e.g., full gprs handling is still ugly and could be cleaned),
+> but that code touches exception-64s.S which is under heavy modification
+> in parallel so I will rebase on top of that before polishing it properly.
+> I will also try to convert to more IS_ENABLED() for Christophe.
 
-To start with the test uses struct page with mk_pte() and mk_pmd() while
-pfn gets used in pfn_pud() during pXX_basic_tests(). So we will not be able
-to derive a valid struct page from a synthetic pfn. Also if synthetic pfn is
-going to be used anyway then why derive it from a real kernel symbol like
-kernel_init(). Could not one be just made up with right alignment ?
+I am flattered.
 
-Currently the test allocates 'mm_struct' and other page table pages from real
-memory then why should it use synthetic pfn while creating actual page table
-entries ? Couple of benefits going with synthetic pfn will be..
+I guess at the end you are not doing it for me but because it is on 
+purpose in your code improvement process.
 
-- It simplifies the test a bit removing PUD_SIZE allocation helpers
-- It might enable the test to be run on systems without adequate memory
+See 
+https://www.kernel.org/doc/html/latest/process/coding-style.html#conditional-compilation
 
-In the current proposal the allocation happens during boot making it much more
-likely to succeed than not and when it fails, respective tests will be skipped.
-
-I am just wondering if being able to run complete set of tests on smaller
-systems with less memory weighs lot more in favor of going with synthetic
-pfn instead.
+Christophe
