@@ -2,73 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4CB4A0063
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 13:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC16FA0072
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 13:05:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JN804z5czDr3R
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 21:00:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JNFJ2dCCzDr6W
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 21:05:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.190; helo=huawei.com; envelope-from=yanaijie@huawei.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="EPTJU0js"; 
- dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JN5z5CBzzDr2r
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 20:59:03 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id gn20so1081105plb.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 03:59:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=3PfQgtmB/PeAwXzGWu3d6xyhKveRxe5sV2Su3HbU17A=;
- b=EPTJU0js8l61hptAqP3s6hKS9aCaWQCN7ibiSNdE0YlenTrKIvMaJsnL00ZDyH/1Id
- HVjpQ8BxRVeJoMR7sXd8i/JICRFB0D615CJqg0mmYhS5NFUbNLc6AOnYQZhHqvb5tsfX
- GblMVaNIspx1j8Yr2R3D7tXDwmArQhhIJac7WuPlmLoPXveMQVakQQ1YCrui6Yj8B83O
- 02s7Cw7xXknEuKTxMY7nAKHpg56M2d55t1SnI14IxCd8UkjAYdcOpGUCwa53rTVmCgoC
- tp6JYtulQCexCDDiG0UY0djuW7xN6WkBA2AmAZxVD1lo6KFWXbIe3CX16vId+io8PIfK
- XKRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=3PfQgtmB/PeAwXzGWu3d6xyhKveRxe5sV2Su3HbU17A=;
- b=oApjoUgZVqnheVGwCIqDb6ukkd4o8pL9jVCnpe1nrO3lHTO53Pc+94TyLZ80UXE7GW
- hop9pfeqpHjShrlnFUyqFqBQ4+C/f81Qbnany/RMYYAiwE1Imp/Tbe+PaV26sXhtzQH9
- tAAegYQ/lHgwboCuKeDPy/54HxVnFO0jGirmDsWhuNOPaHcga+5Yy1arWOXfOoeqdTPX
- 1LByuXUrWUW8B65svUMixZAJ9ysSDwy/6yMPklfD4B57WcNxB6RnMByctg3aoMDkUSGj
- EaV8htsQ5Boedo9D6UmqIlgriodWVqD39wBgmV+jVDkVNJ29Se1x05xTL3qJFBrsZ4mq
- JeVw==
-X-Gm-Message-State: APjAAAVaSlUxX1uNKDBy9I/g6DLnBAcK8Svq+qkKY/55erevpGV8bGED
- Rq/DTAqfFIDNz9hxzcRNZFPCoqp+
-X-Google-Smtp-Source: APXvYqwGf181xs50DmlZ+yXjcA3Ha+rq4NNQ+z03UQuBiE/tZSYbrDXwgyYFSdpeT6T3QIgucQmJpg==
-X-Received: by 2002:a17:902:7592:: with SMTP id
- j18mr3671462pll.186.1566989940790; 
- Wed, 28 Aug 2019 03:59:00 -0700 (PDT)
-Received: from localhost (14-202-91-55.tpgi.com.au. [14.202.91.55])
- by smtp.gmail.com with ESMTPSA id g8sm1969083pgk.1.2019.08.28.03.58.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2019 03:59:00 -0700 (PDT)
-Date: Wed, 28 Aug 2019 20:57:48 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 0/4] Disable compat cruft on ppc64le v2
-To: linuxppc-dev@lists.ozlabs.org, Michal Suchanek <msuchanek@suse.de>
-References: <cover.1566987936.git.msuchanek@suse.de>
-In-Reply-To: <cover.1566987936.git.msuchanek@suse.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JNC05GPCzDr3N
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 21:03:24 +1000 (AEST)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id BD5DA38B7246062394D8;
+ Wed, 28 Aug 2019 19:03:19 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.203) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Wed, 28 Aug 2019
+ 19:03:12 +0800
+Subject: Re: [PATCH v6 06/12] powerpc/fsl_booke/32: implement KASLR
+ infrastructure
+To: Scott Wood <oss@buserror.net>
+References: <20190809100800.5426-1-yanaijie@huawei.com>
+ <20190809100800.5426-7-yanaijie@huawei.com>
+ <20190828045454.GB17757@home.buserror.net>
+From: Jason Yan <yanaijie@huawei.com>
+Message-ID: <de603506-5c4e-4ca3-bd77-e3a69af9faef@huawei.com>
+Date: Wed, 28 Aug 2019 19:03:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.5.0
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1566988993.aiyajovdx0.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190828045454.GB17757@home.buserror.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.203]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,44 +55,214 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, "Dmitry V. Levin" <ldv@altlinux.org>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
- Firoz Khan <firoz.khan@linaro.org>, Allison Randal <allison@lohutok.net>,
- Joel Stanley <joel@jms.id.au>, Steven Rostedt <rostedt@goodmis.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
+Cc: wangkefeng.wang@huawei.com, keescook@chromium.org,
+ kernel-hardening@lists.openwall.com, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, jingxiangfeng@huawei.com, diana.craciun@nxp.com,
+ paulus@samba.org, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
+ fanchengyang@huawei.com, linuxppc-dev@lists.ozlabs.org, yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Suchanek's on August 28, 2019 8:30 pm:
-> With endian switch disabled by default the ppc64le compat supports
-> ppc32le only which is something next to nobody has binaries for.
->=20
-> Less code means less bugs so drop the compat stuff.
-
-Interesting patches, thanks for looking into it. I don't know much
-about compat and wrong endian userspaces. I think sys_switch_endian
-is enabled though, it's just a strange fast endian swap thing that
-has been disabled by default.
-
-The first patches look pretty good. Maybe for the last one it could
-become a selectable option?
 
 
-> I am not particularly sure about the best way to resolve the llseek
-> situation. I don't see anything in the syscal tables making it
-> 32bit-only so I suppose it should be available on 64bit as well.
+On 2019/8/28 12:54, Scott Wood wrote:
+> On Fri, Aug 09, 2019 at 06:07:54PM +0800, Jason Yan wrote:
+>> This patch add support to boot kernel from places other than KERNELBASE.
+>> Since CONFIG_RELOCATABLE has already supported, what we need to do is
+>> map or copy kernel to a proper place and relocate. Freescale Book-E
+>> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
+>> entries are not suitable to map the kernel directly in a randomized
+>> region, so we chose to copy the kernel to a proper place and restart to
+>> relocate.
+>>
+>> The offset of the kernel was not randomized yet(a fixed 64M is set). We
+>> will randomize it in the next patch.
+>>
+>> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+>> Cc: Diana Craciun <diana.craciun@nxp.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Kees Cook <keescook@chromium.org>
+>> Tested-by: Diana Craciun <diana.craciun@nxp.com>
+>> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>> ---
+>>   arch/powerpc/Kconfig                          | 11 ++++
+>>   arch/powerpc/kernel/Makefile                  |  1 +
+>>   arch/powerpc/kernel/early_32.c                |  2 +-
+>>   arch/powerpc/kernel/fsl_booke_entry_mapping.S | 17 +++--
+>>   arch/powerpc/kernel/head_fsl_booke.S          | 13 +++-
+>>   arch/powerpc/kernel/kaslr_booke.c             | 62 +++++++++++++++++++
+>>   arch/powerpc/mm/mmu_decl.h                    |  7 +++
+>>   arch/powerpc/mm/nohash/fsl_booke.c            |  7 ++-
+>>   8 files changed, 105 insertions(+), 15 deletions(-)
+>>   create mode 100644 arch/powerpc/kernel/kaslr_booke.c
+>>
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 77f6ebf97113..710c12ef7159 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -548,6 +548,17 @@ config RELOCATABLE
+>>   	  setting can still be useful to bootwrappers that need to know the
+>>   	  load address of the kernel (eg. u-boot/mkimage).
+>>   
+>> +config RANDOMIZE_BASE
+>> +	bool "Randomize the address of the kernel image"
+>> +	depends on (FSL_BOOKE && FLATMEM && PPC32)
+>> +	depends on RELOCATABLE
+>> +	help
+>> +	  Randomizes the virtual address at which the kernel image is
+>> +	  loaded, as a security feature that deters exploit attempts
+>> +	  relying on knowledge of the location of kernel internals.
+>> +
+>> +	  If unsure, say N.
+>> +
+> 
+> Why is N the safe default (other than concerns about code maturity,
+> though arm64 and mips don't seem to have updated this recommendation
+> after several years)?  On x86 this defaults to Y.
+> 
 
-It's for 32-bit userspace only. Can we just get rid of it, or is
-there some old broken 64-bit BE userspace that tries to call it?
+Actually I would like to set this default Y. I was just wondering if
+people like this feature or not at the beginning so I had to be more
+careful.
 
-Thanks,
-Nick
+>> diff --git a/arch/powerpc/kernel/fsl_booke_entry_mapping.S b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+>> index f4d3eaae54a9..641920d4f694 100644
+>> --- a/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+>> +++ b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+>> @@ -155,23 +155,22 @@ skpinv:	addi	r6,r6,1				/* Increment */
+>>   
+>>   #if defined(ENTRY_MAPPING_BOOT_SETUP)
+>>   
+>> -/* 6. Setup KERNELBASE mapping in TLB1[0] */
+>> +/* 6. Setup kernstart_virt_addr mapping in TLB1[0] */
+>>   	lis	r6,0x1000		/* Set MAS0(TLBSEL) = TLB1(1), ESEL = 0 */
+>>   	mtspr	SPRN_MAS0,r6
+>>   	lis	r6,(MAS1_VALID|MAS1_IPROT)@h
+>>   	ori	r6,r6,(MAS1_TSIZE(BOOK3E_PAGESZ_64M))@l
+>>   	mtspr	SPRN_MAS1,r6
+>> -	lis	r6,MAS2_VAL(PAGE_OFFSET, BOOK3E_PAGESZ_64M, MAS2_M_IF_NEEDED)@h
+>> -	ori	r6,r6,MAS2_VAL(PAGE_OFFSET, BOOK3E_PAGESZ_64M, MAS2_M_IF_NEEDED)@l
+>> -	mtspr	SPRN_MAS2,r6
+>> +	lis     r6,MAS2_EPN_MASK(BOOK3E_PAGESZ_64M)@h
+>> +	ori     r6,r6,MAS2_EPN_MASK(BOOK3E_PAGESZ_64M)@l
+>> +	and     r6,r6,r20
+>> +	ori	r6,r6,MAS2_M_IF_NEEDED@l
+>> +	mtspr   SPRN_MAS2,r6
+> 
+> Please use tabs rather than spaces between the mnemonic and the
+> arguments.
+> 
+> It looks like that was the last user of MAS2_VAL so let's remove it.
+> 
 
-=
+OK.
+
+>> diff --git a/arch/powerpc/kernel/kaslr_booke.c b/arch/powerpc/kernel/kaslr_booke.c
+>> new file mode 100644
+>> index 000000000000..f8dc60534ac1
+>> --- /dev/null
+>> +++ b/arch/powerpc/kernel/kaslr_booke.c
+> 
+> Shouldn't this go under arch/powerpc/mm/nohash?
+> 
+>> +/*
+>> + * To see if we need to relocate the kernel to a random offset
+>> + * void *dt_ptr - address of the device tree
+>> + * phys_addr_t size - size of the first memory block
+>> + */
+>> +notrace void __init kaslr_early_init(void *dt_ptr, phys_addr_t size)
+>> +{
+>> +	unsigned long tlb_virt;
+>> +	phys_addr_t tlb_phys;
+>> +	unsigned long offset;
+>> +	unsigned long kernel_sz;
+>> +
+>> +	kernel_sz = (unsigned long)_end - KERNELBASE;
+> 
+> Why KERNELBASE and not kernstart_addr?
+> 
+
+Did you mean kernstart_virt_addr? It should be kernstart_virt_addr.
+
+>> +
+>> +	offset = kaslr_choose_location(dt_ptr, size, kernel_sz);
+>> +
+>> +	if (offset == 0)
+>> +		return;
+>> +
+>> +	kernstart_virt_addr += offset;
+>> +	kernstart_addr += offset;
+>> +
+>> +	is_second_reloc = 1;
+>> +
+>> +	if (offset >= SZ_64M) {
+>> +		tlb_virt = round_down(kernstart_virt_addr, SZ_64M);
+>> +		tlb_phys = round_down(kernstart_addr, SZ_64M);
+> 
+> If kernstart_addr wasn't 64M-aligned before adding offset, then "offset
+>> = SZ_64M" is not necessarily going to detect when you've crossed a
+> mapping boundary.
+> >> +
+>> +		/* Create kernel map to relocate in */
+>> +		create_tlb_entry(tlb_phys, tlb_virt, 1);
+>> +	}
+>> +
+>> +	/* Copy the kernel to it's new location and run */
+>> +	memcpy((void *)kernstart_virt_addr, (void *)KERNELBASE, kernel_sz);
+>> +
+>> +	reloc_kernel_entry(dt_ptr, kernstart_virt_addr);
+>> +}
+> 
+> After copying, call flush_icache_range() on the destination.
+> 
+
+OK
+
+>> diff --git a/arch/powerpc/mm/nohash/fsl_booke.c b/arch/powerpc/mm/nohash/fsl_booke.c
+>> index 556e3cd52a35..2dc27cf88add 100644
+>> --- a/arch/powerpc/mm/nohash/fsl_booke.c
+>> +++ b/arch/powerpc/mm/nohash/fsl_booke.c
+>> @@ -263,7 +263,8 @@ void setup_initial_memory_limit(phys_addr_t first_memblock_base,
+>>   int __initdata is_second_reloc;
+>>   notrace void __init relocate_init(u64 dt_ptr, phys_addr_t start)
+>>   {
+>> -	unsigned long base = KERNELBASE;
+>> +	unsigned long base = kernstart_virt_addr;
+>> +	phys_addr_t size;
+>>   
+>>   	kernstart_addr = start;
+>>   	if (is_second_reloc) {
+>> @@ -291,7 +292,7 @@ notrace void __init relocate_init(u64 dt_ptr, phys_addr_t start)
+>>   	start &= ~0x3ffffff;
+>>   	base &= ~0x3ffffff;
+>>   	virt_phys_offset = base - start;
+>> -	early_get_first_memblock_info(__va(dt_ptr), NULL);
+>> +	early_get_first_memblock_info(__va(dt_ptr), &size);
+>>   	/*
+>>   	 * We now get the memstart_addr, then we should check if this
+>>   	 * address is the same as what the PAGE_OFFSET map to now. If
+>> @@ -316,6 +317,8 @@ notrace void __init relocate_init(u64 dt_ptr, phys_addr_t start)
+>>   		/* We should never reach here */
+>>   		panic("Relocation error");
+>>   	}
+>> +
+>> +	kaslr_early_init(__va(dt_ptr), size);
+> 
+> Are you assuming that available memory starts at physical address zero?
+> This isn't true of some partitioning scenarios, or in a kdump crash
+> kernel.
+> 
+
+I'm not assuming that but I haven't tested that case for now. I will 
+reconsider and test these scenarios and fix all bugs.
+
+> -Scott
+> 
+> .
+> 
+
