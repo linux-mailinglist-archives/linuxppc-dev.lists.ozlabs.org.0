@@ -1,33 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D8A9F978
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:39:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3091F9F980
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 06:41:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JCgy4bdYzDqnF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:39:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JCkH04mZzDr39
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 14:41:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM60NZ6zDqsr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JCM6242HzDqtK
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 14:24:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46JCM551djz9sNp; Wed, 28 Aug 2019 14:24:49 +1000 (AEST)
+ id 46JCM570Xkz9sP6; Wed, 28 Aug 2019 14:24:49 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: f0f8d7ae3924ed93453e30123e4aaf6f888ca555
-In-Reply-To: <7b1668941ad1041d08b19167030868de5840b153.1566309262.git.christophe.leroy@c-s.fr>
+X-powerpc-patch-commit: c691b4b83b6a348f7b9d13c36916e73c2e1d85e4
+In-Reply-To: <d60ce8dd3a383c7adbfc322bf1d53d81724a6000.1566311636.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com, hch@lst.de
+ Paul Mackerras <paulus@samba.org>, segher@kernel.crashing.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2 01/12] powerpc: remove the ppc44x ocm.c file
-Message-Id: <46JCM551djz9sNp@ozlabs.org>
+Subject: Re: [PATCH v4 1/3] powerpc: rewrite LOAD_REG_IMMEDIATE() as an
+ intelligent macro
+Message-Id: <46JCM570Xkz9sP6@ozlabs.org>
 Date: Wed, 28 Aug 2019 14:24:49 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -45,17 +46,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-08-20 at 14:07:09 UTC, Christophe Leroy wrote:
-> From: Christoph Hellwig <hch@lst.de>
+On Tue, 2019-08-20 at 14:34:12 UTC, Christophe Leroy wrote:
+> Today LOAD_REG_IMMEDIATE() is a basic #define which loads all
+> parts on a value into a register, including the parts that are NUL.
 > 
-> The on chip memory allocator is entirely unused in the kernel tree.
+> This means always 2 instructions on PPC32 and always 5 instructions
+> on PPC64. And those instructions cannot run in parallele as they are
+> updating the same register.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Acked-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Ex: LOAD_REG_IMMEDIATE(r1,THREAD_SIZE) in head_64.S results in:
+> 
+> 3c 20 00 00     lis     r1,0
+> 60 21 00 00     ori     r1,r1,0
+> 78 21 07 c6     rldicr  r1,r1,32,31
+> 64 21 00 00     oris    r1,r1,0
+> 60 21 40 00     ori     r1,r1,16384
+> 
+> Rewrite LOAD_REG_IMMEDIATE() with GAS macro in order to skip
+> the parts that are NUL.
+> 
+> Rename existing LOAD_REG_IMMEDIATE() as LOAD_REG_IMMEDIATE_SYM()
+> and use that one for loading value of symbols which are not known
+> at compile time.
+> 
+> Now LOAD_REG_IMMEDIATE(r1,THREAD_SIZE) in head_64.S results in:
+> 
+> 38 20 40 00     li      r1,16384
+> 
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/f0f8d7ae3924ed93453e30123e4aaf6f888ca555
+https://git.kernel.org/powerpc/c/c691b4b83b6a348f7b9d13c36916e73c2e1d85e4
 
 cheers
