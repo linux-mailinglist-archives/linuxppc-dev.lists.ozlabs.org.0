@@ -2,73 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89D39FF06
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 12:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6968E9FEFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:57:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JLnq0j2RzDqYn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:59:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JLlB4rNGzDqVW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:57:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="go/KEl1g"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="VzaiixhY"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JLjP3cwSzDqZD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:56:09 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id m3so1166514pgv.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 02:56:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=gtLw2PD4vdmVI8TU44xrSxSJ1jQdArNsk+f5nXQyUHY=;
- b=go/KEl1geboy4c2V5Cp8XN/QsY82eAeesBzguIwJYhAw4muPV1Brgy5C0xfgun+ELg
- UWLOBgp6lVGbafMMH7hQDx2U1/eNHDQhxx5IW4key7x65bK2qdmZo/8QY+48kNzCk+St
- tkOAWyi0HlAzV4eV936GCe4Ml5q/EIJqL8JDAN+sKdKsn8TWBAlXA3WnrhG9ElXtkwSx
- jwHhf0q2QYh3i2cy5/+9GJ8UhLJmEtqjx2TUPqCEmfMT5YeZ4/TwzG40jPEpBrF959XO
- lU22MP1hrJ0q/nS+vRnGyPancQ5p8++uMLaJEfZ7u+TyxSHcPsUYHGZWGbjk73TUQjRD
- FRgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=gtLw2PD4vdmVI8TU44xrSxSJ1jQdArNsk+f5nXQyUHY=;
- b=Uxc5vaGVsn9t8+Z8PeTBCBr4ZETycHcRJgCQeJgC9iCS539SadxM8RydMpDc6I7awV
- xlLWXlbDMp3h7sauQlWxYpVqY3+P09osxCaG9g6U1YIaTNXft8VHhnYHUS97ZJqDd9pi
- qxVdLB98SE+oUITxnPd8rfVB37YCHDtoANqlvaw3UnwX5x81ZGGLsu+32AARUvf6Eg6+
- HbUP8HyGQOE8bOLU28I/NY/3gc3yXfJNI54ooMoYYRQCWkoKWCXj5WI07myRZrZq0ACi
- fXB0O89OvUyGfoiIAWyQYqPxYyALGkWiNcsPTuttT1ANIqHfuK6or1qqr2LCQn21GRpb
- qSoQ==
-X-Gm-Message-State: APjAAAW1ARX7stJhMTHb6xi3Svx4SCjOt6XZYy89nP8nB3M2SJ2JJ70v
- hOW0rT/d9E5Qvl+4qiAhSLthWLcL
-X-Google-Smtp-Source: APXvYqy+022yXMXjRoNYay9Eddr6hIUiGUKFmMvrwAjs2j3EAMYn1nKDVHKODu1ZNNheAKFJtXSlRg==
-X-Received: by 2002:a63:460d:: with SMTP id t13mr2611381pga.205.1566986165793; 
- Wed, 28 Aug 2019 02:56:05 -0700 (PDT)
-Received: from localhost (14-202-91-55.tpgi.com.au. [14.202.91.55])
- by smtp.gmail.com with ESMTPSA id a10sm4445051pfl.159.2019.08.28.02.56.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2019 02:56:05 -0700 (PDT)
-Date: Wed, 28 Aug 2019 19:54:55 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [DOC][PATCH v2] powerpc: Provide initial documentation for PAPR
- hcalls
-To: linuxppc-dev@lists.ozlabs.org, Vaibhav Jain <vaibhav@linux.ibm.com>
-References: <20190828082729.16695-1-vaibhav@linux.ibm.com>
-In-Reply-To: <20190828082729.16695-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JLj25c4yzDqVn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:55:50 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46JLhx4SJhz9vBKv;
+ Wed, 28 Aug 2019 11:55:45 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=VzaiixhY; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id DFg0hZsLD2nr; Wed, 28 Aug 2019 11:55:45 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46JLhx31Tgz9vBKr;
+ Wed, 28 Aug 2019 11:55:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566986145; bh=KPXuPE3m67n2skydH1PwRibMi0kncUovKH2JeL8/dRU=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=VzaiixhYH3gLKP+yYZn+q7yr2To3KDjRHNDiLuevj5kdvxGZvi19IZE7ktethdAaR
+ k0dIKhAtZhTZZ0+VqUB2P2V1qZm/JuFNv9Rd6b4lsYTs8Non0ZCncZUgoCW/wnQXcK
+ y20MTlpnOu8xzzBaR+zgv1PY5C35Jp1LBb1Xl+dI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8A8EA8B87E;
+ Wed, 28 Aug 2019 11:55:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id cHRPq9vyM5vn; Wed, 28 Aug 2019 11:55:46 +0200 (CEST)
+Received: from [172.25.230.105] (po15451.idsi0.si.c-s.fr [172.25.230.105])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C5408B856;
+ Wed, 28 Aug 2019 11:55:46 +0200 (CEST)
+Subject: Re: [PATCH v2 0/4] powerpc/64: syscalls in C
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190827135548.21457-1-npiggin@gmail.com>
+ <5ecd9d1a-d35e-dc8c-9ad4-a830a8b1a952@c-s.fr>
+ <1566985278.ehbnos9t6c.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <4d0359d8-0958-583f-7727-10a51bd3c7c6@c-s.fr>
+Date: Wed, 28 Aug 2019 11:55:46 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1566986020.cw3ahh8v0v.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1566985278.ehbnos9t6c.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,38 +79,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, msuchanek@suse.de,
- David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain's on August 28, 2019 6:27 pm:
-> This doc patch provides an initial description of the hcall op-codes
-> that are used by Linux kernel running as a guest (LPAR) on top of
-> PowerVM or any other sPAPR compliant hyper-visor (e.g qemu).
->=20
-> Apart from documenting the hcalls the doc-patch also provides a
-> rudimentary overview of how hcall ABI, how they are issued with the
-> Linux kernel and how information/control flows between the guest and
-> hypervisor.
->=20
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
-> Change-log:
->=20
-> v2:
-> * Added a section on Register conventions to be followed when invoking
->   hcalls. [Nick]
-> * Updated section on HCALL ABI to clarify that byte ordering only
->   matters to in/out values passed by a memory buffer. [Laurent]
-> * Updated a code comment in 'exceptions-64s.S' describing hypercall
->   register conventions to point it to 'papr_hcalls.rst' [Nick]
 
-Thanks for that!
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+Le 28/08/2019 à 11:49, Nicholas Piggin a écrit :
+> Christophe Leroy's on August 28, 2019 7:06 pm:
+>>
+>>
+>> Le 27/08/2019 à 15:55, Nicholas Piggin a écrit :
+>>> Accounted for some feedback.
+>>>
+>>> Nicholas Piggin (4):
+>>>     powerpc: convert to copy_thread_tls
+>>>     powerpc/64: remove support for kernel-mode syscalls
+>>>     powerpc/64: system call remove non-volatile GPR save optimisation
+>>>     powerpc/64: system call implement the bulk of the logic in C
+>>
+>> Would it be possible to split in the following parts:
+>>
+>> 1/ Implement in C whatever can be implemented without removing
+>> non-volatile GPR save optimisation
+>> 2/ Remove non-volatile GPR save optimisation
+>> 3/ Implement in C everything else
+> 
+> Hmm. I'll have a look but I would rather not go back and add the
+> intermediate state I was hoping to avoid. I'll think about it and
+> if it's not too difficult I will try to add something. I have an
+> idea.
+> 
+> With your nvregs performance test on ppc32, are you doing the
+> nvgpr restore? The fast path should be able to avoid that.
 
-=
+I only added the SAVE_NVGPRS call in the syscall entry macro just after 
+the saving of volatile regs, and changed the trap from \trapno+1 to \trapno
+
+Christophe
