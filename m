@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6FA9FE92
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D26569FEC4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 11:44:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JLFl07ydzDr7g
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:35:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JLRK2kGjzDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 19:43:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="G57TuQr0"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="NAyRmRQW"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JLCj59ZczDqWN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:33:53 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id m9so969136pls.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 02:33:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JLPP25BrzDqYh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 19:42:16 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id n9so1181635pgc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 02:42:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
  :message-id:content-transfer-encoding;
- bh=jRC0AdFddS5YFGo+OnsblGkBQurknLKLMo9EImn0kQg=;
- b=G57TuQr0FfUPmLQh1AKnRnpsxTvQZCYg2lT9+z6aX7pZRxfvKeBi/ueyMiiJ/T2FK7
- blBVX+EN3nMTxiAA1GUgeq3UvEjXl/IQHHHnT5j41TXEvl7vmBwhNUHAzyLUm9dpIgsu
- SNr7RWstIS0bwpzPUrcBGCWFauonUGYyI0ILUeJXwhjLmmswsb/83rAEtmu6gRKdJR04
- jwBtMTKe1ouIlncV+4UOTSPDwyFnZcbuSQJPPdGtuyOELp72UL+ozF3WXv6cMWQfutA6
- 2hmD1HzwQ6pSk7VliB+s1xmWto5wbzxaeClLaem95vXXK32Uo8mK7fod8iFvpaq6qZtl
- cx3g==
+ bh=rv3dgBZ7atlQIwLSCKhD8vRyD/NkeOldH3Y7Ei64S+o=;
+ b=NAyRmRQWvdoKxQMQVhY+9jclPEvngJLridWfTvnQ+K4c2UOg2QJNLvUwnzu27BZvVG
+ 1Wp7t7HlDflY9BuZZ8YxIrqje5dlH6KYaBDs7JfaBZ6H6NhaYBZDuaqKZ/YnTU76ly1b
+ 3CQEoKsZe/xexDtz0yQ3/CZFd2lvWB8AlhUU4ADF1QJ1QAYiy1oRE+QdrWi3RyLMetWt
+ gVmZ1HqkHJa6rQJc4dI+s3Y8WFDMzP8WFBiL1snAc94O8zfvPEfhl63qelePDvJ77QZo
+ Eu6K7xn90sfjWzJPL7afVbCydvvf6nSwSa4Z9mia5dhmfqbC3405NVKX/R0PZOPmdC29
+ 3mFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=jRC0AdFddS5YFGo+OnsblGkBQurknLKLMo9EImn0kQg=;
- b=n7onQTngbF1lDB8EblNaiPbQ2zeNf3ZM0P/8fE6yNNffCWXjKsvp4vuyPAU5oPdYqC
- 6Mv17c56c6lTxP7gsP2xocOOCumuiydH5FA5k5VDXiGlHrUZ2KtADBDuWX9E7CzKh+RR
- 7pblCN21S2zNiL3VJTHyveSdhcSuTj/Xy4j3cArdnj4HNoclw5hLVmt5Pt9HJ1QZ3vOo
- w2JFSbPLG4NN/472qB0GrW0vUZj6EIFoWI6c235YwhNnYfiT74V8fKU+XhWMNCa3O2Sk
- FJnCRHmc0f0/bWgpHzAouFIQw2UtwUnpQLgpNS2L8XwRdiokta2gIpdNer6t27xwK/61
- wxyA==
-X-Gm-Message-State: APjAAAUOLiEdsTuemnWm6muB1bmOBF/SJRLN6xQjJZjiw67VLpDDrwy4
- jYVM5QL1xzhEX58VZx7XGPl4ZXT1
-X-Google-Smtp-Source: APXvYqzIUb1nF2M5U9jSrNloik/Kp0unuZn5oVbjk3FpUIVHBoXburuwQlk6oCusdeF1NstLdQKBCw==
-X-Received: by 2002:a17:902:fe01:: with SMTP id
- g1mr2165102plj.154.1566984830251; 
- Wed, 28 Aug 2019 02:33:50 -0700 (PDT)
+ bh=rv3dgBZ7atlQIwLSCKhD8vRyD/NkeOldH3Y7Ei64S+o=;
+ b=Ob77xHNNJwQ5HcapeEfuo+aYZL3rPF+sb1Qr5GaxkStmnj3/VEdxwrzb8K//5+4QQe
+ ZoHsIjZZvRw5v8yWpb4ZKj8sENszrmoTLv9/cueCUiY8nZWZwkHDIXMOh920+inpBMap
+ lIk/D17WhTEMN6BtTMLXs6S5txSiJrDqAWgAKCkRWmjrJUkS3s8hwbEQE9ZBHs9Hrpak
+ kequgKP1QDHc3BmfDyjbJq9UGsJWVgYNANnQPnY3BKVNnAwzmLv0mLs00/6EdsEWV1aw
+ Knho/43u8apOXqVWYxw7Y86uJplBM/NC0huHNeMCXZ5PPRhxbM+spTGhIcddPSZRm9Hj
+ IF9w==
+X-Gm-Message-State: APjAAAXLU5m5uj1t0zNhVhfNBG8waOyMZhNjR7Ehy/9CFR8sdSqU6XNe
+ 9s49X3xIBjPHOBASXuUtelI=
+X-Google-Smtp-Source: APXvYqyQGVsunOqhWLtjB4kZe1C/Vad2qyEf6A5/Ed0jJGVY/1G8wWJVvg7CGjwcRylJ0lqxO6LsQQ==
+X-Received: by 2002:a17:90a:256d:: with SMTP id
+ j100mr3303221pje.126.1566985335054; 
+ Wed, 28 Aug 2019 02:42:15 -0700 (PDT)
 Received: from localhost (14-202-91-55.tpgi.com.au. [14.202.91.55])
- by smtp.gmail.com with ESMTPSA id 5sm1730197pgh.93.2019.08.28.02.33.49
+ by smtp.gmail.com with ESMTPSA id y23sm4860606pfr.86.2019.08.28.02.42.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2019 02:33:49 -0700 (PDT)
-Date: Wed, 28 Aug 2019 19:32:40 +1000
+ Wed, 28 Aug 2019 02:42:14 -0700 (PDT)
+Date: Wed, 28 Aug 2019 19:41:04 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 3/4] powerpc/64: system call remove non-volatile GPR
- save optimisation
+Subject: Re: [PATCH v2 4/4] powerpc/64: system call implement the bulk of the
+ logic in C
 To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
 References: <20190827135548.21457-1-npiggin@gmail.com>
- <20190827135548.21457-4-npiggin@gmail.com>
- <3f91c62a-6d77-d34c-9477-3077afa5f4e8@c-s.fr>
-In-Reply-To: <3f91c62a-6d77-d34c-9477-3077afa5f4e8@c-s.fr>
+ <20190827135548.21457-5-npiggin@gmail.com>
+ <1015bea4-8b51-ea3b-7e45-8825635261bb@c-s.fr>
+In-Reply-To: <1015bea4-8b51-ea3b-7e45-8825635261bb@c-s.fr>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1566984031.5fm67bk15y.astroid@bobo.none>
+Message-Id: <1566984787.11eqat0ax3.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,72 +87,88 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy's on August 28, 2019 7:02 pm:
+Christophe Leroy's on August 28, 2019 4:51 pm:
 >=20
 >=20
 > Le 27/08/2019 =C3=A0 15:55, Nicholas Piggin a =C3=A9crit=C2=A0:
->> powerpc has an optimisation where interrupts avoid saving the
->> non-volatile (or callee saved) registers to the interrupt stack frame if
->> they are not required.
->>=20
->> Two problems with this are that an interrupt does not always know
->> whether it will need non-volatiles; and if it does need them, they can
->> only be saved from the entry-scoped asm code (because we don't control
->> what the C compiler does with these registers).
->>=20
->> system calls are the most difficult: some system calls always require
->> all registers (e.g., fork, to copy regs into the child).  Sometimes
->> registers are only required under certain conditions (e.g., tracing,
->> signal delivery). These cases require ugly logic in the call chains
->> (e.g., ppc_fork), and require a lot of logic to be implemented in asm.
+>> -#include <asm/reg.h>
+>> +#include <asm/mmu.h>
+>> +#include <asm/ptrace.h>
+>> +
+>> +static inline void kuap_check_amr(void)
+>> +{
+>> +#ifdef CONFIG_PPC_KUAP_DEBUG
+>> +	if (mmu_has_feature(MMU_FTR_RADIX_KUAP))
 >=20
-> Do you really find it ugly to just call function nvgprs() before calling=20
-> sys_fork() ? I guess there are things a lot uglier.
-
-That's not the ugly part, the ugly part is trashing the link register
-and then branching directly to where it was supposed to return, which
-is bad for any CPU which has a return predictor so we try to eliminate
-it from the ppc64 kernel.
-
->> So remove the optimisation for system calls, and always save NVGPRs on
->> entry. Modern high performance CPUs are not so sensitive, because the
->> stores are dense in cache and can be hidden by other expensive work in
->> the syscall path -- the null syscall selftests benchmark on POWER9 is
->> not slowed (124.40ns before and 123.64ns after, i.e., within the noise).
+> Better:
 >=20
-> I did the test on PPC32:
->=20
-> On an 885, null_syscall reports 2227ns (132MHz)
-> If saving non-volatile regs, it goes to 2419, ie +8.6%
->=20
-> On an 8321, null_syscall reports 1021ns (333MHz)
-> If saving non-volatile regs, it goes to 1100, ie +7.7%
->=20
-> So unless going to C compensates this degradation, I guess it is not=20
-> worth it on PPC32.
+> 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) &&=20
+> mmu_has_feature(MMU_FTR_RADIX_KUAP))
 
-Yeah that's unfortunate. It is a good optimization for small cores.
+That is better.
 
-I doubt going to C would help for PPC32, probably be even slower.
-
+>> +		WARN_ON_ONCE(mfspr(SPRN_AMR) !=3D AMR_KUAP_BLOCKED);
+>> +#endif
+>> +}
 >>  =20
->> -/* Save non-volatile GPRs, if not already saved. */
->> -_GLOBAL(save_nvgprs)
->> -	ld	r11,_TRAP(r1)
->> -	andi.	r0,r11,1
->> -	beqlr-
->> -	SAVE_NVGPRS(r1)
->> -	clrrdi	r0,r11,1
->> -	std	r0,_TRAP(r1)
->> -	blr
->> -_ASM_NOKPROBE_SYMBOL(save_nvgprs);
+>>   /*
+>>    * We support individually allowing read or write, but we don't suppor=
+t nesting
+>> diff --git a/arch/powerpc/include/asm/cputime.h b/arch/powerpc/include/a=
+sm/cputime.h
+>> index 2431b4ada2fa..f3aa9db1a3cc 100644
+>> --- a/arch/powerpc/include/asm/cputime.h
+>> +++ b/arch/powerpc/include/asm/cputime.h
+>> @@ -60,6 +60,28 @@ static inline void arch_vtime_task_switch(struct task=
+_struct *prev)
+>>   }
+>>   #endif
+>>  =20
+>> +static inline void account_cpu_user_entry(void)
+>> +{
+>> +	unsigned long tb =3D mftb();
+>> +
+>> +	get_accounting(current)->utime +=3D (tb - get_accounting(current)->sta=
+rttime_user);
+>> +	get_accounting(current)->starttime =3D tb;
+>> +}
 >=20
-> I see it is added back somewhere below. Why don't you leave it where it i=
-s ?
+> Can you check the generated assembly ? I remember having bad result with=20
+> get_accouting() being used several times in a arch_vtime_task_switch()=20
+> before commit 	60f1d2893ee6 ("powerpc/time: inline=20
+> arch_vtime_task_switch()")
 
-No longer used by syscalls so I it out from between other syscall=20
-related code to improve icache.
+It's fine on 64s but it's accounting is a constant offset from r13 so
+simple load/store can be done.
+
+> Regardless, I think it would look better as:
+>=20
+> static inline void account_cpu_user_entry(void)
+> {
+> 	unsigned long tb =3D mftb();
+> 	struct cpu_accounting_data *acct =3D get_accounting(current);
+>=20
+> 	acct->utime +=3D (tb - acct->starttime_user);
+> 	acct->starttime =3D tb;
+> }
+
+Yeah that's nicer.
+
+>=20
+>> +static inline void account_cpu_user_exit(void)
+>> +{
+>> +	unsigned long tb =3D mftb();
+>> +
+>> +	get_accounting(current)->stime +=3D (tb - get_accounting(current)->sta=
+rttime);
+>> +	get_accounting(current)->starttime_user =3D tb;
+>> +}
+>=20
+> Same here.
+
+Will do.
 
 Thanks,
 Nick
+
 =
