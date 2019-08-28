@@ -1,52 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240829FF2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 12:10:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABA39FFFA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 12:33:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JM1S1L5jzDr1K
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 20:10:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JMX83b21zDr8r
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2019 20:33:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JLyr10d6zDqjY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 20:07:46 +1000 (AEST)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2019 03:07:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,440,1559545200"; d="scan'208";a="210115035"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by fmsmga002.fm.intel.com with ESMTP; 28 Aug 2019 03:07:40 -0700
-Received: from andy by smile with local (Exim 4.92.1)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1i2urb-0006RD-2L; Wed, 28 Aug 2019 13:07:39 +0300
-Date: Wed, 28 Aug 2019 13:07:39 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v1 2/2] PCI/AER: Update parameter descriptions to satisfy
- kernel-doc validator
-Message-ID: <20190828100739.GJ2680@smile.fi.intel.com>
-References: <20190827151823.75312-1-andriy.shevchenko@linux.intel.com>
- <20190827151823.75312-2-andriy.shevchenko@linux.intel.com>
- <71eb8108-61a7-2815-4082-75c21f8bbf03@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JMTJ6bP3zDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2019 20:30:43 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 4298BAFBE;
+ Wed, 28 Aug 2019 10:30:39 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 0/4] Disable compat cruft on ppc64le v2
+Date: Wed, 28 Aug 2019 12:30:25 +0200
+Message-Id: <cover.1566987936.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <71eb8108-61a7-2815-4082-75c21f8bbf03@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,35 +43,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: David Hildenbrand <david@redhat.com>, "Dmitry V. Levin" <ldv@altlinux.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Firoz Khan <firoz.khan@linaro.org>, Hari Bathini <hbathini@linux.ibm.com>,
+ Michal Suchanek <msuchanek@suse.de>, Joel Stanley <joel@jms.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 27, 2019 at 10:06:54AM -0700, Kuppuswamy Sathyanarayanan wrote:
-> 
-> On 8/27/19 8:18 AM, Andy Shevchenko wrote:
-> > Kernel-doc validator complains:
-> > 
-> > aer.c:207: warning: Function parameter or member 'str' not described in 'pcie_ecrc_get_policy'
-> > aer.c:1209: warning: Function parameter or member 'irq' not described in 'aer_isr'
-> > aer.c:1209: warning: Function parameter or member 'context' not described in 'aer_isr'
-> > aer.c:1209: warning: Excess function parameter 'work' description in 'aer_isr'
-> > 
-> > Fix the above accordingly.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+With endian switch disabled by default the ppc64le compat supports
+ppc32le only which is something next to nobody has binaries for.
 
-> Reviewed-by: Kuppuswamy Sathyanarayanan
-> <sathyanarayanan.kuppuswamy@linux.intel.com>
+Less code means less bugs so drop the compat stuff.
 
-Thanks!
-JFYI: Keep your tag on one line. Some bots require this IIRC (patchwork).
+I am not particularly sure about the best way to resolve the llseek
+situation. I don't see anything in the syscal tables making it
+32bit-only so I suppose it should be available on 64bit as well.
+
+This is tested on ppc64le top of
+
+https://patchwork.ozlabs.org/cover/1153556/
+
+Changes in v2: saner CONFIG_COMPAT ifdefs
+
+Thanks
+
+Michal
+
+Michal Suchanek (4):
+  fs: always build llseek.
+  powerpc: move common register copy functions from signal_32.c to
+    signal.c
+  powerpc/64: make buildable without CONFIG_COMPAT
+  powerpc/64: Disable COMPAT if littleendian.
+
+ arch/powerpc/Kconfig               |   2 +-
+ arch/powerpc/include/asm/syscall.h |   2 +
+ arch/powerpc/kernel/Makefile       |  15 ++-
+ arch/powerpc/kernel/entry_64.S     |   2 +
+ arch/powerpc/kernel/signal.c       | 146 ++++++++++++++++++++++++++++-
+ arch/powerpc/kernel/signal_32.c    | 140 ---------------------------
+ arch/powerpc/kernel/syscall_64.c   |   5 +-
+ arch/powerpc/kernel/vdso.c         |   4 +-
+ arch/powerpc/perf/callchain.c      |  14 ++-
+ fs/read_write.c                    |   2 -
+ 10 files changed, 177 insertions(+), 155 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.22.0
 
