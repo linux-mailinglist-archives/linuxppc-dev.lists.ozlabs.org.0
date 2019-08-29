@@ -2,38 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E38A151B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 11:44:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED75A155B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 12:04:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JyNy5DC0zDqM4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 19:44:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Jyr40QSczDr15
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:04:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JyM50f59zDrNk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 19:42:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46JyM35CvPz9s4Y;
- Thu, 29 Aug 2019 19:42:23 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] powerpc: use the generic dma coherent remap allocator
-In-Reply-To: <20190828142546.GA29960@lst.de>
-References: <20190814132230.31874-1-hch@lst.de>
- <20190814132230.31874-2-hch@lst.de> <20190828061023.GB21592@lst.de>
- <87blw9v2ge.fsf@mpe.ellerman.id.au> <20190828142546.GA29960@lst.de>
-Date: Thu, 29 Aug 2019 19:42:15 +1000
-Message-ID: <87zhjstiiw.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Jynt69hGzDrRP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 20:02:09 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id A15BDB654;
+ Thu, 29 Aug 2019 10:02:05 +0000 (UTC)
+Date: Thu, 29 Aug 2019 12:01:45 +0200
+From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH v3 3/4] powerpc/64: make buildable without CONFIG_COMPAT
+Message-ID: <20190829120145.5201174f@naga>
+In-Reply-To: <20190829064624.GA28508@infradead.org>
+References: <cover.1567007242.git.msuchanek@suse.de>
+ <0ad51b41aebf65b3f3fcb9922f0f00b47932725d.1567007242.git.msuchanek@suse.de>
+ <20190829064624.GA28508@infradead.org>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,31 +48,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: Michael Neuling <mikey@neuling.org>, Allison Randal <allison@lohutok.net>,
+ Arnd Bergmann <arnd@arndb.de>, Nicolai Stange <nstange@suse.de>,
+ David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Brauner <christian@brauner.io>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Breno Leitao <leitao@debian.org>, Firoz Khan <firoz.khan@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christoph Hellwig <hch@lst.de> writes:
-> On Wed, Aug 28, 2019 at 11:34:09PM +1000, Michael Ellerman wrote:
->> Christoph Hellwig <hch@lst.de> writes:
->> > Michael,
->> >
->> > do oyu plan to pick this up?  Otherwise I'd love to pick it up through
->> > the dma-mapping tree as that would avoid one trivial conflict with
->> > another pending patch.
->> 
->> It conflicts a bit with the ioremap changes I already have in next.
->> 
->> And it would be good for it to get some testing on my machines here. So
->> I guess I'd rather it went via the powerpc tree?
->
-> Sure, feel free to queue it up through the ppc tree.  I am about to
-> queue up a patch to move the dma_atomic_pool_init call to common code,
-> so as linux-next / Linus fixup we'll have to eventually remove
-> atomic_pool_init() again.
+On Wed, 28 Aug 2019 23:46:24 -0700
+Christoph Hellwig <hch@infradead.org> wrote:
 
-OK.
+> On Wed, Aug 28, 2019 at 06:43:50PM +0200, Michal Suchanek wrote:
+> > +ifdef CONFIG_COMPAT
+> > +obj-y				+= sys_ppc32.o ptrace32.o signal_32.o
+> > +endif  
+> 
+> This should be:
+> 
+> obj-$(CONFIG_COMPAT)		+= sys_ppc32.o ptrace32.o signal_32.o
 
-cheers
+Yes, looks better.
+> 
+> >  /* This value is used to mark exception frames on the stack. */
+> >  exception_marker:
+> > diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+> > index 60436432399f..73d0f53ffc1a 100644
+> > --- a/arch/powerpc/kernel/signal.c
+> > +++ b/arch/powerpc/kernel/signal.c
+> > @@ -277,7 +277,7 @@ static void do_signal(struct task_struct *tsk)
+> >  
+> >  	rseq_signal_deliver(&ksig, tsk->thread.regs);
+> >  
+> > -	if (is32) {
+> > +	if ((IS_ENABLED(CONFIG_PPC32) || IS_ENABLED(CONFIG_COMPAT)) && is32) {  
+> 
+> I think we should fix the is_32bit_task definitions instead so that
+> callers don't need this mess.  
+
+Yes, that makes sense.
+
+Thanks
+
+Michal
