@@ -1,80 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C67A1149
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 07:59:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA769A11B9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 08:26:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JsPt3V0XzDrVY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 15:59:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Jt0t1MxGzDr7C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 16:26:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+c7f673d4bdabd04d2ac5+5849+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com;
- envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="O9yzkvqP"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JsDL1HsyzDrCl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 15:51:13 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7T5mTPm164374
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:51:12 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2umnmwskfn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:51:00 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Thu, 29 Aug 2019 06:50:52 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 29 Aug 2019 06:50:49 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x7T5oQrT38601044
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Aug 2019 05:50:26 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8F9242049;
- Thu, 29 Aug 2019 05:50:48 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AD7242041;
- Thu, 29 Aug 2019 05:50:47 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.204.205.139])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 29 Aug 2019 05:50:46 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 4/4] powerpc/numa: Remove late request for home node
- associativity
-Date: Thu, 29 Aug 2019 11:20:23 +0530
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190829055023.6171-1-srikar@linux.vnet.ibm.com>
-References: <20190829055023.6171-1-srikar@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19082905-0012-0000-0000-000003442104
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082905-0013-0000-0000-0000217E5FF8
-Message-Id: <20190829055023.6171-5-srikar@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-29_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908290063
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Jsyg2QX6zDqnD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 16:24:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
+ :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=3JI7QotK2O20Md1eCkQSEHO4eOFyIfeK4uIFkYS8zQI=; b=O9yzkvqP60gDvRWGFRg1iYPukL
+ DTswgHAsoTTZs2abhMX4SVtYr5V06YCD343I+LjhwegBYsWC4iVvh7ge3kMySB4w+A2ewqZUXiF9p
+ +TaW+scgxAa5FgCPV966HbQ35APontkN4YwUN2EURzO/b9p7iGSwnnq3c6SCY4wNQ9dyFoNB12wHo
+ Pjm2/Rcj16CLyuxOj5iM0Tisd9jGabkJTTv/fH7eRyrjrdkCsERr799lY5yoztovwNxNFWAK4aLxq
+ UGqkACxUkTTp/w/6SL1AOZpncM/xnUVNP5VW5JZjTBxPCHbava+C3BdaLHIrBj1RIfDxkQRecRD8n
+ MLKb2Vqg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1i3Dom-0002AM-IS; Thu, 29 Aug 2019 06:22:00 +0000
+Date: Wed, 28 Aug 2019 23:22:00 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Subject: Re: [PATCH 1/4] fs: always build llseek.
+Message-ID: <20190829062200.GA3047@infradead.org>
+References: <cover.1566936688.git.msuchanek@suse.de>
+ <80b1955b86fb81e4642881d498068b5a540ef029.1566936688.git.msuchanek@suse.de>
+ <20190828151552.GA16855@infradead.org>
+ <20190828181540.21fa33a4@naga>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190828181540.21fa33a4@naga>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,93 +68,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, "Dmitry V. Levin" <ldv@altlinux.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Christoph Hellwig <hch@infradead.org>, Firoz Khan <firoz.khan@linaro.org>,
+ Allison Randal <allison@lohutok.net>, Joel Stanley <joel@jms.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With commit ("powerpc/numa: Early request for home node associativity"),
-commit 2ea626306810 ("powerpc/topology: Get topology for shared
-processors at boot") which was requesting home node associativity
-becomes redundant.
+On Wed, Aug 28, 2019 at 06:15:40PM +0200, Michal Suchánek wrote:
+> On Wed, 28 Aug 2019 08:15:52 -0700
+> Christoph Hellwig <hch@infradead.org> wrote:
+> 
+> > On Tue, Aug 27, 2019 at 10:21:06PM +0200, Michal Suchanek wrote:
+> > > 64bit !COMPAT does not build because the llseek syscall is in the tables.  
+> > 
+> > Well, this will bloat thinkgs like 64-bit RISC-V for no good reason.
+> > Please introduce a WANT_LSEEK like symbol that ppc64 can select instead.
+> 
+> It also builds when llseek is marked as 32bit only in syscall.tbl
+> 
+> It seems it was handled specially in some way before syscall.tbl was
+> added, though (removed in ab66dcc76d6ab8fae9d69d149ae38c42605e7fc5)
 
-Hence remove the late request for home node associativity.
-
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
----
- arch/powerpc/include/asm/topology.h | 4 ----
- arch/powerpc/kernel/smp.c           | 5 -----
- arch/powerpc/mm/numa.c              | 9 ---------
- 3 files changed, 18 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-index 2f7e1ea..9bd396f 100644
---- a/arch/powerpc/include/asm/topology.h
-+++ b/arch/powerpc/include/asm/topology.h
-@@ -98,7 +98,6 @@ static inline int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
- extern int prrn_is_enabled(void);
- extern int find_and_online_cpu_nid(int cpu);
- extern int timed_topology_update(int nsecs);
--extern void __init shared_proc_topology_init(void);
- #else
- static inline int start_topology_update(void)
- {
-@@ -121,9 +120,6 @@ static inline int timed_topology_update(int nsecs)
- 	return 0;
- }
- 
--#ifdef CONFIG_SMP
--static inline void shared_proc_topology_init(void) {}
--#endif
- #endif /* CONFIG_NUMA && CONFIG_PPC_SPLPAR */
- 
- #include <asm-generic/topology.h>
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index ea6adbf..cdd39a0 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1359,11 +1359,6 @@ void __init smp_cpus_done(unsigned int max_cpus)
- 	if (smp_ops && smp_ops->bringup_done)
- 		smp_ops->bringup_done();
- 
--	/*
--	 * On a shared LPAR, associativity needs to be requested.
--	 * Hence, get numa topology before dumping cpu topology
--	 */
--	shared_proc_topology_init();
- 	dump_numa_cpu_topology();
- 
- #ifdef CONFIG_SCHED_SMT
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index de4a1a1..a20617a 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -1608,15 +1608,6 @@ int prrn_is_enabled(void)
- 	return prrn_enabled;
- }
- 
--void __init shared_proc_topology_init(void)
--{
--	if (lppaca_shared_proc(get_lppaca())) {
--		bitmap_fill(cpumask_bits(&cpu_associativity_changes_mask),
--			    nr_cpumask_bits);
--		numa_update_cpu_topology(false);
--	}
--}
--
- static int topology_read(struct seq_file *file, void *v)
- {
- 	if (vphn_enabled || prrn_enabled)
--- 
-1.8.3.1
-
+Independ of if you need it on a purely 64-bit build on powerpc (which
+I'll let the experts figure out) it is not needed on a purely 64-bit
+build on other platforms.  So please make sure it is still built
+conditional, just possibly with an opt-in for powerpc.
