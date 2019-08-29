@@ -2,41 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDB4A268D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B21D9A2766
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 21:41:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KBhF63T6zDrfM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 04:58:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KCfL0VT4zDsFc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 05:41:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sukadev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KBf65mDDzDrby
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 04:56:12 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id B20A6ABBD;
- Thu, 29 Aug 2019 18:56:08 +0000 (UTC)
-Date: Thu, 29 Aug 2019 20:56:05 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v4 3/4] powerpc/64: make buildable without CONFIG_COMPAT
-Message-ID: <20190829205605.25c72774@naga>
-In-Reply-To: <45bdadce-5b44-c941-14f7-240b0be41a7b@c-s.fr>
-References: <cover.1567072270.git.msuchanek@suse.de>
- <a829dfabed8285161fcdff166d58c7e8f0f6d402.1567072270.git.msuchanek@suse.de>
- <45bdadce-5b44-c941-14f7-240b0be41a7b@c-s.fr>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KCbx0KrKzDrj2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 05:39:23 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7TJcjEi100708; Thu, 29 Aug 2019 15:39:16 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2upj1rpu87-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 29 Aug 2019 15:39:16 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7TJcrPB101516;
+ Thu, 29 Aug 2019 15:39:16 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2upj1rpu7s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 29 Aug 2019 15:39:15 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7TJZGkc030351;
+ Thu, 29 Aug 2019 19:39:14 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma02wdc.us.ibm.com with ESMTP id 2ujvv6x92t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 29 Aug 2019 19:39:14 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7TJdDl250266478
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Aug 2019 19:39:13 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE7F5C605A;
+ Thu, 29 Aug 2019 19:39:13 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76FCCC6055;
+ Thu, 29 Aug 2019 19:39:13 +0000 (GMT)
+Received: from suka-w540.localdomain (unknown [9.70.94.45])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 29 Aug 2019 19:39:13 +0000 (GMT)
+Received: by suka-w540.localdomain (Postfix, from userid 1000)
+ id D39762E10DA; Thu, 29 Aug 2019 12:39:11 -0700 (PDT)
+Date: Thu, 29 Aug 2019 12:39:11 -0700
+From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v7 1/7] kvmppc: Driver to manage pages of secure guest
+Message-ID: <20190829193911.GA26729@us.ibm.com>
+References: <20190822102620.21897-1-bharata@linux.ibm.com>
+ <20190822102620.21897-2-bharata@linux.ibm.com>
+ <20190829030219.GA17497@us.ibm.com>
+ <20190829065642.GA31913@in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190829065642.GA31913@in.ibm.com>
+X-Operating-System: Linux 2.0.32 on an i486
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-29_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908290195
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,295 +96,482 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, Arnd Bergmann <arnd@arndb.de>,
- Nicolai Stange <nstange@suse.de>, David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Joel Stanley <joel@jms.id.au>, Christian Brauner <christian@brauner.io>,
- Firoz Khan <firoz.khan@linaro.org>, Breno Leitao <leitao@debian.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Allison Randal <allison@lohutok.net>, "Eric W.
- Biederman" <ebiederm@xmission.com>
+Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
+ paulus@au1.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 29 Aug 2019 19:40:55 +0200
-Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+Bharata B Rao [bharata@linux.ibm.com] wrote:
+> On Wed, Aug 28, 2019 at 08:02:19PM -0700, Sukadev Bhattiprolu wrote:
+> > Some minor comments/questions below. Overall, the patches look
+> > fine to me.
+> > 
+> > > +#include <linux/pagemap.h>
+> > > +#include <linux/migrate.h>
+> > > +#include <linux/kvm_host.h>
+> > > +#include <asm/ultravisor.h>
+> > > +
+> > > +static struct dev_pagemap kvmppc_devm_pgmap;
+> > > +static unsigned long *kvmppc_devm_pfn_bitmap;
+> > > +static DEFINE_SPINLOCK(kvmppc_devm_pfn_lock);
+> > 
+> > Is this lock protecting just the pfn_bitmap?
+> 
+> Yes.
+> 
+> > 
+> > > +
+> > > +struct kvmppc_devm_page_pvt {
+> > > +	unsigned long *rmap;
+> > > +	unsigned int lpid;
+> > > +	unsigned long gpa;
+> > > +};
+> > > +
+> > > +/*
+> > > + * Get a free device PFN from the pool
+> > > + *
+> > > + * Called when a normal page is moved to secure memory (UV_PAGE_IN). Device
+> > > + * PFN will be used to keep track of the secure page on HV side.
+> > > + *
+> > > + * @rmap here is the slot in the rmap array that corresponds to @gpa.
+> > > + * Thus a non-zero rmap entry indicates that the corresponding guest
+> > > + * page has become secure, and is not mapped on the HV side.
+> > > + *
+> > > + * NOTE: In this and subsequent functions, we pass around and access
+> > > + * individual elements of kvm_memory_slot->arch.rmap[] without any
+> > > + * protection. Should we use lock_rmap() here?
 
-> Le 29/08/2019 =C3=A0 12:23, Michal Suchanek a =C3=A9crit=C2=A0:
-> > There are numerous references to 32bit functions in generic and 64bit
-> > code so ifdef them out.
-> >=20
-> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > ---
-> > v2:
-> > - fix 32bit ifdef condition in signal.c
-> > - simplify the compat ifdef condition in vdso.c - 64bit is redundant
-> > - simplify the compat ifdef condition in callchain.c - 64bit is redunda=
-nt
-> > v3:
-> > - use IS_ENABLED and maybe_unused where possible
-> > - do not ifdef declarations
-> > - clean up Makefile
-> > v4:
-> > - further makefile cleanup
-> > - simplify is_32bit_task conditions
-> > - avoid ifdef in condition by using return
-> > ---
-> >   arch/powerpc/include/asm/thread_info.h |  4 ++--
-> >   arch/powerpc/kernel/Makefile           |  7 +++----
-> >   arch/powerpc/kernel/entry_64.S         |  2 ++
-> >   arch/powerpc/kernel/signal.c           |  3 +--
-> >   arch/powerpc/kernel/syscall_64.c       |  6 ++----
-> >   arch/powerpc/kernel/vdso.c             |  5 ++---
-> >   arch/powerpc/perf/callchain.c          | 14 ++++++++++----
-> >   7 files changed, 22 insertions(+), 19 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/incl=
-ude/asm/thread_info.h
-> > index 8e1d0195ac36..c128d8a48ea3 100644
-> > --- a/arch/powerpc/include/asm/thread_info.h
-> > +++ b/arch/powerpc/include/asm/thread_info.h
-> > @@ -144,10 +144,10 @@ static inline bool test_thread_local_flags(unsign=
-ed int flags)
-> >   	return (ti->local_flags & flags) !=3D 0;
-> >   }
-> >  =20
-> > -#ifdef CONFIG_PPC64
-> > +#ifdef CONFIG_COMPAT
-> >   #define is_32bit_task()	(test_thread_flag(TIF_32BIT))
-> >   #else
-> > -#define is_32bit_task()	(1)
-> > +#define is_32bit_task()	(IS_ENABLED(CONFIG_PPC32))
-> >   #endif
-> >  =20
-> >   #if defined(CONFIG_PPC64)
-> > diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> > index 1d646a94d96c..9d8772e863b9 100644
-> > --- a/arch/powerpc/kernel/Makefile
-> > +++ b/arch/powerpc/kernel/Makefile
-> > @@ -44,16 +44,15 @@ CFLAGS_btext.o +=3D -DDISABLE_BRANCH_PROFILING
-> >   endif
-> >  =20
-> >   obj-y				:=3D cputable.o ptrace.o syscalls.o \
-> > -				   irq.o align.o signal_32.o pmc.o vdso.o \
-> > +				   irq.o align.o signal_$(BITS).o pmc.o vdso.o \
-> >   				   process.o systbl.o idle.o \
-> >   				   signal.o sysfs.o cacheinfo.o time.o \
-> >   				   prom.o traps.o setup-common.o \
-> >   				   udbg.o misc.o io.o misc_$(BITS).o \
-> >   				   of_platform.o prom_parse.o
-> > -obj-$(CONFIG_PPC64)		+=3D setup_64.o sys_ppc32.o \
-> > -				   signal_64.o ptrace32.o \
-> > -				   paca.o nvram_64.o firmware.o \
-> > +obj-$(CONFIG_PPC64)		+=3D setup_64.o paca.o nvram_64.o firmware.o \
-> >   				   syscall_64.o
-> > +obj-$(CONFIG_COMPAT)		+=3D sys_ppc32.o ptrace32.o signal_32.o
-> >   obj-$(CONFIG_VDSO32)		+=3D vdso32/
-> >   obj-$(CONFIG_PPC_WATCHDOG)	+=3D watchdog.o
-> >   obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+=3D hw_breakpoint.o
-> > diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry=
-_64.S
-> > index 2ec825a85f5b..a2dbf216f607 100644
-> > --- a/arch/powerpc/kernel/entry_64.S
-> > +++ b/arch/powerpc/kernel/entry_64.S
-> > @@ -51,8 +51,10 @@
-> >   SYS_CALL_TABLE:
-> >   	.tc sys_call_table[TC],sys_call_table
-> >  =20
-> > +#ifdef CONFIG_COMPAT
-> >   COMPAT_SYS_CALL_TABLE:
-> >   	.tc compat_sys_call_table[TC],compat_sys_call_table
-> > +#endif
-> >  =20
-> >   /* This value is used to mark exception frames on the stack. */
-> >   exception_marker:
-> > diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-> > index 60436432399f..61678cb0e6a1 100644
-> > --- a/arch/powerpc/kernel/signal.c
-> > +++ b/arch/powerpc/kernel/signal.c
-> > @@ -247,7 +247,6 @@ static void do_signal(struct task_struct *tsk)
-> >   	sigset_t *oldset =3D sigmask_to_save();
-> >   	struct ksignal ksig =3D { .sig =3D 0 };
-> >   	int ret;
-> > -	int is32 =3D is_32bit_task();
-> >  =20
-> >   	BUG_ON(tsk !=3D current);
-> >  =20
-> > @@ -277,7 +276,7 @@ static void do_signal(struct task_struct *tsk)
-> >  =20
-> >   	rseq_signal_deliver(&ksig, tsk->thread.regs);
-> >  =20
-> > -	if (is32) {
-> > +	if (is_32bit_task()) {
-> >           	if (ksig.ka.sa.sa_flags & SA_SIGINFO)
-> >   			ret =3D handle_rt_signal32(&ksig, oldset, tsk);
-> >   		else
-> > diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/sys=
-call_64.c
-> > index 98ed970796d5..0d5cbbe54cf1 100644
-> > --- a/arch/powerpc/kernel/syscall_64.c
-> > +++ b/arch/powerpc/kernel/syscall_64.c
-> > @@ -38,7 +38,6 @@ typedef long (*syscall_fn)(long, long, long, long, lo=
-ng, long);
-> >  =20
-> >   long system_call_exception(long r3, long r4, long r5, long r6, long r=
-7, long r8, unsigned long r0, struct pt_regs *regs)
-> >   {
-> > -	unsigned long ti_flags;
-> >   	syscall_fn f;
-> >  =20
-> >   	BUG_ON(!(regs->msr & MSR_PR));
-> > @@ -83,8 +82,7 @@ long system_call_exception(long r3, long r4, long r5,=
- long r6, long r7, long r8,
-> >   	 */
-> >   	regs->softe =3D IRQS_ENABLED;
-> >  =20
-> > -	ti_flags =3D current_thread_info()->flags;
-> > -	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
-> > +	if (unlikely(current_thread_info()->flags & _TIF_SYSCALL_DOTRACE)) {
-> >   		/*
-> >   		 * We use the return value of do_syscall_trace_enter() as the
-> >   		 * syscall number. If the syscall was rejected for any reason
-> > @@ -100,7 +98,7 @@ long system_call_exception(long r3, long r4, long r5=
-, long r6, long r7, long r8,
-> >   	/* May be faster to do array_index_nospec? */
-> >   	barrier_nospec();
-> >  =20
-> > -	if (unlikely(ti_flags & _TIF_32BIT)) {
-> > +	if (unlikely(is_32bit_task())) {
-> >   		f =3D (void *)compat_sys_call_table[r0];
-> >  =20
-> >   		r3 &=3D 0x00000000ffffffffULL;
-> > diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
-> > index d60598113a9f..6d4a077f74d6 100644
-> > --- a/arch/powerpc/kernel/vdso.c
-> > +++ b/arch/powerpc/kernel/vdso.c
-> > @@ -667,9 +667,7 @@ static void __init vdso_setup_syscall_map(void)
-> >   {
-> >   	unsigned int i;
-> >   	extern unsigned long *sys_call_table;
-> > -#ifdef CONFIG_PPC64
-> >   	extern unsigned long *compat_sys_call_table;
-> > -#endif
-> >   	extern unsigned long sys_ni_syscall;
-> >  =20
-> >  =20
-> > @@ -678,7 +676,8 @@ static void __init vdso_setup_syscall_map(void)
-> >   		if (sys_call_table[i] !=3D sys_ni_syscall)
-> >   			vdso_data->syscall_map_64[i >> 5] |=3D
-> >   				0x80000000UL >> (i & 0x1f);
-> > -		if (compat_sys_call_table[i] !=3D sys_ni_syscall)
-> > +		if (IS_ENABLED(CONFIG_COMPAT) &&
-> > +		    compat_sys_call_table[i] !=3D sys_ni_syscall)
-> >   			vdso_data->syscall_map_32[i >> 5] |=3D
-> >   				0x80000000UL >> (i & 0x1f);
-> >   #else /* CONFIG_PPC64 */
-> > diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchai=
-n.c
-> > index c84bbd4298a0..aef8c750d242 100644
-> > --- a/arch/powerpc/perf/callchain.c
-> > +++ b/arch/powerpc/perf/callchain.c
-> > @@ -15,7 +15,7 @@
-> >   #include <asm/sigcontext.h>
-> >   #include <asm/ucontext.h>
-> >   #include <asm/vdso.h>
-> > -#ifdef CONFIG_PPC64
-> > +#ifdef CONFIG_COMPAT =20
->=20
-> Is this ifdef needed at all ? Is it a problem to include it all the time ?
+Where do we serialize two threads attempting to H_SVM_PAGE_IN the same gfn
+at the same time? Or one thread issuing a H_SVM_PAGE_IN and another a
+H_SVM_PAGE_OUT for the same page?
 
-Yes, it is a problem. Some 32bit structures are not defined giving an
-error.
+> > > + */
+> > > +static struct page *kvmppc_devm_get_page(unsigned long *rmap, unsigned long gpa,
+> > > +					 unsigned int lpid)
+> > > +{
+> > > +	struct page *dpage = NULL;
+> > > +	unsigned long bit, devm_pfn;
+> > > +	unsigned long flags;
+> > > +	struct kvmppc_devm_page_pvt *pvt;
+> > > +	unsigned long pfn_last, pfn_first;
+> > > +
+> > > +	if (kvmppc_rmap_is_devm_pfn(*rmap))
+> > > +		return NULL;
+> > > +
+> > > +	pfn_first = kvmppc_devm_pgmap.res.start >> PAGE_SHIFT;
+> > > +	pfn_last = pfn_first +
+> > > +		   (resource_size(&kvmppc_devm_pgmap.res) >> PAGE_SHIFT);
+> > > +	spin_lock_irqsave(&kvmppc_devm_pfn_lock, flags);
+> > 
+> > Blank lines around spin_lock() would help.
+> 
+> You mean blank line before lock and after unlock to clearly see
+> where the lock starts and ends?
+> 
+> > 
+> > > +	bit = find_first_zero_bit(kvmppc_devm_pfn_bitmap, pfn_last - pfn_first);
+> > > +	if (bit >= (pfn_last - pfn_first))
+> > > +		goto out;
+> > > +
+> > > +	bitmap_set(kvmppc_devm_pfn_bitmap, bit, 1);
+> > > +	devm_pfn = bit + pfn_first;
+> > 
+> > Can we drop the &kvmppc_devm_pfn_lock here or after the trylock_page()?
+> > Or does it also protect the ->zone_device_data' assignment below as well?
+> > If so, maybe drop the 'pfn_' from the name of the lock?
+> > 
+> > Besides, we don't seem to hold this lock when accessing ->zone_device_data
+> > in kvmppc_share_page(). Maybe &kvmppc_devm_pfn_lock just protects the bitmap?
+> 
+> Will move the unlock to appropriately.
+> 
+> > 
+> > 
+> > > +	dpage = pfn_to_page(devm_pfn);
+> > 
+> > Does this code and hence CONFIG_PPC_UV depend on a specific model like
+> > CONFIG_SPARSEMEM_VMEMMAP?
+> 
+> I don't think so. Irrespective of that pfn_to_page() should just work
+> for us.
+> 
+> > > +
+> > > +	if (!trylock_page(dpage))
+> > > +		goto out_clear;
+> > > +
+> > > +	*rmap = devm_pfn | KVMPPC_RMAP_DEVM_PFN;
+> > > +	pvt = kzalloc(sizeof(*pvt), GFP_ATOMIC);
+> > > +	if (!pvt)
+> > > +		goto out_unlock;
 
->=20
-> >   #include "../kernel/ppc32.h"
-> >   #endif
-> >   #include <asm/pte-walk.h>
-> > @@ -165,6 +165,7 @@ static int read_user_stack_64(unsigned long __user =
-*ptr, unsigned long *ret)
-> >   	return read_user_stack_slow(ptr, ret, 8);
-> >   }
-> >  =20
-> > +__maybe_unused =20
->=20
-> I don't like that too much. I see this function is almost identical=20
-> between PPC64 and PPC32. It should be possible to have only one, using=20
-> IS_ENABLED(CONFIG_PPC64) inside it to call read_user_stack_slow().
-> An define a dummy read_user_stack_slow() for PPC32 as already done for=20
-> perf_callchain_user_64().
+If we fail to alloc, we don't clear the KVMPPC_RMAP_DEVM_PFN?
 
-We need to #ifdef the block below anyway because it needs 32bit
-structures defined which aren't. So can add usage there.
+Also, when/where do we clear this flag on an uv-page-out?
+kvmppc_devm_drop_pages() drops the flag on a local variable but not
+in the rmap? If we don't clear the flag on page-out, would the
+subsequent H_SVM_PAGE_IN of this page fail?
 
->=20
-> >   static int read_user_stack_32(unsigned int __user *ptr, unsigned int =
-*ret)
-> >   {
-> >   	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
-> > @@ -341,6 +342,7 @@ static inline int valid_user_sp(unsigned long sp, i=
-nt is_64)
-> >  =20
-> >   #endif /* CONFIG_PPC64 */
-> >  =20
-> > +#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
-> >   /*
-> >    * Layout for non-RT signal frames
-> >    */
-> > @@ -482,12 +484,16 @@ static void perf_callchain_user_32(struct perf_ca=
-llchain_entry_ctx *entry,
-> >   		sp =3D next_sp;
-> >   	}
-> >   }
-> > +#endif /* 32bit */
-> >  =20
-> >   void
-> >   perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt=
-_regs *regs)
-> >   {
-> > -	if (current_is_64bit())
-> > -		perf_callchain_user_64(entry, regs);
-> > -	else
-> > +#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
-> > +	if (!current_is_64bit()) {
-> >   		perf_callchain_user_32(entry, regs);
-> > +		return;
-> > +	}
-> > +#endif
-> > +	perf_callchain_user_64(entry, regs);
-> >   }
-> >  =20
->=20
-> Instead of that it could just be:
->=20
-> 	if (current_is_64bit())
-> 		perf_callchain_user_64(entry, regs);
-> 	else
-> 		perf_callchain_user_32(entry, regs);
->=20
->=20
-> By adding a dummy perf_callchain_user_32() when needed as already done=20
-> for perf_callchain_user_64()
+> > > +	pvt->rmap = rmap;
+> > > +	pvt->gpa = gpa;
+> > > +	pvt->lpid = lpid;
+> > > +	dpage->zone_device_data = pvt;
+> > 
+> > ->zone_device_data is set after locking the dpage here, but in
+> > kvmppc_share_page() and kvmppc_devm_fault_migrate_alloc_and_copy()
+> > it is accessed without locking the page?
+> > 
+> > > +	spin_unlock_irqrestore(&kvmppc_devm_pfn_lock, flags);
+> > > +
+> > > +	get_page(dpage);
+> > > +	return dpage;
+> > > +
+> > > +out_unlock:
+> > > +	unlock_page(dpage);
+> > > +out_clear:
+> > > +	bitmap_clear(kvmppc_devm_pfn_bitmap, devm_pfn - pfn_first, 1);
+> > > +out:
+> > > +	spin_unlock_irqrestore(&kvmppc_devm_pfn_lock, flags);
+> > > +	return NULL;
+> > > +}
+> > > +
+> > > +/*
+> > > + * Alloc a PFN from private device memory pool and copy page from normal
+> > > + * memory to secure memory.
+> > > + */
+> > > +static int
+> > > +kvmppc_devm_migrate_alloc_and_copy(struct migrate_vma *mig,
+> > > +				   unsigned long *rmap, unsigned long gpa,
+> > > +				   unsigned int lpid, unsigned long page_shift)
+> > > +{
+> > > +	struct page *spage = migrate_pfn_to_page(*mig->src);
+> > > +	unsigned long pfn = *mig->src >> MIGRATE_PFN_SHIFT;
+> > > +	struct page *dpage;
+> > > +
+> > > +	*mig->dst = 0;
+> > > +	if (!spage || !(*mig->src & MIGRATE_PFN_MIGRATE))
+> > > +		return 0;
+> > > +
+> > > +	dpage = kvmppc_devm_get_page(rmap, gpa, lpid);
+> > > +	if (!dpage)
+> > > +		return -EINVAL;
+> > > +
+> > > +	if (spage)
+> > > +		uv_page_in(lpid, pfn << page_shift, gpa, 0, page_shift);
+> > > +
+> > > +	*mig->dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +/*
+> > > + * Move page from normal memory to secure memory.
+> > > + */
+> > > +unsigned long
+> > > +kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+> > > +		     unsigned long flags, unsigned long page_shift)
+> > > +{
+> > > +	unsigned long addr, end;
+> > > +	unsigned long src_pfn, dst_pfn;
+> > 
+> > These are the host frame numbers correct? Trying to distinguish them
+> > from 'gfn' and 'gpa' used in the function.
+> 
+> Yes host pfns.
+> 
+> > 
+> > > +	struct migrate_vma mig;
+> > > +	struct vm_area_struct *vma;
+> > > +	int srcu_idx;
+> > > +	unsigned long gfn = gpa >> page_shift;
+> > > +	struct kvm_memory_slot *slot;
+> > > +	unsigned long *rmap;
+> > > +	int ret;
+> > > +
+> > > +	if (page_shift != PAGE_SHIFT)
+> > > +		return H_P3;
+> > > +
+> > > +	if (flags)
+> > > +		return H_P2;
+> > > +
+> > > +	ret = H_PARAMETER;
+> > > +	down_read(&kvm->mm->mmap_sem);
+> > > +	srcu_idx = srcu_read_lock(&kvm->srcu);
+> > > +	slot = gfn_to_memslot(kvm, gfn);
+> > 
+> > Can slot be NULL? could be a bug in UV...
+> 
+> Will add a check to test this failure.
+> 
+> > 
+> > > +	rmap = &slot->arch.rmap[gfn - slot->base_gfn];
+> > > +	addr = gfn_to_hva(kvm, gpa >> page_shift);
+> > 
+> > Use 'gfn' as the second parameter? 
+> 
+> Yes.
+> 
+> > 
+> > Nit. for consistency with gpa and gfn, maybe rename 'addr' to
+> > 'hva' or to match 'end' maybe to 'start'.
+> 
+> Guess using hva improves readability, sure.
+> 
+> > 
+> > Also, can we check 'kvmppc_rmap_is_devm_pfn(*rmap)' here and bail out
+> > if its already shared? We currently do it further down the call chain
+> > in kvmppc_devm_get_page() after doing more work.
+> 
+> If the page is already shared, we just give the same back to UV if
+> UV indeed asks for it to be re-shared.
+> 
+> That said, I think we can have kvmppc_rmap_is_devm_pfn early in
+> regular page-in (non-shared case) path so that we don't even setup
+> anything required for migrate_vma_pages.
+> 
+> > 
+> > 
+> > > +	if (kvm_is_error_hva(addr))
+> > > +		goto out;
+> > > +
+> > > +	end = addr + (1UL << page_shift);
+> > > +	vma = find_vma_intersection(kvm->mm, addr, end);
+> > > +	if (!vma || vma->vm_start > addr || vma->vm_end < end)
+> > > +		goto out;
+> > > +
+> > > +	memset(&mig, 0, sizeof(mig));
+> > > +	mig.vma = vma;
+> > > +	mig.start = addr;
+> > > +	mig.end = end;
+> > > +	mig.src = &src_pfn;
+> > > +	mig.dst = &dst_pfn;
+> > > +
+> > > +	if (migrate_vma_setup(&mig))
+> > > +		goto out;
+> > > +
+> > > +	if (kvmppc_devm_migrate_alloc_and_copy(&mig, rmap, gpa,
+> > > +					       kvm->arch.lpid, page_shift))
+> > > +		goto out_finalize;
+> > > +
+> > > +	migrate_vma_pages(&mig);
+> > > +	ret = H_SUCCESS;
+> > > +out_finalize:
+> > > +	migrate_vma_finalize(&mig);
+> > > +out:
+> > > +	srcu_read_unlock(&kvm->srcu, srcu_idx);
+> > > +	up_read(&kvm->mm->mmap_sem);
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +/*
+> > > + * Provision a new page on HV side and copy over the contents
+> > > + * from secure memory.
+> > > + */
+> > > +static int
+> > > +kvmppc_devm_fault_migrate_alloc_and_copy(struct migrate_vma *mig,
+> > > +					 unsigned long page_shift)
+> > > +{
+> > > +	struct page *dpage, *spage;
+> > > +	struct kvmppc_devm_page_pvt *pvt;
+> > > +	unsigned long pfn;
+> > > +	int ret;
+> > > +
+> > > +	spage = migrate_pfn_to_page(*mig->src);
+> > > +	if (!spage || !(*mig->src & MIGRATE_PFN_MIGRATE))
+> > > +		return 0;
+> > > +	if (!is_zone_device_page(spage))
+> > > +		return 0;
+> > 
+> > What does it mean if its not a zone_device page at this point? Caller
+> > would then proceed to migrage_vma_pages() if we return 0 right?
+> 
+> kvmppc_devm_fault_migrate_alloc_and_copy() can be called from two paths:
+> 
+> 1. Fault path when HV touches the secure page. In this case the page
+> has to be a device page.
+> 
+> 2. When page-out is issued for a page that is already paged-in. In this
+> case also it has be a device page.
+> 
+> For both the above cases, that check is redundant.
+> 
+> There is a 3rd case which is possible. If UV ever issues a page-out
+> for a shared page, this check will result in page-out hcall silently
+> succeeding w/o doing any migration (as we don't populate the dst_pfn)
 
-and it can do a dummy use of the function above as well.
+Ok. Nit. thought we can drop the "_fault" in the function name but would
+collide the other "alloc_and_copy" function used during H_SVM_PAGE_IN.
+If the two alloc_and_copy functions are symmetric, maybe they could
+have "page_in" and "page_out" in the (already long) names.
 
-> And by making sure current_is_64bit() returns IS_ENABLED(CONFIG_PPC64)=20
-> when CONFIG_COMPAT is not set, on the same principle as you did for=20
-> is_32bit_task()
-Yes, that would make it constant for the !COMPAT cases.
->=20
-> And maybe you could think about spliting callchain.c out in a=20
-> callchain_32.c and a callchain_64.c that gets selected by the Makefiles=20
-> based on the same principle as you did for ptrace_32.c etc...
-
-I actually did not split those. Can look how splitting is done there
-and if it can be applied to the callchain situation.
-
-Thanks
-
-Michal
+> 
+> > 
+> > > +
+> > > +	dpage = alloc_page_vma(GFP_HIGHUSER, mig->vma, mig->start);
+> > > +	if (!dpage)
+> > > +		return -EINVAL;
+> > > +	lock_page(dpage);
+> > > +	pvt = spage->zone_device_data;
+> > > +
+> > > +	pfn = page_to_pfn(dpage);
+> > > +	ret = uv_page_out(pvt->lpid, pfn << page_shift, pvt->gpa, 0,
+> > > +			  page_shift);
+> > > +	if (ret == U_SUCCESS)
+> > > +		*mig->dst = migrate_pfn(pfn) | MIGRATE_PFN_LOCKED;
+> > > +	else {
+> > > +		unlock_page(dpage);
+> > > +		__free_page(dpage);
+> > > +	}
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +/*
+> > > + * Fault handler callback when HV touches any page that has been
+> > > + * moved to secure memory, we ask UV to give back the page by
+> > > + * issuing a UV_PAGE_OUT uvcall.
+> > > + *
+> > > + * This eventually results in dropping of device PFN and the newly
+> > > + * provisioned page/PFN gets populated in QEMU page tables.
+> > > + */
+> > > +static vm_fault_t kvmppc_devm_migrate_to_ram(struct vm_fault *vmf)
+> > > +{
+> > > +	unsigned long src_pfn, dst_pfn = 0;
+> > > +	struct migrate_vma mig;
+> > > +	int ret = 0;
+> > > +
+> > > +	memset(&mig, 0, sizeof(mig));
+> > > +	mig.vma = vmf->vma;
+> > > +	mig.start = vmf->address;
+> > > +	mig.end = vmf->address + PAGE_SIZE;
+> > > +	mig.src = &src_pfn;
+> > > +	mig.dst = &dst_pfn;
+> > > +
+> > > +	if (migrate_vma_setup(&mig)) {
+> > > +		ret = VM_FAULT_SIGBUS;
+> > > +		goto out;
+> > > +	}
+> > > +
+> > > +	if (kvmppc_devm_fault_migrate_alloc_and_copy(&mig, PAGE_SHIFT)) {
+> > > +		ret = VM_FAULT_SIGBUS;
+> > > +		goto out_finalize;
+> > > +	}
+> > > +
+> > > +	migrate_vma_pages(&mig);
+> > > +out_finalize:
+> > > +	migrate_vma_finalize(&mig);
+> > > +out:
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +/*
+> > > + * Release the device PFN back to the pool
+> > > + *
+> > > + * Gets called when secure page becomes a normal page during UV_PAGE_OUT.
+> > 
+> > Nit: Should that be H_SVM_PAGE_OUT?
+> 
+> Yes, will reword.
+> 
+> > 
+> > > + */
+> > > +static void kvmppc_devm_page_free(struct page *page)
+> > > +{
+> > > +	unsigned long pfn = page_to_pfn(page);
+> > > +	unsigned long flags;
+> > > +	struct kvmppc_devm_page_pvt *pvt;
+> > > +
+> > > +	spin_lock_irqsave(&kvmppc_devm_pfn_lock, flags);
+> > > +	pvt = page->zone_device_data;
+> > > +	page->zone_device_data = NULL;
+> > 
+> > If the pfn_lock only protects the bitmap, would be better to move
+> > it here?
+> 
+> Yes.
+> 
+> > 
+> > > +
+> > > +	bitmap_clear(kvmppc_devm_pfn_bitmap,
+> > > +		     pfn - (kvmppc_devm_pgmap.res.start >> PAGE_SHIFT), 1);
+> > > +	*pvt->rmap = 0;
+> > > +	spin_unlock_irqrestore(&kvmppc_devm_pfn_lock, flags);
+> > > +	kfree(pvt);
+> > > +}
+> > > +
+> > > +static const struct dev_pagemap_ops kvmppc_devm_ops = {
+> > > +	.page_free = kvmppc_devm_page_free,
+> > > +	.migrate_to_ram	= kvmppc_devm_migrate_to_ram,
+> > > +};
+> > > +
+> > > +/*
+> > > + * Move page from secure memory to normal memory.
+> > > + */
+> > > +unsigned long
+> > > +kvmppc_h_svm_page_out(struct kvm *kvm, unsigned long gpa,
+> > > +		      unsigned long flags, unsigned long page_shift)
+> > > +{
+> > > +	struct migrate_vma mig;
+> > > +	unsigned long addr, end;
+> > > +	struct vm_area_struct *vma;
+> > > +	unsigned long src_pfn, dst_pfn = 0;
+> > > +	int srcu_idx;
+> > > +	int ret;
+> > 
+> > Nit: Not sure its a coding style requirement, but many functions seem
+> > to "sort" these local variables in descending order of line length for
+> > appearance :-)  (eg: migrate_vma* functions).
+> 
+> It has ended up like this over multiple versions when variables got added,
+> moved and re-added.
+> 
+> > 
+> > > +
+> > > +	if (page_shift != PAGE_SHIFT)
+> > > +		return H_P3;
+> > > +
+> > > +	if (flags)
+> > > +		return H_P2;
+> > > +
+> > > +	ret = H_PARAMETER;
+> > > +	down_read(&kvm->mm->mmap_sem);
+> > > +	srcu_idx = srcu_read_lock(&kvm->srcu);
+> > > +	addr = gfn_to_hva(kvm, gpa >> page_shift);
+> > > +	if (kvm_is_error_hva(addr))
+> > > +		goto out;
+> > > +
+> > > +	end = addr + (1UL << page_shift);
+> > > +	vma = find_vma_intersection(kvm->mm, addr, end);
+> > > +	if (!vma || vma->vm_start > addr || vma->vm_end < end)
+> > > +		goto out;
+> > > +
+> > > +	memset(&mig, 0, sizeof(mig));
+> > > +	mig.vma = vma;
+> > > +	mig.start = addr;
+> > > +	mig.end = end;
+> > > +	mig.src = &src_pfn;
+> > > +	mig.dst = &dst_pfn;
+> > > +	if (migrate_vma_setup(&mig))
+> > > +		goto out;
+> > > +
+> > > +	ret = kvmppc_devm_fault_migrate_alloc_and_copy(&mig, page_shift);
+> > > +	if (ret)
+> > > +		goto out_finalize;
+> > > +
+> > > +	migrate_vma_pages(&mig);
+> > > +	ret = H_SUCCESS;
+> > 
+> > Nit: Blank line here?
+> 
+> With a blank like above the label line (which is blank for the most part),
+> it looks a bit too much of blank to me :)
+> 
+> However I do have blank line at a few other places. I have been removing
+> them whenever I touch the surrounding lines.
+> 
+> Thanks for your review.
+> 
+> Christoph - You did review this patch in the last iteration. Do you have
+> any additional comments?
+> 
+> Regards,
+> Bharata.
