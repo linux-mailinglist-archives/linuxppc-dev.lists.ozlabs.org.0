@@ -2,47 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955BEA1965
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 13:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4247A19DD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 14:17:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46K1Fy5NM9zDrfm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 21:53:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46K1nx65x2zDrfM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 22:17:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46K1D90PyYzDrdK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 21:51:34 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x7TBpN2r017814;
- Thu, 29 Aug 2019 06:51:23 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x7TBpMVF017813;
- Thu, 29 Aug 2019 06:51:22 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 29 Aug 2019 06:51:22 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 0/4] powerpc/64: syscalls in C
-Message-ID: <20190829115122.GJ31406@gate.crashing.org>
-References: <20190827135548.21457-1-npiggin@gmail.com>
- <5ecd9d1a-d35e-dc8c-9ad4-a830a8b1a952@c-s.fr>
- <1566985278.ehbnos9t6c.astroid@bobo.none>
- <4d0359d8-0958-583f-7727-10a51bd3c7c6@c-s.fr>
- <1567070800.hlilai6sy6.astroid@bobo.none>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1567070800.hlilai6sy6.astroid@bobo.none>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46K1kp1LCzzDqwN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 22:14:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46K1kn0WSMz9sML;
+ Thu, 29 Aug 2019 22:14:41 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH] powerpc/mm: tell if a bad page fault on data is read or
+ write.
+In-Reply-To: <4f88d7e6fda53b5f80a71040ab400242f6c8cb93.1566400889.git.christophe.leroy@c-s.fr>
+References: <4f88d7e6fda53b5f80a71040ab400242f6c8cb93.1566400889.git.christophe.leroy@c-s.fr>
+Date: Thu, 29 Aug 2019 22:14:38 +1000
+Message-ID: <87o908tbgx.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,35 +46,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 29, 2019 at 07:38:01PM +1000, Nicholas Piggin wrote:
-> So... this actually seems to work. Haven't booted it, but the compiler
-> seems to do what we want.
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> DSISR has a bit to tell if the fault is due to a read or a write.
 
-From the GCC manual:
+Except some CPUs don't have a DSISR?
 
-   After defining a global register variable, for the current compilation
-  unit:
+Which is why we have page_fault_is_write() that's used in
+__do_page_fault().
 
-     * If the register is a call-saved register, call ABI is affected: the
-       register will not be restored in function epilogue sequences after
-       the variable has been assigned.  Therefore, functions cannot safely
-       return to callers that assume standard ABI.
+Or is that old cruft?
 
-and
+I see eg. in head_40x.S we pass r5=0 for error code, and we don't set
+regs->dsisr anywhere AFAICS. So it might just contain some junk.
 
-     * Accesses to the variable may be optimized as usual and the register
-       remains available for allocation and use in any computations,
-       provided that observable values of the variable are not affected.
+cheers
 
-This doesn't do what you think, or what you want, or what you think you
-want ;-)
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index 8432c281de92..b5047f9b5dec 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -645,6 +645,7 @@ NOKPROBE_SYMBOL(do_page_fault);
+>  void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
+>  {
+>  	const struct exception_table_entry *entry;
+> +	int is_write = page_fault_is_write(regs->dsisr);
+>  
+>  	/* Are we prepared to handle this fault?  */
+>  	if ((entry = search_exception_tables(regs->nip)) != NULL) {
+> @@ -658,9 +659,10 @@ void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
+>  	case 0x300:
+>  	case 0x380:
+>  	case 0xe00:
+> -		pr_alert("BUG: %s at 0x%08lx\n",
+> +		pr_alert("BUG: %s on %s at 0x%08lx\n",
+>  			 regs->dar < PAGE_SIZE ? "Kernel NULL pointer dereference" :
+> -			 "Unable to handle kernel data access", regs->dar);
+> +			 "Unable to handle kernel data access",
+> +			 is_write ? "write" : "read", regs->dar);
 
-(And if you make all those regs -ffixed-* you are in for a world of hurt).
-
-
-Segher
+>  		break;
+>  	case 0x400:
+>  	case 0x480:
+> -- 
+> 2.13.3
