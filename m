@@ -2,49 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67428A1B50
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 15:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF057A1C5A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 16:07:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46K3FD5TQfzDrRG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 23:22:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46K4FB4Bt5zDrh0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 00:07:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=cyphar.com
- (client-ip=80.241.60.215; helo=mx2.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=aculab.com
+ (client-ip=146.101.78.151; helo=eu-smtp-delivery-151.mimecast.com;
+ envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mx2.mailbox.org (mx2.mailbox.org [80.241.60.215])
+ dmarc=none (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [146.101.78.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46K39s6dV3zDrPW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 23:19:42 +1000 (AEST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mx2.mailbox.org (Postfix) with ESMTPS id C76B2A10EE;
- Thu, 29 Aug 2019 15:19:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
- [80.241.56.123]) (amavisd-new, port 10030)
- with ESMTP id YERUiiJJutp0; Thu, 29 Aug 2019 15:19:27 +0200 (CEST)
-Date: Thu, 29 Aug 2019 23:19:04 +1000
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
-Message-ID: <20190829131904.bkbalbtqt6j3gwcp@yavin>
-References: <20190820033406.29796-1-cyphar@cyphar.com>
- <20190820033406.29796-8-cyphar@cyphar.com>
- <CAKOZuesfxRBJe314rkTKXtjXdz6ki3uAUBYVbu5Q2rd3=ADphQ@mail.gmail.com>
- <20190829121527.u2uvdyeatme5cgkb@yavin>
- <899401fa-ff0a-2ce9-8826-09904efab2d2@rasmusvillemoes.dk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46K46m748szDrgd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 00:02:04 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-33-AjVBBskIPdq6hYwg5k5JLQ-1; Thu, 29 Aug 2019 10:59:48 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 29 Aug 2019 10:59:48 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Thu, 29 Aug 2019 10:59:48 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Nathan Chancellor' <natechancellor@gmail.com>, Nick Desaulniers
+ <ndesaulniers@google.com>
+Subject: RE: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+Thread-Topic: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+Thread-Index: AQHVXdDJpnOUwPzSaUeRyhz1GkEFSKcR4W8w
+Date: Thu, 29 Aug 2019 09:59:48 +0000
+Message-ID: <6801a83ed6d54d95b87a41c57ef6e6b0@AcuMS.aculab.com>
+References: <20190812023214.107817-1-natechancellor@gmail.com>
+ <878srdv206.fsf@mpe.ellerman.id.au>
+ <20190828175322.GA121833@archlinux-threadripper>
+ <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
+ <20190828184529.GC127646@archlinux-threadripper>
+In-Reply-To: <20190828184529.GC127646@archlinux-threadripper>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="itirvnprc6jjrbl3"
-Content-Disposition: inline
-In-Reply-To: <899401fa-ff0a-2ce9-8826-09904efab2d2@rasmusvillemoes.dk>
+X-MC-Unique: AjVBBskIPdq6hYwg5k5JLQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,143 +66,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Daniel Colascione <dancol@google.com>, Aleksa Sarai <asarai@suse.de>,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- Tycho Andersen <tycho@tycho.ws>, linux-m68k@lists.linux-m68k.org,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, David Drysdale <drysdale@google.com>,
- Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
- linuxppc-dev@lists.ozlabs.org, Jeff Layton <jlayton@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
- linux-alpha@vger.kernel.org, Linux FS Devel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Nathan Chancellor
+> Sent: 28 August 2019 19:45
+...
+> However, I think that -fno-builtin-* would be appropriate here because
+> we are providing our own setjmp implementation, meaning clang should not
+> be trying to do anything with the builtin implementation like building a
+> declaration for it.
 
---itirvnprc6jjrbl3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Isn't implementing setjmp impossible unless you tell the compiler that
+you function is 'setjmp-like' ?
 
-On 2019-08-29, Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> On 29/08/2019 14.15, Aleksa Sarai wrote:
-> > On 2019-08-24, Daniel Colascione <dancol@google.com> wrote:
->=20
-> >> Why pad the structure when new functionality (perhaps accommodated via
-> >> a larger structure) could be signaled by passing a new flag? Adding
-> >> reserved fields to a structure with a size embedded in the ABI makes a
-> >> lot of sense --- e.g., pthread_mutex_t can't grow. But this structure
-> >> can grow, so the reservation seems needless to me.
-> >=20
-> > Quite a few folks have said that ->reserved is either unnecessary or
-> > too big. I will be changing this, though I am not clear what the best
-> > way of extending the structure is. If anyone has a strong opinion on
-> > this (or an alternative to the ones listed below), please chime in. I
-> > don't have any really strong attachment to this aspect of the API.
-> >=20
-> > There appear to be a few ways we can do it (that all have precedence
-> > with other syscalls):
-> >=20
-> >  1. Use O_* flags to indicate extensions.
-> >  2. A separate "version" field that is incremented when we change.
-> >  3. Add a size_t argument to openat2(2).
-> >  4. Reserve space (as in this patchset).
-> >=20
-> > (My personal preference would be (3), followed closely by (2).)
->=20
-> 3, definitely, and instead of having to invent a new scheme for every
-> new syscall, make that the default pattern by providing a helper
+For instance I think it all goes horribly wrong if the generated code
+looks like:
+=09push local_variable
+=09// setup arguments to setjmp
+=09call setjmp
+=09pop local_variable
+=09// check return value of setjmp
 
-Sure (though hopefully I don't need to immediately go and refactor all
-the existing size_t syscalls). I will be presenting about this patchset
-at the containers microconference at LPC (in a few weeks), so I'll hold
-of on any API-related rewrites until after that.
+With a naive compiler and simple ABI setjmp just has to save the
+return address, stack pointer and caller saved registers.
+With modern compilers and ABI I doubt you can implement setjmp
+without some help from the compiler.
 
-> int __copy_abi_struct(void *kernel, size_t ksize, const void __user
-> *user, size_t usize)
-> {
-> 	size_t copy =3D min(ksize, usize);
->=20
-> 	if (copy_from_user(kernel, user, copy))
-> 		return -EFAULT;
->=20
-> 	if (usize > ksize) {
-> 		/* maybe a separate "return user_is_zero(user + ksize, usize -
-> ksize);" helper */
-> 		char c;
-> 		user +=3D ksize;
-> 		usize -=3D ksize;
-> 		while (usize--) {
-> 			if (get_user(c, user++))
-> 				return -EFAULT;
-> 			if (c)
-> 				return -EINVAL;
+It is probably best to avoid setjmp/longjmp completely.
 
-This part would probably be better done with memchr_inv() and
-copy_from_user() (and probably should put an upper limit on usize), but
-I get what you mean.
+=09David
 
-> 		}
-> 	} else if (ksize > usize) {
-> 		memset(kernel + usize, 0, ksize - usize);
-> 	}
-> 	return 0;
-> }
-> #define copy_abi_struct(kernel, user, usize)	\
-> 	__copy_abi_struct(kernel, sizeof(*kernel), user, usize)
->
-> > Both (1) and (2) have the problem that the "struct version" is inside
-> > the struct so we'd need to copy_from_user() twice. This isn't the end of
-> > the world, it just feels a bit less clean than is ideal. (3) fixes that
-> > problem, at the cost of making the API slightly more cumbersome to use
-> > directly (though again glibc could wrap that away).
->=20
-> I don't see how 3 is cumbersome to use directly. Userspace code does
-> struct openat_of_the_day args =3D {.field1 =3D x, .field3 =3D y} and pass=
-es
-> &args, sizeof(args). What does glibc need to do beyond its usual munging
-> of the userspace ABI registers to the syscall ABI registers?
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
-I'd argue that
-
-    ret =3D openat2(AT_FDCWD, "foo", &how, sizeof(how)); // (3)
-
-is slightly less pretty than
-
-    ret =3D openat2(AT_FDCWD, "foo", &how); // (1), (2), (4)
-
-But it's not really that bad. Forget I said anything.
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---itirvnprc6jjrbl3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXWfQxQAKCRCdlLljIbnQ
-EoMSAP9J0uy3xcD3flC3cANph5LKQ2g0JWnMb61ew5LWDORVogD/UGWciY+tdPiy
-YNHs2UcBt9SEH1MNpEIgf2GN6RoyaQI=
-=ne2z
------END PGP SIGNATURE-----
-
---itirvnprc6jjrbl3--
