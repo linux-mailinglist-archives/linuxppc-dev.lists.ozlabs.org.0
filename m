@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F41A1F3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 17:32:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B1EA1F67
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 17:41:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46K66h0X5GzDrCJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 01:32:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46K6KZ6fQxzDrP6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 01:41:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,20 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46K62P4573zDrq8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 01:28:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46K6Fx5q5LzDrhk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 01:38:29 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id C63D5227A81; Thu, 29 Aug 2019 17:28:16 +0200 (CEST)
-Date: Thu, 29 Aug 2019 17:28:16 +0200
+ id 904E468B20; Thu, 29 Aug 2019 17:38:23 +0200 (CEST)
+Date: Thu, 29 Aug 2019 17:38:23 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: iommu@lists.linux-foundation.org
-Subject: Re: cleanup the dma_pgprot handling v2
-Message-ID: <20190829152816.GA20232@lst.de>
-References: <20190826132553.4116-1-hch@lst.de>
+To: iommu@lists.linux-foundation.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: Re: remove default fallbacks in dma_map_ops v3
+Message-ID: <20190829153823.GA20459@lst.de>
+References: <20190808160005.10325-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190826132553.4116-1-hch@lst.de>
+In-Reply-To: <20190808160005.10325-1-hch@lst.de>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -44,15 +45,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, Will Deacon <will@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, Geert Uytterhoeven <geert@linux-m68k.org>,
- Paul Burton <paul.burton@mips.com>, Catalin Marinas <catalin.marinas@arm.com>,
- James Hogan <jhogan@kernel.org>, Russell King <linux@armlinux.org.uk>,
- linux-mips@vger.kernel.org, Guan Xuetao <gxt@pku.edu.cn>,
- linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>
+Cc: linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
+ Vladimir Murzin <vladimir.murzin@arm.com>, linux-parisc@vger.kernel.org,
+ linux-sh@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
+ Robin Murphy <robin.murphy@arm.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I've pulled this into the dma-mapping for-next tree now.
+I've applied this to the dma-mapping for-next tree now.
+
+If there are any issues with the parisc patch I'll happily take
+incremental patches.
