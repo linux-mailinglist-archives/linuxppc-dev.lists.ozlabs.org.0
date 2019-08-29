@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6191A2399
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70189A240F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:20:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46K9nC1fZfzDrqN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 04:17:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46K9rw4j9TzDqxg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 04:20:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="om5qpb4c"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="gOCbRoOs"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46K9jJ4tq7zDrjG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 04:13:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46K9kF6BH9zDrC9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 04:14:45 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 73E4123405;
- Thu, 29 Aug 2019 18:13:52 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 860152339E;
+ Thu, 29 Aug 2019 18:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567102433;
- bh=+2KGPUyGeLbKlAPqtEd7NmKzuZE+W+nvBoALCjkf4ww=;
+ s=default; t=1567102483;
+ bh=G/rydemY/se9oRI2oc9ftz0a3FwIJOnjndeX+QAiB20=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=om5qpb4cx6Jbo+LDoS4LB5hQ4Zt3CISCs/u87j7Zww74XG4zlxpbmODWLqVOA36kw
- 7x/7RjriQzuYzkwW+lk0I2Y12EF2fTJ0QBgEuUMT0Y21Wg6h+2OdeK6mjcY8VFaUgx
- GvIVnzeaRqR3WxKsefEW6WHHp33q7Z9BEvCJaRwg=
+ b=gOCbRoOsMZEqosza4vZyH+k1uR4tVJF0Wz5YCD3fYYJ66giH9WGCRK5mojF6iOLXC
+ AlVAvd1AzfZQ7wkJPIf98YZOFK2U7oR+aqDSO9qpAfdb0KPfySx9Nwg0mLa35tY8gE
+ NKCmF6sDYyj4c6rBNoIgmbsd9pn1RR3gXaa+q03A=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 22/76] ibmveth: Convert multicast list size for
- little-endian system
-Date: Thu, 29 Aug 2019 14:12:17 -0400
-Message-Id: <20190829181311.7562-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 43/76] ibmvnic: Unmap DMA address of TX descriptor
+ buffers after use
+Date: Thu, 29 Aug 2019 14:12:38 -0400
+Message-Id: <20190829181311.7562-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190829181311.7562-1-sashal@kernel.org>
 References: <20190829181311.7562-1-sashal@kernel.org>
@@ -61,67 +61,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- Jakub Kicinski <jakub.kicinski@netronome.com>, netdev@vger.kernel.org,
- Thomas Falcon <tlfalcon@linux.ibm.com>, Hangbin Liu <liuhangbin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "Devesh K . Singh" <devesh_singh@in.ibm.com>,
+ Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
+ Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+ Thomas Falcon <tlfalcon@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Thomas Falcon <tlfalcon@linux.ibm.com>
 
-[ Upstream commit 66cf4710b23ab2adda11155684a2c8826f4fe732 ]
+[ Upstream commit 80f0fe0934cd3daa13a5e4d48a103f469115b160 ]
 
-The ibm,mac-address-filters property defines the maximum number of
-addresses the hypervisor's multicast filter list can support. It is
-encoded as a big-endian integer in the OF device tree, but the virtual
-ethernet driver does not convert it for use by little-endian systems.
-As a result, the driver is not behaving as it should on affected systems
-when a large number of multicast addresses are assigned to the device.
+There's no need to wait until a completion is received to unmap
+TX descriptor buffers that have been passed to the hypervisor.
+Instead unmap it when the hypervisor call has completed. This patch
+avoids the possibility that a buffer will not be unmapped because
+a TX completion is lost or mishandled.
 
-Reported-by: Hangbin Liu <liuhangbin@gmail.com>
+Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+Tested-by: Devesh K. Singh <devesh_singh@in.ibm.com>
 Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-Signed-off-by: Jakub Kicinski <jakub.kicinski@netronome.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index d654c234aaf75..c5be4ebd84373 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1605,7 +1605,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 	struct net_device *netdev;
- 	struct ibmveth_adapter *adapter;
- 	unsigned char *mac_addr_p;
--	unsigned int *mcastFilterSize_p;
-+	__be32 *mcastFilterSize_p;
- 	long ret;
- 	unsigned long ret_attr;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 3da6800732656..cebd20f3128d4 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1568,6 +1568,8 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		lpar_rc = send_subcrq_indirect(adapter, handle_array[queue_num],
+ 					       (u64)tx_buff->indir_dma,
+ 					       (u64)num_entries);
++		dma_unmap_single(dev, tx_buff->indir_dma,
++				 sizeof(tx_buff->indir_arr), DMA_TO_DEVICE);
+ 	} else {
+ 		tx_buff->num_entries = num_entries;
+ 		lpar_rc = send_subcrq(adapter, handle_array[queue_num],
+@@ -2788,7 +2790,6 @@ static int ibmvnic_complete_tx(struct ibmvnic_adapter *adapter,
+ 	union sub_crq *next;
+ 	int index;
+ 	int i, j;
+-	u8 *first;
  
-@@ -1627,8 +1627,9 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 		return -EINVAL;
- 	}
+ restart_loop:
+ 	while (pending_scrq(adapter, scrq)) {
+@@ -2818,14 +2819,6 @@ static int ibmvnic_complete_tx(struct ibmvnic_adapter *adapter,
  
--	mcastFilterSize_p = (unsigned int *)vio_get_attribute(dev,
--						VETH_MCAST_FILTER_SIZE, NULL);
-+	mcastFilterSize_p = (__be32 *)vio_get_attribute(dev,
-+							VETH_MCAST_FILTER_SIZE,
-+							NULL);
- 	if (!mcastFilterSize_p) {
- 		dev_err(&dev->dev, "Can't find VETH_MCAST_FILTER_SIZE "
- 			"attribute\n");
-@@ -1645,7 +1646,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+ 				txbuff->data_dma[j] = 0;
+ 			}
+-			/* if sub_crq was sent indirectly */
+-			first = &txbuff->indir_arr[0].generic.first;
+-			if (*first == IBMVNIC_CRQ_CMD) {
+-				dma_unmap_single(dev, txbuff->indir_dma,
+-						 sizeof(txbuff->indir_arr),
+-						 DMA_TO_DEVICE);
+-				*first = 0;
+-			}
  
- 	adapter->vdev = dev;
- 	adapter->netdev = netdev;
--	adapter->mcastFilterSize = *mcastFilterSize_p;
-+	adapter->mcastFilterSize = be32_to_cpu(*mcastFilterSize_p);
- 	adapter->pool_config = 0;
- 
- 	netif_napi_add(netdev, &adapter->napi, ibmveth_poll, 16);
+ 			if (txbuff->last_frag) {
+ 				dev_kfree_skb_any(txbuff->skb);
 -- 
 2.20.1
 
