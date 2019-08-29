@@ -2,40 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1C5A1662
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 12:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49466A1699
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 12:49:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Jzd02hQ0zDrFH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:39:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Jzqx4PrBzDqby
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:49:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="D5wuqvCA"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JzYk5RNRzDqxL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 20:36:42 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 9BDFDAEFF;
- Thu, 29 Aug 2019 10:36:39 +0000 (UTC)
-Date: Thu, 29 Aug 2019 12:36:38 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v4 3/4] powerpc/64: make buildable without CONFIG_COMPAT
-Message-ID: <20190829123638.589e5c77@naga>
-In-Reply-To: <a829dfabed8285161fcdff166d58c7e8f0f6d402.1567072270.git.msuchanek@suse.de>
-References: <cover.1567072270.git.msuchanek@suse.de>
- <a829dfabed8285161fcdff166d58c7e8f0f6d402.1567072270.git.msuchanek@suse.de>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Jznq5WN8zDr6X
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 20:47:10 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id gn20so1403372plb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 03:47:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
+ :message-id:content-transfer-encoding;
+ bh=BVFmwkaJCPl1yCf3RDVOt6AwmdnBTGpbXNYNllgzUtc=;
+ b=D5wuqvCAryXtJdw2Cr9gssKhLJQ6b3e4C61VKcuG5N7HPeRpcPzh5HNJi2OYjy51K5
+ OhuhKMs7oOSzT1CeUiy4jz3GbibcZLrnZ81otdfuF3mTjtk4PLM8XhrUpfJWoYPaBTKw
+ GSrsQBISc54hAJg0rd+gKCjLHRXLT2M/HysJM6Pypqdrj7xVdf/ouq/jiNQzW75JSyxZ
+ hIlkuM2P5FIUAHWyAsEAeeD2nqS5QlwjOPDi6GqsGL5PqfOBDDBHjiMTimBb2/rcdqha
+ G/a3F1CQlSUaPlzr4i05OgtHRUqaAXxOQz7PiQV5HFsJJ2RLj5KPW1Mm3GG7qPTVCc3U
+ LbpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=BVFmwkaJCPl1yCf3RDVOt6AwmdnBTGpbXNYNllgzUtc=;
+ b=fbeulUe4Gt7Zb6fV0NSNDqorDRwiJRS8F7Qu5b2PjL0ZTBaq86+M92cmcXI2CkQ6Ko
+ DIvLwMzmYm6jWh2+s9QLTjaFFgxmOBo9hsQjttHsvYbAgGitR0TUByuGvSiOfe2ol6QP
+ /RGaIW4qvc5bIZxX/Nyc8baGC5kahZjlYho4k1XIBYI2Wsrzf6tFzfIVmOsg6QdjV+jh
+ ZSJh73Re52DuPMdG5/0jrxydWnSd+6Yo0WvVFxg5tlqORSgwVkymC1MkypTwoFUTJde/
+ 6p7zSH3FNuPHf4SxWlwEouUOqKA2lubnxYafTojWb/lKdcL3zKJC/HDM00DUyz8nVWPG
+ 5VqA==
+X-Gm-Message-State: APjAAAUW4PONm7VjAaHSGWgoDSXmUA5426v7Dv2fLSUuarksNSuPnV+a
+ MelwcNur3aefK0gzmxo8jFc=
+X-Google-Smtp-Source: APXvYqygrfBYZZZxM6K4EHTAAFKoRgDyoKeAyWxHItLooG7p18kEq/wEOzscVdVS9CarQpEwYBk/ug==
+X-Received: by 2002:a17:902:2bcb:: with SMTP id
+ l69mr9380522plb.282.1567075628909; 
+ Thu, 29 Aug 2019 03:47:08 -0700 (PDT)
+Received: from localhost (60-241-27-127.tpgi.com.au. [60.241.27.127])
+ by smtp.gmail.com with ESMTPSA id u69sm1715151pgu.77.2019.08.29.03.47.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Aug 2019 03:47:08 -0700 (PDT)
+Date: Thu, 29 Aug 2019 20:45:27 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 0/4] powerpc/64: syscalls in C
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+References: <20190827135548.21457-1-npiggin@gmail.com>
+ <5ecd9d1a-d35e-dc8c-9ad4-a830a8b1a952@c-s.fr>
+ <1566985278.ehbnos9t6c.astroid@bobo.none>
+ <4d0359d8-0958-583f-7727-10a51bd3c7c6@c-s.fr>
+ <1567070800.hlilai6sy6.astroid@bobo.none>
+In-Reply-To: <1567070800.hlilai6sy6.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1567075218.zetwgblt3a.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,248 +84,253 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
- Nicolai Stange <nstange@suse.de>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Allison Randal <allison@lohutok.net>, Firoz Khan <firoz.khan@linaro.org>,
- Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
- Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
- Christian Brauner <christian@brauner.io>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 29 Aug 2019 12:23:42 +0200
-Michal Suchanek <msuchanek@suse.de> wrote:
+Nicholas Piggin's on August 29, 2019 7:38 pm:
+> Christophe Leroy's on August 28, 2019 7:55 pm:
+>>=20
+>>=20
+>> Le 28/08/2019 =C3=A0 11:49, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>> Christophe Leroy's on August 28, 2019 7:06 pm:
+>>>>
+>>>>
+>>>> Le 27/08/2019 =C3=A0 15:55, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>>>> Accounted for some feedback.
+>>>>>
+>>>>> Nicholas Piggin (4):
+>>>>>     powerpc: convert to copy_thread_tls
+>>>>>     powerpc/64: remove support for kernel-mode syscalls
+>>>>>     powerpc/64: system call remove non-volatile GPR save optimisation
+>>>>>     powerpc/64: system call implement the bulk of the logic in C
+>>>>
+>>>> Would it be possible to split in the following parts:
+>>>>
+>>>> 1/ Implement in C whatever can be implemented without removing
+>>>> non-volatile GPR save optimisation
+>>>> 2/ Remove non-volatile GPR save optimisation
+>>>> 3/ Implement in C everything else
+>>>=20
+>>> Hmm. I'll have a look but I would rather not go back and add the
+>>> intermediate state I was hoping to avoid. I'll think about it and
+>>> if it's not too difficult I will try to add something. I have an
+>>> idea.
+>>>=20
+>>> With your nvregs performance test on ppc32, are you doing the
+>>> nvgpr restore? The fast path should be able to avoid that.
+>>=20
+>> I only added the SAVE_NVGPRS call in the syscall entry macro just after=20
+>> the saving of volatile regs, and changed the trap from \trapno+1 to \tra=
+pno
+>=20
+> So... this actually seems to work. Haven't booted it, but the compiler
+> seems to do what we want.
+>=20
 
-> There are numerous references to 32bit functions in generic and 64bit
-> code so ifdef them out.
-> 
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
-> v2:
-> - fix 32bit ifdef condition in signal.c
-> - simplify the compat ifdef condition in vdso.c - 64bit is redundant
-> - simplify the compat ifdef condition in callchain.c - 64bit is redundant
-> v3:
-> - use IS_ENABLED and maybe_unused where possible
-> - do not ifdef declarations
-> - clean up Makefile
-> v4:
-> - further makefile cleanup
-> - simplify is_32bit_task conditions
-> - avoid ifdef in condition by using return
-> ---
->  arch/powerpc/include/asm/thread_info.h |  4 ++--
->  arch/powerpc/kernel/Makefile           |  7 +++----
->  arch/powerpc/kernel/entry_64.S         |  2 ++
->  arch/powerpc/kernel/signal.c           |  3 +--
->  arch/powerpc/kernel/syscall_64.c       |  6 ++----
->  arch/powerpc/kernel/vdso.c             |  5 ++---
->  arch/powerpc/perf/callchain.c          | 14 ++++++++++----
->  7 files changed, 22 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-> index 8e1d0195ac36..c128d8a48ea3 100644
-> --- a/arch/powerpc/include/asm/thread_info.h
-> +++ b/arch/powerpc/include/asm/thread_info.h
-> @@ -144,10 +144,10 @@ static inline bool test_thread_local_flags(unsigned int flags)
->  	return (ti->local_flags & flags) != 0;
->  }
->  
-> -#ifdef CONFIG_PPC64
-> +#ifdef CONFIG_COMPAT
->  #define is_32bit_task()	(test_thread_flag(TIF_32BIT))
->  #else
-> -#define is_32bit_task()	(1)
-> +#define is_32bit_task()	(IS_ENABLED(CONFIG_PPC32))
->  #endif
->  
->  #if defined(CONFIG_PPC64)
-> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> index 1d646a94d96c..9d8772e863b9 100644
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@ -44,16 +44,15 @@ CFLAGS_btext.o += -DDISABLE_BRANCH_PROFILING
->  endif
->  
->  obj-y				:= cputable.o ptrace.o syscalls.o \
-> -				   irq.o align.o signal_32.o pmc.o vdso.o \
-> +				   irq.o align.o signal_$(BITS).o pmc.o vdso.o \
->  				   process.o systbl.o idle.o \
->  				   signal.o sysfs.o cacheinfo.o time.o \
->  				   prom.o traps.o setup-common.o \
->  				   udbg.o misc.o io.o misc_$(BITS).o \
->  				   of_platform.o prom_parse.o
-> -obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
-> -				   signal_64.o ptrace32.o \
-> -				   paca.o nvram_64.o firmware.o \
-> +obj-$(CONFIG_PPC64)		+= setup_64.o paca.o nvram_64.o firmware.o \
->  				   syscall_64.o
-> +obj-$(CONFIG_COMPAT)		+= sys_ppc32.o ptrace32.o signal_32.o
->  obj-$(CONFIG_VDSO32)		+= vdso32/
->  obj-$(CONFIG_PPC_WATCHDOG)	+= watchdog.o
->  obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+= hw_breakpoint.o
-> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-> index 2ec825a85f5b..a2dbf216f607 100644
-> --- a/arch/powerpc/kernel/entry_64.S
-> +++ b/arch/powerpc/kernel/entry_64.S
-> @@ -51,8 +51,10 @@
->  SYS_CALL_TABLE:
->  	.tc sys_call_table[TC],sys_call_table
->  
-> +#ifdef CONFIG_COMPAT
->  COMPAT_SYS_CALL_TABLE:
->  	.tc compat_sys_call_table[TC],compat_sys_call_table
-> +#endif
->  
->  /* This value is used to mark exception frames on the stack. */
->  exception_marker:
-> diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-> index 60436432399f..61678cb0e6a1 100644
-> --- a/arch/powerpc/kernel/signal.c
-> +++ b/arch/powerpc/kernel/signal.c
-> @@ -247,7 +247,6 @@ static void do_signal(struct task_struct *tsk)
->  	sigset_t *oldset = sigmask_to_save();
->  	struct ksignal ksig = { .sig = 0 };
->  	int ret;
-> -	int is32 = is_32bit_task();
->  
->  	BUG_ON(tsk != current);
->  
-> @@ -277,7 +276,7 @@ static void do_signal(struct task_struct *tsk)
->  
->  	rseq_signal_deliver(&ksig, tsk->thread.regs);
->  
-> -	if (is32) {
-> +	if (is_32bit_task()) {
->          	if (ksig.ka.sa.sa_flags & SA_SIGINFO)
->  			ret = handle_rt_signal32(&ksig, oldset, tsk);
->  		else
-> diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
-> index 98ed970796d5..0d5cbbe54cf1 100644
-> --- a/arch/powerpc/kernel/syscall_64.c
-> +++ b/arch/powerpc/kernel/syscall_64.c
-> @@ -38,7 +38,6 @@ typedef long (*syscall_fn)(long, long, long, long, long, long);
->  
->  long system_call_exception(long r3, long r4, long r5, long r6, long r7, long r8, unsigned long r0, struct pt_regs *regs)
->  {
-> -	unsigned long ti_flags;
->  	syscall_fn f;
->  
->  	BUG_ON(!(regs->msr & MSR_PR));
-> @@ -83,8 +82,7 @@ long system_call_exception(long r3, long r4, long r5, long r6, long r7, long r8,
->  	 */
->  	regs->softe = IRQS_ENABLED;
->  
-> -	ti_flags = current_thread_info()->flags;
-> -	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
-> +	if (unlikely(current_thread_info()->flags & _TIF_SYSCALL_DOTRACE)) {
->  		/*
->  		 * We use the return value of do_syscall_trace_enter() as the
->  		 * syscall number. If the syscall was rejected for any reason
-> @@ -100,7 +98,7 @@ long system_call_exception(long r3, long r4, long r5, long r6, long r7, long r8,
->  	/* May be faster to do array_index_nospec? */
->  	barrier_nospec();
->  
-> -	if (unlikely(ti_flags & _TIF_32BIT)) {
-> +	if (unlikely(is_32bit_task())) {
->  		f = (void *)compat_sys_call_table[r0];
->  
->  		r3 &= 0x00000000ffffffffULL;
-> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
-> index d60598113a9f..6d4a077f74d6 100644
-> --- a/arch/powerpc/kernel/vdso.c
-> +++ b/arch/powerpc/kernel/vdso.c
-> @@ -667,9 +667,7 @@ static void __init vdso_setup_syscall_map(void)
->  {
->  	unsigned int i;
->  	extern unsigned long *sys_call_table;
-> -#ifdef CONFIG_PPC64
->  	extern unsigned long *compat_sys_call_table;
-> -#endif
->  	extern unsigned long sys_ni_syscall;
->  
->  
-> @@ -678,7 +676,8 @@ static void __init vdso_setup_syscall_map(void)
->  		if (sys_call_table[i] != sys_ni_syscall)
->  			vdso_data->syscall_map_64[i >> 5] |=
->  				0x80000000UL >> (i & 0x1f);
-> -		if (compat_sys_call_table[i] != sys_ni_syscall)
-> +		if (IS_ENABLED(CONFIG_COMPAT) &&
-> +		    compat_sys_call_table[i] != sys_ni_syscall)
->  			vdso_data->syscall_map_32[i >> 5] |=
->  				0x80000000UL >> (i & 0x1f);
->  #else /* CONFIG_PPC64 */
-> diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
-> index c84bbd4298a0..aef8c750d242 100644
-> --- a/arch/powerpc/perf/callchain.c
-> +++ b/arch/powerpc/perf/callchain.c
-> @@ -15,7 +15,7 @@
->  #include <asm/sigcontext.h>
->  #include <asm/ucontext.h>
->  #include <asm/vdso.h>
-> -#ifdef CONFIG_PPC64
-> +#ifdef CONFIG_COMPAT
->  #include "../kernel/ppc32.h"
->  #endif
->  #include <asm/pte-walk.h>
-> @@ -165,6 +165,7 @@ static int read_user_stack_64(unsigned long __user *ptr, unsigned long *ret)
->  	return read_user_stack_slow(ptr, ret, 8);
->  }
->  
-> +__maybe_unused
->  static int read_user_stack_32(unsigned int __user *ptr, unsigned int *ret)
->  {
->  	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
-> @@ -341,6 +342,7 @@ static inline int valid_user_sp(unsigned long sp, int is_64)
->  
->  #endif /* CONFIG_PPC64 */
->  
-> +#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
->  /*
->   * Layout for non-RT signal frames
->   */
-> @@ -482,12 +484,16 @@ static void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
->  		sp = next_sp;
->  	}
->  }
-> +#endif /* 32bit */
->  
->  void
->  perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
->  {
-> -	if (current_is_64bit())
-> -		perf_callchain_user_64(entry, regs);
-> -	else
-> +#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
-> +	if (!current_is_64bit()) {
->  		perf_callchain_user_32(entry, regs);
-> +		return;
-> +	}
-> +#endif
-> +	perf_callchain_user_64(entry, regs);
->  }
+Here's a really quick start for ppc32. The interrupt handling is
+different enough it may be hard to merge entirely with ppc64, but
+it's not really much code anyway.
 
-This will likely cause unreachable code on 32bit. Since there is need
-for an ifdef and it cannot be inside condition the best is probably to
-just split it to two separate conditions:
+Unfortunately can't restore full registers using the same method,
+because we have some others like lr and cr, so the exit still must
+return a code to asm.
 
- void
- perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
- {
-        if (current_is_64bit())
-                perf_callchain_user_64(entry, regs);
--       else
-+#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
-+       if (!current_is_64bit())
-                perf_callchain_user_32(entry, regs);
+---
+ arch/powerpc/kernel/Makefile     |   2 +-
+ arch/powerpc/kernel/syscall_32.c | 167 +++++++++++++++++++++++++++++++
+ 2 files changed, 168 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/kernel/syscall_32.c
+
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index 7f53cc07f933..83d5808654ec 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -107,7 +107,7 @@ extra-y				+=3D vmlinux.lds
+=20
+ obj-$(CONFIG_RELOCATABLE)	+=3D reloc_$(BITS).o
+=20
+-obj-$(CONFIG_PPC32)		+=3D entry_32.o setup_32.o early_32.o
++obj-$(CONFIG_PPC32)		+=3D entry_32.o setup_32.o early_32.o syscall_32.o
+ obj-$(CONFIG_PPC64)		+=3D dma-iommu.o iommu.o
+ obj-$(CONFIG_KGDB)		+=3D kgdb.o
+ obj-$(CONFIG_BOOTX_TEXT)	+=3D btext.o
+diff --git a/arch/powerpc/kernel/syscall_32.c b/arch/powerpc/kernel/syscall=
+_32.c
+new file mode 100644
+index 000000000000..ff37edac76c8
+--- /dev/null
++++ b/arch/powerpc/kernel/syscall_32.c
+@@ -0,0 +1,167 @@
++#include <linux/err.h>
++#include <asm/cputime.h>
++#include <asm/hw_irq.h>
++#include <asm/ptrace.h>
++#include <asm/reg.h>
++#include <asm/signal.h>
++#include <asm/switch_to.h>
++#include <asm/syscall.h>
++#include <asm/time.h>
++
++typedef long (*syscall_fn)(long, long, long, long, long, long);
++
++register unsigned long r31 asm("r31");
++register unsigned long r30 asm("r30");
++register unsigned long r29 asm("r29");
++register unsigned long r28 asm("r28");
++register unsigned long r27 asm("r27");
++register unsigned long r26 asm("r26");
++register unsigned long r25 asm("r25");
++register unsigned long r24 asm("r24");
++register unsigned long r23 asm("r23");
++register unsigned long r22 asm("r22");
++register unsigned long r21 asm("r21");
++register unsigned long r20 asm("r20");
++register unsigned long r19 asm("r19");
++register unsigned long r18 asm("r18");
++register unsigned long r17 asm("r17");
++register unsigned long r16 asm("r16");
++register unsigned long r15 asm("r15");
++register unsigned long r14 asm("r14");
++register unsigned long r13 asm("r13");
++
++static void save_nvgprs(struct pt_regs *regs)
++{
++	if (!(regs->trap & 1))
++		return;
++	regs->trap &=3D ~0x1;
++
++	asm volatile("stmw	13, %0" : : "m"(regs->gpr[13]) : "memory");
++}
++
++long system_call_exception(long r3, long r4, long r5, long r6, long r7, lo=
+ng r8, unsigned long r0, struct pt_regs *regs)
++{
++	unsigned long ti_flags;
++	syscall_fn f;
++
++	BUG_ON(irqs_disabled());
++	BUG_ON(!(regs->msr & MSR_PR));
++	BUG_ON(!(regs->msr & MSR_EE));
++
++	ti_flags =3D current_thread_info()->flags;
++	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
++		/*
++		 * We use the return value of do_syscall_trace_enter() as the
++		 * syscall number. If the syscall was rejected for any reason
++		 * do_syscall_trace_enter() returns an invalid syscall number
++		 * and the test below against NR_syscalls will fail.
++		 */
++		save_nvgprs(regs);
++		r0 =3D do_syscall_trace_enter(regs);
++	}
++
++	if (unlikely(r0 >=3D NR_syscalls))
++		return -ENOSYS;
++
++	/* May be faster to do array_index_nospec? */
++	barrier_nospec();
++
++	f =3D (void *)sys_call_table[r0];
++
++	return f(r3, r4, r5, r6, r7, r8);
++}
++
++static inline void load_dbcr0(void)
++{
++	/* blah */
++}
++
++unsigned long syscall_exit_prepare(unsigned long r3, struct pt_regs *regs)
++{
++	unsigned long *ti_flagsp =3D &current_thread_info()->flags;
++	unsigned long ti_flags;
++	unsigned long ret =3D 0;
++
++	regs->result =3D r3;
++
++	/* Check whether the syscall is issued inside a restartable sequence */
++	rseq_syscall(regs);
++
++	ti_flags =3D *ti_flagsp;
++
++	if (unlikely(r3 >=3D (unsigned long)-MAX_ERRNO)) {
++		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
++			r3 =3D -r3;
++			regs->ccr |=3D 0x10000000; /* Set SO bit in CR */
++		}
++	}
++
++	if (unlikely(ti_flags & _TIF_PERSYSCALL_MASK)) {
++		if (ti_flags & _TIF_RESTOREALL)
++			ret =3D _TIF_RESTOREALL;
++		else
++			regs->gpr[3] =3D r3;
++		clear_bits(_TIF_PERSYSCALL_MASK, ti_flagsp);
++	} else {
++		regs->gpr[3] =3D r3;
++	}
++
++	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
++		save_nvgprs(regs);
++		do_syscall_trace_leave(regs);
++	}
++
++	local_irq_disable();
++	ti_flags =3D READ_ONCE(*ti_flagsp);
++	while (unlikely(ti_flags & _TIF_USER_WORK_MASK)) {
++		local_irq_enable();
++		if (ti_flags & _TIF_NEED_RESCHED) {
++			schedule();
++		} else {
++			save_nvgprs(regs);
++			/*
++			 * SIGPENDING must restore signal handler function
++			 * argument GPRs, and some non-volatiles (e.g., r1).
++			 * Restore all for now. This could be made lighter.
++			 */
++			if (ti_flags & _TIF_SIGPENDING)
++				ret |=3D _TIF_RESTOREALL;
++			do_notify_resume(regs, ti_flags);
++		}
++		local_irq_disable();
++		ti_flags =3D READ_ONCE(*ti_flagsp);
++	}
++
++	WARN_ON(!(regs->msr & MSR_EE)); /* don't do this */
++
++	/* Tell lockdep IRQs are being enabled when we RFI */
++	trace_hardirqs_on();
++
++#if 0
++	if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE)) {
++		struct thread_struct *t =3D &current->thread;
++
++		/*
++		 * If the process has its own DBCR0 value, load it up. The
++		 * internal debug mode bit tells us that dbcr0 should be
++		 * loaded.
++		 */
++		if (unlikely(t->debug.dbcr0 & DBCR0_IDM))
++			load_dbcr0();
++	}
++
++	if (IS_ENABLED(CONFIG_4xx) && !mmu_has_feature(MMU_FTR_TYPE_47x)) {
++		if (unlikely(icache_44x_need_flush))
++			flush_icache_44x();
++	}
++
++	if (IS_ENABLED(PPC_BOOK3S_32))
++		kuep_unlock();
++
++	kuap_check();
 +#endif
- }
++
++	account_cpu_user_exit();
++
++	return ret;
++}
+--=20
+2.22.0
 
+=
