@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2196A2920
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 23:41:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533D9A29CA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 00:31:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KGJT0FvCzDrPt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 07:41:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KHQt51ZTzDrqJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 08:31:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,25 +18,20 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KG6k3R8HzDsNT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 07:32:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KHND4C9vzDrnR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 08:29:31 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 13294B048;
- Thu, 29 Aug 2019 21:32:42 +0000 (UTC)
-Date: Thu, 29 Aug 2019 23:32:40 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Uma Krishnan <ukrishn@linux.ibm.com>
-Subject: Re: [PATCH 1/3] scsi: cxlflash: Fix fallthrough warnings.
-Message-ID: <20190829233240.243e6206@naga>
-In-Reply-To: <21A3BB0F-98DB-4D64-AE93-9B8A8B6193B3@linux.ibm.com>
-References: <cover.1567081143.git.msuchanek@suse.de>
- <279d33f05007e9f3e3fb4e6ea19634b2608ffbd3.1567081143.git.msuchanek@suse.de>
- <21A3BB0F-98DB-4D64-AE93-9B8A8B6193B3@linux.ibm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+ by mx1.suse.de (Postfix) with ESMTP id AE9A2ACC4;
+ Thu, 29 Aug 2019 22:29:27 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v5 0/5] Disable compat cruft on ppc64le v5
+Date: Fri, 30 Aug 2019 00:28:35 +0200
+Message-Id: <cover.1567117050.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,92 +43,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-scsi@vger.kernel.org,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
- "Manoj N. Kumar" <manoj@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, "Matthew R. Ochs" <mrochs@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Nicolai Stange <nstange@suse.de>, Allison Randal <allison@lohutok.net>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Joel Stanley <joel@jms.id.au>,
+ Firoz Khan <firoz.khan@linaro.org>, Michal Suchanek <msuchanek@suse.de>,
+ Arnd Bergmann <arnd@arndb.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Christian Brauner <christian@brauner.io>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 29 Aug 2019 15:34:08 -0500
-Uma Krishnan <ukrishn@linux.ibm.com> wrote:
+Less code means less bugs so add a knob to skip the compat stuff.
 
-> Below commit queued up for 5.4 includes these changes.
->=20
-> commit 657bd277c162580674ddb86a90c4aeb62639bff5
-> Author: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> Date: =C2=A0=C2=A0Sun Jul 28 19:21:19 2019 -0500
->=20
-> Thanks,
-> Uma Krishnan
+This is tested on ppc64le top of
 
-Works for me as well.
+https://patchwork.ozlabs.org/cover/1153556/
 
-Thanks
+Changes in v2: saner CONFIG_COMPAT ifdefs
+Changes in v3:
+ - change llseek to 32bit instead of builing it unconditionally in fs
+ - clanup the makefile conditionals
+ - remove some ifdefs or convert to IS_DEFINED where possible
+Changes in v4:
+ - cleanup is_32bit_task and current_is_64bit
+ - more makefile cleanup
+Changes in v5:
+ - more current_is_64bit cleanup
+ - split off callchain.c 32bit and 64bit parts
 
-Michal
+Michal Suchanek (5):
+  powerpc: make llseek 32bit-only.
+  powerpc: move common register copy functions from signal_32.c to
+    signal.c
+  powerpc/64: make buildable without CONFIG_COMPAT
+  powerpc/64: Make COMPAT user-selectable disabled on littleendian by
+    default.
+  powerpc/perf: split callchain.c by bitness
 
->=20
-> On Aug 29, 2019, at 7:32 AM, Michal Suchanek <msuchanek@suse.de> wrote:
-> >=20
-> > Add fallthrough comments where missing.
-> >=20
-> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > ---
-> > drivers/scsi/cxlflash/main.c | 8 ++++++++
-> > 1 file changed, 8 insertions(+)
-> >=20
-> > diff --git a/drivers/scsi/cxlflash/main.c b/drivers/scsi/cxlflash/main.c
-> > index b1f4724efde2..f402fa9a7bec 100644
-> > --- a/drivers/scsi/cxlflash/main.c
-> > +++ b/drivers/scsi/cxlflash/main.c
-> > @@ -753,10 +753,13 @@ static void term_intr(struct cxlflash_cfg *cfg, e=
-num undo_level level,
-> > /* SISL_MSI_ASYNC_ERROR is setup only for the primary HWQ */
-> > if (index =3D=3D PRIMARY_HWQ)
-> > cfg->ops->unmap_afu_irq(hwq->ctx_cookie, 3, hwq);
-> > + /* fall through */
-> > case UNMAP_TWO:
-> > cfg->ops->unmap_afu_irq(hwq->ctx_cookie, 2, hwq);
-> > + /* fall through */
-> > case UNMAP_ONE:
-> > cfg->ops->unmap_afu_irq(hwq->ctx_cookie, 1, hwq);
-> > + /* fall through */
-> > case FREE_IRQ:
-> > cfg->ops->free_afu_irqs(hwq->ctx_cookie);
-> > /* fall through */
-> > @@ -973,14 +976,18 @@ static void cxlflash_remove(struct pci_dev *pdev)
-> > switch (cfg->init_state) {
-> > case INIT_STATE_CDEV:
-> > cxlflash_release_chrdev(cfg);
-> > + /* fall through */
-> > case INIT_STATE_SCSI:
-> > cxlflash_term_local_luns(cfg);
-> > scsi_remove_host(cfg->host);
-> > + /* fall through */
-> > case INIT_STATE_AFU:
-> > term_afu(cfg);
-> > + /* fall through */
-> > case INIT_STATE_PCI:
-> > cfg->ops->destroy_afu(cfg->afu_cookie);
-> > pci_disable_device(pdev);
-> > + /* fall through */
-> > case INIT_STATE_NONE:
-> > free_mem(cfg);
-> > scsi_host_put(cfg->host);
-> > @@ -3017,6 +3024,7 @@ static ssize_t num_hwqs_store(struct device *dev,
-> > wait_event(cfg->reset_waitq, cfg->state !=3D STATE_RESET);
-> > if (cfg->state =3D=3D STATE_NORMAL)
-> > goto retry;
-> > + /* fall through */
-> > default:
-> > /* Ideally should not happen */
-> > dev_err(dev, "%s: Device is not ready, state=3D%d\n",
-> > --
-> > 2.12.3
-> >=20
-> >=20
->=20
+ arch/powerpc/Kconfig                     |   5 +-
+ arch/powerpc/include/asm/thread_info.h   |   4 +-
+ arch/powerpc/kernel/Makefile             |   7 +-
+ arch/powerpc/kernel/entry_64.S           |   2 +
+ arch/powerpc/kernel/signal.c             | 144 ++++++++-
+ arch/powerpc/kernel/signal_32.c          | 140 ---------
+ arch/powerpc/kernel/syscall_64.c         |   6 +-
+ arch/powerpc/kernel/syscalls/syscall.tbl |   2 +-
+ arch/powerpc/kernel/vdso.c               |   5 +-
+ arch/powerpc/perf/Makefile               |   4 +
+ arch/powerpc/perf/callchain.c            | 379 +----------------------
+ arch/powerpc/perf/callchain.h            |  11 +
+ arch/powerpc/perf/callchain_32.c         | 218 +++++++++++++
+ arch/powerpc/perf/callchain_64.c         | 185 +++++++++++
+ 14 files changed, 579 insertions(+), 533 deletions(-)
+ create mode 100644 arch/powerpc/perf/callchain.h
+ create mode 100644 arch/powerpc/perf/callchain_32.c
+ create mode 100644 arch/powerpc/perf/callchain_64.c
+
+-- 
+2.22.0
 
