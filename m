@@ -1,89 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E85A11EA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 08:42:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92477A1211
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 08:48:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JtLz37pZzDrN2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 16:42:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JtTt2zcKzDrP9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 16:48:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+c7f673d4bdabd04d2ac5+5849+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="bSq+njuL"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JtJs4DSBzDrKh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 16:40:13 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="q1HORZW0"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46JtJs3Gg5z8vpr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 16:40:13 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46JtJs2cjLz9sN1; Thu, 29 Aug 2019 16:40:13 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="q1HORZW0"; 
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46JtJr0f68z9sNm
- for <linuxppc-dev@ozlabs.org>; Thu, 29 Aug 2019 16:40:11 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id o3so1090316plb.13
- for <linuxppc-dev@ozlabs.org>; Wed, 28 Aug 2019 23:40:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=ORK7X7Ak0hv9l57pH4NKaklPes9OoYBlRdCvb9W3dTo=;
- b=q1HORZW0OWUjI/oO7K00q9t+5S+cjgOt8RQe/7PnPWJMWD9OhqHBvLnu4qgDe/tVT/
- gTg+qo2wqsSu9VsdHm7FxWpN0UtNKq45SLZlnHpeGQuaC8HD1/H2wu36mcgAqbKSvIu0
- vkouxC4mK+bdT56ChNbGZAgyewi1tZ9h+qpfE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=ORK7X7Ak0hv9l57pH4NKaklPes9OoYBlRdCvb9W3dTo=;
- b=unXH4G9AKOya7RjXCQRCz4+rE/XLWAt+AZklwYO7UN6mRmPID1XpvtmzJgNlfO8vfr
- 0e73yt4NUyOKvTCfPN474QW4uUAjFRdwtMKDwprubJYMYXMNzJcXhyzF/O00xkFv+uaU
- Kp65OkrtHhtx6Vh3DzzlC4KIa7YLiVTVxaMblJOT1q0pXai6vQW1InWY37WWGkYNScdC
- unzeGc7Wlwv1tWrydYL2mqQOxlDjgonTYNtPINQUYngMyKI16aHV5XYnGPsJ8C4Xk/cS
- mZZt9ejsuxA+GlpxTZB8SYsC6DigAHRt6OlIzLNfnqM6rdBZCHinIijuDMGRd5zDPoUr
- DCAw==
-X-Gm-Message-State: APjAAAWk716T3tivQxIsrbtLv4OOnLGrOYnJekvz+z0a3HR6syL+dNcq
- MZhsXfydPqp3Sfnftce1NdSNrQ==
-X-Google-Smtp-Source: APXvYqxDJtWozUOTxlziw7Ld/8on+Ta0l+4nJ5okDn71QH5EXiS01UtjM/Lq+WdusL28oQRhpF6Dwg==
-X-Received: by 2002:a17:902:a50a:: with SMTP id
- s10mr8198619plq.108.1567060808510; 
- Wed, 28 Aug 2019 23:40:08 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id r3sm1634491pfr.101.2019.08.28.23.40.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2019 23:40:07 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
- kernel-hardening@lists.openwall.com
-Subject: Re: [PATCH v5 1/2] powerpc/xmon: Allow listing and clearing
- breakpoints in read-only mode
-In-Reply-To: <20190828034613.14750-2-cmr@informatik.wtf>
-References: <20190828034613.14750-1-cmr@informatik.wtf>
- <20190828034613.14750-2-cmr@informatik.wtf>
-Date: Thu, 29 Aug 2019 16:40:03 +1000
-Message-ID: <87ef14v5j0.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JtS32LxMzDrKj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 16:46:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=XqP6KMHBCPelPBAfqvIaQqLm65eVmqW9YvWHKrHsia8=; b=bSq+njuLMh/IWrVBbvVdjZxB1
+ 1GcwUvx/GvMQouDj9rqBcbio1YAApe59HHPJlVQrjMEmEG53zV1kim0pX7me3YGSHHRmlK6XoC7os
+ eLRbmH7iorT3BER7+Ijz9ltiG3nN38RlQ3emvE8lJDMYfRiKxkM6irbaaD6aTYoFOCA3zCz9O57aJ
+ mt+KYeCu0Gpx6P3HlMoQAiKQKw2IBvTtWMfy6xRZZINxNsMwFAgRNBDljwJS1KcZqDtUCEomYt4/r
+ GbJcz0Snih0atw5tAY7aH+dv5EcaDRcMP/tqpxjLlawyiEfPJSlD1P4b9H+felGrTqxZqYlej6w0N
+ b4Vm0zGPQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1i3ECO-0001xf-6i; Thu, 29 Aug 2019 06:46:24 +0000
+Date: Wed, 28 Aug 2019 23:46:24 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Michal Suchanek <msuchanek@suse.de>
+Subject: Re: [PATCH v3 3/4] powerpc/64: make buildable without CONFIG_COMPAT
+Message-ID: <20190829064624.GA28508@infradead.org>
+References: <cover.1567007242.git.msuchanek@suse.de>
+ <0ad51b41aebf65b3f3fcb9922f0f00b47932725d.1567007242.git.msuchanek@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ad51b41aebf65b3f3fcb9922f0f00b47932725d.1567007242.git.msuchanek@suse.de>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,35 +65,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com
+Cc: Michael Neuling <mikey@neuling.org>, Arnd Bergmann <arnd@arndb.de>,
+ Nicolai Stange <nstange@suse.de>, David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Joel Stanley <joel@jms.id.au>, Christian Brauner <christian@brauner.io>,
+ Firoz Khan <firoz.khan@linaro.org>, Breno Leitao <leitao@debian.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Allison Randal <allison@lohutok.net>,
+ "Eric W. Biederman" <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Chris,
+On Wed, Aug 28, 2019 at 06:43:50PM +0200, Michal Suchanek wrote:
+> +ifdef CONFIG_COMPAT
+> +obj-y				+= sys_ppc32.o ptrace32.o signal_32.o
+> +endif
 
-> Read-only mode should not prevent listing and clearing any active
-> breakpoints.
+This should be:
 
-I tested this and it works for me:
+obj-$(CONFIG_COMPAT)		+= sys_ppc32.o ptrace32.o signal_32.o
 
-Tested-by: Daniel Axtens <dja@axtens.net>
+>  /* This value is used to mark exception frames on the stack. */
+>  exception_marker:
+> diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+> index 60436432399f..73d0f53ffc1a 100644
+> --- a/arch/powerpc/kernel/signal.c
+> +++ b/arch/powerpc/kernel/signal.c
+> @@ -277,7 +277,7 @@ static void do_signal(struct task_struct *tsk)
+>  
+>  	rseq_signal_deliver(&ksig, tsk->thread.regs);
+>  
+> -	if (is32) {
+> +	if ((IS_ENABLED(CONFIG_PPC32) || IS_ENABLED(CONFIG_COMPAT)) && is32) {
 
-> +		if (xmon_is_ro || !scanhex(&a)) {
+I think we should fix the is_32bit_task definitions instead so that
+callers don't need this mess.  I'd suggest something like:
 
-It took me a while to figure out what this line does: as I understand
-it, the 'b' command can also be used to install a breakpoint (as well as
-bi/bd). If we are in ro mode or if the input after 'b' doesn't scan as a
-hex string, print the list of breakpoints instead. Anyway, I'm now
-happy with it, so:
-
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Regards,
-Daniel
-
->  			/* print all breakpoints */
->  			printf("   type            address\n");
->  			if (dabr.enabled) {
-> -- 
-> 2.23.0
+#ifdef CONFIG_COMPAT
+#define is_32bit_task()		test_thread_flag(TIF_32BIT)
+#else
+#define is_32bit_task()		IS_ENABLED(CONFIG_PPC32)
+#endif
