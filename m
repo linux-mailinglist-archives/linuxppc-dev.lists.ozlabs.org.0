@@ -1,58 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187C0A1A9A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 15:00:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35586A1A9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 15:03:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46K2lV05m1zDr2y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 23:00:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46K2pb4tjyzDrbj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 23:03:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.160.193; helo=mail-qt1-f193.google.com;
- envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mail-qt1-f193.google.com (mail-qt1-f193.google.com
- [209.85.160.193])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="d1DlSWL7"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46K2hm5nVFzDqxX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 22:57:59 +1000 (AEST)
-Received: by mail-qt1-f193.google.com with SMTP id t12so3483048qtp.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 05:57:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=eBPBkBKyWo1gxv5n6v6wKh2d1Kik1L8vXbkWwc2K3bs=;
- b=ex0cMmNp9lcEPldJaSqVwwJHo1eilXEi/f21NAa7HxeQkiKGnX1siqVgXs1KYQ8CQZ
- d4hCMlHuHhJpix2uzX7bR0LPyFc802nZwOOOp6KXzgKeVjp69tP5CSZvTln+rbnjhAWV
- oC3lVGltinCMf8loSRp6IwgmC4l/jiasAr2TmQ2WDNV3nEW5rMlBD+lsjfZdOmVwfB4X
- XvUt4T1fF/kmHORtaxbFtKyRDnwjE0bVSFwFcn8XJknTaijLqU8yH6o7MBl9jJCXcvhU
- coq3dSZV97ZhaLB7u5h7ctCSAxbxKDHX2aso1qLCwOt/+/Zho/zSmej5l3CjitIxzYhu
- t4kA==
-X-Gm-Message-State: APjAAAX+FQEDFm3HqnIJC/keqgVYvBgZMpX3iAfKZ9Q9ZOQwTQbbKXvy
- rCCgRR67yz4U4zV7CsqyyFBf/TzAMSydYBmeLs4=
-X-Google-Smtp-Source: APXvYqwY3WgtxDzkiHef+9HQh/ay0Es1FEwtogifyQxitHWZN7yE+/+41B7zXg5JPfw7deyTXnwsCWcNTDVb6Yevmn4=
-X-Received: by 2002:ac8:239d:: with SMTP id q29mr9597999qtq.304.1567083475450; 
- Thu, 29 Aug 2019 05:57:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46K2k35pNgzDrD2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 22:59:05 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46K2jv1ydTz9txfW;
+ Thu, 29 Aug 2019 14:58:59 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=d1DlSWL7; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id roj0O764YFSI; Thu, 29 Aug 2019 14:58:59 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46K2jv0q5Qz9txfT;
+ Thu, 29 Aug 2019 14:58:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1567083539; bh=ETDADYf+IUCVWupaeGrp+tk6VOk0Ifz5sDsNRRsIxEM=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=d1DlSWL78knKVNtpTsN23QPXzEkdN+PCnkoG6h0EOTzE09c66D0rhvYJVj2i2o3ys
+ rFyEYohQLwv8QajUjpql0JKluJHVglf94GO5rhHjTA5z/122jEJLTwHpdWQQrxcNz3
+ ByzsE+/YDX2xNTzuBRKI8XONNXkNtMz6aqwuTbUg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8A3C58B8BF;
+ Thu, 29 Aug 2019 14:59:00 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id vUOO7oAfSdZy; Thu, 29 Aug 2019 14:59:00 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 323F68B8B4;
+ Thu, 29 Aug 2019 14:59:00 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/mm: tell if a bad page fault on data is read or
+ write.
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <4f88d7e6fda53b5f80a71040ab400242f6c8cb93.1566400889.git.christophe.leroy@c-s.fr>
+ <87o908tbgx.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <5f539c22-532a-3319-afe8-cdfac4ab3ee6@c-s.fr>
+Date: Thu, 29 Aug 2019 14:59:00 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <cover.1567072270.git.msuchanek@suse.de>
- <061a0de2042156669303f95526ec13476bf490c7.1567072270.git.msuchanek@suse.de>
- <CAK8P3a1wR-jzFSzdPqgfCG4vyAi_xBPVGhc6Nn4KaXpk3cUiJw@mail.gmail.com>
- <20190829143716.6e41b10e@naga>
-In-Reply-To: <20190829143716.6e41b10e@naga>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 29 Aug 2019 14:57:39 +0200
-Message-ID: <CAK8P3a2DHP+8Vbc4yjq5-wT9GpSxvndCa8gnvx0WcD8YAUAsMw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] powerpc: make llseek 32bit-only.
-To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87o908tbgx.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,55 +81,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
- Nicolai Stange <nstange@suse.de>, David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Joel Stanley <joel@jms.id.au>, Christian Brauner <christian@brauner.io>,
- Firoz Khan <firoz.khan@linaro.org>, Breno Leitao <leitao@debian.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Allison Randal <allison@lohutok.net>,
- "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 29, 2019 at 2:37 PM Michal Such=C3=A1nek <msuchanek@suse.de> wr=
-ote:
-> On Thu, 29 Aug 2019 14:19:46 +0200 Arnd Bergmann <arnd@arndb.de> wrote:
-> > On Thu, Aug 29, 2019 at 12:23 PM Michal Suchanek <msuchanek@suse.de> wr=
-ote:
-> > In particular, I don't see why you single out llseek here, but leave ot=
-her
-> > syscalls that are not needed on 64-bit machines such as pread64().
->
-> Because llseek is not built in fs/ when building 64bit only causing a
-> link error.
->
-> I initially posted patch to build it always but it was pointed out it
-> is not needed, and  the interface does not make sense on 64bit, and
-> that platforms that don't have it on 64bit now don't want that useless
-> code.
 
-Ok, please put that into the changeset description then.
 
-I looked at uses of __NR__llseek in debian code search and
-found this one:
+Le 29/08/2019 à 14:14, Michael Ellerman a écrit :
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>> DSISR has a bit to tell if the fault is due to a read or a write.
+> 
+> Except some CPUs don't have a DSISR?
+> 
+> Which is why we have page_fault_is_write() that's used in
+> __do_page_fault().
+> 
+> Or is that old cruft?
+> 
+> I see eg. in head_40x.S we pass r5=0 for error code, and we don't set
+> regs->dsisr anywhere AFAICS. So it might just contain some junk.
 
-https://codesearch.debian.net/show?file=3Dumview_0.8.2-1.2%2Fxmview%2Fum_mm=
-ap.c&line=3D328
+But then we have a problem with show_regs() as well, havent't we ?
 
-It looks like this application will try to use llseek instead of lseek
-when built against kernel headers that define __NR_llseek.
+	if (trap == 0x200 || trap == 0x300 || trap == 0x600)
+#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+		pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, regs->dsisr);
+#else
+		pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, regs->dsisr);
+#endif
 
-Changing the powerpc kernel not to provide that to user
-space may break it unless the program gets recompiled against
-the latest headers.
+I need to look closer.
 
-      Arnd
+Christophe
+
+
+> 
+> cheers
+> 
+>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+>> index 8432c281de92..b5047f9b5dec 100644
+>> --- a/arch/powerpc/mm/fault.c
+>> +++ b/arch/powerpc/mm/fault.c
+>> @@ -645,6 +645,7 @@ NOKPROBE_SYMBOL(do_page_fault);
+>>   void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
+>>   {
+>>   	const struct exception_table_entry *entry;
+>> +	int is_write = page_fault_is_write(regs->dsisr);
+>>   
+>>   	/* Are we prepared to handle this fault?  */
+>>   	if ((entry = search_exception_tables(regs->nip)) != NULL) {
+>> @@ -658,9 +659,10 @@ void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
+>>   	case 0x300:
+>>   	case 0x380:
+>>   	case 0xe00:
+>> -		pr_alert("BUG: %s at 0x%08lx\n",
+>> +		pr_alert("BUG: %s on %s at 0x%08lx\n",
+>>   			 regs->dar < PAGE_SIZE ? "Kernel NULL pointer dereference" :
+>> -			 "Unable to handle kernel data access", regs->dar);
+>> +			 "Unable to handle kernel data access",
+>> +			 is_write ? "write" : "read", regs->dar);
+> 
+>>   		break;
+>>   	case 0x400:
+>>   	case 0x480:
+>> -- 
+>> 2.13.3
