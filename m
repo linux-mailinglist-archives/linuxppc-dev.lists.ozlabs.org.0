@@ -2,86 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE939A1033
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 06:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37265A10BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 07:15:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Jq233jwfzDrK0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 14:12:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JrR84p3WzDqYq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 15:15:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=sukadev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=ti.com
+ (client-ip=198.47.19.141; helo=fllv0015.ext.ti.com;
+ envelope-from=kishon@ti.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=ti.com header.i=@ti.com header.b="xAvXEf/1"; 
+ dkim-atps=neutral
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46JnYh5Q2yzDrLw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 13:06:00 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7T33Clu072857; Wed, 28 Aug 2019 23:05:56 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2up69y88uf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Aug 2019 23:05:56 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7T33svt078996;
- Wed, 28 Aug 2019 23:05:55 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2up69y88tv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Aug 2019 23:05:55 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7T34XEG009874;
- Thu, 29 Aug 2019 03:05:54 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04wdc.us.ibm.com with ESMTP id 2ujvv6sxh9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2019 03:05:54 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7T35suR43385164
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Aug 2019 03:05:54 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F2594124053;
- Thu, 29 Aug 2019 03:05:53 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3FDE124052;
- Thu, 29 Aug 2019 03:05:53 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.70.94.45])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 29 Aug 2019 03:05:53 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id 41F4E2E10DA; Wed, 28 Aug 2019 20:05:52 -0700 (PDT)
-Date: Wed, 28 Aug 2019 20:05:52 -0700
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v7 5/7] kvmppc: Radix changes for secure guest
-Message-ID: <20190829030552.GA17673@us.ibm.com>
-References: <20190822102620.21897-1-bharata@linux.ibm.com>
- <20190822102620.21897-6-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46JrPC2WK4zDrLK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 15:13:49 +1000 (AEST)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+ by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7T5DVQ1080368;
+ Thu, 29 Aug 2019 00:13:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+ s=ti-com-17Q1; t=1567055611;
+ bh=LYyFnkusAO06maJIyAoLh4uHHcHnpkVbJ8SCEW6OJlg=;
+ h=Subject:To:CC:References:From:Date:In-Reply-To;
+ b=xAvXEf/1vTB129pEHtXkhBGqX8JXqhzbbly6gS1T+vqU0Wn+9Yi+jY+g4E3aPNqVZ
+ bs2/RdD9XzUDZalkIWDSNadfyS+dVvioyPCUIQOo99sbAAb86ZifKDpYqA2RMaxQk3
+ 0uTYPMDWLATmZWbjfLTy8NyNqesUw632YUQfGKm0=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+ by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7T5DVgk118886
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Thu, 29 Aug 2019 00:13:31 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 29
+ Aug 2019 00:13:31 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 29 Aug 2019 00:13:31 -0500
+Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])
+ by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7T5DOv7066185;
+ Thu, 29 Aug 2019 00:13:25 -0500
+Subject: Re: [PATCH v2 07/10] PCI: layerscape: Modify the MSIX to the doorbell
+ way
+To: Andrew Murray <andrew.murray@arm.com>, Xiaowei Bao <xiaowei.bao@nxp.com>, 
+ "gustavo.pimentel@synopsys.com" <gustavo.pimentel@synopsys.com>
+References: <20190822112242.16309-1-xiaowei.bao@nxp.com>
+ <20190822112242.16309-7-xiaowei.bao@nxp.com>
+ <20190823135816.GH14582@e119886-lin.cambridge.arm.com>
+ <AM5PR04MB3299E50BA5D7579D41B8B4F9F5A70@AM5PR04MB3299.eurprd04.prod.outlook.com>
+ <20190827132504.GL14582@e119886-lin.cambridge.arm.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <e64a484c-7cf5-5f65-400c-47128ab45e52@ti.com>
+Date: Thu, 29 Aug 2019 10:43:18 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190822102620.21897-6-bharata@linux.ibm.com>
-X-Operating-System: Linux 2.0.32 on an i486
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-29_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908290032
+In-Reply-To: <20190827132504.GL14582@e119886-lin.cambridge.arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,200 +79,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, Roy Zang <roy.zang@nxp.com>,
+ "lorenzo.pieralisi@arm.co" <lorenzo.pieralisi@arm.co>,
+ "arnd@arndb.de" <arnd@arndb.de>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> - After the guest becomes secure, when we handle a page fault of a page
->   belonging to SVM in HV, send that page to UV via UV_PAGE_IN.
-> - Whenever a page is unmapped on the HV side, inform UV via UV_PAGE_INVAL.
-> - Ensure all those routines that walk the secondary page tables of
->   the guest don't do so in case of secure VM. For secure guest, the
->   active secondary page tables are in secure memory and the secondary
->   page tables in HV are freed when guest becomes secure.
-> 
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/kvm_host.h       | 12 ++++++++++++
->  arch/powerpc/include/asm/ultravisor-api.h |  1 +
->  arch/powerpc/include/asm/ultravisor.h     |  5 +++++
->  arch/powerpc/kvm/book3s_64_mmu_radix.c    | 22 ++++++++++++++++++++++
->  arch/powerpc/kvm/book3s_hv_devm.c         | 20 ++++++++++++++++++++
->  5 files changed, 60 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-> index 66e5cc8c9759..29333e8de1c4 100644
-> --- a/arch/powerpc/include/asm/kvm_host.h
-> +++ b/arch/powerpc/include/asm/kvm_host.h
-> @@ -867,6 +867,8 @@ static inline void kvm_arch_vcpu_block_finish(struct kvm_vcpu *vcpu) {}
->  #ifdef CONFIG_PPC_UV
->  extern int kvmppc_devm_init(void);
->  extern void kvmppc_devm_free(void);
-> +extern bool kvmppc_is_guest_secure(struct kvm *kvm);
-> +extern int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gpa);
->  #else
->  static inline int kvmppc_devm_init(void)
->  {
-> @@ -874,6 +876,16 @@ static inline int kvmppc_devm_init(void)
->  }
-> 
->  static inline void kvmppc_devm_free(void) {}
-> +
-> +static inline bool kvmppc_is_guest_secure(struct kvm *kvm)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gpa)
-> +{
-> +	return -EFAULT;
-> +}
->  #endif /* CONFIG_PPC_UV */
-> 
->  #endif /* __POWERPC_KVM_HOST_H__ */
-> diff --git a/arch/powerpc/include/asm/ultravisor-api.h b/arch/powerpc/include/asm/ultravisor-api.h
-> index 46b1ee381695..cf200d4ce703 100644
-> --- a/arch/powerpc/include/asm/ultravisor-api.h
-> +++ b/arch/powerpc/include/asm/ultravisor-api.h
-> @@ -29,5 +29,6 @@
->  #define UV_UNREGISTER_MEM_SLOT		0xF124
->  #define UV_PAGE_IN			0xF128
->  #define UV_PAGE_OUT			0xF12C
-> +#define UV_PAGE_INVAL			0xF138
-> 
->  #endif /* _ASM_POWERPC_ULTRAVISOR_API_H */
-> diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
-> index 719c0c3930b9..b333241bbe4c 100644
-> --- a/arch/powerpc/include/asm/ultravisor.h
-> +++ b/arch/powerpc/include/asm/ultravisor.h
-> @@ -57,4 +57,9 @@ static inline int uv_unregister_mem_slot(u64 lpid, u64 slotid)
->  	return ucall_norets(UV_UNREGISTER_MEM_SLOT, lpid, slotid);
->  }
-> 
-> +static inline int uv_page_inval(u64 lpid, u64 gpa, u64 page_shift)
-> +{
-> +	return ucall_norets(UV_PAGE_INVAL, lpid, gpa, page_shift);
-> +}
-> +
->  #endif	/* _ASM_POWERPC_ULTRAVISOR_H */
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> index 2d415c36a61d..93ad34e63045 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> @@ -19,6 +19,8 @@
->  #include <asm/pgtable.h>
->  #include <asm/pgalloc.h>
->  #include <asm/pte-walk.h>
-> +#include <asm/ultravisor.h>
-> +#include <asm/kvm_host.h>
-> 
->  /*
->   * Supported radix tree geometry.
-> @@ -915,6 +917,9 @@ int kvmppc_book3s_radix_page_fault(struct kvm_run *run, struct kvm_vcpu *vcpu,
->  	if (!(dsisr & DSISR_PRTABLE_FAULT))
->  		gpa |= ea & 0xfff;
-> 
-> +	if (kvmppc_is_guest_secure(kvm))
-> +		return kvmppc_send_page_to_uv(kvm, gpa & PAGE_MASK);
-> +
->  	/* Get the corresponding memslot */
->  	memslot = gfn_to_memslot(kvm, gfn);
-> 
-> @@ -972,6 +977,11 @@ int kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
->  	unsigned long gpa = gfn << PAGE_SHIFT;
->  	unsigned int shift;
-> 
-> +	if (kvmppc_is_guest_secure(kvm)) {
-> +		uv_page_inval(kvm->arch.lpid, gpa, PAGE_SIZE);
-> +		return 0;
-> +	}
+Gustavo,
 
-If it is a page we share with UV, won't we need to drop the HV mapping
-for the page?
-> +
->  	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
->  	if (ptep && pte_present(*ptep))
->  		kvmppc_unmap_pte(kvm, ptep, gpa, shift, memslot,
-> @@ -989,6 +999,9 @@ int kvm_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
->  	int ref = 0;
->  	unsigned long old, *rmapp;
+On 27/08/19 6:55 PM, Andrew Murray wrote:
+> On Sat, Aug 24, 2019 at 12:08:40AM +0000, Xiaowei Bao wrote:
+>>
+>>
+>>> -----Original Message-----
+>>> From: Andrew Murray <andrew.murray@arm.com>
+>>> Sent: 2019年8月23日 21:58
+>>> To: Xiaowei Bao <xiaowei.bao@nxp.com>
+>>> Cc: bhelgaas@google.com; robh+dt@kernel.org; mark.rutland@arm.com;
+>>> shawnguo@kernel.org; Leo Li <leoyang.li@nxp.com>; kishon@ti.com;
+>>> lorenzo.pieralisi@arm.co; arnd@arndb.de; gregkh@linuxfoundation.org; M.h.
+>>> Lian <minghuan.lian@nxp.com>; Mingkai Hu <mingkai.hu@nxp.com>; Roy
+>>> Zang <roy.zang@nxp.com>; jingoohan1@gmail.com;
+>>> gustavo.pimentel@synopsys.com; linux-pci@vger.kernel.org;
+>>> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
+>>> linux-arm-kernel@lists.infradead.org; linuxppc-dev@lists.ozlabs.org
+>>> Subject: Re: [PATCH v2 07/10] PCI: layerscape: Modify the MSIX to the
+>>> doorbell way
+>>>
+>>> On Thu, Aug 22, 2019 at 07:22:39PM +0800, Xiaowei Bao wrote:
+>>>> The layerscape platform use the doorbell way to trigger MSIX interrupt
+>>>> in EP mode.
+>>>>
+>>>
+>>> I have no problems with this patch, however...
+>>>
+>>> Are you able to add to this message a reason for why you are making this
+>>> change? Did dw_pcie_ep_raise_msix_irq not work when func_no != 0? Or did
+>>> it work yet dw_pcie_ep_raise_msix_irq_doorbell is more efficient?
+>>
+>> The fact is that, this driver is verified in ls1046a platform of NXP before, and ls1046a don't
+>> support MSIX feature, so I set the msix_capable of pci_epc_features struct is false,
+>> but in other platform, e.g. ls1088a, it support the MSIX feature, I verified the MSIX
+>> feature in ls1088a, it is not OK, so I changed to another way. Thanks.
 > 
-> +	if (kvmppc_is_guest_secure(kvm))
-> +		return ref;
-> +
->  	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
->  	if (ptep && pte_present(*ptep) && pte_young(*ptep)) {
->  		old = kvmppc_radix_update_pte(kvm, ptep, _PAGE_ACCESSED, 0,
-> @@ -1013,6 +1026,9 @@ int kvm_test_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
->  	unsigned int shift;
->  	int ref = 0;
+> Right, so the existing pci-layerscape-ep.c driver never supported MSIX yet it
+> erroneously had a switch case statement to call dw_pcie_ep_raise_msix_irq which
+> would never get used.
 > 
-> +	if (kvmppc_is_guest_secure(kvm))
-> +		return ref;
-> +
->  	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
->  	if (ptep && pte_present(*ptep) && pte_young(*ptep))
->  		ref = 1;
-> @@ -1030,6 +1046,9 @@ static int kvm_radix_test_clear_dirty(struct kvm *kvm,
->  	int ret = 0;
->  	unsigned long old, *rmapp;
-> 
-> +	if (kvmppc_is_guest_secure(kvm))
-> +		return ret;
-> +
->  	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
->  	if (ptep && pte_present(*ptep) && pte_dirty(*ptep)) {
->  		ret = 1;
-> @@ -1082,6 +1101,9 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
->  	unsigned long gpa;
->  	unsigned int shift;
-> 
-> +	if (kvmppc_is_guest_secure(kvm))
-> +		return;
-> +
->  	gpa = memslot->base_gfn << PAGE_SHIFT;
->  	spin_lock(&kvm->mmu_lock);
->  	for (n = memslot->npages; n; --n) {
-> diff --git a/arch/powerpc/kvm/book3s_hv_devm.c b/arch/powerpc/kvm/book3s_hv_devm.c
-> index 494495806407..19cfad340a51 100644
-> --- a/arch/powerpc/kvm/book3s_hv_devm.c
-> +++ b/arch/powerpc/kvm/book3s_hv_devm.c
-> @@ -49,6 +49,11 @@ struct kvmppc_devm_page_pvt {
->  	bool skip_page_out;
->  };
-> 
-> +bool kvmppc_is_guest_secure(struct kvm *kvm)
-> +{
-> +	return !!(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE);
-> +}
-> +
->  unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
->  {
->  	struct kvm_memslots *slots;
-> @@ -453,6 +458,21 @@ kvmppc_h_svm_page_out(struct kvm *kvm, unsigned long gpa,
->  	return ret;
->  }
-> 
-> +int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gpa)
-> +{
-> +	unsigned long pfn;
-> +	int ret;
-> +
-> +	pfn = gfn_to_pfn(kvm, gpa >> PAGE_SHIFT);
-> +	if (is_error_noslot_pfn(pfn))
-> +		return -EFAULT;
-> +
-> +	ret = uv_page_in(kvm->arch.lpid, pfn << PAGE_SHIFT, gpa, 0, PAGE_SHIFT);
-> +	kvm_release_pfn_clean(pfn);
-> +
-> +	return (ret == U_SUCCESS) ? RESUME_GUEST : -EFAULT;
-> +}
-> +
->  static u64 kvmppc_get_secmem_size(void)
->  {
->  	struct device_node *np;
-> -- 
-> 2.21.0
+> Now that we're adding a platform with MSIX support the existing
+> dw_pcie_ep_raise_msix_irq doesn't work (for this platform) so we are adding a
+> different method.
+
+Gustavo, can you confirm dw_pcie_ep_raise_msix_irq() works for designware as it
+didn't work for both me and Xiaowei?
+
+Thanks
+Kishon
