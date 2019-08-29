@@ -1,39 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EDAA13F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 10:40:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8DDA13FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 10:42:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46JwzK3jYwzDqTw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 18:40:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Jx1k6gG3zDqwj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 18:42:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Cfx8ykrB"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Jwx63jNrzDqLb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 18:38:16 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 5996268B20; Thu, 29 Aug 2019 10:38:10 +0200 (CEST)
-Date: Thu, 29 Aug 2019 10:38:10 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v7 1/7] kvmppc: Driver to manage pages of secure guest
-Message-ID: <20190829083810.GA13039@lst.de>
-References: <20190822102620.21897-1-bharata@linux.ibm.com>
- <20190822102620.21897-2-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Jwy23jHCzDqDh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 18:39:06 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46Jwxq4GPGz9tyg4;
+ Thu, 29 Aug 2019 10:38:55 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Cfx8ykrB; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HE3GtSajPGhf; Thu, 29 Aug 2019 10:38:55 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46Jwxq37BMz9tyg2;
+ Thu, 29 Aug 2019 10:38:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1567067935; bh=tXCF7AbKTiavyowWoh/vYmV9ZQwmX5kJekIVsIYLj/g=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Cfx8ykrBnE57ra6XU5KLHpxPOOQwPT5hI0EjyMJRgp6NeO5DaE5nxD1gsv/4AqXPf
+ 1+7OA+ffewODFsUE1eySj/y6mRHDDcd3hLrwLDc9eJdMdofqX90rSO68LRTSMsNGs5
+ 79MBd5DK+jm5kCtYycshxVcLfoaVvN+qbeMeRIzc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 82CBD8B8AB;
+ Thu, 29 Aug 2019 10:38:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id PPFRhYuRjlPE; Thu, 29 Aug 2019 10:38:56 +0200 (CEST)
+Received: from [192.168.204.43] (unknown [192.168.204.43])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C8CFC8B7B2;
+ Thu, 29 Aug 2019 10:38:53 +0200 (CEST)
+Subject: Re: [PATCH v3 3/4] powerpc/64: make buildable without CONFIG_COMPAT
+To: Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@infradead.org>
+References: <cover.1567007242.git.msuchanek@suse.de>
+ <0ad51b41aebf65b3f3fcb9922f0f00b47932725d.1567007242.git.msuchanek@suse.de>
+ <20190829064624.GA28508@infradead.org>
+ <CAK8P3a2qgLTbud+2Fw8Rr0RXV8-xwBMiBg3hFuqqBinN1zS90A@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <b3f74049-be82-be3c-5156-69a18010537e@c-s.fr>
+Date: Thu, 29 Aug 2019 10:38:53 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190822102620.21897-2-bharata@linux.ibm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <CAK8P3a2qgLTbud+2Fw8Rr0RXV8-xwBMiBg3hFuqqBinN1zS90A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,131 +80,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de
+Cc: Michael Neuling <mikey@neuling.org>, Allison Randal <allison@lohutok.net>,
+ Nicolai Stange <nstange@suse.de>, David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Brauner <christian@brauner.io>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Breno Leitao <leitao@debian.org>, Firoz Khan <firoz.khan@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Michal Suchanek <msuchanek@suse.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 22, 2019 at 03:56:14PM +0530, Bharata B Rao wrote:
-> +/*
-> + * Bits 60:56 in the rmap entry will be used to identify the
-> + * different uses/functions of rmap.
-> + */
-> +#define KVMPPC_RMAP_DEVM_PFN	(0x2ULL << 56)
-
-How did you come up with this specific value?
-
-> +
-> +static inline bool kvmppc_rmap_is_devm_pfn(unsigned long pfn)
-> +{
-> +	return !!(pfn & KVMPPC_RMAP_DEVM_PFN);
-> +}
-
-No need for !! when returning a bool.  Also the helper seems a little
-pointless, just opencoding it would make the code more readable in my
-opinion.
-
-> +#ifdef CONFIG_PPC_UV
-> +extern int kvmppc_devm_init(void);
-> +extern void kvmppc_devm_free(void);
-
-There is no need for extern in a function declaration.
-
-> +static int
-> +kvmppc_devm_migrate_alloc_and_copy(struct migrate_vma *mig,
-> +				   unsigned long *rmap, unsigned long gpa,
-> +				   unsigned int lpid, unsigned long page_shift)
-> +{
-> +	struct page *spage = migrate_pfn_to_page(*mig->src);
-> +	unsigned long pfn = *mig->src >> MIGRATE_PFN_SHIFT;
-> +	struct page *dpage;
-> +
-> +	*mig->dst = 0;
-> +	if (!spage || !(*mig->src & MIGRATE_PFN_MIGRATE))
-> +		return 0;
-> +
-> +	dpage = kvmppc_devm_get_page(rmap, gpa, lpid);
-> +	if (!dpage)
-> +		return -EINVAL;
-> +
-> +	if (spage)
-> +		uv_page_in(lpid, pfn << page_shift, gpa, 0, page_shift);
-> +
-> +	*mig->dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
-> +	return 0;
-> +}
-
-I think you can just merge this trivial helper into the only caller.
-
-> +static int
-> +kvmppc_devm_fault_migrate_alloc_and_copy(struct migrate_vma *mig,
-> +					 unsigned long page_shift)
-> +{
-> +	struct page *dpage, *spage;
-> +	struct kvmppc_devm_page_pvt *pvt;
-> +	unsigned long pfn;
-> +	int ret;
-> +
-> +	spage = migrate_pfn_to_page(*mig->src);
-> +	if (!spage || !(*mig->src & MIGRATE_PFN_MIGRATE))
-> +		return 0;
-> +	if (!is_zone_device_page(spage))
-> +		return 0;
-> +
-> +	dpage = alloc_page_vma(GFP_HIGHUSER, mig->vma, mig->start);
-> +	if (!dpage)
-> +		return -EINVAL;
-> +	lock_page(dpage);
-> +	pvt = spage->zone_device_data;
-> +
-> +	pfn = page_to_pfn(dpage);
-> +	ret = uv_page_out(pvt->lpid, pfn << page_shift, pvt->gpa, 0,
-> +			  page_shift);
-> +	if (ret == U_SUCCESS)
-> +		*mig->dst = migrate_pfn(pfn) | MIGRATE_PFN_LOCKED;
-> +	else {
-> +		unlock_page(dpage);
-> +		__free_page(dpage);
-> +	}
-> +	return ret;
-> +}
-
-Here we actually have two callers, but they have a fair amount of
-duplicate code in them.  I think you want to move that common
-code (including setting up the migrate_vma structure) into this
-function and maybe also give it a more descriptive name.
-
-> +static void kvmppc_devm_page_free(struct page *page)
-> +{
-> +	unsigned long pfn = page_to_pfn(page);
-> +	unsigned long flags;
-> +	struct kvmppc_devm_page_pvt *pvt;
-> +
-> +	spin_lock_irqsave(&kvmppc_devm_pfn_lock, flags);
-> +	pvt = page->zone_device_data;
-> +	page->zone_device_data = NULL;
-> +
-> +	bitmap_clear(kvmppc_devm_pfn_bitmap,
-> +		     pfn - (kvmppc_devm_pgmap.res.start >> PAGE_SHIFT), 1);
-
-Nit: I'd just initialize pfn to the value you want from the start.
-That makes the code a little easier to read, and keeps a tiny bit more
-code outside the spinlock.
-
-	unsigned long pfn = page_to_pfn(page) -
-			(kvmppc_devm_pgmap.res.start >> PAGE_SHIFT);
-
-	..
-
-	 bitmap_clear(kvmppc_devm_pfn_bitmap, pfn, 1);
 
 
-> +	kvmppc_devm_pgmap.type = MEMORY_DEVICE_PRIVATE;
-> +	kvmppc_devm_pgmap.res = *res;
-> +	kvmppc_devm_pgmap.ops = &kvmppc_devm_ops;
-> +	addr = memremap_pages(&kvmppc_devm_pgmap, -1);
+Le 29/08/2019 à 10:01, Arnd Bergmann a écrit :
+> On Thu, Aug 29, 2019 at 8:46 AM Christoph Hellwig <hch@infradead.org> wrote:
+> 
+>>> @@ -277,7 +277,7 @@ static void do_signal(struct task_struct *tsk)
+>>>
+>>>        rseq_signal_deliver(&ksig, tsk->thread.regs);
+>>>
+>>> -     if (is32) {
+>>> +     if ((IS_ENABLED(CONFIG_PPC32) || IS_ENABLED(CONFIG_COMPAT)) && is32) {
+>>
+>> I think we should fix the is_32bit_task definitions instead so that
+>> callers don't need this mess.  I'd suggest something like:
+>>
+>> #ifdef CONFIG_COMPAT
+>> #define is_32bit_task()         test_thread_flag(TIF_32BIT)
+>> #else
+>> #define is_32bit_task()         IS_ENABLED(CONFIG_PPC32)
+>> #endif
+> 
+> Are there actually any (correct) uses of is_32bit_task() outside of
+> #ifdef CONFIG_PPC64?
 
-This -1 should be NUMA_NO_NODE for clarity.
+There is at least  stack_maxrandom_size()
+Also  brk_rnd() and do_signal()
+
+Christophe
+
+> 
+> I suspect most if not all could be changed to the generic
+> in_compat_syscall() that we use outside of architecture specific
+> code.
+> 
+>         Arnd
+> 
