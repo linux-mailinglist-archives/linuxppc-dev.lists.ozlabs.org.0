@@ -1,84 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C42CA1333
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 10:02:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB82A1338
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 10:04:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Jw7c26SyzDrBv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 18:02:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46JwB92HzhzDr97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 18:04:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="clrVBVaN"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Jw513WQczDqWy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 18:00:04 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7T7xtCk034709
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 04:00:01 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2up9f52pjt-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 04:00:00 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Thu, 29 Aug 2019 08:57:57 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 29 Aug 2019 08:57:55 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7T7vr9045416700
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Aug 2019 07:57:53 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 95EF842042;
- Thu, 29 Aug 2019 07:57:53 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA5324204C;
- Thu, 29 Aug 2019 07:57:51 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.124.35.109])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu, 29 Aug 2019 07:57:51 +0000 (GMT)
-Date: Thu, 29 Aug 2019 13:27:49 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v7 5/7] kvmppc: Radix changes for secure guest
-References: <20190822102620.21897-1-bharata@linux.ibm.com>
- <20190822102620.21897-6-bharata@linux.ibm.com>
- <20190829030552.GA17673@us.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Jw574JJgzDrBv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 18:00:11 +1000 (AEST)
+Received: by mail-io1-xd41.google.com with SMTP id j5so5073258ioj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 01:00:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=oVotxGebids4TFp3x/bYvSPZpIw5FaFgkOK0MmkO4Wk=;
+ b=clrVBVaN5dOhL2Dw55x99zrwPG1GZcrRgBQCbTKSj7yO8cfDxnRxMtJMNuA3FBwIet
+ cVagLnY/sgI9nfk0aLXMmqHQVxTKxmpeOgSM9MnO+F5y04SnTQ13W9u0b7yUTsBUEYK3
+ 1jN+12vMY9RSmS9DygQH6ICegK9Cm5OoTgFXazVoa9WMlEGGEqcMQ3XjwlUK8XTC6Gj/
+ K5MLh0Wsl74djTzn+AFdNRm7BbGMsUK/6PKjaSz2Wc4KonV9ue66x2e+bTbc5rPsFJj+
+ zwodcBU0KMiY6L33X8GAoI5TSi+eY+xyVK77hwBb+nskPJ0CRyGI0QyXjFHAKYOu0ep9
+ GKhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=oVotxGebids4TFp3x/bYvSPZpIw5FaFgkOK0MmkO4Wk=;
+ b=m6ygWvOwa2nFK9ru5AOwHagG13wGms21LbzqM8wzogJKVVhr6K6xCUT7rOM8oW7yR/
+ 36ZrkJuDfdfqH0fdx6uSW8dFkhuxKSMdP+zvIeK4SgYUTbOUrSX41SfRuNCzRrz8ifkE
+ vWTtFWo0oI9/vZivKveQKV0IifLRDp12NkTOp8I8B91T5XdnO0XHcWjCoXQ1iAhPvGxd
+ zY0CN+PRCdPdDvIDVo2h4cZEgiMBy0qdpF30Rye0+YbiMmBW0ibz9I0XbDsP2+aeublx
+ 8VvXqYuW6iEWI4mC7JZTLhS1V41TBY/t7uhTuNvbfHJgwPfHhtwOzNtgZqsGGBWkG18X
+ e8Xg==
+X-Gm-Message-State: APjAAAVgmPrkiL2K56oy8Ib4E1eCrKWgk2KkajoDBv3JoVJ1ZlzX2oeo
+ 7Ux2bwwo2K36CelRQkwkkxrNhimLAortNUJfz2E=
+X-Google-Smtp-Source: APXvYqyRwjYAv0NhUYu0lUNiHvKgw2p/Gp8V/1Gg5hYeLOm2Rk0lZ/dSHbap7jPI6fwaxXdNzXpMKIxR5uWwkrKFh+Y=
+X-Received: by 2002:a6b:6b11:: with SMTP id g17mr3869503ioc.293.1567065607875; 
+ Thu, 29 Aug 2019 01:00:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190829030552.GA17673@us.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19082907-0008-0000-0000-0000030E8B2E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082907-0009-0000-0000-00004A2CCDFA
-Message-Id: <20190829075749.GC31913@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-29_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908290087
+References: <20190829063347.13966-1-aneesh.kumar@linux.ibm.com>
+ <20190829063347.13966-2-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190829063347.13966-2-aneesh.kumar@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Thu, 29 Aug 2019 17:59:56 +1000
+Message-ID: <CAOSf1CFuU7tCzKfYNDTe5Tut=Mz+2gL+nnvQ74y75PyrhTP7AA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/nvdimm: use H_SCM_QUERY hcall on H_OVERLAP
+ error
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,124 +74,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 28, 2019 at 08:05:52PM -0700, Sukadev Bhattiprolu wrote:
-> > - After the guest becomes secure, when we handle a page fault of a page
-> >   belonging to SVM in HV, send that page to UV via UV_PAGE_IN.
-> > - Whenever a page is unmapped on the HV side, inform UV via UV_PAGE_INVAL.
-> > - Ensure all those routines that walk the secondary page tables of
-> >   the guest don't do so in case of secure VM. For secure guest, the
-> >   active secondary page tables are in secure memory and the secondary
-> >   page tables in HV are freed when guest becomes secure.
-> > 
-> > Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-> > ---
-> >  arch/powerpc/include/asm/kvm_host.h       | 12 ++++++++++++
-> >  arch/powerpc/include/asm/ultravisor-api.h |  1 +
-> >  arch/powerpc/include/asm/ultravisor.h     |  5 +++++
-> >  arch/powerpc/kvm/book3s_64_mmu_radix.c    | 22 ++++++++++++++++++++++
-> >  arch/powerpc/kvm/book3s_hv_devm.c         | 20 ++++++++++++++++++++
-> >  5 files changed, 60 insertions(+)
-> > 
-> > diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-> > index 66e5cc8c9759..29333e8de1c4 100644
-> > --- a/arch/powerpc/include/asm/kvm_host.h
-> > +++ b/arch/powerpc/include/asm/kvm_host.h
-> > @@ -867,6 +867,8 @@ static inline void kvm_arch_vcpu_block_finish(struct kvm_vcpu *vcpu) {}
-> >  #ifdef CONFIG_PPC_UV
-> >  extern int kvmppc_devm_init(void);
-> >  extern void kvmppc_devm_free(void);
-> > +extern bool kvmppc_is_guest_secure(struct kvm *kvm);
-> > +extern int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gpa);
-> >  #else
-> >  static inline int kvmppc_devm_init(void)
-> >  {
-> > @@ -874,6 +876,16 @@ static inline int kvmppc_devm_init(void)
-> >  }
-> > 
-> >  static inline void kvmppc_devm_free(void) {}
-> > +
-> > +static inline bool kvmppc_is_guest_secure(struct kvm *kvm)
-> > +{
-> > +	return false;
-> > +}
-> > +
-> > +static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gpa)
-> > +{
-> > +	return -EFAULT;
-> > +}
-> >  #endif /* CONFIG_PPC_UV */
-> > 
-> >  #endif /* __POWERPC_KVM_HOST_H__ */
-> > diff --git a/arch/powerpc/include/asm/ultravisor-api.h b/arch/powerpc/include/asm/ultravisor-api.h
-> > index 46b1ee381695..cf200d4ce703 100644
-> > --- a/arch/powerpc/include/asm/ultravisor-api.h
-> > +++ b/arch/powerpc/include/asm/ultravisor-api.h
-> > @@ -29,5 +29,6 @@
-> >  #define UV_UNREGISTER_MEM_SLOT		0xF124
-> >  #define UV_PAGE_IN			0xF128
-> >  #define UV_PAGE_OUT			0xF12C
-> > +#define UV_PAGE_INVAL			0xF138
-> > 
-> >  #endif /* _ASM_POWERPC_ULTRAVISOR_API_H */
-> > diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
-> > index 719c0c3930b9..b333241bbe4c 100644
-> > --- a/arch/powerpc/include/asm/ultravisor.h
-> > +++ b/arch/powerpc/include/asm/ultravisor.h
-> > @@ -57,4 +57,9 @@ static inline int uv_unregister_mem_slot(u64 lpid, u64 slotid)
-> >  	return ucall_norets(UV_UNREGISTER_MEM_SLOT, lpid, slotid);
-> >  }
-> > 
-> > +static inline int uv_page_inval(u64 lpid, u64 gpa, u64 page_shift)
-> > +{
-> > +	return ucall_norets(UV_PAGE_INVAL, lpid, gpa, page_shift);
-> > +}
-> > +
-> >  #endif	/* _ASM_POWERPC_ULTRAVISOR_H */
-> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> > index 2d415c36a61d..93ad34e63045 100644
-> > --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> > +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> > @@ -19,6 +19,8 @@
-> >  #include <asm/pgtable.h>
-> >  #include <asm/pgalloc.h>
-> >  #include <asm/pte-walk.h>
-> > +#include <asm/ultravisor.h>
-> > +#include <asm/kvm_host.h>
-> > 
-> >  /*
-> >   * Supported radix tree geometry.
-> > @@ -915,6 +917,9 @@ int kvmppc_book3s_radix_page_fault(struct kvm_run *run, struct kvm_vcpu *vcpu,
-> >  	if (!(dsisr & DSISR_PRTABLE_FAULT))
-> >  		gpa |= ea & 0xfff;
-> > 
-> > +	if (kvmppc_is_guest_secure(kvm))
-> > +		return kvmppc_send_page_to_uv(kvm, gpa & PAGE_MASK);
-> > +
-> >  	/* Get the corresponding memslot */
-> >  	memslot = gfn_to_memslot(kvm, gfn);
-> > 
-> > @@ -972,6 +977,11 @@ int kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
-> >  	unsigned long gpa = gfn << PAGE_SHIFT;
-> >  	unsigned int shift;
-> > 
-> > +	if (kvmppc_is_guest_secure(kvm)) {
-> > +		uv_page_inval(kvm->arch.lpid, gpa, PAGE_SIZE);
-> > +		return 0;
-> > +	}
-> 
-> If it is a page we share with UV, won't we need to drop the HV mapping
-> for the page?
+On Thu, Aug 29, 2019 at 4:34 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Right now we force an unbind of SCM memory at drcindex on H_OVERLAP error.
+> This really slows down operations like kexec where we get the H_OVERLAP
+> error because we don't go through a full hypervisor re init.
 
-I believe we come here via MMU notifies only after dropping HV mapping.
+Maybe we should be unbinding it on a kexec().
 
-Regards,
-Bharata.
+> H_OVERLAP error for a H_SCM_BIND_MEM hcall indicates that SCM memory at
+> drc index is already bound. Since we don't specify a logical memory
+> address for bind hcall, we can use the H_SCM_QUERY hcall to query
+> the already bound logical address.
 
+This is a little sketchy since we might have crashed during the
+initial bind. Checking if the last block is bound to where we expect
+it to be might be a good idea. If it's not where we expect it to be,
+then an unbind->bind cycle is the only sane thing to do.
+
+> Boot time difference with and without patch is:
+>
+> [    5.583617] IOMMU table initialized, virtual merging enabled
+> [    5.603041] papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Retrying bind after unbinding
+> [  301.514221] papr_scm ibm,persistent-memory:ibm,pmemory@44108001: Retrying bind after unbinding
+> [  340.057238] hv-24x7: read 1530 catalog entries, created 537 event attrs (0 failures), 275 descs
+
+Is the unbind significantly slower than a bind? Or is the region here
+just massive?
+
+> after fix
+>
+> [    5.101572] IOMMU table initialized, virtual merging enabled
+> [    5.116984] papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Querying SCM details
+> [    5.117223] papr_scm ibm,persistent-memory:ibm,pmemory@44108001: Querying SCM details
+> [    5.120530] hv-24x7: read 1530 catalog entries, created 537 event attrs (0 failures), 275 descs
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 26 ++++++++++++++++++++---
+>  1 file changed, 23 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 220e595cb579..4b74cfe7b334 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -110,6 +110,27 @@ static void drc_pmem_unbind(struct papr_scm_priv *p)
+>         return;
+>  }
+>
+> +static int drc_pmem_query(struct papr_scm_priv *p)
+> +{
+> +       unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> +       int64_t rc;
+> +
+> +
+> +       rc = plpar_hcall(H_SCM_QUERY_BLOCK_MEM_BINDING, ret,
+> +                        p->drc_index, 0);
+> +
+> +       if (rc) {
+> +               dev_err(&p->pdev->dev, "Failed to bind SCM");
+> +               return rc;
+> +       }
+> +
+> +       p->bound_addr = ret[0];
+> +       dev_dbg(&p->pdev->dev, "bound drc 0x%x to %pR\n", p->drc_index, &p->res);
+> +
+> +       return 0;
+> +}
+> +
+> +
+>  static int papr_scm_meta_get(struct papr_scm_priv *p,
+>                              struct nd_cmd_get_config_data_hdr *hdr)
+>  {
+> @@ -431,9 +452,8 @@ static int papr_scm_probe(struct platform_device *pdev)
+>
+>         /* If phyp says drc memory still bound then force unbound and retry */
+>         if (rc == H_OVERLAP) {
+> -               dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
+> -               drc_pmem_unbind(p);
+> -               rc = drc_pmem_bind(p);
+
+> +               dev_warn(&pdev->dev, "Querying SCM details\n");
+
+That's a pretty vague message. If we're going to treat leaving the
+region bound over kexec() as normal then you might want to bump it
+down to pr_info() or so.
+
+> +               rc = drc_pmem_query(p);
+>         }
+>
+>         if (rc != H_SUCCESS) {
+> --
+> 2.21.0
+>
