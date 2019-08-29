@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B55A1A51
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 14:42:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F008A1A45
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 14:40:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46K2MJ69JRzDqbc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 22:42:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46K2JW5d1LzDqWN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 22:40:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,17 +18,17 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46K26w6LQNzDrQM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 22:32:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46K26w6JH8zDrQL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 22:32:08 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id E9C05B023;
- Thu, 29 Aug 2019 12:32:04 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 64EC4AE74;
+ Thu, 29 Aug 2019 12:32:05 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/3] scsi: cxlflash: Fix fallthrough warnings.
-Date: Thu, 29 Aug 2019 14:32:00 +0200
-Message-Id: <279d33f05007e9f3e3fb4e6ea19634b2608ffbd3.1567081143.git.msuchanek@suse.de>
+Subject: [PATCH 2/3] scsi: ibmvfc: Fix fallthrough warnings.
+Date: Thu, 29 Aug 2019 14:32:01 +0200
+Message-Id: <1302692ee9813ba49e647b7e6203db5e99e65007.1567081143.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <cover.1567081143.git.msuchanek@suse.de>
 References: <cover.1567081143.git.msuchanek@suse.de>
@@ -45,67 +45,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Uma Krishnan <ukrishn@linux.ibm.com>, linux-scsi@vger.kernel.org,
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
  "Martin K. Petersen" <martin.petersen@oracle.com>,
  "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
- "Manoj N. Kumar" <manoj@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Michal Suchanek <msuchanek@suse.de>, "Matthew R. Ochs" <mrochs@linux.ibm.com>
+ Paul Mackerras <paulus@samba.org>, Michal Suchanek <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add fallthrough comments where missing.
+Add fallthrough comments where they are missing.
 
 Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 ---
- drivers/scsi/cxlflash/main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/ibmvscsi/ibmvfc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/cxlflash/main.c b/drivers/scsi/cxlflash/main.c
-index b1f4724efde2..f402fa9a7bec 100644
---- a/drivers/scsi/cxlflash/main.c
-+++ b/drivers/scsi/cxlflash/main.c
-@@ -753,10 +753,13 @@ static void term_intr(struct cxlflash_cfg *cfg, enum undo_level level,
- 		/* SISL_MSI_ASYNC_ERROR is setup only for the primary HWQ */
- 		if (index == PRIMARY_HWQ)
- 			cfg->ops->unmap_afu_irq(hwq->ctx_cookie, 3, hwq);
-+		/* fall through */
- 	case UNMAP_TWO:
- 		cfg->ops->unmap_afu_irq(hwq->ctx_cookie, 2, hwq);
-+		/* fall through */
- 	case UNMAP_ONE:
- 		cfg->ops->unmap_afu_irq(hwq->ctx_cookie, 1, hwq);
-+		/* fall through */
- 	case FREE_IRQ:
- 		cfg->ops->free_afu_irqs(hwq->ctx_cookie);
- 		/* fall through */
-@@ -973,14 +976,18 @@ static void cxlflash_remove(struct pci_dev *pdev)
- 	switch (cfg->init_state) {
- 	case INIT_STATE_CDEV:
- 		cxlflash_release_chrdev(cfg);
-+		/* fall through */
- 	case INIT_STATE_SCSI:
- 		cxlflash_term_local_luns(cfg);
- 		scsi_remove_host(cfg->host);
-+		/* fall through */
- 	case INIT_STATE_AFU:
- 		term_afu(cfg);
-+		/* fall through */
- 	case INIT_STATE_PCI:
- 		cfg->ops->destroy_afu(cfg->afu_cookie);
- 		pci_disable_device(pdev);
-+		/* fall through */
- 	case INIT_STATE_NONE:
- 		free_mem(cfg);
- 		scsi_host_put(cfg->host);
-@@ -3017,6 +3024,7 @@ static ssize_t num_hwqs_store(struct device *dev,
- 		wait_event(cfg->reset_waitq, cfg->state != STATE_RESET);
- 		if (cfg->state == STATE_NORMAL)
- 			goto retry;
-+		/* fall through */
- 	default:
- 		/* Ideally should not happen */
- 		dev_err(dev, "%s: Device is not ready, state=%d\n",
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 8cdbac076a1b..2a06a5b4d3a5 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -1830,6 +1830,7 @@ static int ibmvfc_bsg_request(struct bsg_job *job)
+ 		port_id = (bsg_request->rqst_data.h_els.port_id[0] << 16) |
+ 			(bsg_request->rqst_data.h_els.port_id[1] << 8) |
+ 			bsg_request->rqst_data.h_els.port_id[2];
++		/* fallthrough */
+ 	case FC_BSG_RPT_ELS:
+ 		fc_flags = IBMVFC_FC_ELS;
+ 		break;
+@@ -1838,6 +1839,7 @@ static int ibmvfc_bsg_request(struct bsg_job *job)
+ 		port_id = (bsg_request->rqst_data.h_ct.port_id[0] << 16) |
+ 			(bsg_request->rqst_data.h_ct.port_id[1] << 8) |
+ 			bsg_request->rqst_data.h_ct.port_id[2];
++		/* fallthrough */
+ 	case FC_BSG_RPT_CT:
+ 		fc_flags = IBMVFC_FC_CT_IU;
+ 		break;
+@@ -4020,6 +4022,7 @@ static void ibmvfc_npiv_login_done(struct ibmvfc_event *evt)
+ 		return;
+ 	case IBMVFC_MAD_CRQ_ERROR:
+ 		ibmvfc_retry_host_init(vhost);
++		/* fallthrough */
+ 	case IBMVFC_MAD_DRIVER_FAILED:
+ 		ibmvfc_free_event(evt);
+ 		return;
 -- 
 2.12.3
 
