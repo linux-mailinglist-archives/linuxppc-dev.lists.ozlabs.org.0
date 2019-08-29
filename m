@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1672A2620
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D76BA2631
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2019 20:39:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KBBy1GkgzDqvx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 04:36:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KBGb2VsqzDrST
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 04:39:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,36 +16,36 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="YgnO7mN3"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Rnl+FZ94"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46K9nk6JNczDrqZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 04:17:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46K9p96MSnzDr94
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 04:18:09 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D50922339E;
- Thu, 29 Aug 2019 18:17:42 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C3E192166E;
+ Thu, 29 Aug 2019 18:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567102663;
- bh=gVurG7BIl7P94A8jKlwa4onRdMssNry3RH32zz0KsOU=;
+ s=default; t=1567102687;
+ bh=4L+TXUYoB3dgZIU4fHI0aqRn5eB6IbrmF5Emxq6NFfg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YgnO7mN3d9Cx3RLLpu3uMmnJG6n2lHXQOuwwkyicvR5AuxmWdbvHB9ahGiz8dkF3i
- kfu/vjwXrISCOo6UGmYSOXGQ4wNTMwtYXIZdRNfaBKCmuWMSsYPyX+IQ/jpBDnIQfi
- 0eETscgv0bsuaxvsPLSF6d42L76rLnDTh4hZuHsc=
+ b=Rnl+FZ94yq9m/8bqaHT7uwbi6shbuui8VKVSlHbnTXf/KwsH80+bGaNAgx+rThzCW
+ mGKMNt0Q0jhPB8sH0nTN8Kg+/uQKWMNiTowgyN9Y+6trAhKJ4vRUCUP+R4Sfn536eg
+ k0W9SHY8u67ybP0y67Ta/Ul4f7/0UGGeybsrT9Q4=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 04/16] ibmveth: Convert multicast list size for
+Subject: [PATCH AUTOSEL 4.4 04/15] ibmveth: Convert multicast list size for
  little-endian system
-Date: Thu, 29 Aug 2019 14:17:22 -0400
-Message-Id: <20190829181736.9040-4-sashal@kernel.org>
+Date: Thu, 29 Aug 2019 14:17:51 -0400
+Message-Id: <20190829181802.9619-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190829181736.9040-1-sashal@kernel.org>
-References: <20190829181736.9040-1-sashal@kernel.org>
+In-Reply-To: <20190829181802.9619-1-sashal@kernel.org>
+References: <20190829181802.9619-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 955f658f3b65f..de9897c8e9331 100644
+index 70b3253e7ed5e..b46fc37c1a947 100644
 --- a/drivers/net/ethernet/ibm/ibmveth.c
 +++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1557,7 +1557,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+@@ -1555,7 +1555,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
  	struct net_device *netdev;
  	struct ibmveth_adapter *adapter;
  	unsigned char *mac_addr_p;
@@ -101,7 +101,7 @@ index 955f658f3b65f..de9897c8e9331 100644
  	long ret;
  	unsigned long ret_attr;
  
-@@ -1579,8 +1579,9 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+@@ -1577,8 +1577,9 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
  		return -EINVAL;
  	}
  
@@ -113,7 +113,7 @@ index 955f658f3b65f..de9897c8e9331 100644
  	if (!mcastFilterSize_p) {
  		dev_err(&dev->dev, "Can't find VETH_MCAST_FILTER_SIZE "
  			"attribute\n");
-@@ -1597,7 +1598,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+@@ -1595,7 +1596,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
  
  	adapter->vdev = dev;
  	adapter->netdev = netdev;
