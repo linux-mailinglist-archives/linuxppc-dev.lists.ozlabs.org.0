@@ -2,85 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E588CA357E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 13:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E43A35F9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 13:47:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KcNP0zT3zDqRJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 21:15:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Kd4q5dZHzDr6P
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 21:47:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=sirena.co.uk
+ (client-ip=2a01:7e01::f03c:91ff:fed4:a3b6; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.co.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KcLF5xqPzDr2p
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 21:13:56 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7UBCOEi129369
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 07:13:51 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uq0ksvp0r-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 07:13:51 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Fri, 30 Aug 2019 12:13:40 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 30 Aug 2019 12:13:38 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7UBDaHf59965478
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Aug 2019 11:13:36 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9BDB9A405F;
- Fri, 30 Aug 2019 11:13:36 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E47B3A405C;
- Fri, 30 Aug 2019 11:13:34 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.81.70])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 30 Aug 2019 11:13:34 +0000 (GMT)
-Date: Fri, 30 Aug 2019 16:43:32 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v7 1/7] kvmppc: Driver to manage pages of secure guest
-References: <20190822102620.21897-1-bharata@linux.ibm.com>
- <20190822102620.21897-2-bharata@linux.ibm.com>
- <20190829030219.GA17497@us.ibm.com>
- <20190829065642.GA31913@in.ibm.com>
- <20190829193911.GA26729@us.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190829193911.GA26729@us.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19083011-0020-0000-0000-000003659D50
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19083011-0021-0000-0000-000021BAF9A8
-Message-Id: <20190830111332.GE31913@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-30_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=960 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908300122
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="Jlx4pGUU"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Kd2b2kXczDqNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 21:45:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+ Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+ List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+ List-Archive; bh=QjPKEdDB9sCJJLsmrlg6e6hB1mOM3Pkslxq2I1phBfw=; b=Jlx4pGUUKv/H
+ 7TLy34v8F8kpMKglTqTATjOIIYARUIpwZuU5MNu+f4CaCohs4TSZa3SanmORostsdtFwOww1DzNQx
+ YIhwuZpJ3ZHSNlF1KRQxNR6XP+oSI7ZA5rx8xuGb3ZbboPBfIvTY1GLrY8HEQTJHbGysSf8Xoz6ag
+ pqUf4=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
+ ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <broonie@sirena.co.uk>)
+ id 1i3fLE-0006Iq-4M; Fri, 30 Aug 2019 11:45:20 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+ id 8C9522742CDC; Fri, 30 Aug 2019 12:45:19 +0100 (BST)
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Applied "ASoC: fsl_ssi: Fix clock control issue in master mode" to
+ the asoc tree
+In-Reply-To: <1567012817-12625-1-git-send-email-shengjiu.wang@nxp.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190830114519.8C9522742CDC@ypsilon.sirena.org.uk>
+Date: Fri, 30 Aug 2019 12:45:19 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,56 +62,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com,
+ linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com,
+ Mark Brown <broonie@kernel.org>, perex@perex.cz, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 29, 2019 at 12:39:11PM -0700, Sukadev Bhattiprolu wrote:
-> Bharata B Rao [bharata@linux.ibm.com] wrote:
-> > On Wed, Aug 28, 2019 at 08:02:19PM -0700, Sukadev Bhattiprolu wrote:
-> Where do we serialize two threads attempting to H_SVM_PAGE_IN the same gfn
-> at the same time? Or one thread issuing a H_SVM_PAGE_IN and another a
-> H_SVM_PAGE_OUT for the same page?
+The patch
 
-I am not not serializing page-in/out calls on same gfn, I thought you take
-care of that in UV, guess UV doesn't yet.
+   ASoC: fsl_ssi: Fix clock control issue in master mode
 
-I can probably use rmap_lock() and serialize such calls in HV if UV can't
-prevent such calls easily.
+has been applied to the asoc tree at
 
-> > > > +
-> > > > +	if (!trylock_page(dpage))
-> > > > +		goto out_clear;
-> > > > +
-> > > > +	*rmap = devm_pfn | KVMPPC_RMAP_DEVM_PFN;
-> > > > +	pvt = kzalloc(sizeof(*pvt), GFP_ATOMIC);
-> > > > +	if (!pvt)
-> > > > +		goto out_unlock;
-> 
-> If we fail to alloc, we don't clear the KVMPPC_RMAP_DEVM_PFN?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.3
 
-Right, I will move the assignment to *rmap to after kzalloc.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> 
-> Also, when/where do we clear this flag on an uv-page-out?
-> kvmppc_devm_drop_pages() drops the flag on a local variable but not
-> in the rmap? If we don't clear the flag on page-out, would the
-> subsequent H_SVM_PAGE_IN of this page fail?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-It gets cleared in kvmppc_devm_page_free().
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> 
-> Ok. Nit. thought we can drop the "_fault" in the function name but would
-> collide the other "alloc_and_copy" function used during H_SVM_PAGE_IN.
-> If the two alloc_and_copy functions are symmetric, maybe they could
-> have "page_in" and "page_out" in the (already long) names.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Christoph also suggested to reorganize these two calls. Will take care.
+Thanks,
+Mark
 
-Regards,
-Bharata.
+From 696d05225cebffd172008d212657be90e823eac0 Mon Sep 17 00:00:00 2001
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+Date: Wed, 28 Aug 2019 13:20:17 -0400
+Subject: [PATCH] ASoC: fsl_ssi: Fix clock control issue in master mode
+
+The test case is
+arecord -Dhw:0 -d 10 -f S16_LE -r 48000 -c 2 temp.wav &
+aplay -Dhw:0 -d 30 -f S16_LE -r 48000 -c 2 test.wav
+
+There will be error after end of arecord:
+aplay: pcm_write:2051: write error: Input/output error
+
+Capture and Playback work in parallel in master mode, one
+substream stops, the other substream is impacted, the
+reason is that clock is disabled wrongly.
+
+The clock's reference count is not increased when second
+substream starts, the hw_param() function returns in the
+beginning because first substream is enabled, then in end
+of first substream, the hw_free() disables the clock.
+
+This patch is to move the clock enablement to the place
+before checking of the device enablement in hw_param().
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://lore.kernel.org/r/1567012817-12625-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/fsl/fsl_ssi.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
+index fa862af25c1a..085855f9b08d 100644
+--- a/sound/soc/fsl/fsl_ssi.c
++++ b/sound/soc/fsl/fsl_ssi.c
+@@ -799,15 +799,6 @@ static int fsl_ssi_hw_params(struct snd_pcm_substream *substream,
+ 	u32 wl = SSI_SxCCR_WL(sample_size);
+ 	int ret;
+ 
+-	/*
+-	 * SSI is properly configured if it is enabled and running in
+-	 * the synchronous mode; Note that AC97 mode is an exception
+-	 * that should set separate configurations for STCCR and SRCCR
+-	 * despite running in the synchronous mode.
+-	 */
+-	if (ssi->streams && ssi->synchronous)
+-		return 0;
+-
+ 	if (fsl_ssi_is_i2s_master(ssi)) {
+ 		ret = fsl_ssi_set_bclk(substream, dai, hw_params);
+ 		if (ret)
+@@ -823,6 +814,15 @@ static int fsl_ssi_hw_params(struct snd_pcm_substream *substream,
+ 		}
+ 	}
+ 
++	/*
++	 * SSI is properly configured if it is enabled and running in
++	 * the synchronous mode; Note that AC97 mode is an exception
++	 * that should set separate configurations for STCCR and SRCCR
++	 * despite running in the synchronous mode.
++	 */
++	if (ssi->streams && ssi->synchronous)
++		return 0;
++
+ 	if (!fsl_ssi_is_ac97(ssi)) {
+ 		/*
+ 		 * Keep the ssi->i2s_net intact while having a local variable
+-- 
+2.20.1
 
