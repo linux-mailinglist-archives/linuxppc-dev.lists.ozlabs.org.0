@@ -2,63 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B85DA2D76
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 05:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F748A2D84
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 05:45:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KQHW3bWLzDr6Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 13:40:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KQND4x3SzDrQG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 13:45:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KQ8501N4zDrKh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 13:34:29 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46KQ844y3Lz8xBK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 13:34:28 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46KQ844BpXz9sBp; Fri, 30 Aug 2019 13:34:28 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=131.153.2.43; helo=h2.fbrelay.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from h2.fbrelay.privateemail.com (h2.fbrelay.privateemail.com
- [131.153.2.43])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46KQ830sr2z9sNf
- for <linuxppc-dev@ozlabs.org>; Fri, 30 Aug 2019 13:34:26 +1000 (AEST)
-Received: from MTA-08-4.privateemail.com (mta-08.privateemail.com
- [68.65.122.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 9D2D1808C9
- for <linuxppc-dev@ozlabs.org>; Thu, 29 Aug 2019 23:34:22 -0400 (EDT)
-Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
- by MTA-08.privateemail.com (Postfix) with ESMTP id 51D8D60046;
- Thu, 29 Aug 2019 23:34:18 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.237])
- by MTA-08.privateemail.com (Postfix) with ESMTPA id CE77B60033;
- Fri, 30 Aug 2019 03:34:17 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org,
-	kernel-hardening@lists.openwall.com
-Subject: [PATCH v6 2/2] powerpc/xmon: Restrict when kernel is locked down
-Date: Thu, 29 Aug 2019 22:37:44 -0500
-Message-Id: <20190830033744.1392-3-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190830033744.1392-1-cmr@informatik.wtf>
-References: <20190830033744.1392-1-cmr@informatik.wtf>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KQLF5TjQzDr4r
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 13:43:17 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7U3gn2H118762
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 23:43:13 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2upu0uhwec-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 23:43:13 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Fri, 30 Aug 2019 04:43:11 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 30 Aug 2019 04:43:08 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7U3h6ef12386482
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Aug 2019 03:43:06 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 99C19AE055;
+ Fri, 30 Aug 2019 03:43:06 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BD879AE053;
+ Fri, 30 Aug 2019 03:43:02 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.109.246.128])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 30 Aug 2019 03:43:02 +0000 (GMT)
+Date: Fri, 30 Aug 2019 09:12:59 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v7 1/7] kvmppc: Driver to manage pages of secure guest
+References: <20190822102620.21897-1-bharata@linux.ibm.com>
+ <20190822102620.21897-2-bharata@linux.ibm.com>
+ <20190829083810.GA13039@lst.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190829083810.GA13039@lst.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19083003-0020-0000-0000-000003657EEF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19083003-0021-0000-0000-000021BAD9A1
+Message-Id: <20190830034259.GD31913@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-30_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=850 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908300036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,287 +90,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, Daniel Axtens <dja@axtens.net>
+Reply-To: bharata@linux.ibm.com
+Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
+ paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xmon should be either fully or partially disabled depending on the
-kernel lockdown state.
+On Thu, Aug 29, 2019 at 10:38:10AM +0200, Christoph Hellwig wrote:
+> On Thu, Aug 22, 2019 at 03:56:14PM +0530, Bharata B Rao wrote:
+> > +/*
+> > + * Bits 60:56 in the rmap entry will be used to identify the
+> > + * different uses/functions of rmap.
+> > + */
+> > +#define KVMPPC_RMAP_DEVM_PFN	(0x2ULL << 56)
+> 
+> How did you come up with this specific value?
 
-Put xmon into read-only mode for lockdown=integrity and prevent user
-entry into xmon when lockdown=confidentiality. Xmon checks the lockdown
-state on every attempted entry:
+Different usage types of RMAP array are being defined.
+https://patchwork.ozlabs.org/patch/1149791/
 
- (1) during early xmon'ing
+The above value is reserved for device pfn usage.
 
- (2) when triggered via sysrq
+> 
+> > +
+> > +static inline bool kvmppc_rmap_is_devm_pfn(unsigned long pfn)
+> > +{
+> > +	return !!(pfn & KVMPPC_RMAP_DEVM_PFN);
+> > +}
+> 
+> No need for !! when returning a bool.  Also the helper seems a little
+> pointless, just opencoding it would make the code more readable in my
+> opinion.
 
- (3) when toggled via debugfs
+I expect similar routines for other usages of RMAP to come up.
 
- (4) when triggered via a previously enabled breakpoint
+> 
+> > +#ifdef CONFIG_PPC_UV
+> > +extern int kvmppc_devm_init(void);
+> > +extern void kvmppc_devm_free(void);
+> 
+> There is no need for extern in a function declaration.
+> 
+> > +static int
+> > +kvmppc_devm_migrate_alloc_and_copy(struct migrate_vma *mig,
+> > +				   unsigned long *rmap, unsigned long gpa,
+> > +				   unsigned int lpid, unsigned long page_shift)
+> > +{
+> > +	struct page *spage = migrate_pfn_to_page(*mig->src);
+> > +	unsigned long pfn = *mig->src >> MIGRATE_PFN_SHIFT;
+> > +	struct page *dpage;
+> > +
+> > +	*mig->dst = 0;
+> > +	if (!spage || !(*mig->src & MIGRATE_PFN_MIGRATE))
+> > +		return 0;
+> > +
+> > +	dpage = kvmppc_devm_get_page(rmap, gpa, lpid);
+> > +	if (!dpage)
+> > +		return -EINVAL;
+> > +
+> > +	if (spage)
+> > +		uv_page_in(lpid, pfn << page_shift, gpa, 0, page_shift);
+> > +
+> > +	*mig->dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+> > +	return 0;
+> > +}
+> 
+> I think you can just merge this trivial helper into the only caller.
 
-The following lockdown state transitions are handled:
+Yes I can, but felt it is nicely abstracted out to a function right now.
 
- (1) lockdown=none -> lockdown=integrity
-     set xmon read-only mode
+> 
+> > +static int
+> > +kvmppc_devm_fault_migrate_alloc_and_copy(struct migrate_vma *mig,
+> > +					 unsigned long page_shift)
+> > +{
+> > +	struct page *dpage, *spage;
+> > +	struct kvmppc_devm_page_pvt *pvt;
+> > +	unsigned long pfn;
+> > +	int ret;
+> > +
+> > +	spage = migrate_pfn_to_page(*mig->src);
+> > +	if (!spage || !(*mig->src & MIGRATE_PFN_MIGRATE))
+> > +		return 0;
+> > +	if (!is_zone_device_page(spage))
+> > +		return 0;
+> > +
+> > +	dpage = alloc_page_vma(GFP_HIGHUSER, mig->vma, mig->start);
+> > +	if (!dpage)
+> > +		return -EINVAL;
+> > +	lock_page(dpage);
+> > +	pvt = spage->zone_device_data;
+> > +
+> > +	pfn = page_to_pfn(dpage);
+> > +	ret = uv_page_out(pvt->lpid, pfn << page_shift, pvt->gpa, 0,
+> > +			  page_shift);
+> > +	if (ret == U_SUCCESS)
+> > +		*mig->dst = migrate_pfn(pfn) | MIGRATE_PFN_LOCKED;
+> > +	else {
+> > +		unlock_page(dpage);
+> > +		__free_page(dpage);
+> > +	}
+> > +	return ret;
+> > +}
+> 
+> Here we actually have two callers, but they have a fair amount of
+> duplicate code in them.  I think you want to move that common
+> code (including setting up the migrate_vma structure) into this
+> function and maybe also give it a more descriptive name.
 
- (2) lockdown=none -> lockdown=confidentiality
-     clear all breakpoints, set xmon read-only mode,
-     prevent user re-entry into xmon
+Sure, I will give this a try. The name is already very descriptive, will
+come up with an appropriate name.
 
- (3) lockdown=integrity -> lockdown=confidentiality
-     clear all breakpoints, set xmon read-only mode,
-     prevent user re-entry into xmon
+BTW this file and the fuction prefixes in this file started out with
+kvmppc_hmm, switched to kvmppc_devm when HMM routines weren't used anymore.
+Now with the use of only non-dev versions, planning to swtich to
+kvmppc_uvmem_
 
-Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
-Tested-by: Daniel Axtens <dja@axtens.net>
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
----
- arch/powerpc/xmon/xmon.c     | 92 ++++++++++++++++++++++++++++--------
- include/linux/security.h     |  2 +
- security/lockdown/lockdown.c |  2 +
- 3 files changed, 76 insertions(+), 20 deletions(-)
+> 
+> > +static void kvmppc_devm_page_free(struct page *page)
+> > +{
+> > +	unsigned long pfn = page_to_pfn(page);
+> > +	unsigned long flags;
+> > +	struct kvmppc_devm_page_pvt *pvt;
+> > +
+> > +	spin_lock_irqsave(&kvmppc_devm_pfn_lock, flags);
+> > +	pvt = page->zone_device_data;
+> > +	page->zone_device_data = NULL;
+> > +
+> > +	bitmap_clear(kvmppc_devm_pfn_bitmap,
+> > +		     pfn - (kvmppc_devm_pgmap.res.start >> PAGE_SHIFT), 1);
+> 
+> Nit: I'd just initialize pfn to the value you want from the start.
+> That makes the code a little easier to read, and keeps a tiny bit more
+> code outside the spinlock.
+> 
+> 	unsigned long pfn = page_to_pfn(page) -
+> 			(kvmppc_devm_pgmap.res.start >> PAGE_SHIFT);
+> 
+> 	..
+> 
+> 	 bitmap_clear(kvmppc_devm_pfn_bitmap, pfn, 1);
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index ed94de614938..335718d0b777 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -25,6 +25,7 @@
- #include <linux/nmi.h>
- #include <linux/ctype.h>
- #include <linux/highmem.h>
-+#include <linux/security.h>
- 
- #include <asm/debugfs.h>
- #include <asm/ptrace.h>
-@@ -187,6 +188,8 @@ static void dump_tlb_44x(void);
- static void dump_tlb_book3e(void);
- #endif
- 
-+static void clear_all_bpt(void);
-+
- #ifdef CONFIG_PPC64
- #define REG		"%.16lx"
- #else
-@@ -283,10 +286,38 @@ Commands:\n\
- "  U	show uptime information\n"
- "  ?	help\n"
- "  # n	limit output to n lines per page (for dp, dpa, dl)\n"
--"  zr	reboot\n\
--  zh	halt\n"
-+"  zr	reboot\n"
-+"  zh	halt\n"
- ;
- 
-+#ifdef CONFIG_SECURITY
-+static bool xmon_is_locked_down(void)
-+{
-+	static bool lockdown;
-+
-+	if (!lockdown) {
-+		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
-+		if (lockdown) {
-+			printf("xmon: Disabled due to kernel lockdown\n");
-+			xmon_is_ro = true;
-+		}
-+	}
-+
-+	if (!xmon_is_ro) {
-+		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
-+		if (xmon_is_ro)
-+			printf("xmon: Read-only due to kernel lockdown\n");
-+	}
-+
-+	return lockdown;
-+}
-+#else /* CONFIG_SECURITY */
-+static inline bool xmon_is_locked_down(void)
-+{
-+	return false;
-+}
-+#endif
-+
- static struct pt_regs *xmon_regs;
- 
- static inline void sync(void)
-@@ -438,7 +469,10 @@ static bool wait_for_other_cpus(int ncpus)
- 
- 	return false;
- }
--#endif /* CONFIG_SMP */
-+#else /* CONFIG_SMP */
-+static inline void get_output_lock(void) {}
-+static inline void release_output_lock(void) {}
-+#endif
- 
- static inline int unrecoverable_excp(struct pt_regs *regs)
- {
-@@ -455,6 +489,7 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 	int cmd = 0;
- 	struct bpt *bp;
- 	long recurse_jmp[JMP_BUF_LEN];
-+	bool locked_down;
- 	unsigned long offset;
- 	unsigned long flags;
- #ifdef CONFIG_SMP
-@@ -465,6 +500,8 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 	local_irq_save(flags);
- 	hard_irq_disable();
- 
-+	locked_down = xmon_is_locked_down();
-+
- 	tracing_enabled = tracing_is_on();
- 	tracing_off();
- 
-@@ -516,7 +553,8 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 
- 	if (!fromipi) {
- 		get_output_lock();
--		excprint(regs);
-+		if (!locked_down)
-+			excprint(regs);
- 		if (bp) {
- 			printf("cpu 0x%x stopped at breakpoint 0x%tx (",
- 			       cpu, BP_NUM(bp));
-@@ -568,10 +606,14 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 		}
- 		remove_bpts();
- 		disable_surveillance();
--		/* for breakpoint or single step, print the current instr. */
--		if (bp || TRAP(regs) == 0xd00)
--			ppc_inst_dump(regs->nip, 1, 0);
--		printf("enter ? for help\n");
-+
-+		if (!locked_down) {
-+			/* for breakpoint or single step, print curr insn */
-+			if (bp || TRAP(regs) == 0xd00)
-+				ppc_inst_dump(regs->nip, 1, 0);
-+			printf("enter ? for help\n");
-+		}
-+
- 		mb();
- 		xmon_gate = 1;
- 		barrier();
-@@ -595,8 +637,9 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 			spin_cpu_relax();
- 			touch_nmi_watchdog();
- 		} else {
--			cmd = cmds(regs);
--			if (cmd != 0) {
-+			if (!locked_down)
-+				cmd = cmds(regs);
-+			if (locked_down || cmd != 0) {
- 				/* exiting xmon */
- 				insert_bpts();
- 				xmon_gate = 0;
-@@ -633,13 +676,16 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 			       "can't continue\n");
- 		remove_bpts();
- 		disable_surveillance();
--		/* for breakpoint or single step, print the current instr. */
--		if (bp || TRAP(regs) == 0xd00)
--			ppc_inst_dump(regs->nip, 1, 0);
--		printf("enter ? for help\n");
-+		if (!locked_down) {
-+			/* for breakpoint or single step, print current insn */
-+			if (bp || TRAP(regs) == 0xd00)
-+				ppc_inst_dump(regs->nip, 1, 0);
-+			printf("enter ? for help\n");
-+		}
- 	}
- 
--	cmd = cmds(regs);
-+	if (!locked_down)
-+		cmd = cmds(regs);
- 
- 	insert_bpts();
- 	in_xmon = 0;
-@@ -668,7 +714,10 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
- 		}
- 	}
- #endif
--	insert_cpu_bpts();
-+	if (locked_down)
-+		clear_all_bpt();
-+	else
-+		insert_cpu_bpts();
- 
- 	touch_nmi_watchdog();
- 	local_irq_restore(flags);
-@@ -3768,7 +3817,6 @@ static int __init setup_xmon_sysrq(void)
- device_initcall(setup_xmon_sysrq);
- #endif /* CONFIG_MAGIC_SYSRQ */
- 
--#ifdef CONFIG_DEBUG_FS
- static void clear_all_bpt(void)
- {
- 	int i;
-@@ -3786,18 +3834,22 @@ static void clear_all_bpt(void)
- 		iabr = NULL;
- 		dabr.enabled = 0;
- 	}
--
--	printf("xmon: All breakpoints cleared\n");
- }
- 
-+#ifdef CONFIG_DEBUG_FS
- static int xmon_dbgfs_set(void *data, u64 val)
- {
- 	xmon_on = !!val;
- 	xmon_init(xmon_on);
- 
- 	/* make sure all breakpoints removed when disabling */
--	if (!xmon_on)
-+	if (!xmon_on) {
- 		clear_all_bpt();
-+		get_output_lock();
-+		printf("xmon: All breakpoints cleared\n");
-+		release_output_lock();
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 429f9f03372b..ba9d308689b6 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -116,12 +116,14 @@ enum lockdown_reason {
- 	LOCKDOWN_MODULE_PARAMETERS,
- 	LOCKDOWN_MMIOTRACE,
- 	LOCKDOWN_DEBUGFS,
-+	LOCKDOWN_XMON_WR,
- 	LOCKDOWN_INTEGRITY_MAX,
- 	LOCKDOWN_KCORE,
- 	LOCKDOWN_KPROBES,
- 	LOCKDOWN_BPF_READ,
- 	LOCKDOWN_PERF,
- 	LOCKDOWN_TRACEFS,
-+	LOCKDOWN_XMON_RW,
- 	LOCKDOWN_CONFIDENTIALITY_MAX,
- };
- 
-diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index 0068cec77c05..db85182d3f11 100644
---- a/security/lockdown/lockdown.c
-+++ b/security/lockdown/lockdown.c
-@@ -31,12 +31,14 @@ static char *lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
- 	[LOCKDOWN_MODULE_PARAMETERS] = "unsafe module parameters",
- 	[LOCKDOWN_MMIOTRACE] = "unsafe mmio",
- 	[LOCKDOWN_DEBUGFS] = "debugfs access",
-+	[LOCKDOWN_XMON_WR] = "xmon write access",
- 	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
- 	[LOCKDOWN_KCORE] = "/proc/kcore access",
- 	[LOCKDOWN_KPROBES] = "use of kprobes",
- 	[LOCKDOWN_BPF_READ] = "use of bpf to read kernel RAM",
- 	[LOCKDOWN_PERF] = "unsafe use of perf",
- 	[LOCKDOWN_TRACEFS] = "use of tracefs",
-+	[LOCKDOWN_XMON_RW] = "xmon read and write access",
- 	[LOCKDOWN_CONFIDENTIALITY_MAX] = "confidentiality",
- };
- 
--- 
-2.23.0
+Sure.
+
+> 
+> 
+> > +	kvmppc_devm_pgmap.type = MEMORY_DEVICE_PRIVATE;
+> > +	kvmppc_devm_pgmap.res = *res;
+> > +	kvmppc_devm_pgmap.ops = &kvmppc_devm_ops;
+> > +	addr = memremap_pages(&kvmppc_devm_pgmap, -1);
+> 
+> This -1 should be NUMA_NO_NODE for clarity.
+
+Right.
+
+Regards,
+Bharata.
 
