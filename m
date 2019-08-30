@@ -2,42 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D638A3EE3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FAEA3EE9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:23:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KrS92CytzDr7H
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:19:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KrX040tfzDr7H
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:23:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=slzo=w2=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="t3DdXlqf"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KrN03RKKzDr70
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:16:16 +1000 (AEST)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 92D2D23427;
- Fri, 30 Aug 2019 20:16:13 +0000 (UTC)
-Date: Fri, 30 Aug 2019 16:16:12 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] ftrace: Fix NULL pointer dereference in t_probe_next()
-Message-ID: <20190830161612.1842fb09@gandalf.local.home>
-In-Reply-To: <05e021f757625cbbb006fad41380323dbe4e3b43.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
- <05e021f757625cbbb006fad41380323dbe4e3b43.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KrTm3dmHzDq9L
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:21:15 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46KrTf4sJsz9v7DV;
+ Fri, 30 Aug 2019 22:21:10 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=t3DdXlqf; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id i8KdkaTkTAHG; Fri, 30 Aug 2019 22:21:10 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46KrTf3fvrz9v7DT;
+ Fri, 30 Aug 2019 22:21:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1567196470; bh=5mIcW5Ma3DiUVmOtdXBzHpmioRdV9+1g1JCs5ObvG4U=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=t3DdXlqf6AB9+SFlptqH0lcdn9EFs2KUWrWSK80SjZRYqLygw7RJuWcBSmAo0RtZl
+ gWVswbFGEHM+vi/lxTQi0BcjJYISm1MccPLm+8ZJO86ORIL9v3LvblzCLwXl6r9j40
+ Hum7QV5VvL2J/RFUHm9RR6/1TzKKgbG5lNh93jSo=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C18488B911;
+ Fri, 30 Aug 2019 22:21:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id DtZa8Q-OHiqT; Fri, 30 Aug 2019 22:21:10 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6830B8B90B;
+ Fri, 30 Aug 2019 22:21:09 +0200 (CEST)
+Subject: Re: [PATCH v6 4/6] powerpc/64: make buildable without CONFIG_COMPAT
+To: Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
+References: <cover.1567188299.git.msuchanek@suse.de>
+ <6192bddc4631d2691b98316908432ffabc5d4b40.1567188299.git.msuchanek@suse.de>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <a04b5750-a160-01a1-c208-7950f4c495bd@c-s.fr>
+Date: Fri, 30 Aug 2019 22:21:09 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <6192bddc4631d2691b98316908432ffabc5d4b40.1567188299.git.msuchanek@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,83 +78,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Nicolai Stange <nstange@suse.de>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Allison Randal <allison@lohutok.net>, Firoz Khan <firoz.khan@linaro.org>,
+ Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Christian Brauner <christian@brauner.io>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  4 Jul 2019 20:04:41 +0530
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
 
-> LTP testsuite on powerpc results in the below crash:
-> 
->   Unable to handle kernel paging request for data at address 0x00000000
->   Faulting instruction address: 0xc00000000029d800
->   Oops: Kernel access of bad area, sig: 11 [#1]
->   LE SMP NR_CPUS=2048 NUMA PowerNV
->   ...
->   CPU: 68 PID: 96584 Comm: cat Kdump: loaded Tainted: G        W
->   NIP:  c00000000029d800 LR: c00000000029dac4 CTR: c0000000001e6ad0
->   REGS: c0002017fae8ba10 TRAP: 0300   Tainted: G        W
->   MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 28022422  XER: 20040000
->   CFAR: c00000000029d90c DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 0
->   ...
->   NIP [c00000000029d800] t_probe_next+0x60/0x180
->   LR [c00000000029dac4] t_mod_start+0x1a4/0x1f0
->   Call Trace:
->   [c0002017fae8bc90] [c000000000cdbc40] _cond_resched+0x10/0xb0 (unreliable)
->   [c0002017fae8bce0] [c0000000002a15b0] t_start+0xf0/0x1c0
->   [c0002017fae8bd30] [c0000000004ec2b4] seq_read+0x184/0x640
->   [c0002017fae8bdd0] [c0000000004a57bc] sys_read+0x10c/0x300
->   [c0002017fae8be30] [c00000000000b388] system_call+0x5c/0x70
-> 
-> The test (ftrace_set_ftrace_filter.sh) is part of ftrace stress tests
-> and the crash happens when the test does 'cat
-> $TRACING_PATH/set_ftrace_filter'.
-> 
-> The address points to the second line below, in t_probe_next(), where
-> filter_hash is dereferenced:
->   hash = iter->probe->ops.func_hash->filter_hash;
->   size = 1 << hash->size_bits;
-> 
-> This happens due to a race with register_ftrace_function_probe(). A new
-> ftrace_func_probe is created and added into the func_probes list in
-> trace_array under ftrace_lock. However, before initializing the filter,
-> we drop ftrace_lock, and re-acquire it after acquiring regex_lock. If
-> another process is trying to read set_ftrace_filter, it will be able to
-> acquire ftrace_lock during this window and it will end up seeing a NULL
-> filter_hash.
-> 
-> Fix this by just checking for a NULL filter_hash in t_probe_next(). If
-> the filter_hash is NULL, then this probe is just being added and we can
-> simply return from here.
 
-Hmm, this is very subtle. I'll take a deeper look at this to see if we
-can keep the race from happening.
-
-Thanks!
-
--- Steve
-
+Le 30/08/2019 à 20:57, Michal Suchanek a écrit :
+> There are numerous references to 32bit functions in generic and 64bit
+> code so ifdef them out.
 > 
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 > ---
->  kernel/trace/ftrace.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> v2:
+> - fix 32bit ifdef condition in signal.c
+> - simplify the compat ifdef condition in vdso.c - 64bit is redundant
+> - simplify the compat ifdef condition in callchain.c - 64bit is redundant
+> v3:
+> - use IS_ENABLED and maybe_unused where possible
+> - do not ifdef declarations
+> - clean up Makefile
+> v4:
+> - further makefile cleanup
+> - simplify is_32bit_task conditions
+> - avoid ifdef in condition by using return
+> v5:
+> - avoid unreachable code on 32bit
+> - make is_current_64bit constant on !COMPAT
+> - add stub perf_callchain_user_32 to avoid some ifdefs
+> v6:
+> - consolidate current_is_64bit
+> ---
+>   arch/powerpc/include/asm/thread_info.h |  4 +--
+>   arch/powerpc/kernel/Makefile           |  7 +++--
+>   arch/powerpc/kernel/entry_64.S         |  2 ++
+>   arch/powerpc/kernel/signal.c           |  3 +--
+>   arch/powerpc/kernel/syscall_64.c       |  6 ++---
+>   arch/powerpc/kernel/vdso.c             |  5 ++--
+>   arch/powerpc/perf/callchain.c          | 37 +++++++++++++++-----------
+>   7 files changed, 33 insertions(+), 31 deletions(-)
 > 
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 7b037295a1f1..0791eafb693d 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -3093,6 +3093,10 @@ t_probe_next(struct seq_file *m, loff_t *pos)
->  		hnd = &iter->probe_entry->hlist;
->  
->  	hash = iter->probe->ops.func_hash->filter_hash;
-> +
-> +	if (!hash)
-> +		return NULL;
-> +
->  	size = 1 << hash->size_bits;
->  
->   retry:
 
+[...]
+
+> diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
+> index b7cdcce20280..788ad2c63f18 100644
+> --- a/arch/powerpc/perf/callchain.c
+> +++ b/arch/powerpc/perf/callchain.c
+> @@ -15,7 +15,7 @@
+>   #include <asm/sigcontext.h>
+>   #include <asm/ucontext.h>
+>   #include <asm/vdso.h>
+> -#ifdef CONFIG_PPC64
+> +#ifdef CONFIG_COMPAT
+>   #include "../kernel/ppc32.h"
+>   #endif
+>   #include <asm/pte-walk.h>
+> @@ -268,16 +268,6 @@ static void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+>   	}
+>   }
+>   
+> -static inline int current_is_64bit(void)
+> -{
+> -	/*
+> -	 * We can't use test_thread_flag() here because we may be on an
+> -	 * interrupt stack, and the thread flags don't get copied over
+> -	 * from the thread_info on the main stack to the interrupt stack.
+> -	 */
+> -	return !test_ti_thread_flag(task_thread_info(current), TIF_32BIT);
+> -}
+> -
+>   #else  /* CONFIG_PPC64 */
+>   static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
+>   {
+> @@ -314,11 +304,6 @@ static inline void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry
+>   {
+>   }
+>   
+> -static inline int current_is_64bit(void)
+> -{
+> -	return 0;
+> -}
+> -
+>   static inline int valid_user_sp(unsigned long sp, int is_64)
+>   {
+>   	if (!sp || (sp & 7) || sp > TASK_SIZE - 32)
+> @@ -334,6 +319,7 @@ static inline int valid_user_sp(unsigned long sp, int is_64)
+>   
+>   #endif /* CONFIG_PPC64 */
+>   
+> +#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
+>   /*
+>    * Layout for non-RT signal frames
+>    */
+> @@ -475,6 +461,25 @@ static void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+>   		sp = next_sp;
+>   	}
+>   }
+> +#else /* 32bit */
+> +static void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+> +				   struct pt_regs *regs)
+> +{
+> +	(void)&read_user_stack_32; /* unused if !COMPAT */
+
+You don't need that anymore do you ?
+
+Christophe
+
+> +}
+> +#endif /* 32bit */
+> +
+> +static inline int current_is_64bit(void)
+> +{
+> +	if (!IS_ENABLED(CONFIG_COMPAT))
+> +		return IS_ENABLED(CONFIG_PPC64);
+> +	/*
+> +	 * We can't use test_thread_flag() here because we may be on an
+> +	 * interrupt stack, and the thread flags don't get copied over
+> +	 * from the thread_info on the main stack to the interrupt stack.
+> +	 */
+> +	return !test_ti_thread_flag(task_thread_info(current), TIF_32BIT);
+> +}
+>   
+>   void
+>   perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
+> 
