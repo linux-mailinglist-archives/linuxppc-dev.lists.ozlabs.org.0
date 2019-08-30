@@ -2,74 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3BDA2AEB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 01:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CFAA2B89
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 02:40:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KJn002g5zDsND
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 09:32:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KLHg2jxBzDrgf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 10:40:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=julietk@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="pu31SPJC"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KJlD2XLTzDrgx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 09:31:02 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7TNQrXU004109; Thu, 29 Aug 2019 19:30:58 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2upnmjn0gc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2019 19:30:58 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7TNUaev018957;
- Thu, 29 Aug 2019 23:30:57 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma04dal.us.ibm.com with ESMTP id 2ujvv77ex0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2019 23:30:57 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7TNUu2C41746794
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Aug 2019 23:30:56 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3FD7DC6057;
- Thu, 29 Aug 2019 23:30:56 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E9C9FC605A;
- Thu, 29 Aug 2019 23:30:55 +0000 (GMT)
-Received: from ltcfleet2-lp9.aus.stglabs.ibm.com (unknown [9.40.195.116])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 29 Aug 2019 23:30:55 +0000 (GMT)
-From: Juliet Kim <julietk@linux.vnet.ibm.com>
-To: netdev@vger.kernel.com
-Subject: [PATCH] net/ibmvnic: free reset work of removed device from queue
-Date: Thu, 29 Aug 2019 19:20:18 -0400
-Message-Id: <20190829232018.10318-1-julietk@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.16.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KLFG1yYhzDrgY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 10:38:40 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id w2so3321488pfi.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2019 17:38:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=DSLyHXthXaKXOQZ8SFsqItHK5pHRiDWtPuxcUQu12HE=;
+ b=pu31SPJCi+AOP3zXr9+aDjC5rxpyExfuNsXBpNJ+U/17mstU+JX99GwniAgq5X7Pa5
+ yWJd36SGMJDkYzN0HburXGQx9v3j6tk4ubUO1WEIePNUdsLuWxfV6CECGk+H9RDp/4Wa
+ KMmLen85d+fQ7Ang26OUP+xrxgFhMbghKZgII=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=DSLyHXthXaKXOQZ8SFsqItHK5pHRiDWtPuxcUQu12HE=;
+ b=O598ZF+ZDs8tAPC5lWeA/SK7tOy1h9+cU7MuzSp3iWuZ16Z8jjkeYmRTMMCBH3uZf7
+ QOZrePMqf4mINFiRWbrxivjK+oS/mhMbEBbgJXr7bWYTXQvvq0mVLbpT6GM4rwUdgRGJ
+ x2nckoRJgHIT4UN24m215ijVZsdtHNzSyaGO6IspOOyv5xa+Hkzbip0h+Kr5HKcTA7JK
+ esFoA4qvzad1Qd3ttPIRwe8EacvA77DNeImm+NYkDyv/zYBhsE7QUVpWvFIeFzOF1Mfg
+ pm9D7IGkt0ccrNlPe0MyANZmo/v+deCSm7Sb4YtFzsjfKDbL6jwS92JTrDZdkJy4tGan
+ ZGiA==
+X-Gm-Message-State: APjAAAWznK2GFyeMDOPFerRH2UCBaVdaKlhfbk08z1wglMBsehRhLr2H
+ tCFo9KxOkgCFnZu+9gFpjOKmmw==
+X-Google-Smtp-Source: APXvYqySp87qZozbuG9m12UZb0GG3l4jvENITo2xlt52HkVNyUOk8lyBYyVA9FdFCHiOprawlyDAQA==
+X-Received: by 2002:a63:9245:: with SMTP id s5mr10952781pgn.123.1567125517640; 
+ Thu, 29 Aug 2019 17:38:37 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id a16sm4341162pfk.5.2019.08.29.17.38.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Aug 2019 17:38:36 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
+ aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr
+Subject: [PATCH v5 0/5] kasan: support backing vmalloc space with real shadow
+ memory
+Date: Fri, 30 Aug 2019 10:38:16 +1000
+Message-Id: <20190830003821.10737-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-29_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908290234
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,52 +78,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: julietk@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 36f1031c51a2 ("ibmvnic: Do not process reset during or after
- device removal") made the change to exit reset if the driver has been
-removed, but does not free reset work items of the adapter from queue.
+Currently, vmalloc space is backed by the early shadow page. This
+means that kasan is incompatible with VMAP_STACK.
 
-Ensure all reset work items are freed when breaking out of the loop early.
+This series provides a mechanism to back vmalloc space with real,
+dynamically allocated memory. I have only wired up x86, because that's
+the only currently supported arch I can work with easily, but it's
+very easy to wire up other architectures, and it appears that there is
+some work-in-progress code to do this on arm64 and s390.
 
-Fixes: 36f1031c51a2 ("ibmnvic: Do not process reset during or after
-device removal”)
+This has been discussed before in the context of VMAP_STACK:
+ - https://bugzilla.kernel.org/show_bug.cgi?id=202009
+ - https://lkml.org/lkml/2018/7/22/198
+ - https://lkml.org/lkml/2019/7/19/822
 
-Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+In terms of implementation details:
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index fa4bb940665c..51bc943e66aa 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1984,8 +1984,11 @@ static void __ibmvnic_reset(struct work_struct *work)
- 	rwi = get_next_rwi(adapter);
- 	while (rwi) {
- 		if (adapter->state == VNIC_REMOVING ||
--		    adapter->state == VNIC_REMOVED)
--			goto out;
-+		    adapter->state == VNIC_REMOVED )
-+			kfree(rwi);
-+			rc = EBUSY;
-+			break;
-+		}
- 
- 		if (adapter->force_reset_recovery) {
- 			adapter->force_reset_recovery = false;
-@@ -2011,7 +2014,7 @@ static void __ibmvnic_reset(struct work_struct *work)
- 		netdev_dbg(adapter->netdev, "Reset failed\n");
- 		free_all_rwi(adapter);
- 	}
--out:
-+
- 	adapter->resetting = false;
- 	if (we_lock_rtnl)
- 		rtnl_unlock();
+Most mappings in vmalloc space are small, requiring less than a full
+page of shadow space. Allocating a full shadow page per mapping would
+therefore be wasteful. Furthermore, to ensure that different mappings
+use different shadow pages, mappings would have to be aligned to
+KASAN_SHADOW_SCALE_SIZE * PAGE_SIZE.
+
+Instead, share backing space across multiple mappings. Allocate a
+backing page when a mapping in vmalloc space uses a particular page of
+the shadow region. This page can be shared by other vmalloc mappings
+later on.
+
+We hook in to the vmap infrastructure to lazily clean up unused shadow
+memory.
+
+
+v1: https://lore.kernel.org/linux-mm/20190725055503.19507-1-dja@axtens.net/
+v2: https://lore.kernel.org/linux-mm/20190729142108.23343-1-dja@axtens.net/
+ Address review comments:
+ - Patch 1: use kasan_unpoison_shadow's built-in handling of
+            ranges that do not align to a full shadow byte
+ - Patch 3: prepopulate pgds rather than faulting things in
+v3: https://lore.kernel.org/linux-mm/20190731071550.31814-1-dja@axtens.net/
+ Address comments from Mark Rutland:
+ - kasan_populate_vmalloc is a better name
+ - handle concurrency correctly
+ - various nits and cleanups
+ - relax module alignment in KASAN_VMALLOC case
+v4: https://lore.kernel.org/linux-mm/20190815001636.12235-1-dja@axtens.net/
+ Changes to patch 1 only:
+ - Integrate Mark's rework, thanks Mark!
+ - handle the case where kasan_populate_shadow might fail
+ - poision shadow on free, allowing the alloc path to just
+     unpoision memory that it uses
+v5: Address comments from Christophe Leroy:
+ - Fix some issues with my descriptions in commit messages and docs
+ - Dynamically free unused shadow pages by hooking into the vmap book-keeping
+ - Split out the test into a separate patch
+ - Optional patch to track the number of pages allocated
+ - minor checkpatch cleanups
+
+Daniel Axtens (5):
+  kasan: support backing vmalloc space with real shadow memory
+  kasan: add test for vmalloc
+  fork: support VMAP_STACK with KASAN_VMALLOC
+  x86/kasan: support KASAN_VMALLOC
+  kasan debug: track pages allocated for vmalloc shadow
+
+ Documentation/dev-tools/kasan.rst |  63 +++++++++++
+ arch/Kconfig                      |   9 +-
+ arch/x86/Kconfig                  |   1 +
+ arch/x86/mm/kasan_init_64.c       |  60 +++++++++++
+ include/linux/kasan.h             |  31 ++++++
+ include/linux/moduleloader.h      |   2 +-
+ include/linux/vmalloc.h           |  12 +++
+ kernel/fork.c                     |   4 +
+ lib/Kconfig.kasan                 |  16 +++
+ lib/test_kasan.c                  |  26 +++++
+ mm/kasan/common.c                 | 170 ++++++++++++++++++++++++++++++
+ mm/kasan/generic_report.c         |   3 +
+ mm/kasan/kasan.h                  |   1 +
+ mm/vmalloc.c                      |  45 +++++++-
+ 14 files changed, 437 insertions(+), 6 deletions(-)
+
 -- 
-2.16.4
+2.20.1
 
