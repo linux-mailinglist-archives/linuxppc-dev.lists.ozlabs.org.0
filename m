@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B847CA2D48
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 05:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED74EA2D4A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 05:26:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KPx00FJjzF0WF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 13:24:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KPyz1GmYzDrCD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 13:26:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,66 +16,67 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="CoDhq78H"; 
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="TXbZK3dG"; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="Ghxsu9D6"; dkim-atps=neutral
+ header.b="iwrew8u1"; dkim-atps=neutral
 Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
  [66.111.4.25])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KPtw5DJLzF0Pv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 13:22:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KPvm3mTzzF0Qh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 13:23:48 +1000 (AEST)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id EFC2421B74;
- Thu, 29 Aug 2019 23:22:53 -0400 (EDT)
+ by mailout.nyi.internal (Postfix) with ESMTP id 3594421CC3;
+ Thu, 29 Aug 2019 23:23:46 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Thu, 29 Aug 2019 23:22:53 -0400
+ by compute6.internal (MEProxy); Thu, 29 Aug 2019 23:23:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
  message-id:subject:from:to:cc:date:in-reply-to:references
  :content-type:mime-version:content-transfer-encoding; s=fm2; bh=
- s8i/QhPR38U6LZIlXMpuiFvKQllTENh2MCPCjD2IL7Q=; b=CoDhq78HHjid0ZS1
- 3uPTuipmGCyFY8U5G+Ao7cRImXPf01QPSTNLoFJbumyl4e/C/WUshfyiDU1dNIqQ
- ZzU1i2LETGghdj6MAZqVzo61sIi4ajJ0WkNp/bnGqd8Ddmi2CytVz1BJanFfpd+y
- FqykdezSVLWM7j/kU3g55IhBXaQZ7kesg1oSowBBEYRsXHtwyMAEclqR+QJhYFxi
- rRBa92NoiXeXmjTIFjdJs9xeCfjaZxwn47b3iKUWvTP0x+lAgbxt/XHLRjTnjJgf
- VkN40/KytJp1YNUNrEasZzdJcBS2Rhxlfwp0tsgV/O5WVZMbZ5hELyoelXE9tCEH
- Zoz8Uw==
+ etGsw4xCUhT9PIhQQXTAlpcDahsdknpFbZ8oV/NAwZA=; b=TXbZK3dGJZP2E14H
+ 3WtFWvfYvpXRdbUXGuLrGSxww7ZRlKuhxYXfNfV/2YYELm+XQdaskDmghZuCXvkx
+ EEpEmYBUy1sXUxKtNRjsMj/6yialABZaekk/uQmjo5Id6Fk1/3N2BzKjY/A2nzpL
+ D+WiEFIiWpej/ri3VWjbCs0s39gjlD+x6elDn/lYoxaHzRDSYsWKDhLX5QxMZ5PC
+ gYTFsSUltmbmMcjI0jqHW06+YsSHITHX49lv2F71WKJIga87OUeBRyCMuVKKeKhG
+ VoJMiY4a2ItHU3vgAaNV1DSlEIRxloxjM+2oGbgt1ZMry46FMl/8idwzoSCdcfOe
+ UujBjQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:content-type
  :date:from:in-reply-to:message-id:mime-version:references
  :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; bh=s8i/QhPR38U6LZIlXMpuiFvKQllTENh2MCPCjD2IL
- 7Q=; b=Ghxsu9D6mtowIYe5xNXII1SC80RmI4QreFIHGtRI1n+rEyJowh6gDfIfA
- na/OBa6unCESw92LiOuUa8A/8bh4AzlR62xuEnpJmSoHC4QX9Ekpzk10Dip2GKLR
- mJW+Ko5YchJ1/BZyWmFVPlIze6lHmPDsMWAY5jaxluJp2/TNcN+SMp7bZE8jchAD
- EEyvDnRgeu0ZOOUa6dMOxIMmS0SjJQLlVUbfQoNjx4gmmcMEcU6XyLjTIqnP01sz
- Az+kJ7inCSP3TS63jhhnaMIX9eQl+X2FkBjF3a6JgQP+FKkHh08t9vuUe59z0jtJ
- 8LESceRq2Iw3BzsiEL5guaYQ5zTdw==
-X-ME-Sender: <xms:jZZoXSbzqvWiz7OZEFgfQpshmamkaNG69TQUBOlCeLSeqiwgfX4h4g>
+ :x-sasl-enc; s=fm3; bh=etGsw4xCUhT9PIhQQXTAlpcDahsdknpFbZ8oV/NAw
+ ZA=; b=iwrew8u1NhrsOhMCABs2FT0LBSRaOlBnPZnJs26Gsy5j1Ayh3UzGz/GFL
+ G6eGQ2yZUL+2OJYHkh9cXZ0tXd6J92XY0dyFOBmkqBlsCrSc84PXXs82NJcOs7kI
+ OnvwTql91iE458CrqY7j4x+7xOAok0XgXDF8l8I4cNguChjZtYK3Jtsn/R00YCKD
+ 0lNetQkwn+S9tzRSWPv0b3BiNIgrT0doCfT3WfQsg2fCuFGX54xE2WstGfWzTdTl
+ mO0SR2FYuA922QMPGUUhEeGAWjcL3aVAsCVyEJmIziDNvVvPdm7GkQXthZTSbW7B
+ ZzQhmr/C2Pot6B1QhoTmzErN+cs6Q==
+X-ME-Sender: <xms:wJZoXUGitbiEcDtXvEOSYzylW6DHWCEu0PGvC8mTf8GYRGTuaEqcIQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudeifedgieejucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- gfrhhlucfvnfffucdlfedtmdenucfjughrpefkuffhvfffjghftggfggfgsehtjeertddt
+ gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfffjghftggfggfgsehtjeertddt
  reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
  hsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecurfgrrhgrmhepmhgr
  ihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggtnecuvehluhhsthgvrhfuih
- iivgeptd
-X-ME-Proxy: <xmx:jZZoXRuY8Ax7Kid73dWZIjfs3yyTKiaYVDppJRd3SNTGyffd1FnSPA>
- <xmx:jZZoXfsO_Fz2JzmYe1TCulG5y00EJEqQHJHAtRU5_BA9VPYBHdJz7A>
- <xmx:jZZoXWeCv14vyAeAvSiABAMDAvJnI3IYtieRl1eZszBPPnXmMOQ1yQ>
- <xmx:jZZoXTaSC2Igo86GwP56n2tkTYkLWMt5hYfGpIjYpAKWFX_-VBdYHg>
+ iivgepud
+X-ME-Proxy: <xmx:wJZoXW__U0OJaQCwV8LTmIty8SrXVLqO2xrxmE1neQXNetNxNYOcwQ>
+ <xmx:wJZoXRnk-gpnMpXd2TLwsYOGUBm4HXS7Ym56pVvrdREFx2j-of8pkg>
+ <xmx:wJZoXc901XhqOc0v6H4ipPl1eVHFwUzQCwBuJctPBW5IHIKrw1Ccpw>
+ <xmx:wpZoXa1rpPSXQm_sQm02Kigsag4OHjZ7hrvqgHPRiK1Bmq3_6jSnPw>
 Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id DB5EF80059;
- Thu, 29 Aug 2019 23:22:51 -0400 (EDT)
-Message-ID: <14925a214dbedf78eda85bb8ccf4ae9ad9fd150d.camel@russell.cc>
-Subject: Re: [PATCH v2] powerpc/mm: Implement STRICT_MODULE_RWX
+ by mail.messagingengine.com (Postfix) with ESMTPA id 5C73380060;
+ Thu, 29 Aug 2019 23:23:41 -0400 (EDT)
+Message-ID: <f0789e57d3e57eecaadc3736541d8769e44fb67a.camel@russell.cc>
+Subject: Re: [PATCH] powerpc: Replace GPL boilerplate with SPDX identifiers
 From: Russell Currey <ruscur@russell.cc>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
-Date: Fri, 30 Aug 2019 13:22:48 +1000
-In-Reply-To: <6bf5e5e3-1dfe-05fe-d736-7c846b8ac6f6@c-s.fr>
-References: <20190614055013.21014-1-ruscur@russell.cc>
- <6bf5e5e3-1dfe-05fe-d736-7c846b8ac6f6@c-s.fr>
+To: Thomas Huth <thuth@redhat.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 30 Aug 2019 13:23:39 +1000
+In-Reply-To: <20190828060737.32531-1-thuth@redhat.com>
+References: <20190828060737.32531-1-thuth@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.32.4 
 MIME-Version: 1.0
@@ -91,21 +92,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-hardening@lists.openwall.com
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-08-28 at 15:54 +0200, Christophe Leroy wrote:
-> Any plan to getting this applied soon ?
-
-Hey Christophe,
-
-I'm still working on it.  Had to rework it for a few reasons, and it
-exposed a bug somewhere else.  Hope to have another version out soon.
-
-- Russell
-
+On Wed, 2019-08-28 at 08:07 +0200, Thomas Huth wrote:
+> The FSF does not reside in "675 Mass Ave, Cambridge" anymore...
+> let's simply use proper SPDX identifiers instead.
 > 
-> Christophe
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+
+Acked-by: Russell Currey <ruscur@russell.cc>
 
