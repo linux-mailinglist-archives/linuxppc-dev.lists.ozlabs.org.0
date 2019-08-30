@@ -2,42 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B186A3F20
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1559EA3F6A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 23:06:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Ks5w1SkrzDqSM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:49:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KsTv4yNvzDrBd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 07:06:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=slzo=w2=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Ks3f3yGSzDqhs
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:47:10 +1000 (AEST)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1104523439;
- Fri, 30 Aug 2019 20:47:07 +0000 (UTC)
-Date: Fri, 30 Aug 2019 16:47:06 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] ftrace: Fix NULL pointer dereference in t_probe_next()
-Message-ID: <20190830164706.453a119e@gandalf.local.home>
-In-Reply-To: <05e021f757625cbbb006fad41380323dbe4e3b43.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
- <05e021f757625cbbb006fad41380323dbe4e3b43.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KsQt3kZnzDqyb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 07:03:49 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 0E5CBAD5D;
+ Fri, 30 Aug 2019 21:03:46 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v7 0/6] Disable compat cruft on ppc64le v7
+Date: Fri, 30 Aug 2019 23:03:37 +0200
+Message-Id: <cover.1567198491.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,85 +43,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Diana Craciun <diana.craciun@nxp.com>, Firoz Khan <firoz.khan@linaro.org>,
+ Hari Bathini <hbathini@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>,
+ Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  4 Jul 2019 20:04:41 +0530
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+Less code means less bugs so add a knob to skip the compat stuff.
 
+This is tested on ppc64le top of
 
->  kernel/trace/ftrace.c | 4 ++++
->  1 file changed, 4 insertions(+)
->=20
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 7b037295a1f1..0791eafb693d 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -3093,6 +3093,10 @@ t_probe_next(struct seq_file *m, loff_t *pos)
->  		hnd =3D &iter->probe_entry->hlist;
-> =20
->  	hash =3D iter->probe->ops.func_hash->filter_hash;
-> +
-> +	if (!hash)
-> +		return NULL;
-> +
->  	size =3D 1 << hash->size_bits;
-> =20
->   retry:
+https://patchwork.ozlabs.org/cover/1153556/
 
-OK, I added this, but I'm also adding this on top:
+Changes in v2: saner CONFIG_COMPAT ifdefs
+Changes in v3:
+ - change llseek to 32bit instead of builing it unconditionally in fs
+ - clanup the makefile conditionals
+ - remove some ifdefs or convert to IS_DEFINED where possible
+Changes in v4:
+ - cleanup is_32bit_task and current_is_64bit
+ - more makefile cleanup
+Changes in v5:
+ - more current_is_64bit cleanup
+ - split off callchain.c 32bit and 64bit parts
+Changes in v6:
+ - cleanup makefile after split
+ - consolidate read_user_stack_32
+ - fix some checkpatch warnings
+Changes in v7:
+ - add back __ARCH_WANT_SYS_LLSEEK to fix build with llseek
+ - remove leftover hunk
+ - add review tags
 
--- Steve
+Michal Suchanek (6):
+  powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
+  powerpc: move common register copy functions from signal_32.c to
+    signal.c
+  powerpc/perf: consolidate read_user_stack_32
+  powerpc/64: make buildable without CONFIG_COMPAT
+  powerpc/64: Make COMPAT user-selectable disabled on littleendian by
+    default.
+  powerpc/perf: split callchain.c by bitness
 
-=46rom 372e0d01da71c84dcecf7028598a33813b0d5256 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
-Date: Fri, 30 Aug 2019 16:30:01 -0400
-Subject: [PATCH] ftrace: Check for empty hash and comment the race with
- registering probes
+ arch/powerpc/Kconfig                   |   5 +-
+ arch/powerpc/include/asm/thread_info.h |   4 +-
+ arch/powerpc/include/asm/unistd.h      |   1 +
+ arch/powerpc/kernel/Makefile           |   7 +-
+ arch/powerpc/kernel/entry_64.S         |   2 +
+ arch/powerpc/kernel/signal.c           | 144 +++++++++-
+ arch/powerpc/kernel/signal_32.c        | 140 ---------
+ arch/powerpc/kernel/syscall_64.c       |   6 +-
+ arch/powerpc/kernel/vdso.c             |   5 +-
+ arch/powerpc/perf/Makefile             |   5 +-
+ arch/powerpc/perf/callchain.c          | 377 +------------------------
+ arch/powerpc/perf/callchain.h          |  11 +
+ arch/powerpc/perf/callchain_32.c       | 204 +++++++++++++
+ arch/powerpc/perf/callchain_64.c       | 185 ++++++++++++
+ fs/read_write.c                        |   3 +-
+ 15 files changed, 566 insertions(+), 533 deletions(-)
+ create mode 100644 arch/powerpc/perf/callchain.h
+ create mode 100644 arch/powerpc/perf/callchain_32.c
+ create mode 100644 arch/powerpc/perf/callchain_64.c
 
-The race between adding a function probe and reading the probes that exist
-is very subtle. It needs a comment. Also, the issue can also happen if the
-probe has has the EMPTY_HASH as its func_hash.
-
-Cc: stable@vger.kernel.org
-Fixes: 7b60f3d876156 ("ftrace: Dynamically create the probe ftrace_ops for =
-the trace_array")
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
----
- kernel/trace/ftrace.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 80beed2cf0da..6200a6fe10e3 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -3096,7 +3096,11 @@ t_probe_next(struct seq_file *m, loff_t *pos)
-=20
- 	hash =3D iter->probe->ops.func_hash->filter_hash;
-=20
--	if (!hash)
-+	/*
-+	 * A probe being registered may temporarily have an empty hash
-+	 * and it's at the end of the func_probes list.
-+	 */
-+	if (!hash || hash =3D=3D EMPTY_HASH)
- 		return NULL;
-=20
- 	size =3D 1 << hash->size_bits;
-@@ -4324,6 +4328,10 @@ register_ftrace_function_probe(char *glob, struct tr=
-ace_array *tr,
-=20
- 	mutex_unlock(&ftrace_lock);
-=20
-+	/*
-+	 * Note, there's a small window here that the func_hash->filter_hash
-+	 * may be NULL or empty. Need to be carefule when reading the loop.
-+	 */
- 	mutex_lock(&probe->ops.func_hash->regex_lock);
-=20
- 	orig_hash =3D &probe->ops.func_hash->filter_hash;
---=20
-2.20.1
+-- 
+2.22.0
 
