@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C17BA3EC4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F7FA3EDC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:15:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Kr9Q0ddqzDqPf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:07:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KrLb1PvHzDq9L
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:15:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,21 +18,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Kr6w6qHCzDqMy
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:04:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KrJf0HpBzDr2P
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:13:22 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id F1F9DABE7;
- Fri, 30 Aug 2019 20:04:51 +0000 (UTC)
-Date: Fri, 30 Aug 2019 22:04:51 +0200
+ by mx1.suse.de (Postfix) with ESMTP id 1BD59ACC3;
+ Fri, 30 Aug 2019 20:13:18 +0000 (UTC)
+Date: Fri, 30 Aug 2019 22:13:15 +0200
 From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: kbuild test robot <lkp@intel.com>
-Subject: Re: [PATCH v2 4/4] powerpc/64: system call implement the bulk of
- the logic in C
-Message-ID: <20190830220451.74183fa0@kitsune.suse.cz>
-In-Reply-To: <201908310210.jvudTAn4%lkp@intel.com>
-References: <20190827135548.21457-5-npiggin@gmail.com>
- <201908310210.jvudTAn4%lkp@intel.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] Revert "asm-generic: Remove unneeded
+ __ARCH_WANT_SYS_LLSEEK macro"
+Message-ID: <20190830221315.4b3b8a74@kitsune.suse.cz>
+In-Reply-To: <CAK8P3a16=ktJm5B3c5-XS7SqVuHBY5+E2FwVUqbdOdWK-AUgSA@mail.gmail.com>
+References: <bb6d25c6baae315d05b571d8c508f0e8fa90027c.1567188299.git.msuchanek@suse.de>
+ <20190830194651.31043-1-msuchanek@suse.de>
+ <CAK8P3a16=ktJm5B3c5-XS7SqVuHBY5+E2FwVUqbdOdWK-AUgSA@mail.gmail.com>
 Organization: SUSE Linux
 X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
@@ -49,46 +50,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@01.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
+ Firoz Khan <firoz.khan@linaro.org>, linux-xtensa@linux-xtensa.org,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>, Borislav Petkov <bp@alien8.de>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, David Howells <dhowells@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Christian Brauner <christian@brauner.io>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S.
+ Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 31 Aug 2019 02:48:26 +0800
-kbuild test robot <lkp@intel.com> wrote:
+On Fri, 30 Aug 2019 21:54:43 +0200
+Arnd Bergmann <arnd@arndb.de> wrote:
 
-> Hi Nicholas,
+> On Fri, Aug 30, 2019 at 9:46 PM Michal Suchanek <msuchanek@suse.de> wrote:
+> >
+> > This reverts commit caf6f9c8a326cffd1d4b3ff3f1cfba75d159d70b.
+> >
+> > Maybe it was needed after all.
+> >
+> > When CONFIG_COMPAT is disabled on ppc64 the kernel does not build.
+> >
+> > There is resistance to both removing the llseek syscall from the 64bit
+> > syscall tables and building the llseek interface unconditionally.
+> >
+> > Link: https://lore.kernel.org/lkml/20190828151552.GA16855@infradead.org/
+> > Link: https://lore.kernel.org/lkml/20190829214319.498c7de2@naga/
+> >
+> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>  
 > 
-> I love your patch! Yet something to improve:
+> This seems like the right idea in principle.
 > 
-> [auto build test ERROR on linus/master]
-> [cannot apply to v5.3-rc6 next-20190830]
-> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+> > index 5bbf587f5bc1..2f3c4bb138c4 100644
+> > --- a/fs/read_write.c
+> > +++ b/fs/read_write.c
+> > @@ -331,7 +331,7 @@ COMPAT_SYSCALL_DEFINE3(lseek, unsigned int, fd, compat_off_t, offset, unsigned i
+> >  }
+> >  #endif
+> >
+> > -#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT)
+> > +#ifdef __ARCH_WANT_SYS_LLSEEK
+> >  SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+> >                 unsigned long, offset_low, loff_t __user *, result,
+> >                 unsigned int, whence)  
 > 
-> url:    https://github.com/0day-ci/linux/commits/Nicholas-Piggin/powerpc-64-syscalls-in-C/20190828-064221
-> config: powerpc64-defconfig (attached as .config)
-> compiler: powerpc64-linux-gcc (GCC) 7.4.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         GCC_VERSION=7.4.0 make.cross ARCH=powerpc64 
-> 
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->    powerpc64-linux-ld: warning: orphan section `.gnu.hash' from `linker stubs' being placed in section `.gnu.hash'.
->    arch/powerpc/kernel/syscall_64.o: In function `.system_call_exception':
-> >> syscall_64.c:(.text+0x180): undefined reference to `.tabort_syscall'  
+> However, only reverting the patch will now break all newly added
+> 32-bit architectures that don't define __ARCH_WANT_SYS_LLSEEK:
+> at least nds32 and riscv32 come to mind, not sure if there is another.
 
-Interestingly it builds and boots for me. Is this something about
-dotted vs dotless symbols depending on some config options?
+AFAICT nds32 never had the syscall. Its headers were added without
+__ARCH_WANT_SYS_LLSEEK before the define was removed.
 
-I see there is _GLOBAL(ret_from_fork) just below so maybe we need
-_GLOBAL(tabort_syscall) instead of .globl tabort_syscall as well.
+The new architecture csky should be handled.
+
+> 
+> I think the easiest way however would be to combine the two checks
+> above and make it
+> 
+> #if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT) ||
+> defined(__ARCH_WANT_SYS_LLSEEK)
+> 
+> and then only set __ARCH_WANT_SYS_LLSEEK for powerpc.
+
+Yes, that limits the use of __ARCH_WANT_SYS_LLSEEK, does not require
+resurrecting the old headers, and may fix some architectures like nds32
+that forgot to add it.
 
 Thanks
 
