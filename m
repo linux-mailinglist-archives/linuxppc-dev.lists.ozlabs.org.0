@@ -1,42 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F45A3F13
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:39:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3760A3F17
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:42:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Krtr40CyzDqnB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:39:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Krxs1lckzDqkk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:42:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.160.193; helo=mail-qt1-f193.google.com;
+ envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mail-qt1-f193.google.com (mail-qt1-f193.google.com
+ [209.85.160.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46KrpP6x6JzDqnM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:35:41 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 041F2AF68;
- Fri, 30 Aug 2019 20:35:38 +0000 (UTC)
-Date: Fri, 30 Aug 2019 22:35:35 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v6 4/6] powerpc/64: make buildable without CONFIG_COMPAT
-Message-ID: <20190830223535.7ef0b76f@kitsune.suse.cz>
-In-Reply-To: <a04b5750-a160-01a1-c208-7950f4c495bd@c-s.fr>
-References: <cover.1567188299.git.msuchanek@suse.de>
- <6192bddc4631d2691b98316908432ffabc5d4b40.1567188299.git.msuchanek@suse.de>
- <a04b5750-a160-01a1-c208-7950f4c495bd@c-s.fr>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Krs71Kq1zDqv3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:38:02 +1000 (AEST)
+Received: by mail-qt1-f193.google.com with SMTP id r5so3817711qtd.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 13:38:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=l2S+wnciTIE2+Vapkd9mAIufXJ8QwtBWmdVgddLBucw=;
+ b=qWf3880NM9Pr4ox3FhTl81yMvtO8sTfr9MMn8VjeXVisoSEV9KYPNEdFHRM/SFe2j7
+ zSCBJ4nbPxEVBApuPdcrDoHGgHjpFciaKSegV8lrauT1+FtR7X3QRcKBPmaEqzB99RKZ
+ 6rHKdFGTfLmljPVACEsoNVjy47b3l+WVGa+6WF7qxSKUTs4vvdgAS8D9FOH38yS3eV2U
+ +yCoCT57OHKkQ2icNcnQinLc32yJiffKSM4/zfgsf+BFBIrZiDfH0OcaTgt7cd1Kh+qF
+ IIIdk7Nef1uEjZp4J7AU5eEsOvndO6cBf2uRmIUWWlwpta8tMshdQACnG5Oj1nU6UtVF
+ 2pFA==
+X-Gm-Message-State: APjAAAW1xM0St+8HM9B1Mnf8FEYppUE0YkhGD97jLbLa4VweBzwcrqKf
+ BetfjxY1S8XKkZb63BHB/UlR+lfMDBJ6q7XnC70=
+X-Google-Smtp-Source: APXvYqwtNMpNjOd1HtJ8sOpmwxGcNvBnMfM6zhXSKSJK4ULJROOvXNbKx16SmaRfjOCM1TgLQruyn5cyAJe5Ery0vHs=
+X-Received: by 2002:aed:2842:: with SMTP id r60mr7893403qtd.142.1567197480529; 
+ Fri, 30 Aug 2019 13:38:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <bb6d25c6baae315d05b571d8c508f0e8fa90027c.1567188299.git.msuchanek@suse.de>
+ <20190830194651.31043-1-msuchanek@suse.de>
+ <CAK8P3a16=ktJm5B3c5-XS7SqVuHBY5+E2FwVUqbdOdWK-AUgSA@mail.gmail.com>
+ <20190830221315.4b3b8a74@kitsune.suse.cz>
+In-Reply-To: <20190830221315.4b3b8a74@kitsune.suse.cz>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 30 Aug 2019 22:37:44 +0200
+Message-ID: <CAK8P3a1nGnB3GWEAso9MKW5HuxuB9ez46HZgS=GX-odtJuAMWQ@mail.gmail.com>
+Subject: Re: [PATCH] Revert "asm-generic: Remove unneeded
+ __ARCH_WANT_SYS_LLSEEK macro"
+To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,159 +65,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, Arnd Bergmann <arnd@arndb.de>,
- Nicolai Stange <nstange@suse.de>, David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Joel Stanley <joel@jms.id.au>, Christian Brauner <christian@brauner.io>,
- Firoz Khan <firoz.khan@linaro.org>, Breno Leitao <leitao@debian.org>,
+Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
  Geert Uytterhoeven <geert@linux-m68k.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Allison Randal <allison@lohutok.net>, "Eric W.
- Biederman" <ebiederm@xmission.com>
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
+ Firoz Khan <firoz.khan@linaro.org>, linux-xtensa@linux-xtensa.org,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>, Borislav Petkov <bp@alien8.de>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, David Howells <dhowells@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Christian Brauner <christian@brauner.io>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 30 Aug 2019 22:21:09 +0200
-Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+On Fri, Aug 30, 2019 at 10:13 PM Michal Such=C3=A1nek <msuchanek@suse.de> w=
+rote:
+> On Fri, 30 Aug 2019 21:54:43 +0200
+> Arnd Bergmann <arnd@arndb.de> wrote:
+> > > index 5bbf587f5bc1..2f3c4bb138c4 100644
+> > > --- a/fs/read_write.c
+> > > +++ b/fs/read_write.c
+> > > @@ -331,7 +331,7 @@ COMPAT_SYSCALL_DEFINE3(lseek, unsigned int, fd, c=
+ompat_off_t, offset, unsigned i
+> > >  }
+> > >  #endif
+> > >
+> > > -#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT)
+> > > +#ifdef __ARCH_WANT_SYS_LLSEEK
+> > >  SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high=
+,
+> > >                 unsigned long, offset_low, loff_t __user *, result,
+> > >                 unsigned int, whence)
+> >
+> > However, only reverting the patch will now break all newly added
+> > 32-bit architectures that don't define __ARCH_WANT_SYS_LLSEEK:
+> > at least nds32 and riscv32 come to mind, not sure if there is another.
+>
+> AFAICT nds32 never had the syscall. Its headers were added without
+> __ARCH_WANT_SYS_LLSEEK before the define was removed.
 
-> Le 30/08/2019 =C3=A0 20:57, Michal Suchanek a =C3=A9crit=C2=A0:
-> > There are numerous references to 32bit functions in generic and 64bit
-> > code so ifdef them out.
-> >=20
-> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > ---
-> > v2:
-> > - fix 32bit ifdef condition in signal.c
-> > - simplify the compat ifdef condition in vdso.c - 64bit is redundant
-> > - simplify the compat ifdef condition in callchain.c - 64bit is redunda=
-nt
-> > v3:
-> > - use IS_ENABLED and maybe_unused where possible
-> > - do not ifdef declarations
-> > - clean up Makefile
-> > v4:
-> > - further makefile cleanup
-> > - simplify is_32bit_task conditions
-> > - avoid ifdef in condition by using return
-> > v5:
-> > - avoid unreachable code on 32bit
-> > - make is_current_64bit constant on !COMPAT
-> > - add stub perf_callchain_user_32 to avoid some ifdefs
-> > v6:
-> > - consolidate current_is_64bit
-> > ---
-> >   arch/powerpc/include/asm/thread_info.h |  4 +--
-> >   arch/powerpc/kernel/Makefile           |  7 +++--
-> >   arch/powerpc/kernel/entry_64.S         |  2 ++
-> >   arch/powerpc/kernel/signal.c           |  3 +--
-> >   arch/powerpc/kernel/syscall_64.c       |  6 ++---
-> >   arch/powerpc/kernel/vdso.c             |  5 ++--
-> >   arch/powerpc/perf/callchain.c          | 37 +++++++++++++++-----------
-> >   7 files changed, 33 insertions(+), 31 deletions(-)
-> >  =20
->=20
-> [...]
->=20
-> > diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchai=
-n.c
-> > index b7cdcce20280..788ad2c63f18 100644
-> > --- a/arch/powerpc/perf/callchain.c
-> > +++ b/arch/powerpc/perf/callchain.c
-> > @@ -15,7 +15,7 @@
-> >   #include <asm/sigcontext.h>
-> >   #include <asm/ucontext.h>
-> >   #include <asm/vdso.h>
-> > -#ifdef CONFIG_PPC64
-> > +#ifdef CONFIG_COMPAT
-> >   #include "../kernel/ppc32.h"
-> >   #endif
-> >   #include <asm/pte-walk.h>
-> > @@ -268,16 +268,6 @@ static void perf_callchain_user_64(struct perf_cal=
-lchain_entry_ctx *entry,
-> >   	}
-> >   }
-> >  =20
-> > -static inline int current_is_64bit(void)
-> > -{
-> > -	/*
-> > -	 * We can't use test_thread_flag() here because we may be on an
-> > -	 * interrupt stack, and the thread flags don't get copied over
-> > -	 * from the thread_info on the main stack to the interrupt stack.
-> > -	 */
-> > -	return !test_ti_thread_flag(task_thread_info(current), TIF_32BIT);
-> > -}
-> > -
-> >   #else  /* CONFIG_PPC64 */
-> >   static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
-> >   {
-> > @@ -314,11 +304,6 @@ static inline void perf_callchain_user_64(struct p=
-erf_callchain_entry_ctx *entry
-> >   {
-> >   }
-> >  =20
-> > -static inline int current_is_64bit(void)
-> > -{
-> > -	return 0;
-> > -}
-> > -
-> >   static inline int valid_user_sp(unsigned long sp, int is_64)
-> >   {
-> >   	if (!sp || (sp & 7) || sp > TASK_SIZE - 32)
-> > @@ -334,6 +319,7 @@ static inline int valid_user_sp(unsigned long sp, i=
-nt is_64)
-> >  =20
-> >   #endif /* CONFIG_PPC64 */
-> >  =20
-> > +#if defined(CONFIG_PPC32) || defined(CONFIG_COMPAT)
-> >   /*
-> >    * Layout for non-RT signal frames
-> >    */
-> > @@ -475,6 +461,25 @@ static void perf_callchain_user_32(struct perf_cal=
-lchain_entry_ctx *entry,
-> >   		sp =3D next_sp;
-> >   	}
-> >   }
-> > +#else /* 32bit */
-> > +static void perf_callchain_user_32(struct perf_callchain_entry_ctx *en=
-try,
-> > +				   struct pt_regs *regs)
-> > +{
-> > +	(void)&read_user_stack_32; /* unused if !COMPAT */ =20
->=20
-> You don't need that anymore do you ?
+nds32 got it from include/asm-generic/unistd.h
 
-Yes, this part is not needed. It was removed later anyway but this
-state is broken.
-
-Thanks
-
-Michal
-
->=20
-> Christophe
->=20
-> > +}
-> > +#endif /* 32bit */
-> > +
-> > +static inline int current_is_64bit(void)
-> > +{
-> > +	if (!IS_ENABLED(CONFIG_COMPAT))
-> > +		return IS_ENABLED(CONFIG_PPC64);
-> > +	/*
-> > +	 * We can't use test_thread_flag() here because we may be on an
-> > +	 * interrupt stack, and the thread flags don't get copied over
-> > +	 * from the thread_info on the main stack to the interrupt stack.
-> > +	 */
-> > +	return !test_ti_thread_flag(task_thread_info(current), TIF_32BIT);
-> > +}
-> >  =20
-> >   void
-> >   perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt=
-_regs *regs)
-> >  =20
-
+        Arnd
