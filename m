@@ -2,38 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67573A3F0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B53EA3F11
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2019 22:37:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46KrnY1qzbzDqd2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:34:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46KrrM1DnpzDr8v
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 06:37:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.160.195; helo=mail-qt1-f195.google.com;
+ envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mail-qt1-f195.google.com (mail-qt1-f195.google.com
+ [209.85.160.195])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Krhr5C41zDqdg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:30:52 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 0F6DFB6CE;
- Fri, 30 Aug 2019 20:30:49 +0000 (UTC)
-From: Michal Suchanek <msuchanek@suse.de>
-To: linux-fsdevel@vger.kernel.org
-Subject: 
-Date: Fri, 30 Aug 2019 22:29:59 +0200
-Message-Id: <20190830202959.3539-1-msuchanek@suse.de>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <CAK8P3a16=ktJm5B3c5-XS7SqVuHBY5+E2FwVUqbdOdWK-AUgSA@mail.gmail.com>
-References: 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46KrlV1PFlzDqNp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 06:33:09 +1000 (AEST)
+Received: by mail-qt1-f195.google.com with SMTP id i4so9027235qtj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2019 13:33:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=C2hE6pOXI9YwgYTXoFXhAGtS+qXq/OZAAT0OYkj0YuE=;
+ b=Uq705TumSSXuXtKJiKLarq2KYTyIfRP7pvYGpxQ6kWn834iekfsS8sdPILpwu5Pk47
+ g6r4ZiIGAJU6PbBk1/6dUYWZMfbznVKTw5xWSHSUo6mOIUst3CkpJ9ovgI9HPr/dw5UA
+ Bm8A51aSSXMx4qs5/WC5iPA0SXRSU6w4Tlwp1kuTmSMztR9hTvBMx8Oov95uEbtbdodK
+ UU6I39HMtlrdaD5OF5rSaVNxh53gntPGiA5k5L6XDSq2Fj+If1AZcTwiJTAXF9PSca02
+ KupBAAqtJfnv8R+j2Q/Op4YMBROhnsLGOeARWVokcjX08/xv1q6GJtaU+Hr3gGyARnSh
+ Nuag==
+X-Gm-Message-State: APjAAAXWA2mMzoxWtMVqApNllOnKxvhshdbt2CiYlQ7ACEq2vGL2ioCU
+ xO7Q+nf8qFlaZwhUtZjFMsaDHHCCcGf++14sU18=
+X-Google-Smtp-Source: APXvYqzNLmASV9zbZWIDANsCXyZ0gD0AajjB+nlVkHem8tbUSIpFypUjy64Chv0ThgUcKdpjgNdza02VbGy4KagIrcQ=
+X-Received: by 2002:ac8:239d:: with SMTP id q29mr17353365qtq.304.1567197187083; 
+ Fri, 30 Aug 2019 13:33:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAK8P3a16=ktJm5B3c5-XS7SqVuHBY5+E2FwVUqbdOdWK-AUgSA@mail.gmail.com>
+ <20190830202959.3539-1-msuchanek@suse.de>
+In-Reply-To: <20190830202959.3539-1-msuchanek@suse.de>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 30 Aug 2019 22:32:51 +0200
+Message-ID: <CAK8P3a2XzubLT4gkAzmu9u17bXB1dznbZm=vGPAzyS74fNa=Kg@mail.gmail.com>
+Subject: Re:
+To: Michal Suchanek <msuchanek@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,62 +61,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Allison Randal <allison@lohutok.net>, linux-kernel@vger.kernel.org,
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Allison Randal <allison@lohutok.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  Paul Mackerras <paulus@samba.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
  Firoz Khan <firoz.khan@linaro.org>, Thomas Gleixner <tglx@linutronix.de>,
- Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  Christian Brauner <christian@brauner.io>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Subject: [PATCH] powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
+On Fri, Aug 30, 2019 at 10:30 PM Michal Suchanek <msuchanek@suse.de> wrote:
+>
+> Subject: [PATCH] powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
+>
+> This partially reverts commit caf6f9c8a326 ("asm-generic: Remove
+> unneeded __ARCH_WANT_SYS_LLSEEK macro")
+>
+> When CONFIG_COMPAT is disabled on ppc64 the kernel does not build.
+>
+> There is resistance to both removing the llseek syscall from the 64bit
+> syscall tables and building the llseek interface unconditionally.
+>
+> Link: https://lore.kernel.org/lkml/20190828151552.GA16855@infradead.org/
+> Link: https://lore.kernel.org/lkml/20190829214319.498c7de2@naga/
+>
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 
-This partially reverts commit caf6f9c8a326 ("asm-generic: Remove
-unneeded __ARCH_WANT_SYS_LLSEEK macro")
-
-When CONFIG_COMPAT is disabled on ppc64 the kernel does not build.
-
-There is resistance to both removing the llseek syscall from the 64bit
-syscall tables and building the llseek interface unconditionally.
-
-Link: https://lore.kernel.org/lkml/20190828151552.GA16855@infradead.org/
-Link: https://lore.kernel.org/lkml/20190829214319.498c7de2@naga/
-
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
- arch/powerpc/include/asm/unistd.h | 1 +
- fs/read_write.c                   | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
-index b0720c7c3fcf..700fcdac2e3c 100644
---- a/arch/powerpc/include/asm/unistd.h
-+++ b/arch/powerpc/include/asm/unistd.h
-@@ -31,6 +31,7 @@
- #define __ARCH_WANT_SYS_SOCKETCALL
- #define __ARCH_WANT_SYS_FADVISE64
- #define __ARCH_WANT_SYS_GETPGRP
-+#define __ARCH_WANT_SYS_LLSEEK
- #define __ARCH_WANT_SYS_NICE
- #define __ARCH_WANT_SYS_OLD_GETRLIMIT
- #define __ARCH_WANT_SYS_OLD_UNAME
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 5bbf587f5bc1..89aa2701dbeb 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -331,7 +331,8 @@ COMPAT_SYSCALL_DEFINE3(lseek, unsigned int, fd, compat_off_t, offset, unsigned i
- }
- #endif
- 
--#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT)
-+#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT) || \
-+	defined(__ARCH_WANT_SYS_LLSEEK)
- SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
- 		unsigned long, offset_low, loff_t __user *, result,
- 		unsigned int, whence)
--- 
-2.22.0
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
