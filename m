@@ -2,56 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F296A4301
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 09:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD29A4307
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 09:19:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46L70B521nzDqWm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 17:15:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46L75G4yPWzDqd3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 17:19:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Kz7Q54jmzDrBY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 11:20:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=sina.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46Kz7Q26V5z8t4R
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 11:20:50 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46Kz7Q1cYtz9sNF; Sat, 31 Aug 2019 11:20:50 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=sina.com
- (client-ip=202.108.3.163; helo=mail3-163.sinamail.sina.com.cn;
- envelope-from=hdanton@sina.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=sina.com
-Received: from mail3-163.sinamail.sina.com.cn (mail3-163.sinamail.sina.com.cn
- [202.108.3.163]) by ozlabs.org (Postfix) with SMTP id 46Kz7N7557z9s7T
- for <linuxppc-dev@ozlabs.org>; Sat, 31 Aug 2019 11:20:41 +1000 (AEST)
-Received: from unknown (HELO [IPv6:::ffff:192.168.199.155])([114.254.173.51])
- by sina.com with ESMTP
- id 5D69CB6200019865; Sat, 31 Aug 2019 09:20:36 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 17560449331780
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46L5hh18l6zDr82
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 16:16:33 +1000 (AEST)
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id CCA8FFE050212F500B61;
+ Sat, 31 Aug 2019 14:00:41 +0800 (CST)
+Received: from localhost.localdomain (10.67.212.75) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 31 Aug 2019 14:00:34 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
+ <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+ <mattst88@gmail.com>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <mpe@ellerman.id.au>, <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
+ <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+ <davem@davemloft.net>, <ralf@linux-mips.org>, <paul.burton@mips.com>,
+ <jhogan@kernel.org>, <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
+Subject: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
+Date: Sat, 31 Aug 2019 13:58:16 +0800
+Message-ID: <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.8.1
+In-Reply-To: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
+References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
 MIME-Version: 1.0
-To: David Howells <dhowells@redhat.com>
-From: Hillf Danton <hdanton@sina.com>
-Subject: Re: Oops (request_key_auth_describe) while running cve-2016-7042
- from LTP
-Date: Sat, 31 Aug 2019 09:20:34 +0800
-Importance: normal
-X-Priority: 3
-In-Reply-To: <11908.1567177954@warthog.procyon.org.uk>
-References: <20190830145454.B91DF125411@zmta02.collab.prod.int.phx2.redhat.com>
- <20190830085646.14740-1-hdanton@sina.com>
- <4384.1567174383@warthog.procyon.org.uk>
- <11908.1567177954@warthog.procyon.org.uk>
-Content-Type: multipart/alternative;
- boundary="_638A9FDF-B087-4B87-8CFC-F3572F88B341_"
+Content-Type: text/plain
+X-Originating-IP: [10.67.212.75]
+X-CFilter-Loop: Reflected
 X-Mailman-Approved-At: Sat, 31 Aug 2019 17:11:34 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,111 +56,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "dhowells@redhat.com" <dhowells@redhat.com>,
- Sachin Sant <sachinp@linux.vnet.ibm.com>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
+Cc: linux-sh@vger.kernel.org, peterz@infradead.org, dave.hansen@linux.intel.com,
+ linuxarm@huawei.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ hpa@zytor.com, sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
+ x86@kernel.org, rppt@linux.ibm.com, dledford@redhat.com,
+ jeffrey.t.kirsher@intel.com, nfont@linux.vnet.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, len.brown@intel.com,
+ anshuman.khandual@arm.com, cai@lca.pw, luto@kernel.org, tglx@linutronix.de,
+ linux-arm-kernel@lists.infradead.org, axboe@kernel.dk, robin.murphy@arm.com,
+ linux-kernel@vger.kernel.org, tbogendoerfer@suse.de,
+ linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
-Message-Id: <46L70B521nzDqWm@lists.ozlabs.org>
 
+According to Section 6.2.14 from ACPI spec 6.3 [1], the setting
+of proximity domain is optional, as below:
 
---_638A9FDF-B087-4B87-8CFC-F3572F88B341_
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+This optional object is used to describe proximity domain
+associations within a machine. _PXM evaluates to an integer
+that identifies a device as belonging to a Proximity Domain
+defined in the System Resource Affinity Table (SRAT).
 
-David Howells <dhowells@redhat.com> wrote:
->> 1, callee has no pre defined duty to help caller in general; they should=
- not
->> try to do anything, however, to help their callers in principle due to
->> limited info on their hands IMO.
->
-> Ah, no.  It's entirely reasonable for an API to specify that one of its
-> methods will be called with one or more locks held - and that the method =
-must
-> be aware of this and may make use of this.
->
-Fair and clear.
+This patch checks node id with the below case before returning
+node_to_cpumask_map[node]:
+1. if node_id >= nr_node_ids, return cpu_none_mask
+2. if node_id < 0, return cpu_online_mask
+3. if node_to_cpumask_map[node_id] is NULL, return cpu_online_mask
 
-Thanks
-Hillf
+[1] https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
 
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+---
+ arch/x86/include/asm/topology.h | 6 ++++++
+ arch/x86/mm/numa.c              | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-
---_638A9FDF-B087-4B87-8CFC-F3572F88B341_
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset="utf-8"
-
-<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
-hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
-fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40"><head><meta ht=
-tp-equiv=3DContent-Type content=3D"text/html; charset=3Dutf-8"><meta name=
-=3DGenerator content=3D"Microsoft Word 15 (filtered medium)"><style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:DengXian;
-	panose-1:2 1 6 0 3 1 1 1 1 1;}
-@font-face
-	{font-family:DengXian;
-	panose-1:2 1 6 0 3 1 1 1 1 1;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	margin-bottom:.0001pt;
-	text-align:justify;
-	text-justify:inter-ideograph;
-	font-size:10.5pt;
-	font-family:DengXian;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:#954F72;
-	text-decoration:underline;}
-span.DefaultFontHxMailStyle
-	{mso-style-name:"Default Font HxMail Style";
-	font-family:DengXian;
-	color:windowtext;
-	font-weight:normal;
-	font-style:normal;
-	text-decoration:none none;}
-.MsoChpDefault
-	{mso-style-type:export-only;}
-/* Page Definitions */
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
-div.WordSection1
-	{page:WordSection1;}
---></style></head><body lang=3DZH-CN link=3Dblue vlink=3D"#954F72"><div cla=
-ss=3DWordSection1><p class=3DMsoNormal><span lang=3DEN-US>David Howells &lt=
-;dhowells@redhat.com&gt; wrote:<o:p></o:p></span></p><p class=3DMsoNormal><=
-span lang=3DEN-US>&gt;&gt; 1, callee has no pre defined duty to help caller=
- in general; they should not</span></p><p class=3DMsoNormal><span lang=3DEN=
--US>&gt;&gt; try to do anything, however, to help their callers in principl=
-e due to</span></p><p class=3DMsoNormal><span lang=3DEN-US>&gt;&gt; limited=
- info on their hands IMO.</span></p><p class=3DMsoNormal><span lang=3DEN-US=
->&gt;<o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>&g=
-t; Ah, no.=C2=A0 It's entirely reasonable for an API to specify that one of=
- its</span></p><p class=3DMsoNormal><span lang=3DEN-US>&gt; methods will be=
- called with one or more locks held - and that the method must</span></p><p=
- class=3DMsoNormal><span lang=3DEN-US>&gt; be aware of this and may make us=
-e of this.</span></p><p class=3DMsoNormal><span lang=3DEN-US>&gt;<o:p>&nbsp=
-;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>Fair and clear.</=
-span></p><p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></=
-p><p class=3DMsoNormal><span lang=3DEN-US>Thanks</span></p><p class=3DMsoNo=
-rmal><span lang=3DEN-US>Hillf</span></p><p class=3DMsoNormal><span lang=3DE=
-N-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span class=3DDefault=
-FontHxMailStyle><span lang=3DEN-US><o:p>&nbsp;</o:p></span></span></p></div=
-></body></html>=
-
---_638A9FDF-B087-4B87-8CFC-F3572F88B341_--
-
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 4b14d23..f36e9c8 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -69,6 +69,12 @@ extern const struct cpumask *cpumask_of_node(int node);
+ /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
+ static inline const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node >= nr_node_ids)
++		return cpu_none_mask;
++
++	if (node < 0 || !node_to_cpumask_map[node])
++		return cpu_online_mask;
++
+ 	return node_to_cpumask_map[node];
+ }
+ #endif
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index e6dad60..5e393d2 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -868,7 +868,7 @@ const struct cpumask *cpumask_of_node(int node)
+ 		dump_stack();
+ 		return cpu_none_mask;
+ 	}
+-	if (node_to_cpumask_map[node] == NULL) {
++	if (node < 0 || !node_to_cpumask_map[node]) {
+ 		printk(KERN_WARNING
+ 			"cpumask_of_node(%d): no node_to_cpumask_map!\n",
+ 			node);
+-- 
+2.8.1
 
