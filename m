@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2A0A430D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 09:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2902AA430F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 09:29:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46L7Cr2kdXzDqW7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 17:25:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46L7JQ0g44zDqY5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2019 17:29:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,10 +18,10 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46L5jw4hYJzDr82
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 16:17:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46L5l44P04zDr82
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2019 16:18:40 +1000 (AEST)
 Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id D2F67685E98158F20FC1;
+ by Forcepoint Email with ESMTP id BFEA57A68E9CC99D4C43;
  Sat, 31 Aug 2019 14:00:46 +0800 (CST)
 Received: from localhost.localdomain (10.67.212.75) by
  DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
@@ -34,9 +34,10 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
  <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
  <davem@davemloft.net>, <ralf@linux-mips.org>, <paul.burton@mips.com>,
  <jhogan@kernel.org>, <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
-Subject: [PATCH v2 6/9] sh: numa: check the node id consistently for sh
-Date: Sat, 31 Aug 2019 13:58:20 +0800
-Message-ID: <1567231103-13237-7-git-send-email-linyunsheng@huawei.com>
+Subject: [PATCH v2 7/9] sparc64: numa: check the node id consistently for
+ sparc64
+Date: Sat, 31 Aug 2019 13:58:21 +0800
+Message-ID: <1567231103-13237-8-git-send-email-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
 References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
@@ -79,45 +80,47 @@ associations within a machine. _PXM evaluates to an integer
 that identifies a device as belonging to a Proximity Domain
 defined in the System Resource Affinity Table (SRAT).
 
-It seems sh does not have real numa support or uncompleted
-numa support, this patch still checks node id with the below
-case to ensure future support is consistent:
+This patch checks node id with the below case before returning
+&numa_cpumask_lookup_table[node]:
 1. if node_id >= nr_node_ids, return cpu_none_mask
 2. if node_id < 0, return cpu_online_mask
-3. if node_to_cpumask_map[node_id] is NULL, return cpu_online_mask
+3. Since numa_cpumask_lookup_table is not a pointer, a comment
+   is added to indicate that
 
 [1] https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
 
 Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
 ---
- arch/sh/include/asm/topology.h | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/sparc/include/asm/topology_64.h | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sh/include/asm/topology.h b/arch/sh/include/asm/topology.h
-index 1db470e..e71e0a0 100644
---- a/arch/sh/include/asm/topology.h
-+++ b/arch/sh/include/asm/topology.h
-@@ -6,7 +6,19 @@
+diff --git a/arch/sparc/include/asm/topology_64.h b/arch/sparc/include/asm/topology_64.h
+index 34c628a..66a7917 100644
+--- a/arch/sparc/include/asm/topology_64.h
++++ b/arch/sparc/include/asm/topology_64.h
+@@ -11,9 +11,19 @@ static inline int cpu_to_node(int cpu)
+ 	return numa_cpu_lookup_table[cpu];
+ }
  
- #define cpu_to_node(cpu)	((void)(cpu),0)
- 
--#define cpumask_of_node(node)	((void)node, cpu_online_mask)
+-#define cpumask_of_node(node) ((node) == -1 ?				\
+-			       cpu_all_mask :				\
+-			       &numa_cpumask_lookup_table[node])
 +static inline const struct cpumask *cpumask_of_node(int node)
 +{
-+	if (node >= nr_node_ids)
++	if (node >= MAX_NUMNODES)
 +		return cpu_none_mask;
 +
-+	if (node < 0 || !node_to_cpumask_map[node])
++	/* numa_cpumask_lookup_table[node] is not a pointer, so
++	 * no need to check for NULL here.
++	 */
++	if (node < 0)
 +		return cpu_online_mask;
 +
-+	/* Should return actual mask based on node_to_cpumask_map
-+	 * if sh arch supports real numa node.
-+	 */
-+	return cpu_online_mask;
++	return &numa_cpumask_lookup_table[node];
 +}
  
- #define pcibus_to_node(bus)	((void)(bus), -1)
- #define cpumask_of_pcibus(bus)	(pcibus_to_node(bus) == -1 ? \
+ struct pci_bus;
+ #ifdef CONFIG_PCI
 -- 
 2.8.1
 
