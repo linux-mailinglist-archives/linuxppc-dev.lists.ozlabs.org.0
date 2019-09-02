@@ -1,41 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F09A528F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 11:11:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F10DA5335
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 11:44:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MPT60d6DzDqQb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 19:11:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MQD120bNzDqQn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 19:44:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=catalin.marinas@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46MPQZ0Y09zDqYn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 19:08:52 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED91028;
- Mon,  2 Sep 2019 02:08:49 -0700 (PDT)
-Received: from arrakis.emea.arm.com (arrakis.cambridge.arm.com [10.1.196.78])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- CD7C33F246; Mon,  2 Sep 2019 02:08:48 -0700 (PDT)
-Date: Mon, 2 Sep 2019 10:08:46 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MQ9h1gcmzDqfY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 19:42:47 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 3AA39ABBE;
+ Mon,  2 Sep 2019 09:42:43 +0000 (UTC)
+Date: Mon, 2 Sep 2019 11:42:39 +0200
+From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: linux-next: manual merge of the powerpc tree with the arm64 tree
-Message-ID: <20190902090846.GA15118@arrakis.emea.arm.com>
-References: <20190902094711.2625ba31@canb.auug.org.au>
- <87lfv7tqt0.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH v7 5/6] powerpc/64: Make COMPAT user-selectable disabled
+ on littleendian by default.
+Message-ID: <20190902114239.32bd81f4@naga>
+In-Reply-To: <87ftlftpy7.fsf@mpe.ellerman.id.au>
+References: <cover.1567198491.git.msuchanek@suse.de>
+ <c7c88e88408588fa6fcf858a5ae503b5e2f4ec0b.1567198492.git.msuchanek@suse.de>
+ <87ftlftpy7.fsf@mpe.ellerman.id.au>
+Followup-To: linux-fsdevel@vger.kernel.org
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87lfv7tqt0.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,49 +50,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Peter Collingbourne <pcc@google.com>, Will Deacon <will@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Michael Neuling <mikey@neuling.org>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, "Eric W.
+ Biederman" <ebiederm@xmission.com>, Diana Craciun <diana.craciun@nxp.com>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Allison Randal <allison@lohutok.net>, Breno Leitao <leitao@debian.org>,
+ Firoz Khan <firoz.khan@linaro.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 02, 2019 at 11:44:43AM +1000, Michael Ellerman wrote:
-> Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> > Hi all,
-> >
-> > Today's linux-next merge of the powerpc tree got a conflict in:
-> >
-> >   arch/Kconfig
-> >
-> > between commit:
-> >
-> >   5cf896fb6be3 ("arm64: Add support for relocating the kernel with RELR relocations")
-> >
-> > from the arm64 tree and commit:
-> >
-> >   0c9c1d563975 ("x86, s390: Move ARCH_HAS_MEM_ENCRYPT definition to arch/Kconfig")
-> >
-> > from the powerpc tree.
-> >
-> > I fixed it up (see below) and can carry the fix as necessary. This
-> > is now fixed as far as linux-next is concerned, but any non trivial
-> > conflicts should be mentioned to your upstream maintainer when your tree
-> > is submitted for merging.  You may also want to consider cooperating
-> > with the maintainer of the conflicting tree to minimise any particularly
-> > complex conflicts.
-> 
-> Thanks.
-> 
-> That conflict seems entirely trivial, but Catalin/Will if it bothers you
-> I have the conflicting commit in a topic branch based on rc2 which you
-> could merge to resolve it:
+On Mon, 02 Sep 2019 12:03:12 +1000
+Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-It's a trivial conflict, easy to resolve. I don't think it's worth
-trying to avoid it (Linus normally doesn't mind such conflicts).
+> Michal Suchanek <msuchanek@suse.de> writes:
+> > On bigendian ppc64 it is common to have 32bit legacy binaries but much
+> > less so on littleendian.  
+> 
+> I think the toolchain people will tell you that there is no 32-bit
+> little endian ABI defined at all, if anything works it's by accident.
 
--- 
-Catalin
+I have seen a piece of software that workarounds code issues on 64bit
+by always compiling 32bit code. So it does work in some way. Also it
+has been pointed out that you can still switch to BE even with the
+'fast-switch' removed.
+
+> 
+> So I think we should not make this selectable, unless someone puts their
+> hand up to say they want it and are willing to test it and keep it
+> working.
+
+I don't really care either way.
+
+Thanks
+
+Michal
+
+> 
+> cheers
+> 
+> > v3: make configurable
+> > ---
+> >  arch/powerpc/Kconfig | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > index 5bab0bb6b833..b0339e892329 100644
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -264,8 +264,9 @@ config PANIC_TIMEOUT
+> >  	default 180
+> >  
+> >  config COMPAT
+> > -	bool
+> > -	default y if PPC64
+> > +	bool "Enable support for 32bit binaries"
+> > +	depends on PPC64
+> > +	default y if !CPU_LITTLE_ENDIAN
+> >  	select COMPAT_BINFMT_ELF
+> >  	select ARCH_WANT_OLD_COMPAT_IPC
+> >  	select COMPAT_OLD_SIGACTION
+> > -- 
+> > 2.22.0  
+
