@@ -2,44 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52383A4EF0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 07:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475ADA4F17
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 08:11:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MK092GdZzDqdb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 15:49:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MKV6300lzDqdc
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 16:11:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.191; helo=huawei.com;
+ (client-ip=45.249.212.35; helo=huawei.com;
  envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MJyH5JMyzDqW1
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 15:47:34 +1000 (AEST)
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 841D5224CEFB5C28D060;
- Mon,  2 Sep 2019 13:47:28 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Mon, 2 Sep 2019
- 13:47:19 +0800
-Subject: Re: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
-To: Peter Zijlstra <peterz@infradead.org>
-References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
- <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
- <20190831085539.GG2369@hirez.programming.kicks-ass.net>
- <4d89c688-49e4-a2aa-32ee-65e36edcd913@huawei.com>
- <20190831161247.GM2369@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MKRJ2RZpzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 16:09:15 +1000 (AEST)
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id DA43FADD0A20B83956FB;
+ Mon,  2 Sep 2019 14:09:09 +0800 (CST)
+Received: from [127.0.0.1] (10.74.191.121) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Mon, 2 Sep 2019
+ 14:09:00 +0800
+Subject: Re: [PATCH v2 7/9] sparc64: numa: check the node id consistently for
+ sparc64
+To: David Miller <davem@davemloft.net>
+References: <1567231103-13237-8-git-send-email-linyunsheng@huawei.com>
+ <20190830.235337.570776316111294728.davem@davemloft.net>
+ <0195eb73-99ae-fec2-3e11-2cb9e6677926@huawei.com>
+ <20190831.130250.1236116087422472663.davem@davemloft.net>
 From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
-Date: Mon, 2 Sep 2019 13:46:51 +0800
+Message-ID: <1e128e33-427f-19a2-0e13-95a9c0656ab1@huawei.com>
+Date: Mon, 2 Sep 2019 14:08:31 +0800
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
  Thunderbird/52.2.0
 MIME-Version: 1.0
-In-Reply-To: <20190831161247.GM2369@hirez.programming.kicks-ass.net>
+In-Reply-To: <20190831.130250.1236116087422472663.davem@davemloft.net>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -56,136 +56,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com, linuxarm@huawei.com,
- jiaxun.yang@flygoat.com, linux-kernel@vger.kernel.org, mwb@linux.vnet.ibm.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
- will@kernel.org, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, peterz@infradead.org,
+ catalin.marinas@arm.com, dave.hansen@linux.intel.com,
+ heiko.carstens@de.ibm.com, linuxarm@huawei.com, jiaxun.yang@flygoat.com,
+ linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com, paulus@samba.org,
+ hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org,
+ cai@lca.pw, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
  x86@kernel.org, rppt@linux.ibm.com, borntraeger@de.ibm.com,
  dledford@redhat.com, mingo@redhat.com, jeffrey.t.kirsher@intel.com,
  jhogan@kernel.org, nfont@linux.vnet.ibm.com, mattst88@gmail.com,
  len.brown@intel.com, gor@linux.ibm.com, anshuman.khandual@arm.com,
- ink@jurassic.park.msu.ru, cai@lca.pw, luto@kernel.org, tglx@linutronix.de,
+ bp@alien8.de, luto@kernel.org, tglx@linutronix.de,
  naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
- rth@twiddle.net, axboe@kernel.dk, robin.murphy@arm.com,
- linux-mips@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
- paul.burton@mips.com, linux-alpha@vger.kernel.org, bp@alien8.de,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+ rth@twiddle.net, axboe@kernel.dk, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
+ paul.burton@mips.com, linux-alpha@vger.kernel.org, ink@jurassic.park.msu.ru,
+ akpm@linux-foundation.org, robin.murphy@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/9/1 0:12, Peter Zijlstra wrote:
-> On Sat, Aug 31, 2019 at 06:09:39PM +0800, Yunsheng Lin wrote:
->>
->>
->> On 2019/8/31 16:55, Peter Zijlstra wrote:
->>> On Sat, Aug 31, 2019 at 01:58:16PM +0800, Yunsheng Lin wrote:
->>>> According to Section 6.2.14 from ACPI spec 6.3 [1], the setting
->>>> of proximity domain is optional, as below:
->>>>
->>>> This optional object is used to describe proximity domain
->>>> associations within a machine. _PXM evaluates to an integer
->>>> that identifies a device as belonging to a Proximity Domain
->>>> defined in the System Resource Affinity Table (SRAT).
->>>
->>> That's just words.. what does it actually mean?
->>
->> It means the dev_to_node(dev) may return -1 if the bios does not
->> implement the proximity domain feature, user may use that value
->> to call cpumask_of_node and cpumask_of_node does not protect itself
->> from node id being -1, which causes out of bound access.
+On 2019/9/1 4:02, David Miller wrote:
+> From: Yunsheng Lin <linyunsheng@huawei.com>
+> Date: Sat, 31 Aug 2019 16:57:04 +0800
 > 
->>>> @@ -69,6 +69,12 @@ extern const struct cpumask *cpumask_of_node(int node);
->>>>  /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
->>>>  static inline const struct cpumask *cpumask_of_node(int node)
->>>>  {
->>>> +	if (node >= nr_node_ids)
->>>> +		return cpu_none_mask;
->>>> +
->>>> +	if (node < 0 || !node_to_cpumask_map[node])
->>>> +		return cpu_online_mask;
->>>> +
->>>>  	return node_to_cpumask_map[node];
->>>>  }
->>>>  #endif
->>>
->>> I _reallly_ hate this. Users are expected to use valid numa ids. Now
->>> we're adding all this checking to all users. Why do we want to do that?
->>
->> As above, the dev_to_node(dev) may return -1.
->>
->>>
->>> Using '(unsigned)node >= nr_nods_ids' is an error.
->>
->> 'node >= nr_node_ids' can be dropped if all user is expected to not call
->> cpumask_of_node with node id greater or equal to nr_nods_ids.
+>> Did you mean sparc64 system does not has ACPI, the device's node id will
+>> not specified by ACPI, so the ACPI is unrelated here?
 > 
-> you copied my typo :-)
-
-I did note the typo, corrected the first one, but missed the second one :)
-
+> Yes, sparc64 never has and never will have ACPI.
 > 
->> From what I can see, the problem can be fixed in three place:
->> 1. Make user dev_to_node return a valid node id even when proximity
->>    domain is not set by bios(or node id set by buggy bios is not valid),
->>    which may need info from the numa system to make sure it will return
->>    a valid node.
->>
->> 2. User that call cpumask_of_node should ensure the node id is valid
->>    before calling cpumask_of_node, and user also need some info to
->>    make ensure node id is valid.
->>
->> 3. Make sure cpumask_of_node deal with invalid node id as this patchset.
->>
->> Which one do you prefer to make sure node id is valid, or do you
->> have any better idea?
->>
->> Any detail advice and suggestion will be very helpful, thanks.
+> This is also true for several other platforms where you have made this
+> change.
 > 
-> 1) because even it is not set, the device really does belong to a node.
-> It is impossible a device will have magic uniform access to memory when
-> CPUs cannot.
+> The assumption of your entire patch set is that the semantics of the
+> NUMA node ID are somehow completely defined by ACPI semantics.  Which
+> is not true.
 
-So it means dev_to_node() will return either NUMA_NO_NODE or a
-valid node id?
+Thanks for pointing out.
 
-> 
-> 2) is already true today, cpumask_of_node() requires a valid node_id.
+The NUMA node id in sparc64 system is defined by DT semantics?
 
-Ok, most of the user does check node_id before calling
-cpumask_of_node(), but does a little different type of checking:
-
-1) some does " < 0" check;
-2) some does "== NUMA_NO_NODE" check;
-3) some does ">= MAX_NUMNODES" check;
-4) some does "< 0 || >= MAX_NUMNODES || !node_online(node)" check.
-
-
-> 
-> 3) is just wrong and increases overhead for everyone.
-
-Ok, cpumask_of_node() is also used in some critical path such
-as scheduling, which may not need those checking, the overhead
-is unnecessary.
-
-But for non-critical path such as setup or configuration path,
-it better to have consistent checking, and also simplify the
-user code that calls cpumask_of_node().
-
-Do you think it is worth the trouble to add a new function
-such as cpumask_of_node_check(maybe some other name) to do
-consistent checking?
-
-Or caller just simply check if dev_to_node()'s return value is
-NUMA_NO_NODE before calling cpumask_of_node()?
-
-
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 > 
 > .
 > 
