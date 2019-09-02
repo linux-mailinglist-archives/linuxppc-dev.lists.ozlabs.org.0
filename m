@@ -1,34 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E48A4E0E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 06:00:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C5BA4E2C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 06:04:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MGZk0396zDqQm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 14:00:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MGgY2shdzDqW9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 14:04:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MFv36pFbzDqSn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 13:29:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MFv433YZzDqSn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46MFv33Bqxz9sNk; Mon,  2 Sep 2019 13:29:35 +1000 (AEST)
+ id 46MFv41xF7z9sN1; Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 3bbd2343734e44de92238eea1a5cd3ad32a6baf0
-In-Reply-To: <54f67bb7ac486c1350f2fa8905cd279f94b9dfb1.1566382841.git.christophe.leroy@c-s.fr>
+X-powerpc-patch-commit: 63ce271b5e377deaddace4bac6dafb6e79d2bee4
+In-Reply-To: <cdaf4bbbb64c288a077845846f04b12683f8875a.1566817807.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/8xx: set STACK_END_MAGIC earlier on the init_stack
-Message-Id: <46MFv33Bqxz9sNk@ozlabs.org>
-Date: Mon,  2 Sep 2019 13:29:35 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/prom: convert PROM_BUG() to standard trap
+Message-Id: <46MFv41xF7z9sN1@ozlabs.org>
+Date: Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,16 +45,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-08-21 at 10:20:51 UTC, Christophe Leroy wrote:
-> Today, the STACK_END_MAGIC is set on init_stack in start_kernel().
+On Mon, 2019-08-26 at 11:10:23 UTC, Christophe Leroy wrote:
+> Prior to commit 1bd98d7fbaf5 ("ppc64: Update BUG handling based on
+> ppc32"), BUG() family was using BUG_ILLEGAL_INSTRUCTION which
+> was an invalid instruction opcode to trap into program check
+> exception.
 > 
-> To avoid a false 'Thread overran stack, or stack corrupted' message
-> on early Oopses, setup STACK_END_MAGIC as soon as possible.
+> That commit converted them to using standard trap instructions,
+> but prom/prom_init and their PROM_BUG() macro were left over.
+> head_64.S and exception-64s.S were left aside as well.
+> 
+> Convert them to using the standard BUG infrastructure.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/3bbd2343734e44de92238eea1a5cd3ad32a6baf0
+https://git.kernel.org/powerpc/c/63ce271b5e377deaddace4bac6dafb6e79d2bee4
 
 cheers
