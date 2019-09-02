@@ -2,48 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8834FA4F1B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 08:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 228A2A4F95
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 09:16:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MKXc3kG9zDqbG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 16:13:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MLwd2S0MzDqGQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:16:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MLtN5QDmzDqGB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 17:14:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.191; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ dmarc=fail (p=none dis=none) header.from=redhat.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46MLtN1MsPz8t3b
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 17:14:20 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46MLtN14Cyz9sN1; Mon,  2 Sep 2019 17:14:20 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=dhowells@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MKVp1g6TzDqQr
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 16:12:18 +1000 (AEST)
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 906792FE466809629DAD;
- Mon,  2 Sep 2019 14:12:15 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Mon, 2 Sep 2019
- 14:12:05 +0800
-Subject: Re: [PATCH v2 8/9] mips: numa: check the node id consistently for
- mips ip27
-To: Paul Burton <paul.burton@mips.com>
-References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
- <1567231103-13237-9-git-send-email-linyunsheng@huawei.com>
- <20190831154547.qzh6j4jwg5o5y4db@pburton-laptop>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <0290a79f-008a-a789-8545-1141c96c1023@huawei.com>
-Date: Mon, 2 Sep 2019 14:11:37 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by ozlabs.org (Postfix) with ESMTPS id 46MLtM4Ybgz9s7T
+ for <linuxppc-dev@ozlabs.org>; Mon,  2 Sep 2019 17:14:19 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 506FA81F1B;
+ Mon,  2 Sep 2019 07:14:17 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com
+ [10.10.120.255])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0256360920;
+ Mon,  2 Sep 2019 07:14:15 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+ Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+ Kingdom.
+ Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <11986.1567178014@warthog.procyon.org.uk>
+References: <11986.1567178014@warthog.procyon.org.uk>
+ <85B7196E-D717-4F19-A7E8-82A18287A3DE@linux.vnet.ibm.com>
+To: Hillf Danton <hdanton@sina.com>
+Subject: Re: Oops (request_key_auth_describe) while running cve-2016-7042 from
+ LTP
 MIME-Version: 1.0
-In-Reply-To: <20190831154547.qzh6j4jwg5o5y4db@pburton-laptop>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <760.1567408455.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Sep 2019 08:14:15 +0100
+Message-ID: <761.1567408455@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.27]); Mon, 02 Sep 2019 07:14:17 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,123 +75,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "dalias@libc.org" <dalias@libc.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
- "linuxarm@huawei.com" <linuxarm@huawei.com>,
- "jiaxun.yang@flygoat.com" <jiaxun.yang@flygoat.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "mwb@linux.vnet.ibm.com" <mwb@linux.vnet.ibm.com>,
- "paulus@samba.org" <paulus@samba.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "chenhc@lemote.com" <chenhc@lemote.com>, "will@kernel.org" <will@kernel.org>,
- "cai@lca.pw" <cai@lca.pw>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "ysato@users.sourceforge.jp" <ysato@users.sourceforge.jp>,
- "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
- "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
- "dledford@redhat.com" <dledford@redhat.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "jeffrey.t.kirsher@intel.com" <jeffrey.t.kirsher@intel.com>,
- "jhogan@kernel.org" <jhogan@kernel.org>,
- "nfont@linux.vnet.ibm.com" <nfont@linux.vnet.ibm.com>,
- "mattst88@gmail.com" <mattst88@gmail.com>,
- "len.brown@intel.com" <len.brown@intel.com>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>,
- "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>,
- "bp@alien8.de" <bp@alien8.de>, "luto@kernel.org" <luto@kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "rth@twiddle.net" <rth@twiddle.net>, "axboe@kernel.dk" <axboe@kernel.dk>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "ralf@linux-mips.org" <ralf@linux-mips.org>,
- "tbogendoerfer@suse.de" <tbogendoerfer@suse.de>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "robin.murphy@arm.com" <robin.murphy@arm.com>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: dhowells@redhat.com, Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/8/31 23:45, Paul Burton wrote:
-> Hi Yunsheng,
-> 
-> On Sat, Aug 31, 2019 at 01:58:22PM +0800, Yunsheng Lin wrote:
->> According to Section 6.2.14 from ACPI spec 6.3 [1], the setting
->> of proximity domain is optional, as below:
->>
->> This optional object is used to describe proximity domain
->> associations within a machine. _PXM evaluates to an integer
->> that identifies a device as belonging to a Proximity Domain
->> defined in the System Resource Affinity Table (SRAT).
->>
->> Since mips ip27 uses hub_data instead of node_to_cpumask_map,
->> this patch checks node id with the below case before returning
->> &hub_data(node)->h_cpus:
->> 1. if node_id >= MAX_COMPACT_NODES, return cpu_none_mask
->> 2. if node_id < 0, return cpu_online_mask
->> 3. if hub_data(node) is NULL, return cpu_online_mask
->>
->> [1] https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
-> 
-> Similar to David's comment on the sparc patch, these systems don't use
-> ACPI so I don't see from your commit message why this change would be
-> relevant.
-> 
-> This same comment applies to patch 9 too.
+Hi Hillf,
 
-Thanks for pointing out.
+Would you like to me to put you down as the author of this patch?  If so, =
+I'll
+need a Signed-off-by from you.
 
-MIPS's NUMA node id is also defined by DT?
+David
+---
+commit df882ad6d4e24a3763719c1798ea58e87d56c2d7
+Author: Hillf Danton <hdanton@sina.com>
+Date:   Fri Aug 30 15:54:33 2019 +0100
 
+    keys: Fix missing null pointer check in request_key_auth_describe()
+    =
 
-> 
-> Thanks,
->     Paul
-> 
->>
->> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
->> ---
->>  arch/mips/include/asm/mach-ip27/topology.h | 15 ++++++++++++---
->>  1 file changed, 12 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/mach-ip27/topology.h b/arch/mips/include/asm/mach-ip27/topology.h
->> index 965f079..914a55a 100644
->> --- a/arch/mips/include/asm/mach-ip27/topology.h
->> +++ b/arch/mips/include/asm/mach-ip27/topology.h
->> @@ -15,9 +15,18 @@ struct cpuinfo_ip27 {
->>  extern struct cpuinfo_ip27 sn_cpu_info[NR_CPUS];
->>  
->>  #define cpu_to_node(cpu)	(sn_cpu_info[(cpu)].p_nodeid)
->> -#define cpumask_of_node(node)	((node) == -1 ?				\
->> -				 cpu_all_mask :				\
->> -				 &hub_data(node)->h_cpus)
->> +
->> +static inline const struct cpumask *cpumask_of_node(int node)
->> +{
->> +	if (node >= MAX_COMPACT_NODES)
->> +		return cpu_none_mask;
->> +
->> +	if (node < 0 || !hub_data(node))
->> +		return cpu_online_mask;
->> +
->> +	return &hub_data(node)->h_cpus;
->> +}
->> +
->>  struct pci_bus;
->>  extern int pcibus_to_node(struct pci_bus *);
->>  
->> -- 
->> 2.8.1
->>
-> 
-> .
-> 
+    If a request_key authentication token key gets revoked, there's a wind=
+ow in
+    which request_key_auth_describe() can see it with a NULL payload - but=
+ it
+    makes no check for this and something like the following oops may occu=
+r:
+    =
+
+            BUG: Kernel NULL pointer dereference at 0x00000038
+            Faulting instruction address: 0xc0000000004ddf30
+            Oops: Kernel access of bad area, sig: 11 [#1]
+            ...
+            NIP [...] request_key_auth_describe+0x90/0xd0
+            LR [...] request_key_auth_describe+0x54/0xd0
+            Call Trace:
+            [...] request_key_auth_describe+0x54/0xd0 (unreliable)
+            [...] proc_keys_show+0x308/0x4c0
+            [...] seq_read+0x3d0/0x540
+            [...] proc_reg_read+0x90/0x110
+            [...] __vfs_read+0x3c/0x70
+            [...] vfs_read+0xb4/0x1b0
+            [...] ksys_read+0x7c/0x130
+            [...] system_call+0x5c/0x70
+    =
+
+    Fix this by checking for a NULL pointer when describing such a key.
+    =
+
+    Also make the read routine check for a NULL pointer to be on the safe =
+side.
+    =
+
+    Fixes: 04c567d9313e ("[PATCH] Keys: Fix race between two instantiators=
+ of a key")
+    Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+    Signed-off-by: David Howells <dhowells@redhat.com>
+    Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+
+diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_=
+auth.c
+index e73ec040e250..ecba39c93fd9 100644
+--- a/security/keys/request_key_auth.c
++++ b/security/keys/request_key_auth.c
+@@ -66,6 +66,9 @@ static void request_key_auth_describe(const struct key *=
+key,
+ {
+ 	struct request_key_auth *rka =3D dereference_key_rcu(key);
+ =
+
++	if (!rka)
++		return;
++
+ 	seq_puts(m, "key:");
+ 	seq_puts(m, key->description);
+ 	if (key_is_positive(key))
+@@ -83,6 +86,9 @@ static long request_key_auth_read(const struct key *key,
+ 	size_t datalen;
+ 	long ret;
+ =
+
++	if (!rka)
++		return -EKEYREVOKED;
++
+ 	datalen =3D rka->callout_len;
+ 	ret =3D datalen;
+ =
 
