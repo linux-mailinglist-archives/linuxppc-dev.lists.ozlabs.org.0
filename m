@@ -1,40 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B0CA5076
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 09:55:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3607A5190
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 10:28:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MMpK1x3bzDqYJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:55:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MNX73M7mzDqc6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 18:28:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MMmF2Y7hzDqYJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 17:54:03 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 3F54F227A8A; Mon,  2 Sep 2019 09:53:56 +0200 (CEST)
-Date: Mon, 2 Sep 2019 09:53:56 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v7 1/7] kvmppc: Driver to manage pages of secure guest
-Message-ID: <20190902075356.GA28967@lst.de>
-References: <20190822102620.21897-1-bharata@linux.ibm.com>
- <20190822102620.21897-2-bharata@linux.ibm.com>
- <20190829083810.GA13039@lst.de> <20190830034259.GD31913@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MNVG3h3tzDqW1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 18:27:01 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id EF187AF0D;
+ Mon,  2 Sep 2019 08:26:56 +0000 (UTC)
+Date: Mon, 2 Sep 2019 10:26:53 +0200
+From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v7 3/6] powerpc/perf: consolidate read_user_stack_32
+Message-ID: <20190902102653.6d477e16@naga>
+In-Reply-To: <877e6rtkhe.fsf@mpe.ellerman.id.au>
+References: <cover.1567198491.git.msuchanek@suse.de>
+ <ea3783a1640b707ef9ce4740562850ef1152829b.1567198491.git.msuchanek@suse.de>
+ <87a7bntkum.fsf@mpe.ellerman.id.au>
+ <877e6rtkhe.fsf@mpe.ellerman.id.au>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190830034259.GD31913@in.ibm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,72 +49,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Diana Craciun <diana.craciun@nxp.com>, Firoz Khan <firoz.khan@linaro.org>,
+ Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Hari Bathini <hbathini@linux.ibm.com>, "Eric W.
+ Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 30, 2019 at 09:12:59AM +0530, Bharata B Rao wrote:
-> On Thu, Aug 29, 2019 at 10:38:10AM +0200, Christoph Hellwig wrote:
-> > On Thu, Aug 22, 2019 at 03:56:14PM +0530, Bharata B Rao wrote:
-> > > +/*
-> > > + * Bits 60:56 in the rmap entry will be used to identify the
-> > > + * different uses/functions of rmap.
-> > > + */
-> > > +#define KVMPPC_RMAP_DEVM_PFN	(0x2ULL << 56)
-> > 
-> > How did you come up with this specific value?
+On Mon, 02 Sep 2019 14:01:17 +1000
+Michael Ellerman <mpe@ellerman.id.au> wrote:
+
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+> > Michal Suchanek <msuchanek@suse.de> writes:  
+> ...
+> >> @@ -295,6 +279,12 @@ static inline int current_is_64bit(void)
+> >>  }
+> >>  
+> >>  #else  /* CONFIG_PPC64 */
+> >> +static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
+> >> +{
+> >> +	return 0;
+> >> +}
+> >> +#endif /* CONFIG_PPC64 */  
+> >
+> > Ending the PPC64 else case here, and then restarting it below with an
+> > ifndef means we end up with two parts of the file that define 32-bit
+> > code, with a common chunk in the middle, which I dislike.
+> >
+> > I'd rather you add the empty read_user_stack_slow() in the existing
+> > #else section and then move read_user_stack_32() below the whole ifdef
+> > PPC64/else/endif section.
+> >
+> > Is there some reason that doesn't work?  
 > 
-> Different usage types of RMAP array are being defined.
-> https://patchwork.ozlabs.org/patch/1149791/
-> 
-> The above value is reserved for device pfn usage.
+> Gah, I missed that you split the whole file later in the series. Any
+> reason you did it in two steps rather than moving patch 6 earlier in the
+> series?
 
-Shouldn't all these defintions go in together in a patch?  Also is bi
-t 56+ a set of values, so is there 1 << 56 and 3 << 56 as well?  Seems
-like even that other patch doesn't fully define these "pfn" values.
+To make this patch readable.
 
-> > No need for !! when returning a bool.  Also the helper seems a little
-> > pointless, just opencoding it would make the code more readable in my
-> > opinion.
-> 
-> I expect similar routines for other usages of RMAP to come up.
+Thanks
 
-Please drop them all.  Having to wade through a header to check for
-a specific bit that also is set manually elsewhere in related code
-just obsfucates it for the reader.
-
-> > > +	*mig->dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
-> > > +	return 0;
-> > > +}
-> > 
-> > I think you can just merge this trivial helper into the only caller.
-> 
-> Yes I can, but felt it is nicely abstracted out to a function right now.
-
-Not really.  It just fits the old calling conventions before I removed
-the indirection.
-
-> > Here we actually have two callers, but they have a fair amount of
-> > duplicate code in them.  I think you want to move that common
-> > code (including setting up the migrate_vma structure) into this
-> > function and maybe also give it a more descriptive name.
-> 
-> Sure, I will give this a try. The name is already very descriptive, will
-> come up with an appropriate name.
-
-I don't think alloc_and_copy is very helpful.  It matches some of the
-implementation, but not the intent.  Why not kvmppc_svm_page_in/out
-similar to the hypervisor calls calling them?  Yes, for one case it
-also gets called from the pagefault handler, but it still performs
-these basic page in/out actions.
-
-> BTW this file and the fuction prefixes in this file started out with
-> kvmppc_hmm, switched to kvmppc_devm when HMM routines weren't used anymore.
-> Now with the use of only non-dev versions, planning to swtich to
-> kvmppc_uvmem_
-
-That prefix sounds fine to me as well.
+Michal
