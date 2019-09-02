@@ -2,73 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E72A54FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 13:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F37EA552A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 13:42:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MScf5xV5zDqbl
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 21:32:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MSqL3kPmzDqcy
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 21:42:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="lJn2ZoGm"; 
- dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MSNM1ZHFzDqcP
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 21:22:11 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id m9so6498910pls.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 04:22:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=rhvVAb+7J0RMzU60BoXrtVVNGscRpJk5bY5+hc+pgTs=;
- b=lJn2ZoGmqXvNOJ2GxqOHlg6gynw3icF854gnf2fdkeE0C1KypDYUziQiRDkZOFXzSt
- zK6v1cmSzkPiqdxZzYsmcE9mgSUk9zesoGV/S6xbSjxAnTZOWTpnmGigvZ+QfyuOa6ph
- ngh/RxBH/bEhzFLW53FQ4dmuIPmMmMb9Ti82U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=rhvVAb+7J0RMzU60BoXrtVVNGscRpJk5bY5+hc+pgTs=;
- b=a/l1XSs27V/nt3bzcbDmB+idVWBLiOVGnEONbxhq9iyFLey06VrGFSz17C5hUUIpKk
- vNWuxDwHDeFXNoTA25Z+9olijpzj+YkIMMh/CuU8YjlGOFvxu3dLOuO9XXB+etbsh06T
- 3iJ+PRBa510rmveKzTDwwVcMGoIBPGD0KY8S3XcIHD35RBgvPesyGzeBw1tb4oc7bilu
- WvqjGpc+H/Fq73wRmLBSBFb3W8oTtKL6KrdIUIPez5EOAmb0UCQctAwL0pztruPEgyAt
- YbWES+jS1iBULgv/NrbHukCojagCLNccpZDiUgh02ZjyMBTtcgcDABOpy/SX13jli9M9
- 0n6g==
-X-Gm-Message-State: APjAAAXPOxm/T0DtLChuZgpTyifg5ePJIgZ0lPlwQ+rbtWjFAfKb2bMX
- F8AYukJ3ESHSmVimCOUg6QzdOg==
-X-Google-Smtp-Source: APXvYqx8sWsJ0Dzj+XlOGkClIeselhraeNCbICc/NGLkgtHjuqQppEXsadh9Ra2gh550ahw6zC+osQ==
-X-Received: by 2002:a17:902:74c7:: with SMTP id
- f7mr25317727plt.263.1567423328350; 
- Mon, 02 Sep 2019 04:22:08 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id x10sm11662494pjo.4.2019.09.02.04.22.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Sep 2019 04:22:07 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
- aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
- linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
- christophe.leroy@c-s.fr
-Subject: [PATCH v6 5/5] kasan debug: track pages allocated for vmalloc shadow
-Date: Mon,  2 Sep 2019 21:20:28 +1000
-Message-Id: <20190902112028.23773-6-dja@axtens.net>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190902112028.23773-1-dja@axtens.net>
-References: <20190902112028.23773-1-dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MSnB1QjNzDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 21:40:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.b="i+i/DkaB"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46MSn91xDnz9sDQ;
+ Mon,  2 Sep 2019 21:40:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1567424413;
+ bh=YtBEn8N30LNig4IjM3QSpseznRYqbL0O14mcZ15x0/k=;
+ h=Date:From:To:Cc:Subject:From;
+ b=i+i/DkaBxJ+/ummk7mmRsfrU3c9NMQt9egwJ/BygIxh0SfgsClGY+6CunnOiC+h8g
+ fNd5EHxk5z8WX/6vGKvPP54x7V/W+00P3HVeL/40SBIVp7YVvmawIfp6LnQ/ieOPYz
+ IZuw2UneUmNoVJnJCgh6hqX5ZTyVeP09nJh6OJiGKanwCwl1idAcBFqCkwpWWasIAZ
+ g+w7f6caXiKRxPXiUM7o7Hz0KjIPEhB9taoGDuG5W2CvAnGZA4+ATMdqXbTF1NPFQa
+ BpNe3yEWZhrNV27QTLCv+KKPAyWKqaGUtTUHUFbT06hgKXleOcO/BDSAAx2A2AaE62
+ NFfJGPo9J6X3w==
+Date: Mon, 2 Sep 2019 21:40:11 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: build failure after merge of the powerpc tree
+Message-ID: <20190902214011.2a5400c9@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/x/Web=1e7njmi=+goy5cmBW";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,105 +56,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com,
- Daniel Axtens <dja@axtens.net>
+Cc: Michal Simek <monstr@monstr.eu>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide the current number of vmalloc shadow pages in
-/sys/kernel/debug/kasan_vmalloc/shadow_pages.
+--Sig_/x/Web=1e7njmi=+goy5cmBW
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Daniel Axtens <dja@axtens.net>
+Hi all,
 
+After merging the powerpc tree, today's linux-next build (powerpc
+ppc44x_defconfig) failed like this:
+
+arch/powerpc/mm/dma-noncoherent.c: In function 'atomic_pool_init':
+arch/powerpc/mm/dma-noncoherent.c:128:9: error: implicit declaration of fun=
+ction 'dma_atomic_pool_init'; did you mean 'atomic_pool_init'? [-Werror=3Di=
+mplicit-function-declaration]
+  128 |  return dma_atomic_pool_init(GFP_KERNEL, pgprot_noncached(PAGE_KERN=
+EL));
+      |         ^~~~~~~~~~~~~~~~~~~~
+      |         atomic_pool_init
+
+Caused by commit
+
+  f2902a2fb40c ("powerpc: use the generic dma coherent remap allocator")
+
+interacting with commit
+
+  8e3a68fb55e0 ("dma-mapping: make dma_atomic_pool_init self-contained")
+
+from the dma-mapping tree.
+
+I have applied the following patch for today (I did the microblaze
+update as well):
+
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Mon, 2 Sep 2019 21:23:11 +1000
+Subject: [PATCH] merge fixes for "dma-mapping: make dma_atomic_pool_init se=
+lf-contained"
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
 ---
+ arch/microblaze/mm/consistent.c   | 6 ------
+ arch/powerpc/mm/dma-noncoherent.c | 6 ------
+ 2 files changed, 12 deletions(-)
 
-Merging this is probably overkill, but I leave it to the discretion
-of the broader community.
-
-On v4 (no dynamic freeing), I saw the following approximate figures
-on my test VM:
-
- - fresh boot: 720
- - after test_vmalloc: ~14000
-
-With v5 (lazy dynamic freeing):
-
- - boot: ~490-500
- - running modprobe test_vmalloc pushes the figures up to sometimes
-    as high as ~14000, but they drop down to ~560 after the test ends.
-    I'm not sure where the extra sixty pages are from, but running the
-    test repeately doesn't cause the number to keep growing, so I don't
-    think we're leaking.
- - with vmap_stack, spawning tasks pushes the figure up to ~4200, then
-    some clearing kicks in and drops it down to previous levels again.
----
- mm/kasan/common.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index 0b5141108cdc..fae3cf4ab23a 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -35,6 +35,7 @@
- #include <linux/vmalloc.h>
- #include <linux/bug.h>
- #include <linux/uaccess.h>
-+#include <linux/debugfs.h>
- 
- #include "kasan.h"
- #include "../slab.h"
-@@ -748,6 +749,8 @@ core_initcall(kasan_memhotplug_init);
- #endif
- 
- #ifdef CONFIG_KASAN_VMALLOC
-+static u64 vmalloc_shadow_pages;
-+
- static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 				      void *unused)
- {
-@@ -774,6 +777,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 	if (likely(pte_none(*ptep))) {
- 		set_pte_at(&init_mm, addr, ptep, pte);
- 		page = 0;
-+		vmalloc_shadow_pages++;
- 	}
- 	spin_unlock(&init_mm.page_table_lock);
- 	if (page)
-@@ -827,6 +831,7 @@ static int kasan_depopulate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 	if (likely(!pte_none(*ptep))) {
- 		pte_clear(&init_mm, addr, ptep);
- 		free_page(page);
-+		vmalloc_shadow_pages--;
- 	}
- 	spin_unlock(&init_mm.page_table_lock);
- 
-@@ -882,4 +887,25 @@ void kasan_release_vmalloc(unsigned long start, unsigned long end,
- 				    (unsigned long)(shadow_end - shadow_start),
- 				    kasan_depopulate_vmalloc_pte, NULL);
+diff --git a/arch/microblaze/mm/consistent.c b/arch/microblaze/mm/consisten=
+t.c
+index 0e0f733eb846..8c5f0c332d8b 100644
+--- a/arch/microblaze/mm/consistent.c
++++ b/arch/microblaze/mm/consistent.c
+@@ -56,10 +56,4 @@ void *cached_kernel_address(void *ptr)
+=20
+ 	return (void *)(addr & ~UNCACHED_SHADOW_MASK);
  }
-+
-+static __init int kasan_init_vmalloc_debugfs(void)
-+{
-+	struct dentry *root, *count;
-+
-+	root = debugfs_create_dir("kasan_vmalloc", NULL);
-+	if (IS_ERR(root)) {
-+		if (PTR_ERR(root) == -ENODEV)
-+			return 0;
-+		return PTR_ERR(root);
-+	}
-+
-+	count = debugfs_create_u64("shadow_pages", 0444, root,
-+				   &vmalloc_shadow_pages);
-+
-+	if (IS_ERR(count))
-+		return PTR_ERR(root);
-+
-+	return 0;
-+}
-+late_initcall(kasan_init_vmalloc_debugfs);
- #endif
--- 
-2.20.1
+-#else /* CONFIG_MMU */
+-static int __init atomic_pool_init(void)
+-{
+-	return dma_atomic_pool_init(GFP_KERNEL, pgprot_noncached(PAGE_KERNEL));
+-}
+-postcore_initcall(atomic_pool_init);
+ #endif /* CONFIG_MMU */
+diff --git a/arch/powerpc/mm/dma-noncoherent.c b/arch/powerpc/mm/dma-noncoh=
+erent.c
+index 4272ca5e8159..2a82984356f8 100644
+--- a/arch/powerpc/mm/dma-noncoherent.c
++++ b/arch/powerpc/mm/dma-noncoherent.c
+@@ -122,9 +122,3 @@ void arch_dma_prep_coherent(struct page *page, size_t s=
+ize)
+=20
+ 	flush_dcache_range(kaddr, kaddr + size);
+ }
+-
+-static int __init atomic_pool_init(void)
+-{
+-	return dma_atomic_pool_init(GFP_KERNEL, pgprot_noncached(PAGE_KERNEL));
+-}
+-postcore_initcall(atomic_pool_init);
+--=20
+2.23.0.rc1
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/x/Web=1e7njmi=+goy5cmBW
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl1s/5sACgkQAVBC80lX
+0Gz0zgf/W3JfSnlkCR8lJac0CEFjaarGLtBWuja8iV+5IdU3ryRxLwWk34wMByPt
+ZbOZsr1Y2bIeE7fjHLiUOFQ18uesK4EvrnVae9sFWD5KFRTDnuXxVwKIXAZmo+GS
+pZE2W/tW13cjbFu7MwWm7d4PCwZjhajMLCYLLm08gtKYE/LwlsGvwtixr3zPYG5p
+sgARuWLFGJ95x8wyJ3KhIy/5MQgljB/SpJ1Rbzq3b5JhH8Tj2RfWegVlB5qW7o+D
+TvoyGzeySQQ+ypGSpp9oqnYjDI1fShWQjgW106mCOHMI3xk0+/yfvBRTEa4b96Lh
+RgneIWhy93djrOsgDPytsy0nZNBJ9Q==
+=b7OS
+-----END PGP SIGNATURE-----
+
+--Sig_/x/Web=1e7njmi=+goy5cmBW--
