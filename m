@@ -1,74 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86021A5AEA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 18:00:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E78B4A5B63
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 18:27:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MZY93v4dzDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 02:00:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Mb980ZJgzDqhD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 02:27:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=andrew.murray@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="hq1SRxQN"; 
- dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MYxV3Bs5zDqf4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 01:32:46 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id bd8so398808plb.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 08:32:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=V/7/J57NvJQGejvVVPaHGAI8/+uGQADgW3QxL0B4byM=;
- b=hq1SRxQNJGj3IsnR2duYh9+6JZc/t8nASLOt8kT/zBROCiE68qsb8HaV8RmyTx9dFZ
- wXxdwvGewCX4eQibEKVmnYOShVD5qCKky1LA8mjtpVUJkvhnycZFWOZAtJQeNTzMwWUb
- LM9oF1UBFwClE2jAYPk1+CMyKSQDVs2nsiKGse5mKV2SH8THA9cOsu2GxnvInyXjwGnC
- zwOThoL8dBGGBWbjE2sUJj9qkOywiILX7bo/RbPaSZgeCfAbioYVVwe9xRbk6FpGrLQm
- WvEoG2OXDQsjg/V7ez+4bEzZQiAQ8FZAdxewboJG6RuuCKB93KVWqc+zmZU624eLIBEK
- 0Oew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=V/7/J57NvJQGejvVVPaHGAI8/+uGQADgW3QxL0B4byM=;
- b=sDMeANJQkbDXgESZ2fw7APqmmMMZ47lweatnxC3KONJUN1idXEfi9cUXd2wjuxYk19
- 2g2EiNDco4nFKEtGihi+7ub+vNAmBnJZvN2u2M/hNK2M7pqSsQPsqm7Rcc4bkxXdJSUS
- 4cAT3/+4Jh+ftlOou8ZRdKXTyDdcl+Y74ZmjG6nw87QemBILByaHJ524CgJEFbGdmmAE
- nYzyKIwFoLbi4MooTMjBpGBujluvBcd1eXWtox7yY3OXOXE3bJodoSgRcr71hUbZp+U7
- E6mWTWAUcwRBO4uCc+QvTPUcWP0HNKbdSPB5zkYixc/jZoXTP4CVXZtfbTq7zm3Lezwv
- F6Qg==
-X-Gm-Message-State: APjAAAUKdiuvagIDdLFfv2BOzi5oTVOYONyEKbNxwHrfrsndZLI2UOB3
- 2VQDjf1OvuIDijGfYj/rMz8y3Tk4TWg=
-X-Google-Smtp-Source: APXvYqz7G2e7horDe1fAHBgbPFg2uj9fVuhCkFUNEH5V91ZjsW8y3tzjvm4gq2aUBVEJTZzszcBZkg==
-X-Received: by 2002:a17:902:1027:: with SMTP id
- b36mr29438025pla.203.1567438363335; 
- Mon, 02 Sep 2019 08:32:43 -0700 (PDT)
-Received: from bobo.local0.net ([61.68.187.15])
- by smtp.gmail.com with ESMTPSA id b14sm15966033pfo.15.2019.09.02.08.32.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Sep 2019 08:32:42 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 6/6] powerpc/64s/radix: introduce options to disable use of
- the tlbie instruction
-Date: Tue,  3 Sep 2019 01:29:31 +1000
-Message-Id: <20190902152931.17840-7-npiggin@gmail.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190902152931.17840-1-npiggin@gmail.com>
-References: <20190902152931.17840-1-npiggin@gmail.com>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46Mb7F69QWzDqNJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 02:26:15 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 509B8344;
+ Mon,  2 Sep 2019 09:26:11 -0700 (PDT)
+Received: from localhost (unknown [10.37.6.20])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 67D033F59C;
+ Mon,  2 Sep 2019 09:26:10 -0700 (PDT)
+Date: Mon, 2 Sep 2019 17:26:08 +0100
+From: Andrew Murray <andrew.murray@arm.com>
+To: Xiaowei Bao <xiaowei.bao@nxp.com>
+Subject: Re: [PATCH v3 01/11] PCI: designware-ep: Add multiple PFs support
+ for DWC
+Message-ID: <20190902162608.GP9720@e119886-lin.cambridge.arm.com>
+References: <20190902031716.43195-1-xiaowei.bao@nxp.com>
+ <20190902031716.43195-2-xiaowei.bao@nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190902031716.43195-2-xiaowei.bao@nxp.com>
+User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,496 +48,558 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: mark.rutland@arm.com, roy.zang@nxp.com, lorenzo.pieralisi@arm.com,
+ arnd@arndb.de, devicetree@vger.kernel.org, jingoohan1@gmail.com,
+ zhiqiang.hou@nxp.com, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kishon@ti.com, minghuan.Lian@nxp.com,
+ robh+dt@kernel.org, gregkh@linuxfoundation.org,
+ linux-arm-kernel@lists.infradead.org, gustavo.pimentel@synopsys.com,
+ leoyang.li@nxp.com, shawnguo@kernel.org, mingkai.hu@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce two options to control the use of the tlbie instruction. A
-boot time option which completely disables the kernel using the
-instruction, this is currently incompatible with HASH MMU, KVM, and
-coherent accelerators.
+On Mon, Sep 02, 2019 at 11:17:06AM +0800, Xiaowei Bao wrote:
+> Add multiple PFs support for DWC, different PF have different config space
+> we use pf-offset property which get from the DTS to access the different pF
 
-And a debugfs option can be switched at runtime and avoids using tlbie
-for invalidating CPU TLBs for normal process and kernel address
-mappings. Coherent accelerators are still managed with tlbie, as will
-KVM partition scope translations.
+This needs to be updated as this no longer comes from the DT.
 
-Cross-CPU TLB flushing is implemented with IPIs and tlbiel. This is a
-basic implementation which does not attempt to make any optimisation
-beyond the tlbie implementation.
+> config space.
+> 
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 
-This is useful for performance testing among other things. For example
-in certain situations on large systems, using IPIs may be faster than
-tlbie as they can be directed rather than broadcast. Later we may also
-take advantage of the IPIs to do more interesting things such as trim
-the mm cpumask more aggressively.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- .../admin-guide/kernel-parameters.txt         |   4 +
- arch/powerpc/include/asm/book3s/64/tlbflush.h |   9 +
- arch/powerpc/kvm/book3s_hv.c                  |   6 +
- arch/powerpc/mm/book3s64/pgtable.c            |  47 +++++
- arch/powerpc/mm/book3s64/radix_tlb.c          | 190 ++++++++++++++++--
- drivers/misc/cxl/main.c                       |   4 +
- drivers/misc/ocxl/main.c                      |   4 +
- 7 files changed, 246 insertions(+), 18 deletions(-)
+We're assuming:
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index d3cbb3ae62b6..65ae16549aa3 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -860,6 +860,10 @@
- 	disable_radix	[PPC]
- 			Disable RADIX MMU mode on POWER9
- 
-+	disable_tlbie	[PPC]
-+			Disable TLBIE instruction. Currently does not work
-+			with KVM, with HASH MMU, or with coherent accelerators.
-+
- 	disable_cpu_apicid= [X86,APIC,SMP]
- 			Format: <int>
- 			The number of initial APIC ID for the
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
-index ebf572ea621e..7aa8195b6cff 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
-@@ -162,4 +162,13 @@ static inline void flush_tlb_pgtable(struct mmu_gather *tlb, unsigned long addre
- 
- 	radix__flush_tlb_pwc(tlb, address);
- }
-+
-+extern bool tlbie_capable;
-+extern bool tlbie_enabled;
-+
-+static inline bool cputlb_use_tlbie(void)
-+{
-+	return tlbie_enabled;
-+}
-+
- #endif /*  _ASM_POWERPC_BOOK3S_64_TLBFLUSH_H */
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index cde3f5a4b3e4..3cdaa2a09a19 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -5462,6 +5462,12 @@ static int kvmppc_radix_possible(void)
- static int kvmppc_book3s_init_hv(void)
- {
- 	int r;
-+
-+	if (!tlbie_capable) {
-+		pr_err("KVM-HV: Host does not support TLBIE\n");
-+		return -ENODEV;
-+	}
-+
- 	/*
- 	 * FIXME!! Do we need to check on all cpus ?
- 	 */
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 351eb78eed55..75483b40fcb1 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -8,6 +8,7 @@
- #include <linux/memblock.h>
- #include <misc/cxl-base.h>
- 
-+#include <asm/debugfs.h>
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
- #include <asm/trace.h>
-@@ -469,3 +470,49 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
- 
- 	return true;
- }
-+
-+/*
-+ * Does the CPU support tlbie?
-+ */
-+bool tlbie_capable __read_mostly = true;
-+EXPORT_SYMBOL(tlbie_capable);
-+
-+/*
-+ * Should tlbie be used for management of CPU TLBs, for kernel and process
-+ * address spaces? tlbie may still be used for nMMU accelerators, and for KVM
-+ * guest address spaces.
-+ */
-+bool tlbie_enabled __read_mostly = true;
-+
-+static int __init setup_disable_tlbie(char *str)
-+{
-+	if (!radix_enabled()) {
-+		pr_err("disable_tlbie: Unable to disable TLBIE with Hash MMU.\n");
-+		return 1;
-+	}
-+
-+	tlbie_capable = false;
-+	tlbie_enabled = false;
-+
-+        return 1;
-+}
-+__setup("disable_tlbie", setup_disable_tlbie);
-+
-+static int __init pgtable_debugfs_setup(void)
-+{
-+	if (!tlbie_capable)
-+		return 0;
-+
-+	/*
-+	 * There is no locking vs tlb flushing when changing this value.
-+	 * The tlb flushers will see one value or another, and use either
-+	 * tlbie or tlbiel with IPIs. In both cases the TLBs will be
-+	 * invalidated as expected.
-+	 */
-+	debugfs_create_bool("tlbie_enabled", 0600,
-+			powerpc_debugfs_root,
-+			&tlbie_enabled);
-+
-+	return 0;
-+}
-+arch_initcall(pgtable_debugfs_setup);
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index f9cf8ae59831..631be42abd33 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -270,6 +270,39 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-+struct tlbiel_pid {
-+	unsigned long pid;
-+	unsigned long ric;
-+};
-+
-+static void do_tlbiel_pid(void *info)
-+{
-+	struct tlbiel_pid *t = info;
-+
-+	if (t->ric == RIC_FLUSH_TLB)
-+		_tlbiel_pid(t->pid, RIC_FLUSH_TLB);
-+	else if (t->ric == RIC_FLUSH_PWC)
-+		_tlbiel_pid(t->pid, RIC_FLUSH_PWC);
-+	else
-+		_tlbiel_pid(t->pid, RIC_FLUSH_ALL);
-+}
-+
-+static inline void _tlbiel_pid_multicast(struct mm_struct *mm,
-+				unsigned long pid, unsigned long ric)
-+{
-+	struct cpumask *cpus = mm_cpumask(mm);
-+	struct tlbiel_pid t = { .pid = pid, .ric = ric };
-+
-+	on_each_cpu_mask(cpus, do_tlbiel_pid, &t, 1);
-+	/*
-+	 * Always want the CPU translations to be invalidated with tlbiel in
-+	 * these paths, so while coprocessors must use tlbie, we can not
-+	 * optimise away the tlbiel component.
-+	 */
-+	if (atomic_read(&mm->context.copros) > 0)
-+		_tlbie_pid(pid, RIC_FLUSH_ALL);
-+}
-+
- static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
- {
- 	asm volatile("ptesync": : :"memory");
-@@ -370,6 +403,53 @@ static __always_inline void _tlbie_va(unsigned long va, unsigned long pid,
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-+struct tlbiel_va {
-+	unsigned long pid;
-+	unsigned long va;
-+	unsigned long psize;
-+	unsigned long ric;
-+};
-+
-+static void do_tlbiel_va(void *info)
-+{
-+	struct tlbiel_va *t = info;
-+
-+	if (t->ric == RIC_FLUSH_TLB)
-+		_tlbiel_va(t->va, t->pid, t->psize, RIC_FLUSH_TLB);
-+	else if (t->ric == RIC_FLUSH_PWC)
-+		_tlbiel_va(t->va, t->pid, t->psize, RIC_FLUSH_PWC);
-+	else
-+		_tlbiel_va(t->va, t->pid, t->psize, RIC_FLUSH_ALL);
-+}
-+
-+static inline void _tlbiel_va_multicast(struct mm_struct *mm,
-+				unsigned long va, unsigned long pid,
-+				unsigned long psize, unsigned long ric)
-+{
-+	struct cpumask *cpus = mm_cpumask(mm);
-+	struct tlbiel_va t = { .va = va, .pid = pid, .psize = psize, .ric = ric };
-+	on_each_cpu_mask(cpus, do_tlbiel_va, &t, 1);
-+	if (atomic_read(&mm->context.copros) > 0)
-+		_tlbie_va(va, pid, psize, RIC_FLUSH_TLB);
-+}
-+
-+struct tlbiel_va_range {
-+	unsigned long pid;
-+	unsigned long start;
-+	unsigned long end;
-+	unsigned long page_size;
-+	unsigned long psize;
-+	bool also_pwc;
-+};
-+
-+static void do_tlbiel_va_range(void *info)
-+{
-+	struct tlbiel_va_range *t = info;
-+
-+	_tlbiel_va_range(t->start, t->end, t->pid, t->page_size,
-+				    t->psize, t->also_pwc);
-+}
-+
- static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
- 			      unsigned long psize, unsigned long ric)
- {
-@@ -393,6 +473,21 @@ static inline void _tlbie_va_range(unsigned long start, unsigned long end,
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-+static inline void _tlbiel_va_range_multicast(struct mm_struct *mm,
-+				unsigned long start, unsigned long end,
-+				unsigned long pid, unsigned long page_size,
-+				unsigned long psize, bool also_pwc)
-+{
-+	struct cpumask *cpus = mm_cpumask(mm);
-+	struct tlbiel_va_range t = { .start = start, .end = end,
-+				.pid = pid, .page_size = page_size,
-+				.psize = psize, .also_pwc = also_pwc };
-+
-+	on_each_cpu_mask(cpus, do_tlbiel_va_range, &t, 1);
-+	if (atomic_read(&mm->context.copros) > 0)
-+		_tlbie_va_range(start, end, pid, page_size, psize, also_pwc);
-+}
-+
- /*
-  * Base TLB flushing operations:
-  *
-@@ -530,10 +625,14 @@ void radix__flush_tlb_mm(struct mm_struct *mm)
- 			goto local;
- 		}
- 
--		if (mm_needs_flush_escalation(mm))
--			_tlbie_pid(pid, RIC_FLUSH_ALL);
--		else
--			_tlbie_pid(pid, RIC_FLUSH_TLB);
-+		if (cputlb_use_tlbie()) {
-+			if (mm_needs_flush_escalation(mm))
-+				_tlbie_pid(pid, RIC_FLUSH_ALL);
-+			else
-+				_tlbie_pid(pid, RIC_FLUSH_TLB);
-+		} else {
-+			_tlbiel_pid_multicast(mm, pid, RIC_FLUSH_TLB);
-+		}
- 	} else {
- local:
- 		_tlbiel_pid(pid, RIC_FLUSH_TLB);
-@@ -559,7 +658,10 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
- 				goto local;
- 			}
- 		}
--		_tlbie_pid(pid, RIC_FLUSH_ALL);
-+		if (cputlb_use_tlbie())
-+			_tlbie_pid(pid, RIC_FLUSH_ALL);
-+		else
-+			_tlbiel_pid_multicast(mm, pid, RIC_FLUSH_ALL);
- 	} else {
- local:
- 		_tlbiel_pid(pid, RIC_FLUSH_ALL);
-@@ -594,7 +696,10 @@ void radix__flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
- 			exit_flush_lazy_tlbs(mm);
- 			goto local;
- 		}
--		_tlbie_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
-+		if (cputlb_use_tlbie())
-+			_tlbie_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
-+		else
-+			_tlbiel_va_multicast(mm, vmaddr, pid, psize, RIC_FLUSH_TLB);
- 	} else {
- local:
- 		_tlbiel_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
-@@ -616,6 +721,24 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
- #define radix__flush_all_mm radix__local_flush_all_mm
- #endif /* CONFIG_SMP */
- 
-+static void do_tlbiel_kernel(void *info)
-+{
-+	_tlbiel_pid(0, RIC_FLUSH_ALL);
-+}
-+
-+static inline void _tlbiel_kernel_broadcast(void)
-+{
-+	on_each_cpu(do_tlbiel_kernel, NULL, 1);
-+	if (tlbie_capable) {
-+		/*
-+		 * Coherent accelerators don't refcount kernel memory mappings,
-+		 * so have to always issue a tlbie for them. This is quite a
-+		 * slow path anyway.
-+		 */
-+		_tlbie_pid(0, RIC_FLUSH_ALL);
-+	}
-+}
-+
- /*
-  * If kernel TLBIs ever become local rather than global, then
-  * drivers/misc/ocxl/link.c:ocxl_link_add_pe will need some work, as it
-@@ -623,7 +746,10 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
-  */
- void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
--	_tlbie_pid(0, RIC_FLUSH_ALL);
-+	if (cputlb_use_tlbie())
-+		_tlbie_pid(0, RIC_FLUSH_ALL);
-+	else
-+		_tlbiel_kernel_broadcast();
- }
- EXPORT_SYMBOL(radix__flush_tlb_kernel_range);
- 
-@@ -679,10 +805,14 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 		if (local) {
- 			_tlbiel_pid(pid, RIC_FLUSH_TLB);
- 		} else {
--			if (mm_needs_flush_escalation(mm))
--				_tlbie_pid(pid, RIC_FLUSH_ALL);
--			else
--				_tlbie_pid(pid, RIC_FLUSH_TLB);
-+			if (cputlb_use_tlbie()) {
-+				if (mm_needs_flush_escalation(mm))
-+					_tlbie_pid(pid, RIC_FLUSH_ALL);
-+				else
-+					_tlbie_pid(pid, RIC_FLUSH_TLB);
-+			} else {
-+				_tlbiel_pid_multicast(mm, pid, RIC_FLUSH_TLB);
-+			}
- 		}
- 	} else {
- 		bool hflush = flush_all_sizes;
-@@ -707,8 +837,8 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 				gflush = false;
- 		}
- 
--		asm volatile("ptesync": : :"memory");
- 		if (local) {
-+			asm volatile("ptesync": : :"memory");
- 			__tlbiel_va_range(start, end, pid, page_size, mmu_virtual_psize);
- 			if (hflush)
- 				__tlbiel_va_range(hstart, hend, pid,
-@@ -717,7 +847,8 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 				__tlbiel_va_range(gstart, gend, pid,
- 						PUD_SIZE, MMU_PAGE_1G);
- 			asm volatile("ptesync": : :"memory");
--		} else {
-+		} else if (cputlb_use_tlbie()) {
-+			asm volatile("ptesync": : :"memory");
- 			__tlbie_va_range(start, end, pid, page_size, mmu_virtual_psize);
- 			if (hflush)
- 				__tlbie_va_range(hstart, hend, pid,
-@@ -727,6 +858,15 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 						PUD_SIZE, MMU_PAGE_1G);
- 			fixup_tlbie();
- 			asm volatile("eieio; tlbsync; ptesync": : :"memory");
-+		} else {
-+			_tlbiel_va_range_multicast(mm,
-+					start, end, pid, page_size, mmu_virtual_psize, false);
-+			if (hflush)
-+				_tlbiel_va_range_multicast(mm,
-+					hstart, hend, pid, PMD_SIZE, MMU_PAGE_2M, false);
-+			if (gflush)
-+				_tlbiel_va_range_multicast(mm,
-+					gstart, gend, pid, PUD_SIZE, MMU_PAGE_1G, false);
- 		}
- 	}
- 	preempt_enable();
-@@ -903,16 +1043,26 @@ static __always_inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
- 		if (local) {
- 			_tlbiel_pid(pid, also_pwc ? RIC_FLUSH_ALL : RIC_FLUSH_TLB);
- 		} else {
--			if (mm_needs_flush_escalation(mm))
--				also_pwc = true;
-+			if (cputlb_use_tlbie()) {
-+				if (mm_needs_flush_escalation(mm))
-+					also_pwc = true;
-+
-+				_tlbie_pid(pid,
-+					also_pwc ?  RIC_FLUSH_ALL : RIC_FLUSH_TLB);
-+			} else {
-+				_tlbiel_pid_multicast(mm, pid,
-+					also_pwc ?  RIC_FLUSH_ALL : RIC_FLUSH_TLB);
-+			}
- 
--			_tlbie_pid(pid, also_pwc ? RIC_FLUSH_ALL : RIC_FLUSH_TLB);
- 		}
- 	} else {
- 		if (local)
- 			_tlbiel_va_range(start, end, pid, page_size, psize, also_pwc);
--		else
-+		else if (cputlb_use_tlbie())
- 			_tlbie_va_range(start, end, pid, page_size, psize, also_pwc);
-+		else
-+			_tlbiel_va_range_multicast(mm,
-+					start, end, pid, page_size, psize, also_pwc);
- 	}
- 	preempt_enable();
- }
-@@ -954,7 +1104,11 @@ void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr)
- 			exit_flush_lazy_tlbs(mm);
- 			goto local;
- 		}
--		_tlbie_va_range(addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
-+		if (cputlb_use_tlbie())
-+			_tlbie_va_range(addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
-+		else
-+			_tlbiel_va_range_multicast(mm,
-+					addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
- 	} else {
- local:
- 		_tlbiel_va_range(addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
-diff --git a/drivers/misc/cxl/main.c b/drivers/misc/cxl/main.c
-index 482a2c1b340a..43b312d06e3e 100644
---- a/drivers/misc/cxl/main.c
-+++ b/drivers/misc/cxl/main.c
-@@ -18,6 +18,7 @@
- #include <linux/sched/task.h>
- 
- #include <asm/cputable.h>
-+#include <asm/mmu.h>
- #include <misc/cxl-base.h>
- 
- #include "cxl.h"
-@@ -315,6 +316,9 @@ static int __init init_cxl(void)
- {
- 	int rc = 0;
- 
-+	if (!tlbie_capable)
-+		return -EINVAL;
-+
- 	if ((rc = cxl_file_init()))
- 		return rc;
- 
-diff --git a/drivers/misc/ocxl/main.c b/drivers/misc/ocxl/main.c
-index 7210d9e059be..ef73cf35dda2 100644
---- a/drivers/misc/ocxl/main.c
-+++ b/drivers/misc/ocxl/main.c
-@@ -2,12 +2,16 @@
- // Copyright 2017 IBM Corp.
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <asm/mmu.h>
- #include "ocxl_internal.h"
- 
- static int __init init_ocxl(void)
- {
- 	int rc = 0;
- 
-+	if (!tlbie_capable)
-+		return -EINVAL;
-+
- 	rc = ocxl_file_init();
- 	if (rc)
- 		return rc;
--- 
-2.22.0
+ - The offset address (func_offset) between PF's in the memory map can be
+   different between different DWC implementations. And also that it's
+   possible for DWC implementations to address PFs without using an offset.
 
+ - The current approach is preferable to adding DWC EP driver callbacks
+   for writing to the EP config space (e.g. a variant of dw_pcie_writew_dbi
+   that takes a func number).
+
+I'm keen to hear feedback from Jingoo/Gustavo on this.
+
+Thanks,
+
+Andrew Murray
+
+> ---
+> v2:
+>  - Remove duplicate redundant code.
+>  - Reimplement the PF config space access way.
+> v3:
+>  - Integrate duplicate code for func_select.
+>  - Move PCIE_ATU_FUNC_NUM(pf) (pf << 20) to ((pf) << 20).
+>  - Add the comments for func_conf_select function.
+> 
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 123 ++++++++++++++++--------
+>  drivers/pci/controller/dwc/pcie-designware.c    |  59 ++++++++----
+>  drivers/pci/controller/dwc/pcie-designware.h    |  18 +++-
+>  3 files changed, 142 insertions(+), 58 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 65f4792..eb851c2 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -19,12 +19,26 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
+>  	pci_epc_linkup(epc);
+>  }
+>  
+> -static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar,
+> -				   int flags)
+> +static unsigned int dw_pcie_ep_func_select(struct dw_pcie_ep *ep, u8 func_no)
+> +{
+> +	unsigned int func_offset = 0;
+> +
+> +	if (ep->ops->func_conf_select)
+> +		func_offset = ep->ops->func_conf_select(ep, func_no);
+> +
+> +	return func_offset;
+> +}
+> +
+> +static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
+> +				   enum pci_barno bar, int flags)
+>  {
+>  	u32 reg;
+> +	unsigned int func_offset = 0;
+> +	struct dw_pcie_ep *ep = &pci->ep;
+> +
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+>  
+> -	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+> +	reg = func_offset + PCI_BASE_ADDRESS_0 + (4 * bar);
+>  	dw_pcie_dbi_ro_wr_en(pci);
+>  	dw_pcie_writel_dbi2(pci, reg, 0x0);
+>  	dw_pcie_writel_dbi(pci, reg, 0x0);
+> @@ -37,7 +51,12 @@ static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar,
+>  
+>  void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
+>  {
+> -	__dw_pcie_ep_reset_bar(pci, bar, 0);
+> +	u8 func_no, funcs;
+> +
+> +	funcs = pci->ep.epc->max_functions;
+> +
+> +	for (func_no = 0; func_no < funcs; func_no++)
+> +		__dw_pcie_ep_reset_bar(pci, func_no, bar, 0);
+>  }
+>  
+>  static int dw_pcie_ep_write_header(struct pci_epc *epc, u8 func_no,
+> @@ -45,28 +64,31 @@ static int dw_pcie_ep_write_header(struct pci_epc *epc, u8 func_no,
+>  {
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> +	unsigned int func_offset = 0;
+> +
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+>  
+>  	dw_pcie_dbi_ro_wr_en(pci);
+> -	dw_pcie_writew_dbi(pci, PCI_VENDOR_ID, hdr->vendorid);
+> -	dw_pcie_writew_dbi(pci, PCI_DEVICE_ID, hdr->deviceid);
+> -	dw_pcie_writeb_dbi(pci, PCI_REVISION_ID, hdr->revid);
+> -	dw_pcie_writeb_dbi(pci, PCI_CLASS_PROG, hdr->progif_code);
+> -	dw_pcie_writew_dbi(pci, PCI_CLASS_DEVICE,
+> +	dw_pcie_writew_dbi(pci, func_offset + PCI_VENDOR_ID, hdr->vendorid);
+> +	dw_pcie_writew_dbi(pci, func_offset + PCI_DEVICE_ID, hdr->deviceid);
+> +	dw_pcie_writeb_dbi(pci, func_offset + PCI_REVISION_ID, hdr->revid);
+> +	dw_pcie_writeb_dbi(pci, func_offset + PCI_CLASS_PROG, hdr->progif_code);
+> +	dw_pcie_writew_dbi(pci, func_offset + PCI_CLASS_DEVICE,
+>  			   hdr->subclass_code | hdr->baseclass_code << 8);
+> -	dw_pcie_writeb_dbi(pci, PCI_CACHE_LINE_SIZE,
+> +	dw_pcie_writeb_dbi(pci, func_offset + PCI_CACHE_LINE_SIZE,
+>  			   hdr->cache_line_size);
+> -	dw_pcie_writew_dbi(pci, PCI_SUBSYSTEM_VENDOR_ID,
+> +	dw_pcie_writew_dbi(pci, func_offset + PCI_SUBSYSTEM_VENDOR_ID,
+>  			   hdr->subsys_vendor_id);
+> -	dw_pcie_writew_dbi(pci, PCI_SUBSYSTEM_ID, hdr->subsys_id);
+> -	dw_pcie_writeb_dbi(pci, PCI_INTERRUPT_PIN,
+> +	dw_pcie_writew_dbi(pci, func_offset + PCI_SUBSYSTEM_ID, hdr->subsys_id);
+> +	dw_pcie_writeb_dbi(pci, func_offset + PCI_INTERRUPT_PIN,
+>  			   hdr->interrupt_pin);
+>  	dw_pcie_dbi_ro_wr_dis(pci);
+>  
+>  	return 0;
+>  }
+>  
+> -static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, enum pci_barno bar,
+> -				  dma_addr_t cpu_addr,
+> +static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no,
+> +				  enum pci_barno bar, dma_addr_t cpu_addr,
+>  				  enum dw_pcie_as_type as_type)
+>  {
+>  	int ret;
+> @@ -79,7 +101,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, enum pci_barno bar,
+>  		return -EINVAL;
+>  	}
+>  
+> -	ret = dw_pcie_prog_inbound_atu(pci, free_win, bar, cpu_addr,
+> +	ret = dw_pcie_prog_inbound_atu(pci, func_no, free_win, bar, cpu_addr,
+>  				       as_type);
+>  	if (ret < 0) {
+>  		dev_err(pci->dev, "Failed to program IB window\n");
+> @@ -92,7 +114,8 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, enum pci_barno bar,
+>  	return 0;
+>  }
+>  
+> -static int dw_pcie_ep_outbound_atu(struct dw_pcie_ep *ep, phys_addr_t phys_addr,
+> +static int dw_pcie_ep_outbound_atu(struct dw_pcie_ep *ep, u8 func_no,
+> +				   phys_addr_t phys_addr,
+>  				   u64 pci_addr, size_t size)
+>  {
+>  	u32 free_win;
+> @@ -104,8 +127,8 @@ static int dw_pcie_ep_outbound_atu(struct dw_pcie_ep *ep, phys_addr_t phys_addr,
+>  		return -EINVAL;
+>  	}
+>  
+> -	dw_pcie_prog_outbound_atu(pci, free_win, PCIE_ATU_TYPE_MEM,
+> -				  phys_addr, pci_addr, size);
+> +	dw_pcie_prog_ep_outbound_atu(pci, func_no, free_win, PCIE_ATU_TYPE_MEM,
+> +				     phys_addr, pci_addr, size);
+>  
+>  	set_bit(free_win, ep->ob_window_map);
+>  	ep->outbound_addr[free_win] = phys_addr;
+> @@ -121,7 +144,7 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no,
+>  	enum pci_barno bar = epf_bar->barno;
+>  	u32 atu_index = ep->bar_to_atu[bar];
+>  
+> -	__dw_pcie_ep_reset_bar(pci, bar, epf_bar->flags);
+> +	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
+>  
+>  	dw_pcie_disable_atu(pci, atu_index, DW_PCIE_REGION_INBOUND);
+>  	clear_bit(atu_index, ep->ib_window_map);
+> @@ -137,14 +160,20 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no,
+>  	size_t size = epf_bar->size;
+>  	int flags = epf_bar->flags;
+>  	enum dw_pcie_as_type as_type;
+> -	u32 reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+> +	u32 reg;
+> +	unsigned int func_offset = 0;
+> +
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+> +
+> +	reg = PCI_BASE_ADDRESS_0 + (4 * bar) + func_offset;
+>  
+>  	if (!(flags & PCI_BASE_ADDRESS_SPACE))
+>  		as_type = DW_PCIE_AS_MEM;
+>  	else
+>  		as_type = DW_PCIE_AS_IO;
+>  
+> -	ret = dw_pcie_ep_inbound_atu(ep, bar, epf_bar->phys_addr, as_type);
+> +	ret = dw_pcie_ep_inbound_atu(ep, func_no, bar,
+> +				     epf_bar->phys_addr, as_type);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -202,7 +231,7 @@ static int dw_pcie_ep_map_addr(struct pci_epc *epc, u8 func_no,
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  
+> -	ret = dw_pcie_ep_outbound_atu(ep, addr, pci_addr, size);
+> +	ret = dw_pcie_ep_outbound_atu(ep, func_no, addr, pci_addr, size);
+>  	if (ret) {
+>  		dev_err(pci->dev, "Failed to enable address\n");
+>  		return ret;
+> @@ -216,11 +245,14 @@ static int dw_pcie_ep_get_msi(struct pci_epc *epc, u8 func_no)
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  	u32 val, reg;
+> +	unsigned int func_offset = 0;
+>  
+>  	if (!ep->msi_cap)
+>  		return -EINVAL;
+>  
+> -	reg = ep->msi_cap + PCI_MSI_FLAGS;
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+> +
+> +	reg = ep->msi_cap + func_offset + PCI_MSI_FLAGS;
+>  	val = dw_pcie_readw_dbi(pci, reg);
+>  	if (!(val & PCI_MSI_FLAGS_ENABLE))
+>  		return -EINVAL;
+> @@ -235,11 +267,14 @@ static int dw_pcie_ep_set_msi(struct pci_epc *epc, u8 func_no, u8 interrupts)
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  	u32 val, reg;
+> +	unsigned int func_offset = 0;
+>  
+>  	if (!ep->msi_cap)
+>  		return -EINVAL;
+>  
+> -	reg = ep->msi_cap + PCI_MSI_FLAGS;
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+> +
+> +	reg = ep->msi_cap + func_offset + PCI_MSI_FLAGS;
+>  	val = dw_pcie_readw_dbi(pci, reg);
+>  	val &= ~PCI_MSI_FLAGS_QMASK;
+>  	val |= (interrupts << 1) & PCI_MSI_FLAGS_QMASK;
+> @@ -255,11 +290,14 @@ static int dw_pcie_ep_get_msix(struct pci_epc *epc, u8 func_no)
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  	u32 val, reg;
+> +	unsigned int func_offset = 0;
+>  
+>  	if (!ep->msix_cap)
+>  		return -EINVAL;
+>  
+> -	reg = ep->msix_cap + PCI_MSIX_FLAGS;
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+> +
+> +	reg = ep->msix_cap + func_offset + PCI_MSIX_FLAGS;
+>  	val = dw_pcie_readw_dbi(pci, reg);
+>  	if (!(val & PCI_MSIX_FLAGS_ENABLE))
+>  		return -EINVAL;
+> @@ -274,11 +312,14 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u16 interrupts)
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  	u32 val, reg;
+> +	unsigned int func_offset = 0;
+>  
+>  	if (!ep->msix_cap)
+>  		return -EINVAL;
+>  
+> -	reg = ep->msix_cap + PCI_MSIX_FLAGS;
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+> +
+> +	reg = ep->msix_cap + func_offset + PCI_MSIX_FLAGS;
+>  	val = dw_pcie_readw_dbi(pci, reg);
+>  	val &= ~PCI_MSIX_FLAGS_QSIZE;
+>  	val |= interrupts;
+> @@ -365,6 +406,7 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  	struct pci_epc *epc = ep->epc;
+>  	unsigned int aligned_offset;
+> +	unsigned int func_offset = 0;
+>  	u16 msg_ctrl, msg_data;
+>  	u32 msg_addr_lower, msg_addr_upper, reg;
+>  	u64 msg_addr;
+> @@ -374,20 +416,22 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	if (!ep->msi_cap)
+>  		return -EINVAL;
+>  
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+> +
+>  	/* Raise MSI per the PCI Local Bus Specification Revision 3.0, 6.8.1. */
+> -	reg = ep->msi_cap + PCI_MSI_FLAGS;
+> +	reg = ep->msi_cap + func_offset + PCI_MSI_FLAGS;
+>  	msg_ctrl = dw_pcie_readw_dbi(pci, reg);
+>  	has_upper = !!(msg_ctrl & PCI_MSI_FLAGS_64BIT);
+> -	reg = ep->msi_cap + PCI_MSI_ADDRESS_LO;
+> +	reg = ep->msi_cap + func_offset + PCI_MSI_ADDRESS_LO;
+>  	msg_addr_lower = dw_pcie_readl_dbi(pci, reg);
+>  	if (has_upper) {
+> -		reg = ep->msi_cap + PCI_MSI_ADDRESS_HI;
+> +		reg = ep->msi_cap + func_offset + PCI_MSI_ADDRESS_HI;
+>  		msg_addr_upper = dw_pcie_readl_dbi(pci, reg);
+> -		reg = ep->msi_cap + PCI_MSI_DATA_64;
+> +		reg = ep->msi_cap + func_offset + PCI_MSI_DATA_64;
+>  		msg_data = dw_pcie_readw_dbi(pci, reg);
+>  	} else {
+>  		msg_addr_upper = 0;
+> -		reg = ep->msi_cap + PCI_MSI_DATA_32;
+> +		reg = ep->msi_cap + func_offset + PCI_MSI_DATA_32;
+>  		msg_data = dw_pcie_readw_dbi(pci, reg);
+>  	}
+>  	aligned_offset = msg_addr_lower & (epc->mem->page_size - 1);
+> @@ -406,11 +450,12 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  }
+>  
+>  int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+> -			     u16 interrupt_num)
+> +			      u16 interrupt_num)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  	struct pci_epc *epc = ep->epc;
+>  	u16 tbl_offset, bir;
+> +	unsigned int func_offset = 0;
+>  	u32 bar_addr_upper, bar_addr_lower;
+>  	u32 msg_addr_upper, msg_addr_lower;
+>  	u32 reg, msg_data, vec_ctrl;
+> @@ -418,12 +463,14 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	void __iomem *msix_tbl;
+>  	int ret;
+>  
+> -	reg = ep->msix_cap + PCI_MSIX_TABLE;
+> +	func_offset = dw_pcie_ep_func_select(ep, func_no);
+> +
+> +	reg = ep->msix_cap + func_offset + PCI_MSIX_TABLE;
+>  	tbl_offset = dw_pcie_readl_dbi(pci, reg);
+>  	bir = (tbl_offset & PCI_MSIX_TABLE_BIR);
+>  	tbl_offset &= PCI_MSIX_TABLE_OFFSET;
+>  
+> -	reg = PCI_BASE_ADDRESS_0 + (4 * bir);
+> +	reg = PCI_BASE_ADDRESS_0 + func_offset + (4 * bir);
+>  	bar_addr_upper = 0;
+>  	bar_addr_lower = dw_pcie_readl_dbi(pci, reg);
+>  	reg_u64 = (bar_addr_lower & PCI_BASE_ADDRESS_MEM_TYPE_MASK);
+> @@ -559,13 +606,13 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  	ep->epc = epc;
+>  	epc_set_drvdata(epc, ep);
+>  
+> -	if (ep->ops->ep_init)
+> -		ep->ops->ep_init(ep);
+> -
+>  	ret = of_property_read_u8(np, "max-functions", &epc->max_functions);
+>  	if (ret < 0)
+>  		epc->max_functions = 1;
+>  
+> +	if (ep->ops->ep_init)
+> +		ep->ops->ep_init(ep);
+> +
+>  	ret = __pci_epc_mem_init(epc, ep->phys_base, ep->addr_size,
+>  				 ep->page_size);
+>  	if (ret < 0) {
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+> index 143cb6c..ede2e75 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware.c
+> @@ -238,9 +238,10 @@ static void dw_pcie_writel_ob_unroll(struct dw_pcie *pci, u32 index, u32 reg,
+>  	dw_pcie_writel_atu(pci, offset + reg, val);
+>  }
+>  
+> -static void dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, int index,
+> -					     int type, u64 cpu_addr,
+> -					     u64 pci_addr, u32 size)
+> +static void dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, u8 func_no,
+> +					     int index, int type,
+> +					     u64 cpu_addr, u64 pci_addr,
+> +					     u32 size)
+>  {
+>  	u32 retries, val;
+>  
+> @@ -255,7 +256,7 @@ static void dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, int index,
+>  	dw_pcie_writel_ob_unroll(pci, index, PCIE_ATU_UNR_UPPER_TARGET,
+>  				 upper_32_bits(pci_addr));
+>  	dw_pcie_writel_ob_unroll(pci, index, PCIE_ATU_UNR_REGION_CTRL1,
+> -				 type);
+> +				 type | PCIE_ATU_FUNC_NUM(func_no));
+>  	dw_pcie_writel_ob_unroll(pci, index, PCIE_ATU_UNR_REGION_CTRL2,
+>  				 PCIE_ATU_ENABLE);
+>  
+> @@ -274,8 +275,9 @@ static void dw_pcie_prog_outbound_atu_unroll(struct dw_pcie *pci, int index,
+>  	dev_err(pci->dev, "Outbound iATU is not being enabled\n");
+>  }
+>  
+> -void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index, int type,
+> -			       u64 cpu_addr, u64 pci_addr, u32 size)
+> +static void __dw_pcie_prog_outbound_atu(struct dw_pcie *pci, u8 func_no,
+> +					int index, int type, u64 cpu_addr,
+> +					u64 pci_addr, u32 size)
+>  {
+>  	u32 retries, val;
+>  
+> @@ -283,8 +285,8 @@ void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index, int type,
+>  		cpu_addr = pci->ops->cpu_addr_fixup(pci, cpu_addr);
+>  
+>  	if (pci->iatu_unroll_enabled) {
+> -		dw_pcie_prog_outbound_atu_unroll(pci, index, type, cpu_addr,
+> -						 pci_addr, size);
+> +		dw_pcie_prog_outbound_atu_unroll(pci, func_no, index, type,
+> +						 cpu_addr, pci_addr, size);
+>  		return;
+>  	}
+>  
+> @@ -300,7 +302,8 @@ void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index, int type,
+>  			   lower_32_bits(pci_addr));
+>  	dw_pcie_writel_dbi(pci, PCIE_ATU_UPPER_TARGET,
+>  			   upper_32_bits(pci_addr));
+> -	dw_pcie_writel_dbi(pci, PCIE_ATU_CR1, type);
+> +	dw_pcie_writel_dbi(pci, PCIE_ATU_CR1, type |
+> +			   PCIE_ATU_FUNC_NUM(func_no));
+>  	dw_pcie_writel_dbi(pci, PCIE_ATU_CR2, PCIE_ATU_ENABLE);
+>  
+>  	/*
+> @@ -317,6 +320,21 @@ void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index, int type,
+>  	dev_err(pci->dev, "Outbound iATU is not being enabled\n");
+>  }
+>  
+> +void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index, int type,
+> +			       u64 cpu_addr, u64 pci_addr, u32 size)
+> +{
+> +	__dw_pcie_prog_outbound_atu(pci, 0, index, type,
+> +				    cpu_addr, pci_addr, size);
+> +}
+> +
+> +void dw_pcie_prog_ep_outbound_atu(struct dw_pcie *pci, u8 func_no, int index,
+> +				  int type, u64 cpu_addr, u64 pci_addr,
+> +				  u32 size)
+> +{
+> +	__dw_pcie_prog_outbound_atu(pci, func_no, index, type,
+> +				    cpu_addr, pci_addr, size);
+> +}
+> +
+>  static u32 dw_pcie_readl_ib_unroll(struct dw_pcie *pci, u32 index, u32 reg)
+>  {
+>  	u32 offset = PCIE_GET_ATU_INB_UNR_REG_OFFSET(index);
+> @@ -332,8 +350,8 @@ static void dw_pcie_writel_ib_unroll(struct dw_pcie *pci, u32 index, u32 reg,
+>  	dw_pcie_writel_atu(pci, offset + reg, val);
+>  }
+>  
+> -static int dw_pcie_prog_inbound_atu_unroll(struct dw_pcie *pci, int index,
+> -					   int bar, u64 cpu_addr,
+> +static int dw_pcie_prog_inbound_atu_unroll(struct dw_pcie *pci, u8 func_no,
+> +					   int index, int bar, u64 cpu_addr,
+>  					   enum dw_pcie_as_type as_type)
+>  {
+>  	int type;
+> @@ -355,8 +373,10 @@ static int dw_pcie_prog_inbound_atu_unroll(struct dw_pcie *pci, int index,
+>  		return -EINVAL;
+>  	}
+>  
+> -	dw_pcie_writel_ib_unroll(pci, index, PCIE_ATU_UNR_REGION_CTRL1, type);
+> +	dw_pcie_writel_ib_unroll(pci, index, PCIE_ATU_UNR_REGION_CTRL1, type |
+> +				 PCIE_ATU_FUNC_NUM(func_no));
+>  	dw_pcie_writel_ib_unroll(pci, index, PCIE_ATU_UNR_REGION_CTRL2,
+> +				 PCIE_ATU_FUNC_NUM_MATCH_EN |
+>  				 PCIE_ATU_ENABLE |
+>  				 PCIE_ATU_BAR_MODE_ENABLE | (bar << 8));
+>  
+> @@ -377,14 +397,15 @@ static int dw_pcie_prog_inbound_atu_unroll(struct dw_pcie *pci, int index,
+>  	return -EBUSY;
+>  }
+>  
+> -int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, int index, int bar,
+> -			     u64 cpu_addr, enum dw_pcie_as_type as_type)
+> +int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, u8 func_no, int index,
+> +			     int bar, u64 cpu_addr,
+> +			     enum dw_pcie_as_type as_type)
+>  {
+>  	int type;
+>  	u32 retries, val;
+>  
+>  	if (pci->iatu_unroll_enabled)
+> -		return dw_pcie_prog_inbound_atu_unroll(pci, index, bar,
+> +		return dw_pcie_prog_inbound_atu_unroll(pci, func_no, index, bar,
+>  						       cpu_addr, as_type);
+>  
+>  	dw_pcie_writel_dbi(pci, PCIE_ATU_VIEWPORT, PCIE_ATU_REGION_INBOUND |
+> @@ -403,9 +424,11 @@ int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, int index, int bar,
+>  		return -EINVAL;
+>  	}
+>  
+> -	dw_pcie_writel_dbi(pci, PCIE_ATU_CR1, type);
+> -	dw_pcie_writel_dbi(pci, PCIE_ATU_CR2, PCIE_ATU_ENABLE
+> -			   | PCIE_ATU_BAR_MODE_ENABLE | (bar << 8));
+> +	dw_pcie_writel_dbi(pci, PCIE_ATU_CR1, type |
+> +			   PCIE_ATU_FUNC_NUM(func_no));
+> +	dw_pcie_writel_dbi(pci, PCIE_ATU_CR2, PCIE_ATU_ENABLE |
+> +			   PCIE_ATU_FUNC_NUM_MATCH_EN |
+> +			   PCIE_ATU_BAR_MODE_ENABLE | (bar << 8));
+>  
+>  	/*
+>  	 * Make sure ATU enable takes effect before any subsequent config
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 5a18e94..6aca0bb 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -71,9 +71,11 @@
+>  #define PCIE_ATU_TYPE_IO		0x2
+>  #define PCIE_ATU_TYPE_CFG0		0x4
+>  #define PCIE_ATU_TYPE_CFG1		0x5
+> +#define PCIE_ATU_FUNC_NUM(pf)           ((pf) << 20)
+>  #define PCIE_ATU_CR2			0x908
+>  #define PCIE_ATU_ENABLE			BIT(31)
+>  #define PCIE_ATU_BAR_MODE_ENABLE	BIT(30)
+> +#define PCIE_ATU_FUNC_NUM_MATCH_EN      BIT(19)
+>  #define PCIE_ATU_LOWER_BASE		0x90C
+>  #define PCIE_ATU_UPPER_BASE		0x910
+>  #define PCIE_ATU_LIMIT			0x914
+> @@ -206,6 +208,14 @@ struct dw_pcie_ep_ops {
+>  	int	(*raise_irq)(struct dw_pcie_ep *ep, u8 func_no,
+>  			     enum pci_epc_irq_type type, u16 interrupt_num);
+>  	const struct pci_epc_features* (*get_features)(struct dw_pcie_ep *ep);
+> +	/*
+> +	 * Provide a method to implement the different func config space
+> +	 * access for different platform, if different func have different
+> +	 * offset, return the offset of func. if use write a register way
+> +	 * return a 0, and implement code in callback function of platform
+> +	 * driver.
+> +	 */
+> +	unsigned int (*func_conf_select)(struct dw_pcie_ep *ep, u8 func_no);
+>  };
+>  
+>  struct dw_pcie_ep {
+> @@ -277,8 +287,12 @@ int dw_pcie_wait_for_link(struct dw_pcie *pci);
+>  void dw_pcie_prog_outbound_atu(struct dw_pcie *pci, int index,
+>  			       int type, u64 cpu_addr, u64 pci_addr,
+>  			       u32 size);
+> -int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, int index, int bar,
+> -			     u64 cpu_addr, enum dw_pcie_as_type as_type);
+> +void dw_pcie_prog_ep_outbound_atu(struct dw_pcie *pci, u8 func_no, int index,
+> +				  int type, u64 cpu_addr, u64 pci_addr,
+> +				  u32 size);
+> +int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, u8 func_no, int index,
+> +			     int bar, u64 cpu_addr,
+> +			     enum dw_pcie_as_type as_type);
+>  void dw_pcie_disable_atu(struct dw_pcie *pci, int index,
+>  			 enum dw_pcie_region_type type);
+>  void dw_pcie_setup(struct dw_pcie *pci);
+> -- 
+> 2.9.5
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
