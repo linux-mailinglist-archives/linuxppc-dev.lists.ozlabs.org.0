@@ -1,42 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0174A557E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 14:03:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0AAA55EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 14:26:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MTJG3jDTzDqgG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 22:03:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MTq36DyZzDqgP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 22:26:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MSnc1dlGzDqcn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 21:40:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=andrew.murray@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46MTGB3b6ZzDqNt
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 22:01:52 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B102B28;
- Mon,  2 Sep 2019 05:01:49 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.20])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 280923F246;
- Mon,  2 Sep 2019 05:01:49 -0700 (PDT)
-Date: Mon, 2 Sep 2019 13:01:47 +0100
-From: Andrew Murray <andrew.murray@arm.com>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCH v3 08/11] PCI: layerscape: Modify the MSIX to the
- doorbell mode
-Message-ID: <20190902120147.GH9720@e119886-lin.cambridge.arm.com>
-References: <20190902031716.43195-1-xiaowei.bao@nxp.com>
- <20190902031716.43195-9-xiaowei.bao@nxp.com>
+ dmarc=none (p=none dis=none) header.from=sina.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46MSnc0J5Hz8t9F
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 21:40:36 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46MSnb6QT3z9sDQ; Mon,  2 Sep 2019 21:40:35 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=sina.com
+ (client-ip=202.108.3.164; helo=mail3-164.sinamail.sina.com.cn;
+ envelope-from=hdanton@sina.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=sina.com
+Received: from mail3-164.sinamail.sina.com.cn (mail3-164.sinamail.sina.com.cn
+ [202.108.3.164]) by ozlabs.org (Postfix) with SMTP id 46MSnY3XQpz9s7T
+ for <linuxppc-dev@ozlabs.org>; Mon,  2 Sep 2019 21:40:22 +1000 (AEST)
+Received: from unknown (HELO [IPv6:::ffff:192.168.199.155])([114.254.173.51])
+ by sina.com with ESMTP
+ id 5D6CFF9F0002CCB9; Mon, 2 Sep 2019 19:40:16 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 46345515077932
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190902031716.43195-9-xiaowei.bao@nxp.com>
-User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
+To: David Howells <dhowells@redhat.com>
+From: Hillf Danton <hdanton@sina.com>
+Subject: Re: Oops (request_key_auth_describe) while running cve-2016-7042
+ from LTP
+Date: Mon, 2 Sep 2019 19:40:15 +0800
+Importance: normal
+X-Priority: 3
+In-Reply-To: <761.1567408455@warthog.procyon.org.uk>
+References: <11986.1567178014@warthog.procyon.org.uk>
+ <85B7196E-D717-4F19-A7E8-82A18287A3DE@linux.vnet.ibm.com>
+ <761.1567408455@warthog.procyon.org.uk>
+Content-Type: multipart/alternative;
+ boundary="_0BF70FBD-0CB0-4F27-A3BD-7BAB1CF9484A_"
+X-Mailman-Approved-At: Mon, 02 Sep 2019 22:24:15 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,52 +63,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, roy.zang@nxp.com, lorenzo.pieralisi@arm.com,
- arnd@arndb.de, devicetree@vger.kernel.org, jingoohan1@gmail.com,
- zhiqiang.hou@nxp.com, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, kishon@ti.com, minghuan.Lian@nxp.com,
- robh+dt@kernel.org, gregkh@linuxfoundation.org,
- linux-arm-kernel@lists.infradead.org, gustavo.pimentel@synopsys.com,
- leoyang.li@nxp.com, shawnguo@kernel.org, mingkai.hu@nxp.com
+Cc: "dhowells@redhat.com" <dhowells@redhat.com>,
+ Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Message-Id: <46MTq36DyZzDqgP@lists.ozlabs.org>
 
-On Mon, Sep 02, 2019 at 11:17:13AM +0800, Xiaowei Bao wrote:
-> dw_pcie_ep_raise_msix_irq was never called in the exisitng driver
-> before, because the ls1046a platform don't support the MSIX feature
-> and msix_capable was always set to false.
-> Now that add the ls1088a platform with MSIX support, but the existing
-> dw_pcie_ep_raise_msix_irq doesn't work, so use the doorbell method to
-> support the MSIX feature.
-> 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 
-Reviewed-by: Andrew Murray <andrew.murray@arm.com>
+--_0BF70FBD-0CB0-4F27-A3BD-7BAB1CF9484A_
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-> ---
-> v2: 
->  - No change
-> v3:
->  - Modify the commit message make it clearly.
-> 
->  drivers/pci/controller/dwc/pci-layerscape-ep.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 1e07287..5f0cb99 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -79,7 +79,8 @@ static int ls_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	case PCI_EPC_IRQ_MSI:
->  		return dw_pcie_ep_raise_msi_irq(ep, func_no, interrupt_num);
->  	case PCI_EPC_IRQ_MSIX:
-> -		return dw_pcie_ep_raise_msix_irq(ep, func_no, interrupt_num);
-> +		return dw_pcie_ep_raise_msix_irq_doorbell(ep, func_no,
-> +							  interrupt_num);
->  	default:
->  		dev_err(pci->dev, "UNKNOWN IRQ type\n");
->  		return -EINVAL;
-> -- 
-> 2.9.5
-> 
+>
+> Hi Hillf,
+>
+> Would you like to me to put you down as the author of this patch?  If so,=
+ I'll
+> need a Signed-off-by from you.
+>
+Signed-off-by: Hillf Danton <hdanton@sina.com>
+
+
+--_0BF70FBD-0CB0-4F27-A3BD-7BAB1CF9484A_
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
+hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
+fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40"><head><meta ht=
+tp-equiv=3DContent-Type content=3D"text/html; charset=3Dutf-8"><meta name=
+=3DGenerator content=3D"Microsoft Word 15 (filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:DengXian;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:DengXian;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:DengXian;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:#954F72;
+	text-decoration:underline;}
+span.DefaultFontHxMailStyle
+	{mso-style-name:"Default Font HxMail Style";
+	font-family:DengXian;
+	color:windowtext;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:none none;}
+.MsoChpDefault
+	{mso-style-type:export-only;}
+/* Page Definitions */
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style></head><body lang=3DZH-CN link=3Dblue vlink=3D"#954F72"><div cla=
+ss=3DWordSection1><p class=3DMsoNormal><span class=3DDefaultFontHxMailStyle=
+><span lang=3DEN-US>&gt;</span></span><span lang=3DEN-US><o:p>&nbsp;</o:p><=
+/span></p><p class=3DMsoNormal><span lang=3DEN-US>&gt; Hi Hillf,</span></p>=
+<p class=3DMsoNormal><span lang=3DEN-US>&gt;<o:p>&nbsp;</o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>&gt; Would you like to me to put you d=
+own as the author of this patch?=C2=A0 If so, I'll</span></p><p class=3DMso=
+Normal><span lang=3DEN-US>&gt; need a Signed-off-by from you.</span></p><p =
+class=3DMsoNormal><span lang=3DEN-US>&gt;<o:p>&nbsp;</o:p></span></p><p cla=
+ss=3DMsoNormal><span lang=3DEN-US>Signed-off-by: Hillf Danton &lt;hdanton@s=
+ina.com&gt;</span></p><p class=3DMsoNormal><span class=3DDefaultFontHxMailS=
+tyle><span lang=3DEN-US><o:p>&nbsp;</o:p></span></span></p></div></body></h=
+tml>=
+
+--_0BF70FBD-0CB0-4F27-A3BD-7BAB1CF9484A_--
+
+
