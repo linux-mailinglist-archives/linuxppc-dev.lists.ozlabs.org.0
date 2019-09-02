@@ -1,92 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00ACDA5A73
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:23:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948A7A5AA7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:37:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MYkV3pLMzDqgW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 01:23:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MZ3F22mhzDqdS
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 01:37:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=rppt@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="BwY7TMOk"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MYdF0ZWNzDqWX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 01:18:40 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x82FFKKv079501
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Sep 2019 11:18:37 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2us3vqbcph-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 11:18:37 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <rppt@linux.ibm.com>;
- Mon, 2 Sep 2019 16:18:34 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 2 Sep 2019 16:18:26 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x82FI1cc20119894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Sep 2019 15:18:01 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E679AE055;
- Mon,  2 Sep 2019 15:18:24 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E5B0AE051;
- Mon,  2 Sep 2019 15:18:22 +0000 (GMT)
-Received: from rapoport-lnx (unknown [9.148.8.160])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon,  2 Sep 2019 15:18:21 +0000 (GMT)
-Date: Mon, 2 Sep 2019 18:18:20 +0300
-From: Mike Rapoport <rppt@linux.ibm.com>
-To: Michal Simek <monstr@monstr.eu>
-Subject: Re: microblaze HAVE_MEMBLOCK_NODE_MAP dependency (was Re: [PATCH v2
- 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA)
-References: <20190731062420.GC21422@rapoport-lnx>
- <20190731080309.GZ9330@dhcp22.suse.cz>
- <20190731111422.GA14538@rapoport-lnx>
- <20190731114016.GI9330@dhcp22.suse.cz>
- <20190731122631.GB14538@rapoport-lnx>
- <20190731130037.GN9330@dhcp22.suse.cz>
- <20190731142129.GA24998@rapoport-lnx>
- <20190731144114.GY9330@dhcp22.suse.cz>
- <20190731171510.GB24998@rapoport-lnx>
- <f57f15b5-dee7-c2be-5a34-192a9ecf0763@monstr.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MYxT1CVkzDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 01:32:37 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id h195so2609728pfe.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 08:32:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=USP7+LidvcBgzAZbbbndVrvv5Wpne7haPDoBCyfSpmg=;
+ b=BwY7TMOkmcTO5RQC4U5f3ckc4+upVTV5tpkhqM9UATgSxt0k/8+0gxdoR50L6c3WfO
+ WzHNiXARaiITwfxVST3UIEAw2c9EEQLuRSgHi/ctPrGC316TrxFcNxxVeZxe20xd/M/3
+ xbtaUhxwZVIpgxDO0xwuP8kVPuDOFlZyX81NGVfslapnHpivmQ5IKzoN863CpvXXTj7U
+ QQDZgWs4yIlHrkN7lsas1AYoyQtj1wOngW1/3mpvBYOPViGw6tukxdAGeyHrxK/h4c6l
+ HeaI1PXfxRDFzv6JhY5R2/sB43FqOH9e++LakpGUD+7ZP0Uvo7aPU7UrwRffFKJqdeDM
+ dA+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=USP7+LidvcBgzAZbbbndVrvv5Wpne7haPDoBCyfSpmg=;
+ b=nEAq7FnT6PaqMo0cfuCatP5rU/VraZb1jU4YCCBlVtacQ9PP2WjlsJ9lzsMTEanbmR
+ dKewQySwYq0Vx3TFSIjsBD9a00WNRv5an6VnFwmJ7IAIBaSVMXxfDdaJs53/9UuQbCqj
+ CKX76yykrowdzHITlugbo8UkC8EePxX06fT7/td+8/NGfQKWPyUCIYk651sEIVsP0cTc
+ UWuYpAewXSWo6SwTnGg7k0Zh48P4X3iwTWMbZ+pII4VyMlXlpsj9UpFIZ++3UD3NaNYG
+ qcrcflMD7t2M1CvWE673ddOccBRy9Gmhl7yV/MpFYXTRooeJ9T8QldPexzMuatHsUFNf
+ 2vVw==
+X-Gm-Message-State: APjAAAXjq6oobuqA9HXodbYmluwfzqJXsSPYg3s/kg8RGK4lPcVc0I86
+ SuLApG9D0iORyC6ZQeJMdY0eKUTmYl4=
+X-Google-Smtp-Source: APXvYqwVu5qLbCDg59L0hh5DCHoiGc8JYV0htTK506vXIt+IP6B4mFlGr96UIfoZ8L505UyoibbmUA==
+X-Received: by 2002:a63:4562:: with SMTP id u34mr25311284pgk.288.1567438354594; 
+ Mon, 02 Sep 2019 08:32:34 -0700 (PDT)
+Received: from bobo.local0.net ([61.68.187.15])
+ by smtp.gmail.com with ESMTPSA id b14sm15966033pfo.15.2019.09.02.08.32.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Sep 2019 08:32:34 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 2/6] powerpc/64s/radix: tidy up TLB flushing code
+Date: Tue,  3 Sep 2019 01:29:27 +1000
+Message-Id: <20190902152931.17840-3-npiggin@gmail.com>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190902152931.17840-1-npiggin@gmail.com>
+References: <20190902152931.17840-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f57f15b5-dee7-c2be-5a34-192a9ecf0763@monstr.eu>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-TM-AS-GCONF: 00
-x-cbid: 19090215-0008-0000-0000-000003101CE3
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090215-0009-0000-0000-00004A2E6B76
-Message-Id: <20190902151819.GA13793@rapoport-lnx>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-02_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=545 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909020172
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,149 +78,287 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will.deacon@arm.com>, Michal Hocko <mhocko@kernel.org>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Will Deacon <will@kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Hoan Tran OS <hoan@os.amperecomputing.com>, Oscar Salvador <osalvador@suse.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 02, 2019 at 03:51:25PM +0200, Michal Simek wrote:
-> On 31. 07. 19 19:15, Mike Rapoport wrote:
-> > On Wed, Jul 31, 2019 at 04:41:14PM +0200, Michal Hocko wrote:
-> >> On Wed 31-07-19 17:21:29, Mike Rapoport wrote:
-> >>> On Wed, Jul 31, 2019 at 03:00:37PM +0200, Michal Hocko wrote:
-> >>>>
-> >>>> I am sorry, but I still do not follow. Who is consuming that node id
-> >>>> information when NUMA=n. In other words why cannot we simply do
-> >>>  
-> >>> We can, I think nobody cared to change it.
-> >>
-> >> It would be great if somebody with the actual HW could try it out.
-> >> I can throw a patch but I do not even have a cross compiler in my
-> >> toolbox.
-> > 
-> > Well, it compiles :)
-> >  
-> >>>> diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-> >>>> index a015a951c8b7..3a47e8db8d1c 100644
-> >>>> --- a/arch/microblaze/mm/init.c
-> >>>> +++ b/arch/microblaze/mm/init.c
-> >>>> @@ -175,14 +175,9 @@ void __init setup_memory(void)
-> >>>>  
-> >>>>  		start_pfn = memblock_region_memory_base_pfn(reg);
-> >>>>  		end_pfn = memblock_region_memory_end_pfn(reg);
-> >>>> -		memblock_set_node(start_pfn << PAGE_SHIFT,
-> >>>> -				  (end_pfn - start_pfn) << PAGE_SHIFT,
-> >>>> -				  &memblock.memory, 0);
-> >>>> +		memory_present(0, start_pfn << PAGE_SHIFT, end_pfn << PAGE_SHIFT);
-> >>>
-> >>> memory_present() expects pfns, the shift is not needed.
-> >>
-> >> Right.
-> 
-> Sorry for slow response on this. In general regarding this topic.
-> Microblaze is soft core CPU (now there are hardcore versions too but not
-> running Linux). I believe there could be Numa system with
-> microblaze/microblazes (SMP is not supported in mainline).
-> 
-> This code was added in 2011 which is pretty hard to remember why it was
-> done in this way.
-> 
-> It compiles but not working on HW. Please take a look at log below.
-> 
-> Thanks,
-> Michal
-> 
-> 
-> [    0.000000] Linux version 5.3.0-rc6-00007-g54b01939182f-dirty
-> (monstr@monstr-desktop3) (gcc version 8.2.0 (crosstool-NG 1.20.0)) #101
-> Mon Sep 2 15:44:05 CEST 2019
-> [    0.000000] setup_memory: max_mapnr: 0x40000
-> [    0.000000] setup_memory: min_low_pfn: 0x80000
-> [    0.000000] setup_memory: max_low_pfn: 0xb0000
-> [    0.000000] setup_memory: max_pfn: 0xc0000
-> [    0.000000] start pfn 0x80000
-> [    0.000000] end pfn 0xc0000
-> [    0.000000] Zone ranges:
-> [    0.000000]   DMA      [mem 0x0000000080000000-0x00000000afffffff]
-> [    0.000000]   Normal   empty
-> [    0.000000]   HighMem  [mem 0x00000000b0000000-0x00000000bfffffff]
-> [    0.000000] Movable zone start for each node
-> [    0.000000] Early memory node ranges
-> [    0.000000]   node   1: [mem 0x0000000080000000-0x00000000bfffffff]
-> [    0.000000] Could not find start_pfn for node 0
-> [    0.000000] Initmem setup node 0 [mem
-> 0x0000000000000000-0x0000000000000000]
+There should be no functional changes.
 
-This does not look good :)
+- Use calls to existing radix_tlb.c functions in flush_partition.
 
-I think the problem is that without an explicit call to memblock_set_node()
-the ->nid in memblock is MAX_NUMNODES but free_area_init_nodes() presumes
-actual node ids are properly set.
+- Rename radix__flush_tlb_lpid to radix__flush_all_lpid and similar,
+  because they flush everything, matching flush_all_mm rather than
+  flush_tlb_mm for the lpid.
 
-> [    0.000000] earlycon: ns16550a0 at MMIO 0x44a01000 (options '115200n8')
-> [    0.000000] printk: bootconsole [ns16550a0] enabled
-> [    0.000000] setup_cpuinfo: initialising
-> [    0.000000] setup_cpuinfo: Using full CPU PVR support
-> [    0.000000] wt_msr_noirq
-> [    0.000000] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
-> [    0.000000] pcpu-alloc: [0] 0
-> [    0.000000] Built 1 zonelists, mobility grouping off.  Total pages: 0
-> [    0.000000] Kernel command line: earlycon
-> [    0.000000] Dentry cache hash table entries: -2147483648 (order: -13,
-> 0 bytes, linear)
-> [    0.000000] Inode-cache hash table entries: -2147483648 (order: -13,
-> 0 bytes, linear)
-> [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-> [    0.000000] Oops: kernel access of bad area, sig: 11
-> [    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted
-> 5.3.0-rc6-00007-g54b01939182f-dirty #101
-> [    0.000000]  Registers dump: mode=805B9EA8
-> [    0.000000]  r1=000065A0, r2=C05B7AE6, r3=00000000, r4=00000000
-> [    0.000000]  r5=00080000, r6=00080B50, r7=00000000, r8=00000004
-> [    0.000000]  r9=00000000, r10=0000001F, r11=00000000, r12=00006666
-> [    0.000000]  r13=4119DCC0, r14=00000000, r15=C05EFF8C, r16=00000000
-> [    0.000000]  r17=C0604408, r18=FFFC0000, r19=C05B9F6C, r20=BFFEC168
-> [    0.000000]  r21=BFFEC168, r22=EFFF9AC0, r23=00000001, r24=C0606874
-> [    0.000000]  r25=BFE6B74C, r26=80000000, r27=00000000, r28=90000040
-> [    0.000000]  r29=01000000, r30=00000380, r31=C05C02F0, rPC=C0604408
-> [    0.000000]  msr=000046A0, ear=00000004, esr=00000D12, fsr=FFFFFFFF
-> [    0.000000] Oops: kernel access of bad area, sig: 11
-> 
-> 
-> -- 
-> Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
-> w: www.monstr.eu p: +42-0-721842854
-> Maintainer of Linux kernel - Xilinx Microblaze
-> Maintainer of Linux kernel - Xilinx Zynq ARM and ZynqMP ARM64 SoCs
-> U-Boot custodian - Xilinx Microblaze/Zynq/ZynqMP/Versal SoCs
-> 
-> 
+- Remove some unused radix_tlb.c flush primitives.
 
+Signed-off: Nicholas Piggin <npiggin@gmail.com>
+---
+ .../include/asm/book3s/64/tlbflush-radix.h    |  12 +-
+ arch/powerpc/kvm/book3s_hv_nested.c           |   2 +-
+ arch/powerpc/mm/book3s64/pgtable.c            |  13 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c          | 117 ++++--------------
+ 4 files changed, 34 insertions(+), 110 deletions(-)
 
-
-
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+index 05147cecb8df..4ce795d30377 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+@@ -17,8 +17,8 @@ extern void radix__flush_tlb_lpid_page(unsigned int lpid,
+ 					unsigned long addr,
+ 					unsigned long page_size);
+ extern void radix__flush_pwc_lpid(unsigned int lpid);
+-extern void radix__flush_tlb_lpid(unsigned int lpid);
+-extern void radix__local_flush_tlb_lpid_guest(unsigned int lpid);
++extern void radix__flush_all_lpid(unsigned int lpid);
++extern void radix__flush_all_lpid_guest(unsigned int lpid);
+ #else
+ static inline void radix__tlbiel_all(unsigned int action) { WARN_ON(1); };
+ static inline void radix__flush_tlb_lpid_page(unsigned int lpid,
+@@ -31,11 +31,7 @@ static inline void radix__flush_pwc_lpid(unsigned int lpid)
+ {
+ 	WARN_ON(1);
+ }
+-static inline void radix__flush_tlb_lpid(unsigned int lpid)
+-{
+-	WARN_ON(1);
+-}
+-static inline void radix__local_flush_tlb_lpid_guest(unsigned int lpid)
++static inline void radix__flush_all_lpid(unsigned int lpid)
+ {
+ 	WARN_ON(1);
+ }
+@@ -73,6 +69,4 @@ extern void radix__flush_tlb_pwc(struct mmu_gather *tlb, unsigned long addr);
+ extern void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr);
+ extern void radix__flush_tlb_all(void);
+ 
+-extern void radix__local_flush_tlb_lpid(unsigned int lpid);
+-
+ #endif
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 735e0ac6f5b2..b3316da2f13e 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -398,7 +398,7 @@ static void kvmhv_flush_lpid(unsigned int lpid)
+ 	long rc;
+ 
+ 	if (!kvmhv_on_pseries()) {
+-		radix__flush_tlb_lpid(lpid);
++		radix__flush_all_lpid(lpid);
+ 		return;
+ 	}
+ 
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 97f3be778c79..c2b87c5ba50b 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -210,20 +210,17 @@ void __init mmu_partition_table_init(void)
+ 
+ static void flush_partition(unsigned int lpid, bool radix)
+ {
+-	asm volatile("ptesync" : : : "memory");
+ 	if (radix) {
+-		asm volatile(PPC_TLBIE_5(%0,%1,2,0,1) : :
+-			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+-		asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
+-			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+-		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 1);
++		radix__flush_all_lpid(lpid);
++		radix__flush_all_lpid_guest(lpid);
+ 	} else {
++		asm volatile("ptesync" : : : "memory");
+ 		asm volatile(PPC_TLBIE_5(%0,%1,2,0,0) : :
+ 			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
++		/* do we need fixup here ?*/
++		asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+ 		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 0);
+ 	}
+-	/* do we need fixup here ?*/
+-	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+ }
+ 
+ void mmu_partition_table_set_entry(unsigned int lpid, unsigned long dw0,
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 71f7fede2fa4..082f90d068ee 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -116,22 +116,6 @@ static __always_inline void __tlbie_pid(unsigned long pid, unsigned long ric)
+ 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+ }
+ 
+-static __always_inline void __tlbiel_lpid(unsigned long lpid, int set,
+-				unsigned long ric)
+-{
+-	unsigned long rb,rs,prs,r;
+-
+-	rb = PPC_BIT(52); /* IS = 2 */
+-	rb |= set << PPC_BITLSHIFT(51);
+-	rs = 0;  /* LPID comes from LPIDR */
+-	prs = 0; /* partition scoped */
+-	r = 1;   /* radix format */
+-
+-	asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+-		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+-	trace_tlbie(lpid, 1, rb, rs, ric, prs, r);
+-}
+-
+ static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
+ {
+ 	unsigned long rb,rs,prs,r;
+@@ -146,23 +130,20 @@ static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
+ 	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
+ }
+ 
+-static __always_inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
+-						unsigned long ric)
++static __always_inline void __tlbie_lpid_guest(unsigned long lpid, unsigned long ric)
+ {
+ 	unsigned long rb,rs,prs,r;
+ 
+ 	rb = PPC_BIT(52); /* IS = 2 */
+-	rb |= set << PPC_BITLSHIFT(51);
+-	rs = 0;  /* LPID comes from LPIDR */
++	rs = lpid;
+ 	prs = 1; /* process scoped */
+ 	r = 1;   /* radix format */
+ 
+-	asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
++	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+ 		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+-	trace_tlbie(lpid, 1, rb, rs, ric, prs, r);
++	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
+ }
+ 
+-
+ static __always_inline void __tlbiel_va(unsigned long va, unsigned long pid,
+ 					unsigned long ap, unsigned long ric)
+ {
+@@ -285,34 +266,6 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
+ 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ }
+ 
+-static inline void _tlbiel_lpid(unsigned long lpid, unsigned long ric)
+-{
+-	int set;
+-
+-	VM_BUG_ON(mfspr(SPRN_LPID) != lpid);
+-
+-	asm volatile("ptesync": : :"memory");
+-
+-	/*
+-	 * Flush the first set of the TLB, and if we're doing a RIC_FLUSH_ALL,
+-	 * also flush the entire Page Walk Cache.
+-	 */
+-	__tlbiel_lpid(lpid, 0, ric);
+-
+-	/* For PWC, only one flush is needed */
+-	if (ric == RIC_FLUSH_PWC) {
+-		asm volatile("ptesync": : :"memory");
+-		return;
+-	}
+-
+-	/* For the remaining sets, just flush the TLB */
+-	for (set = 1; set < POWER9_TLB_SETS_RADIX ; set++)
+-		__tlbiel_lpid(lpid, set, RIC_FLUSH_TLB);
+-
+-	asm volatile("ptesync": : :"memory");
+-	asm volatile(PPC_RADIX_INVALIDATE_ERAT_GUEST "; isync" : : :"memory");
+-}
+-
+ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
+ {
+ 	asm volatile("ptesync": : :"memory");
+@@ -337,35 +290,28 @@ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
+ 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ }
+ 
+-static __always_inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
++static __always_inline void _tlbie_lpid_guest(unsigned long lpid, unsigned long ric)
+ {
+-	int set;
+-
+-	VM_BUG_ON(mfspr(SPRN_LPID) != lpid);
+-
+-	asm volatile("ptesync": : :"memory");
+-
+ 	/*
+-	 * Flush the first set of the TLB, and if we're doing a RIC_FLUSH_ALL,
+-	 * also flush the entire Page Walk Cache.
++	 * Workaround the fact that the "ric" argument to __tlbie_pid
++	 * must be a compile-time contraint to match the "i" constraint
++	 * in the asm statement.
+ 	 */
+-	__tlbiel_lpid_guest(lpid, 0, ric);
+-
+-	/* For PWC, only one flush is needed */
+-	if (ric == RIC_FLUSH_PWC) {
+-		asm volatile("ptesync": : :"memory");
+-		return;
++	switch (ric) {
++	case RIC_FLUSH_TLB:
++		__tlbie_lpid_guest(lpid, RIC_FLUSH_TLB);
++		break;
++	case RIC_FLUSH_PWC:
++		__tlbie_lpid_guest(lpid, RIC_FLUSH_PWC);
++		break;
++	case RIC_FLUSH_ALL:
++	default:
++		__tlbie_lpid_guest(lpid, RIC_FLUSH_ALL);
+ 	}
+-
+-	/* For the remaining sets, just flush the TLB */
+-	for (set = 1; set < POWER9_TLB_SETS_RADIX ; set++)
+-		__tlbiel_lpid_guest(lpid, set, RIC_FLUSH_TLB);
+-
+-	asm volatile("ptesync": : :"memory");
+-	asm volatile(PPC_RADIX_INVALIDATE_ERAT_GUEST : : :"memory");
++	fixup_tlbie_lpid(lpid);
++	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ }
+ 
+-
+ static inline void __tlbiel_va_range(unsigned long start, unsigned long end,
+ 				    unsigned long pid, unsigned long page_size,
+ 				    unsigned long psize)
+@@ -835,32 +781,19 @@ EXPORT_SYMBOL_GPL(radix__flush_pwc_lpid);
+ /*
+  * Flush partition scoped translations from LPID (=LPIDR)
+  */
+-void radix__flush_tlb_lpid(unsigned int lpid)
++void radix__flush_all_lpid(unsigned int lpid)
+ {
+ 	_tlbie_lpid(lpid, RIC_FLUSH_ALL);
+ }
+-EXPORT_SYMBOL_GPL(radix__flush_tlb_lpid);
++EXPORT_SYMBOL_GPL(radix__flush_all_lpid);
+ 
+ /*
+- * Flush partition scoped translations from LPID (=LPIDR)
++ * Flush process scoped translations from LPID (=LPIDR)
+  */
+-void radix__local_flush_tlb_lpid(unsigned int lpid)
++void radix__flush_all_lpid_guest(unsigned int lpid)
+ {
+-	_tlbiel_lpid(lpid, RIC_FLUSH_ALL);
++	_tlbie_lpid_guest(lpid, RIC_FLUSH_ALL);
+ }
+-EXPORT_SYMBOL_GPL(radix__local_flush_tlb_lpid);
+-
+-/*
+- * Flush process scoped translations from LPID (=LPIDR).
+- * Important difference, the guest normally manages its own translations,
+- * but some cases e.g., vCPU CPU migration require KVM to flush.
+- */
+-void radix__local_flush_tlb_lpid_guest(unsigned int lpid)
+-{
+-	_tlbiel_lpid_guest(lpid, RIC_FLUSH_ALL);
+-}
+-EXPORT_SYMBOL_GPL(radix__local_flush_tlb_lpid_guest);
+-
+ 
+ static void radix__flush_tlb_pwc_range_psize(struct mm_struct *mm, unsigned long start,
+ 				  unsigned long end, int psize);
 -- 
-Sincerely yours,
-Mike.
+2.22.0
 
