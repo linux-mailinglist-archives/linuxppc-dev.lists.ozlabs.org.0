@@ -2,32 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C5BA4E2C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 06:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4380DA4E35
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 06:08:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MGgY2shdzDqW9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 14:04:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MGm31Bn7zDqfp
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 14:08:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MFv433YZzDqSn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MFv56j3zzDqY5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 13:29:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46MFv41xF7z9sN1; Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
+ id 46MFv46j2Qz9sPJ; Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 63ce271b5e377deaddace4bac6dafb6e79d2bee4
-In-Reply-To: <cdaf4bbbb64c288a077845846f04b12683f8875a.1566817807.git.christophe.leroy@c-s.fr>
+X-powerpc-patch-commit: f7a0bf7d904e902e13024986b7b357181ee30849
+In-Reply-To: <d644eaf7dff8cc149260066802af230bdf34fded.1566834712.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/prom: convert PROM_BUG() to standard trap
-Message-Id: <46MFv41xF7z9sN1@ozlabs.org>
+Subject: Re: [PATCH 1/6] powerpc/32s: add an option to exclusively select
+ powerpc 601
+Message-Id: <46MFv46j2Qz9sPJ@ozlabs.org>
 Date: Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -45,22 +46,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-08-26 at 11:10:23 UTC, Christophe Leroy wrote:
-> Prior to commit 1bd98d7fbaf5 ("ppc64: Update BUG handling based on
-> ppc32"), BUG() family was using BUG_ILLEGAL_INSTRUCTION which
-> was an invalid instruction opcode to trap into program check
-> exception.
+On Mon, 2019-08-26 at 15:52:13 UTC, Christophe Leroy wrote:
+> Powerpc 601 is rather old powerpc which as some important
+> limitations compared to other book3s/32 powerpcs:
+> - No Timebase.
+> - Common BATs for instruction and data.
+> - No execution protection in segment registers.
+> - No RI bit in MSR
+> - ...
 > 
-> That commit converted them to using standard trap instructions,
-> but prom/prom_init and their PROM_BUG() macro were left over.
-> head_64.S and exception-64s.S were left aside as well.
+> It is starting to be difficult and cumbersome to maintain
+> kernels that are compatible both with 601 and other 6xx cores.
 > 
-> Convert them to using the standard BUG infrastructure.
+> Create a compiletime option to exclusively select either powerpc 601
+> or other 6xx.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Applied to powerpc next, thanks.
+Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/63ce271b5e377deaddace4bac6dafb6e79d2bee4
+https://git.kernel.org/powerpc/c/f7a0bf7d904e902e13024986b7b357181ee30849
 
 cheers
