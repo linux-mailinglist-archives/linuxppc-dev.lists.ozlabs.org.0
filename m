@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948A7A5AA7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAF2A5AB4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:43:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MZ3F22mhzDqdS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 01:37:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MZ9V04LNzDqCM
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 01:43:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="BwY7TMOk"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dAAnb7+z"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MYxT1CVkzDqdd
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 01:32:37 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id h195so2609728pfe.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 08:32:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MYxT1LzBzDqf1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 01:32:35 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id 4so4077746pgm.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 08:32:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=USP7+LidvcBgzAZbbbndVrvv5Wpne7haPDoBCyfSpmg=;
- b=BwY7TMOkmcTO5RQC4U5f3ckc4+upVTV5tpkhqM9UATgSxt0k/8+0gxdoR50L6c3WfO
- WzHNiXARaiITwfxVST3UIEAw2c9EEQLuRSgHi/ctPrGC316TrxFcNxxVeZxe20xd/M/3
- xbtaUhxwZVIpgxDO0xwuP8kVPuDOFlZyX81NGVfslapnHpivmQ5IKzoN863CpvXXTj7U
- QQDZgWs4yIlHrkN7lsas1AYoyQtj1wOngW1/3mpvBYOPViGw6tukxdAGeyHrxK/h4c6l
- HeaI1PXfxRDFzv6JhY5R2/sB43FqOH9e++LakpGUD+7ZP0Uvo7aPU7UrwRffFKJqdeDM
- dA+Q==
+ bh=N1Dbr4C+4pSAGJVIo09NynHwpN6O0xereRJOjrnA65c=;
+ b=dAAnb7+zEpd+yjWy/vghRK2DE76hezFbIUbdPztV/ABkbwTRafPSSODtsKaHmpkXRI
+ P2DK8Vq/jkX5ie6vXzhDTNMRDbWM4nwglyryNov4MRz8rmRoFUCTadiGzJUJk2ihDLTT
+ WZ6qjCB8OshckDpEtOkDuplG4ob7eXOdcsohyslRbcF8bOaXvpR5x4OqKhASM+tqGGiW
+ Jxy/wUeHGn3VsisI+UFrHofR+7IpRzVgRgcX5pVrylzxSkNXzpKFzqOzAwr6XW0KrRmI
+ USFvUS6bebv/+xkdaDeRWYlN00M1vBAKqtP/kCsLqSU0Z9Gw/KftGD0YPNzS6plYQRji
+ wMtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=USP7+LidvcBgzAZbbbndVrvv5Wpne7haPDoBCyfSpmg=;
- b=nEAq7FnT6PaqMo0cfuCatP5rU/VraZb1jU4YCCBlVtacQ9PP2WjlsJ9lzsMTEanbmR
- dKewQySwYq0Vx3TFSIjsBD9a00WNRv5an6VnFwmJ7IAIBaSVMXxfDdaJs53/9UuQbCqj
- CKX76yykrowdzHITlugbo8UkC8EePxX06fT7/td+8/NGfQKWPyUCIYk651sEIVsP0cTc
- UWuYpAewXSWo6SwTnGg7k0Zh48P4X3iwTWMbZ+pII4VyMlXlpsj9UpFIZ++3UD3NaNYG
- qcrcflMD7t2M1CvWE673ddOccBRy9Gmhl7yV/MpFYXTRooeJ9T8QldPexzMuatHsUFNf
- 2vVw==
-X-Gm-Message-State: APjAAAXjq6oobuqA9HXodbYmluwfzqJXsSPYg3s/kg8RGK4lPcVc0I86
- SuLApG9D0iORyC6ZQeJMdY0eKUTmYl4=
-X-Google-Smtp-Source: APXvYqwVu5qLbCDg59L0hh5DCHoiGc8JYV0htTK506vXIt+IP6B4mFlGr96UIfoZ8L505UyoibbmUA==
-X-Received: by 2002:a63:4562:: with SMTP id u34mr25311284pgk.288.1567438354594; 
- Mon, 02 Sep 2019 08:32:34 -0700 (PDT)
+ bh=N1Dbr4C+4pSAGJVIo09NynHwpN6O0xereRJOjrnA65c=;
+ b=ds5Aqgi0/mOI72MbsPI/bep9DJccq9QJ+V2iqLAo2J7sGASLMW0AK+Mt9/kZ536cN6
+ DY+cCJoHkzKp7bbzT3Aak4jrN/Ak/nRm0HoF7TdjoBSVjP9g1HWrSdQAs+Z4wmOGeSob
+ 0rLA7OdPTvxOy9QdAg1OHdgndEIGuFIDmz1WcwcZrQ/JkHYrxSJfLzV4BWIDB/wn6MkG
+ Lp7aQep8HtpkZFOk5rIiI4BqvuIf4d/QPGdf3E7GIeJWoYeGG1MQstti5qBES2qECtRr
+ C3eiLpMrEYw/BdwmuSo4h/GiRGs0xmRTs6Kw8MocWAow0LMSpiv7jOKyeUEsUQnA2sOi
+ hpbg==
+X-Gm-Message-State: APjAAAUfBndZo7lZedhuq8fWZz+4pWGTsLjiqrl8+rFP/Ho5pKm+uMZl
+ 0BNs+O7W7DQmEAxa6EPuOJhaxcpS4ho=
+X-Google-Smtp-Source: APXvYqwQFueT/EoieTTWKu0uwoNcOsyZf7Eq5Z5csExWHYfRSOM5Qxjwf1uV128/QLD3ycy4qhMNeA==
+X-Received: by 2002:aa7:9d8e:: with SMTP id f14mr7563050pfq.217.1567438352473; 
+ Mon, 02 Sep 2019 08:32:32 -0700 (PDT)
 Received: from bobo.local0.net ([61.68.187.15])
- by smtp.gmail.com with ESMTPSA id b14sm15966033pfo.15.2019.09.02.08.32.32
+ by smtp.gmail.com with ESMTPSA id b14sm15966033pfo.15.2019.09.02.08.32.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Sep 2019 08:32:34 -0700 (PDT)
+ Mon, 02 Sep 2019 08:32:32 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/6] powerpc/64s/radix: tidy up TLB flushing code
-Date: Tue,  3 Sep 2019 01:29:27 +1000
-Message-Id: <20190902152931.17840-3-npiggin@gmail.com>
+Subject: [PATCH 1/6] powerpc/64s: remove register_process_table callback
+Date: Tue,  3 Sep 2019 01:29:26 +1000
+Message-Id: <20190902152931.17840-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190902152931.17840-1-npiggin@gmail.com>
 References: <20190902152931.17840-1-npiggin@gmail.com>
@@ -83,282 +83,205 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There should be no functional changes.
+This callback is only required because the partition table init comes
+before process table allocation on powernv (aka bare metal aka native).
 
-- Use calls to existing radix_tlb.c functions in flush_partition.
+Change the order to allocate the process table first, and remove the
+callback.
 
-- Rename radix__flush_tlb_lpid to radix__flush_all_lpid and similar,
-  because they flush everything, matching flush_all_mm rather than
-  flush_tlb_mm for the lpid.
-
-- Remove some unused radix_tlb.c flush primitives.
-
-Signed-off: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- .../include/asm/book3s/64/tlbflush-radix.h    |  12 +-
- arch/powerpc/kvm/book3s_hv_nested.c           |   2 +-
- arch/powerpc/mm/book3s64/pgtable.c            |  13 +-
- arch/powerpc/mm/book3s64/radix_tlb.c          | 117 ++++--------------
- 4 files changed, 34 insertions(+), 110 deletions(-)
+ arch/powerpc/include/asm/book3s/64/mmu.h |  4 ---
+ arch/powerpc/mm/book3s64/hash_utils.c    |  6 ----
+ arch/powerpc/mm/book3s64/pgtable.c       |  3 --
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 45 +++++++-----------------
+ arch/powerpc/platforms/pseries/lpar.c    | 17 +++++++--
+ 5 files changed, 27 insertions(+), 48 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
-index 05147cecb8df..4ce795d30377 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
-@@ -17,8 +17,8 @@ extern void radix__flush_tlb_lpid_page(unsigned int lpid,
- 					unsigned long addr,
- 					unsigned long page_size);
- extern void radix__flush_pwc_lpid(unsigned int lpid);
--extern void radix__flush_tlb_lpid(unsigned int lpid);
--extern void radix__local_flush_tlb_lpid_guest(unsigned int lpid);
-+extern void radix__flush_all_lpid(unsigned int lpid);
-+extern void radix__flush_all_lpid_guest(unsigned int lpid);
- #else
- static inline void radix__tlbiel_all(unsigned int action) { WARN_ON(1); };
- static inline void radix__flush_tlb_lpid_page(unsigned int lpid,
-@@ -31,11 +31,7 @@ static inline void radix__flush_pwc_lpid(unsigned int lpid)
- {
- 	WARN_ON(1);
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+index 23b83d3593e2..bb3deb76c951 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+@@ -206,7 +206,6 @@ extern int mmu_io_psize;
+ void mmu_early_init_devtree(void);
+ void hash__early_init_devtree(void);
+ void radix__early_init_devtree(void);
+-extern void radix_init_native(void);
+ extern void hash__early_init_mmu(void);
+ extern void radix__early_init_mmu(void);
+ static inline void early_init_mmu(void)
+@@ -238,9 +237,6 @@ static inline void setup_initial_memory_limit(phys_addr_t first_memblock_base,
+ 					   first_memblock_size);
  }
--static inline void radix__flush_tlb_lpid(unsigned int lpid)
--{
--	WARN_ON(1);
--}
--static inline void radix__local_flush_tlb_lpid_guest(unsigned int lpid)
-+static inline void radix__flush_all_lpid(unsigned int lpid)
- {
- 	WARN_ON(1);
- }
-@@ -73,6 +69,4 @@ extern void radix__flush_tlb_pwc(struct mmu_gather *tlb, unsigned long addr);
- extern void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr);
- extern void radix__flush_tlb_all(void);
  
--extern void radix__local_flush_tlb_lpid(unsigned int lpid);
+-extern int (*register_process_table)(unsigned long base, unsigned long page_size,
+-				     unsigned long tbl_size);
 -
- #endif
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 735e0ac6f5b2..b3316da2f13e 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -398,7 +398,7 @@ static void kvmhv_flush_lpid(unsigned int lpid)
- 	long rc;
- 
- 	if (!kvmhv_on_pseries()) {
--		radix__flush_tlb_lpid(lpid);
-+		radix__flush_all_lpid(lpid);
- 		return;
- 	}
- 
+ #ifdef CONFIG_PPC_PSERIES
+ extern void radix_init_pseries(void);
+ #else
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index fe99bba39b69..7aed27ea5361 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -859,12 +859,6 @@ static void __init htab_initialize(void)
+ 		/* Using a hypervisor which owns the htab */
+ 		htab_address = NULL;
+ 		_SDR1 = 0; 
+-		/*
+-		 * On POWER9, we need to do a H_REGISTER_PROC_TBL hcall
+-		 * to inform the hypervisor that we wish to use the HPT.
+-		 */
+-		if (cpu_has_feature(CPU_FTR_ARCH_300))
+-			register_process_table(0, 0, 0);
+ #ifdef CONFIG_FA_DUMP
+ 		/*
+ 		 * If firmware assisted dump is active firmware preserves
 diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 97f3be778c79..c2b87c5ba50b 100644
+index 206b43ae4000..97f3be778c79 100644
 --- a/arch/powerpc/mm/book3s64/pgtable.c
 +++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -210,20 +210,17 @@ void __init mmu_partition_table_init(void)
+@@ -23,9 +23,6 @@ EXPORT_SYMBOL(__pmd_frag_nr);
+ unsigned long __pmd_frag_size_shift;
+ EXPORT_SYMBOL(__pmd_frag_size_shift);
  
- static void flush_partition(unsigned int lpid, bool radix)
- {
--	asm volatile("ptesync" : : : "memory");
- 	if (radix) {
--		asm volatile(PPC_TLBIE_5(%0,%1,2,0,1) : :
--			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
--		asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
--			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
--		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 1);
-+		radix__flush_all_lpid(lpid);
-+		radix__flush_all_lpid_guest(lpid);
- 	} else {
-+		asm volatile("ptesync" : : : "memory");
- 		asm volatile(PPC_TLBIE_5(%0,%1,2,0,0) : :
- 			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
-+		/* do we need fixup here ?*/
-+		asm volatile("eieio; tlbsync; ptesync" : : : "memory");
- 		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 0);
- 	}
--	/* do we need fixup here ?*/
--	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
- }
+-int (*register_process_table)(unsigned long base, unsigned long page_size,
+-			      unsigned long tbl_size);
+-
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ /*
+  * This is called when relaxing access to a hugepage. It's also called in the page
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 71b649473045..83fa7864e8f4 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -34,19 +34,6 @@
+ unsigned int mmu_pid_bits;
+ unsigned int mmu_base_pid;
  
- void mmu_partition_table_set_entry(unsigned int lpid, unsigned long dw0,
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 71f7fede2fa4..082f90d068ee 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -116,22 +116,6 @@ static __always_inline void __tlbie_pid(unsigned long pid, unsigned long ric)
- 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
- }
- 
--static __always_inline void __tlbiel_lpid(unsigned long lpid, int set,
--				unsigned long ric)
+-static int native_register_process_table(unsigned long base, unsigned long pg_sz,
+-					 unsigned long table_size)
 -{
--	unsigned long rb,rs,prs,r;
+-	unsigned long patb0, patb1;
 -
--	rb = PPC_BIT(52); /* IS = 2 */
--	rb |= set << PPC_BITLSHIFT(51);
--	rs = 0;  /* LPID comes from LPIDR */
--	prs = 0; /* partition scoped */
--	r = 1;   /* radix format */
+-	patb0 = be64_to_cpu(partition_tb[0].patb0);
+-	patb1 = base | table_size | PATB_GR;
 -
--	asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
--		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
--	trace_tlbie(lpid, 1, rb, rs, ric, prs, r);
+-	mmu_partition_table_set_entry(0, patb0, patb1);
+-
+-	return 0;
 -}
 -
- static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
+ static __ref void *early_alloc_pgtable(unsigned long size, int nid,
+ 			unsigned long region_start, unsigned long region_end)
  {
- 	unsigned long rb,rs,prs,r;
-@@ -146,23 +130,20 @@ static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
- 	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
- }
- 
--static __always_inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
--						unsigned long ric)
-+static __always_inline void __tlbie_lpid_guest(unsigned long lpid, unsigned long ric)
- {
- 	unsigned long rb,rs,prs,r;
- 
- 	rb = PPC_BIT(52); /* IS = 2 */
--	rb |= set << PPC_BITLSHIFT(51);
--	rs = 0;  /* LPID comes from LPIDR */
-+	rs = lpid;
- 	prs = 1; /* process scoped */
- 	r = 1;   /* radix format */
- 
--	asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
-+	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
- 		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
--	trace_tlbie(lpid, 1, rb, rs, ric, prs, r);
-+	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
- }
- 
--
- static __always_inline void __tlbiel_va(unsigned long va, unsigned long pid,
- 					unsigned long ap, unsigned long ric)
- {
-@@ -285,34 +266,6 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
--static inline void _tlbiel_lpid(unsigned long lpid, unsigned long ric)
--{
--	int set;
--
--	VM_BUG_ON(mfspr(SPRN_LPID) != lpid);
--
--	asm volatile("ptesync": : :"memory");
--
--	/*
--	 * Flush the first set of the TLB, and if we're doing a RIC_FLUSH_ALL,
--	 * also flush the entire Page Walk Cache.
--	 */
--	__tlbiel_lpid(lpid, 0, ric);
--
--	/* For PWC, only one flush is needed */
--	if (ric == RIC_FLUSH_PWC) {
--		asm volatile("ptesync": : :"memory");
--		return;
--	}
--
--	/* For the remaining sets, just flush the TLB */
--	for (set = 1; set < POWER9_TLB_SETS_RADIX ; set++)
--		__tlbiel_lpid(lpid, set, RIC_FLUSH_TLB);
--
--	asm volatile("ptesync": : :"memory");
--	asm volatile(PPC_RADIX_INVALIDATE_ERAT_GUEST "; isync" : : :"memory");
--}
--
- static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
- {
- 	asm volatile("ptesync": : :"memory");
-@@ -337,35 +290,28 @@ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
--static __always_inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
-+static __always_inline void _tlbie_lpid_guest(unsigned long lpid, unsigned long ric)
- {
--	int set;
--
--	VM_BUG_ON(mfspr(SPRN_LPID) != lpid);
--
--	asm volatile("ptesync": : :"memory");
--
- 	/*
--	 * Flush the first set of the TLB, and if we're doing a RIC_FLUSH_ALL,
--	 * also flush the entire Page Walk Cache.
-+	 * Workaround the fact that the "ric" argument to __tlbie_pid
-+	 * must be a compile-time contraint to match the "i" constraint
-+	 * in the asm statement.
+@@ -381,18 +368,8 @@ static void __init radix_init_pgtable(void)
  	 */
--	__tlbiel_lpid_guest(lpid, 0, ric);
--
--	/* For PWC, only one flush is needed */
--	if (ric == RIC_FLUSH_PWC) {
--		asm volatile("ptesync": : :"memory");
--		return;
-+	switch (ric) {
-+	case RIC_FLUSH_TLB:
-+		__tlbie_lpid_guest(lpid, RIC_FLUSH_TLB);
-+		break;
-+	case RIC_FLUSH_PWC:
-+		__tlbie_lpid_guest(lpid, RIC_FLUSH_PWC);
-+		break;
-+	case RIC_FLUSH_ALL:
-+	default:
-+		__tlbie_lpid_guest(lpid, RIC_FLUSH_ALL);
- 	}
--
--	/* For the remaining sets, just flush the TLB */
--	for (set = 1; set < POWER9_TLB_SETS_RADIX ; set++)
--		__tlbiel_lpid_guest(lpid, set, RIC_FLUSH_TLB);
--
--	asm volatile("ptesync": : :"memory");
--	asm volatile(PPC_RADIX_INVALIDATE_ERAT_GUEST : : :"memory");
-+	fixup_tlbie_lpid(lpid);
-+	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ 	rts_field = radix__get_tree_size();
+ 	process_tb->prtb0 = cpu_to_be64(rts_field | __pa(init_mm.pgd) | RADIX_PGD_INDEX_SIZE);
+-	/*
+-	 * Fill in the partition table. We are suppose to use effective address
+-	 * of process table here. But our linear mapping also enable us to use
+-	 * physical address here.
+-	 */
+-	register_process_table(__pa(process_tb), 0, PRTB_SIZE_SHIFT - 12);
++
+ 	pr_info("Process table %p and radix root for kernel: %p\n", process_tb, init_mm.pgd);
+-	asm volatile("ptesync" : : : "memory");
+-	asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
+-		     "r" (TLBIEL_INVAL_SET_LPID), "r" (0));
+-	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+-	trace_tlbie(0, 0, TLBIEL_INVAL_SET_LPID, 0, 2, 1, 1);
+ 
+ 	/*
+ 	 * The init_mm context is given the first available (non-zero) PID,
+@@ -413,22 +390,24 @@ static void __init radix_init_pgtable(void)
+ 
+ static void __init radix_init_partition_table(void)
+ {
+-	unsigned long rts_field, dw0;
++	unsigned long rts_field, dw0, dw1;
+ 
+ 	mmu_partition_table_init();
+ 	rts_field = radix__get_tree_size();
+ 	dw0 = rts_field | __pa(init_mm.pgd) | RADIX_PGD_INDEX_SIZE | PATB_HR;
+-	mmu_partition_table_set_entry(0, dw0, 0);
++	dw1 = __pa(process_tb) | (PRTB_SIZE_SHIFT - 12) | PATB_GR;
++	mmu_partition_table_set_entry(0, dw0, dw1);
++
++	asm volatile("ptesync" : : : "memory");
++	asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
++		     "r" (TLBIEL_INVAL_SET_LPID), "r" (0));
++	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
++	trace_tlbie(0, 0, TLBIEL_INVAL_SET_LPID, 0, 2, 1, 1);
+ 
+ 	pr_info("Initializing Radix MMU\n");
+ 	pr_info("Partition table %p\n", partition_tb);
  }
  
--
- static inline void __tlbiel_va_range(unsigned long start, unsigned long end,
- 				    unsigned long pid, unsigned long page_size,
- 				    unsigned long psize)
-@@ -835,32 +781,19 @@ EXPORT_SYMBOL_GPL(radix__flush_pwc_lpid);
- /*
-  * Flush partition scoped translations from LPID (=LPIDR)
-  */
--void radix__flush_tlb_lpid(unsigned int lpid)
-+void radix__flush_all_lpid(unsigned int lpid)
- {
- 	_tlbie_lpid(lpid, RIC_FLUSH_ALL);
- }
--EXPORT_SYMBOL_GPL(radix__flush_tlb_lpid);
-+EXPORT_SYMBOL_GPL(radix__flush_all_lpid);
- 
- /*
-- * Flush partition scoped translations from LPID (=LPIDR)
-+ * Flush process scoped translations from LPID (=LPIDR)
-  */
--void radix__local_flush_tlb_lpid(unsigned int lpid)
-+void radix__flush_all_lpid_guest(unsigned int lpid)
- {
--	_tlbiel_lpid(lpid, RIC_FLUSH_ALL);
-+	_tlbie_lpid_guest(lpid, RIC_FLUSH_ALL);
- }
--EXPORT_SYMBOL_GPL(radix__local_flush_tlb_lpid);
--
--/*
-- * Flush process scoped translations from LPID (=LPIDR).
-- * Important difference, the guest normally manages its own translations,
-- * but some cases e.g., vCPU CPU migration require KVM to flush.
-- */
--void radix__local_flush_tlb_lpid_guest(unsigned int lpid)
+-void __init radix_init_native(void)
 -{
--	_tlbiel_lpid_guest(lpid, RIC_FLUSH_ALL);
+-	register_process_table = native_register_process_table;
 -}
--EXPORT_SYMBOL_GPL(radix__local_flush_tlb_lpid_guest);
 -
+ static int __init get_idx_from_shift(unsigned int shift)
+ {
+ 	int idx = -1;
+@@ -622,8 +601,9 @@ void __init radix__early_init_mmu(void)
+ 	__pmd_frag_nr = RADIX_PMD_FRAG_NR;
+ 	__pmd_frag_size_shift = RADIX_PMD_FRAG_SIZE_SHIFT;
  
- static void radix__flush_tlb_pwc_range_psize(struct mm_struct *mm, unsigned long start,
- 				  unsigned long end, int psize);
++	radix_init_pgtable();
++
+ 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
+-		radix_init_native();
+ 		lpcr = mfspr(SPRN_LPCR);
+ 		mtspr(SPRN_LPCR, lpcr | LPCR_UPRT | LPCR_HR);
+ 		radix_init_partition_table();
+@@ -634,7 +614,6 @@ void __init radix__early_init_mmu(void)
+ 
+ 	memblock_set_current_limit(MEMBLOCK_ALLOC_ANYWHERE);
+ 
+-	radix_init_pgtable();
+ 	/* Switch to the guard PID before turning on MMU */
+ 	radix__switch_mmu_context(NULL, &init_mm);
+ 	if (cpu_has_feature(CPU_FTR_HVMODE))
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 4f76e5f30c97..b3205a6c950c 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -1531,16 +1531,29 @@ void __init hpte_init_pseries(void)
+ 	mmu_hash_ops.flush_hash_range	 = pSeries_lpar_flush_hash_range;
+ 	mmu_hash_ops.hpte_clear_all      = pseries_hpte_clear_all;
+ 	mmu_hash_ops.hugepage_invalidate = pSeries_lpar_hugepage_invalidate;
+-	register_process_table		 = pseries_lpar_register_process_table;
+ 
+ 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
+ 		mmu_hash_ops.resize_hpt = pseries_lpar_resize_hpt;
++
++	/*
++	 * On POWER9, we need to do a H_REGISTER_PROC_TBL hcall
++	 * to inform the hypervisor that we wish to use the HPT.
++	 */
++	if (cpu_has_feature(CPU_FTR_ARCH_300))
++		pseries_lpar_register_process_table(0, 0, 0);
+ }
+ 
+ void radix_init_pseries(void)
+ {
+ 	pr_info("Using radix MMU under hypervisor\n");
+-	register_process_table = pseries_lpar_register_process_table;
++
++	pseries_lpar_register_process_table(__pa(process_tb),
++						0, PRTB_SIZE_SHIFT - 12);
++	asm volatile("ptesync" : : : "memory");
++	asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
++		     "r" (TLBIEL_INVAL_SET_LPID), "r" (0));
++	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
++	trace_tlbie(0, 0, TLBIEL_INVAL_SET_LPID, 0, 2, 1, 1);
+ }
+ 
+ #ifdef CONFIG_PPC_SMLPAR
 -- 
 2.22.0
 
