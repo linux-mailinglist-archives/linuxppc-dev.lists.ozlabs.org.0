@@ -1,43 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96640A556B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 13:59:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0174A557E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 14:03:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MTCg3R9bzDqdd
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 21:59:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MTJG3jDTzDqgG
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 22:03:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MT7165s9zDqTm
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 21:55:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 46MT6y5HYKz9sNf; Mon,  2 Sep 2019 21:55:38 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46MT6y1cwhz9sDQ;
- Mon,  2 Sep 2019 21:55:38 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] x86/efi: move common keyring handler functions to
- new file
-In-Reply-To: <1566825818-9731-4-git-send-email-nayna@linux.ibm.com>
-References: <1566825818-9731-1-git-send-email-nayna@linux.ibm.com>
- <1566825818-9731-4-git-send-email-nayna@linux.ibm.com>
-Date: Mon, 02 Sep 2019 21:55:36 +1000
-Message-ID: <87pnkisyiv.fsf@mpe.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=andrew.murray@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46MTGB3b6ZzDqNt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 22:01:52 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B102B28;
+ Mon,  2 Sep 2019 05:01:49 -0700 (PDT)
+Received: from localhost (unknown [10.37.6.20])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 280923F246;
+ Mon,  2 Sep 2019 05:01:49 -0700 (PDT)
+Date: Mon, 2 Sep 2019 13:01:47 +0100
+From: Andrew Murray <andrew.murray@arm.com>
+To: Xiaowei Bao <xiaowei.bao@nxp.com>
+Subject: Re: [PATCH v3 08/11] PCI: layerscape: Modify the MSIX to the
+ doorbell mode
+Message-ID: <20190902120147.GH9720@e119886-lin.cambridge.arm.com>
+References: <20190902031716.43195-1-xiaowei.bao@nxp.com>
+ <20190902031716.43195-9-xiaowei.bao@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190902031716.43195-9-xiaowei.bao@nxp.com>
+User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,266 +48,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, Paul Mackerras <paulus@samba.org>,
- Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Oliver O'Halloran <oohall@gmail.com>, George Wilson <gcwilson@linux.ibm.com>
+Cc: mark.rutland@arm.com, roy.zang@nxp.com, lorenzo.pieralisi@arm.com,
+ arnd@arndb.de, devicetree@vger.kernel.org, jingoohan1@gmail.com,
+ zhiqiang.hou@nxp.com, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kishon@ti.com, minghuan.Lian@nxp.com,
+ robh+dt@kernel.org, gregkh@linuxfoundation.org,
+ linux-arm-kernel@lists.infradead.org, gustavo.pimentel@synopsys.com,
+ leoyang.li@nxp.com, shawnguo@kernel.org, mingkai.hu@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nayna Jain <nayna@linux.ibm.com> writes:
+On Mon, Sep 02, 2019 at 11:17:13AM +0800, Xiaowei Bao wrote:
+> dw_pcie_ep_raise_msix_irq was never called in the exisitng driver
+> before, because the ls1046a platform don't support the MSIX feature
+> and msix_capable was always set to false.
+> Now that add the ls1088a platform with MSIX support, but the existing
+> dw_pcie_ep_raise_msix_irq doesn't work, so use the doorbell method to
+> support the MSIX feature.
+> 
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 
-> The handlers to add the keys to the .platform keyring and blacklisted
-> hashes to the .blacklist keyring is common for both the uefi and powerpc
-> mechanisms of loading the keys/hashes from the firmware.
->
-> This patch moves the common code from load_uefi.c to keyring_handler.c
->
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Reviewed-by: Andrew Murray <andrew.murray@arm.com>
+
 > ---
->  security/integrity/Makefile                   |  3 +-
->  .../platform_certs/keyring_handler.c          | 80 +++++++++++++++++++
->  .../platform_certs/keyring_handler.h          | 32 ++++++++
->  security/integrity/platform_certs/load_uefi.c | 67 +---------------
->  4 files changed, 115 insertions(+), 67 deletions(-)
->  create mode 100644 security/integrity/platform_certs/keyring_handler.c
->  create mode 100644 security/integrity/platform_certs/keyring_handler.h
-
-This has no acks from security folks, though I'm not really clear on who
-maintains those files.
-
-Do I take it because it's mostly just code movement people are OK with
-it going in via the powerpc tree?
-
-cheers
-
-> diff --git a/security/integrity/Makefile b/security/integrity/Makefile
-> index 19faace69644..525bf1d6e0db 100644
-> --- a/security/integrity/Makefile
-> +++ b/security/integrity/Makefile
-> @@ -11,7 +11,8 @@ integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
->  integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
->  integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o
->  integrity-$(CONFIG_LOAD_UEFI_KEYS) += platform_certs/efi_parser.o \
-> -					platform_certs/load_uefi.o
-> +				      platform_certs/load_uefi.o \
-> +				      platform_certs/keyring_handler.o
->  integrity-$(CONFIG_LOAD_IPL_KEYS) += platform_certs/load_ipl_s390.o
->  $(obj)/load_uefi.o: KBUILD_CFLAGS += -fshort-wchar
->  
-> diff --git a/security/integrity/platform_certs/keyring_handler.c b/security/integrity/platform_certs/keyring_handler.c
-> new file mode 100644
-> index 000000000000..c5ba695c10e3
-> --- /dev/null
-> +++ b/security/integrity/platform_certs/keyring_handler.c
-> @@ -0,0 +1,80 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/sched.h>
-> +#include <linux/cred.h>
-> +#include <linux/err.h>
-> +#include <linux/efi.h>
-> +#include <linux/slab.h>
-> +#include <keys/asymmetric-type.h>
-> +#include <keys/system_keyring.h>
-> +#include "../integrity.h"
-> +
-> +static efi_guid_t efi_cert_x509_guid __initdata = EFI_CERT_X509_GUID;
-> +static efi_guid_t efi_cert_x509_sha256_guid __initdata =
-> +	EFI_CERT_X509_SHA256_GUID;
-> +static efi_guid_t efi_cert_sha256_guid __initdata = EFI_CERT_SHA256_GUID;
-> +
-> +/*
-> + * Blacklist a hash.
-> + */
-> +static __init void uefi_blacklist_hash(const char *source, const void *data,
-> +				       size_t len, const char *type,
-> +				       size_t type_len)
-> +{
-> +	char *hash, *p;
-> +
-> +	hash = kmalloc(type_len + len * 2 + 1, GFP_KERNEL);
-> +	if (!hash)
-> +		return;
-> +	p = memcpy(hash, type, type_len);
-> +	p += type_len;
-> +	bin2hex(p, data, len);
-> +	p += len * 2;
-> +	*p = 0;
-> +
-> +	mark_hash_blacklisted(hash);
-> +	kfree(hash);
-> +}
-> +
-> +/*
-> + * Blacklist an X509 TBS hash.
-> + */
-> +static __init void uefi_blacklist_x509_tbs(const char *source,
-> +					   const void *data, size_t len)
-> +{
-> +	uefi_blacklist_hash(source, data, len, "tbs:", 4);
-> +}
-> +
-> +/*
-> + * Blacklist the hash of an executable.
-> + */
-> +static __init void uefi_blacklist_binary(const char *source,
-> +					 const void *data, size_t len)
-> +{
-> +	uefi_blacklist_hash(source, data, len, "bin:", 4);
-> +}
-> +
-> +/*
-> + * Return the appropriate handler for particular signature list types found in
-> + * the UEFI db and MokListRT tables.
-> + */
-> +__init efi_element_handler_t get_handler_for_db(const efi_guid_t *sig_type)
-> +{
-> +	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
-> +		return add_to_platform_keyring;
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Return the appropriate handler for particular signature list types found in
-> + * the UEFI dbx and MokListXRT tables.
-> + */
-> +__init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type)
-> +{
-> +	if (efi_guidcmp(*sig_type, efi_cert_x509_sha256_guid) == 0)
-> +		return uefi_blacklist_x509_tbs;
-> +	if (efi_guidcmp(*sig_type, efi_cert_sha256_guid) == 0)
-> +		return uefi_blacklist_binary;
-> +	return 0;
-> +}
-> diff --git a/security/integrity/platform_certs/keyring_handler.h b/security/integrity/platform_certs/keyring_handler.h
-> new file mode 100644
-> index 000000000000..2462bfa08fe3
-> --- /dev/null
-> +++ b/security/integrity/platform_certs/keyring_handler.h
-> @@ -0,0 +1,32 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
-> +#ifndef PLATFORM_CERTS_INTERNAL_H
-> +#define PLATFORM_CERTS_INTERNAL_H
-> +
-> +#include <linux/efi.h>
-> +
-> +void blacklist_hash(const char *source, const void *data,
-> +		    size_t len, const char *type,
-> +		    size_t type_len);
-> +
-> +/*
-> + * Blacklist an X509 TBS hash.
-> + */
-> +void blacklist_x509_tbs(const char *source, const void *data, size_t len);
-> +
-> +/*
-> + * Blacklist the hash of an executable.
-> + */
-> +void blacklist_binary(const char *source, const void *data, size_t len);
-> +
-> +/*
-> + * Return the handler for particular signature list types found in the db.
-> + */
-> +efi_element_handler_t get_handler_for_db(const efi_guid_t *sig_type);
-> +
-> +/*
-> + * Return the handler for particular signature list types found in the dbx.
-> + */
-> +efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type);
-> +
-> +#endif
-> diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-> index 81b19c52832b..4369204a19cd 100644
-> --- a/security/integrity/platform_certs/load_uefi.c
-> +++ b/security/integrity/platform_certs/load_uefi.c
-> @@ -9,6 +9,7 @@
->  #include <keys/asymmetric-type.h>
->  #include <keys/system_keyring.h>
->  #include "../integrity.h"
-> +#include "keyring_handler.h"
->  
->  static efi_guid_t efi_cert_x509_guid __initdata = EFI_CERT_X509_GUID;
->  static efi_guid_t efi_cert_x509_sha256_guid __initdata =
-> @@ -67,72 +68,6 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
->  	return db;
->  }
->  
-> -/*
-> - * Blacklist a hash.
-> - */
-> -static __init void uefi_blacklist_hash(const char *source, const void *data,
-> -				       size_t len, const char *type,
-> -				       size_t type_len)
-> -{
-> -	char *hash, *p;
-> -
-> -	hash = kmalloc(type_len + len * 2 + 1, GFP_KERNEL);
-> -	if (!hash)
-> -		return;
-> -	p = memcpy(hash, type, type_len);
-> -	p += type_len;
-> -	bin2hex(p, data, len);
-> -	p += len * 2;
-> -	*p = 0;
-> -
-> -	mark_hash_blacklisted(hash);
-> -	kfree(hash);
-> -}
-> -
-> -/*
-> - * Blacklist an X509 TBS hash.
-> - */
-> -static __init void uefi_blacklist_x509_tbs(const char *source,
-> -					   const void *data, size_t len)
-> -{
-> -	uefi_blacklist_hash(source, data, len, "tbs:", 4);
-> -}
-> -
-> -/*
-> - * Blacklist the hash of an executable.
-> - */
-> -static __init void uefi_blacklist_binary(const char *source,
-> -					 const void *data, size_t len)
-> -{
-> -	uefi_blacklist_hash(source, data, len, "bin:", 4);
-> -}
-> -
-> -/*
-> - * Return the appropriate handler for particular signature list types found in
-> - * the UEFI db and MokListRT tables.
-> - */
-> -static __init efi_element_handler_t get_handler_for_db(const efi_guid_t *
-> -						       sig_type)
-> -{
-> -	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
-> -		return add_to_platform_keyring;
-> -	return 0;
-> -}
-> -
-> -/*
-> - * Return the appropriate handler for particular signature list types found in
-> - * the UEFI dbx and MokListXRT tables.
-> - */
-> -static __init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *
-> -							sig_type)
-> -{
-> -	if (efi_guidcmp(*sig_type, efi_cert_x509_sha256_guid) == 0)
-> -		return uefi_blacklist_x509_tbs;
-> -	if (efi_guidcmp(*sig_type, efi_cert_sha256_guid) == 0)
-> -		return uefi_blacklist_binary;
-> -	return 0;
-> -}
-> -
->  /*
->   * Load the certs contained in the UEFI databases into the platform trusted
->   * keyring and the UEFI blacklisted X.509 cert SHA256 hashes into the blacklist
+> v2: 
+>  - No change
+> v3:
+>  - Modify the commit message make it clearly.
+> 
+>  drivers/pci/controller/dwc/pci-layerscape-ep.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> index 1e07287..5f0cb99 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> @@ -79,7 +79,8 @@ static int ls_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	case PCI_EPC_IRQ_MSI:
+>  		return dw_pcie_ep_raise_msi_irq(ep, func_no, interrupt_num);
+>  	case PCI_EPC_IRQ_MSIX:
+> -		return dw_pcie_ep_raise_msix_irq(ep, func_no, interrupt_num);
+> +		return dw_pcie_ep_raise_msix_irq_doorbell(ep, func_no,
+> +							  interrupt_num);
+>  	default:
+>  		dev_err(pci->dev, "UNKNOWN IRQ type\n");
+>  		return -EINVAL;
 > -- 
-> 2.20.1
+> 2.9.5
+> 
