@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228A2A4F95
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 09:16:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CB4A4FF4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 09:33:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MLwd2S0MzDqGQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:16:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MMJ26z52zDqRp
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 17:33:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MLtN5QDmzDqGB
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 17:14:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=redhat.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46MLtN1MsPz8t3b
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 17:14:20 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46MLtN14Cyz9sN1; Mon,  2 Sep 2019 17:14:20 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=dhowells@redhat.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MMCY03kWzDqTV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 17:29:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=kuvYA3T0maxhdGUw985D46q7bOf4rHWESmnw46BzIyU=; b=RSg8SK30rWjj+TGxS+skngBb9
+ 2fH0Zbvox/26y8ns9l17onRj+Z0upMjen1Jy9C225gpAYncbszcWwsNoaRVXtRhycw5sQPRXxvqZF
+ MZcgdzGUMBphpdnOn16uYyMgLt+qN6EW1z0DTDeFTlEiZTt3odbqEu+DJSqCou9wwYKKH0FxT6dWN
+ I+zp9Ai4QHlNhoBhF21uUvEYbhfjZl2GTj5O4kluEqPaq3MIV3nvvVSecP3gXpoqPTIw8UHW+LeG+
+ 00NHCbD42nXGQS4hidMqlBA/pQDia+x5u1X7c5K0Y5fMyiWYIiSoxiwz3DDXxm0RHe9+pK3isf+sd
+ NVR1Me1xA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1i4gik-0004XZ-Fx; Mon, 02 Sep 2019 07:25:50 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46MLtM4Ybgz9s7T
- for <linuxppc-dev@ozlabs.org>; Mon,  2 Sep 2019 17:14:19 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 506FA81F1B;
- Mon,  2 Sep 2019 07:14:17 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com
- [10.10.120.255])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0256360920;
- Mon,  2 Sep 2019 07:14:15 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
- Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
- Kingdom.
- Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <11986.1567178014@warthog.procyon.org.uk>
-References: <11986.1567178014@warthog.procyon.org.uk>
- <85B7196E-D717-4F19-A7E8-82A18287A3DE@linux.vnet.ibm.com>
-To: Hillf Danton <hdanton@sina.com>
-Subject: Re: Oops (request_key_auth_describe) while running cve-2016-7042 from
- LTP
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 6DC0530116F;
+ Mon,  2 Sep 2019 09:25:06 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 1636C29B6185F; Mon,  2 Sep 2019 09:25:42 +0200 (CEST)
+Date: Mon, 2 Sep 2019 09:25:42 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Subject: Re: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
+Message-ID: <20190902072542.GN2369@hirez.programming.kicks-ass.net>
+References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
+ <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
+ <20190831085539.GG2369@hirez.programming.kicks-ass.net>
+ <4d89c688-49e4-a2aa-32ee-65e36edcd913@huawei.com>
+ <20190831161247.GM2369@hirez.programming.kicks-ass.net>
+ <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <760.1567408455.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 02 Sep 2019 08:14:15 +0100
-Message-ID: <761.1567408455@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.27]); Mon, 02 Sep 2019 07:14:17 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,92 +73,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dhowells@redhat.com, Sachin Sant <sachinp@linux.vnet.ibm.com>,
- keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com, linuxarm@huawei.com,
+ jiaxun.yang@flygoat.com, linux-kernel@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
+ will@kernel.org, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+ x86@kernel.org, rppt@linux.ibm.com, borntraeger@de.ibm.com,
+ dledford@redhat.com, mingo@redhat.com, jeffrey.t.kirsher@intel.com,
+ jhogan@kernel.org, nfont@linux.vnet.ibm.com, mattst88@gmail.com,
+ len.brown@intel.com, gor@linux.ibm.com, anshuman.khandual@arm.com,
+ ink@jurassic.park.msu.ru, cai@lca.pw, luto@kernel.org, tglx@linutronix.de,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, robin.murphy@arm.com,
+ linux-mips@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
+ paul.burton@mips.com, linux-alpha@vger.kernel.org, bp@alien8.de,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Hillf,
+On Mon, Sep 02, 2019 at 01:46:51PM +0800, Yunsheng Lin wrote:
+> On 2019/9/1 0:12, Peter Zijlstra wrote:
 
-Would you like to me to put you down as the author of this patch?  If so, =
-I'll
-need a Signed-off-by from you.
+> > 1) because even it is not set, the device really does belong to a node.
+> > It is impossible a device will have magic uniform access to memory when
+> > CPUs cannot.
+> 
+> So it means dev_to_node() will return either NUMA_NO_NODE or a
+> valid node id?
 
-David
+NUMA_NO_NODE := -1, which is not a valid node number. It is also, like I
+said, not a valid device location on a NUMA system.
+
+Just because ACPI/BIOS is shit, doesn't mean the device doesn't have a
+node association. It just means we don't know and might have to guess.
+
+> > 2) is already true today, cpumask_of_node() requires a valid node_id.
+> 
+> Ok, most of the user does check node_id before calling
+> cpumask_of_node(), but does a little different type of checking:
+> 
+> 1) some does " < 0" check;
+> 2) some does "== NUMA_NO_NODE" check;
+> 3) some does ">= MAX_NUMNODES" check;
+> 4) some does "< 0 || >= MAX_NUMNODES || !node_online(node)" check.
+
+The one true way is:
+
+	'(unsigned)node_id >= nr_node_ids'
+
+> > 3) is just wrong and increases overhead for everyone.
+> 
+> Ok, cpumask_of_node() is also used in some critical path such
+> as scheduling, which may not need those checking, the overhead
+> is unnecessary.
+> 
+> But for non-critical path such as setup or configuration path,
+> it better to have consistent checking, and also simplify the
+> user code that calls cpumask_of_node().
+> 
+> Do you think it is worth the trouble to add a new function
+> such as cpumask_of_node_check(maybe some other name) to do
+> consistent checking?
+> 
+> Or caller just simply check if dev_to_node()'s return value is
+> NUMA_NO_NODE before calling cpumask_of_node()?
+
+It is not a matter of convenience. The function is called
+cpumask_of_node(), when node < 0 || node >= nr_node_ids, it is not a
+valid node, therefore the function shouldn't return anything except an
+error.
+
+Also note that the CONFIG_DEBUG_PER_CPU_MAPS version of
+cpumask_of_node() already does this (although it wants the below fix).
+
 ---
-commit df882ad6d4e24a3763719c1798ea58e87d56c2d7
-Author: Hillf Danton <hdanton@sina.com>
-Date:   Fri Aug 30 15:54:33 2019 +0100
-
-    keys: Fix missing null pointer check in request_key_auth_describe()
-    =
-
-    If a request_key authentication token key gets revoked, there's a wind=
-ow in
-    which request_key_auth_describe() can see it with a NULL payload - but=
- it
-    makes no check for this and something like the following oops may occu=
-r:
-    =
-
-            BUG: Kernel NULL pointer dereference at 0x00000038
-            Faulting instruction address: 0xc0000000004ddf30
-            Oops: Kernel access of bad area, sig: 11 [#1]
-            ...
-            NIP [...] request_key_auth_describe+0x90/0xd0
-            LR [...] request_key_auth_describe+0x54/0xd0
-            Call Trace:
-            [...] request_key_auth_describe+0x54/0xd0 (unreliable)
-            [...] proc_keys_show+0x308/0x4c0
-            [...] seq_read+0x3d0/0x540
-            [...] proc_reg_read+0x90/0x110
-            [...] __vfs_read+0x3c/0x70
-            [...] vfs_read+0xb4/0x1b0
-            [...] ksys_read+0x7c/0x130
-            [...] system_call+0x5c/0x70
-    =
-
-    Fix this by checking for a NULL pointer when describing such a key.
-    =
-
-    Also make the read routine check for a NULL pointer to be on the safe =
-side.
-    =
-
-    Fixes: 04c567d9313e ("[PATCH] Keys: Fix race between two instantiators=
- of a key")
-    Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-
-diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_=
-auth.c
-index e73ec040e250..ecba39c93fd9 100644
---- a/security/keys/request_key_auth.c
-+++ b/security/keys/request_key_auth.c
-@@ -66,6 +66,9 @@ static void request_key_auth_describe(const struct key *=
-key,
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index e6dad600614c..5f49c10201c7 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -861,7 +861,7 @@ void numa_remove_cpu(int cpu)
+  */
+ const struct cpumask *cpumask_of_node(int node)
  {
- 	struct request_key_auth *rka =3D dereference_key_rcu(key);
- =
-
-+	if (!rka)
-+		return;
-+
- 	seq_puts(m, "key:");
- 	seq_puts(m, key->description);
- 	if (key_is_positive(key))
-@@ -83,6 +86,9 @@ static long request_key_auth_read(const struct key *key,
- 	size_t datalen;
- 	long ret;
- =
-
-+	if (!rka)
-+		return -EKEYREVOKED;
-+
- 	datalen =3D rka->callout_len;
- 	ret =3D datalen;
- =
-
+-	if (node >= nr_node_ids) {
++	if ((unsigned)node >= nr_node_ids) {
+ 		printk(KERN_WARNING
+ 			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
+ 			node, nr_node_ids);
