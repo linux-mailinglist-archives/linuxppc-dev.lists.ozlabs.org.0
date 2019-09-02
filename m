@@ -2,33 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7A9A4DFB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 05:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CB6A4DFD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 05:57:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MGTs28Q7zDqPN
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 13:56:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MGWh0fCgzDqNx
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 13:57:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MFv2612XzDqRY
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 13:29:34 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MFv40j2kzDqb0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 13:29:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46MFv12snJz9sDQ; Mon,  2 Sep 2019 13:29:33 +1000 (AEST)
+ id 46MFv35H4Gz9sNf; Mon,  2 Sep 2019 13:29:35 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: f2902a2fb40c589b886d21518ef8a1ee87f76b0c
-In-Reply-To: <20190814132230.31874-2-hch@lst.de>
-To: Christoph Hellwig <hch@lst.de>,
+X-powerpc-patch-commit: a04565741284f695db4cfe5a3e61940d2259cb8f
+In-Reply-To: <b095e12c82fcba1ac4c09fc3b85d969f36614746.1566417610.git.christophe.leroy@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: use the generic dma coherent remap allocator
-Message-Id: <46MFv12snJz9sDQ@ozlabs.org>
-Date: Mon,  2 Sep 2019 13:29:33 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/8xx: drop unused self-modifying code alternative
+ to FixupDAR.
+Message-Id: <46MFv35H4Gz9sNf@ozlabs.org>
+Date: Mon,  2 Sep 2019 13:29:35 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,29 +41,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-08-14 at 13:22:30 UTC, Christoph Hellwig wrote:
-> This switches to using common code for the DMA allocations, including
-> potential use of the CMA allocator if configured.
+On Wed, 2019-08-21 at 20:00:34 UTC, Christophe Leroy wrote:
+> The code which fixups the DAR on TLB errors for dbcX instructions
+> has a self-modifying code alternative that has never been used.
 > 
-> Switching to the generic code enables DMA allocations from atomic
-> context, which is required by the DMA API documentation, and also
-> adds various other minor features drivers start relying upon.  It
-> also makes sure we have on tested code base for all architectures
-> that require uncached pte bits for coherent DMA allocations.
+> Drop it.
 > 
-> Another advantage is that consistent memory allocations now share
-> the general vmalloc pool instead of needing an explicit careout
-> from it.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/f2902a2fb40c589b886d21518ef8a1ee87f76b0c
+https://git.kernel.org/powerpc/c/a04565741284f695db4cfe5a3e61940d2259cb8f
 
 cheers
