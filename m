@@ -2,39 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E266EA5226
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 10:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F09A528F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 11:11:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MNzt5FtXzDqS3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 18:49:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MPT60d6DzDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2019 19:11:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=catalin.marinas@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MNy63r7DzDqVS
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 18:47:41 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id D9537B6C9;
- Mon,  2 Sep 2019 08:47:37 +0000 (UTC)
-From: Michal Suchanek <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>
-Subject: [PATCH] Revert "powerpc: Add barrier_nospec to raw_copy_in_user()"
-Date: Mon,  2 Sep 2019 10:47:26 +0200
-Message-Id: <20190902084726.14515-1-msuchanek@suse.de>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190821153656.57fabe9c@kitsune.suse.cz>
-References: 
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46MPQZ0Y09zDqYn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2019 19:08:52 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED91028;
+ Mon,  2 Sep 2019 02:08:49 -0700 (PDT)
+Received: from arrakis.emea.arm.com (arrakis.cambridge.arm.com [10.1.196.78])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ CD7C33F246; Mon,  2 Sep 2019 02:08:48 -0700 (PDT)
+Date: Mon, 2 Sep 2019 10:08:46 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: linux-next: manual merge of the powerpc tree with the arm64 tree
+Message-ID: <20190902090846.GA15118@arrakis.emea.arm.com>
+References: <20190902094711.2625ba31@canb.auug.org.au>
+ <87lfv7tqt0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87lfv7tqt0.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,36 +47,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mathieu Malaterre <malat@debian.org>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Anton Blanchard <anton@samba.org>,
- Michal Suchanek <msuchanek@suse.de>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Peter Collingbourne <pcc@google.com>, Will Deacon <will@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Sep 02, 2019 at 11:44:43AM +1000, Michael Ellerman wrote:
+> Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> > Hi all,
+> >
+> > Today's linux-next merge of the powerpc tree got a conflict in:
+> >
+> >   arch/Kconfig
+> >
+> > between commit:
+> >
+> >   5cf896fb6be3 ("arm64: Add support for relocating the kernel with RELR relocations")
+> >
+> > from the arm64 tree and commit:
+> >
+> >   0c9c1d563975 ("x86, s390: Move ARCH_HAS_MEM_ENCRYPT definition to arch/Kconfig")
+> >
+> > from the powerpc tree.
+> >
+> > I fixed it up (see below) and can carry the fix as necessary. This
+> > is now fixed as far as linux-next is concerned, but any non trivial
+> > conflicts should be mentioned to your upstream maintainer when your tree
+> > is submitted for merging.  You may also want to consider cooperating
+> > with the maintainer of the conflicting tree to minimise any particularly
+> > complex conflicts.
+> 
+> Thanks.
+> 
+> That conflict seems entirely trivial, but Catalin/Will if it bothers you
+> I have the conflicting commit in a topic branch based on rc2 which you
+> could merge to resolve it:
 
-This reverts commit 6fbcdd59094ade30db63f32316e9502425d7b256.
+It's a trivial conflict, easy to resolve. I don't think it's worth
+trying to avoid it (Linus normally doesn't mind such conflicts).
 
-Not needed. Data handled by raw_copy_in_user must be loaded through
-copy_from_user to be used in the kernel which already has the barrier.
-
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
- arch/powerpc/include/asm/uaccess.h | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 8b03eb44e876..76f34346b642 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -312,7 +312,6 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
- {
- 	unsigned long ret;
- 
--	barrier_nospec();
- 	allow_user_access(to, from, n);
- 	ret = __copy_tofrom_user(to, from, n);
- 	prevent_user_access(to, from, n);
 -- 
-2.22.0
-
+Catalin
