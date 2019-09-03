@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B86BA6678
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EC4A667C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:23:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N2zh0HbszDqbt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:21:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N3205pFnzDqdX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:23:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="ZxHGGFMa"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="cmvCwrjT"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N2t80tjqzDqQK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:16:31 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id y22so4856527pfr.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:16:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tH3FfqzDqdR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:16:39 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id n190so8891190pgn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:16:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=AbOYweJolmZcc1tLqVQOyuvVnN0aVR9HLvij1Z+lYUs=;
- b=ZxHGGFMaOpVVjt13nw3KZNF1X7StzdMvt1GhXnylI3WvWRaGH4xavdHEkMYm2Dyo+P
- ExobyY3Wf/urTXR3TPI+gQnO+SUXUfDkv4VZguZjPbmFMWHN2gzWVajQGv9lWRQ6sM/e
- 0OluELEmRec5LcDLcNfK0LWITCsPFaStufIg5GCusEW/ZNFyI/Hzh+ns9B9uaCVSgty1
- uRsv3LJXWcq8GDOVrVqQjRw0dIjbOW6EVtUPXMo+bF4mqWtG2/HlY7nIBhWLECySyRCr
- /XGSyTeCArprmXq4jYptLhg8qF+dK1qjroCZ00GCQSo48dmSkoJqgybMLtp4u1K4RYdu
- yIow==
+ bh=tfxaMc7NY0qu6L1pFCnDnLivVFylL+4EqJ5kpGw5UAw=;
+ b=cmvCwrjTDoi+8QgrB694d9zJryZ0bRL9vRBetzG7JdxaYF7YyimH7DBN/BMYJrnK/U
+ vGVewwP/tPP9FXvDa4tkDXP7Mq+a79F5AbDUeu84G0CUWTozzyRFUMhoELpc1v/6jwJ3
+ VtZPN37Q0jw2g0cA66PjbVnI97WmMUK2LIwD47piQdYIh47WH/Dw0ldQ+LwW7lgzKSmd
+ pb9AA8Hy3eO6X5e3Upp119EegCqCEPmXZVLzZQcP0cjCalOYoZLUTan2jKJGeh5jjRbV
+ RdDosYDF9WRYDuNifuXHiZx1RROmsG/x4YGDh9Y703xLPuWa0AvrdbyhP1LPrWaYxE4l
+ vaVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=AbOYweJolmZcc1tLqVQOyuvVnN0aVR9HLvij1Z+lYUs=;
- b=j3mj/QhUI2V16l3mzru/w/E7AcgYOo3cHEUPIxin/G5nsgjlT+xhd2LG1UM+gkc2Ef
- vDphoMzQCD41TM87FYtJ4RU2gQyL8OkibHiOQ5tP7W8V6kB6cQVHhk5UPyAhCKbr++ue
- sK65fENRhnjQA9nxVNmSUw9rp+8Ku50RP+ZjkeP1WbKtrpTYzz4smJEW8TdcrDueWiE2
- 2rvPWL8Zt97QTSCxo3xIXX41YSdBfD2rubBIWClLneJI47PXWsj+KflaHzSTqAwBJhU8
- aL4yHoeD+KShE7iPLasbpLFbfSQH8bdEcNsqQ8eM+REwlmI66TGsPtwMKU4LhAbydewS
- NYpg==
-X-Gm-Message-State: APjAAAXj1wU9YoaUWIepLKlb4lELAoVtoNxvOeeElNE75om/MEW74gtY
- qDKoaG54sLUBAtcEw/DfxMe3XJgn
-X-Google-Smtp-Source: APXvYqxEXrUyE5tdH/KDFnu2EXjszc5MjuWsaCYG/kAcD5ljzSLGtjm9yAo65WMbjO2IZuPA44e9Tg==
-X-Received: by 2002:a17:90a:f0c7:: with SMTP id
- fa7mr18281517pjb.115.1567505789235; 
- Tue, 03 Sep 2019 03:16:29 -0700 (PDT)
+ bh=tfxaMc7NY0qu6L1pFCnDnLivVFylL+4EqJ5kpGw5UAw=;
+ b=jgMP7or1oR2TF0gGUO6JseUaEBy6wLqh2r18rGKR55d26JHpHZRjL8TWIUvJs2++4Q
+ X0x7f9RvngWQOhAwmSdcQJKfrGKro4pMVeRkQAredwEaj6304jPECjezNrvNF3u/7zXG
+ 99GMLZOjJ/dPbj1N5KyEi3BGd3GOWbl56VOL5n9U+nXRcta1sqKk0e1JMyerOSYxFMhr
+ UYsRGhgjLrvB5mQDl8Y1qNde8sNJg8PbrQBe9+zK63ZoE7crqE9CyfOL5B4F/TytUX3U
+ +ealLXC5NXq6kVImIBBVjqXpU/cmGLRbJT8ewyu+t1LqGYwl5n9Ria68EJg8bzCW3scg
+ k8FA==
+X-Gm-Message-State: APjAAAXm8mx154m19X58IiLrQv0XsTPkAuTfuRr/qbUWyfWuweCAhj7b
+ VdjQtOqjoRXPrHlEo0VlHvTKoU8w
+X-Google-Smtp-Source: APXvYqzlmTqxXjorXfJ3UiT91Pp6Z+uAVTFoh0SEv4IDcxNpTHeJN13pid6mSjZ76aJoM1Pg+ucz4g==
+X-Received: by 2002:a65:6458:: with SMTP id s24mr29180418pgv.158.1567505796497; 
+ Tue, 03 Sep 2019 03:16:36 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.16.27
+ by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.16.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 03:16:28 -0700 (PDT)
+ Tue, 03 Sep 2019 03:16:30 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 01/14] powerpc/eeh: Clean up EEH PEs after recovery finishes
-Date: Tue,  3 Sep 2019 20:15:52 +1000
-Message-Id: <20190903101605.2890-2-oohall@gmail.com>
+Subject: [PATCH 02/14] powerpc/eeh: Fix race when freeing PDNs
+Date: Tue,  3 Sep 2019 20:15:53 +1000
+Message-Id: <20190903101605.2890-3-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190903101605.2890-1-oohall@gmail.com>
 References: <20190903101605.2890-1-oohall@gmail.com>
@@ -84,174 +83,105 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the last device in an eeh_pe is removed the eeh_pe structure itself
-(and any empty parents) are freed since they are no longer needed. This
-results in a crash when a hotplug driver is involved since the following
-may occur:
+When hot-adding devices we rely on the hotplug driver to create pci_dn's
+for the devices under the hotplug slot. Converse, when hot-removing the
+driver will remove the pci_dn's that it created. This is a problem because
+the pci_dev is still live until it's refcount drops to zero. This can
+happen if the driver is slow to tear down it's internal state. Ideally, the
+driver would not attempt to perform any config accesses to the device once
+it's been marked as removed, but sometimes it happens. As a result, we
+might attempt to access the pci_dn for a device that has been torn down and
+the kernel may crash as a result.
 
-1. Device is suprise removed.
-2. Driver performs an MMIO, which fails and queues and eeh_event.
-3. Hotplug driver receives a hotplug interrupt and removes any
-   pci_devs that were under the slot.
-4. pci_dev is torn down and the eeh_pe is freed.
-5. The EEH event handler thread processes the eeh_event and crashes
-   since the eeh_pe pointer in the eeh_event structure is no
-   longer valid.
-
-Crashing is generally considered poor form. Instead of doing that use
-the fact PEs are marked as EEH_PE_INVALID to keep them around until the
-end of the recovery cycle, at which point we can safely prune any empty
-PEs.
+To fix this, don't free the pci_dn unless the corresponding pci_dev has
+been released.  If the pci_dev is still live, then we mark the pci_dn with
+a flag that indicates the pci_dev's release function should free it.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
-Sam Bobroff is working on implementing proper refcounting for EEH PEs,
-but that's not going to be ready for a while and this is less broken
-than what we have now.
----
- arch/powerpc/kernel/eeh_driver.c | 36 ++++++++++++++++++++++++++++++--
- arch/powerpc/kernel/eeh_event.c  |  8 +++++++
- arch/powerpc/kernel/eeh_pe.c     | 23 +++++++++++++++++++-
- 3 files changed, 64 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/pci-bridge.h |  1 +
+ arch/powerpc/kernel/pci-hotplug.c     |  7 +++++++
+ arch/powerpc/kernel/pci_dn.c          | 21 +++++++++++++++++++--
+ 3 files changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index a31cd32c4ce9..75266156943f 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -734,6 +734,33 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
-  */
- #define MAX_WAIT_FOR_RECOVERY 300
+diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+index 54a9de01c2a3..69f4cb3b7c56 100644
+--- a/arch/powerpc/include/asm/pci-bridge.h
++++ b/arch/powerpc/include/asm/pci-bridge.h
+@@ -183,6 +183,7 @@ struct iommu_table;
+ struct pci_dn {
+ 	int     flags;
+ #define PCI_DN_FLAG_IOV_VF	0x01
++#define PCI_DN_FLAG_DEAD	0x02    /* Device has been hot-removed */
  
+ 	int	busno;			/* pci bus number */
+ 	int	devfn;			/* pci device and function number */
+diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
+index 0b0cf8168b47..fc62c4bc47b1 100644
+--- a/arch/powerpc/kernel/pci-hotplug.c
++++ b/arch/powerpc/kernel/pci-hotplug.c
+@@ -55,11 +55,18 @@ EXPORT_SYMBOL_GPL(pci_find_bus_by_node);
+ void pcibios_release_device(struct pci_dev *dev)
+ {
+ 	struct pci_controller *phb = pci_bus_to_host(dev->bus);
++	struct pci_dn *pdn = pci_get_pdn(dev);
+ 
+ 	eeh_remove_device(dev);
+ 
+ 	if (phb->controller_ops.release_device)
+ 		phb->controller_ops.release_device(dev);
 +
-+/* Walks the PE tree after processing an event to remove any stale PEs.
-+ *
-+ * NB: This needs to be recursive to ensure the leaf PEs get removed
-+ * before their parents do. Although this is possible to do recursively
-+ * we don't since this is easier to read and we need to garantee
-+ * the leaf nodes will be handled first.
-+ */
-+static void eeh_pe_cleanup(struct eeh_pe *pe)
-+{
-+	struct eeh_pe *child_pe, *tmp;
-+
-+	list_for_each_entry_safe(child_pe, tmp, &pe->child_list, child)
-+		eeh_pe_cleanup(child_pe);
-+
-+	if (pe->state & EEH_PE_KEEP)
-+		return;
-+
-+	if (!(pe->state & EEH_PE_INVALID))
-+		return;
-+
-+	if (list_empty(&pe->edevs) && list_empty(&pe->child_list)) {
-+		list_del(&pe->child);
-+		kfree(pe);
++	/* free()ing the pci_dn has been deferred to us, do it now */
++	if (pdn && (pdn->flags & PCI_DN_FLAG_DEAD)) {
++		pci_dbg(dev, "freeing dead pdn\n");
++		kfree(pdn);
 +	}
-+}
-+
- /**
-  * eeh_handle_normal_event - Handle EEH events on a specific PE
-  * @pe: EEH PE - which should not be used after we return, as it may
-@@ -772,8 +799,6 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		return;
- 	}
- 
--	eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
--
- 	eeh_pe_update_time_stamp(pe);
- 	pe->freeze_count++;
- 	if (pe->freeze_count > eeh_max_freezes) {
-@@ -963,6 +988,12 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 			return;
- 		}
- 	}
-+
-+	/*
-+	 * Clean up any PEs without devices. While marked as EEH_PE_RECOVERYING
-+	 * we don't want to modify the PE tree structure so we do it here.
-+	 */
-+	eeh_pe_cleanup(pe);
- 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
  }
  
-@@ -1035,6 +1066,7 @@ void eeh_handle_special_event(void)
- 		 */
- 		if (rc == EEH_NEXT_ERR_FROZEN_PE ||
- 		    rc == EEH_NEXT_ERR_FENCED_PHB) {
-+			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
- 			eeh_handle_normal_event(pe);
- 		} else {
- 			pci_lock_rescan_remove();
-diff --git a/arch/powerpc/kernel/eeh_event.c b/arch/powerpc/kernel/eeh_event.c
-index 64cfbe41174b..e36653e5f76b 100644
---- a/arch/powerpc/kernel/eeh_event.c
-+++ b/arch/powerpc/kernel/eeh_event.c
-@@ -121,6 +121,14 @@ int __eeh_send_failure_event(struct eeh_pe *pe)
- 	}
- 	event->pe = pe;
- 
-+	/*
-+	 * Mark the PE as recovering before inserting it in the queue.
-+	 * This prevents the PE from being free()ed by a hotplug driver
-+	 * while the PE is sitting in the event queue.
-+	 */
-+	if (pe)
-+		eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
-+
- 	/* We may or may not be called in an interrupt context */
- 	spin_lock_irqsave(&eeh_eventlist_lock, flags);
- 	list_add(&event->list, &eeh_eventlist);
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index 1a6254bcf056..177852e39a25 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -470,6 +470,7 @@ int eeh_add_to_parent_pe(struct eeh_dev *edev)
- int eeh_rmv_from_parent_pe(struct eeh_dev *edev)
+ /**
+diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+index 5614ca0940ca..4e654df55969 100644
+--- a/arch/powerpc/kernel/pci_dn.c
++++ b/arch/powerpc/kernel/pci_dn.c
+@@ -320,6 +320,7 @@ void pci_remove_device_node_info(struct device_node *dn)
  {
- 	struct eeh_pe *pe, *parent, *child;
-+	bool keep, recover;
- 	int cnt;
+ 	struct pci_dn *pdn = dn ? PCI_DN(dn) : NULL;
+ 	struct device_node *parent;
++	struct pci_dev *pdev;
+ #ifdef CONFIG_EEH
+ 	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
  
- 	pe = eeh_dev_to_pe(edev);
-@@ -490,10 +491,21 @@ int eeh_rmv_from_parent_pe(struct eeh_dev *edev)
- 	 */
- 	while (1) {
- 		parent = pe->parent;
-+
-+		/* PHB PEs should never be removed */
- 		if (pe->type & EEH_PE_PHB)
- 			break;
+@@ -333,12 +334,28 @@ void pci_remove_device_node_info(struct device_node *dn)
+ 	WARN_ON(!list_empty(&pdn->child_list));
+ 	list_del(&pdn->list);
  
--		if (!(pe->state & EEH_PE_KEEP)) {
-+		/*
-+		 * XXX: KEEP is set while resetting a PE. I don't think it's
-+		 * ever set without RECOVERING also being set. I could
-+		 * be wrong though so catch that with a WARN.
-+		 */
-+		keep = !!(pe->state & EEH_PE_KEEP);
-+		recover = !!(pe->state & EEH_PE_RECOVERING);
-+		WARN_ON(keep && !recover);
++	/* Drop the parent pci_dn's ref to our backing dt node */
+ 	parent = of_get_parent(dn);
+ 	if (parent)
+ 		of_node_put(parent);
+ 
+-	dn->data = NULL;
+-	kfree(pdn);
++	/*
++	 * At this point we *might* still have a pci_dev that was
++	 * instantiated from this pci_dn. So defer free()ing it until
++	 * the pci_dev's release function is called.
++	 */
++	pdev = pci_get_domain_bus_and_slot(pdn->phb->global_number,
++			pdn->busno, pdn->devfn);
++	if (pdev) {
++		/* NB: pdev has a ref to dn */
++		pci_dbg(pdev, "marked pdn (from %pOF) as dead\n", dn);
++		pdn->flags |= PCI_DN_FLAG_DEAD;
++	} else {
++		dn->data = NULL;
++		kfree(pdn);
++	}
 +
-+		if (!keep && !recover) {
- 			if (list_empty(&pe->edevs) &&
- 			    list_empty(&pe->child_list)) {
- 				list_del(&pe->child);
-@@ -502,6 +514,15 @@ int eeh_rmv_from_parent_pe(struct eeh_dev *edev)
- 				break;
- 			}
- 		} else {
-+			/*
-+			 * Mark the PE as invalid. At the end of the recovery
-+			 * process any invalid PEs will be garbage collected.
-+			 *
-+			 * We need to delay the free()ing of them since we can
-+			 * remove edev's while traversing the PE tree which
-+			 * might trigger the removal of a PE and we can't
-+			 * deal with that (yet).
-+			 */
- 			if (list_empty(&pe->edevs)) {
- 				cnt = 0;
- 				list_for_each_entry(child, &pe->child_list, child) {
++	pci_dev_put(pdev);
+ }
+ EXPORT_SYMBOL_GPL(pci_remove_device_node_info);
+ 
 -- 
 2.21.0
 
