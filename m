@@ -1,86 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A575A60C0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 07:39:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48971A60E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 07:57:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Mwk52qvmzDqNp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 15:39:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Mx7f1M11zDqY2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 15:57:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
+ envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Ys9Y1fQI"; 
+ dkim-atps=neutral
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MwQR4bbtzDqVr
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 15:25:35 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x835MSNc143073
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 3 Sep 2019 01:25:32 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2usgfdta8g-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 01:25:32 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Tue, 3 Sep 2019 06:25:30 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 3 Sep 2019 06:25:25 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x835POT138469740
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Sep 2019 05:25:24 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D342AE04D;
- Tue,  3 Sep 2019 05:25:24 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E7D19AE045;
- Tue,  3 Sep 2019 05:25:23 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  3 Sep 2019 05:25:23 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id ADFCCA00EC;
- Tue,  3 Sep 2019 15:25:22 +1000 (AEST)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: alastair@d-silva.org
-Subject: [PATCH v2 6/6] powerpc: Don't flush caches when adding memory
-Date: Tue,  3 Sep 2019 15:24:00 +1000
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190903052407.16638-1-alastair@au1.ibm.com>
-References: <20190903052407.16638-1-alastair@au1.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Mx5Y1gJVzDqQ9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 15:55:58 +1000 (AEST)
+Received: by mail-wr1-x442.google.com with SMTP id h7so14644402wrt.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 22:55:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=X7sSiUySVZV9o7/lrwJkuFeTAt0kOUYd/2rnVcX4C8w=;
+ b=Ys9Y1fQIYN15V0apg8nw2x0mdkLG1gGNdLtlgz4yLuv9IaPS1KM1uIJ8JN37YtoltE
+ l8m2NDUGfIn0E5p4sarsomM9ekjwyWsHsGnAUD5wkCtuvsEbywJGCy1q+CDsMJrIYNCq
+ Lh6kM0IYyvOWZoWc62AfycTE0J7CU6MwvpmfPExJ7BjxJZGNPfCfYqfF59G8B/9AvTZV
+ IxhS+n5aKbC1rVX+jOnVOQvJG5nrFZnCbpYfYjlPcQmQYmtXkc4qvJlrFWSLocMFeqDg
+ WTRxJ1TqYC6NiivsiaabMgS91UanJWDR3VngBpHqlgCIHu81YQ49cfa6u1eu05K0Vh8g
+ F24Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=X7sSiUySVZV9o7/lrwJkuFeTAt0kOUYd/2rnVcX4C8w=;
+ b=AHMbBYX86dcv0PiGAl0mNDioOzvoGW/Oz1LWeu7HKwGrS6n+Cz3eKSNf1C36hPRecn
+ C4mJLM+OLk2fbj5ffeRcRFvLu/9hpYLcgLvhVLZrlYRPWHYpRNJtRm/A0rYWgzIAM+Nt
+ rgbgUH1zZy44dbO+1haJSD+IYAci2qp/n2yeJjzIGuT+AOvItPUVNU52kxNYyITMIc2T
+ MD4u/x/ky1+sNurAtfAPh77am8AfshOFM6mJbMCgN/NfYbmu0fFmnWCR+EClSF528JdL
+ n4BSq6Yuyqnw+NLmk0Lv1szG10fnPEDzpefkSttwovyKf4E8BdbZS6b550E+qWLFnF5r
+ 4fLQ==
+X-Gm-Message-State: APjAAAUvK/gHAJrXpJNE1f0egKeYqdnB906BCxaPDJI2kmnmxzyzlz1U
+ LlhNECDkGGm9F4LbE4yaX9Y=
+X-Google-Smtp-Source: APXvYqyBhTmrTiKTpFKgVK1t14H6EtrLzraSNMVF6fR+NHY6gWzA/qnovaxj2pzBYW88+FhaukDwWQ==
+X-Received: by 2002:a5d:6602:: with SMTP id n2mr10555596wru.317.1567490155857; 
+ Mon, 02 Sep 2019 22:55:55 -0700 (PDT)
+Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
+ by smtp.gmail.com with ESMTPSA id a130sm7848265wmf.48.2019.09.02.22.55.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Sep 2019 22:55:55 -0700 (PDT)
+Date: Mon, 2 Sep 2019 22:55:53 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: David Laight <David.Laight@aculab.com>
+Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+Message-ID: <20190903055553.GC60296@archlinux-threadripper>
+References: <20190812023214.107817-1-natechancellor@gmail.com>
+ <878srdv206.fsf@mpe.ellerman.id.au>
+ <20190828175322.GA121833@archlinux-threadripper>
+ <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
+ <20190828184529.GC127646@archlinux-threadripper>
+ <6801a83ed6d54d95b87a41c57ef6e6b0@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19090305-0028-0000-0000-00000396EEBA
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090305-0029-0000-0000-000024593A68
-Message-Id: <20190903052407.16638-7-alastair@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-03_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=694 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909030060
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6801a83ed6d54d95b87a41c57ef6e6b0@AcuMS.aculab.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,55 +84,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Qian Cai <cai@lca.pw>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alastair D'Silva <alastair@d-silva.org>
+On Thu, Aug 29, 2019 at 09:59:48AM +0000, David Laight wrote:
+> From: Nathan Chancellor
+> > Sent: 28 August 2019 19:45
+> ...
+> > However, I think that -fno-builtin-* would be appropriate here because
+> > we are providing our own setjmp implementation, meaning clang should not
+> > be trying to do anything with the builtin implementation like building a
+> > declaration for it.
+> 
+> Isn't implementing setjmp impossible unless you tell the compiler that
+> you function is 'setjmp-like' ?
 
-This operation takes a significant amount of time when hotplugging
-large amounts of memory (~50 seconds with 890GB of persistent memory).
+No idea, PowerPC is the only architecture that does such a thing.
 
-This was orignally in commit fb5924fddf9e
-("powerpc/mm: Flush cache on memory hot(un)plug") to support memtrace,
-but the flush on add is not needed as it is flushed on remove.
+https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/tree/arch/powerpc/kernel/misc.S#n43
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- arch/powerpc/mm/mem.c | 7 -------
- 1 file changed, 7 deletions(-)
+Goes back all the way to before git history (all the way to ppc64's
+addition actually):
 
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 854aaea2c6ae..2a14b5b93e19 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -111,7 +111,6 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
--	u64 i;
- 	int rc;
- 
- 	resize_hpt_for_hotplug(memblock_phys_mem_size());
-@@ -124,12 +123,6 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
- 		return -EFAULT;
- 	}
- 
--	for (i = 0; i < size; i += FLUSH_CHUNK_SIZE) {
--		flush_dcache_range(start + i,
--				   min(start + size, start + i + FLUSH_CHUNK_SIZE));
--		cond_resched();
--	}
--
- 	return __add_pages(nid, start_pfn, nr_pages, restrictions);
- }
- 
--- 
-2.21.0
+https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commit/?id=61542216fa90397a2e70c46583edf26bc81994df
 
+https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commit/arch/ppc64/xmon/setjmp.c?id=5f12b0bff93831620218e8ed3970903ecb7861ce
+
+I would just like this warning fixed given that PowerPC builds with
+-Werror by default so it is causing a build failure in our CI.
+
+Cheers,
+Nathan
