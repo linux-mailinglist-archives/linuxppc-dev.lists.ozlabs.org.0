@@ -1,71 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD99A66C0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:49:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBA3A66C9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:52:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N3cR5Q5RzDqQJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:49:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N3gM6m10zDqRp
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:52:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.com
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=nborisov@suse.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="XuYvlS3a"; 
- dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.com
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tt2pbFzDqbx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:17:10 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id q21so5454396pfn.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:17:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=QuE/xU0WLbAKCushxzM6VLwrglMp5CDHJ8t2/oskUCE=;
- b=XuYvlS3a51NMP2ZlyTshaGF4ynnLB/z2Io9Ws1Jwr5ojzqEDGDCt5t/dG/mdZdfTuP
- 7QaMEhtXqr2trngrNspe38gqHe5hz92g8P3U2dPd/wkvWNVRpWWJU4uafTk0CdEkbfw6
- NmJFOxARodHIG3URDC1GbUpFL33oEQm0Js3em1sj4sYG/A2Y9Zyv8ccElwlwJ/W8UQbq
- B/8LbqLqCWbZbPXDj/zr1f2lR//BWNH62IM+Ic0/BPKzBJXt3oVPjNQxE6im5aRnAKaV
- JnZiTHVH3GuQZXvdloIY49xxAeHpGX3r1oSo0SMs+0ZkSH1fd+dMqvx5CwvHqoEmWlnf
- 3XWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=QuE/xU0WLbAKCushxzM6VLwrglMp5CDHJ8t2/oskUCE=;
- b=Nb7gOnjdM/Z8T4F98p/wRcoDXTAu0emI4UpNKXf5OnUZc74CXJuS14ByTex+PbWYKu
- qTpEg2jiJz4l3rVkODSQ/refoGskjSkOb3OWJluotl5S/cIo4k90o9jfhyenqm2p+xEY
- fFam5OXoaLkQi1jnnUETujqOld2kB8IDtV++tpNZhFqyBYWUs4wVeEBVeHbEbwlvfQmq
- EDfkMRvMuyJwz5JTkpHLGOhpWVl9/MVkvj2xCtU92dmMGN8wwe3oIrZ0gdaSwrV3wTET
- k5JejkrvErZtmWNjNOUBEhzWSl1+6awR50vT6+SISsS/5+TZi4tS9sLL4ulsDLjd1OCY
- OjGA==
-X-Gm-Message-State: APjAAAU64bApMApVAXAWoYSE2GIn5A8fDzPpJW/1rigwuyBLna85OuRK
- +F5L+PBX3C6AqXD+I7858/BzGV3H
-X-Google-Smtp-Source: APXvYqzOO8OLLjObnp0hQOzkOnfIfxYJin+oN4KncylQbfLt+PqKCe2yUb7Dt+jDa1scKYsk2XwEQw==
-X-Received: by 2002:a65:621a:: with SMTP id d26mr23125656pgv.153.1567505827409; 
- Tue, 03 Sep 2019 03:17:07 -0700 (PDT)
-Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.17.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 03:17:06 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 14/14] selftests/powerpc: Add basic EEH selftest
-Date: Tue,  3 Sep 2019 20:16:05 +1000
-Message-Id: <20190903101605.2890-15-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190903101605.2890-1-oohall@gmail.com>
-References: <20190903101605.2890-1-oohall@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N3PM0rmQzDqTV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:40:05 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id A71E6AD46;
+ Tue,  3 Sep 2019 10:40:00 +0000 (UTC)
+Subject: Re: [mainline][BUG][PPC][btrfs][bisected 00801a] kernel BUG at
+ fs/btrfs/locking.c:71!
+To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <1567500907.5082.12.camel@abdul>
+From: Nikolay Borisov <nborisov@suse.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nborisov@suse.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <7139ac07-db63-b984-c416-d1c94337c9bf@suse.com>
+Date: Tue, 3 Sep 2019 13:39:57 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <1567500907.5082.12.camel@abdul>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,252 +93,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sbobroff@linux.ibm.com, Oliver O'Halloran <oohall@gmail.com>
+Cc: sachinp <sachinp@linux.vnet.ibm.com>, josef@toxicpanda.com,
+ linux-kernel <linux-kernel@vger.kernel.org>, David Sterba <dsterba@suse.com>,
+ chandan <chandan@linux.vnet.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
+ linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the new eeh_dev_check and eeh_dev_break interfaces to test EEH
-recovery.  Historically this has been done manually using platform specific
-EEH error injection facilities (e.g. via RTAS). However, documentation on
-how to use these facilities is haphazard at best and non-existent at worst
-so it's hard to develop a cross-platform test.
 
-The new debugfs interfaces allow the kernel to handle the platform specific
-details so we can write a more generic set of sets. This patch adds the
-most basic of recovery tests where:
 
-a) Errors are injected and recovered from sequentially,
-b) Errors are not injected into PCI-PCI bridges, such as PCIe switches.
-c) Errors are only injected into device function zero.
-d) No errors are injected into Virtual Functions.
+On 3.09.19 г. 11:55 ч., Abdul Haleem wrote:
+> Greeting's
+> 
+> Mainline kernel panics with LTP/fs_fill-dir tests for btrfs file system on my P9 box running mainline kernel 5.3.0-rc5
+> 
+> BUG_ON was first introduced by below commit
+> 
+> commit 00801ae4bb2be5f5af46502ef239ac5f4b536094
+> Author: David Sterba <dsterba@suse.com>
+> Date:   Thu May 2 16:53:47 2019 +0200
+> 
+>     btrfs: switch extent_buffer write_locks from atomic to int
+>     
+>     The write_locks is either 0 or 1 and always updated under the lock,
+>     so we don't need the atomic_t semantics.
+>     
+>     Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+>     Signed-off-by: David Sterba <dsterba@suse.com>
+> 
+> diff --git a/fs/btrfs/locking.c b/fs/btrfs/locking.c
+> index 2706676279..98fccce420 100644
+> --- a/fs/btrfs/locking.c
+> +++ b/fs/btrfs/locking.c
+> @@ -58,17 +58,17 @@ static void btrfs_assert_tree_read_locked(struct
+> extent_buffer *eb)
+>  
+>  static void btrfs_assert_tree_write_locks_get(struct extent_buffer *eb)
+>  {
+> -       atomic_inc(&eb->write_locks);
+> +       eb->write_locks++;
+>  }
+>  
+>  static void btrfs_assert_tree_write_locks_put(struct extent_buffer *eb)
+>  {
+> -       atomic_dec(&eb->write_locks);
+> +       eb->write_locks--;
+>  }
+>  
+>  void btrfs_assert_tree_locked(struct extent_buffer *eb)
+>  {
+> -       BUG_ON(!atomic_read(&eb->write_locks));
+> +       BUG_ON(!eb->write_locks);
+>  }
+>  
+> 
+> tests logs:
+> avocado-misc-tests/io/disk/ltp_fs.py:LtpFs.test_fs_run;fs_fill-dir-ext3-61cd:  [ 3376.022096] EXT4-fs (nvme0n1): mounting ext3 file system using the ext4 subsystem
+> EXT4-fs (nvme0n1): mounted filesystem with ordered data mode. Opts: (null)
+> EXT4-fs (loop1): mounting ext2 file system using the ext4 subsystem
+> EXT4-fs (loop1): mounted filesystem without journal. Opts: (null)
+> EXT4-fs (loop1): mounting ext3 file system using the ext4 subsystem
+> EXT4-fs (loop1): mounted filesystem with ordered data mode. Opts: (null)
+> EXT4-fs (loop1): mounted filesystem with ordered data mode. Opts: (null)
+> XFS (loop1): Mounting V5 Filesystem
+> XFS (loop1): Ending clean mount
+> XFS (loop1): Unmounting Filesystem
+> BTRFS: device fsid 7c08f81b-6642-4a06-9182-2884e80d56ee devid 1 transid 5 /dev/loop1
+> BTRFS info (device loop1): disk space caching is enabled
+> BTRFS info (device loop1): has skinny extents
+> BTRFS info (device loop1): enabling ssd optimizations
+> BTRFS info (device loop1): creating UUID tree
+> ------------[ cut here ]------------
+> kernel BUG at fs/btrfs/locking.c:71!
+> Oops: Exception in kernel mode, sig: 5 [#1]
+> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> Dumping ftrace buffer:
+>    (ftrace buffer empty)
+> Modules linked in: fuse(E) vfat(E) fat(E) btrfs(E) xor(E)
+> zstd_decompress(E) zstd_compress(E) raid6_pq(E) xfs(E) raid0(E)
+> linear(E) dm_round_robin(E) dm_queue_length(E) dm_service_time(E)
+> dm_multipath(E) loop(E) rpadlpar_io(E) rpaphp(E) lpfc(E) bnx2x(E)
+> xt_CHECKSUM(E) xt_MASQUERADE(E) tun(E) bridge(E) stp(E) llc(E) kvm_pr(E)
+> kvm(E) tcp_diag(E) udp_diag(E) inet_diag(E) unix_diag(E)
+> af_packet_diag(E) netlink_diag(E) ip6t_rpfilter(E) ipt_REJECT(E)
+> nf_reject_ipv4(E) ip6t_REJECT(E) nf_reject_ipv6(E) xt_conntrack(E)
+> ip_set(E) nfnetlink(E) ebtable_nat(E) ebtable_broute(E) ip6table_nat(E)
+> ip6table_mangle(E) ip6table_security(E) ip6table_raw(E) iptable_nat(E)
+> nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E)
+> iptable_mangle(E) iptable_security(E) iptable_raw(E) ebtable_filter(E)
+> ebtables(E) ip6table_filter(E) ip6_tables(E) iptable_filter(E) sunrpc(E)
+> raid10(E) xts(E) pseries_rng(E) vmx_crypto(E) sg(E) uio_pdrv_genirq(E)
+> uio(E) binfmt_misc(E) sch_fq_codel(E) ip_tables(E)
+>  ext4(E) mbcache(E) jbd2(E) sr_mod(E) cdrom(E) sd_mod(E) ibmvscsi(E)
+> scsi_transport_srp(E) ibmveth(E) nvmet_fc(E) nvmet(E) nvme_fc(E)
+> nvme_fabrics(E) scsi_transport_fc(E) mdio(E) libcrc32c(E) ptp(E)
+> pps_core(E) nvme(E) nvme_core(E) dm_mirror(E) dm_region_hash(E)
+> dm_log(E) dm_mod(E) [last unloaded: lpfc]
+> CPU: 14 PID: 1803 Comm: kworker/u32:8 Tainted: G            E     5.3.0-rc5-autotest-autotest #1
+> Workqueue: btrfs-endio-write btrfs_endio_write_helper [btrfs]
+> NIP:  c00800000164dd70 LR: c00800000164df00 CTR: c000000000a817a0
+> REGS: c00000000260b5d0 TRAP: 0700   Tainted: G            E      (5.3.0-rc5-autotest-autotest)
+> MSR:  8000000102029033 <SF,VEC,EE,ME,IR,DR,RI,LE,TM[E]>  CR: 22444082  XER: 00000000
+> CFAR: c00800000164defc IRQMASK: 0
+> GPR00: c0080000015c55f4 c00000000260b860 c008000001703b00 c000000267a29af0
+> GPR04: 0000000000000000 0000000000000001 0000000000000000 0000000000000000
+> GPR08: 0000000000000000 0000000000000001 0000000000000000 0000000000000004
+> GPR12: 0000000000004000 c00000001ec58e00 0000000000000000 0000000000000000
+> GPR16: 0000000000010000 0000000000000004 0000000000000001 0000000000000001
+> GPR20: 0000000000000000 0000000000000001 000000003e0f83e1 c00000025a7cbef0
+> GPR24: c00000000260ba26 0000000040000000 c0000000014a26e8 0000000000000003
+> GPR28: 0000000000000004 c00000025f2010a0 c000000267a29af0 0000000000000000
+> NIP [c00800000164dd70] btrfs_assert_tree_locked+0x10/0x20 [btrfs]
+> LR [c00800000164df00] btrfs_set_lock_blocking_write+0x60/0x100 [btrfs]
+> Call Trace:
+> [c00000000260b860] [c00000000260b8e0] 0xc00000000260b8e0 (unreliable)
+> [c00000000260b890] [c0080000015c55f4] btrfs_set_path_blocking+0xb4/0xc0 [btrfs]
+> [c00000000260b8e0] [c0080000015cb808] btrfs_search_slot+0x8e8/0xb80 [btrfs]
 
-a), b) and c) are largely due to limitations of Linux's EEH support.  EEH
-recovery is serialised in the EEH recovery thread which forces a).
-Similarly, multi-function PCI devices are almost always grouped into the
-same PE so injecting an error on one function exercises the same code
-paths. c) is because we currently more or less ignore PCI bridges during
-recovery and assume that the recovered topology will be the same as the
-original.
-
-d) is due to the limits of the eeh_dev_break interface. With the current
-implementation we can't inject an error into a specific VF without
-potentially causing additional errors on other VFs. Due to the serialised
-recovery process we might end up timing out waiting for another function to
-recover before the function of interest is recovered. The platform specific
-error injection facilities are finer-grained and allow this capability, but
-doing that requires working out how to use those facilities first.
-
-Basicly, it's better than nothing and it's a base to build on.
-
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- tools/testing/selftests/powerpc/Makefile      |  1 +
- tools/testing/selftests/powerpc/eeh/Makefile  |  9 ++
- .../selftests/powerpc/eeh/eeh-basic.sh        | 82 +++++++++++++++++++
- .../selftests/powerpc/eeh/eeh-functions.sh    | 76 +++++++++++++++++
- 4 files changed, 168 insertions(+)
- create mode 100644 tools/testing/selftests/powerpc/eeh/Makefile
- create mode 100755 tools/testing/selftests/powerpc/eeh/eeh-basic.sh
- create mode 100755 tools/testing/selftests/powerpc/eeh/eeh-functions.sh
-
-diff --git a/tools/testing/selftests/powerpc/Makefile b/tools/testing/selftests/powerpc/Makefile
-index b3ad909aefbc..644770c3b754 100644
---- a/tools/testing/selftests/powerpc/Makefile
-+++ b/tools/testing/selftests/powerpc/Makefile
-@@ -26,6 +26,7 @@ SUB_DIRS = alignment		\
- 	   switch_endian	\
- 	   syscalls		\
- 	   tm			\
-+	   eeh			\
- 	   vphn         \
- 	   math		\
- 	   ptrace	\
-diff --git a/tools/testing/selftests/powerpc/eeh/Makefile b/tools/testing/selftests/powerpc/eeh/Makefile
-new file mode 100644
-index 000000000000..b397babd569b
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/eeh/Makefile
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0
-+noarg:
-+	$(MAKE) -C ../
-+
-+TEST_PROGS := eeh-basic.sh
-+TEST_FILES := eeh-functions.sh
-+
-+top_srcdir = ../../../../..
-+include ../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/eeh/eeh-basic.sh b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
-new file mode 100755
-index 000000000000..f988d2f42e8f
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
-@@ -0,0 +1,82 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+. ./eeh-functions.sh
-+
-+if ! eeh_supported ; then
-+	echo "EEH not supported on this system, skipping"
-+	exit 0;
-+fi
-+
-+if [ ! -e "/sys/kernel/debug/powerpc/eeh_dev_check" ] && \
-+   [ ! -e "/sys/kernel/debug/powerpc/eeh_dev_break" ] ; then
-+	echo "debugfs EEH testing files are missing. Is debugfs mounted?"
-+	exit 1;
-+fi
-+
-+pre_lspci=`mktemp`
-+lspci > $pre_lspci
-+
-+# Bump the max freeze count to something absurd so we don't
-+# trip over it while breaking things.
-+echo 5000 > /sys/kernel/debug/powerpc/eeh_max_freezes
-+
-+# record the devices that we break in here. Assuming everything
-+# goes to plan we should get them back once the recover process
-+# is finished.
-+devices=""
-+
-+# Build up a list of candidate devices.
-+for dev in `ls -1 /sys/bus/pci/devices/ | grep '\.0$'` ; do
-+	# skip bridges since we can't recover them (yet...)
-+	if [ -e "/sys/bus/pci/devices/$dev/pci_bus" ] ; then
-+		echo "$dev, Skipped: bridge"
-+		continue;
-+	fi
-+
-+	# Skip VFs for now since we don't have a reliable way
-+	# to break them.
-+	if [ -e "/sys/bus/pci/devices/$dev/physfn" ] ; then
-+		echo "$dev, Skipped: virtfn"
-+		continue;
-+	fi
-+
-+	# Don't inject errosr into an already-frozen PE. This happens with
-+	# PEs that contain multiple PCI devices (e.g. multi-function cards)
-+	# and injecting new errors during the recovery process will probably
-+	# result in the recovery failing and the device being marked as
-+	# failed.
-+	if ! pe_ok $dev ; then
-+		echo "$dev, Skipped: Bad initial PE state"
-+		continue;
-+	fi
-+
-+	echo "$dev, Added"
-+
-+	# Add to this list of device to check
-+	devices="$devices $dev"
-+done
-+
-+dev_count="$(echo $devices | wc -w)"
-+echo "Found ${dev_count} breakable devices..."
-+
-+failed=0
-+for dev in $devices ; do
-+	echo "Breaking $dev..."
-+
-+	if ! pe_ok $dev ; then
-+		echo "Skipping $dev, Initial PE state is not ok"
-+		failed="$((failed + 1))"
-+		continue;
-+	fi
-+
-+	if ! eeh_one_dev $dev ; then
-+		failed="$((failed + 1))"
-+	fi
-+done
-+
-+echo "$failed devices failed to recover ($dev_count tested)"
-+lspci | diff -u $pre_lspci -
-+rm -f $pre_lspci
-+
-+exit $failed
-diff --git a/tools/testing/selftests/powerpc/eeh/eeh-functions.sh b/tools/testing/selftests/powerpc/eeh/eeh-functions.sh
-new file mode 100755
-index 000000000000..26112ab5cdf4
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/eeh/eeh-functions.sh
-@@ -0,0 +1,76 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+pe_ok() {
-+	local dev="$1"
-+	local path="/sys/bus/pci/devices/$dev/eeh_pe_state"
-+
-+	if ! [ -e "$path" ] ; then
-+		return 1;
-+	fi
-+
-+	local fw_state="$(cut -d' ' -f1 < $path)"
-+	local sw_state="$(cut -d' ' -f2 < $path)"
-+
-+	# If EEH_PE_ISOLATED or EEH_PE_RECOVERING are set then the PE is in an
-+	# error state or being recovered. Either way, not ok.
-+	if [ "$((sw_state & 0x3))" -ne 0 ] ; then
-+		return 1
-+	fi
-+
-+	# A functioning PE should have the EEH_STATE_MMIO_ACTIVE and
-+	# EEH_STATE_DMA_ACTIVE flags set. For some goddamn stupid reason
-+	# the platform backends set these when the PE is in reset. The
-+	# RECOVERING check above should stop any false positives though.
-+	if [ "$((fw_state & 0x18))" -ne "$((0x18))" ] ; then
-+		return 1
-+	fi
-+
-+	return 0;
-+}
-+
-+eeh_supported() {
-+	test -e /proc/powerpc/eeh && \
-+	grep -q 'EEH Subsystem is enabled' /proc/powerpc/eeh
-+}
-+
-+eeh_one_dev() {
-+	local dev="$1"
-+
-+	# Using this function from the command line is sometimes useful for
-+	# testing so check that the argument is a well-formed sysfs device
-+	# name.
-+	if ! test -e /sys/bus/pci/devices/$dev/ ; then
-+		echo "Error: '$dev' must be a sysfs device name (DDDD:BB:DD.F)"
-+		return 1;
-+	fi
-+
-+	# Break it
-+	echo $dev >/sys/kernel/debug/powerpc/eeh_dev_break
-+
-+	# Force an EEH device check. If the kernel has already
-+	# noticed the EEH (due to a driver poll or whatever), this
-+	# is a no-op.
-+	echo $dev >/sys/kernel/debug/powerpc/eeh_dev_check
-+
-+	# Enforce a 30s timeout for recovery. Even the IPR, which is infamously
-+	# slow to reset, should recover within 30s.
-+	max_wait=30
-+
-+	for i in `seq 0 ${max_wait}` ; do
-+		if pe_ok $dev ; then
-+			break;
-+		fi
-+		echo "$dev, waited $i/${max_wait}"
-+		sleep 1
-+	done
-+
-+	if ! pe_ok $dev ; then
-+		echo "$dev, Failed to recover!"
-+		return 1;
-+	fi
-+
-+	echo "$dev, Recovered after $i seconds"
-+	return 0;
-+}
-+
--- 
-2.21.0
+Can you provide the line numbers btrfs_search_slot+0x8e8/0xb80
+corresponds to?
 
