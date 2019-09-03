@@ -1,101 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386F7A7114
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:54:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025FCA7135
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 19:00:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NCj74ZtDzDqN8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:54:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NCqk6NZzzDqR1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 03:00:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NCBs352XzDqTm
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:31:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+680e2818d6643897e706+5854+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46NCBs1lXmz8t0n
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:31:33 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46NCBs0rFYz9sRm; Wed,  4 Sep 2019 02:31:33 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="S3daUb2+"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46NCBq04SPz9sRp
- for <linuxppc-dev@ozlabs.org>; Wed,  4 Sep 2019 02:31:30 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x83GNSYf138163
- for <linuxppc-dev@ozlabs.org>; Tue, 3 Sep 2019 12:31:28 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ust37mh7p-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 03 Sep 2019 12:31:28 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Tue, 3 Sep 2019 17:31:26 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 3 Sep 2019 17:31:23 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x83GVL2134078860
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Sep 2019 16:31:21 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6125CA4040;
- Tue,  3 Sep 2019 16:31:21 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 768D2A405B;
- Tue,  3 Sep 2019 16:31:19 +0000 (GMT)
-Received: from [9.85.81.203] (unknown [9.85.81.203])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  3 Sep 2019 16:31:19 +0000 (GMT)
-Subject: Re: [PATCH v5 11/31] powernv/fadump: add fadump support on powernv
-To: Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>
-References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
- <156630272823.8896.18439144196389587229.stgit@hbathini.in.ibm.com>
- <87sgpdr5y6.fsf@mpe.ellerman.id.au>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Date: Tue, 3 Sep 2019 22:01:18 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NCfT4msLzDqnf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:52:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=LvpBWtVIgybfRt8dClX5c+nTFaEgP5NOqPPGkq3C7hE=; b=S3daUb2++xfMv9DBuUEn+KiRb
+ rDGWJhDdSxuyi8LHgCalEJco7OrwhgpVNs5gWBIPSdVJUIoQjIHXNxck0zZC3O1ToA7HxWBLwaD3m
+ 6JKhhevm/LaZlXaIIZsMZTv+ynO/WuLQ1pFpS+dgWZyDxnuk35McHI30MlMgPdy4vgOiWgOfUL+6p
+ TCNE+FhK2S/7vGyEPbqpKC+0jxETu/74AmU32NNeil0Zt93j39eSMlmjN2J1n/x4IZVZBakd80r4G
+ 02UAYjlqV39IVEqmfq9RGVKBuc6JKVUiFnnflDGzwrq8XeLdSdeTJgnrayY7rMQGbJbz4+VP7WNyY
+ G9LUkQotw==;
+Received: from [2001:4bb8:18c:1755:c70:4a89:bc61:2] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1i5C25-0002as-8F; Tue, 03 Sep 2019 16:51:53 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: mpe@ellerman.id.au,
+	paulus@samba.org,
+	benh@kernel.crashing.org
+Subject: [PATCH] powerpc/powernv: remove the unused pnv_npu_try_dma_set_bypass
+ function
+Date: Tue,  3 Sep 2019 18:51:47 +0200
+Message-Id: <20190903165147.11099-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <87sgpdr5y6.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19090316-0028-0000-0000-000003972B58
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090316-0029-0000-0000-0000245979D8
-Message-Id: <69b1eba6-9ca6-864c-7148-4693e4578339@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-03_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909030167
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,94 +65,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Oliver <oohall@gmail.com>,
- Vasant Hegde <hegdevasant@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Neither pnv_npu_try_dma_set_bypass nor the pnv_npu_dma_set_32 and
+pnv_npu_dma_set_bypass helpers called by it are used anywhere in the
+kernel tree, so remove them.
 
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/powerpc/platforms/powernv/npu-dma.c | 99 ------------------------
+ 1 file changed, 99 deletions(-)
 
-On 03/09/19 4:40 PM, Michael Ellerman wrote:
-> Hari Bathini <hbathini@linux.ibm.com> writes:
->> Add basic callback functions for FADump on PowerNV platform.
-> 
-> I assume this doesn't actually work yet?
-> 
-> Does something block it from appearing to work at runtime?
-
-With this patch, "fadump=on" would reserve memory for FADump as support is enabled
-but registration with f/w is not yet added. So, it would fail to register...
-
-> 
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index d8dcd88..fc4ecfe 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -566,7 +566,7 @@ config CRASH_DUMP
->>  
->>  config FA_DUMP
->>  	bool "Firmware-assisted dump"
->> -	depends on PPC64 && PPC_RTAS
->> +	depends on PPC64 && (PPC_RTAS || PPC_POWERNV)
->>  	select CRASH_CORE
->>  	select CRASH_DUMP
->>  	help
->> @@ -577,7 +577,8 @@ config FA_DUMP
->>  	  is meant to be a kdump replacement offering robustness and
->>  	  speed not possible without system firmware assistance.
->>  
->> -	  If unsure, say "N"
->> +	  If unsure, say "y". Only special kernels like petitboot may
->> +	  need to say "N" here.
->>  
->>  config IRQ_ALL_CPUS
->>  	bool "Distribute interrupts on all CPUs by default"
->> diff --git a/arch/powerpc/kernel/fadump-common.h b/arch/powerpc/kernel/fadump-common.h
->> index d2c5b16..f6c52d3 100644
->> --- a/arch/powerpc/kernel/fadump-common.h
->> +++ b/arch/powerpc/kernel/fadump-common.h
->> @@ -140,4 +140,13 @@ static inline int rtas_fadump_dt_scan(struct fw_dump *fadump_config, ulong node)
->>  }
->>  #endif
->>  
->> +#ifdef CONFIG_PPC_POWERNV
->> +extern int opal_fadump_dt_scan(struct fw_dump *fadump_config, ulong node);
->> +#else
->> +static inline int opal_fadump_dt_scan(struct fw_dump *fadump_config, ulong node)
->> +{
->> +	return 1;
->> +}
-> 
-> Extending the strange flat device tree calling convention to these
-> functions is not ideal.
-> 
-> It would be better I think if they just returned bool true/false for
-> "found it" / "not found", and then early_init_dt_scan_fw_dump() can
-> convert that into the appropriate return value.
-> 
->> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
->> index f7c8073..b8061fb9 100644
->> --- a/arch/powerpc/kernel/fadump.c
->> +++ b/arch/powerpc/kernel/fadump.c
->> @@ -114,6 +114,9 @@ int __init early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
->>  	if (strcmp(uname, "rtas") == 0)
->>  		return rtas_fadump_dt_scan(&fw_dump, node);
->>  
->> +	if (strcmp(uname, "ibm,opal") == 0)
->> +		return opal_fadump_dt_scan(&fw_dump, node);
->> +
-> 
-> ie this would become:
-> 
-> 	if (strcmp(uname, "ibm,opal") == 0 && opal_fadump_dt_scan(&fw_dump, node))
->             return 1;
-> 
-
-Yeah. Will update accordingly...
-
-Thanks
-Hari
+diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+index c16249d251f1..a570a249edc3 100644
+--- a/arch/powerpc/platforms/powernv/npu-dma.c
++++ b/arch/powerpc/platforms/powernv/npu-dma.c
+@@ -192,105 +192,6 @@ static long pnv_npu_unset_window(struct iommu_table_group *table_group, int num)
+ 	return 0;
+ }
+ 
+-/*
+- * Enables 32 bit DMA on NPU.
+- */
+-static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
+-{
+-	struct pci_dev *gpdev;
+-	struct pnv_ioda_pe *gpe;
+-	int64_t rc;
+-
+-	/*
+-	 * Find the assoicated PCI devices and get the dma window
+-	 * information from there.
+-	 */
+-	if (!npe->pdev || !(npe->flags & PNV_IODA_PE_DEV))
+-		return;
+-
+-	gpe = get_gpu_pci_dev_and_pe(npe, &gpdev);
+-	if (!gpe)
+-		return;
+-
+-	rc = pnv_npu_set_window(&npe->table_group, 0,
+-			gpe->table_group.tables[0]);
+-
+-	/*
+-	 * NVLink devices use the same TCE table configuration as
+-	 * their parent device so drivers shouldn't be doing DMA
+-	 * operations directly on these devices.
+-	 */
+-	set_dma_ops(&npe->pdev->dev, &dma_dummy_ops);
+-}
+-
+-/*
+- * Enables bypass mode on the NPU. The NPU only supports one
+- * window per link, so bypass needs to be explicitly enabled or
+- * disabled. Unlike for a PHB3 bypass and non-bypass modes can't be
+- * active at the same time.
+- */
+-static int pnv_npu_dma_set_bypass(struct pnv_ioda_pe *npe)
+-{
+-	struct pnv_phb *phb = npe->phb;
+-	int64_t rc = 0;
+-	phys_addr_t top = memblock_end_of_DRAM();
+-
+-	if (phb->type != PNV_PHB_NPU_NVLINK || !npe->pdev)
+-		return -EINVAL;
+-
+-	rc = pnv_npu_unset_window(&npe->table_group, 0);
+-	if (rc != OPAL_SUCCESS)
+-		return rc;
+-
+-	/* Enable the bypass window */
+-
+-	top = roundup_pow_of_two(top);
+-	dev_info(&npe->pdev->dev, "Enabling bypass for PE %x\n",
+-			npe->pe_number);
+-	rc = opal_pci_map_pe_dma_window_real(phb->opal_id,
+-			npe->pe_number, npe->pe_number,
+-			0 /* bypass base */, top);
+-
+-	if (rc == OPAL_SUCCESS)
+-		pnv_pci_ioda2_tce_invalidate_entire(phb, false);
+-
+-	return rc;
+-}
+-
+-void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool bypass)
+-{
+-	int i;
+-	struct pnv_phb *phb;
+-	struct pci_dn *pdn;
+-	struct pnv_ioda_pe *npe;
+-	struct pci_dev *npdev;
+-
+-	for (i = 0; ; ++i) {
+-		npdev = pnv_pci_get_npu_dev(gpdev, i);
+-
+-		if (!npdev)
+-			break;
+-
+-		pdn = pci_get_pdn(npdev);
+-		if (WARN_ON(!pdn || pdn->pe_number == IODA_INVALID_PE))
+-			return;
+-
+-		phb = pci_bus_to_host(npdev->bus)->private_data;
+-
+-		/* We only do bypass if it's enabled on the linked device */
+-		npe = &phb->ioda.pe_array[pdn->pe_number];
+-
+-		if (bypass) {
+-			dev_info(&npdev->dev,
+-					"Using 64-bit DMA iommu bypass\n");
+-			pnv_npu_dma_set_bypass(npe);
+-		} else {
+-			dev_info(&npdev->dev, "Using 32-bit DMA via iommu\n");
+-			pnv_npu_dma_set_32(npe);
+-		}
+-	}
+-}
+-
+ #ifdef CONFIG_IOMMU_API
+ /* Switch ownership from platform code to external user (e.g. VFIO) */
+ static void pnv_npu_take_ownership(struct iommu_table_group *table_group)
+-- 
+2.20.1
 
