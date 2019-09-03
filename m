@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4486A6161
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 08:25:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E5BA6162
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 08:27:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Mxly08qBzDqWj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 16:25:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MxpK724jzDqW2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 16:27:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="h45CkPWo"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jSi/qWON"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46MxgV66l3zDqXS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 16:21:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MxjM34BZzDqWj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 16:23:35 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46MxgQ3B6xzB09ZG;
- Tue,  3 Sep 2019 08:21:54 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46MxjD5f4jzB09ZG;
+ Tue,  3 Sep 2019 08:23:28 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=h45CkPWo; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=jSi/qWON; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id PtKxy15SB0Br; Tue,  3 Sep 2019 08:21:54 +0200 (CEST)
+ with ESMTP id yI4Wk4yYjcQ6; Tue,  3 Sep 2019 08:23:28 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46MxgQ1prczB09ZC;
- Tue,  3 Sep 2019 08:21:54 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46MxjD4JnLzB09ZC;
+ Tue,  3 Sep 2019 08:23:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1567491714; bh=h5hnU1hsq4biEly8U4JQAFzas83dMfNa9k2nCVtK7tY=;
+ t=1567491808; bh=3rMEla0IRyGqnTbAGeQB90lkVJ6wbzqtAr9Y3HR5NO4=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=h45CkPWoTzyoKFVn9Nc2M8HOq5pLKsqSVRdHx2mrovdONdgHRr0tMeGiyQLfJagB6
- w5OqF7hKXVCWMK3h+NHD+9raP2qPJa31UY1nZcI0+gjCvdXJFMDNlwmvQadEj/sd9r
- bG/ibTuw/ulnmma6iBpuJZaUUl8VLO6PKHwxViiU=
+ b=jSi/qWONxHtO6HDsgkiglSSzPgvKuGVlatFhk3N+t6KuTIsZ6seRgJoCkVKpYasUg
+ N24RMQnqqTSMkdU0MqAwYjX9ArNBNR87dD5imn8hOwLcyc4bgyIoKiople5dcIQFoU
+ twlrhgP2nLDU1Ja5a8HaVQJYWX+lz3bs6VpgwCZI=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 234418B7A3;
- Tue,  3 Sep 2019 08:21:55 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B0B58B7A3;
+ Tue,  3 Sep 2019 08:23:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id GESt_EghkgFG; Tue,  3 Sep 2019 08:21:55 +0200 (CEST)
+ with ESMTP id 7Kxqw9KkM_4J; Tue,  3 Sep 2019 08:23:29 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EDD568B761;
- Tue,  3 Sep 2019 08:21:53 +0200 (CEST)
-Subject: Re: [PATCH v2 5/6] powerpc: Remove 'extern' from func prototypes in
- cache headers
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 80AC28B761;
+ Tue,  3 Sep 2019 08:23:28 +0200 (CEST)
+Subject: Re: [PATCH v2 6/6] powerpc: Don't flush caches when adding memory
 To: Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
 References: <20190903052407.16638-1-alastair@au1.ibm.com>
- <20190903052407.16638-6-alastair@au1.ibm.com>
+ <20190903052407.16638-7-alastair@au1.ibm.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <1a59f400-7e04-ef34-9b9e-eb5143fe261c@c-s.fr>
-Date: Tue, 3 Sep 2019 08:21:53 +0200
+Message-ID: <e6713f8a-6465-f9fe-40e9-91d52aa06195@c-s.fr>
+Date: Tue, 3 Sep 2019 08:23:28 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190903052407.16638-6-alastair@au1.ibm.com>
+In-Reply-To: <20190903052407.16638-7-alastair@au1.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -91,66 +90,50 @@ Sender: "Linuxppc-dev"
 
 
 
-Le 03/09/2019 à 07:23, Alastair D'Silva a écrit :
+Le 03/09/2019 à 07:24, Alastair D'Silva a écrit :
 > From: Alastair D'Silva <alastair@d-silva.org>
 > 
-> The 'extern' keyword does not value-add for function prototypes.
-
-Is it worth it ? That kind of change is nice cleanup but the drawback is 
-to kill automatic backports of fixes.
-
+> This operation takes a significant amount of time when hotplugging
+> large amounts of memory (~50 seconds with 890GB of persistent memory).
+> 
+> This was orignally in commit fb5924fddf9e
+> ("powerpc/mm: Flush cache on memory hot(un)plug") to support memtrace,
+> but the flush on add is not needed as it is flushed on remove.
 > 
 > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 > ---
->   arch/powerpc/include/asm/cache.h      | 8 ++++----
->   arch/powerpc/include/asm/cacheflush.h | 6 +++---
->   2 files changed, 7 insertions(+), 7 deletions(-)
+>   arch/powerpc/mm/mem.c | 7 -------
+>   1 file changed, 7 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
-> index 91c808c6738b..54fffdf5a6ec 100644
-> --- a/arch/powerpc/include/asm/cache.h
-> +++ b/arch/powerpc/include/asm/cache.h
-> @@ -102,10 +102,10 @@ static inline u32 l1_icache_bytes(void)
->   #define __read_mostly __attribute__((__section__(".data..read_mostly")))
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index 854aaea2c6ae..2a14b5b93e19 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -111,7 +111,6 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> -	u64 i;
+>   	int rc;
 >   
->   #ifdef CONFIG_PPC_BOOK3S_32
-> -extern long _get_L2CR(void);
-> -extern long _get_L3CR(void);
-> -extern void _set_L2CR(unsigned long);
-> -extern void _set_L3CR(unsigned long);
-> +long _get_L2CR(void);
-> +long _get_L3CR(void);
-> +void _set_L2CR(unsigned long val);
-> +void _set_L3CR(unsigned long val);
->   #else
->   #define _get_L2CR()	0L
->   #define _get_L3CR()	0L
-> diff --git a/arch/powerpc/include/asm/cacheflush.h b/arch/powerpc/include/asm/cacheflush.h
-> index 4a1c9f0200e1..fa10dc19206c 100644
-> --- a/arch/powerpc/include/asm/cacheflush.h
-> +++ b/arch/powerpc/include/asm/cacheflush.h
-> @@ -38,15 +38,15 @@ static inline void flush_cache_vmap(unsigned long start, unsigned long end) { }
->   #endif
+>   	resize_hpt_for_hotplug(memblock_phys_mem_size());
+> @@ -124,12 +123,6 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
+>   		return -EFAULT;
+>   	}
 >   
->   #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
-> -extern void flush_dcache_page(struct page *page);
-> +void flush_dcache_page(struct page *page);
->   #define flush_dcache_mmap_lock(mapping)		do { } while (0)
->   #define flush_dcache_mmap_unlock(mapping)	do { } while (0)
->   
->   void flush_icache_range(unsigned long start, unsigned long stop);
-> -extern void flush_icache_user_range(struct vm_area_struct *vma,
-> +void flush_icache_user_range(struct vm_area_struct *vma,
->   				    struct page *page, unsigned long addr,
->   				    int len);
+> -	for (i = 0; i < size; i += FLUSH_CHUNK_SIZE) {
+> -		flush_dcache_range(start + i,
+> -				   min(start + size, start + i + FLUSH_CHUNK_SIZE));
+> -		cond_resched();
+> -	}
+> -
 
-You have to re-align the other parameters to the ( of the first line.
+So you are removing the code you added in patch 4. Why not move this one 
+before patch 4 ?
 
-> -extern void flush_dcache_icache_page(struct page *page);
-> +void flush_dcache_icache_page(struct page *page);
->   void __flush_dcache_icache(void *page);
+>   	return __add_pages(nid, start_pfn, nr_pages, restrictions);
+>   }
 >   
->   /**
 > 
 
 Christophe
