@@ -1,45 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A61A695C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 15:08:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3618A69E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 15:32:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N6gx3DnWzDqS6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 23:07:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N7DN5GwdzDqlD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 23:32:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="UJfpyNDi"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
+ [IPv6:2607:f8b0:4864:20::842])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N6cT3YqSzDqGk
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 23:04:55 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x83D4XqU001876;
- Tue, 3 Sep 2019 08:04:33 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x83D4VSl001875;
- Tue, 3 Sep 2019 08:04:31 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 3 Sep 2019 08:04:31 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: "Alastair D'Silva" <alastair@au1.ibm.com>
-Subject: Re: [PATCH v2 3/6] powerpc: Convert flush_icache_range & friends to C
-Message-ID: <20190903130430.GC31406@gate.crashing.org>
-References: <20190903052407.16638-1-alastair@au1.ibm.com>
- <20190903052407.16638-4-alastair@au1.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N78c0FBwzDqR2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 23:29:19 +1000 (AEST)
+Received: by mail-qt1-x842.google.com with SMTP id u40so11266578qth.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 06:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=vSCrsgtUDOrdMKexctcYwvLETgiF3cYlWaBb3HHaSbs=;
+ b=UJfpyNDiEYeIfGsfuZHqmN1M22/sY3oHMoq+94AImqFUbIcEiMK18AUSiub89oF0DN
+ 6alIfIUEzABH9P29i54S9c3HRjoxEIWUFZlSXn4tbCzFtVnTtRGU7OBvWeVQ0Hz/vLW2
+ Tmx0uTCD10/Uj09DGFmNsi70AorIqlmW9DvsbfINv9kmPzpQUm8VRfoeZaOpk7bkLtTz
+ h7Qpp4kKpuHv5wS+X7ftnyS0ZTPad3uWxrg1KwoY5mKrAuIhyqWtjDxOwCdT9HKigZnY
+ yV0mCdAJv0zY+I5VRRo5JeIQ90Bzn0cDW9nHSkv1dQjo6yHt6EC1UWUFAozXkCAPGQ0h
+ hTUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=vSCrsgtUDOrdMKexctcYwvLETgiF3cYlWaBb3HHaSbs=;
+ b=AkzPiUSUGM9AyoV2HsyCbK3VXIPKbepLSqWxFaILlMvJslu6m2TB5Sm8fzZaITPari
+ NpTZmsrSzl7G3qiCbd4lzxAIOeW+c/K+QXeA2wAa8Eqn0RkU9KDdzFlr9HbXrG0Yk4nv
+ h+Kkz8Pj5eIapHkcLeiuwIj47Xbwqjwvzln/sAgAF2a6jKjHpB/gw1++iOivgiW+5YFy
+ bCLCLt3+fRoouyFfcWHby5BAQD+C8q2Spbma3iXhnSHmDU1/zFvaTmpJyynEUOXnkwQa
+ k+UDLNxdoMM9N+3BfYAUhXAeUqVT4t7rqWeEEQdevU+JuRXTacIWIkjYomj6oh6j/e2S
+ Qr4Q==
+X-Gm-Message-State: APjAAAWhm2Mel8OdiZZpx72DSY74OdsQp74JrTbLPjUWZqK7gPFXtD6o
+ qcg4HHkFehxfU21mCCR2XJ9BpQ==
+X-Google-Smtp-Source: APXvYqw/yxe4cj3zPsPpC0WLlYfi8qeZk7SV9W2df+c/k7Ixec4IezKnFBb6gQSOI8MGlLhcGrN34A==
+X-Received: by 2002:ac8:7b99:: with SMTP id p25mr33996117qtu.243.1567517356351; 
+ Tue, 03 Sep 2019 06:29:16 -0700 (PDT)
+Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
+ [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id f34sm9330397qtc.19.2019.09.03.06.29.14
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 03 Sep 2019 06:29:15 -0700 (PDT)
+Message-ID: <1567517354.5576.45.camel@lca.pw>
+Subject: Re: [PATCH] powerpc/powernv: fix a W=1 compilation warning
+From: Qian Cai <cai@lca.pw>
+To: benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+ Christoph Hellwig <hch@lst.de>
+Date: Tue, 03 Sep 2019 09:29:14 -0400
+In-Reply-To: <1558541369-8263-1-git-send-email-cai@lca.pw>
+References: <1558541369-8263-1-git-send-email-cai@lca.pw>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190903052407.16638-4-alastair@au1.ibm.com>
-User-Agent: Mutt/1.4.2.3i
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,53 +81,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, alastair@d-silva.org, Qian Cai <cai@lca.pw>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+I saw Christ start to remove npu-dma.c code [1]
 
-On Tue, Sep 03, 2019 at 03:23:57PM +1000, Alastair D'Silva wrote:
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+[1] https://lore.kernel.org/linuxppc-dev/20190625145239.2759-4-hch@lst.de/
 
-> +#if !defined(CONFIG_PPC_8xx) & !defined(CONFIG_PPC64)
+Should pnv_npu_dma_set_32() be removed too?
 
-Please write that as &&?  That is more usual, and thus, easier to read.
+It was only called by pnv_npu_try_dma_set_bypass() but the later is not used
+anywhere in the kernel tree. If that is a case, I don't need to bother fixing
+the warning here.
 
-> +static void flush_dcache_icache_phys(unsigned long physaddr)
-
-> +	asm volatile(
-> +		"   mtctr %2;"
-> +		"   mtmsr %3;"
-> +		"   isync;"
-> +		"0: dcbst   0, %0;"
-> +		"   addi    %0, %0, %4;"
-> +		"   bdnz    0b;"
-> +		"   sync;"
-> +		"   mtctr %2;"
-> +		"1: icbi    0, %1;"
-> +		"   addi    %1, %1, %4;"
-> +		"   bdnz    1b;"
-> +		"   sync;"
-> +		"   mtmsr %5;"
-> +		"   isync;"
-> +		: "+r" (loop1), "+r" (loop2)
-> +		: "r" (nb), "r" (msr), "i" (bytes), "r" (msr0)
-> +		: "ctr", "memory");
-
-This outputs as one huge assembler statement, all on one line.  That's
-going to be fun to read or debug.
-
-loop1 and/or loop2 can be assigned the same register as msr0 or nb.  They
-need to be made earlyclobbers.  (msr is fine, all of its reads are before
-any writes to loop1 or loop2; and bytes is fine, it's not a register).
-
-
-Segher
+On Wed, 2019-05-22 at 12:09 -0400, Qian Cai wrote:
+> The commit b575c731fe58 ("powerpc/powernv/npu: Add set/unset window
+> helpers") called pnv_npu_set_window() in a void function
+> pnv_npu_dma_set_32(), but the return code from pnv_npu_set_window() has
+> no use there as all the error logging happen in pnv_npu_set_window(),
+> so just remove the unused variable to avoid a compilation warning,
+> 
+> arch/powerpc/platforms/powernv/npu-dma.c: In function
+> 'pnv_npu_dma_set_32':
+> arch/powerpc/platforms/powernv/npu-dma.c:198:10: warning: variable ‘rc’
+> set but not used [-Wunused-but-set-variable]
+> 
+> Signed-off-by: Qian Cai <cai@lca.pw>
+> ---
+>  arch/powerpc/platforms/powernv/npu-dma.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c
+> b/arch/powerpc/platforms/powernv/npu-dma.c
+> index 495550432f3d..035208ed591f 100644
+> --- a/arch/powerpc/platforms/powernv/npu-dma.c
+> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
+> @@ -195,7 +195,6 @@ static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
+>  {
+>  	struct pci_dev *gpdev;
+>  	struct pnv_ioda_pe *gpe;
+> -	int64_t rc;
+>  
+>  	/*
+>  	 * Find the assoicated PCI devices and get the dma window
+> @@ -208,8 +207,8 @@ static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
+>  	if (!gpe)
+>  		return;
+>  
+> -	rc = pnv_npu_set_window(&npe->table_group, 0,
+> -			gpe->table_group.tables[0]);
+> +	pnv_npu_set_window(&npe->table_group, 0,
+> +			   gpe->table_group.tables[0]);
+>  
+>  	/*
+>  	 * NVLink devices use the same TCE table configuration as
