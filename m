@@ -2,73 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04CFA6B9D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 16:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 441E6A6C06
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 16:58:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N8cb6g0JzDqrs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 00:35:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N9795c9kzDqjH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 00:58:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="hScFHEtW"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="TdUwLWei"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N8Vb29BgzDqnV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 00:29:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=O0vMqdd0CVfcLwe8ztibkw7pTl1sYEubPo8aMD2xLx0=; b=hScFHEtWp1N1rzg5nlCTz+Y7W
- +tUV4KU9048Mdt0gs//aT/p8NbdNDFzqXzyT7Hq+O3dM4aK47758OEA43NBs5hhl7YsjAC4DLG8V9
- cuQIjW9qmvhc7YNvWFjkn6k0G/VAocrRxMfLRmFSX3WLF8Wstq2ts/ffKvzWPvnxx8nVyFfEL1Tba
- w9nMXoTByi9GSWC6eckGCD8CJ+ae1XNFmfzBnR8A/+LOe1Gvwt1rXl0VUbz6JqzJyj/XTF/JMbvth
- QYNZzNFIEC2qpggjMo8xRXga5GJJRdp+9Y4UREXMnI24TosND5eL4FWzE1jC/tImZvsc1f61jFFDf
- m6tYNCrvg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1i59nm-0005Cx-Oq; Tue, 03 Sep 2019 14:28:59 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AD646306037;
- Tue,  3 Sep 2019 16:28:16 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id D58D82097776B; Tue,  3 Sep 2019 16:28:52 +0200 (CEST)
-Date: Tue, 3 Sep 2019 16:28:52 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Salil Mehta <salil.mehta@huawei.com>
-Subject: Re: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
-Message-ID: <20190903142852.GT2349@hirez.programming.kicks-ass.net>
-References: <20190831085539.GG2369@hirez.programming.kicks-ass.net>
- <4d89c688-49e4-a2aa-32ee-65e36edcd913@huawei.com>
- <20190831161247.GM2369@hirez.programming.kicks-ass.net>
- <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
- <20190902072542.GN2369@hirez.programming.kicks-ass.net>
- <5fa2aa99-89fa-cd41-b090-36a23cfdeb73@huawei.com>
- <20190902125644.GQ2369@hirez.programming.kicks-ass.net>
- <1f48081c-c9d6-8f3e-9559-8b0bec98f125@huawei.com>
- <20190903071111.GU2369@hirez.programming.kicks-ass.net>
- <3bc19c01095545ddbe2ba424f5488b4d@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N94L2vPJzDqTd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 00:55:45 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id 4so7992750pld.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 07:55:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=CZ8tuOmuka1RKOh9uZYxX64asskdg/IRNCGvFNDvGIA=;
+ b=TdUwLWei7O2GtGjoJhNuW4vtXToUDnCEFGBEiMFSqOyEYvn6uuCUIwq7PO0SfU3C1K
+ 4XWtsZ8X8qoN3HlM5ZOtpCNAZJhSObGLt+wAwQpqWRKZcVQAXZKIY/iEco+KRr/iWOAM
+ gDhizUh7ejhWyPK/F7TxskflMYw2pUoXZlkDU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=CZ8tuOmuka1RKOh9uZYxX64asskdg/IRNCGvFNDvGIA=;
+ b=J/RvioTa+3zvYqFty7eAhReXSr5wPQnF+88BEKDJXWEGiLMFSjzGyXS6XhwsaiLJwD
+ 3NSqJg9iKI6zj0ZaFsBMK/j8QnWAZjCTXDWx+jBtLTH7hsWQRWlRAYLN8U0TghlHCtZB
+ q/4ClXx6+UU4CJnTOeq4KVqVaz6w2IPqN1rphgbLv/PMAkDO9cv2X/bWiFNeslPs4Knj
+ uHdk8htX3wPWG9d0Ns6Ry0Gr1H9rHcX/SDaTEvHe57MPPcanDszePqxkrI/C5V+DMZOo
+ c7+Ofbfn4+T4n9mnu04Ntn0Km3kRh8Re6VMleP/J4AwX8KojYxu8iNycyqnfIwztLnsO
+ ABtQ==
+X-Gm-Message-State: APjAAAW7C+ADGozOXFqCE6wXNvbxTErrxaPJmk46Aaj53158iejgfkES
+ wPF3d3hlHfs1rPx/15m8a8Nshg==
+X-Google-Smtp-Source: APXvYqwX1u+cJ7UBoBnzl610xUDA0ydm4oDNnn1LknkArck/I7ljcJuzAQn/Q64Q0qrb1B+fweaTxQ==
+X-Received: by 2002:a17:902:543:: with SMTP id
+ 61mr35725696plf.20.1567522542162; 
+ Tue, 03 Sep 2019 07:55:42 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id 65sm15600780pgf.30.2019.09.03.07.55.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Sep 2019 07:55:41 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
+ aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr
+Subject: [PATCH v7 0/5] kasan: support backing vmalloc space with real shadow
+ memory
+Date: Wed,  4 Sep 2019 00:55:31 +1000
+Message-Id: <20190903145536.3390-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3bc19c01095545ddbe2ba424f5488b4d@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,75 +79,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "dalias@libc.org" <dalias@libc.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
- Linuxarm <linuxarm@huawei.com>,
- "jiaxun.yang@flygoat.com" <jiaxun.yang@flygoat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "mwb@linux.vnet.ibm.com" <mwb@linux.vnet.ibm.com>,
- "paulus@samba.org" <paulus@samba.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "chenhc@lemote.com" <chenhc@lemote.com>, "will@kernel.org" <will@kernel.org>,
- "cai@lca.pw" <cai@lca.pw>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "ysato@users.sourceforge.jp" <ysato@users.sourceforge.jp>,
- "x86@kernel.org" <x86@kernel.org>,
- "paul.burton@mips.com" <paul.burton@mips.com>,
- "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
- "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
- "dledford@redhat.com" <dledford@redhat.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "jeffrey.t.kirsher@intel.com" <jeffrey.t.kirsher@intel.com>,
- "jhogan@kernel.org" <jhogan@kernel.org>,
- "nfont@linux.vnet.ibm.com" <nfont@linux.vnet.ibm.com>,
- "mattst88@gmail.com" <mattst88@gmail.com>,
- "len.brown@intel.com" <len.brown@intel.com>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>,
- "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>,
- "robin.murphy@arm.com" <robin.murphy@arm.com>, "bp@alien8.de" <bp@alien8.de>,
- "luto@kernel.org" <luto@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "rth@twiddle.net" <rth@twiddle.net>, "axboe@kernel.dk" <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "ralf@linux-mips.org" <ralf@linux-mips.org>,
- "tbogendoerfer@suse.de" <tbogendoerfer@suse.de>,
- linyunsheng <linyunsheng@huawei.com>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 03, 2019 at 12:15:24PM +0000, Salil Mehta wrote:
-> > From: Linuxarm [mailto:linuxarm-bounces@huawei.com] On Behalf Of Peter Zijlstra
-> > On Tue, Sep 03, 2019 at 02:19:04PM +0800, Yunsheng Lin wrote:
+Currently, vmalloc space is backed by the early shadow page. This
+means that kasan is incompatible with VMAP_STACK.
 
-> > > Is it possible that the node id set by device_add() become invalid
-> > > if the node is offlined, then dev_to_node() may return a invalid
-> > > node id.
-> > 
-> > In that case I would expect the device to go away too. Once the memory
-> > controller goes away, the PCI bus connected to it cannot continue to
-> > function.
-> 
-> I am not sure if this is *exactly* true on our system as NUMA nodes are
-> part of the SoCs and devices could still be used even if all the memory
-> and CPUs part of the node are turned off. Although, it is highly unlikely
-> anybody would do that(maybe could be debated for the Power Management case?) 
+This series provides a mechanism to back vmalloc space with real,
+dynamically allocated memory. I have only wired up x86, because that's
+the only currently supported arch I can work with easily, but it's
+very easy to wire up other architectures, and it appears that there is
+some work-in-progress code to do this on arm64 and s390.
 
-Cute; anyway, we never change nr_node_ids (after boot), so once a node
-is deemed valid it always is.
+This has been discussed before in the context of VMAP_STACK:
+ - https://bugzilla.kernel.org/show_bug.cgi?id=202009
+ - https://lkml.org/lkml/2018/7/22/198
+ - https://lkml.org/lkml/2019/7/19/822
 
-The worst that can happen in the above case, is that cpumask_of_node()
-returns an empty mask, which, if all CPUs (of said node) are offline, is
-an accurate representation.
+In terms of implementation details:
+
+Most mappings in vmalloc space are small, requiring less than a full
+page of shadow space. Allocating a full shadow page per mapping would
+therefore be wasteful. Furthermore, to ensure that different mappings
+use different shadow pages, mappings would have to be aligned to
+KASAN_SHADOW_SCALE_SIZE * PAGE_SIZE.
+
+Instead, share backing space across multiple mappings. Allocate a
+backing page when a mapping in vmalloc space uses a particular page of
+the shadow region. This page can be shared by other vmalloc mappings
+later on.
+
+We hook in to the vmap infrastructure to lazily clean up unused shadow
+memory.
+
+
+v1: https://lore.kernel.org/linux-mm/20190725055503.19507-1-dja@axtens.net/
+v2: https://lore.kernel.org/linux-mm/20190729142108.23343-1-dja@axtens.net/
+ Address review comments:
+ - Patch 1: use kasan_unpoison_shadow's built-in handling of
+            ranges that do not align to a full shadow byte
+ - Patch 3: prepopulate pgds rather than faulting things in
+v3: https://lore.kernel.org/linux-mm/20190731071550.31814-1-dja@axtens.net/
+ Address comments from Mark Rutland:
+ - kasan_populate_vmalloc is a better name
+ - handle concurrency correctly
+ - various nits and cleanups
+ - relax module alignment in KASAN_VMALLOC case
+v4: https://lore.kernel.org/linux-mm/20190815001636.12235-1-dja@axtens.net/
+ Changes to patch 1 only:
+ - Integrate Mark's rework, thanks Mark!
+ - handle the case where kasan_populate_shadow might fail
+ - poision shadow on free, allowing the alloc path to just
+     unpoision memory that it uses
+v5: https://lore.kernel.org/linux-mm/20190830003821.10737-1-dja@axtens.net/
+ Address comments from Christophe Leroy:
+ - Fix some issues with my descriptions in commit messages and docs
+ - Dynamically free unused shadow pages by hooking into the vmap book-keeping
+ - Split out the test into a separate patch
+ - Optional patch to track the number of pages allocated
+ - minor checkpatch cleanups
+v6: https://lore.kernel.org/linux-mm/20190902112028.23773-1-dja@axtens.net/
+ Properly guard freeing pages in patch 1, drop debugging code.
+v7: Add a TLB flush on freeing, thanks Mark Rutland.
+    Explain more clearly how I think freeing is concurrency-safe.
+
+Daniel Axtens (5):
+  kasan: support backing vmalloc space with real shadow memory
+  kasan: add test for vmalloc
+  fork: support VMAP_STACK with KASAN_VMALLOC
+  x86/kasan: support KASAN_VMALLOC
+  kasan debug: track pages allocated for vmalloc shadow
+
+ Documentation/dev-tools/kasan.rst |  63 ++++++++
+ arch/Kconfig                      |   9 +-
+ arch/x86/Kconfig                  |   1 +
+ arch/x86/mm/kasan_init_64.c       |  60 ++++++++
+ include/linux/kasan.h             |  31 ++++
+ include/linux/moduleloader.h      |   2 +-
+ include/linux/vmalloc.h           |  12 ++
+ kernel/fork.c                     |   4 +
+ lib/Kconfig.kasan                 |  16 +++
+ lib/test_kasan.c                  |  26 ++++
+ mm/kasan/common.c                 | 230 ++++++++++++++++++++++++++++++
+ mm/kasan/generic_report.c         |   3 +
+ mm/kasan/kasan.h                  |   1 +
+ mm/vmalloc.c                      |  45 +++++-
+ 14 files changed, 497 insertions(+), 6 deletions(-)
+
+-- 
+2.20.1
 
