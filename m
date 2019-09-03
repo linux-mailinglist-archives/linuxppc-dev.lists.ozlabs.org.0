@@ -2,74 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3109A6A80
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 15:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C545A6AED
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 16:13:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N7kP3bqSzDqlj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 23:55:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N8766yPyzDqXQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 00:13:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::742; helo=mail-qk1-x742.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="nN8cX37p"; 
- dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N7g05PBWzDqgf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 23:52:11 +1000 (AEST)
-Received: by mail-qk1-x742.google.com with SMTP id x5so1879095qkh.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 06:52:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=W/R8RJDNpye5FLl3og5Wq9/dqGw44U2FIoixhMRWi4I=;
- b=nN8cX37pAWvMObPKDBbnrAc31TKMJQLvM5YlcbnM3/IYofmSnqlXNC8Q2sRLfdNCeh
- 68CHAMLOA5FFN8NdCJGMYCo+qVTpZ75yB7dEIZxn6wmAJnXvHLRTSm+3JLHLDgUNw+Mc
- BcZQ/FO+Y+gbwOV+Jw3VCVThKOrmoRLzMf3NyqklNLg+YSKXJr26f9vZz6AmaTEhD0+A
- Pw0QVWE14ML0YqUGW6D69HBwnYcWs11NOAbFVf8g5855Cmr2bfUMqCg7GQTLm7M9D+TR
- An0sHtB4kNQ0sN82f8mELTW3M3CY9HPPxa6Agc4N+1NRHIO0v8zlCKhYt+LuSCvsvB2m
- bFaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=W/R8RJDNpye5FLl3og5Wq9/dqGw44U2FIoixhMRWi4I=;
- b=L1Za320NwWBWdtlz5IPPFo2Bniz50ZsXnVBcU2ApeN/cGavxFHP4l8/lbyhm2eueN4
- FDaaevcA0gI60y4hoNp2KWKuRsn7DG1d1gaLVDTUTBLD4bncn852WgHjiYM/FCgWmevm
- ii18POQGMMtIy0DhjU3iz77CsjMiUG5Jnr38/Djv82jicDrB1m17H1mYRf+a8DPSDDef
- 2nh6yFoJqFQvmXluLFl+X1VQ+Xvy5h26I0DGEVGRZf6G3Zc5KavarEV+6fZuW28YoqJH
- EpJve503AwmkQCY7fnaZktBJQIMQcsfG6c2sS0lh6eA40Tdgns/XBhUajzu6IuKnYcU9
- HFDw==
-X-Gm-Message-State: APjAAAVKpoy7BYVJf39g34V0FMzq17upg9lQfSNwfQttTmvjbOXGJ71X
- LbsRyUsDY39b/rxWYA4cKuUSaA==
-X-Google-Smtp-Source: APXvYqy/OawhyqFF4oGRKBlI5kQb3e9GCFV//8yxa4FqQRP0SymEHCLOcrJMoVQsyrAZgPZHdlrLQw==
-X-Received: by 2002:a37:480d:: with SMTP id v13mr33166288qka.295.1567518727565; 
- Tue, 03 Sep 2019 06:52:07 -0700 (PDT)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
- [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id 31sm1314959qtn.52.2019.09.03.06.52.06
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 03 Sep 2019 06:52:07 -0700 (PDT)
-Message-ID: <1567518725.5576.48.camel@lca.pw>
-Subject: Re: [PATCH] powerpc/powernv: fix a W=1 compilation warning
-From: Qian Cai <cai@lca.pw>
-To: Christoph Hellwig <hch@lst.de>
-Date: Tue, 03 Sep 2019 09:52:05 -0400
-In-Reply-To: <20190903133051.GA23985@lst.de>
-References: <1558541369-8263-1-git-send-email-cai@lca.pw>
- <1567517354.5576.45.camel@lca.pw> <20190903133051.GA23985@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N83K5PchzDqXS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 00:09:47 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x83E7RPh101343
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 3 Sep 2019 10:09:42 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2usrsuu3yv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 10:09:42 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Tue, 3 Sep 2019 15:09:30 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 3 Sep 2019 15:09:27 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x83E9Q7J47317030
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 Sep 2019 14:09:26 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 393615205A;
+ Tue,  3 Sep 2019 14:09:26 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E764B52057;
+ Tue,  3 Sep 2019 14:09:25 +0000 (GMT)
+Received: from [9.81.199.254] (unknown [9.81.199.254])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 7716AA01CA;
+ Wed,  4 Sep 2019 00:09:24 +1000 (AEST)
+Subject: Re: [PATCH 06/14] powerpc/eeh: Remove stale CAPI comment
+To: "Oliver O'Halloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190903101605.2890-1-oohall@gmail.com>
+ <20190903101605.2890-7-oohall@gmail.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Wed, 4 Sep 2019 00:09:21 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190903101605.2890-7-oohall@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19090314-0028-0000-0000-000003971EAC
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090314-0029-0000-0000-000024596C7E
+Message-Id: <3f3a2cde-cd42-81b3-5060-283105bc63e2@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-03_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909030148
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,28 +93,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linux-kernel@vger.kernel.org, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: sbobroff@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-09-03 at 15:30 +0200, Christoph Hellwig wrote:
-> On Tue, Sep 03, 2019 at 09:29:14AM -0400, Qian Cai wrote:
-> > I saw Christ start to remove npu-dma.c code [1]
-> > 
-> > [1] https://lore.kernel.org/linuxppc-dev/20190625145239.2759-4-hch@lst.de/
-> > 
-> > Should pnv_npu_dma_set_32() be removed too?
-> > 
-> > It was only called by pnv_npu_try_dma_set_bypass() but the later is not used
-> > anywhere in the kernel tree. If that is a case, I don't need to bother
-> > fixing
-> > the warning here.
+On 3/9/19 8:15 pm, Oliver O'Halloran wrote:
+> Support for switching CAPI cards into and out of CAPI mode was removed a
+> while ago. Drop the comment since it's no longer relevant.
 > 
-> Yes, pnv_npu_try_dma_set_bypass and pnv_npu_dma_set_32 should go away
-> as well as they are unused.  Do you want to send a patch or should I
-> prepare one?
+> Cc: Andrew Donnellan <ajd@linux.ibm.com>
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
-I would be nice that you could prepare one since it probably could be a part for
-your previous attempt.
+Oliver looked... unimpressed with the hackiness of the design of our 
+mode-switching as he yelled at me to come explain this comment.
+
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+
+> ---
+>   arch/powerpc/platforms/powernv/eeh-powernv.c | 7 -------
+>   1 file changed, 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> index e7b867912f24..94e26d56ecd2 100644
+> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
+> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> @@ -1125,13 +1125,6 @@ static int pnv_eeh_reset(struct eeh_pe *pe, int option)
+>   		return -EIO;
+>   	}
+>   
+> -	/*
+> -	 * If dealing with the root bus (or the bus underneath the
+> -	 * root port), we reset the bus underneath the root port.
+> -	 *
+> -	 * The cxl driver depends on this behaviour for bi-modal card
+> -	 * switching.
+> -	 */
+>   	if (pci_is_root_bus(bus) ||
+>   	    pci_is_root_bus(bus->parent))
+>   		return pnv_eeh_root_reset(hose, option);
+> 
+
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
+
