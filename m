@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4B6A6FDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:37:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC84A70CC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:44:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NCK7358GzDqWs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:36:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NCTB6RvmzDqTs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:43:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="ujWY6HiW"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="V1X9sHKj"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NC6R5xd4zDqhS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:27:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NC8621mQzDqTR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:29:09 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 412DB238C6;
- Tue,  3 Sep 2019 16:27:39 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id DC8D823878;
+ Tue,  3 Sep 2019 16:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567528060;
- bh=ZsVtxklk/JzEFceQMjTt/P8EYOL7MvwBNXU5d/AO3OY=;
+ s=default; t=1567528147;
+ bh=RL7cqUrwDW1oDNF8gDfPiDCt5tOXre5M3VFS2sT092c=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ujWY6HiW4GpGlOspq1d0ui5xjyL3VRz+sVcumWaZE++oXvME+HCMtNbtybq9f83xd
- YRazMsMhFHOq/7EHDV3dVjWARKTKWmQzZ8Zvu7VN8LKlh8cmAJvr5RVFBw9R6NWbLp
- E6kmK3q3BUmd6clepjjemP+NSW0JfCoVCDl6nhsI=
+ b=V1X9sHKjXTFVztxRT3Jib8/HbRhN7e1bdt/cb8lv8GYp6HpdqlmZn0tNOPmk8Xdmu
+ c9H+jYm+K0JjZCKRz2xD1tx9D2XWAAwnVOP8ou2vLD6LzvrrqF351Sl6yswimscUp8
+ uoFmp1eTiDyOeU+b4ymcxs7oIrW/6BeX3jOcBpJY=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 075/167] powerpc/kvm: Save and restore host
- AMR/IAMR/UAMOR
-Date: Tue,  3 Sep 2019 12:23:47 -0400
-Message-Id: <20190903162519.7136-75-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 136/167] KVM: PPC: Use ccr field in pt_regs
+ struct embedded in vcpu struct
+Date: Tue,  3 Sep 2019 12:24:48 -0400
+Message-Id: <20190903162519.7136-136-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190903162519.7136-1-sashal@kernel.org>
 References: <20190903162519.7136-1-sashal@kernel.org>
@@ -62,137 +62,352 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Sasha Levin <sashal@kernel.org>, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Paul Mackerras <paulus@ozlabs.org>
 
-[ Upstream commit c3c7470c75566a077c8dc71dcf8f1948b8ddfab4 ]
+[ Upstream commit fd0944baad806dfb4c777124ec712c55b714ff51 ]
 
-When the hash MMU is active the AMR, IAMR and UAMOR are used for
-pkeys. The AMR is directly writable by user space, and the UAMOR masks
-those writes, meaning both registers are effectively user register
-state. The IAMR is used to create an execute only key.
+When the 'regs' field was added to struct kvm_vcpu_arch, the code
+was changed to use several of the fields inside regs (e.g., gpr, lr,
+etc.) but not the ccr field, because the ccr field in struct pt_regs
+is 64 bits on 64-bit platforms, but the cr field in kvm_vcpu_arch is
+only 32 bits.  This changes the code to use the regs.ccr field
+instead of cr, and changes the assembly code on 64-bit platforms to
+use 64-bit loads and stores instead of 32-bit ones.
 
-Also we must maintain the value of at least the AMR when running in
-process context, so that any memory accesses done by the kernel on
-behalf of the process are correctly controlled by the AMR.
-
-Although we are correctly switching all registers when going into a
-guest, on returning to the host we just write 0 into all regs, except
-on Power9 where we restore the IAMR correctly.
-
-This could be observed by a user process if it writes the AMR, then
-runs a guest and we then return immediately to it without
-rescheduling. Because we have written 0 to the AMR that would have the
-effect of granting read/write permission to pages that the process was
-trying to protect.
-
-In addition, when using the Radix MMU, the AMR can prevent inadvertent
-kernel access to userspace data, writing 0 to the AMR disables that
-protection.
-
-So save and restore AMR, IAMR and UAMOR.
-
-Fixes: cf43d3b26452 ("powerpc: Enable pkey subsystem")
-Cc: stable@vger.kernel.org # v4.16+
-Signed-off-by: Russell Currey <ruscur@russell.cc>
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Acked-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 26 ++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ arch/powerpc/include/asm/kvm_book3s.h    |  4 ++--
+ arch/powerpc/include/asm/kvm_book3s_64.h |  4 ++--
+ arch/powerpc/include/asm/kvm_booke.h     |  4 ++--
+ arch/powerpc/include/asm/kvm_host.h      |  2 --
+ arch/powerpc/kernel/asm-offsets.c        |  4 ++--
+ arch/powerpc/kvm/book3s_emulate.c        | 12 ++++++------
+ arch/powerpc/kvm/book3s_hv.c             |  4 ++--
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S  |  4 ++--
+ arch/powerpc/kvm/book3s_hv_tm.c          |  6 +++---
+ arch/powerpc/kvm/book3s_hv_tm_builtin.c  |  5 +++--
+ arch/powerpc/kvm/book3s_pr.c             |  4 ++--
+ arch/powerpc/kvm/bookehv_interrupts.S    |  8 ++++----
+ arch/powerpc/kvm/emulate_loadstore.c     |  1 -
+ 13 files changed, 30 insertions(+), 32 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+index 83a9aa3cf6891..dd18d8174504f 100644
+--- a/arch/powerpc/include/asm/kvm_book3s.h
++++ b/arch/powerpc/include/asm/kvm_book3s.h
+@@ -301,12 +301,12 @@ static inline ulong kvmppc_get_gpr(struct kvm_vcpu *vcpu, int num)
+ 
+ static inline void kvmppc_set_cr(struct kvm_vcpu *vcpu, u32 val)
+ {
+-	vcpu->arch.cr = val;
++	vcpu->arch.regs.ccr = val;
+ }
+ 
+ static inline u32 kvmppc_get_cr(struct kvm_vcpu *vcpu)
+ {
+-	return vcpu->arch.cr;
++	return vcpu->arch.regs.ccr;
+ }
+ 
+ static inline void kvmppc_set_xer(struct kvm_vcpu *vcpu, ulong val)
+diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
+index dc435a5af7d6c..14fa07c73f44d 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_64.h
++++ b/arch/powerpc/include/asm/kvm_book3s_64.h
+@@ -482,7 +482,7 @@ static inline u64 sanitize_msr(u64 msr)
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ static inline void copy_from_checkpoint(struct kvm_vcpu *vcpu)
+ {
+-	vcpu->arch.cr  = vcpu->arch.cr_tm;
++	vcpu->arch.regs.ccr  = vcpu->arch.cr_tm;
+ 	vcpu->arch.regs.xer = vcpu->arch.xer_tm;
+ 	vcpu->arch.regs.link  = vcpu->arch.lr_tm;
+ 	vcpu->arch.regs.ctr = vcpu->arch.ctr_tm;
+@@ -499,7 +499,7 @@ static inline void copy_from_checkpoint(struct kvm_vcpu *vcpu)
+ 
+ static inline void copy_to_checkpoint(struct kvm_vcpu *vcpu)
+ {
+-	vcpu->arch.cr_tm  = vcpu->arch.cr;
++	vcpu->arch.cr_tm  = vcpu->arch.regs.ccr;
+ 	vcpu->arch.xer_tm = vcpu->arch.regs.xer;
+ 	vcpu->arch.lr_tm  = vcpu->arch.regs.link;
+ 	vcpu->arch.ctr_tm = vcpu->arch.regs.ctr;
+diff --git a/arch/powerpc/include/asm/kvm_booke.h b/arch/powerpc/include/asm/kvm_booke.h
+index d513e3ed1c659..f0cef625f17ce 100644
+--- a/arch/powerpc/include/asm/kvm_booke.h
++++ b/arch/powerpc/include/asm/kvm_booke.h
+@@ -46,12 +46,12 @@ static inline ulong kvmppc_get_gpr(struct kvm_vcpu *vcpu, int num)
+ 
+ static inline void kvmppc_set_cr(struct kvm_vcpu *vcpu, u32 val)
+ {
+-	vcpu->arch.cr = val;
++	vcpu->arch.regs.ccr = val;
+ }
+ 
+ static inline u32 kvmppc_get_cr(struct kvm_vcpu *vcpu)
+ {
+-	return vcpu->arch.cr;
++	return vcpu->arch.regs.ccr;
+ }
+ 
+ static inline void kvmppc_set_xer(struct kvm_vcpu *vcpu, ulong val)
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 2b6049e839706..2f95e38f05491 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -538,8 +538,6 @@ struct kvm_vcpu_arch {
+ 	ulong tar;
+ #endif
+ 
+-	u32 cr;
+-
+ #ifdef CONFIG_PPC_BOOK3S
+ 	ulong hflags;
+ 	ulong guest_owned_ext;
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 89cf15566c4e8..7c3738d890e8b 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -438,7 +438,7 @@ int main(void)
+ #ifdef CONFIG_PPC_BOOK3S
+ 	OFFSET(VCPU_TAR, kvm_vcpu, arch.tar);
+ #endif
+-	OFFSET(VCPU_CR, kvm_vcpu, arch.cr);
++	OFFSET(VCPU_CR, kvm_vcpu, arch.regs.ccr);
+ 	OFFSET(VCPU_PC, kvm_vcpu, arch.regs.nip);
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+ 	OFFSET(VCPU_MSR, kvm_vcpu, arch.shregs.msr);
+@@ -695,7 +695,7 @@ int main(void)
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ 
+ #else /* CONFIG_PPC_BOOK3S */
+-	OFFSET(VCPU_CR, kvm_vcpu, arch.cr);
++	OFFSET(VCPU_CR, kvm_vcpu, arch.regs.ccr);
+ 	OFFSET(VCPU_XER, kvm_vcpu, arch.regs.xer);
+ 	OFFSET(VCPU_LR, kvm_vcpu, arch.regs.link);
+ 	OFFSET(VCPU_CTR, kvm_vcpu, arch.regs.ctr);
+diff --git a/arch/powerpc/kvm/book3s_emulate.c b/arch/powerpc/kvm/book3s_emulate.c
+index 36b11c5a0dbb9..2654df220d054 100644
+--- a/arch/powerpc/kvm/book3s_emulate.c
++++ b/arch/powerpc/kvm/book3s_emulate.c
+@@ -110,7 +110,7 @@ static inline void kvmppc_copyto_vcpu_tm(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.ctr_tm = vcpu->arch.regs.ctr;
+ 	vcpu->arch.tar_tm = vcpu->arch.tar;
+ 	vcpu->arch.lr_tm = vcpu->arch.regs.link;
+-	vcpu->arch.cr_tm = vcpu->arch.cr;
++	vcpu->arch.cr_tm = vcpu->arch.regs.ccr;
+ 	vcpu->arch.xer_tm = vcpu->arch.regs.xer;
+ 	vcpu->arch.vrsave_tm = vcpu->arch.vrsave;
+ }
+@@ -129,7 +129,7 @@ static inline void kvmppc_copyfrom_vcpu_tm(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.regs.ctr = vcpu->arch.ctr_tm;
+ 	vcpu->arch.tar = vcpu->arch.tar_tm;
+ 	vcpu->arch.regs.link = vcpu->arch.lr_tm;
+-	vcpu->arch.cr = vcpu->arch.cr_tm;
++	vcpu->arch.regs.ccr = vcpu->arch.cr_tm;
+ 	vcpu->arch.regs.xer = vcpu->arch.xer_tm;
+ 	vcpu->arch.vrsave = vcpu->arch.vrsave_tm;
+ }
+@@ -141,7 +141,7 @@ static void kvmppc_emulate_treclaim(struct kvm_vcpu *vcpu, int ra_val)
+ 	uint64_t texasr;
+ 
+ 	/* CR0 = 0 | MSR[TS] | 0 */
+-	vcpu->arch.cr = (vcpu->arch.cr & ~(CR0_MASK << CR0_SHIFT)) |
++	vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & ~(CR0_MASK << CR0_SHIFT)) |
+ 		(((guest_msr & MSR_TS_MASK) >> (MSR_TS_S_LG - 1))
+ 		 << CR0_SHIFT);
+ 
+@@ -220,7 +220,7 @@ void kvmppc_emulate_tabort(struct kvm_vcpu *vcpu, int ra_val)
+ 	tm_abort(ra_val);
+ 
+ 	/* CR0 = 0 | MSR[TS] | 0 */
+-	vcpu->arch.cr = (vcpu->arch.cr & ~(CR0_MASK << CR0_SHIFT)) |
++	vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & ~(CR0_MASK << CR0_SHIFT)) |
+ 		(((guest_msr & MSR_TS_MASK) >> (MSR_TS_S_LG - 1))
+ 		 << CR0_SHIFT);
+ 
+@@ -494,8 +494,8 @@ int kvmppc_core_emulate_op_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
+ 
+ 			if (!(kvmppc_get_msr(vcpu) & MSR_PR)) {
+ 				preempt_disable();
+-				vcpu->arch.cr = (CR0_TBEGIN_FAILURE |
+-				  (vcpu->arch.cr & ~(CR0_MASK << CR0_SHIFT)));
++				vcpu->arch.regs.ccr = (CR0_TBEGIN_FAILURE |
++				  (vcpu->arch.regs.ccr & ~(CR0_MASK << CR0_SHIFT)));
+ 
+ 				vcpu->arch.texasr = (TEXASR_FS | TEXASR_EXACT |
+ 					(((u64)(TM_CAUSE_EMULATE | TM_CAUSE_PERSISTENT))
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 9595db30e6b87..05b32cc12e417 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -410,8 +410,8 @@ static void kvmppc_dump_regs(struct kvm_vcpu *vcpu)
+ 	       vcpu->arch.shregs.sprg0, vcpu->arch.shregs.sprg1);
+ 	pr_err("sprg2 = %.16llx sprg3 = %.16llx\n",
+ 	       vcpu->arch.shregs.sprg2, vcpu->arch.shregs.sprg3);
+-	pr_err("cr = %.8x  xer = %.16lx  dsisr = %.8x\n",
+-	       vcpu->arch.cr, vcpu->arch.regs.xer, vcpu->arch.shregs.dsisr);
++	pr_err("cr = %.8lx  xer = %.16lx  dsisr = %.8x\n",
++	       vcpu->arch.regs.ccr, vcpu->arch.regs.xer, vcpu->arch.shregs.dsisr);
+ 	pr_err("dar = %.16llx\n", vcpu->arch.shregs.dar);
+ 	pr_err("fault dar = %.16lx dsisr = %.8x\n",
+ 	       vcpu->arch.fault_dar, vcpu->arch.fault_dsisr);
 diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 1d14046124a01..5902a60f92268 100644
+index 5902a60f92268..68c7591f2b5f7 100644
 --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
 +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -56,6 +56,8 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
- #define STACK_SLOT_DAWR		(SFS-56)
- #define STACK_SLOT_DAWRX	(SFS-64)
- #define STACK_SLOT_HFSCR	(SFS-72)
-+#define STACK_SLOT_AMR		(SFS-80)
-+#define STACK_SLOT_UAMOR	(SFS-88)
+@@ -1209,7 +1209,7 @@ BEGIN_FTR_SECTION
+ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
  
- /*
-  * Call kvmppc_hv_entry in real mode.
-@@ -760,11 +762,9 @@ BEGIN_FTR_SECTION
- 	mfspr	r5, SPRN_TIDR
- 	mfspr	r6, SPRN_PSSCR
- 	mfspr	r7, SPRN_PID
--	mfspr	r8, SPRN_IAMR
- 	std	r5, STACK_SLOT_TID(r1)
- 	std	r6, STACK_SLOT_PSSCR(r1)
- 	std	r7, STACK_SLOT_PID(r1)
--	std	r8, STACK_SLOT_IAMR(r1)
- 	mfspr	r5, SPRN_HFSCR
- 	std	r5, STACK_SLOT_HFSCR(r1)
- END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
-@@ -772,11 +772,18 @@ BEGIN_FTR_SECTION
- 	mfspr	r5, SPRN_CIABR
- 	mfspr	r6, SPRN_DAWR
- 	mfspr	r7, SPRN_DAWRX
-+	mfspr	r8, SPRN_IAMR
- 	std	r5, STACK_SLOT_CIABR(r1)
- 	std	r6, STACK_SLOT_DAWR(r1)
- 	std	r7, STACK_SLOT_DAWRX(r1)
-+	std	r8, STACK_SLOT_IAMR(r1)
- END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+ 	ld	r5, VCPU_LR(r4)
+-	lwz	r6, VCPU_CR(r4)
++	ld	r6, VCPU_CR(r4)
+ 	mtlr	r5
+ 	mtcr	r6
  
-+	mfspr	r5, SPRN_AMR
-+	std	r5, STACK_SLOT_AMR(r1)
-+	mfspr	r6, SPRN_UAMOR
-+	std	r6, STACK_SLOT_UAMOR(r1)
-+
+@@ -1320,7 +1320,7 @@ kvmppc_interrupt_hv:
+ 	std	r3, VCPU_GPR(R12)(r9)
+ 	/* CR is in the high half of r12 */
+ 	srdi	r4, r12, 32
+-	stw	r4, VCPU_CR(r9)
++	std	r4, VCPU_CR(r9)
  BEGIN_FTR_SECTION
- 	/* Set partition DABR */
- 	/* Do this before re-enabling PMU to avoid P7 DABR corruption bug */
-@@ -1713,22 +1720,25 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
- 	mtspr	SPRN_PSPB, r0
- 	mtspr	SPRN_WORT, r0
- BEGIN_FTR_SECTION
--	mtspr	SPRN_IAMR, r0
- 	mtspr	SPRN_TCSCR, r0
- 	/* Set MMCRS to 1<<31 to freeze and disable the SPMC counters */
- 	li	r0, 1
- 	sldi	r0, r0, 31
- 	mtspr	SPRN_MMCRS, r0
- END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
--8:
+ 	ld	r3, HSTATE_CFAR(r13)
+ 	std	r3, VCPU_CFAR(r9)
+diff --git a/arch/powerpc/kvm/book3s_hv_tm.c b/arch/powerpc/kvm/book3s_hv_tm.c
+index 008285058f9b5..888e2609e3f15 100644
+--- a/arch/powerpc/kvm/book3s_hv_tm.c
++++ b/arch/powerpc/kvm/book3s_hv_tm.c
+@@ -130,7 +130,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 			return RESUME_GUEST;
+ 		}
+ 		/* Set CR0 to indicate previous transactional state */
+-		vcpu->arch.cr = (vcpu->arch.cr & 0x0fffffff) |
++		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
+ 			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 28);
+ 		/* L=1 => tresume, L=0 => tsuspend */
+ 		if (instr & (1 << 21)) {
+@@ -174,7 +174,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		copy_from_checkpoint(vcpu);
  
--	/* Save and reset AMR and UAMOR before turning on the MMU */
-+	/* Save and restore AMR, IAMR and UAMOR before turning on the MMU */
-+	ld	r8, STACK_SLOT_IAMR(r1)
-+	mtspr	SPRN_IAMR, r8
-+
-+8:	/* Power7 jumps back in here */
- 	mfspr	r5,SPRN_AMR
- 	mfspr	r6,SPRN_UAMOR
- 	std	r5,VCPU_AMR(r9)
- 	std	r6,VCPU_UAMOR(r9)
--	li	r6,0
--	mtspr	SPRN_AMR,r6
-+	ld	r5,STACK_SLOT_AMR(r1)
-+	ld	r6,STACK_SLOT_UAMOR(r1)
-+	mtspr	SPRN_AMR, r5
- 	mtspr	SPRN_UAMOR, r6
+ 		/* Set CR0 to indicate previous transactional state */
+-		vcpu->arch.cr = (vcpu->arch.cr & 0x0fffffff) |
++		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
+ 			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 28);
+ 		vcpu->arch.shregs.msr &= ~MSR_TS_MASK;
+ 		return RESUME_GUEST;
+@@ -204,7 +204,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		copy_to_checkpoint(vcpu);
  
- 	/* Switch DSCR back to host value */
-@@ -1897,11 +1907,9 @@ BEGIN_FTR_SECTION
- 	ld	r5, STACK_SLOT_TID(r1)
- 	ld	r6, STACK_SLOT_PSSCR(r1)
- 	ld	r7, STACK_SLOT_PID(r1)
--	ld	r8, STACK_SLOT_IAMR(r1)
- 	mtspr	SPRN_TIDR, r5
- 	mtspr	SPRN_PSSCR, r6
- 	mtspr	SPRN_PID, r7
--	mtspr	SPRN_IAMR, r8
- END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 		/* Set CR0 to indicate previous transactional state */
+-		vcpu->arch.cr = (vcpu->arch.cr & 0x0fffffff) |
++		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
+ 			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 28);
+ 		vcpu->arch.shregs.msr = msr | MSR_TS_S;
+ 		return RESUME_GUEST;
+diff --git a/arch/powerpc/kvm/book3s_hv_tm_builtin.c b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
+index b2c7c6fca4f96..3cf5863bc06e8 100644
+--- a/arch/powerpc/kvm/book3s_hv_tm_builtin.c
++++ b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
+@@ -89,7 +89,8 @@ int kvmhv_p9_tm_emulation_early(struct kvm_vcpu *vcpu)
+ 		if (instr & (1 << 21))
+ 			vcpu->arch.shregs.msr = (msr & ~MSR_TS_MASK) | MSR_TS_T;
+ 		/* Set CR0 to 0b0010 */
+-		vcpu->arch.cr = (vcpu->arch.cr & 0x0fffffff) | 0x20000000;
++		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
++			0x20000000;
+ 		return 1;
+ 	}
  
- #ifdef CONFIG_PPC_RADIX_MMU
+@@ -105,5 +106,5 @@ void kvmhv_emulate_tm_rollback(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.shregs.msr &= ~MSR_TS_MASK;	/* go to N state */
+ 	vcpu->arch.regs.nip = vcpu->arch.tfhar;
+ 	copy_from_checkpoint(vcpu);
+-	vcpu->arch.cr = (vcpu->arch.cr & 0x0fffffff) | 0xa0000000;
++	vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) | 0xa0000000;
+ }
+diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+index 614ebb4261f76..de9702219dee9 100644
+--- a/arch/powerpc/kvm/book3s_pr.c
++++ b/arch/powerpc/kvm/book3s_pr.c
+@@ -167,7 +167,7 @@ void kvmppc_copy_to_svcpu(struct kvm_vcpu *vcpu)
+ 	svcpu->gpr[11] = vcpu->arch.regs.gpr[11];
+ 	svcpu->gpr[12] = vcpu->arch.regs.gpr[12];
+ 	svcpu->gpr[13] = vcpu->arch.regs.gpr[13];
+-	svcpu->cr  = vcpu->arch.cr;
++	svcpu->cr  = vcpu->arch.regs.ccr;
+ 	svcpu->xer = vcpu->arch.regs.xer;
+ 	svcpu->ctr = vcpu->arch.regs.ctr;
+ 	svcpu->lr  = vcpu->arch.regs.link;
+@@ -249,7 +249,7 @@ void kvmppc_copy_from_svcpu(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.regs.gpr[11] = svcpu->gpr[11];
+ 	vcpu->arch.regs.gpr[12] = svcpu->gpr[12];
+ 	vcpu->arch.regs.gpr[13] = svcpu->gpr[13];
+-	vcpu->arch.cr  = svcpu->cr;
++	vcpu->arch.regs.ccr  = svcpu->cr;
+ 	vcpu->arch.regs.xer = svcpu->xer;
+ 	vcpu->arch.regs.ctr = svcpu->ctr;
+ 	vcpu->arch.regs.link  = svcpu->lr;
+diff --git a/arch/powerpc/kvm/bookehv_interrupts.S b/arch/powerpc/kvm/bookehv_interrupts.S
+index 612b7f6a887f8..4e5081e584098 100644
+--- a/arch/powerpc/kvm/bookehv_interrupts.S
++++ b/arch/powerpc/kvm/bookehv_interrupts.S
+@@ -186,7 +186,7 @@ END_BTB_FLUSH_SECTION
+ 	 */
+ 	PPC_LL	r4, PACACURRENT(r13)
+ 	PPC_LL	r4, (THREAD + THREAD_KVM_VCPU)(r4)
+-	stw	r10, VCPU_CR(r4)
++	PPC_STL	r10, VCPU_CR(r4)
+ 	PPC_STL r11, VCPU_GPR(R4)(r4)
+ 	PPC_STL	r5, VCPU_GPR(R5)(r4)
+ 	PPC_STL	r6, VCPU_GPR(R6)(r4)
+@@ -296,7 +296,7 @@ _GLOBAL(kvmppc_handler_\intno\()_\srr1)
+ 	PPC_STL	r4, VCPU_GPR(R4)(r11)
+ 	PPC_LL	r4, THREAD_NORMSAVE(0)(r10)
+ 	PPC_STL	r5, VCPU_GPR(R5)(r11)
+-	stw	r13, VCPU_CR(r11)
++	PPC_STL	r13, VCPU_CR(r11)
+ 	mfspr	r5, \srr0
+ 	PPC_STL	r3, VCPU_GPR(R10)(r11)
+ 	PPC_LL	r3, THREAD_NORMSAVE(2)(r10)
+@@ -323,7 +323,7 @@ _GLOBAL(kvmppc_handler_\intno\()_\srr1)
+ 	PPC_STL	r4, VCPU_GPR(R4)(r11)
+ 	PPC_LL	r4, GPR9(r8)
+ 	PPC_STL	r5, VCPU_GPR(R5)(r11)
+-	stw	r9, VCPU_CR(r11)
++	PPC_STL	r9, VCPU_CR(r11)
+ 	mfspr	r5, \srr0
+ 	PPC_STL	r3, VCPU_GPR(R8)(r11)
+ 	PPC_LL	r3, GPR10(r8)
+@@ -647,7 +647,7 @@ lightweight_exit:
+ 	PPC_LL	r3, VCPU_LR(r4)
+ 	PPC_LL	r5, VCPU_XER(r4)
+ 	PPC_LL	r6, VCPU_CTR(r4)
+-	lwz	r7, VCPU_CR(r4)
++	PPC_LL	r7, VCPU_CR(r4)
+ 	PPC_LL	r8, VCPU_PC(r4)
+ 	PPC_LD(r9, VCPU_SHARED_MSR, r11)
+ 	PPC_LL	r0, VCPU_GPR(R0)(r4)
+diff --git a/arch/powerpc/kvm/emulate_loadstore.c b/arch/powerpc/kvm/emulate_loadstore.c
+index 75dce1ef3bc83..f91b1309a0a86 100644
+--- a/arch/powerpc/kvm/emulate_loadstore.c
++++ b/arch/powerpc/kvm/emulate_loadstore.c
+@@ -117,7 +117,6 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
+ 
+ 	emulated = EMULATE_FAIL;
+ 	vcpu->arch.regs.msr = vcpu->arch.shared->msr;
+-	vcpu->arch.regs.ccr = vcpu->arch.cr;
+ 	if (analyse_instr(&op, &vcpu->arch.regs, inst) == 0) {
+ 		int type = op.type & INSTR_TYPE_MASK;
+ 		int size = GETSIZE(op.type);
 -- 
 2.20.1
 
