@@ -1,54 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF1EA6151
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 08:23:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777B9A613F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 08:21:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46MxjT1qdfzDqXR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 16:23:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MxgB6pQszDqjg
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 16:21:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="MLogrkjT"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Mxd74JSczDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 16:19:53 +1000 (AEST)
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 3346C78A70894A92193E;
- Tue,  3 Sep 2019 14:19:48 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Tue, 3 Sep 2019
- 14:19:41 +0800
-Subject: Re: [PATCH v2 2/9] x86: numa: check the node id consistently for x86
-To: Peter Zijlstra <peterz@infradead.org>
-References: <1567231103-13237-1-git-send-email-linyunsheng@huawei.com>
- <1567231103-13237-3-git-send-email-linyunsheng@huawei.com>
- <20190831085539.GG2369@hirez.programming.kicks-ass.net>
- <4d89c688-49e4-a2aa-32ee-65e36edcd913@huawei.com>
- <20190831161247.GM2369@hirez.programming.kicks-ass.net>
- <ae64285f-5134-4147-7b02-34bb5d519e8c@huawei.com>
- <20190902072542.GN2369@hirez.programming.kicks-ass.net>
- <5fa2aa99-89fa-cd41-b090-36a23cfdeb73@huawei.com>
- <20190902125644.GQ2369@hirez.programming.kicks-ass.net>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <1f48081c-c9d6-8f3e-9559-8b0bec98f125@huawei.com>
-Date: Tue, 3 Sep 2019 14:19:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Mxcv46c6zDqVD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 16:19:43 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46Mxcq0v7nzB09ZC;
+ Tue,  3 Sep 2019 08:19:39 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=MLogrkjT; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id q27xp8ZHa-je; Tue,  3 Sep 2019 08:19:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46Mxcp6v03z9vBnX;
+ Tue,  3 Sep 2019 08:19:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1567491579; bh=vpywQY0jhYCtLj16pKTZzrclmKJxpqH5sO++tsorcW0=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=MLogrkjT5XOSI5cZayVsFTMCcSoCuHf36ABgH/ikEzCiH2/FPIB9FWVSFOLz4UQhK
+ HSIteJrIO9Uh4EL7RssqI+2ia25i4v8EQDp/PA3dj2u+1a9/I0BLYTsE+NwQuxa9t0
+ D7v7bsXUQULUZAhTwvluxL9d+EpRFhNrNed6e3jg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D15A28B7A3;
+ Tue,  3 Sep 2019 08:19:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id xkPFnxZYp08y; Tue,  3 Sep 2019 08:19:39 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A71078B761;
+ Tue,  3 Sep 2019 08:19:38 +0200 (CEST)
+Subject: Re: [PATCH v2 4/6] powerpc: Chunk calls to flush_dcache_range in
+ arch_*_memory
+To: Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20190903052407.16638-1-alastair@au1.ibm.com>
+ <20190903052407.16638-5-alastair@au1.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <3bde4dbc-5176-0df5-a0bf-993eef2a333b@c-s.fr>
+Date: Tue, 3 Sep 2019 08:19:38 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190902125644.GQ2369@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20190903052407.16638-5-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,112 +79,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com, linuxarm@huawei.com,
- jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
- will@kernel.org, bp@alien8.de, linux-s390@vger.kernel.org,
- ysato@users.sourceforge.jp, x86@kernel.org, rppt@linux.ibm.com,
- borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
- jeffrey.t.kirsher@intel.com, jhogan@kernel.org, nfont@linux.vnet.ibm.com,
- mattst88@gmail.com, len.brown@intel.com, gor@linux.ibm.com,
- anshuman.khandual@arm.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- ink@jurassic.park.msu.ru, luto@kernel.org, tglx@linutronix.de,
- naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
- rth@twiddle.net, axboe@kernel.dk, linuxppc-dev@lists.ozlabs.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
- linux-alpha@vger.kernel.org, cai@lca.pw, akpm@linux-foundation.org,
- robin.murphy@arm.com, davem@davemloft.net
+Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Qian Cai <cai@lca.pw>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/9/2 20:56, Peter Zijlstra wrote:
-> On Mon, Sep 02, 2019 at 08:25:24PM +0800, Yunsheng Lin wrote:
->> On 2019/9/2 15:25, Peter Zijlstra wrote:
->>> On Mon, Sep 02, 2019 at 01:46:51PM +0800, Yunsheng Lin wrote:
->>>> On 2019/9/1 0:12, Peter Zijlstra wrote:
->>>
->>>>> 1) because even it is not set, the device really does belong to a node.
->>>>> It is impossible a device will have magic uniform access to memory when
->>>>> CPUs cannot.
->>>>
->>>> So it means dev_to_node() will return either NUMA_NO_NODE or a
->>>> valid node id?
->>>
->>> NUMA_NO_NODE := -1, which is not a valid node number. It is also, like I
->>> said, not a valid device location on a NUMA system.
->>>
->>> Just because ACPI/BIOS is shit, doesn't mean the device doesn't have a
->>> node association. It just means we don't know and might have to guess.
->>
->> How do we guess the device's location when ACPI/BIOS does not set it?
-> 
-> See device_add(), it looks to the device's parent and on NO_NODE, puts
-> it there.
-> 
-> Lacking any hints, just stick it to node0 and print a FW_BUG or
-> something.
-> 
->> It seems dev_to_node() does not do anything about that and leave the
->> job to the caller or whatever function that get called with its return
->> value, such as cpumask_of_node().
-> 
-> Well, dev_to_node() doesn't do anything; nor should it. It are the
-> callers of set_dev_node() that should be taking care.
-> 
-> Also note how device_add() sets the device node to the parent device's
-> node on NUMA_NO_NODE. Arguably we should change it to complain when it
-> finds NUMA_NO_NODE and !parent.
-
-Is it possible that the node id set by device_add() become invalid
-if the node is offlined, then dev_to_node() may return a invalid
-node id.
-
-From the comment in select_fallback_rq(), it seems that a node can
-be offlined, not sure if node offline process has taken cared of that?
-
-	/*
-         * If the node that the CPU is on has been offlined, cpu_to_node()
-         * will return -1. There is no CPU on the node, and we should
-         * select the CPU on the other node.
-         */
 
 
-With the above assumption that a device is always on a valid node,
-the node id returned from dev_to_node() can be safely passed to
-cpumask_of_node() without any checking?
-
+Le 03/09/2019 à 07:23, Alastair D'Silva a écrit :
+> From: Alastair D'Silva <alastair@d-silva.org>
 > 
+> When presented with large amounts of memory being hotplugged
+> (in my test case, ~890GB), the call to flush_dcache_range takes
+> a while (~50 seconds), triggering RCU stalls.
+> 
+> This patch breaks up the call into 1GB chunks, calling
+> cond_resched() inbetween to allow the scheduler to run.
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 > ---
->  drivers/base/core.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+>   arch/powerpc/mm/mem.c | 18 ++++++++++++++++--
+>   1 file changed, 16 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index f0dd8e38fee3..2caf204966a0 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2120,8 +2120,16 @@ int device_add(struct device *dev)
->  		dev->kobj.parent = kobj;
->  
->  	/* use parent numa_node */
-> -	if (parent && (dev_to_node(dev) == NUMA_NO_NODE))
-> -		set_dev_node(dev, dev_to_node(parent));
-> +	if (dev_to_node(dev) == NUMA_NO_NODE) {
-> +		if (parent)
-> +			set_dev_node(dev, dev_to_node(parent));
-> +#ifdef CONFIG_NUMA
-> +		else {
-> +			pr_err("device: '%s': has no assigned NUMA node\n", dev_name(dev));
-> +			set_dev_node(dev, 0);
-> +		}
-> +#endif
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index cd540123874d..854aaea2c6ae 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -104,11 +104,14 @@ int __weak remove_section_mapping(unsigned long start, unsigned long end)
+>   	return -ENODEV;
+>   }
+>   
+> +#define FLUSH_CHUNK_SIZE SZ_1G
+
+Maybe the name is a bit long for a local define. See if we could reduce 
+code line splits below by shortening this name.
+
+> +
+>   int __ref arch_add_memory(int nid, u64 start, u64 size,
+>   			struct mhp_restrictions *restrictions)
+>   {
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+> +	u64 i;
+>   	int rc;
+>   
+>   	resize_hpt_for_hotplug(memblock_phys_mem_size());
+> @@ -120,7 +123,12 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
+>   			start, start + size, rc);
+>   		return -EFAULT;
+>   	}
+> -	flush_dcache_range(start, start + size);
+> +
+> +	for (i = 0; i < size; i += FLUSH_CHUNK_SIZE) {
+> +		flush_dcache_range(start + i,
+> +				   min(start + size, start + i + FLUSH_CHUNK_SIZE));
+
+My eyes don't like it.
+
+What about
+	for (; i < size; i += FLUSH_CHUNK_SIZE) {
+		int len = min(size - i, FLUSH_CHUNK_SIZE);
+
+		flush_dcache_range(start + i, start + i + len);
+		cond_resched();
+	}
+
+or
+
+	end = start + size;
+	for (; start < end; start += FLUSH_CHUNK_SIZE, size -= FLUSH_CHUNK_SIZE) {
+		int len = min(size, FLUSH_CHUNK_SIZE);
+
+		flush_dcache_range(start, start + len);
+		cond_resched();
+	}
+
+> +		cond_resched();
 > +	}
->  
->  	/* first, register with generic layer. */
->  	/* we require the name to be set before, and pass NULL */
-> 
-> .
+>   
+>   	return __add_pages(nid, start_pfn, nr_pages, restrictions);
+>   }
+> @@ -131,13 +139,19 @@ void __ref arch_remove_memory(int nid, u64 start, u64 size,
+>   	unsigned long start_pfn = start >> PAGE_SHIFT;
+>   	unsigned long nr_pages = size >> PAGE_SHIFT;
+>   	struct page *page = pfn_to_page(start_pfn) + vmem_altmap_offset(altmap);
+> +	u64 i;
+>   	int ret;
+>   
+>   	__remove_pages(page_zone(page), start_pfn, nr_pages, altmap);
+>   
+>   	/* Remove htab bolted mappings for this section of memory */
+>   	start = (unsigned long)__va(start);
+> -	flush_dcache_range(start, start + size);
+> +	for (i = 0; i < size; i += FLUSH_CHUNK_SIZE) {
+> +		flush_dcache_range(start + i,
+> +				   min(start + size, start + i + FLUSH_CHUNK_SIZE));
+> +		cond_resched();
+> +	}
+> +
+
+This piece of code looks pretty similar to the one before. Can we 
+refactor into a small helper ?
+
+>   	ret = remove_section_mapping(start, start + size);
+>   	WARN_ON_ONCE(ret);
+>   
 > 
 
+Christophe
