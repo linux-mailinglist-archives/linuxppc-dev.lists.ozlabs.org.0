@@ -1,55 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01B2A712C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:57:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE76A7102
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:50:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NCmg0gxxzDqkP
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:57:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NCcp3W26zDqNX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:50:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NC872NQMzDqTR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:29:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Wq6xJFgi"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46NC866jLpz8t6V
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:29:10 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46NC865Khjz9sRc; Wed,  4 Sep 2019 02:29:10 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NCCG0WzrzDqSx
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:31:54 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C829B238F5;
- Tue,  3 Sep 2019 16:31:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567528311;
- bh=Rc0nyCb11rtoLwKBSMsZv14/IRpM9ByxOTtCoc7QxmI=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Wq6xJFgitu45ILS7zCsZPDOuyGMQU4rTRapwTtf/tPW0E7KVLR3TgEprQ2zzSiuYo
- Ukd07FOer0vvRzVe0CS+uU+GzLjDbltJcY5XDcMavKAaBcsvwnoWt2glBruJtjJzaZ
- Mtf/sqbtANuPvhkKumUsdbhpCCEdPgg4S1Al0GTs=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 149/167] powerpc/mm: Limit rma_size to 1TB when
- running without HV mode
-Date: Tue,  3 Sep 2019 12:25:01 -0400
-Message-Id: <20190903162519.7136-149-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190903162519.7136-1-sashal@kernel.org>
-References: <20190903162519.7136-1-sashal@kernel.org>
+ by ozlabs.org (Postfix) with ESMTPS id 46NC852Vwgz9sR7
+ for <linuxppc-dev@ozlabs.org>; Wed,  4 Sep 2019 02:29:09 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x83GNJ95021806
+ for <linuxppc-dev@ozlabs.org>; Tue, 3 Sep 2019 12:29:07 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2usu0bsw4q-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 03 Sep 2019 12:29:07 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Tue, 3 Sep 2019 17:29:04 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 3 Sep 2019 17:29:02 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x83GT0ab49020954
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 Sep 2019 16:29:00 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7C1C8A405E;
+ Tue,  3 Sep 2019 16:29:00 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 762EBA4059;
+ Tue,  3 Sep 2019 16:28:58 +0000 (GMT)
+Received: from [9.85.81.203] (unknown [9.85.81.203])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  3 Sep 2019 16:28:58 +0000 (GMT)
+Subject: Re: [PATCH v5 10/31] opal: add MPIPL interface definitions
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
+References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
+ <156630272066.8896.14185583668659839717.stgit@hbathini.in.ibm.com>
+ <87tv9tr5yc.fsf@mpe.ellerman.id.au>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Date: Tue, 3 Sep 2019 21:58:57 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87tv9tr5yc.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19090316-0020-0000-0000-000003672E62
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090316-0021-0000-0000-000021BC997A
+Message-Id: <aa997e57-3d51-94b6-c587-79aededcafa2@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-03_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909030167
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,77 +107,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Oliver <oohall@gmail.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
 
-[ Upstream commit da0ef93310e67ae6902efded60b6724dab27a5d1 ]
 
-The virtual real mode addressing (VRMA) mechanism is used when a
-partition is using HPT (Hash Page Table) translation and performs real
-mode accesses (MSR[IR|DR] = 0) in non-hypervisor mode. In this mode
-effective address bits 0:23 are treated as zero (i.e. the access is
-aliased to 0) and the access is performed using an implicit 1TB SLB
-entry.
+On 03/09/19 4:40 PM, Michael Ellerman wrote:
+> Hari Bathini <hbathini@linux.ibm.com> writes:
+>> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
+>> index 383242e..c8a5665 100644
+>> --- a/arch/powerpc/include/asm/opal-api.h
+>> +++ b/arch/powerpc/include/asm/opal-api.h
+>> @@ -980,6 +983,50 @@ struct opal_sg_list {
+>>  };
+>>  
+>>  /*
+>> + * Firmware-Assisted Dump (FADump) using MPIPL
+>> + */
+>> +
+>> +/* MPIPL update operations */
+>> +enum opal_mpipl_ops {
+>> +	OPAL_MPIPL_ADD_RANGE			= 0,
+>> +	OPAL_MPIPL_REMOVE_RANGE			= 1,
+>> +	OPAL_MPIPL_REMOVE_ALL			= 2,
+>> +	OPAL_MPIPL_FREE_PRESERVED_MEMORY	= 3,
+>> +};
+>> +
+>> +/*
+>> + * Each tag maps to a metadata type. Use these tags to register/query
+>> + * corresponding metadata address with/from OPAL.
+>> + */
+>> +enum opal_mpipl_tags {
+>> +	OPAL_MPIPL_TAG_CPU		= 0,
+>> +	OPAL_MPIPL_TAG_OPAL		= 1,
+>> +	OPAL_MPIPL_TAG_KERNEL		= 2,
+>> +	OPAL_MPIPL_TAG_BOOT_MEM		= 3,
+>> +};
+>> +
+>> +/* Preserved memory details */
+>> +struct opal_mpipl_region {
+>> +	__be64	src;
+>> +	__be64	dest;
+>> +	__be64	size;
+>> +};
+>> +
+>> +/* FADump structure format version */
+>> +#define MPIPL_FADUMP_VERSION			0x01
+>> +
+>> +/* Metadata provided by OPAL. */
+>> +struct opal_mpipl_fadump {
+>> +	u8				version;
+>> +	u8				reserved[7];
+>> +	__be32				crashing_pir;
+>> +	__be32				cpu_data_version;
+>> +	__be32				cpu_data_size;
+>> +	__be32				region_cnt;
+>> +	struct opal_mpipl_region	region[];
+>> +} __attribute__((packed));
+>> +
+> 
+> The above hunk is in the wrong place vs the skiboot header. Please put
+> things in exactly the same place in the skiboot and kernel versions of
+> the header.
+> 
+> After your kernel & skiboot patches are applied, the result of:
+> 
+>  $ git diff ~/src/skiboot/include/opal-api.h arch/powerpc/include/asm/opal-api.h
+> 
+> Should not include anything MPIPL/fadump related.
 
-The size of the RMA (Real Memory Area) is communicated to the guest as
-the size of the first memory region in the device tree. And because of
-the mechanism described above can be expected to not exceed 1TB. In
-the event that the host erroneously represents the RMA as being larger
-than 1TB, guest accesses in real mode to memory addresses above 1TB
-will be aliased down to below 1TB. This means that a memory access
-performed in real mode may differ to one performed in virtual mode for
-the same memory address, which would likely have unintended
-consequences.
+Sure.
 
-To avoid this outcome have the guest explicitly limit the size of the
-RMA to the current maximum, which is 1TB. This means that even if the
-first memory block is larger than 1TB, only the first 1TB should be
-accessed in real mode.
+> 
+>> diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
+>> index 57bd029..878110a 100644
+>> --- a/arch/powerpc/include/asm/opal.h
+>> +++ b/arch/powerpc/include/asm/opal.h
+>> @@ -39,6 +39,12 @@ int64_t opal_npu_spa_clear_cache(uint64_t phb_id, uint32_t bdfn,
+>>  				uint64_t PE_handle);
+>>  int64_t opal_npu_tl_set(uint64_t phb_id, uint32_t bdfn, long cap,
+>>  			uint64_t rate_phys, uint32_t size);
+>> +
+>> +int64_t opal_mpipl_update(enum opal_mpipl_ops op, u64 src,
+>> +			  u64 dest, u64 size);
+>> +int64_t opal_mpipl_register_tag(enum opal_mpipl_tags tag, uint64_t addr);
+>> +int64_t opal_mpipl_query_tag(enum opal_mpipl_tags tag, uint64_t *addr);
+>> +
+> 
+> Please consistently use kernel types for new prototypes in here.
 
-Fixes: c610d65c0ad0 ("powerpc/pseries: lift RTAS limit for hash")
-Cc: stable@vger.kernel.org # v4.16+
-Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
-Tested-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20190710052018.14628-1-sjitindarsingh@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/mm/hash_utils_64.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+uint64_t instead of 'enum's?
 
-diff --git a/arch/powerpc/mm/hash_utils_64.c b/arch/powerpc/mm/hash_utils_64.c
-index f23a89d8e4ce6..29fd8940867e5 100644
---- a/arch/powerpc/mm/hash_utils_64.c
-+++ b/arch/powerpc/mm/hash_utils_64.c
-@@ -1859,11 +1859,20 @@ void hash__setup_initial_memory_limit(phys_addr_t first_memblock_base,
- 	 *
- 	 * For guests on platforms before POWER9, we clamp the it limit to 1G
- 	 * to avoid some funky things such as RTAS bugs etc...
-+	 *
-+	 * On POWER9 we limit to 1TB in case the host erroneously told us that
-+	 * the RMA was >1TB. Effective address bits 0:23 are treated as zero
-+	 * (meaning the access is aliased to zero i.e. addr = addr % 1TB)
-+	 * for virtual real mode addressing and so it doesn't make sense to
-+	 * have an area larger than 1TB as it can't be addressed.
- 	 */
- 	if (!early_cpu_has_feature(CPU_FTR_HVMODE)) {
- 		ppc64_rma_size = first_memblock_size;
- 		if (!early_cpu_has_feature(CPU_FTR_ARCH_300))
- 			ppc64_rma_size = min_t(u64, ppc64_rma_size, 0x40000000);
-+		else
-+			ppc64_rma_size = min_t(u64, ppc64_rma_size,
-+					       1UL << SID_SHIFT_1T);
- 
- 		/* Finally limit subsequent allocations */
- 		memblock_set_current_limit(ppc64_rma_size);
--- 
-2.20.1
+- Hari
 
