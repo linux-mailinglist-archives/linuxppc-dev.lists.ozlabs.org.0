@@ -1,59 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025FCA7135
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 19:00:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3397A7165
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 19:07:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NCqk6NZzzDqR1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 03:00:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ND0q304lzDqRy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 03:07:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+680e2818d6643897e706+5854+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="S3daUb2+"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ddSKJmtr"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NCfT4msLzDqnf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:52:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=LvpBWtVIgybfRt8dClX5c+nTFaEgP5NOqPPGkq3C7hE=; b=S3daUb2++xfMv9DBuUEn+KiRb
- rDGWJhDdSxuyi8LHgCalEJco7OrwhgpVNs5gWBIPSdVJUIoQjIHXNxck0zZC3O1ToA7HxWBLwaD3m
- 6JKhhevm/LaZlXaIIZsMZTv+ynO/WuLQ1pFpS+dgWZyDxnuk35McHI30MlMgPdy4vgOiWgOfUL+6p
- TCNE+FhK2S/7vGyEPbqpKC+0jxETu/74AmU32NNeil0Zt93j39eSMlmjN2J1n/x4IZVZBakd80r4G
- 02UAYjlqV39IVEqmfq9RGVKBuc6JKVUiFnnflDGzwrq8XeLdSdeTJgnrayY7rMQGbJbz4+VP7WNyY
- G9LUkQotw==;
-Received: from [2001:4bb8:18c:1755:c70:4a89:bc61:2] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1i5C25-0002as-8F; Tue, 03 Sep 2019 16:51:53 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: mpe@ellerman.id.au,
-	paulus@samba.org,
-	benh@kernel.crashing.org
-Subject: [PATCH] powerpc/powernv: remove the unused pnv_npu_try_dma_set_bypass
- function
-Date: Tue,  3 Sep 2019 18:51:47 +0200
-Message-Id: <20190903165147.11099-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NCxy67sKzDq9D
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 03:05:25 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46NCxq6NB6z9ttSV;
+ Tue,  3 Sep 2019 19:05:19 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ddSKJmtr; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 2vuLju-xL0CH; Tue,  3 Sep 2019 19:05:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46NCxq4srnz9ttSS;
+ Tue,  3 Sep 2019 19:05:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1567530319; bh=AnfdWi7CX7QvptJ7TwWSoc3U0kxIA1QpOhq4tZSTQk8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ddSKJmtrXauwW4OQ6ofNnTtFBI+TtMnI5tc2ICEKqvmDV99s9XBTUUvaCveYJKiOn
+ dYmIPLo+ZtS6vMUnwVYFivmyZt1RnNbsVJ6GjmLVgcgR9Dm/hCzcW2WxA8EJJ9pdsg
+ 5W2eLVduyBHO62mxytTV99pyvo02DZ/JJikdgzLk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 640B18B881;
+ Tue,  3 Sep 2019 19:05:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id wUZWLHRixqsD; Tue,  3 Sep 2019 19:05:21 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 308678B86E;
+ Tue,  3 Sep 2019 19:05:20 +0200 (CEST)
+Subject: Re: [PATCH v2 3/6] powerpc: Convert flush_icache_range & friends to C
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <20190903052407.16638-1-alastair@au1.ibm.com>
+ <20190903052407.16638-4-alastair@au1.ibm.com>
+ <20190903130430.GC31406@gate.crashing.org>
+ <d268ee78-607e-5eb3-ed89-d5c07f672046@c-s.fr>
+ <20190903160415.GA9749@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <321b003a-9633-5ff4-c4a2-59a47ec23421@c-s.fr>
+Date: Tue, 3 Sep 2019 19:05:19 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190903160415.GA9749@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,130 +81,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Alastair D'Silva <alastair@au1.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, alastair@d-silva.org, Qian Cai <cai@lca.pw>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Neither pnv_npu_try_dma_set_bypass nor the pnv_npu_dma_set_32 and
-pnv_npu_dma_set_bypass helpers called by it are used anywhere in the
-kernel tree, so remove them.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/platforms/powernv/npu-dma.c | 99 ------------------------
- 1 file changed, 99 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-index c16249d251f1..a570a249edc3 100644
---- a/arch/powerpc/platforms/powernv/npu-dma.c
-+++ b/arch/powerpc/platforms/powernv/npu-dma.c
-@@ -192,105 +192,6 @@ static long pnv_npu_unset_window(struct iommu_table_group *table_group, int num)
- 	return 0;
- }
- 
--/*
-- * Enables 32 bit DMA on NPU.
-- */
--static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
--{
--	struct pci_dev *gpdev;
--	struct pnv_ioda_pe *gpe;
--	int64_t rc;
--
--	/*
--	 * Find the assoicated PCI devices and get the dma window
--	 * information from there.
--	 */
--	if (!npe->pdev || !(npe->flags & PNV_IODA_PE_DEV))
--		return;
--
--	gpe = get_gpu_pci_dev_and_pe(npe, &gpdev);
--	if (!gpe)
--		return;
--
--	rc = pnv_npu_set_window(&npe->table_group, 0,
--			gpe->table_group.tables[0]);
--
--	/*
--	 * NVLink devices use the same TCE table configuration as
--	 * their parent device so drivers shouldn't be doing DMA
--	 * operations directly on these devices.
--	 */
--	set_dma_ops(&npe->pdev->dev, &dma_dummy_ops);
--}
--
--/*
-- * Enables bypass mode on the NPU. The NPU only supports one
-- * window per link, so bypass needs to be explicitly enabled or
-- * disabled. Unlike for a PHB3 bypass and non-bypass modes can't be
-- * active at the same time.
-- */
--static int pnv_npu_dma_set_bypass(struct pnv_ioda_pe *npe)
--{
--	struct pnv_phb *phb = npe->phb;
--	int64_t rc = 0;
--	phys_addr_t top = memblock_end_of_DRAM();
--
--	if (phb->type != PNV_PHB_NPU_NVLINK || !npe->pdev)
--		return -EINVAL;
--
--	rc = pnv_npu_unset_window(&npe->table_group, 0);
--	if (rc != OPAL_SUCCESS)
--		return rc;
--
--	/* Enable the bypass window */
--
--	top = roundup_pow_of_two(top);
--	dev_info(&npe->pdev->dev, "Enabling bypass for PE %x\n",
--			npe->pe_number);
--	rc = opal_pci_map_pe_dma_window_real(phb->opal_id,
--			npe->pe_number, npe->pe_number,
--			0 /* bypass base */, top);
--
--	if (rc == OPAL_SUCCESS)
--		pnv_pci_ioda2_tce_invalidate_entire(phb, false);
--
--	return rc;
--}
--
--void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool bypass)
--{
--	int i;
--	struct pnv_phb *phb;
--	struct pci_dn *pdn;
--	struct pnv_ioda_pe *npe;
--	struct pci_dev *npdev;
--
--	for (i = 0; ; ++i) {
--		npdev = pnv_pci_get_npu_dev(gpdev, i);
--
--		if (!npdev)
--			break;
--
--		pdn = pci_get_pdn(npdev);
--		if (WARN_ON(!pdn || pdn->pe_number == IODA_INVALID_PE))
--			return;
--
--		phb = pci_bus_to_host(npdev->bus)->private_data;
--
--		/* We only do bypass if it's enabled on the linked device */
--		npe = &phb->ioda.pe_array[pdn->pe_number];
--
--		if (bypass) {
--			dev_info(&npdev->dev,
--					"Using 64-bit DMA iommu bypass\n");
--			pnv_npu_dma_set_bypass(npe);
--		} else {
--			dev_info(&npdev->dev, "Using 32-bit DMA via iommu\n");
--			pnv_npu_dma_set_32(npe);
--		}
--	}
--}
--
- #ifdef CONFIG_IOMMU_API
- /* Switch ownership from platform code to external user (e.g. VFIO) */
- static void pnv_npu_take_ownership(struct iommu_table_group *table_group)
--- 
-2.20.1
+Le 03/09/2019 à 18:04, Segher Boessenkool a écrit :
+> On Tue, Sep 03, 2019 at 04:28:09PM +0200, Christophe Leroy wrote:
+>> Le 03/09/2019 à 15:04, Segher Boessenkool a écrit :
+>>> On Tue, Sep 03, 2019 at 03:23:57PM +1000, Alastair D'Silva wrote:
+>>>> +	asm volatile(
+>>>> +		"   mtctr %2;"
+>>>> +		"   mtmsr %3;"
+>>>> +		"   isync;"
+>>>> +		"0: dcbst   0, %0;"
+>>>> +		"   addi    %0, %0, %4;"
+>>>> +		"   bdnz    0b;"
+>>>> +		"   sync;"
+>>>> +		"   mtctr %2;"
+>>>> +		"1: icbi    0, %1;"
+>>>> +		"   addi    %1, %1, %4;"
+>>>> +		"   bdnz    1b;"
+>>>> +		"   sync;"
+>>>> +		"   mtmsr %5;"
+>>>> +		"   isync;"
+>>>> +		: "+r" (loop1), "+r" (loop2)
+>>>> +		: "r" (nb), "r" (msr), "i" (bytes), "r" (msr0)
+>>>> +		: "ctr", "memory");
+>>>
+>>> This outputs as one huge assembler statement, all on one line.  That's
+>>> going to be fun to read or debug.
+>>
+>> Do you mean \n has to be added after the ; ?
+> 
+> Something like that.  There is no really satisfying way for doing huge
+> inline asm, and maybe that is a good thing ;-)
+> 
+> Often people write \n\t at the end of each line of inline asm.  This works
+> pretty well (but then there are labels, oh joy).
+> 
+>>> loop1 and/or loop2 can be assigned the same register as msr0 or nb.  They
+>>> need to be made earlyclobbers.  (msr is fine, all of its reads are before
+>>> any writes to loop1 or loop2; and bytes is fine, it's not a register).
+>>
+>> Can you explicit please ? Doesn't '+r' means that they are input and
+>> output at the same time ?
+> 
+> That is what + means, yes -- that this output is an input as well.  It is
+> the same to write
+> 
+>    asm("mov %1,%0 ; mov %0,42" : "+r"(x), "=r"(y));
+> or to write
+>    asm("mov %1,%0 ; mov %0,42" : "=r"(x), "=r"(y) : "0"(x));
+> 
+> (So not "at the same time" as in "in the same machine instruction", but
+> more loosely, as in "in the same inline asm statement").
+> 
+>> "to be made earlyclobbers", what does this means exactly ? How to do that ?
+> 
+> You write &, like "+&r" in this case.  It means the machine code writes
+> to this register before it has consumed all asm inputs (remember, GCC
+> does not understand (or even parse!) the assembler string).
+> 
+> So just
+> 
+> 		: "+&r" (loop1), "+&r" (loop2)
+> 
+> will do.  (Why are they separate though?  It could just be one loop var).
 
+Yes it could just be a single loop var, but in that case it would have 
+to be reset at the start of the second loop, which means we would have 
+to pass 'addr' for resetting the loop anyway, so I opted to do it 
+outside the inline asm by using to separate loop vars set to their 
+starting value outside the inline asm.
+
+Christophe
