@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F38A6689
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65899A668D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:31:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N37v73LhzDqCl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:28:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N3C80vBgzDqP5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:31:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="relOnnJ2"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="fUKlOgmm"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tM5c5KzDqc2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:16:43 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id u72so4690397pgb.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:16:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tV3KpFzDqQK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:16:50 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id x15so8869569pgg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:16:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=icWrNJc1r61CPJA3GssblHEkeSqyLXym6XcU+K4q7OU=;
- b=relOnnJ294WHmDocfnvdbS/FhuJNuImXMJW8zB6MtLdMzk5756yjSxYejZ5CaLW5Ad
- NTcJTXueOat+gZkHtR2hGP/M++avWcWpv0F2r10BUIHQ5lT2mR2BrsRM+Poz8KO5w6QR
- CvY87p2B2XEsyBQbFAybSxEARQsc2L09cYOuLzorokx9XAO1gJA9jS63+HqvlrMX/0zA
- kInelUmZzmvS0o4N/OUI44br+nuV51X03dRfh6B8+dvD50/Ff3WjphGkh42lReAg/4Uo
- V/HnRSda+0vc+BsDfeQfyHJIkXnqX0zCf3cjpulbPJG+EtJeO+xW6Cwurm7U5NR1Hy5i
- fpEQ==
+ bh=oflZ7oeU8QgdikE1fkjMQOiEyn0+bHCXZfFNrTKL+2A=;
+ b=fUKlOgmm79ZrW8aK1CcVA2E5vmYsjGvu118q7B2WKAWQaM0yPv7y8oVTUTIgOXF6CK
+ 8cNFOqAl5FmuMG6athFnZZMhgBAsY54/5P4pt+sxLW2YfvYjO12M7zQAtpNkKBJyMZvi
+ BcFwpH5OXI1M8bmXvxTvydr5O8hYuyv3lmuXXMxH/HHDTG+6zdXW5bm4tPkAKpLkIhpW
+ 1FmoFWRVq77u1HYbTNLnF4RY+U/Y4cL4J/XzZgcqbn+n8BPRKKPmwuUh6t9Rycw1X/fj
+ KQZIr6zBibYdcHY1z7ufw8RXMdFXV9G8t1vRdJYwTblSTzUTOW0PDl4yt1FMoJKKXwa4
+ 6K2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=icWrNJc1r61CPJA3GssblHEkeSqyLXym6XcU+K4q7OU=;
- b=cctqKbCNoN4O/8kEJoqk3jpRHtxlvgvGgHQ/twLasi43+XDKEY2pNydteKClq3op5+
- XsM8a/rvBflzkDKtmkHASZXOwtZY/uRYU019L9XaU0SkIpq3glY9Wt+DqFd+9V7lRsDm
- bnnqjxzLkXuGw2bchLWZgjgGkWfqRWxY7RhxDQWCQi8cqoeOy2uEa+HodqbrbCC6fUVy
- FWP9zBXsahR+cCQpeNa+IEjV1MPJA6HXPoHH2B+E223df+nLuqf05W0973aP6fiOznyw
- zoCoZr0HPD9jACX8+wBHfMBJVljQUnS8Y2Rtk++FgwCiL+B45DSJHGTtAZLcV6Zx7D78
- OHwQ==
-X-Gm-Message-State: APjAAAV9Jb7eiqglqQEW1n4e5tgFzV7nkCVUUdwmMS/Yl7rmdPP0MBVW
- MQ7uoFIWUhWo461GxcC/efr2rTRb
-X-Google-Smtp-Source: APXvYqzsxYk2EnHn6E+yYWwZ0o6+GbJAqIM2YS6tIIEekxma5HuZV/jngDgTtDyY5BHI9JMEEI/S+g==
-X-Received: by 2002:a65:654d:: with SMTP id a13mr29088915pgw.196.1567505800823; 
- Tue, 03 Sep 2019 03:16:40 -0700 (PDT)
+ bh=oflZ7oeU8QgdikE1fkjMQOiEyn0+bHCXZfFNrTKL+2A=;
+ b=dWOhTMGrjKMXYFcve/63mYKlUXDUsiQipwQ9g/LlSg8ujwEKUVu7qB8nS5BcGqhWCW
+ 6Ut3zMmf45YLXPtwOKSeWgqqv6U3S1GPuUYq6Vt/qYo75XNoLK5Ha/Jlta1IdQHisYwg
+ xTbJPGI6djLXjpF1PDYwE4smdwaJ7N+Z33vEPBqeH2DdOgHPq1gdQCsxpWFhPgskT6ol
+ K1OdlZI9gcUfYEMdsoIVxtlSpIcG8u0J+O3J/+vEOQdb4ArBKSQCBCyr35Rt0QobcRdz
+ joY3GoWWpb7ReVA0cOPGeHC1HedMurF0lHR5WPEbk4F6AowVvCtatotTDwSJYokiASs7
+ O7fw==
+X-Gm-Message-State: APjAAAX6kEuAhC0egb7z9hVKQPqFZAKjn3IThgzSS5pEH8UTPdqnDrOI
+ 7jWCXO/gP49G0+zYwm85fkMjnmj+
+X-Google-Smtp-Source: APXvYqxhVEgzOLAyR6gd1bH0BidYLzlefuld1+gAAHPHJN+uyJp1BFTzYO9ahcIQoC9sE9z5j9S9Iw==
+X-Received: by 2002:aa7:800c:: with SMTP id j12mr37113567pfi.255.1567505807819; 
+ Tue, 03 Sep 2019 03:16:47 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.16.38
+ by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.16.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 03:16:40 -0700 (PDT)
+ Tue, 03 Sep 2019 03:16:42 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 04/14] powerpc/eeh: Check slot presence state in
- eeh_handle_normal_event()
-Date: Tue,  3 Sep 2019 20:15:55 +1000
-Message-Id: <20190903101605.2890-5-oohall@gmail.com>
+Subject: [PATCH 05/14] powerpc/eeh: Defer printing stack trace
+Date: Tue,  3 Sep 2019 20:15:56 +1000
+Message-Id: <20190903101605.2890-6-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190903101605.2890-1-oohall@gmail.com>
 References: <20190903101605.2890-1-oohall@gmail.com>
@@ -84,130 +83,193 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a device is surprise removed while undergoing IO we will probably
-get an EEH PE freeze due to MMIO timeouts and other errors. When a freeze
-is detected we send a recovery event to the EEH worker thread which will
-notify drivers, and perform recovery as needed.
+Currently we print a stack trace in the event handler to help with
+debugging EEH issues. In the case of suprise hot-unplug this is unneeded,
+so we want to prevent printing the stack trace unless we know it's due to
+an actual device error. To accomplish this, we can save a stack trace at
+the point of detection and only print it once the EEH recovery handler has
+determined the freeze was due to an actual error.
 
-In the event of a hot-remove we don't want recovery to occur since there
-isn't a device to recover. The recovery process is fairly long due to
-the number of wait states (required by PCIe) which causes problems when
-devices are removed and replaced (e.g. hot swapping of U.2 NVMe drives).
-
-To determine if we need to skip the recovery process we can use the
-get_adapter_state() operation of the hotplug_slot to determine if the
-slot contains a device or not, and if the slot is empty we can skip
-recovery entirely.
-
-One thing to note is that the slot being EEH frozen does not prevent the
-hotplug driver from working. We don't have the EEH recovery thread
-remove any of the devices since it's assumed that the hotplug driver
-will handle tearing down the slot state.
+Since the whole point of this is to prevent spurious EEH output we also
+move a few prints out of the detection thread, or mark them as pr_debug
+so anyone interested can get output from the eeh_check_dev_failure()
+if they want.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/kernel/eeh_driver.c | 60 ++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ arch/powerpc/include/asm/eeh.h   | 11 +++++++++
+ arch/powerpc/kernel/eeh.c        | 15 ++++---------
+ arch/powerpc/kernel/eeh_driver.c | 38 +++++++++++++++++++++++++++++++-
+ arch/powerpc/kernel/eeh_event.c  | 26 ++++++++++------------
+ 4 files changed, 64 insertions(+), 26 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+index c13119a5e69b..9d0e1694a94d 100644
+--- a/arch/powerpc/include/asm/eeh.h
++++ b/arch/powerpc/include/asm/eeh.h
+@@ -88,6 +88,17 @@ struct eeh_pe {
+ 	struct list_head child_list;	/* List of PEs below this PE	*/
+ 	struct list_head child;		/* Memb. child_list/eeh_phb_pe	*/
+ 	struct list_head edevs;		/* List of eeh_dev in this PE	*/
++
++	/*
++	 * Saved stack trace. When we find a PE freeze in eeh_dev_check_failure
++	 * the stack trace is saved here so we can print it in the recovery
++	 * thread if it turns out to due to a real problem rather than
++	 * a hot-remove.
++	 *
++	 * A max of 64 entries might be overkill, but it also might not be.
++	 */
++	unsigned long stack_trace[64];
++	int trace_entries;
+ };
+ 
+ #define eeh_pe_for_each_dev(pe, edev, tmp) \
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 9c468e79d13c..46d17817b438 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -420,11 +420,9 @@ static int eeh_phb_check_failure(struct eeh_pe *pe)
+ 	eeh_pe_mark_isolated(phb_pe);
+ 	eeh_serialize_unlock(flags);
+ 
+-	pr_err("EEH: PHB#%x failure detected, location: %s\n",
++	pr_debug("EEH: PHB#%x failure detected, location: %s\n",
+ 		phb_pe->phb->global_number, eeh_pe_loc_get(phb_pe));
+-	dump_stack();
+ 	eeh_send_failure_event(phb_pe);
+-
+ 	return 1;
+ out:
+ 	eeh_serialize_unlock(flags);
+@@ -451,7 +449,7 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
+ 	unsigned long flags;
+ 	struct device_node *dn;
+ 	struct pci_dev *dev;
+-	struct eeh_pe *pe, *parent_pe, *phb_pe;
++	struct eeh_pe *pe, *parent_pe;
+ 	int rc = 0;
+ 	const char *location = NULL;
+ 
+@@ -581,13 +579,8 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
+ 	 * a stack trace will help the device-driver authors figure
+ 	 * out what happened.  So print that out.
+ 	 */
+-	phb_pe = eeh_phb_pe_get(pe->phb);
+-	pr_err("EEH: Frozen PHB#%x-PE#%x detected\n",
+-	       pe->phb->global_number, pe->addr);
+-	pr_err("EEH: PE location: %s, PHB location: %s\n",
+-	       eeh_pe_loc_get(pe), eeh_pe_loc_get(phb_pe));
+-	dump_stack();
+-
++	pr_debug("EEH: %s: Frozen PHB#%x-PE#%x detected\n",
++		__func__, pe->phb->global_number, pe->addr);
+ 	eeh_send_failure_event(pe);
+ 
+ 	return 1;
 diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index 18a69fac4d80..52ce7584af43 100644
+index 52ce7584af43..0d34cc12c529 100644
 --- a/arch/powerpc/kernel/eeh_driver.c
 +++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -27,6 +27,7 @@
- #include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/pci_hotplug.h>
- #include <asm/eeh.h>
- #include <asm/eeh_event.h>
- #include <asm/ppc-pci.h>
-@@ -769,6 +770,46 @@ static void eeh_pe_cleanup(struct eeh_pe *pe)
- 	}
- }
+@@ -863,8 +863,44 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 			if (eeh_slot_presence_check(edev->pdev))
+ 				devices++;
  
-+/**
-+ * eeh_check_slot_presence - Check if a device is still present in a slot
-+ * @pdev: pci_dev to check
-+ *
-+ * This function may return a false positive if we can't determine the slot's
-+ * presence state. This might happen for for PCIe slots if the PE containing
-+ * the upstream bridge is also frozen, or the bridge is part of the same PE
-+ * as the device.
-+ *
-+ * This shouldn't happen often, but you might see it if you hotplug a PCIe
-+ * switch.
-+ */
-+static bool eeh_slot_presence_check(struct pci_dev *pdev)
-+{
-+	const struct hotplug_slot_ops *ops;
-+	struct pci_slot *slot;
-+	u8 state;
-+	int rc;
+-	if (!devices)
++	if (!devices) {
++		pr_debug("EEH: Frozen PHB#%x-PE#%x is empty!\n",
++			pe->phb->global_number, pe->addr);
+ 		goto out; /* nothing to recover */
++	}
 +
-+	if (!pdev)
-+		return false;
++	/* Log the event */
++	if (pe->type & EEH_PE_PHB) {
++		pr_err("EEH: PHB#%x failure detected, location: %s\n",
++			pe->phb->global_number, eeh_pe_loc_get(pe));
++	} else {
++		struct eeh_pe *phb_pe = eeh_phb_pe_get(pe->phb);
 +
-+	if (pdev->error_state == pci_channel_io_perm_failure)
-+		return false;
++		pr_err("EEH: Frozen PHB#%x-PE#%x detected\n",
++		       pe->phb->global_number, pe->addr);
++		pr_err("EEH: PE location: %s, PHB location: %s\n",
++		       eeh_pe_loc_get(pe), eeh_pe_loc_get(phb_pe));
++	}
 +
-+	slot = pdev->slot;
-+	if (!slot || !slot->hotplug)
-+		return true;
-+
-+	ops = slot->hotplug->ops;
-+	if (!ops || !ops->get_adapter_status)
-+		return true;
-+
-+	rc = ops->get_adapter_status(slot->hotplug, &state);
-+	if (rc)
-+		return true;
-+
-+	return !!state;
-+}
-+
- /**
-  * eeh_handle_normal_event - Handle EEH events on a specific PE
-  * @pe: EEH PE - which should not be used after we return, as it may
-@@ -799,6 +840,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 	enum pci_ers_result result = PCI_ERS_RESULT_NONE;
- 	struct eeh_rmv_data rmv_data =
- 		{LIST_HEAD_INIT(rmv_data.removed_vf_list), 0};
-+	int devices = 0;
- 
- 	bus = eeh_pe_bus_get(pe);
- 	if (!bus) {
-@@ -807,6 +849,23 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		return;
- 	}
- 
 +	/*
-+	 * When devices are hot-removed we might get an EEH due to
-+	 * a driver attempting to touch the MMIO space of a removed
-+	 * device. In this case we don't have a device to recover
-+	 * so suppress the event if we can't find any present devices.
-+	 *
-+	 * The hotplug driver should take care of tearing down the
-+	 * device itself.
++	 * Print the saved stack trace now that we've verified there's
++	 * something to recover.
 +	 */
-+	eeh_for_each_pe(pe, tmp_pe)
-+		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
-+			if (eeh_slot_presence_check(edev->pdev))
-+				devices++;
++	if (pe->trace_entries) {
++		void **ptrs = (void **) pe->stack_trace;
++		int i;
 +
-+	if (!devices)
-+		goto out; /* nothing to recover */
++		pr_err("EEH: Frozen PHB#%x-PE#%x detected\n",
++		       pe->phb->global_number, pe->addr);
 +
++		/* FIXME: Use the same format as dump_stack() */
++		pr_err("EEH: Call Trace:\n");
++		for (i = 0; i < pe->trace_entries; i++)
++			pr_err("EEH: [%pK] %pS\n", ptrs[i], ptrs[i]);
++
++		pe->trace_entries = 0;
++	}
++
+ 
  	eeh_pe_update_time_stamp(pe);
  	pe->freeze_count++;
- 	if (pe->freeze_count > eeh_max_freezes) {
-@@ -997,6 +1056,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		}
- 	}
+diff --git a/arch/powerpc/kernel/eeh_event.c b/arch/powerpc/kernel/eeh_event.c
+index e36653e5f76b..1d55486adb0f 100644
+--- a/arch/powerpc/kernel/eeh_event.c
++++ b/arch/powerpc/kernel/eeh_event.c
+@@ -40,7 +40,6 @@ static int eeh_event_handler(void * dummy)
+ {
+ 	unsigned long flags;
+ 	struct eeh_event *event;
+-	struct eeh_pe *pe;
  
-+out:
- 	/*
- 	 * Clean up any PEs without devices. While marked as EEH_PE_RECOVERYING
- 	 * we don't want to modify the PE tree structure so we do it here.
+ 	while (!kthread_should_stop()) {
+ 		if (wait_for_completion_interruptible(&eeh_eventlist_event))
+@@ -59,19 +58,10 @@ static int eeh_event_handler(void * dummy)
+ 			continue;
+ 
+ 		/* We might have event without binding PE */
+-		pe = event->pe;
+-		if (pe) {
+-			if (pe->type & EEH_PE_PHB)
+-				pr_info("EEH: Detected error on PHB#%x\n",
+-					 pe->phb->global_number);
+-			else
+-				pr_info("EEH: Detected PCI bus error on "
+-					"PHB#%x-PE#%x\n",
+-					pe->phb->global_number, pe->addr);
+-			eeh_handle_normal_event(pe);
+-		} else {
++		if (event->pe)
++			eeh_handle_normal_event(event->pe);
++		else
+ 			eeh_handle_special_event();
+-		}
+ 
+ 		kfree(event);
+ 	}
+@@ -126,8 +116,16 @@ int __eeh_send_failure_event(struct eeh_pe *pe)
+ 	 * This prevents the PE from being free()ed by a hotplug driver
+ 	 * while the PE is sitting in the event queue.
+ 	 */
+-	if (pe)
++	if (pe) {
++		/*
++		 * Save the current stack trace so we can dump it from the
++		 * event handler thread.
++		 */
++		pe->trace_entries = stack_trace_save(pe->stack_trace,
++					 ARRAY_SIZE(pe->stack_trace), 0);
++
+ 		eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
++	}
+ 
+ 	/* We may or may not be called in an interrupt context */
+ 	spin_lock_irqsave(&eeh_eventlist_lock, flags);
 -- 
 2.21.0
 
