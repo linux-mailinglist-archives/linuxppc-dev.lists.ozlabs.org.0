@@ -2,47 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828FCA6D8C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FB6A6D9F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:09:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NBfv4QknzDqlZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:07:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NBjp0MyGzDqlw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:09:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NBbz5V5yzDqTY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:04:46 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x83G4HnT010981;
- Tue, 3 Sep 2019 11:04:17 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x83G4F0O010980;
- Tue, 3 Sep 2019 11:04:15 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 3 Sep 2019 11:04:15 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v2 3/6] powerpc: Convert flush_icache_range & friends to C
-Message-ID: <20190903160415.GA9749@gate.crashing.org>
-References: <20190903052407.16638-1-alastair@au1.ibm.com>
- <20190903052407.16638-4-alastair@au1.ibm.com>
- <20190903130430.GC31406@gate.crashing.org>
- <d268ee78-607e-5eb3-ed89-d5c07f672046@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d268ee78-607e-5eb3-ed89-d5c07f672046@c-s.fr>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NBct07zFzDqcw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:05:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46NBcr6471z8swt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:05:32 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46NBcr4ypnz9sBF; Wed,  4 Sep 2019 02:05:32 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46NBcq4Wynz9sDB
+ for <linuxppc-dev@ozlabs.org>; Wed,  4 Sep 2019 02:05:31 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x83FvLmG025776
+ for <linuxppc-dev@ozlabs.org>; Tue, 3 Sep 2019 12:05:28 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2usu0bs1u5-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 03 Sep 2019 12:05:28 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Tue, 3 Sep 2019 17:05:26 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 3 Sep 2019 17:05:18 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x83G5HGQ55967932
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 Sep 2019 16:05:17 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E8586A4053;
+ Tue,  3 Sep 2019 16:05:16 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F33ABA404D;
+ Tue,  3 Sep 2019 16:05:14 +0000 (GMT)
+Received: from [9.85.81.203] (unknown [9.85.81.203])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  3 Sep 2019 16:05:14 +0000 (GMT)
+Subject: Re: [PATCH v5 02/31] powerpc/fadump: move internal code to a new file
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
+References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
+ <156630266000.8896.13603358349585118846.stgit@hbathini.in.ibm.com>
+ <871rwxskjo.fsf@mpe.ellerman.id.au>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Date: Tue, 3 Sep 2019 21:35:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <871rwxskjo.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19090316-0012-0000-0000-000003462A92
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090316-0013-0000-0000-000021807992
+Message-Id: <7823769a-9e2c-9ae7-d12e-7d5e42f51355@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-03_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909030164
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,79 +107,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alastair D'Silva <alastair@au1.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, alastair@d-silva.org, Qian Cai <cai@lca.pw>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Oliver <oohall@gmail.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 03, 2019 at 04:28:09PM +0200, Christophe Leroy wrote:
-> Le 03/09/2019 à 15:04, Segher Boessenkool a écrit :
-> >On Tue, Sep 03, 2019 at 03:23:57PM +1000, Alastair D'Silva wrote:
-> >>+	asm volatile(
-> >>+		"   mtctr %2;"
-> >>+		"   mtmsr %3;"
-> >>+		"   isync;"
-> >>+		"0: dcbst   0, %0;"
-> >>+		"   addi    %0, %0, %4;"
-> >>+		"   bdnz    0b;"
-> >>+		"   sync;"
-> >>+		"   mtctr %2;"
-> >>+		"1: icbi    0, %1;"
-> >>+		"   addi    %1, %1, %4;"
-> >>+		"   bdnz    1b;"
-> >>+		"   sync;"
-> >>+		"   mtmsr %5;"
-> >>+		"   isync;"
-> >>+		: "+r" (loop1), "+r" (loop2)
-> >>+		: "r" (nb), "r" (msr), "i" (bytes), "r" (msr0)
-> >>+		: "ctr", "memory");
-> >
-> >This outputs as one huge assembler statement, all on one line.  That's
-> >going to be fun to read or debug.
+
+
+On 03/09/19 4:39 PM, Michael Ellerman wrote:
+> Hari Bathini <hbathini@linux.ibm.com> writes:
+>> Make way for refactoring platform specific FADump code by moving code
+>> that could be referenced from multiple places to fadump-common.c file.
+>>
+>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>> ---
+>>  arch/powerpc/kernel/Makefile        |    2 
+>>  arch/powerpc/kernel/fadump-common.c |  140 ++++++++++++++++++++++++++++++++++
+>>  arch/powerpc/kernel/fadump-common.h |    8 ++
+>>  arch/powerpc/kernel/fadump.c        |  146 ++---------------------------------
+>>  4 files changed, 158 insertions(+), 138 deletions(-)
+>>  create mode 100644 arch/powerpc/kernel/fadump-common.c
 > 
-> Do you mean \n has to be added after the ; ?
+> I don't understand why we need fadump.c and fadump-common.c? They're
+> both common/shared across pseries & powernv aren't they?
 
-Something like that.  There is no really satisfying way for doing huge
-inline asm, and maybe that is a good thing ;-)
+The convention I tried to follow to have fadump-common.c shared between fadump.c,
+pseries & powernv code while pseries & powernv code take callback requests from
+fadump.c and use fadump-common.c (shared by both platforms), if necessary to fullfil
+those requests...
 
-Often people write \n\t at the end of each line of inline asm.  This works
-pretty well (but then there are labels, oh joy).
+> By the end of the series we end up with 149 lines in fadump-common.c
+> which seems like a waste of time. Just put it all in fadump.c.
 
-> >loop1 and/or loop2 can be assigned the same register as msr0 or nb.  They
-> >need to be made earlyclobbers.  (msr is fine, all of its reads are before
-> >any writes to loop1 or loop2; and bytes is fine, it's not a register).
+Yeah. Probably not worth a new C file. Will just have two separate headers. One for
+internal code and one for interfacing with other modules...
+
+[...]
+
+>> + * Copyright 2019, IBM Corp.
+>> + * Author: Hari Bathini <hbathini@linux.ibm.com>
 > 
-> Can you explicit please ? Doesn't '+r' means that they are input and 
-> output at the same time ?
+> These can just be:
+> 
+>  * Copyright 2011, Mahesh Salgaonkar, IBM Corporation.
+>  * Copyright 2019, Hari Bathini, IBM Corporation.
+> 
 
-That is what + means, yes -- that this output is an input as well.  It is
-the same to write
+Sure.
 
-  asm("mov %1,%0 ; mov %0,42" : "+r"(x), "=r"(y));
-or to write
-  asm("mov %1,%0 ; mov %0,42" : "=r"(x), "=r"(y) : "0"(x));
+>> + */
+>> +
+>> +#undef DEBUG
+> 
+> Don't undef DEBUG please.
+> 
 
-(So not "at the same time" as in "in the same machine instruction", but
-more loosely, as in "in the same inline asm statement").
+Sorry! Seeing such thing in most files, I thought this was the convention. Will drop
+this change in all the new files I added.
 
-> "to be made earlyclobbers", what does this means exactly ? How to do that ?
+>> +#define pr_fmt(fmt) "fadump: " fmt
+>> +
+>> +#include <linux/memblock.h>
+>> +#include <linux/elf.h>
+>> +#include <linux/mm.h>
+>> +#include <linux/crash_core.h>
+>> +
+>> +#include "fadump-common.h"
+>> +
+>> +void *fadump_cpu_notes_buf_alloc(unsigned long size)
+>> +{
+>> +	void *vaddr;
+>> +	struct page *page;
+>> +	unsigned long order, count, i;
+>> +
+>> +	order = get_order(size);
+>> +	vaddr = (void *)__get_free_pages(GFP_KERNEL|__GFP_ZERO, order);
+>> +	if (!vaddr)
+>> +		return NULL;
+>> +
+>> +	count = 1 << order;
+>> +	page = virt_to_page(vaddr);
+>> +	for (i = 0; i < count; i++)
+>> +		SetPageReserved(page + i);
+>> +	return vaddr;
+>> +}
+> 
+> I realise you're just moving this code, but why do we need all this hand
+> rolled allocation stuff?
 
-You write &, like "+&r" in this case.  It means the machine code writes
-to this register before it has consumed all asm inputs (remember, GCC
-does not understand (or even parse!) the assembler string).
+Yeah, I think alloc_pages_exact() may be better here. Mahesh, am I missing something?
 
-So just
+- Hari
 
-		: "+&r" (loop1), "+&r" (loop2)
-
-will do.  (Why are they separate though?  It could just be one loop var).
-
-
-Segher
