@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16421A66B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:41:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDF5A66B6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:44:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N3RL47yhzDqjM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:41:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N3Tv4kXyzDq9j
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:44:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="MLHhfcpq"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="W0gwVS/B"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tj2BwTzDqbg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:17:01 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id q21so5454160pfn.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:17:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tl5KXqzDqbc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:17:03 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id y22so4857330pfr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:17:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=vWF7Y9ZizAHSa3ZtOg2E2ccF/TTT1ikuIOmayF/x5Tc=;
- b=MLHhfcpqaOT/06d7q47z/2i6+pyv+xP3MQbnbEDRpCZl0NCJAaMvV0GlfDK1yNxs+L
- SEUjpQXrDmCGqJ/T+uZ6QsMrk4MHdSap9z01THqtpTqfLBXm0+wy39pG+u3/5DJ8Y0uO
- ztQbMvTh2ilyPojrKvbmPLuXdYzGTaHUDMfAgk3CZCh8AotLU91UnEXUdmY4NRRkod4i
- gxs6AeZSvGF5L4rjfHgwyCwlCngPa68StGTj9h7HJ+vuXNlz5VaQcrGnyE3yXDjB84Sb
- zA0KNk4dLZkMihFF0U70CIY7Q/bawQFGo1I9Px+afx/OFQ9U5DGPgsKtSSSNiSybduSP
- degw==
+ bh=I00wDD/LIg61EwSKWX4EoZQWKAlTLND9gzcu1ZWR0hc=;
+ b=W0gwVS/BYObQMD9cymImic6i4HRFLRqR0hkr5y4YOkzQ318flN7bWFxRQNQmHVMcqf
+ G0DIkGQgbsxYWUDpZvzKIrVrUvrF1GnCwFOZoqb3fdgY5m1QCdFL3bOmjIPUrbWlMRZV
+ Jfldnbh6/aHS+mzd4jHvV36t5/TsgVX6cZRqverJTi4ZRs17nhtQvMOr63GFIbbO4Gdf
+ CuK16d4XalaSgpN1fom3f8+hTqV5BPNBeX1D/BSC40demvwIejKE7Lvs5vsHDVPFckkO
+ oKOtId8iG0802/Wa4yQVEBYTjgeT4+UXRNy98gIipJOOhjwi2GHtlQDJ0oToLafu6BA+
+ GwSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=vWF7Y9ZizAHSa3ZtOg2E2ccF/TTT1ikuIOmayF/x5Tc=;
- b=C0PfFNoOkfPcC0BaVgu1Dd3x0J2sstGJOuPS6NcSgSAW1AIt+pzJVTYLPo4MIDnxIL
- f5uv6p06YWEUCLjbd/L0pjwGIckghOahS/TxdHjpC5fLm7JcHN+bZqJy6xbQKNUs9O5Q
- L3aSqxQDVJ07daAaxCUM19R31wzYxMETuPgdWIIA+W5nSg3gOGcsjAp8sNCGixyPxr1G
- wpE+Irtn3NlqQUJaO6kVxHXP4ZbgXJFA5SEFIfguvDozZo5gdQ69ra1UoILwfeVRBrKo
- qjjM8kHliyktsK+12QYpiaAIbrf6bahpeBgWAh2J+XCT9iG7AZA/nfZ4J5n3aODepJLU
- PeMA==
-X-Gm-Message-State: APjAAAWEE6DEj799av8dz2AUB8/xYu+6YzIWErHWrrHH68Ou+pHq9IE+
- UHeakMMYclwUkcGBZ0xaSP1ITDhr
-X-Google-Smtp-Source: APXvYqzn+ao6enIwmcg6aNxJeoeZzJSc9n9rrzzPK5Ys06FWxqG8M3AvL86woBqXYTf+ElHeTGlafw==
-X-Received: by 2002:a17:90a:ff08:: with SMTP id
- ce8mr7548182pjb.123.1567505818659; 
- Tue, 03 Sep 2019 03:16:58 -0700 (PDT)
+ bh=I00wDD/LIg61EwSKWX4EoZQWKAlTLND9gzcu1ZWR0hc=;
+ b=G4keujYKBB1QO9Ue4y2KIBQS/92077yAC8wN2nJq8L1BdGXhEISECd0dzSkPMqzCim
+ lW8hELJvVc6+OfShVcHoIUCLZ85j5Fbxu9mGTUf8qr+7KY0WZgjYjF48XenU7Kornt57
+ NcbdRWcSs6b5RrKx8qpk3Cvw4nEAvk/oNT/SD+oe26Un2iNHjc8XS7oijds8nSK3ynGv
+ ApZQFh8VecnjgIt5jHWRL9Iug73kVwSZW8ZIga512czsg3tIvYhFm4OfzpnRgRTC2xhK
+ /SYXTD1QI6JJ946+meyYucXdDDxiCIW9BS7R+N8Jrx7K4puLLoLrkS9ViNlENYI/oeQD
+ ud0w==
+X-Gm-Message-State: APjAAAXyMsN/+Ji2cIKnn6o5LKj/jeFG6rX8L+iKSKVUsWZ6c3I91RPo
+ 4aEIytpqrfE2cpUjuFlvxi73KSNB
+X-Google-Smtp-Source: APXvYqypcKWXZ9xFvQtIQnE7M89u0HDtNO+6FXCieFLgJEfHv5pb3TixPJfqRxisPZliXQH8ZdDyfw==
+X-Received: by 2002:a62:8246:: with SMTP id w67mr40468261pfd.226.1567505820752; 
+ Tue, 03 Sep 2019 03:17:00 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.16.56
+ by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.16.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 03:16:58 -0700 (PDT)
+ Tue, 03 Sep 2019 03:17:00 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 10/14] pci-hotplug/pnv_php: Add attention indicator support
-Date: Tue,  3 Sep 2019 20:16:01 +1000
-Message-Id: <20190903101605.2890-11-oohall@gmail.com>
+Subject: [PATCH 11/14] powerpc/eeh: Set attention indicator while recovering
+Date: Tue,  3 Sep 2019 20:16:02 +1000
+Message-Id: <20190903101605.2890-12-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190903101605.2890-1-oohall@gmail.com>
 References: <20190903101605.2890-1-oohall@gmail.com>
@@ -84,42 +83,76 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pnv_php is generally used with PCIe bridges which provide a native
-interface for setting the attention and power indicator LEDs. Wire up
-those interfaces even if firmware does not have support for them (yet...)
+I am the RAS team. Hear me roar.
+
+Roar.
+
+On a more serious note, being able to locate failed devices can be helpful.
+Set the attention indicator if the slot supports it once we've determined
+the device is present and only clear it if the device is fully recovered.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- drivers/pci/hotplug/pnv_php.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/eeh_driver.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 6fdf8b74cb0a..d7b2b47bc33e 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -419,9 +419,21 @@ static int pnv_php_get_attention_state(struct hotplug_slot *slot, u8 *state)
- static int pnv_php_set_attention_state(struct hotplug_slot *slot, u8 state)
- {
- 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
-+	struct pci_dev *bridge = php_slot->pdev;
-+	u16 new, mask;
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 0d34cc12c529..80bd157fcb45 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -803,6 +803,10 @@ static bool eeh_slot_presence_check(struct pci_dev *pdev)
+ 	if (!ops || !ops->get_adapter_status)
+ 		return true;
  
--	/* FIXME: Make it real once firmware supports it */
- 	php_slot->attention_state = state;
-+	if (!bridge)
-+		return 0;
++	/* set the attention indicator while we've got the slot ops */
++	if (ops->set_attention_status)
++		ops->set_attention_status(slot->hotplug, 1);
 +
-+	mask = PCI_EXP_SLTCTL_AIC;
-+
-+	if (state)
-+		new = PCI_EXP_SLTCTL_ATTN_IND_ON;
-+	else
-+		new = PCI_EXP_SLTCTL_ATTN_IND_OFF;
-+
-+	pcie_capability_clear_and_set_word(bridge, PCI_EXP_SLTCTL, mask, new);
- 
- 	return 0;
+ 	rc = ops->get_adapter_status(slot->hotplug, &state);
+ 	if (rc)
+ 		return true;
+@@ -810,6 +814,28 @@ static bool eeh_slot_presence_check(struct pci_dev *pdev)
+ 	return !!state;
  }
+ 
++static void eeh_clear_slot_attention(struct pci_dev *pdev)
++{
++	const struct hotplug_slot_ops *ops;
++	struct pci_slot *slot;
++
++	if (!pdev)
++		return;
++
++	if (pdev->error_state == pci_channel_io_perm_failure)
++		return;
++
++	slot = pdev->slot;
++	if (!slot || !slot->hotplug)
++		return;
++
++	ops = slot->hotplug->ops;
++	if (!ops || !ops->set_attention_status)
++		return;
++
++	ops->set_attention_status(slot->hotplug, 0);
++}
++
+ /**
+  * eeh_handle_normal_event - Handle EEH events on a specific PE
+  * @pe: EEH PE - which should not be used after we return, as it may
+@@ -1098,6 +1124,12 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 	 * we don't want to modify the PE tree structure so we do it here.
+ 	 */
+ 	eeh_pe_cleanup(pe);
++
++	/* clear the slot attention LED for all recovered devices */
++	eeh_for_each_pe(pe, tmp_pe)
++		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
++			eeh_clear_slot_attention(edev->pdev);
++
+ 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
+ }
+ 
 -- 
 2.21.0
 
