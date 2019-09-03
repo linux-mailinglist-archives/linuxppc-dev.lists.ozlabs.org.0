@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDF5A66B6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70486A66B8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 12:46:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46N3Tv4kXyzDq9j
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:44:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46N3XH2H8HzDqB2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 20:46:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="W0gwVS/B"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="M0Y1WYFA"; 
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tl5KXqzDqbc
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:17:03 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id y22so4857330pfr.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:17:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46N2tn65NRzDqYk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 20:17:05 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id t11so1601667plo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 03:17:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=I00wDD/LIg61EwSKWX4EoZQWKAlTLND9gzcu1ZWR0hc=;
- b=W0gwVS/BYObQMD9cymImic6i4HRFLRqR0hkr5y4YOkzQ318flN7bWFxRQNQmHVMcqf
- G0DIkGQgbsxYWUDpZvzKIrVrUvrF1GnCwFOZoqb3fdgY5m1QCdFL3bOmjIPUrbWlMRZV
- Jfldnbh6/aHS+mzd4jHvV36t5/TsgVX6cZRqverJTi4ZRs17nhtQvMOr63GFIbbO4Gdf
- CuK16d4XalaSgpN1fom3f8+hTqV5BPNBeX1D/BSC40demvwIejKE7Lvs5vsHDVPFckkO
- oKOtId8iG0802/Wa4yQVEBYTjgeT4+UXRNy98gIipJOOhjwi2GHtlQDJ0oToLafu6BA+
- GwSA==
+ bh=QkBEvx4jjUC5SgtRKMxgodSfEvD5fInmplDhp4aotmo=;
+ b=M0Y1WYFAmPtpvzVJZ9McH1q1WWRiOkAhN6nSjPn8+ImwKue3jyRN+OFLkOBnuBTItq
+ S+vH66vt5xoDb4I4DrozI9eja5zz3ads8Rdy2Fu7Q2YZx3Gbv8ALPa9DtlbgDiUTw+dd
+ T+R39ZFsxkfaGi0jo1zed6WMskox5T3AxnsyxDCMS15iIgM5Twls0YtFKQ2zlGzzxGzo
+ 1x4yrk/DPN6/LTKJUFxtzPxDYsIZSXwA475MMWqFcfi/FbM9MHFnVizUdC+zYn2mEFvb
+ p8nuj54pP3w+cW6ZfWrKKxjTnRLABnK+f2pso1vwTJJD+chGb81Hb2iZiQqi4tVid4td
+ 1VkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=I00wDD/LIg61EwSKWX4EoZQWKAlTLND9gzcu1ZWR0hc=;
- b=G4keujYKBB1QO9Ue4y2KIBQS/92077yAC8wN2nJq8L1BdGXhEISECd0dzSkPMqzCim
- lW8hELJvVc6+OfShVcHoIUCLZ85j5Fbxu9mGTUf8qr+7KY0WZgjYjF48XenU7Kornt57
- NcbdRWcSs6b5RrKx8qpk3Cvw4nEAvk/oNT/SD+oe26Un2iNHjc8XS7oijds8nSK3ynGv
- ApZQFh8VecnjgIt5jHWRL9Iug73kVwSZW8ZIga512czsg3tIvYhFm4OfzpnRgRTC2xhK
- /SYXTD1QI6JJ946+meyYucXdDDxiCIW9BS7R+N8Jrx7K4puLLoLrkS9ViNlENYI/oeQD
- ud0w==
-X-Gm-Message-State: APjAAAXyMsN/+Ji2cIKnn6o5LKj/jeFG6rX8L+iKSKVUsWZ6c3I91RPo
- 4aEIytpqrfE2cpUjuFlvxi73KSNB
-X-Google-Smtp-Source: APXvYqypcKWXZ9xFvQtIQnE7M89u0HDtNO+6FXCieFLgJEfHv5pb3TixPJfqRxisPZliXQH8ZdDyfw==
-X-Received: by 2002:a62:8246:: with SMTP id w67mr40468261pfd.226.1567505820752; 
- Tue, 03 Sep 2019 03:17:00 -0700 (PDT)
+ bh=QkBEvx4jjUC5SgtRKMxgodSfEvD5fInmplDhp4aotmo=;
+ b=Al0zV864Xfe7w7/WIgz8dPcdDqySv26WcwnEwx9SC5bX/79+amKEnYsE7IavrCEWt5
+ 5Pf2LwyG2ya9u4j2DTEQMTVLSwbxdFmoRhda6wzT9CSQndhf4jhu6xNRRPlI+78GpbeI
+ 6wgEg2GmGioJr2zpMz/K8g3FqlpxLqsB/TGXTkIsmJnb9nWnS3MdkEnr2/CvvC2jdgYH
+ GPLls2FQqbHlzgfQQ+8WHOO1ZEzmBZIPx4fejMUW468lUdta9r8WpdZG/6KPtF7lDepO
+ Wa91f6/2iF3CrxP6aWEbCMp6UMRwkNyA03LTBRs1Ybej1y9Ayxp4uBs2DbF2LjKbj0TJ
+ EKgg==
+X-Gm-Message-State: APjAAAXS1/19yLRWKdqyMx4rAqy8twMTBLQJEo/ObEr4y/52XV2Ip1zy
+ 2xz/888qoJXvKiJMXghANi8RMnjk
+X-Google-Smtp-Source: APXvYqxuvqlq5+Y7NHHdS4ITXjLliLBqV2SwUkKlTfO+QlCpwNN+Z9hw12ZN2GF/VN+0IMN2KXWgog==
+X-Received: by 2002:a17:902:4581:: with SMTP id
+ n1mr35234858pld.310.1567505822864; 
+ Tue, 03 Sep 2019 03:17:02 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.16.58
+ by smtp.gmail.com with ESMTPSA id e24sm19676701pgk.21.2019.09.03.03.17.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 03:17:00 -0700 (PDT)
+ Tue, 03 Sep 2019 03:17:02 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 11/14] powerpc/eeh: Set attention indicator while recovering
-Date: Tue,  3 Sep 2019 20:16:02 +1000
-Message-Id: <20190903101605.2890-12-oohall@gmail.com>
+Subject: [PATCH 12/14] powerpc/eeh: Add debugfs interface to run an EEH check
+Date: Tue,  3 Sep 2019 20:16:03 +1000
+Message-Id: <20190903101605.2890-13-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190903101605.2890-1-oohall@gmail.com>
 References: <20190903101605.2890-1-oohall@gmail.com>
@@ -83,76 +84,108 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I am the RAS team. Hear me roar.
+Detecting an frozen EEH PE usually occurs when an MMIO load returns a 0xFFs
+response. When performing EEH testing using the EEH error injection feature
+available on some platforms there is no simple way to kick-off the kernel's
+recovery process since any accesses from userspace (usually /dev/mem) will
+bypass the MMIO helpers in the kernel which check if a 0xFF response is due
+to an EEH freeze or not.
 
-Roar.
+If a device contains a 0xFF byte in it's config space it's possible to
+trigger the recovery process via config space read from userspace, but this
+is not a reliable method. If a driver is bound to the device an in use it
+will frequently trigger the MMIO check, but this is also inconsistent.
 
-On a more serious note, being able to locate failed devices can be helpful.
-Set the attention indicator if the slot supports it once we've determined
-the device is present and only clear it if the device is fully recovered.
+To solve these problems this patch adds a debugfs file called
+"eeh_dev_check" which accepts a <domain>:<bus>:<dev>.<fn> string and runs
+eeh_dev_check_failure() on it. This is the same check that's done when the
+kernel gets a 0xFF result from an config or MMIO read with the added
+benifit that it can be reliably triggered from userspace.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/kernel/eeh_driver.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ arch/powerpc/kernel/eeh.c | 61 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index 0d34cc12c529..80bd157fcb45 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -803,6 +803,10 @@ static bool eeh_slot_presence_check(struct pci_dev *pdev)
- 	if (!ops || !ops->get_adapter_status)
- 		return true;
- 
-+	/* set the attention indicator while we've got the slot ops */
-+	if (ops->set_attention_status)
-+		ops->set_attention_status(slot->hotplug, 1);
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 46d17817b438..ace1c5a6b8ed 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1873,6 +1873,64 @@ static const struct file_operations eeh_force_recover_fops = {
+ 	.llseek	= no_llseek,
+ 	.write	= eeh_force_recover_write,
+ };
 +
- 	rc = ops->get_adapter_status(slot->hotplug, &state);
- 	if (rc)
- 		return true;
-@@ -810,6 +814,28 @@ static bool eeh_slot_presence_check(struct pci_dev *pdev)
- 	return !!state;
- }
- 
-+static void eeh_clear_slot_attention(struct pci_dev *pdev)
++static ssize_t eeh_debugfs_dev_usage(struct file *filp,
++				char __user *user_buf,
++				size_t count, loff_t *ppos)
 +{
-+	const struct hotplug_slot_ops *ops;
-+	struct pci_slot *slot;
++	static const char usage[] = "input format: <domain>:<bus>:<dev>.<fn>\n";
 +
-+	if (!pdev)
-+		return;
-+
-+	if (pdev->error_state == pci_channel_io_perm_failure)
-+		return;
-+
-+	slot = pdev->slot;
-+	if (!slot || !slot->hotplug)
-+		return;
-+
-+	ops = slot->hotplug->ops;
-+	if (!ops || !ops->set_attention_status)
-+		return;
-+
-+	ops->set_attention_status(slot->hotplug, 0);
++	return simple_read_from_buffer(user_buf, count, ppos,
++				       usage, sizeof(usage) - 1);
 +}
 +
- /**
-  * eeh_handle_normal_event - Handle EEH events on a specific PE
-  * @pe: EEH PE - which should not be used after we return, as it may
-@@ -1098,6 +1124,12 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 	 * we don't want to modify the PE tree structure so we do it here.
- 	 */
- 	eeh_pe_cleanup(pe);
++static ssize_t eeh_dev_check_write(struct file *filp,
++				const char __user *user_buf,
++				size_t count, loff_t *ppos)
++{
++	uint32_t domain, bus, dev, fn;
++	struct pci_dev *pdev;
++	struct eeh_dev *edev;
++	char buf[20];
++	int ret;
 +
-+	/* clear the slot attention LED for all recovered devices */
-+	eeh_for_each_pe(pe, tmp_pe)
-+		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
-+			eeh_clear_slot_attention(edev->pdev);
++	ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
++	if (!ret)
++		return -EFAULT;
 +
- 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
- }
++	ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
++	if (ret != 4) {
++		pr_err("%s: expected 4 args, got %d\n", __func__, ret);
++		return -EINVAL;
++	}
++
++	pdev = pci_get_domain_bus_and_slot(domain, bus, (dev << 3) | fn);
++	if (!pdev)
++		return -ENODEV;
++
++	edev = pci_dev_to_eeh_dev(pdev);
++	if (!edev) {
++		pci_err(pdev, "No eeh_dev for this device!\n");
++		pci_dev_put(pdev);
++		return -ENODEV;
++	}
++
++	ret = eeh_dev_check_failure(edev);
++	pci_info(pdev, "eeh_dev_check_failure(%04x:%02x:%02x.%01x) = %d\n",
++			domain, bus, dev, fn, ret);
++
++	pci_dev_put(pdev);
++
++	return count;
++}
++
++static const struct file_operations eeh_dev_check_fops = {
++	.open	= simple_open,
++	.llseek	= no_llseek,
++	.write	= eeh_dev_check_write,
++	.read   = eeh_debugfs_dev_usage,
++};
++
+ #endif
  
+ static int __init eeh_init_proc(void)
+@@ -1888,6 +1946,9 @@ static int __init eeh_init_proc(void)
+ 		debugfs_create_bool("eeh_disable_recovery", 0600,
+ 				powerpc_debugfs_root,
+ 				&eeh_debugfs_no_recover);
++		debugfs_create_file_unsafe("eeh_dev_check", 0600,
++				powerpc_debugfs_root, NULL,
++				&eeh_dev_check_fops);
+ 		debugfs_create_file_unsafe("eeh_force_recover", 0600,
+ 				powerpc_debugfs_root, NULL,
+ 				&eeh_force_recover_fops);
 -- 
 2.21.0
 
