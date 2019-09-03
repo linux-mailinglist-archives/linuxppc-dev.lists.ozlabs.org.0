@@ -2,87 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4985A5E9E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 02:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C48EA5EE7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 03:35:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Mnyv6Y3yzDqfr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 10:34:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46MqK95BFQzDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 11:35:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=popple.id.au
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alistair@popple.id.au; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.15.43; helo=eur01-db5-obe.outbound.protection.outlook.com;
+ envelope-from=xiaowei.bao@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=popple.id.au
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="A4TG8WeB"; 
+ dkim-atps=neutral
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr150043.outbound.protection.outlook.com [40.107.15.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Mnx60yZ3zDqTj
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 10:33:11 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x830W2fT141597
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 2 Sep 2019 20:33:07 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2us8327xhq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Sep 2019 20:33:06 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alistair@popple.id.au>;
- Tue, 3 Sep 2019 01:33:05 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 3 Sep 2019 01:33:02 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x830X2VG45941084
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Sep 2019 00:33:02 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE61511C05C;
- Tue,  3 Sep 2019 00:33:01 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 026E711C04C;
- Tue,  3 Sep 2019 00:33:01 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  3 Sep 2019 00:33:00 +0000 (GMT)
-Received: from townsend.localnet (unknown [9.102.39.70])
- (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8DD3DA00EC;
- Tue,  3 Sep 2019 10:32:57 +1000 (AEST)
-From: Alistair Popple <alistair@popple.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 6/6] powerpc/64s/radix: introduce options to disable use
- of the tlbie instruction
-Date: Tue, 03 Sep 2019 10:32:56 +1000
-In-Reply-To: <20190902152931.17840-7-npiggin@gmail.com>
-References: <20190902152931.17840-1-npiggin@gmail.com>
- <20190902152931.17840-7-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46MqHB5z62zDqbk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2019 11:33:54 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lVrqxpoDR+4TrGVjUqQ+gEGhPC1E2nx1mxw3LVU9Jnd+lEZSPp/DNSQEAup8qhzjVsx8ryfQ4CRMfUj9dlpI7my7MrKnFzKihwJKzPONKP5xqYnnP70xpvFYeuWGGnqixHu7azMdTWtohZI+EKhpJnwaaW1DcBHlcd2EMgklkXYNnEFze0qkFWL7+jZad8Rye9ZPBZjHANKwG6ICt2ISXQD6s8Tz+ePHhGcoI/kW7pvpHaFO4e4jJlrQqiRTF395HP1r/EW0wMtrCrH5dMAdI5cRuRSnVyoqFrvcOXxBRunsepAeL17ibSl/UJ1tgkSfO12Mfwf0O3WnlBTD2QPMDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/DOADx+psDt4dToHwJNRvHYgrc8d4scsqS0URHGsMqY=;
+ b=UZpcYBLqQIN3FRxatUTbYJDYOmChQeelrWHfArXAabCqVUprIuCrt6fRg+cybvK0HaqvT6bscUfKxdvH6qtWe6Ul6uOpkH6p9bVnC2s039te46tYLEcU4ofL7acupyunl13/HTLxzUDeRx0wH0UM8HbScaiBcAvB/Jws8Lzoism3uUYQvoNQfjFCPOCsVKMkAPiOWcW+kAVORFecaGuhQjb27odT7cZjLKyrp4F/1CJcekdmFeOzCB+H7l7XVtsr81c9j044RUk22o+U1vHJ2B2UFrlZu2O2mwCVNST3xMtqL1NUkt0/GXFWu5FtySE813M/oONC/bo4C6v49lDFoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/DOADx+psDt4dToHwJNRvHYgrc8d4scsqS0URHGsMqY=;
+ b=A4TG8WeBO2t4888eRSpymDZNSiJEgCmZ0BQKRwKdBuez+zUywSPSiHdBZEV2wHI5GcHsRbiSTxKMRKOF9guYyt5h1Sa4vsdgCN6bE8EGzffm3pBHndsIJqX1lJX3G42RK1N4Nh622p8w8i53VQSw5GvxeU2UCdSFYce8zunZy+8=
+Received: from AM5PR04MB3299.eurprd04.prod.outlook.com (10.173.255.158) by
+ AM5PR04MB3250.eurprd04.prod.outlook.com (10.173.254.151) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2220.20; Tue, 3 Sep 2019 01:33:48 +0000
+Received: from AM5PR04MB3299.eurprd04.prod.outlook.com
+ ([fe80::5dd3:ddc9:411a:db41]) by AM5PR04MB3299.eurprd04.prod.outlook.com
+ ([fe80::5dd3:ddc9:411a:db41%3]) with mapi id 15.20.2220.022; Tue, 3 Sep 2019
+ 01:33:48 +0000
+From: Xiaowei Bao <xiaowei.bao@nxp.com>
+To: Andrew Murray <andrew.murray@arm.com>
+Subject: RE: [PATCH v3 05/11] dt-bindings: pci: layerscape-pci: add compatible
+ strings for ls1088a and ls2088a
+Thread-Topic: [PATCH v3 05/11] dt-bindings: pci: layerscape-pci: add
+ compatible strings for ls1088a and ls2088a
+Thread-Index: AQHVYT5jmPfE5iaogkycau2MGZNxFacYUkAAgADaAhA=
+Date: Tue, 3 Sep 2019 01:33:47 +0000
+Message-ID: <AM5PR04MB329957D1325CED60804D0C08F5B90@AM5PR04MB3299.eurprd04.prod.outlook.com>
+References: <20190902031716.43195-1-xiaowei.bao@nxp.com>
+ <20190902031716.43195-6-xiaowei.bao@nxp.com>
+ <20190902123140.GI9720@e119886-lin.cambridge.arm.com>
+In-Reply-To: <20190902123140.GI9720@e119886-lin.cambridge.arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=xiaowei.bao@nxp.com; 
+x-originating-ip: [119.31.174.73]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 9e2a9617-5fc6-4c20-f837-08d7300ec47e
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:AM5PR04MB3250; 
+x-ms-traffictypediagnostic: AM5PR04MB3250:|AM5PR04MB3250:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM5PR04MB3250A437F9476D024EF62E7BF5B90@AM5PR04MB3250.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 01494FA7F7
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(136003)(396003)(346002)(376002)(366004)(39860400002)(13464003)(199004)(189003)(11346002)(7736002)(25786009)(4326008)(8676002)(76116006)(66946007)(9686003)(305945005)(6436002)(66446008)(66476007)(66556008)(64756008)(52536014)(186003)(5660300002)(6246003)(81166006)(81156014)(54906003)(256004)(14444005)(8936002)(74316002)(66066001)(2906002)(53936002)(316002)(6116002)(3846002)(71200400001)(476003)(86362001)(55016002)(33656002)(446003)(229853002)(486006)(6916009)(44832011)(14454004)(7696005)(6506007)(53546011)(76176011)(478600001)(102836004)(99286004)(26005)(7416002)(71190400001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:AM5PR04MB3250;
+ H:AM5PR04MB3299.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: D4QgtriG5I47aYMdGldkYwh7Ir+CHuoSX+PqsZqd6QFnnVaGv+yGdXulnD/J4qO88bhWwjeagHkrJ0d883/jWkZ4ABN2EKoQpcKrVzzc0gfZj2/0mODj3JChrd47HJtHK2rzd6eFUjytQGWfml4W05Af/8Cg8xINjwIqAxrdXDUKyQZgs3U1otnE59mq7AYQaMRySMky/Lmlyj6sPsfpUo1O0kE5GW6N+/ws3L+snukBbv1+/1gg2eFQo41sL63eRxKdDfxYx7t0Ls+mfMoupz+37ONOpPay2xKXSrPdBpiFsJPMgmwvRNw1ZGq7RO3gkxSexdx+czbuVAsdDy/txjClpBTnMJRV9RGrBY2iSSEX9dZqXQYRJ28envDs7qqhY6HjTNm4Hxt2WWvQcANMuL7wB1YkQ6OF+AjoWa3Fg38=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-TM-AS-GCONF: 00
-x-cbid: 19090300-0028-0000-0000-00000396DB5B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090300-0029-0000-0000-00002459269E
-Message-Id: <2435845.pBas4ZpoTR@townsend>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-02_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1034 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=388 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909030002
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e2a9617-5fc6-4c20-f837-08d7300ec47e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2019 01:33:47.9426 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: t11BTwtdiL4iWOpMHEWGXLpWmc4Yrog+ohSGFvnOeQj1pv+KW5e0gm6uPD4nMzMW0/DTYbdqNULec8+CH6j8XQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR04MB3250
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,542 +108,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, Roy Zang <roy.zang@nxp.com>,
+ "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+ "arnd@arndb.de" <arnd@arndb.de>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
+ "Z.q. Hou" <zhiqiang.hou@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kishon@ti.com" <kishon@ti.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "gustavo.pimentel@synopsys.com" <gustavo.pimentel@synopsys.com>,
+ Leo Li <leoyang.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nick,
-
-On Tuesday, 3 September 2019 1:29:31 AM AEST Nicholas Piggin wrote:
-> Introduce two options to control the use of the tlbie instruction. A
-> boot time option which completely disables the kernel using the
-> instruction, this is currently incompatible with HASH MMU, KVM, and
-> coherent accelerators.
-
-Some accelerators (eg. cxl, ocxl, npu) call mm_context_add_copro() to force 
-global TLB invalidations:
-
-static inline void mm_context_add_copro(struct mm_struct *mm)
-{
-        /*
-         * If any copro is in use, increment the active CPU count
-         * in order to force TLB invalidations to be global as to
-         * propagate to the Nest MMU.
-         */
-        if (atomic_inc_return(&mm->context.copros) == 1)
-                inc_mm_active_cpus(mm);
-}
-
-Admittedly I haven't dug into all the details of this patch but it sounds like 
-it might break the above if TLBIE is disabled. Do you think we should add a 
-WARN_ON if mm_context_add_copro() is called with TLBIE disabled? Or perhaps 
-even force TLBIE to be re-enabled if it is called with it disabled?
-
-- Alistair
-
-> And a debugfs option can be switched at runtime and avoids using tlbie
-> for invalidating CPU TLBs for normal process and kernel address
-> mappings. Coherent accelerators are still managed with tlbie, as will
-> KVM partition scope translations.
-> 
-> Cross-CPU TLB flushing is implemented with IPIs and tlbiel. This is a
-> basic implementation which does not attempt to make any optimisation
-> beyond the tlbie implementation.
-> 
-> This is useful for performance testing among other things. For example
-> in certain situations on large systems, using IPIs may be faster than
-> tlbie as they can be directed rather than broadcast. Later we may also
-> take advantage of the IPIs to do more interesting things such as trim
-> the mm cpumask more aggressively.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  .../admin-guide/kernel-parameters.txt         |   4 +
->  arch/powerpc/include/asm/book3s/64/tlbflush.h |   9 +
->  arch/powerpc/kvm/book3s_hv.c                  |   6 +
->  arch/powerpc/mm/book3s64/pgtable.c            |  47 +++++
->  arch/powerpc/mm/book3s64/radix_tlb.c          | 190 ++++++++++++++++--
->  drivers/misc/cxl/main.c                       |   4 +
->  drivers/misc/ocxl/main.c                      |   4 +
->  7 files changed, 246 insertions(+), 18 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/
-admin-guide/kernel-parameters.txt
-> index d3cbb3ae62b6..65ae16549aa3 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -860,6 +860,10 @@
->  	disable_radix	[PPC]
->  			Disable RADIX MMU mode on POWER9
->  
-> +	disable_tlbie	[PPC]
-> +			Disable TLBIE instruction. Currently does not work
-> +			with KVM, with HASH MMU, or with coherent accelerators.
-> +
->  	disable_cpu_apicid= [X86,APIC,SMP]
->  			Format: <int>
->  			The number of initial APIC ID for the
-> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/
-include/asm/book3s/64/tlbflush.h
-> index ebf572ea621e..7aa8195b6cff 100644
-> --- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
-> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
-> @@ -162,4 +162,13 @@ static inline void flush_tlb_pgtable(struct mmu_gather 
-*tlb, unsigned long addre
->  
->  	radix__flush_tlb_pwc(tlb, address);
->  }
-> +
-> +extern bool tlbie_capable;
-> +extern bool tlbie_enabled;
-> +
-> +static inline bool cputlb_use_tlbie(void)
-> +{
-> +	return tlbie_enabled;
-> +}
-> +
->  #endif /*  _ASM_POWERPC_BOOK3S_64_TLBFLUSH_H */
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index cde3f5a4b3e4..3cdaa2a09a19 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -5462,6 +5462,12 @@ static int kvmppc_radix_possible(void)
->  static int kvmppc_book3s_init_hv(void)
->  {
->  	int r;
-> +
-> +	if (!tlbie_capable) {
-> +		pr_err("KVM-HV: Host does not support TLBIE\n");
-> +		return -ENODEV;
-> +	}
-> +
->  	/*
->  	 * FIXME!! Do we need to check on all cpus ?
->  	 */
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/
-pgtable.c
-> index 351eb78eed55..75483b40fcb1 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -8,6 +8,7 @@
->  #include <linux/memblock.h>
->  #include <misc/cxl-base.h>
->  
-> +#include <asm/debugfs.h>
->  #include <asm/pgalloc.h>
->  #include <asm/tlb.h>
->  #include <asm/trace.h>
-> @@ -469,3 +470,49 @@ int pmd_move_must_withdraw(struct spinlock 
-*new_pmd_ptl,
->  
->  	return true;
->  }
-> +
-> +/*
-> + * Does the CPU support tlbie?
-> + */
-> +bool tlbie_capable __read_mostly = true;
-> +EXPORT_SYMBOL(tlbie_capable);
-> +
-> +/*
-> + * Should tlbie be used for management of CPU TLBs, for kernel and process
-> + * address spaces? tlbie may still be used for nMMU accelerators, and for 
-KVM
-> + * guest address spaces.
-> + */
-> +bool tlbie_enabled __read_mostly = true;
-> +
-> +static int __init setup_disable_tlbie(char *str)
-> +{
-> +	if (!radix_enabled()) {
-> +		pr_err("disable_tlbie: Unable to disable TLBIE with Hash MMU.\n");
-> +		return 1;
-> +	}
-> +
-> +	tlbie_capable = false;
-> +	tlbie_enabled = false;
-> +
-> +        return 1;
-> +}
-> +__setup("disable_tlbie", setup_disable_tlbie);
-> +
-> +static int __init pgtable_debugfs_setup(void)
-> +{
-> +	if (!tlbie_capable)
-> +		return 0;
-> +
-> +	/*
-> +	 * There is no locking vs tlb flushing when changing this value.
-> +	 * The tlb flushers will see one value or another, and use either
-> +	 * tlbie or tlbiel with IPIs. In both cases the TLBs will be
-> +	 * invalidated as expected.
-> +	 */
-> +	debugfs_create_bool("tlbie_enabled", 0600,
-> +			powerpc_debugfs_root,
-> +			&tlbie_enabled);
-> +
-> +	return 0;
-> +}
-> +arch_initcall(pgtable_debugfs_setup);
-> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/
-radix_tlb.c
-> index f9cf8ae59831..631be42abd33 100644
-> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -270,6 +270,39 @@ static inline void _tlbie_pid(unsigned long pid, 
-unsigned long ric)
->  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
->  
-> +struct tlbiel_pid {
-> +	unsigned long pid;
-> +	unsigned long ric;
-> +};
-> +
-> +static void do_tlbiel_pid(void *info)
-> +{
-> +	struct tlbiel_pid *t = info;
-> +
-> +	if (t->ric == RIC_FLUSH_TLB)
-> +		_tlbiel_pid(t->pid, RIC_FLUSH_TLB);
-> +	else if (t->ric == RIC_FLUSH_PWC)
-> +		_tlbiel_pid(t->pid, RIC_FLUSH_PWC);
-> +	else
-> +		_tlbiel_pid(t->pid, RIC_FLUSH_ALL);
-> +}
-> +
-> +static inline void _tlbiel_pid_multicast(struct mm_struct *mm,
-> +				unsigned long pid, unsigned long ric)
-> +{
-> +	struct cpumask *cpus = mm_cpumask(mm);
-> +	struct tlbiel_pid t = { .pid = pid, .ric = ric };
-> +
-> +	on_each_cpu_mask(cpus, do_tlbiel_pid, &t, 1);
-> +	/*
-> +	 * Always want the CPU translations to be invalidated with tlbiel in
-> +	 * these paths, so while coprocessors must use tlbie, we can not
-> +	 * optimise away the tlbiel component.
-> +	 */
-> +	if (atomic_read(&mm->context.copros) > 0)
-> +		_tlbie_pid(pid, RIC_FLUSH_ALL);
-> +}
-> +
->  static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
->  {
->  	asm volatile("ptesync": : :"memory");
-> @@ -370,6 +403,53 @@ static __always_inline void _tlbie_va(unsigned long va, 
-unsigned long pid,
->  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
->  
-> +struct tlbiel_va {
-> +	unsigned long pid;
-> +	unsigned long va;
-> +	unsigned long psize;
-> +	unsigned long ric;
-> +};
-> +
-> +static void do_tlbiel_va(void *info)
-> +{
-> +	struct tlbiel_va *t = info;
-> +
-> +	if (t->ric == RIC_FLUSH_TLB)
-> +		_tlbiel_va(t->va, t->pid, t->psize, RIC_FLUSH_TLB);
-> +	else if (t->ric == RIC_FLUSH_PWC)
-> +		_tlbiel_va(t->va, t->pid, t->psize, RIC_FLUSH_PWC);
-> +	else
-> +		_tlbiel_va(t->va, t->pid, t->psize, RIC_FLUSH_ALL);
-> +}
-> +
-> +static inline void _tlbiel_va_multicast(struct mm_struct *mm,
-> +				unsigned long va, unsigned long pid,
-> +				unsigned long psize, unsigned long ric)
-> +{
-> +	struct cpumask *cpus = mm_cpumask(mm);
-> +	struct tlbiel_va t = { .va = va, .pid = pid, .psize = psize, .ric = ric };
-> +	on_each_cpu_mask(cpus, do_tlbiel_va, &t, 1);
-> +	if (atomic_read(&mm->context.copros) > 0)
-> +		_tlbie_va(va, pid, psize, RIC_FLUSH_TLB);
-> +}
-> +
-> +struct tlbiel_va_range {
-> +	unsigned long pid;
-> +	unsigned long start;
-> +	unsigned long end;
-> +	unsigned long page_size;
-> +	unsigned long psize;
-> +	bool also_pwc;
-> +};
-> +
-> +static void do_tlbiel_va_range(void *info)
-> +{
-> +	struct tlbiel_va_range *t = info;
-> +
-> +	_tlbiel_va_range(t->start, t->end, t->pid, t->page_size,
-> +				    t->psize, t->also_pwc);
-> +}
-> +
->  static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long 
-lpid,
->  			      unsigned long psize, unsigned long ric)
->  {
-> @@ -393,6 +473,21 @@ static inline void _tlbie_va_range(unsigned long start, 
-unsigned long end,
->  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
->  
-> +static inline void _tlbiel_va_range_multicast(struct mm_struct *mm,
-> +				unsigned long start, unsigned long end,
-> +				unsigned long pid, unsigned long page_size,
-> +				unsigned long psize, bool also_pwc)
-> +{
-> +	struct cpumask *cpus = mm_cpumask(mm);
-> +	struct tlbiel_va_range t = { .start = start, .end = end,
-> +				.pid = pid, .page_size = page_size,
-> +				.psize = psize, .also_pwc = also_pwc };
-> +
-> +	on_each_cpu_mask(cpus, do_tlbiel_va_range, &t, 1);
-> +	if (atomic_read(&mm->context.copros) > 0)
-> +		_tlbie_va_range(start, end, pid, page_size, psize, also_pwc);
-> +}
-> +
->  /*
->   * Base TLB flushing operations:
->   *
-> @@ -530,10 +625,14 @@ void radix__flush_tlb_mm(struct mm_struct *mm)
->  			goto local;
->  		}
->  
-> -		if (mm_needs_flush_escalation(mm))
-> -			_tlbie_pid(pid, RIC_FLUSH_ALL);
-> -		else
-> -			_tlbie_pid(pid, RIC_FLUSH_TLB);
-> +		if (cputlb_use_tlbie()) {
-> +			if (mm_needs_flush_escalation(mm))
-> +				_tlbie_pid(pid, RIC_FLUSH_ALL);
-> +			else
-> +				_tlbie_pid(pid, RIC_FLUSH_TLB);
-> +		} else {
-> +			_tlbiel_pid_multicast(mm, pid, RIC_FLUSH_TLB);
-> +		}
->  	} else {
->  local:
->  		_tlbiel_pid(pid, RIC_FLUSH_TLB);
-> @@ -559,7 +658,10 @@ static void __flush_all_mm(struct mm_struct *mm, bool 
-fullmm)
->  				goto local;
->  			}
->  		}
-> -		_tlbie_pid(pid, RIC_FLUSH_ALL);
-> +		if (cputlb_use_tlbie())
-> +			_tlbie_pid(pid, RIC_FLUSH_ALL);
-> +		else
-> +			_tlbiel_pid_multicast(mm, pid, RIC_FLUSH_ALL);
->  	} else {
->  local:
->  		_tlbiel_pid(pid, RIC_FLUSH_ALL);
-> @@ -594,7 +696,10 @@ void radix__flush_tlb_page_psize(struct mm_struct *mm, 
-unsigned long vmaddr,
->  			exit_flush_lazy_tlbs(mm);
->  			goto local;
->  		}
-> -		_tlbie_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
-> +		if (cputlb_use_tlbie())
-> +			_tlbie_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
-> +		else
-> +			_tlbiel_va_multicast(mm, vmaddr, pid, psize, RIC_FLUSH_TLB);
->  	} else {
->  local:
->  		_tlbiel_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
-> @@ -616,6 +721,24 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
->  #define radix__flush_all_mm radix__local_flush_all_mm
->  #endif /* CONFIG_SMP */
->  
-> +static void do_tlbiel_kernel(void *info)
-> +{
-> +	_tlbiel_pid(0, RIC_FLUSH_ALL);
-> +}
-> +
-> +static inline void _tlbiel_kernel_broadcast(void)
-> +{
-> +	on_each_cpu(do_tlbiel_kernel, NULL, 1);
-> +	if (tlbie_capable) {
-> +		/*
-> +		 * Coherent accelerators don't refcount kernel memory mappings,
-> +		 * so have to always issue a tlbie for them. This is quite a
-> +		 * slow path anyway.
-> +		 */
-> +		_tlbie_pid(0, RIC_FLUSH_ALL);
-> +	}
-> +}
-> +
->  /*
->   * If kernel TLBIs ever become local rather than global, then
->   * drivers/misc/ocxl/link.c:ocxl_link_add_pe will need some work, as it
-> @@ -623,7 +746,10 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
->   */
->  void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
->  {
-> -	_tlbie_pid(0, RIC_FLUSH_ALL);
-> +	if (cputlb_use_tlbie())
-> +		_tlbie_pid(0, RIC_FLUSH_ALL);
-> +	else
-> +		_tlbiel_kernel_broadcast();
->  }
->  EXPORT_SYMBOL(radix__flush_tlb_kernel_range);
->  
-> @@ -679,10 +805,14 @@ static inline void __radix__flush_tlb_range(struct 
-mm_struct *mm,
->  		if (local) {
->  			_tlbiel_pid(pid, RIC_FLUSH_TLB);
->  		} else {
-> -			if (mm_needs_flush_escalation(mm))
-> -				_tlbie_pid(pid, RIC_FLUSH_ALL);
-> -			else
-> -				_tlbie_pid(pid, RIC_FLUSH_TLB);
-> +			if (cputlb_use_tlbie()) {
-> +				if (mm_needs_flush_escalation(mm))
-> +					_tlbie_pid(pid, RIC_FLUSH_ALL);
-> +				else
-> +					_tlbie_pid(pid, RIC_FLUSH_TLB);
-> +			} else {
-> +				_tlbiel_pid_multicast(mm, pid, RIC_FLUSH_TLB);
-> +			}
->  		}
->  	} else {
->  		bool hflush = flush_all_sizes;
-> @@ -707,8 +837,8 @@ static inline void __radix__flush_tlb_range(struct 
-mm_struct *mm,
->  				gflush = false;
->  		}
->  
-> -		asm volatile("ptesync": : :"memory");
->  		if (local) {
-> +			asm volatile("ptesync": : :"memory");
->  			__tlbiel_va_range(start, end, pid, page_size, mmu_virtual_psize);
->  			if (hflush)
->  				__tlbiel_va_range(hstart, hend, pid,
-> @@ -717,7 +847,8 @@ static inline void __radix__flush_tlb_range(struct 
-mm_struct *mm,
->  				__tlbiel_va_range(gstart, gend, pid,
->  						PUD_SIZE, MMU_PAGE_1G);
->  			asm volatile("ptesync": : :"memory");
-> -		} else {
-> +		} else if (cputlb_use_tlbie()) {
-> +			asm volatile("ptesync": : :"memory");
->  			__tlbie_va_range(start, end, pid, page_size, mmu_virtual_psize);
->  			if (hflush)
->  				__tlbie_va_range(hstart, hend, pid,
-> @@ -727,6 +858,15 @@ static inline void __radix__flush_tlb_range(struct 
-mm_struct *mm,
->  						PUD_SIZE, MMU_PAGE_1G);
->  			fixup_tlbie();
->  			asm volatile("eieio; tlbsync; ptesync": : :"memory");
-> +		} else {
-> +			_tlbiel_va_range_multicast(mm,
-> +					start, end, pid, page_size, mmu_virtual_psize, false);
-> +			if (hflush)
-> +				_tlbiel_va_range_multicast(mm,
-> +					hstart, hend, pid, PMD_SIZE, MMU_PAGE_2M, false);
-> +			if (gflush)
-> +				_tlbiel_va_range_multicast(mm,
-> +					gstart, gend, pid, PUD_SIZE, MMU_PAGE_1G, false);
->  		}
->  	}
->  	preempt_enable();
-> @@ -903,16 +1043,26 @@ static __always_inline void 
-__radix__flush_tlb_range_psize(struct mm_struct *mm,
->  		if (local) {
->  			_tlbiel_pid(pid, also_pwc ? RIC_FLUSH_ALL : RIC_FLUSH_TLB);
->  		} else {
-> -			if (mm_needs_flush_escalation(mm))
-> -				also_pwc = true;
-> +			if (cputlb_use_tlbie()) {
-> +				if (mm_needs_flush_escalation(mm))
-> +					also_pwc = true;
-> +
-> +				_tlbie_pid(pid,
-> +					also_pwc ?  RIC_FLUSH_ALL : RIC_FLUSH_TLB);
-> +			} else {
-> +				_tlbiel_pid_multicast(mm, pid,
-> +					also_pwc ?  RIC_FLUSH_ALL : RIC_FLUSH_TLB);
-> +			}
->  
-> -			_tlbie_pid(pid, also_pwc ? RIC_FLUSH_ALL : RIC_FLUSH_TLB);
->  		}
->  	} else {
->  		if (local)
->  			_tlbiel_va_range(start, end, pid, page_size, psize, also_pwc);
-> -		else
-> +		else if (cputlb_use_tlbie())
->  			_tlbie_va_range(start, end, pid, page_size, psize, also_pwc);
-> +		else
-> +			_tlbiel_va_range_multicast(mm,
-> +					start, end, pid, page_size, psize, also_pwc);
->  	}
->  	preempt_enable();
->  }
-> @@ -954,7 +1104,11 @@ void radix__flush_tlb_collapsed_pmd(struct mm_struct 
-*mm, unsigned long addr)
->  			exit_flush_lazy_tlbs(mm);
->  			goto local;
->  		}
-> -		_tlbie_va_range(addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
-> +		if (cputlb_use_tlbie())
-> +			_tlbie_va_range(addr, end, pid, PAGE_SIZE, mmu_virtual_psize, 
-true);
-> +		else
-> +			_tlbiel_va_range_multicast(mm,
-> +					addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
->  	} else {
->  local:
->  		_tlbiel_va_range(addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
-> diff --git a/drivers/misc/cxl/main.c b/drivers/misc/cxl/main.c
-> index 482a2c1b340a..43b312d06e3e 100644
-> --- a/drivers/misc/cxl/main.c
-> +++ b/drivers/misc/cxl/main.c
-> @@ -18,6 +18,7 @@
->  #include <linux/sched/task.h>
->  
->  #include <asm/cputable.h>
-> +#include <asm/mmu.h>
->  #include <misc/cxl-base.h>
->  
->  #include "cxl.h"
-> @@ -315,6 +316,9 @@ static int __init init_cxl(void)
->  {
->  	int rc = 0;
->  
-> +	if (!tlbie_capable)
-> +		return -EINVAL;
-> +
->  	if ((rc = cxl_file_init()))
->  		return rc;
->  
-> diff --git a/drivers/misc/ocxl/main.c b/drivers/misc/ocxl/main.c
-> index 7210d9e059be..ef73cf35dda2 100644
-> --- a/drivers/misc/ocxl/main.c
-> +++ b/drivers/misc/ocxl/main.c
-> @@ -2,12 +2,16 @@
->  // Copyright 2017 IBM Corp.
->  #include <linux/module.h>
->  #include <linux/pci.h>
-> +#include <asm/mmu.h>
->  #include "ocxl_internal.h"
->  
->  static int __init init_ocxl(void)
->  {
->  	int rc = 0;
->  
-> +	if (!tlbie_capable)
-> +		return -EINVAL;
-> +
->  	rc = ocxl_file_init();
->  	if (rc)
->  		return rc;
-> 
-
-
-
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW5kcmV3IE11cnJheSA8
+YW5kcmV3Lm11cnJheUBhcm0uY29tPg0KPiBTZW50OiAyMDE5xOo51MIyyNUgMjA6MzINCj4gVG86
+IFhpYW93ZWkgQmFvIDx4aWFvd2VpLmJhb0BueHAuY29tPg0KPiBDYzogcm9iaCtkdEBrZXJuZWwu
+b3JnOyBtYXJrLnJ1dGxhbmRAYXJtLmNvbTsgc2hhd25ndW9Aa2VybmVsLm9yZzsgTGVvDQo+IExp
+IDxsZW95YW5nLmxpQG54cC5jb20+OyBraXNob25AdGkuY29tOyBsb3JlbnpvLnBpZXJhbGlzaUBh
+cm0uY29tOyBNLmguDQo+IExpYW4gPG1pbmdodWFuLmxpYW5AbnhwLmNvbT47IE1pbmdrYWkgSHUg
+PG1pbmdrYWkuaHVAbnhwLmNvbT47IFJveQ0KPiBaYW5nIDxyb3kuemFuZ0BueHAuY29tPjsgamlu
+Z29vaGFuMUBnbWFpbC5jb207DQo+IGd1c3Rhdm8ucGltZW50ZWxAc3lub3BzeXMuY29tOyBsaW51
+eC1wY2lAdmdlci5rZXJuZWwub3JnOw0KPiBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZzsgbGlu
+dXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4gbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZy
+YWRlYWQub3JnOyBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZzsNCj4gYXJuZEBhcm5kYi5k
+ZTsgZ3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc7IFoucS4gSG91DQo+IDx6aGlxaWFuZy5ob3VA
+bnhwLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MyAwNS8xMV0gZHQtYmluZGluZ3M6IHBj
+aTogbGF5ZXJzY2FwZS1wY2k6IGFkZCBjb21wYXRpYmxlDQo+IHN0cmluZ3MgZm9yIGxzMTA4OGEg
+YW5kIGxzMjA4OGENCj4gDQo+IE9uIE1vbiwgU2VwIDAyLCAyMDE5IGF0IDExOjE3OjEwQU0gKzA4
+MDAsIFhpYW93ZWkgQmFvIHdyb3RlOg0KPiA+IEFkZCBjb21wYXRpYmxlIHN0cmluZ3MgZm9yIGxz
+MTA4OGEgYW5kIGxzMjA4OGEuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBYaWFvd2VpIEJhbyA8
+eGlhb3dlaS5iYW9AbnhwLmNvbT4NCj4gPiAtLS0NCj4gPiB2MjoNCj4gPiAgLSBObyBjaGFuZ2Uu
+DQo+ID4gdjM6DQo+ID4gIC0gVXNlIG9uZSB2YWxpZCBjb21iaW5hdGlvbiBvZiBjb21wYXRpYmxl
+IHN0cmluZ3MuDQo+ID4NCj4gPiAgRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3Bj
+aS9sYXllcnNjYXBlLXBjaS50eHQgfCA0ICsrKy0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDMgaW5z
+ZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL0RvY3VtZW50
+YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9wY2kvbGF5ZXJzY2FwZS1wY2kudHh0DQo+ID4gYi9E
+b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvcGNpL2xheWVyc2NhcGUtcGNpLnR4dA0K
+PiA+IGluZGV4IGUyMGNlYWEuLjc2MmFlNDEgMTAwNjQ0DQo+ID4gLS0tIGEvRG9jdW1lbnRhdGlv
+bi9kZXZpY2V0cmVlL2JpbmRpbmdzL3BjaS9sYXllcnNjYXBlLXBjaS50eHQNCj4gPiArKysgYi9E
+b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvcGNpL2xheWVyc2NhcGUtcGNpLnR4dA0K
+PiA+IEBAIC0yMiw3ICsyMiw5IEBAIFJlcXVpcmVkIHByb3BlcnRpZXM6DQo+ID4gICAgICAgICAg
+ImZzbCxsczEwNDNhLXBjaWUiDQo+ID4gICAgICAgICAgImZzbCxsczEwMTJhLXBjaWUiDQo+ID4g
+ICAgRVAgbW9kZToNCj4gPiAtCSJmc2wsbHMxMDQ2YS1wY2llLWVwIiwgImZzbCxscy1wY2llLWVw
+Ig0KPiA+ICsJImZzbCxsczEwNDZhLXBjaWUtZXAiICJmc2wsbHMtcGNpZS1lcCINCj4gPiArCSJm
+c2wsbHMxMDg4YS1wY2llLWVwIiAiZnNsLGxzLXBjaWUtZXAiDQo+ID4gKwkiZnNsLGxzMjA4OGEt
+cGNpZS1lcCIgImZzbCxscy1wY2llLWVwIg0KPiANCj4gVGhpcyBpc24ndCBjb25zaXN0ZW50IHdp
+dGggIltQQVRDSCB2MyAwOS8xMV0gUENJOiBsYXllcnNjYXBlOiBBZGQgRVAgbW9kZS4uLiINCj4g
+YXMgdGhhdCBwYXRjaCBkcm9wcyB0aGUgZmFsbGJhY2sgImZzbCxscy1wY2llLWVwIi4gRWl0aGVy
+IHRoZSBmYWxsYmFjayBtdXN0IGJlDQo+IHByZXNlcnZlZCBpbiB0aGUgZHJpdmVyLCBvciB5b3Ug
+bmVlZCB0byBkcm9wIGl0IGhlcmUuDQo+IA0KPiBXaGF0IGlmIHRoZXJlIGFyZSBleGlzdGluZyB1
+c2VycyB0aGF0IGRlcGVuZCBvbiB0aGUgZmFsbGJhY2s/DQo+IA0KPiAoSSdtIGFsc28gbm90IHN1
+cmUgaWYgdGhhdCBjb21tYSBzaG91bGQgaGF2ZSBiZWVuIGRyb3BwZWQpLg0KDQpIaSBBbmRyZXcs
+DQoNClRoYW5rcyBmb3IgeW91ciBjb21tZW50cywgSSBsb3NlIHRoZSBjb21tYS4NCg0KVGhhbmtz
+IA0KWGlhb3dlaQ0KDQo+IA0KPiBUaGFua3MsDQo+IA0KPiBBbmRyZXcgTXVycmF5DQo+IA0KPiA+
+ICAtIHJlZzogYmFzZSBhZGRyZXNzZXMgYW5kIGxlbmd0aHMgb2YgdGhlIFBDSWUgY29udHJvbGxl
+ciByZWdpc3RlciBibG9ja3MuDQo+ID4gIC0gaW50ZXJydXB0czogQSBsaXN0IG9mIGludGVycnVw
+dCBvdXRwdXRzIG9mIHRoZSBjb250cm9sbGVyLiBNdXN0IGNvbnRhaW4gYW4NCj4gPiAgICBlbnRy
+eSBmb3IgZWFjaCBlbnRyeSBpbiB0aGUgaW50ZXJydXB0LW5hbWVzIHByb3BlcnR5Lg0KPiA+IC0t
+DQo+ID4gMi45LjUNCj4gPg0K
