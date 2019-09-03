@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109EEA6EC3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10365A6F6A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:33:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NC8D2VSWzDqTs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:29:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NCF22dvBzDqlS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:33:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="YV291SDY"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Lgzuaa7K"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NC4t5zDxzDqTs
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:26:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NC562w02zDqjN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:26:34 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6859C23789;
- Tue,  3 Sep 2019 16:26:19 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6392E2343A;
+ Tue,  3 Sep 2019 16:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567527980;
- bh=y4mtFdd/M4192J/pE0CJUfdZ9vvIJgvFr2RKFhXHTls=;
+ s=default; t=1567527992;
+ bh=fNXofpzU+Gy9im9kY+0bK089WAnmTKpFoRAQ0B2B5SQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YV291SDY9wCYYkPSkFbLAutuTU7aH7htRIc6Yv5pmSG0gTP85J9Dedevt/1nVpmoH
- yicNQinrOXx66W2P/Z5qDltgTt1+ZbcVA2DAWG1zJFFWFVmNYkIECRJE4LhyqODCrl
- uIVP1xJGmD9yUJjf+XEs5qiDatqps3jBvMP4E2Eg=
+ b=Lgzuaa7Kv6VmYnyPenymH4S1oxJwoF+rcTq75BIVOdoLpGpVq0xAwJSqDTtsiSTPW
+ 4GiMIxY8GOVJV4heLFXeOj55qnNsE2kNcx0jgzjAaquofKhn9kEwZOYGFru7WGcDke
+ c1rd1d9Vb5jnOuN5P6hHD0kHOEQT+XZ52NTG0iHQ=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 035/167] KVM: PPC: Book3S HV: Fix race between
- kvm_unmap_hva_range and MMU mode switch
-Date: Tue,  3 Sep 2019 12:23:07 -0400
-Message-Id: <20190903162519.7136-35-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 043/167] powerpc/pkeys: Fix handling of pkey
+ state across fork()
+Date: Tue,  3 Sep 2019 12:23:15 -0400
+Message-Id: <20190903162519.7136-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190903162519.7136-1-sashal@kernel.org>
 References: <20190903162519.7136-1-sashal@kernel.org>
@@ -61,106 +61,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>, Ram Pai <linuxram@us.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Paul Mackerras <paulus@ozlabs.org>
+From: Ram Pai <linuxram@us.ibm.com>
 
-[ Upstream commit 234ff0b729ad882d20f7996591a964965647addf ]
+[ Upstream commit 2cd4bd192ee94848695c1c052d87913260e10f36 ]
 
-Testing has revealed an occasional crash which appears to be caused
-by a race between kvmppc_switch_mmu_to_hpt and kvm_unmap_hva_range_hv.
-The symptom is a NULL pointer dereference in __find_linux_pte() called
-from kvm_unmap_radix() with kvm->arch.pgtable == NULL.
+Protection key tracking information is not copied over to the
+mm_struct of the child during fork(). This can cause the child to
+erroneously allocate keys that were already allocated. Any allocated
+execute-only key is lost aswell.
 
-Looking at kvmppc_switch_mmu_to_hpt(), it does indeed clear
-kvm->arch.pgtable (via kvmppc_free_radix()) before setting
-kvm->arch.radix to NULL, and there is nothing to prevent
-kvm_unmap_hva_range_hv() or the other MMU callback functions from
-being called concurrently with kvmppc_switch_mmu_to_hpt() or
-kvmppc_switch_mmu_to_radix().
+Add code; called by dup_mmap(), to copy the pkey state from parent to
+child explicitly.
 
-This patch therefore adds calls to spin_lock/unlock on the kvm->mmu_lock
-around the assignments to kvm->arch.radix, and makes sure that the
-partition-scoped radix tree or HPT is only freed after changing
-kvm->arch.radix.
+This problem was originally found by Dave Hansen on x86, which turns
+out to be a problem on powerpc aswell.
 
-This also takes the kvm->mmu_lock in kvmppc_rmap_reset() to make sure
-that the clearing of each rmap array (one per memslot) doesn't happen
-concurrently with use of the array in the kvm_unmap_hva_range_hv()
-or the other MMU callbacks.
-
-Fixes: 18c3640cefc7 ("KVM: PPC: Book3S HV: Add infrastructure for running HPT guests on radix host")
-Cc: stable@vger.kernel.org # v4.15+
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Fixes: cf43d3b26452 ("powerpc: Enable pkey subsystem")
+Cc: stable@vger.kernel.org # v4.16+
+Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_64_mmu_hv.c |  3 +++
- arch/powerpc/kvm/book3s_hv.c        | 15 +++++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/mmu_context.h | 15 +++++++++------
+ arch/powerpc/mm/pkeys.c                | 10 ++++++++++
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-index 68e14afecac85..a488c105b9234 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-@@ -744,12 +744,15 @@ void kvmppc_rmap_reset(struct kvm *kvm)
- 	srcu_idx = srcu_read_lock(&kvm->srcu);
- 	slots = kvm_memslots(kvm);
- 	kvm_for_each_memslot(memslot, slots) {
-+		/* Mutual exclusion with kvm_unmap_hva_range etc. */
-+		spin_lock(&kvm->mmu_lock);
- 		/*
- 		 * This assumes it is acceptable to lose reference and
- 		 * change bits across a reset.
- 		 */
- 		memset(memslot->arch.rmap, 0,
- 		       memslot->npages * sizeof(*memslot->arch.rmap));
-+		spin_unlock(&kvm->mmu_lock);
- 	}
- 	srcu_read_unlock(&kvm->srcu, srcu_idx);
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index b694d6af11508..ae953958c0f33 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -217,12 +217,6 @@ static inline void enter_lazy_tlb(struct mm_struct *mm,
+ #endif
  }
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 083dcedba11ce..9595db30e6b87 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3813,12 +3813,15 @@ static int kvmppc_hv_setup_htab_rma(struct kvm_vcpu *vcpu)
- /* Must be called with kvm->lock held and mmu_ready = 0 and no vcpus running */
- int kvmppc_switch_mmu_to_hpt(struct kvm *kvm)
+ 
+-static inline int arch_dup_mmap(struct mm_struct *oldmm,
+-				struct mm_struct *mm)
+-{
+-	return 0;
+-}
+-
+ #ifndef CONFIG_PPC_BOOK3S_64
+ static inline void arch_exit_mmap(struct mm_struct *mm)
  {
-+	kvmppc_rmap_reset(kvm);
-+	kvm->arch.process_table = 0;
-+	/* Mutual exclusion with kvm_unmap_hva_range etc. */
-+	spin_lock(&kvm->mmu_lock);
-+	kvm->arch.radix = 0;
-+	spin_unlock(&kvm->mmu_lock);
- 	kvmppc_free_radix(kvm);
- 	kvmppc_update_lpcr(kvm, LPCR_VPM1,
- 			   LPCR_VPM1 | LPCR_UPRT | LPCR_GTSE | LPCR_HR);
--	kvmppc_rmap_reset(kvm);
--	kvm->arch.radix = 0;
--	kvm->arch.process_table = 0;
- 	return 0;
+@@ -247,6 +241,7 @@ static inline void arch_bprm_mm_init(struct mm_struct *mm,
+ #ifdef CONFIG_PPC_MEM_KEYS
+ bool arch_vma_access_permitted(struct vm_area_struct *vma, bool write,
+ 			       bool execute, bool foreign);
++void arch_dup_pkeys(struct mm_struct *oldmm, struct mm_struct *mm);
+ #else /* CONFIG_PPC_MEM_KEYS */
+ static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
+ 		bool write, bool execute, bool foreign)
+@@ -259,6 +254,7 @@ static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
+ #define thread_pkey_regs_save(thread)
+ #define thread_pkey_regs_restore(new_thread, old_thread)
+ #define thread_pkey_regs_init(thread)
++#define arch_dup_pkeys(oldmm, mm)
+ 
+ static inline u64 pte_to_hpte_pkey_bits(u64 pteflags)
+ {
+@@ -267,5 +263,12 @@ static inline u64 pte_to_hpte_pkey_bits(u64 pteflags)
+ 
+ #endif /* CONFIG_PPC_MEM_KEYS */
+ 
++static inline int arch_dup_mmap(struct mm_struct *oldmm,
++				struct mm_struct *mm)
++{
++	arch_dup_pkeys(oldmm, mm);
++	return 0;
++}
++
+ #endif /* __KERNEL__ */
+ #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
+diff --git a/arch/powerpc/mm/pkeys.c b/arch/powerpc/mm/pkeys.c
+index b271b283c785e..25a8dd9cd71db 100644
+--- a/arch/powerpc/mm/pkeys.c
++++ b/arch/powerpc/mm/pkeys.c
+@@ -414,3 +414,13 @@ bool arch_vma_access_permitted(struct vm_area_struct *vma, bool write,
+ 
+ 	return pkey_access_permitted(vma_pkey(vma), write, execute);
  }
- 
-@@ -3831,10 +3834,14 @@ int kvmppc_switch_mmu_to_radix(struct kvm *kvm)
- 	if (err)
- 		return err;
- 
-+	kvmppc_rmap_reset(kvm);
-+	/* Mutual exclusion with kvm_unmap_hva_range etc. */
-+	spin_lock(&kvm->mmu_lock);
-+	kvm->arch.radix = 1;
-+	spin_unlock(&kvm->mmu_lock);
- 	kvmppc_free_hpt(&kvm->arch.hpt);
- 	kvmppc_update_lpcr(kvm, LPCR_UPRT | LPCR_GTSE | LPCR_HR,
- 			   LPCR_VPM1 | LPCR_UPRT | LPCR_GTSE | LPCR_HR);
--	kvm->arch.radix = 1;
- 	return 0;
- }
- 
++
++void arch_dup_pkeys(struct mm_struct *oldmm, struct mm_struct *mm)
++{
++	if (static_branch_likely(&pkey_disabled))
++		return;
++
++	/* Duplicate the oldmm pkey state in mm: */
++	mm_pkey_allocation_map(mm) = mm_pkey_allocation_map(oldmm);
++	mm->context.execute_only_pkey = oldmm->context.execute_only_pkey;
++}
 -- 
 2.20.1
 
