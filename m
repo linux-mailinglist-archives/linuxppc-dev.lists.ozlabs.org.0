@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10365A6F6A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4B6A6FDA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2019 18:37:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NCF22dvBzDqlS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:33:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NCK7358GzDqWs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:36:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Lgzuaa7K"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="ujWY6HiW"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NC562w02zDqjN
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:26:34 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NC6R5xd4zDqhS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 02:27:43 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6392E2343A;
- Tue,  3 Sep 2019 16:26:31 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 412DB238C6;
+ Tue,  3 Sep 2019 16:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567527992;
- bh=fNXofpzU+Gy9im9kY+0bK089WAnmTKpFoRAQ0B2B5SQ=;
+ s=default; t=1567528060;
+ bh=ZsVtxklk/JzEFceQMjTt/P8EYOL7MvwBNXU5d/AO3OY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Lgzuaa7Kv6VmYnyPenymH4S1oxJwoF+rcTq75BIVOdoLpGpVq0xAwJSqDTtsiSTPW
- 4GiMIxY8GOVJV4heLFXeOj55qnNsE2kNcx0jgzjAaquofKhn9kEwZOYGFru7WGcDke
- c1rd1d9Vb5jnOuN5P6hHD0kHOEQT+XZ52NTG0iHQ=
+ b=ujWY6HiW4GpGlOspq1d0ui5xjyL3VRz+sVcumWaZE++oXvME+HCMtNbtybq9f83xd
+ YRazMsMhFHOq/7EHDV3dVjWARKTKWmQzZ8Zvu7VN8LKlh8cmAJvr5RVFBw9R6NWbLp
+ E6kmK3q3BUmd6clepjjemP+NSW0JfCoVCDl6nhsI=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 043/167] powerpc/pkeys: Fix handling of pkey
- state across fork()
-Date: Tue,  3 Sep 2019 12:23:15 -0400
-Message-Id: <20190903162519.7136-43-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 075/167] powerpc/kvm: Save and restore host
+ AMR/IAMR/UAMOR
+Date: Tue,  3 Sep 2019 12:23:47 -0400
+Message-Id: <20190903162519.7136-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190903162519.7136-1-sashal@kernel.org>
 References: <20190903162519.7136-1-sashal@kernel.org>
@@ -61,102 +61,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ram Pai <linuxram@us.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ram Pai <linuxram@us.ibm.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 2cd4bd192ee94848695c1c052d87913260e10f36 ]
+[ Upstream commit c3c7470c75566a077c8dc71dcf8f1948b8ddfab4 ]
 
-Protection key tracking information is not copied over to the
-mm_struct of the child during fork(). This can cause the child to
-erroneously allocate keys that were already allocated. Any allocated
-execute-only key is lost aswell.
+When the hash MMU is active the AMR, IAMR and UAMOR are used for
+pkeys. The AMR is directly writable by user space, and the UAMOR masks
+those writes, meaning both registers are effectively user register
+state. The IAMR is used to create an execute only key.
 
-Add code; called by dup_mmap(), to copy the pkey state from parent to
-child explicitly.
+Also we must maintain the value of at least the AMR when running in
+process context, so that any memory accesses done by the kernel on
+behalf of the process are correctly controlled by the AMR.
 
-This problem was originally found by Dave Hansen on x86, which turns
-out to be a problem on powerpc aswell.
+Although we are correctly switching all registers when going into a
+guest, on returning to the host we just write 0 into all regs, except
+on Power9 where we restore the IAMR correctly.
+
+This could be observed by a user process if it writes the AMR, then
+runs a guest and we then return immediately to it without
+rescheduling. Because we have written 0 to the AMR that would have the
+effect of granting read/write permission to pages that the process was
+trying to protect.
+
+In addition, when using the Radix MMU, the AMR can prevent inadvertent
+kernel access to userspace data, writing 0 to the AMR disables that
+protection.
+
+So save and restore AMR, IAMR and UAMOR.
 
 Fixes: cf43d3b26452 ("powerpc: Enable pkey subsystem")
 Cc: stable@vger.kernel.org # v4.16+
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmu_context.h | 15 +++++++++------
- arch/powerpc/mm/pkeys.c                | 10 ++++++++++
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S | 26 ++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-index b694d6af11508..ae953958c0f33 100644
---- a/arch/powerpc/include/asm/mmu_context.h
-+++ b/arch/powerpc/include/asm/mmu_context.h
-@@ -217,12 +217,6 @@ static inline void enter_lazy_tlb(struct mm_struct *mm,
- #endif
- }
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index 1d14046124a01..5902a60f92268 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -56,6 +56,8 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+ #define STACK_SLOT_DAWR		(SFS-56)
+ #define STACK_SLOT_DAWRX	(SFS-64)
+ #define STACK_SLOT_HFSCR	(SFS-72)
++#define STACK_SLOT_AMR		(SFS-80)
++#define STACK_SLOT_UAMOR	(SFS-88)
  
--static inline int arch_dup_mmap(struct mm_struct *oldmm,
--				struct mm_struct *mm)
--{
--	return 0;
--}
--
- #ifndef CONFIG_PPC_BOOK3S_64
- static inline void arch_exit_mmap(struct mm_struct *mm)
- {
-@@ -247,6 +241,7 @@ static inline void arch_bprm_mm_init(struct mm_struct *mm,
- #ifdef CONFIG_PPC_MEM_KEYS
- bool arch_vma_access_permitted(struct vm_area_struct *vma, bool write,
- 			       bool execute, bool foreign);
-+void arch_dup_pkeys(struct mm_struct *oldmm, struct mm_struct *mm);
- #else /* CONFIG_PPC_MEM_KEYS */
- static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
- 		bool write, bool execute, bool foreign)
-@@ -259,6 +254,7 @@ static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
- #define thread_pkey_regs_save(thread)
- #define thread_pkey_regs_restore(new_thread, old_thread)
- #define thread_pkey_regs_init(thread)
-+#define arch_dup_pkeys(oldmm, mm)
+ /*
+  * Call kvmppc_hv_entry in real mode.
+@@ -760,11 +762,9 @@ BEGIN_FTR_SECTION
+ 	mfspr	r5, SPRN_TIDR
+ 	mfspr	r6, SPRN_PSSCR
+ 	mfspr	r7, SPRN_PID
+-	mfspr	r8, SPRN_IAMR
+ 	std	r5, STACK_SLOT_TID(r1)
+ 	std	r6, STACK_SLOT_PSSCR(r1)
+ 	std	r7, STACK_SLOT_PID(r1)
+-	std	r8, STACK_SLOT_IAMR(r1)
+ 	mfspr	r5, SPRN_HFSCR
+ 	std	r5, STACK_SLOT_HFSCR(r1)
+ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+@@ -772,11 +772,18 @@ BEGIN_FTR_SECTION
+ 	mfspr	r5, SPRN_CIABR
+ 	mfspr	r6, SPRN_DAWR
+ 	mfspr	r7, SPRN_DAWRX
++	mfspr	r8, SPRN_IAMR
+ 	std	r5, STACK_SLOT_CIABR(r1)
+ 	std	r6, STACK_SLOT_DAWR(r1)
+ 	std	r7, STACK_SLOT_DAWRX(r1)
++	std	r8, STACK_SLOT_IAMR(r1)
+ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
  
- static inline u64 pte_to_hpte_pkey_bits(u64 pteflags)
- {
-@@ -267,5 +263,12 @@ static inline u64 pte_to_hpte_pkey_bits(u64 pteflags)
- 
- #endif /* CONFIG_PPC_MEM_KEYS */
- 
-+static inline int arch_dup_mmap(struct mm_struct *oldmm,
-+				struct mm_struct *mm)
-+{
-+	arch_dup_pkeys(oldmm, mm);
-+	return 0;
-+}
++	mfspr	r5, SPRN_AMR
++	std	r5, STACK_SLOT_AMR(r1)
++	mfspr	r6, SPRN_UAMOR
++	std	r6, STACK_SLOT_UAMOR(r1)
 +
- #endif /* __KERNEL__ */
- #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
-diff --git a/arch/powerpc/mm/pkeys.c b/arch/powerpc/mm/pkeys.c
-index b271b283c785e..25a8dd9cd71db 100644
---- a/arch/powerpc/mm/pkeys.c
-+++ b/arch/powerpc/mm/pkeys.c
-@@ -414,3 +414,13 @@ bool arch_vma_access_permitted(struct vm_area_struct *vma, bool write,
+ BEGIN_FTR_SECTION
+ 	/* Set partition DABR */
+ 	/* Do this before re-enabling PMU to avoid P7 DABR corruption bug */
+@@ -1713,22 +1720,25 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
+ 	mtspr	SPRN_PSPB, r0
+ 	mtspr	SPRN_WORT, r0
+ BEGIN_FTR_SECTION
+-	mtspr	SPRN_IAMR, r0
+ 	mtspr	SPRN_TCSCR, r0
+ 	/* Set MMCRS to 1<<31 to freeze and disable the SPMC counters */
+ 	li	r0, 1
+ 	sldi	r0, r0, 31
+ 	mtspr	SPRN_MMCRS, r0
+ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+-8:
  
- 	return pkey_access_permitted(vma_pkey(vma), write, execute);
- }
+-	/* Save and reset AMR and UAMOR before turning on the MMU */
++	/* Save and restore AMR, IAMR and UAMOR before turning on the MMU */
++	ld	r8, STACK_SLOT_IAMR(r1)
++	mtspr	SPRN_IAMR, r8
 +
-+void arch_dup_pkeys(struct mm_struct *oldmm, struct mm_struct *mm)
-+{
-+	if (static_branch_likely(&pkey_disabled))
-+		return;
-+
-+	/* Duplicate the oldmm pkey state in mm: */
-+	mm_pkey_allocation_map(mm) = mm_pkey_allocation_map(oldmm);
-+	mm->context.execute_only_pkey = oldmm->context.execute_only_pkey;
-+}
++8:	/* Power7 jumps back in here */
+ 	mfspr	r5,SPRN_AMR
+ 	mfspr	r6,SPRN_UAMOR
+ 	std	r5,VCPU_AMR(r9)
+ 	std	r6,VCPU_UAMOR(r9)
+-	li	r6,0
+-	mtspr	SPRN_AMR,r6
++	ld	r5,STACK_SLOT_AMR(r1)
++	ld	r6,STACK_SLOT_UAMOR(r1)
++	mtspr	SPRN_AMR, r5
+ 	mtspr	SPRN_UAMOR, r6
+ 
+ 	/* Switch DSCR back to host value */
+@@ -1897,11 +1907,9 @@ BEGIN_FTR_SECTION
+ 	ld	r5, STACK_SLOT_TID(r1)
+ 	ld	r6, STACK_SLOT_PSSCR(r1)
+ 	ld	r7, STACK_SLOT_PID(r1)
+-	ld	r8, STACK_SLOT_IAMR(r1)
+ 	mtspr	SPRN_TIDR, r5
+ 	mtspr	SPRN_PSSCR, r6
+ 	mtspr	SPRN_PID, r7
+-	mtspr	SPRN_IAMR, r8
+ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+ 
+ #ifdef CONFIG_PPC_RADIX_MMU
 -- 
 2.20.1
 
