@@ -2,86 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D33A7908
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 04:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7946DA7944
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 05:25:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NSxN3bNrzDqnk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 12:50:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NTjW5wzhzDqgw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 13:25:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=sukadev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
+ envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NSvF4DxCzDqkV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 12:48:55 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NTgZ2jPGzDqdt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 13:23:54 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x842lGaO045367; Tue, 3 Sep 2019 22:48:50 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ut1jncrmu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Sep 2019 22:48:50 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x842lVHW045872;
- Tue, 3 Sep 2019 22:48:50 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ut1jncrme-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Sep 2019 22:48:50 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x842isj3032000;
- Wed, 4 Sep 2019 02:48:48 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma01wdc.us.ibm.com with ESMTP id 2uqgh6pgke-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Sep 2019 02:48:48 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x842mmYU61473226
+ x843MGgB042713
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 3 Sep 2019 23:23:50 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ut44u1sye-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 23:23:49 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Wed, 4 Sep 2019 04:23:47 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 4 Sep 2019 04:23:41 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x843Nenn56295450
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Sep 2019 02:48:48 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33861BE051;
- Wed,  4 Sep 2019 02:48:48 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A5A3BE04F;
- Wed,  4 Sep 2019 02:48:47 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.70.94.45])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  4 Sep 2019 02:48:47 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id 595252E10EB; Tue,  3 Sep 2019 19:48:46 -0700 (PDT)
-Date: Tue, 3 Sep 2019 19:48:46 -0700
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Subject: Re: [RFC PATCH 00/11] Secure Virtual Machine Enablement
-Message-ID: <20190904024846.GA16605@us.ibm.com>
-References: <20180824162535.22798-1-bauerman@linux.ibm.com>
+ Wed, 4 Sep 2019 03:23:40 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8F7694C04A;
+ Wed,  4 Sep 2019 03:23:40 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A62F64C040;
+ Wed,  4 Sep 2019 03:23:39 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Sep 2019 03:23:39 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5C651A0147;
+ Wed,  4 Sep 2019 13:23:37 +1000 (AEST)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Date: Wed, 04 Sep 2019 13:23:36 +1000
+In-Reply-To: <44b8223d-52d9-e932-4bb7-b7590ea11a03@c-s.fr>
+References: <20190903052407.16638-1-alastair@au1.ibm.com>
+ <20190903052407.16638-4-alastair@au1.ibm.com>
+ <44b8223d-52d9-e932-4bb7-b7590ea11a03@c-s.fr>
+Organization: IBM Australia
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20180824162535.22798-1-bauerman@linux.ibm.com>
-X-Operating-System: Linux 2.0.32 on an i486
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
+x-cbid: 19090403-4275-0000-0000-00000360D557
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090403-4276-0000-0000-0000387318D8
+Message-Id: <c15c26963663b8de3102fd08df614fc5a8b3ecc2.camel@au1.ibm.com>
+Subject: RE: [PATCH v2 3/6] powerpc: Convert flush_icache_range & friends to C
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-09-03_05:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909040027
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909040034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,316 +96,695 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Qian Cai <cai@lca.pw>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thiago Jung Bauermann [bauerman@linux.ibm.com] wrote:
-> [ Some people didn't receive all the patches in this series, even though
->   the linuxppc-dev list did so trying to send again. This is exactly the
->   same series I posted yesterday. Sorry for the clutter. ]
+On Tue, 2019-09-03 at 08:08 +0200, Christophe Leroy wrote:
 > 
-> This series contains preliminary work to enable Secure Virtual Machines
-> (SVM) on powerpc. SVMs request to be migrated to secure memory very early in
-> the boot process (in prom_init()), so by default all of their memory is
-> inaccessible to the hypervisor. There is an ultravisor call that the VM can
-> use to request certain pages to be made accessible (aka shared).
+> Le 03/09/2019 à 07:23, Alastair D'Silva a écrit :
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > Similar to commit 22e9c88d486a
+> > ("powerpc/64: reuse PPC32 static inline flush_dcache_range()")
+> > this patch converts the following ASM symbols to C:
+> >      flush_icache_range()
+> >      __flush_dcache_icache()
+> >      __flush_dcache_icache_phys()
+> > 
+> > This was done as we discovered a long-standing bug where the length
+> > of the
+> > range was truncated due to using a 32 bit shift instead of a 64 bit
+> > one.
+> > 
+> > By converting these functions to C, it becomes easier to maintain.
+> > 
+> > flush_dcache_icache_phys() retains a critical assembler section as
+> > we must
+> > ensure there are no memory accesses while the data MMU is disabled
+> > (authored by Christophe Leroy). Since this has no external callers,
+> > it has
+> > also been made static, allowing the compiler to inline it within
+> > flush_dcache_icache_page().
+> > 
+> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> > ---
+> >   arch/powerpc/include/asm/cache.h      |  26 ++---
+> >   arch/powerpc/include/asm/cacheflush.h |  24 ++--
+> >   arch/powerpc/kernel/misc_32.S         | 117 --------------------
+> >   arch/powerpc/kernel/misc_64.S         | 102 -----------------
+> >   arch/powerpc/mm/mem.c                 | 152
+> > +++++++++++++++++++++++++-
+> >   5 files changed, 173 insertions(+), 248 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/include/asm/cache.h
+> > b/arch/powerpc/include/asm/cache.h
+> > index f852d5cd746c..91c808c6738b 100644
+> > --- a/arch/powerpc/include/asm/cache.h
+> > +++ b/arch/powerpc/include/asm/cache.h
+> > @@ -98,20 +98,7 @@ static inline u32 l1_icache_bytes(void)
+> >   #endif
+> >   #endif /* ! __ASSEMBLY__ */
+> >   
+> > -#if defined(__ASSEMBLY__)
+> > -/*
+> > - * For a snooping icache, we still need a dummy icbi to purge all
+> > the
+> > - * prefetched instructions from the ifetch buffers. We also need a
+> > sync
+> > - * before the icbi to order the the actual stores to memory that
+> > might
+> > - * have modified instructions with the icbi.
+> > - */
+> > -#define PURGE_PREFETCHED_INS	\
+> > -	sync;			\
+> > -	icbi	0,r3;		\
+> > -	sync;			\
+> > -	isync
+> > -
+> > -#else
+> > +#if !defined(__ASSEMBLY__)
+> >   #define __read_mostly
+> > __attribute__((__section__(".data..read_mostly")))
+> >   
+> >   #ifdef CONFIG_PPC_BOOK3S_32
+> > @@ -145,6 +132,17 @@ static inline void dcbst(void *addr)
+> >   {
+> >   	__asm__ __volatile__ ("dcbst %y0" : : "Z"(*(u8 *)addr) :
+> > "memory");
+> >   }
+> > +
+> > +static inline void icbi(void *addr)
+> > +{
+> > +	__asm__ __volatile__ ("icbi 0, %0" : : "r"(addr) : "memory");
+> 
+> I think "__asm__ __volatile__" is deprecated. Use "asm volatile"
+> instead.
+> 
 
-I would like to piggy-back on this series (since it provides the
-context) to add another patch we need for SVMs :-) 
+Ok.
 
-Appreciate any comments. 
+> > +}
+> > +
+> > +static inline void iccci(void *addr)
+> > +{
+> > +	__asm__ __volatile__ ("iccci 0, %0" : : "r"(addr) : "memory");
+> > +}
+> > +
+> 
+> Same
+> 
+> >   #endif /* !__ASSEMBLY__ */
+> >   #endif /* __KERNEL__ */
+> >   #endif /* _ASM_POWERPC_CACHE_H */
+> > diff --git a/arch/powerpc/include/asm/cacheflush.h
+> > b/arch/powerpc/include/asm/cacheflush.h
+> > index ed57843ef452..4a1c9f0200e1 100644
+> > --- a/arch/powerpc/include/asm/cacheflush.h
+> > +++ b/arch/powerpc/include/asm/cacheflush.h
+> > @@ -42,24 +42,20 @@ extern void flush_dcache_page(struct page
+> > *page);
+> >   #define flush_dcache_mmap_lock(mapping)		do { } while
+> > (0)
+> >   #define flush_dcache_mmap_unlock(mapping)	do { } while (0)
+> >   
+> > -extern void flush_icache_range(unsigned long, unsigned long);
+> > +void flush_icache_range(unsigned long start, unsigned long stop);
+> >   extern void flush_icache_user_range(struct vm_area_struct *vma,
+> >   				    struct page *page, unsigned long
+> > addr,
+> >   				    int len);
+> > -extern void __flush_dcache_icache(void *page_va);
+> >   extern void flush_dcache_icache_page(struct page *page);
+> > -#if defined(CONFIG_PPC32) && !defined(CONFIG_BOOKE)
+> > -extern void __flush_dcache_icache_phys(unsigned long physaddr);
+> > -#else
+> > -static inline void __flush_dcache_icache_phys(unsigned long
+> > physaddr)
+> > -{
+> > -	BUG();
+> > -}
+> > -#endif
+> > -
+> > -/*
+> > - * Write any modified data cache blocks out to memory and
+> > invalidate them.
+> > - * Does not invalidate the corresponding instruction cache blocks.
+> > +void __flush_dcache_icache(void *page);
+> > +
+> > +/**
+> > + * flush_dcache_range(): Write any modified data cache blocks out
+> > to memory and
+> > + * invalidate them. Does not invalidate the corresponding
+> > instruction cache
+> > + * blocks.
+> > + *
+> > + * @start: the start address
+> > + * @stop: the stop address (exclusive)
+> >    */
+> >   static inline void flush_dcache_range(unsigned long start,
+> > unsigned long stop)
+> >   {
+> > diff --git a/arch/powerpc/kernel/misc_32.S
+> > b/arch/powerpc/kernel/misc_32.S
+> > index fe4bd321730e..12b95e6799d4 100644
+> > --- a/arch/powerpc/kernel/misc_32.S
+> > +++ b/arch/powerpc/kernel/misc_32.S
+> > @@ -318,123 +318,6 @@
+> > END_FTR_SECTION_IFSET(CPU_FTR_UNIFIED_ID_CACHE)
+> >   EXPORT_SYMBOL(flush_instruction_cache)
+> >   #endif /* CONFIG_PPC_8xx */
+> >   
+> > -/*
+> > - * Write any modified data cache blocks out to memory
+> > - * and invalidate the corresponding instruction cache blocks.
+> > - * This is a no-op on the 601.
+> > - *
+> > - * flush_icache_range(unsigned long start, unsigned long stop)
+> > - */
+> > -_GLOBAL(flush_icache_range)
+> > -BEGIN_FTR_SECTION
+> > -	PURGE_PREFETCHED_INS
+> > -	blr				/* for 601, do nothing */
+> > -END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+> > -	rlwinm	r3,r3,0,0,31 - L1_CACHE_SHIFT
+> > -	subf	r4,r3,r4
+> > -	addi	r4,r4,L1_CACHE_BYTES - 1
+> > -	srwi.	r4,r4,L1_CACHE_SHIFT
+> > -	beqlr
+> > -	mtctr	r4
+> > -	mr	r6,r3
+> > -1:	dcbst	0,r3
+> > -	addi	r3,r3,L1_CACHE_BYTES
+> > -	bdnz	1b
+> > -	sync				/* wait for dcbst's to get
+> > to ram */
+> > -#ifndef CONFIG_44x
+> > -	mtctr	r4
+> > -2:	icbi	0,r6
+> > -	addi	r6,r6,L1_CACHE_BYTES
+> > -	bdnz	2b
+> > -#else
+> > -	/* Flash invalidate on 44x because we are passed kmapped
+> > addresses and
+> > -	   this doesn't work for userspace pages due to the virtually
+> > tagged
+> > -	   icache.  Sigh. */
+> > -	iccci	0, r0
+> > -#endif
+> > -	sync				/* additional sync needed
+> > on g4 */
+> > -	isync
+> > -	blr
+> > -_ASM_NOKPROBE_SYMBOL(flush_icache_range)
+> > -EXPORT_SYMBOL(flush_icache_range)
+> > -
+> > -/*
+> > - * Flush a particular page from the data cache to RAM.
+> > - * Note: this is necessary because the instruction cache does
+> > *not*
+> > - * snoop from the data cache.
+> > - * This is a no-op on the 601 which has a unified cache.
+> > - *
+> > - *	void __flush_dcache_icache(void *page)
+> > - */
+> > -_GLOBAL(__flush_dcache_icache)
+> > -BEGIN_FTR_SECTION
+> > -	PURGE_PREFETCHED_INS
+> > -	blr
+> > -END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+> > -	rlwinm	r3,r3,0,0,31-PAGE_SHIFT		/* Get page base
+> > address */
+> > -	li	r4,PAGE_SIZE/L1_CACHE_BYTES	/* Number of lines in a
+> > page */
+> > -	mtctr	r4
+> > -	mr	r6,r3
+> > -0:	dcbst	0,r3				/* Write line to
+> > ram */
+> > -	addi	r3,r3,L1_CACHE_BYTES
+> > -	bdnz	0b
+> > -	sync
+> > -#ifdef CONFIG_44x
+> > -	/* We don't flush the icache on 44x. Those have a virtual
+> > icache
+> > -	 * and we don't have access to the virtual address here (it's
+> > -	 * not the page vaddr but where it's mapped in user space). The
+> > -	 * flushing of the icache on these is handled elsewhere, when
+> > -	 * a change in the address space occurs, before returning to
+> > -	 * user space
+> > -	 */
+> > -BEGIN_MMU_FTR_SECTION
+> > -	blr
+> > -END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_44x)
+> > -#endif /* CONFIG_44x */
+> > -	mtctr	r4
+> > -1:	icbi	0,r6
+> > -	addi	r6,r6,L1_CACHE_BYTES
+> > -	bdnz	1b
+> > -	sync
+> > -	isync
+> > -	blr
+> > -
+> > -#ifndef CONFIG_BOOKE
+> > -/*
+> > - * Flush a particular page from the data cache to RAM, identified
+> > - * by its physical address.  We turn off the MMU so we can just
+> > use
+> > - * the physical address (this may be a highmem page without a
+> > kernel
+> > - * mapping).
+> > - *
+> > - *	void __flush_dcache_icache_phys(unsigned long physaddr)
+> > - */
+> > -_GLOBAL(__flush_dcache_icache_phys)
+> > -BEGIN_FTR_SECTION
+> > -	PURGE_PREFETCHED_INS
+> > -	blr					/* for 601, do nothing */
+> > -END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+> > -	mfmsr	r10
+> > -	rlwinm	r0,r10,0,28,26			/* clear DR */
+> > -	mtmsr	r0
+> > -	isync
+> > -	rlwinm	r3,r3,0,0,31-PAGE_SHIFT		/* Get page base
+> > address */
+> > -	li	r4,PAGE_SIZE/L1_CACHE_BYTES	/* Number of lines in a
+> > page */
+> > -	mtctr	r4
+> > -	mr	r6,r3
+> > -0:	dcbst	0,r3				/* Write line to
+> > ram */
+> > -	addi	r3,r3,L1_CACHE_BYTES
+> > -	bdnz	0b
+> > -	sync
+> > -	mtctr	r4
+> > -1:	icbi	0,r6
+> > -	addi	r6,r6,L1_CACHE_BYTES
+> > -	bdnz	1b
+> > -	sync
+> > -	mtmsr	r10				/* restore DR */
+> > -	isync
+> > -	blr
+> > -#endif /* CONFIG_BOOKE */
+> > -
+> >   /*
+> >    * Copy a whole page.  We use the dcbz instruction on the
+> > destination
+> >    * to reduce memory traffic (it eliminates the unnecessary reads
+> > of
+> > diff --git a/arch/powerpc/kernel/misc_64.S
+> > b/arch/powerpc/kernel/misc_64.S
+> > index 9bc0aa9aeb65..ff20c253f273 100644
+> > --- a/arch/powerpc/kernel/misc_64.S
+> > +++ b/arch/powerpc/kernel/misc_64.S
+> > @@ -49,108 +49,6 @@ _GLOBAL(call_do_irq)
+> >   	mtlr	r0
+> >   	blr
+> >   
+> > -	.section	".toc","aw"
+> > -PPC64_CACHES:
+> > -	.tc		ppc64_caches[TC],ppc64_caches
+> > -	.section	".text"
+> > -
+> > -/*
+> > - * Write any modified data cache blocks out to memory
+> > - * and invalidate the corresponding instruction cache blocks.
+> > - *
+> > - * flush_icache_range(unsigned long start, unsigned long stop)
+> > - *
+> > - *   flush all bytes from start through stop-1 inclusive
+> > - */
+> > -
+> > -_GLOBAL_TOC(flush_icache_range)
+> > -BEGIN_FTR_SECTION
+> > -	PURGE_PREFETCHED_INS
+> > -	blr
+> > -END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+> > -/*
+> > - * Flush the data cache to memory
+> > - *
+> > - * Different systems have different cache line sizes
+> > - * and in some cases i-cache and d-cache line sizes differ from
+> > - * each other.
+> > - */
+> > - 	ld	r10,PPC64_CACHES@toc(r2)
+> > -	lwz	r7,DCACHEL1BLOCKSIZE(r10)/* Get cache block size */
+> > -	addi	r5,r7,-1
+> > -	andc	r6,r3,r5		/* round low to line bdy */
+> > -	subf	r8,r6,r4		/* compute length */
+> > -	add	r8,r8,r5		/* ensure we get enough */
+> > -	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of cache block
+> > size */
+> > -	srd.	r8,r8,r9		/* compute line count */
+> > -	beqlr				/* nothing to do? */
+> > -	mtctr	r8
+> > -1:	dcbst	0,r6
+> > -	add	r6,r6,r7
+> > -	bdnz	1b
+> > -	sync
+> > -
+> > -/* Now invalidate the instruction cache */
+> > -	
+> > -	lwz	r7,ICACHEL1BLOCKSIZE(r10)	/* Get Icache block size */
+> > -	addi	r5,r7,-1
+> > -	andc	r6,r3,r5		/* round low to line bdy */
+> > -	subf	r8,r6,r4		/* compute length */
+> > -	add	r8,r8,r5
+> > -	lwz	r9,ICACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of Icache
+> > block size */
+> > -	srd.	r8,r8,r9		/* compute line count */
+> > -	beqlr				/* nothing to do? */
+> > -	mtctr	r8
+> > -2:	icbi	0,r6
+> > -	add	r6,r6,r7
+> > -	bdnz	2b
+> > -	isync
+> > -	blr
+> > -_ASM_NOKPROBE_SYMBOL(flush_icache_range)
+> > -EXPORT_SYMBOL(flush_icache_range)
+> > -
+> > -/*
+> > - * Flush a particular page from the data cache to RAM.
+> > - * Note: this is necessary because the instruction cache does
+> > *not*
+> > - * snoop from the data cache.
+> > - *
+> > - *	void __flush_dcache_icache(void *page)
+> > - */
+> > -_GLOBAL(__flush_dcache_icache)
+> > -/*
+> > - * Flush the data cache to memory
+> > - *
+> > - * Different systems have different cache line sizes
+> > - */
+> > -
+> > -BEGIN_FTR_SECTION
+> > -	PURGE_PREFETCHED_INS
+> > -	blr
+> > -END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+> > -
+> > -/* Flush the dcache */
+> > - 	ld	r7,PPC64_CACHES@toc(r2)
+> > -	clrrdi	r3,r3,PAGE_SHIFT           	    /* Page align
+> > */
+> > -	lwz	r4,DCACHEL1BLOCKSPERPAGE(r7)	/* Get # dcache blocks per
+> > page */
+> > -	lwz	r5,DCACHEL1BLOCKSIZE(r7)	/* Get dcache block size */
+> > -	mr	r6,r3
+> > -	mtctr	r4
+> > -0:	dcbst	0,r6
+> > -	add	r6,r6,r5
+> > -	bdnz	0b
+> > -	sync
+> > -
+> > -/* Now invalidate the icache */	
+> > -
+> > -	lwz	r4,ICACHEL1BLOCKSPERPAGE(r7)	/* Get # icache blocks per
+> > page */
+> > -	lwz	r5,ICACHEL1BLOCKSIZE(r7)	/* Get icache block size */
+> > -	mtctr	r4
+> > -1:	icbi	0,r3
+> > -	add	r3,r3,r5
+> > -	bdnz	1b
+> > -	isync
+> > -	blr
+> > -
+> >   _GLOBAL(__bswapdi2)
+> >   EXPORT_SYMBOL(__bswapdi2)
+> >   	srdi	r8,r3,32
+> > diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> > index 9191a66b3bc5..cd540123874d 100644
+> > --- a/arch/powerpc/mm/mem.c
+> > +++ b/arch/powerpc/mm/mem.c
+> > @@ -321,6 +321,105 @@ void free_initmem(void)
+> >   	free_initmem_default(POISON_FREE_INITMEM);
+> >   }
+> >   
+> > +/*
+> > + * Warning: This macro will perform an early return if the CPU has
+> > + * a coherent icache. The intent is is call this early in
+> > function,
+> > + * and handle the non-coherent icache variant afterwards.
+> > + *
+> > + * For a snooping icache, we still need a dummy icbi to purge all
+> > the
+> > + * prefetched instructions from the ifetch buffers. We also need a
+> > sync
+> > + * before the icbi to order the the actual stores to memory that
+> > might
+> > + * have modified instructions with the icbi.
+> > + */
+> > +#define flush_coherent_icache_or_return(addr) {			
+> > \
+> > +	if (cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {		\
+> > +		mb(); /* sync */				\
+> > +		icbi(addr);					\
+> > +		mb(); /* sync */				\
+> > +		isync();					\
+> > +		return;						\
+> > +	}							\
+> > +}
+> 
+> I hate this kind of awful macro which kills code readability.
+> 
+> Please to something like
+> 
+> static bool flush_coherent_icache_or_return(unsigned long addr)
+> {
+> 	if (!cpu_has_feature(CPU_FTR_COHERENT_ICACHE))
+> 		return false;
+> 
+> 	mb(); /* sync */
+> 	icbi(addr);
+> 	mb(); /* sync */
+> 	isync();
+> 	return true;
+> }
+> 
+> then callers will do:
+> 
+> 	if (flush_coherent_icache_or_return(addr))
+> 		return;
 
----
+Sounds good.
 
-From ed93a0e36ec886483a72fdb8d99380bbe6607f37 Mon Sep 17 00:00:00 2001
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Date: Thu, 16 May 2019 20:57:12 -0500
-Subject: [PATCH 1/1] powerpc/pseries/svm: don't access some SPRs
+> > +
+> > +/**
+> > + * flush_icache_range: Write any modified data cache blocks out to
+> > memory
+> > + * and invalidate the corresponding blocks in the instruction
+> > cache
+> > + *
+> > + * Generic code will call this after writing memory, before
+> > executing from it.
+> > + *
+> > + * @start: the start address
+> > + * @stop: the stop address (exclusive)
+> > + */
+> > +void flush_icache_range(unsigned long start, unsigned long stop)
+> > +{
+> > +	unsigned long shift = l1_icache_shift();
+> > +	unsigned long bytes = l1_icache_bytes();
+> > +	char *addr = (char *)(start & ~(bytes - 1));
+> > +	unsigned long size = stop - (unsigned long)addr + (bytes - 1);
+> > +	unsigned long i;
+> 
+> Could probably move all this and the loop into a
+> __flush_icache_range() 
+> helper.
 
-Ultravisor disables some CPU features like EBB and BHRB in the HFSCR
-for secure virtual machines (SVMs). If the SVMs attempt to access
-related registers, they will get a Program Interrupt.
+Will factor it out into invalidate_icache_range (as its similar to
+invalidate_dcache_range).
 
-Use macros/wrappers to skip accessing EBB and BHRB related registers
-for secure VMs.
+> 
+> > +
+> > +	flush_coherent_icache_or_return(addr);
+> > +	clean_dcache_range(start, stop);
+> > +
+> > +	if (IS_ENABLED(CONFIG_44x)) {
+> > +		/*
+> > +		 * Flash invalidate on 44x because we are passed
+> > kmapped
+> > +		 * addresses and this doesn't work for userspace pages
+> > due to
+> > +		 * the virtually tagged icache.
+> > +		 */
+> > +		iccci(addr);
+> > +	} else {
+> > +		/* Now invalidate the instruction cache */
+> > +		for (i = 0; i < size >> shift; i++, addr += bytes)
+> > +			icbi(addr);
+> > +	}
+> > +
+> > +	if (!IS_ENABLED(CONFIG_PPC64))
+> > +		mb(); /* additional sync needed on g4 */
+> > +	isync();
+> > +}
+> > +EXPORT_SYMBOL(flush_icache_range);
+> > +
+> > +#if !defined(CONFIG_PPC_8xx) & !defined(CONFIG_PPC64)
+> > +/**
+> > + * flush_dcache_icache_phys() - Flush a page by it's physical
+> > address
+> > + * @physaddr: the physical address of the page
+> > + */
+> > +static void flush_dcache_icache_phys(unsigned long physaddr)
+> > +{
+> > +	unsigned long bytes = l1_dcache_bytes();
+> > +	unsigned long nb = PAGE_SIZE / bytes;
+> > +	unsigned long addr = physaddr & PAGE_MASK;
+> > +	unsigned long msr, msr0;
+> > +	unsigned long loop1 = addr, loop2 = addr;
+> > +
+> > +	msr0 = mfmsr();
+> > +	msr = msr0 & ~MSR_DR;
+> 
+> Maybe we could get rid of msr and just use (msr0 & ~MSR_DR) in the
+> asm 
+> inputs parameters.
+> 
 
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
----
- arch/powerpc/include/asm/reg.h          | 35 ++++++++++++++++++++++++
- arch/powerpc/kernel/process.c           | 12 ++++-----
- arch/powerpc/kvm/book3s_hv.c            | 24 ++++++++---------
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 48 ++++++++++++++++++++++++---------
- arch/powerpc/kvm/book3s_hv_tm_builtin.c |  6 ++---
- arch/powerpc/perf/core-book3s.c         |  4 +--
- arch/powerpc/xmon/xmon.c                |  2 +-
- 7 files changed, 95 insertions(+), 36 deletions(-)
+That's already pretty busy, I think it's clearer as-is.
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index ec3714c..1397cb3 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1376,6 +1376,41 @@ static inline void msr_check_and_clear(unsigned long bits)
- 		__msr_check_and_clear(bits);
- }
- 
-+#ifdef CONFIG_PPC_SVM
-+/*
-+ * Move from some "restricted" sprs.
-+ * Secure VMs should not access some registers as the related features
-+ * are disabled in the CPU. If an SVM is attempting read from the given
-+ * SPR, return 0. Otherwise behave like a normal mfspr.
-+ */
-+#define mfspr_r(rn)						\
-+({								\
-+	unsigned long rval = 0ULL;				\
-+								\
-+	if (!(mfmsr() & MSR_S))					\
-+		asm volatile("mfspr %0," __stringify(rn)	\
-+				: "=r" (rval));			\
-+	rval;							\
-+})
-+
-+/*
-+ * Move to some "restricted" sprs.
-+ * Secure VMs should not access some registers as the related features
-+ * are disabled in the CPU. If an SVM is attempting write to the given
-+ * SPR, ignore the write. Otherwise behave like a normal mtspr.
-+ */
-+#define mtspr_r(rn, v)					\
-+({								\
-+	if (!(mfmsr() & MSR_S))					\
-+		asm volatile("mtspr " __stringify(rn) ",%0" :	\
-+				     : "r" ((unsigned long)(v)) \
-+				     : "memory");		\
-+})
-+#else
-+#define mfspr_r		mfspr
-+#define mtspr_r		mtspr
-+#endif
-+
- #ifdef __powerpc64__
- #if defined(CONFIG_PPC_CELL) || defined(CONFIG_PPC_FSL_BOOK3E)
- #define mftb()		({unsigned long rval;				\
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 8fc4de0..d5e7386 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1072,9 +1072,9 @@ static inline void save_sprs(struct thread_struct *t)
- 		t->dscr = mfspr(SPRN_DSCR);
- 
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		t->bescr = mfspr(SPRN_BESCR);
--		t->ebbhr = mfspr(SPRN_EBBHR);
--		t->ebbrr = mfspr(SPRN_EBBRR);
-+		t->bescr = mfspr_r(SPRN_BESCR);
-+		t->ebbhr = mfspr_r(SPRN_EBBHR);
-+		t->ebbrr = mfspr_r(SPRN_EBBRR);
- 
- 		t->fscr = mfspr(SPRN_FSCR);
- 
-@@ -1111,11 +1111,11 @@ static inline void restore_sprs(struct thread_struct *old_thread,
- 
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
- 		if (old_thread->bescr != new_thread->bescr)
--			mtspr(SPRN_BESCR, new_thread->bescr);
-+			mtspr_r(SPRN_BESCR, new_thread->bescr);
- 		if (old_thread->ebbhr != new_thread->ebbhr)
--			mtspr(SPRN_EBBHR, new_thread->ebbhr);
-+			mtspr_r(SPRN_EBBHR, new_thread->ebbhr);
- 		if (old_thread->ebbrr != new_thread->ebbrr)
--			mtspr(SPRN_EBBRR, new_thread->ebbrr);
-+			mtspr_r(SPRN_EBBRR, new_thread->ebbrr);
- 
- 		if (old_thread->fscr != new_thread->fscr)
- 			mtspr(SPRN_FSCR, new_thread->fscr);
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 8304ee2..91f4db2 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3584,9 +3584,9 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	mtspr(SPRN_PSPB, vcpu->arch.pspb);
- 	mtspr(SPRN_FSCR, vcpu->arch.fscr);
- 	mtspr(SPRN_TAR, vcpu->arch.tar);
--	mtspr(SPRN_EBBHR, vcpu->arch.ebbhr);
--	mtspr(SPRN_EBBRR, vcpu->arch.ebbrr);
--	mtspr(SPRN_BESCR, vcpu->arch.bescr);
-+	mtspr_r(SPRN_EBBHR, vcpu->arch.ebbhr);
-+	mtspr_r(SPRN_EBBRR, vcpu->arch.ebbrr);
-+	mtspr_r(SPRN_BESCR, vcpu->arch.bescr);
- 	mtspr(SPRN_WORT, vcpu->arch.wort);
- 	mtspr(SPRN_TIDR, vcpu->arch.tid);
- 	mtspr(SPRN_DAR, vcpu->arch.shregs.dar);
-@@ -3657,9 +3657,9 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	vcpu->arch.pspb = mfspr(SPRN_PSPB);
- 	vcpu->arch.fscr = mfspr(SPRN_FSCR);
- 	vcpu->arch.tar = mfspr(SPRN_TAR);
--	vcpu->arch.ebbhr = mfspr(SPRN_EBBHR);
--	vcpu->arch.ebbrr = mfspr(SPRN_EBBRR);
--	vcpu->arch.bescr = mfspr(SPRN_BESCR);
-+	vcpu->arch.ebbhr = mfspr_r(SPRN_EBBHR);
-+	vcpu->arch.ebbrr = mfspr_r(SPRN_EBBRR);
-+	vcpu->arch.bescr = mfspr_r(SPRN_BESCR);
- 	vcpu->arch.wort = mfspr(SPRN_WORT);
- 	vcpu->arch.tid = mfspr(SPRN_TIDR);
- 	vcpu->arch.amr = mfspr(SPRN_AMR);
-@@ -4288,9 +4288,9 @@ static int kvmppc_vcpu_run_hv(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 
- 	/* Save userspace EBB and other register values */
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		ebb_regs[0] = mfspr(SPRN_EBBHR);
--		ebb_regs[1] = mfspr(SPRN_EBBRR);
--		ebb_regs[2] = mfspr(SPRN_BESCR);
-+		ebb_regs[0] = mfspr_r(SPRN_EBBHR);
-+		ebb_regs[1] = mfspr_r(SPRN_EBBRR);
-+		ebb_regs[2] = mfspr_r(SPRN_BESCR);
- 		user_tar = mfspr(SPRN_TAR);
- 	}
- 	user_vrsave = mfspr(SPRN_VRSAVE);
-@@ -4336,9 +4336,9 @@ static int kvmppc_vcpu_run_hv(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 
- 	/* Restore userspace EBB and other register values */
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
--		mtspr(SPRN_EBBHR, ebb_regs[0]);
--		mtspr(SPRN_EBBRR, ebb_regs[1]);
--		mtspr(SPRN_BESCR, ebb_regs[2]);
-+		mtspr_r(SPRN_EBBHR, ebb_regs[0]);
-+		mtspr_r(SPRN_EBBRR, ebb_regs[1]);
-+		mtspr_r(SPRN_BESCR, ebb_regs[2]);
- 		mtspr(SPRN_TAR, user_tar);
- 		mtspr(SPRN_FSCR, current->thread.fscr);
- 	}
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index f4399b0..4cbf8ca 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -808,15 +808,27 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
- 	mtspr	SPRN_CIABR, r7
- 	mtspr	SPRN_TAR, r8
- 	ld	r5, VCPU_IC(r4)
--	ld	r8, VCPU_EBBHR(r4)
- 	mtspr	SPRN_IC, r5
--	mtspr	SPRN_EBBHR, r8
--	ld	r5, VCPU_EBBRR(r4)
--	ld	r6, VCPU_BESCR(r4)
-+
-+	/* EBB and TM are disabled for secure VMs so skip them */
-+	mfmsr   r8
-+	andis.  r8, r8, MSR_S@high
-+	bne     clear_ebb0
-+	ld      r5, VCPU_EBBHR(r4)
-+	ld      r6, VCPU_EBBRR(r4)
-+	ld      r7, VCPU_BESCR(r4)
-+	b       store_ebb0
-+clear_ebb0:
-+	li      r5, 0
-+	li      r6, 0
-+	li      r7, 0
-+store_ebb0:
-+	mtspr   SPRN_EBBHR, r5
-+	mtspr   SPRN_EBBRR, r6
-+	mtspr   SPRN_BESCR, r7
-+
- 	lwz	r7, VCPU_GUEST_PID(r4)
- 	ld	r8, VCPU_WORT(r4)
--	mtspr	SPRN_EBBRR, r5
--	mtspr	SPRN_BESCR, r6
- 	mtspr	SPRN_PID, r7
- 	mtspr	SPRN_WORT, r8
- BEGIN_FTR_SECTION
-@@ -1611,14 +1623,26 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
- 	mfspr	r7, SPRN_TAR
- 	std	r5, VCPU_IC(r9)
- 	std	r7, VCPU_TAR(r9)
--	mfspr	r8, SPRN_EBBHR
--	std	r8, VCPU_EBBHR(r9)
--	mfspr	r5, SPRN_EBBRR
--	mfspr	r6, SPRN_BESCR
-+
-+	/* EBB and TM are disabled for secure VMs so skip them */
-+	mfmsr   r8
-+	andis.  r8, r8, MSR_S@high
-+	bne     clear_ebb1
-+	mfspr   r5, SPRN_EBBHR
-+	mfspr   r6, SPRN_EBBRR
-+	mfspr   r7, SPRN_BESCR
-+	b       store_ebb1
-+clear_ebb1:
-+	li      r5, 0
-+	li      r6, 0
-+	li      r7, 0
-+store_ebb1:
-+	std     r5, VCPU_EBBHR(r9)
-+	std     r6, VCPU_EBBRR(r9)
-+	std     r7, VCPU_BESCR(r9)
-+
- 	mfspr	r7, SPRN_PID
- 	mfspr	r8, SPRN_WORT
--	std	r5, VCPU_EBBRR(r9)
--	std	r6, VCPU_BESCR(r9)
- 	stw	r7, VCPU_GUEST_PID(r9)
- 	std	r8, VCPU_WORT(r9)
- BEGIN_FTR_SECTION
-diff --git a/arch/powerpc/kvm/book3s_hv_tm_builtin.c b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-index 2172462..bc3071c 100644
---- a/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-@@ -45,18 +45,18 @@ int kvmhv_p9_tm_emulation_early(struct kvm_vcpu *vcpu)
- 		if (!(vcpu->arch.hfscr & HFSCR_EBB) ||
- 		    ((msr & MSR_PR) && !(mfspr(SPRN_FSCR) & FSCR_EBB)))
- 			return 0;
--		bescr = mfspr(SPRN_BESCR);
-+		bescr = mfspr_r(SPRN_BESCR);
- 		/* expect to see a S->T transition requested */
- 		if (((bescr >> 30) & 3) != 2)
- 			return 0;
- 		bescr &= ~BESCR_GE;
- 		if (instr & (1 << 11))
- 			bescr |= BESCR_GE;
--		mtspr(SPRN_BESCR, bescr);
-+		mtspr_r(SPRN_BESCR, bescr);
- 		msr = (msr & ~MSR_TS_MASK) | MSR_TS_T;
- 		vcpu->arch.shregs.msr = msr;
- 		vcpu->arch.cfar = vcpu->arch.regs.nip - 4;
--		vcpu->arch.regs.nip = mfspr(SPRN_EBBRR);
-+		vcpu->arch.regs.nip = mfspr_r(SPRN_EBBRR);
- 		return 1;
- 
- 	case PPC_INST_MTMSRD:
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index ca92e01..e51b2c9 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -846,9 +846,9 @@ void perf_event_print_debug(void)
- 
- 	if (ppmu->flags & PPMU_ARCH_207S) {
- 		pr_info("MMCR2: %016lx EBBHR: %016lx\n",
--			mfspr(SPRN_MMCR2), mfspr(SPRN_EBBHR));
-+			mfspr(SPRN_MMCR2), mfspr_r(SPRN_EBBHR));
- 		pr_info("EBBRR: %016lx BESCR: %016lx\n",
--			mfspr(SPRN_EBBRR), mfspr(SPRN_BESCR));
-+			mfspr_r(SPRN_EBBRR), mfspr_r(SPRN_BESCR));
- 	}
- #endif
- 	pr_info("SIAR:  %016lx SDAR:  %016lx SIER:  %016lx\n",
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 14e56c2..20b3431 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1871,7 +1871,7 @@ static void dump_207_sprs(void)
- 	printf("sdar   = %.16lx   sier = %.16lx pmc6   = %.8lx\n",
- 		mfspr(SPRN_SDAR), mfspr(SPRN_SIER), mfspr(SPRN_PMC6));
- 	printf("ebbhr  = %.16lx  ebbrr = %.16lx bescr  = %.16lx\n",
--		mfspr(SPRN_EBBHR), mfspr(SPRN_EBBRR), mfspr(SPRN_BESCR));
-+		mfspr_r(SPRN_EBBHR), mfspr_r(SPRN_EBBRR), mfspr_r(SPRN_BESCR));
- 	printf("iamr   = %.16lx\n", mfspr(SPRN_IAMR));
- 
- 	if (!(msr & MSR_HV))
+> > +	/*
+> > +	 * This must remain as ASM to prevent potential memory accesses
+> > +	 * while the data MMU is disabled
+> > +	 */
+> > +	asm volatile(
+> > +		"   mtctr %2;"
+> > +		"   mtmsr %3;"
+> > +		"   isync;"
+> > +		"0: dcbst   0, %0;"
+> > +		"   addi    %0, %0, %4;"
+> > +		"   bdnz    0b;"
+> > +		"   sync;"
+> > +		"   mtctr %2;"
+> > +		"1: icbi    0, %1;"
+> > +		"   addi    %1, %1, %4;"
+> > +		"   bdnz    1b;"
+> > +		"   sync;"
+> > +		"   mtmsr %5;"
+> > +		"   isync;"
+> > +		: "+r" (loop1), "+r" (loop2)
+> > +		: "r" (nb), "r" (msr), "i" (bytes), "r" (msr0)
+> > +		: "ctr", "memory");
+> 
+> Maybe also add "msr" in the clobbers.
+> 
+Ok.
+
+> > +}
+> > +#endif // !defined(CONFIG_PPC_8xx) & !defined(CONFIG_PPC64)
+> > +
+> >   /*
+> >    * This is called when a page has been modified by the kernel.
+> >    * It just marks the page as not i-cache clean.  We do the i-
+> > cache
+> > @@ -353,12 +452,63 @@ void flush_dcache_icache_page(struct page
+> > *page)
+> >   		__flush_dcache_icache(start);
+> >   		kunmap_atomic(start);
+> >   	} else {
+> > -		__flush_dcache_icache_phys(page_to_pfn(page) <<
+> > PAGE_SHIFT);
+> > +		unsigned long addr = page_to_pfn(page) << PAGE_SHIFT;
+> > +
+> > +		flush_coherent_icache_or_return((void *)addr);
+> > +		flush_dcache_icache_phys(addr);
+> >   	}
+> >   #endif
+> >   }
+> >   EXPORT_SYMBOL(flush_dcache_icache_page);
+> >   
+> > +/**
+> > + * __flush_dcache_icache(): Flush a particular page from the data
+> > cache to RAM.
+> > + * Note: this is necessary because the instruction cache does
+> > *not*
+> > + * snoop from the data cache.
+> > + *
+> > + * @page: the address of the page to flush
+> > + */
+> > +void __flush_dcache_icache(void *page)
+> > +{
+> > +	char *addr = page;
+> > +	unsigned long lines = PAGE_SIZE >> l1_dcache_shift();
+> > +	unsigned long bytes = l1_dcache_bytes();
+> > +	unsigned long i;
+> > +
+> > +	flush_coherent_icache_or_return(addr);
+> > +
+> > +	/* Flush the data cache to memory */
+> > +	for (i = 0; i < lines; i++, addr += bytes)
+> > +		dcbst(addr);
+> 
+> Use clean_dcache_range(addr, addr + PAGE_SIZE);
+> 
+Ok.
+
+> > +
+> > +	mb(); /* sync */
+> > +
+> > +#ifdef CONFIG_44x
+> 
+> This ifdef is useless.
+> If CONFIG_44x is not enabled, MMU_FTR_TYPE_44x will not be in 
+> MMU_FTRS_POSSIBLE so cpu_has_feature() will return constant false at 
+> buildtime and GCC will drop it.
+> 
+
+Ok.
+
+> > +	/*
+> > +	 * We don't flush the icache on 44x. Those have a virtual
+> > icache and we
+> > +	 * don't have access to the virtual address here (it's not the
+> > page
+> > +	 * vaddr but where it's mapped in user space). The flushing of
+> > the
+> > +	 * icache on these is handled elsewhere, when a change in the
+> > address
+> > +	 * space occurs, before returning to user space.
+> > +	 */
+> > +
+> > +	if (cpu_has_feature(MMU_FTR_TYPE_44x))
+> > +		return;
+> > +#endif
+> > +
+> > +	lines = PAGE_SIZE >> l1_icache_shift();
+> > +	bytes = l1_icache_bytes();
+> > +	addr = page;
+> > +
+> > +	/* Now invalidate the instruction cache */
+> > +	for (i = 0; i < lines; i++, addr += bytes)
+> > +		icbi(addr);
+> 
+> Re-use the __flush_icache_range() helper suggested before.
+> 
+Ok.
+
+> > +
+> > +	mb(); /* sync */
+> > +	isync();
+> > +}
+> > +EXPORT_SYMBOL(__flush_dcache_icache);
+> > +
+> >   void clear_user_page(void *page, unsigned long vaddr, struct page
+> > *pg)
+> >   {
+> >   	clear_page(page);
+> > 
+> 
+> Christophe
 -- 
-1.8.3.1
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
 
