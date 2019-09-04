@@ -1,76 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D601A7ACA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 07:39:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC9AA7AD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 07:41:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NXgS4jrQzDqqY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 15:39:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NXk92zf7zDqrj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 15:41:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="F++lDZyr"; 
- dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NXdW1HR0zDqjy
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 15:37:16 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id 205so10041880pfw.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 22:37:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=uE8xeQ7vNKg/s6NUUP8wb0BKxjOZa8xbhpDvYMGFXO0=;
- b=F++lDZyrC2eVfSHOVXko4T72RXSBTSeAwJG9fgn3u+9G8PDwCa14qTG/cIwj22Rf8g
- t7Jj5s6mmPoxTiaGxRI+uL++ezS8u99rA7WC/BfzO0bw/YcMls1HLcjRefL/HWcWtpdm
- ikM3u7yNhgXgUbQH677gq7iYdwGzCBexvY1TB9j4y6VN6fklGpWW4Pb8vcth+gyivJ8v
- EW1g5vhaK1gxoCf9BwoXYdLp55WYwSZ6cFe+IHAAkBw7drh+BpzACjY/BzEXxDmbx0PW
- MZ0lCGNx2sRsS+fhekgSWR/JTXrnIX2zl5xglYiOuNxAE6BXtthXoFQJ4ym0MIN7pmNW
- yUbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=uE8xeQ7vNKg/s6NUUP8wb0BKxjOZa8xbhpDvYMGFXO0=;
- b=tA4955ZZJ3cja/T80Han19wcTL/OrmYcHdM7xzC0dIKuyohzpd4WAFrTfuDT1Ve79I
- UtdJTJiBWxX8JdGoCBI3Z3s2GzEqfgLsoh6IgrPlicXmn0va6SfXRh3xrp9EhHGtXiuv
- mOBafCKG/nIJSQWa6Lg7HZdZOadzjWVZwI8qVj7IXrS/n9nR9HCcmnZ2/onXeD945OIA
- 6UgJpHsa780wxf5zpeRY7hijYwe3x8mbyqhUxRw7nXMP5+Jg99nEj9Y2YVFduY9UTSxd
- uOHUojixvibAxZz2xp1l5492XJ7OnORAjHJILaDHrFsYfaIymVxTcYCIkxl48I3zY5ri
- rZvQ==
-X-Gm-Message-State: APjAAAV2PP6KVceK7rptFYYNvtko9HbptttkwOKFudZFcWgK0tWb+2rq
- W9Dwysa7jsAlUmbml3iH//o=
-X-Google-Smtp-Source: APXvYqyEFAAw+BNftadAQ4oorLGOkbtIzvUAeY+P0+LwqoUZPLjHBY7F2Cw7K1dHnhI8XPJEakvcZQ==
-X-Received: by 2002:a17:90a:360b:: with SMTP id
- s11mr3254703pjb.30.1567575432983; 
- Tue, 03 Sep 2019 22:37:12 -0700 (PDT)
-Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.googlemail.com with ESMTPSA id q33sm2063273pja.29.2019.09.03.22.37.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 22:37:12 -0700 (PDT)
-Message-ID: <026a6bfbfd8268c5158bc48fb43907cc13442561.camel@gmail.com>
-Subject: Re: [PATCH v5 18/23] powerpc/pci: Handle BAR movement
-From: Oliver O'Halloran <oohall@gmail.com>
-To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>, 
- linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 04 Sep 2019 15:37:07 +1000
-In-Reply-To: <20190816165101.911-19-s.miroshnichenko@yadro.com>
-References: <20190816165101.911-1-s.miroshnichenko@yadro.com>
- <20190816165101.911-19-s.miroshnichenko@yadro.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NXgk0lyyzDqpG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 15:39:13 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x845cFa0140094
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Sep 2019 01:39:11 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ut5vw2axy-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 01:39:11 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
+ Wed, 4 Sep 2019 06:39:09 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 4 Sep 2019 06:39:05 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x845d4ZW42139994
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Sep 2019 05:39:05 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DFD1DA405F;
+ Wed,  4 Sep 2019 05:39:04 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9A0D8A4064;
+ Wed,  4 Sep 2019 05:39:02 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.109.195.163])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed,  4 Sep 2019 05:39:02 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
+ Wed, 04 Sep 2019 11:09:01 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH v2 1/2] powerpc/nvdimm: Use HCALL error as the return value
+In-Reply-To: <20190903123452.28620-1-aneesh.kumar@linux.ibm.com>
+References: <20190903123452.28620-1-aneesh.kumar@linux.ibm.com>
+Date: Wed, 04 Sep 2019 11:09:01 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19090405-0028-0000-0000-000003976ADC
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090405-0029-0000-0000-00002459BACD
+Message-Id: <87y2z4tybu.fsf@vajain21.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-04_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909040059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,45 +88,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, linux@yadro.com
+Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-08-16 at 19:50 +0300, Sergey Miroshnichenko wrote:
-> Add pcibios_rescan_prepare()/_done() hooks for the powerpc platform. Now if
-> the device's driver supports movable BARs, pcibios_rescan_prepare() will be
-> called after the device is stopped, and pcibios_rescan_done() - before it
-> resumes. There are no memory requests to this device between the hooks, so
-> it it safe to rebuild the EEH address cache during that.
-> 
-> CC: Oliver O'Halloran <oohall@gmail.com>
-> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-> ---
->  arch/powerpc/kernel/pci-hotplug.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
-> index 0b0cf8168b47..18cf13bba228 100644
-> --- a/arch/powerpc/kernel/pci-hotplug.c
-> +++ b/arch/powerpc/kernel/pci-hotplug.c
-> @@ -144,3 +144,13 @@ void pci_hp_add_devices(struct pci_bus *bus)
->  	pcibios_finish_adding_to_bus(bus);
->  }
->  EXPORT_SYMBOL_GPL(pci_hp_add_devices);
-> +
-> +void pcibios_rescan_prepare(struct pci_dev *pdev)
-> +{
-> +	eeh_addr_cache_rmv_dev(pdev);
-> +}
-> +
-> +void pcibios_rescan_done(struct pci_dev *pdev)
-> +{
-> +	eeh_addr_cache_insert_dev(pdev);
-> +}
+Hi Aneesh,
 
-Is this actually sufficent? The PE number for a device is largely
-determined by the location of the MMIO BARs. If you move a BAR far
-enough the PE number stored in the eeh_pe would need to be updated as
-well.
+Thanks for the patch. Minor review comments below:
+
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+
+> This simplifies the error handling and also enable us to switch to
+> H_SCM_QUERY hcall in a later patch on H_OVERLAP error.
+>
+> We also do some kernel print formatting fixup in this patch.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 26 ++++++++++-------------
+>  1 file changed, 11 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index a5ac371a3f06..3bef4d298ac6 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -66,28 +66,22 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
+>  	} while (rc == H_BUSY);
+>  
+>  	if (rc) {
+> -		/* H_OVERLAP needs a separate error path */
+> -		if (rc == H_OVERLAP)
+> -			return -EBUSY;
+> -
+>  		dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
+> -		return -ENXIO;
+> +		return rc;
+>  	}
+>  
+>  	p->bound_addr = saved;
+> -
+> -	dev_dbg(&p->pdev->dev, "bound drc %x to %pR\n", p->drc_index, &p->res);
+> -
+> -	return 0;
+
+> +	dev_dbg(&p->pdev->dev, "bound drc 0x%x to %pR\n", p->drc_index, &p->res);
+s/0x%x/%#x/
+> +	return rc;
+rc == 0 always at this point hence 'return 0' should still work.
+
+>  }
+>  
+> -static int drc_pmem_unbind(struct papr_scm_priv *p)
+> +static void drc_pmem_unbind(struct papr_scm_priv *p)
+>  {
+>  	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+>  	uint64_t token = 0;
+>  	int64_t rc;
+>  
+> -	dev_dbg(&p->pdev->dev, "unbind drc %x\n", p->drc_index);
+> +	dev_dbg(&p->pdev->dev, "unbind drc 0x%x\n", p->drc_index);
+>  
+>  	/* NB: unbind has the same retry requirements as drc_pmem_bind() */
+>  	do {
+> @@ -110,10 +104,10 @@ static int drc_pmem_unbind(struct papr_scm_priv *p)
+>  	if (rc)
+>  		dev_err(&p->pdev->dev, "unbind error: %lld\n", rc);
+>  	else
+> -		dev_dbg(&p->pdev->dev, "unbind drc %x complete\n",
+> +		dev_dbg(&p->pdev->dev, "unbind drc 0x%x complete\n",
+>  			p->drc_index);
+>  
+> -	return rc == H_SUCCESS ? 0 : -ENXIO;
+> +	return;
+I would prefer drc_pmem_unbind() to still return error from the
+HCALL. The caller can descide if it wants to ignore the error or not.
+
+>  }
+>  
+>  static int papr_scm_meta_get(struct papr_scm_priv *p,
+> @@ -436,14 +430,16 @@ static int papr_scm_probe(struct platform_device *pdev)
+>  	rc = drc_pmem_bind(p);
+>  
+>  	/* If phyp says drc memory still bound then force unbound and retry */
+> -	if (rc == -EBUSY) {
+> +	if (rc == H_OVERLAP) {
+>  		dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
+>  		drc_pmem_unbind(p);
+>  		rc = drc_pmem_bind(p);
+>  	}
+>  
+> -	if (rc)
+> +	if (rc != H_SUCCESS) {
+> +		rc = -ENXIO;
+>  		goto err;
+> +	}
+>  
+>  	/* setup the resource for the newly bound range */
+>  	p->res.start = p->bound_addr;
+> -- 
+> 2.21.0
+>
+
+-- 
+Vaibhav Jain <vaibhav@linux.ibm.com>
+Linux Technology Center, IBM India Pvt. Ltd.
 
