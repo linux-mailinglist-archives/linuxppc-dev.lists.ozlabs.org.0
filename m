@@ -1,80 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91A2A77DF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 02:26:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCF2A77FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 03:04:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NPkL5X0qzDqm9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 10:26:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NQZ563DqzDqlp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 11:03:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::342; helo=mail-wm1-x342.google.com;
- envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=socionext.com
+ (client-ip=210.131.2.90; helo=conssluserg-05.nifty.com;
+ envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=socionext.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="s823D9jM"; 
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="B4uvS7NL"; 
  dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com
+ [210.131.2.90])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NPhB1ygBzDqV6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 10:24:07 +1000 (AEST)
-Received: by mail-wm1-x342.google.com with SMTP id n2so1440254wmk.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 17:24:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=+kGji0iEqvX2PbYbdW45C9GxA697L85/6dAAQKl+YqI=;
- b=s823D9jMikjUnE0COKWdQm/5U4/NnfIueifeneGq16e97vNfIELcg2uISDJC5H8Osu
- mkf7end+YfLLnME+nIbdTcGf8L3mr/WrKyX/l1DiTowgansH74ndS7WLYnhy0hQO9F0K
- N8xC0HX2mYKW+Mkv4YnyZkRNwM5jTY+He1FfAeVw6hAI+S1FcM/X1C3HuOz+V1yyGQu5
- HaphnnucdoJtfT4Ljfx7+pXTfb8COZztaEZ5RJ2wOavoaxjWqCx2lIYg/QA7gpTWlBYL
- s820/Lyd8uH5qB7MhN1eK/MGWtG3lExath8vlfPqIsMpi25nX3PJgc9sv/129uVc+1Ia
- tdIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=+kGji0iEqvX2PbYbdW45C9GxA697L85/6dAAQKl+YqI=;
- b=TJ913SP1+ohkx5UenQHquP7Fi0eW/RqnksbEZJPtgdv2IKnxecRK030IWm0wGb9ucH
- J/pDHxrfUb+e6dSOm4NfRDhOJdyl5kWroQkgcI8d2lDoEHhmSeFDSWTzBhCHOqDQ9ATi
- zqfdmQaFLKUuII5h2Odm6ppURu6ACcKo3zzUXbRpvaMt4Dfg/yZwV9MCnP6po3+6HF6Y
- 0JPyt4bHfZ7x3NofI+yhwrzirlaCbma4eZIinva+XJiQ4NIqMT3YGEPfkdKdmeMnDjAc
- 4rYrLUSNWH21O4rwflp3IOy5jqFXyn3vcXudvzG+6Tf5JQ+KVD/YO3Kq2cpZsFPOV7zA
- FgPg==
-X-Gm-Message-State: APjAAAVWruSndQf1tg3kU1Prp/Ai4//Wk48OnUN6LLwdIhS0hGnvcc8G
- DBBAZc+D1lVC9X6FGGLx1Ac=
-X-Google-Smtp-Source: APXvYqyRT9H5yO3lBr9uzkfqAogtNcUrdzoodQwtPgDJnVgYlLavOlowlxIb5ZUBH6+0p1L8IqP6Sg==
-X-Received: by 2002:a1c:4c06:: with SMTP id z6mr1965649wmf.47.1567556643727;
- Tue, 03 Sep 2019 17:24:03 -0700 (PDT)
-Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
- by smtp.gmail.com with ESMTPSA id b26sm1242242wmj.14.2019.09.03.17.24.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 17:24:03 -0700 (PDT)
-Date: Tue, 3 Sep 2019 17:24:01 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
-Message-ID: <20190904002401.GA70635@archlinux-threadripper>
-References: <20190812023214.107817-1-natechancellor@gmail.com>
- <878srdv206.fsf@mpe.ellerman.id.au>
- <20190828175322.GA121833@archlinux-threadripper>
- <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
- <20190828184529.GC127646@archlinux-threadripper>
- <6801a83ed6d54d95b87a41c57ef6e6b0@AcuMS.aculab.com>
- <20190903055553.GC60296@archlinux-threadripper>
- <20190903193128.GC9749@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NQWQ4lNmzDqhl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 11:01:37 +1000 (AEST)
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com
+ [209.85.217.49]) (authenticated)
+ by conssluserg-05.nifty.com with ESMTP id x84116f7005226
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Sep 2019 10:01:07 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x84116f7005226
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1567558867;
+ bh=AjEufFzVyVLU2AdLo34FLZlaBTX1x5K/b/SnhbXJ+hk=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=B4uvS7NLJB3xR6BpqAhfh7z1pYGyymVdo4RP50YZ2dkM7L8KD40tZBYM0NAClKxZ/
+ Y1pvINpM/ItKhXAMLAM0sMWmqlay/t3hhF+lb6tM2KGPbeGYJ7FdG+nsjjuCDJyoj4
+ mPukkD3zmHux2ARmjSVuGpcPVbN8B8lNTTQcPHWaAhJwnDbTAeQc6Fb1TmN2aWlQbb
+ v6SsKmNGe/KgbTOQMFFhjedraDaz/HIK7nPkquhC80snMn7CXlRueQg7NE7pm7OsTg
+ qIpfbFEskPu9eh5UETe+A/lCRNK6oElYjTZ7z7IKPAyTmbRV41V8pyFUmj6nmA+4mL
+ MVth8LJAUZ+ag==
+X-Nifty-SrcIP: [209.85.217.49]
+Received: by mail-vs1-f49.google.com with SMTP id r1so9852575vsq.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 18:01:07 -0700 (PDT)
+X-Gm-Message-State: APjAAAUtvfMTbYbT4wE0gG7IeyPpkCT+asHxbFGDbgMOUiKnw7pjlUWu
+ soTWEv+3SsEq1k7SndyvTsSPHNP3BQU8zG0amrA=
+X-Google-Smtp-Source: APXvYqyo1po5O9L9Nq5Ia7qmFmp/ATeXGAcAqwEBQcXBG/9eqEjgCQ08JqpAR6C0b8FHMTdDqWVRRmFm/GoJ9LBHUok=
+X-Received: by 2002:a67:e9cc:: with SMTP id q12mr11010457vso.181.1567558866354; 
+ Tue, 03 Sep 2019 18:01:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190903193128.GC9749@gate.crashing.org>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20190904101259.2687cea4@canb.auug.org.au>
+In-Reply-To: <20190904101259.2687cea4@canb.auug.org.au>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Wed, 4 Sep 2019 10:00:30 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAT=qUi76cF776GcT=UYce5QBo+_24gLwXH7ra15=1xLvQ@mail.gmail.com>
+Message-ID: <CAK7LNAT=qUi76cF776GcT=UYce5QBo+_24gLwXH7ra15=1xLvQ@mail.gmail.com>
+Subject: Re: linux-next: build warnings after merge of the kbuild tree
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,40 +68,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>,
- LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- David Laight <David.Laight@aculab.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 03, 2019 at 02:31:28PM -0500, Segher Boessenkool wrote:
-> On Mon, Sep 02, 2019 at 10:55:53PM -0700, Nathan Chancellor wrote:
-> > On Thu, Aug 29, 2019 at 09:59:48AM +0000, David Laight wrote:
-> > > From: Nathan Chancellor
-> > > > Sent: 28 August 2019 19:45
-> > > ...
-> > > > However, I think that -fno-builtin-* would be appropriate here because
-> > > > we are providing our own setjmp implementation, meaning clang should not
-> > > > be trying to do anything with the builtin implementation like building a
-> > > > declaration for it.
-> > > 
-> > > Isn't implementing setjmp impossible unless you tell the compiler that
-> > > you function is 'setjmp-like' ?
-> > 
-> > No idea, PowerPC is the only architecture that does such a thing.
-> 
-> Since setjmp can return more than once, yes, exciting things can happen
-> if you do not tell the compiler about this.
-> 
-> 
-> Segher
-> 
+Hi Stephen,
 
-Fair enough so I guess we are back to just outright disabling the
-warning.
+On Wed, Sep 4, 2019 at 9:13 AM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>
+> Hi all,
+>
+> After merging the kbuild tree, today's linux-next build (powerpc
+> ppc64_defconfig) produced these warnings:
+>
+>
+> Presumably introduced by commit
+>
+>   1267f9d3047d ("kbuild: add $(BASH) to run scripts with bash-extension")
+>
+> and presumably arch/powerpc/tools/unrel_branch_check.sh (which has no
+> #! line) is a bash script.  Yeah, is uses '((' and '))'.
 
-Cheers,
-Nathan
+Thanks for catching this.
+
+
+Could you fix it up as follows?
+I will squash it for tomorrow's linux-next.
+
+
+--- a/arch/powerpc/Makefile.postlink
++++ b/arch/powerpc/Makefile.postlink
+@@ -18,7 +18,7 @@ quiet_cmd_relocs_check = CHKREL  $@
+ ifdef CONFIG_PPC_BOOK3S_64
+       cmd_relocs_check =                                               \
+        $(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh
+"$(OBJDUMP)" "$@" ; \
+-       $(CONFIG_SHELL)
+$(srctree)/arch/powerpc/tools/unrel_branch_check.sh "$(OBJDUMP)" "$@"
++       $(BASH) $(srctree)/arch/powerpc/tools/unrel_branch_check.sh
+"$(OBJDUMP)" "$@"
+ else
+       cmd_relocs_check =                                               \
+        $(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh
+"$(OBJDUMP)" "$@"
+
+
+
+
+
+> --
+> Cheers,
+> Stephen Rothwell
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
