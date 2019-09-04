@@ -2,89 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDAEA7AB9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 07:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D601A7ACA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 07:39:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NXQV52hdzDqpf
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 15:27:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NXgS4jrQzDqqY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 15:39:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="F++lDZyr"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NXNh0mb9zDqYL
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 15:26:11 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x845MRw6001366
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Sep 2019 01:26:08 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ut51au1rf-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 01:26:07 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Wed, 4 Sep 2019 06:26:04 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 4 Sep 2019 06:26:00 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x845PxUO27197504
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Sep 2019 05:25:59 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF7115204F;
- Wed,  4 Sep 2019 05:25:59 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1DA5152052;
- Wed,  4 Sep 2019 05:25:59 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B77E2A0147;
- Wed,  4 Sep 2019 15:25:55 +1000 (AEST)
-Subject: Re: [PATCH] powerpc: Perform a bounds check in arch_add_memory
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@kernel.org>
-Date: Wed, 04 Sep 2019 15:25:55 +1000
-In-Reply-To: <5ce9f700-8e70-c669-32fa-9598a01eb8ba@redhat.com>
-References: <20190827052047.31547-1-alastair@au1.ibm.com>
- <20190827062844.GQ7538@dhcp22.suse.cz>
- <ea9e43fff6b6531af0620f9df62e015af66d4535.camel@au1.ibm.com>
- <1f2d967a-57a1-d3a3-4eb7-306b43709fee@redhat.com>
- <7e8e34ece6386bd3b0703f218a3b4688c83886d7.camel@au1.ibm.com>
- <5ce9f700-8e70-c669-32fa-9598a01eb8ba@redhat.com>
-Organization: IBM Australia
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NXdW1HR0zDqjy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 15:37:16 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id 205so10041880pfw.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 22:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :user-agent:mime-version:content-transfer-encoding;
+ bh=uE8xeQ7vNKg/s6NUUP8wb0BKxjOZa8xbhpDvYMGFXO0=;
+ b=F++lDZyrC2eVfSHOVXko4T72RXSBTSeAwJG9fgn3u+9G8PDwCa14qTG/cIwj22Rf8g
+ t7Jj5s6mmPoxTiaGxRI+uL++ezS8u99rA7WC/BfzO0bw/YcMls1HLcjRefL/HWcWtpdm
+ ikM3u7yNhgXgUbQH677gq7iYdwGzCBexvY1TB9j4y6VN6fklGpWW4Pb8vcth+gyivJ8v
+ EW1g5vhaK1gxoCf9BwoXYdLp55WYwSZ6cFe+IHAAkBw7drh+BpzACjY/BzEXxDmbx0PW
+ MZ0lCGNx2sRsS+fhekgSWR/JTXrnIX2zl5xglYiOuNxAE6BXtthXoFQJ4ym0MIN7pmNW
+ yUbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=uE8xeQ7vNKg/s6NUUP8wb0BKxjOZa8xbhpDvYMGFXO0=;
+ b=tA4955ZZJ3cja/T80Han19wcTL/OrmYcHdM7xzC0dIKuyohzpd4WAFrTfuDT1Ve79I
+ UtdJTJiBWxX8JdGoCBI3Z3s2GzEqfgLsoh6IgrPlicXmn0va6SfXRh3xrp9EhHGtXiuv
+ mOBafCKG/nIJSQWa6Lg7HZdZOadzjWVZwI8qVj7IXrS/n9nR9HCcmnZ2/onXeD945OIA
+ 6UgJpHsa780wxf5zpeRY7hijYwe3x8mbyqhUxRw7nXMP5+Jg99nEj9Y2YVFduY9UTSxd
+ uOHUojixvibAxZz2xp1l5492XJ7OnORAjHJILaDHrFsYfaIymVxTcYCIkxl48I3zY5ri
+ rZvQ==
+X-Gm-Message-State: APjAAAV2PP6KVceK7rptFYYNvtko9HbptttkwOKFudZFcWgK0tWb+2rq
+ W9Dwysa7jsAlUmbml3iH//o=
+X-Google-Smtp-Source: APXvYqyEFAAw+BNftadAQ4oorLGOkbtIzvUAeY+P0+LwqoUZPLjHBY7F2Cw7K1dHnhI8XPJEakvcZQ==
+X-Received: by 2002:a17:90a:360b:: with SMTP id
+ s11mr3254703pjb.30.1567575432983; 
+ Tue, 03 Sep 2019 22:37:12 -0700 (PDT)
+Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.googlemail.com with ESMTPSA id q33sm2063273pja.29.2019.09.03.22.37.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Sep 2019 22:37:12 -0700 (PDT)
+Message-ID: <026a6bfbfd8268c5158bc48fb43907cc13442561.camel@gmail.com>
+Subject: Re: [PATCH v5 18/23] powerpc/pci: Handle BAR movement
+From: Oliver O'Halloran <oohall@gmail.com>
+To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>, 
+ linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 04 Sep 2019 15:37:07 +1000
+In-Reply-To: <20190816165101.911-19-s.miroshnichenko@yadro.com>
+References: <20190816165101.911-1-s.miroshnichenko@yadro.com>
+ <20190816165101.911-19-s.miroshnichenko@yadro.com>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19090405-4275-0000-0000-00000360DDD9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090405-4276-0000-0000-00003873218D
-Message-Id: <6823c187257b5033bca8905dda17b6c79a4944a6.camel@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-04_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909040056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,114 +82,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-09-02 at 09:28 +0200, David Hildenbrand wrote:
-> On 02.09.19 01:54, Alastair D'Silva wrote:
-> > On Tue, 2019-08-27 at 09:13 +0200, David Hildenbrand wrote:
-> > > On 27.08.19 08:39, Alastair D'Silva wrote:
-> > > > On Tue, 2019-08-27 at 08:28 +0200, Michal Hocko wrote:
-> > > > > On Tue 27-08-19 15:20:46, Alastair D'Silva wrote:
-> > > > > > From: Alastair D'Silva <alastair@d-silva.org>
-> > > > > > 
-> > > > > > It is possible for firmware to allocate memory ranges
-> > > > > > outside
-> > > > > > the range of physical memory that we support
-> > > > > > (MAX_PHYSMEM_BITS).
-> > > > > 
-> > > > > Doesn't that count as a FW bug? Do you have any evidence of
-> > > > > that
-> > > > > in
-> > > > > the
-> > > > > field? Just wondering...
-> > > > > 
-> > > > 
-> > > > Not outside our lab, but OpenCAPI attached LPC memory is
-> > > > assigned
-> > > > addresses based on the slot/NPU it is connected to. These
-> > > > addresses
-> > > > prior to:
-> > > > 4ffe713b7587 ("powerpc/mm: Increase the max addressable memory
-> > > > to
-> > > > 2PB")
-> > > > were inaccessible and resulted in bogus sections - see our
-> > > > discussion
-> > > > on 'mm: Trigger bug on if a section is not found in
-> > > > __section_nr'.
-> > > > Doing this check here was your suggestion :)
-> > > > 
-> > > > It's entirely possible that a similar problem will occur in the
-> > > > future,
-> > > > and it's cheap to guard against, which is why I've added this.
-> > > > 
-> > > 
-> > > If you keep it here, I guess this should be wrapped by a
-> > > WARN_ON_ONCE().
-> > > 
-> > > If we move it to common code (e.g., __add_pages() or
-> > > add_memory()),
-> > > then
-> > > probably not. I can see that s390x allows to configure
-> > > MAX_PHYSMEM_BITS,
-> > > so the check could actually make sense.
-> > > 
-> > 
-> > I couldn't see a nice platform indepedent way to determine the
-> > allowable address range, but if there is, then I'll move this to
-> > the
-> > generic code instead.
-> > 
+On Fri, 2019-08-16 at 19:50 +0300, Sergey Miroshnichenko wrote:
+> Add pcibios_rescan_prepare()/_done() hooks for the powerpc platform. Now if
+> the device's driver supports movable BARs, pcibios_rescan_prepare() will be
+> called after the device is stopped, and pcibios_rescan_done() - before it
+> resumes. There are no memory requests to this device between the hooks, so
+> it it safe to rebuild the EEH address cache during that.
 > 
-> At least on the !ZONE_DEVICE path we have
+> CC: Oliver O'Halloran <oohall@gmail.com>
+> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+> ---
+>  arch/powerpc/kernel/pci-hotplug.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> __add_memory() -> register_memory_resource() ...
-> 
-> return ERR_PTR(-E2BIG);
-> 
-> 
-> I was thinking about something like
-> 
-> int add_pages()
-> {
-> 	if ((start + size - 1) >> MAX_PHYSMEM_BITS)
-> 		return -E2BIG;	
-> 
-> 	return arch_add_memory(...)
-> }
-> 
-> And switching users of arch_add_memory() to add_pages(). However, x86
-> already has an add_pages() function, so that would need some more
-> thought.
-> 
-> Maybe simply renaming the existing add_pages() to arch_add_pages().
-> 
-> add_pages(): Create virtual mapping
-> __add_pages(): Don't create virtual mapping
-> 
-> arch_add_memory(): Arch backend for add_pages()
-> arch_add_pages(): Arch backend for __add_pages()
-> 
-> It would be even more consistent if we would have arch_add_pages()
-> vs.
-> __arch_add_pages().
+> diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
+> index 0b0cf8168b47..18cf13bba228 100644
+> --- a/arch/powerpc/kernel/pci-hotplug.c
+> +++ b/arch/powerpc/kernel/pci-hotplug.c
+> @@ -144,3 +144,13 @@ void pci_hp_add_devices(struct pci_bus *bus)
+>  	pcibios_finish_adding_to_bus(bus);
+>  }
+>  EXPORT_SYMBOL_GPL(pci_hp_add_devices);
+> +
+> +void pcibios_rescan_prepare(struct pci_dev *pdev)
+> +{
+> +	eeh_addr_cache_rmv_dev(pdev);
+> +}
+> +
+> +void pcibios_rescan_done(struct pci_dev *pdev)
+> +{
+> +	eeh_addr_cache_insert_dev(pdev);
+> +}
 
-Looking a bit further, I think a good course of action would be to add
-the check to memory_hotplug.c:check_hotplug_memory_range().
-
-This would be the least invasive, and could check both
-MAX_POSSIBLE_PHYSMEM_BITS and MAX_PHYSMEM_BITS.
-
-With that in mind, we can drop this patch.
-
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
+Is this actually sufficent? The PE number for a device is largely
+determined by the location of the MMIO BARs. If you move a BAR far
+enough the PE number stored in the eeh_pe would need to be updated as
+well.
 
