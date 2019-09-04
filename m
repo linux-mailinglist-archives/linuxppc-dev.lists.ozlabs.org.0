@@ -1,84 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675BBA7D59
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 10:10:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDE0A7D7E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 10:18:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Nc1n4BgPzDqq3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 18:10:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NcCg6zx5zDqsK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 18:18:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=aculab.com
+ (client-ip=146.101.78.151; helo=eu-smtp-delivery-151.mimecast.com;
+ envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [146.101.78.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NbzQ0KKhzDqlS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 18:08:01 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8487iv3052225
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Sep 2019 04:07:59 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ut66gx16t-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 04:07:58 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Wed, 4 Sep 2019 09:07:56 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 4 Sep 2019 09:07:54 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8487rWX47186058
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Sep 2019 08:07:53 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 62606A4057;
- Wed,  4 Sep 2019 08:07:53 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 12C64A4051;
- Wed,  4 Sep 2019 08:07:53 +0000 (GMT)
-Received: from localhost (unknown [9.124.35.94])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  4 Sep 2019 08:07:52 +0000 (GMT)
-Date: Wed, 04 Sep 2019 13:37:50 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] ftrace: Fix NULL pointer dereference in t_probe_next()
-To: Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
- <05e021f757625cbbb006fad41380323dbe4e3b43.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
- <20190830164706.453a119e@gandalf.local.home>
-In-Reply-To: <20190830164706.453a119e@gandalf.local.home>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Nc9h2VpkzDqT8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 18:16:54 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-193-nFFPn1P4Oom3Bv3qJ6LEWg-1; Wed, 04 Sep 2019 09:16:47 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 4 Sep 2019 09:16:45 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Wed, 4 Sep 2019 09:16:45 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Nathan Chancellor' <natechancellor@gmail.com>, Segher Boessenkool
+ <segher@kernel.crashing.org>
+Subject: RE: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+Thread-Topic: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+Thread-Index: AQHVXdDJpnOUwPzSaUeRyhz1GkEFSKcR4W8wgAjREfaAAIOqQA==
+Date: Wed, 4 Sep 2019 08:16:45 +0000
+Message-ID: <1bcd7086f3d24dfa82eec03980f30fbc@AcuMS.aculab.com>
+References: <20190812023214.107817-1-natechancellor@gmail.com>
+ <878srdv206.fsf@mpe.ellerman.id.au>
+ <20190828175322.GA121833@archlinux-threadripper>
+ <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
+ <20190828184529.GC127646@archlinux-threadripper>
+ <6801a83ed6d54d95b87a41c57ef6e6b0@AcuMS.aculab.com>
+ <20190903055553.GC60296@archlinux-threadripper>
+ <20190903193128.GC9749@gate.crashing.org>
+ <20190904002401.GA70635@archlinux-threadripper>
+In-Reply-To: <20190904002401.GA70635@archlinux-threadripper>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
+X-MC-Unique: nFFPn1P4Oom3Bv3qJ6LEWg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 19090408-0008-0000-0000-00000310D94C
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090408-0009-0000-0000-00004A2F2DBF
-Message-Id: <1567584434.0m0xodpunl.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-04_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909040083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,39 +70,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Steven Rostedt wrote:
-> On Thu,  4 Jul 2019 20:04:41 +0530
-> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+From: Nathan Chancellor [mailto:natechancellor@gmail.com]
+> Sent: 04 September 2019 01:24
+> On Tue, Sep 03, 2019 at 02:31:28PM -0500, Segher Boessenkool wrote:
+> > On Mon, Sep 02, 2019 at 10:55:53PM -0700, Nathan Chancellor wrote:
+> > > On Thu, Aug 29, 2019 at 09:59:48AM +0000, David Laight wrote:
+> > > > From: Nathan Chancellor
+> > > > > Sent: 28 August 2019 19:45
+> > > > ...
+> > > > > However, I think that -fno-builtin-* would be appropriate here be=
+cause
+> > > > > we are providing our own setjmp implementation, meaning clang sho=
+uld not
+> > > > > be trying to do anything with the builtin implementation like bui=
+lding a
+> > > > > declaration for it.
+> > > >
+> > > > Isn't implementing setjmp impossible unless you tell the compiler t=
+hat
+> > > > you function is 'setjmp-like' ?
+> > >
+> > > No idea, PowerPC is the only architecture that does such a thing.
+> >
+> > Since setjmp can return more than once, yes, exciting things can happen
+> > if you do not tell the compiler about this.
+> >
+> >
+> > Segher
+> >
 >=20
->=20
->>  kernel/trace/ftrace.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->>=20
->> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
->> index 7b037295a1f1..0791eafb693d 100644
->> --- a/kernel/trace/ftrace.c
->> +++ b/kernel/trace/ftrace.c
->> @@ -3093,6 +3093,10 @@ t_probe_next(struct seq_file *m, loff_t *pos)
->>  		hnd =3D &iter->probe_entry->hlist;
->> =20
->>  	hash =3D iter->probe->ops.func_hash->filter_hash;
->> +
->> +	if (!hash)
->> +		return NULL;
->> +
->>  	size =3D 1 << hash->size_bits;
->> =20
->>   retry:
->=20
-> OK, I added this, but I'm also adding this on top:
+> Fair enough so I guess we are back to just outright disabling the
+> warning.
 
-Thanks, the additional comments do make this much clearer.
+Just disabling the warning won't stop the compiler generating code
+that breaks a 'user' implementation of setjmp().
 
-Regards,
-Naveen
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
