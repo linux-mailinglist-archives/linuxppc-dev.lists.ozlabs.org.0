@@ -2,50 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE3EA9591
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 23:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BE6A964D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 00:25:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NyFW4zFCzDqtt
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 07:51:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Nz0d0tJQzDqGW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 08:25:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=cyphar.com
- (client-ip=2001:67c:2050:104:0:2:25:2; helo=mx2.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mx2.mailbox.org (mx2a.mailbox.org
- [IPv6:2001:67c:2050:104:0:2:25:2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=2a00:1450:4864:20::144; helo=mail-lf1-x144.google.com;
+ envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="hfyCSdKg"; dkim-atps=neutral
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
+ [IPv6:2a00:1450:4864:20::144])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NyCW064FzDqtQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 07:49:39 +1000 (AEST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:2:0])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mx2.mailbox.org (Postfix) with ESMTPS id D7E89A19C8;
- Wed,  4 Sep 2019 23:49:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de
- [80.241.56.125]) (amavisd-new, port 10030)
- with ESMTP id VdSCaItxf1Ze; Wed,  4 Sep 2019 23:49:19 +0200 (CEST)
-Date: Thu, 5 Sep 2019 07:48:56 +1000
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v12 10/12] namei: aggressively check for nd->root escape
- on ".." resolution
-Message-ID: <20190904214856.vnvom7h5xontvngq@yavin.dot.cyphar.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Nyyk2PTtzDqtn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 08:23:40 +1000 (AEST)
+Received: by mail-lf1-x144.google.com with SMTP id u29so276253lfk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 15:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=L+6eZ5jXr9FHa9aXBFBl0ghBEbFlLODFrE967a3DFmE=;
+ b=hfyCSdKgCY/Fe6ZhOgmUuzH+l1Av9MeoieBRJhOHgspd/HlfkJB3tRok9F33ql8Uzt
+ YCi53+gSbOv7WH3zYmMiTF0zGBnANwxV7c7oClcZwaNIXXqds0cxD5Xcu535ms7QpKLP
+ zDVTwLMuj95aI+DpS0Y7tzdH7BHLTHU6tmSJs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=L+6eZ5jXr9FHa9aXBFBl0ghBEbFlLODFrE967a3DFmE=;
+ b=udGCmfLiy5482A0rjWNAV7817RZow25M+k9RRBIJ4Y5b3LfajWGfgGEiZb/bqM2CH8
+ asrKPdRbXR4G5kAy2aUuYVTV4OobOMO+NK3+9Tz0m3cACRtaL5EtskPNGTgYaaXhFjYr
+ GTVdLUBlAawYWDenUudBHOpm0RVJ1lHw2pDzf2DJFnZ+3zUYh6sINcAq8mcx/HwY9079
+ IMUJF6vXGcuI3vwz1xZwJ0YjpvPm4/adp/dKxURfZ+AbAt1vnyLa1/xHPMaEwrEmmHmo
+ bmbsubF+rmQpGnxeu60/WZ9jVN2sP/QrG5sHwOgfrvhUjmD85uU8Iwyl1tCqjjBp0eTm
+ KGDQ==
+X-Gm-Message-State: APjAAAXlQ4QpPC1QI5K4sDAJiatSWso/4PmWPaZsOXFOjytYYMFNuuSy
+ YVUURwSi7u1RJCmO3cVKp93f0peA9vg=
+X-Google-Smtp-Source: APXvYqw3nYXMkhDof9AvRlU7pGPB2cgawy+wpygAP+b4JtNqK+889IeDR6yb864AxmdfOxIk4gj14g==
+X-Received: by 2002:a19:381a:: with SMTP id f26mr244567lfa.168.1567635815750; 
+ Wed, 04 Sep 2019 15:23:35 -0700 (PDT)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com.
+ [209.85.208.173])
+ by smtp.gmail.com with ESMTPSA id j5sm36311lfm.29.2019.09.04.15.23.35
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Sep 2019 15:23:35 -0700 (PDT)
+Received: by mail-lj1-f173.google.com with SMTP id x18so338468ljh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 15:23:35 -0700 (PDT)
+X-Received: by 2002:a2e:9a84:: with SMTP id p4mr24283824lji.52.1567635425244; 
+ Wed, 04 Sep 2019 15:17:05 -0700 (PDT)
+MIME-Version: 1.0
 References: <20190904201933.10736-1-cyphar@cyphar.com>
  <20190904201933.10736-11-cyphar@cyphar.com>
  <CAHk-=wiod1rQMU+6Zew=cLE8uX4tUdf42bM5eKngMnNVS2My7g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="i46h7izteerqaavi"
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiod1rQMU+6Zew=cLE8uX4tUdf42bM5eKngMnNVS2My7g@mail.gmail.com>
+ <20190904214856.vnvom7h5xontvngq@yavin.dot.cyphar.com>
+In-Reply-To: <20190904214856.vnvom7h5xontvngq@yavin.dot.cyphar.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 4 Sep 2019 15:16:49 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgcJq21Hydh7Tx5-o8empoPp7ULDBw0Am-du_Pa+fcftQ@mail.gmail.com>
+Message-ID: <CAHk-=wgcJq21Hydh7Tx5-o8empoPp7ULDBw0Am-du_Pa+fcftQ@mail.gmail.com>
+Subject: Re: [PATCH v12 10/12] namei: aggressively check for nd->root escape
+ on ".." resolution
+To: Aleksa Sarai <cyphar@cyphar.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,96 +116,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Sep 4, 2019 at 2:49 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+>
+> Hinting to userspace to do a retry (with -EAGAIN as you mention in your
+> other mail) wouldn't be a bad thing at all, though you'd almost
+> certainly get quite a few spurious -EAGAINs -- &{mount,rename}_lock are
+> global for the entire machine, after all.
 
---i46h7izteerqaavi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'd hope that we have some future (possibly very long-term)
+alternative that is not quite system-global, but yes, right now they
+are.
 
-On 2019-09-04, Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> On Wed, Sep 4, 2019 at 1:23 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
-> > This patch allows for LOOKUP_BENEATH and LOOKUP_IN_ROOT to safely permit
-> > ".." resolution (in the case of LOOKUP_BENEATH the resolution will still
-> > fail if ".." resolution would resolve a path outside of the root --
-> > while LOOKUP_IN_ROOT will chroot(2)-style scope it). Magic-link jumps
-> > are still disallowed entirely because now they could result in
-> > inconsistent behaviour if resolution encounters a subsequent ".."[*].
->=20
-> This is the only patch in the series that makes me go "umm".
->=20
-> Why is it ok to re-initialize m_seq, which is used by other things
-> too? I think it's because we're out of RCU lookup, but there's no
-> comment about it, and it looks iffy to me. I'd rather have a separate
-> sequence count that doesn't have two users with different lifetime
-> rules.
+Which is one reason I'd rather see EAGAIN in user space - yes, it
+probably makes it even easier to trigger, but it also means that user
+space might be able to do something about it when it does trigger.
 
-Yeah, the reasoning was that it's because we're out of RCU lookup and if
-we didn't re-grab ->m_seq we'd hit path_is_under() on every subsequent
-".." (even though we've checked that it's safe). But yes, I should've
-used a different field to avoid confusion (and stop it looking
-unnecessarily dodgy). I will fix that.
+For example, maybe user space can first just use an untrusted path
+as-is, and if it gets EAGAIN or EXDEV, it may be that user space can
+simplify the path (ie turn "xyz/.../abc" into just "abc".
 
-> But even apart from that, I think from a "patch continuity" standpoint
-> it would be better to introduce the sequence counts as just an error
-> condition first - iow, not have the "path_is_under()" check, but just
-> return -EXDEV if the sequence number doesn't match.
+And even if user space doesn't do anything like that, I suspect a
+performance problem is going to be a whole lot easier to debug and
+report when somebody ends up seeing excessive retries happening. As a
+developer you'll see it in profiles or in system call traces, rather
+than it resulting in very odd possible slowdowns for the kernel.
 
-Ack, will do.
+And yeah, it would probably be best to then at least delay doing
+option 3 indefinitely, just to make sure user space knows about and
+actually has a test-case for that EAGAIN happening.
 
-> So you'd have three stages:
->=20
->  1) ".." always returns -EXDEV
->=20
->  2) ".." returns -EXDEV if there was a concurrent rename/mount
->=20
->  3) ".." returns -EXDEV if there was a concurrent rename/mount and we
-> reset the sequence numbers and check if you escaped.
->=20
-> becasue the sequence number reset really does make me go "hmm", plus I
-> get this nagging little feeling in the back of my head that you can
-> cause nasty O(n^2) lookup cost behavior with deep paths, lots of "..",
-> and repeated path_is_under() calls.
-
-The reason for doing the concurrent-{rename,mount} checks was to try to
-avoid the O(n^2) in most cases, but you're right that if you have an
-attacker that is spamming renames (or you're on a box with a lot of
-renames and/or mounts going on *anywhere*) you will hit an O(n^2) here
-(more pedantically, O(m*n) but who's counting?).
-
-Unfortunately, I'm not sure what the best solution would be for this
-one. If -EAGAIN retries are on the table, we could limit how many times
-we're willing to do path_is_under() and then just return -EAGAIN.
-
-> So (1) sounds safe. (2) sounds simple. And (3) is where I think subtle
-> things start happening.
->=20
-> Also, I'm not 100% convinced that (3) is needed at all. I think the
-> retry could be done in user space instead, which needs to have a
-> fallback anyway. Yes? No?
-
-Hinting to userspace to do a retry (with -EAGAIN as you mention in your
-other mail) wouldn't be a bad thing at all, though you'd almost
-certainly get quite a few spurious -EAGAINs -- &{mount,rename}_lock are
-global for the entire machine, after all.
-
-But if the only significant roadblock is that (3) seems a bit too hairy,
-I would be quite happy with landing (2) as a first step (with -EAGAIN).
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---i46h7izteerqaavi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXXAxQwAKCRCdlLljIbnQ
-Er4vAQDiHBfZXElf8shcA4ixj+Uqqylcy09QYhCXLxI7/JHdiQD9GI/Ehs0C3HPA
-8HQsyqVEjkx8dq5gApLNG5Rp8gVgywQ=
-=Il7T
------END PGP SIGNATURE-----
-
---i46h7izteerqaavi--
+              Linus
