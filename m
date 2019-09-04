@@ -2,74 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0069CA7D3E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 10:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 675BBA7D59
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 10:10:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NbsK6nC5zDqsv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 18:02:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Nc1n4BgPzDqq3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 18:10:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ganeshgr@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+ envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NbqL4Wd9zDqlQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 18:01:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NbzQ0KKhzDqlS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 18:08:01 +1000 (AEST)
 Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8480TDM029937
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Sep 2019 04:00:58 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ut66gwsfq-1
+ x8487iv3052225
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Sep 2019 04:07:59 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ut66gx16t-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 04:00:57 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 04:07:58 -0400
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ganeshgr@linux.ibm.com>;
- Wed, 4 Sep 2019 09:00:55 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Wed, 4 Sep 2019 09:07:56 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 4 Sep 2019 09:00:53 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x8480Tfg32965008
+ Wed, 4 Sep 2019 09:07:54 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8487rWX47186058
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Sep 2019 08:00:29 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B6E35204F;
- Wed,  4 Sep 2019 08:00:52 +0000 (GMT)
-Received: from localhost.in.ibm.com (unknown [9.124.35.97])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 7A8F65204E;
- Wed,  4 Sep 2019 08:00:51 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc: dump kernel log before carrying out fadump or
- kdump
-Date: Wed,  4 Sep 2019 13:29:49 +0530
-X-Mailer: git-send-email 2.17.2
+ Wed, 4 Sep 2019 08:07:53 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 62606A4057;
+ Wed,  4 Sep 2019 08:07:53 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 12C64A4051;
+ Wed,  4 Sep 2019 08:07:53 +0000 (GMT)
+Received: from localhost (unknown [9.124.35.94])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Sep 2019 08:07:52 +0000 (GMT)
+Date: Wed, 04 Sep 2019 13:37:50 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/2] ftrace: Fix NULL pointer dereference in t_probe_next()
+To: Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
+ <05e021f757625cbbb006fad41380323dbe4e3b43.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
+ <20190830164706.453a119e@gandalf.local.home>
+In-Reply-To: <20190830164706.453a119e@gandalf.local.home>
+MIME-Version: 1.0
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-x-cbid: 19090408-0028-0000-0000-000003977988
+x-cbid: 19090408-0008-0000-0000-00000310D94C
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090408-0029-0000-0000-00002459CA03
-Message-Id: <20190904075949.15607-1-ganeshgr@linux.ibm.com>
+x-cbparentid: 19090408-0009-0000-0000-00004A2F2DBF
+Message-Id: <1567584434.0m0xodpunl.naveen@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-04_01:, , signatures=0
+ definitions=2019-09-04_02:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=391 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909040081
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909040083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,41 +90,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 4388c9b3a6ee ("powerpc: Do not send system reset request
-through the oops path"), pstore dmesg file is not updated when dump is
-triggered from HMC. This commit modified system reset (sreset) handler
-to invoke fadump or kdump (if configured), without pushing dmesg to
-pstore. This leaves pstore to have old dmesg data which won't be much
-of a help if kdump fails to capture the dump. This patch fixes that by
-calling kmsg_dump() before heading to fadump ot kdump.
+Steven Rostedt wrote:
+> On Thu,  4 Jul 2019 20:04:41 +0530
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+>=20
+>=20
+>>  kernel/trace/ftrace.c | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>>=20
+>> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+>> index 7b037295a1f1..0791eafb693d 100644
+>> --- a/kernel/trace/ftrace.c
+>> +++ b/kernel/trace/ftrace.c
+>> @@ -3093,6 +3093,10 @@ t_probe_next(struct seq_file *m, loff_t *pos)
+>>  		hnd =3D &iter->probe_entry->hlist;
+>> =20
+>>  	hash =3D iter->probe->ops.func_hash->filter_hash;
+>> +
+>> +	if (!hash)
+>> +		return NULL;
+>> +
+>>  	size =3D 1 << hash->size_bits;
+>> =20
+>>   retry:
+>=20
+> OK, I added this, but I'm also adding this on top:
 
-Fixes: 4388c9b3a6ee ("powerpc: Do not send system reset request through the oops path")
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
-V2: Rephrasing the commit message
----
- arch/powerpc/kernel/traps.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks, the additional comments do make this much clearer.
 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 11caa0291254..82f43535e686 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -472,6 +472,7 @@ void system_reset_exception(struct pt_regs *regs)
- 	if (debugger(regs))
- 		goto out;
- 
-+	kmsg_dump(KMSG_DUMP_OOPS);
- 	/*
- 	 * A system reset is a request to dump, so we always send
- 	 * it through the crashdump code (if fadump or kdump are
--- 
-2.17.2
+Regards,
+Naveen
 
