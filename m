@@ -2,74 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB5CA7AD6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 07:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F281A7B6A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 08:16:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NXnx0CwgzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 15:44:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NYVk1xT3zDqlZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 16:16:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="E7HOIcOF"; 
- dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NXm60Q03zDq8g
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 15:42:59 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id x15so10589589pgg.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2019 22:42:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=/vKI/xtQQlEFNhFbyn9evKm0aZnte8W4Hq+F88vuIdI=;
- b=E7HOIcOFXmqv1o8xG/+0CQv7Cb20qBLrKhBcpvho4TGNzUhwZJ2/dwDBI2YO6UHYpC
- pT8jGuqien6kU5G94FYeaZSNLz3c1lLlH3oKONHZQDCQMZwj+NfP0fQ8HSG/DyN6bqia
- AR7QscQrEQeVb3lOyEr8lXu0RGvU+dhsw67soFeVQZdRnfxIXYmKrOzXJMQ04GjXwE86
- b9rEQYxDJuncEXcCo8GmQ0jwdD8BYjvW1LNgqxk52E8pX5XQGg15N+p/2oCBVT19841h
- qPKthatg1oVRC5XP1Fu+ASx1LVu8sOIsh2244fsw/TUHSrHQC5kWIMdZmMHdcL9Gtk9h
- rg9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=/vKI/xtQQlEFNhFbyn9evKm0aZnte8W4Hq+F88vuIdI=;
- b=r1M03EsPaywaY6ZZlVzimW8KnyNKCa2IkIlvVfKzJSZqXi8p3bSwmC4E1O8hvDYQE3
- CevAar1WRIUiQNwH1toLWJm+O6kuyiO5pEmiOkZR7lWzfsuk8yy/ctZv51rvK0BxndZb
- pVREeYqrKrnrsAsxuIIvF5Kd7ZcTakemqQofQbaorBEfLYL3Ehij4Cxr4tKCHUHPU9mq
- +lZ5GwBhntP/bs+yuKJBuLAJViXngDWuiv6w9w39hKlv8Jk7FEhPtErMh7mvC5xqLscC
- ZaiLMyGYu7bLPw6eo+7SE/SB+T7g3GEH9kb8u84Dq5BxiswZkv4DRtSu7e6wCk2FNiu2
- plCw==
-X-Gm-Message-State: APjAAAUE/EuHprM83H92ept0YIdoKRHyFIqaGZ87MfyzJf7WK0NevPkk
- lsFBucHwh942jTNS/2uBYgU=
-X-Google-Smtp-Source: APXvYqycDvwzhznYAgJsQ1bBhLESqy4XeRJ7wlvJq1+JUK0lZ1bSVQ0c71FiPGuNvgra0pyHGZrPLA==
-X-Received: by 2002:a62:e802:: with SMTP id c2mr8693508pfi.212.1567575776084; 
- Tue, 03 Sep 2019 22:42:56 -0700 (PDT)
-Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.googlemail.com with ESMTPSA id b5sm29335714pfp.38.2019.09.03.22.42.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2019 22:42:55 -0700 (PDT)
-Message-ID: <1edd23fd93386d8a69bc9280329b2d7c819155d4.camel@gmail.com>
-Subject: Re: [PATCH v5 16/23] PCI: hotplug: movable BARs: Don't reserve
- IO/mem bus space
-From: Oliver O'Halloran <oohall@gmail.com>
-To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>, 
- linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 04 Sep 2019 15:42:50 +1000
-In-Reply-To: <20190816165101.911-17-s.miroshnichenko@yadro.com>
-References: <20190816165101.911-1-s.miroshnichenko@yadro.com>
- <20190816165101.911-17-s.miroshnichenko@yadro.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46NYSV1pdkzDqQH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 16:14:31 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 312C2344;
+ Tue,  3 Sep 2019 23:14:29 -0700 (PDT)
+Received: from [10.162.41.129] (p8cg001049571a15.blr.arm.com [10.162.41.129])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ 89A8D3F718; Tue,  3 Sep 2019 23:16:41 -0700 (PDT)
+Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To: kbuild test robot <lkp@intel.com>
+References: <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
+ <201909031912.htvWy2Bu%lkp@intel.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <4dc9698f-dff4-b916-a83e-dc932c8087c0@arm.com>
+Date: Wed, 4 Sep 2019 11:44:25 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <201909031912.htvWy2Bu%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,41 +50,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, linux@yadro.com
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-snps-arc@lists.infradead.org, kbuild-all@01.org,
+ Kees Cook <keescook@chromium.org>, Mark Brown <broonie@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-08-16 at 19:50 +0300, Sergey Miroshnichenko wrote:
-> A hotplugged bridge with many hotplug-capable ports may request
-> reserving more IO space than the machine has. This could be overridden
-> with the "hpiosize=" kernel argument though.
+
+
+On 09/03/2019 04:43 PM, kbuild test robot wrote:
+> Hi Anshuman,
 > 
-> But when BARs are movable, there are no need to reserve space anymore:
-> new BARs are allocated not from reserved gaps, but via rearranging the
-> existing BARs. Requesting a precise amount of space for bridge windows
-> increases the chances of adding the new bridge successfully.
-
-It wouldn't hurt to reserve some memory space to prevent unnecessary
-BAR shuffling at runtime. If it turns out that we need more space then
-we can always fall back to re-assigning the whole tree.
-
-> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-> ---
->  drivers/pci/setup-bus.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Thank you for the patch! Yet something to improve:
 > 
-> diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-> index c7b7e30c6284..7d64ec8e7088 100644
-> --- a/drivers/pci/setup-bus.c
-> +++ b/drivers/pci/setup-bus.c
-> @@ -1287,7 +1287,7 @@ void __pci_bus_size_bridges(struct pci_bus *bus, struct list_head *realloc_head)
->  
->  	case PCI_HEADER_TYPE_BRIDGE:
->  		pci_bridge_check_ranges(bus);
-> -		if (bus->self->is_hotplug_bridge) {
-> +		if (bus->self->is_hotplug_bridge && !pci_movable_bars_enabled()) {
->  			additional_io_size  = pci_hotplug_io_size;
->  			additional_mem_size = pci_hotplug_mem_size;
->  		}
+> [auto build test ERROR on linus/master]
+> [cannot apply to v5.3-rc7 next-20190902]
+> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-debug-Add-tests-for-architecture-exported-page-table-helpers/20190903-162959
+> config: m68k-allmodconfig (attached as .config)
+> compiler: m68k-linux-gcc (GCC) 7.4.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.4.0 make.cross ARCH=m68k 
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All error/warnings (new ones prefixed by >>):
+> 
+>    In file included from arch/m68k/include/asm/bug.h:32:0,
+>                     from include/linux/bug.h:5,
+>                     from include/linux/thread_info.h:12,
+>                     from include/asm-generic/preempt.h:5,
+>                     from ./arch/m68k/include/generated/asm/preempt.h:1,
+>                     from include/linux/preempt.h:78,
+>                     from arch/m68k/include/asm/irqflags.h:6,
+>                     from include/linux/irqflags.h:16,
+>                     from arch/m68k/include/asm/atomic.h:6,
+>                     from include/linux/atomic.h:7,
+>                     from include/linux/mm_types_task.h:13,
+>                     from include/linux/mm_types.h:5,
+>                     from include/linux/hugetlb.h:5,
+>                     from mm/arch_pgtable_test.c:14:
+>    mm/arch_pgtable_test.c: In function 'pmd_clear_tests':
+>>> arch/m68k/include/asm/page.h:31:22: error: lvalue required as unary '&' operand
+>     #define pmd_val(x) ((&x)->pmd[0])
+>                          ^
+>    include/asm-generic/bug.h:124:25: note: in definition of macro 'WARN_ON'
+>      int __ret_warn_on = !!(condition);    \
+>                             ^~~~~~~~~
+>>> arch/m68k/include/asm/motorola_pgtable.h:138:26: note: in expansion of macro 'pmd_val'
+>     #define pmd_none(pmd)  (!pmd_val(pmd))
+>                              ^~~~~~~
+>>> mm/arch_pgtable_test.c:233:11: note: in expansion of macro 'pmd_none'
+>      WARN_ON(!pmd_none(READ_ONCE(*pmdp)));
+>               ^~~~~~~~
+>    mm/arch_pgtable_test.c: In function 'pmd_populate_tests':
+>>> arch/m68k/include/asm/page.h:31:22: error: lvalue required as unary '&' operand
+>     #define pmd_val(x) ((&x)->pmd[0])
 
+Storing READ_ONCE(*pmdp) in a local pmd_t variable first solves the problem.
