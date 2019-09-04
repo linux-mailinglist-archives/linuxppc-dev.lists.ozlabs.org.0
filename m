@@ -1,93 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAB6A96F2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 01:16:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E99A96FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 01:19:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46P07n2103zDqys
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 09:16:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46P0BR6yXWzDr27
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 09:18:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com;
+ envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="E0hH/5KZ"; 
+ dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46P0541YmSzDqZp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 09:14:11 +1000 (AEST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2019 16:14:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,468,1559545200"; d="scan'208";a="187784257"
-Received: from ray.jf.intel.com (HELO [10.7.201.140]) ([10.7.201.140])
- by orsmga006.jf.intel.com with ESMTP; 04 Sep 2019 16:14:08 -0700
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
- <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-Message-ID: <3b67e4d8-ba67-e7b2-f4d1-1276262d349e@intel.com>
-Date: Wed, 4 Sep 2019 16:14:08 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46P0763fPkzDqyp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 09:16:02 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id k1so546227wmi.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 16:16:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=D+jh77ZLgNensDYPn2dN2wL4k27PJ6BpfuVV6pgmL7g=;
+ b=E0hH/5KZPUbuapqt3Z57/i+myQE/X/8+9T1h7ZwzooTZFrauoJKpwhyX2YG21HRAly
+ 5ZPac6JEX2A0gPXuwBVMuX4LbTwVUws7ZdBidSR5KDozTQXQYfMwl88kRfMHS/OkTMq0
+ cotN8RM2UrUFC8JZpSkMJm6h4cCwj8lL0cZJF7Z+6vyPR9I2a5lHJ8ltH8gTtqM/a9qk
+ fUR4h3x3Nk03WFcUmF633tW7lJGnGNZx8EoMnrK/hphQ6mCIaQd/sURbEX/UdRfl47L8
+ 6WAGON3hJk4HT+fv5HhYXo3BC/w9GTdUPEBETmCLkHQclpPvFkxikQQVE0EQk8MW3m4V
+ U6Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=D+jh77ZLgNensDYPn2dN2wL4k27PJ6BpfuVV6pgmL7g=;
+ b=nFGXkDSencefi2puHHOgwjmfU30csGFRssBzLJUW/OaxLHa+IugY4Lp5+hDhs9m8oX
+ H80p83255FS7svsxJY7s12n5HzaqI/+sw32SvLNmY6Z2zztfWfDWbEnipsQnaGK2blK/
+ DSnEF1WGFxsG/umoydStMpo/NXM10giQenNnYXcfELc/VC2bRfi0JcCSn8D93644oYI7
+ ZI5qbN67UYjk/2q2t4HBcvX1geB12/XSGm3h8lND9TdQW/r/1ROnJ7Gj9ZZIl2gWC7RZ
+ gvX0yGZloLFf+zIfuYsz/phkot5mvC4WCi+4T5J2wCHh7sZ70g/Aonj8syllPyZjgOZ3
+ iRoA==
+X-Gm-Message-State: APjAAAXYGYWsTC4RbLZATeZDWUo4V9xYg5AkejdVim3Rqdtlyphz1G+N
+ lbcSymnb1STMacSX51S+rCU=
+X-Google-Smtp-Source: APXvYqznil+fqfMulqs43QZJNRB7vW35OcADELC0oZ/vgbpO2vg2C3b20RkPKZ41YzhNwbmyWSb20A==
+X-Received: by 2002:a7b:c766:: with SMTP id x6mr514054wmk.51.1567638957553;
+ Wed, 04 Sep 2019 16:15:57 -0700 (PDT)
+Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
+ by smtp.gmail.com with ESMTPSA id z189sm788009wmc.25.2019.09.04.16.15.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Sep 2019 16:15:56 -0700 (PDT)
+Date: Wed, 4 Sep 2019 16:15:54 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+Message-ID: <20190904231554.GA42450@archlinux-threadripper>
+References: <878srdv206.fsf@mpe.ellerman.id.au>
+ <20190828175322.GA121833@archlinux-threadripper>
+ <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
+ <20190828184529.GC127646@archlinux-threadripper>
+ <6801a83ed6d54d95b87a41c57ef6e6b0@AcuMS.aculab.com>
+ <20190903055553.GC60296@archlinux-threadripper>
+ <20190903193128.GC9749@gate.crashing.org>
+ <20190904002401.GA70635@archlinux-threadripper>
+ <1bcd7086f3d24dfa82eec03980f30fbc@AcuMS.aculab.com>
+ <20190904130135.GN9749@gate.crashing.org>
 MIME-Version: 1.0
-In-Reply-To: <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190904130135.GN9749@gate.crashing.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,45 +88,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- Kees Cook <keescook@chromium.org>, "Shutemov,
- Kirill" <kirill.shutemov@intel.com>, Mark Brown <broonie@kernel.org>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ David Laight <David.Laight@aculab.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/3/19 1:01 AM, Anshuman Khandual wrote:
-> This adds a test module which will validate architecture page table helpers
-> and accessors regarding compliance with generic MM semantics expectations.
-> This will help various architectures in validating changes to the existing
-> page table helpers or addition of new ones.
+On Wed, Sep 04, 2019 at 08:01:35AM -0500, Segher Boessenkool wrote:
+> On Wed, Sep 04, 2019 at 08:16:45AM +0000, David Laight wrote:
+> > From: Nathan Chancellor [mailto:natechancellor@gmail.com]
+> > > Fair enough so I guess we are back to just outright disabling the
+> > > warning.
+> > 
+> > Just disabling the warning won't stop the compiler generating code
+> > that breaks a 'user' implementation of setjmp().
+> 
+> Yeah.  I have a patch (will send in an hour or so) that enables the
+> "returns_twice" attribute for setjmp (in <asm/setjmp.h>).  In testing
+> (with GCC trunk) it showed no difference in code generation, but
+> better save than sorry.
+> 
+> It also sets "noreturn" on longjmp, and that *does* help, it saves a
+> hundred insns or so (all in xmon, no surprise there).
+> 
+> I don't think this will make LLVM shut up about this though.  And
+> technically it is right: the C standard does say that in hosted mode
+> setjmp is a reserved name and you need to include <setjmp.h> to access
+> it (not <asm/setjmp.h>).
 
-This looks really cool.  The "only" complication on x86 is the large
-number of compile and runtime options that we have.  When this gets
-merged, it would be really nice to make sure that the 0day guys have
-good coverage of all the configurations.
+It does not fix the warning, I tested your patch.
 
-I'm not _quite_ sure what kind of bugs it will catch on x86 and I
-suspect it'll have more value for the other architectures, but it seems
-harmless enough.
+> So why is the kernel compiled as hosted?  Does adding -ffreestanding
+> hurt anything?  Is that actually supported on LLVM, on all relevant
+> versions of it?  Does it shut up the warning there (if not, that would
+> be an LLVM bug)?
+
+It does fix this warning because -ffreestanding implies -fno-builtin,
+which also solves the warning. LLVM has supported -ffreestanding since
+at least 3.0.0. There are some parts of the kernel that are compiled
+with this and it probably should be used in more places but it sounds
+like there might be some good codegen improvements that are disabled
+with it:
+
+https://lore.kernel.org/lkml/CAHk-=wi-epJZfBHDbKKDZ64us7WkF=LpUfhvYBmZSteO8Q0RAg@mail.gmail.com/
+
+Cheers,
+Nathan
