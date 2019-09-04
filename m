@@ -1,41 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB568A8186
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 13:53:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F267A8193
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 13:57:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NhzB4xMYzDqtZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 21:53:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Nj3n0FzYzDqZ1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 21:57:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NhxR4LC8zDqHJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 21:51:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Nj0y2wDZzDqQG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 21:54:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 46NhxR3kdfz9sDQ; Wed,  4 Sep 2019 21:51:39 +1000 (AEST)
+ id 46Nj0y1sJjz9sDB; Wed,  4 Sep 2019 21:54:42 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46NhxR06zlz9sDB;
- Wed,  4 Sep 2019 21:51:38 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46Nj0x26cvz9s7T;
+ Wed,  4 Sep 2019 21:54:41 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Hari Bathini <hbathini@linux.ibm.com>,
  linuxppc-dev <linuxppc-dev@ozlabs.org>
-Subject: Re: [PATCH v5 19/31] powerpc/fadump: Update documentation about OPAL
- platform support
-In-Reply-To: <156630278711.8896.9799921270260662672.stgit@hbathini.in.ibm.com>
+Subject: Re: [PATCH v5 20/31] powerpc/fadump: use smaller offset while finding
+ memory for reservation
+In-Reply-To: <156630279483.8896.5669371616456324826.stgit@hbathini.in.ibm.com>
 References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
- <156630278711.8896.9799921270260662672.stgit@hbathini.in.ibm.com>
-Date: Wed, 04 Sep 2019 21:51:38 +1000
-Message-ID: <87y2z4p9dh.fsf@mpe.ellerman.id.au>
+ <156630279483.8896.5669371616456324826.stgit@hbathini.in.ibm.com>
+Date: Wed, 04 Sep 2019 21:54:41 +1000
+Message-ID: <87v9u8p98e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,45 +58,45 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Hari Bathini <hbathini@linux.ibm.com> writes:
-> With FADump support now available on both pseries and OPAL platforms,
-> update FADump documentation with these details.
->
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  Documentation/powerpc/firmware-assisted-dump.rst |  104 +++++++++++++---------
->  1 file changed, 63 insertions(+), 41 deletions(-)
->
-> diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-> index d912755..2c3342c 100644
-> --- a/Documentation/powerpc/firmware-assisted-dump.rst
-> +++ b/Documentation/powerpc/firmware-assisted-dump.rst
-> @@ -72,7 +72,8 @@ as follows:
->     normal.
+> diff --git a/arch/powerpc/kernel/fadump-common.h b/arch/powerpc/kernel/fadump-common.h
+> index d2dd117..7107cf2 100644
+> --- a/arch/powerpc/kernel/fadump-common.h
+> +++ b/arch/powerpc/kernel/fadump-common.h
+> @@ -66,6 +66,14 @@ static inline u64 fadump_str_to_u64(const char *str)
 >  
->  -  The freshly booted kernel will notice that there is a new
-> -   node (ibm,dump-kernel) in the device tree, indicating that
-> +   node (ibm,dump-kernel on PSeries or ibm,opal/dump/mpipl-boot
-> +   on OPAL platform) in the device tree, indicating that
->     there is crash data available from a previous boot. During
->     the early boot OS will reserve rest of the memory above
->     boot memory size effectively booting with restricted memory
-> @@ -96,7 +97,9 @@ as follows:
+>  #define FADUMP_CRASH_INFO_MAGIC		fadump_str_to_u64("FADMPINF")
 >  
->  Please note that the firmware-assisted dump feature
->  is only available on Power6 and above systems with recent
-> -firmware versions.
+> +/*
+> + * Amount of memory (1024MB) to skip before making another attempt at
+> + * reserving memory (after the previous attempt to reserve memory for
+> + * FADump failed due to memory holes and/or reserved ranges) to reduce
+> + * the likelihood of memory reservation failure.
+> + */
+> +#define FADUMP_OFFSET_SIZE			0x40000000U
 
-Notice how "recent" has bit rotted.
+This seems like a bit of a hack.
 
-> +firmware versions on PSeries (PowerVM) platform and Power9
-> +and above systems with recent firmware versions on PowerNV
-> +(OPAL) platform.
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index 971c50d..8dd2dcc 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -371,7 +371,7 @@ int __init fadump_reserve_mem(void)
+>  			    !memblock_is_region_reserved(base, size))
+>  				break;
+>  
+> -			base += size;
+> +			base += FADUMP_OFFSET_SIZE;
+>  		}
 
-Can we say something more helpful here, ie. "recent" is not very useful.
-AFAIK it's actually wrong, there isn't a released firmware with the
-support yet at all, right?
+The comment above the loop says:
 
-Given all the relevant firmware is open source can't we at least point
-to a commit or release tag or something?
+		/*
+		 * Reserve memory at an offset closer to bottom of the RAM to
+		 * minimize the impact of memory hot-remove operation. We can't
+		 * use memblock_find_in_range() here since it doesn't allocate
+		 * from bottom to top.
+		 */
+
+Is that true? Can't we set memblock to bottom up mode and then call it?
 
 cheers
