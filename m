@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7BEA83DC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 15:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 782DAA8592
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 16:23:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NlKm4GZ6zDqsR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 23:39:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NmK16nKlzDqwM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 00:23:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NmD120snzDqcS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 00:19:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NlFH3trRzDqdh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 23:35:31 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x84DZ8EK027511;
- Wed, 4 Sep 2019 08:35:09 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x84DZ6Rj027508;
- Wed, 4 Sep 2019 08:35:06 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 4 Sep 2019 08:35:06 -0500
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46NmCz51kqz8t3b
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 00:19:27 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46NmCz2jDxz9sPp; Thu,  5 Sep 2019 00:19:27 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=gcc1-power7.osuosl.org (client-ip=140.211.15.137;
+ helo=gcc1-power7.osuosl.org; envelope-from=segher@gcc1-power7.osuosl.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+X-Greylist: delayed 487 seconds by postgrey-1.36 at bilbo;
+ Thu, 05 Sep 2019 00:19:25 AEST
+Received: from gcc1-power7.osuosl.org (gcc1-power7.osuosl.org [140.211.15.137])
+ by ozlabs.org (Postfix) with ESMTP id 46NmCx6YLlz9s3Z
+ for <linuxppc-dev@ozlabs.org>; Thu,  5 Sep 2019 00:19:25 +1000 (AEST)
+Received: by gcc1-power7.osuosl.org (Postfix, from userid 10019)
+ id 472351240C2E; Wed,  4 Sep 2019 14:11:15 +0000 (UTC)
 From: Segher Boessenkool <segher@kernel.crashing.org>
-To: "Alastair D'Silva" <alastair@au1.ibm.com>
-Subject: Re: [PATCH v2 3/6] powerpc: Convert flush_icache_range & friends to C
-Message-ID: <20190904133506.GO9749@gate.crashing.org>
-References: <20190903052407.16638-1-alastair@au1.ibm.com>
- <20190903052407.16638-4-alastair@au1.ibm.com>
- <44b8223d-52d9-e932-4bb7-b7590ea11a03@c-s.fr>
- <c15c26963663b8de3102fd08df614fc5a8b3ecc2.camel@au1.ibm.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c15c26963663b8de3102fd08df614fc5a8b3ecc2.camel@au1.ibm.com>
-User-Agent: Mutt/1.4.2.3i
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc: Add attributes for setjmp/longjmp
+Date: Wed,  4 Sep 2019 14:11:07 +0000
+Message-Id: <c02ce4a573f3bac907e2c70957a2d1275f910013.1567605586.git.segher@kernel.crashing.org>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,23 +53,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Qian Cai <cai@lca.pw>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 04, 2019 at 01:23:36PM +1000, Alastair D'Silva wrote:
-> > Maybe also add "msr" in the clobbers.
-> > 
-> Ok.
+The setjmp function should be declared as "returns_twice", or bad
+things can happen[1].  This does not actually change generated code
+in my testing.
 
-There is no known register "msr" in GCC.
+The longjmp function should be declared as "noreturn", so that the
+compiler can optimise calls to it better.  This makes the generated
+code a little shorter.
 
+Signed-off-by: Segher Boessenkool <segher@kernel.crashing.org>
 
-Segher
+[1] See https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-returns_005ftwice-function-attribute
+---
+ arch/powerpc/include/asm/setjmp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
+index d995061..e9f81bb 100644
+--- a/arch/powerpc/include/asm/setjmp.h
++++ b/arch/powerpc/include/asm/setjmp.h
+@@ -7,7 +7,7 @@
+ 
+ #define JMP_BUF_LEN    23
+ 
+-extern long setjmp(long *);
+-extern void longjmp(long *, long);
++extern long setjmp(long *) __attribute__((returns_twice));
++extern void longjmp(long *, long) __attribute__((noreturn));
+ 
+ #endif /* _ASM_POWERPC_SETJMP_H */
+-- 
+1.8.3.1
+
