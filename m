@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E29A7A7F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 06:59:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A78A7A86
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 07:01:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NWnm0Vx9zDqjY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 14:59:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NWr73BX7zDqjY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 15:01:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,51 +19,50 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NWjk6C2bzDqjN
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 14:55:54 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NWjq3sD1zDqjN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 14:55:59 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x844qFHE038506; Wed, 4 Sep 2019 00:55:49 -0400
+ x844qHih112373; Wed, 4 Sep 2019 00:55:54 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ut5vw18x2-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ut44u3san-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Sep 2019 00:55:49 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x844sjxM043270;
- Wed, 4 Sep 2019 00:55:49 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ut5vw18wn-1
+ Wed, 04 Sep 2019 00:55:54 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x844tCGI137284;
+ Wed, 4 Sep 2019 00:55:54 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ut44u3sa9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Sep 2019 00:55:48 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x844t8Lw015332;
- Wed, 4 Sep 2019 04:55:47 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04wdc.us.ibm.com with ESMTP id 2us9fn0ukg-1
+ Wed, 04 Sep 2019 00:55:54 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x844t9am006879;
+ Wed, 4 Sep 2019 04:55:53 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2uqgh74mfb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Sep 2019 04:55:47 +0000
+ Wed, 04 Sep 2019 04:55:53 +0000
 Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
  [9.57.199.111])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x844tl3B53608802
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x844tqxH14549594
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Sep 2019 04:55:47 GMT
+ Wed, 4 Sep 2019 04:55:52 GMT
 Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D1BCAC05F;
- Wed,  4 Sep 2019 04:55:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9F001AC05B;
+ Wed,  4 Sep 2019 04:55:52 +0000 (GMT)
 Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 772E2AC05B;
- Wed,  4 Sep 2019 04:55:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id CD3A9AC05E;
+ Wed,  4 Sep 2019 04:55:49 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.80.235.180])
  by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  4 Sep 2019 04:55:44 +0000 (GMT)
+ Wed,  4 Sep 2019 04:55:49 +0000 (GMT)
 From: gromero <gromero@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mikey@neuling.org
-Subject: [PATCH v2 2/3] powerpc/tm: Fix restoring FP/VMX facility incorrectly
- on interrupts
-Date: Wed,  4 Sep 2019 00:55:28 -0400
-Message-Id: <20190904045529.23002-2-gromero@linux.vnet.ibm.com>
+Subject: [PATCH v2 3/3] powerpc/tm: Add tm-poison test
+Date: Wed,  4 Sep 2019 00:55:29 -0400
+Message-Id: <20190904045529.23002-3-gromero@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20190904045529.23002-1-gromero@linux.vnet.ibm.com>
 References: <20190903044718.13773-1-mikey@neuling.org>
@@ -95,128 +94,225 @@ Sender: "Linuxppc-dev"
 
 From: Gustavo Romero <gromero@linux.ibm.com>
 
-When in userspace and MSR FP=0 the hardware FP state is unrelated to
-the current process. This is extended for transactions where if tbegin
-is run with FP=0, the hardware checkpoint FP state will also be
-unrelated to the current process. Due to this, we need to ensure this
-hardware checkpoint is updated with the correct state before we enable
-FP for this process.
+Add TM selftest to check if FP or VEC register values from one process
+can leak into another process when both run on the same CPU.
 
-Unfortunately we get this wrong when returning to a process from a
-hardware interrupt. A process that starts a transaction with FP=0 can
-take an interrupt. When the kernel returns back to that process, we
-change to FP=1 but with hardware checkpoint FP state not updated. If
-this transaction is then rolled back, the FP registers now contain the
-wrong state.
-
-The process looks like this:
-   Userspace:                      Kernel
-
-               Start userspace
-                with MSR FP=0 TM=1
-                  < -----
-   ...
-   tbegin
-   bne
-               Hardware interrupt
-                   ---- >
-                                    <do_IRQ...>
-                                    ....
-                                    ret_from_except
-                                      restore_math()
-				        /* sees FP=0 */
-                                        restore_fp()
-                                          tm_active_with_fp()
-					    /* sees FP=1 (Incorrect) */
-                                          load_fp_state()
-                                        FP = 0 -> 1
-                  < -----
-               Return to userspace
-                 with MSR TM=1 FP=1
-                 with junk in the FP TM checkpoint
-   TM rollback
-   reads FP junk
-
-When returning from the hardware exception, tm_active_with_fp() is
-incorrectly making restore_fp() call load_fp_state() which is setting
-FP=1.
-
-The fix is to remove tm_active_with_fp().
-
-tm_active_with_fp() is attempting to handle the case where FP state
-has been changed inside a transaction. In this case the checkpointed
-and transactional FP state is different and hence we must restore the
-FP state (ie. we can't do lazy FP restore inside a transaction that's
-used FP). It's safe to remove tm_active_with_fp() as this case is
-handled by restore_tm_state(). restore_tm_state() detects if FP has
-been using inside a transaction and will set load_fp and call
-restore_math() to ensure the FP state (checkpoint and transaction) is
-restored.
-
-This is a data integrity problem for the current process as the FP
-registers are corrupted. It's also a security problem as the FP
-registers from one process may be leaked to another.
-
-Similarly for VMX.
-
-A simple testcase to replicate this will be posted to
-tools/testing/selftests/powerpc/tm/tm-poison.c
-
-This fixes CVE-2019-15031.
-
-Fixes: a7771176b439 ("powerpc: Don't enable FP/Altivec if not checkpointed")
-Cc: stable@vger.kernel.org # 4.15+
 Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
 Signed-off-by: Michael Neuling <mikey@neuling.org>
 ---
- arch/powerpc/kernel/process.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+ tools/testing/selftests/powerpc/tm/.gitignore |   1 +
+ tools/testing/selftests/powerpc/tm/Makefile   |   2 +-
+ .../testing/selftests/powerpc/tm/tm-poison.c  | 179 ++++++++++++++++++
+ 3 files changed, 181 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/tm/tm-poison.c
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 437b57068cf8..7a84c9f1778e 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -101,21 +101,8 @@ static void check_if_tm_restore_required(struct task_struct *tsk)
- 	}
- }
+diff --git a/tools/testing/selftests/powerpc/tm/.gitignore b/tools/testing/selftests/powerpc/tm/.gitignore
+index 951fe855f7cd..98f2708d86cc 100644
+--- a/tools/testing/selftests/powerpc/tm/.gitignore
++++ b/tools/testing/selftests/powerpc/tm/.gitignore
+@@ -17,3 +17,4 @@ tm-vmx-unavail
+ tm-unavailable
+ tm-trap
+ tm-sigreturn
++tm-poison
+diff --git a/tools/testing/selftests/powerpc/tm/Makefile b/tools/testing/selftests/powerpc/tm/Makefile
+index c0734ed0ef56..b15a1a325bd0 100644
+--- a/tools/testing/selftests/powerpc/tm/Makefile
++++ b/tools/testing/selftests/powerpc/tm/Makefile
+@@ -5,7 +5,7 @@ SIGNAL_CONTEXT_CHK_TESTS := tm-signal-context-chk-gpr tm-signal-context-chk-fpu
+ TEST_GEN_PROGS := tm-resched-dscr tm-syscall tm-signal-msr-resv tm-signal-stack \
+ 	tm-vmxcopy tm-fork tm-tar tm-tmspr tm-vmx-unavail tm-unavailable tm-trap \
+ 	$(SIGNAL_CONTEXT_CHK_TESTS) tm-sigreturn tm-signal-sigreturn-nt \
+-	tm-signal-context-force-tm
++	tm-signal-context-force-tm tm-poison
  
--static bool tm_active_with_fp(struct task_struct *tsk)
--{
--	return MSR_TM_ACTIVE(tsk->thread.regs->msr) &&
--		(tsk->thread.ckpt_regs.msr & MSR_FP);
--}
--
--static bool tm_active_with_altivec(struct task_struct *tsk)
--{
--	return MSR_TM_ACTIVE(tsk->thread.regs->msr) &&
--		(tsk->thread.ckpt_regs.msr & MSR_VEC);
--}
- #else
- static inline void check_if_tm_restore_required(struct task_struct *tsk) { }
--static inline bool tm_active_with_fp(struct task_struct *tsk) { return false; }
--static inline bool tm_active_with_altivec(struct task_struct *tsk) { return false; }
- #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
- 
- bool strict_msr_control;
-@@ -252,7 +239,7 @@ EXPORT_SYMBOL(enable_kernel_fp);
- 
- static int restore_fp(struct task_struct *tsk)
- {
--	if (tsk->thread.load_fp || tm_active_with_fp(tsk)) {
-+	if (tsk->thread.load_fp) {
- 		load_fp_state(&current->thread.fp_state);
- 		current->thread.load_fp++;
- 		return 1;
-@@ -334,8 +321,7 @@ EXPORT_SYMBOL_GPL(flush_altivec_to_thread);
- 
- static int restore_altivec(struct task_struct *tsk)
- {
--	if (cpu_has_feature(CPU_FTR_ALTIVEC) &&
--		(tsk->thread.load_vec || tm_active_with_altivec(tsk))) {
-+	if (cpu_has_feature(CPU_FTR_ALTIVEC) && (tsk->thread.load_vec)) {
- 		load_vr_state(&tsk->thread.vr_state);
- 		tsk->thread.used_vr = 1;
- 		tsk->thread.load_vec++;
+ top_srcdir = ../../../../..
+ include ../../lib.mk
+diff --git a/tools/testing/selftests/powerpc/tm/tm-poison.c b/tools/testing/selftests/powerpc/tm/tm-poison.c
+new file mode 100644
+index 000000000000..977558497c16
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/tm/tm-poison.c
+@@ -0,0 +1,179 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright 2019, Gustavo Romero, Michael Neuling, IBM Corp.
++ *
++ * This test will spawn two processes. Both will be attached to the same
++ * CPU (CPU 0). The child will be in a loop writing to FP register f31 and
++ * VMX/VEC/Altivec register vr31 a known value, called poison, calling
++ * sched_yield syscall after to allow the parent to switch on the CPU.
++ * Parent will set f31 and vr31 to 1 and in a loop will check if f31 and
++ * vr31 remain 1 as expected until a given timeout (2m). If the issue is
++ * present child's poison will leak into parent's f31 or vr31 registers,
++ * otherwise, poison will never leak into parent's f31 and vr31 registers.
++ */
++
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <inttypes.h>
++#include <sched.h>
++#include <sys/types.h>
++#include <signal.h>
++#include <inttypes.h>
++
++#include "tm.h"
++
++int tm_poison_test(void)
++{
++	int pid;
++	cpu_set_t cpuset;
++	uint64_t poison = 0xdeadbeefc0dec0fe;
++	uint64_t unknown = 0;
++	bool fail_fp = false;
++	bool fail_vr = false;
++
++	SKIP_IF(!have_htm());
++
++	/* Attach both Child and Parent to CPU 0 */
++	CPU_ZERO(&cpuset);
++	CPU_SET(0, &cpuset);
++	sched_setaffinity(0, sizeof(cpuset), &cpuset);
++
++	pid = fork();
++	if (!pid) {
++		/**
++		 * child
++		 */
++		while (1) {
++			sched_yield();
++			asm (
++				"mtvsrd 31, %[poison];" // f31 = poison
++				"mtvsrd 63, %[poison];" // vr31 = poison
++
++				: : [poison] "r" (poison) : );
++		}
++	}
++
++	/**
++	 * parent
++	 */
++	asm (
++		/*
++		 * Set r3, r4, and f31 to known value 1 before entering
++		 * in transaction. They won't be written after that.
++		 */
++		"       li      3, 0x1          ;"
++		"       li      4, 0x1          ;"
++		"       mtvsrd  31, 4           ;"
++
++		/*
++		 * The Time Base (TB) is a 64-bit counter register that is
++		 * independent of the CPU clock and which is incremented
++		 * at a frequency of 512000000 Hz, so every 1.953125ns.
++		 * So it's necessary 120s/0.000000001953125s = 61440000000
++		 * increments to get a 2 minutes timeout. Below we set that
++		 * value in r5 and then use r6 to track initial TB value,
++		 * updating TB values in r7 at every iteration and comparing it
++		 * to r6. When r7 (current) - r6 (initial) > 61440000000 we bail
++		 * out since for sure we spent already 2 minutes in the loop.
++		 * SPR 268 is the TB register.
++		 */
++		"       lis     5, 14           ;"
++		"       ori     5, 5, 19996     ;"
++		"       sldi    5, 5, 16        ;" // r5 = 61440000000
++
++		"       mfspr   6, 268          ;" // r6 (TB initial)
++		"1:     mfspr   7, 268          ;" // r7 (TB current)
++		"       subf    7, 6, 7         ;" // r7 - r6 > 61440000000 ?
++		"       cmpd    7, 5            ;"
++		"       bgt     3f              ;" // yes, exit
++
++		/*
++		 * Main loop to check f31
++		 */
++		"       tbegin.                 ;" // no, try again
++		"       beq     1b              ;" // restart if no timeout
++		"       mfvsrd  3, 31           ;" // read f31
++		"       cmpd    3, 4            ;" // f31 == 1 ?
++		"       bne     2f              ;" // broken :-(
++		"       tabort. 3               ;" // try another transaction
++		"2:     tend.                   ;" // commit transaction
++		"3:     mr    %[unknown], 3     ;" // record r3
++
++		: [unknown] "=r" (unknown)
++		:
++		: "cr0", "r3", "r4", "r5", "r6", "r7", "vs31"
++
++		);
++
++	/*
++	 * On leak 'unknown' will contain 'poison' value from child,
++	 * otherwise (no leak) 'unknown' will contain the same value
++	 * as r3 before entering in transactional mode, i.e. 0x1.
++	 */
++	fail_fp = unknown != 0x1;
++	if (fail_fp)
++		printf("Unknown value %#"PRIx64" leaked into f31!\n", unknown);
++	else
++		printf("Good, no poison or leaked value into FP registers\n");
++
++	asm (
++		/*
++		 * Set r3, r4, and vr31 to known value 1 before entering
++		 * in transaction. They won't be written after that.
++		 */
++		"       li      3, 0x1          ;"
++		"       li      4, 0x1          ;"
++		"       mtvsrd  63, 4           ;"
++
++		"       lis     5, 14           ;"
++		"       ori     5, 5, 19996     ;"
++		"       sldi    5, 5, 16        ;" // r5 = 61440000000
++
++		"       mfspr   6, 268          ;" // r6 (TB initial)
++		"1:     mfspr   7, 268          ;" // r7 (TB current)
++		"       subf    7, 6, 7         ;" // r7 - r6 > 61440000000 ?
++		"       cmpd    7, 5            ;"
++		"       bgt     3f              ;" // yes, exit
++
++		/*
++		 * Main loop to check vr31
++		 */
++		"       tbegin.                 ;" // no, try again
++		"       beq     1b              ;" // restart if no timeout
++		"       mfvsrd  3, 63           ;" // read vr31
++		"       cmpd    3, 4            ;" // vr31 == 1 ?
++		"       bne     2f              ;" // broken :-(
++		"       tabort. 3               ;" // try another transaction
++		"2:     tend.                   ;" // commit transaction
++		"3:     mr    %[unknown], 3     ;" // record r3
++
++		: [unknown] "=r" (unknown)
++		:
++		: "cr0", "r3", "r4", "r5", "r6", "r7", "vs63"
++
++		);
++
++	/*
++	 * On leak 'unknown' will contain 'poison' value from child,
++	 * otherwise (no leak) 'unknown' will contain the same value
++	 * as r3 before entering in transactional mode, i.e. 0x1.
++	 */
++	fail_vr = unknown != 0x1;
++	if (fail_vr)
++		printf("Unknown value %#"PRIx64" leaked into vr31!\n", unknown);
++	else
++		printf("Good, no poison or leaked value into VEC registers\n");
++
++	kill(pid, SIGKILL);
++
++	return (fail_fp | fail_vr);
++}
++
++int main(int argc, char *argv[])
++{
++	/* Test completes in about 4m */
++	test_harness_set_timeout(250);
++	return test_harness(tm_poison_test, "tm_poison_test");
++}
 -- 
 2.17.2
 
