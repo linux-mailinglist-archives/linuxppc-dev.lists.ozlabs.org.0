@@ -1,43 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20933A8117
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 13:32:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0480CA812E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 13:38:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46NhVh5x2vzDqtY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 21:31:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46NhfP25mdzDqk9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2019 21:38:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46NhSk0rJ5zDqk5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 21:30:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46NhcT5Qv1zDqk9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 21:36:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="YXK5Lvcs"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46NhcT3Rlbz8swb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2019 21:36:57 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46NhSj73vXz9sDB; Wed,  4 Sep 2019 21:30:13 +1000 (AEST)
+ id 46NhcT2Nxtz9sN1; Wed,  4 Sep 2019 21:36:57 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46NhSj37NDz9s4Y;
- Wed,  4 Sep 2019 21:30:13 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Hari Bathini <hbathini@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>
-Subject: Re: [PATCH v5 15/31] powernv/fadump: support copying multiple kernel
- boot memory regions
-In-Reply-To: <156630275779.8896.7854485220030978790.stgit@hbathini.in.ibm.com>
-References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
- <156630275779.8896.7854485220030978790.stgit@hbathini.in.ibm.com>
-Date: Wed, 04 Sep 2019 21:30:13 +1000
-Message-ID: <877e6oqoxm.fsf@mpe.ellerman.id.au>
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="YXK5Lvcs"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46NhcS690wz9sDQ;
+ Wed,  4 Sep 2019 21:36:55 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 570E320820;
+ Wed,  4 Sep 2019 11:36:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1567597012;
+ bh=a56KG1rm+dxxe4u1p29NlNtKXIQggvIKhjPKOKWs/KQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=YXK5LvcsSf+fXLWKyCcDDnoK7JjgM5tb8afue21/iYjn6NS5vzvdc/xIL8kUv7Aql
+ ObEyuV6v/38/XFHwUq85kTLTQBMYnGMVEo1cz2ASFWQYXT+HslPLL/neAukQNmT9QZ
+ nynLzFH1HhrSNxsUDGSvCMqYIS96U1w1BvcvzrHw=
+Date: Wed, 4 Sep 2019 13:36:50 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] sysfs: add BIN_ATTR_WO() macro
+Message-ID: <20190904113650.GA8275@kroah.com>
+References: <1566825818-9731-1-git-send-email-nayna@linux.ibm.com>
+ <1566825818-9731-3-git-send-email-nayna@linux.ibm.com>
+ <20190826140131.GA15270@kroah.com>
+ <ff9674e1-1b27-783a-38f3-4fd725353186@linux.vnet.ibm.com>
+ <20190826150153.GD18418@kroah.com>
+ <87ef0yrqxt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ef0yrqxt.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,111 +80,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Vasant Hegde <hegdevasant@linux.ibm.com>, Oliver <oohall@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
+Cc: linux-efi@vger.kernel.org, Nayna <nayna@linux.vnet.ibm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linux-integrity@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
-> Firmware uses 32-bit field for region size while copying/backing-up
+On Tue, Sep 03, 2019 at 01:37:02PM +1000, Michael Ellerman wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> > This variant was missing from sysfs.h, I guess no one noticed it before.
+> >
+> > Turns out the powerpc secure variable code can use it, so add it to the
+> > tree for it, and potentially others to take advantage of, instead of
+> > open-coding it.
+> >
+> > Reported-by: Nayna Jain <nayna@linux.ibm.com>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >
+> > I'll queue this up to my tree for 5.4-rc1, but if you want to take this
+> > in your tree earlier, feel free to do so.
+> 
+> OK. This series is blocked on the firmware support going in, so at the
+> moment it might miss v5.4 anyway. So this going via your tree is no
+> problem.
 
-Which firmware exactly is imposing that limit?
+Ok, will queue it up now, thanks!
 
-> memory during MPIPL. So, the maximum copy size for a region would
-> be a page less than 4GB (aligned to pagesize) but FADump capture
-> kernel usually needs more memory than that to be preserved to avoid
-> running into out of memory errors.
->
-> So, request firmware to copy multiple kernel boot memory regions
-> instead of just one (which worked fine for pseries as 64-bit field
-> was used for size there).
->
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/powernv/opal-fadump.c |   35 +++++++++++++++++++++-----
->  1 file changed, 28 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/powernv/opal-fadump.c b/arch/powerpc/platforms/powernv/opal-fadump.c
-> index 91fb909..a755705 100644
-> --- a/arch/powerpc/platforms/powernv/opal-fadump.c
-> +++ b/arch/powerpc/platforms/powernv/opal-fadump.c
-> @@ -28,6 +28,8 @@ static int opal_fadump_unregister(struct fw_dump *fadump_conf);
->  static void opal_fadump_update_config(struct fw_dump *fadump_conf,
->  				      const struct opal_fadump_mem_struct *fdm)
->  {
-> +	pr_debug("Boot memory regions count: %d\n", fdm->region_cnt);
-> +
->  	/*
->  	 * The destination address of the first boot memory region is the
->  	 * destination address of boot memory regions.
-> @@ -50,16 +52,35 @@ static void opal_fadump_init_metadata(struct opal_fadump_mem_struct *fdm)
->  
->  static ulong opal_fadump_init_mem_struct(struct fw_dump *fadump_conf)
->  {
-> -	ulong addr = fadump_conf->reserve_dump_area_start;
-> +	ulong src_addr, dest_addr;
-> +	int max_copy_size, cur_size, size;
->  
->  	opal_fdm = __va(fadump_conf->kernel_metadata);
->  	opal_fadump_init_metadata(opal_fdm);
->  
-> -	opal_fdm->region_cnt = 1;
-> -	opal_fdm->rgn[0].src	= RMA_START;
-> -	opal_fdm->rgn[0].dest	= addr;
-> -	opal_fdm->rgn[0].size	= fadump_conf->boot_memory_size;
-> -	addr += fadump_conf->boot_memory_size;
-> +	/*
-> +	 * Firmware currently supports only 32-bit value for size,
-
-"currently" implies it could change in future?
-
-If it does we assume it will only increase, and we're happy that old
-kernels will continue to use the 32-bit limit?
-
-> +	 * align it to pagesize and request firmware to copy multiple
-> +	 * kernel boot memory regions.
-> +	 */
-> +	max_copy_size = _ALIGN_DOWN(U32_MAX, PAGE_SIZE);
-> +
-> +	/* Boot memory regions */
-> +	src_addr = RMA_START;
-
-I'm not convinced using RMA_START actually makes things any clearer,
-given that it's #defined as 0, and we even have a BUILD_BUG_ON() to make
-sure it's never anything else.
-
-eg:
-
-	src_addr = 0;
-
-> +	dest_addr = fadump_conf->reserve_dump_area_start;
-> +	size = fadump_conf->boot_memory_size;
-> +	while (size) {
-> +		cur_size = size > max_copy_size ? max_copy_size : size;
-> +
-> +		opal_fdm->rgn[opal_fdm->region_cnt].src  = src_addr;
-> +		opal_fdm->rgn[opal_fdm->region_cnt].dest = dest_addr;
-> +		opal_fdm->rgn[opal_fdm->region_cnt].size = cur_size;
-> +
-> +		opal_fdm->region_cnt++;
-> +		dest_addr	+= cur_size;
-> +		src_addr	+= cur_size;
-> +		size		-= cur_size;
-> +	}
->  
->  	/*
->  	 * Kernel metadata is passed to f/w and retrieved in capture kerenl.
-> @@ -70,7 +91,7 @@ static ulong opal_fadump_init_mem_struct(struct fw_dump *fadump_conf)
->  
->  	opal_fadump_update_config(fadump_conf, opal_fdm);
->  
-> -	return addr;
-> +	return dest_addr;
->  }
->  
->  static ulong opal_fadump_get_metadata_size(void)
-
-cheers
+greg k-h
