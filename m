@@ -1,56 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982E4AAA7E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 20:01:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82009AAAA6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 20:10:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PT651LY1zDr2h
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 04:01:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PTJ94BMBzDr2s
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 04:10:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=anastas.io
- (client-ip=104.248.188.109; helo=alpha.anastas.io;
- envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=anastas.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=anastas.io header.i=@anastas.io header.b="mN1ifW4B"; 
- dkim-atps=neutral
-Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
+ spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
+ (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
+ envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PT3n309KzDqw0
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 03:59:49 +1000 (AEST)
-Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by alpha.anastas.io (Postfix) with ESMTPSA id C6A667E74E;
- Thu,  5 Sep 2019 12:59:45 -0500 (CDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
- t=1567706386; bh=61aoJjKj3xjkVn+bS+/OtYdskRw6zpPaF6JEETWOzDE=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=mN1ifW4BHAXGjac5ZRUWGNdSopsnL4mwoPJqqWjcEvGEzcyB1MgFhc6/6+gy6PV9O
- Ej9ehnE+ob6gIS3x6AYep8eol0GsMsNyqNcc8cZx2mQD82knj1kuT5X5Rz62u/GiR8
- 2ahln/ww1d4ajrsxzlSBksEXpM3DgmRn84rx6G/WGJPv3HTuDdq/sbkCUMUIAmfdrD
- fjZgvGNGAIFp3zfqlOtvCqrjqNP1QAIEeykN9xkK3DxH1Tlzs4Tdkml4ErA4FFPoPE
- 37yxGGLry2bTOHxsmJHxwq3WSDzF6PT4GB2jSRUeShAVJdtY9XHtUlOjZ3bRcXquvG
- xSX9j/7fXvNMw==
-Subject: Re: [PATCH 0/2] Fix IOMMU setup for hotplugged devices on pseries
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20190905042215.3974-1-shawn@anastas.io>
- <7a41184c-9b30-8d91-9d78-9d60c8d128ef@ozlabs.ru>
-From: Shawn Anastasio <shawn@anastas.io>
-Message-ID: <7fb9fb72-2afd-451c-1411-54c7bb865d56@anastas.io>
-Date: Thu, 5 Sep 2019 12:59:44 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PTFw6QcmzDqx2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 04:08:31 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.1 #3 (Red Hat
+ Linux)) id 1i5wAg-000437-LE; Thu, 05 Sep 2019 18:07:51 +0000
+Date: Thu, 5 Sep 2019 19:07:50 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+Message-ID: <20190905180750.GQ1131@ZenIV.linux.org.uk>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
 MIME-Version: 1.0
-In-Reply-To: <7a41184c-9b30-8d91-9d78-9d60c8d128ef@ozlabs.ru>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190904201933.10736-2-cyphar@cyphar.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,53 +47,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhelgaas@google.com, sbobroff@linux.ibm.com, oohall@gmail.com
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Shuah Khan <shuah@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/5/19 4:08 AM, Alexey Kardashevskiy wrot>
-> I just tried hotplugging 3 virtio-net devices into a guest system with 
-> v5.2 kernel and it seems working (i.e. BARs mapped, a driver is bound):
->
-> 
-> root@le-dbg:~# lspci -v | egrep -i '(virtio|Memory)'
-> 00:00.0 Ethernet controller: Red Hat, Inc Virtio network device
->          Memory at 200080040000 (32-bit, non-prefetchable) [size=4K]
->          Memory at 210000000000 (64-bit, prefetchable) [size=16K]
->          Kernel driver in use: virtio-pci
-> 00:01.0 Ethernet controller: Red Hat, Inc Virtio network device
->          Memory at 200080041000 (32-bit, non-prefetchable) [size=4K]
->          Memory at 210000004000 (64-bit, prefetchable) [size=16K]
->          Kernel driver in use: virtio-pci
-> 00:02.0 Ethernet controller: Red Hat, Inc Virtio network device
->          Memory at 200080042000 (32-bit, non-prefetchable) [size=4K]
->          Memory at 210000008000 (64-bit, prefetchable) [size=16K]
->          Kernel driver in use: virtio-pci
-> 
-> Can you explain in detail what you are doing exactly and what is failing 
-> and what qemu/guest kernel/guest distro is used? Thanks,
+On Thu, Sep 05, 2019 at 06:19:22AM +1000, Aleksa Sarai wrote:
+> +/*
+> + * "memset(p, 0, size)" but for user space buffers. Caller must have already
+> + * checked access_ok(p, size).
+> + */
+> +static int __memzero_user(void __user *p, size_t s)
+> +{
+> +	const char zeros[BUFFER_SIZE] = {};
+> +	while (s > 0) {
+> +		size_t n = min(s, sizeof(zeros));
+> +
+> +		if (__copy_to_user(p, zeros, n))
+> +			return -EFAULT;
+> +
+> +		p += n;
+> +		s -= n;
+> +	}
+> +	return 0;
+> +}
 
-Sure. I'm on host kernel 5.2.8, guest on 5.3-rc7 (also tested on 5.1.16)
-and I'm hotplugging ivshmem devices to a separate spapr-pci-host-bridge
-defined as follows:
+That's called clear_user().
 
--device spapr-pci-host-bridge,index=1,id=pci.1
+> +int copy_struct_to_user(void __user *dst, size_t usize,
+> +			const void *src, size_t ksize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
+> +
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
 
-Device hotplug and BAR assignment does work, but IOMMU group assignment
-seems to fail. This is evidenced by the kernel log which shows the
-following message for the first device but not the second:
+Why?
 
-[  136.849448] pci 0001:00:00.0: Adding to iommu group 1
+> +	} else if (usize > ksize) {
+> +		if (__memzero_user(dst + size, rest))
+> +			return -EFAULT;
+> +	}
+> +	/* Copy the interoperable parts of the struct. */
+> +	if (__copy_to_user(dst, src, size))
+> +		return -EFAULT;
 
-Trying to bind the second device to vfio-pci as a result of this
-fails:
+Why not simply clear_user() and copy_to_user()?
 
-[  471.691948] vfio-pci: probe of 0001:00:01.0 failed with error -22
+> +int copy_struct_from_user(void *dst, size_t ksize,
+> +			  const void __user *src, size_t usize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
 
-I traced that failure to a call to iommu_group_get() which returns
-NULL for the second device. I then traced that back to the ordering
-issue I described.
+Cute, but... you would be just as well without that 'rest' thing.
 
-For your second and third virtio-net devices, was the
-"Adding to iommu group N" kernel message printed?
+> +
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
+
+Again, why?
+
+> +	if (unlikely(!access_ok(src, usize)))
+> +		return -EFAULT;
+
+Why not simply copy_from_user() here?
+
+> +	/* Deal with trailing bytes. */
+> +	if (usize < ksize)
+> +		memset(dst + size, 0, rest);
+> +	else if (usize > ksize) {
+> +		const void __user *addr = src + size;
+> +		char buffer[BUFFER_SIZE] = {};
+> +
+> +		while (rest > 0) {
+> +			size_t bufsize = min(rest, sizeof(buffer));
+> +
+> +			if (__copy_from_user(buffer, addr, bufsize))
+> +				return -EFAULT;
+> +			if (memchr_inv(buffer, 0, bufsize))
+> +				return -E2BIG;
+
+Frankly, that looks like a candidate for is_all_zeroes_user().
+With the loop like above serving as a dumb default.  And on
+badly alighed address it _will_ be dumb.  Probably too much
+so - something like
+	if ((unsigned long)addr & 1) {
+		u8 v;
+		if (get_user(v, (__u8 __user *)addr))
+			return -EFAULT;
+		if (v)
+			return -E2BIG;
+		addr++;
+	}
+	if ((unsigned long)addr & 2) {
+		u16 v;
+		if (get_user(v, (__u16 __user *)addr))
+			return -EFAULT;
+		if (v)
+			return -E2BIG;
+		addr +=2;
+	}
+	if ((unsigned long)addr & 4) {
+		u32 v;
+		if (get_user(v, (__u32 __user *)addr))
+			return -EFAULT;
+		if (v)
+			return -E2BIG;
+	}
+	<read the rest like you currently do>
+would be saner, and things like x86 could trivially add an
+asm variant - it's not hard.  Incidentally, memchr_inv() is
+an overkill in this case...
