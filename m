@@ -2,75 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BE3AAE81
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 00:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB036AAE92
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 00:34:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Pb6L75XPzDr5D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 08:32:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Pb9B6tc9zDqQ1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 08:34:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="GXRdKrgL"; 
- dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
+ (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
+ envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Pb485zT7zDr5n
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 08:30:31 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id 4so2232274pgm.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2019 15:30:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
- :message-id:content-transfer-encoding;
- bh=hiVLruuS610U5KXu/rLH4E6cgqoHwaQnK6C0kYLeaGE=;
- b=GXRdKrgLUnjJ7CGIWiIUyTgca9vRRw6U7vaEg5T9fJAR9dJZwzMMqhlnd9C7eJ25YQ
- SiGW6Ll+bAKr/VCrZ5dz2aHJ07mBAPNw29aFupNNC4TNAWrisciJbuv7vl0CTss1m+K1
- 5V7GxkvPNMawu2Bo8Fv7My13Ey1IrMDydwy/LvYbRCeXbqKPaTd1t7f6DHFwZIlkPUHv
- U+AJkD1RB11uFaOBxVcuK2lrhxgReTUpkQO3ODj05Xmd+aRJgM3ccrGpaWXvvC4hKjzb
- o6QwnC8r3Er/CWLFKQFVdGDk6LbOsYbE67wwEaiGd8JC8+nNinLEE9SCb3tmd70X9d/K
- kAag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=hiVLruuS610U5KXu/rLH4E6cgqoHwaQnK6C0kYLeaGE=;
- b=CZC+JlMDSBrH8QrtBcd9OZfd5WzUR7ZbX4Blx7j/6zVKLjKii5KWJksxGfTBBjdD04
- 2x9n5slBPWEo8gT+PMhg/0ShsHqhmMDuyNOtKrqN1/rtUKpgvredh2dtKTD+zbZ5tstP
- Qtv/cQ2yrBSgCUqXixooQZNlPXoYxys0jIOTgB6eNOeLgLfCwqzaKBssfE53/4/4L+fC
- KR1uJoVzdZU6Tw+9bjBzVnXkya0QcwgHnJ/sUb0q357Yq/UdUtkdN/wuaxbGCT0DB+6F
- b4lbY8rmKykZQNulBu63HtU2fC7xy+gVGtRCuhZQJ+YzGFxv0hg6TaXF1WSvpsm/EYLE
- Eerg==
-X-Gm-Message-State: APjAAAW4nTuc54sASCYsyfPtEt2ru4GCdxs39kMTjMH97ir6KxZ4ijIh
- irQzWUusOkVHKPZDbbyUYx0=
-X-Google-Smtp-Source: APXvYqzonKp1npXOVf+7+xDsQ8V716ESJICZmHVDMVRbsjnXLSCVJITToCWTYnJc9oSLVPMPkwAuAA==
-X-Received: by 2002:a17:90a:e38b:: with SMTP id
- b11mr6748291pjz.142.1567722627917; 
- Thu, 05 Sep 2019 15:30:27 -0700 (PDT)
-Received: from localhost ([203.63.189.78])
- by smtp.gmail.com with ESMTPSA id m9sm3112409pgr.24.2019.09.05.15.30.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2019 15:30:27 -0700 (PDT)
-Date: Fri, 06 Sep 2019 08:29:22 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3] powerpc/64: system call implement the bulk of the
- logic in C
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
-References: <20190905123512.24311-1-npiggin@gmail.com>
- <5407d893-5d04-5363-906b-32607479c925@c-s.fr>
-In-Reply-To: <5407d893-5d04-5363-906b-32607479c925@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Pb6Y3JlMzDr6W
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 08:32:32 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.1 #3 (Red Hat
+ Linux)) id 1i60I9-0001pN-0U; Thu, 05 Sep 2019 22:31:49 +0000
+Date: Thu, 5 Sep 2019 23:31:48 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+Message-ID: <20190905223148.GS1131@ZenIV.linux.org.uk>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
+ <20190905180750.GQ1131@ZenIV.linux.org.uk>
+ <20190905182303.7f6bxpa2enbgcegv@wittgenstein>
+ <20190905182801.GR1131@ZenIV.linux.org.uk>
+ <20190905195618.pwzgvuzadkfpznfz@yavin.dot.cyphar.com>
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1567722266.e46t8f2fyp.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190905195618.pwzgvuzadkfpznfz@yavin.dot.cyphar.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,45 +51,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Christian Brauner <christian.brauner@ubuntu.com>,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, Jiri Olsa <jolsa@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy's on September 6, 2019 2:29 am:
->=20
->=20
-> Le 05/09/2019 =C3=A0 14:35, Nicholas Piggin a =C3=A9crit=C2=A0:
->> -.Lsyscall_error_cont:
->> -	ld	r7,_NIP(r1)
->>   BEGIN_FTR_SECTION
->>   	stdcx.	r0,0,r1			/* to clear the reservation */
->>   END_FTR_SECTION_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->> -	andi.	r6,r8,MSR_PR
->> -	ld	r4,_LINK(r1)
->>  =20
->> -	kuap_check_amr r10, r11
->> +	mtspr	SPRN_SRR0,r4
->> +	mtspr	SPRN_SRR1,r5
->=20
-> That looks dangerous. Once you have modified SRR0 and SRR1, your=20
-> exception becomes unrecoverable, so this should be done as close as=20
-> possible to the rfi.
+On Fri, Sep 06, 2019 at 05:56:18AM +1000, Aleksa Sarai wrote:
+> On 2019-09-05, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > On Thu, Sep 05, 2019 at 08:23:03PM +0200, Christian Brauner wrote:
+> > 
+> > > Because every caller of that function right now has that limit set
+> > > anyway iirc. So we can either remove it from here and place it back for
+> > > the individual callers or leave it in the helper.
+> > > Also, I'm really asking, why not? Is it unreasonable to have an upper
+> > > bound on the size (for a long time probably) or are you disagreeing with
+> > > PAGE_SIZE being used? PAGE_SIZE limit is currently used by sched, perf,
+> > > bpf, and clone3 and in a few other places.
+> > 
+> > For a primitive that can be safely used with any size (OK, any within
+> > the usual 2Gb limit)?  Why push the random policy into the place where
+> > it doesn't belong?
+> > 
+> > Seriously, what's the point?  If they want to have a large chunk of
+> > userland memory zeroed or checked for non-zeroes - why would that
+> > be a problem?
+> 
+> Thinking about it some more, there isn't really any r/w amplification --
+> so there isn't much to gain by passing giant structs. Though, if we are
+> going to permit 2GB buffers, isn't that also an argument to use
+> memchr_inv()? :P
 
-Worse than that even, when we set MSR[RI]=3D0 the exception becomes
-unrecoverable, and that happens in the C code!
+I'm not sure I understand the last bit.  If you look at what copy_from_user()
+does on misaligned source/destination, especially on architectures that
+really, really do not like unaligned access...
 
-> Here you seem to do many thinks inbetween,=20
-> including restoring some registers from the stack.
+Case in point: alpha (and it's not unusual in that respect).  What it boils
+down to is
+	copy bytes until the destination is aligned
+	if source and destination are both aligned
+		copy word by word
+	else
+		read word by word, storing the mix of two adjacent words
+	copy the rest byte by byte
 
-The code it replaces has a pretty large non-recoverable window as
-well, interrupt entry has large ones particularly for KVM. It's an
-unfortunate quirk of the architecture but it's not worth getting
-too worried about or sacrificing too much performance for.
+The unpleasant case (to and from having different remainders modulo 8) is
+basically
 
-I do have some later patches which improves this a lot, but that will
-wait until after the interrupt return is also changed to C.
+	if (count >= 8) {
+		u64 *aligned = (u64 *)(from & ~7);
+		u64 *dest = (u64 *)to;
+		int bitshift = (from & 7) * 8;
+		u64 prev, next;
 
-Thanks,
-Nick
+		prev = aligned[0];
+		do {   
+			next = aligned[1];
+			prev <<= bitshift;
+			prev |= next >> (64 - bitshift);
+			*dest++ = prev;
+			aligned++;  
+			prev = next;
+			from += 8;
+			to += 8;
+			count -= 8;
+		} while (count >= 8);
+	}
 
-=
+Now, mix that with "... and do memchr_inv() on the copy to find if we'd
+copied any non-zeroes, nevermind where" and it starts looking really
+ridiculous.
+
+We should just read the fscking source, aligned down to word boundary
+and check each word being read.  The first and the last ones - masked.
+All there is to it.  On almost all architectures that'll work well
+enough; s390 might want something more elaborate (there even word-by-word
+copies are costly, but I'd suggest talking to them for details).
+
+Something like bool all_zeroes_user(const void __user *p, size_t count)
+would probably be a sane API...
