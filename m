@@ -1,80 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4600EA9DE2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 11:11:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB469A9E10
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 11:17:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PFKx66rnzDr0v
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 19:11:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PFTQ5SPGzDqfD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 19:17:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="0z4xt+c7"; 
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=nefkom.net
+ (client-ip=212.18.0.9; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+X-Greylist: delayed 348 seconds by postgrey-1.36 at bilbo;
+ Thu, 05 Sep 2019 19:15:36 AEST
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PFGs2pbvzDr0f
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 19:08:34 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id bd8so986865plb.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2019 02:08:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=ghHRvQPVPbervCmbxcj9ka6t6kqgJGcJ0N1C9QEazv0=;
- b=0z4xt+c7UhZ3WIZd0Lo1oEbNZK/Qp0TdkdYnv+TvMItGrucMc0skqhRM6tasUaqfPS
- uHg0q90isJIsxHLEMhg/WMNiIJ37kBscPCSxpfSj2PFq2eIRCH0I9KCrG++SJKhP7hyl
- GUB+1vuKBHn90Hl3VkrsE3w26JGa3iZ2ecmMpmf9VgCIr0HcDvAcLG0RBp+5g8R1MSdB
- XTqC0MRjt+Qf8Q1OPKtB8kA7VpPTEy5ioHi5A0GY+JIsxVYDoLtA1hfotJGuVe0ez7Tz
- HkGt0cIpHDIJHxtXS1CT8ZKm3o8rlrxuXt0ZjHaUSuRr0v+Y7T1XiZuAfiGj710/Qk2P
- 9TZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=ghHRvQPVPbervCmbxcj9ka6t6kqgJGcJ0N1C9QEazv0=;
- b=owNPt2B6SG6Q5WVj49W+JOAPqe2/AJPUkHBlCqmPqntVW9kRYRQTwRlrbL+c1/xp7x
- DlHGu+QCxLp7N+e9mwJIM6Wq7DXCP86Lcz/nEIOeOzML1JQ9SavEQH/9uwkM3eiRoqCL
- 598sgCCvGp/fkL6GyKhogwTTKyU6nzVMsFt6XzZcJ2NVZbxa2Gxa+qdjSryObb6KX4yl
- e1wQpVeTiloglS/3RKC/e6Ze17f6QOSo86K/dJU3XkUwIkz13ARCvV97Ezl5/nQxyk4e
- 2vRbBFINmUtL+Bf0QEnEfBQWyr/9VXsmV+vKkl++K274nQwv+1S97BGsVc/7EiOfzim+
- yC9w==
-X-Gm-Message-State: APjAAAWDvM5ALPCL23kxdN5JDqPdIbFZZd43kvLGGTJfghuY3qZzLMyX
- dbng2YNA1A+6KLE44vzUGWP3+A==
-X-Google-Smtp-Source: APXvYqxDe7RmUKZdRmOXfm85qGSMv0TNu4nPbOm/7M3aDQGBmOcx2bC0nYxjTuFwB1j6CM2+HZhJwg==
-X-Received: by 2002:a17:902:e493:: with SMTP id
- cj19mr2228022plb.292.1567674509883; 
- Thu, 05 Sep 2019 02:08:29 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id s186sm2029034pfb.126.2019.09.05.02.08.26
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 05 Sep 2019 02:08:29 -0700 (PDT)
-Subject: Re: [PATCH 0/2] Fix IOMMU setup for hotplugged devices on pseries
-To: Shawn Anastasio <shawn@anastas.io>, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20190905042215.3974-1-shawn@anastas.io>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <7a41184c-9b30-8d91-9d78-9d60c8d128ef@ozlabs.ru>
-Date: Thu, 5 Sep 2019 19:08:24 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PFQw1hW6zDqYp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 19:15:35 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 46PFJ40dnZz1rK5J;
+ Thu,  5 Sep 2019 11:09:40 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 46PFJ32zjcz1qqkk;
+ Thu,  5 Sep 2019 11:09:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id bsFr3srmzyBP; Thu,  5 Sep 2019 11:09:36 +0200 (CEST)
+X-Auth-Info: HjUMDzwcEehHBjaVffXZjtB4a4fj/TG0EaQI9SDHSpRwfnDQz77oFMRdUd9Aa8bN
+Received: from hawking (charybdis-ext.suse.de [195.135.221.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Thu,  5 Sep 2019 11:09:36 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,
+ from}_user helpers
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
+X-Yow: RELATIVES!!
+Date: Thu, 05 Sep 2019 11:09:35 +0200
+In-Reply-To: <20190904201933.10736-2-cyphar@cyphar.com> (Aleksa Sarai's
+ message of "Thu, 5 Sep 2019 06:19:22 +1000")
+Message-ID: <mvma7bj85yo.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190905042215.3974-1-shawn@anastas.io>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,84 +64,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhelgaas@google.com, oohall@gmail.com, sbobroff@linux.ibm.com
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Jiri Olsa <jolsa@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
+ Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sep 05 2019, Aleksa Sarai <cyphar@cyphar.com> wrote:
 
+> diff --git a/lib/struct_user.c b/lib/struct_user.c
+> new file mode 100644
+> index 000000000000..7301ab1bbe98
+> --- /dev/null
+> +++ b/lib/struct_user.c
+> @@ -0,0 +1,182 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2019 SUSE LLC
+> + * Copyright (C) 2019 Aleksa Sarai <cyphar@cyphar.com>
+> + */
+> +
+> +#include <linux/types.h>
+> +#include <linux/export.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/kernel.h>
+> +#include <linux/string.h>
+> +
+> +#define BUFFER_SIZE 64
+> +
+> +/*
+> + * "memset(p, 0, size)" but for user space buffers. Caller must have already
+> + * checked access_ok(p, size).
+> + */
+> +static int __memzero_user(void __user *p, size_t s)
+> +{
+> +	const char zeros[BUFFER_SIZE] = {};
 
-On 05/09/2019 14:22, Shawn Anastasio wrote:
-> On pseries QEMU guests, IOMMU setup for hotplugged PCI devices is currently
-> broken for all but the first device on a given bus. The culprit is an ordering
-> issue in the pseries hotplug path (via pci_rescan_bus()) which results in IOMMU
-> group assigment occuring before device registration in sysfs. This triggers
-> the following check in arch/powerpc/kernel/iommu.c:
-> 
-> /*
->   * The sysfs entries should be populated before
->   * binding IOMMU group. If sysfs entries isn't
->   * ready, we simply bail.
->   */
-> if (!device_is_registered(dev))
-> 	return -ENOENT;
-> 
-> This fails for hotplugged devices since the pcibios_add_device() call in the
-> pseries hotplug path (in pci_device_add()) occurs before device_add().
-> Since the IOMMU groups are set up in pcibios_add_device(), this means that a
-> sysfs entry will not yet be present and it will fail.
+Perhaps make that static?
 
-I just tried hotplugging 3 virtio-net devices into a guest system with 
-v5.2 kernel and it seems working (i.e. BARs mapped, a driver is bound):
-
-
-root@le-dbg:~# lspci -v | egrep -i '(virtio|Memory)'
-00:00.0 Ethernet controller: Red Hat, Inc Virtio network device
-         Memory at 200080040000 (32-bit, non-prefetchable) [size=4K]
-         Memory at 210000000000 (64-bit, prefetchable) [size=16K]
-         Kernel driver in use: virtio-pci
-00:01.0 Ethernet controller: Red Hat, Inc Virtio network device
-         Memory at 200080041000 (32-bit, non-prefetchable) [size=4K]
-         Memory at 210000004000 (64-bit, prefetchable) [size=16K]
-         Kernel driver in use: virtio-pci
-00:02.0 Ethernet controller: Red Hat, Inc Virtio network device
-         Memory at 200080042000 (32-bit, non-prefetchable) [size=4K]
-         Memory at 210000008000 (64-bit, prefetchable) [size=16K]
-         Kernel driver in use: virtio-pci
-
-Can you explain in detail what you are doing exactly and what is failing 
-and what qemu/guest kernel/guest distro is used? Thanks,
-
-
-> 
-> There is a special case that allows the first hotplugged device on a bus to
-> succeed, though. The powerpc pcibios_add_device() implementation will skip
-> initializing the device if bus setup is not yet complete.
-> Later, the pci core will call pcibios_fixup_bus() which will perform setup
-> for the first (and only) device on the bus and since it has already been
-> registered in sysfs, the IOMMU setup will succeed.
-> 
-> My current solution is to introduce another pcibios function, pcibios_fixup_dev,
-> which is called after device_add() in pci_device_add(). Then in powerpc code,
-> pcibios_setup_device() was moved from pcibios_add_device() to this new function
-> which will occur after sysfs registration so IOMMU assignment will succeed.
-> 
-> I added a new pcibios function rather than moving the pcibios_add_device() call
-> to after the device_add() call in pci_add_device() because there are other
-> architectures that use it and it wasn't immediately clear to me whether moving
-> it would break them.
-> 
-> If anybody has more insight or a better way to fix this, please let me know.
-> 
-> Shawn Anastasio (2):
->    PCI: Introduce pcibios_fixup_dev()
->    powerpc/pci: Fix IOMMU setup for hotplugged devices on pseries
-> 
->   arch/powerpc/kernel/pci-common.c | 13 ++++++-------
->   drivers/pci/probe.c              | 14 ++++++++++++++
->   include/linux/pci.h              |  1 +
->   3 files changed, 21 insertions(+), 7 deletions(-)
-> 
+Andreas.
 
 -- 
-Alexey
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
