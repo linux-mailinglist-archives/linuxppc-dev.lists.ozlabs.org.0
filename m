@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C73DAABD9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 21:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B4CAACB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 22:06:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PVpL4r92zDr68
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 05:18:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PWsK1rNRzDqgH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 06:05:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=anastas.io
- (client-ip=104.248.188.109; helo=alpha.anastas.io;
- envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=anastas.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=anastas.io header.i=@anastas.io header.b="eJiz/bNf"; 
- dkim-atps=neutral
-Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=2001:67c:2050:104:0:2:25:2; helo=mx2.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx2.mailbox.org (mx2a.mailbox.org
+ [IPv6:2001:67c:2050:104:0:2:25:2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PVjx0jDHzDqs1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 05:14:28 +1000 (AEST)
-Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PWg34wrwzDr3Z
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 05:57:00 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by alpha.anastas.io (Postfix) with ESMTPSA id 3818C7E74E;
- Thu,  5 Sep 2019 14:13:56 -0500 (CDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
- t=1567710836; bh=jkDnyyJxLCKRf9Hh3sYC8Cvd+CcM72dsoaJ1/VZoyXM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=eJiz/bNfIq2gq62s8P6uE/cX9dvr2amsxdM1sSH4w9JN1qcmXpWwCfbYM4BybXt0p
- CpEGqgHoVksQl5NNTNqVMiwNiQw0eQDILY37Rra9soEYrYxWMJlqXJOV4LpG9TDWpP
- /Ooz0aPiRe3GMswgMwGGKbClH8EDxvsqET0mp5YXTP+we/Dr6ko4TuCNtQjz0vqTks
- hjuvtfGwl1d9oiLuyPn9iBucUW5tMu1lMw7vJ4aBeM7969LOs8JLDINa7exg0sEwNK
- kEAvb618MyrVplHG8aEEY20rQoulLuDQQyLG5ll0MH06//ZHmibs2LTg8susmD4GEE
- XqUT832Kx2H3g==
-From: Shawn Anastasio <shawn@anastas.io>
-To: linux-pci@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/1] powerpc/pci: Fix pcibios_setup_device() ordering
-Date: Thu,  5 Sep 2019 14:13:43 -0500
-Message-Id: <20190905191343.2919-2-shawn@anastas.io>
-In-Reply-To: <20190905191343.2919-1-shawn@anastas.io>
-References: <20190905191343.2919-1-shawn@anastas.io>
+ by mx2.mailbox.org (Postfix) with ESMTPS id DCACBA0D19;
+ Thu,  5 Sep 2019 21:56:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+ by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de
+ [80.241.56.122]) (amavisd-new, port 10030)
+ with ESMTP id MUcBvZslYqK5; Thu,  5 Sep 2019 21:56:42 +0200 (CEST)
+Date: Fri, 6 Sep 2019 05:56:18 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+Message-ID: <20190905195618.pwzgvuzadkfpznfz@yavin.dot.cyphar.com>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
+ <20190905180750.GQ1131@ZenIV.linux.org.uk>
+ <20190905182303.7f6bxpa2enbgcegv@wittgenstein>
+ <20190905182801.GR1131@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="lkob4nx2s4nikwgg"
+Content-Disposition: inline
+In-Reply-To: <20190905182801.GR1131@ZenIV.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,79 +58,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sbobroff@linux.ibm.com, aik@ozlabs.ru, lukas@wunner.de, oohall@gmail.com,
- bhelgaas@google.com
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Christian Brauner <christian.brauner@ubuntu.com>,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, Jiri Olsa <jolsa@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move PCI device setup from pcibios_add_device() and pcibios_fixup_bus() to
-pcibios_bus_add_device(). This ensures that platform-specific DMA and IOMMU
-setup occurs after the device has been registered in sysfs, which is a
-requirement for IOMMU group assignment to work
 
-This fixes IOMMU group assignment for hotplugged devices on pseries, where
-the existing behavior results in IOMMU assignment before registration.
+--lkob4nx2s4nikwgg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks to Lukas Wunner <lukas@wunner.de> for the suggestion.
+On 2019-09-05, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Thu, Sep 05, 2019 at 08:23:03PM +0200, Christian Brauner wrote:
+>=20
+> > Because every caller of that function right now has that limit set
+> > anyway iirc. So we can either remove it from here and place it back for
+> > the individual callers or leave it in the helper.
+> > Also, I'm really asking, why not? Is it unreasonable to have an upper
+> > bound on the size (for a long time probably) or are you disagreeing with
+> > PAGE_SIZE being used? PAGE_SIZE limit is currently used by sched, perf,
+> > bpf, and clone3 and in a few other places.
+>=20
+> For a primitive that can be safely used with any size (OK, any within
+> the usual 2Gb limit)?  Why push the random policy into the place where
+> it doesn't belong?
+>=20
+> Seriously, what's the point?  If they want to have a large chunk of
+> userland memory zeroed or checked for non-zeroes - why would that
+> be a problem?
 
-Signed-off-by: Shawn Anastasio <shawn@anastas.io>
----
- arch/powerpc/kernel/pci-common.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+Thinking about it some more, there isn't really any r/w amplification --
+so there isn't much to gain by passing giant structs. Though, if we are
+going to permit 2GB buffers, isn't that also an argument to use
+memchr_inv()? :P
 
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index f627e15bb43c..d119c77efb69 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -261,12 +261,6 @@ int pcibios_sriov_disable(struct pci_dev *pdev)
- 
- #endif /* CONFIG_PCI_IOV */
- 
--void pcibios_bus_add_device(struct pci_dev *pdev)
--{
--	if (ppc_md.pcibios_bus_add_device)
--		ppc_md.pcibios_bus_add_device(pdev);
--}
--
- static resource_size_t pcibios_io_size(const struct pci_controller *hose)
- {
- #ifdef CONFIG_PPC64
-@@ -987,15 +981,17 @@ static void pcibios_setup_device(struct pci_dev *dev)
- 		ppc_md.pci_irq_fixup(dev);
- }
- 
--int pcibios_add_device(struct pci_dev *dev)
-+void pcibios_bus_add_device(struct pci_dev *pdev)
- {
--	/*
--	 * We can only call pcibios_setup_device() after bus setup is complete,
--	 * since some of the platform specific DMA setup code depends on it.
--	 */
--	if (dev->bus->is_added)
--		pcibios_setup_device(dev);
-+	/* Perform platform-specific device setup */
-+	pcibios_setup_device(pdev);
-+
-+	if (ppc_md.pcibios_bus_add_device)
-+		ppc_md.pcibios_bus_add_device(pdev);
-+}
- 
-+int pcibios_add_device(struct pci_dev *dev)
-+{
- #ifdef CONFIG_PCI_IOV
- 	if (ppc_md.pcibios_fixup_sriov)
- 		ppc_md.pcibios_fixup_sriov(dev);
-@@ -1037,9 +1033,6 @@ void pcibios_fixup_bus(struct pci_bus *bus)
- 
- 	/* Now fixup the bus bus */
- 	pcibios_setup_bus_self(bus);
--
--	/* Now fixup devices on that bus */
--	pcibios_setup_bus_devices(bus);
- }
- EXPORT_SYMBOL(pcibios_fixup_bus);
- 
--- 
-2.20.1
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
+--lkob4nx2s4nikwgg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXXFoXwAKCRCdlLljIbnQ
+EkH6AP4mTXfGXldo6DW9pN3b8QgoKfRKIsKKRirvrHzSGLXpkgEAgJQFw7jvGxM5
+R7P96Ylo52dN3tmTa+41vZfPhMozHwA=
+=OHll
+-----END PGP SIGNATURE-----
+
+--lkob4nx2s4nikwgg--
