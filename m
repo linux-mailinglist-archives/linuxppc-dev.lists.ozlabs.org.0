@@ -2,48 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD593A9EE7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 11:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 673F9A9EF2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 11:55:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PGFz2sDVzDr49
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 19:52:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PGJl66vwzDr2k
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 19:55:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=cyphar.com
- (client-ip=80.241.60.215; helo=mx2.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mx2.mailbox.org (mx2.mailbox.org [80.241.60.215])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PGCr37MZzDqxc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 19:51:00 +1000 (AEST)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mx2.mailbox.org (Postfix) with ESMTPS id B12A0A1D27;
- Thu,  5 Sep 2019 11:50:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
- by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de
- [80.241.56.122]) (amavisd-new, port 10030)
- with ESMTP id H6fKP-o1gXOv; Thu,  5 Sep 2019 11:50:49 +0200 (CEST)
-Date: Thu, 5 Sep 2019 19:50:26 +1000
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
- helpers
-Message-ID: <20190905095026.gjemg2gqua2vufxb@yavin.dot.cyphar.com>
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-2-cyphar@cyphar.com>
- <57ba3752-c4a6-d2a4-1a4d-a0e13bccd473@rasmusvillemoes.dk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PGGL3ty4zDqxk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 19:53:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 46PGGL0Mbhz9sN1; Thu,  5 Sep 2019 19:53:14 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46PGGK4Z9Jz9sBF;
+ Thu,  5 Sep 2019 19:53:13 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH] powerpc/64: Fix stacktrace on BE when function_graph is
+ enabled
+In-Reply-To: <1566636816.4snngx2qd3.naveen@linux.ibm.com>
+References: <20190823122901.32667-1-mpe@ellerman.id.au>
+ <1566636816.4snngx2qd3.naveen@linux.ibm.com>
+Date: Thu, 05 Sep 2019 19:53:12 +1000
+Message-ID: <87woennk6v.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="npvprxbrvxn3jdkc"
-Content-Disposition: inline
-In-Reply-To: <57ba3752-c4a6-d2a4-1a4d-a0e13bccd473@rasmusvillemoes.dk>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,344 +48,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>,
- linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
- linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
- Jiri Olsa <jolsa@redhat.com>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-m68k@lists.linux-m68k.org, Al Viro <viro@zeniv.linux.org.uk>,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
- Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
---npvprxbrvxn3jdkc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 2019-09-05, Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> On 04/09/2019 22.19, Aleksa Sarai wrote:
-> > A common pattern for syscall extensions is increasing the size of a
-> > struct passed from userspace, such that the zero-value of the new fields
-> > result in the old kernel behaviour (allowing for a mix of userspace and
-> > kernel vintages to operate on one another in most cases). This is done
-> > in both directions -- hence two helpers -- though it's more common to
-> > have to copy user space structs into kernel space.
-> >=20
-> > Previously there was no common lib/ function that implemented
-> > the necessary extension-checking semantics (and different syscalls
-> > implemented them slightly differently or incompletely[1]). A future
-> > patch replaces all of the common uses of this pattern to use the new
-> > copy_struct_{to,from}_user() helpers.
-> >=20
-> > [1]: For instance {sched_setattr,perf_event_open,clone3}(2) all do do
-> >      similar checks to copy_struct_from_user() while rt_sigprocmask(2)
-> >      always rejects differently-sized struct arguments.
-> >=20
-> > Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-> > ---
-> > diff --git a/lib/struct_user.c b/lib/struct_user.c
-> > new file mode 100644
-> > index 000000000000..7301ab1bbe98
-> > --- /dev/null
-> > +++ b/lib/struct_user.c
-> > @@ -0,0 +1,182 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +/*
-> > + * Copyright (C) 2019 SUSE LLC
-> > + * Copyright (C) 2019 Aleksa Sarai <cyphar@cyphar.com>
-> > + */
-> > +
-> > +#include <linux/types.h>
-> > +#include <linux/export.h>
-> > +#include <linux/uaccess.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/string.h>
-> > +
-> > +#define BUFFER_SIZE 64
-> > +
-> > +/*
-> > + * "memset(p, 0, size)" but for user space buffers. Caller must have a=
-lready
-> > + * checked access_ok(p, size).
-> > + */
->=20
-> Isn't this __clear_user() exactly (perhaps except for the return value)?
-> Perhaps not every arch has that?
-
-I didn't know about clear_user() -- I will switch to it.
-
-> > +static int __memzero_user(void __user *p, size_t s)
-> > +{
-> > +	const char zeros[BUFFER_SIZE] =3D {};
-> > +	while (s > 0) {
-> > +		size_t n =3D min(s, sizeof(zeros));
-> > +
-> > +		if (__copy_to_user(p, zeros, n))
-> > +			return -EFAULT;
-> > +
-> > +		p +=3D n;
-> > +		s -=3D n;
-> > +	}
-> > +	return 0;
-> > +}
-> > +
-> > +/**
-> > + * copy_struct_to_user: copy a struct to user space
-> > + * @dst:   Destination address, in user space.
-> > + * @usize: Size of @dst struct.
-> > + * @src:   Source address, in kernel space.
-> > + * @ksize: Size of @src struct.
-> > + *
-> > + * Returns (in all cases, some data may have been copied):
-> > + *  * -EFBIG:  (@usize < @ksize) and there are non-zero trailing bytes=
- in @src.
-> > + *  * -EFAULT: access to user space failed.
-> > + */
-> > +int copy_struct_to_user(void __user *dst, size_t usize,
-> > +			const void *src, size_t ksize)
-> > +{
-> > +	size_t size =3D min(ksize, usize);
-> > +	size_t rest =3D abs(ksize - usize);
->=20
-> Eh, I'd avoid abs() here due to the funkiness of the implicit type
-> conversions - ksize-usize has type size_t, then that's coerced to an int
-> (or a long maybe?), the abs is applied which return an int/long (or
-> unsigned versions?). Something like "rest =3D max(ksize, usize) - size;"
-> is more obviously correct and doesn't fall into any
-> narrowing/widening/sign extending traps.
-
-Yeah, I originally used "max(ksize, usize) - size" for that reason but
-was worried it looked too funky (and some quick tests showed that abs()
-gives the right results in most cases -- though I just realised it would
-probably not give the right results around SIZE_MAX). I'll switch back.
-
-> > +	if (unlikely(usize > PAGE_SIZE))
-> > +		return -EFAULT;
->=20
-> Please don't. That is a restriction on all future extensions - once a
-> kernel is shipped with a syscall using this helper with that arbitrary
-> restriction in place, that syscall is forever prevented from extending
-> its arg struct beyond PAGE_SIZE (which is arch-dependent anyway). Sure,
-> it's hard to imagine, but who'd have thought 32 O_* or CLONE_* bits
-> weren't enough for everybody?
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Michael Ellerman wrote:
+>> Currently if we oops or warn while function_graph is active the stack
+>> trace looks like:
+>>   .trace_graph_return+0xac/0x100
+>>   .ftrace_return_to_handler+0x98/0x140
+>>   .return_to_handler+0x20/0x40
+>>   .return_to_handler+0x0/0x40
+>>   .return_to_handler+0x0/0x40
+>>   .return_to_handler+0x0/0x40
+>>   .return_to_handler+0x0/0x40
+>>   .return_to_handler+0x0/0x40
+>>   .return_to_handler+0x0/0x40
+>>   .cpu_startup_entry+0x34/0x40
+>>   .start_secondary+0x680/0x6f0
+>>   start_secondary_prolog+0x10/0x14
+>> 
+>> Notice the multiple entries that just show .return_to_handler.
+>> 
+>> There is logic in show_stack() to detect this case and print the
+>> traced function, but we inadvertently broke it in commit
+>> 7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler") (2014),
+>> because that commit accidentally removed the dereference of rth which
+>> gets the text address from the function descriptor. Hence this is only
+>> broken on big endian (or technically ELFv1).
+>> 
+>> Fix it by using the proper accessor, which is ppc_function_entry().
+>> Result is we get a stack trace such as:
+>> 
+>>   .trace_graph_return+0x134/0x160
+>>   .ftrace_return_to_handler+0x94/0x140
+>>   .return_to_handler+0x20/0x40
+>>   .return_to_handler+0x0/0x40 (.shared_cede_loop+0x48/0x130)
+>>   .return_to_handler+0x0/0x40 (.cpuidle_enter_state+0xa0/0x690)
+>>   .return_to_handler+0x0/0x40 (.cpuidle_enter+0x44/0x70)
+>>   .return_to_handler+0x0/0x40 (.call_cpuidle+0x68/0xc0)
+>>   .return_to_handler+0x0/0x40 (.do_idle+0x37c/0x400)
+>>   .return_to_handler+0x0/0x40 (.cpu_startup_entry+0x30/0x50)
+>>   .rest_init+0x224/0x348
+>> 
+>> Fixes: 7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler")
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> ---
+>>  arch/powerpc/kernel/process.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+>> index 8fc4de0d22b4..1601d7cfe45e 100644
+>> --- a/arch/powerpc/kernel/process.c
+>> +++ b/arch/powerpc/kernel/process.c
+>> @@ -2048,7 +2048,7 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
+>>  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+>>  	struct ftrace_ret_stack *ret_stack;
+>>  	extern void return_to_handler(void);
+>> -	unsigned long rth = (unsigned long)return_to_handler;
+>> +	unsigned long rth = ppc_function_entry(return_to_handler);
 >
-> This is only for future compatibility, and if someone runs an app
-> compiled against 7.3 headers on a 5.4 kernel, they probably don't care
-> about performance, but they would like their app to run.
+> Thanks! This looks good to me. A small suggestion though -- can we use 
+> dereference_kernel_function_descriptor() instead? It will be a nop for 
+> ABIv2, which would be nice, but not really a major deal.
 
-I'm not sure I agree that the limit is in place *forever* -- it's
-generally not a break in compatibility to convert an error into a
-success (though, there are counterexamples such as mknod(2) -- but that
-was a very specific case).
+ppc_function_entry() isn't a nop on ABIv2, *if* the function has a local
+entry point.
 
-You're right that it would mean that some very new code won't run on
-very ancient kernels (assuming we ever pass around structs that
-massive), but there should be a reasonable trade-off here IMHO.
+As it happens return_to_handler doesn't have a local entry point, so it
+is currently a nop.
 
-If we allow very large sizes, a program could probably DoS the kernel by
-allocating a moderately-large block of memory and then spawning a bunch
-of threads that all cause the kernel to re-check that the same 1GB block
-of memory is zeroed. I haven't tried, but it seems like it's best to
-avoid the possibility altogether.
+But if return_to_handler did have a local entry then
+ppc_function_entry() would do the right thing here because we use
+ppc_function_entry() in prepare_ftrace_return().
 
-> > +	}
-> > +	/* Copy the interoperable parts of the struct. */
-> > +	if (__copy_to_user(dst, src, size))
-> > +		return -EFAULT;
->=20
-> I think I understand why you put this last instead of handling the
-> buffer in the "natural" order. However,
-> I'm wondering whether we should actually do this copy before checking
-> that the extra kernel bytes are 0 - the user will still be told that
-> there was some extra information via the -EFBIG/-E2BIG return, but maybe
-> in some cases the part he understands is good enough. But I also guess
-> we have to look to existing users to see whether that would prevent them
-> from being converted to using this helper.
->=20
-> linux-api folks, WDYT?
+At least I think that's true :)
 
-Regarding the order, I just copied what sched and perf already do. I
-wouldn't mind doing it the other way around -- though I am a little
-cautious about implicitly making guarantees like that. The syscall that
-uses copy_struct_to_user() might not want to make that guarantee (it
-might not make sense for them), and there are some -E2BIG returns that
-won't result in data being copied (usize > PAGE_SIZE).
+> In either case:
+> Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 
-As for feedback, this is syscall-dependent at the moment. The sched and
-perf users explicitly return the size of the kernel structure (by
-overwriting uattr->size if -E2BIG is returned) for copies in either
-direction. So users arguably already have some kind of feedback about
-size issues. clone3() on the other hand doesn't do that (though it
-doesn't copy anything to user-space so this isn't relevant to this
-particular question).
-
-Effectively, I'd like to see someone argue that this is something that
-they would personally want (before we do it).
-
-> > +	return 0;
->=20
-> Maybe more useful to "return size;", some users might want to know/pass
-> on how much was actually copied.
-
-Even though it is "just" min(ksize, usize), I don't see any harm in
-returning it. Will do.
-
-> > +}
-> > +EXPORT_SYMBOL(copy_struct_to_user);
->=20
-> Can't we wait with this until a modular user shows up? The primary users
-> are syscalls, which can't be modular AFAIK.
-
-Yeah, I'll drop it. You could use them for ioctl()s but we can always
-add EXPORT_SYMBOL() later.
-
-> > +/**
-> > + * copy_struct_from_user: copy a struct from user space
-> > + * @dst:   Destination address, in kernel space. This buffer must be @=
-ksize
-> > + *         bytes long.
-> > + * @ksize: Size of @dst struct.
-> > + * @src:   Source address, in user space.
-> > + * @usize: (Alleged) size of @src struct.
-> > + *
-> > + * Copies a struct from user space to kernel space, in a way that guar=
-antees
-> > + * backwards-compatibility for struct syscall arguments (as long as fu=
-ture
-> > + * struct extensions are made such that all new fields are *appended* =
-to the
-> > + * old struct, and zeroed-out new fields have the same meaning as the =
-old
-> > + * struct).
-> > + *
-> > + * @ksize is just sizeof(*dst), and @usize should've been passed by us=
-er space.
-> > + * The recommended usage is something like the following:
-> > + *
-> > + *   SYSCALL_DEFINE2(foobar, const struct foo __user *, uarg, size_t, =
-usize)
-> > + *   {
-> > + *      int err;
-> > + *      struct foo karg =3D {};
-> > + *
-> > + *      err =3D copy_struct_from_user(&karg, sizeof(karg), uarg, size);
-> > + *      if (err)
-> > + *        return err;
-> > + *
-> > + *      // ...
-> > + *   }
-> > + *
-> > + * There are three cases to consider:
-> > + *  * If @usize =3D=3D @ksize, then it's copied verbatim.
-> > + *  * If @usize < @ksize, then the user space has passed an old struct=
- to a
-> > + *    newer kernel. The rest of the trailing bytes in @dst (@ksize - @=
-usize)
-> > + *    are to be zero-filled.
-> > + *  * If @usize > @ksize, then the user space has passed a new struct =
-to an
-> > + *    older kernel. The trailing bytes unknown to the kernel (@usize -=
- @ksize)
-> > + *    are checked to ensure they are zeroed, otherwise -E2BIG is retur=
-ned.
-> > + *
-> > + * Returns (in all cases, some data may have been copied):
-> > + *  * -E2BIG:  (@usize > @ksize) and there are non-zero trailing bytes=
- in @src.
-> > + *  * -E2BIG:  @usize is "too big" (at time of writing, >PAGE_SIZE).
-> > + *  * -EFAULT: access to user space failed.
-> > + */
-> > +int copy_struct_from_user(void *dst, size_t ksize,
-> > +			  const void __user *src, size_t usize)
-> > +{
-> > +	size_t size =3D min(ksize, usize);
-> > +	size_t rest =3D abs(ksize - usize);
->=20
-> As above.
->=20
-> > +	if (unlikely(usize > PAGE_SIZE))
-> > +		return -EFAULT;
->=20
-> As above.
->=20
-> > +	if (unlikely(!access_ok(src, usize)))
-> > +		return -EFAULT;
-> > +
-> > +	/* Deal with trailing bytes. */
-> > +	if (usize < ksize)
-> > +		memset(dst + size, 0, rest);
-> > +	else if (usize > ksize) {
-> > +		const void __user *addr =3D src + size;
-> > +		char buffer[BUFFER_SIZE] =3D {};
-> > +
-> > +		while (rest > 0) {
-> > +			size_t bufsize =3D min(rest, sizeof(buffer));
-> > +
-> > +			if (__copy_from_user(buffer, addr, bufsize))
-> > +				return -EFAULT;
-> > +			if (memchr_inv(buffer, 0, bufsize))
-> > +				return -E2BIG;
-> > +
-> > +			addr +=3D bufsize;
-> > +			rest -=3D bufsize;
-> > +		}
->=20
-> I'd create a __user_is_zero() helper for this - that way the two
-> branches in the two helpers become nicely symmetric, each just calling a
-> single helper that deals appropriately with the tail. And we can discuss
-> how to implement __user_is_zero() in another bikeshed.
-
-Will do.
-
->=20
-> > +	}
-> > +	/* Copy the interoperable parts of the struct. */
-> > +	if (__copy_from_user(dst, src, size))
-> > +		return -EFAULT;
->=20
-> If you do move up the __copy_to_user(), please move this as well - on
-> the kernel side, we certainly don't care that we copied some bytes to a
-> local buffer which we then ignore because the user had a non-zero tail.
-> But if __copy_to_user() is kept last in copy_struct_to_user(), this
-> should stay for symmetry.
-
-I will keep that in mind.
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---npvprxbrvxn3jdkc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXXDaXgAKCRCdlLljIbnQ
-Emf2AQDodc/azw4b6cwwZDqnqxOM8t8DCzDdAdvqvdxibvlNZQEA0FAaEvh21B5s
-gAEhZHoS+52ad2ZdUjMFOGVxov8Odg8=
-=BfyA
------END PGP SIGNATURE-----
-
---npvprxbrvxn3jdkc--
+cheers
