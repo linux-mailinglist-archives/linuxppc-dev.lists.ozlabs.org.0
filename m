@@ -1,38 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB37EA9914
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 05:57:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D53BA9915
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 05:59:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46P6Mh72NmzDqvW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 13:57:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46P6Pf4Jf4zDqgj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 13:59:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46P6Kk6NmYzDqQD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 13:55:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46P6Kk1PQwz9s3Z;
- Thu,  5 Sep 2019 13:55:38 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Bart Van Assche <bvanassche@acm.org>, Qian Cai <cai@lca.pw>
-Subject: Re: lockdep warning while booting POWER9 PowerNV
-In-Reply-To: <9b8b287a-4ae1-ca9b-cff1-6d93672b6893@acm.org>
-References: <1567199630.5576.39.camel@lca.pw>
- <9b8b287a-4ae1-ca9b-cff1-6d93672b6893@acm.org>
-Date: Thu, 05 Sep 2019 13:55:35 +1000
-Message-ID: <87ef0vpfbc.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46P6MD2zPVzDqkJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 13:56:56 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x853qIPj025802
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Sep 2019 23:56:52 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2utttv84t3-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2019 23:56:52 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
+ Thu, 5 Sep 2019 04:56:50 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 5 Sep 2019 04:56:48 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x853ul1S45285656
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 5 Sep 2019 03:56:47 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 21DA811C04A;
+ Thu,  5 Sep 2019 03:56:47 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8491F11C04C;
+ Thu,  5 Sep 2019 03:56:45 +0000 (GMT)
+Received: from [9.124.31.69] (unknown [9.124.31.69])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  5 Sep 2019 03:56:45 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH v3 2/3] Powerpc64/Watchpoint: Don't ignore extraneous
+ exceptions
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, mpe@ellerman.id.au
+References: <20190710045445.31037-1-ravi.bangoria@linux.ibm.com>
+ <20190710045445.31037-3-ravi.bangoria@linux.ibm.com>
+ <1567608022.j44gajn34z.naveen@linux.ibm.com>
+Date: Thu, 5 Sep 2019 09:26:44 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <1567608022.j44gajn34z.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19090503-0008-0000-0000-000003114319
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090503-0009-0000-0000-00004A2F9A9F
+Message-Id: <d0d3619f-3633-54f7-f0a3-563801867c7b@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-05_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=854 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909050040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,70 +93,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Bart Van Assche <bvanassche@acm.org> writes:
-> On 8/30/19 2:13 PM, Qian Cai wrote:
->> https://raw.githubusercontent.com/cailca/linux-mm/master/powerpc.config
->> 
->> Once in a while, booting an IBM POWER9 PowerNV system (8335-GTH) would generate
->> a warning in lockdep_register_key() at,
->> 
->> if (WARN_ON_ONCE(static_obj(key)))
->> 
->> because
->> 
->> key = 0xc0000000019ad118
->> &_stext = 0xc000000000000000
->> &_end = 0xc0000000049d0000
->> 
->> i.e., it will cause static_obj() returns 1.
->
-> (back from a trip)
->
-> Hi Qian,
->
-> Does this mean that on POWER9 it can happen that a dynamically allocated 
-> object has an address that falls between &_stext and &_end?
-
-I thought that was true on all arches due to initmem, but seems not.
-
-I guess we have the same problem as s390 and we need to define
-arch_is_kernel_initmem_freed().
-
-Qian, can you try this:
-
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index 4a1664a8658d..616b1b7b7e52 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -5,8 +5,22 @@
- 
- #include <linux/elf.h>
- #include <linux/uaccess.h>
-+
-+#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
-+
- #include <asm-generic/sections.h>
- 
-+extern bool init_mem_is_free;
-+
-+static inline int arch_is_kernel_initmem_freed(unsigned long addr)
-+{
-+	if (!init_mem_is_free)
-+		return 0;
-+
-+	return addr >= (unsigned long)__init_begin &&
-+		addr < (unsigned long)__init_end;
-+}
-+
- extern char __head_end[];
- 
- #ifdef __powerpc64__
 
 
-cheers
+On 9/4/19 8:12 PM, Naveen N. Rao wrote:
+> Ravi Bangoria wrote:
+>> On Powerpc64, watchpoint match range is double-word granular. On
+>> a watchpoint hit, DAR is set to the first byte of overlap between
+>> actual access and watched range. And thus it's quite possible that
+>> DAR does not point inside user specified range. Ex, say user creates
+>> a watchpoint with address range 0x1004 to 0x1007. So hw would be
+>> configured to watch from 0x1000 to 0x1007. If there is a 4 byte
+>> access from 0x1002 to 0x1005, DAR will point to 0x1002 and thus
+>> interrupt handler considers it as extraneous, but it's actually not,
+>> because part of the access belongs to what user has asked. So, let
+>> kernel pass it on to user and let user decide what to do with it
+>> instead of silently ignoring it. The drawback is, it can generate
+>> false positive events.
+> 
+> I think you should do the additional validation here, instead of generating false positives. You should be able to read the instruction, run it through analyse_instr(), and then use OP_IS_LOAD_STORE() and GETSIZE() to understand the access range. This can be used to then perform a better match against what the user asked for.
+
+Ok. Let me see how feasible that is.
+
+But patch 1 and 3 are independent of this and can still go in. mpe?
+
+-Ravi
+
