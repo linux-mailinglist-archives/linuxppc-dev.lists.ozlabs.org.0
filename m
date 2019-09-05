@@ -1,58 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB469A9E10
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 11:17:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8C2A9E23
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 11:20:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PFTQ5SPGzDqfD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 19:17:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PFXK6tnDzDqJ8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 19:20:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nefkom.net
- (client-ip=212.18.0.9; helo=mail-out.m-online.net;
- envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-X-Greylist: delayed 348 seconds by postgrey-1.36 at bilbo;
- Thu, 05 Sep 2019 19:15:36 AEST
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PFQw1hW6zDqYp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 19:15:35 +1000 (AEST)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 46PFJ40dnZz1rK5J;
- Thu,  5 Sep 2019 11:09:40 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 46PFJ32zjcz1qqkk;
- Thu,  5 Sep 2019 11:09:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
- port 10024)
- with ESMTP id bsFr3srmzyBP; Thu,  5 Sep 2019 11:09:36 +0200 (CEST)
-X-Auth-Info: HjUMDzwcEehHBjaVffXZjtB4a4fj/TG0EaQI9SDHSpRwfnDQz77oFMRdUd9Aa8bN
-Received: from hawking (charybdis-ext.suse.de [195.135.221.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Thu,  5 Sep 2019 11:09:36 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,
- from}_user helpers
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-2-cyphar@cyphar.com>
-X-Yow: RELATIVES!!
-Date: Thu, 05 Sep 2019 11:09:35 +0200
-In-Reply-To: <20190904201933.10736-2-cyphar@cyphar.com> (Aleksa Sarai's
- message of "Thu, 5 Sep 2019 06:19:22 +1000")
-Message-ID: <mvma7bj85yo.fsf@linux-m68k.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46PFV66HrvzDqYp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 19:18:21 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32DB51576;
+ Thu,  5 Sep 2019 02:18:20 -0700 (PDT)
+Received: from [10.162.41.136] (p8cg001049571a15.blr.arm.com [10.162.41.136])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ 00B6A3F67D; Thu,  5 Sep 2019 02:18:07 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
+ <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
+ <20190904221618.1b624a98@thinkpad>
+Message-ID: <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
+Date: Thu, 5 Sep 2019 14:48:14 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20190904221618.1b624a98@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,70 +51,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- Jiri Olsa <jolsa@redhat.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-m68k@lists.linux-m68k.org, Al Viro <viro@zeniv.linux.org.uk>,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
- Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sep 05 2019, Aleksa Sarai <cyphar@cyphar.com> wrote:
 
-> diff --git a/lib/struct_user.c b/lib/struct_user.c
-> new file mode 100644
-> index 000000000000..7301ab1bbe98
-> --- /dev/null
-> +++ b/lib/struct_user.c
-> @@ -0,0 +1,182 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) 2019 SUSE LLC
-> + * Copyright (C) 2019 Aleksa Sarai <cyphar@cyphar.com>
-> + */
-> +
-> +#include <linux/types.h>
-> +#include <linux/export.h>
-> +#include <linux/uaccess.h>
-> +#include <linux/kernel.h>
-> +#include <linux/string.h>
-> +
-> +#define BUFFER_SIZE 64
-> +
-> +/*
-> + * "memset(p, 0, size)" but for user space buffers. Caller must have already
-> + * checked access_ok(p, size).
-> + */
-> +static int __memzero_user(void __user *p, size_t s)
-> +{
-> +	const char zeros[BUFFER_SIZE] = {};
+On 09/05/2019 01:46 AM, Gerald Schaefer wrote:
+> On Tue,  3 Sep 2019 13:31:46 +0530
+> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> 
+>> This adds a test module which will validate architecture page table helpers
+>> and accessors regarding compliance with generic MM semantics expectations.
+>> This will help various architectures in validating changes to the existing
+>> page table helpers or addition of new ones.
+>>
+>> Test page table and memory pages creating it's entries at various level are
+>> all allocated from system memory with required alignments. If memory pages
+>> with required size and alignment could not be allocated, then all depending
+>> individual tests are skipped.
+> 
+> This looks very useful, thanks. Of course, s390 is quite special and does
+> not work nicely with this patch (yet), mostly because of our dynamic page
+> table levels/folding. Still need to figure out what can be fixed in the arch
 
-Perhaps make that static?
+Hmm.
 
-Andreas.
+> code and what would need to be changed in the test module. See below for some
+> generic comments/questions.
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+Sure.
+
+> 
+> At least one real bug in the s390 code was already revealed by this, which
+> is very nice. In pmd/pud_bad(), we also check large pmds/puds for sanity,
+> instead of reporting them as bad, which is apparently not how it is expected.
+
+Hmm, so it has already started being useful :)
+
+> 
+> [...]
+>> +/*
+>> + * Basic operations
+>> + *
+>> + * mkold(entry)			= An old and not a young entry
+>> + * mkyoung(entry)		= A young and not an old entry
+>> + * mkdirty(entry)		= A dirty and not a clean entry
+>> + * mkclean(entry)		= A clean and not a dirty entry
+>> + * mkwrite(entry)		= A write and not a write protected entry
+>> + * wrprotect(entry)		= A write protected and not a write entry
+>> + * pxx_bad(entry)		= A mapped and non-table entry
+>> + * pxx_same(entry1, entry2)	= Both entries hold the exact same value
+>> + */
+>> +#define VADDR_TEST	(PGDIR_SIZE + PUD_SIZE + PMD_SIZE + PAGE_SIZE)
+> 
+> Why is P4D_SIZE missing in the VADDR_TEST calculation?
+
+This was a random possible virtual address to generate a representative
+page table structure for the test. As there is a default (PGDIR_SIZE) for
+P4D_SIZE on platforms which really do not have P4D level, it should be okay
+to add P4D_SIZE in the above calculation.
+
+> 
+> [...]
+>> +
+>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
+>> +static void pud_clear_tests(pud_t *pudp)
+>> +{
+>> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
+>> +	pud_clear(pudp);
+>> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
+>> +}
+> 
+> For pgd/p4d/pud_clear(), we only clear if the page table level is present
+> and not folded. The memset() here overwrites the table type bits, so
+> pud_clear() will not clear anything on s390 and the pud_none() check will
+> fail.
+> Would it be possible to OR a (larger) random value into the table, so that
+> the lower 12 bits would be preserved?
+
+So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
+it should OR a large random value preserving lower 12 bits. Hmm, this should
+still do the trick for other platforms, they just need non zero value. So on
+s390, the lower 12 bits on the page table entry already has valid value while
+entering this function which would make sure that pud_clear() really does
+clear the entry ?
+
+> 
+>> +
+>> +static void pud_populate_tests(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
+>> +{
+>> +	/*
+>> +	 * This entry points to next level page table page.
+>> +	 * Hence this must not qualify as pud_bad().
+>> +	 */
+>> +	pmd_clear(pmdp);
+>> +	pud_clear(pudp);
+>> +	pud_populate(mm, pudp, pmdp);
+>> +	WARN_ON(pud_bad(READ_ONCE(*pudp)));
+>> +}
+> 
+> This will populate the pud with a pmd pointer that does not point to the
+> beginning of the pmd table, but to the second entry (because of how
+> VADDR_TEST is constructed). This will result in failing pud_bad() check
+> on s390. Not sure why/how it works on other archs, but would it be possible
+> to align pmdp down to the beginning of the pmd table (and similar for the
+> other pxd_populate_tests)?
+
+Right, that was a problem. Will fix it by using the saved entries used for
+freeing the page table pages at the end, which always point to the beginning
+of a page table page.
+
+> 
+> [...]
+>> +
+>> +	p4d_free(mm, saved_p4dp);
+>> +	pud_free(mm, saved_pudp);
+>> +	pmd_free(mm, saved_pmdp);
+>> +	pte_free(mm, (pgtable_t) virt_to_page(saved_ptep));
+> 
+> pgtable_t is arch-specific, and on s390 it is not a struct page pointer,
+> but a pte pointer. So this will go wrong, also on all other archs (if any)
+> where pgtable_t is not struct page.
+> Would it be possible to use pte_free_kernel() instead, and just pass
+> saved_ptep directly?
+
+It makes sense, will change.
