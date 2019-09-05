@@ -2,77 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C14AA125
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 13:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49DCAA169
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 13:30:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PJBZ6fWWzDqys
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 21:20:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PJQK3yhHzDr48
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 21:30:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=rasmusvillemoes.dk
- (client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com;
- envelope-from=linux@rasmusvillemoes.dk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="TmAHYZxq"; dkim-atps=neutral
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
- [IPv6:2a00:1450:4864:20::243])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=80.241.60.215; helo=mx2.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx2.mailbox.org (mx2.mailbox.org [80.241.60.215])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PJ7z6J4kzDqth
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 21:17:50 +1000 (AEST)
-Received: by mail-lj1-x243.google.com with SMTP id d5so2011882lja.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2019 04:17:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=FZQLTiI56V9ejCTERxmKEuoyOsqpXI4ROWUat/u48IQ=;
- b=TmAHYZxqRc6xu2le8iULfxikI7ku0uT9OqruTeiVIjBtHlSUVtr7xfmu4YCFlsjTOs
- Rhq1GYmaO5KwXBXGMlzcAxQ/LcO6e9A60OIH5XcxDVVNn2uwqfJXj5l04xQJTBjas8S+
- rezhJDHHi4QSeAmUuvBdnaXdMHr6k1YEDw8fQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=FZQLTiI56V9ejCTERxmKEuoyOsqpXI4ROWUat/u48IQ=;
- b=FVH9XJCBtBySXErK0CYRzQHU6Z1WBBJTQvjZ5MknG/Zi2/bHhOygQqpaFvw/UI5LbG
- RirN9Y6CISDkv1tHWJQWiM9XyV7ZZmjUBvGLYxoka/gSPMhJNREgH44VEpyo/b8SMc2b
- gSgSY0JMCaITWwECNV4+ojcKd9Mtn+hsXuzbRd9pC5RRHVKNJu4iLzG/U6Fplag4e+Ji
- SgNnwRt7NIJxuG6bN9jLGjonPDTSPS/tpIjweVXNJbEcIukz7PPlmOo4qgCICGmAGFW4
- Qyn6VqFDwccZQrsyCIpU4I51HyDYZrapYQ3I69pZhIIzaQqqSyhW6AAeGkN6EDV2+6ad
- 1UKQ==
-X-Gm-Message-State: APjAAAUkNK2PCSgXrc0ScKwPuaPZWAZNPVnJiPmUjW4/jYt4fEsB8FVd
- Gz/d44TbaO53CVEmd+u26oVGOg==
-X-Google-Smtp-Source: APXvYqy+jIyWA4s/Awrv2CCVQWWEoIb0eYt4SAhqVoZ9KSv6Iim6pns0uTxVPV5vb5IsmAlCA9M4vg==
-X-Received: by 2002:a2e:5418:: with SMTP id i24mr1705390ljb.126.1567682261376; 
- Thu, 05 Sep 2019 04:17:41 -0700 (PDT)
-Received: from [172.16.11.28] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id l3sm377157lfc.31.2019.09.05.04.17.38
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 05 Sep 2019 04:17:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PJMg5JHMzDr41
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 21:27:55 +1000 (AEST)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:1:0])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx2.mailbox.org (Postfix) with ESMTPS id 80455A162A;
+ Thu,  5 Sep 2019 13:27:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
+ [80.241.56.123]) (amavisd-new, port 10030)
+ with ESMTP id bvZM-eYrS-l9; Thu,  5 Sep 2019 13:27:44 +0200 (CEST)
+Date: Thu, 5 Sep 2019 21:27:18 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Christian Brauner <christian.brauner@ubuntu.com>
 Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
  helpers
-To: Christian Brauner <christian.brauner@ubuntu.com>,
- Aleksa Sarai <cyphar@cyphar.com>
+Message-ID: <20190905112718.ojg3znly6x3m4mjq@yavin.dot.cyphar.com>
 References: <20190904201933.10736-1-cyphar@cyphar.com>
  <20190904201933.10736-2-cyphar@cyphar.com>
- <20190905110544.d6c5t7rx25kvywmi@wittgenstein>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <ae415ea8-4442-d81c-3b46-2ae5fb35bbdf@rasmusvillemoes.dk>
-Date: Thu, 5 Sep 2019 13:17:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <20190905110915.4vvhicg4ldmpi5u6@wittgenstein>
 MIME-Version: 1.0
-In-Reply-To: <20190905110544.d6c5t7rx25kvywmi@wittgenstein>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="nkbo7v76ghbobp4m"
+Content-Disposition: inline
+In-Reply-To: <20190905110915.4vvhicg4ldmpi5u6@wittgenstein>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,12 +57,14 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>,
- linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
- linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
- Jiri Olsa <jolsa@redhat.com>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Jiri Olsa <jolsa@redhat.com>,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
  Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
  linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
@@ -111,32 +85,59 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/09/2019 13.05, Christian Brauner wrote:
+
+--nkbo7v76ghbobp4m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 2019-09-05, Christian Brauner <christian.brauner@ubuntu.com> wrote:
 > On Thu, Sep 05, 2019 at 06:19:22AM +1000, Aleksa Sarai wrote:
+> > A common pattern for syscall extensions is increasing the size of a
+> > struct passed from userspace, such that the zero-value of the new fields
+> > result in the old kernel behaviour (allowing for a mix of userspace and
+> > kernel vintages to operate on one another in most cases). This is done
+> > in both directions -- hence two helpers -- though it's more common to
+> > have to copy user space structs into kernel space.
+> >=20
+> > Previously there was no common lib/ function that implemented
+> > the necessary extension-checking semantics (and different syscalls
+> > implemented them slightly differently or incompletely[1]). A future
+> > patch replaces all of the common uses of this pattern to use the new
+> > copy_struct_{to,from}_user() helpers.
+> >=20
+> > [1]: For instance {sched_setattr,perf_event_open,clone3}(2) all do do
+> >      similar checks to copy_struct_from_user() while rt_sigprocmask(2)
+> >      always rejects differently-sized struct arguments.
+> >=20
+> > Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+>=20
+> I would probably split this out into a separate patchset. It can very
+> well go in before openat2(). Thoughts?
 
->> +	if (unlikely(!access_ok(dst, usize)))
->> +		return -EFAULT;
->> +
->> +	/* Deal with trailing bytes. */
->> +	if (usize < ksize) {
->> +		if (memchr_inv(src + size, 0, rest))
->> +			return -EFBIG;
->> +	} else if (usize > ksize) {
->> +		if (__memzero_user(dst + size, rest))
->> +			return -EFAULT;
-> 
-> Is zeroing that memory really our job? Seems to me we should just check
-> it is zeroed.
+Yeah, I'll split this and the related patches out -- though I will admit
+I'm not sure how you're supposed to deal with multiple independent
+patchsets that depend on each other. How will folks reviewing openat2(2)
+know to include the lib/struct_user.c changes?
 
-Of course it is, otherwise you'd require userspace to clear the output
-buffer it gives us, which in the majority of cases is wasted work. It's
-much easier to reason about if we just say "the kernel populates [uaddr,
-uaddr + usize)".
+Also, whose tree should it go through?
 
-It's completely symmetric to copy_struct_from_user doing a memset() of
-the tail of the kernel buffer in case of ksize>usize - you wouldn't want
-to require the kernel callers to pass a zeroed buffer to
-copy_struct_from_user() - it's just that when we memset(__user*),
-there's an error check to do.
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
-Rasmus
+--nkbo7v76ghbobp4m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXXDxEwAKCRCdlLljIbnQ
+EqovAQD8WBncNVUTEL0Y3xtDhqYMDFHga+X5xWtEwl2PAh4uVQEAhuzdaAU+gBqt
+VqtP9IF4PFfoqMmGbekI1BKCWI4gmgo=
+=UsGw
+-----END PGP SIGNATURE-----
+
+--nkbo7v76ghbobp4m--
