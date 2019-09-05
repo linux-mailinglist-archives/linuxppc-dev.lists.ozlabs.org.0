@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72CCAAC565
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 10:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 520CBAC567
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 10:58:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46QSw81qTczDr10
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 18:56:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46QSxs1Mh9zDqBP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 18:58:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,28 +19,26 @@ Received: from youngberry.canonical.com (youngberry.canonical.com
  [91.189.89.112])
  (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PHRF6PbRzDqNv
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 20:46:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PHtg4hRlzDqpR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 21:06:19 +1000 (AEST)
 Received: from [213.220.153.21] (helo=wittgenstein)
  by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
  (Exim 4.76) (envelope-from <christian.brauner@ubuntu.com>)
- id 1i5pGI-0007WW-Cl; Thu, 05 Sep 2019 10:45:10 +0000
-Date: Thu, 5 Sep 2019 12:45:08 +0200
+ id 1i5paF-0000a6-K4; Thu, 05 Sep 2019 11:05:47 +0000
+Date: Thu, 5 Sep 2019 13:05:45 +0200
 From: Christian Brauner <christian.brauner@ubuntu.com>
 To: Aleksa Sarai <cyphar@cyphar.com>
 Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
  helpers
-Message-ID: <20190905104507.glbhzeke4p3cg3ti@wittgenstein>
+Message-ID: <20190905110544.d6c5t7rx25kvywmi@wittgenstein>
 References: <20190904201933.10736-1-cyphar@cyphar.com>
  <20190904201933.10736-2-cyphar@cyphar.com>
- <57ba3752-c4a6-d2a4-1a4d-a0e13bccd473@rasmusvillemoes.dk>
- <20190905095026.gjemg2gqua2vufxb@yavin.dot.cyphar.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190905095026.gjemg2gqua2vufxb@yavin.dot.cyphar.com>
+In-Reply-To: <20190904201933.10736-2-cyphar@cyphar.com>
 User-Agent: NeoMutt/20180716
-X-Mailman-Approved-At: Sat, 07 Sep 2019 18:55:12 +1000
+X-Mailman-Approved-At: Sat, 07 Sep 2019 18:55:13 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,173 +79,276 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 05, 2019 at 07:50:26PM +1000, Aleksa Sarai wrote:
-> On 2019-09-05, Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> > On 04/09/2019 22.19, Aleksa Sarai wrote:
-> > > A common pattern for syscall extensions is increasing the size of a
-> > > struct passed from userspace, such that the zero-value of the new fields
-> > > result in the old kernel behaviour (allowing for a mix of userspace and
-> > > kernel vintages to operate on one another in most cases). This is done
-> > > in both directions -- hence two helpers -- though it's more common to
-> > > have to copy user space structs into kernel space.
-> > > 
-> > > Previously there was no common lib/ function that implemented
-> > > the necessary extension-checking semantics (and different syscalls
-> > > implemented them slightly differently or incompletely[1]). A future
-> > > patch replaces all of the common uses of this pattern to use the new
-> > > copy_struct_{to,from}_user() helpers.
-> > > 
-> > > [1]: For instance {sched_setattr,perf_event_open,clone3}(2) all do do
-> > >      similar checks to copy_struct_from_user() while rt_sigprocmask(2)
-> > >      always rejects differently-sized struct arguments.
-> > > 
-> > > Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-> > > ---
-> > > diff --git a/lib/struct_user.c b/lib/struct_user.c
-> > > new file mode 100644
-> > > index 000000000000..7301ab1bbe98
-> > > --- /dev/null
-> > > +++ b/lib/struct_user.c
-> > > @@ -0,0 +1,182 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > > +/*
-> > > + * Copyright (C) 2019 SUSE LLC
-> > > + * Copyright (C) 2019 Aleksa Sarai <cyphar@cyphar.com>
-> > > + */
-> > > +
-> > > +#include <linux/types.h>
-> > > +#include <linux/export.h>
-> > > +#include <linux/uaccess.h>
-> > > +#include <linux/kernel.h>
-> > > +#include <linux/string.h>
-> > > +
-> > > +#define BUFFER_SIZE 64
-> > > +
-> > > +/*
-> > > + * "memset(p, 0, size)" but for user space buffers. Caller must have already
-> > > + * checked access_ok(p, size).
-> > > + */
-> > 
-> > Isn't this __clear_user() exactly (perhaps except for the return value)?
-> > Perhaps not every arch has that?
+On Thu, Sep 05, 2019 at 06:19:22AM +1000, Aleksa Sarai wrote:
+> A common pattern for syscall extensions is increasing the size of a
+> struct passed from userspace, such that the zero-value of the new fields
+> result in the old kernel behaviour (allowing for a mix of userspace and
+> kernel vintages to operate on one another in most cases). This is done
+> in both directions -- hence two helpers -- though it's more common to
+> have to copy user space structs into kernel space.
 > 
-> I didn't know about clear_user() -- I will switch to it.
+> Previously there was no common lib/ function that implemented
+> the necessary extension-checking semantics (and different syscalls
+> implemented them slightly differently or incompletely[1]). A future
+> patch replaces all of the common uses of this pattern to use the new
+> copy_struct_{to,from}_user() helpers.
 > 
-> > > +static int __memzero_user(void __user *p, size_t s)
-> > > +{
-> > > +	const char zeros[BUFFER_SIZE] = {};
-> > > +	while (s > 0) {
-> > > +		size_t n = min(s, sizeof(zeros));
-> > > +
-> > > +		if (__copy_to_user(p, zeros, n))
-> > > +			return -EFAULT;
-> > > +
-> > > +		p += n;
-> > > +		s -= n;
-> > > +	}
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +/**
-> > > + * copy_struct_to_user: copy a struct to user space
-> > > + * @dst:   Destination address, in user space.
-> > > + * @usize: Size of @dst struct.
-> > > + * @src:   Source address, in kernel space.
-> > > + * @ksize: Size of @src struct.
-> > > + *
-> > > + * Returns (in all cases, some data may have been copied):
-> > > + *  * -EFBIG:  (@usize < @ksize) and there are non-zero trailing bytes in @src.
-> > > + *  * -EFAULT: access to user space failed.
-> > > + */
-> > > +int copy_struct_to_user(void __user *dst, size_t usize,
-> > > +			const void *src, size_t ksize)
-> > > +{
-> > > +	size_t size = min(ksize, usize);
-> > > +	size_t rest = abs(ksize - usize);
-> > 
-> > Eh, I'd avoid abs() here due to the funkiness of the implicit type
-> > conversions - ksize-usize has type size_t, then that's coerced to an int
-> > (or a long maybe?), the abs is applied which return an int/long (or
-> > unsigned versions?). Something like "rest = max(ksize, usize) - size;"
-> > is more obviously correct and doesn't fall into any
-> > narrowing/widening/sign extending traps.
+> [1]: For instance {sched_setattr,perf_event_open,clone3}(2) all do do
+>      similar checks to copy_struct_from_user() while rt_sigprocmask(2)
+>      always rejects differently-sized struct arguments.
 > 
-> Yeah, I originally used "max(ksize, usize) - size" for that reason but
-> was worried it looked too funky (and some quick tests showed that abs()
-> gives the right results in most cases -- though I just realised it would
-> probably not give the right results around SIZE_MAX). I'll switch back.
+> Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+> ---
+>  include/linux/uaccess.h |   5 ++
+>  lib/Makefile            |   2 +-
+>  lib/struct_user.c       | 182 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 188 insertions(+), 1 deletion(-)
+>  create mode 100644 lib/struct_user.c
 > 
-> > > +	if (unlikely(usize > PAGE_SIZE))
-> > > +		return -EFAULT;
-> > 
-> > Please don't. That is a restriction on all future extensions - once a
-> > kernel is shipped with a syscall using this helper with that arbitrary
-> > restriction in place, that syscall is forever prevented from extending
-> > its arg struct beyond PAGE_SIZE (which is arch-dependent anyway). Sure,
-> > it's hard to imagine, but who'd have thought 32 O_* or CLONE_* bits
-> > weren't enough for everybody?
-> >
-> > This is only for future compatibility, and if someone runs an app
-> > compiled against 7.3 headers on a 5.4 kernel, they probably don't care
-> > about performance, but they would like their app to run.
-> 
-> I'm not sure I agree that the limit is in place *forever* -- it's
-> generally not a break in compatibility to convert an error into a
-> success (though, there are counterexamples such as mknod(2) -- but that
-> was a very specific case).
-> 
-> You're right that it would mean that some very new code won't run on
-> very ancient kernels (assuming we ever pass around structs that
-> massive), but there should be a reasonable trade-off here IMHO.
+> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> index 34a038563d97..0ad9544a1aee 100644
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -230,6 +230,11 @@ static inline unsigned long __copy_from_user_inatomic_nocache(void *to,
+>  
+>  #endif		/* ARCH_HAS_NOCACHE_UACCESS */
+>  
+> +extern int copy_struct_to_user(void __user *dst, size_t usize,
+> +			       const void *src, size_t ksize);
+> +extern int copy_struct_from_user(void *dst, size_t ksize,
+> +				 const void __user *src, size_t usize);
+> +
+>  /*
+>   * probe_kernel_read(): safely attempt to read from a location
+>   * @dst: pointer to the buffer that shall take the data
+> diff --git a/lib/Makefile b/lib/Makefile
+> index 29c02a924973..d86c71feaf0a 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -28,7 +28,7 @@ endif
+>  CFLAGS_string.o := $(call cc-option, -fno-stack-protector)
+>  endif
+>  
+> -lib-y := ctype.o string.o vsprintf.o cmdline.o \
+> +lib-y := ctype.o string.o struct_user.o vsprintf.o cmdline.o \
+>  	 rbtree.o radix-tree.o timerqueue.o xarray.o \
+>  	 idr.o extable.o \
+>  	 sha1.o chacha.o irq_regs.o argv_split.o \
+> diff --git a/lib/struct_user.c b/lib/struct_user.c
+> new file mode 100644
+> index 000000000000..7301ab1bbe98
+> --- /dev/null
+> +++ b/lib/struct_user.c
+> @@ -0,0 +1,182 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2019 SUSE LLC
+> + * Copyright (C) 2019 Aleksa Sarai <cyphar@cyphar.com>
+> + */
+> +
+> +#include <linux/types.h>
+> +#include <linux/export.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/kernel.h>
+> +#include <linux/string.h>
+> +
+> +#define BUFFER_SIZE 64
+> +
+> +/*
+> + * "memset(p, 0, size)" but for user space buffers. Caller must have already
+> + * checked access_ok(p, size).
+> + */
+> +static int __memzero_user(void __user *p, size_t s)
+> +{
+> +	const char zeros[BUFFER_SIZE] = {};
+> +	while (s > 0) {
+> +		size_t n = min(s, sizeof(zeros));
+> +
+> +		if (__copy_to_user(p, zeros, n))
+> +			return -EFAULT;
+> +
+> +		p += n;
+> +		s -= n;
+> +	}
+> +	return 0;
+> +}
+> +
+> +/**
+> + * copy_struct_to_user: copy a struct to user space
+> + * @dst:   Destination address, in user space.
+> + * @usize: Size of @dst struct.
+> + * @src:   Source address, in kernel space.
+> + * @ksize: Size of @src struct.
+> + *
+> + * Copies a struct from kernel space to user space, in a way that guarantees
+> + * backwards-compatibility for struct syscall arguments (as long as future
+> + * struct extensions are made such that all new fields are *appended* to the
+> + * old struct, and zeroed-out new fields have the same meaning as the old
+> + * struct).
+> + *
+> + * @ksize is just sizeof(*dst), and @usize should've been passed by user space.
+> + * The recommended usage is something like the following:
+> + *
+> + *   SYSCALL_DEFINE2(foobar, struct foo __user *, uarg, size_t, usize)
+> + *   {
+> + *      int err;
+> + *      struct foo karg = {};
+> + *
+> + *      // do something with karg
+> + *
+> + *      err = copy_struct_to_user(uarg, usize, &karg, sizeof(karg));
+> + *      if (err)
+> + *        return err;
+> + *
+> + *      // ...
+> + *   }
+> + *
+> + * There are three cases to consider:
+> + *  * If @usize == @ksize, then it's copied verbatim.
+> + *  * If @usize < @ksize, then kernel space is "returning" a newer struct to an
+> + *    older user space. In order to avoid user space getting incomplete
+> + *    information (new fields might be important), all trailing bytes in @src
+> + *    (@ksize - @usize) must be zerored, otherwise -EFBIG is returned.
+> + *  * If @usize > @ksize, then the kernel is "returning" an older struct to a
+> + *    newer user space. The trailing bytes in @dst (@usize - @ksize) will be
+> + *    zero-filled.
+> + *
+> + * Returns (in all cases, some data may have been copied):
+> + *  * -EFBIG:  (@usize < @ksize) and there are non-zero trailing bytes in @src.
+> + *  * -EFAULT: access to user space failed.
+> + */
+> +int copy_struct_to_user(void __user *dst, size_t usize,
+> +			const void *src, size_t ksize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
+> +
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
 
-Passing a struct larger than a PAGE_SIZE right now (at least for all
-those calls that would make use of this helper at the moment) is to be
-considered a bug.
-The PAGE_SIZE check is a reasonable heuristic. It's an assumption that
-is pretty common in the kernel in other places as well. Plus the
-possibility of DoS.
+Looks like this should be -EFBIG.
 
-> 
-> If we allow very large sizes, a program could probably DoS the kernel by
-> allocating a moderately-large block of memory and then spawning a bunch
-> of threads that all cause the kernel to re-check that the same 1GB block
-> of memory is zeroed. I haven't tried, but it seems like it's best to
-> avoid the possibility altogether.
-> 
-> > > +	}
-> > > +	/* Copy the interoperable parts of the struct. */
-> > > +	if (__copy_to_user(dst, src, size))
-> > > +		return -EFAULT;
-> > 
-> > I think I understand why you put this last instead of handling the
-> > buffer in the "natural" order. However,
-> > I'm wondering whether we should actually do this copy before checking
-> > that the extra kernel bytes are 0 - the user will still be told that
-> > there was some extra information via the -EFBIG/-E2BIG return, but maybe
-> > in some cases the part he understands is good enough. But I also guess
-> > we have to look to existing users to see whether that would prevent them
-> > from being converted to using this helper.
-> > 
-> > linux-api folks, WDYT?
-> 
-> Regarding the order, I just copied what sched and perf already do. I
-> wouldn't mind doing it the other way around -- though I am a little
-> cautious about implicitly making guarantees like that. The syscall that
-> uses copy_struct_to_user() might not want to make that guarantee (it
-> might not make sense for them), and there are some -E2BIG returns that
-> won't result in data being copied (usize > PAGE_SIZE).
-> 
-> As for feedback, this is syscall-dependent at the moment. The sched and
-> perf users explicitly return the size of the kernel structure (by
-> overwriting uattr->size if -E2BIG is returned) for copies in either
-> direction. So users arguably already have some kind of feedback about
-> size issues. clone3() on the other hand doesn't do that (though it
-> doesn't copy anything to user-space so this isn't relevant to this
-> particular question).
-> 
-> Effectively, I'd like to see someone argue that this is something that
-> they would personally want (before we do it).
+> +	if (unlikely(!access_ok(dst, usize)))
+> +		return -EFAULT;
+> +
+> +	/* Deal with trailing bytes. */
+> +	if (usize < ksize) {
+> +		if (memchr_inv(src + size, 0, rest))
+> +			return -EFBIG;
+> +	} else if (usize > ksize) {
+> +		if (__memzero_user(dst + size, rest))
+> +			return -EFAULT;
 
-I think the order you have right now is fine. I don't see the point of
-doing work first before we have verified that things are sane.
+Is zeroing that memory really our job? Seems to me we should just check
+it is zeroed.
+
+> +	}
+> +	/* Copy the interoperable parts of the struct. */
+> +	if (__copy_to_user(dst, src, size))
+> +		return -EFAULT;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(copy_struct_to_user);
+> +
+> +/**
+> + * copy_struct_from_user: copy a struct from user space
+> + * @dst:   Destination address, in kernel space. This buffer must be @ksize
+> + *         bytes long.
+> + * @ksize: Size of @dst struct.
+> + * @src:   Source address, in user space.
+> + * @usize: (Alleged) size of @src struct.
+> + *
+> + * Copies a struct from user space to kernel space, in a way that guarantees
+> + * backwards-compatibility for struct syscall arguments (as long as future
+> + * struct extensions are made such that all new fields are *appended* to the
+> + * old struct, and zeroed-out new fields have the same meaning as the old
+> + * struct).
+> + *
+> + * @ksize is just sizeof(*dst), and @usize should've been passed by user space.
+> + * The recommended usage is something like the following:
+> + *
+> + *   SYSCALL_DEFINE2(foobar, const struct foo __user *, uarg, size_t, usize)
+> + *   {
+> + *      int err;
+> + *      struct foo karg = {};
+> + *
+> + *      err = copy_struct_from_user(&karg, sizeof(karg), uarg, size);
+> + *      if (err)
+> + *        return err;
+> + *
+> + *      // ...
+> + *   }
+> + *
+> + * There are three cases to consider:
+> + *  * If @usize == @ksize, then it's copied verbatim.
+> + *  * If @usize < @ksize, then the user space has passed an old struct to a
+> + *    newer kernel. The rest of the trailing bytes in @dst (@ksize - @usize)
+> + *    are to be zero-filled.
+> + *  * If @usize > @ksize, then the user space has passed a new struct to an
+> + *    older kernel. The trailing bytes unknown to the kernel (@usize - @ksize)
+> + *    are checked to ensure they are zeroed, otherwise -E2BIG is returned.
+> + *
+> + * Returns (in all cases, some data may have been copied):
+> + *  * -E2BIG:  (@usize > @ksize) and there are non-zero trailing bytes in @src.
+> + *  * -E2BIG:  @usize is "too big" (at time of writing, >PAGE_SIZE).
+> + *  * -EFAULT: access to user space failed.
+> + */
+> +int copy_struct_from_user(void *dst, size_t ksize,
+> +			  const void __user *src, size_t usize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
+> +
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
+
+That should be -E2BIG.
+
+> +	if (unlikely(!access_ok(src, usize)))
+> +		return -EFAULT;
+> +
+> +	/* Deal with trailing bytes. */
+> +	if (usize < ksize)
+> +		memset(dst + size, 0, rest);
+
+I think kernel style mandates that if one branch in an if-else ladder
+requires {} all other must use {} as well. So this should be:
+
+if () {
+	// one line
+} else {
+	// one line
+	// another line
+}
+
+That's a change in behavior for clone3() and sched at least, no? Unless
+- which I guess you might have done - you have moved the "error out when
+the struct is too small" part before the call to copy_struct_from_user()
+for them.
+
+> +	else if (usize > ksize) {
+> +		const void __user *addr = src + size;
+> +		char buffer[BUFFER_SIZE] = {};
+> +
+> +		while (rest > 0) {
+> +			size_t bufsize = min(rest, sizeof(buffer));
+> +
+> +			if (__copy_from_user(buffer, addr, bufsize))
+> +				return -EFAULT;
+> +			if (memchr_inv(buffer, 0, bufsize))
+> +				return -E2BIG;
+> +
+> +			addr += bufsize;
+> +			rest -= bufsize;
+> +		}
+> +	}
+> +	/* Copy the interoperable parts of the struct. */
+> +	if (__copy_from_user(dst, src, size))
+> +		return -EFAULT;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(copy_struct_from_user);
+> -- 
+> 2.23.0
+> 
