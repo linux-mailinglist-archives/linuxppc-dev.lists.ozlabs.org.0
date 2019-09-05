@@ -2,80 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7418FAAB05
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 20:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F8CAAB09
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 20:33:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PTlT70kdzDqq8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 04:30:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PTpC0GBqzDr5Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 04:33:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
+ (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
+ envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PTXK4hfWzDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 04:21:05 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x85IChtc124680
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 5 Sep 2019 14:21:03 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uu70u19ra-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2019 14:21:03 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Thu, 5 Sep 2019 19:21:00 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 5 Sep 2019 19:20:57 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x85IKuPR55836852
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Sep 2019 18:20:56 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 61EF5AE053;
- Thu,  5 Sep 2019 18:20:56 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86CC9AE051;
- Thu,  5 Sep 2019 18:20:54 +0000 (GMT)
-Received: from naverao1-tp.ibmuc.com (unknown [9.85.95.49])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  5 Sep 2019 18:20:54 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 3/3] powerpc: Use ftrace_graph_ret_addr() when unwinding
-Date: Thu,  5 Sep 2019 23:50:30 +0530
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1567707399.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1567707399.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PTj94g12zDr45
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 04:28:45 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.1 #3 (Red Hat
+ Linux)) id 1i5wUD-0004ZK-Jy; Thu, 05 Sep 2019 18:28:02 +0000
+Date: Thu, 5 Sep 2019 19:28:01 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <christian.brauner@ubuntu.com>
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+Message-ID: <20190905182801.GR1131@ZenIV.linux.org.uk>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
+ <20190905180750.GQ1131@ZenIV.linux.org.uk>
+ <20190905182303.7f6bxpa2enbgcegv@wittgenstein>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19090518-4275-0000-0000-000003619928
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090518-4276-0000-0000-00003873E295
-Message-Id: <dc89c9a887121342d9c7819482c3dabdece2a323.1567707399.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-05_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=501 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909050172
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190905182303.7f6bxpa2enbgcegv@wittgenstein>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,80 +49,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Jiri Olsa <jolsa@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ Aleksa Sarai <cyphar@cyphar.com>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-api@vger.kernel.org,
+ Chanho Min <chanho.min@lge.com>, Jeff Layton <jlayton@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
+ linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With support for HAVE_FUNCTION_GRAPH_RET_ADDR_PTR,
-ftrace_graph_ret_addr() provides more robust unwinding when function
-graph is in use. Update show_stack() to use the same.
+On Thu, Sep 05, 2019 at 08:23:03PM +0200, Christian Brauner wrote:
 
-With dump_stack() added to sysrq_sysctl_handler(), before this patch:
-  root@(none):/sys/kernel/debug/tracing# cat /proc/sys/kernel/sysrq
-  CPU: 0 PID: 218 Comm: cat Not tainted 5.3.0-rc7-00868-g8453ad4a078c-dirty #20
-  Call Trace:
-  [c0000000d1e13c30] [c00000000006ab98] return_to_handler+0x0/0x40 (dump_stack+0xe8/0x164) (unreliable)
-  [c0000000d1e13c80] [c000000000145680] sysrq_sysctl_handler+0x48/0xb8
-  [c0000000d1e13cd0] [c00000000006ab98] return_to_handler+0x0/0x40 (proc_sys_call_handler+0x274/0x2a0)
-  [c0000000d1e13d60] [c00000000006ab98] return_to_handler+0x0/0x40 (return_to_handler+0x0/0x40)
-  [c0000000d1e13d80] [c00000000006ab98] return_to_handler+0x0/0x40 (__vfs_read+0x3c/0x70)
-  [c0000000d1e13dd0] [c00000000006ab98] return_to_handler+0x0/0x40 (vfs_read+0xb8/0x1b0)
-  [c0000000d1e13e20] [c00000000006ab98] return_to_handler+0x0/0x40 (ksys_read+0x7c/0x140)
+> Because every caller of that function right now has that limit set
+> anyway iirc. So we can either remove it from here and place it back for
+> the individual callers or leave it in the helper.
+> Also, I'm really asking, why not? Is it unreasonable to have an upper
+> bound on the size (for a long time probably) or are you disagreeing with
+> PAGE_SIZE being used? PAGE_SIZE limit is currently used by sched, perf,
+> bpf, and clone3 and in a few other places.
 
-After this patch:
-  Call Trace:
-  [c0000000d1e33c30] [c00000000006ab58] return_to_handler+0x0/0x40 (dump_stack+0xe8/0x164) (unreliable)
-  [c0000000d1e33c80] [c000000000145680] sysrq_sysctl_handler+0x48/0xb8
-  [c0000000d1e33cd0] [c00000000006ab58] return_to_handler+0x0/0x40 (proc_sys_call_handler+0x274/0x2a0)
-  [c0000000d1e33d60] [c00000000006ab58] return_to_handler+0x0/0x40 (__vfs_read+0x3c/0x70)
-  [c0000000d1e33d80] [c00000000006ab58] return_to_handler+0x0/0x40 (vfs_read+0xb8/0x1b0)
-  [c0000000d1e33dd0] [c00000000006ab58] return_to_handler+0x0/0x40 (ksys_read+0x7c/0x140)
-  [c0000000d1e33e20] [c00000000006ab58] return_to_handler+0x0/0x40 (system_call+0x5c/0x68)
+For a primitive that can be safely used with any size (OK, any within
+the usual 2Gb limit)?  Why push the random policy into the place where
+it doesn't belong?
 
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/process.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
-
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 24621e7e5033..f289bdd2b562 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2047,10 +2047,8 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
- 	int count = 0;
- 	int firstframe = 1;
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
--	struct ftrace_ret_stack *ret_stack;
--	extern void return_to_handler(void);
--	unsigned long rth = (unsigned long)return_to_handler;
--	int curr_frame = 0;
-+	unsigned long ret_addr;
-+	int ftrace_idx = 0;
- #endif
- 
- 	if (tsk == NULL)
-@@ -2079,15 +2077,10 @@ void show_stack(struct task_struct *tsk, unsigned long *stack)
- 		if (!firstframe || ip != lr) {
- 			printk("["REG"] ["REG"] %pS", sp, ip, (void *)ip);
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
--			if ((ip == rth) && curr_frame >= 0) {
--				ret_stack = ftrace_graph_get_ret_stack(current,
--								  curr_frame++);
--				if (ret_stack)
--					pr_cont(" (%pS)",
--						(void *)ret_stack->ret);
--				else
--					curr_frame = -1;
--			}
-+			ret_addr = ftrace_graph_ret_addr(current,
-+						&ftrace_idx, ip, stack);
-+			if (ret_addr != ip)
-+				pr_cont(" (%pS)", (void *)ret_addr);
- #endif
- 			if (firstframe)
- 				pr_cont(" (unreliable)");
--- 
-2.23.0
-
+Seriously, what's the point?  If they want to have a large chunk of
+userland memory zeroed or checked for non-zeroes - why would that
+be a problem?
