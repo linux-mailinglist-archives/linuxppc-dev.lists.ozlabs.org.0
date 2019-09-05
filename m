@@ -2,88 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7E9AA189
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 13:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD21BAA19F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 13:37:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PJWF2RkyzDr5N
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 21:34:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PJZk4TKnzDr6Q
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 21:37:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PJTG2YFKzDqck
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 21:32:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PJXV0vXvzDqLZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 21:35:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46PJTG1fgpz8t7L
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 21:32:50 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46PJXT6Xcwz8swb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 21:35:37 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46PJTG16kXz9sNf; Thu,  5 Sep 2019 21:32:50 +1000 (AEST)
+ id 46PJXT5vsjz9sDQ; Thu,  5 Sep 2019 21:35:37 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46PJTF4gB3z9sDQ;
- Thu,  5 Sep 2019 21:32:49 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 46PJXT1ySkz9sP6
+ for <linuxppc-dev@ozlabs.org>; Thu,  5 Sep 2019 21:35:36 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x85BWW6T017256; Thu, 5 Sep 2019 07:32:40 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2usu18rqm8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Sep 2019 07:32:39 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x85BQFvB010338;
- Thu, 5 Sep 2019 11:32:25 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02dal.us.ibm.com with ESMTP id 2uqgh7gv2p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Sep 2019 11:32:25 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x85BWNS546268754
+ x85BWUv9073802
+ for <linuxppc-dev@ozlabs.org>; Thu, 5 Sep 2019 07:35:33 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uu0qr2ctv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Thu, 05 Sep 2019 07:35:32 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Thu, 5 Sep 2019 12:35:31 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 5 Sep 2019 12:35:28 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x85BZRBJ29229056
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Sep 2019 11:32:23 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 594EB6A047;
- Thu,  5 Sep 2019 11:32:23 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5B1C86A04D;
- Thu,  5 Sep 2019 11:32:21 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.80.196.15])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  5 Sep 2019 11:32:21 +0000 (GMT)
-Subject: Re: [PATCH v5 1/2] powerpc: detect the secure boot mode of the system
-To: Michael Ellerman <mpe@ellerman.id.au>, Nayna Jain <nayna@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, linux-integrity@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <1566218108-12705-1-git-send-email-nayna@linux.ibm.com>
- <1566218108-12705-2-git-send-email-nayna@linux.ibm.com>
- <87tv9usynv.fsf@mpe.ellerman.id.au>
-From: Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <8366281f-5b24-63cf-bd79-9794298b5bf7@linux.vnet.ibm.com>
-Date: Thu, 5 Sep 2019 07:32:20 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ Thu, 5 Sep 2019 11:35:27 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CCA7B4C044;
+ Thu,  5 Sep 2019 11:35:27 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F8C84C040;
+ Thu,  5 Sep 2019 11:35:27 +0000 (GMT)
+Received: from localhost (unknown [9.199.43.142])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  5 Sep 2019 11:35:27 +0000 (GMT)
+Date: Thu, 05 Sep 2019 17:05:25 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/64: Fix stacktrace on BE when function_graph is
+ enabled
+To: linuxppc-dev@ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+References: <20190823122901.32667-1-mpe@ellerman.id.au>
+ <1566636816.4snngx2qd3.naveen@linux.ibm.com>
+ <87woennk6v.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87woennk6v.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87tv9usynv.fsf@mpe.ellerman.id.au>
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
+x-cbid: 19090511-0016-0000-0000-000002A70837
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090511-0017-0000-0000-000033077B0A
+Message-Id: <1567682710.gcl0lz43q4.naveen@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-09-05_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -103,312 +105,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, Paul Mackerras <paulus@samba.org>,
- Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>,
- George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 09/02/2019 07:52 AM, Michael Ellerman wrote:
-> Hi Nayna,
-
-Hi Michael,
-
->
-> Sorry I've taken so long to get to this series, there's just too many
-> patches that need reviewing :/
-
-No problem. I understand. Thanks for reviewing.
-
->
-> Nayna Jain <nayna@linux.ibm.com> writes:
->> Secure boot on POWER defines different IMA policies based on the secure
->> boot state of the system.
-> The terminology throughout is a bit vague, we have POWER, PowerPC, Linux
-> on POWER etc.
->
-> What this patch is talking about is a particular implemention of secure
-> boot on some OpenPOWER machines running bare metal - am I right?
->
-> So saying "Secure boot on POWER defines different IMA policies" is a bit
-> broad I think. Really we've just decided that a way to implement secure
-> boot is to use IMA policies.
-
-I think the idea was to convey that the same design can be reused or 
-extended as needed.
-But I agree for now it is currently only OpenPOWER machines running on 
-bare metal, I will fix the wordings to use "PowerNV" consistently.
-
-
-
->
->> This patch defines a function to detect the secure boot state of the
->> system.
+Michael Ellerman wrote:
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+>> Michael Ellerman wrote:
+>>> Currently if we oops or warn while function_graph is active the stack
+>>> trace looks like:
+>>>   .trace_graph_return+0xac/0x100
+>>>   .ftrace_return_to_handler+0x98/0x140
+>>>   .return_to_handler+0x20/0x40
+>>>   .return_to_handler+0x0/0x40
+>>>   .return_to_handler+0x0/0x40
+>>>   .return_to_handler+0x0/0x40
+>>>   .return_to_handler+0x0/0x40
+>>>   .return_to_handler+0x0/0x40
+>>>   .return_to_handler+0x0/0x40
+>>>   .cpu_startup_entry+0x34/0x40
+>>>   .start_secondary+0x680/0x6f0
+>>>   start_secondary_prolog+0x10/0x14
+>>>=20
+>>> Notice the multiple entries that just show .return_to_handler.
+>>>=20
+>>> There is logic in show_stack() to detect this case and print the
+>>> traced function, but we inadvertently broke it in commit
+>>> 7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler") (2014),
+>>> because that commit accidentally removed the dereference of rth which
+>>> gets the text address from the function descriptor. Hence this is only
+>>> broken on big endian (or technically ELFv1).
+>>>=20
+>>> Fix it by using the proper accessor, which is ppc_function_entry().
+>>> Result is we get a stack trace such as:
+>>>=20
+>>>   .trace_graph_return+0x134/0x160
+>>>   .ftrace_return_to_handler+0x94/0x140
+>>>   .return_to_handler+0x20/0x40
+>>>   .return_to_handler+0x0/0x40 (.shared_cede_loop+0x48/0x130)
+>>>   .return_to_handler+0x0/0x40 (.cpuidle_enter_state+0xa0/0x690)
+>>>   .return_to_handler+0x0/0x40 (.cpuidle_enter+0x44/0x70)
+>>>   .return_to_handler+0x0/0x40 (.call_cpuidle+0x68/0xc0)
+>>>   .return_to_handler+0x0/0x40 (.do_idle+0x37c/0x400)
+>>>   .return_to_handler+0x0/0x40 (.cpu_startup_entry+0x30/0x50)
+>>>   .rest_init+0x224/0x348
+>>>=20
+>>> Fixes: 7d56c65a6ff9 ("powerpc/ftrace: Remove mod_return_to_handler")
+>>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>> ---
+>>>  arch/powerpc/kernel/process.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>=20
+>>> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
+s.c
+>>> index 8fc4de0d22b4..1601d7cfe45e 100644
+>>> --- a/arch/powerpc/kernel/process.c
+>>> +++ b/arch/powerpc/kernel/process.c
+>>> @@ -2048,7 +2048,7 @@ void show_stack(struct task_struct *tsk, unsigned=
+ long *stack)
+>>>  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+>>>  	struct ftrace_ret_stack *ret_stack;
+>>>  	extern void return_to_handler(void);
+>>> -	unsigned long rth =3D (unsigned long)return_to_handler;
+>>> +	unsigned long rth =3D ppc_function_entry(return_to_handler);
 >>
->> The PPC_SECURE_BOOT config represents the base enablement of secureboot
->> on POWER.
->>
->> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
->> ---
->>   arch/powerpc/Kconfig               | 11 +++++
->>   arch/powerpc/include/asm/secboot.h | 27 ++++++++++++
->>   arch/powerpc/kernel/Makefile       |  2 +
->>   arch/powerpc/kernel/secboot.c      | 71 ++++++++++++++++++++++++++++++
->>   4 files changed, 111 insertions(+)
->>   create mode 100644 arch/powerpc/include/asm/secboot.h
->>   create mode 100644 arch/powerpc/kernel/secboot.c
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index 77f6ebf97113..c902a39124dc 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -912,6 +912,17 @@ config PPC_MEM_KEYS
->>   
->>   	  If unsure, say y.
->>   
->> +config PPC_SECURE_BOOT
->> +	prompt "Enable PowerPC Secure Boot"
-> How about "Enable secure boot support"
+>> Thanks! This looks good to me. A small suggestion though -- can we use=20
+>> dereference_kernel_function_descriptor() instead? It will be a nop for=20
+>> ABIv2, which would be nice, but not really a major deal.
+>=20
+> ppc_function_entry() isn't a nop on ABIv2, *if* the function has a local
+> entry point.
+>=20
+> As it happens return_to_handler doesn't have a local entry point, so it
+> is currently a nop.
 
-Yes. Sounds better.
+What I meant was that we still go read the first two instructions to=20
+identify if there is a GEP with ppc_function_entry(). But,=20
+dereference_kernel_function_descriptor() would be compiled out.
 
->
->> +	bool
->> +	default n
-> The default is 'n', so you don't need that default line.
+>=20
+> But if return_to_handler did have a local entry then
+> ppc_function_entry() would do the right thing here because we use
+> ppc_function_entry() in prepare_ftrace_return().
+>=20
+> At least I think that's true :)
 
-Sure.
+That's a good point :)
+However, I think we should never have return_to_handler() with a GEP/LEP=20
+since it is not a regular function.
+
+We should switch use of ppc_function_entry() in prepare_ftrace_return()=20
+to dereference_kernel_function_descriptor(). I will send a patch for=20
+that.
 
 
->
->> +	depends on PPC64
-> Should it just depend on POWERNV for now? AFAIK there's nothing in here
-> that's necessarily going to be shared with the guest secure boot code is
-> there?
+- Naveen
 
-Yes. sounds good.
-
-
->
->> +	help
->> +	  Linux on POWER with firmware secure boot enabled needs to define
->> +	  security policies to extend secure boot to the OS.This config
->> +	  allows user to enable OS Secure Boot on PowerPC systems that
->> +	  have firmware secure boot support.
-> Again POWER vs PowerPC.
->
-> I think something like:
->
-> "Enable support for secure boot on some systems that have firmware
-> support for it. If in doubt say N."
-
-Sure.
-
->
->
->> diff --git a/arch/powerpc/include/asm/secboot.h b/arch/powerpc/include/asm/secboot.h
-> secure_boot.h would be fine.
-
-Sure.
-
->
->> new file mode 100644
->> index 000000000000..e726261bb00b
->> --- /dev/null
->> +++ b/arch/powerpc/include/asm/secboot.h
->> @@ -0,0 +1,27 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * PowerPC secure boot definitions
->> + *
->> + * Copyright (C) 2019 IBM Corporation
->> + * Author: Nayna Jain <nayna@linux.ibm.com>
-> I prefer to not have email addresses in copyright headers, as they just
-> bit rot. Your email is in the git log.
-
-Sure.
-
-
->
->> + *
->> + */
->> +#ifndef POWERPC_SECBOOT_H
->> +#define POWERPC_SECBOOT_H
-> We usually do _ASM_POWERPC_SECBOOT_H (or _ASM_POWERPC_SECURE_BOOT_H).
-
-Sure.
-
->
->> +#ifdef CONFIG_PPC_SECURE_BOOT
->> +extern struct device_node *is_powerpc_secvar_supported(void);
->> +extern bool get_powerpc_secureboot(void);
-> You don't need 'extern' for functions in headers.
-
-Yes. will fix.
-
->
->> +#else
->> +static inline struct device_node *is_powerpc_secvar_supported(void)
->> +{
->> +	return NULL;
->> +}
->> +
->> +static inline bool get_powerpc_secureboot(void)
->> +{
->> +	return false;
->> +}
->> +
->> +#endif
->> +#endif
->> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
->> index ea0c69236789..d310ebb4e526 100644
->> --- a/arch/powerpc/kernel/Makefile
->> +++ b/arch/powerpc/kernel/Makefile
->> @@ -157,6 +157,8 @@ endif
->>   obj-$(CONFIG_EPAPR_PARAVIRT)	+= epapr_paravirt.o epapr_hcalls.o
->>   obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvm_emul.o
->>   
->> +obj-$(CONFIG_PPC_SECURE_BOOT)	+= secboot.o
->> +
->>   # Disable GCOV, KCOV & sanitizers in odd or sensitive code
->>   GCOV_PROFILE_prom_init.o := n
->>   KCOV_INSTRUMENT_prom_init.o := n
->> diff --git a/arch/powerpc/kernel/secboot.c b/arch/powerpc/kernel/secboot.c
->> new file mode 100644
->> index 000000000000..5ea0d52d64ef
->> --- /dev/null
->> +++ b/arch/powerpc/kernel/secboot.c
->> @@ -0,0 +1,71 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2019 IBM Corporation
->> + * Author: Nayna Jain <nayna@linux.ibm.com>
->> + *
->> + * secboot.c
->> + *      - util function to get powerpc secboot state
-> That's not really necessary.
-
-Sure.
-
->
->> + */
->> +#include <linux/types.h>
->> +#include <linux/of.h>
->> +#include <asm/secboot.h>
->> +
->> +struct device_node *is_powerpc_secvar_supported(void)
-> This is a pretty weird signature. The "is_" implies it will return a
-> bool, but then it actually returns a device node *.
-
-Yes. Agree. Will fix.
-
->
->> +{
->> +	struct device_node *np;
->> +	int status;
->> +
->> +	np = of_find_node_by_name(NULL, "ibm,secureboot");
->> +	if (!np) {
->> +		pr_info("secureboot node is not found\n");
->> +		return NULL;
->> +	}
-> There's no good reason to search by name. You should just search by compatible.
->
-> eg. of_find_compatible_node()
-
-Sure.
-
-
->
->> +	status = of_device_is_compatible(np, "ibm,secureboot-v3");
->> +	if (!status) {
->> +		pr_info("Secure variables are not supported by this firmware\n");
->> +		return NULL;
->> +	}
->> +
->> +	return np;
->> +}
->> +
->> +bool get_powerpc_secureboot(void)
->> +{
->> +	struct device_node *np;
->> +	struct device_node *secvar_np;
->> +	const u64 *psecboot;
->> +	u64 secboot = 0;
->> +
->> +	np = is_powerpc_secvar_supported();
->> +	if (!np)
->> +		goto disabled;
->> +
->> +	/* Fail-safe for any failure related to secvar */
->> +	secvar_np = of_get_child_by_name(np, "secvar");
-> Finding a child by name is not ideal, it encodes the structure of the
-> tree in the API. It's better to just search by compatible.
->
-> eg. of_find_compatible_node("ibm,secvar-v1")
->
-> You should also define what that means, ie. write a little snippet of
-> doc to define what the expected properties are and their meaning and so
-> on.
-
-It is part of the skiboot patches 
-(https://patchwork.ozlabs.org/patch/1157346/)
-Sure. I will add one in the kernel as well.
-
-
->
->> +	if (!secvar_np) {
->> +		pr_err("Expected secure variables support, fail-safe\n");
-> I'm a bit confused by this. This is the exact opposite of what I
-> understand fail-safe to mean. We shouldn't tell the user the system is
-> securely booted unless we're 100% sure it is. Right?
-
-Yes. Thanks for pointing this out. "Fail secure" is the correct term. 
-This is the situation where secure variables are supported. Any failure 
-reading the secure variables may be an attack, so we fail securely.
-
-
->
->> +		goto enabled;
->> +	}
->> +
->> +	if (!of_device_is_available(secvar_np)) {
->> +		pr_err("Secure variables support is in error state, fail-safe\n");
->> +		goto enabled;
->> +	}
-> It seems a little weird to use the status property to indicate ok/error
-> and then also have a "secure-mode" property. Wouldn't just "secure-mode"
-> be sufficient with several states to represent what we need?
-
-Before we check in which mode the system booted (e.g. setup, user, etc) 
-using "secure mode" property, the "status" check helps to ensure that 
-the system secure boot initialized correctly. We will look into
-combining the two variables.
-
-
-
->
->> +	psecboot = of_get_property(secvar_np, "secure-mode", NULL);
->> +	if (!psecboot)
->> +		goto enabled;
-> Please use of_read_property_u64() or similar.
-
-Sure.
-
->
->> +	secboot = be64_to_cpup((__be64 *)psecboot);
->> +	if (!(secboot & (~0x0)))
-> I'm not sure what that's trying to do.
-
-We are exposing secure modes from the skiboot to the kernel via a 
-bitfield, partitioned into generic modes and backend specific modes. I 
-will update this code so that it is clearer.
-
-Thanks & Regards,
-       - Nayna
