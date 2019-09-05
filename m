@@ -2,44 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E614DA9CD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 10:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1722A9D6D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 10:46:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PDD04K0kzDqvr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 18:21:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PDmy3dy5zDr22
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 18:46:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46PD9969g9zDqRH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 18:18:36 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B372337;
- Thu,  5 Sep 2019 01:18:34 -0700 (PDT)
-Received: from [10.162.41.136] (p8cg001049571a15.blr.arm.com [10.162.41.136])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- 04B713F67D; Thu,  5 Sep 2019 01:18:20 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
- <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
- <20190904141950.ykoe3h7b4hcvnysu@box>
-Message-ID: <6d4b989d-8eaa-d26e-6068-4b0e4d7a52f9@arm.com>
-Date: Thu, 5 Sep 2019 13:48:27 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ spf=pass (mailfrom) smtp.mailfrom=rasmusvillemoes.dk
+ (client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com;
+ envelope-from=linux@rasmusvillemoes.dk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="N6IVzoEo"; dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PDkX1L1dzDqyP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 18:44:00 +1000 (AEST)
+Received: by mail-lj1-x243.google.com with SMTP id a22so1575087ljd.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2019 01:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=NBuoXU/CsvpEfHDk6v7qAee7rwiMK16vCU2UCK4nqCQ=;
+ b=N6IVzoEohl3Ii8OgzeM6vAo9dY5+J6qYVU5h5ZRS7mowRtkkYIOgOVnCpVVmpMuP4M
+ JnwE+sy/QoDSWwTWRo6bHTZUWVmRUdVAAthZM02dIMNYyiwdhWwEDXgYyipiWXEyubVf
+ ef+6I5cJONBZQkYxa9wFQDCcEfEWCsqK9Ws1g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=NBuoXU/CsvpEfHDk6v7qAee7rwiMK16vCU2UCK4nqCQ=;
+ b=PKSlEddJ9/WkwAo4TBjHT/3AraRxAEVPNL8WEy24Ifrj9y76NJg86xA7yjKc8LveXG
+ 4p7DHKRKoROi9nOFDibsyjPYLGOsd4PdoZq9WSooohcfeLSQtEE1BKmuZceS64q90IJ5
+ sjXxmJpWCWPxIF6U588QB1VFMnN0WFyY+1TNzY6uRHqQHblBoUyn/7z57zQ4aaMKF3LM
+ rDaRmKJ6+9G6ommZxdecTlLdn6mC057a+AiYW6H/rtuMjuaWUISarZaCSKjrDboS2weI
+ AHEc3Eqgirb+QraPu/8qfcLta0KFtAmCM50KYs60tRb24mgme88If3uZTwAa81+Pa6UU
+ fwow==
+X-Gm-Message-State: APjAAAU9Snc+JKHZXIdkck4RUPnIoV37D78Wyg0fbubcghy38X2MVAbK
+ q5yk+gFlZmyeSJHsSyEKhKeGEQ==
+X-Google-Smtp-Source: APXvYqytSckEtF1ynO/D0dH8NXuZW7wdO2pDnnfImuEUflVZ+2h5sNxfU5qE5h9/+CC+5M7TGsxbSA==
+X-Received: by 2002:a05:651c:1023:: with SMTP id
+ w3mr1206160ljm.94.1567673035658; 
+ Thu, 05 Sep 2019 01:43:55 -0700 (PDT)
+Received: from [172.16.11.28] ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id k7sm249936lji.68.2019.09.05.01.43.52
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 05 Sep 2019 01:43:54 -0700 (PDT)
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+To: Aleksa Sarai <cyphar@cyphar.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ Jeff Layton <jlayton@kernel.org>, "J. Bruce Fields" <bfields@fieldses.org>,
+ Arnd Bergmann <arnd@arndb.de>, David Howells <dhowells@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Christian Brauner <christian@brauner.io>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <57ba3752-c4a6-d2a4-1a4d-a0e13bccd473@rasmusvillemoes.dk>
+Date: Thu, 5 Sep 2019 10:43:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190904141950.ykoe3h7b4hcvnysu@box>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20190904201933.10736-2-cyphar@cyphar.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,678 +88,277 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+ Jiri Olsa <jolsa@redhat.com>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
+ linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/04/2019 07:49 PM, Kirill A. Shutemov wrote:
-> On Tue, Sep 03, 2019 at 01:31:46PM +0530, Anshuman Khandual wrote:
->> This adds a test module which will validate architecture page table helpers
->> and accessors regarding compliance with generic MM semantics expectations.
->> This will help various architectures in validating changes to the existing
->> page table helpers or addition of new ones.
->>
->> Test page table and memory pages creating it's entries at various level are
->> all allocated from system memory with required alignments. If memory pages
->> with required size and alignment could not be allocated, then all depending
->> individual tests are skipped.
+On 04/09/2019 22.19, Aleksa Sarai wrote:
+> A common pattern for syscall extensions is increasing the size of a
+> struct passed from userspace, such that the zero-value of the new fields
+> result in the old kernel behaviour (allowing for a mix of userspace and
+> kernel vintages to operate on one another in most cases). This is done
+> in both directions -- hence two helpers -- though it's more common to
+> have to copy user space structs into kernel space.
 > 
-> See my comments below.
+> Previously there was no common lib/ function that implemented
+> the necessary extension-checking semantics (and different syscalls
+> implemented them slightly differently or incompletely[1]). A future
+> patch replaces all of the common uses of this pattern to use the new
+> copy_struct_{to,from}_user() helpers.
 > 
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Vlastimil Babka <vbabka@suse.cz>
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
->> Cc: Jason Gunthorpe <jgg@ziepe.ca>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Peter Zijlstra <peterz@infradead.org>
->> Cc: Michal Hocko <mhocko@kernel.org>
->> Cc: Mark Rutland <mark.rutland@arm.com>
->> Cc: Mark Brown <broonie@kernel.org>
->> Cc: Steven Price <Steven.Price@arm.com>
->> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
->> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
->> Cc: Kees Cook <keescook@chromium.org>
->> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
->> Cc: Matthew Wilcox <willy@infradead.org>
->> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
->> Cc: Dave Hansen <dave.hansen@intel.com>
->> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
->> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Vineet Gupta <vgupta@synopsys.com>
->> Cc: James Hogan <jhogan@kernel.org>
->> Cc: Paul Burton <paul.burton@mips.com>
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> Cc: linux-snps-arc@lists.infradead.org
->> Cc: linux-mips@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-ia64@vger.kernel.org
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: linux-s390@vger.kernel.org
->> Cc: linux-sh@vger.kernel.org
->> Cc: sparclinux@vger.kernel.org
->> Cc: x86@kernel.org
->> Cc: linux-kernel@vger.kernel.org
->>
->> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  mm/Kconfig.debug       |  14 ++
->>  mm/Makefile            |   1 +
->>  mm/arch_pgtable_test.c | 425 +++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 440 insertions(+)
->>  create mode 100644 mm/arch_pgtable_test.c
->>
->> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
->> index 327b3ebf23bf..ce9c397f7b07 100644
->> --- a/mm/Kconfig.debug
->> +++ b/mm/Kconfig.debug
->> @@ -117,3 +117,17 @@ config DEBUG_RODATA_TEST
->>      depends on STRICT_KERNEL_RWX
->>      ---help---
->>        This option enables a testcase for the setting rodata read-only.
->> +
->> +config DEBUG_ARCH_PGTABLE_TEST
->> +	bool "Test arch page table helpers for semantics compliance"
->> +	depends on MMU
->> +	depends on DEBUG_KERNEL
->> +	help
->> +	  This options provides a kernel module which can be used to test
->> +	  architecture page table helper functions on various platform in
->> +	  verifying if they comply with expected generic MM semantics. This
->> +	  will help architectures code in making sure that any changes or
->> +	  new additions of these helpers will still conform to generic MM
->> +	  expected semantics.
->> +
->> +	  If unsure, say N.
->> diff --git a/mm/Makefile b/mm/Makefile
->> index d996846697ef..bb572c5aa8c5 100644
->> --- a/mm/Makefile
->> +++ b/mm/Makefile
->> @@ -86,6 +86,7 @@ obj-$(CONFIG_HWPOISON_INJECT) += hwpoison-inject.o
->>  obj-$(CONFIG_DEBUG_KMEMLEAK) += kmemleak.o
->>  obj-$(CONFIG_DEBUG_KMEMLEAK_TEST) += kmemleak-test.o
->>  obj-$(CONFIG_DEBUG_RODATA_TEST) += rodata_test.o
->> +obj-$(CONFIG_DEBUG_ARCH_PGTABLE_TEST) += arch_pgtable_test.o
->>  obj-$(CONFIG_PAGE_OWNER) += page_owner.o
->>  obj-$(CONFIG_CLEANCACHE) += cleancache.o
->>  obj-$(CONFIG_MEMORY_ISOLATION) += page_isolation.o
->> diff --git a/mm/arch_pgtable_test.c b/mm/arch_pgtable_test.c
->> new file mode 100644
->> index 000000000000..f15be8a73723
->> --- /dev/null
->> +++ b/mm/arch_pgtable_test.c
->> @@ -0,0 +1,425 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * This kernel module validates architecture page table helpers &
->> + * accessors and helps in verifying their continued compliance with
->> + * generic MM semantics.
->> + *
->> + * Copyright (C) 2019 ARM Ltd.
->> + *
->> + * Author: Anshuman Khandual <anshuman.khandual@arm.com>
->> + */
->> +#define pr_fmt(fmt) "arch_pgtable_test: %s " fmt, __func__
->> +
->> +#include <linux/kernel.h>
->> +#include <linux/hugetlb.h>
->> +#include <linux/mm.h>
->> +#include <linux/mman.h>
->> +#include <linux/mm_types.h>
->> +#include <linux/module.h>
->> +#include <linux/printk.h>
->> +#include <linux/swap.h>
->> +#include <linux/swapops.h>
->> +#include <linux/pfn_t.h>
->> +#include <linux/gfp.h>
->> +#include <linux/spinlock.h>
->> +#include <linux/sched/mm.h>
->> +#include <asm/pgalloc.h>
->> +#include <asm/pgtable.h>
->> +
->> +/*
->> + * Basic operations
->> + *
->> + * mkold(entry)			= An old and not a young entry
->> + * mkyoung(entry)		= A young and not an old entry
->> + * mkdirty(entry)		= A dirty and not a clean entry
->> + * mkclean(entry)		= A clean and not a dirty entry
->> + * mkwrite(entry)		= A write and not a write protected entry
->> + * wrprotect(entry)		= A write protected and not a write entry
->> + * pxx_bad(entry)		= A mapped and non-table entry
->> + * pxx_same(entry1, entry2)	= Both entries hold the exact same value
->> + */
->> +#define VADDR_TEST	(PGDIR_SIZE + PUD_SIZE + PMD_SIZE + PAGE_SIZE)
+> [1]: For instance {sched_setattr,perf_event_open,clone3}(2) all do do
+>      similar checks to copy_struct_from_user() while rt_sigprocmask(2)
+>      always rejects differently-sized struct arguments.
 > 
-> What is special about this address? How do you know if it is not occupied
-> yet?
-
-We are creating the page table from scratch after allocating an mm_struct
-for a given random virtual address 'VADDR_TEST'. Hence nothing is occupied
-just yet. There is nothing special about this address, just that it tries
-to ensure the page table entries are being created with some offset from
-beginning of respective page table page at all levels ? The idea is to
-have a more representative form of page table structure for test.
-
-> 
->> +#define VMA_TEST_FLAGS	(VM_READ|VM_WRITE|VM_EXEC)
->> +#define RANDOM_NZVALUE	(0xbe)
->> +
->> +static bool pud_aligned;
->> +static bool pmd_aligned;
->> +
->> +extern struct mm_struct *mm_alloc(void);
->> +
->> +static void pte_basic_tests(struct page *page, pgprot_t prot)
->> +{
->> +	pte_t pte = mk_pte(page, prot);
->> +
->> +	WARN_ON(!pte_same(pte, pte));
->> +	WARN_ON(!pte_young(pte_mkyoung(pte)));
->> +	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
->> +	WARN_ON(!pte_write(pte_mkwrite(pte)));
->> +	WARN_ON(pte_young(pte_mkold(pte)));
->> +	WARN_ON(pte_dirty(pte_mkclean(pte)));
->> +	WARN_ON(pte_write(pte_wrprotect(pte)));
->> +}
->> +
->> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
->> +static void pmd_basic_tests(struct page *page, pgprot_t prot)
->> +{
->> +	pmd_t pmd;
->> +
->> +	/*
->> +	 * Memory block here must be PMD_SIZE aligned. Abort this
->> +	 * test in case we could not allocate such a memory block.
->> +	 */
->> +	if (!pmd_aligned) {
->> +		pr_warn("Could not proceed with PMD tests\n");
->> +		return;
->> +	}
->> +
->> +	pmd = mk_pmd(page, prot);
->> +	WARN_ON(!pmd_same(pmd, pmd));
->> +	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
->> +	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
->> +	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
->> +	WARN_ON(pmd_young(pmd_mkold(pmd)));
->> +	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
->> +	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
->> +	/*
->> +	 * A huge page does not point to next level page table
->> +	 * entry. Hence this must qualify as pmd_bad().
->> +	 */
->> +	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
->> +}
->> +#else
->> +static void pmd_basic_tests(struct page *page, pgprot_t prot) { }
->> +#endif
->> +
->> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->> +static void pud_basic_tests(struct page *page, pgprot_t prot)
->> +{
->> +	pud_t pud;
->> +
->> +	/*
->> +	 * Memory block here must be PUD_SIZE aligned. Abort this
->> +	 * test in case we could not allocate such a memory block.
->> +	 */
->> +	if (!pud_aligned) {
->> +		pr_warn("Could not proceed with PUD tests\n");
->> +		return;
->> +	}
->> +
->> +	pud = pfn_pud(page_to_pfn(page), prot);
->> +	WARN_ON(!pud_same(pud, pud));
->> +	WARN_ON(!pud_young(pud_mkyoung(pud)));
->> +	WARN_ON(!pud_write(pud_mkwrite(pud)));
->> +	WARN_ON(pud_write(pud_wrprotect(pud)));
->> +	WARN_ON(pud_young(pud_mkold(pud)));
->> +
->> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->> +	/*
->> +	 * A huge page does not point to next level page table
->> +	 * entry. Hence this must qualify as pud_bad().
->> +	 */
->> +	WARN_ON(!pud_bad(pud_mkhuge(pud)));
->> +#endif
->> +}
->> +#else
->> +static void pud_basic_tests(struct page *page, pgprot_t prot) { }
->> +#endif
->> +
->> +static void p4d_basic_tests(struct page *page, pgprot_t prot)
->> +{
->> +	p4d_t p4d;
->> +
->> +	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
->> +	WARN_ON(!p4d_same(p4d, p4d));
->> +}
->> +
->> +static void pgd_basic_tests(struct page *page, pgprot_t prot)
->> +{
->> +	pgd_t pgd;
->> +
->> +	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
->> +	WARN_ON(!pgd_same(pgd, pgd));
->> +}
->> +
->> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->> +static void pud_clear_tests(pud_t *pudp)
->> +{
->> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
->> +	pud_clear(pudp);
->> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
->> +}
->> +
->> +static void pud_populate_tests(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
->> +{
->> +	/*
->> +	 * This entry points to next level page table page.
->> +	 * Hence this must not qualify as pud_bad().
->> +	 */
->> +	pmd_clear(pmdp);
->> +	pud_clear(pudp);
->> +	pud_populate(mm, pudp, pmdp);
->> +	WARN_ON(pud_bad(READ_ONCE(*pudp)));
->> +}
->> +#else
->> +static void pud_clear_tests(pud_t *pudp) { }
->> +static void pud_populate_tests(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
->> +{
->> +}
->> +#endif
->> +
->> +#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
->> +static void p4d_clear_tests(p4d_t *p4dp)
->> +{
->> +	memset(p4dp, RANDOM_NZVALUE, sizeof(p4d_t));
->> +	p4d_clear(p4dp);
->> +	WARN_ON(!p4d_none(READ_ONCE(*p4dp)));
->> +}
->> +
->> +static void p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
->> +{
->> +	/*
->> +	 * This entry points to next level page table page.
->> +	 * Hence this must not qualify as p4d_bad().
->> +	 */
->> +	pud_clear(pudp);
->> +	p4d_clear(p4dp);
->> +	p4d_populate(mm, p4dp, pudp);
->> +	WARN_ON(p4d_bad(READ_ONCE(*p4dp)));
->> +}
->> +#else
->> +static void p4d_clear_tests(p4d_t *p4dp) { }
->> +static void p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
->> +{
->> +}
->> +#endif
->> +
->> +#ifndef __PAGETABLE_P4D_FOLDED
->> +static void pgd_clear_tests(pgd_t *pgdp)
->> +{
->> +	memset(pgdp, RANDOM_NZVALUE, sizeof(pgd_t));
->> +	pgd_clear(pgdp);
->> +	WARN_ON(!pgd_none(READ_ONCE(*pgdp)));
->> +}
->> +
->> +static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
->> +{
->> +	/*
->> +	 * This entry points to next level page table page.
->> +	 * Hence this must not qualify as pgd_bad().
->> +	 */
->> +	p4d_clear(p4dp);
->> +	pgd_clear(pgdp);
->> +	pgd_populate(mm, pgdp, p4dp);
->> +	WARN_ON(pgd_bad(READ_ONCE(*pgdp)));
->> +}
->> +#else
->> +static void pgd_clear_tests(pgd_t *pgdp) { }
->> +static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
->> +{
->> +}
->> +#endif
-> 
-> This will not work if p4d is folded at runtime. Like for x86-64 and s390.
-> 
-> Here's the fixup. It should work for both x86-64 and s390, but I only
-> tested on x86-64:
-> 
-> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-> index 52e5f5f2240d..b882792a3999 100644
-> --- a/arch/x86/include/asm/pgtable_64_types.h
-> +++ b/arch/x86/include/asm/pgtable_64_types.h
-> @@ -40,6 +40,8 @@ static inline bool pgtable_l5_enabled(void)
->  #define pgtable_l5_enabled() 0
->  #endif /* CONFIG_X86_5LEVEL */
->  
-> +#define mm_p4d_folded(mm) (!pgtable_l5_enabled())
+> Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+> ---
+> diff --git a/lib/struct_user.c b/lib/struct_user.c
+> new file mode 100644
+> index 000000000000..7301ab1bbe98
+> --- /dev/null
+> +++ b/lib/struct_user.c
+> @@ -0,0 +1,182 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2019 SUSE LLC
+> + * Copyright (C) 2019 Aleksa Sarai <cyphar@cyphar.com>
+> + */
 > +
->  extern unsigned int pgdir_shift;
->  extern unsigned int ptrs_per_p4d;
->  
-> diff --git a/mm/arch_pgtable_test.c b/mm/arch_pgtable_test.c
-> index f15be8a73723..206fe3334a28 100644
-> --- a/mm/arch_pgtable_test.c
-> +++ b/mm/arch_pgtable_test.c
-> @@ -193,9 +193,11 @@ static void p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
->  }
->  #endif
->  
-> -#ifndef __PAGETABLE_P4D_FOLDED
->  static void pgd_clear_tests(pgd_t *pgdp)
->  {
-> +	if (mm_p4d_folded(mm))
-> +		return;
+> +#include <linux/types.h>
+> +#include <linux/export.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/kernel.h>
+> +#include <linux/string.h>
 > +
->  	memset(pgdp, RANDOM_NZVALUE, sizeof(pgd_t));
->  	pgd_clear(pgdp);
->  	WARN_ON(!pgd_none(READ_ONCE(*pgdp)));
-> @@ -203,6 +205,9 @@ static void pgd_clear_tests(pgd_t *pgdp)
->  
->  static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
->  {
-> +	if (mm_p4d_folded(mm))
-> +		return;
+> +#define BUFFER_SIZE 64
 > +
->  	/*
->  	 * This entry points to next level page table page.
->  	 * Hence this must not qualify as pgd_bad().
-> @@ -212,12 +217,6 @@ static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
->  	pgd_populate(mm, pgdp, p4dp);
->  	WARN_ON(pgd_bad(READ_ONCE(*pgdp)));
->  }
-> -#else
-> -static void pgd_clear_tests(pgd_t *pgdp) { }
-> -static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
-> -{
-> -}
-> -#endif
+> +/*
+> + * "memset(p, 0, size)" but for user space buffers. Caller must have already
+> + * checked access_ok(p, size).
+> + */
 
-This makes sense for runtime cases but there is a problem here.
+Isn't this __clear_user() exactly (perhaps except for the return value)?
+Perhaps not every arch has that?
 
-On arm64, pgd_populate() which takes (pud_t *) as last argument instead of
-(p4d_t *) will fail to build when not wrapped in !__PAGETABLE_P4D_FOLDED
-on certain configurations.
+> +static int __memzero_user(void __user *p, size_t s)
+> +{
+> +	const char zeros[BUFFER_SIZE] = {};
+> +	while (s > 0) {
+> +		size_t n = min(s, sizeof(zeros));
+> +
+> +		if (__copy_to_user(p, zeros, n))
+> +			return -EFAULT;
+> +
+> +		p += n;
+> +		s -= n;
+> +	}
+> +	return 0;
+> +}
+> +
+> +/**
+> + * copy_struct_to_user: copy a struct to user space
+> + * @dst:   Destination address, in user space.
+> + * @usize: Size of @dst struct.
+> + * @src:   Source address, in kernel space.
+> + * @ksize: Size of @src struct.
+> + *
+> + * Returns (in all cases, some data may have been copied):
+> + *  * -EFBIG:  (@usize < @ksize) and there are non-zero trailing bytes in @src.
+> + *  * -EFAULT: access to user space failed.
+> + */
+> +int copy_struct_to_user(void __user *dst, size_t usize,
+> +			const void *src, size_t ksize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
 
-./arch/arm64/include/asm/pgalloc.h:81:75: note:
-expected ‘pud_t *’ {aka ‘struct <anonymous> *’}
-but argument is of type ‘pgd_t *’ {aka ‘struct <anonymous> *’}
-static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, pud_t *pudp)
-                                                                   ~~~~~~~^~~~
-Wondering if this is something to be fixed on arm64 or its more general
-problem. Will look into this further.
+Eh, I'd avoid abs() here due to the funkiness of the implicit type
+conversions - ksize-usize has type size_t, then that's coerced to an int
+(or a long maybe?), the abs is applied which return an int/long (or
+unsigned versions?). Something like "rest = max(ksize, usize) - size;"
+is more obviously correct and doesn't fall into any
+narrowing/widening/sign extending traps.
 
->  
->  static void pte_clear_tests(pte_t *ptep)
->  {
-> 
->> +
->> +static void pte_clear_tests(pte_t *ptep)
->> +{
->> +	memset(ptep, RANDOM_NZVALUE, sizeof(pte_t));
->> +	pte_clear(NULL, 0, ptep);
->> +	WARN_ON(!pte_none(READ_ONCE(*ptep)));
->> +}
->> +
->> +static void pmd_clear_tests(pmd_t *pmdp)
->> +{
->> +	memset(pmdp, RANDOM_NZVALUE, sizeof(pmd_t));
->> +	pmd_clear(pmdp);
->> +	WARN_ON(!pmd_none(READ_ONCE(*pmdp)));
->> +}
->> +
->> +static void pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
->> +			       pgtable_t pgtable)
->> +{
->> +	/*
->> +	 * This entry points to next level page table page.
->> +	 * Hence this must not qualify as pmd_bad().
->> +	 */
->> +	pmd_clear(pmdp);
->> +	pmd_populate(mm, pmdp, pgtable);
->> +	WARN_ON(pmd_bad(READ_ONCE(*pmdp)));
->> +}
->> +
->> +static bool pfn_range_valid(struct zone *z, unsigned long start_pfn,
->> +			    unsigned long nr_pages)
->> +{
->> +	unsigned long i, end_pfn = start_pfn + nr_pages;
->> +	struct page *page;
->> +
->> +	for (i = start_pfn; i < end_pfn; i++) {
->> +		if (!pfn_valid(i))
->> +			return false;
->> +
->> +		page = pfn_to_page(i);
->> +
->> +		if (page_zone(page) != z)
->> +			return false;
->> +
->> +		if (PageReserved(page))
->> +			return false;
->> +
->> +		if (page_count(page) > 0)
->> +			return false;
->> +
->> +		if (PageHuge(page))
->> +			return false;
->> +	}
->> +	return true;
->> +}
->> +
->> +static struct page *alloc_gigantic_page(nodemask_t *nodemask,
->> +					int nid, gfp_t gfp_mask, int order)
->> +{
->> +	struct zonelist *zonelist;
->> +	struct zone *zone;
->> +	struct zoneref *z;
->> +	enum zone_type zonesel;
->> +	unsigned long ret, pfn, flags, nr_pages;
->> +
->> +	nr_pages = 1UL << order;
->> +	zonesel = gfp_zone(gfp_mask);
->> +	zonelist = node_zonelist(nid, gfp_mask);
->> +	for_each_zone_zonelist_nodemask(zone, z, zonelist, zonesel, nodemask) {
->> +		spin_lock_irqsave(&zone->lock, flags);
->> +		pfn = ALIGN(zone->zone_start_pfn, nr_pages);
->> +		while (zone_spans_pfn(zone, pfn + nr_pages - 1)) {
->> +			if (pfn_range_valid(zone, pfn, nr_pages)) {
->> +				spin_unlock_irqrestore(&zone->lock, flags);
->> +				ret = alloc_contig_range(pfn, pfn + nr_pages,
->> +							 MIGRATE_MOVABLE,
->> +							 gfp_mask);
->> +				if (!ret)
->> +					return pfn_to_page(pfn);
->> +				spin_lock_irqsave(&zone->lock, flags);
->> +			}
->> +			pfn += nr_pages;
->> +		}
->> +		spin_unlock_irqrestore(&zone->lock, flags);
->> +	}
->> +	return NULL;
->> +}
->> +
->> +static struct page *alloc_mapped_page(void)
->> +{
->> +	gfp_t gfp_mask = GFP_KERNEL | __GFP_ZERO;
->> +	struct page *page = NULL;
->> +
->> +	page = alloc_gigantic_page(&node_states[N_MEMORY], first_memory_node,
->> +				   gfp_mask, get_order(PUD_SIZE));
->> +	if (page) {
->> +		pud_aligned = true;
->> +		pmd_aligned = true;
->> +		return page;
->> +	}
->> +
->> +	page = alloc_pages(gfp_mask, get_order(PMD_SIZE));
->> +	if (page) {
->> +		pmd_aligned = true;
->> +		return page;
->> +	}
->> +	return alloc_page(gfp_mask);
->> +}
->> +
->> +static void free_mapped_page(struct page *page)
->> +{
->> +	if (pud_aligned) {
->> +		unsigned long pfn = page_to_pfn(page);
->> +
->> +		free_contig_range(pfn, 1ULL << get_order(PUD_SIZE));
->> +		return;
->> +	}
->> +
->> +	if (pmd_aligned) {
->> +		int order = get_order(PMD_SIZE);
->> +
->> +		free_pages((unsigned long)page_address(page), order);
->> +		return;
->> +	}
->> +	free_page((unsigned long)page_address(page));
->> +}
->> +
->> +static int __init arch_pgtable_tests_init(void)
->> +{
->> +	struct mm_struct *mm;
->> +	struct page *page;
->> +	pgd_t *pgdp;
->> +	p4d_t *p4dp, *saved_p4dp;
->> +	pud_t *pudp, *saved_pudp;
->> +	pmd_t *pmdp, *saved_pmdp;
->> +	pte_t *ptep, *saved_ptep;
->> +	pgprot_t prot = vm_get_page_prot(VMA_TEST_FLAGS);
->> +	unsigned long vaddr = VADDR_TEST;
->> +
->> +	mm = mm_alloc();
->> +	if (!mm) {
->> +		pr_err("mm_struct allocation failed\n");
->> +		return 1;
->> +	}
->> +
->> +	page = alloc_mapped_page();
->> +	if (!page) {
->> +		pr_err("memory allocation failed\n");
->> +		return 1;
->> +	}
->> +
->> +	pgdp = pgd_offset(mm, vaddr);
->> +	p4dp = p4d_alloc(mm, pgdp, vaddr);
->> +	pudp = pud_alloc(mm, p4dp, vaddr);
->> +	pmdp = pmd_alloc(mm, pudp, vaddr);
->> +	ptep = pte_alloc_map(mm, pmdp, vaddr);
->> +
->> +	/*
->> +	 * Save all the page table page addresses as the page table
->> +	 * entries will be used for testing with random or garbage
->> +	 * values. These saved addresses will be used for freeing
->> +	 * page table pages.
->> +	 */
->> +	saved_p4dp = p4d_offset(pgdp, 0UL);
->> +	saved_pudp = pud_offset(p4dp, 0UL);
->> +	saved_pmdp = pmd_offset(pudp, 0UL);
->> +	saved_ptep = pte_offset_map(pmdp, 0UL);
->> +
->> +	pte_basic_tests(page, prot);
->> +	pmd_basic_tests(page, prot);
->> +	pud_basic_tests(page, prot);
->> +	p4d_basic_tests(page, prot);
->> +	pgd_basic_tests(page, prot);
->> +
->> +	pte_clear_tests(ptep);
->> +	pmd_clear_tests(pmdp);
->> +	pud_clear_tests(pudp);
->> +	p4d_clear_tests(p4dp);
->> +	pgd_clear_tests(pgdp);
->> +
->> +	pmd_populate_tests(mm, pmdp, (pgtable_t) page);
-> 
-> This is not correct for architectures that defines pgtable_t as pte_t
-> pointer, not struct page pointer.
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
 
-Right, a grep on the source confirms that.
+Please don't. That is a restriction on all future extensions - once a
+kernel is shipped with a syscall using this helper with that arbitrary
+restriction in place, that syscall is forever prevented from extending
+its arg struct beyond PAGE_SIZE (which is arch-dependent anyway). Sure,
+it's hard to imagine, but who'd have thought 32 O_* or CLONE_* bits
+weren't enough for everybody?
 
-These platforms define pgtable_t as struct page *
+This is only for future compatibility, and if someone runs an app
+compiled against 7.3 headers on a 5.4 kernel, they probably don't care
+about performance, but they would like their app to run.
 
-arch/alpha/include/asm/page.h:typedef struct page *pgtable_t;
-arch/arm/include/asm/page.h:typedef struct page *pgtable_t;
-arch/arm64/include/asm/page.h:typedef struct page *pgtable_t;
-arch/csky/include/asm/page.h:typedef struct page *pgtable_t;
-arch/hexagon/include/asm/page.h:typedef struct page *pgtable_t;
-arch/ia64/include/asm/page.h:  typedef struct page *pgtable_t;
-arch/ia64/include/asm/page.h:    typedef struct page *pgtable_t;
-arch/m68k/include/asm/page.h:typedef struct page *pgtable_t;
-arch/microblaze/include/asm/page.h:typedef struct page *pgtable_t;
-arch/mips/include/asm/page.h:typedef struct page *pgtable_t;
-arch/nds32/include/asm/page.h:typedef struct page *pgtable_t;
-arch/nios2/include/asm/page.h:typedef struct page *pgtable_t;
-arch/openrisc/include/asm/page.h:typedef struct page *pgtable_t;
-arch/parisc/include/asm/page.h:typedef struct page *pgtable_t;
-arch/riscv/include/asm/page.h:typedef struct page *pgtable_t;
-arch/sh/include/asm/page.h:typedef struct page *pgtable_t;
-arch/sparc/include/asm/page_32.h:typedef struct page *pgtable_t;
-arch/um/include/asm/page.h:typedef struct page *pgtable_t;
-arch/unicore32/include/asm/page.h:typedef struct page *pgtable_t;
-arch/x86/include/asm/pgtable_types.h:typedef struct page *pgtable_t;
-arch/xtensa/include/asm/page.h:typedef struct page *pgtable_t;
+[If we ever create such a large ABI struct that doesn't fit on stack,
+we'd have to extend our API a little to create a dup_struct_from_user()
+that does the kmalloc() for us and then calls copy_struct_from_user() -
+but we might want that long before we hit PAGE_SIZE structs].
 
-These platforms define pgtable_t as pte_t *
+> +	if (unlikely(!access_ok(dst, usize)))
+> +		return -EFAULT;
+> +
+> +	/* Deal with trailing bytes. */
+> +	if (usize < ksize) {
+> +		if (memchr_inv(src + size, 0, rest))
+> +			return -EFBIG;
+> +	} else if (usize > ksize) {
+> +		if (__memzero_user(dst + size, rest))
+> +			return -EFAULT;
 
-arch/arc/include/asm/page.h:typedef pte_t * pgtable_t;
-arch/powerpc/include/asm/mmu.h:typedef pte_t *pgtable_t;
-arch/s390/include/asm/page.h:typedef pte_t *pgtable_t;
-arch/sparc/include/asm/page_64.h:typedef pte_t *pgtable_t;
+I think that could simply be __clear_user().
 
-Should we need have two pmd_populate_tests() definitions with
-different arguments (struct page pointer or pte_t pointer) and then
-call either one after detecting the given platform ?
+> +	}
+> +	/* Copy the interoperable parts of the struct. */
+> +	if (__copy_to_user(dst, src, size))
+> +		return -EFAULT;
 
-> 
->> +	pud_populate_tests(mm, pudp, pmdp);
->> +	p4d_populate_tests(mm, p4dp, pudp);
->> +	pgd_populate_tests(mm, pgdp, p4dp);
-> 
-> This is wrong. All p?dp points to the second entry in page table entry.
-> This is not valid pointer for page table and triggers p?d_bad() on x86.
+I think I understand why you put this last instead of handling the
+buffer in the "natural" order. However,
+I'm wondering whether we should actually do this copy before checking
+that the extra kernel bytes are 0 - the user will still be told that
+there was some extra information via the -EFBIG/-E2BIG return, but maybe
+in some cases the part he understands is good enough. But I also guess
+we have to look to existing users to see whether that would prevent them
+from being converted to using this helper.
 
-Yeah these are second entries because of the way we create the page table.
-But I guess its applicable only to the second argument in all these above
-cases because the first argument can be any valid entry on previous page
-table level.
+linux-api folks, WDYT?
 
-> 
-> Use saved_p?dp instead.
+> +	return 0;
 
-It works on x86. Will test on arm64 and update.
+Maybe more useful to "return size;", some users might want to know/pass
+on how much was actually copied.
+
+> +}
+> +EXPORT_SYMBOL(copy_struct_to_user);
+
+Can't we wait with this until a modular user shows up? The primary users
+are syscalls, which can't be modular AFAIK.
+
+> +/**
+> + * copy_struct_from_user: copy a struct from user space
+> + * @dst:   Destination address, in kernel space. This buffer must be @ksize
+> + *         bytes long.
+> + * @ksize: Size of @dst struct.
+> + * @src:   Source address, in user space.
+> + * @usize: (Alleged) size of @src struct.
+> + *
+> + * Copies a struct from user space to kernel space, in a way that guarantees
+> + * backwards-compatibility for struct syscall arguments (as long as future
+> + * struct extensions are made such that all new fields are *appended* to the
+> + * old struct, and zeroed-out new fields have the same meaning as the old
+> + * struct).
+> + *
+> + * @ksize is just sizeof(*dst), and @usize should've been passed by user space.
+> + * The recommended usage is something like the following:
+> + *
+> + *   SYSCALL_DEFINE2(foobar, const struct foo __user *, uarg, size_t, usize)
+> + *   {
+> + *      int err;
+> + *      struct foo karg = {};
+> + *
+> + *      err = copy_struct_from_user(&karg, sizeof(karg), uarg, size);
+> + *      if (err)
+> + *        return err;
+> + *
+> + *      // ...
+> + *   }
+> + *
+> + * There are three cases to consider:
+> + *  * If @usize == @ksize, then it's copied verbatim.
+> + *  * If @usize < @ksize, then the user space has passed an old struct to a
+> + *    newer kernel. The rest of the trailing bytes in @dst (@ksize - @usize)
+> + *    are to be zero-filled.
+> + *  * If @usize > @ksize, then the user space has passed a new struct to an
+> + *    older kernel. The trailing bytes unknown to the kernel (@usize - @ksize)
+> + *    are checked to ensure they are zeroed, otherwise -E2BIG is returned.
+> + *
+> + * Returns (in all cases, some data may have been copied):
+> + *  * -E2BIG:  (@usize > @ksize) and there are non-zero trailing bytes in @src.
+> + *  * -E2BIG:  @usize is "too big" (at time of writing, >PAGE_SIZE).
+> + *  * -EFAULT: access to user space failed.
+> + */
+> +int copy_struct_from_user(void *dst, size_t ksize,
+> +			  const void __user *src, size_t usize)
+> +{
+> +	size_t size = min(ksize, usize);
+> +	size_t rest = abs(ksize - usize);
+
+As above.
+
+> +	if (unlikely(usize > PAGE_SIZE))
+> +		return -EFAULT;
+
+As above.
+
+> +	if (unlikely(!access_ok(src, usize)))
+> +		return -EFAULT;
+> +
+> +	/* Deal with trailing bytes. */
+> +	if (usize < ksize)
+> +		memset(dst + size, 0, rest);
+> +	else if (usize > ksize) {
+> +		const void __user *addr = src + size;
+> +		char buffer[BUFFER_SIZE] = {};
+> +
+> +		while (rest > 0) {
+> +			size_t bufsize = min(rest, sizeof(buffer));
+> +
+> +			if (__copy_from_user(buffer, addr, bufsize))
+> +				return -EFAULT;
+> +			if (memchr_inv(buffer, 0, bufsize))
+> +				return -E2BIG;
+> +
+> +			addr += bufsize;
+> +			rest -= bufsize;
+> +		}
+
+I'd create a __user_is_zero() helper for this - that way the two
+branches in the two helpers become nicely symmetric, each just calling a
+single helper that deals appropriately with the tail. And we can discuss
+how to implement __user_is_zero() in another bikeshed.
+
+> +	}
+> +	/* Copy the interoperable parts of the struct. */
+> +	if (__copy_from_user(dst, src, size))
+> +		return -EFAULT;
+
+If you do move up the __copy_to_user(), please move this as well - on
+the kernel side, we certainly don't care that we copied some bytes to a
+local buffer which we then ignore because the user had a non-zero tail.
+But if __copy_to_user() is kept last in copy_struct_to_user(), this
+should stay for symmetry.
+
+> +	return 0;
+
+As above.
+
+> +}
+> +EXPORT_SYMBOL(copy_struct_from_user);
+
+As above.
+
+Rasmus
+
