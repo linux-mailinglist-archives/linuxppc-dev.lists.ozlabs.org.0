@@ -2,33 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737FAAA2B5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 14:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6501AA2BD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 14:11:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PKGG5l9WzDr5N
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 22:08:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PKKZ3NwvzDqvR
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2019 22:11:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PKCC3znGzDqfS
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PKCC6D1fzDqgS
  for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 22:05:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46PKCB17dzz9sPG; Thu,  5 Sep 2019 22:05:41 +1000 (AEST)
+ id 46PKCC0HSGz9sP7; Thu,  5 Sep 2019 22:05:42 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 8205d5d98ef7f155de211f5e2eb6ca03d95a5a60
-In-Reply-To: <20190904045529.23002-1-gromero@linux.vnet.ibm.com>
+X-powerpc-patch-commit: a8318c13e79badb92bc6640704a64cc022a6eb97
+In-Reply-To: <20190904045529.23002-2-gromero@linux.vnet.ibm.com>
 To: gromero <gromero@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  mikey@neuling.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2 1/3] powerpc/tm: Fix FP/VMX unavailable exceptions
- inside a transaction
-Message-Id: <46PKCB17dzz9sPG@ozlabs.org>
-Date: Thu,  5 Sep 2019 22:05:41 +1000 (AEST)
+Subject: Re: [PATCH v2 2/3] powerpc/tm: Fix restoring FP/VMX facility
+ incorrectly on interrupts
+Message-Id: <46PKCC0HSGz9sP7@ozlabs.org>
+Date: Thu,  5 Sep 2019 22:05:42 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,26 +45,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-09-04 at 04:55:27 UTC, gromero wrote:
+On Wed, 2019-09-04 at 04:55:28 UTC, gromero wrote:
 > From: Gustavo Romero <gromero@linux.ibm.com>
 > 
-> When we take an FP unavailable exception in a transaction we have to
-> account for the hardware FP TM checkpointed registers being
-> incorrect. In this case for this process we know the current and
-> checkpointed FP registers must be the same (since FP wasn't used
-> inside the transaction) hence in the thread_struct we copy the current
-> FP registers to the checkpointed ones.
+> When in userspace and MSR FP=0 the hardware FP state is unrelated to
+> the current process. This is extended for transactions where if tbegin
+> is run with FP=0, the hardware checkpoint FP state will also be
+> unrelated to the current process. Due to this, we need to ensure this
+> hardware checkpoint is updated with the correct state before we enable
+> FP for this process.
 ...
 > 
-> This fixes CVE-2019-15030.
+> This fixes CVE-2019-15031.
 > 
-> Fixes: f48e91e87e67 ("powerpc/tm: Fix FP and VMX register corruption")
-> Cc: stable@vger.kernel.org # 4.12+
-> Signed-off-by: Gustavo Romero <gromero@linux.vnet.ibm.com>
+> Fixes: a7771176b439 ("powerpc: Don't enable FP/Altivec if not checkpointed")
+> Cc: stable@vger.kernel.org # 4.15+
+> Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
 > Signed-off-by: Michael Neuling <mikey@neuling.org>
 
 Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/8205d5d98ef7f155de211f5e2eb6ca03d95a5a60
+https://git.kernel.org/powerpc/c/a8318c13e79badb92bc6640704a64cc022a6eb97
 
 cheers
