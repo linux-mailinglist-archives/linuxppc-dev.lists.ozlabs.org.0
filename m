@@ -1,73 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AAEAC513
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 09:06:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CCAAC565
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 10:56:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46QQTV20HfzDqvT
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 17:06:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46QSw81qTczDr10
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 18:56:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com;
- envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=ubuntu.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="FTOUBe3b"; 
- dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=ubuntu.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46QQRb0mLMzDqnR
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2019 17:05:12 +1000 (AEST)
-Received: by mail-wr1-x441.google.com with SMTP id y19so8686356wrd.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Sep 2019 00:05:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=uG/4ee4QFvxtO6YqUj4/6hf8mT0/4TZPno4rf5+gn9c=;
- b=FTOUBe3b1iLDFD2AKBcM8gwSBoborf46EBl+4RqfL4+qEcQADfnDxAvRimNSy67ajc
- HSa7h6Wd5HRTv2meUD6p5JyNaGopTZEAMaLB+/NMbKg4YF6s0L45Z5pE2cYIF36GcRNM
- 5Sw/KbZd43ZYCoVuX0ExAqSukr41d7f20Eh6PLm7AXzTCA7h/wg+8lsj2wWWTQkNJLgF
- Zsm/nib5GR08vatVvtUOAjq+jATcrWADIPt2LCZOgVUSIGV+VYm19M4tFm+I0qK0RGMI
- jf7D1ce8NTz5gXeBVc/AsDIGc+zy7ZYV5aVfrA61qZKiFuWGzTd12gDNP423t9kz7sKr
- wb2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=uG/4ee4QFvxtO6YqUj4/6hf8mT0/4TZPno4rf5+gn9c=;
- b=JdbTK02hhH8hKjr/bpMLpoXsbVnB5Mt6ZxezHKCTMVzudUKuin6wsvHFyBI51hHvWu
- 9OciCqWGq9WVfAwvoogj4nYS2jFTNJ5wu9HlYZr9pAulmRi50seg+bAIme8LM2t/iuki
- G6pKr9mCCNFAkXf7Ji3Nmurrt6n0Zuo9N6KSJJSavedYy8WEnoGw31B+n3kULSK2IPmM
- HO6CCqtSwGZ0wqng53dcn3vXhpuBA8+uXqQhq4YW4aWj95zMCwoCM9TNzEPlZE/Rk58B
- /IL8jbv/cs1xtySl18w+qDqYF24tscvjxKW4RtY1dfPs/4TNx8I0Up6FbsWrqzublDLC
- cqvA==
-X-Gm-Message-State: APjAAAVO57zJuvBRMA76lzSkS3nUtkH9ZCNnpKZzY2Uw9kwKU7509c00
- Iwx/xHgohfhnvMfGsoEG1xw=
-X-Google-Smtp-Source: APXvYqw2AY9QlhJaEyP4D5m/vtc4Ci+Vs0emJ7CXSHVzaCW1j53cQKUHcAWB5KeOXdAr8Zbn6dkS/g==
-X-Received: by 2002:a5d:438c:: with SMTP id i12mr9716673wrq.238.1567839908891; 
- Sat, 07 Sep 2019 00:05:08 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
- by smtp.gmail.com with ESMTPSA id b184sm16203809wmg.47.2019.09.07.00.05.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 07 Sep 2019 00:05:07 -0700 (PDT)
-Date: Sat, 7 Sep 2019 09:05:05 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: [PATCH v2] powerpc/lockdep: fix a false positive warning
-Message-ID: <20190907070505.GA88784@gmail.com>
-References: <20190906231754.830-1-cai@lca.pw>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PHRF6PbRzDqNv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2019 20:46:01 +1000 (AEST)
+Received: from [213.220.153.21] (helo=wittgenstein)
+ by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+ (Exim 4.76) (envelope-from <christian.brauner@ubuntu.com>)
+ id 1i5pGI-0007WW-Cl; Thu, 05 Sep 2019 10:45:10 +0000
+Date: Thu, 5 Sep 2019 12:45:08 +0200
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
+ helpers
+Message-ID: <20190905104507.glbhzeke4p3cg3ti@wittgenstein>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-2-cyphar@cyphar.com>
+ <57ba3752-c4a6-d2a4-1a4d-a0e13bccd473@rasmusvillemoes.dk>
+ <20190905095026.gjemg2gqua2vufxb@yavin.dot.cyphar.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190906231754.830-1-cai@lca.pw>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190905095026.gjemg2gqua2vufxb@yavin.dot.cyphar.com>
+User-Agent: NeoMutt/20180716
+X-Mailman-Approved-At: Sat, 07 Sep 2019 18:55:12 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,151 +52,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, bvanassche@acm.org, arnd@arndb.de,
- peterz@infradead.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Jiri Olsa <jolsa@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
+ Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Sep 05, 2019 at 07:50:26PM +1000, Aleksa Sarai wrote:
+> On 2019-09-05, Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+> > On 04/09/2019 22.19, Aleksa Sarai wrote:
+> > > A common pattern for syscall extensions is increasing the size of a
+> > > struct passed from userspace, such that the zero-value of the new fields
+> > > result in the old kernel behaviour (allowing for a mix of userspace and
+> > > kernel vintages to operate on one another in most cases). This is done
+> > > in both directions -- hence two helpers -- though it's more common to
+> > > have to copy user space structs into kernel space.
+> > > 
+> > > Previously there was no common lib/ function that implemented
+> > > the necessary extension-checking semantics (and different syscalls
+> > > implemented them slightly differently or incompletely[1]). A future
+> > > patch replaces all of the common uses of this pattern to use the new
+> > > copy_struct_{to,from}_user() helpers.
+> > > 
+> > > [1]: For instance {sched_setattr,perf_event_open,clone3}(2) all do do
+> > >      similar checks to copy_struct_from_user() while rt_sigprocmask(2)
+> > >      always rejects differently-sized struct arguments.
+> > > 
+> > > Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> > > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+> > > ---
+> > > diff --git a/lib/struct_user.c b/lib/struct_user.c
+> > > new file mode 100644
+> > > index 000000000000..7301ab1bbe98
+> > > --- /dev/null
+> > > +++ b/lib/struct_user.c
+> > > @@ -0,0 +1,182 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > > +/*
+> > > + * Copyright (C) 2019 SUSE LLC
+> > > + * Copyright (C) 2019 Aleksa Sarai <cyphar@cyphar.com>
+> > > + */
+> > > +
+> > > +#include <linux/types.h>
+> > > +#include <linux/export.h>
+> > > +#include <linux/uaccess.h>
+> > > +#include <linux/kernel.h>
+> > > +#include <linux/string.h>
+> > > +
+> > > +#define BUFFER_SIZE 64
+> > > +
+> > > +/*
+> > > + * "memset(p, 0, size)" but for user space buffers. Caller must have already
+> > > + * checked access_ok(p, size).
+> > > + */
+> > 
+> > Isn't this __clear_user() exactly (perhaps except for the return value)?
+> > Perhaps not every arch has that?
+> 
+> I didn't know about clear_user() -- I will switch to it.
+> 
+> > > +static int __memzero_user(void __user *p, size_t s)
+> > > +{
+> > > +	const char zeros[BUFFER_SIZE] = {};
+> > > +	while (s > 0) {
+> > > +		size_t n = min(s, sizeof(zeros));
+> > > +
+> > > +		if (__copy_to_user(p, zeros, n))
+> > > +			return -EFAULT;
+> > > +
+> > > +		p += n;
+> > > +		s -= n;
+> > > +	}
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +/**
+> > > + * copy_struct_to_user: copy a struct to user space
+> > > + * @dst:   Destination address, in user space.
+> > > + * @usize: Size of @dst struct.
+> > > + * @src:   Source address, in kernel space.
+> > > + * @ksize: Size of @src struct.
+> > > + *
+> > > + * Returns (in all cases, some data may have been copied):
+> > > + *  * -EFBIG:  (@usize < @ksize) and there are non-zero trailing bytes in @src.
+> > > + *  * -EFAULT: access to user space failed.
+> > > + */
+> > > +int copy_struct_to_user(void __user *dst, size_t usize,
+> > > +			const void *src, size_t ksize)
+> > > +{
+> > > +	size_t size = min(ksize, usize);
+> > > +	size_t rest = abs(ksize - usize);
+> > 
+> > Eh, I'd avoid abs() here due to the funkiness of the implicit type
+> > conversions - ksize-usize has type size_t, then that's coerced to an int
+> > (or a long maybe?), the abs is applied which return an int/long (or
+> > unsigned versions?). Something like "rest = max(ksize, usize) - size;"
+> > is more obviously correct and doesn't fall into any
+> > narrowing/widening/sign extending traps.
+> 
+> Yeah, I originally used "max(ksize, usize) - size" for that reason but
+> was worried it looked too funky (and some quick tests showed that abs()
+> gives the right results in most cases -- though I just realised it would
+> probably not give the right results around SIZE_MAX). I'll switch back.
+> 
+> > > +	if (unlikely(usize > PAGE_SIZE))
+> > > +		return -EFAULT;
+> > 
+> > Please don't. That is a restriction on all future extensions - once a
+> > kernel is shipped with a syscall using this helper with that arbitrary
+> > restriction in place, that syscall is forever prevented from extending
+> > its arg struct beyond PAGE_SIZE (which is arch-dependent anyway). Sure,
+> > it's hard to imagine, but who'd have thought 32 O_* or CLONE_* bits
+> > weren't enough for everybody?
+> >
+> > This is only for future compatibility, and if someone runs an app
+> > compiled against 7.3 headers on a 5.4 kernel, they probably don't care
+> > about performance, but they would like their app to run.
+> 
+> I'm not sure I agree that the limit is in place *forever* -- it's
+> generally not a break in compatibility to convert an error into a
+> success (though, there are counterexamples such as mknod(2) -- but that
+> was a very specific case).
+> 
+> You're right that it would mean that some very new code won't run on
+> very ancient kernels (assuming we ever pass around structs that
+> massive), but there should be a reasonable trade-off here IMHO.
 
-* Qian Cai <cai@lca.pw> wrote:
+Passing a struct larger than a PAGE_SIZE right now (at least for all
+those calls that would make use of this helper at the moment) is to be
+considered a bug.
+The PAGE_SIZE check is a reasonable heuristic. It's an assumption that
+is pretty common in the kernel in other places as well. Plus the
+possibility of DoS.
 
-> The commit 108c14858b9e ("locking/lockdep: Add support for dynamic
-> keys") introduced a boot warning on powerpc below, because since the
-> commit 2d4f567103ff ("KVM: PPC: Introduce kvm_tmp framework") adds
-> kvm_tmp[] into the .bss section and then free the rest of unused spaces
-> back to the page allocator.
 > 
-> kernel_init
->   kvm_guest_init
->     kvm_free_tmp
->       free_reserved_area
->         free_unref_page
->           free_unref_page_prepare
+> If we allow very large sizes, a program could probably DoS the kernel by
+> allocating a moderately-large block of memory and then spawning a bunch
+> of threads that all cause the kernel to re-check that the same 1GB block
+> of memory is zeroed. I haven't tried, but it seems like it's best to
+> avoid the possibility altogether.
 > 
-> Later, alloc_workqueue() happens to allocate some pages from there and
-> trigger the warning at,
+> > > +	}
+> > > +	/* Copy the interoperable parts of the struct. */
+> > > +	if (__copy_to_user(dst, src, size))
+> > > +		return -EFAULT;
+> > 
+> > I think I understand why you put this last instead of handling the
+> > buffer in the "natural" order. However,
+> > I'm wondering whether we should actually do this copy before checking
+> > that the extra kernel bytes are 0 - the user will still be told that
+> > there was some extra information via the -EFBIG/-E2BIG return, but maybe
+> > in some cases the part he understands is good enough. But I also guess
+> > we have to look to existing users to see whether that would prevent them
+> > from being converted to using this helper.
+> > 
+> > linux-api folks, WDYT?
 > 
-> if (WARN_ON_ONCE(static_obj(key)))
+> Regarding the order, I just copied what sched and perf already do. I
+> wouldn't mind doing it the other way around -- though I am a little
+> cautious about implicitly making guarantees like that. The syscall that
+> uses copy_struct_to_user() might not want to make that guarantee (it
+> might not make sense for them), and there are some -E2BIG returns that
+> won't result in data being copied (usize > PAGE_SIZE).
 > 
-> Fix it by adding a generic helper arch_is_bss_hole() to skip those areas
-> in static_obj(). Since kvm_free_tmp() is only done early during the
-> boot, just go lockless to make the implementation simple for now.
+> As for feedback, this is syscall-dependent at the moment. The sched and
+> perf users explicitly return the size of the kernel structure (by
+> overwriting uattr->size if -E2BIG is returned) for copies in either
+> direction. So users arguably already have some kind of feedback about
+> size issues. clone3() on the other hand doesn't do that (though it
+> doesn't copy anything to user-space so this isn't relevant to this
+> particular question).
 > 
-> WARNING: CPU: 0 PID: 13 at kernel/locking/lockdep.c:1120
-> Workqueue: events work_for_cpu_fn
-> Call Trace:
->   lockdep_register_key+0x68/0x200
->   wq_init_lockdep+0x40/0xc0
->   trunc_msg+0x385f9/0x4c30f (unreliable)
->   wq_init_lockdep+0x40/0xc0
->   alloc_workqueue+0x1e0/0x620
->   scsi_host_alloc+0x3d8/0x490
->   ata_scsi_add_hosts+0xd0/0x220 [libata]
->   ata_host_register+0x178/0x400 [libata]
->   ata_host_activate+0x17c/0x210 [libata]
->   ahci_host_activate+0x84/0x250 [libahci]
->   ahci_init_one+0xc74/0xdc0 [ahci]
->   local_pci_probe+0x78/0x100
->   work_for_cpu_fn+0x40/0x70
->   process_one_work+0x388/0x750
->   process_scheduled_works+0x50/0x90
->   worker_thread+0x3d0/0x570
->   kthread+0x1b8/0x1e0
->   ret_from_kernel_thread+0x5c/0x7c
-> 
-> Fixes: 108c14858b9e ("locking/lockdep: Add support for dynamic keys")
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
-> 
-> v2: No need to actually define arch_is_bss_hole() powerpc64 only.
-> 
->  arch/powerpc/include/asm/sections.h | 11 +++++++++++
->  arch/powerpc/kernel/kvm.c           |  5 +++++
->  include/asm-generic/sections.h      |  7 +++++++
->  kernel/locking/lockdep.c            |  3 +++
->  4 files changed, 26 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-> index 4a1664a8658d..4f5d69c42017 100644
-> --- a/arch/powerpc/include/asm/sections.h
-> +++ b/arch/powerpc/include/asm/sections.h
-> @@ -5,8 +5,19 @@
->  
->  #include <linux/elf.h>
->  #include <linux/uaccess.h>
-> +
-> +#define arch_is_bss_hole arch_is_bss_hole
-> +
->  #include <asm-generic/sections.h>
->  
-> +extern void *bss_hole_start, *bss_hole_end;
-> +
-> +static inline int arch_is_bss_hole(unsigned long addr)
-> +{
-> +	return addr >= (unsigned long)bss_hole_start &&
-> +	       addr < (unsigned long)bss_hole_end;
-> +}
-> +
->  extern char __head_end[];
->  
->  #ifdef __powerpc64__
-> diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
-> index b7b3a5e4e224..89e0e522e125 100644
-> --- a/arch/powerpc/kernel/kvm.c
-> +++ b/arch/powerpc/kernel/kvm.c
-> @@ -66,6 +66,7 @@
->  static bool kvm_patching_worked = true;
->  char kvm_tmp[1024 * 1024];
->  static int kvm_tmp_index;
-> +void *bss_hole_start, *bss_hole_end;
->  
->  static inline void kvm_patch_ins(u32 *inst, u32 new_inst)
->  {
-> @@ -707,6 +708,10 @@ static __init void kvm_free_tmp(void)
->  	 */
->  	kmemleak_free_part(&kvm_tmp[kvm_tmp_index],
->  			   ARRAY_SIZE(kvm_tmp) - kvm_tmp_index);
-> +
-> +	bss_hole_start = &kvm_tmp[kvm_tmp_index];
-> +	bss_hole_end = &kvm_tmp[ARRAY_SIZE(kvm_tmp)];
-> +
->  	free_reserved_area(&kvm_tmp[kvm_tmp_index],
->  			   &kvm_tmp[ARRAY_SIZE(kvm_tmp)], -1, NULL);
->  }
-> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-> index d1779d442aa5..4d8b1f2c5fd9 100644
-> --- a/include/asm-generic/sections.h
-> +++ b/include/asm-generic/sections.h
-> @@ -91,6 +91,13 @@ static inline int arch_is_kernel_initmem_freed(unsigned long addr)
->  }
->  #endif
->  
-> +#ifndef arch_is_bss_hole
-> +static inline int arch_is_bss_hole(unsigned long addr)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> +
->  /**
->   * memory_contains - checks if an object is contained within a memory region
->   * @begin: virtual address of the beginning of the memory region
-> diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-> index 4861cf8e274b..cd75b51f15ce 100644
-> --- a/kernel/locking/lockdep.c
-> +++ b/kernel/locking/lockdep.c
-> @@ -675,6 +675,9 @@ static int static_obj(const void *obj)
->  	if (arch_is_kernel_initmem_freed(addr))
->  		return 0;
->  
-> +	if (arch_is_bss_hole(addr))
-> +		return 0;
+> Effectively, I'd like to see someone argue that this is something that
+> they would personally want (before we do it).
 
-arch_is_bss_hole() should use a 'bool' - but other than that, this 
-looks good to me, if the PowerPC maintainers agree too.
-
-Thanks,
-
-	Ingo
+I think the order you have right now is fine. I don't see the point of
+doing work first before we have verified that things are sane.
