@@ -1,35 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10D3AB1C9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 06:49:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F161FAB285
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 08:30:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PlTg4bpLzDqV1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 14:49:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PnkM68sWzDr8r
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 16:30:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PlRN3MhRzDr6x
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 14:47:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46PlRM2RTZz9s7T;
- Fri,  6 Sep 2019 14:47:43 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.3-5 tag
-Date: Fri, 06 Sep 2019 14:47:37 +1000
-Message-ID: <87ftlaxc7q.fsf@mpe.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46PnhQ3fBszDqSY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 16:29:05 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2652828;
+ Thu,  5 Sep 2019 23:29:03 -0700 (PDT)
+Received: from [10.162.42.101] (p8cg001049571a15.blr.arm.com [10.162.42.101])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ EE03C3F67D; Thu,  5 Sep 2019 23:31:17 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
+ <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
+ <20190904221618.1b624a98@thinkpad>
+ <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
+ <20190905190629.523bdb87@thinkpad>
+Message-ID: <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
+Date: Fri, 6 Sep 2019 11:58:59 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20190905190629.523bdb87@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,68 +53,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michaelellerman@gmail.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, gromero@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On 09/05/2019 10:36 PM, Gerald Schaefer wrote:
+> On Thu, 5 Sep 2019 14:48:14 +0530
+> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> 
+>>> [...]  
+>>>> +
+>>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
+>>>> +static void pud_clear_tests(pud_t *pudp)
+>>>> +{
+>>>> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
+>>>> +	pud_clear(pudp);
+>>>> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
+>>>> +}  
+>>>
+>>> For pgd/p4d/pud_clear(), we only clear if the page table level is present
+>>> and not folded. The memset() here overwrites the table type bits, so
+>>> pud_clear() will not clear anything on s390 and the pud_none() check will
+>>> fail.
+>>> Would it be possible to OR a (larger) random value into the table, so that
+>>> the lower 12 bits would be preserved?  
+>>
+>> So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
+>> it should OR a large random value preserving lower 12 bits. Hmm, this should
+>> still do the trick for other platforms, they just need non zero value. So on
+>> s390, the lower 12 bits on the page table entry already has valid value while
+>> entering this function which would make sure that pud_clear() really does
+>> clear the entry ?
+> 
+> Yes, in theory the table entry on s390 would have the type set in the last
+> 4 bits, so preserving those would be enough. If it does not conflict with
+> others, I would still suggest preserving all 12 bits since those would contain
+> arch-specific flags in general, just to be sure. For s390, the pte/pmd tests
+> would also work with the memset, but for consistency I think the same logic
+> should be used in all pxd_clear_tests.
 
-Hi Linus,
+Makes sense but..
 
-Please pull some more powerpc fixes for 5.3:
-
-The following changes since commit ed4289e8b48845888ee46377bd2b55884a55e60b:
-
-  Revert "powerpc: slightly improve cache helpers" (2019-07-31 22:56:27 +1000)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.3-5
-
-for you to fetch changes up to a8318c13e79badb92bc6640704a64cc022a6eb97:
-
-  powerpc/tm: Fix restoring FP/VMX facility incorrectly on interrupts (2019-09-04 22:31:13 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.3 #5
-
-One fix for a boot hang on some Freescale machines when PREEMPT is enabled.
-
-Two CVE fixes for bugs in our handling of FP registers and transactional memory,
-both of which can result in corrupted FP state, or FP state leaking between
-processes.
-
-Thanks to:
-  Chris Packham, Christophe Leroy, Gustavo Romero, Michael Neuling.
-
-- ------------------------------------------------------------------
-Christophe Leroy (1):
-      powerpc/64e: Drop stale call to smp_processor_id() which hangs SMP startup
-
-Gustavo Romero (2):
-      powerpc/tm: Fix FP/VMX unavailable exceptions inside a transaction
-      powerpc/tm: Fix restoring FP/VMX facility incorrectly on interrupts
+There is a small challenge with this. Modifying individual bits on a given
+page table entry from generic code like this test case is bit tricky. That
+is because there are not enough helpers to create entries with an absolute
+value. This would have been easier if all the platforms provided functions
+like __pxx() which is not the case now. Otherwise something like this should
+have worked.
 
 
- arch/powerpc/kernel/process.c | 21 ++++-----------------
- arch/powerpc/mm/nohash/tlb.c  |  1 -
- 2 files changed, 4 insertions(+), 18 deletions(-)
------BEGIN PGP SIGNATURE-----
+pud_t pud = READ_ONCE(*pudp);
+pud = __pud(pud_val(pud) | RANDOM_VALUE (keeping lower 12 bits 0))
+WRITE_ONCE(*pudp, pud);
 
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl1x48cACgkQUevqPMjh
-pYBCuRAAo/buJyqBbDaN8qnw1L0gusb8KF3/j9rmoMQYTmwJROtodWnK7Yxf79LI
-t8Fj94ENYaEZRazpJ379Yp2qWCIExfmWpv4GdVoLKuZwVi6aM4H5iRTSZ6SSbTY6
-Rdseae17IbV4oXwEzYLjYdDtgVdrJbcWEqbdxLkffkn+km35Idz3jD5WeWXx0RQy
-H0YtaZfj79caxB6Db78xY/z9ocq4zPNljI2Ghd0bvC7NmsELAVUl0/8RFn6qjRM9
-LZM+Oi64Z7JnLz/FRtD/RNZSK4xAwq7vh/BdSzDGiGbaNX1o0OysxQHzv8ePwABC
-GE42CqQ326vx4uICkaA7uFJ6F94s6PF1F+6XjiI0hm2STPsn0QuHd+yWKkHXMx23
-VU/SvZWK3PC6HJgyCQQvmdY7g/UrcXpA0pr2IUhCnxmT2MrbFceYopSnueoag7An
-WAVombwtfaFLRv8g8yV2E0y8K1X3AmfIpZBFK95zMg3uQPTiuA5Z2lFcU6L131g0
-pr3K3OkR9vOn5crxOba8osjhwseNcpcvynkT5xzpRewrIpUSkl0tzwwue5jox6NX
-KPV2eooGNfEcdYhuum41k+2Ps9y2aNdIXkhAdqXqTArpOdTSjdDNd+CxlHg8ZGl7
-S9LffbbZhsxY4++6xSiLhhfAYQi/QjEuL6HQjy+DENEdSc+BmF8=
-=nAqV
------END PGP SIGNATURE-----
+But __pud() will fail to build in many platforms.
+
+The other alternative will be to make sure memset() happens on all other
+bits except the lower 12 bits which will depend on endianness. If s390
+has a fixed endianness, we can still use either of them which will hold
+good for others as well.
+
+memset(pudp, RANDOM_NZVALUE, sizeof(pud_t) - 3);
+
+OR
+
+memset(pudp + 3, RANDOM_NZVALUE, sizeof(pud_t) - 3);
+
+> 
+> However, there is another issue on s390 which will make this only work
+> for pud_clear_tests(), and not for the p4d/pgd_tests. The problem is that
+> mm_alloc() will only give you a 3-level page table initially on s390.
+> This means that pudp == p4dp == pgdp, and so the p4d/pgd_tests will
+> both see the pud level (of course this also affects other tests).
+
+Got it.
+
+> 
+> Not sure yet how to fix this, i.e. how to initialize/update the page table
+> to 5 levels. We can handle 5 level page tables, and it would be good if
+> all levels could be tested, but using mm_alloc() to establish the page
+> tables might not work on s390. One option could be to provide an arch-hook
+> or weak function to allocate/initialize the mm.
+
+Sure, got it. Though I plan to do add some arch specific tests or init sequence
+like the above later on but for now the idea is to get the smallest possible set
+of test cases which builds and runs on all platforms without requiring any arch
+specific hooks or special casing (#ifdef) to be agreed upon broadly and accepted.
+
+Do you think this is absolutely necessary on s390 for the very first set of test
+cases or we can add this later on as an improvement ?
+
+> 
+> IIUC, the (dummy) mm is really only needed to provide an mm->pgd as starting
+> point, right?
+
+Right.
