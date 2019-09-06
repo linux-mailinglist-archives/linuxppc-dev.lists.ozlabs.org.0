@@ -1,47 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F161FAB285
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 08:30:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1821AB291
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 08:41:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PnkM68sWzDr8r
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 16:30:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PnyV2MBbzDqj4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 16:41:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Pnwg0wG4zDqXM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 16:39:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46PnhQ3fBszDqSY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 16:29:05 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2652828;
- Thu,  5 Sep 2019 23:29:03 -0700 (PDT)
-Received: from [10.162.42.101] (p8cg001049571a15.blr.arm.com [10.162.42.101])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- EE03C3F67D; Thu,  5 Sep 2019 23:31:17 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
- <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
- <20190904221618.1b624a98@thinkpad>
- <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
- <20190905190629.523bdb87@thinkpad>
-Message-ID: <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
-Date: Fri, 6 Sep 2019 11:58:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46Pnwf39lYz8tHG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 16:39:46 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46Pnwf2yPkz9sNT; Fri,  6 Sep 2019 16:39:46 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46Pnwd5p31z9sN1
+ for <linuxppc-dev@ozlabs.org>; Fri,  6 Sep 2019 16:39:45 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x866bS0g146292
+ for <linuxppc-dev@ozlabs.org>; Fri, 6 Sep 2019 02:39:43 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uuevtx7dg-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 06 Sep 2019 02:39:43 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Fri, 6 Sep 2019 07:39:41 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 6 Sep 2019 07:39:38 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x866dD3I41353724
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Sep 2019 06:39:13 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BBF2911C069;
+ Fri,  6 Sep 2019 06:39:36 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6221911C04C;
+ Fri,  6 Sep 2019 06:39:35 +0000 (GMT)
+Received: from [9.184.183.129] (unknown [9.184.183.129])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Sep 2019 06:39:35 +0000 (GMT)
+Subject: Re: [PATCH v5 05/31] pseries/fadump: introduce callbacks for platform
+ specific operations
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
+References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
+ <156630268261.8896.15418812183266232587.stgit@hbathini.in.ibm.com>
+ <87y2z5r5ys.fsf@mpe.ellerman.id.au>
+ <09a16e75-d9ea-2581-46d1-45827b019e01@linux.ibm.com>
+Date: Fri, 6 Sep 2019 12:09:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190905190629.523bdb87@thinkpad>
+In-Reply-To: <09a16e75-d9ea-2581-46d1-45827b019e01@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19090606-0020-0000-0000-0000036862CB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19090606-0021-0000-0000-000021BDDA1E
+Message-Id: <4c05458e-835d-e249-a451-f632236cf62d@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-06_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=878 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909060071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,121 +109,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, Oliver <oohall@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/05/2019 10:36 PM, Gerald Schaefer wrote:
-> On Thu, 5 Sep 2019 14:48:14 +0530
-> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+
+
+On 03/09/19 9:36 PM, Hari Bathini wrote:
 > 
->>> [...]  
->>>> +
->>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->>>> +static void pud_clear_tests(pud_t *pudp)
->>>> +{
->>>> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
->>>> +	pud_clear(pudp);
->>>> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
->>>> +}  
->>>
->>> For pgd/p4d/pud_clear(), we only clear if the page table level is present
->>> and not folded. The memset() here overwrites the table type bits, so
->>> pud_clear() will not clear anything on s390 and the pud_none() check will
->>> fail.
->>> Would it be possible to OR a (larger) random value into the table, so that
->>> the lower 12 bits would be preserved?  
+> 
+> On 03/09/19 4:40 PM, Michael Ellerman wrote:
+>> Hari Bathini <hbathini@linux.ibm.com> writes:
+>>> Introduce callback functions for platform specific operations like
+>>> register, unregister, invalidate & such. Also, define place-holders
+>>> for the same on pSeries platform.
 >>
->> So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
->> it should OR a large random value preserving lower 12 bits. Hmm, this should
->> still do the trick for other platforms, they just need non zero value. So on
->> s390, the lower 12 bits on the page table entry already has valid value while
->> entering this function which would make sure that pud_clear() really does
->> clear the entry ?
+>> We already have an ops structure for machine specific calls, it's
+>> ppc_md. Is there a good reason why these aren't just in machdep_calls
+>> under #ifdef CONFIG_FA_DUMP ?
 > 
-> Yes, in theory the table entry on s390 would have the type set in the last
-> 4 bits, so preserving those would be enough. If it does not conflict with
-> others, I would still suggest preserving all 12 bits since those would contain
-> arch-specific flags in general, just to be sure. For s390, the pte/pmd tests
-> would also work with the memset, but for consistency I think the same logic
-> should be used in all pxd_clear_tests.
+> Not really. We move this callbacks to 'struct machdep_calls'
 
-Makes sense but..
+Actually, we can't move this callbacks to 'struct machdep calls' as we need
+these callbacks much before machine_probe().
 
-There is a small challenge with this. Modifying individual bits on a given
-page table entry from generic code like this test case is bit tricky. That
-is because there are not enough helpers to create entries with an absolute
-value. This would have been easier if all the platforms provided functions
-like __pxx() which is not the case now. Otherwise something like this should
-have worked.
+So, if we have to use ppc_md callbacks for fadump... we need to be set the
+callbacks twice. Once during dt_scan and again in setup_fadump. Not worth it, I guess..
 
+- Hari
 
-pud_t pud = READ_ONCE(*pudp);
-pud = __pud(pud_val(pud) | RANDOM_VALUE (keeping lower 12 bits 0))
-WRITE_ONCE(*pudp, pud);
-
-But __pud() will fail to build in many platforms.
-
-The other alternative will be to make sure memset() happens on all other
-bits except the lower 12 bits which will depend on endianness. If s390
-has a fixed endianness, we can still use either of them which will hold
-good for others as well.
-
-memset(pudp, RANDOM_NZVALUE, sizeof(pud_t) - 3);
-
-OR
-
-memset(pudp + 3, RANDOM_NZVALUE, sizeof(pud_t) - 3);
-
-> 
-> However, there is another issue on s390 which will make this only work
-> for pud_clear_tests(), and not for the p4d/pgd_tests. The problem is that
-> mm_alloc() will only give you a 3-level page table initially on s390.
-> This means that pudp == p4dp == pgdp, and so the p4d/pgd_tests will
-> both see the pud level (of course this also affects other tests).
-
-Got it.
-
-> 
-> Not sure yet how to fix this, i.e. how to initialize/update the page table
-> to 5 levels. We can handle 5 level page tables, and it would be good if
-> all levels could be tested, but using mm_alloc() to establish the page
-> tables might not work on s390. One option could be to provide an arch-hook
-> or weak function to allocate/initialize the mm.
-
-Sure, got it. Though I plan to do add some arch specific tests or init sequence
-like the above later on but for now the idea is to get the smallest possible set
-of test cases which builds and runs on all platforms without requiring any arch
-specific hooks or special casing (#ifdef) to be agreed upon broadly and accepted.
-
-Do you think this is absolutely necessary on s390 for the very first set of test
-cases or we can add this later on as an improvement ?
-
-> 
-> IIUC, the (dummy) mm is really only needed to provide an mm->pgd as starting
-> point, right?
-
-Right.
