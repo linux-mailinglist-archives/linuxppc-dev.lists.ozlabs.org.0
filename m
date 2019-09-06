@@ -2,101 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED72EAC24B
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 00:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF1DAC2F0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 01:19:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46QBQt3B6KzDqBs
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 08:03:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46QD6c51l7zDqmJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 09:19:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmx.de
- (client-ip=212.227.17.20; helo=mout.gmx.net; envelope-from=deller@gmx.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=gmx.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gmx.net header.i=@gmx.net header.b="TnzUoo9N"; 
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="SyDw8rI4"; 
  dkim-atps=neutral
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46QBNv5gj8zDr5j
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2019 08:02:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1567807309;
- bh=kVUocnhNrCWM8haPThvZCfN3oxSXOIw8fSty7Y0VTOg=;
- h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
- b=TnzUoo9NnO7De3P+hzZpw/mAOjwFdiXAjtWas/wdeAINHQD64ANVw5IZ3zS1Vb8bB
- iZ2FTBeqvy5Rey7H1EVh4zwbGua391PDthOPgS1uJ3osWLBrqsDYRdAXj1VAQKNsJY
- jeIQZPS5h4K7v5jVqblVmlunAVO1BceeIIKpQ8Q0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.135.139]) by mail.gmx.com (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MeCpb-1igEkV3S0l-00bKm6; Sat, 07
- Sep 2019 00:01:48 +0200
-Subject: Re: [PATCH v5 0/7] kexec: add generic support for elf kernel images
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-References: <20190823194919.30916-1-svens@stackframe.org>
- <22b40bb7-6f86-0a69-12b2-12d90124173d@gmx.de>
- <87blvxgkqw.fsf@morokweng.localdomain>
-From: Helge Deller <deller@gmx.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=deller@gmx.de; keydata=
- xsBNBFDPIPYBCAC6PdtagIE06GASPWQJtfXiIzvpBaaNbAGgmd3Iv7x+3g039EV7/zJ1do/a
- y9jNEDn29j0/jyd0A9zMzWEmNO4JRwkMd5Z0h6APvlm2D8XhI94r/8stwroXOQ8yBpBcP0yX
- +sqRm2UXgoYWL0KEGbL4XwzpDCCapt+kmarND12oFj30M1xhTjuFe0hkhyNHkLe8g6MC0xNg
- KW3x7B74Rk829TTAtj03KP7oA+dqsp5hPlt/hZO0Lr0kSAxf3kxtaNA7+Z0LLiBqZ1nUerBh
- OdiCasCF82vQ4/y8rUaKotXqdhGwD76YZry9AQ9p6ccqKaYEzWis078Wsj7p0UtHoYDbABEB
- AAHNHEhlbGdlIERlbGxlciA8ZGVsbGVyQGdteC5kZT7CwJIEEwECADwCGwMGCwkIBwMCBhUI
- AgkKCwQWAgMBAh4BAheAFiEE9M/0wAvkPPtRU6Boh8nBUbUeOGQFAlrHzIICGQEACgkQh8nB
- UbUeOGT1GAgAt+EeoHB4DbAx+pZoGbBYp6ZY8L6211n8fSi7wiwgM5VppucJ+C+wILoPkqiU
- +ZHKlcWRbttER2oBUvKOt0+yDfAGcoZwHS0P+iO3HtxR81h3bosOCwek+TofDXl+TH/WSQJa
- iaitof6iiPZLygzUmmW+aLSSeIAHBunpBetRpFiep1e5zujCglKagsW78Pq0DnzbWugGe26A
- 288JcK2W939bT1lZc22D9NhXXRHfX2QdDdrCQY7UsI6g/dAm1d2ldeFlGleqPMdaaQMcv5+E
- vDOur20qjTlenjnR/TFm9tA1zV+K7ePh+JfwKc6BSbELK4EHv8J8WQJjfTphakYLVM7ATQRQ
- zyD2AQgA2SJJapaLvCKdz83MHiTMbyk8yj2AHsuuXdmB30LzEQXjT3JEqj1mpvcEjXrX1B3h
- +0nLUHPI2Q4XWRazrzsseNMGYqfVIhLsK6zT3URPkEAp7R1JxoSiLoh4qOBdJH6AJHex4CWu
- UaSXX5HLqxKl1sq1tO8rq2+hFxY63zbWINvgT0FUEME27Uik9A5t8l9/dmF0CdxKdmrOvGMw
- T770cTt76xUryzM3fAyjtOEVEglkFtVQNM/BN/dnq4jDE5fikLLs8eaJwsWG9k9wQUMtmLpL
- gRXeFPRRK+IT48xuG8rK0g2NOD8aW5ThTkF4apznZe74M7OWr/VbuZbYW443QQARAQABwsBf
- BBgBAgAJBQJQzyD2AhsMAAoJEIfJwVG1HjhkNTgH/idWz2WjLE8DvTi7LvfybzvnXyx6rWUs
- 91tXUdCzLuOtjqWVsqBtSaZynfhAjlbqRlrFZQ8i8jRyJY1IwqgvHP6PO9s+rIxKlfFQtqhl
- kR1KUdhNGtiI90sTpi4aeXVsOyG3572KV3dKeFe47ALU6xE5ZL5U2LGhgQkbjr44I3EhPWc/
- lJ/MgLOPkfIUgjRXt0ZcZEN6pAMPU95+u1N52hmqAOQZvyoyUOJFH1siBMAFRbhgWyv+YE2Y
- ZkAyVDL2WxAedQgD/YCCJ+16yXlGYGNAKlvp07SimS6vBEIXk/3h5Vq4Hwgg0Z8+FRGtYZyD
- KrhlU0uMP9QTB5WAUvxvGy8=
-Message-ID: <ac109a98-8a41-b3b2-9b2e-2bfe5bd3166a@gmx.de>
-Date: Sat, 7 Sep 2019 00:01:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46QD4f4XFLzDrCD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2019 09:18:09 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id g4so9159681qtq.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Sep 2019 16:18:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xEHvhDCiSNySF2s6HQz4q9U2jEp8Cpol0sbtQ3rHoEc=;
+ b=SyDw8rI4aN90GaPzgaFpy7QlVzoQ/N11Bsk92xEvYdSj0f1M8LB3p8GDLi/NHmjK5s
+ FCZcnEbNfy9qlbtL64QjYXjtm3ImVvB0V1EtJZOxm31i5ZSq4rNHn6X20S3pjSP6PVmS
+ 5iMRGR+lgdHP8/p1kEgfQmy/yHUkcjodhpcnryBzHZM9Q62mm8DK9n/lQGAg3fy4yknf
+ vz0Wa3IvDMWKB+8OKkN9wG3NiJp1/oZrQtHZHIAyu4aumFHgfBwWfXiRTwTGbjgBtG/v
+ LKrpW5pN3LEZz7rfg3iezOlPvgM6EsZn4FcJPD1w2nIrLrjJjd3dbq7FW8Uxmho00HZj
+ qpSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xEHvhDCiSNySF2s6HQz4q9U2jEp8Cpol0sbtQ3rHoEc=;
+ b=aTvPeSvpAzi+of8C1wspyu5XuLiq/mSkyd20CdSbNZ7zkvhWDo8y5zp1lGq0LlsUKD
+ TxS2cViQ0+nFenrrSPlzaP+EgvTnw0YroU8XaqhyKRjrA5dcIZ5ygPdvaKXUC8wVHt2Y
+ BGoDQ1Lku1C9sDFHQhZ7mvy0E7W1L4KqeVuym6xkMcY+I3CcQovwOxaMTIjFJvp3EBmJ
+ bNXxyC+YU38FB6ITIpJw2CmbI9O0k45WrnWkzK2MhnaX4mUeJafzUSIiZCDFRzNirgLN
+ +/11vkSNMEedqrLOpQiB7+1140WTXR62kfcjVHBjbH+D3i0D6yMdKYIHXq4dHSMcQwM8
+ /W6A==
+X-Gm-Message-State: APjAAAXkcy8rr7BwRvphe8fwcy8xoOAB6K2erDXPJVVoGCJrn/tgbnU/
+ qojaH6X9HZlkgxfVgm9ZWE+4NA==
+X-Google-Smtp-Source: APXvYqzJAgVBT0XCTnjsN+YHyEu+mU7vz4KirkwxE6DaxZZIsM/TO4gy05d4hmXLUpbFd0Oy3D7VrQ==
+X-Received: by 2002:ac8:4796:: with SMTP id k22mr11361795qtq.333.1567811886260; 
+ Fri, 06 Sep 2019 16:18:06 -0700 (PDT)
+Received: from Qians-MBP.fios-router
+ (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id o26sm3147034qkm.0.2019.09.06.16.18.04
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Fri, 06 Sep 2019 16:18:05 -0700 (PDT)
+From: Qian Cai <cai@lca.pw>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/lockdep: fix a false positive warning
+Date: Fri,  6 Sep 2019 19:17:54 -0400
+Message-Id: <20190906231754.830-1-cai@lca.pw>
+X-Mailer: git-send-email 2.20.1 (Apple Git-117)
 MIME-Version: 1.0
-In-Reply-To: <87blvxgkqw.fsf@morokweng.localdomain>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OpY+wRorhXY+5ZVu38MgLwykHvj2jP7yMvfAT3aAJVNv0yewUEx
- gSsM6fUsV5CUsJt/yay1Hh1cnVV1t9xTOIvFn5IBk3wdbfFRpemvdQtf0zlkSLNJ+ispRYx
- AJn5gO5V64bNk1j5juJKrRZqLgcf/Yb/UTQuCQ49a7PmBLxZLT6xD9pnVV/5IqdJSvr3LVd
- w+RSL1MqZD9RDNzl3A4SQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:rkYcC0aB/Gw=:KWH4ZFYz3uYoFzPOhZx0UO
- kInbee74645eIiJzPoL6CkjEv8dEcttSW5DTpbqw5Djpdy3MWnWxVsqn+6eyq9lqJmhxufsvz
- LrwHaYzkhJl1Fr8K59XVdpX8739OBBjXOmMBy7x0mC0Cpom9BFDmSBz0trhPMATjLB3RdPi8k
- EheSSui08FoUbunK5foRnWfJqrV13g4a57v2/007Hya9OK3imL7lNJbgl2AMRS38D+wZWdZQj
- 7IBB59E41QRljmX+lj/tK9b3Rr52uQ1hu1RKHqbtTypGK3OTxB9UHA541MHur+7OmRXQx7zyX
- Ef7a9Y3sL/OgG5y/hYw/E2IiWAMVeAEQqtf4AZ/wAilN+am9P1i0sfZDVRhyrjDAxIUKHcEOs
- RgVVAuOiCC1UmpGQ3a8kHZxhJrMrYyWoODIbZZXzboTHDYJ1Ew85B6YZvhtZK7gMWMjxZGKso
- yOpUGSSuV4oJ+G4v2DFSsaK2Ua4pztSytPdbTSsrZKb6QChnMfgOb2nHzobIOR5uOTGTJduXd
- dohdPtyVdpign+cYT9NIH2i3bJ7wTXOm14RG8t/77oWMRS6xARMlZvlsSEyfMYZnRxuCuXSxQ
- qR0TwALVULpro+9wnxoNRutpxIIy5elg4y4srrupyWBZ1QLZtsnI7DouF2fC15iFz9Hi+VYRq
- iJWGnVyweto+iPzWNEyIkp0ZAjU5PJ1PDmXOJz1W3va3MgN9mSYGry42UzR3H2K5cLsP10O4T
- rGdC/QCj6ygFPfROyMuS3d9Lhp69HxqNdYVCpa1fvPKz0783Jvd9byzGYOULeHWyvdWjoaCFP
- OD5gNT0TNBHtzPKKDf89iSHRZQyX5gvlzJrGIrD42vE8BbJfRTFZ9fmTkvNS9NHGqhSiTe34j
- A1kFZnA4bHnG3ptNe7OWW3HSwJ2uPRn0u/30JZlbKDnfeDE6YJXrb2EkGGYT9qzfFOUGizOSH
- DubCmP+TqcZnrV8XREYlyXbqqT6C7Qk5Zhf4802n4w3LSmqQUwftIT6LWChiwhKY71qERxNvO
- f6zFLEnyRpea6nmVeOK/BYQO1o4rUbdGH2MjlU3EBT8nxrtXkSbbU7bohoWSc+TGLeMxvHoC2
- sT0psH1u0jpB/QbSb+ULwR6GMJb1q68mv1LzNaZVBZl88/aFlpywOkh5FKuNaiuMa34H5lK7P
- hQeUSvkc8ha+dxVMy0tiUAvsO3fXujvdEYyB0Ak+sC7MO6ksTifDfWxD+ydJ9ak7UWEfk=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,61 +77,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kexec@lists.infradead.org, Sven Schnelle <svens@stackframe.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, bvanassche@acm.org, arnd@arndb.de,
+ peterz@infradead.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06.09.19 23:47, Thiago Jung Bauermann wrote:
-> Helge Deller <deller@gmx.de> writes:
->> This kexec patch series is the groundwork for kexec on the parisc archi=
-tecture.
->> Since we want kexec on parisc, I've applied it to my for-next-kexec tre=
-e [1],
->> and can push it to Linus in the next merge window through the parisc tr=
-ee [2].
->
-> I just had a look at this version and it looks fine to me. Identical to
-> the version I reviewed before except for the changes I suggested.
-> Thanks, Sven!
->
->> If someone has any objections, or if you prefer to take it through
->> a kexec or powerpc tree, please let me know.
->>
->> Helge
->>
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux=
-.git/log/?h=3Dfor-next-kexec
->> [2] https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux=
-.git/log/?h=3Dfor-next
->
-> I noticed that the first patch is the only one that doesn't have my
-> Reviewed-by. If you want, you can add it:
->
-> Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+The commit 108c14858b9e ("locking/lockdep: Add support for dynamic
+keys") introduced a boot warning on powerpc below, because since the
+commit 2d4f567103ff ("KVM: PPC: Introduce kvm_tmp framework") adds
+kvm_tmp[] into the .bss section and then free the rest of unused spaces
+back to the page allocator.
 
-Thanks for reviewing again!
-I added your Reviewed-by to the patches in the for-next tree.
+kernel_init
+  kvm_guest_init
+    kvm_free_tmp
+      free_reserved_area
+        free_unref_page
+          free_unref_page_prepare
 
-Helge
+Later, alloc_workqueue() happens to allocate some pages from there and
+trigger the warning at,
 
->
->> On 23.08.19 21:49, Sven Schnelle wrote:
->>> Changes to v4:
->>>  - rebase on current powerpc/merge tree
->>>  - fix syscall name in commit message
->>>  - remove a few unused #defines in arch/powerpc/kernel/kexec_elf_64.c
->>> ...
->>>  arch/Kconfig                                  |   3 +
->>>  arch/powerpc/Kconfig                          |   1 +
->>>  arch/powerpc/kernel/kexec_elf_64.c            | 545 +----------------=
--
->>>  include/linux/kexec.h                         |  23 +
->>>  kernel/Makefile                               |   1 +
->>>  .../kexec_elf_64.c =3D> kernel/kexec_elf.c      | 394 +++----------
->>>  6 files changed, 115 insertions(+), 852 deletions(-)
->>>  copy arch/powerpc/kernel/kexec_elf_64.c =3D> kernel/kexec_elf.c (50%)
->
->
+if (WARN_ON_ONCE(static_obj(key)))
+
+Fix it by adding a generic helper arch_is_bss_hole() to skip those areas
+in static_obj(). Since kvm_free_tmp() is only done early during the
+boot, just go lockless to make the implementation simple for now.
+
+WARNING: CPU: 0 PID: 13 at kernel/locking/lockdep.c:1120
+Workqueue: events work_for_cpu_fn
+Call Trace:
+  lockdep_register_key+0x68/0x200
+  wq_init_lockdep+0x40/0xc0
+  trunc_msg+0x385f9/0x4c30f (unreliable)
+  wq_init_lockdep+0x40/0xc0
+  alloc_workqueue+0x1e0/0x620
+  scsi_host_alloc+0x3d8/0x490
+  ata_scsi_add_hosts+0xd0/0x220 [libata]
+  ata_host_register+0x178/0x400 [libata]
+  ata_host_activate+0x17c/0x210 [libata]
+  ahci_host_activate+0x84/0x250 [libahci]
+  ahci_init_one+0xc74/0xdc0 [ahci]
+  local_pci_probe+0x78/0x100
+  work_for_cpu_fn+0x40/0x70
+  process_one_work+0x388/0x750
+  process_scheduled_works+0x50/0x90
+  worker_thread+0x3d0/0x570
+  kthread+0x1b8/0x1e0
+  ret_from_kernel_thread+0x5c/0x7c
+
+Fixes: 108c14858b9e ("locking/lockdep: Add support for dynamic keys")
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
+
+v2: No need to actually define arch_is_bss_hole() powerpc64 only.
+
+ arch/powerpc/include/asm/sections.h | 11 +++++++++++
+ arch/powerpc/kernel/kvm.c           |  5 +++++
+ include/asm-generic/sections.h      |  7 +++++++
+ kernel/locking/lockdep.c            |  3 +++
+ 4 files changed, 26 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
+index 4a1664a8658d..4f5d69c42017 100644
+--- a/arch/powerpc/include/asm/sections.h
++++ b/arch/powerpc/include/asm/sections.h
+@@ -5,8 +5,19 @@
+ 
+ #include <linux/elf.h>
+ #include <linux/uaccess.h>
++
++#define arch_is_bss_hole arch_is_bss_hole
++
+ #include <asm-generic/sections.h>
+ 
++extern void *bss_hole_start, *bss_hole_end;
++
++static inline int arch_is_bss_hole(unsigned long addr)
++{
++	return addr >= (unsigned long)bss_hole_start &&
++	       addr < (unsigned long)bss_hole_end;
++}
++
+ extern char __head_end[];
+ 
+ #ifdef __powerpc64__
+diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
+index b7b3a5e4e224..89e0e522e125 100644
+--- a/arch/powerpc/kernel/kvm.c
++++ b/arch/powerpc/kernel/kvm.c
+@@ -66,6 +66,7 @@
+ static bool kvm_patching_worked = true;
+ char kvm_tmp[1024 * 1024];
+ static int kvm_tmp_index;
++void *bss_hole_start, *bss_hole_end;
+ 
+ static inline void kvm_patch_ins(u32 *inst, u32 new_inst)
+ {
+@@ -707,6 +708,10 @@ static __init void kvm_free_tmp(void)
+ 	 */
+ 	kmemleak_free_part(&kvm_tmp[kvm_tmp_index],
+ 			   ARRAY_SIZE(kvm_tmp) - kvm_tmp_index);
++
++	bss_hole_start = &kvm_tmp[kvm_tmp_index];
++	bss_hole_end = &kvm_tmp[ARRAY_SIZE(kvm_tmp)];
++
+ 	free_reserved_area(&kvm_tmp[kvm_tmp_index],
+ 			   &kvm_tmp[ARRAY_SIZE(kvm_tmp)], -1, NULL);
+ }
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index d1779d442aa5..4d8b1f2c5fd9 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -91,6 +91,13 @@ static inline int arch_is_kernel_initmem_freed(unsigned long addr)
+ }
+ #endif
+ 
++#ifndef arch_is_bss_hole
++static inline int arch_is_bss_hole(unsigned long addr)
++{
++	return 0;
++}
++#endif
++
+ /**
+  * memory_contains - checks if an object is contained within a memory region
+  * @begin: virtual address of the beginning of the memory region
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 4861cf8e274b..cd75b51f15ce 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -675,6 +675,9 @@ static int static_obj(const void *obj)
+ 	if (arch_is_kernel_initmem_freed(addr))
+ 		return 0;
+ 
++	if (arch_is_bss_hole(addr))
++		return 0;
++
+ 	/*
+ 	 * static variable?
+ 	 */
+-- 
+2.20.1 (Apple Git-117)
 
