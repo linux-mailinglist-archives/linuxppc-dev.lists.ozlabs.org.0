@@ -2,81 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381D2AB740
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 13:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68483AB9F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 15:55:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46PwYp5tVNzDq83
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 21:38:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PzbC5VC3zDqjk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 23:55:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com;
- envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PwWf41ctzDr7q
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 21:37:01 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x86BadTm089538
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 6 Sep 2019 07:36:55 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uunksa8xp-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PzTK2z0pzDqPj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 23:50:12 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x86DlNt8124938
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 6 Sep 2019 09:50:07 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2uuns4xtub-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Sep 2019 07:36:54 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Sep 2019 09:50:07 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Fri, 6 Sep 2019 12:36:46 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Fri, 6 Sep 2019 14:50:05 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 6 Sep 2019 12:36:45 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x86Bahag46399692
+ Fri, 6 Sep 2019 14:50:02 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x86Do16359047942
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Sep 2019 11:36:43 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7AA2652054;
- Fri,  6 Sep 2019 11:36:43 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.199.53.172])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id B556A5204E;
- Fri,  6 Sep 2019 11:36:41 +0000 (GMT)
-Date: Fri, 6 Sep 2019 17:06:39 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v7 1/7] kvmppc: Driver to manage pages of secure guest
-References: <20190822102620.21897-1-bharata@linux.ibm.com>
- <20190822102620.21897-2-bharata@linux.ibm.com>
- <20190829083810.GA13039@lst.de> <20190830034259.GD31913@in.ibm.com>
- <20190902075356.GA28967@lst.de>
+ Fri, 6 Sep 2019 13:50:01 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C7AF9A4055;
+ Fri,  6 Sep 2019 13:50:01 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 99EC7A404D;
+ Fri,  6 Sep 2019 13:50:00 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri,  6 Sep 2019 13:50:00 +0000 (GMT)
+Date: Fri, 6 Sep 2019 19:19:59 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2 3/4] powerpc/numa: Early request for home node
+ associativity
+References: <20190829055023.6171-1-srikar@linux.vnet.ibm.com>
+ <20190829055023.6171-4-srikar@linux.vnet.ibm.com>
+ <87tv9qqzm7.fsf@linux.ibm.com>
+ <20190906034110.GA12412@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20190902075356.GA28967@lst.de>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190906034110.GA12412@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
-x-cbid: 19090611-0008-0000-0000-00000311D8FF
+x-cbid: 19090613-0028-0000-0000-00000398843F
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090611-0009-0000-0000-00004A303630
-Message-Id: <20190906113639.GA8748@in.ibm.com>
+x-cbparentid: 19090613-0029-0000-0000-0000245ADDCC
+Message-Id: <20190906134959.GB12412@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-06_04:, , signatures=0
+ definitions=2019-09-06_06:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=993 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909060123
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909060147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,63 +92,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 02, 2019 at 09:53:56AM +0200, Christoph Hellwig wrote:
-> On Fri, Aug 30, 2019 at 09:12:59AM +0530, Bharata B Rao wrote:
-> > On Thu, Aug 29, 2019 at 10:38:10AM +0200, Christoph Hellwig wrote:
-> > > On Thu, Aug 22, 2019 at 03:56:14PM +0530, Bharata B Rao wrote:
-> > > > +/*
-> > > > + * Bits 60:56 in the rmap entry will be used to identify the
-> > > > + * different uses/functions of rmap.
-> > > > + */
-> > > > +#define KVMPPC_RMAP_DEVM_PFN	(0x2ULL << 56)
-> > > 
-> > > How did you come up with this specific value?
+> > Regardless, I have an annoying question :-) Isn't it possible that,
+> > while Linux is calling vphn_get_nid() for each logical cpu in sequence,
+> > the platform could change a virtual processor's node assignment,
+> > potentially causing sibling threads to get different node assignments
+> > and producing an incoherent topology (which then leads to sched domain
+> > assertions etc)?
 > > 
-> > Different usage types of RMAP array are being defined.
-> > https://patchwork.ozlabs.org/patch/1149791/
-> > 
-> > The above value is reserved for device pfn usage.
 > 
-> Shouldn't all these defintions go in together in a patch?
-
-Ideally yes, but the above patch is already in Paul's tree, I will sync
-up with him about this.
-
-> Also is bit 56+ a set of values, so is there 1 << 56 and 3 << 56 as well?  Seems
-> like even that other patch doesn't fully define these "pfn" values.
-
-I realized that the bit numbers have changed, it is no longer bits 60:56,
-but instead top 8bits. 
-
-#define KVMPPC_RMAP_UVMEM_PFN   0x0200000000000000
-static inline bool kvmppc_rmap_is_uvmem_pfn(unsigned long *rmap)
-{
-        return ((*rmap & 0xff00000000000000) == KVMPPC_RMAP_UVMEM_PFN);
-}
-
+> Right, its certainly possible for node assignment to change while we iterate
+> through the siblings. Do you have an recommendations?
 > 
-> > > No need for !! when returning a bool.  Also the helper seems a little
-> > > pointless, just opencoding it would make the code more readable in my
-> > > opinion.
-> > 
-> > I expect similar routines for other usages of RMAP to come up.
+
+One thingk that I forgot to add was we already cache the cpu_to_node
+mapping. If the mapping is around, we still don't lookup the nid.
+
+However its still possible that in the first iteration where we cache the
+nid's. we still end up with different nids for different siblings if node
+associativity changes in between.
+
+> > If so, I think more care is needed. The algorithm should make the vphn
+> > call only once per cpu node, I think?
 > 
-> Please drop them all.  Having to wade through a header to check for
-> a specific bit that also is set manually elsewhere in related code
-> just obsfucates it for the reader.
+> I didn't get "once per cpu node", How do we know which all cpus are part of
+> that cpu node? Or did you mean once per cpu core?
 
-I am currently using the routine kvmppc_rmap_is_uvmem_pfn() (shown
-above) instead open coding it at multiple places, but I can drop it if
-you prefer.
-
-Regards,
-Bharata.
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
