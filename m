@@ -2,84 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFBBAB15B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 05:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D10D3AB1C9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 06:49:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Pk0t2SWqzDr7N
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 13:43:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46PlTg4bpLzDqV1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2019 14:49:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Pjyn4zzlzDr6q
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 13:41:20 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x863ajMV141132
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 5 Sep 2019 23:41:15 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2uuddkbt7b-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2019 23:41:15 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Fri, 6 Sep 2019 04:41:14 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 6 Sep 2019 04:41:13 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x863fCse39125184
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Sep 2019 03:41:12 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 067F34C052;
- Fri,  6 Sep 2019 03:41:12 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DBDEB4C058;
- Fri,  6 Sep 2019 03:41:10 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri,  6 Sep 2019 03:41:10 +0000 (GMT)
-Date: Fri, 6 Sep 2019 09:11:10 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH v2 3/4] powerpc/numa: Early request for home node
- associativity
-References: <20190829055023.6171-1-srikar@linux.vnet.ibm.com>
- <20190829055023.6171-4-srikar@linux.vnet.ibm.com>
- <87tv9qqzm7.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46PlRN3MhRzDr6x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 14:47:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46PlRM2RTZz9s7T;
+ Fri,  6 Sep 2019 14:47:43 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.3-5 tag
+Date: Fri, 06 Sep 2019 14:47:37 +1000
+Message-ID: <87ftlaxc7q.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <87tv9qqzm7.fsf@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19090603-0012-0000-0000-0000034750C1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090603-0013-0000-0000-00002181A92A
-Message-Id: <20190906034110.GA12412@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-06_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909060039
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,81 +41,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: michaelellerman@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, gromero@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> >
-> > While here, fix a problem where of_node_put could be called even when
-> > of_get_cpu_node was not successful.
-> 
-> of_node_put() handles NULL arguments, so this should not be necessary.
-> 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Ok 
+Hi Linus,
 
-> > @@ -875,7 +908,7 @@ void __init mem_topology_setup(void)
-> >  	reset_numa_cpu_lookup_table();
-> >  
-> >  	for_each_present_cpu(cpu)
-> > -		numa_setup_cpu(cpu);
-> > +		numa_setup_cpu(cpu, false);
-> >  }
-> 
-> I'm open to other points of view here, but I would prefer two separate
-> functions, something like vphn_get_nid() for runtime and
-> vphn_get_nid_early() (which could be __init) for boot-time
-> initialization. Propagating a somewhat unexpressive boolean flag through
-> two levels of function calls in this code is unappealing...
-> 
+Please pull some more powerpc fixes for 5.3:
 
-Somehow not convinced that we need to duplicate function just to avoid
-passing a bool.
+The following changes since commit ed4289e8b48845888ee46377bd2b55884a55e60b:
 
-If propagating a boolean flag in two levels of function calls is an issue,
-we could decipher the logic in numa_setup_cpu itself
+  Revert "powerpc: slightly improve cache helpers" (2019-07-31 22:56:27 +1000)
 
-Something like this
-static int numa_setup_cpu(unsigned long lcpu, bool get_hwid)
-{
-....
+are available in the git repository at:
 
-	if (firmware_has_feature(FW_FEATURE_VPHN)) {
-		long hwid;
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.3-5
 
-		if (get_hwid)
-			hwid = get_hard_smp_processor_id(cpu);
-		else
-			hwid = cpu_to_phys_id[cpu];
+for you to fetch changes up to a8318c13e79badb92bc6640704a64cc022a6eb97:
 
-		nid = vphn_get_nid(lcpu, hwid);
-	}
+  powerpc/tm: Fix restoring FP/VMX facility incorrectly on interrupts (2019-09-04 22:31:13 +1000)
 
-....
-Would this help?
+- ------------------------------------------------------------------
+powerpc fixes for 5.3 #5
 
-> Regardless, I have an annoying question :-) Isn't it possible that,
-> while Linux is calling vphn_get_nid() for each logical cpu in sequence,
-> the platform could change a virtual processor's node assignment,
-> potentially causing sibling threads to get different node assignments
-> and producing an incoherent topology (which then leads to sched domain
-> assertions etc)?
-> 
+One fix for a boot hang on some Freescale machines when PREEMPT is enabled.
 
-Right, its certainly possible for node assignment to change while we iterate
-through the siblings. Do you have an recommendations?
+Two CVE fixes for bugs in our handling of FP registers and transactional memory,
+both of which can result in corrupted FP state, or FP state leaking between
+processes.
 
-> If so, I think more care is needed. The algorithm should make the vphn
-> call only once per cpu node, I think?
+Thanks to:
+  Chris Packham, Christophe Leroy, Gustavo Romero, Michael Neuling.
 
-I didn't get "once per cpu node", How do we know which all cpus are part of
-that cpu node? Or did you mean once per cpu core?
+- ------------------------------------------------------------------
+Christophe Leroy (1):
+      powerpc/64e: Drop stale call to smp_processor_id() which hangs SMP startup
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+Gustavo Romero (2):
+      powerpc/tm: Fix FP/VMX unavailable exceptions inside a transaction
+      powerpc/tm: Fix restoring FP/VMX facility incorrectly on interrupts
 
+
+ arch/powerpc/kernel/process.c | 21 ++++-----------------
+ arch/powerpc/mm/nohash/tlb.c  |  1 -
+ 2 files changed, 4 insertions(+), 18 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl1x48cACgkQUevqPMjh
+pYBCuRAAo/buJyqBbDaN8qnw1L0gusb8KF3/j9rmoMQYTmwJROtodWnK7Yxf79LI
+t8Fj94ENYaEZRazpJ379Yp2qWCIExfmWpv4GdVoLKuZwVi6aM4H5iRTSZ6SSbTY6
+Rdseae17IbV4oXwEzYLjYdDtgVdrJbcWEqbdxLkffkn+km35Idz3jD5WeWXx0RQy
+H0YtaZfj79caxB6Db78xY/z9ocq4zPNljI2Ghd0bvC7NmsELAVUl0/8RFn6qjRM9
+LZM+Oi64Z7JnLz/FRtD/RNZSK4xAwq7vh/BdSzDGiGbaNX1o0OysxQHzv8ePwABC
+GE42CqQ326vx4uICkaA7uFJ6F94s6PF1F+6XjiI0hm2STPsn0QuHd+yWKkHXMx23
+VU/SvZWK3PC6HJgyCQQvmdY7g/UrcXpA0pr2IUhCnxmT2MrbFceYopSnueoag7An
+WAVombwtfaFLRv8g8yV2E0y8K1X3AmfIpZBFK95zMg3uQPTiuA5Z2lFcU6L131g0
+pr3K3OkR9vOn5crxOba8osjhwseNcpcvynkT5xzpRewrIpUSkl0tzwwue5jox6NX
+KPV2eooGNfEcdYhuum41k+2Ps9y2aNdIXkhAdqXqTArpOdTSjdDNd+CxlHg8ZGl7
+S9LffbbZhsxY4++6xSiLhhfAYQi/QjEuL6HQjy+DENEdSc+BmF8=
+=nAqV
+-----END PGP SIGNATURE-----
