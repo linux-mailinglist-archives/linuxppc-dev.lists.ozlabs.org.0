@@ -1,81 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3999DAC84E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 19:44:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB9DAC885
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 19:52:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Qhd13dtYzDqdm
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Sep 2019 03:44:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Qhpm604HzDqc1
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Sep 2019 03:52:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=amacapital.net
- (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
- envelope-from=luto@amacapital.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com;
+ envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=amacapital.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=amacapital-net.20150623.gappssmtp.com
- header.i=@amacapital-net.20150623.gappssmtp.com header.b="Ahrc72PG"; 
- dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="O0k0d7lq"; dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Qhb26SPCzDqT9
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Sep 2019 03:42:32 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id w11so4684794plp.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Sep 2019 10:42:32 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Qhn24BDhzDqby
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Sep 2019 03:51:17 +1000 (AEST)
+Received: by mail-lf1-x142.google.com with SMTP id y4so7474530lfe.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Sep 2019 10:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amacapital-net.20150623.gappssmtp.com; s=20150623;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=zOxFxXxkeAXBLA4hmpQx5p2K1SwU8yRrMWsF/vzne4c=;
- b=Ahrc72PGzKNYWoLbwpqpkb4sblxxhLeem6jebRPHiC48yikyu8YdaM5Oje1cRKpGrE
- B1aFxjVmVluxNvScD9M4WSgd+3044EW5n5U/PFuuVmQG4Hbymvgt22zE94vbhcs9R725
- YmVhBFQvI6AY2jzBjl65iE1N91bXW5n21nVFyaplmtDp+2SiGPjY7BdJbCgTW6FOdyps
- WzpWqeuBT7oibyk4x8aGykU8dzYGBQ3SiApw6VGFkEO8SPi7/aZ892rQXq+Pb+3b5ZeC
- PbzZzd392k2TpO4uq92p9v5vThdZeJX5HF5wKk1rRbCSaXdBoZUNJaEVn/U3I0P9Ilwr
- 6irw==
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=JJRFoANDdA7LVjR/dXOt13NCYJCwAkkvMBjFRYL2CJk=;
+ b=O0k0d7lqzfAmPEYFzDlOGgQsR12LVtrvxo5oTKj/qTWwdx05EQgXW+UipRXAFcHY7l
+ NJSN5sB8Bd0GzZnsutsLrlnHa03N+sVzppgC400AeuuF3leAik8ua94YYTL1N/jeDSEY
+ p0NLqzIjW/MddvLJPDdxPws4zfzc5nCUgJ+sc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=zOxFxXxkeAXBLA4hmpQx5p2K1SwU8yRrMWsF/vzne4c=;
- b=l4s6Prrc6iaIkmsj5GiuqICC7HRafJrwOcTQvtUDwNTTRHOyfc+zcmtT5Cm1Gu6caw
- nZXuhSfE0oQirM549zZ8R3p3oZfTzHmP2/zZOYVCr086KBYYS+QzVdBuhkLppgHfxWGW
- Kg/CQL2fEbBqBUCqiqpsNg2IIalLU/VHIDZ9Q6POoYBfYjeI8AUwHsgRzbQbt4lsCQZP
- 5bcYLwCRBVX1oBve3Ny3ZP9EJIdfK0O1WpLcmKie7nRp/ouh1fnEBtV0V5wleV9OZ0XG
- vKlPl1SXkIaSX0Ce4JiPEt8HatI5p/t0o6cpASGt4tkP+3iPL07Ua/uJMVRzTjy9TWTi
- d3qg==
-X-Gm-Message-State: APjAAAUOtRaLHZ/zetOXuC1WF+Ji3z3FC222k/snxiBEPgO5QOEdf+LG
- XA7aYpX5u1ynz17ikFKNN1a2Fw==
-X-Google-Smtp-Source: APXvYqy9Whfn7uTg3BOXXtKo+Xb13mslF8Px0gcix7JC2yC4OfYP4K4dJzWw76A+9fC6aflAwbUnzg==
-X-Received: by 2002:a17:902:421:: with SMTP id
- 30mr16087280ple.105.1567878146356; 
- Sat, 07 Sep 2019 10:42:26 -0700 (PDT)
-Received: from ?IPv6:2600:100f:b121:da37:bc66:d4de:83c7:e0cd?
- ([2600:100f:b121:da37:bc66:d4de:83c7:e0cd])
- by smtp.gmail.com with ESMTPSA id h11sm8785567pgv.5.2019.09.07.10.42.24
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 07 Sep 2019 10:42:25 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v12 11/12] open: openat2(2) syscall
-From: Andy Lutomirski <luto@amacapital.net>
-X-Mailer: iPhone Mail (16G102)
-In-Reply-To: <CAHk-=whZx97Nm-gUK0ppofj2RA2LLz2vmaDUTKSSV-+yYB9q_Q@mail.gmail.com>
-Date: Sat, 7 Sep 2019 10:42:23 -0700
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=JJRFoANDdA7LVjR/dXOt13NCYJCwAkkvMBjFRYL2CJk=;
+ b=mae6UGmiE/q45zgAC8DBviCa2z86tLRBa0xa4hpNkKhmuq+7HG4RR5nLZO+WxCIBRJ
+ FrZ+uCdYdAYCMrhze5zphDC47thQf4Y1htTOhndHndPvaqV0Dm4g5KNhQRijxYpkqbfT
+ XjXwXAMKM58ujkFX0eyiw3pRu/cQiM7PE+0WpdgnMZdx0PL/tLcB6ZiOSxylXU0EdI+8
+ Xp+AYjCnMMLn+0c/wYXcee6t87ZDFfffba8fwa88N6oM7hvtnYWIUv1N7YZ8gEufVHsB
+ 5eeVAiBr61bs85ifpz6QJppbKVwqTG3l8s7PaGct+elwldZboj8EEuSvboyUGvV7d0J9
+ NsSQ==
+X-Gm-Message-State: APjAAAV8g+9f+7P/QvYTBxC8R1NKA8alB/QGyD3IaqgjM9yFMJJm/mAx
+ kcVhmm0DscSk4oMy3XmewC7ZXAfkqL8=
+X-Google-Smtp-Source: APXvYqyW0JT6S/kgbSJpeHNbz344NR3Y2Tk7jYOtL74JDNnOIpp1/IrDO03Kz0FxQcf+DTrJ2l5VQA==
+X-Received: by 2002:ac2:59c2:: with SMTP id x2mr9701182lfn.125.1567878672143; 
+ Sat, 07 Sep 2019 10:51:12 -0700 (PDT)
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com.
+ [209.85.208.171])
+ by smtp.gmail.com with ESMTPSA id z72sm1566422ljb.98.2019.09.07.10.51.11
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 07 Sep 2019 10:51:11 -0700 (PDT)
+Received: by mail-lj1-f171.google.com with SMTP id l1so8874212lji.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Sep 2019 10:51:11 -0700 (PDT)
+X-Received: by 2002:a2e:8645:: with SMTP id i5mr9691835ljj.165.1567878349245; 
+ Sat, 07 Sep 2019 10:45:49 -0700 (PDT)
+MIME-Version: 1.0
 References: <20190904201933.10736-1-cyphar@cyphar.com>
  <20190904201933.10736-12-cyphar@cyphar.com>
  <7236f382d72130f2afbbe8940e72cc67e5c6dce0.camel@kernel.org>
  <CAHk-=whZx97Nm-gUK0ppofj2RA2LLz2vmaDUTKSSV-+yYB9q_Q@mail.gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
+ <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
+In-Reply-To: <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 7 Sep 2019 10:45:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
+Message-ID: <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
+Subject: Re: [PATCH v12 11/12] open: openat2(2) syscall
+To: Andy Lutomirski <luto@amacapital.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,50 +117,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Sep 7, 2019 at 10:42 AM Andy Lutomirski <luto@amacapital.net> wrote:
+>
+> Linus, you rejected resolveat() because you wanted a *nice* API
 
+No. I rejected resoveat() because it was a completely broken garbage
+API that couldn't do even basic stuff right (like O_CREAT).
 
-> On Sep 7, 2019, at 9:58 AM, Linus Torvalds <torvalds@linux-foundation.org>=
- wrote:
->=20
->> On Sat, Sep 7, 2019 at 5:40 AM Jeff Layton <jlayton@kernel.org> wrote:
->>=20
->> After thinking about this a bit, I wonder if we might be better served
->> with a new set of OA2_* flags instead of repurposing the O_* flags?
->=20
-> I'd hate to have yet _another_ set of translation functions, and
-> another chance of people just getting it wrong either in user space or
-> the kernel.
->=20
-> So no. Let's not make another set of flags that has no sane way to
-> have type-safety to avoid more confusion.
->=20
-> The new flags that _only_ work with openat2() might be named with a
-> prefix/suffix to mark that, but I'm not sure it's a huge deal.
->=20
->           =20
+We have a ton of flag space in the new openat2() model, we might as
+well leave the old flags alone that people are (a) used to and (b) we
+have code to support _anyway_.
 
-I agree with the philosophy, but I think it doesn=E2=80=99t apply in this ca=
-se.  Here are the flags:
+Making up a new flag namespace is only going to cause us - and users -
+more work, and more confusion. For no actual advantage. It's not going
+to be "cleaner". It's just going to be worse.
 
-O_RDONLY, O_WRONLY, O_RDWR: not even a proper bitmask. The kernel already ha=
-s the FMODE_ bits to make this make sense. How about we make the openat2 per=
-mission bits consistent with the internal representation and let the O_ perm=
-ission bits remain as an awful translation.  The kernel already translates l=
-ike this, and it already sucks.
-
-O_CREAT, O_TMPFILE, O_NOCTTY, O_TRUNC: not modes on the fd at all.  These af=
-fect the meaning of open().  Heck, for openat2, NOCTTY should be this defaul=
-t.
-
-O_EXCL: hopelessly overloaded.
-
-O_APPEND, O_DIRECT, O_SYNC, O_DSYNC, O_LARGEFILE, O_NOATIME, O_PATH, O_NONBL=
-OCK: genuine mode bits
-
-O_CLOEXEC: special because it affects the fd, not the struct file.
-
-Linus, you rejected resolveat() because you wanted a *nice* API that people w=
-ould use and that might even be adopted by other OSes. Let=E2=80=99s please n=
-ot make openat2() be a giant pile of crap in the name of consistency with op=
-en().  open(), frankly, is horrible.
-
+                 Linus
