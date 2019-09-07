@@ -2,70 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF1DAC2F0
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 01:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C99AC3F8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 03:37:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46QD6c51l7zDqmJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 09:19:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46QH903JVXzDr9K
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 11:37:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="SyDw8rI4"; 
- dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46QD4f4XFLzDrCD
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2019 09:18:09 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id g4so9159681qtq.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Sep 2019 16:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=xEHvhDCiSNySF2s6HQz4q9U2jEp8Cpol0sbtQ3rHoEc=;
- b=SyDw8rI4aN90GaPzgaFpy7QlVzoQ/N11Bsk92xEvYdSj0f1M8LB3p8GDLi/NHmjK5s
- FCZcnEbNfy9qlbtL64QjYXjtm3ImVvB0V1EtJZOxm31i5ZSq4rNHn6X20S3pjSP6PVmS
- 5iMRGR+lgdHP8/p1kEgfQmy/yHUkcjodhpcnryBzHZM9Q62mm8DK9n/lQGAg3fy4yknf
- vz0Wa3IvDMWKB+8OKkN9wG3NiJp1/oZrQtHZHIAyu4aumFHgfBwWfXiRTwTGbjgBtG/v
- LKrpW5pN3LEZz7rfg3iezOlPvgM6EsZn4FcJPD1w2nIrLrjJjd3dbq7FW8Uxmho00HZj
- qpSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=xEHvhDCiSNySF2s6HQz4q9U2jEp8Cpol0sbtQ3rHoEc=;
- b=aTvPeSvpAzi+of8C1wspyu5XuLiq/mSkyd20CdSbNZ7zkvhWDo8y5zp1lGq0LlsUKD
- TxS2cViQ0+nFenrrSPlzaP+EgvTnw0YroU8XaqhyKRjrA5dcIZ5ygPdvaKXUC8wVHt2Y
- BGoDQ1Lku1C9sDFHQhZ7mvy0E7W1L4KqeVuym6xkMcY+I3CcQovwOxaMTIjFJvp3EBmJ
- bNXxyC+YU38FB6ITIpJw2CmbI9O0k45WrnWkzK2MhnaX4mUeJafzUSIiZCDFRzNirgLN
- +/11vkSNMEedqrLOpQiB7+1140WTXR62kfcjVHBjbH+D3i0D6yMdKYIHXq4dHSMcQwM8
- /W6A==
-X-Gm-Message-State: APjAAAXkcy8rr7BwRvphe8fwcy8xoOAB6K2erDXPJVVoGCJrn/tgbnU/
- qojaH6X9HZlkgxfVgm9ZWE+4NA==
-X-Google-Smtp-Source: APXvYqzJAgVBT0XCTnjsN+YHyEu+mU7vz4KirkwxE6DaxZZIsM/TO4gy05d4hmXLUpbFd0Oy3D7VrQ==
-X-Received: by 2002:ac8:4796:: with SMTP id k22mr11361795qtq.333.1567811886260; 
- Fri, 06 Sep 2019 16:18:06 -0700 (PDT)
-Received: from Qians-MBP.fios-router
- (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id o26sm3147034qkm.0.2019.09.06.16.18.04
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Fri, 06 Sep 2019 16:18:05 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/lockdep: fix a false positive warning
-Date: Fri,  6 Sep 2019 19:17:54 -0400
-Message-Id: <20190906231754.830-1-cai@lca.pw>
-X-Mailer: git-send-email 2.20.1 (Apple Git-117)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46QH6p0BmczDr7h
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2019 11:35:12 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x871VcxL039606; Fri, 6 Sep 2019 21:35:05 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uuwcns85u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Sep 2019 21:35:05 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x871WNcd041002;
+ Fri, 6 Sep 2019 21:35:04 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uuwcns85h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Sep 2019 21:35:04 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x871YncW013303;
+ Sat, 7 Sep 2019 01:35:03 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma01wdc.us.ibm.com with ESMTP id 2uqgh7faxb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 07 Sep 2019 01:35:03 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x871Z35r52560288
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 7 Sep 2019 01:35:03 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 281D9AE060;
+ Sat,  7 Sep 2019 01:35:03 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE52EAE05C;
+ Sat,  7 Sep 2019 01:35:00 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.199.12])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Sat,  7 Sep 2019 01:35:00 +0000 (GMT)
+References: <20190823194919.30916-1-svens@stackframe.org>
+ <22b40bb7-6f86-0a69-12b2-12d90124173d@gmx.de>
+ <87blvxgkqw.fsf@morokweng.localdomain>
+ <ac109a98-8a41-b3b2-9b2e-2bfe5bd3166a@gmx.de>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH v5 0/7] kexec: add generic support for elf kernel images
+In-reply-to: <ac109a98-8a41-b3b2-9b2e-2bfe5bd3166a@gmx.de>
+Date: Fri, 06 Sep 2019 22:34:57 -0300
+Message-ID: <87a7bghose.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-07_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909070015
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,148 +91,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, bvanassche@acm.org, arnd@arndb.de,
- peterz@infradead.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: kexec@lists.infradead.org, Sven Schnelle <svens@stackframe.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The commit 108c14858b9e ("locking/lockdep: Add support for dynamic
-keys") introduced a boot warning on powerpc below, because since the
-commit 2d4f567103ff ("KVM: PPC: Introduce kvm_tmp framework") adds
-kvm_tmp[] into the .bss section and then free the rest of unused spaces
-back to the page allocator.
 
-kernel_init
-  kvm_guest_init
-    kvm_free_tmp
-      free_reserved_area
-        free_unref_page
-          free_unref_page_prepare
+Helge Deller <deller@gmx.de> writes:
 
-Later, alloc_workqueue() happens to allocate some pages from there and
-trigger the warning at,
+> On 06.09.19 23:47, Thiago Jung Bauermann wrote:
+>> Helge Deller <deller@gmx.de> writes:
+>>> This kexec patch series is the groundwork for kexec on the parisc architecture.
+>>> Since we want kexec on parisc, I've applied it to my for-next-kexec tree [1],
+>>> and can push it to Linus in the next merge window through the parisc tree [2].
+>>
+>> I just had a look at this version and it looks fine to me. Identical to
+>> the version I reviewed before except for the changes I suggested.
+>> Thanks, Sven!
+>>
+>>> If someone has any objections, or if you prefer to take it through
+>>> a kexec or powerpc tree, please let me know.
+>>>
+>>> Helge
+>>>
+>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/log/?h=for-next-kexec
+>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/log/?h=for-next
+>>
+>> I noticed that the first patch is the only one that doesn't have my
+>> Reviewed-by. If you want, you can add it:
+>>
+>> Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+>
+> Thanks for reviewing again!
+> I added your Reviewed-by to the patches in the for-next tree.
 
-if (WARN_ON_ONCE(static_obj(key)))
+Thanks!
 
-Fix it by adding a generic helper arch_is_bss_hole() to skip those areas
-in static_obj(). Since kvm_free_tmp() is only done early during the
-boot, just go lockless to make the implementation simple for now.
-
-WARNING: CPU: 0 PID: 13 at kernel/locking/lockdep.c:1120
-Workqueue: events work_for_cpu_fn
-Call Trace:
-  lockdep_register_key+0x68/0x200
-  wq_init_lockdep+0x40/0xc0
-  trunc_msg+0x385f9/0x4c30f (unreliable)
-  wq_init_lockdep+0x40/0xc0
-  alloc_workqueue+0x1e0/0x620
-  scsi_host_alloc+0x3d8/0x490
-  ata_scsi_add_hosts+0xd0/0x220 [libata]
-  ata_host_register+0x178/0x400 [libata]
-  ata_host_activate+0x17c/0x210 [libata]
-  ahci_host_activate+0x84/0x250 [libahci]
-  ahci_init_one+0xc74/0xdc0 [ahci]
-  local_pci_probe+0x78/0x100
-  work_for_cpu_fn+0x40/0x70
-  process_one_work+0x388/0x750
-  process_scheduled_works+0x50/0x90
-  worker_thread+0x3d0/0x570
-  kthread+0x1b8/0x1e0
-  ret_from_kernel_thread+0x5c/0x7c
-
-Fixes: 108c14858b9e ("locking/lockdep: Add support for dynamic keys")
-Signed-off-by: Qian Cai <cai@lca.pw>
----
-
-v2: No need to actually define arch_is_bss_hole() powerpc64 only.
-
- arch/powerpc/include/asm/sections.h | 11 +++++++++++
- arch/powerpc/kernel/kvm.c           |  5 +++++
- include/asm-generic/sections.h      |  7 +++++++
- kernel/locking/lockdep.c            |  3 +++
- 4 files changed, 26 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index 4a1664a8658d..4f5d69c42017 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -5,8 +5,19 @@
- 
- #include <linux/elf.h>
- #include <linux/uaccess.h>
-+
-+#define arch_is_bss_hole arch_is_bss_hole
-+
- #include <asm-generic/sections.h>
- 
-+extern void *bss_hole_start, *bss_hole_end;
-+
-+static inline int arch_is_bss_hole(unsigned long addr)
-+{
-+	return addr >= (unsigned long)bss_hole_start &&
-+	       addr < (unsigned long)bss_hole_end;
-+}
-+
- extern char __head_end[];
- 
- #ifdef __powerpc64__
-diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
-index b7b3a5e4e224..89e0e522e125 100644
---- a/arch/powerpc/kernel/kvm.c
-+++ b/arch/powerpc/kernel/kvm.c
-@@ -66,6 +66,7 @@
- static bool kvm_patching_worked = true;
- char kvm_tmp[1024 * 1024];
- static int kvm_tmp_index;
-+void *bss_hole_start, *bss_hole_end;
- 
- static inline void kvm_patch_ins(u32 *inst, u32 new_inst)
- {
-@@ -707,6 +708,10 @@ static __init void kvm_free_tmp(void)
- 	 */
- 	kmemleak_free_part(&kvm_tmp[kvm_tmp_index],
- 			   ARRAY_SIZE(kvm_tmp) - kvm_tmp_index);
-+
-+	bss_hole_start = &kvm_tmp[kvm_tmp_index];
-+	bss_hole_end = &kvm_tmp[ARRAY_SIZE(kvm_tmp)];
-+
- 	free_reserved_area(&kvm_tmp[kvm_tmp_index],
- 			   &kvm_tmp[ARRAY_SIZE(kvm_tmp)], -1, NULL);
- }
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index d1779d442aa5..4d8b1f2c5fd9 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -91,6 +91,13 @@ static inline int arch_is_kernel_initmem_freed(unsigned long addr)
- }
- #endif
- 
-+#ifndef arch_is_bss_hole
-+static inline int arch_is_bss_hole(unsigned long addr)
-+{
-+	return 0;
-+}
-+#endif
-+
- /**
-  * memory_contains - checks if an object is contained within a memory region
-  * @begin: virtual address of the beginning of the memory region
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 4861cf8e274b..cd75b51f15ce 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -675,6 +675,9 @@ static int static_obj(const void *obj)
- 	if (arch_is_kernel_initmem_freed(addr))
- 		return 0;
- 
-+	if (arch_is_bss_hole(addr))
-+		return 0;
-+
- 	/*
- 	 * static variable?
- 	 */
 -- 
-2.20.1 (Apple Git-117)
-
+Thiago Jung Bauermann
+IBM Linux Technology Center
