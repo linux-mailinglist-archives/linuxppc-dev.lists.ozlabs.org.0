@@ -2,47 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FB6AC57D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 11:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87B6AC674
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 13:37:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46QT9H4mRTzDqFD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 19:08:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46QXTq38MpzDqPT
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 21:37:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=ubuntu.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::841; helo=mail-qt1-x841.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ubuntu.com
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="SYqjFOmb"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
+ [IPv6:2607:f8b0:4864:20::841])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46PpPy1wQRzDqtr
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2019 17:01:42 +1000 (AEST)
-Received: from [213.220.153.21] (helo=wittgenstein)
- by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
- (Exim 4.76) (envelope-from <christian.brauner@ubuntu.com>)
- id 1i68El-00072o-Nh; Fri, 06 Sep 2019 07:00:51 +0000
-Date: Fri, 6 Sep 2019 09:00:49 +0200
-From: Christian Brauner <christian.brauner@ubuntu.com>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v12 01/12] lib: introduce copy_struct_{to,from}_user
- helpers
-Message-ID: <20190906070048.tmhuemasmsn55spq@wittgenstein>
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-2-cyphar@cyphar.com>
- <20190905180750.GQ1131@ZenIV.linux.org.uk>
- <20190905182303.7f6bxpa2enbgcegv@wittgenstein>
- <20190905182801.GR1131@ZenIV.linux.org.uk>
- <20190905195618.pwzgvuzadkfpznfz@yavin.dot.cyphar.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190905195618.pwzgvuzadkfpznfz@yavin.dot.cyphar.com>
-User-Agent: NeoMutt/20180716
-X-Mailman-Approved-At: Sat, 07 Sep 2019 18:55:13 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46QXS03q2lzDqSC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2019 21:35:59 +1000 (AEST)
+Received: by mail-qt1-x841.google.com with SMTP id g13so9982474qtj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Sep 2019 04:35:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=ZfMCqtRG3776EYn97WT0OsP3uu6yPWIiXZtP2HYxXjQ=;
+ b=SYqjFOmb1lorXoSExxnMnW2j/lfll6fQ4bkI8ipQTc6lg65BdeoAudUEhWZoQ7J3ji
+ nRHofsMHtX4i65qp8p8NR0kj2p4KH590SM8hLFWBFYCv3wYs1W/TjOpqGODP3bUSZNLJ
+ ifvznN3u5tbI+zfMhhwz1fZQIW0cCI8W6CNVn0obW+aWt4Xkzesj/WDfhLJvVMoRVtAd
+ gTMvwGq4QmG7j+8rLHjXhGIKUXZK+9exAxb5rc52K3nD2J0kki6miNzlHRv48KkYs1+V
+ 8XG+6UG7a7riG/U1WTFQHilUrnEHrQfwlZkCNAAI0GvfHthev4ml7SEIBLARfC6cmfqa
+ m6sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=ZfMCqtRG3776EYn97WT0OsP3uu6yPWIiXZtP2HYxXjQ=;
+ b=CdmnPhuN7HSXibtusy9EJxiftdYf9Tz4R6bpU+FU3Z3j6vhBw3tRPWIaHGdQeJsBtY
+ SquQ4rRK5ThZZsXGa2kw3GLcWbRVHATArgUxkdSY9feEcYEzKxrcXSlAsFeLYh38U+lQ
+ 90IGlBl6HUi+bfXCgk0G+f3YOenMgg+KK7KZFImQMQ7SODd1fDEAazMJw8OqL+RH330+
+ eoxAMM+LpQSQeFtB6SO0WLPvlqzbdAgiajQNbTar2QwR3p7/jytZWnrsM4ETCdgYyZ+8
+ /oSp2Z1UQE/ITs6Kc2N2l7iRowxl2AoHpBU+EAfCrz5F38FhTLjGstPjWHvluqHxChAp
+ jraw==
+X-Gm-Message-State: APjAAAXLU+vJkUVqIBPRiuonoLwAGUeqQPYsw1fW2OapYmOxrUfmRu5n
+ 7TaeLp0SN98QQ5zX6fYaZTKryg==
+X-Google-Smtp-Source: APXvYqwitwvx6V2pj9mK/oeRTft1UMVSefAlLIqnVI4hN2v3+Pt/MLuW6b+CrfJxqXKkM9TTfHXVdw==
+X-Received: by 2002:ac8:13c2:: with SMTP id i2mr13231243qtj.211.1567856156566; 
+ Sat, 07 Sep 2019 04:35:56 -0700 (PDT)
+Received: from qians-mbp.fios-router.home
+ (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id r55sm4897634qtj.86.2019.09.07.04.35.55
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 07 Sep 2019 04:35:55 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH v2] powerpc/lockdep: fix a false positive warning
+From: Qian Cai <cai@lca.pw>
+In-Reply-To: <20190907070505.GA88784@gmail.com>
+Date: Sat, 7 Sep 2019 07:35:54 -0400
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <420D09F4-FC19-421C-AE46-4B2A9157FAE3@lca.pw>
+References: <20190906231754.830-1-cai@lca.pw>
+ <20190907070505.GA88784@gmail.com>
+To: Ingo Molnar <mingo@kernel.org>
+X-Mailer: Apple Mail (2.3445.104.11)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,71 +82,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- Jiri Olsa <jolsa@redhat.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-m68k@lists.linux-m68k.org, Al Viro <viro@zeniv.linux.org.uk>,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
- Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: linux-arch@vger.kernel.org, bvanassche@acm.org, arnd@arndb.de,
+ Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 06, 2019 at 05:56:18AM +1000, Aleksa Sarai wrote:
-> On 2019-09-05, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > On Thu, Sep 05, 2019 at 08:23:03PM +0200, Christian Brauner wrote:
-> > 
-> > > Because every caller of that function right now has that limit set
-> > > anyway iirc. So we can either remove it from here and place it back for
-> > > the individual callers or leave it in the helper.
-> > > Also, I'm really asking, why not? Is it unreasonable to have an upper
-> > > bound on the size (for a long time probably) or are you disagreeing with
-> > > PAGE_SIZE being used? PAGE_SIZE limit is currently used by sched, perf,
-> > > bpf, and clone3 and in a few other places.
-> > 
-> > For a primitive that can be safely used with any size (OK, any within
-> > the usual 2Gb limit)?  Why push the random policy into the place where
-> > it doesn't belong?
-> > 
-> > Seriously, what's the point?  If they want to have a large chunk of
-> > userland memory zeroed or checked for non-zeroes - why would that
-> > be a problem?
-> 
-> Thinking about it some more, there isn't really any r/w amplification --
-> so there isn't much to gain by passing giant structs. Though, if we are
-> going to permit 2GB buffers, isn't that also an argument to use
-> memchr_inv()? :P
 
-I think we should just do a really dumb, easy to understand minimal
-thing for now. It could even just be what every caller is doing right
-now anyway with the get_user() loop.
-The only way to settle memchr_inv() vs all the other clever ways
-suggested here is to benchmark it and see if it matters *for the current
-users* of this helper. If it does, great we can do it. If it doesn't why
-bother having that argument right now?
-Once we somehow end up in a possible world where we apparently have
-decided it's a great idea to copy 2GB argument structures for a syscall
-into or from the kernel we can start optimizing the hell out of this.
-Before that and especially with current callers I honestly doubt it
-matters whether we use memchr_inv() or while() {get_user()} loops.
 
-Christian
+> On Sep 7, 2019, at 3:05 AM, Ingo Molnar <mingo@kernel.org> wrote:
+>=20
+>=20
+> * Qian Cai <cai@lca.pw> wrote:
+>=20
+>> The commit 108c14858b9e ("locking/lockdep: Add support for dynamic
+>> keys") introduced a boot warning on powerpc below, because since the
+>> commit 2d4f567103ff ("KVM: PPC: Introduce kvm_tmp framework") adds
+>> kvm_tmp[] into the .bss section and then free the rest of unused =
+spaces
+>> back to the page allocator.
+>>=20
+>> kernel_init
+>>  kvm_guest_init
+>>    kvm_free_tmp
+>>      free_reserved_area
+>>        free_unref_page
+>>          free_unref_page_prepare
+>>=20
+>> Later, alloc_workqueue() happens to allocate some pages from there =
+and
+>> trigger the warning at,
+>>=20
+>> if (WARN_ON_ONCE(static_obj(key)))
+>>=20
+>> Fix it by adding a generic helper arch_is_bss_hole() to skip those =
+areas
+>> in static_obj(). Since kvm_free_tmp() is only done early during the
+>> boot, just go lockless to make the implementation simple for now.
+>>=20
+>> WARNING: CPU: 0 PID: 13 at kernel/locking/lockdep.c:1120
+>> Workqueue: events work_for_cpu_fn
+>> Call Trace:
+>>  lockdep_register_key+0x68/0x200
+>>  wq_init_lockdep+0x40/0xc0
+>>  trunc_msg+0x385f9/0x4c30f (unreliable)
+>>  wq_init_lockdep+0x40/0xc0
+>>  alloc_workqueue+0x1e0/0x620
+>>  scsi_host_alloc+0x3d8/0x490
+>>  ata_scsi_add_hosts+0xd0/0x220 [libata]
+>>  ata_host_register+0x178/0x400 [libata]
+>>  ata_host_activate+0x17c/0x210 [libata]
+>>  ahci_host_activate+0x84/0x250 [libahci]
+>>  ahci_init_one+0xc74/0xdc0 [ahci]
+>>  local_pci_probe+0x78/0x100
+>>  work_for_cpu_fn+0x40/0x70
+>>  process_one_work+0x388/0x750
+>>  process_scheduled_works+0x50/0x90
+>>  worker_thread+0x3d0/0x570
+>>  kthread+0x1b8/0x1e0
+>>  ret_from_kernel_thread+0x5c/0x7c
+>>=20
+>> Fixes: 108c14858b9e ("locking/lockdep: Add support for dynamic keys")
+>> Signed-off-by: Qian Cai <cai@lca.pw>
+>> ---
+>>=20
+>> v2: No need to actually define arch_is_bss_hole() powerpc64 only.
+>>=20
+>> arch/powerpc/include/asm/sections.h | 11 +++++++++++
+>> arch/powerpc/kernel/kvm.c           |  5 +++++
+>> include/asm-generic/sections.h      |  7 +++++++
+>> kernel/locking/lockdep.c            |  3 +++
+>> 4 files changed, 26 insertions(+)
+>>=20
+>> diff --git a/arch/powerpc/include/asm/sections.h =
+b/arch/powerpc/include/asm/sections.h
+>> index 4a1664a8658d..4f5d69c42017 100644
+>> --- a/arch/powerpc/include/asm/sections.h
+>> +++ b/arch/powerpc/include/asm/sections.h
+>> @@ -5,8 +5,19 @@
+>>=20
+>> #include <linux/elf.h>
+>> #include <linux/uaccess.h>
+>> +
+>> +#define arch_is_bss_hole arch_is_bss_hole
+>> +
+>> #include <asm-generic/sections.h>
+>>=20
+>> +extern void *bss_hole_start, *bss_hole_end;
+>> +
+>> +static inline int arch_is_bss_hole(unsigned long addr)
+>> +{
+>> +	return addr >=3D (unsigned long)bss_hole_start &&
+>> +	       addr < (unsigned long)bss_hole_end;
+>> +}
+>> +
+>> extern char __head_end[];
+>>=20
+>> #ifdef __powerpc64__
+>> diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
+>> index b7b3a5e4e224..89e0e522e125 100644
+>> --- a/arch/powerpc/kernel/kvm.c
+>> +++ b/arch/powerpc/kernel/kvm.c
+>> @@ -66,6 +66,7 @@
+>> static bool kvm_patching_worked =3D true;
+>> char kvm_tmp[1024 * 1024];
+>> static int kvm_tmp_index;
+>> +void *bss_hole_start, *bss_hole_end;
+>>=20
+>> static inline void kvm_patch_ins(u32 *inst, u32 new_inst)
+>> {
+>> @@ -707,6 +708,10 @@ static __init void kvm_free_tmp(void)
+>> 	 */
+>> 	kmemleak_free_part(&kvm_tmp[kvm_tmp_index],
+>> 			   ARRAY_SIZE(kvm_tmp) - kvm_tmp_index);
+>> +
+>> +	bss_hole_start =3D &kvm_tmp[kvm_tmp_index];
+>> +	bss_hole_end =3D &kvm_tmp[ARRAY_SIZE(kvm_tmp)];
+>> +
+>> 	free_reserved_area(&kvm_tmp[kvm_tmp_index],
+>> 			   &kvm_tmp[ARRAY_SIZE(kvm_tmp)], -1, NULL);
+>> }
+>> diff --git a/include/asm-generic/sections.h =
+b/include/asm-generic/sections.h
+>> index d1779d442aa5..4d8b1f2c5fd9 100644
+>> --- a/include/asm-generic/sections.h
+>> +++ b/include/asm-generic/sections.h
+>> @@ -91,6 +91,13 @@ static inline int =
+arch_is_kernel_initmem_freed(unsigned long addr)
+>> }
+>> #endif
+>>=20
+>> +#ifndef arch_is_bss_hole
+>> +static inline int arch_is_bss_hole(unsigned long addr)
+>> +{
+>> +	return 0;
+>> +}
+>> +#endif
+>> +
+>> /**
+>>  * memory_contains - checks if an object is contained within a memory =
+region
+>>  * @begin: virtual address of the beginning of the memory region
+>> diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+>> index 4861cf8e274b..cd75b51f15ce 100644
+>> --- a/kernel/locking/lockdep.c
+>> +++ b/kernel/locking/lockdep.c
+>> @@ -675,6 +675,9 @@ static int static_obj(const void *obj)
+>> 	if (arch_is_kernel_initmem_freed(addr))
+>> 		return 0;
+>>=20
+>> +	if (arch_is_bss_hole(addr))
+>> +		return 0;
+>=20
+> arch_is_bss_hole() should use a 'bool' - but other than that, this=20
+> looks good to me, if the PowerPC maintainers agree too.
+
+I thought about making it a bool in the first place, but since all other =
+similar helpers
+(arch_is_kernel_initmem_freed(), arch_is_kernel_text(), =
+arch_is_kernel_data() etc)
+could be bool too but are not, I kept arch_is_bss_hole() just to be =
+=E2=80=9Cint=E2=80=9D for consistent.
+
+Although then there is is_kernel_rodata() which is bool. I suppose =
+I=E2=80=99ll change
+arch_is_bss_hole() to bool, and then could have a follow-up patch to =
+covert all similar
+helpers to return boo instead.
+
