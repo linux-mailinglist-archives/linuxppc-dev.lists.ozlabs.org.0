@@ -2,81 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BA0AC8BB
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2019 20:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 679C2ACB96
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Sep 2019 10:34:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46QjM61wFrzDqfK
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Sep 2019 04:17:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46R4NG3yRzzDqYj
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Sep 2019 18:34:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=amacapital.net
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=luto@amacapital.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=amacapital.net
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com;
+ envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=amacapital-net.20150623.gappssmtp.com
- header.i=@amacapital-net.20150623.gappssmtp.com header.b="gPB2S/s2"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Xy0s84Ep"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46QjJj4ySyzDqWK
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Sep 2019 04:15:15 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id 205so6631590pfw.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Sep 2019 11:15:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amacapital-net.20150623.gappssmtp.com; s=20150623;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=yCXO2IUW/xP5rGitFpbGKrkQxCFizP24AMzmcKYJo+k=;
- b=gPB2S/s21fOdrhZkZvzaMRRbkTHlbc79vLkQ8L7Cpmmu8hvbAG6eoC0Dm32QXRGYMY
- +1LPES8i+LJBkfY/p1yzpRzMMv2odDchTO0YHOkxwFiie7OsEOHDwtOH8zJJ6F9AZyk5
- MkZFVhvuxPxeMIKfq+G9obcmbfsQBob0Nc70jrYQVbX0W8tNU0vMgyrejbOLHj/PJBII
- 8jO1EQn6kWKOgkBib76U4yxHBzWI3KaSO/lLhJIPi5x1WrjQ3kHOZysmKhg2Dv2MsCh4
- N/OxZH40a7P6xhJ/lAgfa+dSsRZSJmy+02UKql6Xb3VKWtRKJq/2ht+J5tBxXcxSYFTB
- 1GhQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46R4LZ1xCNzDqX1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Sep 2019 18:33:07 +1000 (AEST)
+Received: by mail-wr1-x441.google.com with SMTP id h7so9561579wrw.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Sep 2019 01:33:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to
+ :user-agent; bh=Dvenms9Y7ILBHUAT3jSNMNmZR/R8ixW/QNiX0T3fndY=;
+ b=Xy0s84Epf/0r5ThM7KFlOlfZVD9d9Ci5oqr03zZd2VEm3Wi/ir6LN98a2DQWDX1j8/
+ TLY4i4EW/VS7X/9Qk5MR6xTXW5Xwp/Yk42/OKbtWmzAEnbbMOHgwhnEIGXoRWJiJPvaW
+ keLOxQ3LcKHLh8Sjw+k/LOLV7qVHUjsciT7T5sqN5+1E9yLr7Xp1Ls3SUahRLTXCGKuZ
+ TN8O6j+iE5YBIikJvz8S5jBB8UsSE/lzygxaC5IiN6jne2TV4m+DkcsFdCYtcdGfD7RL
+ Z+RWoW0KaAYISaO9iSHM71cX9bH2mGEa/l9VSmK19bTHtSWd9XX/VSVDjo+1zerG/v50
+ cMXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=yCXO2IUW/xP5rGitFpbGKrkQxCFizP24AMzmcKYJo+k=;
- b=ssnSwbLsMVGQ/VIQYRwS9YvW3lhv66UZ23x+G+G2dlAl74wbCzqFPztT9FfTg8CMR8
- gj/HVW+V5h0s0WC4+XLdv2qsqHJl3Ed5FI3FeNVaLhQtjX1ClUjxE9ua6YkDsj2SEN1a
- S0xYVyPQg36xsQre+qJqJoqAzqVBbiCXqPBJtd+S+OiM3/rOUv+Ft6anRyR1erY4FhT3
- SoVX6+N3lXNiq3RKn0DdKDsC3RmcPtfdKB4jWOhB6+jXruyggSODxSo+WOrlvapBLLdK
- /EAxMgIQ5Sp213S6X5imVRZKlT3Y0TzOvT8CgEM84SCCiZVUKQDQQUEvxc/WHr9Wn7eo
- ji4Q==
-X-Gm-Message-State: APjAAAWIySu0rh41PSLsOk7fDGXaPCf6+JAv4fQWi/4zYtd5d/35ZvPe
- BuV2p8ywbGXalhglNBuwyB3T0g==
-X-Google-Smtp-Source: APXvYqwtLHTxDBZPI4nj5nW8UmB/sRAqU0rGQe5gnm9Rg561yB9Atb14l/OoZSzCcZVB4Qk4BIIw8Q==
-X-Received: by 2002:aa7:8b09:: with SMTP id f9mr13154710pfd.23.1567880111917; 
- Sat, 07 Sep 2019 11:15:11 -0700 (PDT)
-Received: from ?IPv6:2600:100f:b121:da37:bc66:d4de:83c7:e0cd?
- ([2600:100f:b121:da37:bc66:d4de:83c7:e0cd])
- by smtp.gmail.com with ESMTPSA id x5sm10495873pfn.149.2019.09.07.11.15.10
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 07 Sep 2019 11:15:11 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v12 11/12] open: openat2(2) syscall
-From: Andy Lutomirski <luto@amacapital.net>
-X-Mailer: iPhone Mail (16G102)
-In-Reply-To: <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
-Date: Sat, 7 Sep 2019 11:15:09 -0700
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <EE7399FD-7587-407B-B628-1D92CFD6B120@amacapital.net>
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-12-cyphar@cyphar.com>
- <7236f382d72130f2afbbe8940e72cc67e5c6dce0.camel@kernel.org>
- <CAHk-=whZx97Nm-gUK0ppofj2RA2LLz2vmaDUTKSSV-+yYB9q_Q@mail.gmail.com>
- <C81D6D29-F6BF-48E6-A15E-3ABCB2C992E5@amacapital.net>
- <CAHk-=whe90Ec_RRrMRLE0=bJOHNS9YmVwcytVxmrfK3oCuZF6A@mail.gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition
+ :content-transfer-encoding:in-reply-to:user-agent;
+ bh=Dvenms9Y7ILBHUAT3jSNMNmZR/R8ixW/QNiX0T3fndY=;
+ b=KGfQQBQyG1B69mkAmWZxkKB0I2TSxKRZU1LRj16WDgxybmQnNS7BE3sL30DUzIfl7y
+ nXx8qKVcFFRKd3JE4ljbRYqMSFZXda6Ar/yxvUb1TJjFYKpwH+9KgPlBhpE1yhbf4f2Y
+ H0a+RPYk1STBNHxkJQJ0+6qjbR1npLATG8Oee5qEDV9IzZZatCzJPnFQaIVgB2NRahmO
+ aqG1KX0JYdf4Lstn3vf/BP9jQ+FFfx7C8iavB6BjNZ/R0d8tI0D5Ne0TSa2xb47FAtcT
+ YKsK9BfwC9k8AREsXc5OJ2b+hKCYSIOP1Oq1c3js6dzoE0XuhIzndu8CoUlSme4s3vF1
+ Lsig==
+X-Gm-Message-State: APjAAAVm2IatmRucvIU8gYoCdITTHDqeqgW+goolmPjIxAR/twk9phtA
+ uNvE+xVJNlbTOi4kdzdoEDM=
+X-Google-Smtp-Source: APXvYqxmEXYD4KfHG33ISQrdtsla0hWkLH3IEJfmTrLErV0Ihc/bV5nsvOMFY9z0b/uum8iYI9GRGw==
+X-Received: by 2002:a5d:49c2:: with SMTP id t2mr13914364wrs.351.1567931581038; 
+ Sun, 08 Sep 2019 01:33:01 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+ by smtp.gmail.com with ESMTPSA id u68sm17085458wmu.12.2019.09.08.01.32.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 08 Sep 2019 01:33:00 -0700 (PDT)
+Date: Sun, 8 Sep 2019 10:32:58 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Qian Cai <cai@lca.pw>
+Subject: Re: [PATCH v2] powerpc/lockdep: fix a false positive warning
+Message-ID: <20190908083257.GA126088@gmail.com>
+References: <20190906231754.830-1-cai@lca.pw>
+ <20190907070505.GA88784@gmail.com>
+ <420D09F4-FC19-421C-AE46-4B2A9157FAE3@lca.pw>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <420D09F4-FC19-421C-AE46-4B2A9157FAE3@lca.pw>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,82 +83,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Jiri Olsa <jolsa@redhat.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
- Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, alpha <linux-alpha@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Linux Containers <containers@lists.linux-foundation.org>
+Cc: linux-arch@vger.kernel.org, bvanassche@acm.org, arnd@arndb.de,
+ Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-> On Sep 7, 2019, at 10:45 AM, Linus Torvalds <torvalds@linux-foundation.org=
-> wrote:
->=20
->> On Sat, Sep 7, 2019 at 10:42 AM Andy Lutomirski <luto@amacapital.net> wro=
-te:
->>=20
->> Linus, you rejected resolveat() because you wanted a *nice* API
->=20
-> No. I rejected resoveat() because it was a completely broken garbage
-> API that couldn't do even basic stuff right (like O_CREAT).
->=20
-> We have a ton of flag space in the new openat2() model, we might as
-> well leave the old flags alone that people are (a) used to and (b) we
-> have code to support _anyway_.
->=20
-> Making up a new flag namespace is only going to cause us - and users -
-> more work, and more confusion. For no actual advantage. It's not going
-> to be "cleaner". It's just going to be worse.
->=20
->=20
+* Qian Cai <cai@lca.pw> wrote:
 
-If we keep all the flag bits in the same mask with the same values, then we=E2=
-=80=99re stuck with O_RDONLY=3D0 and everything that implies.  We=E2=80=99ll=
- have UPGRADE_READ that works differently from the missing plain-old-READ bi=
-t, and we can=E2=80=99t express execute-only-no-read-or-write. This sucks.
+> I thought about making it a bool in the first place, but since all 
+> other similar helpers (arch_is_kernel_initmem_freed(), 
+> arch_is_kernel_text(), arch_is_kernel_data() etc) could be bool too but 
+> are not, I kept arch_is_bss_hole() just to be “int” for consistent.
+> 
+> Although then there is is_kernel_rodata() which is bool. I suppose I’ll 
+> change arch_is_bss_hole() to bool, and then could have a follow-up 
+> patch to covert all similar helpers to return boo instead.
 
-Can we at least split the permission bits into their own mask and make bits 0=
- and 1 illegal in the main set of flags in openat2?
+Sounds good to me.
 
-There=E2=80=99s another thread going on right now about adding a bit along t=
-he lines of =E2=80=9CMAYEXEC=E2=80=9D, and one of the conclusions was that i=
-t should wait for openat2 so that it can have same semantics. If we=E2=80=99=
-re stuck with O_RDONLY and friends, then MAYEXEC is doomed to being at least=
- a bit nonsensical.
+Thanks,
 
-As an analogy, AMD64 introduced bigger PTEs but kept the same nonsense encod=
-ing of read and write permission. And then we got NX, and now we=E2=80=99re g=
-etting little holes in the encoding stolen by CET to mean new silly things. =
- I don=E2=80=99t know if you=E2=80=99ve been following the various rounds of=
- patches, but it is truly horrible. The mapping from meaning to the actual b=
-its is *shit*, and AMD64 should have made a clean break instead.
-
-open()=E2=80=99s permission bits are basically the same situation. And the k=
-ernel *already* has a non-type-safe translation layer. Please, please let op=
-enat2() at least get rid of the turd in open()=E2=80=99s bits 0 and 1.
-
+	Ingo
