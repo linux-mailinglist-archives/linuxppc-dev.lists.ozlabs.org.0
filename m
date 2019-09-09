@@ -2,68 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFD0ADAB7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 16:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5786ADB3B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 16:33:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46RqhN3rCmzDqNp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 00:06:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46RrHQ75l5zDqNJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 00:33:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::844; helo=mail-qt1-x844.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=lca.pw
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="eeHn9BXh"; 
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="gxEMwh/a"; 
  dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
+ [IPv6:2607:f8b0:4864:20::844])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46RqcN0r2QzDqNp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 00:02:43 +1000 (AEST)
-Received: by mail-io1-xd41.google.com with SMTP id k5so3595358iol.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Sep 2019 07:02:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=8i5dkStrabNHsl7KV3zOIJ5RJgzj90AK9sxoEEJihIo=;
- b=eeHn9BXhrxmfX9aye2EW2AnRlwbqWsP/9UGyIoyui1PwsLNVui38+z8yNFWGuXNTqu
- 5DlQJlAfRtR0zTYXc+rsc4XI6CfPNhE9/z7AUsVOQNcRVNG8hPcI+Dma0zWlEef0Kda5
- YmZY1EnK9sf10kNt5oWN1BKtN3GZs3eyExgE3MFlb3ZZUJIklI76U4vYu8upWGzb84cx
- ErpoYjOaD6//OdfwiefUwm5NTEWEi1GRCjyDIELHtp1VGYtZZV/US5AxH68IWdwBPYn2
- 7JhSBdpIlpO7vsaPsH0l45+XaG7HyGzH6yYDOU7fUx5bNM1tkUN6StJQcJNtlubK1EM4
- 6eKQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46RrDx3XLRzDqNF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 00:30:56 +1000 (AEST)
+Received: by mail-qt1-x844.google.com with SMTP id u40so16362036qth.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Sep 2019 07:30:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id;
+ bh=CXfqRVCQFw7xqj7AICeJBWtrNhS6pGZdKh11BOOZ9lA=;
+ b=gxEMwh/a/ND2u6HYSSw+CvoCqCBHgB9WAY3kEMDTKnHS721fCqfnpsUSXC2a0oOeGf
+ hS6DIyV3UJqVsob9he/lOalVvuUnlHqXfyaB6/qIu5AZdsXVBD3H5UKaA89p9ehrqtw+
+ HyVJbHyy0BC20nYdMA7IvWJsrq/du8PbBCqzLf/32PujYUN1YiLrJBu2apAoILgQ2QQM
+ WXN1kirG4t98s2AA6PXav/e270xdKKCBwOxaaUgq+gIL67v8Nnc7hzablBWT5tXiqNyZ
+ dztk4qQJT8T3WUmUbdwsE/SUovPAHV8+d9xftGR/FzO4FcQmWQWioLNX0jmu7RnXkbMR
+ l9pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=8i5dkStrabNHsl7KV3zOIJ5RJgzj90AK9sxoEEJihIo=;
- b=ppOoTjvEXycqZUV5B+ei0b8vyxWj2lZCeZu4E3DnnBenkmJkmiVemHxKyfMZqiQG37
- zzymrg5D30lVZrdSDRkW7FUY/Of8FHe4bORUXuIIyXX3LxPWwuXtTqUfz/bRGHKp1HZ7
- vAAYc56DiNc1JLQKzdUfriaIZQTX8TVXKIGkCG7FhpY/t81PTplTP73kl3MMAPNUJQP+
- E/2CAu88juuluZ0fRJc0Xy1iADkNYzaqy1zgG2unDsnAYPtUFrYUWJv2bbizAZmbLTFs
- 8JZcn+afCqQNIue2xW/3rDniBGS7jZYPAPBoc4q/hYyC3qO/8CdxQXDzQ/wLOgt1t6RE
- x1zQ==
-X-Gm-Message-State: APjAAAVExeFktCX9PAsMDiJAZvs217562ow44GP6unTOxK9GPWBqrj+G
- J1JeYdLDa9sT4aARbIOq1vphStLUy8X7C3ay2Mc=
-X-Google-Smtp-Source: APXvYqyL386XCzrPyKA6S2bjdTj5LdfIJF3K+CS7kEa0ci3Yw2WTxtOi9ty8C8PnCPAwjUejB3RRqqLbCMNixIljCqU=
-X-Received: by 2002:a6b:bb86:: with SMTP id l128mr18026803iof.18.1568037761702; 
- Mon, 09 Sep 2019 07:02:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190816165101.911-1-s.miroshnichenko@yadro.com>
- <20190816165101.911-19-s.miroshnichenko@yadro.com>
- <026a6bfbfd8268c5158bc48fb43907cc13442561.camel@gmail.com>
- <7af3d4cd-b786-19b1-1ddf-b93f9875976d@yadro.com>
-In-Reply-To: <7af3d4cd-b786-19b1-1ddf-b93f9875976d@yadro.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 10 Sep 2019 00:02:30 +1000
-Message-ID: <CAOSf1CG-oaKazKzZCULUjntc+3-dztiQ3U=6tcWu+OGer_77Ag@mail.gmail.com>
-Subject: Re: [PATCH v5 18/23] powerpc/pci: Handle BAR movement
-To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-Content-Type: text/plain; charset="UTF-8"
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=CXfqRVCQFw7xqj7AICeJBWtrNhS6pGZdKh11BOOZ9lA=;
+ b=on8cgPQDIWZKDlOtkf0SY725tYnWsPGvrD9uWHv6mNLemn2S9mhq9zD7ODTS9stP7Y
+ OTZQi24VoMTh3HGbF117GwFQxgtecGIISYSEXVpSs3YcUw3+3SkepOEZWKFlDTUpqj2o
+ koBVeVsGo3knCFKTEIQH6qkPPpXl/QdfxPXUp9E62emiuOMmzTpd33kmhGut+ATEMawS
+ avHcE1rSVSJu3SkSYHYp1RNrmN17YJ5zLVvDgKZhu5gpPFI95/vlVVz9Dq05I8FkM0os
+ RyT0MRbdhNs78aSlBIxbW/PKS917Hu+v/VTcspMpNxtzHTajqgz6ACbr56a6DkZ2egfX
+ Zaag==
+X-Gm-Message-State: APjAAAVXL/UhW/Xiu9tt+35hu+GvTaJ5o2SmN5S1a7RWGYmE+SEGaPGR
+ 9hKGD+pXAeWR176pMXV2VgaSJw==
+X-Google-Smtp-Source: APXvYqz3L3fSgl55DmtBbUTWQgR45D2JISFvfWDBJBH3PWAbVc68BgzFeZ6k0wq1m7D4qm15IYPnzA==
+X-Received: by 2002:a0c:eda7:: with SMTP id h7mr14228023qvr.30.1568039452923; 
+ Mon, 09 Sep 2019 07:30:52 -0700 (PDT)
+Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id w126sm6478943qkd.68.2019.09.09.07.30.51
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 09 Sep 2019 07:30:51 -0700 (PDT)
+From: Qian Cai <cai@lca.pw>
+To: mpe@ellerman.id.au
+Subject: [PATCH v3] powerpc/lockdep: fix a false positive warning
+Date: Mon,  9 Sep 2019 10:30:33 -0400
+Message-Id: <1568039433-10176-1-git-send-email-cai@lca.pw>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,102 +72,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux@yadro.com
+Cc: linux-arch@vger.kernel.org, bvanassche@acm.org, arnd@arndb.de,
+ peterz@infradead.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ paulus@samba.org, Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org,
+ mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 7, 2019 at 2:25 AM Sergey Miroshnichenko
-<s.miroshnichenko@yadro.com> wrote:
->
-> Hi Oliver,
->
-> On 9/4/19 8:37 AM, Oliver O'Halloran wrote:
-> > On Fri, 2019-08-16 at 19:50 +0300, Sergey Miroshnichenko wrote:
-> >> Add pcibios_rescan_prepare()/_done() hooks for the powerpc platform. Now if
-> >> the device's driver supports movable BARs, pcibios_rescan_prepare() will be
-> >> called after the device is stopped, and pcibios_rescan_done() - before it
-> >> resumes. There are no memory requests to this device between the hooks, so
-> >> it it safe to rebuild the EEH address cache during that.
-> >>
-> >> CC: Oliver O'Halloran <oohall@gmail.com>
-> >> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-> >> ---
-> >>  arch/powerpc/kernel/pci-hotplug.c | 10 ++++++++++
-> >>  1 file changed, 10 insertions(+)
-> >>
-> >> diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
-> >> index 0b0cf8168b47..18cf13bba228 100644
-> >> --- a/arch/powerpc/kernel/pci-hotplug.c
-> >> +++ b/arch/powerpc/kernel/pci-hotplug.c
-> >> @@ -144,3 +144,13 @@ void pci_hp_add_devices(struct pci_bus *bus)
-> >>      pcibios_finish_adding_to_bus(bus);
-> >>  }
-> >>  EXPORT_SYMBOL_GPL(pci_hp_add_devices);
-> >> +
-> >> +void pcibios_rescan_prepare(struct pci_dev *pdev)
-> >> +{
-> >> +    eeh_addr_cache_rmv_dev(pdev);
-> >> +}
-> >> +
-> >> +void pcibios_rescan_done(struct pci_dev *pdev)
-> >> +{
-> >> +    eeh_addr_cache_insert_dev(pdev);
-> >> +}
-> >
-> > Is this actually sufficent? The PE number for a device is largely
-> > determined by the location of the MMIO BARs. If you move a BAR far
-> > enough the PE number stored in the eeh_pe would need to be updated as
-> > well.
-> >
->
-> Thanks for the hint! I've checked on our PowerNV: for bridges with MEM
-> only it allocates PE numbers starting from 0xff down, and when there
-> are MEM64 - starting from 0 up, one PE number per 4GiB.
->
-> PEs are allocated during call to pnv_pci_setup_bridge(), and the I've
-> added invocation of pci_setup_bridge() after a hotplug event in the
-> "Recalculate all bridge windows during rescan" patch of this series.
+The commit 108c14858b9e ("locking/lockdep: Add support for dynamic
+keys") introduced a boot warning on powerpc below, because since the
+commit 2d4f567103ff ("KVM: PPC: Introduce kvm_tmp framework") adds
+kvm_tmp[] into the .bss section and then free the rest of unused spaces
+back to the page allocator.
 
-Sort of.
+kernel_init
+  kvm_guest_init
+    kvm_free_tmp
+      free_reserved_area
+        free_unref_page
+          free_unref_page_prepare
 
-On PHB3 both the 32bit and the 64bit MMIO windows are split into 256
-segments each of which is mapped to a PE number. For the 32bit space
-there's a remapping table in hardware that allows arbitrary mapping of
-segments to PE numbers, but in the 64bit space the mapping is fixed
-with the first segment being PE0, etc. If there's a 64 bit BAR under a
-bridge the PE is really "allocated" during the BAR assignment process,
-and the setup_bridge() step sets up the EEH state based on that.
+Later, alloc_workqueue() happens to allocate some pages from there and
+trigger the warning at,
 
-It's worth pointing out that this is why the 64bit window is usually
-4GB. Bridge windows need to be aligned to a segment boundary to ensure
-the devices under them are placed into a unique PE.
+if (WARN_ON_ONCE(static_obj(key)))
 
-> Currently, if a bus already has a PE, pnv_ioda_setup_bus_PE() takes it
-> and returns. I can see two ways to change it, both are not difficult to
-> implement:
->
->  a.1) check if MEM64 BARs appeared below the bus - allocate and assign
->       a new master PE with required number of slave PEs;
->
->  a.2) if the bus now has more MEM64 than before - check if more slave
->       PEs must be reserved;
->
->  b) release all the PEs before a PCI rescan and allocate+assign them
->     again after - with this approach the "Hook up the writes to
->     PCI_SECONDARY_BUS register" patch may be eliminated.
->
-> Do you find any of these suitable?
+Fix it by adding a generic helper arch_is_bss_hole() to skip those areas
+in static_obj(). Since kvm_free_tmp() is only done early during the
+boot, just go lockless to make the implementation simple for now.
 
-I'm not sure a) would work, but even if it does b) is preferable.
-There's a lot of strangeness in the powerpc PCI code as-is without
-adding extra code paths to deal with. Keeping what happens at hotplug
-consistent with what happens at boot will help keep things sane.
+WARNING: CPU: 0 PID: 13 at kernel/locking/lockdep.c:1120
+Workqueue: events work_for_cpu_fn
+Call Trace:
+  lockdep_register_key+0x68/0x200
+  wq_init_lockdep+0x40/0xc0
+  trunc_msg+0x385f9/0x4c30f (unreliable)
+  wq_init_lockdep+0x40/0xc0
+  alloc_workqueue+0x1e0/0x620
+  scsi_host_alloc+0x3d8/0x490
+  ata_scsi_add_hosts+0xd0/0x220 [libata]
+  ata_host_register+0x178/0x400 [libata]
+  ata_host_activate+0x17c/0x210 [libata]
+  ahci_host_activate+0x84/0x250 [libahci]
+  ahci_init_one+0xc74/0xdc0 [ahci]
+  local_pci_probe+0x78/0x100
+  work_for_cpu_fn+0x40/0x70
+  process_one_work+0x388/0x750
+  process_scheduled_works+0x50/0x90
+  worker_thread+0x3d0/0x570
+  kthread+0x1b8/0x1e0
+  ret_from_kernel_thread+0x5c/0x7c
 
-FYI in the next few days I'm going to post a series that rips out the
-use of pci_dn in powernv and the generic parts of EEH (pseries still
-uses it). Assuming Bjorn isn't picking this up for 5.4 you might want
-to wait for that before getting too deep into this.
+Fixes: 108c14858b9e ("locking/lockdep: Add support for dynamic keys")
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
 
-Oliver
+v3: Change arch_is_bss_hole() to return a "bool".
+    Rearrange variables in kvm.c a bit.
+v2: No need to actually define arch_is_bss_hole() powerpc64 only.
+
+ arch/powerpc/include/asm/sections.h | 11 +++++++++++
+ arch/powerpc/kernel/kvm.c           |  8 +++++++-
+ include/asm-generic/sections.h      |  7 +++++++
+ kernel/locking/lockdep.c            |  3 +++
+ 4 files changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
+index 4a1664a8658d..6e9e39ebbb27 100644
+--- a/arch/powerpc/include/asm/sections.h
++++ b/arch/powerpc/include/asm/sections.h
+@@ -5,8 +5,19 @@
+ 
+ #include <linux/elf.h>
+ #include <linux/uaccess.h>
++
++#define arch_is_bss_hole arch_is_bss_hole
++
+ #include <asm-generic/sections.h>
+ 
++extern void *bss_hole_start, *bss_hole_end;
++
++static inline bool arch_is_bss_hole(unsigned long addr)
++{
++	return addr >= (unsigned long)bss_hole_start &&
++	       addr < (unsigned long)bss_hole_end;
++}
++
+ extern char __head_end[];
+ 
+ #ifdef __powerpc64__
+diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
+index b7b3a5e4e224..e3c3b076ff07 100644
+--- a/arch/powerpc/kernel/kvm.c
++++ b/arch/powerpc/kernel/kvm.c
+@@ -64,9 +64,11 @@
+ #define KVM_INST_MTSRIN		0x7c0001e4
+ 
+ static bool kvm_patching_worked = true;
+-char kvm_tmp[1024 * 1024];
+ static int kvm_tmp_index;
+ 
++char kvm_tmp[1024 * 1024];
++void *bss_hole_start, *bss_hole_end;
++
+ static inline void kvm_patch_ins(u32 *inst, u32 new_inst)
+ {
+ 	*inst = new_inst;
+@@ -707,6 +709,10 @@ static __init void kvm_free_tmp(void)
+ 	 */
+ 	kmemleak_free_part(&kvm_tmp[kvm_tmp_index],
+ 			   ARRAY_SIZE(kvm_tmp) - kvm_tmp_index);
++
++	bss_hole_start = &kvm_tmp[kvm_tmp_index];
++	bss_hole_end = &kvm_tmp[ARRAY_SIZE(kvm_tmp)];
++
+ 	free_reserved_area(&kvm_tmp[kvm_tmp_index],
+ 			   &kvm_tmp[ARRAY_SIZE(kvm_tmp)], -1, NULL);
+ }
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index d1779d442aa5..28a7a56e7c8a 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -91,6 +91,13 @@ static inline int arch_is_kernel_initmem_freed(unsigned long addr)
+ }
+ #endif
+ 
++#ifndef arch_is_bss_hole
++static inline bool arch_is_bss_hole(unsigned long addr)
++{
++	return false;
++}
++#endif
++
+ /**
+  * memory_contains - checks if an object is contained within a memory region
+  * @begin: virtual address of the beginning of the memory region
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 4861cf8e274b..cd75b51f15ce 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -675,6 +675,9 @@ static int static_obj(const void *obj)
+ 	if (arch_is_kernel_initmem_freed(addr))
+ 		return 0;
+ 
++	if (arch_is_bss_hole(addr))
++		return 0;
++
+ 	/*
+ 	 * static variable?
+ 	 */
+-- 
+1.8.3.1
+
