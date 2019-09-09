@@ -1,90 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322D9ADD87
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 18:53:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362BBADFC4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 22:04:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46RvPB5CLwzDqLb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 02:53:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Rzdf538xzDqRR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 06:04:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=de.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=gerald.schaefer@de.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="IrWT20fb"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46RvMM1fLGzDqLb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 02:51:42 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x89GkpFw089836
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 9 Sep 2019 12:51:38 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uwteh0jbe-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Sep 2019 12:51:38 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <gerald.schaefer@de.ibm.com>;
- Mon, 9 Sep 2019 17:51:35 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 9 Sep 2019 17:51:24 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x89GoxbI41157048
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Sep 2019 16:50:59 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85A0311C050;
- Mon,  9 Sep 2019 16:51:23 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 387CA11C04C;
- Mon,  9 Sep 2019 16:51:22 +0000 (GMT)
-Received: from thinkpad (unknown [9.152.212.222])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  9 Sep 2019 16:51:22 +0000 (GMT)
-Date: Mon, 9 Sep 2019 18:51:21 +0200
-From: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-In-Reply-To: <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
- <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
- <20190904221618.1b624a98@thinkpad>
- <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
- <20190905190629.523bdb87@thinkpad>
- <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
- <20190906210346.5ecbff01@thinkpad>
- <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46RzbV4ZwwzDqQB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 06:02:23 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id q5so9919178pfg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Sep 2019 13:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=xW7EQcr0CjNApYbCMIe6HxKaG8AfbdjFuus/B7ASN4M=;
+ b=IrWT20fbQOnXyNKinqp5OPc/kpar1wnCgipwXSgm71GIDrbS2sjQCkbzspksAGbCLH
+ 4i0o33F7A44k9WtSfCrUbvTAdNcg3yrKovUufCA2dtKvHtVka28le5119zq+0Cv2CIWw
+ SwA5UHo9Bu1YXk+jtQsx6EU71AtPmYqSFsiV3rZRmVdSPmwGZOoVtugLG/3yN4Uzq/NH
+ F70FnGSjwOeI1SAuHwBy0cn7IF+ly5AHiE6egoYGKDxl/UTvW4OhZrq2uoLTkkHAsbsE
+ t/EQefOrA5vf7HPDMVmHT7ohO9JVZk/JS38HeqYsWcb/4D4mGO9/C7EwUDIy1zRNq2KV
+ E0yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=xW7EQcr0CjNApYbCMIe6HxKaG8AfbdjFuus/B7ASN4M=;
+ b=O/dPB+w6bKkVGIPJOCdusUlV3p4PZsiYv9TWdkkGPYMrmJISnY9YtTEDhD/2Bqmysq
+ rZCEGtji4K4wGEqSHujpWp7/rH5O4K0sgKm4JLtzmdE1V/z61fIeAcxcGENOPSHCAUMt
+ lRk3X01lffocyx7l1n1zUTdx1rLRTJO0KdGodeOB+0sC5jdsNefui4Jgco+gISN+JUGd
+ reAOjrZi0N3JFIxHHTBjDja30tFt7sjcahlI1c0OS+wAey5mwS0yE3kOXt1TW0R6TSRo
+ l1gOPvFt0eqy2N2uml4m9uI1zeg9gTGKwByIyyAUAv6NjQ2/LsXbi6eBPg5YxEWEGfs7
+ U1dw==
+X-Gm-Message-State: APjAAAXBGdMTfrmKnf5JRWeCUO+GSuHv7Uzrra8gjTqLlL1ufCs1oPSM
+ rH4Qq46/JHvSfln9UKjoIG4=
+X-Google-Smtp-Source: APXvYqzTkwJBa3F0RxKnqmT5gOH5RbcRfdaf81JN1nzvoeP3MdObNZQOet8DwV8ZjCgD7GTvPLYVBA==
+X-Received: by 2002:a63:3c5:: with SMTP id 188mr23042649pgd.394.1568059341642; 
+ Mon, 09 Sep 2019 13:02:21 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id p17sm16111267pff.27.2019.09.09.13.02.20
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 09 Sep 2019 13:02:21 -0700 (PDT)
+Date: Mon, 9 Sep 2019 13:01:57 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 1/3] ASoC: fsl_asrc: Use in(out)put_format instead of
+ in(out)put_word_width
+Message-ID: <20190909200156.GB10344@Asurada-Nvidia.nvidia.com>
+References: <cover.1568025083.git.shengjiu.wang@nxp.com>
+ <65e96ca15afd4a282b122f3ea8b13642cf4614c7.1568025083.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 19090916-0020-0000-0000-00000369E0CB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090916-0021-0000-0000-000021BF62C6
-Message-Id: <20190909185121.6271e9be@thinkpad>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-09_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909090170
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65e96ca15afd4a282b122f3ea8b13642cf4614c7.1568025083.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,139 +82,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 9 Sep 2019 11:56:50 +0530
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+On Mon, Sep 09, 2019 at 06:33:19PM -0400, Shengjiu Wang wrote:
+> snd_pcm_format_t is more formal than enum asrc_word_width, which has
+> two property, width and physical width, which is more accurate than
+> enum asrc_word_width. So it is better to use in(out)put_format
+> instead of in(out)put_word_width.
 
-[..]
-> >=20
-> > Hmm, I simply used this on my system to make pud_clear_tests() work, not
-> > sure if it works on all archs:
-> >=20
-> > pud_val(*pudp) |=3D RANDOM_NZVALUE; =20
->=20
-> Which compiles on arm64 but then fails on x86 because of the way pmd_val()
-> has been defined there. on arm64 and s390 (with many others) pmd_val() is
-> a macro which still got the variable that can be used as lvalue but that =
-is
-> not true for some other platforms like x86.
->=20
-> arch/arm64/include/asm/pgtable-types.h:	#define pmd_val(x)	((x).pmd)
-> arch/s390/include/asm/page.h:		#define pmd_val(x)	((x).pmd)
-> arch/x86/include/asm/pgtable.h:		#define pmd_val(x)       native_pmd_val(=
-x)
->=20
-> static inline pmdval_t native_pmd_val(pmd_t pmd)
-> {
->         return pmd.pmd;
-> }
->=20
-> Unless I am mistaken, the return value from this function can not be used=
- as
-> lvalue for future assignments.
->=20
-> mm/arch_pgtable_test.c: In function =E2=80=98pud_clear_tests=E2=80=99:
-> mm/arch_pgtable_test.c:156:17: error: lvalue required as left operand of =
-assignment
->   pud_val(*pudp) |=3D RANDOM_ORVALUE;
->                  ^~
-> AFAICS pxx_val() were never intended to be used as lvalue and using it th=
-at way
-> might just happen to work on all those platforms which define them as mac=
-ros.
-> They meant to just provide values for an entry as being determined by the=
- platform.
->=20
-> In principle pxx_val() on an entry was not supposed to be modified direct=
-ly from
-> generic code without going through (again) platform helpers for any speci=
-fic state
-> change (write, old, dirty, special, huge etc). The current use case is a =
-deviation
-> for that.
->=20
-> I originally went with memset() just to load up the entries with non-zero=
- value so
-> that we know pxx_clear() are really doing the clearing. The same is being=
- followed
-> for all pxx_same() checks.
->=20
-> Another way for fixing the problem would be to mark them with known attri=
-butes
-> like write/young/huge etc instead which for sure will create non-zero ent=
-ries.
-> We can do that for pxx_clear() and pxx_same() tests and drop RANDOM_NZVAL=
-UE
-> completely. Does that sound good ?
+Hmm...I don't really see the benefit of using snd_pcm_format_t
+here...I mean, I know it's a generic one, and would understand
+if we use it as a param for a common API. But this patch merely
+packs the "width" by intentionally using this snd_pcm_format_t
+and then adds another translation to unpack it.. I feel it's a
+bit overcomplicated. Or am I missing something?
 
-Umm, not really. Those mkwrite/young/huge etc. helpers do only exist for
-page table levels where we can also have large mappings, at least on s390.
-Also, we do (on s390) again check for certain sanity before actually setting
-the bits.
-Good news is that at least for the pxx_same() checks the memset() is no
-problem, because pxx_same() does not do any checks other than the same chec=
-k.
+And I feel it's not necessary to use ALSA common format in our
+own "struct asrc_config" since it is more IP/register specific. 
 
-For the pxx_clear_tests(), maybe it could be an option to put them behind t=
-he
-pxx_populate_tests(), and rely on them having properly populated (non-clear)
-values after that?
+Thanks
+Nicolin
 
-[...]
-> >=20
-> > Actually, using get_unmapped_area() as suggested by Kirill could also
-> > solve this issue. We do create a new mm with 3-level page tables on s39=
-0,
-> > and the dynamic upgrade to 4 or 5 levels is then triggered exactly by
-> > arch_get_unmapped_area(), depending on the addr. But I currently don't
-> > see how / where arch_get_unmapped_area() is set up for such a dummy mm
-> > created by mm_alloc(). =20
->=20
-> Normally they are set during program loading but we can set it up explici=
-tly
-> for the test mm_struct if we need to but there are some other challenges.
->=20
-> load_[aout|elf|flat|..]_binary()
-> 	setup_new_exec()
-> 		arch_pick_mmap_layout().
->=20
-> I did some initial experiments around get_unmapped_area(). Seems bit tric=
-ky
-> to get it working on a pure 'test' mm_struct. It expects a real user cont=
-ext
-> in the form of current->mm.
-
-Yes, that's where I stopped because it looked rather complicated :-)
-Not sure why Kirill suggested it initially, but if using get_unmapped_area()
-would only be necessary to get properly initialized page table levels
-on s390, you could also defer this to a later add-on patch.
-
-Regards,
-Gerald
-
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  sound/soc/fsl/fsl_asrc.c | 56 +++++++++++++++++++++++++++-------------
+>  sound/soc/fsl/fsl_asrc.h |  4 +--
+>  2 files changed, 40 insertions(+), 20 deletions(-)
+> 
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index cfa40ef6b1ca..4d3804a1ea55 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
+> @@ -265,6 +265,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  	struct asrc_config *config = pair->config;
+>  	struct fsl_asrc *asrc_priv = pair->asrc_priv;
+>  	enum asrc_pair_index index = pair->index;
+> +	enum asrc_word_width input_word_width;
+> +	enum asrc_word_width output_word_width;
+>  	u32 inrate, outrate, indiv, outdiv;
+>  	u32 clk_index[2], div[2];
+>  	int in, out, channels;
+> @@ -283,9 +285,32 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  		return -EINVAL;
+>  	}
+>  
+> -	/* Validate output width */
+> -	if (config->output_word_width == ASRC_WIDTH_8_BIT) {
+> -		pair_err("does not support 8bit width output\n");
+> +	switch (snd_pcm_format_width(config->input_format)) {
+> +	case 8:
+> +		input_word_width = ASRC_WIDTH_8_BIT;
+> +		break;
+> +	case 16:
+> +		input_word_width = ASRC_WIDTH_16_BIT;
+> +		break;
+> +	case 24:
+> +		input_word_width = ASRC_WIDTH_24_BIT;
+> +		break;
+> +	default:
+> +		pair_err("does not support this input format, %d\n",
+> +			 config->input_format);
+> +		return -EINVAL;
+> +	}
+> +
+> +	switch (snd_pcm_format_width(config->output_format)) {
+> +	case 16:
+> +		output_word_width = ASRC_WIDTH_16_BIT;
+> +		break;
+> +	case 24:
+> +		output_word_width = ASRC_WIDTH_24_BIT;
+> +		break;
+> +	default:
+> +		pair_err("does not support this output format, %d\n",
+> +			 config->output_format);
+>  		return -EINVAL;
+>  	}
+>  
+> @@ -383,8 +408,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  	/* Implement word_width configurations */
+>  	regmap_update_bits(asrc_priv->regmap, REG_ASRMCR1(index),
+>  			   ASRMCR1i_OW16_MASK | ASRMCR1i_IWD_MASK,
+> -			   ASRMCR1i_OW16(config->output_word_width) |
+> -			   ASRMCR1i_IWD(config->input_word_width));
+> +			   ASRMCR1i_OW16(output_word_width) |
+> +			   ASRMCR1i_IWD(input_word_width));
+>  
+>  	/* Enable BUFFER STALL */
+>  	regmap_update_bits(asrc_priv->regmap, REG_ASRMCR(index),
+> @@ -497,13 +522,13 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+>  				  struct snd_soc_dai *dai)
+>  {
+>  	struct fsl_asrc *asrc_priv = snd_soc_dai_get_drvdata(dai);
+> -	int width = params_width(params);
+>  	struct snd_pcm_runtime *runtime = substream->runtime;
+>  	struct fsl_asrc_pair *pair = runtime->private_data;
+>  	unsigned int channels = params_channels(params);
+>  	unsigned int rate = params_rate(params);
+>  	struct asrc_config config;
+> -	int word_width, ret;
+> +	snd_pcm_format_t format;
+> +	int ret;
+>  
+>  	ret = fsl_asrc_request_pair(channels, pair);
+>  	if (ret) {
+> @@ -513,15 +538,10 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+>  
+>  	pair->config = &config;
+>  
+> -	if (width == 16)
+> -		width = ASRC_WIDTH_16_BIT;
+> -	else
+> -		width = ASRC_WIDTH_24_BIT;
+> -
+>  	if (asrc_priv->asrc_width == 16)
+> -		word_width = ASRC_WIDTH_16_BIT;
+> +		format = SNDRV_PCM_FORMAT_S16_LE;
+>  	else
+> -		word_width = ASRC_WIDTH_24_BIT;
+> +		format = SNDRV_PCM_FORMAT_S24_LE;
+>  
+>  	config.pair = pair->index;
+>  	config.channel_num = channels;
+> @@ -529,13 +549,13 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+>  	config.outclk = OUTCLK_ASRCK1_CLK;
+>  
+>  	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+> -		config.input_word_width   = width;
+> -		config.output_word_width  = word_width;
+> +		config.input_format   = params_format(params);
+> +		config.output_format  = format;
+>  		config.input_sample_rate  = rate;
+>  		config.output_sample_rate = asrc_priv->asrc_rate;
+>  	} else {
+> -		config.input_word_width   = word_width;
+> -		config.output_word_width  = width;
+> +		config.input_format   = format;
+> +		config.output_format  = params_format(params);
+>  		config.input_sample_rate  = asrc_priv->asrc_rate;
+>  		config.output_sample_rate = rate;
+>  	}
+> diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
+> index c60075112570..38af485bdd22 100644
+> --- a/sound/soc/fsl/fsl_asrc.h
+> +++ b/sound/soc/fsl/fsl_asrc.h
+> @@ -342,8 +342,8 @@ struct asrc_config {
+>  	unsigned int dma_buffer_size;
+>  	unsigned int input_sample_rate;
+>  	unsigned int output_sample_rate;
+> -	enum asrc_word_width input_word_width;
+> -	enum asrc_word_width output_word_width;
+> +	snd_pcm_format_t input_format;
+> +	snd_pcm_format_t output_format;
+>  	enum asrc_inclk inclk;
+>  	enum asrc_outclk outclk;
+>  };
+> -- 
+> 2.21.0
+> 
