@@ -1,102 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7979DAD9F6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 15:27:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFD0ADAB7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 16:06:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Rpq66HcdzDqLl
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 23:26:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46RqhN3rCmzDqNp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 00:06:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eeHn9BXh"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46RplC0GRLzDqBd
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Sep 2019 23:23:35 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46RplB37vCz8t3b
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Sep 2019 23:23:34 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46RplB2R1Vz9sNF; Mon,  9 Sep 2019 23:23:34 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46Rpl94kycz9sCJ
- for <linuxppc-dev@ozlabs.org>; Mon,  9 Sep 2019 23:23:32 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x89DNBHI100383
- for <linuxppc-dev@ozlabs.org>; Mon, 9 Sep 2019 09:23:28 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2uwqjn81bw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 09 Sep 2019 09:23:28 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Mon, 9 Sep 2019 14:23:26 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 9 Sep 2019 14:23:24 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x89DMwH436700636
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Sep 2019 13:22:58 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 53294A4059;
- Mon,  9 Sep 2019 13:23:22 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F0BEEA4055;
- Mon,  9 Sep 2019 13:23:20 +0000 (GMT)
-Received: from [9.184.183.129] (unknown [9.184.183.129])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  9 Sep 2019 13:23:20 +0000 (GMT)
-Subject: Re: [PATCH v5 21/31] powernv/fadump: process architected register
- state data provided by firmware
-To: Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>
-References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
- <156630280239.8896.11769233860624935762.stgit@hbathini.in.ibm.com>
- <87sgpcp80n.fsf@mpe.ellerman.id.au>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Date: Mon, 9 Sep 2019 18:53:20 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46RqcN0r2QzDqNp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 00:02:43 +1000 (AEST)
+Received: by mail-io1-xd41.google.com with SMTP id k5so3595358iol.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Sep 2019 07:02:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=8i5dkStrabNHsl7KV3zOIJ5RJgzj90AK9sxoEEJihIo=;
+ b=eeHn9BXhrxmfX9aye2EW2AnRlwbqWsP/9UGyIoyui1PwsLNVui38+z8yNFWGuXNTqu
+ 5DlQJlAfRtR0zTYXc+rsc4XI6CfPNhE9/z7AUsVOQNcRVNG8hPcI+Dma0zWlEef0Kda5
+ YmZY1EnK9sf10kNt5oWN1BKtN3GZs3eyExgE3MFlb3ZZUJIklI76U4vYu8upWGzb84cx
+ ErpoYjOaD6//OdfwiefUwm5NTEWEi1GRCjyDIELHtp1VGYtZZV/US5AxH68IWdwBPYn2
+ 7JhSBdpIlpO7vsaPsH0l45+XaG7HyGzH6yYDOU7fUx5bNM1tkUN6StJQcJNtlubK1EM4
+ 6eKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=8i5dkStrabNHsl7KV3zOIJ5RJgzj90AK9sxoEEJihIo=;
+ b=ppOoTjvEXycqZUV5B+ei0b8vyxWj2lZCeZu4E3DnnBenkmJkmiVemHxKyfMZqiQG37
+ zzymrg5D30lVZrdSDRkW7FUY/Of8FHe4bORUXuIIyXX3LxPWwuXtTqUfz/bRGHKp1HZ7
+ vAAYc56DiNc1JLQKzdUfriaIZQTX8TVXKIGkCG7FhpY/t81PTplTP73kl3MMAPNUJQP+
+ E/2CAu88juuluZ0fRJc0Xy1iADkNYzaqy1zgG2unDsnAYPtUFrYUWJv2bbizAZmbLTFs
+ 8JZcn+afCqQNIue2xW/3rDniBGS7jZYPAPBoc4q/hYyC3qO/8CdxQXDzQ/wLOgt1t6RE
+ x1zQ==
+X-Gm-Message-State: APjAAAVExeFktCX9PAsMDiJAZvs217562ow44GP6unTOxK9GPWBqrj+G
+ J1JeYdLDa9sT4aARbIOq1vphStLUy8X7C3ay2Mc=
+X-Google-Smtp-Source: APXvYqyL386XCzrPyKA6S2bjdTj5LdfIJF3K+CS7kEa0ci3Yw2WTxtOi9ty8C8PnCPAwjUejB3RRqqLbCMNixIljCqU=
+X-Received: by 2002:a6b:bb86:: with SMTP id l128mr18026803iof.18.1568037761702; 
+ Mon, 09 Sep 2019 07:02:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87sgpcp80n.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19090913-0012-0000-0000-00000348C841
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090913-0013-0000-0000-000021832897
-Message-Id: <b7c46267-92d8-9202-b657-7cb8e37451fe@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-09_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909090138
+References: <20190816165101.911-1-s.miroshnichenko@yadro.com>
+ <20190816165101.911-19-s.miroshnichenko@yadro.com>
+ <026a6bfbfd8268c5158bc48fb43907cc13442561.camel@gmail.com>
+ <7af3d4cd-b786-19b1-1ddf-b93f9875976d@yadro.com>
+In-Reply-To: <7af3d4cd-b786-19b1-1ddf-b93f9875976d@yadro.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 10 Sep 2019 00:02:30 +1000
+Message-ID: <CAOSf1CG-oaKazKzZCULUjntc+3-dztiQ3U=6tcWu+OGer_77Ag@mail.gmail.com>
+Subject: Re: [PATCH v5 18/23] powerpc/pci: Handle BAR movement
+To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,39 +75,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Vasant Hegde <hegdevasant@linux.ibm.com>, Oliver <oohall@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
+Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 04/09/19 5:50 PM, Michael Ellerman wrote:
-> Hari Bathini <hbathini@linux.ibm.com> writes:
+On Sat, Sep 7, 2019 at 2:25 AM Sergey Miroshnichenko
+<s.miroshnichenko@yadro.com> wrote:
 >
+> Hi Oliver,
+>
+> On 9/4/19 8:37 AM, Oliver O'Halloran wrote:
+> > On Fri, 2019-08-16 at 19:50 +0300, Sergey Miroshnichenko wrote:
+> >> Add pcibios_rescan_prepare()/_done() hooks for the powerpc platform. Now if
+> >> the device's driver supports movable BARs, pcibios_rescan_prepare() will be
+> >> called after the device is stopped, and pcibios_rescan_done() - before it
+> >> resumes. There are no memory requests to this device between the hooks, so
+> >> it it safe to rebuild the EEH address cache during that.
+> >>
+> >> CC: Oliver O'Halloran <oohall@gmail.com>
+> >> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+> >> ---
+> >>  arch/powerpc/kernel/pci-hotplug.c | 10 ++++++++++
+> >>  1 file changed, 10 insertions(+)
+> >>
+> >> diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
+> >> index 0b0cf8168b47..18cf13bba228 100644
+> >> --- a/arch/powerpc/kernel/pci-hotplug.c
+> >> +++ b/arch/powerpc/kernel/pci-hotplug.c
+> >> @@ -144,3 +144,13 @@ void pci_hp_add_devices(struct pci_bus *bus)
+> >>      pcibios_finish_adding_to_bus(bus);
+> >>  }
+> >>  EXPORT_SYMBOL_GPL(pci_hp_add_devices);
+> >> +
+> >> +void pcibios_rescan_prepare(struct pci_dev *pdev)
+> >> +{
+> >> +    eeh_addr_cache_rmv_dev(pdev);
+> >> +}
+> >> +
+> >> +void pcibios_rescan_done(struct pci_dev *pdev)
+> >> +{
+> >> +    eeh_addr_cache_insert_dev(pdev);
+> >> +}
+> >
+> > Is this actually sufficent? The PE number for a device is largely
+> > determined by the location of the MMIO BARs. If you move a BAR far
+> > enough the PE number stored in the eeh_pe would need to be updated as
+> > well.
+> >
+>
+> Thanks for the hint! I've checked on our PowerNV: for bridges with MEM
+> only it allocates PE numbers starting from 0xff down, and when there
+> are MEM64 - starting from 0 up, one PE number per 4GiB.
+>
+> PEs are allocated during call to pnv_pci_setup_bridge(), and the I've
+> added invocation of pci_setup_bridge() after a hotplug event in the
+> "Recalculate all bridge windows during rescan" patch of this series.
 
-[...]
+Sort of.
 
->> +/*
->> + * CPU state data is provided by f/w. Below are the definitions
->> + * provided in HDAT spec. Refer to latest HDAT specification for
->> + * any update to this format.
->> + */
-> 
-> How is this meant to work? If HDAT ever changes the format they will
-> break all existing kernels in the field.
-> 
->> +#define HDAT_FADUMP_CPU_DATA_VERSION		1
+On PHB3 both the 32bit and the 64bit MMIO windows are split into 256
+segments each of which is mapped to a PE number. For the 32bit space
+there's a remapping table in hardware that allows arbitrary mapping of
+segments to PE numbers, but in the 64bit space the mapping is fixed
+with the first segment being PE0, etc. If there's a 64 bit BAR under a
+bridge the PE is really "allocated" during the BAR assignment process,
+and the setup_bridge() step sets up the EEH state based on that.
 
-Changes are not expected here. But this is just to cover for such scenario,
-if that ever happens.
+It's worth pointing out that this is why the 64bit window is usually
+4GB. Bridge windows need to be aligned to a segment boundary to ensure
+the devices under them are placed into a unique PE.
 
-Also, I think it is a bit far-fetched to error out if versions mismatch.
-Warning and proceeding sounds worthier because the changes are usually
-backward compatible, if and when there are any. Will update accordingly... 
+> Currently, if a bus already has a PE, pnv_ioda_setup_bus_PE() takes it
+> and returns. I can see two ways to change it, both are not difficult to
+> implement:
+>
+>  a.1) check if MEM64 BARs appeared below the bus - allocate and assign
+>       a new master PE with required number of slave PEs;
+>
+>  a.2) if the bus now has more MEM64 than before - check if more slave
+>       PEs must be reserved;
+>
+>  b) release all the PEs before a PCI rescan and allocate+assign them
+>     again after - with this approach the "Hook up the writes to
+>     PCI_SECONDARY_BUS register" patch may be eliminated.
+>
+> Do you find any of these suitable?
 
-- Hari
+I'm not sure a) would work, but even if it does b) is preferable.
+There's a lot of strangeness in the powerpc PCI code as-is without
+adding extra code paths to deal with. Keeping what happens at hotplug
+consistent with what happens at boot will help keep things sane.
 
+FYI in the next few days I'm going to post a series that rips out the
+use of pci_dn in powernv and the generic parts of EEH (pseries still
+uses it). Assuming Bjorn isn't picking this up for 5.4 you might want
+to wait for that before getting too deep into this.
+
+Oliver
