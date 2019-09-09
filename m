@@ -1,86 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1572FADBF4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 17:15:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B012ADC28
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2019 17:34:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46RsDn5qZ8zDqK1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 01:15:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Rsfm6rnFzDqGQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 01:34:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=shutemov.name
- (client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
- envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=shutemov-name.20150623.gappssmtp.com
- header.i=@shutemov-name.20150623.gappssmtp.com header.b="lqK7soM8"; 
- dkim-atps=neutral
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46RsBR38pczDqJh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 01:13:50 +1000 (AEST)
-Received: by mail-ed1-x543.google.com with SMTP id f2so6947203edw.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Sep 2019 08:13:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=shutemov-name.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=ptGQKrJwsC6QNZJxPTcIFHrTBzodlhROW8EV9Cr6mks=;
- b=lqK7soM8Ql8EG2Ftn3h3hR+olO0M3L5hi5yR7FV9iLEmOGD4dckGUM3j+cW0/Dime1
- tcaru2ydfakL0qOGX9NW71rS5xXhlEsWXHR5tZTvN8nAdg3jRR7H91vVYT27iUT4zLQL
- /8sd6tx6RSZch+NQKzd2gDDMnTl6lfsTiDI17WOQGfxtCfWUReS2eIOCKDQqmHkeOOb6
- CQ29hW9JyqW2659VgWaWS03hTBmcSoCzS6kj58DkCjvhtjcgvBnAojuQ6LW0JN5ngCCR
- oxmuahVreVZAzOjjnErCDvkrgGlDpVGWckjhAKTQyS0XAzH5VKEiZW6qr15a3nTgG9T0
- I28w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Rscx4GsjzDqCk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 01:33:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dDhjutOR"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46Rscx2VXTz8t6X
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 01:33:21 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46Rscx194Fz9sCJ; Tue, 10 Sep 2019 01:33:21 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dDhjutOR"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46Rscw2W33z9s00
+ for <linuxppc-dev@ozlabs.org>; Tue, 10 Sep 2019 01:33:19 +1000 (AEST)
+Received: by mail-io1-xd43.google.com with SMTP id m11so29732314ioo.0
+ for <linuxppc-dev@ozlabs.org>; Mon, 09 Sep 2019 08:33:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=yVJbRmooCX4u0lvbwVAgp7dGZKoaCdPYyvWjgm/51hU=;
+ b=dDhjutORYn9XJpV59znJaxDiEzAGE9Xzc96mJrPl984lQLyLtn2m/qWRwumaE0i2ke
+ bmMzylQsa76Koz76Qa9abd25rGx4IjUowE5172wiH7M5ZQSvSYvLSWKdIsFThU+7OK21
+ 1az6qPuveDhcTUW1kBU3/XNMEwLXtO3hs9H9VFmFvhOTGFdQIgWe2E4GjTbl5v/AJMhE
+ F7b06bRfYkkbAlYF3TQWdCEu+XBvbsXYSKPdEqJg3I5TcxP6f+5bZnHItETpXgAJTXwb
+ vhaCJSbRdMpV88t17henmCY5ROq4hsP1DI5vDc+kI04WLDvohaCEIzo8WaGyEBfjtgyI
+ ERLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=ptGQKrJwsC6QNZJxPTcIFHrTBzodlhROW8EV9Cr6mks=;
- b=HtcP5g0V2+ve1XlSVrQdFIt1H5SM/LIledvs85elxLRsFvy6tHbqRUmIXtVPvAlToK
- 6FajGB0UaOP2cs2FBnV8f9MTCetIH1qoiqA0NPBqIL3gr5Y5bC1vGu+SrETwFjphJ+S4
- wNXimNHSOMCKvEjRkKBfJrm8+XPoOXuvclirQ2EuZEXtetlqLfh5CSuiC9RA++gTKy2t
- 9Pgk3fPGEoVdj84k4ux+JPKOVQGjj0MpUj9c+Ul3O9YfqANCUIX26mNeX0vG60iHw05W
- Q5bnBHZ9YmH9OgGbkkOaOxIA9TYPKCjkiD9F/alIU6kLV3FOSnTHtdFYImXvbvRsBFz9
- wihA==
-X-Gm-Message-State: APjAAAWqkfhLpUUxYEVZhOIbGcX421b/wNXSA+pKdvBMLyh4HUKJfUKd
- zG3pd3a2L4J87BIs7AlEfEmAhw==
-X-Google-Smtp-Source: APXvYqwJokBcl6isKFmA//BZZyEEgwoj2uNW2kTs0Tg/Y35qXurjsqN7Jks2aTze1VFcwFZl9Fv8+Q==
-X-Received: by 2002:a17:906:c304:: with SMTP id
- s4mr20002026ejz.71.1568042026870; 
- Mon, 09 Sep 2019 08:13:46 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
- by smtp.gmail.com with ESMTPSA id bf19sm3010529edb.23.2019.09.09.08.13.45
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 09 Sep 2019 08:13:46 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
- id CD9501003B5; Mon,  9 Sep 2019 18:13:44 +0300 (+03)
-Date: Mon, 9 Sep 2019 18:13:44 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-Message-ID: <20190909151344.ghfypjbgxyosjdk3@box>
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
- <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
- <20190904221618.1b624a98@thinkpad>
- <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
- <20190905190629.523bdb87@thinkpad>
- <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
- <20190906210346.5ecbff01@thinkpad>
- <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=yVJbRmooCX4u0lvbwVAgp7dGZKoaCdPYyvWjgm/51hU=;
+ b=uf6TJZvNG4owjN+LReoH37OL9USG/qcXR/ks0Zo58xGKlh9VRHDp9BZnU+AMxTtiOu
+ eoDKEd6SPiFu9INzRem7zJ1s4uwsnZAa+WSCwEY7abYyy37JSPsCeCu5R4Ogt0owgsqw
+ hCBhU/Iffc5kbQqfVyZvDl/hy0P7EK6Lfj6e4vC7GRZWy7AjT8CDk6ZTmfmSM8BS5I4P
+ XDHGYuIB1mLnwgcs/fwTAEIfdGV0jWENUsXv370PNDsl6a959jfnwJLjxEL3QOKyUbwV
+ LacShkgvnelkTVnGRRrGo7mRYXzowzQhSEZaGd4qTodzTZUWBHztaXqkVVqvecehq9Tk
+ a0bA==
+X-Gm-Message-State: APjAAAXkQm6OPAwFyJwTsF3m68CwuF3PI/V4O7apkc+lHXzwvszhrsEe
+ qCTZlRb32bpBrmn2ZrAVZraADZ1yIRNLYjcCueo=
+X-Google-Smtp-Source: APXvYqyUuzg30g0FzE/aCo5WMBCqpTrOSK6JcXpnQGy4a+DaKuGS0i6/VJ/vXfXC87CHF9PYbOpS2vEwIaDbO6CsJTY=
+X-Received: by 2002:a05:6638:8e:: with SMTP id
+ v14mr1998062jao.72.1568043195514; 
+ Mon, 09 Sep 2019 08:33:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
-User-Agent: NeoMutt/20180716
+References: <156630261682.8896.3418665808003586786.stgit@hbathini.in.ibm.com>
+ <156630280239.8896.11769233860624935762.stgit@hbathini.in.ibm.com>
+ <87sgpcp80n.fsf@mpe.ellerman.id.au>
+ <b7c46267-92d8-9202-b657-7cb8e37451fe@linux.ibm.com>
+In-Reply-To: <b7c46267-92d8-9202-b657-7cb8e37451fe@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 10 Sep 2019 01:33:04 +1000
+Message-ID: <CAOSf1CHjV5PM-rYJ_5-XHmZyBNO_H=Nw8X7+HoOZnL+D7pM-sg@mail.gmail.com>
+Subject: Re: [PATCH v5 21/31] powernv/fadump: process architected register
+ state data provided by firmware
+To: Hari Bathini <hbathini@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,105 +93,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- linux-s390@vger.kernel.org, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-arm-kernel@lists.infradead.org,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 09, 2019 at 11:56:50AM +0530, Anshuman Khandual wrote:
-> 
-> 
-> On 09/07/2019 12:33 AM, Gerald Schaefer wrote:
-> > On Fri, 6 Sep 2019 11:58:59 +0530
-> > Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> > 
-> >> On 09/05/2019 10:36 PM, Gerald Schaefer wrote:
-> >>> On Thu, 5 Sep 2019 14:48:14 +0530
-> >>> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> >>>   
-> >>>>> [...]    
-> >>>>>> +
-> >>>>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
-> >>>>>> +static void pud_clear_tests(pud_t *pudp)
-> >>>>>> +{
-> >>>>>> +	memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
-> >>>>>> +	pud_clear(pudp);
-> >>>>>> +	WARN_ON(!pud_none(READ_ONCE(*pudp)));
-> >>>>>> +}    
-> >>>>>
-> >>>>> For pgd/p4d/pud_clear(), we only clear if the page table level is present
-> >>>>> and not folded. The memset() here overwrites the table type bits, so
-> >>>>> pud_clear() will not clear anything on s390 and the pud_none() check will
-> >>>>> fail.
-> >>>>> Would it be possible to OR a (larger) random value into the table, so that
-> >>>>> the lower 12 bits would be preserved?    
-> >>>>
-> >>>> So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
-> >>>> it should OR a large random value preserving lower 12 bits. Hmm, this should
-> >>>> still do the trick for other platforms, they just need non zero value. So on
-> >>>> s390, the lower 12 bits on the page table entry already has valid value while
-> >>>> entering this function which would make sure that pud_clear() really does
-> >>>> clear the entry ?  
-> >>>
-> >>> Yes, in theory the table entry on s390 would have the type set in the last
-> >>> 4 bits, so preserving those would be enough. If it does not conflict with
-> >>> others, I would still suggest preserving all 12 bits since those would contain
-> >>> arch-specific flags in general, just to be sure. For s390, the pte/pmd tests
-> >>> would also work with the memset, but for consistency I think the same logic
-> >>> should be used in all pxd_clear_tests.  
-> >>
-> >> Makes sense but..
-> >>
-> >> There is a small challenge with this. Modifying individual bits on a given
-> >> page table entry from generic code like this test case is bit tricky. That
-> >> is because there are not enough helpers to create entries with an absolute
-> >> value. This would have been easier if all the platforms provided functions
-> >> like __pxx() which is not the case now. Otherwise something like this should
-> >> have worked.
-> >>
-> >>
-> >> pud_t pud = READ_ONCE(*pudp);
-> >> pud = __pud(pud_val(pud) | RANDOM_VALUE (keeping lower 12 bits 0))
-> >> WRITE_ONCE(*pudp, pud);
-> >>
-> >> But __pud() will fail to build in many platforms.
-> > 
-> > Hmm, I simply used this on my system to make pud_clear_tests() work, not
-> > sure if it works on all archs:
-> > 
-> > pud_val(*pudp) |= RANDOM_NZVALUE;
-> 
-> Which compiles on arm64 but then fails on x86 because of the way pmd_val()
-> has been defined there.
+On Mon, Sep 9, 2019 at 11:23 PM Hari Bathini <hbathini@linux.ibm.com> wrote:
+>
+> On 04/09/19 5:50 PM, Michael Ellerman wrote:
+> > Hari Bathini <hbathini@linux.ibm.com> writes:
+> >
+>
+> [...]
+>
+> >> +/*
+> >> + * CPU state data is provided by f/w. Below are the definitions
+> >> + * provided in HDAT spec. Refer to latest HDAT specification for
+> >> + * any update to this format.
+> >> + */
+> >
+> > How is this meant to work? If HDAT ever changes the format they will
+> > break all existing kernels in the field.
+> >
+> >> +#define HDAT_FADUMP_CPU_DATA_VERSION                1
+>
+> Changes are not expected here. But this is just to cover for such scenario,
+> if that ever happens.
 
-Use instead
+The HDAT spec doesn't define the SPR numbers for NIA, MSR and the CR.
+As far as I can tell the values you've assumed here are chip-specific,
+non-architected SPR numbers that come from an array buried somewhere
+in the SBE codebase. I don't believe you for a second when you say
+that this will never change.
 
-	*pudp = __pud(pud_val(*pudp) | RANDOM_NZVALUE);
+> Also, I think it is a bit far-fetched to error out if versions mismatch.
+> Warning and proceeding sounds worthier because the changes are usually
+> backward compatible, if and when there are any. Will update accordingly...
 
-It *should* be more portable.
+Literally the only reason I didn't drop the CPU DATA parts of the OPAL
+MPIPL series was because I assumed the kernel would do the sensible
+thing and reject or ignore the structure if it did not know how to
+parse the data.
 
--- 
- Kirill A. Shutemov
+Oliver
