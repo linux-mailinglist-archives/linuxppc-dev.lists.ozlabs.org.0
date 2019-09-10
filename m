@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753A1AE5A4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 10:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F13AE5AD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 10:37:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46SJHw5w5HzDqGM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 18:35:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46SJLJ1bndzDqhn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 18:37:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,60 +19,59 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46SJB31zPLzDqbl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 18:30:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46SJB74rLWzDqZk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 18:30:07 +1000 (AEST)
 Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8A8RHOi116141
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 04:30:00 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ux7yw8syv-1
+ x8A8RG3M116005
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 04:30:05 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ux7yw8t2y-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 04:30:00 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 04:30:05 -0400
 Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Tue, 10 Sep 2019 09:29:58 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Tue, 10 Sep 2019 09:30:02 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 10 Sep 2019 09:29:54 +0100
+ Tue, 10 Sep 2019 09:29:59 +0100
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8A8TrYX58916958
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8A8TvLH51249254
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Sep 2019 08:29:53 GMT
+ Tue, 10 Sep 2019 08:29:57 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E61765204F;
- Tue, 10 Sep 2019 08:29:52 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A477E52050;
+ Tue, 10 Sep 2019 08:29:57 +0000 (GMT)
 Received: from bharata.ibmuc.com (unknown [9.199.35.217])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A271052050;
- Tue, 10 Sep 2019 08:29:50 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A532452052;
+ Tue, 10 Sep 2019 08:29:55 +0000 (GMT)
 From: Bharata B Rao <bharata@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 1/8] KVM: PPC: Book3S HV: Define usage types for rmap array
- in guest memslot
-Date: Tue, 10 Sep 2019 13:59:39 +0530
+Subject: [PATCH v8 3/8] kvmppc: Shared pages support for secure guests
+Date: Tue, 10 Sep 2019 13:59:41 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190910082946.7849-1-bharata@linux.ibm.com>
 References: <20190910082946.7849-1-bharata@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19091008-0012-0000-0000-0000034967DF
+x-cbid: 19091008-4275-0000-0000-00000363DA67
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091008-0013-0000-0000-00002183CAE5
-Message-Id: <20190910082946.7849-2-bharata@linux.ibm.com>
+x-cbparentid: 19091008-4276-0000-0000-000038762D16
+Message-Id: <20190910082946.7849-4-bharata@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-09-10_06:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=812 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1909100085
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,97 +86,138 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
  Bharata B Rao <bharata@linux.ibm.com>, linux-mm@kvack.org, jglisse@redhat.com,
- aneesh.kumar@linux.vnet.ibm.com,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>, paulus@au1.ibm.com,
+ aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
  sukadev@linux.vnet.ibm.com, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+A secure guest will share some of its pages with hypervisor (Eg. virtio
+bounce buffers etc). Support sharing of pages between hypervisor and
+ultravisor.
 
-The rmap array in the guest memslot is an array of size number of guest
-pages, allocated at memslot creation time. Each rmap entry in this array
-is used to store information about the guest page to which it
-corresponds. For example for a hpt guest it is used to store a lock bit,
-rc bits, a present bit and the index of a hpt entry in the guest hpt
-which maps this page. For a radix guest which is running nested guests
-it is used to store a pointer to a linked list of nested rmap entries
-which store the nested guest physical address which maps this guest
-address and for which there is a pte in the shadow page table.
+Once a secure page is converted to shared page, the device page is
+unmapped from the HV side page tables.
 
-As there are currently two uses for the rmap array, and the potential
-for this to expand to more in the future, define a type field (being the
-top 8 bits of the rmap entry) to be used to define the type of the rmap
-entry which is currently present and define two values for this field
-for the two current uses of the rmap array.
-
-Since the nested case uses the rmap entry to store a pointer, define
-this type as having the two high bits set as is expected for a pointer.
-Define the hpt entry type as having bit 56 set (bit 7 IBM bit ordering).
-
-Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-		[Added rmap type KVMPPC_RMAP_UVMEM_PFN]
 ---
- arch/powerpc/include/asm/kvm_host.h | 28 ++++++++++++++++++++++++----
- arch/powerpc/kvm/book3s_hv_rm_mmu.c |  2 +-
- 2 files changed, 25 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/hvcall.h  |  3 ++
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 65 ++++++++++++++++++++++++++++--
+ 2 files changed, 65 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 4bb552d639b8..81cd221ccc04 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -232,11 +232,31 @@ struct revmap_entry {
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 2595d0144958..4e98dd992bd1 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -342,6 +342,9 @@
+ #define H_TLB_INVALIDATE	0xF808
+ #define H_COPY_TOFROM_GUEST	0xF80C
+ 
++/* Flags for H_SVM_PAGE_IN */
++#define H_PAGE_IN_SHARED        0x1
++
+ /* Platform-specific hcalls used by the Ultravisor */
+ #define H_SVM_PAGE_IN		0xEF00
+ #define H_SVM_PAGE_OUT		0xEF04
+diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+index a1eccb065ba9..bcecb643a730 100644
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -46,6 +46,7 @@ struct kvmppc_uvmem_page_pvt {
+ 	unsigned long *rmap;
+ 	unsigned int lpid;
+ 	unsigned long gpa;
++	bool skip_page_out;
  };
  
  /*
-- * We use the top bit of each memslot->arch.rmap entry as a lock bit,
-- * and bit 32 as a present flag.  The bottom 32 bits are the
-- * index in the guest HPT of a HPTE that points to the page.
-+ * The rmap array of size number of guest pages is allocated for each memslot.
-+ * This array is used to store usage specific information about the guest page.
-+ * Below are the encodings of the various possible usage types.
-  */
--#define KVMPPC_RMAP_LOCK_BIT	63
-+/* Free bits which can be used to define a new usage */
-+#define KVMPPC_RMAP_TYPE_MASK	0xff00000000000000
-+#define KVMPPC_RMAP_NESTED	0xc000000000000000	/* Nested rmap array */
-+#define KVMPPC_RMAP_HPT		0x0100000000000000	/* HPT guest */
-+#define KVMPPC_RMAP_UVMEM_PFN	0x0200000000000000	/* Secure GPA */
-+
-+static inline unsigned long kvmppc_rmap_type(unsigned long *rmap)
+@@ -159,6 +160,53 @@ kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
+ 	return ret;
+ }
+ 
++/*
++ * Shares the page with HV, thus making it a normal page.
++ *
++ * - If the page is already secure, then provision a new page and share
++ * - If the page is a normal page, share the existing page
++ *
++ * In the former case, uses the dev_pagemap_ops migrate_to_ram handler
++ * to unmap the device page from QEMU's page tables.
++ */
++static unsigned long
++kvmppc_share_page(struct kvm *kvm, unsigned long gpa, unsigned long page_shift)
 +{
-+	return (*rmap & KVMPPC_RMAP_TYPE_MASK);
++
++	int ret = H_PARAMETER;
++	struct page *uvmem_page;
++	struct kvmppc_uvmem_page_pvt *pvt;
++	unsigned long pfn;
++	unsigned long *rmap;
++	struct kvm_memory_slot *slot;
++	unsigned long gfn = gpa >> page_shift;
++	int srcu_idx;
++
++	srcu_idx = srcu_read_lock(&kvm->srcu);
++	slot = gfn_to_memslot(kvm, gfn);
++	if (!slot)
++		goto out;
++
++	rmap = &slot->arch.rmap[gfn - slot->base_gfn];
++	if (kvmppc_rmap_type(rmap) == KVMPPC_RMAP_UVMEM_PFN) {
++		uvmem_page = pfn_to_page(*rmap & ~KVMPPC_RMAP_UVMEM_PFN);
++		pvt = (struct kvmppc_uvmem_page_pvt *)
++			uvmem_page->zone_device_data;
++		pvt->skip_page_out = true;
++	}
++
++	pfn = gfn_to_pfn(kvm, gfn);
++	if (is_error_noslot_pfn(pfn))
++		goto out;
++
++	if (!uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0, page_shift))
++		ret = H_SUCCESS;
++	kvm_release_pfn_clean(pfn);
++out:
++	srcu_read_unlock(&kvm->srcu, srcu_idx);
++	return ret;
 +}
 +
-+/*
-+ * rmap usage definition for a hash page table (hpt) guest:
-+ * 0x0000080000000000	Lock bit
-+ * 0x0000018000000000	RC bits
-+ * 0x0000000100000000	Present bit
-+ * 0x00000000ffffffff	HPT index bits
-+ * The bottom 32 bits are the index in the guest HPT of a HPTE that points to
-+ * the page.
-+ */
-+#define KVMPPC_RMAP_LOCK_BIT	43
- #define KVMPPC_RMAP_RC_SHIFT	32
- #define KVMPPC_RMAP_REFERENCED	(HPTE_R_R << KVMPPC_RMAP_RC_SHIFT)
- #define KVMPPC_RMAP_PRESENT	0x100000000ul
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-index 63e0ce91e29d..7186c65c61c9 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-@@ -99,7 +99,7 @@ void kvmppc_add_revmap_chain(struct kvm *kvm, struct revmap_entry *rev,
- 	} else {
- 		rev->forw = rev->back = pte_index;
- 		*rmap = (*rmap & ~KVMPPC_RMAP_INDEX) |
--			pte_index | KVMPPC_RMAP_PRESENT;
-+			pte_index | KVMPPC_RMAP_PRESENT | KVMPPC_RMAP_HPT;
- 	}
- 	unlock_rmap(rmap);
- }
+ /*
+  * H_SVM_PAGE_IN: Move page from normal memory to secure memory.
+  */
+@@ -177,9 +225,12 @@ kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+ 	if (page_shift != PAGE_SHIFT)
+ 		return H_P3;
+ 
+-	if (flags)
++	if (flags & ~H_PAGE_IN_SHARED)
+ 		return H_P2;
+ 
++	if (flags & H_PAGE_IN_SHARED)
++		return kvmppc_share_page(kvm, gpa, page_shift);
++
+ 	ret = H_PARAMETER;
+ 	srcu_idx = srcu_read_lock(&kvm->srcu);
+ 	down_read(&kvm->mm->mmap_sem);
+@@ -252,8 +303,16 @@ kvmppc_svm_page_out(struct vm_area_struct *vma, unsigned long start,
+ 	pvt = spage->zone_device_data;
+ 	pfn = page_to_pfn(dpage);
+ 
+-	ret = uv_page_out(pvt->lpid, pfn << page_shift, pvt->gpa, 0,
+-			  page_shift);
++	/*
++	 * This function is used in two cases:
++	 * - When HV touches a secure page, for which we do UV_PAGE_OUT
++	 * - When a secure page is converted to shared page, we touch
++	 *   the page to essentially unmap the device page. In this
++	 *   case we skip page-out.
++	 */
++	if (!pvt->skip_page_out)
++		ret = uv_page_out(pvt->lpid, pfn << page_shift, pvt->gpa, 0,
++				  page_shift);
+ 
+ 	if (ret == U_SUCCESS)
+ 		*mig.dst = migrate_pfn(pfn) | MIGRATE_PFN_LOCKED;
 -- 
 2.21.0
 
