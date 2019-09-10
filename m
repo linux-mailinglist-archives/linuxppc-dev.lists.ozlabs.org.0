@@ -2,52 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0011CAE34F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 07:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E104DAE369
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 08:03:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46SDW63KC2zDqM5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 15:44:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46SDwb2s4bzDqS9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 16:03:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46SDtw1F95zDqNC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 16:01:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46SDTd1d0gzDqJg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 15:43:15 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A514B28;
- Mon,  9 Sep 2019 22:43:10 -0700 (PDT)
-Received: from [10.162.40.137] (p8cg001049571a15.blr.arm.com [10.162.40.137])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- 53DA43F67D; Mon,  9 Sep 2019 22:45:25 -0700 (PDT)
-Subject: Re: [PATCH 1/1] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- "Kirill A. Shutemov" <kirill@shutemov.name>
-References: <1567497706-8649-1-git-send-email-anshuman.khandual@arm.com>
- <1567497706-8649-2-git-send-email-anshuman.khandual@arm.com>
- <20190904221618.1b624a98@thinkpad>
- <20e3044d-2af5-b27b-7653-cec53bdec941@arm.com>
- <20190905190629.523bdb87@thinkpad>
- <3c609e33-afbb-ffaf-481a-6d225a06d1d0@arm.com>
- <20190906210346.5ecbff01@thinkpad>
- <3d5de35f-8192-1c75-50a9-03e66e3b8e5c@arm.com>
- <20190909151344.ghfypjbgxyosjdk3@box>
- <5883d41a-8299-1584-aa3d-fac89b3d9b5b@arm.com>
- <94029d96-47c4-3020-57a8-4e03de1b4fc8@c-s.fr>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <b0e2c87c-1130-4219-246b-e050a9da2a39@arm.com>
-Date: Tue, 10 Sep 2019 11:13:07 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=popple.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46SDtt6srDz9s4Y;
+ Tue, 10 Sep 2019 16:01:42 +1000 (AEST)
+From: Alistair Popple <alistair@popple.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] PPC: Set reserved PCR bits
+Date: Tue, 10 Sep 2019 16:01:02 +1000
+Message-Id: <20190910060102.21597-1-alistair@popple.id.au>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <94029d96-47c4-3020-57a8-4e03de1b4fc8@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,230 +42,236 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Mark Brown <broonie@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Jordan Niethe <jniethe5@gmail.com>, Joel Stanley <joel@jms.id.au>,
+ Alistair Popple <alistair@popple.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Currently the reserved bits of the Processor Compatibility Register
+(PCR) are cleared as per the Programming Note in Section 1.3.3 of
+version 3.0B of the Power ISA. This causes all new architecture
+features to be made available when running on newer processors with
+new architecture features added to the PCR as bits must be set to
+disable a given feature.
 
+For example to disable new features added as part of Version 2.07 of
+the ISA the corresponding bit in the PCR needs to be set.
 
-On 09/10/2019 10:15 AM, Christophe Leroy wrote:
-> 
-> 
-> On 09/10/2019 03:56 AM, Anshuman Khandual wrote:
->>
->>
->> On 09/09/2019 08:43 PM, Kirill A. Shutemov wrote:
->>> On Mon, Sep 09, 2019 at 11:56:50AM +0530, Anshuman Khandual wrote:
->>>>
->>>>
->>>> On 09/07/2019 12:33 AM, Gerald Schaefer wrote:
->>>>> On Fri, 6 Sep 2019 11:58:59 +0530
->>>>> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
->>>>>
->>>>>> On 09/05/2019 10:36 PM, Gerald Schaefer wrote:
->>>>>>> On Thu, 5 Sep 2019 14:48:14 +0530
->>>>>>> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
->>>>>>>   
->>>>>>>>> [...]
->>>>>>>>>> +
->>>>>>>>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->>>>>>>>>> +static void pud_clear_tests(pud_t *pudp)
->>>>>>>>>> +{
->>>>>>>>>> +    memset(pudp, RANDOM_NZVALUE, sizeof(pud_t));
->>>>>>>>>> +    pud_clear(pudp);
->>>>>>>>>> +    WARN_ON(!pud_none(READ_ONCE(*pudp)));
->>>>>>>>>> +}
->>>>>>>>>
->>>>>>>>> For pgd/p4d/pud_clear(), we only clear if the page table level is present
->>>>>>>>> and not folded. The memset() here overwrites the table type bits, so
->>>>>>>>> pud_clear() will not clear anything on s390 and the pud_none() check will
->>>>>>>>> fail.
->>>>>>>>> Would it be possible to OR a (larger) random value into the table, so that
->>>>>>>>> the lower 12 bits would be preserved?
->>>>>>>>
->>>>>>>> So the suggestion is instead of doing memset() on entry with RANDOM_NZVALUE,
->>>>>>>> it should OR a large random value preserving lower 12 bits. Hmm, this should
->>>>>>>> still do the trick for other platforms, they just need non zero value. So on
->>>>>>>> s390, the lower 12 bits on the page table entry already has valid value while
->>>>>>>> entering this function which would make sure that pud_clear() really does
->>>>>>>> clear the entry ?
->>>>>>>
->>>>>>> Yes, in theory the table entry on s390 would have the type set in the last
->>>>>>> 4 bits, so preserving those would be enough. If it does not conflict with
->>>>>>> others, I would still suggest preserving all 12 bits since those would contain
->>>>>>> arch-specific flags in general, just to be sure. For s390, the pte/pmd tests
->>>>>>> would also work with the memset, but for consistency I think the same logic
->>>>>>> should be used in all pxd_clear_tests.
->>>>>>
->>>>>> Makes sense but..
->>>>>>
->>>>>> There is a small challenge with this. Modifying individual bits on a given
->>>>>> page table entry from generic code like this test case is bit tricky. That
->>>>>> is because there are not enough helpers to create entries with an absolute
->>>>>> value. This would have been easier if all the platforms provided functions
->>>>>> like __pxx() which is not the case now. Otherwise something like this should
->>>>>> have worked.
->>>>>>
->>>>>>
->>>>>> pud_t pud = READ_ONCE(*pudp);
->>>>>> pud = __pud(pud_val(pud) | RANDOM_VALUE (keeping lower 12 bits 0))
->>>>>> WRITE_ONCE(*pudp, pud);
->>>>>>
->>>>>> But __pud() will fail to build in many platforms.
->>>>>
->>>>> Hmm, I simply used this on my system to make pud_clear_tests() work, not
->>>>> sure if it works on all archs:
->>>>>
->>>>> pud_val(*pudp) |= RANDOM_NZVALUE;
->>>>
->>>> Which compiles on arm64 but then fails on x86 because of the way pmd_val()
->>>> has been defined there.
->>>
->>> Use instead
->>>
->>>     *pudp = __pud(pud_val(*pudp) | RANDOM_NZVALUE);
->>
->> Agreed.
->>
->> As I had mentioned before this would have been really the cleanest approach.
->>
->>>
->>> It *should* be more portable.
->>
->> Not really, because not all the platforms have __pxx() definitions right now.
->> Going with these will clearly cause build failures on affected platforms. Lets
->> examine __pud() for instance. It is defined only on these platforms.
->>
->> arch/arm64/include/asm/pgtable-types.h:        #define __pud(x) ((pud_t) { (x) } )
->> arch/mips/include/asm/pgtable-64.h:        #define __pud(x) ((pud_t) { (x) })
->> arch/powerpc/include/asm/pgtable-be-types.h:    #define __pud(x) ((pud_t) { cpu_to_be64(x) })
->> arch/powerpc/include/asm/pgtable-types.h:    #define __pud(x) ((pud_t) { (x) })
->> arch/s390/include/asm/page.h:            #define __pud(x) ((pud_t) { (x) } )
->> arch/sparc/include/asm/page_64.h:        #define __pud(x) ((pud_t) { (x) } )
->> arch/sparc/include/asm/page_64.h:        #define __pud(x) (x)
->> arch/x86/include/asm/pgtable.h:            #define __pud(x) native_make_pud(x)
-> 
-> You missed:
-> arch/x86/include/asm/paravirt.h:static inline pud_t __pud(pudval_t val)
-> include/asm-generic/pgtable-nop4d-hack.h:#define __pud(x)                ((pud_t) { __pgd(x) })
-> include/asm-generic/pgtable-nopud.h:#define __pud(x)        ((pud_t) { __p4d(x) })
-> 
->>
->> Similarly for __pmd()
->>
->> arch/alpha/include/asm/page.h:            #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/arm/include/asm/page-nommu.h:        #define __pmd(x)  (x)
->> arch/arm/include/asm/pgtable-2level-types.h:    #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/arm/include/asm/pgtable-2level-types.h:    #define __pmd(x)  (x)
->> arch/arm/include/asm/pgtable-3level-types.h:    #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/arm/include/asm/pgtable-3level-types.h:    #define __pmd(x)  (x)
->> arch/arm64/include/asm/pgtable-types.h:        #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/m68k/include/asm/page.h:            #define __pmd(x)  ((pmd_t) { { (x) }, })
->> arch/mips/include/asm/pgtable-64.h:        #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/nds32/include/asm/page.h:            #define __pmd(x)  (x)
->> arch/parisc/include/asm/page.h:            #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/parisc/include/asm/page.h:            #define __pmd(x)  (x)
->> arch/powerpc/include/asm/pgtable-be-types.h:    #define __pmd(x)  ((pmd_t) { cpu_to_be64(x) })
->> arch/powerpc/include/asm/pgtable-types.h:    #define __pmd(x)  ((pmd_t) { (x) })
->> arch/riscv/include/asm/pgtable-64.h:        #define __pmd(x)  ((pmd_t) { (x) })
->> arch/s390/include/asm/page.h:            #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/sh/include/asm/pgtable-3level.h:        #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/sparc/include/asm/page_32.h:        #define __pmd(x)  ((pmd_t) { { (x) }, })
->> arch/sparc/include/asm/page_32.h:        #define __pmd(x)  ((pmd_t) { { (x) }, })
->> arch/sparc/include/asm/page_64.h:        #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/sparc/include/asm/page_64.h:        #define __pmd(x)  (x)
->> arch/um/include/asm/page.h:            #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/um/include/asm/page.h:            #define __pmd(x)  ((pmd_t) { (x) } )
->> arch/x86/include/asm/pgtable.h:            #define __pmd(x)  native_make_pmd(x)
-> 
-> You missed:
-> arch/x86/include/asm/paravirt.h:static inline pmd_t __pmd(pmdval_t val)
-> include/asm-generic/page.h:#define __pmd(x)     ((pmd_t) { (x) } )
-> include/asm-generic/pgtable-nopmd.h:#define __pmd(x)        ((pmd_t) { __pud(x) } )
-> 
-> 
->>
->> Similarly for __pgd()
->>
->> arch/alpha/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/alpha/include/asm/page.h:            #define __pgd(x)  (x)
->> arch/arc/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) })
->> arch/arc/include/asm/page.h:            #define __pgd(x)  (x)
->> arch/arm/include/asm/pgtable-3level-types.h:    #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/arm/include/asm/pgtable-3level-types.h:    #define __pgd(x)  (x)
->> arch/arm64/include/asm/pgtable-types.h:        #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/csky/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) })
->> arch/hexagon/include/asm/page.h:        #define __pgd(x)  ((pgd_t) { (x) })
->> arch/m68k/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/mips/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/nds32/include/asm/page.h:            #define __pgd(x)  (x)
->> arch/nios2/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) })
->> arch/openrisc/include/asm/page.h:        #define __pgd(x)  ((pgd_t) { (x) })
->> arch/parisc/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/parisc/include/asm/page.h:            #define __pgd(x)  (x)
->> arch/powerpc/include/asm/pgtable-be-types.h:    #define __pgd(x)  ((pgd_t) { cpu_to_be64(x) })
->> arch/powerpc/include/asm/pgtable-types.h:    #define __pgd(x)  ((pgd_t) { (x) })
->> arch/riscv/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) })
->> arch/s390/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/sh/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/sparc/include/asm/page_32.h:        #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/sparc/include/asm/page_32.h:        #define __pgd(x)  (x)
->> arch/sparc/include/asm/page_64.h:        #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/sparc/include/asm/page_64.h:        #define __pgd(x)  (x)
->> arch/um/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
->> arch/unicore32/include/asm/page.h:        #define __pgd(x)  ((pgd_t) { (x) })
->> arch/unicore32/include/asm/page.h:        #define __pgd(x)  (x)
->> arch/x86/include/asm/pgtable.h:            #define __pgd(x)  native_make_pgd(x)
->> arch/xtensa/include/asm/page.h:            #define __pgd(x)  ((pgd_t) { (x) } )
-> 
-> You missed:
-> arch/x86/include/asm/paravirt.h:static inline pgd_t __pgd(pgdval_t val)
-> include/asm-generic/page.h:#define __pgd(x)     ((pgd_t) { (x) } )
-> 
-> 
->>
->> Similarly for __p4d()
->>
->> arch/s390/include/asm/page.h:            #define __p4d(x)  ((p4d_t) { (x) } )
->> arch/x86/include/asm/pgtable.h:            #define __p4d(x)  native_make_p4d(x)
-> 
-> You missed:
-> arch/x86/include/asm/paravirt.h:static inline p4d_t __p4d(p4dval_t val)
-> include/asm-generic/5level-fixup.h:#define __p4d(x) __pgd(x)
-> include/asm-generic/pgtable-nop4d.h:#define __p4d(x)        ((p4d_t) { __pgd(x) })
-> 
-> 
->>
->> The search pattern here has been "#define __pxx(". Unless I am missing something,
->> I dont see how we can use these without risking build failures.
->>
-> 
-> I guess you missed that arches not defining them fall back on the definitions in include/asm-generic
+As new processor features generally require explicit kernel support
+they should be disabled until such support is implemented. Therefore
+kernels should set all unknown/reserved bits in the PCR such that any
+new architecture features which the kernel does not currently know
+about get disabled.
 
-You are right. I was confused whether these generic definitions were really
-applicable for all those platforms as fallback (with so many page table
-level folding combinations available) when they dont define. Sure will take
-this approach and try to build them on multiple platforms.
+An update is planned to the ISA to clarify that the PCR is an
+exception to the Programming Note on reserved bits in Section 1.3.3.
+
+Signed-off-by: Alistair Popple <alistair@popple.id.au>
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+Tested-by: Joel Stanley <joel@jms.id.au>
+---
+v2: Added some clarifications to the commit message
+---
+ arch/powerpc/include/asm/reg.h          |  3 +++
+ arch/powerpc/kernel/cpu_setup_power.S   |  6 ++++++
+ arch/powerpc/kernel/dt_cpu_ftrs.c       |  3 ++-
+ arch/powerpc/kvm/book3s_hv.c            | 11 +++++++----
+ arch/powerpc/kvm/book3s_hv_nested.c     |  6 +++---
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S | 10 ++++++----
+ 6 files changed, 27 insertions(+), 12 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 10caa145f98b..258435c75c43 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -475,6 +475,7 @@
+ #define   PCR_VEC_DIS	(1ul << (63-0))	/* Vec. disable (bit NA since POWER8) */
+ #define   PCR_VSX_DIS	(1ul << (63-1))	/* VSX disable (bit NA since POWER8) */
+ #define   PCR_TM_DIS	(1ul << (63-2))	/* Trans. memory disable (POWER8) */
++#define   PCR_HIGH_BITS	(PCR_VEC_DIS | PCR_VSX_DIS | PCR_TM_DIS)
+ /*
+  * These bits are used in the function kvmppc_set_arch_compat() to specify and
+  * determine both the compatibility level which we want to emulate and the
+@@ -483,6 +484,8 @@
+ #define   PCR_ARCH_207	0x8		/* Architecture 2.07 */
+ #define   PCR_ARCH_206	0x4		/* Architecture 2.06 */
+ #define   PCR_ARCH_205	0x2		/* Architecture 2.05 */
++#define   PCR_LOW_BITS	(PCR_ARCH_207 | PCR_ARCH_206 | PCR_ARCH_205)
++#define   PCR_MASK	~(PCR_HIGH_BITS | PCR_LOW_BITS)	/* PCR Reserved Bits */
+ #define	SPRN_HEIR	0x153	/* Hypervisor Emulated Instruction Register */
+ #define SPRN_TLBINDEXR	0x154	/* P7 TLB control register */
+ #define SPRN_TLBVPNR	0x155	/* P7 TLB control register */
+diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
+index 3239a9fe6c1c..a460298c7ddb 100644
+--- a/arch/powerpc/kernel/cpu_setup_power.S
++++ b/arch/powerpc/kernel/cpu_setup_power.S
+@@ -23,6 +23,7 @@ _GLOBAL(__setup_cpu_power7)
+ 	beqlr
+ 	li	r0,0
+ 	mtspr	SPRN_LPID,r0
++	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+ 	mtspr	SPRN_PCR,r0
+ 	mfspr	r3,SPRN_LPCR
+ 	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
+@@ -37,6 +38,7 @@ _GLOBAL(__restore_cpu_power7)
+ 	beqlr
+ 	li	r0,0
+ 	mtspr	SPRN_LPID,r0
++	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+ 	mtspr	SPRN_PCR,r0
+ 	mfspr	r3,SPRN_LPCR
+ 	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
+@@ -54,6 +56,7 @@ _GLOBAL(__setup_cpu_power8)
+ 	beqlr
+ 	li	r0,0
+ 	mtspr	SPRN_LPID,r0
++	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+ 	mtspr	SPRN_PCR,r0
+ 	mfspr	r3,SPRN_LPCR
+ 	ori	r3, r3, LPCR_PECEDH
+@@ -76,6 +79,7 @@ _GLOBAL(__restore_cpu_power8)
+ 	beqlr
+ 	li	r0,0
+ 	mtspr	SPRN_LPID,r0
++	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+ 	mtspr	SPRN_PCR,r0
+ 	mfspr   r3,SPRN_LPCR
+ 	ori	r3, r3, LPCR_PECEDH
+@@ -98,6 +102,7 @@ _GLOBAL(__setup_cpu_power9)
+ 	mtspr	SPRN_PSSCR,r0
+ 	mtspr	SPRN_LPID,r0
+ 	mtspr	SPRN_PID,r0
++	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+ 	mtspr	SPRN_PCR,r0
+ 	mfspr	r3,SPRN_LPCR
+ 	LOAD_REG_IMMEDIATE(r4, LPCR_PECEDH | LPCR_PECE_HVEE | LPCR_HVICE  | LPCR_HEIC)
+@@ -123,6 +128,7 @@ _GLOBAL(__restore_cpu_power9)
+ 	mtspr	SPRN_PSSCR,r0
+ 	mtspr	SPRN_LPID,r0
+ 	mtspr	SPRN_PID,r0
++	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+ 	mtspr	SPRN_PCR,r0
+ 	mfspr   r3,SPRN_LPCR
+ 	LOAD_REG_IMMEDIATE(r4, LPCR_PECEDH | LPCR_PECE_HVEE | LPCR_HVICE | LPCR_HEIC)
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index bd95318d2202..bceee2fde885 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -101,7 +101,7 @@ static void __restore_cpu_cpufeatures(void)
+ 	if (hv_mode) {
+ 		mtspr(SPRN_LPID, 0);
+ 		mtspr(SPRN_HFSCR, system_registers.hfscr);
+-		mtspr(SPRN_PCR, 0);
++		mtspr(SPRN_PCR, PCR_MASK);
+ 	}
+ 	mtspr(SPRN_FSCR, system_registers.fscr);
+ 
+@@ -144,6 +144,7 @@ static void __init cpufeatures_setup_cpu(void)
+ 		mtspr(SPRN_HFSCR, 0);
+ 	}
+ 	mtspr(SPRN_FSCR, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
+ 
+ 	/*
+ 	 * LPCR does not get cleared, to match behaviour with secondaries
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index cde3f5a4b3e4..7a133c3aebe6 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -401,8 +401,11 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+ 
+ 	spin_lock(&vc->lock);
+ 	vc->arch_compat = arch_compat;
+-	/* Set all PCR bits for which guest_pcr_bit <= bit < host_pcr_bit */
+-	vc->pcr = host_pcr_bit - guest_pcr_bit;
++	/*
++	 * Set all PCR bits for which guest_pcr_bit <= bit < host_pcr_bit
++	 * Also set all reserved PCR bits
++	 */
++	vc->pcr = (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
+ 	spin_unlock(&vc->lock);
+ 
+ 	return 0;
+@@ -3398,7 +3401,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	}
+ 
+ 	if (vc->pcr)
+-		mtspr(SPRN_PCR, vc->pcr);
++		mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
+ 	mtspr(SPRN_DPDES, vc->dpdes);
+ 	mtspr(SPRN_VTB, vc->vtb);
+ 
+@@ -3478,7 +3481,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vc->vtb = mfspr(SPRN_VTB);
+ 	mtspr(SPRN_DPDES, 0);
+ 	if (vc->pcr)
+-		mtspr(SPRN_PCR, 0);
++		mtspr(SPRN_PCR, PCR_MASK);
+ 
+ 	if (vc->tb_offset_applied) {
+ 		u64 new_tb = mftb() - vc->tb_offset_applied;
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 735e0ac6f5b2..e916522c5c39 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -29,7 +29,7 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
+ {
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+-	hr->pcr = vc->pcr;
++	hr->pcr = vc->pcr | PCR_MASK;
+ 	hr->dpdes = vc->dpdes;
+ 	hr->hfscr = vcpu->arch.hfscr;
+ 	hr->tb_offset = vc->tb_offset;
+@@ -65,7 +65,7 @@ static void byteswap_hv_regs(struct hv_guest_state *hr)
+ 	hr->lpid = swab32(hr->lpid);
+ 	hr->vcpu_token = swab32(hr->vcpu_token);
+ 	hr->lpcr = swab64(hr->lpcr);
+-	hr->pcr = swab64(hr->pcr);
++	hr->pcr = swab64(hr->pcr) | PCR_MASK;
+ 	hr->amor = swab64(hr->amor);
+ 	hr->dpdes = swab64(hr->dpdes);
+ 	hr->hfscr = swab64(hr->hfscr);
+@@ -148,7 +148,7 @@ static void restore_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
+ {
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+-	vc->pcr = hr->pcr;
++	vc->pcr = hr->pcr | PCR_MASK;
+ 	vc->dpdes = hr->dpdes;
+ 	vcpu->arch.hfscr = hr->hfscr;
+ 	vcpu->arch.dawr = hr->dawr0;
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index 337e64468d78..f21dee7a1757 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -643,8 +643,10 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+ 
+ 	/* Load guest PCR value to select appropriate compat mode */
+ 37:	ld	r7, VCORE_PCR(r5)
+-	cmpdi	r7, 0
++	LOAD_REG_IMMEDIATE(r6, PCR_MASK)
++	cmpld	r7, r6
+ 	beq	38f
++	or	r7, r7, r6
+ 	mtspr	SPRN_PCR, r7
+ 38:
+ 
+@@ -1884,10 +1886,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+ 
+ 	/* Reset PCR */
+ 	ld	r0, VCORE_PCR(r5)
+-	cmpdi	r0, 0
++	LOAD_REG_IMMEDIATE(r6, PCR_MASK)
++	cmpld	r0, r6
+ 	beq	18f
+-	li	r0, 0
+-	mtspr	SPRN_PCR, r0
++	mtspr	SPRN_PCR, r6
+ 18:
+ 	/* Signal secondary CPUs to continue */
+ 	stb	r0,VCORE_IN_GUEST(r5)
+-- 
+2.20.1
+
