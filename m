@@ -1,51 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D65BAF089
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 19:37:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402AAAF113
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 20:32:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46SXKP0BYczF1R7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 03:37:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46SYY62dV3zF1fq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 04:32:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=188.165.44.50; helo=5.mo4.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 10798 seconds by postgrey-1.36 at bilbo;
- Wed, 11 Sep 2019 03:35:28 AEST
-Received: from 5.mo4.mail-out.ovh.net (5.mo4.mail-out.ovh.net [188.165.44.50])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46SXHN2rc1zF1Ph
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 03:35:23 +1000 (AEST)
-Received: from player750.ha.ovh.net (unknown [10.108.54.230])
- by mo4.mail-out.ovh.net (Postfix) with ESMTP id 8001D2046ED
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 15:59:45 +0200 (CEST)
-Received: from kaod.org (deibp9eh1--blueice1n4.emea.ibm.com [195.212.29.166])
- (Authenticated sender: clg@kaod.org)
- by player750.ha.ovh.net (Postfix) with ESMTPSA id 0B10D9BCF29D;
- Tue, 10 Sep 2019 13:59:37 +0000 (UTC)
-Subject: Re: [PATCH] powerpc/xive: Fix bogus error code returned by OPAL
-To: Greg Kurz <groug@kaod.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <156812362556.1866243.7399893138425681517.stgit@bahia.tls.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <b8c656c8-296c-2bc3-0758-ca513e76a19f@kaod.org>
-Date: Tue, 10 Sep 2019 15:59:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46SYW25mzWzF12B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 04:30:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="bjPAWTkE"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46SYW11NV4z9sCJ;
+ Wed, 11 Sep 2019 04:30:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1568140238;
+ bh=f4U1zO2/pzQQfC6HW1AIvY8jEzHpvz5Va9YInwDeUe4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=bjPAWTkE2pbHDx9ZvsEug69vxtE8M/T3yz/Qd+vrB8ielWshLQ6SaPq+mGAbac2ct
+ ej7BQXJYmyEQPMX3ETl4iM0BYuRfmYzjTKbXwy4HtOyNGtv4OsKWUBy/cmESiekcao
+ Z834pvArUYWOFG+n9JeXwhoSFnFKZrvnQ2Sho6LOfVE/jSSzKMPyPp6EzJm3o2vK68
+ 9LD6Ksr+s2ZbX2GMGy6yLQwXSWDU3uqJutIHuvElI5FuD1XlF0Ebdb6AcTN5E5aF/6
+ g4IL+72+IJ3MKpJKGUF4TeWwSR727VCuDDNP99bgDwOMKKoLNyXXV9lsYbMLTxlVhW
+ ucSd4fpHnrS4A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Chancellor <natechancellor@gmail.com>,
+ Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
+In-Reply-To: <20190904231554.GA42450@archlinux-threadripper>
+References: <878srdv206.fsf@mpe.ellerman.id.au>
+ <20190828175322.GA121833@archlinux-threadripper>
+ <CAKwvOdmXbYrR6n-cxKt3XxkE4Lmj0sSoZBUtHVb0V2LTUFHmug@mail.gmail.com>
+ <20190828184529.GC127646@archlinux-threadripper>
+ <6801a83ed6d54d95b87a41c57ef6e6b0@AcuMS.aculab.com>
+ <20190903055553.GC60296@archlinux-threadripper>
+ <20190903193128.GC9749@gate.crashing.org>
+ <20190904002401.GA70635@archlinux-threadripper>
+ <1bcd7086f3d24dfa82eec03980f30fbc@AcuMS.aculab.com>
+ <20190904130135.GN9749@gate.crashing.org>
+ <20190904231554.GA42450@archlinux-threadripper>
+Date: Wed, 11 Sep 2019 04:30:38 +1000
+Message-ID: <87mufcypf5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <156812362556.1866243.7399893138425681517.stgit@bahia.tls.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 12416705648356002583
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrtddtgdegjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,81 +67,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ David Laight <David.Laight@aculab.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/09/2019 15:53, Greg Kurz wrote:
-> There's a bug in skiboot that causes the OPAL_XIVE_ALLOCATE_IRQ call
-> to return the 32-bit value 0xffffffff when OPAL has run out of IRQs.
-> Unfortunatelty, OPAL return values are signed 64-bit entities and
-> errors are supposed to be negative. If that happens, the linux code
-> confusingly treats 0xffffffff as a valid IRQ number and panics at some
-> point.
-> 
-> A fix was recently merged in skiboot:
-> 
-> e97391ae2bb5 ("xive: fix return value of opal_xive_allocate_irq()")
-> 
-> but we need a workaround anyway to support older skiboots already
-> on the field.
-> 
-> Internally convert 0xffffffff to OPAL_RESOURCE which is the usual error
-> returned upon resource exhaustion.
-> 
-> Signed-off-by: Greg Kurz <groug@kaod.org>
+Nathan Chancellor <natechancellor@gmail.com> writes:
+> On Wed, Sep 04, 2019 at 08:01:35AM -0500, Segher Boessenkool wrote:
+>> On Wed, Sep 04, 2019 at 08:16:45AM +0000, David Laight wrote:
+>> > From: Nathan Chancellor [mailto:natechancellor@gmail.com]
+>> > > Fair enough so I guess we are back to just outright disabling the
+>> > > warning.
+>> > 
+>> > Just disabling the warning won't stop the compiler generating code
+>> > that breaks a 'user' implementation of setjmp().
+>> 
+>> Yeah.  I have a patch (will send in an hour or so) that enables the
+>> "returns_twice" attribute for setjmp (in <asm/setjmp.h>).  In testing
+>> (with GCC trunk) it showed no difference in code generation, but
+>> better save than sorry.
+>> 
+>> It also sets "noreturn" on longjmp, and that *does* help, it saves a
+>> hundred insns or so (all in xmon, no surprise there).
+>> 
+>> I don't think this will make LLVM shut up about this though.  And
+>> technically it is right: the C standard does say that in hosted mode
+>> setjmp is a reserved name and you need to include <setjmp.h> to access
+>> it (not <asm/setjmp.h>).
+>
+> It does not fix the warning, I tested your patch.
+>
+>> So why is the kernel compiled as hosted?  Does adding -ffreestanding
+>> hurt anything?  Is that actually supported on LLVM, on all relevant
+>> versions of it?  Does it shut up the warning there (if not, that would
+>> be an LLVM bug)?
+>
+> It does fix this warning because -ffreestanding implies -fno-builtin,
+> which also solves the warning. LLVM has supported -ffreestanding since
+> at least 3.0.0. There are some parts of the kernel that are compiled
+> with this and it probably should be used in more places but it sounds
+> like there might be some good codegen improvements that are disabled
+> with it:
+>
+> https://lore.kernel.org/lkml/CAHk-=wi-epJZfBHDbKKDZ64us7WkF=LpUfhvYBmZSteO8Q0RAg@mail.gmail.com/
 
+For xmon.c and crash.c I think using -ffreestanding would be fine.
+They're both crash/debug code, so we don't care about minor optimisation
+differences. If anything we don't want the compiler being too clever
+when generating that code.
 
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-> ---
->  arch/powerpc/sysdev/xive/native.c |   13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-> index 37987c815913..c35583f84f9f 100644
-> --- a/arch/powerpc/sysdev/xive/native.c
-> +++ b/arch/powerpc/sysdev/xive/native.c
-> @@ -231,6 +231,15 @@ static bool xive_native_match(struct device_node *node)
->  	return of_device_is_compatible(node, "ibm,opal-xive-vc");
->  }
->  
-> +static int64_t opal_xive_allocate_irq_fixup(uint32_t chip_id)
-> +{
-> +	s64 irq = opal_xive_allocate_irq(chip_id);
-> +
-> +#define XIVE_ALLOC_NO_SPACE	0xffffffff /* No possible space */
-> +	return
-> +		irq == XIVE_ALLOC_NO_SPACE ? OPAL_RESOURCE : irq;
-> +}
-> +
->  #ifdef CONFIG_SMP
->  static int xive_native_get_ipi(unsigned int cpu, struct xive_cpu *xc)
->  {
-> @@ -238,7 +247,7 @@ static int xive_native_get_ipi(unsigned int cpu, struct xive_cpu *xc)
->  
->  	/* Allocate an IPI and populate info about it */
->  	for (;;) {
-> -		irq = opal_xive_allocate_irq(xc->chip_id);
-> +		irq = opal_xive_allocate_irq_fixup(xc->chip_id);
->  		if (irq == OPAL_BUSY) {
->  			msleep(OPAL_BUSY_DELAY_MS);
->  			continue;
-> @@ -259,7 +268,7 @@ u32 xive_native_alloc_irq(void)
->  	s64 rc;
->  
->  	for (;;) {
-> -		rc = opal_xive_allocate_irq(OPAL_XIVE_ANY_CHIP);
-> +		rc = opal_xive_allocate_irq_fixup(OPAL_XIVE_ANY_CHIP);
->  		if (rc != OPAL_BUSY)
->  			break;
->  		msleep(OPAL_BUSY_DELAY_MS);
-> 
-
+cheers
