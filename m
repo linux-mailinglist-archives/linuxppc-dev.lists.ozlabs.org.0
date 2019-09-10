@@ -2,59 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7444DAE239
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 04:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222FFAE251
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 04:23:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46S7kg1bjRzDqQ5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 12:09:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46S83L6ZJnzDqSQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 12:23:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=2a01:111:f400:fe1f::60f;
- helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.13.74; helo=eur01-he1-obe.outbound.protection.outlook.com;
  envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="Qj4vouVd"; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="dOPrJrhE"; 
  dkim-atps=neutral
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com
- (mail-ve1eur01on060f.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe1f::60f])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr130074.outbound.protection.outlook.com [40.107.13.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46S7hp5k52zDqFH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 12:07:34 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46S81g6PL7zDqRY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 12:22:12 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RK3vwYP5aKcm8APEU033xN0XCpozCmmiloOXQdLcZzefAoF7dugdbBF3esZHkylLj1FPaSPi3ODWbfDw/EjGqostRbkKppaW6ncilV8tVkO2Tc5BbC6/2tsuwUNYlgfybFPBbsqxi9ZfqefN/65fdsmzzdMwpb73eSqEmelcV7a8KFfyvvYfuJTxOyXsXU0M23sp0JxTBOihn0Lp2CdLESxcr1reIZBcfKlUO/aZstJ0CPBncQIB6J0dJ9sNR5ZQe3oJ/bfmD7odoq3b5qVe/2iO+6PUDaxhQeVCNx2PUGOVTtUhdU3DKUXFcgNFG8+fTyRr9jdrBNVGQEvIXNqJ6A==
+ b=hac85i4Ybze1qWltxjXPi/UP7J3gvUJc5kvSt5tWowEMUi5Yyniwm+bqF7pKHU99iD5ePul57+0YW8n/GIXra1K67Gr1vBK0HLWp3ksmg2LpMOHvCXGg8jlrfoOPt+W2w5C9826NihtmlL+LTBnTwejJITaZVpN0h1Sks8GAuFHXL0ffo030UCqljAiy76GoyRnHckkrjvgMPXWZrEVyEdOvBOOtqb441jTGTJiDoQwAgNTDBgImafBDC9W143DqGFiKoUcqw4dgpUh/TK/xLg5jnq6g9gtSTZzUhY/7Yo9kVtgYy/2FmM8+RM2pSLUGPpSJwAokzGu9RhM+yjfKzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l0Q7M29zjUZiT5VpAvxff+oGDKk7ik9Lw9CnBST1wwI=;
- b=I6JaEcmuxgpNsCv4hsGDQ9uK+1ZWDhXLr6R+cSu9R0DUnMm9yIBC8TwcXTKJmKG3ZlCTWrPij1H/3kzrhpP1iZv3vzeyWpydxjjmA8ldFJIvUbq5JXL5H8HMC/N8VIewAvwZ+P873AzUuCOUbWGyzwJPLHb7hoRh8F5SJGLy+5IfDuWfN3RkaJ5x7r7Si0MiWcnHVTSZ0ZknWvje0yg7rWB7xhP6LzchjurDTTgKrAmA1+myv6GfMnWVIADUTOWD7WofH/MURIARY5vxls3BOWgRW/lJI0OPn8NXz0gxuFL9HO2uhXqdMK341coZ9rwhAbn8mJHVfrv2/U0UFF9SVw==
+ bh=No3ctTFpXzweRSedArjwO/8+SYHAoCvKdfZu3TKJWx8=;
+ b=VNVNNeYPCXBW6yahBmsT2HBbm5zqwDQBuQdZNQzoHABQMAXoTA3n9ectaurTGi91OdPT/aea6l+1LWI91eCzzp9M4OO3ssJysHPx0LdxiQb4o/HsvlsbslsXMPEXNQka2UPDmKcgEcLiJfcUEN9APKvQVTpVLaKYirj6nZ8ZoyfCC4gv70szWt/9Wi0NGGcybiCXHdFIRUsJxPML+0KR5vxL0EXrX0zRjM/2x3ZmC1H9+pK5XXGf64WIJhl08cR1xIMVpsmGwdBH48epoMRna3ftXjvkL3GvMiOtaPXCecQRFtBONsob13Cw2Ug/QCDcZKFUfujC0dz1FGQXBSPI5g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l0Q7M29zjUZiT5VpAvxff+oGDKk7ik9Lw9CnBST1wwI=;
- b=Qj4vouVdNXOyqLOfRZQwhAsyFV/y+VzfTMYdHUNfZ52xVMSK1kMRHRx9ovENmQu6Ua41xRFS9WpvZ4ix1MLncMRZAtnYuFAHoLV0EpMBvB5Uqt81XP6QDp4VPo76wLysgJMoURbJuJNV7XaAEsyb8yKELBh9xaR5S/13Gj7eBIE=
+ bh=No3ctTFpXzweRSedArjwO/8+SYHAoCvKdfZu3TKJWx8=;
+ b=dOPrJrhEM5zMXtKC5R+XK2U8DoBe39Iw2Vl6OQv3CLCQP58tRTfsXih/5sd0G1cwXHp3UveYxgdqs6jJzEEcyzEujVReTMjv+mNXzPJuygkaJDUp3rFSFYH3Ayjld1KzSYUJLL9EfzSao7zEqrp8jjJPg5RxjxPuKQGoQll4ogg=
 Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) by
- VE1PR04MB6590.eurprd04.prod.outlook.com (20.179.234.206) with Microsoft SMTP
+ VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2241.18; Tue, 10 Sep 2019 02:07:25 +0000
+ 15.20.2241.13; Tue, 10 Sep 2019 02:22:06 +0000
 Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
  ([fe80::5049:d7e5:95ff:3d53]) by VE1PR04MB6479.eurprd04.prod.outlook.com
  ([fe80::5049:d7e5:95ff:3d53%7]) with mapi id 15.20.2241.018; Tue, 10 Sep 2019
- 02:07:25 +0000
+ 02:22:06 +0000
 From: "S.j. Wang" <shengjiu.wang@nxp.com>
 To: Nicolin Chen <nicoleotsuka@gmail.com>
-Subject: Re: [PATCH 2/3] ASoC: fsl_asrc: update supported sample format
-Thread-Topic: [PATCH 2/3] ASoC: fsl_asrc: update supported sample format
-Thread-Index: AdVne99A50iblB+wSvqDBZhWvxbm4A==
-Date: Tue, 10 Sep 2019 02:07:25 +0000
-Message-ID: <VE1PR04MB64791308D87F91C51412DF53E3B60@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Subject: RE: [EXT] Re: [PATCH 1/3] ASoC: fsl_asrc: Use in(out)put_format
+ instead of in(out)put_word_width
+Thread-Topic: [EXT] Re: [PATCH 1/3] ASoC: fsl_asrc: Use in(out)put_format
+ instead of in(out)put_word_width
+Thread-Index: AQHVZ0mAeLH1tmnz60SUVq7w0GAb7KckKplg
+Date: Tue, 10 Sep 2019 02:22:06 +0000
+Message-ID: <VE1PR04MB6479D271F4271ECF404473E7E3B60@VE1PR04MB6479.eurprd04.prod.outlook.com>
+References: <cover.1568025083.git.shengjiu.wang@nxp.com>
+ <65e96ca15afd4a282b122f3ea8b13642cf4614c7.1568025083.git.shengjiu.wang@nxp.com>
+ <20190909200156.GB10344@Asurada-Nvidia.nvidia.com>
+In-Reply-To: <20190909200156.GB10344@Asurada-Nvidia.nvidia.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -63,36 +67,36 @@ authentication-results: spf=none (sender IP is )
  smtp.mailfrom=shengjiu.wang@nxp.com; 
 x-originating-ip: [119.31.174.66]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7ae50c49-f1ff-4ac3-b35e-08d73593a00f
+x-ms-office365-filtering-correlation-id: 9990b7f9-2712-4b84-72a7-08d73595acf7
 x-ms-office365-filtering-ht: Tenant
 x-microsoft-antispam: BCL:0; PCL:0;
  RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:VE1PR04MB6590; 
-x-ms-traffictypediagnostic: VE1PR04MB6590:
-x-microsoft-antispam-prvs: <VE1PR04MB65902D2856F523D4870B2AC6E3B60@VE1PR04MB6590.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
+ SRVR:VE1PR04MB6479; 
+x-ms-traffictypediagnostic: VE1PR04MB6479:
+x-microsoft-antispam-prvs: <VE1PR04MB6479DE5863AF1C44681D582CE3B60@VE1PR04MB6479.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-forefront-prvs: 01565FED4C
 x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(136003)(39860400002)(346002)(366004)(376002)(396003)(189003)(199004)(8936002)(4744005)(7696005)(53936002)(256004)(9686003)(55016002)(52536014)(66946007)(64756008)(66446008)(86362001)(316002)(478600001)(14454004)(66066001)(66476007)(6246003)(6506007)(7416002)(2906002)(1411001)(25786009)(4326008)(33656002)(229853002)(8676002)(71190400001)(74316002)(6916009)(476003)(81166006)(102836004)(81156014)(26005)(5660300002)(186003)(6436002)(99286004)(76116006)(7736002)(66556008)(71200400001)(54906003)(305945005)(3846002)(6116002)(486006);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6590;
+ SFS:(10009020)(4636009)(366004)(39860400002)(136003)(396003)(346002)(376002)(199004)(189003)(53936002)(81166006)(14454004)(7736002)(55016002)(26005)(305945005)(52536014)(76176011)(2906002)(33656002)(6916009)(316002)(7416002)(9686003)(6436002)(54906003)(6506007)(102836004)(66476007)(66556008)(256004)(25786009)(1411001)(64756008)(8676002)(66446008)(229853002)(86362001)(3846002)(66066001)(476003)(71200400001)(446003)(4326008)(8936002)(71190400001)(5660300002)(76116006)(478600001)(66946007)(81156014)(99286004)(186003)(486006)(11346002)(6246003)(7696005)(74316002)(6116002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6479;
  H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
+ PTR:InfoNoRecords; A:1; MX:1; 
 received-spf: None (protection.outlook.com: nxp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: bYlrU4jnp+IhudtYAD+U46GCMO1594Vx4x+JE2i8l91iZdPkkkooLDxSh6dw61Plhc59/2B+dRLYkQr4x+U+Y9AH9KIGmQ5NntNVArskF7IKnoQW43AwycNgqtO6wHsJUEzbcrFimE/xRybbThFR22R5e2nXieB3i1hijsZuqsGn6TEDk+HXo1H47gaq1R1qBg0L2LN+8KJAHsw4eJTMqCGKyfOm99haE5//C3kT5fwkWuN0+oCDA3pLviABGpoePTdf79a9UpyGAq+gmz66D7BgoXrUuy1AaGP7iDeZeXuwKa3nVYi/G5e3O8N6Yd6rfEuIj6oxiv2amL7+xYoq1190purGoSbIpqkAjdNr/V/zELf57sdeMb5o74+wSPAfblk8tpNZZC9g5xn65T53VaDwPWLDjdxyZd+kujnvLAQ=
+x-microsoft-antispam-message-info: khDdeqQSy4Adt0azYaGDX/+ZEyZNC/8e4RSyezJqKWpUKqhCPwBTwbBG+6jJ9QfvcO5G9H14nsxuTqQ5qs0JWU1X99kVMu2k4VNnGDHC79dVc+EIba4ssRJ3ErgRK1bX6nAciANbeSe5FJIZb+8vWBvluqBbaZgOHciuXk6aFLDCu1hAlms3UrRLzdLv1V0rYkK+IZyAzhBmjvR4hC2RJiNyol8n98sbSF3st4F/hsgG0uAvIbLoFnL5w8LPGKnNvvwUjJMgj1Dsa1eKEzd9SfrtxjRMqMCfswS0XSyQZbOjwHhhA4b/eR88Xg0PONUM4tpPCe4mpDNUkwbR0CwOOguV3bMx1JkkdCBZ1wPUNdapVjha1xZg4PGEqthBKzHCGpuZUU4FPobBuu3z4mkZ6vAowgwybRun57H5cNPVN2A=
 x-ms-exchange-transport-forked: True
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ae50c49-f1ff-4ac3-b35e-08d73593a00f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2019 02:07:25.6593 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9990b7f9-2712-4b84-72a7-08d73595acf7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2019 02:22:06.4121 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oPNe9BqE5f0XnhyrPG9gsKCspaCiihaWFCbmdx1ZmkaeZAhffgemDSxnHS/numxbnd+zDr/ixd907k52KgQpQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6590
+X-MS-Exchange-CrossTenant-userprincipalname: 8JJLXM9+bDxisu84w9pfEKEWxO28mnYvOIng2F9yuDc9r7dPaWbNGniCfgbNE6UEJsaDmq9NCdwwXflaRyTBQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6479
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,25 +123,50 @@ Sender: "Linuxppc-dev"
 Hi
 
 >=20
-> On Mon, Sep 09, 2019 at 06:33:20PM -0400, Shengjiu Wang wrote:
-> > The ASRC support 24bit/16bit/8bit input width, so S20_3LE format
-> > should not be supported, it is word width is 20bit.
+> On Mon, Sep 09, 2019 at 06:33:19PM -0400, Shengjiu Wang wrote:
+> > snd_pcm_format_t is more formal than enum asrc_word_width, which
+> has
+> > two property, width and physical width, which is more accurate than
+> > enum asrc_word_width. So it is better to use in(out)put_format instead
+> > of in(out)put_word_width.
 >=20
-> I thought 3LE used 24-bit physical width. And the driver assigns
-> ASRC_WIDTH_24_BIT to "width" for all non-16bit cases, so 20-bit would go
-> for that 24-bit slot also. I don't clearly recall if I had explicitly tes=
-ted
-> S20_3LE, but I feel it should work since I put there...
+> Hmm...I don't really see the benefit of using snd_pcm_format_t here...I
+> mean, I know it's a generic one, and would understand if we use it as a
+> param for a common API. But this patch merely packs the "width" by
+> intentionally using this snd_pcm_format_t and then adds another
+> translation to unpack it.. I feel it's a bit overcomplicated. Or am I mis=
+sing
+> something?
+>=20
+> And I feel it's not necessary to use ALSA common format in our own "struc=
+t
+> asrc_config" since it is more IP/register specific.
 >=20
 > Thanks
 > Nicolin
 >=20
 
-For S20_3LE, the width is 20bit,  but the ASRC only support 24bit, if set t=
-he
-ASRMCR1n.IWD=3D 24bit, because the actual width is 20 bit, the volume is
-Lower than expected,  it likes 24bit data right shift 4 bit.=20
-So it is not supported.
+As you know, we have another M2M function internally, when user want to
+Set the format through M2M API, it is better to use snd_pcm_format_t instea=
+d the
+Width, for snd_pcm_format_t include two property, data with and physical wi=
+dth
+In driver some place need data width, some place need physical width.
+For example how to distinguish S24_LE and S24_3LE in driver,  DMA setting n=
+eeds
+The physical width,  but ASRC need data width.=20
+
+Another purpose is that we have another new designed ASRC, which support mo=
+re
+Formats, I would like it can share same API with this ASRC, using snd_pcm_f=
+ormat_t
+That we can use the common API, like snd_pcm_format_linear,
+snd_pcm_format_big_endian to get the property of the format, which is neede=
+d by
+driver.
+
 
 Best regards
-Wang shengjiu=20
+Wang shengjiu
+
+
