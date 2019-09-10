@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8871BAE708
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 11:32:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA032AE70C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 11:33:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46SKYc14rSzDrMp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 19:32:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46SKbT4q6PzDrNB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 19:33:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="sgTTDUlG"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="MvjVDPw8"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46SKDg69MdzDqtQ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46SKDg6BT9zDqtm
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 19:17:23 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46SKDX2Dw9z9txW1;
- Tue, 10 Sep 2019 11:17:16 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46SKDY1QD0z9txWC;
+ Tue, 10 Sep 2019 11:17:17 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=sgTTDUlG; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=MvjVDPw8; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id RK8tQVNrSAkW; Tue, 10 Sep 2019 11:17:16 +0200 (CEST)
+ with ESMTP id Msu_dKvgM-Ra; Tue, 10 Sep 2019 11:17:17 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46SKDX18FPz9txVx;
- Tue, 10 Sep 2019 11:17:16 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46SKDY0Nzwz9txW3;
+ Tue, 10 Sep 2019 11:17:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1568107036; bh=nAEXXfUjpNn4CdY4YHF6V5QIWU8F3wktBkYkCgSPql8=;
+ t=1568107037; bh=8QgIQ71YTNVzSY6FhAVflXh/3XEeMxBtSGOEfNUDtow=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=sgTTDUlGXjD+WEDRj7Bk38efAJapUq9Ik3Y7pI2fu9ageU2t+L9+8c8COQXGPaLEJ
- lEoxYocYzPVaiWJXusz7/MblBQZXBXibCDmlD3frrJtMAPfiT54+jaSFavGcDFKGMC
- 7mBQ3dPQKoCzTyVgKA+JTjNy77CRDfNg5pDocT7c=
+ b=MvjVDPw8MVX+S1wuojufmKnez0Dc0cwN4FoPPXEzuZup7GQZDpohfKH0on0JVc+kt
+ tDT3x4RY4Zd0jEVVT0e+/yFMqlV2fv9KY8mDZpD25Bbm8VmoweLCBrGuugfJjq9geI
+ Ro6igU02YJHHCrG2rFhXrhVZbQQhD9SDoswJrjJw=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 272108B87E;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D720B8B881;
  Tue, 10 Sep 2019 11:17:15 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id i94UJ2lek6sk; Tue, 10 Sep 2019 11:17:14 +0200 (CEST)
+ with ESMTP id J-LvfglUaSA7; Tue, 10 Sep 2019 11:17:15 +0200 (CEST)
 Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7CE508B891;
- Tue, 10 Sep 2019 11:16:27 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B44D98B896;
+ Tue, 10 Sep 2019 11:16:29 +0200 (CEST)
 Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 34D616B739; Tue, 10 Sep 2019 09:16:27 +0000 (UTC)
-Message-Id: <beb8a7272cecadee5480b647aafd1ac5db5d746a.1568106758.git.christophe.leroy@c-s.fr>
+ id 420F56B739; Tue, 10 Sep 2019 09:16:29 +0000 (UTC)
+Message-Id: <afee0f68dbfa72785457fd13f15f6fd5e249264d.1568106758.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1568106758.git.christophe.leroy@c-s.fr>
 References: <cover.1568106758.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 08/15] powerpc/32: Add early stack overflow detection with
- VMAP stack.
+Subject: [PATCH v3 10/15] powerpc/8xx: drop exception entries for non-existing
+ exceptions
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, dja@axtens.net
-Date: Tue, 10 Sep 2019 09:16:27 +0000 (UTC)
+Date: Tue, 10 Sep 2019 09:16:29 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,223 +82,82 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To avoid recursive faults, stack overflow detection has to be
-performed before writing in the stack in exception prologs.
+head_8xx.S has entries for all exceptions from 0x100 to 0x1f00.
+Several of them do not exist and are never generated by the 8xx
+in accordance with the documentation.
 
-Do it by checking the alignment. If the stack pointer alignment is
-wrong, it means it is pointing to the following or preceding page.
-
-Without VMAP stack, a stack overflow is catastrophic. With VMAP
-stack, a stack overflow isn't destructive, so don't panic. Kill
-the task with SIGSEGV instead.
-
-A dedicated overflow stack is set up for each CPU.
-
-lkdtm: Performing direct entry EXHAUST_STACK
-lkdtm: Calling function with 512 frame size to depth 32 ...
-lkdtm: loop 32/32 ...
-lkdtm: loop 31/32 ...
-lkdtm: loop 30/32 ...
-lkdtm: loop 29/32 ...
-lkdtm: loop 28/32 ...
-lkdtm: loop 27/32 ...
-lkdtm: loop 26/32 ...
-lkdtm: loop 25/32 ...
-lkdtm: loop 24/32 ...
-lkdtm: loop 23/32 ...
-lkdtm: loop 22/32 ...
-lkdtm: loop 21/32 ...
-lkdtm: loop 20/32 ...
-Kernel stack overflow in process test[359], r1=c900c008
-Oops: Kernel stack overflow, sig: 6 [#1]
-BE PAGE_SIZE=4K MMU=Hash PowerMac
-Modules linked in:
-CPU: 0 PID: 359 Comm: test Not tainted 5.3.0-rc7+ #2225
-NIP:  c0622060 LR: c0626710 CTR: 00000000
-REGS: c0895f48 TRAP: 0000   Not tainted  (5.3.0-rc7+)
-MSR:  00001032 <ME,IR,DR,RI>  CR: 28004224  XER: 00000000
-GPR00: c0626ca4 c900c008 c783c000 c07335cc c900c010 c07335cc c900c0f0 c07335cc
-GPR08: c900c0f0 00000001 00000000 00000000 28008222 00000000 00000000 00000000
-GPR16: 00000000 00000000 10010128 10010000 b799c245 10010158 c07335cc 00000025
-GPR24: c0690000 c08b91d4 c068f688 00000020 c900c0f0 c068f668 c08b95b4 c08b91d4
-NIP [c0622060] format_decode+0x0/0x4d4
-LR [c0626710] vsnprintf+0x80/0x5fc
-Call Trace:
-[c900c068] [c0626ca4] vscnprintf+0x18/0x48
-[c900c078] [c007b944] vprintk_store+0x40/0x214
-[c900c0b8] [c007bf50] vprintk_emit+0x90/0x1dc
-[c900c0e8] [c007c5cc] printk+0x50/0x60
-[c900c128] [c03da5b0] recursive_loop+0x44/0x6c
-[c900c338] [c03da5c4] recursive_loop+0x58/0x6c
-[c900c548] [c03da5c4] recursive_loop+0x58/0x6c
-[c900c758] [c03da5c4] recursive_loop+0x58/0x6c
-[c900c968] [c03da5c4] recursive_loop+0x58/0x6c
-[c900cb78] [c03da5c4] recursive_loop+0x58/0x6c
-[c900cd88] [c03da5c4] recursive_loop+0x58/0x6c
-[c900cf98] [c03da5c4] recursive_loop+0x58/0x6c
-[c900d1a8] [c03da5c4] recursive_loop+0x58/0x6c
-[c900d3b8] [c03da5c4] recursive_loop+0x58/0x6c
-[c900d5c8] [c03da5c4] recursive_loop+0x58/0x6c
-[c900d7d8] [c03da5c4] recursive_loop+0x58/0x6c
-[c900d9e8] [c03da5c4] recursive_loop+0x58/0x6c
-[c900dbf8] [c03da5c4] recursive_loop+0x58/0x6c
-[c900de08] [c03da67c] lkdtm_EXHAUST_STACK+0x30/0x4c
-[c900de18] [c03da3e8] direct_entry+0xc8/0x140
-[c900de48] [c029fb40] full_proxy_write+0x64/0xcc
-[c900de68] [c01500f8] __vfs_write+0x30/0x1d0
-[c900dee8] [c0152cb8] vfs_write+0xb8/0x1d4
-[c900df08] [c0152f7c] ksys_write+0x58/0xe8
-[c900df38] [c0014208] ret_from_syscall+0x0/0x34
---- interrupt: c01 at 0xf806664
-    LR = 0x1000c868
-Instruction dump:
-4bffff91 80010014 7c832378 7c0803a6 38210010 4e800020 3d20c08a 3ca0c089
-8089a0cc 38a58f0c 38600001 4ba2d494 <9421ffe0> 7c0802a6 bfc10018 7c9f2378
-
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Remove those entry points to make some room for future growing
+exception code.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/include/asm/irq.h |  1 +
- arch/powerpc/kernel/entry_32.S | 25 +++++++++++++++++++++++++
- arch/powerpc/kernel/head_32.h  |  4 ++++
- arch/powerpc/kernel/irq.c      |  1 +
- arch/powerpc/kernel/setup_32.c |  1 +
- arch/powerpc/kernel/traps.c    | 15 ++++++++++++---
- 6 files changed, 44 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/head_8xx.S | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
-index 814dfab7e392..ec74ced2437d 100644
---- a/arch/powerpc/include/asm/irq.h
-+++ b/arch/powerpc/include/asm/irq.h
-@@ -55,6 +55,7 @@ extern void *mcheckirq_ctx[NR_CPUS];
-  */
- extern void *hardirq_ctx[NR_CPUS];
- extern void *softirq_ctx[NR_CPUS];
-+extern void *stackovf_ctx[NR_CPUS];
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 3de9c5f1746c..5aa63693f790 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -134,18 +134,6 @@ MachineCheck:
+ 	addi r3,r1,STACK_FRAME_OVERHEAD
+ 	EXC_XFER_STD(0x200, machine_check_exception)
  
- void call_do_softirq(void *sp);
- void call_do_irq(struct pt_regs *regs, void *sp);
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 2a26fe19f0b1..00fcf954e742 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -184,9 +184,11 @@ transfer_to_handler:
-          */
- 	kuap_save_and_lock r11, r12, r9, r2, r0
- 	addi	r2, r12, -THREAD
-+#ifndef CONFIG_VMAP_STACK
- 	lwz	r9,KSP_LIMIT(r12)
- 	cmplw	r1,r9			/* if r1 <= ksp_limit */
- 	ble-	stack_ovf		/* then the kernel stack overflowed */
-+#endif
- 5:
- #if defined(CONFIG_PPC_BOOK3S_32) || defined(CONFIG_E500)
- 	lwz	r12,TI_LOCAL_FLAGS(r2)
-@@ -298,6 +300,28 @@ reenable_mmu:
-  * On kernel stack overflow, load up an initial stack pointer
-  * and call StackOverflow(regs), which should not return.
-  */
-+#ifdef CONFIG_VMAP_STACK
-+_GLOBAL(stack_ovf)
-+	li	r11, 0
-+#ifdef CONFIG_SMP
-+	mfspr	r11, SPRN_SPRG_THREAD
-+	tovirt(r11, r11)
-+	lwz	r11, TASK_CPU - THREAD(r11)
-+	slwi	r11, r11, 3
-+#endif
-+	addis	r11, r11, stackovf_ctx@ha
-+	addi	r11, r11, stackovf_ctx@l
-+	lwz	r11, 0(r11)
-+	cmpwi	cr1, r11, 0
-+	addi	r11, r11, THREAD_SIZE - INT_FRAME_SIZE
-+	bne	cr1, 1f
-+	lis	r11, init_thread_union + THREAD_SIZE - INT_FRAME_SIZE@ha
-+	addi	r11, r11, init_thread_union + THREAD_SIZE - INT_FRAME_SIZE@l
-+1:	EXCEPTION_PROLOG_2
-+	SAVE_NVGPRS(r11)
-+	addi	r3, r1, STACK_FRAME_OVERHEAD
-+	EXC_XFER_STD(0, StackOverflow)
-+#else
- stack_ovf:
- 	/* sometimes we use a statically-allocated stack, which is OK. */
- 	lis	r12,_end@h
-@@ -319,6 +343,7 @@ stack_ovf:
- 	mtspr	SPRN_SRR1,r10
- 	SYNC
- 	RFI
-+#endif
+-/* Data access exception.
+- * This is "never generated" by the MPC8xx.
+- */
+-	. = 0x300
+-DataAccess:
+-
+-/* Instruction access exception.
+- * This is "never generated" by the MPC8xx.
+- */
+-	. = 0x400
+-InstructionAccess:
+-
+ /* External interrupt */
+ 	EXCEPTION(0x500, HardwareInterrupt, do_IRQ, EXC_XFER_LITE)
  
- #ifdef CONFIG_TRACE_IRQFLAGS
- trace_syscall_entry_irq_off:
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 59e775930be8..283d4298d555 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -58,6 +58,10 @@
- 	tophys(r11,r11)
- #endif
- 1:
-+#ifdef CONFIG_VMAP_STACK
-+	mtcrf	0x7f, r11
-+	bt	32 - THREAD_ALIGN_SHIFT, stack_ovf_trampoline
-+#endif
- .endm
+@@ -162,16 +150,9 @@ Alignment:
+ /* Program check exception */
+ 	EXCEPTION(0x700, ProgramCheck, program_check_exception, EXC_XFER_STD)
  
- .macro EXCEPTION_PROLOG_2 ext
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 5645bc9cbc09..48aadc033e4a 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -678,6 +678,7 @@ void *mcheckirq_ctx[NR_CPUS] __read_mostly;
+-/* No FPU on MPC8xx.  This exception is not supposed to happen.
+-*/
+-	EXCEPTION(0x800, FPUnavailable, unknown_exception, EXC_XFER_STD)
+-
+ /* Decrementer */
+ 	EXCEPTION(0x900, Decrementer, timer_interrupt, EXC_XFER_LITE)
  
- void *softirq_ctx[NR_CPUS] __read_mostly;
- void *hardirq_ctx[NR_CPUS] __read_mostly;
-+void *stackovf_ctx[NR_CPUS] __read_mostly;
+-	EXCEPTION(0xa00, Trap_0a, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0xb00, Trap_0b, unknown_exception, EXC_XFER_STD)
+-
+ /* System call */
+ 	. = 0xc00
+ SystemCall:
+@@ -179,8 +160,6 @@ SystemCall:
  
- void do_softirq_own_stack(void)
- {
-diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
-index 180e658c1a6b..0e5b59daf2df 100644
---- a/arch/powerpc/kernel/setup_32.c
-+++ b/arch/powerpc/kernel/setup_32.c
-@@ -155,6 +155,7 @@ void __init irqstack_early_init(void)
- 	for_each_possible_cpu(i) {
- 		softirq_ctx[i] = alloc_stack();
- 		hardirq_ctx[i] = alloc_stack();
-+		stackovf_ctx[i] = alloc_stack();
- 	}
- }
+ /* Single step - not used on 601 */
+ 	EXCEPTION(0xd00, SingleStep, single_step_exception, EXC_XFER_STD)
+-	EXCEPTION(0xe00, Trap_0e, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0xf00, Trap_0f, unknown_exception, EXC_XFER_STD)
  
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 11caa0291254..8fe2553481f4 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1622,11 +1622,20 @@ void alignment_exception(struct pt_regs *regs)
+ /* On the MPC8xx, this is a software emulation interrupt.  It occurs
+  * for all unimplemented and illegal instructions.
+@@ -507,14 +486,6 @@ DARFixed:/* Return from dcbx instruction bug workaround */
+ 	/* 0x300 is DataAccess exception, needed by bad_page_fault() */
+ 	EXC_XFER_LITE(0x300, handle_page_fault)
  
- void StackOverflow(struct pt_regs *regs)
- {
-+	enum ctx_state prev_state = exception_enter();
-+
- 	pr_crit("Kernel stack overflow in process %s[%d], r1=%lx\n",
- 		current->comm, task_pid_nr(current), regs->gpr[1]);
--	debugger(regs);
--	show_regs(regs);
--	panic("kernel stack overflow");
-+
-+	if (IS_ENABLED(CONFIG_VMAP_STACK)) {
-+		die("Kernel stack overflow", regs, SIGSEGV);
-+	} else {
-+		debugger(regs);
-+		show_regs(regs);
-+		panic("kernel stack overflow");
-+	}
-+
-+	exception_exit(prev_state);
- }
- 
- void kernel_fp_unavailable_exception(struct pt_regs *regs)
+-	EXCEPTION(0x1500, Trap_15, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0x1600, Trap_16, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0x1700, Trap_17, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0x1800, Trap_18, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0x1900, Trap_19, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0x1a00, Trap_1a, unknown_exception, EXC_XFER_STD)
+-	EXCEPTION(0x1b00, Trap_1b, unknown_exception, EXC_XFER_STD)
+-
+ /* On the MPC8xx, these next four traps are used for development
+  * support of breakpoints and such.  Someday I will get around to
+  * using them.
 -- 
 2.13.3
 
