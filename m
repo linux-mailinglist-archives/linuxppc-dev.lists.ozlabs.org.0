@@ -2,43 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC975AEFC7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 18:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F559AEFF4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 18:51:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46SW5L0JDqzF1Sm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 02:41:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46SWJv2xCyzF0RK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 02:51:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46SW324CdbzDrBl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 02:39:40 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id A6DA837E79;
- Tue, 10 Sep 2019 16:39:38 +0000 (UTC)
-Received: from t460s.redhat.com (ovpn-116-108.ams2.redhat.com [10.36.116.108])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6855060BF3;
- Tue, 10 Sep 2019 16:39:33 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1] powerpc/pseries: CMM: Drop page array
-Date: Tue, 10 Sep 2019 18:39:32 +0200
-Message-Id: <20190910163932.13160-1-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46SWGg0Ky6zDrQs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 02:49:45 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8AGljsL155762
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 12:49:41 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uxcvdnhs6-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 12:49:40 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <groug@kaod.org>;
+ Tue, 10 Sep 2019 17:49:38 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 10 Sep 2019 17:49:35 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x8AGnYPm31261136
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Sep 2019 16:49:34 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 80C704203F;
+ Tue, 10 Sep 2019 16:49:34 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3565042049;
+ Tue, 10 Sep 2019 16:49:34 +0000 (GMT)
+Received: from bahia.tls.ibm.com (unknown [9.101.4.41])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Sep 2019 16:49:34 +0000 (GMT)
+Subject: [PATCH] KVM: PPC: Book3S HV: Tunable to configure maximum # of
+ vCPUs per VM
+From: Greg Kurz <groug@kaod.org>
+To: Paul Mackerras <paulus@ozlabs.org>
+Date: Tue, 10 Sep 2019 18:49:34 +0200
+User-Agent: StGit/unknown-version
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.29]); Tue, 10 Sep 2019 16:39:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19091016-4275-0000-0000-000003640AE4
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19091016-4276-0000-0000-000038766001
+Message-Id: <156813417397.1880979.6162333671088177553.stgit@bahia.tls.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-10_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1034 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909100161
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,291 +87,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Arun KS <arunks@codeaurora.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
+Cc: kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ =?utf-8?q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We can simply store the pages in a list (page->lru), no need for a
-separate data structure (+ complicated handling). This is how most
-other balloon drivers store allocated pages without additional tracking
-data.
+Each vCPU of a VM allocates a XIVE VP in OPAL which is associated with
+8 event queue (EQ) descriptors, one for each priority. A POWER9 socket
+can handle a maximum of 1M event queues.
 
-For the notifiers, use page_to_pfn() to check if a page is in the
-applicable range. plpar_page_set_loaned()/plpar_page_set_active() were
-called with __pa(page_address()) for now, I assume we can simply switch
-to page_to_phys() here. The pfn_to_kaddr() handling is now mostly gone.
+The powernv platform allocates NR_CPUS (== 2048) VPs for the hypervisor,
+and each XIVE KVM device allocates KVM_MAX_VCPUS (== 2048) VPs. This means
+that on a bi-socket system, we can create at most:
 
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Arun KS <arunks@codeaurora.org>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: David Hildenbrand <david@redhat.com>
+(2 * 1M) / (8 * 2048) - 1 == 127 XIVE or XICS-on-XIVE KVM devices
+
+ie, start at most 127 VMs benefiting from an in-kernel interrupt controller.
+Subsequent VMs need to rely on much slower userspace emulated XIVE device in
+QEMU.
+
+This is problematic as one can legitimately expect to start the same
+number of mono-CPU VMs as the number of HW threads available on the
+system (eg, 144 on Witherspoon).
+
+I'm not aware of any userspace supporting more that 1024 vCPUs. It thus
+seem overkill to consume that many VPs per VM. Ideally we would even
+want userspace to be able to tell KVM about the maximum number of vCPUs
+when creating the VM.
+
+For now, provide a module parameter to configure the maximum number of
+vCPUs per VM. While here, reduce the default value to 1024 to match the
+current limit in QEMU. This number is only used by the XIVE KVM devices,
+but some more users of KVM_MAX_VCPUS could possibly be converted.
+
+With this change, I could successfully run 230 mono-CPU VMs on a
+Witherspoon system using the official skiboot-6.3.
+
+I could even run more VMs by using upstream skiboot containing this
+fix, that allows to better spread interrupts between sockets:
+
+e97391ae2bb5 ("xive: fix return value of opal_xive_allocate_irq()")
+
+MAX VPCUS | MAX VMS
+----------+---------
+     1024 |     255
+      512 |     511
+      256 |    1023 (*)
+
+(*) the system was barely usable because of the extreme load and
+    memory exhaustion but the VMs did start.
+
+Signed-off-by: Greg Kurz <groug@kaod.org>
 ---
+ arch/powerpc/include/asm/kvm_host.h   |    1 +
+ arch/powerpc/kvm/book3s_hv.c          |   32 ++++++++++++++++++++++++++++++++
+ arch/powerpc/kvm/book3s_xive.c        |    2 +-
+ arch/powerpc/kvm/book3s_xive_native.c |    2 +-
+ 4 files changed, 35 insertions(+), 2 deletions(-)
 
-Only compile-tested. I hope the page_to_phys() thingy is correct and I
-didn't mess up something else / ignoring something important why the array
-is needed.
-
-I stumbled over this while looking at how the memory isolation notifier is
-used - and wondered why the additional array is necessary. Also, I think
-by switching to the generic balloon compaction mechanism, we could get
-rid of the memory hotplug notifier and the memory isolation notifier in
-this code, as the migration capability of the inflated pages is the real
-requirement:
-	commit 14b8a76b9d53346f2871bf419da2aaf219940c50
-	Author: Robert Jennings <rcj@linux.vnet.ibm.com>
-	Date:   Thu Dec 17 14:44:52 2009 +0000
-	
-	    powerpc: Make the CMM memory hotplug aware
-	
-	    The Collaborative Memory Manager (CMM) module allocates individual pages
-	    over time that are not migratable.  On a long running system this can
-	    severely impact the ability to find enough pages to support a hotplug
-	    memory remove operation.
-	[...]
-
-Thoughts?
-
----
- arch/powerpc/platforms/pseries/cmm.c | 155 ++++++---------------------
- 1 file changed, 31 insertions(+), 124 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index b33251d75927..9cab34a667bf 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -75,21 +75,13 @@ module_param_named(debug, cmm_debug, uint, 0644);
- MODULE_PARM_DESC(debug, "Enable module debugging logging. Set to 1 to enable. "
- 		 "[Default=" __stringify(CMM_DEBUG) "]");
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 6fb5fb4779e0..17582ce38788 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -335,6 +335,7 @@ struct kvm_arch {
+ 	struct kvm_nested_guest *nested_guests[KVM_MAX_NESTED_GUESTS];
+ 	/* This array can grow quite large, keep it at the end */
+ 	struct kvmppc_vcore *vcores[KVM_MAX_VCORES];
++	unsigned int max_vcpus;
+ #endif
+ };
  
--#define CMM_NR_PAGES ((PAGE_SIZE - sizeof(void *) - sizeof(unsigned long)) / sizeof(unsigned long))
--
- #define cmm_dbg(...) if (cmm_debug) { printk(KERN_INFO "cmm: "__VA_ARGS__); }
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index f8975c620f41..393d8a1ce9d8 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -125,6 +125,36 @@ static bool nested = true;
+ module_param(nested, bool, S_IRUGO | S_IWUSR);
+ MODULE_PARM_DESC(nested, "Enable nested virtualization (only on POWER9)");
  
--struct cmm_page_array {
--	struct cmm_page_array *next;
--	unsigned long index;
--	unsigned long page[CMM_NR_PAGES];
--};
--
- static unsigned long loaned_pages;
- static unsigned long loaned_pages_target;
- static unsigned long oom_freed_pages;
- 
--static struct cmm_page_array *cmm_page_list;
-+static LIST_HEAD(cmm_page_list);
- static DEFINE_SPINLOCK(cmm_lock);
- 
- static DEFINE_MUTEX(hotplug_mutex);
-@@ -138,8 +130,7 @@ static long plpar_page_set_active(unsigned long vpa)
-  **/
- static long cmm_alloc_pages(long nr)
++#define MIN(x, y) (((x) < (y)) ? (x) : (y))
++
++static unsigned int max_vcpus = MIN(KVM_MAX_VCPUS, 1024);
++
++static int set_max_vcpus(const char *val, const struct kernel_param *kp)
++{
++	unsigned int new_max_vcpus;
++	int ret;
++
++	ret = kstrtouint(val, 0, &new_max_vcpus);
++	if (ret)
++		return ret;
++
++	if (new_max_vcpus > KVM_MAX_VCPUS)
++		return -EINVAL;
++
++	max_vcpus = new_max_vcpus;
++
++	return 0;
++}
++
++static struct kernel_param_ops max_vcpus_ops = {
++	.set = set_max_vcpus,
++	.get = param_get_uint,
++};
++
++module_param_cb(max_vcpus, &max_vcpus_ops, &max_vcpus, S_IRUGO | S_IWUSR);
++MODULE_PARM_DESC(max_vcpus, "Maximum number of vCPUS per VM (max = "
++		 __stringify(KVM_MAX_VCPUS) ")");
++
+ static inline bool nesting_enabled(struct kvm *kvm)
  {
--	struct cmm_page_array *pa, *npa;
--	unsigned long addr;
-+	struct page *page;
- 	long rc;
+ 	return kvm->arch.nested_enable && kvm_is_radix(kvm);
+@@ -4918,6 +4948,8 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ 	if (radix_enabled())
+ 		kvmhv_radix_debugfs_init(kvm);
  
- 	cmm_dbg("Begin request for %ld pages\n", nr);
-@@ -156,43 +147,20 @@ static long cmm_alloc_pages(long nr)
- 			break;
- 		}
- 
--		addr = __get_free_page(GFP_NOIO | __GFP_NOWARN |
--				       __GFP_NORETRY | __GFP_NOMEMALLOC);
--		if (!addr)
-+		page = alloc_page(GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY |
-+				  __GFP_NOMEMALLOC);
-+		if (!page)
- 			break;
- 		spin_lock(&cmm_lock);
--		pa = cmm_page_list;
--		if (!pa || pa->index >= CMM_NR_PAGES) {
--			/* Need a new page for the page list. */
--			spin_unlock(&cmm_lock);
--			npa = (struct cmm_page_array *)__get_free_page(
--					GFP_NOIO | __GFP_NOWARN |
--					__GFP_NORETRY | __GFP_NOMEMALLOC);
--			if (!npa) {
--				pr_info("%s: Can not allocate new page list\n", __func__);
--				free_page(addr);
--				break;
--			}
--			spin_lock(&cmm_lock);
--			pa = cmm_page_list;
--
--			if (!pa || pa->index >= CMM_NR_PAGES) {
--				npa->next = pa;
--				npa->index = 0;
--				pa = npa;
--				cmm_page_list = pa;
--			} else
--				free_page((unsigned long) npa);
--		}
--
--		if ((rc = plpar_page_set_loaned(__pa(addr)))) {
-+		rc = plpar_page_set_loaned(page_to_phys(page));
-+		if (rc) {
- 			pr_err("%s: Can not set page to loaned. rc=%ld\n", __func__, rc);
- 			spin_unlock(&cmm_lock);
--			free_page(addr);
-+			__free_page(page);
- 			break;
- 		}
- 
--		pa->page[pa->index++] = addr;
-+		list_add(&page->lru, &cmm_page_list);
- 		loaned_pages++;
- 		totalram_pages_dec();
- 		spin_unlock(&cmm_lock);
-@@ -212,25 +180,16 @@ static long cmm_alloc_pages(long nr)
-  **/
- static long cmm_free_pages(long nr)
- {
--	struct cmm_page_array *pa;
--	unsigned long addr;
-+	struct page *page, *tmp;
- 
- 	cmm_dbg("Begin free of %ld pages.\n", nr);
- 	spin_lock(&cmm_lock);
--	pa = cmm_page_list;
--	while (nr) {
--		if (!pa || pa->index <= 0)
-+	list_for_each_entry_safe(page, tmp, &cmm_page_list, lru) {
-+		if (!nr)
- 			break;
--		addr = pa->page[--pa->index];
--
--		if (pa->index == 0) {
--			pa = pa->next;
--			free_page((unsigned long) cmm_page_list);
--			cmm_page_list = pa;
--		}
--
--		plpar_page_set_active(__pa(addr));
--		free_page(addr);
-+		plpar_page_set_active(page_to_phys(page));
-+		list_del(&page->lru);
-+		__free_page(page);
- 		loaned_pages--;
- 		nr--;
- 		totalram_pages_inc();
-@@ -491,20 +450,13 @@ static struct notifier_block cmm_reboot_nb = {
- static unsigned long cmm_count_pages(void *arg)
- {
- 	struct memory_isolate_notify *marg = arg;
--	struct cmm_page_array *pa;
--	unsigned long start = (unsigned long)pfn_to_kaddr(marg->start_pfn);
--	unsigned long end = start + (marg->nr_pages << PAGE_SHIFT);
--	unsigned long idx;
-+	struct page *page;
- 
- 	spin_lock(&cmm_lock);
--	pa = cmm_page_list;
--	while (pa) {
--		if ((unsigned long)pa >= start && (unsigned long)pa < end)
-+	list_for_each_entry(page, &cmm_page_list, lru) {
-+		if (page_to_pfn(page) >= marg->start_pfn &&
-+		    page_to_pfn(page) < marg->start_pfn + marg->nr_pages)
- 			marg->pages_found++;
--		for (idx = 0; idx < pa->index; idx++)
--			if (pa->page[idx] >= start && pa->page[idx] < end)
--				marg->pages_found++;
--		pa = pa->next;
- 	}
- 	spin_unlock(&cmm_lock);
++	kvm->arch.max_vcpus = max_vcpus;
++
  	return 0;
-@@ -545,69 +497,24 @@ static struct notifier_block cmm_mem_isolate_nb = {
- static int cmm_mem_going_offline(void *arg)
- {
- 	struct memory_notify *marg = arg;
--	unsigned long start_page = (unsigned long)pfn_to_kaddr(marg->start_pfn);
--	unsigned long end_page = start_page + (marg->nr_pages << PAGE_SHIFT);
--	struct cmm_page_array *pa_curr, *pa_last, *npa;
--	unsigned long idx;
-+	struct page *page, *tmp;
- 	unsigned long freed = 0;
+ }
  
- 	cmm_dbg("Memory going offline, searching 0x%lx (%ld pages).\n",
--			start_page, marg->nr_pages);
-+		(unsigned long)pfn_to_kaddr(marg->start_pfn), marg->nr_pages);
- 	spin_lock(&cmm_lock);
+diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+index 2ef43d037a4f..0fea31b64564 100644
+--- a/arch/powerpc/kvm/book3s_xive.c
++++ b/arch/powerpc/kvm/book3s_xive.c
+@@ -2026,7 +2026,7 @@ static int kvmppc_xive_create(struct kvm_device *dev, u32 type)
+ 		xive->q_page_order = xive->q_order - PAGE_SHIFT;
  
- 	/* Search the page list for pages in the range to be offlined */
--	pa_last = pa_curr = cmm_page_list;
--	while (pa_curr) {
--		for (idx = (pa_curr->index - 1); (idx + 1) > 0; idx--) {
--			if ((pa_curr->page[idx] < start_page) ||
--			    (pa_curr->page[idx] >= end_page))
--				continue;
--
--			plpar_page_set_active(__pa(pa_curr->page[idx]));
--			free_page(pa_curr->page[idx]);
--			freed++;
--			loaned_pages--;
--			totalram_pages_inc();
--			pa_curr->page[idx] = pa_last->page[--pa_last->index];
--			if (pa_last->index == 0) {
--				if (pa_curr == pa_last)
--					pa_curr = pa_last->next;
--				pa_last = pa_last->next;
--				free_page((unsigned long)cmm_page_list);
--				cmm_page_list = pa_last;
--			}
--		}
--		pa_curr = pa_curr->next;
--	}
--
--	/* Search for page list structures in the range to be offlined */
--	pa_last = NULL;
--	pa_curr = cmm_page_list;
--	while (pa_curr) {
--		if (((unsigned long)pa_curr >= start_page) &&
--				((unsigned long)pa_curr < end_page)) {
--			npa = (struct cmm_page_array *)__get_free_page(
--					GFP_NOIO | __GFP_NOWARN |
--					__GFP_NORETRY | __GFP_NOMEMALLOC);
--			if (!npa) {
--				spin_unlock(&cmm_lock);
--				cmm_dbg("Failed to allocate memory for list "
--						"management. Memory hotplug "
--						"failed.\n");
--				return -ENOMEM;
--			}
--			memcpy(npa, pa_curr, PAGE_SIZE);
--			if (pa_curr == cmm_page_list)
--				cmm_page_list = npa;
--			if (pa_last)
--				pa_last->next = npa;
--			free_page((unsigned long) pa_curr);
--			freed++;
--			pa_curr = npa;
--		}
--
--		pa_last = pa_curr;
--		pa_curr = pa_curr->next;
-+	list_for_each_entry_safe(page, tmp, &cmm_page_list, lru) {
-+		if (page_to_pfn(page) < marg->start_pfn ||
-+		    page_to_pfn(page) >= marg->start_pfn + marg->nr_pages)
-+			continue;
-+		plpar_page_set_active(page_to_phys(page));
-+		list_del(&page->lru);
-+		__free_page(page);
-+		freed++;
-+		loaned_pages--;
-+		totalram_pages_inc();
- 	}
+ 	/* Allocate a bunch of VPs */
+-	xive->vp_base = xive_native_alloc_vp_block(KVM_MAX_VCPUS);
++	xive->vp_base = xive_native_alloc_vp_block(kvm->arch.max_vcpus);
+ 	pr_devel("VP_Base=%x\n", xive->vp_base);
  
- 	spin_unlock(&cmm_lock);
--- 
-2.21.0
+ 	if (xive->vp_base == XIVE_INVALID_VP)
+diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+index 84a354b90f60..20314010da56 100644
+--- a/arch/powerpc/kvm/book3s_xive_native.c
++++ b/arch/powerpc/kvm/book3s_xive_native.c
+@@ -1095,7 +1095,7 @@ static int kvmppc_xive_native_create(struct kvm_device *dev, u32 type)
+ 	 * a default. Getting the max number of CPUs the VM was
+ 	 * configured with would improve our usage of the XIVE VP space.
+ 	 */
+-	xive->vp_base = xive_native_alloc_vp_block(KVM_MAX_VCPUS);
++	xive->vp_base = xive_native_alloc_vp_block(kvm->arch.max_vcpus);
+ 	pr_devel("VP_Base=%x\n", xive->vp_base);
+ 
+ 	if (xive->vp_base == XIVE_INVALID_VP)
 
