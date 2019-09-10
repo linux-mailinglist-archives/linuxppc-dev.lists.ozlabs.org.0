@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349A6AE6DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 11:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4364CAE6AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 11:20:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46SKRD5r62zDrH6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 19:26:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46SKJ85XBBzDr4D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2019 19:20:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="bRfVBqGT"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="RUeGbqhm"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46SKDb0MrBzDr0m
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 19:17:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46SKDZ6wp7zDqxt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2019 19:17:18 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46SKDT4VFtz9txVy;
- Tue, 10 Sep 2019 11:17:13 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46SKDV0l5bz9txW5;
+ Tue, 10 Sep 2019 11:17:14 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=bRfVBqGT; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=RUeGbqhm; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id gGVpoIF28Ftl; Tue, 10 Sep 2019 11:17:13 +0200 (CEST)
+ with ESMTP id qUplvgyWTpPZ; Tue, 10 Sep 2019 11:17:14 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46SKDT3N62z9txVw;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46SKDT6fjlz9txVx;
  Tue, 10 Sep 2019 11:17:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1568107033; bh=kGon0ub1xJnz0O6Eae+CiFjeXTbJxumDVRZ8IyCl084=;
+ t=1568107033; bh=EO9Qxk0hjLo3ieTea7LgHM8klTAmnyp7SMifgH/BhW0=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=bRfVBqGTm7ZP4TNHo9d4OwEGPPNEDsVuceZm4Z9QKfBh3L9M1H18Boq0bohSbaYj7
- YQcZbhlnXwS5bfH7AQ/zHN6iTLd4PJv46JVLKpfogSFrNFL8HMO3a8xyNYXg7jDBbP
- 13NG9g4/xhCgJySauKt5R3YagsKncUdvCP9ZOJdw=
+ b=RUeGbqhmtSQL6TkjVQeHzuKDxJuSeE6kGuyrtadXRHcnlDDbxmXqQaE/Sc7shn/jk
+ 39l2vnSYfRBY00g5ctauzFQUPoSKKms+X4MLgbrCUvK/0ct69k/O44eQ0rhr2/rwj2
+ zz45eYC9qMs7dS1awzstzMrtdNIjhwvkasvudh5c=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 327F18B878;
- Tue, 10 Sep 2019 11:17:13 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 006148B874;
+ Tue, 10 Sep 2019 11:17:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id BWrtv-xqzQwT; Tue, 10 Sep 2019 11:17:12 +0200 (CEST)
+ with ESMTP id uZn0QpmHIKjG; Tue, 10 Sep 2019 11:17:12 +0200 (CEST)
 Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 66CD38B886;
- Tue, 10 Sep 2019 11:16:20 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5790C8B888;
+ Tue, 10 Sep 2019 11:16:21 +0200 (CEST)
 Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 096006B739; Tue, 10 Sep 2019 09:16:20 +0000 (UTC)
-Message-Id: <20ee91d8a7abc7d27a79ba704c0fd4b2800e9951.1568106758.git.christophe.leroy@c-s.fr>
+ id 0FC5E6B739; Tue, 10 Sep 2019 09:16:21 +0000 (UTC)
+Message-Id: <d499a16f946110de264ab8db46f29d6c22acc218.1568106758.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1568106758.git.christophe.leroy@c-s.fr>
 References: <cover.1568106758.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 01/15] powerpc/32: replace MTMSRD() by mtmsr
+Subject: [PATCH v3 02/15] powerpc/32: Add EXCEPTION_PROLOG_0 in head_32.h
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, dja@axtens.net
-Date: Tue, 10 Sep 2019 09:16:20 +0000 (UTC)
+Date: Tue, 10 Sep 2019 09:16:21 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,124 +81,83 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On PPC32, MTMSRD() is simply defined as mtmsr.
-
-Replace MTMSRD(reg) by mtmsr reg in files dedicated to PPC32,
-this makes the code less obscure.
+This patch creates a macro for the very first part of
+exception prolog, this will help when implementing
+CONFIG_VMAP_STACK
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/entry_32.S | 18 +++++++++---------
- arch/powerpc/kernel/head_32.h  |  4 ++--
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ arch/powerpc/kernel/head_32.S  | 4 +---
+ arch/powerpc/kernel/head_32.h  | 9 ++++++---
+ arch/powerpc/kernel/head_8xx.S | 9 ++-------
+ 3 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index d60908ea37fb..6273b4862482 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -397,7 +397,7 @@ ret_from_syscall:
- 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)	/* doesn't include MSR_EE */
- 	/* Note: We don't bother telling lockdep about it */
- 	SYNC
--	MTMSRD(r10)
-+	mtmsr	r10
- 	lwz	r9,TI_FLAGS(r2)
- 	li	r8,-MAX_ERRNO
- 	andi.	r0,r9,(_TIF_SYSCALL_DOTRACE|_TIF_SINGLESTEP|_TIF_USER_WORK_MASK|_TIF_PERSYSCALL_MASK)
-@@ -554,7 +554,7 @@ syscall_exit_work:
- 	 */
- 	ori	r10,r10,MSR_EE
- 	SYNC
--	MTMSRD(r10)
-+	mtmsr	r10
- 
- 	/* Save NVGPRS if they're not saved already */
- 	lwz	r4,_TRAP(r1)
-@@ -697,7 +697,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_SPE)
- 	and.	r0,r0,r11	/* FP or altivec or SPE enabled? */
- 	beq+	1f
- 	andc	r11,r11,r0
--	MTMSRD(r11)
-+	mtmsr	r11
- 	isync
- 1:	stw	r11,_MSR(r1)
- 	mfcr	r10
-@@ -831,7 +831,7 @@ ret_from_except:
- 	/* Note: We don't bother telling lockdep about it */
- 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)
- 	SYNC			/* Some chip revs have problems here... */
--	MTMSRD(r10)		/* disable interrupts */
-+	mtmsr	r10		/* disable interrupts */
- 
- 	lwz	r3,_MSR(r1)	/* Returning to user mode? */
- 	andi.	r0,r3,MSR_PR
-@@ -998,7 +998,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
- 	 */
- 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL & ~MSR_RI)
- 	SYNC
--	MTMSRD(r10)		/* clear the RI bit */
-+	mtmsr	r10		/* clear the RI bit */
- 	.globl exc_exit_restart
- exc_exit_restart:
- 	lwz	r12,_NIP(r1)
-@@ -1234,7 +1234,7 @@ do_resched:			/* r10 contains MSR_KERNEL here */
- #endif
- 	ori	r10,r10,MSR_EE
- 	SYNC
--	MTMSRD(r10)		/* hard-enable interrupts */
-+	mtmsr	r10		/* hard-enable interrupts */
- 	bl	schedule
- recheck:
- 	/* Note: And we don't tell it we are disabling them again
-@@ -1243,7 +1243,7 @@ recheck:
- 	 */
- 	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)
- 	SYNC
--	MTMSRD(r10)		/* disable interrupts */
-+	mtmsr	r10		/* disable interrupts */
- 	lwz	r9,TI_FLAGS(r2)
- 	andi.	r0,r9,_TIF_NEED_RESCHED
- 	bne-	do_resched
-@@ -1252,7 +1252,7 @@ recheck:
- do_user_signal:			/* r10 contains MSR_KERNEL here */
- 	ori	r10,r10,MSR_EE
- 	SYNC
--	MTMSRD(r10)		/* hard-enable interrupts */
-+	mtmsr	r10		/* hard-enable interrupts */
- 	/* save r13-r31 in the exception frame, if not already done */
- 	lwz	r3,_TRAP(r1)
- 	andi.	r0,r3,1
-@@ -1341,7 +1341,7 @@ _GLOBAL(enter_rtas)
- 	stw	r9,8(r1)
- 	LOAD_REG_IMMEDIATE(r0,MSR_KERNEL)
- 	SYNC			/* disable interrupts so SRR0/1 */
--	MTMSRD(r0)		/* don't get trashed */
-+	mtmsr	r0		/* don't get trashed */
- 	li	r9,MSR_KERNEL & ~(MSR_IR|MSR_DR)
- 	mtlr	r6
- 	stw	r7, THREAD + RTAS_SP(r2)
+diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
+index 4a24f8f026c7..9e868567b716 100644
+--- a/arch/powerpc/kernel/head_32.S
++++ b/arch/powerpc/kernel/head_32.S
+@@ -272,9 +272,7 @@ __secondary_hold_acknowledge:
+  */
+ 	. = 0x200
+ 	DO_KVM  0x200
+-	mtspr	SPRN_SPRG_SCRATCH0,r10
+-	mtspr	SPRN_SPRG_SCRATCH1,r11
+-	mfcr	r10
++	EXCEPTION_PROLOG_0
+ #ifdef CONFIG_PPC_CHRP
+ 	mfspr	r11, SPRN_SPRG_THREAD
+ 	lwz	r11, RTAS_SP(r11)
 diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 8abc7783dbe5..b2ca8c9ffd8b 100644
+index b2ca8c9ffd8b..8e345f8d4b0e 100644
 --- a/arch/powerpc/kernel/head_32.h
 +++ b/arch/powerpc/kernel/head_32.h
-@@ -50,7 +50,7 @@
- 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
- #else
- 	li	r10,MSR_KERNEL & ~(MSR_IR|MSR_DR) /* can take exceptions */
--	MTMSRD(r10)			/* (except for mach check in rtas) */
-+	mtmsr	r10			/* (except for mach check in rtas) */
- #endif
- 	stw	r0,GPR0(r11)
- 	lis	r10,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
-@@ -80,7 +80,7 @@
- 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
- #else
- 	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL & ~(MSR_IR|MSR_DR)) /* can take exceptions */
--	MTMSRD(r10)			/* (except for mach check in rtas) */
-+	mtmsr	r10			/* (except for mach check in rtas) */
- #endif
- 	lis	r10,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
- 	stw	r2,GPR2(r11)
+@@ -10,13 +10,16 @@
+  * We assume sprg3 has the physical address of the current
+  * task's thread_struct.
+  */
+-
+ .macro EXCEPTION_PROLOG
++	EXCEPTION_PROLOG_0
++	EXCEPTION_PROLOG_1
++	EXCEPTION_PROLOG_2
++.endm
++
++.macro EXCEPTION_PROLOG_0
+ 	mtspr	SPRN_SPRG_SCRATCH0,r10
+ 	mtspr	SPRN_SPRG_SCRATCH1,r11
+ 	mfcr	r10
+-	EXCEPTION_PROLOG_1
+-	EXCEPTION_PROLOG_2
+ .endm
+ 
+ .macro EXCEPTION_PROLOG_1
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 19f583e18402..dac7c0a34eea 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -494,10 +494,7 @@ InstructionTLBError:
+  */
+ 	. = 0x1400
+ DataTLBError:
+-	mtspr	SPRN_SPRG_SCRATCH0, r10
+-	mtspr	SPRN_SPRG_SCRATCH1, r11
+-	mfcr	r10
+-
++	EXCEPTION_PROLOG_0
+ 	mfspr	r11, SPRN_DAR
+ 	cmpwi	cr0, r11, RPN_PATTERN
+ 	beq-	FixupDAR	/* must be a buggy dcbX, icbi insn. */
+@@ -530,9 +527,7 @@ DARFixed:/* Return from dcbx instruction bug workaround */
+  */
+ 	. = 0x1c00
+ DataBreakpoint:
+-	mtspr	SPRN_SPRG_SCRATCH0, r10
+-	mtspr	SPRN_SPRG_SCRATCH1, r11
+-	mfcr	r10
++	EXCEPTION_PROLOG_0
+ 	mfspr	r11, SPRN_SRR0
+ 	cmplwi	cr0, r11, (.Ldtlbie - PAGE_OFFSET)@l
+ 	cmplwi	cr7, r11, (.Litlbie - PAGE_OFFSET)@l
 -- 
 2.13.3
 
