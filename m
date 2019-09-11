@@ -2,66 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6A6B050B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 22:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CDA9B0512
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 23:03:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46TDk12nzmzF3rh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 06:57:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46TDs838ZHzF3xj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 07:03:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
  envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="O4HLFzuL"; 
+ unprotected) header.d=google.com header.i=@google.com header.b="o7jCP9O6"; 
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46TDhR1bQ7zF3rW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 06:56:06 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id t1so10682655plq.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 13:56:06 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46TDqW5w6GzF3rl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 07:02:14 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id b13so14453847pfo.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 14:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=hECyZnP2/Wb3+Wh7idFWgoa4zJGDS5Ymb1IJNhVMGsM=;
- b=O4HLFzuLvgRtaOYD+41+U97SXnxP09FStmC8vuSWi1/3Md/asn73q1z3atC6YBnIp0
- U0GJtUwMWu0aPVl70WI9gq1j3E3MWR/ca+WwxESdzEEcx2PiOYkgMHz8y/ZMfAikCgYc
- NdfD+1ztePAqXEIyFab7iXjCt7OUz+sJebpixEcD32vSZmCidk3dPa5OBoORsYy1Rsus
- +OTzjB8hgDGuPSUh3FEFQT+GonA4RRpOgCc1rNYQXkj/DXE8DKCEJwwpkJd2KwDcgxqY
- 6kneExfgwdKVtAseOKzKSZFla1DbA8hUPPIRE78vmXEyVY+R8RD29XvNewSBrVrvf5b5
- MEFw==
+ :cc; bh=BmSGku8jGWaQdEnWgjS8EmzhMwO0vQvjKEtMVStz3ho=;
+ b=o7jCP9O619jk1A8fcSgzAWayhUVzV5ZQt3XJGgqVC4Cr2Y27xwM0ppsCKWoztQnBFe
+ tlxVQygRIqQmFJPuPR0h2TaKn4X28eymj7iEHy5QfNAzcyw+h1PHy6PhWu/NIY0vZMBD
+ n8pKo9xFCJvpTQpvkgIwlpo9ZNi2ZaT4Bkcdn6IxwAkMN5z2jFsk2bu8EFNjZl6wMEPv
+ YZC/7ZBuOj536hHif/679mreNnVxNJUZkYm1f6nUwWPEsPE5MNIzLc6w4DQkazrLePDv
+ 5uZcD2N56xzSI7oEnq+PfQ5t/ZsBvVzrsSMF1zLSk6B4FwV1Anb0Q3Zq6mkj+Sm0LfyE
+ 8ZLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=hECyZnP2/Wb3+Wh7idFWgoa4zJGDS5Ymb1IJNhVMGsM=;
- b=qRLSdFO5mUevhcmiMpdy8xV+6tEfKB0wsNzPLeddBqF+xjEqNaba2ayF70xtRZXb13
- CilonxdeCLL2JDcU6X74W3pTvXelQtUmTz9mWCKyD4zd9cqW9l7WGqaQ1FLVaLl87Kur
- pSITfNWnXOoffZp+fhKSln+Fr3Hlpd8fVqMOvW8rPxT/kqsx73xiU/Zb0uwwEKW8Yu62
- f1B8zTOPEILxHMCrRuWCAxcwRi2sYhsFfS01krOSMQRpOC05C5QvfW7oFRe1eBD2PTTO
- GKdobHkoj3jwD+bKO/YBXpPlLMaiG40OFk2SD2F5fF6Sly6c/RZkbAA1hPcO6ZaganU9
- xzSQ==
-X-Gm-Message-State: APjAAAVDTFJmpeNwOKB6raNHSPGwcRY3AfU6QsJ2NPKIjeJ7TAYCJXoi
- pkQdHIEQ1yn9gJsQ/ZX+QnIl5vE4gH88uuphpiI0ag==
-X-Google-Smtp-Source: APXvYqygXwwB3HrJAYGIzgZFaTxeGs7BobXjt9YTik0bsJO7DbpauDgLEBayH/87rd+PF6LMKAqF7jHu/7L1+MMzZfc=
-X-Received: by 2002:a17:902:7296:: with SMTP id
- d22mr39066409pll.179.1568235363028; 
- Wed, 11 Sep 2019 13:56:03 -0700 (PDT)
+ bh=BmSGku8jGWaQdEnWgjS8EmzhMwO0vQvjKEtMVStz3ho=;
+ b=EjpjQl0kx5fsdO7CzyC/rpJpFa6FGtbBdSU1RguiLJlqMXE/PFAYhPt8PuIWAZLB56
+ sWhTs/fP4r6xPVDStiJv99a+RB91tze0FCLeaxl9JIVu4ATX9MPsw4FMG6sQmT3Yn9o0
+ MCjUQUZfO3FrQevANLhiSlMtnsJN6I+KCuAMRHT6izLnh3CRXUq7DJlcyoB6DFuFW12s
+ fWLaSnvj2zVwxhQjZR06ZhXcNxfjtq97cIPCk/gyRcEb4J8p1+KcdMZHBE7oEUfB0BRi
+ Yw0gWspG77VuViwtuohcCDC2xj3j4bnzmQvpVYngw+mQAl8JAHymDnbP0tlwfdnsKSJI
+ KL8Q==
+X-Gm-Message-State: APjAAAV8kg9LXq6o0srFKdrgVLJbDBtmLQYk/CHhzgrfSeRwm39PelL3
+ mKfr6Czn1pm/G2DCnyu+PeOKgNRhQchiFmW7LhZ0Iw==
+X-Google-Smtp-Source: APXvYqypx9sTdaUqWPw1cVmR3te2mC9wx57XFuE4p0MZXxepRD5h/5pwdXHJeHB20U1iiWL6kUo2AHVEcIsr6mTHga0=
+X-Received: by 2002:a65:690b:: with SMTP id s11mr34339694pgq.10.1568235730928; 
+ Wed, 11 Sep 2019 14:02:10 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190911182049.77853-1-natechancellor@gmail.com>
- <20190911182049.77853-3-natechancellor@gmail.com>
-In-Reply-To: <20190911182049.77853-3-natechancellor@gmail.com>
+ <20190911182049.77853-4-natechancellor@gmail.com>
+In-Reply-To: <20190911182049.77853-4-natechancellor@gmail.com>
 From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 11 Sep 2019 13:55:52 -0700
-Message-ID: <CAKwvOdn2vz0XGDQrbBiGFAp6vvBzmOgUH3GLkgGY4UAWLhhZUQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] powerpc: Avoid clang warnings around setjmp and
- longjmp
+Date: Wed, 11 Sep 2019 14:01:59 -0700
+Message-ID: <CAKwvOdnh+YoACaX4Oxk7ZiEQAQ2VgA6W=Dtbk7gzK5yJduFvGQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] powerpc/prom_init: Use -ffreestanding to avoid a
+ reference to bcmp
 To: Nathan Chancellor <natechancellor@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,7 +74,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+Cc: LKML <linux-kernel@vger.kernel.org>,
  clang-built-linux <clang-built-linux@googlegroups.com>,
  Paul Mackerras <paulus@samba.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
@@ -86,84 +85,51 @@ Sender: "Linuxppc-dev"
 On Wed, Sep 11, 2019 at 11:21 AM Nathan Chancellor
 <natechancellor@gmail.com> wrote:
 >
-> Commit aea447141c7e ("powerpc: Disable -Wbuiltin-requires-header when
-> setjmp is used") disabled -Wbuiltin-requires-header because of a warning
-> about the setjmp and longjmp declarations.
+> r370454 gives LLVM the ability to convert certain loops into a reference
+> to bcmp as an optimization; this breaks prom_init_check.sh:
 >
-> r367387 in clang added another diagnostic around this, complaining that
-> there is no jmp_buf declaration.
+>   CALL    arch/powerpc/kernel/prom_init_check.sh
+> Error: External symbol 'bcmp' referenced from prom_init.c
+> make[2]: *** [arch/powerpc/kernel/Makefile:196: prom_init_check] Error 1
 >
-> In file included from ../arch/powerpc/xmon/xmon.c:47:
-> ../arch/powerpc/include/asm/setjmp.h:10:13: error: declaration of
-> built-in function 'setjmp' requires the declaration of the 'jmp_buf'
-> type, commonly provided in the header <setjmp.h>.
-> [-Werror,-Wincomplete-setjmp-declaration]
-> extern long setjmp(long *);
->             ^
-> ../arch/powerpc/include/asm/setjmp.h:11:13: error: declaration of
-> built-in function 'longjmp' requires the declaration of the 'jmp_buf'
-> type, commonly provided in the header <setjmp.h>.
-> [-Werror,-Wincomplete-setjmp-declaration]
-> extern void longjmp(long *, long);
->             ^
-> 2 errors generated.
+> bcmp is defined in lib/string.c as a wrapper for memcmp so this could be
+> added to the whitelist. However, commit 450e7dd4001f ("powerpc/prom_init:
+> don't use string functions from lib/") copied memcmp as prom_memcmp to
+> avoid KASAN instrumentation so having bcmp be resolved to regular memcmp
+> would break that assumption. Furthermore, because the compiler is the
+> one that inserted bcmp, we cannot provide something like prom_bcmp.
 >
-> We are not using the standard library's longjmp/setjmp implementations
-> for obvious reasons; make this clear to clang by using -ffreestanding
-> on these files.
+> To prevent LLVM from being clever with optimizations like this, use
+> -ffreestanding to tell LLVM we are not hosted so it is not free to make
+> transformations like this.
+>
+> Link: https://github.com/ClangBuiltLinux/linux/issues/647
+> Link: https://github.com/llvm/llvm-project/commit/5c9f3cfec78f9e9ae013de9a0d092a68e3e79e002
 
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-https://godbolt.org/z/B2oQnl
+The above link doesn't work for me (HTTP 404).  PEBKAC?
+https://github.com/llvm/llvm-project/commit/5c9f3cfec78f9e9ae013de9a0d092a68e3e79e002
 
->
-> Cc: stable@vger.kernel.org # 4.14+
-> Link: https://github.com/ClangBuiltLinux/linux/issues/625
-> Link: https://github.com/llvm/llvm-project/commit/3be25e79477db2d31ac46493d97eca8c20592b07
-> Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
 > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 > ---
 >
-> v1 -> v3:
+> New patch in the series so no previous version.
 >
-> * Use -ffreestanding instead of outright disabling the warning because
->   it is legitimate.
->
-> I skipped v2 because the first patch in the series already had a v2.
->
->  arch/powerpc/kernel/Makefile | 4 ++--
->  arch/powerpc/xmon/Makefile   | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  arch/powerpc/kernel/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> index c9cc4b689e60..19f19c8c874b 100644
+> index 19f19c8c874b..aa78b3f6271e 100644
 > --- a/arch/powerpc/kernel/Makefile
 > +++ b/arch/powerpc/kernel/Makefile
-> @@ -5,8 +5,8 @@
+> @@ -21,7 +21,7 @@ CFLAGS_prom_init.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+>  CFLAGS_btext.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+>  CFLAGS_prom.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
 >
->  CFLAGS_ptrace.o                += -DUTS_MACHINE='"$(UTS_MACHINE)"'
+> -CFLAGS_prom_init.o += $(call cc-option, -fno-stack-protector)
+> +CFLAGS_prom_init.o += $(call cc-option, -fno-stack-protector) -ffreestanding
 >
-> -# Disable clang warning for using setjmp without setjmp.h header
-> -CFLAGS_crash.o         += $(call cc-disable-warning, builtin-requires-header)
-> +# Avoid clang warnings around longjmp/setjmp declarations
-> +CFLAGS_crash.o         += -ffreestanding
->
->  ifdef CONFIG_PPC64
->  CFLAGS_prom_init.o     += $(NO_MINIMAL_TOC)
-> diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-> index f142570ad860..c3842dbeb1b7 100644
-> --- a/arch/powerpc/xmon/Makefile
-> +++ b/arch/powerpc/xmon/Makefile
-> @@ -1,8 +1,8 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for xmon
->
-> -# Disable clang warning for using setjmp without setjmp.h header
-> -subdir-ccflags-y := $(call cc-disable-warning, builtin-requires-header)
-> +# Avoid clang warnings around longjmp/setjmp declarations
-> +subdir-ccflags-y := -ffreestanding
->
->  GCOV_PROFILE := n
->  KCOV_INSTRUMENT := n
+>  ifdef CONFIG_FUNCTION_TRACER
+>  # Do not trace early boot code
 > --
 > 2.23.0
 >
