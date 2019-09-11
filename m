@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECA7AFF5E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 16:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A07AFF72
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 17:01:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46T4ln2Bb1zF3Fm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 00:58:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46T4qM2VcgzF3Gh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 01:01:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46T4WM6yGLzF3BG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 00:47:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46T4Wt0kCgzF3C8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 00:48:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46T4WM64kDz8t0n
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 00:47:43 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46T4Ws6lGHz8t0n
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 00:48:09 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 46T4WM4P7gz9sDB; Thu, 12 Sep 2019 00:47:43 +1000 (AEST)
+ id 46T4Ws5Dqfz9sNF; Thu, 12 Sep 2019 00:48:09 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
@@ -33,42 +33,46 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46T4WL6sn9z9s4Y
- for <linuxppc-dev@ozlabs.org>; Thu, 12 Sep 2019 00:47:42 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 46T4Ws2Hgvz9s4Y
+ for <linuxppc-dev@ozlabs.org>; Thu, 12 Sep 2019 00:48:09 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8BEgaPE188373
- for <linuxppc-dev@ozlabs.org>; Wed, 11 Sep 2019 10:47:41 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uxc00r0a1-1
+ x8BEgdIH136517
+ for <linuxppc-dev@ozlabs.org>; Wed, 11 Sep 2019 10:48:07 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uy1ryb71v-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 11 Sep 2019 10:47:35 -0400
+ for <linuxppc-dev@ozlabs.org>; Wed, 11 Sep 2019 10:48:07 -0400
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Wed, 11 Sep 2019 15:47:14 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Wed, 11 Sep 2019 15:48:05 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 11 Sep 2019 15:47:11 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x8BElAjb15925558
+ Wed, 11 Sep 2019 15:48:01 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8BElxbQ57475132
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Sep 2019 14:47:10 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 550E152051;
- Wed, 11 Sep 2019 14:47:10 +0000 (GMT)
+ Wed, 11 Sep 2019 14:47:59 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AC7954C046;
+ Wed, 11 Sep 2019 14:47:59 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B83784C04E;
+ Wed, 11 Sep 2019 14:47:57 +0000 (GMT)
 Received: from hbathini.in.ibm.com (unknown [9.102.24.71])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6FE045204E;
- Wed, 11 Sep 2019 14:47:08 +0000 (GMT)
-Subject: [PATCH v6 04/36] powerpc/fadump: Improve fadump documentation
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 11 Sep 2019 14:47:57 +0000 (GMT)
+Subject: [PATCH v6 05/36] powerpc/fadump: use helper functions to
+ reserve/release cpu notes buffer
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@ozlabs.org>
-Date: Wed, 11 Sep 2019 20:17:07 +0530
+Date: Wed, 11 Sep 2019 20:17:56 +0530
 In-Reply-To: <156821308145.5656.2233728784001623843.stgit@hbathini.in.ibm.com>
 References: <156821308145.5656.2233728784001623843.stgit@hbathini.in.ibm.com>
 User-Agent: StGit/0.17.1-dirty
@@ -76,17 +80,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19091114-4275-0000-0000-000003648142
+x-cbid: 19091114-0008-0000-0000-000003146B9A
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091114-4276-0000-0000-00003876D93E
-Message-Id: <156821322070.5656.8194734198500730487.stgit@hbathini.in.ibm.com>
+x-cbparentid: 19091114-0009-0000-0000-00004A32D7C7
+Message-Id: <156821323555.5656.2486038022572739622.stgit@hbathini.in.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-09-11_08:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=663 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=819 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1909110138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -107,106 +111,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The figures depicting FADump's (Firmware-Assisted Dump) memory layout
-are missing some finer details like different memory regions and what
-they represent. Improve the documentation by updating those details.
+Use helper functions to simplify memory allocation, pinning down and
+freeing the memory used for CPU notes buffer.
 
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
 
-* No changes in v6.
+* New patch to improve CPU notes buffer allocation.
 
 
- Documentation/powerpc/firmware-assisted-dump.rst |   61 ++++++++++++----------
- 1 file changed, 33 insertions(+), 28 deletions(-)
+ arch/powerpc/kernel/fadump.c |   21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-index 9ca1283..563c021 100644
---- a/Documentation/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/powerpc/firmware-assisted-dump.rst
-@@ -76,8 +76,9 @@ as follows:
-    there is crash data available from a previous boot. During
-    the early boot OS will reserve rest of the memory above
-    boot memory size effectively booting with restricted memory
--   size. This will make sure that the second kernel will not
--   touch any of the dump memory area.
-+   size. This will make sure that this kernel (also, referred
-+   to as second kernel or capture kernel) will not touch any
-+   of the dump memory area.
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index eb0745e..994fc09 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -786,33 +786,24 @@ void fadump_update_elfcore_header(char *bufp)
  
- -  User-space tools will read /proc/vmcore to obtain the contents
-    of memory, which holds the previous crashed kernel dump in ELF
-@@ -128,42 +129,46 @@ space memory except the user pages that were present in CMA region::
+ static void *fadump_alloc_buffer(unsigned long size)
+ {
+-	void *vaddr;
++	unsigned long count, i;
+ 	struct page *page;
+-	unsigned long order, count, i;
++	void *vaddr;
  
-   o Memory Reservation during first kernel
+-	order = get_order(size);
+-	vaddr = (void *)__get_free_pages(GFP_KERNEL|__GFP_ZERO, order);
++	vaddr = alloc_pages_exact(size, GFP_KERNEL | __GFP_ZERO);
+ 	if (!vaddr)
+ 		return NULL;
  
--  Low memory                                         Top of memory
--  0      boot memory size                                       |
--  |           |                |<--Reserved dump area -->|      |
--  V           V                |   Permanent Reservation |      V
--  +-----------+----------/ /---+---+----+-----------+----+------+
--  |           |                |CPU|HPTE|  DUMP     |ELF |      |
--  +-----------+----------/ /---+---+----+-----------+----+------+
--        |                                           ^
--        |                                           |
--        \                                           /
--         -------------------------------------------
--          Boot memory content gets transferred to
--          reserved area by firmware at the time of
--          crash
-+  Low memory                                                Top of memory
-+  0      boot memory size      |<--Reserved dump area --->|      |
-+  |           |                | (Permanent Reservation)  |      |
-+  V           V                |                          |      V
-+  +-----------+----------/ /---+---+----+--------+---+----+------+
-+  |           |                |CPU|HPTE|  DUMP  |HDR|ELF |      |
-+  +-----------+----------/ /---+---+----+--------+---+----+------+
-+        |                                   ^      ^
-+        |                                   |      |
-+        \                                   /      |
-+         -----------------------------------     FADump Header
-+          Boot memory content gets transferred   (meta area)
-+          to reserved area by firmware at the
-+          time of crash
-+
-                    Fig. 1
+-	count = 1 << order;
++	count = PAGE_ALIGN(size) / PAGE_SIZE;
+ 	page = virt_to_page(vaddr);
+ 	for (i = 0; i < count; i++)
+-		SetPageReserved(page + i);
++		mark_page_reserved(page + i);
+ 	return vaddr;
+ }
  
-+
-   o Memory Reservation during second kernel after crash
+ static void fadump_free_buffer(unsigned long vaddr, unsigned long size)
+ {
+-	struct page *page;
+-	unsigned long order, count, i;
+-
+-	order = get_order(size);
+-	count = 1 << order;
+-	page = virt_to_page(vaddr);
+-	for (i = 0; i < count; i++)
+-		ClearPageReserved(page + i);
+-	__free_pages(page, order);
++	free_reserved_area((void *)vaddr, (void *)(vaddr + size), -1, NULL);
+ }
  
--  Low memory                                        Top of memory
--  0      boot memory size                                       |
--  |           |<------------- Reserved dump area ----------- -->|
--  V           V                                                 V
--  +-----------+----------/ /---+---+----+-----------+----+------+
--  |           |                |CPU|HPTE|  DUMP     |ELF |      |
--  +-----------+----------/ /---+---+----+-----------+----+------+
-+  Low memory                                                Top of memory
-+  0      boot memory size                                        |
-+  |           |<----------- Crash preserved area --------------->|
-+  V           V                |<-- Reserved dump area -->|      V
-+  +-----------+----------/ /---+---+----+--------+---+----+------+
-+  |           |                |CPU|HPTE|  DUMP  |HDR|ELF |      |
-+  +-----------+----------/ /---+---+----+--------+---+----+------+
-         |                                              |
-         V                                              V
-    Used by second                                /proc/vmcore
-    kernel to boot
-                    Fig. 2
- 
--Currently the dump will be copied from /proc/vmcore to a
--a new file upon user intervention. The dump data available through
--/proc/vmcore will be in ELF format. Hence the existing kdump
--infrastructure (kdump scripts) to save the dump works fine with
--minor modifications.
-+Currently the dump will be copied from /proc/vmcore to a new file upon
-+user intervention. The dump data available through /proc/vmcore will be
-+in ELF format. Hence the existing kdump infrastructure (kdump scripts)
-+to save the dump works fine with minor modifications. KDump scripts on
-+major Distro releases have already been modified to work seemlessly (no
-+user intervention in saving the dump) when FADump is used, instead of
-+KDump, as dump mechanism.
- 
- The tools to examine the dump will be same as the ones
- used for kdump.
+ s32 fadump_setup_cpu_notes_buf(u32 num_cpus)
 
