@@ -1,73 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4091CAFB4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 13:22:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FAEAFC08
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 14:00:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Szyk5TLkzF33Y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 21:22:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46T0pQ0jk8zF34D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 22:00:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="gVILecSB"; 
- dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Szwn4CpJzF31l
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 21:20:56 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id y19so24088528wrd.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 04:20:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=yEm/6Jz34sEd/TPS+tNQ49kUmKwP86ymVLNzLiSgWtk=;
- b=gVILecSBs6QnwsZ+tVcGKZJzUcdF/4UK/rFxniUgqk+meB/ggS8jm3zvQ5AJCIa1vz
- sDvsgTALWTwzFP8qBeo6KtR11dRAVTEe75Ub4+kCj+RKEGe/e5XPTjaPN/ISbMEiJAmb
- yId7phTTN7WWQGvCZrBW4kWBwVd60Bf3vZzwo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=yEm/6Jz34sEd/TPS+tNQ49kUmKwP86ymVLNzLiSgWtk=;
- b=Kj0YZa4/i4qvYV57qsbQ3KOzR+LpT6bmY8hMrVNeTgt9FKgaxc1W6yLNGVEF6JTqlK
- 1JHp4id1uzCokVNiTS0QklTGTRav+KCfxDb7NYZbj8eqfl9bLSzA3X14vNWUWP3mGCTn
- QtSH2v0wyfJWuCwJUm+kQme+aXPNT79Va9a8/6hZtDcPoHZx6JDPFp6Jp/XN/XcuxpNF
- 9oV6Q2QQ7Pa1uDA7W1dtGbE5yQkYxq85Nxp6DBHeU62sG5Rbj7Kytj/58kTg0wS6GAC2
- zcfKIWU/1m+txNc8SO98MRX7lFsSfSgPdH/S5HrLC6QWaUFAbtloKIXjdP65PwW4pMyw
- smeA==
-X-Gm-Message-State: APjAAAWa8lgcG5YiCweUkHGgN4FHSUXC/z7vUzpbkj8yeAM+YY0bqEfz
- dpuJvwsh9ZMCzB6ablAbyOv4uQ==
-X-Google-Smtp-Source: APXvYqz4mviNdySjKkAku5DXmhzwzhVEEIpdN3y03EfYJn20mk48h91uhFgTy4RUInZl9y0ayE/Tmg==
-X-Received: by 2002:a05:6000:1632:: with SMTP id
- v18mr12353420wrb.233.1568200850794; 
- Wed, 11 Sep 2019 04:20:50 -0700 (PDT)
-Received: from localhost ([148.69.85.38])
- by smtp.gmail.com with ESMTPSA id r9sm35678905wra.19.2019.09.11.04.20.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2019 04:20:50 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, x86@kernel.org, aryabinin@virtuozzo.com, glider@google.com,
- luto@kernel.org, linux-kernel@vger.kernel.org, mark.rutland@arm.com,
- dvyukov@google.com
-Subject: Re: [PATCH v7 0/5] kasan: support backing vmalloc space with real
- shadow memory
-In-Reply-To: <d43cba17-ef1f-b715-e826-5325432042dd@c-s.fr>
-References: <20190903145536.3390-1-dja@axtens.net>
- <d43cba17-ef1f-b715-e826-5325432042dd@c-s.fr>
-Date: Wed, 11 Sep 2019 21:20:49 +1000
-Message-ID: <87ftl39izy.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46T0lh5D3jzF324
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 21:58:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="Afq08k54"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 46T0lh3p6Nz9sDB; Wed, 11 Sep 2019 21:58:08 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 46T0lh334jz9sNF; Wed, 11 Sep 2019 21:58:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1568203088;
+ bh=Vy4hxNy5H4nXpVB0J5OJPxiPAovkXT8uIkQnZC3sc9c=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Afq08k54qKNb3dYYn3ekDL9Oi35/MkC4hlktWPf0jLTQdGvyAPScXBvyLEBRf3jB7
+ uHAUMdFdXSJi+4wgfcA+vgqz1oQ0mjfL0olKkpDw9jNgZ+Kta0xYDqpmAtya000XIk
+ epo543XYn/LIFIYz2CdR4VbS9ZL7QNOnZ55MD3gM2M6PTCY01HpKFS2kEpbbogkBZF
+ vvuv612HFPm5/VTptOHtslnvNmZDMr8OCMB8w/8XLfvJOYgUR3m6Hm32ZUE60s2amg
+ Ak5p67p4H4cmR45RfgKrgmUt6JGX/S0bd+cEmI5sDEaqXquIw9SC63sm96oSkCDdwF
+ BWK5TtEo1ndmQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH 1/4] powerpc/kvm: Move kvm_tmp into .text, shrink to 64K
+Date: Wed, 11 Sep 2019 21:57:43 +1000
+Message-Id: <20190911115746.12433-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,18 +54,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com
+Cc: cai@lca.pw, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+In some configurations of KVM, guests binary patch themselves to
+avoid/reduce trapping into the hypervisor. For some instructions this
+requires replacing one instruction with a sequence of instructions.
 
-> Are any other patches required prior to this series ? I have tried to 
-> apply it on later powerpc/merge branch without success:
+For those cases we need to write the sequence of instructions
+somewhere and then patch the location of the original instruction to
+branch to the sequence. That requires that the location of the
+sequence be within 32MB of the original instruction.
 
-It applies on the latest linux-next. I didn't base it on powerpc/*
-because it's generic.
+The current solution for this is that we create a 1MB array in BSS,
+write sequences into there, and then free the remainder of the array.
 
-Regards,
-Daniel
+This has a few problems:
+ - it confuses kmemleak.
+ - it confuses lockdep.
+ - it requires mapping kvm_tmp executable, which can cause adjacent
+   areas to also be mapped executable if we're using 16M pages for the
+   linear mapping.
+ - the 32MB limit can be exceeded if the kernel is big enough,
+   especially with STRICT_KERNEL_RWX enabled, which then prevents the
+   patching from working at all.
+
+We can fix all those problems by making kvm_tmp just a region of
+regular .text. However currently it's 1MB in size, and we don't want
+to waste 1MB of text. In practice however I only see ~30KB of kvm_tmp
+being used even for an allyes_config. So shrink kvm_tmp to 64K, which
+ought to be enough for everyone, and move it into .text.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/kvm.c      | 24 +++++-------------------
+ arch/powerpc/kernel/kvm_emul.S |  8 ++++++++
+ 2 files changed, 13 insertions(+), 19 deletions(-)
+
+diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
+index b7b3a5e4e224..e3b5aa583319 100644
+--- a/arch/powerpc/kernel/kvm.c
++++ b/arch/powerpc/kernel/kvm.c
+@@ -64,7 +64,8 @@
+ #define KVM_INST_MTSRIN		0x7c0001e4
+ 
+ static bool kvm_patching_worked = true;
+-char kvm_tmp[1024 * 1024];
++extern char kvm_tmp[];
++extern char kvm_tmp_end[];
+ static int kvm_tmp_index;
+ 
+ static inline void kvm_patch_ins(u32 *inst, u32 new_inst)
+@@ -132,7 +133,7 @@ static u32 *kvm_alloc(int len)
+ {
+ 	u32 *p;
+ 
+-	if ((kvm_tmp_index + len) > ARRAY_SIZE(kvm_tmp)) {
++	if ((kvm_tmp_index + len) > (kvm_tmp_end - kvm_tmp)) {
+ 		printk(KERN_ERR "KVM: No more space (%d + %d)\n",
+ 				kvm_tmp_index, len);
+ 		kvm_patching_worked = false;
+@@ -699,25 +700,13 @@ static void kvm_use_magic_page(void)
+ 			 kvm_patching_worked ? "worked" : "failed");
+ }
+ 
+-static __init void kvm_free_tmp(void)
+-{
+-	/*
+-	 * Inform kmemleak about the hole in the .bss section since the
+-	 * corresponding pages will be unmapped with DEBUG_PAGEALLOC=y.
+-	 */
+-	kmemleak_free_part(&kvm_tmp[kvm_tmp_index],
+-			   ARRAY_SIZE(kvm_tmp) - kvm_tmp_index);
+-	free_reserved_area(&kvm_tmp[kvm_tmp_index],
+-			   &kvm_tmp[ARRAY_SIZE(kvm_tmp)], -1, NULL);
+-}
+-
+ static int __init kvm_guest_init(void)
+ {
+ 	if (!kvm_para_available())
+-		goto free_tmp;
++		return 0;
+ 
+ 	if (!epapr_paravirt_enabled)
+-		goto free_tmp;
++		return 0;
+ 
+ 	if (kvm_para_has_feature(KVM_FEATURE_MAGIC_PAGE))
+ 		kvm_use_magic_page();
+@@ -727,9 +716,6 @@ static int __init kvm_guest_init(void)
+ 	powersave_nap = 1;
+ #endif
+ 
+-free_tmp:
+-	kvm_free_tmp();
+-
+ 	return 0;
+ }
+ 
+diff --git a/arch/powerpc/kernel/kvm_emul.S b/arch/powerpc/kernel/kvm_emul.S
+index eb2568f583ae..9dd17dce10a1 100644
+--- a/arch/powerpc/kernel/kvm_emul.S
++++ b/arch/powerpc/kernel/kvm_emul.S
+@@ -334,5 +334,13 @@
+ kvm_emulate_mtsrin_len:
+ 	.long (kvm_emulate_mtsrin_end - kvm_emulate_mtsrin) / 4
+ 
++	.balign 4
++	.global kvm_tmp
++kvm_tmp:
++	.space	(64 * 1024)
++
++.global kvm_tmp_end
++kvm_tmp_end:
++
+ .global kvm_template_end
+ kvm_template_end:
+-- 
+2.21.0
+
