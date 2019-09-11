@@ -2,79 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14069AF8AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 11:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 255EDAF9E4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 12:06:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Sx8v6HFzzF2Dw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 19:16:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46SyGg6S8nzF2FN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2019 20:06:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=abdhalee@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Sx6v0m3lzDqCC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 19:14:30 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8B96l6G078434; Wed, 11 Sep 2019 05:14:21 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2uxvddbp4f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Sep 2019 05:14:21 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8B9AVLm009215;
- Wed, 11 Sep 2019 09:14:20 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01wdc.us.ibm.com with ESMTP id 2uv4679wf3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Sep 2019 09:14:20 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8B9EJ9E50004364
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Sep 2019 09:14:19 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BD764AC062;
- Wed, 11 Sep 2019 09:14:19 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4CD47AC05E;
- Wed, 11 Sep 2019 09:14:17 +0000 (GMT)
-Received: from [9.124.31.108] (unknown [9.124.31.108])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 11 Sep 2019 09:14:17 +0000 (GMT)
-Message-ID: <1568193255.30609.14.camel@abdul.in.ibm.com>
-Subject: Re: [mainline][BUG][PPC][btrfs][bisected 00801a] kernel BUG at
- fs/btrfs/locking.c:71!
-From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-To: Nikolay Borisov <nborisov@suse.com>
-Date: Wed, 11 Sep 2019 14:44:15 +0530
-In-Reply-To: <c51e672f-c5b2-13d9-afa4-8f44a1e8580a@suse.com>
-References: <1567500907.5082.12.camel@abdul>
- <7139ac07-db63-b984-c416-d1c94337c9bf@suse.com>
- <1568188807.30609.6.camel@abdul.in.ibm.com>
- <c51e672f-c5b2-13d9-afa4-8f44a1e8580a@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-11_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=397 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909110088
+ spf=none (mailfrom) smtp.mailfrom=sirena.org.uk
+ (client-ip=2a01:7e01::f03c:91ff:fed4:a3b6; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="SyVqUXDT"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46SyD50KWHzF27c
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2019 20:04:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Jfmz88C6lrhs31cRlnO49TRqP1LMaWlkChTQG4q+Yew=; b=SyVqUXDTdYWAInG1jgsHwaWdH
+ tFuY19DeE6XUnOA8U1ciXF7ZiKrzizIVnnPTY6a92MPIuOvWPmsjgqyQtrNbBWMkLEq0JsiR9WWN1
+ cQeZAgZYhaSoiYcVYR/4luC1DZDJWUAVMCNaegctmk9+yh50ZCeqva6nVQmNIi4/WDrOQ=;
+Received: from [148.69.85.38] (helo=fitzroy.sirena.org.uk)
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <broonie@sirena.org.uk>)
+ id 1i7zTd-0007XI-4R; Wed, 11 Sep 2019 10:03:53 +0000
+Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
+ id 87284D02D76; Wed, 11 Sep 2019 11:03:52 +0100 (BST)
+Date: Wed, 11 Sep 2019 11:03:52 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 1/2] ASoC: fsl_mqs: add DT binding documentation
+Message-ID: <20190911100352.GS2036@sirena.org.uk>
+References: <cff8bff1e8d3334fa308ddfcec266a5284e3c858.1568169346.git.shengjiu.wang@nxp.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="//h4sZKAxcnndsN6"
+Content-Disposition: inline
+In-Reply-To: <cff8bff1e8d3334fa308ddfcec266a5284e3c858.1568169346.git.shengjiu.wang@nxp.com>
+X-Cookie: Be careful!  UGLY strikes 9 out of 10!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,49 +65,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp <sachinp@linux.vnet.ibm.com>, josef@toxicpanda.com,
- linux-kernel <linux-kernel@vger.kernel.org>, David Sterba <dsterba@suse.com>,
- chandan <chandan@linux.vnet.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-btrfs@vger.kernel.org
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ perex@perex.cz, nicoleotsuka@gmail.com, robh+dt@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-09-11 at 11:09 +0300, Nikolay Borisov wrote:
-> 
-> On 11.09.19 г. 11:00 ч., Abdul Haleem wrote:
-> > On Tue, 2019-09-03 at 13:39 +0300, Nikolay Borisov wrote:
-> >>
-> 
-> <split>
-> 
-> >> corresponds to?
-> > 
-> > btrfs_search_slot+0x8e8/0xb80 maps to fs/btrfs/ctree.c:2751
-> >                 write_lock_level = BTRFS_MAX_LEVEL;
-> 
-> That doesn't make sense, presumably btrfs_search_slot+0x8e8/0xb80 should
-> point at or right after the instruction which called
-> btrfs_set_path_blocking. So either line 2796, 2894, 2901 or 2918 .
-> 
-I might be calculating to wrong address, could you please have a look on
-the obj dump for files I have sent (which are less than 2MB)
-> > 
-> > I have sent direct message attaching vmlinux and the obj dump for
-> > ctree.c and locking.c
-> > 
-> 
-> I just got a message from : InterScan Messaging Security Suite about
-> some policy being broken and no vmscan.
 
-Sorry, my vmlinux was above 28Mb.
+--//h4sZKAxcnndsN6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Wed, Sep 11, 2019 at 10:42:38AM -0400, Shengjiu Wang wrote:
 
--- 
-Regard's
+> +  - gpr : The gpr node.
 
-Abdul Haleem
-IBM Linux Technology Centre
+What is a gpr node?
 
+--//h4sZKAxcnndsN6
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl14xocACgkQJNaLcl1U
+h9DCkQf/boGjyVueB4AhrIMUugvRHAK7g8btFd64V3bz8anjolHMklTWGGeE9FGv
+Z0dIvqYu+GNy8SdEDagnH4ZqeiGhgDyeNLCPCSg++HgsJLsw2PadGfxpIagEPm1X
+5MXKVBiRW31EKo8d58xRsNVbWdWpkNsMW/4JiTRQR6IZ4op8DxAqGmpWpvjuAcPZ
+KBNo78YpmO3x+stm5dC9zAXWro0NzcMu2G98bLWAHieY5yT8v7aQDFZtPvNRjxNr
+2IyRhZDcE1NU+Kbi8QGKYtmTYICdgJtt4wsx2k4GZ9/+SXx+d+HL6UHu67imQm6N
+/0diiJmTf9MkEXh05p1whRrAXYKiyA==
+=XX1U
+-----END PGP SIGNATURE-----
+
+--//h4sZKAxcnndsN6--
