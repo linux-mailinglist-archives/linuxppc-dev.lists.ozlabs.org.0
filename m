@@ -1,45 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7150FB1553
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 22:22:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBE6B16A0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 01:23:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46TqtZ4jK7zF50H
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 06:21:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Tvvm18MwzF519
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 09:23:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="ONE2qNZw"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Tqr90jRWzF3WL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 06:19:51 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 31F95AD08;
- Thu, 12 Sep 2019 20:19:48 +0000 (UTC)
-Date: Thu, 12 Sep 2019 22:19:46 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v8 5/7] powerpc/64: make buildable without CONFIG_COMPAT
-Message-ID: <20190912221946.41a161e4@kitsune.suse.cz>
-In-Reply-To: <758324b9-203b-ec4b-affc-a30aefc9ea23@c-s.fr>
-References: <cover.1568306311.git.msuchanek@suse.de>
- <039ed7ac686927fe169241ac72225a258d95ccfc.1568306311.git.msuchanek@suse.de>
- <9973bf6b-f1b9-c778-bd88-ed41e45ca126@c-s.fr>
- <20190912202604.14a73423@kitsune.suse.cz>
- <758324b9-203b-ec4b-affc-a30aefc9ea23@c-s.fr>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Tvt21HzlzF4yx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 09:21:45 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id i18so14235983pgl.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 16:21:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=cfuHGRLy8MAHGaooaO76at7ZU9RjLSy1/AcY20LrGz4=;
+ b=ONE2qNZwg1741FDo5uEQ6I8c64u77O4PBT6nDWoToKFs6XNpmkauOrIGsen+NFNWKV
+ jnR3QuBhnGS5ogeZOBXO3uWj3PKtpde7DFGXDS/gy45S0MkhYg2ZuZ9tv47GxHKEI7Lm
+ QLla4db4MBry4fMHaZZMlkvF0xn1ZZuwm6y9BBwMsE9lUfdgzhnKGA2vsvmMM6NkIgf4
+ +ShG8+gSO1V0hQ05HgVVq8DvxRSgxHt/4hovXdKNTn/jlkN68suNPxf1HU5OqtaQp7Lu
+ Eb9d59lkxDWy37PUJEsfFg3NJ9jo02AgM95Uf+Vlm0ycnPx9idp4tkBe/+ceowtOg3tn
+ URIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=cfuHGRLy8MAHGaooaO76at7ZU9RjLSy1/AcY20LrGz4=;
+ b=HYKUMfoHcZY3EeJAaPgRiylTPGToDvTLeqrr3e5oP8APTLnnDk8EIeIMM60MSAYxEh
+ VPztEzr/JTOrVkSPfGHMpezCGvCr1/oCh6qcNVPVHZlrz/Ny2KNN2BTbwxqMxy9c/CmX
+ 33t4CEfBSgUi9FkvpajJJE8mbYTClzxt5svPZvCUjhehQzX9I4s0gNlT0Jc8bk2a8XsI
+ v7W3HIdLXil/ySxx5c7gfArC/gwI/xhOVgAJkfJ6cZlYshi2juLoxSN75bF4u9YDd9Ar
+ oc+kwWG3BdlxS++TCjIG70AsN4Cjufh74VnVsF0h2OOG4rqvzba3VkGKMlw/EDbdrwKP
+ VnRA==
+X-Gm-Message-State: APjAAAXupGTVDpkL8mCpGzOx0VLOjTegTmryM95V2CZs7gSHtU3o1Dcg
+ ymG+poJnVj3jC4b+1s6Leto=
+X-Google-Smtp-Source: APXvYqzZIQm+h/0QNu9dg8DnY8zWPNl00lnNgKtEEAubibhAR2pxRqBWHKTo9/jS0PgzYsyCyzRRkQ==
+X-Received: by 2002:a63:4824:: with SMTP id v36mr13497605pga.385.1568330502215; 
+ Thu, 12 Sep 2019 16:21:42 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id l62sm42479694pfl.167.2019.09.12.16.21.41
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 12 Sep 2019 16:21:41 -0700 (PDT)
+Date: Thu, 12 Sep 2019 16:21:20 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 1/3] ASoC: fsl_asrc: Use in(out)put_format instead of
+ in(out)put_word_width
+Message-ID: <20190912232119.GB24937@Asurada-Nvidia.nvidia.com>
+References: <cover.1568025083.git.shengjiu.wang@nxp.com>
+ <65e96ca15afd4a282b122f3ea8b13642cf4614c7.1568025083.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65e96ca15afd4a282b122f3ea8b13642cf4614c7.1568025083.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,128 +82,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
- Allison Randal <allison@lohutok.net>, Diana Craciun <diana.craciun@nxp.com>,
- Firoz Khan <firoz.khan@linaro.org>, Joel Stanley <joel@jms.id.au>,
- Arnd Bergmann <arnd@arndb.de>, Nicholas Piggin <npiggin@gmail.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 12 Sep 2019 21:36:11 +0200
-Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+On Mon, Sep 09, 2019 at 06:33:19PM -0400, Shengjiu Wang wrote:
+> snd_pcm_format_t is more formal than enum asrc_word_width, which has
+> two property, width and physical width, which is more accurate than
+> enum asrc_word_width. So it is better to use in(out)put_format
+> instead of in(out)put_word_width.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-> Le 12/09/2019 =C3=A0 20:26, Michal Such=C3=A1nek a =C3=A9crit=C2=A0:
-> > On Thu, 12 Sep 2019 20:02:16 +0200
-> > Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-> >  =20
-> >> Le 12/09/2019 =C3=A0 19:26, Michal Suchanek a =C3=A9crit=C2=A0: =20
-> >>> There are numerous references to 32bit functions in generic and 64bit
-> >>> code so ifdef them out.
-> >>>
-> >>> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> >>> ---
-> >>> v2:
-> >>> - fix 32bit ifdef condition in signal.c
-> >>> - simplify the compat ifdef condition in vdso.c - 64bit is redundant
-> >>> - simplify the compat ifdef condition in callchain.c - 64bit is redun=
-dant
-> >>> v3:
-> >>> - use IS_ENABLED and maybe_unused where possible
-> >>> - do not ifdef declarations
-> >>> - clean up Makefile
-> >>> v4:
-> >>> - further makefile cleanup
-> >>> - simplify is_32bit_task conditions
-> >>> - avoid ifdef in condition by using return
-> >>> v5:
-> >>> - avoid unreachable code on 32bit
-> >>> - make is_current_64bit constant on !COMPAT
-> >>> - add stub perf_callchain_user_32 to avoid some ifdefs
-> >>> v6:
-> >>> - consolidate current_is_64bit
-> >>> v7:
-> >>> - remove leftover perf_callchain_user_32 stub from previous series ve=
-rsion
-> >>> v8:
-> >>> - fix build again - too trigger-happy with stub removal
-> >>> - remove a vdso.c hunk that causes warning according to kbuild test r=
-obot
-> >>> ---
-> >>>    arch/powerpc/include/asm/thread_info.h |  4 +--
-> >>>    arch/powerpc/kernel/Makefile           |  7 ++---
-> >>>    arch/powerpc/kernel/entry_64.S         |  2 ++
-> >>>    arch/powerpc/kernel/signal.c           |  3 +-
-> >>>    arch/powerpc/kernel/syscall_64.c       |  6 ++--
-> >>>    arch/powerpc/kernel/vdso.c             |  3 +-
-> >>>    arch/powerpc/perf/callchain.c          | 39 ++++++++++++++--------=
-----
-> >>>    7 files changed, 33 insertions(+), 31 deletions(-)
-> >>>
-> >>> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/in=
-clude/asm/thread_info.h
-> >>> index 8e1d0195ac36..c128d8a48ea3 100644
-> >>> --- a/arch/powerpc/include/asm/thread_info.h
-> >>> +++ b/arch/powerpc/include/asm/thread_info.h
-> >>> @@ -144,10 +144,10 @@ static inline bool test_thread_local_flags(unsi=
-gned int flags)
-> >>>    	return (ti->local_flags & flags) !=3D 0;
-> >>>    }
-> >>>   =20
-> >>> -#ifdef CONFIG_PPC64
-> >>> +#ifdef CONFIG_COMPAT
-> >>>    #define is_32bit_task()	(test_thread_flag(TIF_32BIT))
-> >>>    #else
-> >>> -#define is_32bit_task()	(1)
-> >>> +#define is_32bit_task()	(IS_ENABLED(CONFIG_PPC32))
-> >>>    #endif
-> >>>   =20
-> >>>    #if defined(CONFIG_PPC64) =20
-> >>
-> >> [...]
-> >> =20
-> >>> +static inline int current_is_64bit(void)
-> >>> +{
-> >>> +	if (!IS_ENABLED(CONFIG_COMPAT))
-> >>> +		return IS_ENABLED(CONFIG_PPC64);
-> >>> +	/*
-> >>> +	 * We can't use test_thread_flag() here because we may be on an
-> >>> +	 * interrupt stack, and the thread flags don't get copied over
-> >>> +	 * from the thread_info on the main stack to the interrupt stack.
-> >>> +	 */
-> >>> +	return !test_ti_thread_flag(task_thread_info(current), TIF_32BIT);
-> >>> +} =20
-> >>
-> >>
-> >> Since at least commit ed1cd6deb013 ("powerpc: Activate
-> >> CONFIG_THREAD_INFO_IN_TASK")
-> >> [https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
-mmit/?id=3Ded1cd6d]
-> >> the above comment is wrong and current_is_64bit() is equivalent to
-> >> !is_32bit_task()
-> >>
-> >> See https://github.com/linuxppc/issues/issues/275
-> >>
-> >> Christophe =20
-> >=20
-> > I aim at changing the code as little as possible here. A separate patch
-> > on top removing this function would be ok? =20
->=20
-> Yes I agree. By making prior to this patch a separate patch which drops=20
-> current_is_64bit() would be good. And it would reduce the size of this=20
-> patch by approximately one third.
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
-Indeed, removing it before makes this patch much cleaner.
-
-Thanks
-
-Michal
+> ---
+>  sound/soc/fsl/fsl_asrc.c | 56 +++++++++++++++++++++++++++-------------
+>  sound/soc/fsl/fsl_asrc.h |  4 +--
+>  2 files changed, 40 insertions(+), 20 deletions(-)
+> 
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index cfa40ef6b1ca..4d3804a1ea55 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
+> @@ -265,6 +265,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  	struct asrc_config *config = pair->config;
+>  	struct fsl_asrc *asrc_priv = pair->asrc_priv;
+>  	enum asrc_pair_index index = pair->index;
+> +	enum asrc_word_width input_word_width;
+> +	enum asrc_word_width output_word_width;
+>  	u32 inrate, outrate, indiv, outdiv;
+>  	u32 clk_index[2], div[2];
+>  	int in, out, channels;
+> @@ -283,9 +285,32 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  		return -EINVAL;
+>  	}
+>  
+> -	/* Validate output width */
+> -	if (config->output_word_width == ASRC_WIDTH_8_BIT) {
+> -		pair_err("does not support 8bit width output\n");
+> +	switch (snd_pcm_format_width(config->input_format)) {
+> +	case 8:
+> +		input_word_width = ASRC_WIDTH_8_BIT;
+> +		break;
+> +	case 16:
+> +		input_word_width = ASRC_WIDTH_16_BIT;
+> +		break;
+> +	case 24:
+> +		input_word_width = ASRC_WIDTH_24_BIT;
+> +		break;
+> +	default:
+> +		pair_err("does not support this input format, %d\n",
+> +			 config->input_format);
+> +		return -EINVAL;
+> +	}
+> +
+> +	switch (snd_pcm_format_width(config->output_format)) {
+> +	case 16:
+> +		output_word_width = ASRC_WIDTH_16_BIT;
+> +		break;
+> +	case 24:
+> +		output_word_width = ASRC_WIDTH_24_BIT;
+> +		break;
+> +	default:
+> +		pair_err("does not support this output format, %d\n",
+> +			 config->output_format);
+>  		return -EINVAL;
+>  	}
+>  
+> @@ -383,8 +408,8 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  	/* Implement word_width configurations */
+>  	regmap_update_bits(asrc_priv->regmap, REG_ASRMCR1(index),
+>  			   ASRMCR1i_OW16_MASK | ASRMCR1i_IWD_MASK,
+> -			   ASRMCR1i_OW16(config->output_word_width) |
+> -			   ASRMCR1i_IWD(config->input_word_width));
+> +			   ASRMCR1i_OW16(output_word_width) |
+> +			   ASRMCR1i_IWD(input_word_width));
+>  
+>  	/* Enable BUFFER STALL */
+>  	regmap_update_bits(asrc_priv->regmap, REG_ASRMCR(index),
+> @@ -497,13 +522,13 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+>  				  struct snd_soc_dai *dai)
+>  {
+>  	struct fsl_asrc *asrc_priv = snd_soc_dai_get_drvdata(dai);
+> -	int width = params_width(params);
+>  	struct snd_pcm_runtime *runtime = substream->runtime;
+>  	struct fsl_asrc_pair *pair = runtime->private_data;
+>  	unsigned int channels = params_channels(params);
+>  	unsigned int rate = params_rate(params);
+>  	struct asrc_config config;
+> -	int word_width, ret;
+> +	snd_pcm_format_t format;
+> +	int ret;
+>  
+>  	ret = fsl_asrc_request_pair(channels, pair);
+>  	if (ret) {
+> @@ -513,15 +538,10 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+>  
+>  	pair->config = &config;
+>  
+> -	if (width == 16)
+> -		width = ASRC_WIDTH_16_BIT;
+> -	else
+> -		width = ASRC_WIDTH_24_BIT;
+> -
+>  	if (asrc_priv->asrc_width == 16)
+> -		word_width = ASRC_WIDTH_16_BIT;
+> +		format = SNDRV_PCM_FORMAT_S16_LE;
+>  	else
+> -		word_width = ASRC_WIDTH_24_BIT;
+> +		format = SNDRV_PCM_FORMAT_S24_LE;
+>  
+>  	config.pair = pair->index;
+>  	config.channel_num = channels;
+> @@ -529,13 +549,13 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+>  	config.outclk = OUTCLK_ASRCK1_CLK;
+>  
+>  	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+> -		config.input_word_width   = width;
+> -		config.output_word_width  = word_width;
+> +		config.input_format   = params_format(params);
+> +		config.output_format  = format;
+>  		config.input_sample_rate  = rate;
+>  		config.output_sample_rate = asrc_priv->asrc_rate;
+>  	} else {
+> -		config.input_word_width   = word_width;
+> -		config.output_word_width  = width;
+> +		config.input_format   = format;
+> +		config.output_format  = params_format(params);
+>  		config.input_sample_rate  = asrc_priv->asrc_rate;
+>  		config.output_sample_rate = rate;
+>  	}
+> diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
+> index c60075112570..38af485bdd22 100644
+> --- a/sound/soc/fsl/fsl_asrc.h
+> +++ b/sound/soc/fsl/fsl_asrc.h
+> @@ -342,8 +342,8 @@ struct asrc_config {
+>  	unsigned int dma_buffer_size;
+>  	unsigned int input_sample_rate;
+>  	unsigned int output_sample_rate;
+> -	enum asrc_word_width input_word_width;
+> -	enum asrc_word_width output_word_width;
+> +	snd_pcm_format_t input_format;
+> +	snd_pcm_format_t output_format;
+>  	enum asrc_inclk inclk;
+>  	enum asrc_outclk outclk;
+>  };
+> -- 
+> 2.21.0
+> 
