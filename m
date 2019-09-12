@@ -2,78 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D95B0D78
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 13:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78D4B0EA3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 14:11:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46TbTN46gZzF4Lm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 21:02:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Td0j42cjzF4LV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 22:11:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=shutemov.name
- (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
- envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=shutemov-name.20150623.gappssmtp.com
- header.i=@shutemov-name.20150623.gappssmtp.com header.b="XU1ehr7B"; 
- dkim-atps=neutral
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46TbQf51jfzF3SS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 21:00:21 +1000 (AEST)
-Received: by mail-ed1-x542.google.com with SMTP id u6so23536793edq.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 04:00:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=shutemov-name.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=i4n3cs5YIwHpBBnCvQbY3FnLMZHpwOIQycs63oVDiSc=;
- b=XU1ehr7BQ2UPg1KBuVQ5nl6L4OIYSyENUTpJxtu0PcESlZD1JDIDF/kfEGLVTwGTPP
- MxBuxnwufiCItM0eu2f6PGyyjzV27Q2cNWmrCI/fGkWv00JgM+mdZSN1lgpv2XIZF9yD
- Ti1WM/t84cLxXEP8DSXzi5NQKs0TYyJ79hQa7AZv9JgQdH0hTuNKnH8BEAiZ+ewccLLa
- vvU+d/v7/7I+eQ9LvIytn9jJr+WOd1sRRaRjF83QEr00IfWCJU2SCQ/EcoyWOdAh3E8X
- tFKZsg92QCTLtpzpNowjR1vbUr8LIL24WrcjhMNVcplThOrveFyd6bS7Oehx93UQGF8r
- wpAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=i4n3cs5YIwHpBBnCvQbY3FnLMZHpwOIQycs63oVDiSc=;
- b=mmm7rHZ4gNhAcIHkR1e4y3Kwpl26hY2utDhRoXaJmrUbHA/oF/e2JpIyvDhk+yEBxl
- 4rbhH5t6lhyK9p8BurT8gbqDvoE3uHFfHq2F+GimIlCgHh96bOllaF3aoJqZqMc5jRxW
- sbxjC+T4rc6zmRznHJgDkl+L2kQiSYazxp+lBV1KM1RfWLUQ2eppcvypObkiC3MOhDdF
- l8jr0Rg3PP44g4V2GKoNm3PQAGkNRWmyzqIOhCR6jZz3mk0+/3HgJxfb6wvJh8S3NsyS
- Ranj4r9GqPduujvrGt8WCFk/RoM9M0eMBTF7B5v4+xIOV8JTBwfM8x1vGoVSJUKqx7hA
- AH4Q==
-X-Gm-Message-State: APjAAAWUgboCElJFQsm+y8VueAj+j0QY0gHOgdFpFVk5ui6ySWcdRRr1
- Ox7I/xieWJL9hTiYTueBpYXBJQ==
-X-Google-Smtp-Source: APXvYqzn86bOsg/hOamx0ZM4X4jdcRXf0RIV/TYjmuJGR8c1qTMEHrx7GcnktNsAZCbZ5Sfr2/boLg==
-X-Received: by 2002:a50:d084:: with SMTP id v4mr42151595edd.48.1568286015703; 
- Thu, 12 Sep 2019 04:00:15 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
- by smtp.gmail.com with ESMTPSA id 60sm4730030edg.10.2019.09.12.04.00.14
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 12 Sep 2019 04:00:14 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
- id 379ED100B4A; Thu, 12 Sep 2019 14:00:16 +0300 (+03)
-Date: Thu, 12 Sep 2019 14:00:16 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating
- architecture page table helpers
-Message-ID: <20190912110016.srrydg2krplscbgq@box>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46TcyD3m3rzF4JP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 22:09:21 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F07428;
+ Thu, 12 Sep 2019 05:09:18 -0700 (PDT)
+Received: from [192.168.0.129] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC7263F71F;
+ Thu, 12 Sep 2019 05:09:07 -0700 (PDT)
+Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
 References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
  <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
+ <20190912110016.srrydg2krplscbgq@box>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <0116e7b7-cee5-c821-cc54-f4e397c774b2@arm.com>
+Date: Thu, 12 Sep 2019 17:39:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190912110016.srrydg2krplscbgq@box>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,15 +79,23 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 12, 2019 at 11:32:53AM +0530, Anshuman Khandual wrote:
-> +MODULE_LICENSE("GPL v2");
-> +MODULE_AUTHOR("Anshuman Khandual <anshuman.khandual@arm.com>");
-> +MODULE_DESCRIPTION("Test architecture page table helpers");
 
-It's not module. Why?
 
-BTW, I think we should make all code here __init (or it's variants) so it
-can be discarded on boot. It has not use after that.
+On 09/12/2019 04:30 PM, Kirill A. Shutemov wrote:
+> On Thu, Sep 12, 2019 at 11:32:53AM +0530, Anshuman Khandual wrote:
+>> +MODULE_LICENSE("GPL v2");
+>> +MODULE_AUTHOR("Anshuman Khandual <anshuman.khandual@arm.com>");
+>> +MODULE_DESCRIPTION("Test architecture page table helpers");
+> 
+> It's not module. Why?
 
--- 
- Kirill A. Shutemov
+Not any more. Nothing in particular. Just that module_init() code gets
+executed after page allocator init which is needed here. But I guess
+probably not a great way to get this test started.
+
+> 
+> BTW, I think we should make all code here __init (or it's variants) so it
+> can be discarded on boot. It has not use after that.
+
+Sounds good, will change. Will mark all these functions as __init and
+will trigger the test with late_initcall().
