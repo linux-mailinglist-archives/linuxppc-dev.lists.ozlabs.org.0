@@ -2,73 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6809EB128F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 18:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 473FEB12E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 18:44:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Tk8V20bmzF4hq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 02:03:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Tl3572G6zF4j0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 02:44:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="QJrMe2Jx"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Tk681BTnzF4gm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 02:01:35 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46Tk626Hl0z9v04k;
- Thu, 12 Sep 2019 18:01:30 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=QJrMe2Jx; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id liaZw7xK4Xx2; Thu, 12 Sep 2019 18:01:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46Tk6259b9z9v04j;
- Thu, 12 Sep 2019 18:01:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1568304090; bh=+bQzqNz/hj/4kgqgkHWqT5NiFCfypan3w7IuElucVTc=;
- h=Subject:To:References:From:Cc:Date:In-Reply-To:From;
- b=QJrMe2JxRyE2V1sbHW+TrDbhP0rdOhyQALMwAEmENFARrXND1zFh8fjeuXiKP5cRf
- eocBRaCpyjqRml7GRYZn+cY/KrUmhVMMoRadkhIwelET7UZw2kjtgh6DsRz5enfCla
- 6C41yVrh0pQ/cWT7JpvkVzOlElyNBCbNoQTUEO6g=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 662528B949;
- Thu, 12 Sep 2019 18:01:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PV9RBhmM-ac0; Thu, 12 Sep 2019 18:01:32 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 119D78B945;
- Thu, 12 Sep 2019 18:01:32 +0200 (CEST)
-Subject: Re: [PATCH v1 3/4] powerpc: Add support for GENERIC_EARLY_IOREMAP
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-References: <cover.1568295907.git.christophe.leroy@c-s.fr>
- <412c7eaa6a373d8f82a3c3ee01e6a65a1a6589de.1568295907.git.christophe.leroy@c-s.fr>
- <87ftl1seyr.fsf@linux.ibm.com> <cab82255-7353-1435-08cb-6732d429b17d@c-s.fr>
- <874l1hsed6.fsf@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <d2ca0ea6-b4c7-58aa-ffed-74730ab1f492@c-s.fr>
-Date: Thu, 12 Sep 2019 18:01:31 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Tl1C3HWzzF4bm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 02:42:23 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8CGfukm182988; Thu, 12 Sep 2019 12:42:16 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uyp18yk99-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Sep 2019 12:42:15 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8CGg6YK183365;
+ Thu, 12 Sep 2019 12:42:10 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uyp18yk4y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Sep 2019 12:42:10 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8CGeK9c010572;
+ Thu, 12 Sep 2019 16:41:59 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 2uyqd8sdkw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Sep 2019 16:41:59 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8CGfwI158720524
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 12 Sep 2019 16:41:58 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3A8107805C;
+ Thu, 12 Sep 2019 16:41:58 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1F95B78060;
+ Thu, 12 Sep 2019 16:41:58 +0000 (GMT)
+Received: from localhost (unknown [9.41.101.192])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 12 Sep 2019 16:41:58 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 3/5] powerpc/numa: Use cpu node map of first sibling
+ thread
+In-Reply-To: <20190911165845.GA31643@linux.vnet.ibm.com>
+References: <20190906135020.19772-1-srikar@linux.vnet.ibm.com>
+ <20190906135020.19772-4-srikar@linux.vnet.ibm.com>
+ <87lfuurirh.fsf@linux.ibm.com> <20190911165845.GA31643@linux.vnet.ibm.com>
+Date: Thu, 12 Sep 2019 11:41:57 -0500
+Message-ID: <87ftl1qxey.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <874l1hsed6.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-12_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909120174
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,162 +91,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Srikar,
+
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>> > @@ -496,6 +501,16 @@ static int numa_setup_cpu(unsigned long lcpu)
+>> >  	if (nid < 0 || !node_possible(nid))
+>> >  		nid = first_online_node;
+>> >  
+>> > +	/*
+>> > +	 * Update for the first thread of the core. All threads of a core
+>> > +	 * have to be part of the same node. This not only avoids querying
+>> > +	 * for every other thread in the core, but always avoids a case
+>> > +	 * where virtual node associativity change causes subsequent threads
+>> > +	 * of a core to be associated with different nid.
+>> > +	 */
+>> > +	if (fcpu != lcpu)
+>> > +		map_cpu_to_node(fcpu, nid);
+>> > +
+>> 
+>> OK, I see that this somewhat addresses my concern above. But changing
+>> this mapping for a remote cpu is unsafe except under specific
+>> circumstances. I think this should first assert:
+>> 
+>> * numa_cpu_lookup_table[fcpu] == NUMA_NO_NODE
+>> * cpu_online(fcpu) == false
+>> 
+>> to document and enforce the conditions that must hold for this to be OK.
+>
+> I do understand that we shouldn't be modifying the nid for a different cpu.
+>
+> We just checked above that the mapping for the first cpu doesnt exist.
+> If the first cpu (or remote cpu as you coin it) was online, then its
+> mapping should have existed and we return even before we come here.
+
+I agree that is how the code will work with your change, and I'm fine
+with simply warning if fcpu is offline.
+
+The point is to make this rule more explicit in the code for the benefit
+of future readers and to catch violations of it by future changes. There
+is a fair amount of code remaining in this file and elsewhere in
+arch/powerpc that was written under the impression that changing the
+cpu-node relationship at runtime is OK.
 
 
-Le 12/09/2019 à 17:50, Aneesh Kumar K.V a écrit :
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> 
->> Le 12/09/2019 à 17:37, Aneesh Kumar K.V a écrit :
->>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>>
->>>> Add support for GENERIC_EARLY_IOREMAP.
->>>>
->>>> Let's define 16 slots of 256Kbytes each for early ioremap.
->>>>
->>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>>> ---
->>>>    arch/powerpc/Kconfig              |  1 +
->>>>    arch/powerpc/include/asm/Kbuild   |  1 +
->>>>    arch/powerpc/include/asm/fixmap.h | 12 ++++++++++++
->>>>    arch/powerpc/kernel/setup_32.c    |  3 +++
->>>>    arch/powerpc/kernel/setup_64.c    |  3 +++
->>>>    5 files changed, 20 insertions(+)
->>>>
->>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>>> index 6a7c797fa9d2..8fe252962518 100644
->>>> --- a/arch/powerpc/Kconfig
->>>> +++ b/arch/powerpc/Kconfig
->>>> @@ -161,6 +161,7 @@ config PPC
->>>>    	select GENERIC_CMOS_UPDATE
->>>>    	select GENERIC_CPU_AUTOPROBE
->>>>    	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
->>>> +	select GENERIC_EARLY_IOREMAP
->>>>    	select GENERIC_IRQ_SHOW
->>>>    	select GENERIC_IRQ_SHOW_LEVEL
->>>>    	select GENERIC_PCI_IOMAP		if PCI
->>>> diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
->>>> index 9a1d2fc6ceb7..30829120659c 100644
->>>> --- a/arch/powerpc/include/asm/Kbuild
->>>> +++ b/arch/powerpc/include/asm/Kbuild
->>>> @@ -12,3 +12,4 @@ generic-y += preempt.h
->>>>    generic-y += vtime.h
->>>>    generic-y += msi.h
->>>>    generic-y += simd.h
->>>> +generic-y += early_ioremap.h
->>>> diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
->>>> index 722289a1d000..d5c4d357bd33 100644
->>>> --- a/arch/powerpc/include/asm/fixmap.h
->>>> +++ b/arch/powerpc/include/asm/fixmap.h
->>>> @@ -15,6 +15,7 @@
->>>>    #define _ASM_FIXMAP_H
->>>>    
->>>>    #ifndef __ASSEMBLY__
->>>> +#include <linux/sizes.h>
->>>>    #include <asm/page.h>
->>>>    #include <asm/pgtable.h>
->>>>    #ifdef CONFIG_HIGHMEM
->>>> @@ -64,6 +65,14 @@ enum fixed_addresses {
->>>>    		       FIX_IMMR_SIZE,
->>>>    #endif
->>>>    	/* FIX_PCIE_MCFG, */
->>>> +	__end_of_permanent_fixed_addresses,
->>>> +
->>>> +#define NR_FIX_BTMAPS		(SZ_256K / PAGE_SIZE)
->>>> +#define FIX_BTMAPS_SLOTS	16
->>>> +#define TOTAL_FIX_BTMAPS	(NR_FIX_BTMAPS * FIX_BTMAPS_SLOTS)
->>>> +
->>>> +	FIX_BTMAP_END = __end_of_permanent_fixed_addresses,
->>>> +	FIX_BTMAP_BEGIN = FIX_BTMAP_END + TOTAL_FIX_BTMAPS - 1,
->>>>    	__end_of_fixed_addresses
->>>>    };
->>>>    
->>>> @@ -71,6 +80,7 @@ enum fixed_addresses {
->>>>    #define FIXADDR_START		(FIXADDR_TOP - __FIXADDR_SIZE)
->>>>    
->>>>    #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NCG
->>>> +#define FIXMAP_PAGE_IO	PAGE_KERNEL_NCG
->>>>    
->>>>    #include <asm-generic/fixmap.h>
->>>>    
->>>> @@ -85,5 +95,7 @@ static inline void __set_fixmap(enum fixed_addresses idx,
->>>>    	map_kernel_page(__fix_to_virt(idx), phys, flags);
->>>>    }
->>>>    
->>>> +#define __early_set_fixmap	__set_fixmap
->>>> +
->>>>    #endif /* !__ASSEMBLY__ */
->>>>    #endif
->>>> diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
->>>> index a7541edf0cdb..dcffe927f5b9 100644
->>>> --- a/arch/powerpc/kernel/setup_32.c
->>>> +++ b/arch/powerpc/kernel/setup_32.c
->>>> @@ -44,6 +44,7 @@
->>>>    #include <asm/asm-prototypes.h>
->>>>    #include <asm/kdump.h>
->>>>    #include <asm/feature-fixups.h>
->>>> +#include <asm/early_ioremap.h>
->>>>    
->>>>    #include "setup.h"
->>>>    
->>>> @@ -80,6 +81,8 @@ notrace void __init machine_init(u64 dt_ptr)
->>>>    	/* Configure static keys first, now that we're relocated. */
->>>>    	setup_feature_keys();
->>>>    
->>>> +	early_ioremap_setup();
->>>> +
->>>>    	/* Enable early debugging if any specified (see udbg.h) */
->>>>    	udbg_early_init();
->>>>    
->>>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
->>>> index 44b4c432a273..b85f6a1cc3a1 100644
->>>> --- a/arch/powerpc/kernel/setup_64.c
->>>> +++ b/arch/powerpc/kernel/setup_64.c
->>>> @@ -65,6 +65,7 @@
->>>>    #include <asm/hw_irq.h>
->>>>    #include <asm/feature-fixups.h>
->>>>    #include <asm/kup.h>
->>>> +#include <asm/early_ioremap.h>
->>>>    
->>>>    #include "setup.h"
->>>>    
->>>> @@ -338,6 +339,8 @@ void __init early_setup(unsigned long dt_ptr)
->>>>    	apply_feature_fixups();
->>>>    	setup_feature_keys();
->>>>    
->>>> +	early_ioremap_setup();
->>>> +
->>>>    	/* Initialize the hash table or TLB handling */
->>>>    	early_init_mmu();
->>>>    
->>>
->>> Can we remove early_ioremap_range() after this?
->>>
->>
->> Yes, once all early callers of ioremap functions are converted to using
->> early_ioremap()
-> 
-> Why can't we switch the early callers to early_ioremap and print a
-> warning?
-> 
-> ie,
-> if (!slab_available()) {
->     pr_warn("switch to early_ioremap");
->     early_ioremap();
+> nid = numa_cpu_lookup_table[fcpu];
+> if (nid >= 0) {
+> 	map_cpu_to_node(lcpu, nid);
+> 	return nid;
 > }
-> 
+>
+> Currently numa_setup_cpus is only called at very early boot and in cpu
+> hotplug. At hotplug time, the oneline of cpus is serialized. Right? Do we 
+> see a chance of remote cpu changing its state as we set its nid here?
+>
+> Also lets say if we assert and for some unknown reason the assertion fails.
+> How do we handle the failure case?  We cant get out without setting
+> the nid. We cant continue setting the nid. Should we panic the system given
+> that the check a few lines above is now turning out to be false? Probably
+> no, as I think we can live with it.
+>
+> Any thoughts?
 
-Because:
-- early_iounmap() requires the size of the area to be freed unlike iounmap()
-- early_ioremap() is for ephemeral mappings. All early mapping must be 
-gone at the end of init (this is verified by 
-late_initcall(check_early_ioremap_leak))
-
-Second point means another approach has to be taken for installing early 
-permanent mapping, for instance by using fixmaps.
-
-Christophe
+I think just WARN_ON(cpu_online(fcpu)) would be satisfactory. In my
+experience, the downstream effects of violating this condition are
+varied and quite difficult to debug. Seems only appropriate to emit a
+warning and stack trace before the OS inevitably becomes unstable.
