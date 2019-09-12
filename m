@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D6AB0CBE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 12:20:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811BFB0CCB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 12:24:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46TZXm1SD5zF44s
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 20:20:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46TZd167vyzF4BP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 20:24:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,10 +18,10 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46TZTl6dG4zF48Q
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46TZTl6fn2zF48W
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 20:18:02 +1000 (AEST)
 Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 16F4FEDB530A876F1624;
+ by Forcepoint Email with ESMTP id 01CAE14800DBA7180C95;
  Thu, 12 Sep 2019 18:17:57 +0800 (CST)
 Received: from localhost.localdomain (10.67.212.75) by
  DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
@@ -34,10 +34,10 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
  <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
  <davem@davemloft.net>, <ralf@linux-mips.org>, <paul.burton@mips.com>,
  <jhogan@kernel.org>, <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
-Subject: [PATCH v3 1/8] arm64: numa: make node_to_cpumask_map() NUMA_NO_NODE
- aware for arm64
-Date: Thu, 12 Sep 2019 18:15:27 +0800
-Message-ID: <1568283334-178380-2-git-send-email-linyunsheng@huawei.com>
+Subject: [PATCH v3 2/8] x86: numa: make node_to_cpumask_map() NUMA_NO_NODE
+ aware for x86
+Date: Thu, 12 Sep 2019 18:15:28 +0800
+Message-ID: <1568283334-178380-3-git-send-email-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
 References: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
@@ -103,15 +103,15 @@ V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
     for NUMA_NO_NODE case, and change the commit log to better justify
     the change.
 ---
- arch/arm64/include/asm/numa.h | 3 +++
- arch/arm64/mm/numa.c          | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/topology.h | 3 +++
+ arch/x86/mm/numa.c              | 7 +++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/numa.h b/arch/arm64/include/asm/numa.h
-index 626ad01..c8a4b31 100644
---- a/arch/arm64/include/asm/numa.h
-+++ b/arch/arm64/include/asm/numa.h
-@@ -25,6 +25,9 @@ const struct cpumask *cpumask_of_node(int node);
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 4b14d23..7fa82e1 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -69,6 +69,9 @@ extern const struct cpumask *cpumask_of_node(int node);
  /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
  static inline const struct cpumask *cpumask_of_node(int node)
  {
@@ -121,22 +121,25 @@ index 626ad01..c8a4b31 100644
  	return node_to_cpumask_map[node];
  }
  #endif
-diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-index 4f241cc..bef4bdd 100644
---- a/arch/arm64/mm/numa.c
-+++ b/arch/arm64/mm/numa.c
-@@ -46,7 +46,10 @@ EXPORT_SYMBOL(node_to_cpumask_map);
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index e6dad60..c676ffb 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -861,9 +861,12 @@ void numa_remove_cpu(int cpu)
   */
  const struct cpumask *cpumask_of_node(int node)
  {
--	if (WARN_ON(node >= nr_node_ids))
+-	if (node >= nr_node_ids) {
 +	if (node == NUMA_NO_NODE)
 +		return cpu_online_mask;
 +
-+	if (WARN_ON((unsigned int)node >= nr_node_ids))
++	if ((unsigned int)node >= nr_node_ids) {
+ 		printk(KERN_WARNING
+-			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
++			"cpumask_of_node(%d): node >= nr_node_ids(%u)\n",
+ 			node, nr_node_ids);
+ 		dump_stack();
  		return cpu_none_mask;
- 
- 	if (WARN_ON(node_to_cpumask_map[node] == NULL))
 -- 
 2.8.1
 
