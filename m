@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE38B0CEA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 12:30:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03FAB0CD4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 12:26:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46TZlg0PTDzF4Cw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 20:30:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46TZgQ3NB4zF1y4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 20:26:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,10 +18,10 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46TZTp4qK9zF48W
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46TZTp1QpDzF48N
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 20:18:06 +1000 (AEST)
 Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id 3E41A8133B2273B54CD8;
+ by Forcepoint Email with ESMTP id 28016B5415292F76FC6D;
  Thu, 12 Sep 2019 18:18:02 +0800 (CST)
 Received: from localhost.localdomain (10.67.212.75) by
  DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
@@ -34,10 +34,10 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
  <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
  <davem@davemloft.net>, <ralf@linux-mips.org>, <paul.burton@mips.com>,
  <jhogan@kernel.org>, <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
-Subject: [PATCH v3 3/8] alpha: numa: make node_to_cpumask_map() NUMA_NO_NODE
- aware for alpha
-Date: Thu, 12 Sep 2019 18:15:29 +0800
-Message-ID: <1568283334-178380-4-git-send-email-linyunsheng@huawei.com>
+Subject: [PATCH v3 4/8] powerpc: numa: make node_to_cpumask_map() NUMA_NO_NODE
+ aware for powerpc
+Date: Thu, 12 Sep 2019 18:15:30 +0800
+Message-ID: <1568283334-178380-5-git-send-email-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
 References: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
@@ -90,7 +90,7 @@ behavior depending on where the code is executed. So in fact we really
 want to return cpu_online_mask for NUMA_NO_NODE.
 
 Since this arch was already NUMA_NO_NODE aware, this patch only changes
-it to return cpu_online_mask.
+it to return cpu_online_mask and use NUMA_NO_NODE instead of "-1".
 
 [1] https://lore.kernel.org/patchwork/patch/1125789/
 Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
@@ -100,22 +100,24 @@ V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
     for NUMA_NO_NODE case, and change the commit log to better justify
     the change.
 ---
- arch/alpha/include/asm/topology.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/topology.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/alpha/include/asm/topology.h b/arch/alpha/include/asm/topology.h
-index 5a77a40..836c9e2 100644
---- a/arch/alpha/include/asm/topology.h
-+++ b/arch/alpha/include/asm/topology.h
-@@ -31,7 +31,7 @@ static const struct cpumask *cpumask_of_node(int node)
- 	int cpu;
+diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+index 2f7e1ea..107f5cd 100644
+--- a/arch/powerpc/include/asm/topology.h
++++ b/arch/powerpc/include/asm/topology.h
+@@ -17,8 +17,8 @@ struct device_node;
  
- 	if (node == NUMA_NO_NODE)
--		return cpu_all_mask;
-+		return cpu_online_mask;
+ #include <asm/mmzone.h>
  
- 	cpumask_clear(&node_to_cpumask_map[node]);
+-#define cpumask_of_node(node) ((node) == -1 ?				\
+-			       cpu_all_mask :				\
++#define cpumask_of_node(node) ((node) == NUMA_NO_NODE ?			\
++			       cpu_online_mask :			\
+ 			       node_to_cpumask_map[node])
  
+ struct pci_bus;
 -- 
 2.8.1
 
