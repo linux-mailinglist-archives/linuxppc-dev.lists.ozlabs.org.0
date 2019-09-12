@@ -1,66 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AB4B1007
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 15:33:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E373B102A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 15:40:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Tfpz4fZDzF4Jw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 23:33:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46TfzF6g1MzF46m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 23:40:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="AlE91qUL"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46TfkJ37FqzDqWx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 23:29:11 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46TfkB4RrNz9txvH;
- Thu, 12 Sep 2019 15:29:06 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=AlE91qUL; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id CS_Eux0cFFP1; Thu, 12 Sep 2019 15:29:06 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46TfkB3PHMz9txv9;
- Thu, 12 Sep 2019 15:29:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1568294946; bh=8YKLm3BM8Fxy2PQQ/azbBDLOKtUwGMrFARZT5pRecvA=;
- h=From:Subject:To:Cc:Date:From;
- b=AlE91qUL1IErytQqrdVZaNb9DzquT4c1DDMHzdBMvDQPPhBo32PH9smETuDiHEmDM
- VhhMwPC/3jHELmOlEDYDvNJcOof5G74/RIP+uh59HYEPZHXxKgIyDK2IFWOnFck8fs
- 6YGJfcZvPw8X9qe0HOoAGCsjkgP/t+e84XZFSC0E=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D128C8B933;
- Thu, 12 Sep 2019 15:29:07 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id MahlDDjqoM9y; Thu, 12 Sep 2019 15:29:07 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6A0258B934;
- Thu, 12 Sep 2019 15:29:07 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 3B00F6B736; Thu, 12 Sep 2019 13:29:07 +0000 (UTC)
-Message-Id: <f816ccdbd15b97cf43c5a8c7cc8dfa8db58ff036.1568294935.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/8xx: use the fixmapped IMMR in cpm_reset()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 12 Sep 2019 13:29:07 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Tfvs3DrlzF4QS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 23:37:29 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8CDXIuL020722; Thu, 12 Sep 2019 09:37:20 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uyp6qt5vb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Sep 2019 09:37:19 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8CDZHn7027303;
+ Thu, 12 Sep 2019 09:37:19 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uyp6qt5u7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Sep 2019 09:37:19 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8CDYS2x024731;
+ Thu, 12 Sep 2019 13:37:17 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma03dal.us.ibm.com with ESMTP id 2uv468xvaw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Sep 2019 13:37:17 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8CDbGY562128512
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 12 Sep 2019 13:37:16 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 856C2136059;
+ Thu, 12 Sep 2019 13:37:16 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B4A8136051;
+ Thu, 12 Sep 2019 13:37:14 +0000 (GMT)
+Received: from [9.199.32.243] (unknown [9.199.32.243])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 12 Sep 2019 13:37:13 +0000 (GMT)
+Subject: Re: [PATCH 1/3] powerpc/mm: Initialize the HPTE encoding values
+To: Laurent Dufour <ldufour@linux.ibm.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com
+References: <20190830120712.22971-1-ldufour@linux.ibm.com>
+ <20190830120712.22971-2-ldufour@linux.ibm.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <527b1a15-e37f-0d76-b999-e22cf04f9f7e@linux.ibm.com>
+Date: Thu, 12 Sep 2019 19:07:12 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190830120712.22971-2-ldufour@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-12_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909120143
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,48 +94,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit f86ef74ed919 ("powerpc/8xx: Fix vaddr for IMMR early
-remap"), the IMMR area has been mapped at startup with fixmap.
+On 8/30/19 5:37 PM, Laurent Dufour wrote:
+> Before reading the HPTE encoding values we initialize all of them to -1 (an
+> invalid value) to later being able to detect the initialized ones.
+> 
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>   arch/powerpc/mm/book3s64/hash_utils.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index c3bfef08dcf8..2039bc315459 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -408,7 +408,7 @@ static int __init htab_dt_scan_page_sizes(unsigned long node,
+>   {
+>   	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
+>   	const __be32 *prop;
+> -	int size = 0;
+> +	int size = 0, idx, base_idx;
+>   
+>   	/* We are scanning "cpu" nodes only */
+>   	if (type == NULL || strcmp(type, "cpu") != 0)
+> @@ -418,6 +418,11 @@ static int __init htab_dt_scan_page_sizes(unsigned long node,
+>   	if (!prop)
+>   		return 0;
+>   
+> +	/* Set all the penc values to invalid */
+> +	for (base_idx = 0; base_idx < MMU_PAGE_COUNT; base_idx++)
+> +		for (idx = 0; idx < MMU_PAGE_COUNT; idx++)
+> +			mmu_psize_defs[base_idx].penc[idx] = -1;
+> +
+>   	pr_info("Page sizes from device-tree:\n");
+>   	size /= 4;
+>   	cur_cpu_spec->mmu_features &= ~(MMU_FTR_16M_PAGE);
+> @@ -426,7 +431,6 @@ static int __init htab_dt_scan_page_sizes(unsigned long node,
+>   		unsigned int slbenc = be32_to_cpu(prop[1]);
+>   		unsigned int lpnum = be32_to_cpu(prop[2]);
+>   		struct mmu_psize_def *def;
+> -		int idx, base_idx;
+>   
+>   		size -= 3; prop += 3;
+>   		base_idx = get_idx_from_shift(base_shift);
+> 
 
-Use that fixmap directly instead of calling ioremap(), this
-avoids calling ioremap() early before the slab is available.
+We already do this in mmu_psize_set_default_penc() ?
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/platforms/8xx/cpm1.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/platforms/8xx/cpm1.c b/arch/powerpc/platforms/8xx/cpm1.c
-index 5a47b3ead01a..d4648cc468dc 100644
---- a/arch/powerpc/platforms/8xx/cpm1.c
-+++ b/arch/powerpc/platforms/8xx/cpm1.c
-@@ -51,7 +51,7 @@
- #define CPM_MAP_SIZE    (0x4000)
- 
- cpm8xx_t __iomem *cpmp;  /* Pointer to comm processor space */
--immap_t __iomem *mpc8xx_immr;
-+immap_t __iomem *mpc8xx_immr = (void __iomem *)VIRT_IMMR_BASE;
- static cpic8xx_t __iomem *cpic_reg;
- 
- static struct irq_domain *cpm_pic_host;
-@@ -205,12 +205,6 @@ void __init cpm_reset(void)
- 	int len;
- #endif
- 
--	mpc8xx_immr = ioremap(get_immrbase(), 0x4000);
--	if (!mpc8xx_immr) {
--		printk(KERN_CRIT "Could not map IMMR\n");
--		return;
--	}
--
- 	cpmp = &mpc8xx_immr->im_cpm;
- 
- #ifndef CONFIG_PPC_EARLY_DEBUG_CPM
--- 
-2.13.3
-
+-aneesh
