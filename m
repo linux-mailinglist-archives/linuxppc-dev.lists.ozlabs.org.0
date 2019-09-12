@@ -2,82 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6218B1261
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 17:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D14B1265
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 17:46:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Tjj41kGZzF4fx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 01:43:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46TjmS5XwzzF4gB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 01:46:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ncacx61M"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Tjd83mC3zF3Cg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 01:39:56 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8CFXoMW109103; Thu, 12 Sep 2019 11:39:49 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2uyqfmv0k7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Sep 2019 11:39:49 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8CFYJmk111935;
- Thu, 12 Sep 2019 11:39:48 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2uyqfmv0ju-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Sep 2019 11:39:48 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8CFZlMR026556;
- Thu, 12 Sep 2019 15:39:48 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02dal.us.ibm.com with ESMTP id 2uv467yxgm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Sep 2019 15:39:47 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8CFdj4j52166930
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Sep 2019 15:39:45 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D3F86A061;
- Thu, 12 Sep 2019 15:39:45 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7AA6D6A057;
- Thu, 12 Sep 2019 15:39:45 +0000 (GMT)
-Received: from localhost (unknown [9.41.101.192])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 12 Sep 2019 15:39:45 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH 0/2] pseries/hotplug: Change the default behaviour of
- cede_offline
-In-Reply-To: <1568284541-15169-1-git-send-email-ego@linux.vnet.ibm.com>
-References: <1568284541-15169-1-git-send-email-ego@linux.vnet.ibm.com>
-Date: Thu, 12 Sep 2019 10:39:45 -0500
-Message-ID: <87impxr0am.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Tjhw26YLzF4fn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 01:43:10 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46Tjhm75TvzB09bB;
+ Thu, 12 Sep 2019 17:43:04 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ncacx61M; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id EHJt8SoSX6rY; Thu, 12 Sep 2019 17:43:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46Tjhm5y7RzB09b0;
+ Thu, 12 Sep 2019 17:43:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1568302984; bh=jwkiVsyu4qTpGbjgj9zvg2L17cG+LcedXjD4KVOR3aw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ncacx61MTw9l0fH/aIN33QEKzpSS37GIo1Lm+DGhNEzBVZV+7lFzpZzU+VCDpQl/A
+ WOqGmEfhk+9ei5DYC46N5dLAhENVhnQ3UIcz+0p1JwxO3/OPWizlfaNThFFGeAlizK
+ 0uFIyrZiBjrpSM2th7RKnmV5luDabUtVWeKDSZC8=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 701D58B941;
+ Thu, 12 Sep 2019 17:43:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Cg95q0QX3o1e; Thu, 12 Sep 2019 17:43:06 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 730808B933;
+ Thu, 12 Sep 2019 17:43:05 +0200 (CEST)
+Subject: Re: [PATCH v1 3/4] powerpc: Add support for GENERIC_EARLY_IOREMAP
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ npiggin@gmail.com, hch@infradead.org
+References: <cover.1568295907.git.christophe.leroy@c-s.fr>
+ <412c7eaa6a373d8f82a3c3ee01e6a65a1a6589de.1568295907.git.christophe.leroy@c-s.fr>
+ <87ftl1seyr.fsf@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <cab82255-7353-1435-08cb-6732d429b17d@c-s.fr>
+Date: Thu, 12 Sep 2019 17:43:05 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-12_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=642 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909120160
+In-Reply-To: <87ftl1seyr.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,26 +82,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Kamalesh Babulal <kamaleshb@in.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
-> The patchset also defines a new sysfs attribute
-> "/sys/device/system/cpu/cede_offline_enabled" on PSeries Linux guests
-> to allow userspace programs to change the state into which the
-> offlined CPU need to be put to at runtime.
 
-A boolean sysfs interface will become awkward if we need to add another
-mode in the future.
 
-What do you think about naming the attribute something like
-'offline_mode', with the possible values 'extended-cede' and
-'rtas-stopped'?
+Le 12/09/2019 à 17:37, Aneesh Kumar K.V a écrit :
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> 
+>> Add support for GENERIC_EARLY_IOREMAP.
+>>
+>> Let's define 16 slots of 256Kbytes each for early ioremap.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>> ---
+>>   arch/powerpc/Kconfig              |  1 +
+>>   arch/powerpc/include/asm/Kbuild   |  1 +
+>>   arch/powerpc/include/asm/fixmap.h | 12 ++++++++++++
+>>   arch/powerpc/kernel/setup_32.c    |  3 +++
+>>   arch/powerpc/kernel/setup_64.c    |  3 +++
+>>   5 files changed, 20 insertions(+)
+>>
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 6a7c797fa9d2..8fe252962518 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -161,6 +161,7 @@ config PPC
+>>   	select GENERIC_CMOS_UPDATE
+>>   	select GENERIC_CPU_AUTOPROBE
+>>   	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
+>> +	select GENERIC_EARLY_IOREMAP
+>>   	select GENERIC_IRQ_SHOW
+>>   	select GENERIC_IRQ_SHOW_LEVEL
+>>   	select GENERIC_PCI_IOMAP		if PCI
+>> diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
+>> index 9a1d2fc6ceb7..30829120659c 100644
+>> --- a/arch/powerpc/include/asm/Kbuild
+>> +++ b/arch/powerpc/include/asm/Kbuild
+>> @@ -12,3 +12,4 @@ generic-y += preempt.h
+>>   generic-y += vtime.h
+>>   generic-y += msi.h
+>>   generic-y += simd.h
+>> +generic-y += early_ioremap.h
+>> diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
+>> index 722289a1d000..d5c4d357bd33 100644
+>> --- a/arch/powerpc/include/asm/fixmap.h
+>> +++ b/arch/powerpc/include/asm/fixmap.h
+>> @@ -15,6 +15,7 @@
+>>   #define _ASM_FIXMAP_H
+>>   
+>>   #ifndef __ASSEMBLY__
+>> +#include <linux/sizes.h>
+>>   #include <asm/page.h>
+>>   #include <asm/pgtable.h>
+>>   #ifdef CONFIG_HIGHMEM
+>> @@ -64,6 +65,14 @@ enum fixed_addresses {
+>>   		       FIX_IMMR_SIZE,
+>>   #endif
+>>   	/* FIX_PCIE_MCFG, */
+>> +	__end_of_permanent_fixed_addresses,
+>> +
+>> +#define NR_FIX_BTMAPS		(SZ_256K / PAGE_SIZE)
+>> +#define FIX_BTMAPS_SLOTS	16
+>> +#define TOTAL_FIX_BTMAPS	(NR_FIX_BTMAPS * FIX_BTMAPS_SLOTS)
+>> +
+>> +	FIX_BTMAP_END = __end_of_permanent_fixed_addresses,
+>> +	FIX_BTMAP_BEGIN = FIX_BTMAP_END + TOTAL_FIX_BTMAPS - 1,
+>>   	__end_of_fixed_addresses
+>>   };
+>>   
+>> @@ -71,6 +80,7 @@ enum fixed_addresses {
+>>   #define FIXADDR_START		(FIXADDR_TOP - __FIXADDR_SIZE)
+>>   
+>>   #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NCG
+>> +#define FIXMAP_PAGE_IO	PAGE_KERNEL_NCG
+>>   
+>>   #include <asm-generic/fixmap.h>
+>>   
+>> @@ -85,5 +95,7 @@ static inline void __set_fixmap(enum fixed_addresses idx,
+>>   	map_kernel_page(__fix_to_virt(idx), phys, flags);
+>>   }
+>>   
+>> +#define __early_set_fixmap	__set_fixmap
+>> +
+>>   #endif /* !__ASSEMBLY__ */
+>>   #endif
+>> diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
+>> index a7541edf0cdb..dcffe927f5b9 100644
+>> --- a/arch/powerpc/kernel/setup_32.c
+>> +++ b/arch/powerpc/kernel/setup_32.c
+>> @@ -44,6 +44,7 @@
+>>   #include <asm/asm-prototypes.h>
+>>   #include <asm/kdump.h>
+>>   #include <asm/feature-fixups.h>
+>> +#include <asm/early_ioremap.h>
+>>   
+>>   #include "setup.h"
+>>   
+>> @@ -80,6 +81,8 @@ notrace void __init machine_init(u64 dt_ptr)
+>>   	/* Configure static keys first, now that we're relocated. */
+>>   	setup_feature_keys();
+>>   
+>> +	early_ioremap_setup();
+>> +
+>>   	/* Enable early debugging if any specified (see udbg.h) */
+>>   	udbg_early_init();
+>>   
+>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+>> index 44b4c432a273..b85f6a1cc3a1 100644
+>> --- a/arch/powerpc/kernel/setup_64.c
+>> +++ b/arch/powerpc/kernel/setup_64.c
+>> @@ -65,6 +65,7 @@
+>>   #include <asm/hw_irq.h>
+>>   #include <asm/feature-fixups.h>
+>>   #include <asm/kup.h>
+>> +#include <asm/early_ioremap.h>
+>>   
+>>   #include "setup.h"
+>>   
+>> @@ -338,6 +339,8 @@ void __init early_setup(unsigned long dt_ptr)
+>>   	apply_feature_fixups();
+>>   	setup_feature_keys();
+>>   
+>> +	early_ioremap_setup();
+>> +
+>>   	/* Initialize the hash table or TLB handling */
+>>   	early_init_mmu();
+>>   
+> 
+> Can we remove early_ioremap_range() after this?
+> 
+
+Yes, once all early callers of ioremap functions are converted to using 
+early_ioremap()
+
+Christophe
