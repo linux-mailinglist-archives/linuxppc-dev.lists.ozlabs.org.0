@@ -2,30 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811BFB0CCB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 12:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE38B0CEA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 12:30:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46TZd167vyzF4BP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 20:24:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46TZlg0PTDzF4Cw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 20:30:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.35; helo=huawei.com;
+ (client-ip=45.249.212.32; helo=huawei.com;
  envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46TZTl6fn2zF48W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 20:18:02 +1000 (AEST)
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 01CAE14800DBA7180C95;
- Thu, 12 Sep 2019 18:17:57 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46TZTp4qK9zF48W
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2019 20:18:06 +1000 (AEST)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 3E41A8133B2273B54CD8;
+ Thu, 12 Sep 2019 18:18:02 +0800 (CST)
 Received: from localhost.localdomain (10.67.212.75) by
  DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 12 Sep 2019 18:17:55 +0800
+ 14.3.439.0; Thu, 12 Sep 2019 18:17:56 +0800
 From: Yunsheng Lin <linyunsheng@huawei.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
  <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
@@ -34,10 +34,10 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
  <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
  <davem@davemloft.net>, <ralf@linux-mips.org>, <paul.burton@mips.com>,
  <jhogan@kernel.org>, <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
-Subject: [PATCH v3 2/8] x86: numa: make node_to_cpumask_map() NUMA_NO_NODE
- aware for x86
-Date: Thu, 12 Sep 2019 18:15:28 +0800
-Message-ID: <1568283334-178380-3-git-send-email-linyunsheng@huawei.com>
+Subject: [PATCH v3 3/8] alpha: numa: make node_to_cpumask_map() NUMA_NO_NODE
+ aware for alpha
+Date: Thu, 12 Sep 2019 18:15:29 +0800
+Message-ID: <1568283334-178380-4-git-send-email-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
 References: <1568283334-178380-1-git-send-email-linyunsheng@huawei.com>
@@ -89,11 +89,8 @@ to the particular node's cpus which would have really non deterministic
 behavior depending on where the code is executed. So in fact we really
 want to return cpu_online_mask for NUMA_NO_NODE.
 
-Also there is a debuging version of node_to_cpumask_map(), which only
-is used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this patch changes
-it to handle NUMA_NO_NODE as the normal node_to_cpumask_map(). And "fix"
-a sign "bug" since it is for debugging and should catch all the error
-cases.
+Since this arch was already NUMA_NO_NODE aware, this patch only changes
+it to return cpu_online_mask.
 
 [1] https://lore.kernel.org/patchwork/patch/1125789/
 Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
@@ -103,43 +100,22 @@ V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
     for NUMA_NO_NODE case, and change the commit log to better justify
     the change.
 ---
- arch/x86/include/asm/topology.h | 3 +++
- arch/x86/mm/numa.c              | 7 +++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ arch/alpha/include/asm/topology.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index 4b14d23..7fa82e1 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -69,6 +69,9 @@ extern const struct cpumask *cpumask_of_node(int node);
- /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
- static inline const struct cpumask *cpumask_of_node(int node)
- {
-+	if (node == NUMA_NO_NODE)
+diff --git a/arch/alpha/include/asm/topology.h b/arch/alpha/include/asm/topology.h
+index 5a77a40..836c9e2 100644
+--- a/arch/alpha/include/asm/topology.h
++++ b/arch/alpha/include/asm/topology.h
+@@ -31,7 +31,7 @@ static const struct cpumask *cpumask_of_node(int node)
+ 	int cpu;
+ 
+ 	if (node == NUMA_NO_NODE)
+-		return cpu_all_mask;
 +		return cpu_online_mask;
-+
- 	return node_to_cpumask_map[node];
- }
- #endif
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index e6dad60..c676ffb 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -861,9 +861,12 @@ void numa_remove_cpu(int cpu)
-  */
- const struct cpumask *cpumask_of_node(int node)
- {
--	if (node >= nr_node_ids) {
-+	if (node == NUMA_NO_NODE)
-+		return cpu_online_mask;
-+
-+	if ((unsigned int)node >= nr_node_ids) {
- 		printk(KERN_WARNING
--			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
-+			"cpumask_of_node(%d): node >= nr_node_ids(%u)\n",
- 			node, nr_node_ids);
- 		dump_stack();
- 		return cpu_none_mask;
+ 
+ 	cpumask_clear(&node_to_cpumask_map[node]);
+ 
 -- 
 2.8.1
 
