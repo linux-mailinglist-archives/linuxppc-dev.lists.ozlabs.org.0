@@ -1,80 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88114F72B6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 12:05:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A4AF734F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 12:42:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BShf4GGdzF4GP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 22:05:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BTVw3ZbXzF4TJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 22:42:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhsharma@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="CxpkZizN"; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BSfZ72GCzDqvl
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 22:03:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1573470211;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/y8p7TWJ4+9dx0qZYntYI0vqqca78jHSFlqFEn+6Y9I=;
- b=CxpkZizNkV3iIjlPIF8m0iAl/PSBwLDfvdzWdroSQf3UYptIETu512VHVoHQocvY+8PUe2
- 60vwVpyi0hexNGYLdX83w6UyIACyMBm97ZC2Sa2XjyPXrQ2CsAyjQxV2rWmP9GWEGlwylg
- yXJ5guAC1Rv6hTZz/Cmqx/b9/9fc20A=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-397-6HpxqJn3Mo-4zxwZqIjciA-1; Mon, 11 Nov 2019 03:01:43 -0500
-Received: by mail-pf1-f198.google.com with SMTP id a1so12068281pfn.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 00:01:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=D7Q1sNAJK7KGCeC1/osi4u/yd8LMbojW2DcAg7eyhwk=;
- b=iMXmAZBZMh+h+o5XWHZU20JYScX++SGNuus5fMgmPSHXWtVdFeAemjfyxWtQuA/0p0
- PXFZEABzhpbpo0GWSFXB3WBtpZLlDJyjlDTSQuYF2HnBmIgGvrLxbIElO0r2ao6cEW9f
- WwD8mr5VjzVCsoxK0Ln7Bhlq72OC79fGT+Px6JT6SRiAAz9KCC6L+/oH+klbruvSyZkc
- 1xCJR0Bb3vzfHBucEypdo7RvTVJyXiZmFPYCdsCdPiI9ZrMUdAakK0w3absbLtHVdL0t
- fAmlJaNszLDVHN6svp2YV3yLCY0Y+3CyTs6bWIeOqQht8lr/eEcOUz9P/Z2DcKJu9BWI
- dYow==
-X-Gm-Message-State: APjAAAVlzQL1J+6XVkLlf5Jf4ZMDWCcGgkd0AlaVG4OoFRwSBdC8mhM9
- fnnR3cnwaBMPh290HB5yV2P5W0CorRYwaBw5HgOGa57SUxL5jjH9cTNSKG0ACH1Z/Omug/J8wW6
- i8a6oWtUhl2QDP4Cqik49RivYoQ==
-X-Received: by 2002:a62:fcd2:: with SMTP id e201mr404504pfh.52.1573459301444; 
- Mon, 11 Nov 2019 00:01:41 -0800 (PST)
-X-Google-Smtp-Source: APXvYqw/PM/uE1YEEDp1OQcYhDW64ur/c96jF9ficCBtta087Mx43bjXxmhjovhzV8sTDdZdS3kXpw==
-X-Received: by 2002:a62:fcd2:: with SMTP id e201mr404459pfh.52.1573459301055; 
- Mon, 11 Nov 2019 00:01:41 -0800 (PST)
-Received: from localhost ([122.177.0.15])
- by smtp.gmail.com with ESMTPSA id r33sm12736180pjb.5.2019.11.11.00.01.38
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 11 Nov 2019 00:01:39 -0800 (PST)
-From: Bhupesh Sharma <bhsharma@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 1/3] crash_core,
- vmcoreinfo: Append 'MAX_PHYSMEM_BITS' to vmcoreinfo
-Date: Mon, 11 Nov 2019 13:31:20 +0530
-Message-Id: <1573459282-26989-2-git-send-email-bhsharma@redhat.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1573459282-26989-1-git-send-email-bhsharma@redhat.com>
-References: <1573459282-26989-1-git-send-email-bhsharma@redhat.com>
-X-MC-Unique: 6HpxqJn3Mo-4zxwZqIjciA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BTKD5BgMzF3JP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 22:33:36 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ xABBXKFC036678; Mon, 11 Nov 2019 06:33:26 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2w76aq9hhs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Nov 2019 06:33:26 -0500
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id xABBXP3F037122;
+ Mon, 11 Nov 2019 06:33:25 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2w76aq9h51-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Nov 2019 06:33:25 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xABBUr2o002969;
+ Mon, 11 Nov 2019 11:32:56 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma04dal.us.ibm.com with ESMTP id 2w5n361psm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Nov 2019 11:32:56 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xABBWtD454788524
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 Nov 2019 11:32:55 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 871B928059;
+ Mon, 11 Nov 2019 11:32:55 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 547E028058;
+ Mon, 11 Nov 2019 11:32:50 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.36.163])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 11 Nov 2019 11:32:49 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 Q)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com
+Subject: Re: [PATCH 1/3] powerpc/mm: Initialize the HPTE encoding values
+In-Reply-To: <20190830120712.22971-2-ldufour@linux.ibm.com>
+References: <20190830120712.22971-1-ldufour@linux.ibm.com>
+ <20190830120712.22971-2-ldufour@linux.ibm.com>
+Date: Thu, 12 Sep 2019 19:02:40 +0530
+Message-ID: <87v9txzll3.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-11-11_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911110109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,84 +90,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
- Steve Capper <steve.capper@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
- bhsharma@redhat.com, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- kexec@lists.infradead.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org,
- James Morse <james.morse@arm.com>, linux-arm-kernel@lists.infradead.org,
- Boris Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- bhupesh.linux@gmail.com, Will Deacon <will@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Dave Anderson <anderson@redhat.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Right now user-space tools like 'makedumpfile' and 'crash' need to rely
-on a best-guess method of determining value of 'MAX_PHYSMEM_BITS'
-supported by underlying kernel.
+Laurent Dufour <ldufour@linux.ibm.com> writes:
 
-This value is used in user-space code to calculate the bit-space
-required to store a section for SPARESMEM (similar to the existing
-calculation method used in the kernel implementation):
+> Before reading the HPTE encoding values we initialize all of them to -1 (an
+> invalid value) to later being able to detect the initialized ones.
+>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
 
-  #define SECTIONS_SHIFT    (MAX_PHYSMEM_BITS - SECTION_SIZE_BITS)
+We already do this in mmu_psize_set_default_penc() ?
 
-Now, regressions have been reported in user-space utilities
-like 'makedumpfile' and 'crash' on arm64, with the recently added
-kernel support for 52-bit physical address space, as there is
-no clear method of determining this value in user-space
-(other than reading kernel CONFIG flags).
-
-As per suggestion from makedumpfile maintainer (Kazu), it makes more
-sense to append 'MAX_PHYSMEM_BITS' to vmcoreinfo in the core code itself
-rather than in arch-specific code, so that the user-space code for other
-archs can also benefit from this addition to the vmcoreinfo and use it
-as a standard way of determining 'SECTIONS_SHIFT' value in user-land.
-
-A reference 'makedumpfile' implementation which reads the
-'MAX_PHYSMEM_BITS' value from vmcoreinfo in a arch-independent fashion
-is available here:
-
-[0]. https://github.com/bhupesh-sharma/makedumpfile/blob/remove-max-phys-me=
-m-bit-v1/arch/ppc64.c#L471
-
-Cc: Boris Petkov <bp@alien8.de>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: James Morse <james.morse@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Steve Capper <steve.capper@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Dave Anderson <anderson@redhat.com>
-Cc: Kazuhito Hagio <k-hagio@ab.jp.nec.com>
-Cc: x86@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kexec@lists.infradead.org
-Signed-off-by: Bhupesh Sharma <bhsharma@redhat.com>
----
- kernel/crash_core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index 9f1557b98468..18175687133a 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -413,6 +413,7 @@ static int __init crash_save_vmcoreinfo_init(void)
- =09VMCOREINFO_LENGTH(mem_section, NR_SECTION_ROOTS);
- =09VMCOREINFO_STRUCT_SIZE(mem_section);
- =09VMCOREINFO_OFFSET(mem_section, section_mem_map);
-+=09VMCOREINFO_NUMBER(MAX_PHYSMEM_BITS);
- #endif
- =09VMCOREINFO_STRUCT_SIZE(page);
- =09VMCOREINFO_STRUCT_SIZE(pglist_data);
---=20
-2.7.4
-
+> ---
+>  arch/powerpc/mm/book3s64/hash_utils.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index c3bfef08dcf8..2039bc315459 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -408,7 +408,7 @@ static int __init htab_dt_scan_page_sizes(unsigned long node,
+>  {
+>  	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
+>  	const __be32 *prop;
+> -	int size = 0;
+> +	int size = 0, idx, base_idx;
+>  
+>  	/* We are scanning "cpu" nodes only */
+>  	if (type == NULL || strcmp(type, "cpu") != 0)
+> @@ -418,6 +418,11 @@ static int __init htab_dt_scan_page_sizes(unsigned long node,
+>  	if (!prop)
+>  		return 0;
+>  
+> +	/* Set all the penc values to invalid */
+> +	for (base_idx = 0; base_idx < MMU_PAGE_COUNT; base_idx++)
+> +		for (idx = 0; idx < MMU_PAGE_COUNT; idx++)
+> +			mmu_psize_defs[base_idx].penc[idx] = -1;
+> +
+>  	pr_info("Page sizes from device-tree:\n");
+>  	size /= 4;
+>  	cur_cpu_spec->mmu_features &= ~(MMU_FTR_16M_PAGE);
+> @@ -426,7 +431,6 @@ static int __init htab_dt_scan_page_sizes(unsigned long node,
+>  		unsigned int slbenc = be32_to_cpu(prop[1]);
+>  		unsigned int lpnum = be32_to_cpu(prop[2]);
+>  		struct mmu_psize_def *def;
+> -		int idx, base_idx;
+>  
+>  		size -= 3; prop += 3;
+>  		base_idx = get_idx_from_shift(base_shift);
+> -- 
+> 2.23.0
