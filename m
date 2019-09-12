@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D88B1398
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 19:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAF5B13D5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2019 19:37:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Tm3975CfzF4m2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 03:29:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46TmF20PSKzF4pq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 03:37:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,18 +18,20 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Tm075yBXzF4kw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 03:26:31 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Tm0G5q8HzF4lT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 03:26:38 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 61455B713;
- Thu, 12 Sep 2019 17:26:25 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 73A42B7DA;
+ Thu, 12 Sep 2019 17:26:33 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 0/7] Disable compat cruft on ppc64le v8
-Date: Thu, 12 Sep 2019 19:26:02 +0200
-Message-Id: <cover.1568306311.git.msuchanek@suse.de>
+Subject: [PATCH v8 1/7] powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
+Date: Thu, 12 Sep 2019 19:26:03 +0200
+Message-Id: <2e5c00c054f5a1c8ea4b5944685940af0665bfc1.1568306311.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <cover.1568306311.git.msuchanek@suse.de>
+References: <cover.1568306311.git.msuchanek@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,67 +62,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Less code means less bugs so add a knob to skip the compat stuff.
+This partially reverts commit caf6f9c8a326 ("asm-generic: Remove
+unneeded __ARCH_WANT_SYS_LLSEEK macro")
 
-This is tested on ppc64le top of
+When CONFIG_COMPAT is disabled on ppc64 the kernel does not build.
 
-https://patchwork.ozlabs.org/patch/1153850/
-https://patchwork.ozlabs.org/patch/1158412/
+There is resistance to both removing the llseek syscall from the 64bit
+syscall tables and building the llseek interface unconditionally.
 
-Changes in v2: saner CONFIG_COMPAT ifdefs
-Changes in v3:
- - change llseek to 32bit instead of builing it unconditionally in fs
- - clanup the makefile conditionals
- - remove some ifdefs or convert to IS_DEFINED where possible
-Changes in v4:
- - cleanup is_32bit_task and current_is_64bit
- - more makefile cleanup
-Changes in v5:
- - more current_is_64bit cleanup
- - split off callchain.c 32bit and 64bit parts
-Changes in v6:
- - cleanup makefile after split
- - consolidate read_user_stack_32
- - fix some checkpatch warnings
-Changes in v7:
- - add back __ARCH_WANT_SYS_LLSEEK to fix build with llseek
- - remove leftover hunk
- - add review tags
-Changes in v8:
- - consolidate valid_user_sp to fix it in the split callchain.c
- - fix build errors/warnings with PPC64 !COMPAT and PPC32
+Link: https://lore.kernel.org/lkml/20190828151552.GA16855@infradead.org/
+Link: https://lore.kernel.org/lkml/20190829214319.498c7de2@naga/
 
-Michal Suchanek (7):
-  powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
-  powerpc: move common register copy functions from signal_32.c to
-    signal.c
-  powerpc/perf: consolidate read_user_stack_32
-  powerpc/perf: consolidate valid_user_sp
-  powerpc/64: make buildable without CONFIG_COMPAT
-  powerpc/64: Make COMPAT user-selectable disabled on littleendian by
-    default.
-  powerpc/perf: split callchain.c by bitness
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/powerpc/include/asm/unistd.h | 1 +
+ fs/read_write.c                   | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
- arch/powerpc/Kconfig                   |   5 +-
- arch/powerpc/include/asm/thread_info.h |   4 +-
- arch/powerpc/include/asm/unistd.h      |   1 +
- arch/powerpc/kernel/Makefile           |   7 +-
- arch/powerpc/kernel/entry_64.S         |   2 +
- arch/powerpc/kernel/signal.c           | 144 +++++++++-
- arch/powerpc/kernel/signal_32.c        | 140 ---------
- arch/powerpc/kernel/syscall_64.c       |   6 +-
- arch/powerpc/kernel/vdso.c             |   3 +-
- arch/powerpc/perf/Makefile             |   5 +-
- arch/powerpc/perf/callchain.c          | 377 +------------------------
- arch/powerpc/perf/callchain.h          |  25 ++
- arch/powerpc/perf/callchain_32.c       | 197 +++++++++++++
- arch/powerpc/perf/callchain_64.c       | 178 ++++++++++++
- fs/read_write.c                        |   3 +-
- 15 files changed, 566 insertions(+), 531 deletions(-)
- create mode 100644 arch/powerpc/perf/callchain.h
- create mode 100644 arch/powerpc/perf/callchain_32.c
- create mode 100644 arch/powerpc/perf/callchain_64.c
-
+diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
+index b0720c7c3fcf..700fcdac2e3c 100644
+--- a/arch/powerpc/include/asm/unistd.h
++++ b/arch/powerpc/include/asm/unistd.h
+@@ -31,6 +31,7 @@
+ #define __ARCH_WANT_SYS_SOCKETCALL
+ #define __ARCH_WANT_SYS_FADVISE64
+ #define __ARCH_WANT_SYS_GETPGRP
++#define __ARCH_WANT_SYS_LLSEEK
+ #define __ARCH_WANT_SYS_NICE
+ #define __ARCH_WANT_SYS_OLD_GETRLIMIT
+ #define __ARCH_WANT_SYS_OLD_UNAME
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 5bbf587f5bc1..89aa2701dbeb 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -331,7 +331,8 @@ COMPAT_SYSCALL_DEFINE3(lseek, unsigned int, fd, compat_off_t, offset, unsigned i
+ }
+ #endif
+ 
+-#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT)
++#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT) || \
++	defined(__ARCH_WANT_SYS_LLSEEK)
+ SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+ 		unsigned long, offset_low, loff_t __user *, result,
+ 		unsigned int, whence)
 -- 
 2.23.0
 
