@@ -1,87 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6348B1FCD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 15:41:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350D7B1FD1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 15:45:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46VGyT3yw4zF5GW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 23:41:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46VH2j4sSczF3S4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 23:45:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=fossix.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="LWRfw0Gl"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46VGP55cCmzF4bL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 23:16:24 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8DDD6Ec140722
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 09:16:22 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v0awaam8v-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 09:16:21 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ldufour@linux.ibm.com>;
- Fri, 13 Sep 2019 14:16:19 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 13 Sep 2019 14:16:15 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x8DDFn9344368324
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Sep 2019 13:15:50 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EBD19AE059;
- Fri, 13 Sep 2019 13:16:14 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5878BAE051;
- Fri, 13 Sep 2019 13:16:14 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.181.150])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 13 Sep 2019 13:16:14 +0000 (GMT)
-Subject: Re: [PATCH 3/3] powerpc/mm: call H_BLOCK_REMOVE when supported
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com
-References: <20190830120712.22971-1-ldufour@linux.ibm.com>
- <20190830120712.22971-4-ldufour@linux.ibm.com>
- <5bcd3da7-1bc2-f3f9-3ed2-e3aa0bb540bd@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Date: Fri, 13 Sep 2019 15:16:13 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46VGkc1cLbzF5GD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 23:31:35 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id n4so15288649pgv.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 06:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=9ddMFiJu/sWzXjkexotIn9umjnAL30uzzTUAh4FEKTA=;
+ b=LWRfw0GlPqtpTJMS8Lh6Tuv8esJSSzpd8D1rEOlAg3Bp085NgI1H/9zflEueRBXSuh
+ NMaP+hDWL6zan6LOFFZljAeNOH9tFgC2x2/OpZciITy6ZRwgpAxIdC2uPzk0PydrnoKP
+ m8tQ/OHGNKeJPSwUDMA8dQ4eqNPKSJBNqIGtvUYtcouOjTwFYdnRVCCHW0QeA3i+7HWP
+ fzUCaXstUbBPtHUww/+vGG7bRbLAUHSiZvTGQhRB720lnW1DrZMDzE7QIO1qKGzcVfTi
+ AnziJ3LVkMpclxhOv6qH76MhvuOa3aVcUXRFZyU3bf7iRvW7hgbWT7Paq6b7PR2E2Erf
+ cU5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version:content-transfer-encoding;
+ bh=9ddMFiJu/sWzXjkexotIn9umjnAL30uzzTUAh4FEKTA=;
+ b=gGKuKA3XUYgQeEDa7hRToC4b1RRlJuebjiJlPwCvGwB+ek5ciy55giG/oN6DOIuPew
+ ne3c+wey/iDXw0j7l9fAARTn0U2jajm9hp5GICwq8bdq8imlYVE2t57bx8fae3P/O7P1
+ U5JQx2x+3XK+wdlQDRecGmfWqc6UP+hYlHmB/OK2xDWrTxjX1ab5fzEdy0XbUZMtD+aV
+ pC0LZV1HZ5jSyTFqziFInaFQzfRy+xWkct1wY0HL1cFxXfnYP445fQ7opvP0yZdNjGg1
+ ViMB7gfLbFgN7jYoFBCQfLw2EOozlqykcCi2ztqyTjcCgz0/19W/OljUMlhPuEBJqlwy
+ xK6A==
+X-Gm-Message-State: APjAAAVYSjN05eYuoD/C+rQ0HDatLuJfNmFAWaE/6u+h+oRi/oetr5ie
+ hqsJH6/YGa/1EGtGKwZlCIDZkw==
+X-Google-Smtp-Source: APXvYqweIKhJb64CFwQ0oERfJ9vPY2uyZJ1J4wrn4HgzGDyKTvZYRQWNVsqferrXgB82OV4RKcLYsA==
+X-Received: by 2002:a63:6947:: with SMTP id e68mr43615810pgc.60.1568381491040; 
+ Fri, 13 Sep 2019 06:31:31 -0700 (PDT)
+Received: from localhost ([49.207.57.15])
+ by smtp.gmail.com with ESMTPSA id 127sm56901669pfw.6.2019.09.13.06.31.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Sep 2019 06:31:30 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 4/8] powerpc/vdso32: inline __get_datapage()
+In-Reply-To: <a95c4a58-bc59-3e75-46db-414f6d0f1412@c-s.fr>
+References: <cover.1566491310.git.christophe.leroy@c-s.fr>
+ <194fb7bc973ef2ce43016c97dd32f2b2dcbae4e7.1566491310.git.christophe.leroy@c-s.fr>
+ <87h864iiq9.fsf@santosiv.in.ibm.com>
+ <a95c4a58-bc59-3e75-46db-414f6d0f1412@c-s.fr>
+Date: Fri, 13 Sep 2019 19:01:28 +0530
+Message-ID: <87blvonwzz.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <5bcd3da7-1bc2-f3f9-3ed2-e3aa0bb540bd@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19091313-4275-0000-0000-000003654FAE
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091313-4276-0000-0000-00003877ADA2
-Message-Id: <cf06842a-ea37-9684-5b28-de4277e7bef3@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-13_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909130130
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,80 +85,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 12/09/2019 à 16:20, Aneesh Kumar K.V a écrit :
-> On 8/30/19 5:37 PM, Laurent Dufour wrote:
->> Instead of calling H_BLOCK_REMOVE all the time when the feature is
->> exhibited, call this hcall only when the couple base page size, page size
->> is supported as reported by the TLB Invalidate Characteristics.
->>
-> 
-> supported is not actually what we are checking here. We are checking 
-> whether the base page size actual page size remove can be done in chunks of 
-> 8 blocks. If we don't support 8 block you fallback to bulk invalidate. May 
-> be update the commit message accordingly?
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
 
-Yes that's correct.
+> Hi Santosh,
+>
+> Le 26/08/2019 =C3=A0 07:44, Santosh Sivaraj a =C3=A9crit=C2=A0:
+>> Hi Christophe,
+>>=20
+>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>=20
+>>> __get_datapage() is only a few instructions to retrieve the
+>>> address of the page where the kernel stores data to the VDSO.
+>>>
+>>> By inlining this function into its users, a bl/blr pair and
+>>> a mflr/mtlr pair is avoided, plus a few reg moves.
+>>>
+>>> The improvement is noticeable (about 55 nsec/call on an 8xx)
+>>>
+>>> vdsotest before the patch:
+>>> gettimeofday:    vdso: 731 nsec/call
+>>> clock-gettime-realtime-coarse:    vdso: 668 nsec/call
+>>> clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
+>>>
+>>> vdsotest after the patch:
+>>> gettimeofday:    vdso: 677 nsec/call
+>>> clock-gettime-realtime-coarse:    vdso: 613 nsec/call
+>>> clock-gettime-monotonic-coarse:    vdso: 690 nsec/call
+>>>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>> ---
+>>>   arch/powerpc/kernel/vdso32/cacheflush.S   | 10 +++++-----
+>>>   arch/powerpc/kernel/vdso32/datapage.S     | 29 ++++------------------=
+-------
+>>>   arch/powerpc/kernel/vdso32/datapage.h     | 11 +++++++++++
+>>>   arch/powerpc/kernel/vdso32/gettimeofday.S | 13 ++++++-------
+>>>   4 files changed, 26 insertions(+), 37 deletions(-)
+>>>   create mode 100644 arch/powerpc/kernel/vdso32/datapage.h
+>>=20
+>> The datapage.h file should ideally be moved under include/asm, then we c=
+an use
+>> the same for powerpc64 too.
+>
+> I have a more ambitious project indeed.
+>
+> Most of the VDSO code is duplicated between vdso32 and vdso64. I'm=20
+> aiming at merging everything into a single source code.
+>
+> This means we would have to generate vdso32.so and vdso64.so out of the=20
+> same source files. Any idea on how to do that ? I'm not too good at=20
+> creating Makefiles. I guess we would have everything in=20
+> arch/powerpc/kernel/vdso/ and would have to build the objects twice,=20
+> once in arch/powerpc/kernel/vdso32/ and once in arch/powerpc/kernel/vdso6=
+4/
 
-I think I should also put the warning message displayed when reading the 
-characteristic in that commit and explicitly mentioned that we only support 
-8 entries size block for this hcall.
-This way the limitation is limited to this commit.
+Should we need to build the objects twice? For 64 bit config it is going to=
+ be
+a 64 bit build else a 32 bit build. It should suffice to get the single sou=
+rce
+code compile for both, maybe with macros or (!)CONFIG_PPC64 conditional
+compilation. Am I missing something when you say build twice?
 
-> 
->> For regular pages and hugetlb, the assumption is made that the page size is
->> equal to the base page size. For THP the page size is assumed to be 16M.
->>
->> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
->> ---
->>   arch/powerpc/platforms/pseries/lpar.c | 11 +++++++++--
->>   1 file changed, 9 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/lpar.c 
->> b/arch/powerpc/platforms/pseries/lpar.c
->> index 375e19b3cf53..ef3dbf108a65 100644
->> --- a/arch/powerpc/platforms/pseries/lpar.c
->> +++ b/arch/powerpc/platforms/pseries/lpar.c
->> @@ -1143,7 +1143,11 @@ static inline void 
->> __pSeries_lpar_hugepage_invalidate(unsigned long *slot,
->>       if (lock_tlbie)
->>           spin_lock_irqsave(&pSeries_lpar_tlbie_lock, flags);
->> -    if (firmware_has_feature(FW_FEATURE_BLOCK_REMOVE))
->> +    /*
->> +     * Assuming THP size is 16M, and we only support 8 bytes size buffer
->> +     * for the momment.
->> +     */
->> +    if (mmu_psize_defs[psize].hblk[MMU_PAGE_16M] == 8)
->>           hugepage_block_invalidate(slot, vpn, count, psize, ssize);
->>       else
->>           hugepage_bulk_invalidate(slot, vpn, count, psize, ssize);
-> 
-> 
-> 
-> So we don't use block invalidate if blocksize is != 8.
-
-yes
-
-> 
-> 
->> @@ -1437,7 +1441,10 @@ static void pSeries_lpar_flush_hash_range(unsigned 
->> long number, int local)
->>       if (lock_tlbie)
->>           spin_lock_irqsave(&pSeries_lpar_tlbie_lock, flags);
->> -    if (firmware_has_feature(FW_FEATURE_BLOCK_REMOVE)) {
->> +    /*
->> +     * Currently, we only support 8 bytes size buffer in do_block_remove().
->> +     */
->> +    if (mmu_psize_defs[batch->psize].hblk[batch->psize] == 8) {
->>           do_block_remove(number, batch, param);
->>           goto out;
->>       }
->>
-> 
-> -aneesh
-
+Thanks,
+Santosh
