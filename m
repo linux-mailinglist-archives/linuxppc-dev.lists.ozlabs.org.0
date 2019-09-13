@@ -2,80 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2427EB219A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 16:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 792F8B21E3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 16:25:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46VHWs10dszF5DC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2019 00:07:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46VHwt2QWWzF40r
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2019 00:25:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=fossix.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="UFkVQVLL"; 
- dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46VHRT63pQzF5hS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 00:03:32 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id c17so7558798pgg.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 07:03:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=vpmitwkoehCvB7dqkSmwhbgYzpwlvWcY38/mwAHllec=;
- b=UFkVQVLLfYMzvetJ9zD6dYwDftLzvnJhg/6r+xH/MrR9sI2bRT7iGFyIhw4skj/Gtq
- UI1p4nIlx32+Z1PZtASeVFd3Vsn/K1RzYxd/PZuKKm7EGf7wTlG+IMIOGibcnvyB0i6Q
- DIAW6+t7xAbx6wgjAvl6jSkThhnm4MujFOlbQWIfW/d3kKhajUXYHbR8x7iMYOiRGdrM
- L8lYFSC8Cki2eJzWIF6bvbPAtww5Y4eovljDt1Qtf8CEgvoP48YFmUWXDnDx+D4j+WRI
- wwaY4bGh67EiNA6rIdMrSWvqWgytLTtVff6BAMuFS9k+n/yd6D0ah1fjhqKcvs0bvQZf
- V/Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=vpmitwkoehCvB7dqkSmwhbgYzpwlvWcY38/mwAHllec=;
- b=CrMBhJZOcIRLQZBg14akLSndVl3WDLqpglID+X9HwkJMmkEvH6c9o7oKBEUkMxsjbR
- BiwGv8njMuT8UfaTzQermG6jNKQKx5qvBSCgxSnSJT1ZiRW/i36B34+zvYKD0hxS1rCP
- JFvGq0e7+qHv5qZY5CYAFhdtQjmfNDes7h8NkFYBMqQmE21bvYd5/9XXkqKAHZQcJbPU
- ZpJLseH44AqL1XopzjAYlWAHhrdJp4ZZBvAC6zNHR1ZLN6ilAermhvhB5ZEF0Ae7RX4u
- ZFhrRcRTFsD55JstQtnSFenKQ6xbH8HuoJvEJD0FgjyWRq8TLSyNJJoYXhBhuCHKSq2Z
- kY9w==
-X-Gm-Message-State: APjAAAVe6gYcwKkEabox+/W+nOKyypnb0x+eR83a988dEF+YYjggKnVX
- p6MTHiGFCj6omGIMjIToD3QbeQ==
-X-Google-Smtp-Source: APXvYqz9Ak5zvFaLOBaz8kX/Gcf8o6jJP3aS6fv6pGphH4og6+EVm3Ul8XrvDMoTLaNK0KctWpfX3w==
-X-Received: by 2002:a65:6901:: with SMTP id s1mr6335459pgq.338.1568383410623; 
- Fri, 13 Sep 2019 07:03:30 -0700 (PDT)
-Received: from localhost ([49.207.57.15])
- by smtp.gmail.com with ESMTPSA id l72sm4751241pjb.7.2019.09.13.07.03.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Sep 2019 07:03:29 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 4/8] powerpc/vdso32: inline __get_datapage()
-In-Reply-To: <559296a2-37f6-dc83-7f60-07567637a9a8@c-s.fr>
-References: <cover.1566491310.git.christophe.leroy@c-s.fr>
- <194fb7bc973ef2ce43016c97dd32f2b2dcbae4e7.1566491310.git.christophe.leroy@c-s.fr>
- <87h864iiq9.fsf@santosiv.in.ibm.com>
- <a95c4a58-bc59-3e75-46db-414f6d0f1412@c-s.fr>
- <87blvonwzz.fsf@santosiv.in.ibm.com>
- <559296a2-37f6-dc83-7f60-07567637a9a8@c-s.fr>
-Date: Fri, 13 Sep 2019 19:33:27 +0530
-Message-ID: <875zlwnvio.fsf@santosiv.in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46VHrm1Q0xzF5gn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 00:21:59 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8DELZe0090323; Fri, 13 Sep 2019 10:21:54 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v0ct7g03v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2019 10:21:54 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8DEE8tP019313;
+ Fri, 13 Sep 2019 14:21:53 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma01dal.us.ibm.com with ESMTP id 2uyw58qmpt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2019 14:21:53 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8DELqRd45810154
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 13 Sep 2019 14:21:52 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F180E136051;
+ Fri, 13 Sep 2019 14:21:51 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 388E413604F;
+ Fri, 13 Sep 2019 14:21:50 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.44.61])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 13 Sep 2019 14:21:49 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, cam@neo-zeon.de
+Subject: Re: [Bug 204789] New: Boot failure with more than 256G of memory
+In-Reply-To: <875zlw7q5s.fsf@linux.ibm.com>
+References: <bug-204789-27@https.bugzilla.kernel.org/>
+ <20190911073153.9df4d4618d7f99752cd18edd@linux-foundation.org>
+ <875zlw7q5s.fsf@linux.ibm.com>
+Date: Fri, 13 Sep 2019 19:51:47 +0530
+Message-ID: <87zhj85lac.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-13_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909130142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,112 +84,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: bugzilla-daemon@bugzilla.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> writes:
 
-> Le 13/09/2019 =C3=A0 15:31, Santosh Sivaraj a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>=20
->>> Hi Santosh,
->>>
->>> Le 26/08/2019 =C3=A0 07:44, Santosh Sivaraj a =C3=A9crit=C2=A0:
->>>> Hi Christophe,
->>>>
->>>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>>>
->>>>> __get_datapage() is only a few instructions to retrieve the
->>>>> address of the page where the kernel stores data to the VDSO.
->>>>>
->>>>> By inlining this function into its users, a bl/blr pair and
->>>>> a mflr/mtlr pair is avoided, plus a few reg moves.
->>>>>
->>>>> The improvement is noticeable (about 55 nsec/call on an 8xx)
->>>>>
->>>>> vdsotest before the patch:
->>>>> gettimeofday:    vdso: 731 nsec/call
->>>>> clock-gettime-realtime-coarse:    vdso: 668 nsec/call
->>>>> clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
->>>>>
->>>>> vdsotest after the patch:
->>>>> gettimeofday:    vdso: 677 nsec/call
->>>>> clock-gettime-realtime-coarse:    vdso: 613 nsec/call
->>>>> clock-gettime-monotonic-coarse:    vdso: 690 nsec/call
->>>>>
->>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>>>> ---
->>>>>    arch/powerpc/kernel/vdso32/cacheflush.S   | 10 +++++-----
->>>>>    arch/powerpc/kernel/vdso32/datapage.S     | 29 ++++---------------=
-----------
->>>>>    arch/powerpc/kernel/vdso32/datapage.h     | 11 +++++++++++
->>>>>    arch/powerpc/kernel/vdso32/gettimeofday.S | 13 ++++++-------
->>>>>    4 files changed, 26 insertions(+), 37 deletions(-)
->>>>>    create mode 100644 arch/powerpc/kernel/vdso32/datapage.h
->>>>
->>>> The datapage.h file should ideally be moved under include/asm, then we=
- can use
->>>> the same for powerpc64 too.
->>>
->>> I have a more ambitious project indeed.
->>>
->>> Most of the VDSO code is duplicated between vdso32 and vdso64. I'm
->>> aiming at merging everything into a single source code.
->>>
->>> This means we would have to generate vdso32.so and vdso64.so out of the
->>> same source files. Any idea on how to do that ? I'm not too good at
->>> creating Makefiles. I guess we would have everything in
->>> arch/powerpc/kernel/vdso/ and would have to build the objects twice,
->>> once in arch/powerpc/kernel/vdso32/ and once in arch/powerpc/kernel/vds=
-o64/
->>=20
->> Should we need to build the objects twice? For 64 bit config it is going=
- to be
->> a 64 bit build else a 32 bit build. It should suffice to get the single =
-source
->> code compile for both, maybe with macros or (!)CONFIG_PPC64 conditional
->> compilation. Am I missing something when you say build twice?
->>=20
+> Andrew Morton <akpm@linux-foundation.org> writes:
 >
-> IIUC, on PPC64 we build vdso64 for 64bits user apps and vdso32 for=20
-> 32bits user apps.
+>> (switched to email.  Please respond via emailed reply-to-all, not via the
+>> bugzilla web interface).
+>>
+>> On Sun, 08 Sep 2019 00:04:26 +0000 bugzilla-daemon@bugzilla.kernel.org wrote:
+>>
+>>> https://bugzilla.kernel.org/show_bug.cgi?id=204789
+>>> 
+>>>             Bug ID: 204789
+>>>            Summary: Boot failure with more than 256G of memory
+>>>            Product: Memory Management
+>>>            Version: 2.5
+>>>     Kernel Version: 5.2.x
+>>>           Hardware: PPC-64
+>>>                 OS: Linux
+>>>               Tree: Mainline
+>>>             Status: NEW
+>>>           Severity: high
+>>>           Priority: P1
+>>>          Component: Other
+>>>           Assignee: akpm@linux-foundation.org
+>>>           Reporter: cam@neo-zeon.de
+>>>         Regression: No
+>>
+>> "Yes" :)
+>>
+>>> Kernel series 5.2.x will not boot on my Talos II workstation with dual POWER9
+>>> 18 core processors and 512G of physical memory with disable_radix=yes and 4k
+>>> pages.
+>>> 
+>>> 5.3-rc6 did not work either.
+>>> 
+>>> 5.1 and earlier boot fine. 
+>>
+>> Thanks.  It's probably best to report this on the powerpc list, cc'ed here.
+>>
+>>> I can get the system to boot IF I leave the Radix MMU enabled or if I boot a
+>>> kernel with 64k pages. I haven't yet tested enabling the Radix MMU with 64k
+>>> pages at the same time, but I suspect this would work. This is a system I
+>>> cannot take down TOO frequently.
+>>> 
+>>> The system will also boot with the Radix MMU disabled and 4k pages with 256G or
+>>> less memory. Setting mem on the kernel CLI to 256G or less results in a
+>>> successful boot. Setting mem=257G or higher no Radix MMU and 4k pages and the
+>>> kernel will not boot.
+>>> 
+>>> Petitboot comes up, but the system fails VERY early in boot in the serial
+>>> console with:
+>>> SIGTERM received, booting...
+>>> [   23.838858] kexec_core: Starting new kernel
+>>> 
+>>> Early printk is enabled, and it never progresses any further.
+>>> 
+>>> 5.1 boots just fine with the Radix MMU disabled and 4k pages.
+>>> 
+>>> Unfortunately, I currently need 4k pages for bcache to work, and Radix MMU
+>>> disabled in order for FreeBSD 12.x to work under KVM so I'm sticking with
+>>> 5.1.21 for now.
+>>> 
+>>> I have been unable to reproduce this issue in KVM.
+>>> 
+>>> Here are my PCIe peripherals:
+>>> 1. Microsemi/Adaptec HBA 1100-4i SAS controller
+>>> 2. Megaraid 9316-16i SAS RAID controller.
+>>> 
+>>> I've only tried little endian as this is a little endian install.
 >
-> In arch/powerpc/kernel/Makefile, you have:
+> Will you be able to bisect this? I tried 4K PAGESIZE on P8 with upstream
+> kernel and I can't recreate the issuue.
 >
-> obj-$(CONFIG_VDSO32)		+=3D vdso32/
-> obj-$(CONFIG_PPC64)		+=3D vdso64/
+> [root@ltc ~]# free -g
+>               total        used        free      shared  buff/cache   available
+> Mem:            495           0         494           0           0         493
+> Swap:             0           0           0
+> [root@ltc ~]# getconf PAGESIZE
+> 4096
+> [root@ltc ~]# grep Hash /proc/cpuinfo 
+> MMU             : Hash
 >
-> And in arch/powerpc/platforms/Kconfig.cputype, you have:
->
-> config VDSO32
-> 	def_bool y
-> 	depends on PPC32 || CPU_BIG_ENDIAN
-> 	help
-> 	  This symbol controls whether we build the 32-bit VDSO. We obviously
-> 	  want to do that if we're building a 32-bit kernel. If we're building
-> 	  a 64-bit kernel then we only want a 32-bit VDSO if we're building for
-> 	  big endian. That is because the only little endian configuration we
-> 	  support is ppc64le which is 64-bit only.
+> I will see if I can get a P9 system with largemem
 >
 
-I didn't know we build 32 bit vdso for 64 bit big endians. But I don't think
-its difficult to do it, might be a bit tricky. We can have two targets from
-the same source.
+I was able to recreate this on a system that got memory above 16TB
+address. I guess your P9 system memory layout is also like that.
 
-SRC =3D vdso/*.c
-OBJS_32 =3D $(SRC:.c=3Dvdso32/.o)
-OBJS_64 =3D $(SRC:.c=3Dvdso64/.o)
+Can you try this patch? It doesn't really fix the isssue, as in map the
+full 512GB of memory. But it do prevent the kernel crash.
 
-Something like this would work. Of course, this is out of memory, might hav=
-e to
-do something slightly different for the Makefiles in kernel.
+commit ebd05100344765fc3c030f0c257c2f9236fcd1ec
+Author: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Date:   Fri Sep 13 19:26:25 2019 +0530
 
-Thanks,
-Santosh
+    powerpc/book3s64/hash/4k: 4k supports only 16TB linear mapping
+    
+    With commit: 0034d395f89d ("powerpc/mm/hash64: Map all the kernel regions in the
+    same 0xc range"), we now split the 64TB address range into 4 contexts each of
+    16TB. That implies we can do only 16TB linear mapping. Make sure we don't
+    add physical memory above 16TB if that is present in the system.
+    
+    Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
->
->
->
-> Christophe
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+index bb3deb76c951..86cce8189240 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+@@ -35,12 +35,16 @@ extern struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT];
+  * memory requirements with large number of sections.
+  * 51 bits is the max physical real address on POWER9
+  */
+-#if defined(CONFIG_SPARSEMEM_VMEMMAP) && defined(CONFIG_SPARSEMEM_EXTREME) &&  \
+-	defined(CONFIG_PPC_64K_PAGES)
++
++#if defined(CONFIG_PPC_64K_PAGES)
++#if defined(CONFIG_SPARSEMEM_VMEMMAP) && defined(CONFIG_SPARSEMEM_EXTREME)
+ #define MAX_PHYSMEM_BITS 51
+ #else
+ #define MAX_PHYSMEM_BITS 46
+ #endif
++#else /* CONFIG_PPC_64K_PAGES */
++#define MAX_PHYSMEM_BITS 44
++#endif
+ 
+ /* 64-bit classic hash table MMU */
+ #include <asm/book3s/64/mmu-hash.h>
+
