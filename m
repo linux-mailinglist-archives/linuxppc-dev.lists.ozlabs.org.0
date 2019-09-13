@@ -2,87 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A992B1A85
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 11:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80588B1A92
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 11:14:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46V8zh4LGPzF5Jp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 19:12:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46V92J0BsSzF3Lw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 19:14:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=shutemov.name
+ (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com;
+ envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=shutemov-name.20150623.gappssmtp.com
+ header.i=@shutemov-name.20150623.gappssmtp.com header.b="cuhllGlp"; 
+ dkim-atps=neutral
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
+ [IPv6:2a00:1450:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46V8xd5bqJzF4Zr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 19:10:45 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8D97X8V040729
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 05:10:42 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v07es9qu4-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 05:10:41 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ldufour@linux.ibm.com>;
- Fri, 13 Sep 2019 10:10:39 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 13 Sep 2019 10:10:36 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8D9AZWC58327128
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Sep 2019 09:10:35 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C490A4060;
- Fri, 13 Sep 2019 09:10:35 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8282A405C;
- Fri, 13 Sep 2019 09:10:34 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.117.92])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 13 Sep 2019 09:10:34 +0000 (GMT)
-Subject: Re: [PATCH 2/3] powperc/mm: read TLB Block Invalidate Characteristics
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com
-References: <20190830120712.22971-1-ldufour@linux.ibm.com>
- <20190830120712.22971-3-ldufour@linux.ibm.com> <87impxshfk.fsf@linux.ibm.com>
- <468a53a6-a970-5526-8035-eef59dcf48ed@linux.ibm.com>
- <97bafb53-6ae9-1d42-1816-ef81b845b80c@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Date: Fri, 13 Sep 2019 11:10:34 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46V90L5mFlzF4qN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 19:13:06 +1000 (AEST)
+Received: by mail-ed1-x544.google.com with SMTP id g12so733293eds.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 02:13:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to
+ :user-agent; bh=GEliFawsGnvWaq/wjC8o7X+uw8pCAUzjjDt3si5wKpw=;
+ b=cuhllGlp2MOrdGub8Xg9DSnbN4UNbu5MAj+tu2g8/hUaiRvqMMOHfTNwMUyS5pk0Wh
+ Cr/5CrT44vV+Lu6MEqICuL5EsXflVt2aB1CYOvw49Ff95R0+EpyudeDA0c1SjKiSBgvJ
+ j392DdO8k5wtN6+t0Mq4Pin3skB6EB7fqWabfD22XoO9Zau3MU3BJhMVCPaEwzZDcctL
+ 3Z1utSLzZkSKBXiuC7y0bwtRfMC6JHyQJ4KI6FWcJD3QstGxSDpCFQt7SWa9ffXb7iM8
+ Ka/YoQxle3ll0z8qQj2WsoJL1cViPtFo+jeRDT45DkakRyYbR2vwrsjhDwiP9OSANs1/
+ 05gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to:user-agent;
+ bh=GEliFawsGnvWaq/wjC8o7X+uw8pCAUzjjDt3si5wKpw=;
+ b=eGuf+8Zk0ZMJkw05QAkDEgsZNyWic7f47Q2/157nMa8HAQS74r1g6Dk4D+Ti6HKSnk
+ JW2pK+VMnblHq6zqqC4wZnwNI4vCqS0+5lcYqV/lxeQg++ESUVSBCxFgImNYFt158KCs
+ 0sIKeK3vBb3T0Kys4gETi+NIf1NQWoCt1msRIe1FRcXufatX7wywDBzW3UXeWkLG7/VJ
+ aBf8knEpcrXE3Ws8s6+CgEZ7mY4NIzv8yrZOWaRK7m9fyJclRqM3d0a23ZVpc/QYgJAS
+ bn18nThv7ppoviLh6OWZrSyfPKbCp/b+3HPtvKRV93Z6PCTV1C2ID/FPymjg6Dmao1Kr
+ BYbg==
+X-Gm-Message-State: APjAAAV3BXeTQqKxxcMQKYF4NWnsGp74LLQMwhBgXWz3TDmmjdL0QUlx
+ DsIqiFeoMEIJVGvj3sj5GC3PNA==
+X-Google-Smtp-Source: APXvYqz9+Jjoiq6EpEOnNn2ue7LgRH298IcNtOZjCAdMkVz1fw1ulTQ0FfVWoOu1Q7FOQkoJoXJfvw==
+X-Received: by 2002:aa7:da59:: with SMTP id w25mr44834467eds.143.1568365983857; 
+ Fri, 13 Sep 2019 02:13:03 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+ by smtp.gmail.com with ESMTPSA id oo23sm3092469ejb.64.2019.09.13.02.13.03
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 13 Sep 2019 02:13:03 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+ id 3271B10160B; Fri, 13 Sep 2019 12:13:05 +0300 (+03)
+Date: Fri, 13 Sep 2019 12:13:05 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating
+ architecture page table helpers
+Message-ID: <20190913091305.rkds4f3fqv3yjhjy@box>
+References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
+ <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
+ <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
+ <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <97bafb53-6ae9-1d42-1816-ef81b845b80c@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19091309-0012-0000-0000-0000034ACACB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091309-0013-0000-0000-000021853A28
-Message-Id: <76cd8c5e-0a7f-1aa0-0004-c7a874085ce1@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-13_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=879 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909130088
+In-Reply-To: <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,70 +89,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linux-s390@vger.kernel.org, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 13/09/2019 à 04:00, Aneesh Kumar K.V a écrit :
-> On 9/13/19 12:56 AM, Laurent Dufour wrote:
->> Le 12/09/2019 à 16:44, Aneesh Kumar K.V a écrit :
->>> Laurent Dufour <ldufour@linux.ibm.com> writes:
+On Fri, Sep 13, 2019 at 02:32:04PM +0530, Anshuman Khandual wrote:
 > 
->>>> +
->>>> +    idx = 2;
->>>> +    while (idx < len) {
->>>> +        unsigned int block_size = local_buffer[idx++];
->>>> +        unsigned int npsize;
->>>> +
->>>> +        if (!block_size)
->>>> +            break;
->>>> +
->>>> +        block_size = 1 << block_size;
->>>> +        if (block_size != 8)
->>>> +            /* We only support 8 bytes size TLB invalidate buffer */
->>>> +            pr_warn("Unsupported H_BLOCK_REMOVE block size : %d\n",
->>>> +                block_size);
->>>
->>> Should we skip setting block size if we find block_size != 8? Also can
->>> we avoid doing that pr_warn in loop and only warn if we don't find
->>> block_size 8 in the invalidate characteristics array?
->>
->> My idea here is to fully read and process the data returned by the hcall, 
->> and to put the limitation to 8 when checking before calling H_BLOCK_REMOVE.
->> The warning is there because I want it to be displayed once at boot.
->>
+> On 09/12/2019 10:44 PM, Christophe Leroy wrote:
+> > 
+> > 
+> > Le 12/09/2019 � 08:02, Anshuman Khandual a �crit�:
+> >> This adds a test module which will validate architecture page table helpers
+> >> and accessors regarding compliance with generic MM semantics expectations.
+> >> This will help various architectures in validating changes to the existing
+> >> page table helpers or addition of new ones.
+> >>
+> >> Test page table and memory pages creating it's entries at various level are
+> >> all allocated from system memory with required alignments. If memory pages
+> >> with required size and alignment could not be allocated, then all depending
+> >> individual tests are skipped.
+> >>
+> > 
+> > [...]
+> > 
+> >>
+> >> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> >> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> >> ---
+> >> � arch/x86/include/asm/pgtable_64_types.h |�� 2 +
+> >> � mm/Kconfig.debug����������������������� |� 14 +
+> >> � mm/Makefile���������������������������� |�� 1 +
+> >> � mm/arch_pgtable_test.c����������������� | 429 ++++++++++++++++++++++++
+> >> � 4 files changed, 446 insertions(+)
+> >> � create mode 100644 mm/arch_pgtable_test.c
+> >>
+> >> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
+> >> index 52e5f5f2240d..b882792a3999 100644
+> >> --- a/arch/x86/include/asm/pgtable_64_types.h
+> >> +++ b/arch/x86/include/asm/pgtable_64_types.h
+> >> @@ -40,6 +40,8 @@ static inline bool pgtable_l5_enabled(void)
+> >> � #define pgtable_l5_enabled() 0
+> >> � #endif /* CONFIG_X86_5LEVEL */
+> >> � +#define mm_p4d_folded(mm) (!pgtable_l5_enabled())
+> >> +
+> > 
+> > This is specific to x86, should go in a separate patch.
 > 
-> 
-> Can we have two block size reported for the same base page size/actual page 
-> size combination? If so we will overwrite the hblk[actual_psize] ?
+> Thought about it but its just a single line. Kirill suggested this in the
+> previous version. There is a generic fallback definition but s390 has it's
+> own. This change overrides the generic one for x86 probably as a fix or as
+> an improvement. Kirill should be able to help classify it in which case it
+> can be a separate patch.
 
-In check_lp_set_hblk() I'm only keeping the bigger one.
+I don't think it worth a separate patch.
 
-> 
->>>
->>>> +
->>>> +        for (npsize = local_buffer[idx++];  npsize > 0; npsize--)
->>>> +            check_lp_set_hblk((unsigned int) local_buffer[idx++],
->>>> +                      block_size);
->>>> +    }
->>>> +
->>>> +    for (bpsize = 0; bpsize < MMU_PAGE_COUNT; bpsize++)
->>>> +        for (idx = 0; idx < MMU_PAGE_COUNT; idx++)
->>>> +            if (mmu_psize_defs[bpsize].hblk[idx])
->>>> +                pr_info("H_BLOCK_REMOVE supports base psize:%d 
->>>> psize:%d block size:%d",
->>>> +                    bpsize, idx,
->>>> +                    mmu_psize_defs[bpsize].hblk[idx]);
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +machine_arch_initcall(pseries, read_tlbbi_characteristics);
->>>> +
->>>>   /*
->>>>    * Take a spinlock around flushes to avoid bouncing the hypervisor tlbie
->>>>    * lock.
-> 
-> -aneesh
-
+-- 
+ Kirill A. Shutemov
