@@ -1,51 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5ECB1B12
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 11:47:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF14B1B51
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 12:03:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46V9lr4Nf4zF5M4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 19:47:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46VB6H4srvzF5M7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 20:03:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Sqj8nI8N"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46V9gW26t3zF5Kb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 19:43:33 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3C1461A0262;
- Fri, 13 Sep 2019 11:43:29 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B835E1A00C4;
- Fri, 13 Sep 2019 11:43:22 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id D3862402C9;
- Fri, 13 Sep 2019 17:43:14 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- robh+dt@kernel.org, mark.rutland@arm.com, devicetree@vger.kernel.org
-Subject: [PATCH V2 2/2] ASoC: fsl_mqs: Add MQS component driver
-Date: Fri, 13 Sep 2019 17:42:14 +0800
-Message-Id: <74dfc73a92d2df4213225abe7d2a3db82672fe0f.1568367274.git.shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <65e1f035aea2951aacda54aa3a751bc244f72f6a.1568367274.git.shengjiu.wang@nxp.com>
-References: <65e1f035aea2951aacda54aa3a751bc244f72f6a.1568367274.git.shengjiu.wang@nxp.com>
-In-Reply-To: <65e1f035aea2951aacda54aa3a751bc244f72f6a.1568367274.git.shengjiu.wang@nxp.com>
-References: <65e1f035aea2951aacda54aa3a751bc244f72f6a.1568367274.git.shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46VB3m3K7ZzF5GP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 20:01:07 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46VB3f0pVyz9tyjW;
+ Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Sqj8nI8N; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id wR-kri8FtY2Q; Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46VB3d6fTQz9tyjG;
+ Fri, 13 Sep 2019 12:01:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1568368861; bh=2ALza02n3A6CEg96aj5aMUr3JRGvxRxQLYEMFbFE/UU=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Sqj8nI8NzbdvtlrbtrCYNcrM/TyIHT3s84kxgzLuc1bHrWIX3+Flnk1NoUeSpiScl
+ UtPpympvmV9LviqGRUz/Z7JinvogKFhxB4Hnk01VKvvK3cYgxdyYZdocRhBX7zGS2q
+ RYCcqoehg9GVxm+zOPGaVX3kpe6owDPMAy/ACXJk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F0DC88B982;
+ Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id fVVtef9u6zrS; Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
+Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 95ADA8B958;
+ Fri, 13 Sep 2019 12:01:02 +0200 (CEST)
+Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
+ <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
+ <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
+ <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
+Date: Fri, 13 Sep 2019 12:01:00 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,417 +81,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-MQS (medium quality sound), is used to generate medium quality
-audio via a standard digital output pin. It can be used to
-connect stereo speakers or headphones simply via power amplifier
-stages without an additional DAC chip. It only accepts 2-channel,
-LSB-valid 16bit, MSB shift-out first, frame sync asserting with
-the first bit of the frame, data shifted with the posedge of
-bit clock, 44.1 kHz or 48 kHz signals from SAI1 in left justified
-format; and it provides the SNR target as no more than 20dB for
-the signals below 10 kHz. The signals above 10 kHz will have
-worse THD+N values.
 
-MQS provides only simple audio reproduction. No internal pop,
-click or distortion artifact reduction methods are provided.
 
-The MQS receives the audio data from the SAI1 Tx section.
+Le 13/09/2019 à 11:02, Anshuman Khandual a écrit :
+> 
+>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
+>>
+>> #ifdefs have to be avoided as much as possible, see below
+> 
+> Yeah but it has been bit difficult to avoid all these $ifdef because of the
+> availability (or lack of it) for all these pgtable helpers in various config
+> combinations on all platforms.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
-Changes in v2
-- use devm_platform_ioremap_resource
+As far as I can see these pgtable helpers should exist everywhere at 
+least via asm-generic/ files.
 
- sound/soc/fsl/Kconfig   |  10 ++
- sound/soc/fsl/Makefile  |   2 +
- sound/soc/fsl/fsl_mqs.c | 333 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 345 insertions(+)
- create mode 100644 sound/soc/fsl/fsl_mqs.c
+Can you spot a particular config which fails ?
 
-diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
-index aa99c008a925..65e8cd4be930 100644
---- a/sound/soc/fsl/Kconfig
-+++ b/sound/soc/fsl/Kconfig
-@@ -25,6 +25,16 @@ config SND_SOC_FSL_SAI
- 	  This option is only useful for out-of-tree drivers since
- 	  in-tree drivers select it automatically.
- 
-+config SND_SOC_FSL_MQS
-+	tristate "Medium Quality Sound (MQS) module support"
-+	depends on SND_SOC_FSL_SAI
-+	select REGMAP_MMIO
-+	help
-+	  Say Y if you want to add Medium Quality Sound (MQS)
-+	  support for the Freescale CPUs.
-+	  This option is only useful for out-of-tree drivers since
-+	  in-tree drivers select it automatically.
-+
- config SND_SOC_FSL_AUDMIX
- 	tristate "Audio Mixer (AUDMIX) module support"
- 	select REGMAP_MMIO
-diff --git a/sound/soc/fsl/Makefile b/sound/soc/fsl/Makefile
-index c0dd04422fe9..8cde88c72d93 100644
---- a/sound/soc/fsl/Makefile
-+++ b/sound/soc/fsl/Makefile
-@@ -23,6 +23,7 @@ snd-soc-fsl-esai-objs := fsl_esai.o
- snd-soc-fsl-micfil-objs := fsl_micfil.o
- snd-soc-fsl-utils-objs := fsl_utils.o
- snd-soc-fsl-dma-objs := fsl_dma.o
-+snd-soc-fsl-mqs-objs := fsl_mqs.o
- 
- obj-$(CONFIG_SND_SOC_FSL_AUDMIX) += snd-soc-fsl-audmix.o
- obj-$(CONFIG_SND_SOC_FSL_ASOC_CARD) += snd-soc-fsl-asoc-card.o
-@@ -33,6 +34,7 @@ obj-$(CONFIG_SND_SOC_FSL_SPDIF) += snd-soc-fsl-spdif.o
- obj-$(CONFIG_SND_SOC_FSL_ESAI) += snd-soc-fsl-esai.o
- obj-$(CONFIG_SND_SOC_FSL_MICFIL) += snd-soc-fsl-micfil.o
- obj-$(CONFIG_SND_SOC_FSL_UTILS) += snd-soc-fsl-utils.o
-+obj-$(CONFIG_SND_SOC_FSL_MQS) += snd-soc-fsl-mqs.o
- obj-$(CONFIG_SND_SOC_POWERPC_DMA) += snd-soc-fsl-dma.o
- 
- # MPC5200 Platform Support
-diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
-new file mode 100644
-index 000000000000..c1619a553514
---- /dev/null
-+++ b/sound/soc/fsl/fsl_mqs.c
-@@ -0,0 +1,333 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// ALSA SoC IMX MQS driver
-+//
-+// Copyright (C) 2014-2015 Freescale Semiconductor, Inc.
-+// Copyright 2019 NXP
-+
-+#include <linux/clk.h>
-+#include <linux/module.h>
-+#include <linux/moduleparam.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/of.h>
-+#include <linux/pm.h>
-+#include <linux/slab.h>
-+#include <sound/soc.h>
-+#include <sound/pcm.h>
-+#include <sound/initval.h>
-+
-+#define REG_MQS_CTRL		0x00
-+
-+#define MQS_EN_MASK			(0x1 << 28)
-+#define MQS_EN_SHIFT			(28)
-+#define MQS_SW_RST_MASK			(0x1 << 24)
-+#define MQS_SW_RST_SHIFT		(24)
-+#define MQS_OVERSAMPLE_MASK		(0x1 << 20)
-+#define MQS_OVERSAMPLE_SHIFT		(20)
-+#define MQS_CLK_DIV_MASK		(0xFF << 0)
-+#define MQS_CLK_DIV_SHIFT		(0)
-+
-+/* codec private data */
-+struct fsl_mqs {
-+	struct regmap *regmap;
-+	struct clk *mclk;
-+	struct clk *ipg;
-+
-+	unsigned int reg_iomuxc_gpr2;
-+	unsigned int reg_mqs_ctrl;
-+	bool use_gpr;
-+};
-+
-+#define FSL_MQS_RATES	(SNDRV_PCM_RATE_44100 | SNDRV_PCM_RATE_48000)
-+#define FSL_MQS_FORMATS	SNDRV_PCM_FMTBIT_S16_LE
-+
-+static int fsl_mqs_hw_params(struct snd_pcm_substream *substream,
-+			     struct snd_pcm_hw_params *params,
-+			     struct snd_soc_dai *dai)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct fsl_mqs *mqs_priv = snd_soc_component_get_drvdata(component);
-+	unsigned long mclk_rate;
-+	int div, res;
-+	int bclk, lrclk;
-+
-+	mclk_rate = clk_get_rate(mqs_priv->mclk);
-+	bclk = snd_soc_params_to_bclk(params);
-+	lrclk = params_rate(params);
-+
-+	/*
-+	 * mclk_rate / (oversample(32,64) * FS * 2 * divider ) = repeat_rate;
-+	 * if repeat_rate is 8, mqs can achieve better quality.
-+	 * oversample rate is fix to 32 currently.
-+	 */
-+	div = mclk_rate / (32 * lrclk * 2 * 8);
-+	res = mclk_rate % (32 * lrclk * 2 * 8);
-+
-+	if (res == 0 && div > 0 && div <= 256) {
-+		if (mqs_priv->use_gpr) {
-+			regmap_update_bits(mqs_priv->regmap, IOMUXC_GPR2,
-+					   IMX6SX_GPR2_MQS_CLK_DIV_MASK,
-+					   (div - 1) << IMX6SX_GPR2_MQS_CLK_DIV_SHIFT);
-+			regmap_update_bits(mqs_priv->regmap, IOMUXC_GPR2,
-+					   IMX6SX_GPR2_MQS_OVERSAMPLE_MASK, 0);
-+		} else {
-+			regmap_update_bits(mqs_priv->regmap, REG_MQS_CTRL,
-+					   MQS_CLK_DIV_MASK,
-+					   (div - 1) << MQS_CLK_DIV_SHIFT);
-+			regmap_update_bits(mqs_priv->regmap, REG_MQS_CTRL,
-+					   MQS_OVERSAMPLE_MASK, 0);
-+		}
-+	} else {
-+		dev_err(component->dev, "can't get proper divider\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static int fsl_mqs_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
-+{
-+	/* Only LEFT_J & SLAVE mode is supported. */
-+	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
-+	case SND_SOC_DAIFMT_LEFT_J:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-+	case SND_SOC_DAIFMT_NB_NF:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
-+	case SND_SOC_DAIFMT_CBS_CFS:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int fsl_mqs_startup(struct snd_pcm_substream *substream,
-+			   struct snd_soc_dai *dai)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct fsl_mqs *mqs_priv = snd_soc_component_get_drvdata(component);
-+
-+	if (mqs_priv->use_gpr)
-+		regmap_update_bits(mqs_priv->regmap, IOMUXC_GPR2,
-+				   IMX6SX_GPR2_MQS_EN_MASK,
-+				   1 << IMX6SX_GPR2_MQS_EN_SHIFT);
-+	else
-+		regmap_update_bits(mqs_priv->regmap, REG_MQS_CTRL,
-+				   MQS_EN_MASK,
-+				   1 << MQS_EN_SHIFT);
-+	return 0;
-+}
-+
-+static void fsl_mqs_shutdown(struct snd_pcm_substream *substream,
-+			     struct snd_soc_dai *dai)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct fsl_mqs *mqs_priv = snd_soc_component_get_drvdata(component);
-+
-+	if (mqs_priv->use_gpr)
-+		regmap_update_bits(mqs_priv->regmap, IOMUXC_GPR2,
-+				   IMX6SX_GPR2_MQS_EN_MASK, 0);
-+	else
-+		regmap_update_bits(mqs_priv->regmap, REG_MQS_CTRL,
-+				   MQS_EN_MASK, 0);
-+}
-+
-+const static struct snd_soc_component_driver soc_codec_fsl_mqs = {
-+	.idle_bias_on = 1,
-+	.non_legacy_dai_naming	= 1,
-+};
-+
-+static const struct snd_soc_dai_ops fsl_mqs_dai_ops = {
-+	.startup = fsl_mqs_startup,
-+	.shutdown = fsl_mqs_shutdown,
-+	.hw_params = fsl_mqs_hw_params,
-+	.set_fmt = fsl_mqs_set_dai_fmt,
-+};
-+
-+static struct snd_soc_dai_driver fsl_mqs_dai = {
-+	.name		= "fsl-mqs-dai",
-+	.playback	= {
-+		.stream_name	= "Playback",
-+		.channels_min	= 2,
-+		.channels_max	= 2,
-+		.rates		= FSL_MQS_RATES,
-+		.formats	= FSL_MQS_FORMATS,
-+	},
-+	.ops = &fsl_mqs_dai_ops,
-+};
-+
-+static const struct regmap_config fsl_mqs_regmap_config = {
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.val_bits = 32,
-+	.max_register = REG_MQS_CTRL,
-+	.cache_type = REGCACHE_NONE,
-+};
-+
-+static int fsl_mqs_probe(struct platform_device *pdev)
-+{
-+	struct device_node *np = pdev->dev.of_node;
-+	struct device_node *gpr_np = 0;
-+	struct fsl_mqs *mqs_priv;
-+	void __iomem *regs;
-+	int ret = 0;
-+
-+	mqs_priv = devm_kzalloc(&pdev->dev, sizeof(*mqs_priv), GFP_KERNEL);
-+	if (!mqs_priv)
-+		return -ENOMEM;
-+
-+	/* On i.MX6sx the MQS control register is in GPR domain
-+	 * But in i.MX8QM/i.MX8QXP the control register is moved
-+	 * to its own domain.
-+	 */
-+	if (of_device_is_compatible(np, "fsl,imx8qm-mqs"))
-+		mqs_priv->use_gpr = false;
-+	else
-+		mqs_priv->use_gpr = true;
-+
-+	if (mqs_priv->use_gpr) {
-+		gpr_np = of_parse_phandle(np, "gpr", 0);
-+		if (IS_ERR(gpr_np)) {
-+			dev_err(&pdev->dev, "failed to get gpr node by phandle\n");
-+			ret = PTR_ERR(gpr_np);
-+			goto out;
-+		}
-+
-+		mqs_priv->regmap = syscon_node_to_regmap(gpr_np);
-+		if (IS_ERR(mqs_priv->regmap)) {
-+			dev_err(&pdev->dev, "failed to get gpr regmap\n");
-+			ret = PTR_ERR(mqs_priv->regmap);
-+			goto out;
-+		}
-+	} else {
-+		regs = devm_platform_ioremap_resource(pdev, 0);
-+		if (IS_ERR(regs))
-+			return PTR_ERR(regs);
-+
-+		mqs_priv->regmap = devm_regmap_init_mmio_clk(&pdev->dev,
-+							     "core",
-+							     regs,
-+							     &fsl_mqs_regmap_config);
-+		if (IS_ERR(mqs_priv->regmap)) {
-+			dev_err(&pdev->dev, "failed to init regmap: %ld\n",
-+				PTR_ERR(mqs_priv->regmap));
-+			return PTR_ERR(mqs_priv->regmap);
-+		}
-+
-+		mqs_priv->ipg = devm_clk_get(&pdev->dev, "core");
-+		if (IS_ERR(mqs_priv->ipg)) {
-+			dev_err(&pdev->dev, "failed to get the clock: %ld\n",
-+				PTR_ERR(mqs_priv->ipg));
-+			goto out;
-+		}
-+	}
-+
-+	mqs_priv->mclk = devm_clk_get(&pdev->dev, "mclk");
-+	if (IS_ERR(mqs_priv->mclk)) {
-+		dev_err(&pdev->dev, "failed to get the clock: %ld\n",
-+			PTR_ERR(mqs_priv->mclk));
-+		goto out;
-+	}
-+
-+	dev_set_drvdata(&pdev->dev, mqs_priv);
-+	pm_runtime_enable(&pdev->dev);
-+
-+	return devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
-+			&fsl_mqs_dai, 1);
-+out:
-+	if (!IS_ERR(gpr_np))
-+		of_node_put(gpr_np);
-+
-+	return ret;
-+}
-+
-+static int fsl_mqs_remove(struct platform_device *pdev)
-+{
-+	pm_runtime_disable(&pdev->dev);
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM
-+static int fsl_mqs_runtime_resume(struct device *dev)
-+{
-+	struct fsl_mqs *mqs_priv = dev_get_drvdata(dev);
-+
-+	if (mqs_priv->ipg)
-+		clk_prepare_enable(mqs_priv->ipg);
-+
-+	if (mqs_priv->mclk)
-+		clk_prepare_enable(mqs_priv->mclk);
-+
-+	if (mqs_priv->use_gpr)
-+		regmap_write(mqs_priv->regmap, IOMUXC_GPR2,
-+			     mqs_priv->reg_iomuxc_gpr2);
-+	else
-+		regmap_write(mqs_priv->regmap, REG_MQS_CTRL,
-+			     mqs_priv->reg_mqs_ctrl);
-+	return 0;
-+}
-+
-+static int fsl_mqs_runtime_suspend(struct device *dev)
-+{
-+	struct fsl_mqs *mqs_priv = dev_get_drvdata(dev);
-+
-+	if (mqs_priv->use_gpr)
-+		regmap_read(mqs_priv->regmap, IOMUXC_GPR2,
-+			    &mqs_priv->reg_iomuxc_gpr2);
-+	else
-+		regmap_read(mqs_priv->regmap, REG_MQS_CTRL,
-+			    &mqs_priv->reg_mqs_ctrl);
-+
-+	if (mqs_priv->mclk)
-+		clk_disable_unprepare(mqs_priv->mclk);
-+
-+	if (mqs_priv->ipg)
-+		clk_disable_unprepare(mqs_priv->ipg);
-+
-+	return 0;
-+}
-+#endif
-+
-+static const struct dev_pm_ops fsl_mqs_pm_ops = {
-+	SET_RUNTIME_PM_OPS(fsl_mqs_runtime_suspend,
-+			   fsl_mqs_runtime_resume,
-+			   NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-+				pm_runtime_force_resume)
-+};
-+
-+static const struct of_device_id fsl_mqs_dt_ids[] = {
-+	{ .compatible = "fsl,imx8qm-mqs", },
-+	{ .compatible = "fsl,imx6sx-mqs", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, fsl_mqs_dt_ids);
-+
-+static struct platform_driver fsl_mqs_driver = {
-+	.probe		= fsl_mqs_probe,
-+	.remove		= fsl_mqs_remove,
-+	.driver		= {
-+		.name	= "fsl-mqs",
-+		.of_match_table = fsl_mqs_dt_ids,
-+		.pm = &fsl_mqs_pm_ops,
-+	},
-+};
-+
-+module_platform_driver(fsl_mqs_driver);
-+
-+MODULE_AUTHOR("Shengjiu Wang <Shengjiu.Wang@nxp.com>");
-+MODULE_DESCRIPTION("MQS codec driver");
-+MODULE_LICENSE("GPL v2");
-+MODULE_ALIAS("platform: fsl-mqs");
--- 
-2.21.0
+> 
+>>
 
+[...]
+
+>>> +#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
+>>
+>> The same can be done here.
+> 
+> IIRC not only the page table helpers but there are data types (pxx_t) which
+> were not present on various configs and these wrappers help prevent build
+> failures. Any ways will try and see if this can be improved further. But
+> meanwhile if you have some suggestions, please do let me know.
+
+pgt_t and pmd_t are everywhere I guess.
+then pud_t and p4d_t have fallbacks in asm-generic files.
+
+So it shouldn't be an issue. Maybe if a couple of arches miss them, the 
+best would be to fix the arches, since that's the purpose of your 
+testsuite isn't it ?
+
+
+Christophe
