@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED3FB1861
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 08:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A9BB1862
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 08:34:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46V5R44xvXzF5Bw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 16:32:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46V5T92VjCzF5CZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 16:34:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,58 +16,56 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="uY5+cHed"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="VJ4CF4p8"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46V5Nl6lm4zF4PF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 16:30:31 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46V5Qn4y4CzF5C9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 16:32:17 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46V5Ng1ggyz9vKGc;
- Fri, 13 Sep 2019 08:30:27 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46V5Qj000Sz9vKGb;
+ Fri, 13 Sep 2019 08:32:12 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=uY5+cHed; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=VJ4CF4p8; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id hTfAidC5OknU; Fri, 13 Sep 2019 08:30:27 +0200 (CEST)
+ with ESMTP id tJ-xaM53VrCX; Fri, 13 Sep 2019 08:32:12 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46V5Ng0CK5z9vKGb;
- Fri, 13 Sep 2019 08:30:27 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46V5Qh5lbpz9vKGZ;
+ Fri, 13 Sep 2019 08:32:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1568356227; bh=HrnbpUjOdH2O99QrUiRX6bCSReFaAawQQMZp1ROobsw=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=uY5+cHedX8EBA/3u7WV7Bo2q8qsDdacLeTyW2xe+lgyb8kWMDhYUWwj5wLahYQvWL
- KxO7OKM/TU1ZZyLoG0lbZV7z9dEEqRaHKloWaa1nFI6aHx9nq3Ne0YnB6oY9Fj8KCq
- q8niX4qFtO7jgdwzJtyzsS2XllvoT2vb8TfAEVvc=
+ t=1568356332; bh=ReBvPV0Z/m9MUram7yhwHTiidcmJNZL+BD+hfnsloLA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=VJ4CF4p8hg1KKGgIhCeAsV4qMKvXYlzNNehQ7ceZ4a6ZuNVr4zWlfLC2C/d+4Vx6x
+ bOBxjzejDmg2+91ZvpNauetOhqSmZP1lVWbg5kakCMndFFbJsOS+UyolY/r68IIfBa
+ 7Uu12tw9w30LmD65sqocpmha8manvmPDWe4ylXUw=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E1F008B7FD;
- Fri, 13 Sep 2019 08:30:27 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A62D88B7FD;
+ Fri, 13 Sep 2019 08:32:13 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 2ivNC-fiIQGc; Fri, 13 Sep 2019 08:30:27 +0200 (CEST)
+ with ESMTP id LcWRvZH4vQC7; Fri, 13 Sep 2019 08:32:13 +0200 (CEST)
 Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7C5A18B770;
- Fri, 13 Sep 2019 08:30:27 +0200 (CEST)
-Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
- page table helpers
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 334838B770;
+ Fri, 13 Sep 2019 08:32:13 +0200 (CEST)
+Subject: Re: [PATCH V2 0/2] mm/debug: Add tests for architecture exported page
+ table helpers
 To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
 References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
- <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
- <4cf31ca9-39e4-87e4-7eef-a6f3f0ea7576@c-s.fr>
- <31aa6043-3b11-a936-bf35-6ed84bff9304@c-s.fr>
- <600a7c62-eea9-e26f-f7cf-f2103b7c228c@c-s.fr>
-Message-ID: <09fa20e8-a587-34ce-ec44-ebe159009350@c-s.fr>
-Date: Fri, 13 Sep 2019 08:30:25 +0200
+ <527edfce-c986-de4c-e286-34a70f6a2790@c-s.fr>
+ <1b467d7a-0324-eb2c-876a-f04a99b9c596@arm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <ba2314ff-54c1-0deb-b207-b591647fac9d@c-s.fr>
+Date: Fri, 13 Sep 2019 08:32:11 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <600a7c62-eea9-e26f-f7cf-f2103b7c228c@c-s.fr>
+In-Reply-To: <1b467d7a-0324-eb2c-876a-f04a99b9c596@arm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -87,134 +85,50 @@ Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
  James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
  Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
  Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, linux-s390@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
  Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
  Russell King - ARM Linux <linux@armlinux.org.uk>,
  Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
  Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Vlastimil Babka <vbabka@suse.cz>, linux-snps-arc@lists.infradead.org,
- Kees Cook <keescook@chromium.org>, Mark Brown <broonie@kernel.org>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>,
  Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
  linux-arm-kernel@lists.infradead.org,
  Sri Krishna chowdary <schowdary@nvidia.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-mips@vger.kernel.org,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
  Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
  Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
  Vineet Gupta <vgupta@synopsys.com>,
  Martin Schwidefsky <schwidefsky@de.ibm.com>,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+ "David S. Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 12/09/2019 à 17:52, Christophe Leroy a écrit :
+Le 13/09/2019 à 08:24, Anshuman Khandual a écrit :
 > 
 > 
-> Le 12/09/2019 à 17:36, Christophe Leroy a écrit :
+> On 09/12/2019 08:12 PM, Christophe Leroy wrote:
+>> Hi,
 >>
->>
->> Le 12/09/2019 à 17:00, Christophe Leroy a écrit :
->>>
->>>
->>> On 09/12/2019 06:02 AM, Anshuman Khandual wrote:
->>>> This adds a test module which will validate architecture page table 
->>>> helpers
->>>> and accessors regarding compliance with generic MM semantics 
->>>> expectations.
->>>> This will help various architectures in validating changes to the 
->>>> existing
->>>> page table helpers or addition of new ones.
->>>>
->>>> Test page table and memory pages creating it's entries at various 
->>>> level are
->>>> all allocated from system memory with required alignments. If memory 
->>>> pages
->>>> with required size and alignment could not be allocated, then all 
->>>> depending
->>>> individual tests are skipped.
->>>
->>> Build failure on powerpc book3s/32. This is because asm/highmem.h is 
->>> missing. It can't be included from asm/book3s/32/pgtable.h because it 
->>> creates circular dependency. So it has to be included from 
->>> mm/arch_pgtable_test.c
->>
->> In fact it is <linux/highmem.h> that needs to be added, adding 
->> <asm/highmem.h> directly provokes build failure at link time.
->>
+>> I didn't get patch 1 of this series, and it is not on linuxppc-dev patchwork either. Can you resend ?
 > 
-> I get the following failure,
+> Its there on linux-mm patchwork and copied on linux-kernel@vger.kernel.org
+> as well. The CC list for the first patch was different than the second one.
 > 
-> [    0.704685] ------------[ cut here ]------------
-> [    0.709239] initcall arch_pgtable_tests_init+0x0/0x228 returned with 
-> preemption imbalance
+> https://patchwork.kernel.org/patch/11142317/
+> 
+> Let me know if you can not find it either on MM or LKML list.
+> 
 
-preempt_disable() is called from kmap_atomic() which is called from 
-pte_alloc_map() via pte_offset_map().
-
-pte_unmap() has to be called to release the mapped pte and re-enable 
-preemtion.
+I finaly found it on linux-mm archive, thanks. See my other mails and my 
+fixing patch.
 
 Christophe
-
-
-> [    0.717539] WARNING: CPU: 0 PID: 1 at init/main.c:952 
-> do_one_initcall+0x18c/0x1d4
-> [    0.724922] CPU: 0 PID: 1 Comm: swapper Not tainted 
-> 5.3.0-rc7-s3k-dev-00880-g28fd02a838e5-dirty #2307
-> [    0.734070] NIP:  c070e674 LR: c070e674 CTR: c001292c
-> [    0.739084] REGS: df4a5dd0 TRAP: 0700   Not tainted 
-> (5.3.0-rc7-s3k-dev-00880-g28fd02a838e5-dirty)
-> [    0.747975] MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 28000222  XER: 00000000
-> [    0.754628]
-> [    0.754628] GPR00: c070e674 df4a5e88 df4a0000 0000004e 0000000a 
-> 00000000 000000ca 38207265
-> [    0.754628] GPR08: 00001032 00000800 00000000 00000000 22000422 
-> 00000000 c0004a7c 00000000
-> [    0.754628] GPR16: 00000000 00000000 00000000 00000000 00000000 
-> c0810000 c0800000 c0816f30
-> [    0.754628] GPR24: c070dc20 c074702c 00000006 0000009c 00000000 
-> c0724494 c074e140 00000000
-> [    0.789339] NIP [c070e674] do_one_initcall+0x18c/0x1d4
-> [    0.794435] LR [c070e674] do_one_initcall+0x18c/0x1d4
-> [    0.799437] Call Trace:
-> [    0.801867] [df4a5e88] [c070e674] do_one_initcall+0x18c/0x1d4 
-> (unreliable)
-> [    0.808694] [df4a5ee8] [c070e8c0] kernel_init_freeable+0x204/0x2dc
-> [    0.814830] [df4a5f28] [c0004a94] kernel_init+0x18/0x110
-> [    0.820107] [df4a5f38] [c00122ac] ret_from_kernel_thread+0x14/0x1c
-> [    0.826220] Instruction dump:
-> [    0.829161] 4beb1069 7d2000a6 61298000 7d200124 89210008 2f890000 
-> 41be0048 3c60c06a
-> [    0.836849] 38a10008 7fa4eb78 3863cacc 4b915115 <0fe00000> 4800002c 
-> 81220070 712a0004
-> [    0.844723] ---[ end trace 969d686308d40b33 ]---
-> 
-> Then starting init fails:
-> 
-> [    3.894074] Run /init as init process
-> [    3.898403] Failed to execute /init (error -14)
-> [    3.903009] Run /sbin/init as init process
-> [    3.907172] Run /etc/init as init process
-> [    3.911251] Run /bin/init as init process
-> [    3.915513] Run /bin/sh as init process
-> [    3.919471] Starting init: /bin/sh exists but couldn't execute it 
-> (error -14)
-> [    3.926732] Kernel panic - not syncing: No working init found.  Try 
-> passing init= option to kernel. See Linux 
-> Documentation/admin-guide/init.rst for guidance.
-> [    3.940864] CPU: 0 PID: 1 Comm: init Tainted: G        W 
-> 5.3.0-rc7-s3k-dev-00880-g28fd02a838e5-dirty #2307
-> [    3.951165] Call Trace:
-> [    3.953617] [df4a5ec8] [c002392c] panic+0x12c/0x320 (unreliable)
-> [    3.959621] [df4a5f28] [c0004b8c] rootfs_mount+0x0/0x2c
-> [    3.964849] [df4a5f38] [c00122ac] ret_from_kernel_thread+0x14/0x1c
-> 
-> 
-> Christophe
