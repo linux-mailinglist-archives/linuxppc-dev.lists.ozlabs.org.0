@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688F1B1783
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 06:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4A8B178E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 06:23:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46V2Fn3MDWzF56m
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 14:09:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46V2ZB2D9YzF572
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2019 14:23:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com;
+ (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46V2D33tMXzF54b
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 14:07:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46V2XC243RzF55j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2019 14:21:46 +1000 (AEST)
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2019 21:07:37 -0700
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 12 Sep 2019 21:21:43 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,489,1559545200"; 
- d="gz'50?scan'50,208,50";a="385290051"
+X-IronPort-AV: E=Sophos;i="5.64,492,1559545200"; 
+ d="gz'50?scan'50,208,50";a="197434566"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 12 Sep 2019 21:07:36 -0700
+ by orsmga002.jf.intel.com with ESMTP; 12 Sep 2019 21:21:41 -0700
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
  (envelope-from <lkp@intel.com>)
- id 1i8crw-0002wV-22; Fri, 13 Sep 2019 12:07:36 +0800
-Date: Fri, 13 Sep 2019 12:06:42 +0800
+ id 1i8d5Y-000GaV-Ok; Fri, 13 Sep 2019 12:21:40 +0800
+Date: Fri, 13 Sep 2019 12:20:55 +0800
 From: kbuild test robot <lkp@intel.com>
-To: Oliver O'Halloran <oohall@gmail.com>
-Subject: [powerpc:next-test 167/234] arch/powerpc/kernel/eeh_event.c:124:23:
- error: implicit declaration of function 'stack_trace_save'; did you mean
- 'stack_depot_save'?
-Message-ID: <201909131234.ZkHSkbEE%lkp@intel.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: [powerpc:next-test 188/234]
+ arch/powerpc/platforms/powernv/npu-dma.c:126:13: error: 'pnv_npu_set_window'
+ defined but not used
+Message-ID: <201909131251.vDhGACHG%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="ntqqubndy7abe75i"
+Content-Type: multipart/mixed; boundary="xwdkoxnucbdppwyq"
 Content-Disposition: inline
 X-Patchwork-Hint: ignore
 User-Agent: NeoMutt/20170113 (1.7.2)
@@ -63,19 +63,19 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---ntqqubndy7abe75i
+--xwdkoxnucbdppwyq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/powerpc/linux.git next-test
 head:   4fead715c62a5196fa57218a1992e5eb8437dd8a
-commit: 25baf3d81614b0b8ca8958f4d6f111ccaaaad578 [167/234] powerpc/eeh: Defer printing stack trace
+commit: b4d37a7b6934c0c16930c73f43c08e9a6af22f1a [188/234] powerpc/powernv: Remove unused pnv_npu_try_dma_set_bypass() function
 config: powerpc-skiroot_defconfig (attached as .config)
 compiler: powerpc64le-linux-gcc (GCC) 7.4.0
 reproduce:
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
-        git checkout 25baf3d81614b0b8ca8958f4d6f111ccaaaad578
+        git checkout b4d37a7b6934c0c16930c73f43c08e9a6af22f1a
         # save the attached .config to linux build tree
         GCC_VERSION=7.4.0 make.cross ARCH=powerpc 
 
@@ -84,74 +84,109 @@ Reported-by: kbuild test robot <lkp@intel.com>
 
 All errors (new ones prefixed by >>):
 
-   arch/powerpc/kernel/eeh_event.c: In function '__eeh_send_failure_event':
->> arch/powerpc/kernel/eeh_event.c:124:23: error: implicit declaration of function 'stack_trace_save'; did you mean 'stack_depot_save'? [-Werror=implicit-function-declaration]
-      pe->trace_entries = stack_trace_save(pe->stack_trace,
-                          ^~~~~~~~~~~~~~~~
-                          stack_depot_save
+>> arch/powerpc/platforms/powernv/npu-dma.c:126:13: error: 'pnv_npu_set_window' defined but not used [-Werror=unused-function]
+    static long pnv_npu_set_window(struct iommu_table_group *table_group, int num,
+                ^~~~~~~~~~~~~~~~~~
+>> arch/powerpc/platforms/powernv/npu-dma.c:96:28: error: 'get_gpu_pci_dev_and_pe' defined but not used [-Werror=unused-function]
+    static struct pnv_ioda_pe *get_gpu_pci_dev_and_pe(struct pnv_ioda_pe *npe,
+                               ^~~~~~~~~~~~~~~~~~~~~~
    cc1: all warnings being treated as errors
 
-vim +124 arch/powerpc/kernel/eeh_event.c
+vim +/pnv_npu_set_window +126 arch/powerpc/platforms/powernv/npu-dma.c
 
-    93	
-    94	/**
-    95	 * eeh_send_failure_event - Generate a PCI error event
-    96	 * @pe: EEH PE
-    97	 *
-    98	 * This routine can be called within an interrupt context;
-    99	 * the actual event will be delivered in a normal context
-   100	 * (from a workqueue).
-   101	 */
-   102	int __eeh_send_failure_event(struct eeh_pe *pe)
-   103	{
-   104		unsigned long flags;
-   105		struct eeh_event *event;
-   106	
-   107		event = kzalloc(sizeof(*event), GFP_ATOMIC);
-   108		if (!event) {
-   109			pr_err("EEH: out of memory, event not handled\n");
-   110			return -ENOMEM;
-   111		}
-   112		event->pe = pe;
-   113	
-   114		/*
-   115		 * Mark the PE as recovering before inserting it in the queue.
-   116		 * This prevents the PE from being free()ed by a hotplug driver
-   117		 * while the PE is sitting in the event queue.
-   118		 */
-   119		if (pe) {
-   120			/*
-   121			 * Save the current stack trace so we can dump it from the
-   122			 * event handler thread.
-   123			 */
- > 124			pe->trace_entries = stack_trace_save(pe->stack_trace,
-   125						 ARRAY_SIZE(pe->stack_trace), 0);
-   126	
-   127			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
-   128		}
-   129	
-   130		/* We may or may not be called in an interrupt context */
-   131		spin_lock_irqsave(&eeh_eventlist_lock, flags);
-   132		list_add(&event->list, &eeh_eventlist);
-   133		spin_unlock_irqrestore(&eeh_eventlist_lock, flags);
-   134	
-   135		/* For EEH deamon to knick in */
-   136		complete(&eeh_eventlist_event);
-   137	
-   138		return 0;
-   139	}
-   140	
+5d2aa710e69724 Alistair Popple      2015-12-17   91  
+5d2aa710e69724 Alistair Popple      2015-12-17   92  /*
+5d2aa710e69724 Alistair Popple      2015-12-17   93   * Returns the PE assoicated with the PCI device of the given
+5d2aa710e69724 Alistair Popple      2015-12-17   94   * NPU. Returns the linked pci device if pci_dev != NULL.
+5d2aa710e69724 Alistair Popple      2015-12-17   95   */
+5d2aa710e69724 Alistair Popple      2015-12-17  @96  static struct pnv_ioda_pe *get_gpu_pci_dev_and_pe(struct pnv_ioda_pe *npe,
+5d2aa710e69724 Alistair Popple      2015-12-17   97  						  struct pci_dev **gpdev)
+5d2aa710e69724 Alistair Popple      2015-12-17   98  {
+5d2aa710e69724 Alistair Popple      2015-12-17   99  	struct pnv_phb *phb;
+5d2aa710e69724 Alistair Popple      2015-12-17  100  	struct pci_controller *hose;
+5d2aa710e69724 Alistair Popple      2015-12-17  101  	struct pci_dev *pdev;
+5d2aa710e69724 Alistair Popple      2015-12-17  102  	struct pnv_ioda_pe *pe;
+5d2aa710e69724 Alistair Popple      2015-12-17  103  	struct pci_dn *pdn;
+5d2aa710e69724 Alistair Popple      2015-12-17  104  
+5d2aa710e69724 Alistair Popple      2015-12-17  105  	pdev = pnv_pci_get_gpu_dev(npe->pdev);
+5d2aa710e69724 Alistair Popple      2015-12-17  106  	if (!pdev)
+5d2aa710e69724 Alistair Popple      2015-12-17  107  		return NULL;
+5d2aa710e69724 Alistair Popple      2015-12-17  108  
+5d2aa710e69724 Alistair Popple      2015-12-17  109  	pdn = pci_get_pdn(pdev);
+5d2aa710e69724 Alistair Popple      2015-12-17  110  	if (WARN_ON(!pdn || pdn->pe_number == IODA_INVALID_PE))
+5d2aa710e69724 Alistair Popple      2015-12-17  111  		return NULL;
+5d2aa710e69724 Alistair Popple      2015-12-17  112  
+5d2aa710e69724 Alistair Popple      2015-12-17  113  	hose = pci_bus_to_host(pdev->bus);
+5d2aa710e69724 Alistair Popple      2015-12-17  114  	phb = hose->private_data;
+5d2aa710e69724 Alistair Popple      2015-12-17  115  	pe = &phb->ioda.pe_array[pdn->pe_number];
+5d2aa710e69724 Alistair Popple      2015-12-17  116  
+5d2aa710e69724 Alistair Popple      2015-12-17  117  	if (gpdev)
+5d2aa710e69724 Alistair Popple      2015-12-17  118  		*gpdev = pdev;
+5d2aa710e69724 Alistair Popple      2015-12-17  119  
+5d2aa710e69724 Alistair Popple      2015-12-17  120  	return pe;
+5d2aa710e69724 Alistair Popple      2015-12-17  121  }
+5d2aa710e69724 Alistair Popple      2015-12-17  122  
+83fb8ccf975138 Alexey Kardashevskiy 2018-12-19  123  static long pnv_npu_unset_window(struct iommu_table_group *table_group,
+83fb8ccf975138 Alexey Kardashevskiy 2018-12-19  124  		int num);
+83fb8ccf975138 Alexey Kardashevskiy 2018-12-19  125  
+83fb8ccf975138 Alexey Kardashevskiy 2018-12-19 @126  static long pnv_npu_set_window(struct iommu_table_group *table_group, int num,
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  127  		struct iommu_table *tbl)
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  128  {
+83fb8ccf975138 Alexey Kardashevskiy 2018-12-19  129  	struct pnv_ioda_pe *npe = container_of(table_group, struct pnv_ioda_pe,
+83fb8ccf975138 Alexey Kardashevskiy 2018-12-19  130  			table_group);
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  131  	struct pnv_phb *phb = npe->phb;
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  132  	int64_t rc;
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  133  	const unsigned long size = tbl->it_indirect_levels ?
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  134  		tbl->it_level_size : tbl->it_size;
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  135  	const __u64 start_addr = tbl->it_offset << tbl->it_page_shift;
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  136  	const __u64 win_size = tbl->it_size << tbl->it_page_shift;
+b04149c2dd85ac Alexey Kardashevskiy 2018-12-19  137  	int num2 = (num == 0) ? 1 : 0;
+b04149c2dd85ac Alexey Kardashevskiy 2018-12-19  138  
+b04149c2dd85ac Alexey Kardashevskiy 2018-12-19  139  	/* NPU has just one TVE so if there is another table, remove it first */
+b04149c2dd85ac Alexey Kardashevskiy 2018-12-19  140  	if (npe->table_group.tables[num2])
+83fb8ccf975138 Alexey Kardashevskiy 2018-12-19  141  		pnv_npu_unset_window(&npe->table_group, num2);
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  142  
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  143  	pe_info(npe, "Setting up window %llx..%llx pg=%lx\n",
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  144  			start_addr, start_addr + win_size - 1,
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  145  			IOMMU_PAGE_SIZE(tbl));
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  146  
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  147  	rc = opal_pci_map_pe_dma_window(phb->opal_id,
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  148  			npe->pe_number,
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  149  			npe->pe_number,
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  150  			tbl->it_indirect_levels + 1,
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  151  			__pa(tbl->it_base),
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  152  			size << 3,
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  153  			IOMMU_PAGE_SIZE(tbl));
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  154  	if (rc) {
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  155  		pe_err(npe, "Failed to configure TCE table, err %lld\n", rc);
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  156  		return rc;
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  157  	}
+6b3d12a948d279 Alistair Popple      2017-05-03  158  	pnv_pci_ioda2_tce_invalidate_entire(phb, false);
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  159  
+85674868cecebd Alexey Kardashevskiy 2016-04-29  160  	/* Add the table to the list so its TCE cache will get invalidated */
+b5cb9ab1a00b11 Alexey Kardashevskiy 2016-04-29  161  	pnv_pci_link_table_and_group(phb->hose->node, num,
+85674868cecebd Alexey Kardashevskiy 2016-04-29  162  			tbl, &npe->table_group);
+85674868cecebd Alexey Kardashevskiy 2016-04-29  163  
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  164  	return 0;
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  165  }
+b575c731fe58c1 Alexey Kardashevskiy 2016-04-29  166  
+
+:::::: The code at line 126 was first introduced by commit
+:::::: 83fb8ccf975138283c7f6d3685d9c5e2292381dd powerpc/powernv/npu: Convert NPU IOMMU helpers to iommu_table_group_ops
+
+:::::: TO: Alexey Kardashevskiy <aik@ozlabs.ru>
+:::::: CC: Michael Ellerman <mpe@ellerman.id.au>
 
 ---
 0-DAY kernel test infrastructure                Open Source Technology Center
 https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
---ntqqubndy7abe75i
+--xwdkoxnucbdppwyq
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICBQVe10AAy5jb25maWcAlDxbc9u20u/9FZr05Zw50xzbcZz0+8YPEAlKqEiCAUjJ9gtG
+H4sICHUYe10AAy5jb25maWcAlDxbc9u20u/9FZr05Zw50xzbcZz0+8YPEAlKqEiCAUjJ9gtG
 kZXUU8fykeS2+fdnF+AFIJdyTqfTWtjFbbHYO/jzTz9P2Mtx9219fNisHx+/T75un7b79XF7
 P/ny8Lj9/0ksJ7ksJzwW5VtATh+eXv7+9/Pur+3+eTN5//bd27Nf9puLyWK7f9o+TqLd05eH
 ry8wwMPu6aeff4J/f4bGb88w1v7/JnW/q8vH7S+PONIvXzebyT9mUfTPyYe3l2/PAD+SeSJm
@@ -531,4 +566,4 @@ du+c7Na0ul3iAyBJ4NA9KQ8U049ZWS/nny913T0WiUZZxqfqUIiYBxt2Q8iydsECOkVIfDAs
 AT6kCZEF1gpmrQVxzM1YuuVQpa3U0EzjIQVQ04USJUj7lePVCnOTc61yBv7qlR5WK1C9As4d
 ZrdufLjRUY5667aQmEYJFEE3sO43/oGzQGS3E7RCHDJ7yLofzmyvtguw1ED9B+7PO9ceSgEA
 
---ntqqubndy7abe75i--
+--xwdkoxnucbdppwyq--
