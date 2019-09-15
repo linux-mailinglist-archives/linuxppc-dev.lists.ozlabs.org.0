@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D96B2D8E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 03:32:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBDAB2D8F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 03:34:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WBgn0gKpzF5xR
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 11:32:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WBjk58YWzF5w8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 11:34:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,53 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Uir3BmFX"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="rYdORvoJ"; 
  dkim-atps=neutral
 Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
  [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WBbM13VczF5pm
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:28:30 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id i18so17243765pgl.11
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:28:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WBbP4rCyzF5pT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:28:33 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id m29so993985pgc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:28:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=rxmjz0iKLpD4SvQHr6gqGFu7B4HWvIXc0QCj5vXAUUQ=;
- b=Uir3BmFX5sMDJEYNYALGnFpnSsF9q7j/jsg2BmzJY72MB4FAI39iHy2V7ZkzlsEF+n
- s3XNSjLgMth/VdVQAPE1u6MIRGkEKQ7rcT5hsJvUkuEE39wz8TFXs4e+21mlBkWVT8XW
- yBPbOOFgUsVfpZc5RhYUIVWrnRmYplhcZ1ktwuqIPdDQnrUlO5Uy2+BN1QwBxtRy05w2
- 3uzeTMRc4/jL6ZVREh4R4B8bFfEtMc/F1YYFo/TAIb6r3PlFkmbX98eISWTdMkCKT0oI
- 0Js6yc539gU7VKId1/ceDUqWBb1fLtXgyqrSqP7ojx64ct8gkhF4PDqAFnumapVIkFlD
- LGiQ==
+ bh=z0oUk02qbs5xDQCZ4aN0Lu50uX+8pdjMfY1RvYU/OnU=;
+ b=rYdORvoJRPtVYfA53cU5uFulGCG2tcDdr9wEQlEdUyju8Jx0Mv/HjX8irXgWvLjYgM
+ qS2oCrJy+TjE9NQYt7+FR0Ouf/9ud2rKRM47kNDg7BYm7hfRAsJAe2GDebMQPIwRPT0j
+ L8/tPX+1xdztYE/XZZyDU94V06kWoKWr5oDKApbmWxmUoRW7IeImtZmMilG/pUQuwp5q
+ dmisySQ76tDTVOBBtarYwwc6rUzUeo1ce+uXQAegAcAqwHW+R6GK3M7K0CWzG/AyMe9v
+ eIF2oFVjlYtyjgIgiy4nW9p3qMOOU2FGfsZ6sCDsslbos/kBBtCwJ61Kt1vqWqXjU/aW
+ bG+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=rxmjz0iKLpD4SvQHr6gqGFu7B4HWvIXc0QCj5vXAUUQ=;
- b=JeY3S/9nyOUni+tfkqxB53XP3+syT7WZjVB6NYmkFIIL/T3FCoNZRMHhIV1NvNpXvc
- KS498EUquQnYi6tC5Fyzvj0NdMRHdXPhrqPNgfZS6jLbf2/G+r/NLwNRanlEIRfZP38g
- B5+hquD0NjSMs3yoY4Zu7rJJNIwu5clomfQlP5fYq6b4IaaUYbepXGOrub+XEmhkQKlh
- jQhyXb7igFationRNNgyQdQQ+HQFjps+6iBZ58uWw5p1ZIC/N3fOF91aode32J3X+IrA
- 5BOAj8a9efUl9ounkR+SaKmbqOetzGxvcjloAg2ZcYja0VZ7X5Ooe/gPXw/iYL2dN6e3
- seTA==
-X-Gm-Message-State: APjAAAXmrP+B7W5UCZ74Np1EcPYuXyh0E09bAEZZ3xN3ZpqHf/0kXzXc
- Z7SYtgVL5Bw319WfrBaN4LS8bv51
-X-Google-Smtp-Source: APXvYqxE0ZdlcD96BCTQqnJ3dex9rgGmkBNFDuNfxo4dQoiAksb7Iiycw9q/xhuS1B0GEz+cBWoo9A==
-X-Received: by 2002:a63:1:: with SMTP id 1mr18684498pga.162.1568510908956;
- Sat, 14 Sep 2019 18:28:28 -0700 (PDT)
+ bh=z0oUk02qbs5xDQCZ4aN0Lu50uX+8pdjMfY1RvYU/OnU=;
+ b=qcjEaMTnaXr7/PUwO9o2fJgcj4NB7pc+jJ1IeiTE2hNqBy7sus+M51tSxEbZ/WqUFu
+ 6uy9uruN7ZRj/Qs2GqkPNygW0zQ20Mi+mOFdKgFpnYnLwJA7iDlgq8TZ9wtQeMwt2yjc
+ P7elyGO653hp3sdRZuLi3w9MJ9S3SMEL2exOmiLr1z5JTaRa8qVl83/6d3E3dIQFf9iz
+ rMKbF6Efpt4ocOQ3KzjVTvnmfg9L9qYGflotAOvMgEjdi72M2D9qybqXnVoEpcpcG03P
+ GuCLeNHHubsq8adBOA1rm9C/S8lNnkO9pDsRZT7wbWqcNvWelif274RB3wnR8WQzuiEx
+ 8XMA==
+X-Gm-Message-State: APjAAAXG63p/kPLA6Yw0lxz7w2YSIok3aqszz8SGFmgtdPUk+Ikqr3t9
+ QUFxa7Pm2g3k/fEai9k0/F5/FuN5
+X-Google-Smtp-Source: APXvYqxvCXJ+mu1B9M2ZalPNcqWA/WCLOIXl8O0O0cdRGyF4P9oFLWGzFqPLvLfTF1S/2FfiX9+Wmg==
+X-Received: by 2002:a63:6193:: with SMTP id
+ v141mr51232565pgb.263.1568510911818; 
+ Sat, 14 Sep 2019 18:28:31 -0700 (PDT)
 Received: from bobo.local0.net ([203.63.189.78])
- by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.28.26
+ by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.28.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Sep 2019 18:28:28 -0700 (PDT)
+ Sat, 14 Sep 2019 18:28:31 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 01/27] powerpc/64s/exception: Introduce INT_DEFINE
- parameter block for code generation
-Date: Sun, 15 Sep 2019 11:27:47 +1000
-Message-Id: <20190915012813.29317-2-npiggin@gmail.com>
+Subject: [RFC PATCH 02/27] powerpc/64s/exception: Add GEN_COMMON macro that
+ uses INT_DEFINE parameters
+Date: Sun, 15 Sep 2019 11:27:48 +1000
+Message-Id: <20190915012813.29317-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190915012813.29317-1-npiggin@gmail.com>
 References: <20190915012813.29317-1-npiggin@gmail.com>
@@ -85,143 +86,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The code generation macro arguments are difficult to read, and
-defaults can't easily be used.
-
-This introduces a block where parameters can be set for interrupt
-handler code generation by the subsequent macros, and adds the first
-generation macro for interrupt entry.
-
-One interrupt handler is converted to the new macros to demonstrate
-the change, the rest will be coverted all at once.
-
 No generated code change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 77 ++++++++++++++++++++++++++--
- 1 file changed, 73 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index d0018dd17e0a..e6ad6e6cf65e 100644
+index e6ad6e6cf65e..591ae2a73e18 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -193,6 +193,61 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- 	mtctr	reg;							\
- 	bctr
+@@ -206,6 +206,9 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ #define IMASK		.L_IMASK_\name\()
+ #define IKVM_REAL	.L_IKVM_REAL_\name\()
+ #define IKVM_VIRT	.L_IKVM_VIRT_\name\()
++#define ISTACK		.L_ISTACK_\name\()
++#define IRECONCILE	.L_IRECONCILE_\name\()
++#define IKUAP		.L_IKUAP_\name\()
  
-+/*
-+ * Interrupt code generation macros
-+ */
-+#define IVEC		.L_IVEC_\name\()
-+#define IHSRR		.L_IHSRR_\name\()
-+#define IAREA		.L_IAREA_\name\()
-+#define IDAR		.L_IDAR_\name\()
-+#define IDSISR		.L_IDSISR_\name\()
-+#define ISET_RI		.L_ISET_RI_\name\()
-+#define IEARLY		.L_IEARLY_\name\()
-+#define IMASK		.L_IMASK_\name\()
-+#define IKVM_REAL	.L_IKVM_REAL_\name\()
-+#define IKVM_VIRT	.L_IKVM_VIRT_\name\()
-+
-+#define INT_DEFINE_BEGIN(n)						\
-+.macro int_define_ ## n name
-+
-+#define INT_DEFINE_END(n)						\
-+.endm ;									\
-+int_define_ ## n n ;							\
-+do_define_int n
-+
-+.macro do_define_int name
-+	.ifndef IVEC
-+		.error "IVEC not defined"
+ #define INT_DEFINE_BEGIN(n)						\
+ .macro int_define_ ## n name
+@@ -246,6 +249,15 @@ do_define_int n
+ 	.ifndef IKVM_VIRT
+ 		IKVM_VIRT=0
+ 	.endif
++	.ifndef ISTACK
++		ISTACK=1
 +	.endif
-+	.ifndef IHSRR
-+		IHSRR=EXC_STD
++	.ifndef IRECONCILE
++		IRECONCILE=1
 +	.endif
-+	.ifndef IAREA
-+		IAREA=PACA_EXGEN
++	.ifndef IKUAP
++		IKUAP=1
 +	.endif
-+	.ifndef IDAR
-+		IDAR=0
-+	.endif
-+	.ifndef IDSISR
-+		IDSISR=0
-+	.endif
-+	.ifndef ISET_RI
-+		ISET_RI=1
-+	.endif
-+	.ifndef IEARLY
-+		IEARLY=0
-+	.endif
-+	.ifndef IMASK
-+		IMASK=0
-+	.endif
-+	.ifndef IKVM_REAL
-+		IKVM_REAL=0
-+	.endif
-+	.ifndef IKVM_VIRT
-+		IKVM_VIRT=0
-+	.endif
-+.endm
-+
+ .endm
+ 
  .macro INT_KVM_HANDLER name, vec, hsrr, area, skip
- 	TRAMP_KVM_BEGIN(\name\()_kvm)
- 	KVM_HANDLER \vec, \hsrr, \area, \skip
-@@ -474,7 +529,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	 */
- 	GET_SCRATCH0(r10)
- 	std	r10,\area\()+EX_R13(r13)
--	.if \dar
-+	.if \dar == 1
- 	.if \hsrr
- 	mfspr	r10,SPRN_HDAR
- 	.else
-@@ -482,7 +537,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	.endif
- 	std	r10,\area\()+EX_DAR(r13)
- 	.endif
--	.if \dsisr
-+	.if \dsisr == 1
- 	.if \hsrr
- 	mfspr	r10,SPRN_HDSISR
- 	.else
-@@ -506,6 +561,14 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+@@ -670,6 +682,10 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66)
  	.endif
  .endm
  
-+.macro GEN_INT_ENTRY name, virt, ool=0
-+	.if ! \virt
-+		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_REAL
-+	.else
-+		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_VIRT
-+	.endif
++.macro GEN_COMMON name
++	INT_COMMON IVEC, IAREA, ISTACK, IKUAP, IRECONCILE, IDAR, IDSISR
 +.endm
 +
  /*
-  * On entry r13 points to the paca, r9-r13 are saved in the paca,
-  * r9 contains the saved CR, r11 and r12 contain the saved SRR0 and
-@@ -1143,12 +1206,18 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	bl	unrecoverable_exception
- 	b	.
- 
-+INT_DEFINE_BEGIN(data_access)
-+	IVEC=0x300
-+	IDAR=1
-+	IDSISR=1
-+	IKVM_REAL=1
-+INT_DEFINE_END(data_access)
- 
- EXC_REAL_BEGIN(data_access, 0x300, 0x80)
--	INT_HANDLER data_access, 0x300, ool=1, dar=1, dsisr=1, kvm=1
-+	GEN_INT_ENTRY data_access, virt=0, ool=1
- EXC_REAL_END(data_access, 0x300, 0x80)
- EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
--	INT_HANDLER data_access, 0x300, virt=1, dar=1, dsisr=1
-+	GEN_INT_ENTRY data_access, virt=1
+  * Restore all registers including H/SRR0/1 saved in a stack frame of a
+  * standard exception.
+@@ -1221,13 +1237,7 @@ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
  EXC_VIRT_END(data_access, 0x4300, 0x80)
  INT_KVM_HANDLER data_access, 0x300, EXC_STD, PACA_EXGEN, 1
  EXC_COMMON_BEGIN(data_access_common)
+-	/*
+-	 * Here r13 points to the paca, r9 contains the saved CR,
+-	 * SRR0 and SRR1 are saved in r11 and r12,
+-	 * r9 - r13 are saved in paca->exgen.
+-	 * EX_DAR and EX_DSISR have saved DAR/DSISR
+-	 */
+-	INT_COMMON 0x300, PACA_EXGEN, 1, 1, 1, 1, 1
++	GEN_COMMON data_access
+ 	ld	r4,_DAR(r1)
+ 	ld	r5,_DSISR(r1)
+ BEGIN_MMU_FTR_SECTION
 -- 
 2.23.0
 
