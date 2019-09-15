@@ -2,90 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB75B33E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 06:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72ECB344C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 07:13:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WtRC1tSDzF4tN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 14:23:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WvX52B0HzDrB1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 15:13:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=adam.zerella@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="T1bh5zbj"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WtNr4h3RzF4p9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 14:21:48 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8G3NAHR148762
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 23:26:09 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v1ss197av-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 23:26:09 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Mon, 16 Sep 2019 04:26:07 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 16 Sep 2019 04:26:02 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8G3Q1Yx50462912
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Sep 2019 03:26:01 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B08311C04A;
- Mon, 16 Sep 2019 03:26:01 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB9E411C04C;
- Mon, 16 Sep 2019 03:26:00 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 16 Sep 2019 03:26:00 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id E0E33A01B5;
- Mon, 16 Sep 2019 13:25:57 +1000 (AEST)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Date: Mon, 16 Sep 2019 13:25:57 +1000
-In-Reply-To: <c4760639-68e8-6969-d0eb-97f12f814109@c-s.fr>
-References: <20190903052407.16638-1-alastair@au1.ibm.com>
- <20190903052407.16638-2-alastair@au1.ibm.com>
- <c4760639-68e8-6969-d0eb-97f12f814109@c-s.fr>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WHy62CtpzF3hH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 15:30:00 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id q5so20450471pfg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 22:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ej/u95XewO8oxEcD2YFAX3/VQ7PaDTsn1Re04y77RLQ=;
+ b=T1bh5zbjHeIbb7GZFFEVni5AAysciCtvB/KQ9lIsQ85fRHqx7JXsCMmfaHDzD6PV1W
+ +NXn7kytaZhwXPxVR4XPk9g3MsrFtt1rmWwZlAtRKlz3nmcfC7aqZT2NYSSW1/rDgU1C
+ kN0anx2X5g0Q76wYs9VcObT5VEqXzwukhtDh2LcuKl0bWzjsig7c0CZhluljfKt1n4tQ
+ LdLJFjHGDAQKiUwTKSoc9cTiOuFxHw4/zbpD/F8wd06vEPZF5u2IeS/SPpa6cQ1vQWPg
+ 48gaqT/EoXD25G4ZVvSty9cj+LCTV3QIAwiVU7W0jqnCohJroadAO9Sti+8RW6DlLpoY
+ 03ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ej/u95XewO8oxEcD2YFAX3/VQ7PaDTsn1Re04y77RLQ=;
+ b=s31yJ1e4PE1IKj3c2KaBhhP5FlnHF/wjST6EQ1hR93aW6m+VVPckJ/KvKcC4zQ7yjx
+ FvLKIFfv8BnWjS5vXzrZzb78MrthdMUVboKIKzRcj/JpJ8Wppr4jjeSZXV+VMkdIj9GP
+ piXvpsr7XS0O7yAq3OQwzv/WgXYzX7cIcTBkqO/ZRuaxWHvqWNFuwx7tIj/rlo1Xri63
+ oBFLiXVgisXwVgYejcAMoh9LnGssAJWcrluRl3km2FJyAIGxhOEzGUkbRMefoS+Fl1wQ
+ XpZ/7rEsCU9HqbJQVYqYV5rBj6+lEvsvkyxO61tzL5WfTzAPD/t1O2pAXlTicmSx+wOj
+ Lk9Q==
+X-Gm-Message-State: APjAAAWz04/xo13J4h9DIJiaNFiKSxE2h8Te2EIdJtZLQS2kQiAwB3mA
+ sapRky8OrxA5yWMFLVK8P0I=
+X-Google-Smtp-Source: APXvYqzeq0YV1qXcBW4pAZjUEGQu2bHQdU+w4lR0v9u4fxe2rtZWEtYaTSm/FiG9LwmD9ljfJIIM4g==
+X-Received: by 2002:a65:6104:: with SMTP id z4mr6748738pgu.27.1568525397425;
+ Sat, 14 Sep 2019 22:29:57 -0700 (PDT)
+Received: from localhost.localdomain (ip-103-85-37-119.syd.xi.com.au.
+ [103.85.37.119])
+ by smtp.gmail.com with ESMTPSA id q42sm7137156pja.16.2019.09.14.22.29.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 14 Sep 2019 22:29:56 -0700 (PDT)
+From: Adam Zerella <adam.zerella@gmail.com>
+To: 
+Subject: [PATCH] docs: powerpc: Add missing documentation reference
+Date: Sun, 15 Sep 2019 15:29:05 +1000
+Message-Id: <20190915052905.13431-1-adam.zerella@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19091603-0028-0000-0000-0000039D501E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091603-0029-0000-0000-0000245FC33D
-Message-Id: <ed2fb3e4f4f6710f97178acef8f3ee8966cc9641.camel@au1.ibm.com>
-Subject: RE: [PATCH v2 1/6] powerpc: Allow flush_icache_range to work across
- ranges >4GB
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-16_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=855 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909160034
+X-Mailman-Approved-At: Mon, 16 Sep 2019 15:11:42 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,45 +79,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Qian Cai <cai@lca.pw>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>
+Cc: Adam Zerella <adam.zerella@gmail.com>, corbet@lwn.net, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2019-09-14 at 09:46 +0200, Christophe Leroy wrote:
-> 
-> Le 03/09/2019 à 07:23, Alastair D'Silva a écrit :
-> > From: Alastair D'Silva <alastair@d-silva.org>
-> > 
-> > When calling flush_icache_range with a size >4GB, we were masking
-> > off the upper 32 bits, so we would incorrectly flush a range
-> > smaller
-> > than intended.
-> > 
-> > This patch replaces the 32 bit shifts with 64 bit ones, so that
-> > the full size is accounted for.
-> 
-> Isn't there the same issue in arch/powerpc/kernel/vdso64/cacheflush.S
-> ?
-> 
-> Christophe
+The documentation pages for 'elfnote' and 'ultravisor'
+are not included in the powerpc documentation index, this
+generates Sphinx warnings:
 
-Yes, there is. I'll fix it, but I wonder whether anything calls it? I
-asked Google, and every mention of it was in the kernel source or
-mailing list.
+WARNING: document isn't included in any toctree
 
-Maybe BenH can chime in?
+Additionally, when one includes these missing doc pages,
+more Sphinx warnings appear. Unused footnote references,
+syntax highlighting and table of content ordering has
+been adjusted.
 
+Signed-off-by: Adam Zerella <adam.zerella@gmail.com>
+---
+ Documentation/powerpc/elfnote.rst    | 29 ++++++++++++++--------------
+ Documentation/powerpc/index.rst      |  2 ++
+ Documentation/powerpc/ultravisor.rst | 13 +++++--------
+ 3 files changed, 21 insertions(+), 23 deletions(-)
+
+diff --git a/Documentation/powerpc/elfnote.rst b/Documentation/powerpc/elfnote.rst
+index 2a5c4beeb809..06602248621c 100644
+--- a/Documentation/powerpc/elfnote.rst
++++ b/Documentation/powerpc/elfnote.rst
+@@ -8,8 +8,7 @@ capabilities and information which can be used by a bootloader or userland.
+ Types and Descriptors
+ ---------------------
+ 
+-The types to be used with the "PowerPC" namesapce are defined in the
+-include/uapi/asm/elfnote.h
++The types to be used with the "PowerPC" namesapce are defined in [#f1]_.
+ 
+ 	1) PPC_ELFNOTE_CAPABILITIES
+ 
+@@ -18,25 +17,25 @@ bitmap as "descriptor" field. Each bit is described below:
+ 
+ - Ultravisor-capable bit (PowerNV only).
+ 
++.. code-block:: c
++
+ 	#define PPCCAP_ULTRAVISOR_BIT (1 << 0)
+ 
+-	Indicate that the powerpc kernel binary knows how to run in an
+-	ultravisor-enabled system.
++Indicate that the powerpc kernel binary knows how to run in an
++ultravisor-enabled system.
+ 
+-	In an ultravisor-enabled system, some machine resources are now controlled
+-	by the ultravisor. If the kernel is not ultravisor-capable, but it ends up
+-	being run on a machine with ultravisor, the kernel will probably crash
+-	trying to access ultravisor resources. For instance, it may crash in early
+-	boot trying to set the partition table entry 0.
++In an ultravisor-enabled system, some machine resources are now controlled
++by the ultravisor. If the kernel is not ultravisor-capable, but it ends up
++being run on a machine with ultravisor, the kernel will probably crash
++trying to access ultravisor resources. For instance, it may crash in early
++boot trying to set the partition table entry 0.
+ 
+-	In an ultravisor-enabled system, a bootloader could warn the user or prevent
+-   	the kernel from being run if the PowerPC ultravisor capability doesn't exist
+-	or the Ultravisor-capable bit is not set.
++In an ultravisor-enabled system, a bootloader could warn the user or prevent
++the kernel from being run if the PowerPC ultravisor capability doesn't exist
++or the Ultravisor-capable bit is not set.
+ 
+ References
+ ----------
+ 
+-arch/powerpc/include/asm/elfnote.h
+-arch/powerpc/kernel/note.S
+-
++.. [#f1] arch/powerpc/include/asm/elfnote.h
+ 
+diff --git a/Documentation/powerpc/index.rst b/Documentation/powerpc/index.rst
+index 549b1cdd77ae..db7b6a880f52 100644
+--- a/Documentation/powerpc/index.rst
++++ b/Documentation/powerpc/index.rst
+@@ -15,6 +15,7 @@ powerpc
+     dawr-power9
+     dscr
+     eeh-pci-error-recovery
++    elfnote
+     firmware-assisted-dump
+     hvcs
+     isa-versions
+@@ -25,6 +26,7 @@ powerpc
+     qe_firmware
+     syscall64-abi
+     transactional_memory
++    ultravisor
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/powerpc/ultravisor.rst b/Documentation/powerpc/ultravisor.rst
+index 94a149f34ec3..730854f73830 100644
+--- a/Documentation/powerpc/ultravisor.rst
++++ b/Documentation/powerpc/ultravisor.rst
+@@ -1,5 +1,5 @@
+ .. SPDX-License-Identifier: GPL-2.0
+-﻿.. _ultravisor:
++.. _ultravisor:
+ 
+ ============================
+ Protected Execution Facility
+@@ -8,9 +8,6 @@ Protected Execution Facility
+ .. contents::
+     :depth: 3
+ 
+-.. sectnum::
+-    :depth: 3
+-
+ Protected Execution Facility
+ ############################
+ 
+@@ -255,10 +252,10 @@ Ultravisor calls API
+     be made available in the public/OpenPower version of the PAPR
+     specification.
+ 
+-    **Note**
++    .. note::
+ 
+-    If PEF is not enabled, the ultracalls will be redirected to the
+-    Hypervisor which must handle/fail the calls.
++        If PEF is not enabled, the ultracalls will be redirected to the
++        Hypervisor which must handle/fail the calls.
+ 
+ Ultracalls used by Hypervisor
+ =============================
+@@ -1054,4 +1051,4 @@ Use cases
+ References
+ ##########
+ 
+-.. [1] `Supporting Protected Computing on IBM Power Architecture <https://developer.ibm.com/articles/l-support-protected-computing/>`_
++- `Supporting Protected Computing on IBM Power Architecture <https://developer.ibm.com/articles/l-support-protected-computing/>`_
 -- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
+2.21.0
 
