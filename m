@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E051B2D9A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 03:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69728B2D9B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 03:45:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WBwn6czkzF63S
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 11:43:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WByx5J8CzF4g9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 11:45:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="gkj6TlTa"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="S2Pgu/Gf"; 
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WBbj0Jv3zF5r5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:28:49 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id m9so14940855pls.8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:28:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WBbm0qmrzF5r2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:28:51 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id q10so20295073pfl.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:28:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=WazmI77PqSdHqEhfA3hARSGKN2eeeJPw3yuM6xNjhCk=;
- b=gkj6TlTaOClTopTu4HrKPFS3t6TPcqLnnHP8oJ65XLchDTL5T9aiLn89aeW1Uej4aT
- oGY7VH9UnItzkHp3Y6ne/gxTH+6Gn4fHVUWJEzuD8r8a5ORNTDfY6HWPPTc/TY+hG5MP
- VQRTZqSDzgKEyzNqHVV3ZoSzmLZAsGGDn7cRYPnoKcw5Quu/F0+VWKPVuNwtq33xGY2k
- 7O97+Z5X+PBV6pTTCRxzOnsm1lP78M4B/eNC9mKhFMZv8XrRYWlSh/aAkCkVG0YJgESe
- gqzfAx9nkOQoFzXPVs+ChAkD542kib78YfkTKm9s5pDu5R6ueH/1OWSkYOmvKLrCqZcc
- nGFQ==
+ bh=fmR7XMzyavzj4VCy0MlGZ9mjhhLgbUIDDnTIu19bZqg=;
+ b=S2Pgu/Gf7NEGCziL8uVp9LeuWmd5zEGiGo51vL5gAvsy6iw/riZcIqJKUlcTCUoABt
+ 916jTFvWsY3UdCOJjjEqgsQ+C5DNRdNWLPoJvF+HDhFAzRBPYwMIA8pXLlVvQiwbakCF
+ w8YX/ZJpVH18HEGT1UWGVIV/5A9BISvNWQTltjKUz0xmvFa18vtpLzW4X0+/ULANdsVp
+ pLsf4J1roZUA4z/oRlpv/EG5YOD3FD6iOmOfm2z4hiy0OjaXlpNJg8PQTU93Yao4rfPc
+ xXqDHYJ0deVEqqd1R2kdNLu3Ldcy+SupKzlJMOB84HJPlRS74VlgKdu4fZBU+gonlq5u
+ BSWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=WazmI77PqSdHqEhfA3hARSGKN2eeeJPw3yuM6xNjhCk=;
- b=gWngyue3PQe2dbWatRygKF3KCsEyrF0Ekmq3P+0uDFnyJSnb3z595mUZRCMM6q3u1p
- mLMO4EACGg1YfWAZCSqp3YWm1/HV1NMdAFx7+npMVg+K8iJZjBt2dTr+hPQ//rKo8aHV
- 26FRiv3C7liUcTa9083mV/DJXYvEERls0UR0SdQoXcCbia+DOLvyfkSAzR63lKu/7Zr8
- DzH9qVROCHivbzSKkdAyBzUDhFhiOL7MwDxDVMuOjAtpjyL+ognEP5pnVUNWzPncxCf4
- DlEUnmzz4BjkYCojGh+TQc4coBIttXCZqixCw81gzpEcOrEjqxSNZkMXBA2sNKbiEup4
- LZMA==
-X-Gm-Message-State: APjAAAV8SRZKxKYglDH9rkLu1rpVwz5pPx5sf7b7KJtXi4Rm7AiPLN5O
- Wwa7EjfgHwgmboy3YveFozjPZy9u
-X-Google-Smtp-Source: APXvYqxfhPnDfTMq/3IJRCx+XCxuTDotXnHL13Nckn7Mjbx7ukLR+HSYmdn68y8oIJQMG/9/wWfx+g==
-X-Received: by 2002:a17:902:36a:: with SMTP id
- 97mr57296499pld.61.1568510926722; 
- Sat, 14 Sep 2019 18:28:46 -0700 (PDT)
+ bh=fmR7XMzyavzj4VCy0MlGZ9mjhhLgbUIDDnTIu19bZqg=;
+ b=dm+JSVLP1QsqPZ0cdjrtkZSkt+JJD5LDTFIFhjnDMZVBntIMB42v14P8MWrDen0TDw
+ p3izcwNCU7Ku6yKH4rXQAXnqBKstQvNeMaxXkgF+bN84fe36BpQ4OaVMD3kAkGCXIOeE
+ U/gMltr2NvRcwqM2vQnoYibrTY3JlN7TVi5flowgWZH6t56WtTewjSwu6b65/y919I6F
+ txQwpK1iXZXX7s8oiIx/7N+5iqiisSZC16Nrlrl5A1zJigcCqaRAK5K3K4Mlm2qfIWAB
+ CCSoM8J/greeFI7rTXhrsXzy3V/uVwPjBtd446WhGNAS8BDCBlYyLKzGzOhQv2SezaAT
+ IGtA==
+X-Gm-Message-State: APjAAAXYw9DSBF33qP9NHTMKUG6NeWllWQtMjiz3KN6kXjhWOmmMa4V+
+ LRMkhgs3xkL96jr5bofkZIXrSiV/
+X-Google-Smtp-Source: APXvYqx1AgrzGvHgd6YZkGmIjq5yUQVthkn0rNMzbwvU98YCUgmXUcW4ECIWgpq/Bdf3dzIXHMgGFA==
+X-Received: by 2002:a17:90a:8509:: with SMTP id
+ l9mr13191826pjn.10.1568510929467; 
+ Sat, 14 Sep 2019 18:28:49 -0700 (PDT)
 Received: from bobo.local0.net ([203.63.189.78])
- by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.28.44
+ by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.28.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Sep 2019 18:28:46 -0700 (PDT)
+ Sat, 14 Sep 2019 18:28:49 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 07/27] powerpc/64s/exception: Remove old INT_COMMON macro
-Date: Sun, 15 Sep 2019 11:27:53 +1000
-Message-Id: <20190915012813.29317-8-npiggin@gmail.com>
+Subject: [RFC PATCH 08/27] powerpc/64s/exception: Remove old INT_KVM_HANDLER
+Date: Sun, 15 Sep 2019 11:27:54 +1000
+Message-Id: <20190915012813.29317-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190915012813.29317-1-npiggin@gmail.com>
 References: <20190915012813.29317-1-npiggin@gmail.com>
@@ -87,136 +87,140 @@ Sender: "Linuxppc-dev"
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 51 +++++++++++++---------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 55 +++++++++++++---------------
+ 1 file changed, 26 insertions(+), 29 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index ba2dcd91aaaf..f318869607db 100644
+index f318869607db..bef0c2eee7dc 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -591,8 +591,8 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
-  * If stack=0, then the stack is already set in r1, and r1 is saved in r10.
-  * PPR save and CPU accounting is not done for the !stack case (XXX why not?)
-  */
--.macro INT_COMMON vec, area, stack, kaup, reconcile, dar, dsisr
--	.if \stack
-+.macro GEN_COMMON name
-+	.if ISTACK
- 	andi.	r10,r12,MSR_PR		/* See if coming from user	*/
- 	mr	r10,r1			/* Save r1			*/
- 	subi	r1,r1,INT_FRAME_SIZE	/* alloc frame on kernel stack	*/
-@@ -609,54 +609,54 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	std	r0,GPR0(r1)		/* save r0 in stackframe	*/
- 	std	r10,GPR1(r1)		/* save r1 in stackframe	*/
- 
--	.if \stack
--	.if \kaup
-+	.if ISTACK
-+	.if IKUAP
- 	kuap_save_amr_and_lock r9, r10, cr1, cr0
- 	.endif
- 	beq	101f			/* if from kernel mode		*/
- 	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10)
--	SAVE_PPR(\area, r9)
-+	SAVE_PPR(IAREA, r9)
- 101:
- 	.else
--	.if \kaup
-+	.if IKUAP
- 	kuap_save_amr_and_lock r9, r10, cr1
- 	.endif
- 	.endif
- 
- 	/* Save original regs values from save area to stack frame. */
--	ld	r9,\area+EX_R9(r13)	/* move r9, r10 to stackframe	*/
--	ld	r10,\area+EX_R10(r13)
-+	ld	r9,IAREA+EX_R9(r13)	/* move r9, r10 to stackframe	*/
-+	ld	r10,IAREA+EX_R10(r13)
- 	std	r9,GPR9(r1)
- 	std	r10,GPR10(r1)
--	ld	r9,\area+EX_R11(r13)	/* move r11 - r13 to stackframe	*/
--	ld	r10,\area+EX_R12(r13)
--	ld	r11,\area+EX_R13(r13)
-+	ld	r9,IAREA+EX_R11(r13)	/* move r11 - r13 to stackframe	*/
-+	ld	r10,IAREA+EX_R12(r13)
-+	ld	r11,IAREA+EX_R13(r13)
- 	std	r9,GPR11(r1)
- 	std	r10,GPR12(r1)
- 	std	r11,GPR13(r1)
--	.if \dar
--	.if \dar == 2
-+	.if IDAR
-+	.if IDAR == 2
- 	ld	r10,_NIP(r1)
- 	.else
--	ld	r10,\area+EX_DAR(r13)
-+	ld	r10,IAREA+EX_DAR(r13)
- 	.endif
- 	std	r10,_DAR(r1)
- 	.endif
--	.if \dsisr
--	.if \dsisr == 2
-+	.if IDSISR
-+	.if IDSISR == 2
- 	ld	r10,_MSR(r1)
- 	lis	r11,DSISR_SRR1_MATCH_64S@h
- 	and	r10,r10,r11
- 	.else
--	lwz	r10,\area+EX_DSISR(r13)
-+	lwz	r10,IAREA+EX_DSISR(r13)
- 	.endif
- 	std	r10,_DSISR(r1)
- 	.endif
- BEGIN_FTR_SECTION_NESTED(66)
--	ld	r10,\area+EX_CFAR(r13)
-+	ld	r10,IAREA+EX_CFAR(r13)
- 	std	r10,ORIG_GPR3(r1)
- END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66)
--	GET_CTR(r10, \area)
-+	GET_CTR(r10, IAREA)
- 	std	r10,_CTR(r1)
- 	std	r2,GPR2(r1)		/* save r2 in stackframe	*/
- 	SAVE_4GPRS(3, r1)		/* save r3 - r6 in stackframe   */
-@@ -668,26 +668,22 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66)
- 	mfspr	r11,SPRN_XER		/* save XER in stackframe	*/
- 	std	r10,SOFTE(r1)
- 	std	r11,_XER(r1)
--	li	r9,(\vec)+1
-+	li	r9,(IVEC)+1
- 	std	r9,_TRAP(r1)		/* set trap number		*/
- 	li	r10,0
- 	ld	r11,exception_marker@toc(r2)
- 	std	r10,RESULT(r1)		/* clear regs->result		*/
- 	std	r11,STACK_FRAME_OVERHEAD-16(r1) /* mark the frame	*/
- 
--	.if \stack
-+	.if ISTACK
- 	ACCOUNT_STOLEN_TIME
- 	.endif
- 
--	.if \reconcile
-+	.if IRECONCILE
- 	RECONCILE_IRQ_STATE(r10, r11)
+@@ -266,15 +266,6 @@ do_define_int n
  	.endif
  .endm
  
--.macro GEN_COMMON name
--	INT_COMMON IVEC, IAREA, ISTACK, IKUAP, IRECONCILE, IDAR, IDSISR
+-.macro INT_KVM_HANDLER name, vec, hsrr, area, skip
+-	TRAMP_KVM_BEGIN(\name\()_kvm)
+-	KVM_HANDLER \vec, \hsrr, \area, \skip
 -.endm
 -
+-.macro GEN_KVM name
+-	KVM_HANDLER IVEC, IHSRR, IAREA, IKVM_SKIP
+-.endm
+-
+ #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
  /*
-  * Restore all registers including H/SRR0/1 saved in a stack frame of a
-  * standard exception.
-@@ -2400,7 +2396,8 @@ EXC_COMMON_BEGIN(soft_nmi_common)
- 	mr	r10,r1
- 	ld	r1,PACAEMERGSP(r13)
- 	subi	r1,r1,INT_FRAME_SIZE
--	INT_COMMON 0x900, PACA_EXGEN, 0, 1, 1, 0, 0
-+	__ISTACK(decrementer)=0
-+	GEN_COMMON decrementer
- 	bl	save_nvgprs
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	soft_nmi_interrupt
+@@ -293,35 +284,35 @@ do_define_int n
+ 	bne	\name\()_kvm
+ .endm
+ 
+-.macro KVM_HANDLER vec, hsrr, area, skip
+-	.if \skip
++.macro GEN_KVM name
++	.if IKVM_SKIP
+ 	cmpwi	r10,KVM_GUEST_MODE_SKIP
+ 	beq	89f
+ 	.else
+ BEGIN_FTR_SECTION_NESTED(947)
+-	ld	r10,\area+EX_CFAR(r13)
++	ld	r10,IAREA+EX_CFAR(r13)
+ 	std	r10,HSTATE_CFAR(r13)
+ END_FTR_SECTION_NESTED(CPU_FTR_CFAR,CPU_FTR_CFAR,947)
+ 	.endif
+ 
+ BEGIN_FTR_SECTION_NESTED(948)
+-	ld	r10,\area+EX_PPR(r13)
++	ld	r10,IAREA+EX_PPR(r13)
+ 	std	r10,HSTATE_PPR(r13)
+ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+-	ld	r10,\area+EX_R10(r13)
++	ld	r10,IAREA+EX_R10(r13)
+ 	std	r12,HSTATE_SCRATCH0(r13)
+ 	sldi	r12,r9,32
+ 	/* HSRR variants have the 0x2 bit added to their trap number */
+-	.if \hsrr == EXC_HV_OR_STD
++	.if IHSRR == EXC_HV_OR_STD
+ 	BEGIN_FTR_SECTION
+-	ori	r12,r12,(\vec + 0x2)
++	ori	r12,r12,(IVEC + 0x2)
+ 	FTR_SECTION_ELSE
+-	ori	r12,r12,(\vec)
++	ori	r12,r12,(IVEC)
+ 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
+-	.elseif \hsrr
+-	ori	r12,r12,(\vec + 0x2)
++	.elseif IHSRR
++	ori	r12,r12,(IVEC+ 0x2)
+ 	.else
+-	ori	r12,r12,(\vec)
++	ori	r12,r12,(IVEC)
+ 	.endif
+ 
+ #ifdef CONFIG_RELOCATABLE
+@@ -334,25 +325,25 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	std	r9,HSTATE_SCRATCH1(r13)
+ 	__LOAD_FAR_HANDLER(r9, kvmppc_interrupt)
+ 	mtctr	r9
+-	ld	r9,\area+EX_R9(r13)
++	ld	r9,IAREA+EX_R9(r13)
+ 	bctr
+ #else
+-	ld	r9,\area+EX_R9(r13)
++	ld	r9,IAREA+EX_R9(r13)
+ 	b	kvmppc_interrupt
+ #endif
+ 
+ 
+-	.if \skip
++	.if IKVM_SKIP
+ 89:	mtocrf	0x80,r9
+-	ld	r9,\area+EX_R9(r13)
+-	ld	r10,\area+EX_R10(r13)
+-	.if \hsrr == EXC_HV_OR_STD
++	ld	r9,IAREA+EX_R9(r13)
++	ld	r10,IAREA+EX_R10(r13)
++	.if IHSRR == EXC_HV_OR_STD
+ 	BEGIN_FTR_SECTION
+ 	b	kvmppc_skip_Hinterrupt
+ 	FTR_SECTION_ELSE
+ 	b	kvmppc_skip_interrupt
+ 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
+-	.elseif \hsrr
++	.elseif IHSRR
+ 	b	kvmppc_skip_Hinterrupt
+ 	.else
+ 	b	kvmppc_skip_interrupt
+@@ -363,7 +354,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ #else
+ .macro KVMTEST name, hsrr, n
+ .endm
+-.macro KVM_HANDLER name, vec, hsrr, area, skip
++.macro GEN_KVM name
+ .endm
+ #endif
+ 
+@@ -1640,6 +1631,12 @@ EXC_VIRT_NONE(0x4b00, 0x100)
+  * without saving, though xer is not a good idea to use, as hardware may
+  * interpret some bits so it may be costly to change them.
+  */
++INT_DEFINE_BEGIN(system_call)
++	IVEC=0xc00
++	IKVM_REAL=1
++	IKVM_VIRT=1
++INT_DEFINE_END(system_call)
++
+ .macro SYSTEM_CALL virt
+ #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+ 	/*
+@@ -1733,7 +1730,7 @@ TRAMP_KVM_BEGIN(system_call_kvm)
+ 	SET_SCRATCH0(r10)
+ 	std	r9,PACA_EXGEN+EX_R9(r13)
+ 	mfcr	r9
+-	KVM_HANDLER 0xc00, EXC_STD, PACA_EXGEN, 0
++	GEN_KVM system_call
+ #endif
+ 
+ 
 -- 
 2.23.0
 
