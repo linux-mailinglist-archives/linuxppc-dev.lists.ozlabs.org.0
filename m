@@ -2,92 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CDD8B304F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 15:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 842A8B311B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 19:15:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WVtb4fHczF5Qm
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 23:42:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WbcP3dWSzF33S
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 03:15:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WVSN5Nt5zF59g
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 23:23:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46WVSN4X7Gz8tWS
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 23:23:32 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46WVSN42G7z9sPZ; Sun, 15 Sep 2019 23:23:32 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com;
- envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=none (mailfrom) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46WVSM61tJz9sP4
- for <linuxppc-dev@ozlabs.org>; Sun, 15 Sep 2019 23:23:31 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8FDMZhj161761
- for <linuxppc-dev@ozlabs.org>; Sun, 15 Sep 2019 09:23:29 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v0u127cgf-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Sun, 15 Sep 2019 09:23:29 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
- Sun, 15 Sep 2019 14:23:27 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sun, 15 Sep 2019 14:23:25 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8FDNOjw52166872
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 15 Sep 2019 13:23:24 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A631A4060;
- Sun, 15 Sep 2019 13:23:24 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E13AFA405B;
- Sun, 15 Sep 2019 13:23:22 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.199.54.91])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sun, 15 Sep 2019 13:23:22 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 4/4] powerpc/fadump: sysfs for fadump memory reservation
-Date: Sun, 15 Sep 2019 18:53:10 +0530
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20190915132310.13542-1-sourabhjain@linux.ibm.com>
-References: <20190915132310.13542-1-sourabhjain@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19091513-0012-0000-0000-0000034BEF4F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091513-0013-0000-0000-000021866297
-Message-Id: <20190915132310.13542-5-sourabhjain@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-15_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909150147
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WbZd3TvgzF4Vq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 03:14:17 +1000 (AEST)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1i9Y1u-00037s-1D; Sun, 15 Sep 2019 12:09:42 -0500
+Message-ID: <fb07c36767c1b4c6bacfd4bb0fddf789d248573e.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>, galak@kernel.crashing.org
+Date: Sun, 15 Sep 2019 12:09:40 -0500
+In-Reply-To: <e9437d8c-564e-cc76-e8fd-54e4000c2349@c-s.fr>
+References: <b51b96090138aba1920d2cf7c0e0e348667f9a69.1566564560.git.christophe.leroy@c-s.fr>
+ <331759c1bcba5797d30f8eace74afb16ac5f3c36.1566564560.git.christophe.leroy@c-s.fr>
+ <b201df6242e7f6cebd525e0a301eef2afdb38f30.camel@buserror.net>
+ <e9437d8c-564e-cc76-e8fd-54e4000c2349@c-s.fr>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: christophe.leroy@c-s.fr, benh@kernel.crashing.org,
+ paulus@samba.org, mpe@ellerman.id.au, galak@kernel.crashing.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+ * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+ *      this recipient and sender
+Subject: Re: [PATCH 2/2] powerpc/83xx: map IMMR with a BAT.
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,94 +68,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, hbathini@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a sys interface to allow querying the memory reserved by FADump for
-saving the crash dump.
+On Sat, 2019-09-14 at 18:51 +0200, Christophe Leroy wrote:
+> 
+> Le 14/09/2019 à 16:34, Scott Wood a écrit :
+> > On Fri, 2019-08-23 at 12:50 +0000, Christophe Leroy wrote:
+> > > On mpc83xx with a QE, IMMR is 2Mbytes.
+> > > On mpc83xx without a QE, IMMR is 1Mbytes.
+> > > Each driver will map a part of it to access the registers it needs.
+> > > Some driver will map the same part of IMMR as other drivers.
+> > > 
+> > > In order to reduce TLB misses, map the full IMMR with a BAT.
+> > > 
+> > > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> > > ---
+> > >   arch/powerpc/platforms/83xx/misc.c | 10 ++++++++++
+> > >   1 file changed, 10 insertions(+)
+> > > 
+> > > diff --git a/arch/powerpc/platforms/83xx/misc.c
+> > > b/arch/powerpc/platforms/83xx/misc.c
+> > > index f46d7bf3b140..1e395b01c535 100644
+> > > --- a/arch/powerpc/platforms/83xx/misc.c
+> > > +++ b/arch/powerpc/platforms/83xx/misc.c
+> > > @@ -18,6 +18,8 @@
+> > >   #include <sysdev/fsl_soc.h>
+> > >   #include <sysdev/fsl_pci.h>
+> > >   
+> > > +#include <mm/mmu_decl.h>
+> > > +
+> > >   #include "mpc83xx.h"
+> > >   
+> > >   static __be32 __iomem *restart_reg_base;
+> > > @@ -145,6 +147,14 @@ void __init mpc83xx_setup_arch(void)
+> > >   	if (ppc_md.progress)
+> > >   		ppc_md.progress("mpc83xx_setup_arch()", 0);
+> > >   
+> > > +	if (!__map_without_bats) {
+> > > +		int immrsize = IS_ENABLED(CONFIG_QUICC_ENGINE) ? SZ_2M :
+> > > SZ_1M;
+> > 
+> > Any reason not to unconditionally make it 2M?  After all, the kernel being
+> > built with CONFIG_QUICC_ENGINE doesn't mean that the hardware you're
+> > running
+> > on has it...
+> > 
+> 
+> Euh .. ok. I didn't see it that way, but you are right.
+> 
+> Do you think it is not a problem to map 2M even when the quicc engine is 
+> not there ? Or should it check device tree instead ?
 
-Also added Documentation/ABI for the new sysfs file.
+It should be OK, since it's a guarded mapping.  Unless the IMMR base is not 2M
+aligned...
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- Documentation/ABI/testing/sysfs-kernel-fadump    |  7 +++++++
- Documentation/powerpc/firmware-assisted-dump.rst |  5 +++++
- arch/powerpc/kernel/fadump.c                     | 14 ++++++++++++++
- 3 files changed, 26 insertions(+)
+-Scott
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
-index ed8eec3d759c..34cb89173872 100644
---- a/Documentation/ABI/testing/sysfs-kernel-fadump
-+++ b/Documentation/ABI/testing/sysfs-kernel-fadump
-@@ -39,3 +39,10 @@ Description:	write only
- 		The sysfs file is available when the system is booted to
- 		collect the dump on OPAL based machine. It used to release
- 		the memory used to collect the opalcore.
-+
-+What:		/sys/kernel/fadump/fadump_mem_reserved
-+Date:		Sep 2019
-+Contact:	linuxppc-dev@lists.ozlabs.org
-+Description:	read only
-+		Provide information about the amount of memory reserved by
-+		FADump to save the crash dump in bytes.
-diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-index 4fd7f5eab97d..7e8404052ba7 100644
---- a/Documentation/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/powerpc/firmware-assisted-dump.rst
-@@ -268,6 +268,11 @@ Here is the list of files under kernel sysfs:
-     be handled and vmcore will not be captured. This interface can be
-     easily integrated with kdump service start/stop.
- 
-+ /sys/kernel/fadump/fadump_mem_reserved
-+
-+   This is used to display the memory reserved by FADump for saving the
-+   crash dump.
-+
-  /sys/kernel/fadump_release_mem
-     This file is available only when FADump is active during
-     second kernel. This is used to release the reserved memory
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index bb70fa208a86..d970ce2a8a44 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1357,6 +1357,13 @@ static ssize_t fadump_enabled_show(struct kobject *kobj,
- 	return sprintf(buf, "%d\n", fw_dump.fadump_enabled);
- }
- 
-+static ssize_t fadump_mem_reserved_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
-+					char *buf)
-+{
-+	return sprintf(buf, "%ld\n", fw_dump.reserve_dump_area_size);
-+}
-+
- static ssize_t fadump_register_show(struct kobject *kobj,
- 					struct kobj_attribute *attr,
- 					char *buf)
-@@ -1430,6 +1437,9 @@ static struct kobj_attribute fadump_attr = __ATTR(fadump_enabled,
- static struct kobj_attribute fadump_register_attr = __ATTR(fadump_registered,
- 						0644, fadump_register_show,
- 						fadump_register_store);
-+static struct kobj_attribute fadump_mem_reserved_attr =
-+			__ATTR(fadump_mem_reserved, 0444,
-+			       fadump_mem_reserved_show, NULL);
- 
- DEFINE_SHOW_ATTRIBUTE(fadump_region);
- 
-@@ -1487,6 +1497,10 @@ static void fadump_init_files(void)
- 			pr_err("unable to create fadump/fadump_release_mem sysfs file (%d)\n",
- 			       rc);
- 	}
-+	rc = sysfs_create_file(fadump_kobj, &fadump_mem_reserved_attr.attr);
-+	if (rc)
-+		pr_err("unable to create fadump_mem_reserved sysfs file (%d)\n",
-+		       rc);
- 	return;
- }
- 
--- 
-2.17.2
 
