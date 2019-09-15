@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A169B2DBC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 04:01:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8509AB2DBD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 04:03:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WCKB4tyzzF4pN
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 12:01:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WCN85VS0zF6BP
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 12:03:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="TnF9CEkZ"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="tFH/lWxx"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WBcB19PfzF5r7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:29:14 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id q10so20295358pfl.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:29:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WBcF0NBZzF5qB
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:29:16 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id m9so14941159pls.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:29:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=zuRdx++Tzg0MwINxFg2gGFU09nGrbbv3sD03eYlGH+M=;
- b=TnF9CEkZrH8/Rl3iX0reTt20ilF9QbBpckMT3uwMgOlvcnLRD57i85vX7CoE//XCg4
- rCGhvY10D9elhSfEkfbQwIeKSHuAFp4EJxypHuDsa2g+8o0FanGtagrGBmkmRIgVR64z
- kjWQa0WjsmVhqauT11KpFDlx8sIVPu4iDBvyjc5pQ3KhDMGg2k+GwoWoA2+NAhP8ZEwa
- T7r+M0x/1Q6VYc1oiVR7ptI6Qa8gNcHY8I5CtsKH/xZdAbJyf9KC1EDaB94cycqe6xMH
- YiofD0R+oNXbIjdSYvpSDLZO+spRvDU/SXqTO1GrCUXn1urHJWnzsIhseZbgLW5j7fGD
- byTQ==
+ bh=qO1cTnvV48lP79pf8aYl/XVEkyju6LgKodKnPL2OG/A=;
+ b=tFH/lWxxp++ruIaX/kMm8uLROILGOYYCyU82bWjBFMaSbOKX0Bp7xCasN6oKyee4Gz
+ sR2smEdV/bre3d3s/XBI8Zn1bYKlKs5GSki0O48CcYyTNjReq5idtXww75UrnpNumOc9
+ eaK1bGrtYFRD9qsQbe8FmbIhwaJa2Nt679YIWgsz2qUd764cwdYNta9nCq6H+saOdUYI
+ fI40ZBF6xfvyTLKLn7TnA/xbneP164YMUp1Zk3FeAXX60TgfpD+Er6nnakpnnsyWs2Aq
+ /4M0l2Gt2cskYcelmXnVwuGgJdGFsGQAWRCDLjGZW0+uwoy7YHXhsspFlVxmPcswvTBe
+ JCAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=zuRdx++Tzg0MwINxFg2gGFU09nGrbbv3sD03eYlGH+M=;
- b=qPhZloiB+zkbLiZo4BUJgscXigG1DiODk8Cv0gk4hprVtl6cg9sQzcbCaDydp/h/t2
- RC63wmIzBXlgwoy53wzk1S2G9olkkw2u75EKWcxqgjzkL9uaf+FS75q3BelaFKcfVwLi
- m5uYwUqLxXhp2DZ+KPvMteHsbBOSjGOz3azwhI0Y8jXnCGvgqRNqbGBi7coWNwAlDVqS
- uy+qgw/b/7iFf8tfQPHSNxNYpCEljWQtUTkhqwBo3ukLpfEYdEkICxTns3rJ1S2DGUai
- cct1myErateoAxaV3dt0BfTFgY1oRZ8Fu2AWoFm5jzqE6sz2q4tQmebAaBJhipawuo3m
- QNwQ==
-X-Gm-Message-State: APjAAAUEXfa9UHLooOJQPkaMiMaZY1AtYMNTsDhFzyo+PXUyWyo6a05Q
- qnPE1eNA4JiHPP/neFoTwmPO5WUq
-X-Google-Smtp-Source: APXvYqx+7JWmheIS05kJ4mwu1sdsQ7Ml3qqZ45d6P4ndms3jPYhyQqJNmgGKS09ntjB9SGKLS7t4hg==
-X-Received: by 2002:a17:90a:ac18:: with SMTP id
- o24mr13670602pjq.142.1568510950943; 
- Sat, 14 Sep 2019 18:29:10 -0700 (PDT)
+ bh=qO1cTnvV48lP79pf8aYl/XVEkyju6LgKodKnPL2OG/A=;
+ b=c37CZhzWRLQbK0U0m5sHNILkUB8zS4XbweK/qGWiX8FZnm/Z9xJ9BImtcZaObxhiDS
+ 5Y8xXp5/LmjFX5l278FsDi90Ho7uIzmGnRZlEzu4S/qUzW8Iv0Br0gVjXNTx9P6MM8D4
+ 1vAVcL5fsa5/8icIIah+K2d0LJaAndZQBdyjDPvi6lF65OtZPe2HgflIxWTy4cGf0Yj2
+ 9F3sPMKMzwPvge31vUleA+PsQcBqD2Lfh2pcChPzKsWm9jBUeLk9oS9lMxomnDrGJCW3
+ fFKVe9gTs1FF4JImwCa6/ogaWxPOIqhjVqMSo6zj3z6VFfDLupYshrZkzbukSpJqrnC4
+ GRAg==
+X-Gm-Message-State: APjAAAXZmjOY5ujun4RA1OuA/OBB2/T7SAJo1F/NhvWEXVqa6PEZvXHI
+ k2NJYlwK+mIxaITsE+F6gYzEFA7O
+X-Google-Smtp-Source: APXvYqwh0f/VebzAGEM+P6ZXEE78wr+nhQqF6fzrjMKh9S/ReWq+YJ9drTUEj66DvY4FjQ6UxbGZzQ==
+X-Received: by 2002:a17:902:a50a:: with SMTP id
+ s10mr48607986plq.336.1568510953556; 
+ Sat, 14 Sep 2019 18:29:13 -0700 (PDT)
 Received: from bobo.local0.net ([203.63.189.78])
- by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.29.08
+ by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.29.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Sep 2019 18:29:10 -0700 (PDT)
+ Sat, 14 Sep 2019 18:29:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 16/27] powerpc/64s/exception: hdecrementer avoid touching
- the stack
-Date: Sun, 15 Sep 2019 11:28:02 +1000
-Message-Id: <20190915012813.29317-17-npiggin@gmail.com>
+Subject: [RFC PATCH 17/27] powerpc/64s/exception: re-inline some handlers
+Date: Sun, 15 Sep 2019 11:28:03 +1000
+Message-Id: <20190915012813.29317-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190915012813.29317-1-npiggin@gmail.com>
 References: <20190915012813.29317-1-npiggin@gmail.com>
@@ -86,100 +85,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hdec interrupt handler is reported to sometimes fire in Linux if
-KVM leaves it pending after a guest exists. This is harmless, so there
-is a no-op handler for it.
-
-The interrupt handler currently uses the regular kernel stack. Change
-this to avoid touching the stack entirely.
-
-This should be the last place where the regular Linux stack can be
-accessed with asynchronous interrupts (including PMI) soft-masked.
-It might be possible to take advantage of this invariant, e.g., to
-context switch the kernel stack SLB entry without clearing MSR[EE].
+The reduction in interrupt entry size allows some handlers to be
+re-inlined.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/time.h      |  1 -
- arch/powerpc/kernel/exceptions-64s.S | 25 ++++++++++++++++++++-----
- arch/powerpc/kernel/time.c           |  9 ---------
- 3 files changed, 20 insertions(+), 15 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-index 08dbe3e6831c..e0107495c4de 100644
---- a/arch/powerpc/include/asm/time.h
-+++ b/arch/powerpc/include/asm/time.h
-@@ -24,7 +24,6 @@ extern struct clock_event_device decrementer_clockevent;
- 
- 
- extern void generic_calibrate_decr(void);
--extern void hdec_interrupt(struct pt_regs *regs);
- 
- /* Some sane defaults: 125 MHz timebase, 1GHz processor */
- extern unsigned long ppc_proc_freq;
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 9fa71d51ecf4..7a234e6d7bf5 100644
+index 7a234e6d7bf5..9494403b9586 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1491,6 +1491,8 @@ EXC_COMMON_BEGIN(decrementer_common)
- INT_DEFINE_BEGIN(hdecrementer)
- 	IVEC=0x980
- 	IHSRR=EXC_HV
-+	ISTACK=0
-+	IRECONCILE=0
- 	IKVM_REAL=1
- 	IKVM_VIRT=1
- INT_DEFINE_END(hdecrementer)
-@@ -1502,11 +1504,24 @@ EXC_VIRT_BEGIN(hdecrementer, 0x4980, 0x80)
- 	GEN_INT_ENTRY hdecrementer, virt=1
- EXC_VIRT_END(hdecrementer, 0x4980, 0x80)
- EXC_COMMON_BEGIN(hdecrementer_common)
--	GEN_COMMON hdecrementer
--	bl	save_nvgprs
--	addi	r3,r1,STACK_FRAME_OVERHEAD
--	bl	hdec_interrupt
--	b	ret_from_except
-+	__GEN_COMMON_ENTRY hdecrementer
-+	/*
-+	 * Hypervisor decrementer interrupts not caught by the KVM test
-+	 * shouldn't occur but are sometimes left pending on exit from a KVM
-+	 * guest.  We don't need to do anything to clear them, as they are
-+	 * edge-triggered.
-+	 *
-+	 * Be careful to avoid touching the kernel stack.
-+	 */
-+	ld	r10,PACA_EXGEN+EX_CTR(r13)
-+	mtctr	r10
-+	mtcrf	0x80,r9
-+	ld	r9,PACA_EXGEN+EX_R9(r13)
-+	ld	r10,PACA_EXGEN+EX_R10(r13)
-+	ld	r11,PACA_EXGEN+EX_R11(r13)
-+	ld	r12,PACA_EXGEN+EX_R12(r13)
-+	ld	r13,PACA_EXGEN+EX_R13(r13)
-+	HRFI_TO_KERNEL
+@@ -1186,7 +1186,7 @@ INT_DEFINE_BEGIN(data_access)
+ INT_DEFINE_END(data_access)
  
- 	GEN_KVM hdecrementer
+ EXC_REAL_BEGIN(data_access, 0x300, 0x80)
+-	GEN_INT_ENTRY data_access, virt=0, ool=1
++	GEN_INT_ENTRY data_access, virt=0
+ EXC_REAL_END(data_access, 0x300, 0x80)
+ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
+ 	GEN_INT_ENTRY data_access, virt=1
+@@ -1216,7 +1216,7 @@ INT_DEFINE_BEGIN(data_access_slb)
+ INT_DEFINE_END(data_access_slb)
  
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 694522308cd5..bebc8c440289 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -663,15 +663,6 @@ void timer_broadcast_interrupt(void)
- }
- #endif
+ EXC_REAL_BEGIN(data_access_slb, 0x380, 0x80)
+-	GEN_INT_ENTRY data_access_slb, virt=0, ool=1
++	GEN_INT_ENTRY data_access_slb, virt=0
+ EXC_REAL_END(data_access_slb, 0x380, 0x80)
+ EXC_VIRT_BEGIN(data_access_slb, 0x4380, 0x80)
+ 	GEN_INT_ENTRY data_access_slb, virt=1
+@@ -1472,7 +1472,7 @@ INT_DEFINE_BEGIN(decrementer)
+ INT_DEFINE_END(decrementer)
  
--/*
-- * Hypervisor decrementer interrupts shouldn't occur but are sometimes
-- * left pending on exit from a KVM guest.  We don't need to do anything
-- * to clear them, as they are edge-triggered.
-- */
--void hdec_interrupt(struct pt_regs *regs)
--{
--}
--
- #ifdef CONFIG_SUSPEND
- static void generic_suspend_disable_irqs(void)
- {
+ EXC_REAL_BEGIN(decrementer, 0x900, 0x80)
+-	GEN_INT_ENTRY decrementer, virt=0, ool=1
++	GEN_INT_ENTRY decrementer, virt=0
+ EXC_REAL_END(decrementer, 0x900, 0x80)
+ EXC_VIRT_BEGIN(decrementer, 0x4900, 0x80)
+ 	GEN_INT_ENTRY decrementer, virt=1
 -- 
 2.23.0
 
