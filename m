@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D1AB2DD2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 04:21:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633C9B2DD3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 04:23:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WCmD3vZ8zF5Kh
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 12:21:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WCpR1Ng3zF6Jn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 12:23:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Uz56D5lv"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="r2Cmj+hY"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WBcf4bNszF1JL
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:29:38 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id y72so20244462pfb.12
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:29:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WBck3sv6zF2FK
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:29:42 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id m29so994743pgc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:29:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=BCBphJn/VmhD6unAclmx7czyRGbhgave5LeVBi1iHHM=;
- b=Uz56D5lvG+f3f44zPwtWSd5zqpIz77VMdKxBzCisYpKBa791hN11ZpHIxaHj5WXBtd
- rRdaHJPhCDTLJ5K0sZ4Jp7hwJG9pQ4UYPVNqSlhU2oESc8ybnNltzZ7DzmaEc10O6lRO
- RHu8bNhBU12XKwR6Yn6A95n0P9SwMzhkSY6kxctRBP6nzQNEr/0Rztzz1Cnkz6ISmcF5
- gDj2nYTFuRlyBY9vlql3KZ8FA1GqqI7V37emSzZdHBkz4FDFHj3LWWwgD7Vn7hWWhPkM
- xr6h3x3zHuRlMn4yeO45K9CtzifMIgwF8iMP639As7gY3jOG2GxUgfG5C9pWoVp82Z+R
- tAdw==
+ bh=U61y2CWFAv/+DR5OVcD9pRsRrwKxGb43cNdpummBGvM=;
+ b=r2Cmj+hYNlOpJ8vWDXTY0Emr4FjDZnYEGvqYbumUEEI+P6QNxReQo6w5Su/sXpJD5T
+ GpPZ0IC4fdDg8BS6cLZ+3PS+Bvqs3745Sy4CALM7il2WG9UzgpNpyJB1MtxbvHVSGuRL
+ nJnfAprMXy3jIRn3ebNh/XA4p2Tre/LDGvu5yspwh8cID6r79iXZ+s6zf9lRuoxqcKTS
+ ZhA3CrgjBLjRfRC0dC7qK2NNVkRKz7urObPT22H5AMghsyRtHLFzPrHrQMiSAS9RhWk6
+ /yZHfOMa2XRSCuvpaGDzYtQNFxsMN0ACpQzwkuD7gqvaugpvO0uSbAhKIewk7tQMOMQN
+ E/Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=BCBphJn/VmhD6unAclmx7czyRGbhgave5LeVBi1iHHM=;
- b=Z9Lhrz01bL724EjHM701AV8eo7svI9YoLuWo6/H4yZr+PIDn49S30TOXoQVUm9CyU+
- f1U0l7I+eDkQKb183/EXFpGwhQHSmXNEIiWfDS6d4EOvfWTYWQAa8J6d75lPG94FNv4u
- IyybJW+US4SljOlDVvUOAjnSJYl+zAencgiwOcnVjyIYuLKH2FNL759DDDxvoVZ+xXUw
- FR9rrQxj3/NJzUltxBL38WVNY73JYz1hu+OvjejdQQjrRhaQ+4t9drdpZDaGL+huJCox
- +nbvIgtrhnb0uBSyjq9o57klxy6Zjr8zjkaYY7Wt8xuEnpzawKflUrc5gKRYMUY8Etae
- Db9g==
-X-Gm-Message-State: APjAAAWcRIwR+bkoG5PVa7p60Nh9bihw4X4W6wCu/JX4QXLbYdqtUFD0
- n8KLUHznvA/IM55HgD1pQ2GIwB04
-X-Google-Smtp-Source: APXvYqy67FHQ162+LSE75MEHFcUM/jdWiEpKHN8Rx2Go3f3mVgIiJI8iySbPG+LVnxuT7TWGZaYp8Q==
-X-Received: by 2002:a62:5302:: with SMTP id h2mr4644922pfb.237.1568510976519; 
- Sat, 14 Sep 2019 18:29:36 -0700 (PDT)
+ bh=U61y2CWFAv/+DR5OVcD9pRsRrwKxGb43cNdpummBGvM=;
+ b=G1kwxnXoBKxj+qPtqsnhUFdseHisyHf+69+ZiR8UMrCCCvrlfk06g4X4TMNQ2KxiQ1
+ 6HAr+XmP2292W2DfHT9R5Cn3RBIE2ChDUFOUQUEgejULN/wj5Bw9IIL1b0KaurjQuWs/
+ +Gwutc5MnALUXr7J+LUdfaf/pOdUpINsCsQ87F+jgr9CM93IMTjiMXbHcc3xYt3A90FA
+ NsxJAQ3umDlPr4JPmH1DgdyztWQoYDIDtw4dqgYPAP0hmGqA8Yqvy8QK0f9YI4MYuAIs
+ CQmFfC8GeDkpwi1LS1M+ylfFX63zgMcu7zVbgtR8NrBiXoa+UHgYcrH/+dC1pDT3JLPK
+ OhdA==
+X-Gm-Message-State: APjAAAW+sJtdqBxM5yZcJTRuBNg/z8a6CCbexeO+T6d7acRd5wlfso0D
+ Lm6UQPnJRdpTfoMnuMXEbcTNDARM
+X-Google-Smtp-Source: APXvYqzhKqqU8Dtl08ifzzsrvEd855Xr11G9kNNWnQDsCQMoqXdgt5goUkrV0j86PIpWyglvwuDpbQ==
+X-Received: by 2002:a63:5549:: with SMTP id f9mr18055489pgm.346.1568510979170; 
+ Sat, 14 Sep 2019 18:29:39 -0700 (PDT)
 Received: from bobo.local0.net ([203.63.189.78])
- by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.29.34
+ by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.29.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Sep 2019 18:29:36 -0700 (PDT)
+ Sat, 14 Sep 2019 18:29:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 25/27] powerpc/64s/exception: remove lite interrupt return
-Date: Sun, 15 Sep 2019 11:28:11 +1000
-Message-Id: <20190915012813.29317-26-npiggin@gmail.com>
+Subject: [RFC PATCH 26/27] powerpc/64s/exception: treat NIA below
+ __end_interrupts as soft-masked
+Date: Sun, 15 Sep 2019 11:28:12 +1000
+Message-Id: <20190915012813.29317-27-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190915012813.29317-1-npiggin@gmail.com>
 References: <20190915012813.29317-1-npiggin@gmail.com>
@@ -84,127 +85,90 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The difference between lite and regular returns is that the lite case
-restores all NVGPRs, whereas lite skips that. This is quite clumsy
-though, most interrupts want the NVGPRs saved for debugging, not to
-modify in the caller, so the NVGPRs restore is not necessary most of
-the time. Restore NVGPRs explicitly for one case that requires it,
-and move everything else over to avoiding the restore unless the
-interrupt return demands it (e.g., handling a signal).
+The scv instruction causes an interrupt which can enter the kernel with
+MSR[EE]=1, thus allowing interrupts to hit at any time. These must not
+be taken as normal interrupts, because they come from MSR[PR]=0 context,
+and yet the kernel stack is not yet set up and r13 is not set to the
+PACA).
+
+Treat this as a soft-masked interrupt regardless of the soft masked
+state. This does not affect behaviour yet, because currently all
+interrupts are taken with MSR[EE]=0.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/entry_64.S       |  4 ----
- arch/powerpc/kernel/exceptions-64s.S | 21 +++++++++++----------
- 2 files changed, 11 insertions(+), 14 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 34 +++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index b2e68f5ca8f7..00173cc904ef 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -452,10 +452,6 @@ _GLOBAL(fast_interrupt_return)
- 
- 	.balign IFETCH_ALIGN_BYTES
- _GLOBAL(interrupt_return)
--	REST_NVGPRS(r1)
--
--	.balign IFETCH_ALIGN_BYTES
--_GLOBAL(interrupt_return_lite)
- 	ld	r4,_MSR(r1)
- 	andi.	r0,r4,MSR_PR
- 	beq	kernel_interrupt_return
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 269edd1460be..1bccc869ebd3 100644
+index 1bccc869ebd3..07e00f690730 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1507,7 +1507,7 @@ EXC_COMMON_BEGIN(hardware_interrupt_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
--	b	interrupt_return_lite
-+	b	interrupt_return
+@@ -492,10 +492,33 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
+ 	.endif /* IVIRT */
+ .endm
  
- 	GEN_KVM hardware_interrupt
++#define LOAD_IMM(reg, expr)			\
++	lis	reg,(expr)@highest;		\
++	ori	reg,reg,(expr)@higher;		\
++	rldicr	reg,reg,32,31;			\
++	oris	reg,reg,(expr)@__AS_ATHIGH;	\
++	ori	reg,reg,(expr)@l
++
+ .macro __GEN_COMMON_BODY name
+ 	.if IMASK
++		.if ! ISTACK
++		.error "No support for masked interrupt to use custom stack"
++		.endif
++
++		/* If coming from user, skip soft-mask tests. */
++		andi.	r10,r12,MSR_PR
++		bne	2f
++
++		/* Kernel code running below __end_interrupts is implicitly
++		 * soft-masked */
++		LOAD_HANDLER(r10, __end_interrupts)
++		cmpd	r11,r10
++		li	r10,IMASK
++		blt-	1f
++
++		/* Test the soft mask state against our interrupt's bit */
+ 		lbz	r10,PACAIRQSOFTMASK(r13)
+-		andi.	r10,r10,IMASK
++1:		andi.	r10,r10,IMASK
+ 		/* Associate vector numbers with bits in paca->irq_happened */
+ 		.if IVEC == 0x500 || IVEC == 0xea0
+ 		li	r10,PACA_IRQ_EE
+@@ -526,7 +549,7 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
  
-@@ -1694,7 +1694,7 @@ EXC_COMMON_BEGIN(decrementer_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	timer_interrupt
--	b	interrupt_return_lite
-+	b	interrupt_return
+ 	.if ISTACK
+ 	andi.	r10,r12,MSR_PR		/* See if coming from user	*/
+-	mr	r10,r1			/* Save r1			*/
++2:	mr	r10,r1			/* Save r1			*/
+ 	subi	r1,r1,INT_FRAME_SIZE	/* alloc frame on kernel stack	*/
+ 	beq-	100f
+ 	ld	r1,PACAKSAVE(r13)	/* kernel stack to use		*/
+@@ -2771,7 +2794,8 @@ masked_interrupt:
+ 	ld	r10,PACA_EXGEN+EX_R10(r13)
+ 	ld	r11,PACA_EXGEN+EX_R11(r13)
+ 	ld	r12,PACA_EXGEN+EX_R12(r13)
+-	/* returns to kernel where r13 must be set up, so don't restore it */
++	ld	r13,PACA_EXGEN+EX_R13(r13)
++	/* May return to masked low address where r13 is not set up */
+ 	.if \hsrr
+ 	HRFI_TO_KERNEL
+ 	.else
+@@ -2930,6 +2954,10 @@ EXC_COMMON_BEGIN(ppc64_runlatch_on_trampoline)
  
- 	GEN_KVM decrementer
- 
-@@ -1785,7 +1785,7 @@ EXC_COMMON_BEGIN(doorbell_super_common)
- #else
- 	bl	unknown_exception
- #endif
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM doorbell_super
- 
-@@ -2183,7 +2183,7 @@ EXC_COMMON_BEGIN(h_doorbell_common)
- #else
- 	bl	unknown_exception
- #endif
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM h_doorbell
- 
-@@ -2213,7 +2213,7 @@ EXC_COMMON_BEGIN(h_virt_irq_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM h_virt_irq
- 
-@@ -2260,7 +2260,7 @@ EXC_COMMON_BEGIN(performance_monitor_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	performance_monitor_exception
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM performance_monitor
- 
-@@ -3013,7 +3013,7 @@ do_hash_page:
-         cmpdi	r3,0			/* see if __hash_page succeeded */
- 
- 	/* Success */
--	beq	interrupt_return_lite	/* Return from exception on success */
-+	beq	interrupt_return	/* Return from exception on success */
- 
- 	/* Error */
- 	blt-	13f
-@@ -3027,10 +3027,11 @@ do_hash_page:
- handle_page_fault:
- 11:	andis.  r0,r5,DSISR_DABRMATCH@h
- 	bne-    handle_dabr_fault
-+	bl	save_nvgprs
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_page_fault
- 	cmpdi	r3,0
--	beq+	interrupt_return_lite
-+	beq+	interrupt_return
- 	mr	r5,r3
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	ld	r4,_DAR(r1)
-@@ -3045,9 +3046,9 @@ handle_dabr_fault:
- 	bl      do_break
+ USE_FIXED_SECTION(virt_trampolines)
  	/*
- 	 * do_break() may have changed the NV GPRS while handling a breakpoint.
--	 * If so, we need to restore them with their updated values. Don't use
--	 * interrupt_return_lite here.
-+	 * If so, we need to restore them with their updated values.
- 	 */
-+	REST_NVGPRS(r1)
- 	b       interrupt_return
- 
- 
++	 * All code below __end_interrupts is treated as soft-masked. If
++	 * any code runs here with MSR[EE]=1, it must then cope with pending
++	 * soft interrupt being raised (i.e., by ensuring it is replayed).
++	 *
+ 	 * The __end_interrupts marker must be past the out-of-line (OOL)
+ 	 * handlers, so that they are copied to real address 0x100 when running
+ 	 * a relocatable kernel. This ensures they can be reached from the short
 -- 
 2.23.0
 
