@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47971B2D8D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 03:30:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D96B2D8E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 03:32:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WBdh3GzczF5pw
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 11:30:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WBgn0gKpzF5xR
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 11:32:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,56 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="XVK8+KMD"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Uir3BmFX"; 
  dkim-atps=neutral
 Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
  [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WBbM11r3zF5pl
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WBbM13VczF5pm
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:28:30 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id 4so17238889pgm.12
+Received: by mail-pg1-x542.google.com with SMTP id i18so17243765pgl.11
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:28:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=aTYLKIjzuo4ebngefpf2lIDCWUAwqQfGZrtOcbPKL+I=;
- b=XVK8+KMDYiv7kK0/TlN1LwufxyzXrQKG6aNJYMBD8OmyPtdQxDlAdAfGKHP/1bxHBe
- niIOd4o3bcy7ymSULI6FoYuJBK5jWIhfJXWXwqzOD8sgdTjQGZ5AiP3kwF2QmL4wOkLg
- XeH+bLqNpqpH4cisyMkAk4G9ahwTntjsTVeDz5r+T0iw3f7TcSRZg5K4xzMQbXwf5oLy
- GoU2jIHiBSiUZYMxwhqOss0zEmX1vV7/ALLiKiMJ1C+JpDR5sI8jXfOqENLXP5VP+MfP
- jvAYrOzC4BLSaV80KLSJ65Dkws1Aq0HcBMXBgciFvSf0prTQ/5ieWPRb/JH/2DurPMk6
- kBMg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=rxmjz0iKLpD4SvQHr6gqGFu7B4HWvIXc0QCj5vXAUUQ=;
+ b=Uir3BmFX5sMDJEYNYALGnFpnSsF9q7j/jsg2BmzJY72MB4FAI39iHy2V7ZkzlsEF+n
+ s3XNSjLgMth/VdVQAPE1u6MIRGkEKQ7rcT5hsJvUkuEE39wz8TFXs4e+21mlBkWVT8XW
+ yBPbOOFgUsVfpZc5RhYUIVWrnRmYplhcZ1ktwuqIPdDQnrUlO5Uy2+BN1QwBxtRy05w2
+ 3uzeTMRc4/jL6ZVREh4R4B8bFfEtMc/F1YYFo/TAIb6r3PlFkmbX98eISWTdMkCKT0oI
+ 0Js6yc539gU7VKId1/ceDUqWBb1fLtXgyqrSqP7ojx64ct8gkhF4PDqAFnumapVIkFlD
+ LGiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=aTYLKIjzuo4ebngefpf2lIDCWUAwqQfGZrtOcbPKL+I=;
- b=UgBQkAsS2izHrSCOLShGSc+rUfIzf2VEyMZh9UEFQpwmNRcbbZ3WQoJGlhVdygncdh
- kbdWc9dap9f4PQBOgTW/ypCYOldEjLAsGyyoMF9nyqLhuxVCszrRY69q+9WFz7YY4QJL
- ehNqGcPng8fUTkNAGneJtJyq1Tnr7zhkeYoUX86KXOkJzWx6gEvMkbGwrK97eCGCaoXg
- 1ql+STTiI08aH4NN4jS5JzoO8QHGv+fGcV+jyMQexnHthZM6KZZNQfGjGsFGzI1zDQAF
- 4M07qB5RBPC5pMU9gvt0Wek77cd+NkKhLE+Qf+Rg56idjnDsV/hPhPdaGJ9sX2TNg1DS
- arHA==
-X-Gm-Message-State: APjAAAWMw3dlNwZFAu92xZBUPmUMk/q/oNzQD88mM3CL5X2uivM7j63U
- +x2HvHBQNe0bxcr/7Y1gJlF0wbVT
-X-Google-Smtp-Source: APXvYqyOH3mqI+5MPLZ069Ek/yK/7gDdoaEW4i5TGviupqCnsQhlq4c8jkHZ6hwIViLL5Nx90+zwwg==
-X-Received: by 2002:a17:90a:ac16:: with SMTP id
- o22mr13648375pjq.8.1568510906301; 
- Sat, 14 Sep 2019 18:28:26 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=rxmjz0iKLpD4SvQHr6gqGFu7B4HWvIXc0QCj5vXAUUQ=;
+ b=JeY3S/9nyOUni+tfkqxB53XP3+syT7WZjVB6NYmkFIIL/T3FCoNZRMHhIV1NvNpXvc
+ KS498EUquQnYi6tC5Fyzvj0NdMRHdXPhrqPNgfZS6jLbf2/G+r/NLwNRanlEIRfZP38g
+ B5+hquD0NjSMs3yoY4Zu7rJJNIwu5clomfQlP5fYq6b4IaaUYbepXGOrub+XEmhkQKlh
+ jQhyXb7igFationRNNgyQdQQ+HQFjps+6iBZ58uWw5p1ZIC/N3fOF91aode32J3X+IrA
+ 5BOAj8a9efUl9ounkR+SaKmbqOetzGxvcjloAg2ZcYja0VZ7X5Ooe/gPXw/iYL2dN6e3
+ seTA==
+X-Gm-Message-State: APjAAAXmrP+B7W5UCZ74Np1EcPYuXyh0E09bAEZZ3xN3ZpqHf/0kXzXc
+ Z7SYtgVL5Bw319WfrBaN4LS8bv51
+X-Google-Smtp-Source: APXvYqxE0ZdlcD96BCTQqnJ3dex9rgGmkBNFDuNfxo4dQoiAksb7Iiycw9q/xhuS1B0GEz+cBWoo9A==
+X-Received: by 2002:a63:1:: with SMTP id 1mr18684498pga.162.1568510908956;
+ Sat, 14 Sep 2019 18:28:28 -0700 (PDT)
 Received: from bobo.local0.net ([203.63.189.78])
- by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.28.23
+ by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.28.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Sep 2019 18:28:25 -0700 (PDT)
+ Sat, 14 Sep 2019 18:28:28 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 00/27] current interrupt series plus scv syscall
-Date: Sun, 15 Sep 2019 11:27:46 +1000
-Message-Id: <20190915012813.29317-1-npiggin@gmail.com>
+Subject: [RFC PATCH 01/27] powerpc/64s/exception: Introduce INT_DEFINE
+ parameter block for code generation
+Date: Sun, 15 Sep 2019 11:27:47 +1000
+Message-Id: <20190915012813.29317-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20190915012813.29317-1-npiggin@gmail.com>
+References: <20190915012813.29317-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,84 +85,143 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-My interrupt entry patches have finally collided with syscall and
-interrupt exit patches, so I'll merge the series. Most patches have
-been seen already, however there have been a number of small changes
-and fixes throughout the series.
+The code generation macro arguments are difficult to read, and
+defaults can't easily be used.
 
-The final two patches add support for 'scv' and 'rfscv' instructions.
+This introduces a block where parameters can be set for interrupt
+handler code generation by the subsequent macros, and adds the first
+generation macro for interrupt entry.
 
-I'm posting this out now so we can start considering ABI and userspace
-support. We have the PPC_FEATURE2_SCV hwcap for this.
+One interrupt handler is converted to the new macros to demonstrate
+the change, the rest will be coverted all at once.
 
-Thanks,
-Nick
+No generated code change.
 
-Nicholas Piggin (27):
-  powerpc/64s/exception: Introduce INT_DEFINE parameter block for code
-    generation
-  powerpc/64s/exception: Add GEN_COMMON macro that uses INT_DEFINE
-    parameters
-  powerpc/64s/exception: Add GEN_KVM macro that uses INT_DEFINE
-    parameters
-  powerpc/64s/exception: Expand EXC_COMMON and EXC_COMMON_ASYNC macros
-  powerpc/64s/exception: Move all interrupt handlers to new style code
-    gen macros
-  powerpc/64s/exception: Remove old INT_ENTRY macro
-  powerpc/64s/exception: Remove old INT_COMMON macro
-  powerpc/64s/exception: Remove old INT_KVM_HANDLER
-  powerpc/64s/exception: Add ISIDE option
-  powerpc/64s/exception: move real->virt switch into the common handler
-  powerpc/64s/exception: move soft-mask test to common code
-  powerpc/64s/exception: move KVM test to common code
-  powerpc/64s/exception: remove confusing IEARLY option
-  powerpc/64s/exception: remove the SPR saving patch code macros
-  powerpc/64s/exception: trim unused arguments from KVMTEST macro
-  powerpc/64s/exception: hdecrementer avoid touching the stack
-  powerpc/64s/exception: re-inline some handlers
-  powerpc/64s/exception: Clean up SRR specifiers
-  powerpc/64s/exception: add more comments for interrupt handlers
-  powerpc/64s/exception: only test KVM in SRR interrupts when PR KVM is
-    supported
-  powerpc/64s/exception: soft nmi interrupt should not use
-    ret_from_except
-  powerpc/64: system call remove non-volatile GPR save optimisation
-  powerpc/64: system call implement the bulk of the logic in C
-  powerpc/64s: interrupt return in C
-  powerpc/64s/exception: remove lite interrupt return
-  powerpc/64s/exception: treat NIA below __end_interrupts as soft-masked
-  powerpc/64s: system call support for scv/rfscv instructions
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/exceptions-64s.S | 77 ++++++++++++++++++++++++++--
+ 1 file changed, 73 insertions(+), 4 deletions(-)
 
- arch/powerpc/include/asm/asm-prototypes.h     |   11 -
- .../powerpc/include/asm/book3s/64/kup-radix.h |   24 +-
- arch/powerpc/include/asm/cputime.h            |   24 +
- arch/powerpc/include/asm/exception-64s.h      |    4 -
- arch/powerpc/include/asm/head-64.h            |    2 +-
- arch/powerpc/include/asm/hw_irq.h             |    4 +
- arch/powerpc/include/asm/ppc_asm.h            |    2 +
- arch/powerpc/include/asm/processor.h          |    2 +-
- arch/powerpc/include/asm/ptrace.h             |    3 +
- arch/powerpc/include/asm/signal.h             |    3 +
- arch/powerpc/include/asm/switch_to.h          |   11 +
- arch/powerpc/include/asm/time.h               |    4 +-
- arch/powerpc/kernel/Makefile                  |    3 +-
- arch/powerpc/kernel/cpu_setup_power.S         |    2 +-
- arch/powerpc/kernel/dt_cpu_ftrs.c             |    1 +
- arch/powerpc/kernel/entry_64.S                |  964 ++------
- arch/powerpc/kernel/exceptions-64e.S          |  254 +-
- arch/powerpc/kernel/exceptions-64s.S          | 2046 ++++++++++++-----
- arch/powerpc/kernel/process.c                 |    2 +
- arch/powerpc/kernel/signal.h                  |    2 -
- arch/powerpc/kernel/syscall_64.c              |  422 ++++
- arch/powerpc/kernel/syscalls/syscall.tbl      |   22 +-
- arch/powerpc/kernel/systbl.S                  |    9 +-
- arch/powerpc/kernel/time.c                    |    9 -
- arch/powerpc/kernel/vector.S                  |    2 +-
- arch/powerpc/kvm/book3s_hv_rmhandlers.S       |   11 -
- arch/powerpc/kvm/book3s_segment.S             |    7 -
- 27 files changed, 2458 insertions(+), 1392 deletions(-)
- create mode 100644 arch/powerpc/kernel/syscall_64.c
-
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index d0018dd17e0a..e6ad6e6cf65e 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -193,6 +193,61 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	mtctr	reg;							\
+ 	bctr
+ 
++/*
++ * Interrupt code generation macros
++ */
++#define IVEC		.L_IVEC_\name\()
++#define IHSRR		.L_IHSRR_\name\()
++#define IAREA		.L_IAREA_\name\()
++#define IDAR		.L_IDAR_\name\()
++#define IDSISR		.L_IDSISR_\name\()
++#define ISET_RI		.L_ISET_RI_\name\()
++#define IEARLY		.L_IEARLY_\name\()
++#define IMASK		.L_IMASK_\name\()
++#define IKVM_REAL	.L_IKVM_REAL_\name\()
++#define IKVM_VIRT	.L_IKVM_VIRT_\name\()
++
++#define INT_DEFINE_BEGIN(n)						\
++.macro int_define_ ## n name
++
++#define INT_DEFINE_END(n)						\
++.endm ;									\
++int_define_ ## n n ;							\
++do_define_int n
++
++.macro do_define_int name
++	.ifndef IVEC
++		.error "IVEC not defined"
++	.endif
++	.ifndef IHSRR
++		IHSRR=EXC_STD
++	.endif
++	.ifndef IAREA
++		IAREA=PACA_EXGEN
++	.endif
++	.ifndef IDAR
++		IDAR=0
++	.endif
++	.ifndef IDSISR
++		IDSISR=0
++	.endif
++	.ifndef ISET_RI
++		ISET_RI=1
++	.endif
++	.ifndef IEARLY
++		IEARLY=0
++	.endif
++	.ifndef IMASK
++		IMASK=0
++	.endif
++	.ifndef IKVM_REAL
++		IKVM_REAL=0
++	.endif
++	.ifndef IKVM_VIRT
++		IKVM_VIRT=0
++	.endif
++.endm
++
+ .macro INT_KVM_HANDLER name, vec, hsrr, area, skip
+ 	TRAMP_KVM_BEGIN(\name\()_kvm)
+ 	KVM_HANDLER \vec, \hsrr, \area, \skip
+@@ -474,7 +529,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	 */
+ 	GET_SCRATCH0(r10)
+ 	std	r10,\area\()+EX_R13(r13)
+-	.if \dar
++	.if \dar == 1
+ 	.if \hsrr
+ 	mfspr	r10,SPRN_HDAR
+ 	.else
+@@ -482,7 +537,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	.endif
+ 	std	r10,\area\()+EX_DAR(r13)
+ 	.endif
+-	.if \dsisr
++	.if \dsisr == 1
+ 	.if \hsrr
+ 	mfspr	r10,SPRN_HDSISR
+ 	.else
+@@ -506,6 +561,14 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	.endif
+ .endm
+ 
++.macro GEN_INT_ENTRY name, virt, ool=0
++	.if ! \virt
++		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_REAL
++	.else
++		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_VIRT
++	.endif
++.endm
++
+ /*
+  * On entry r13 points to the paca, r9-r13 are saved in the paca,
+  * r9 contains the saved CR, r11 and r12 contain the saved SRR0 and
+@@ -1143,12 +1206,18 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+ 	bl	unrecoverable_exception
+ 	b	.
+ 
++INT_DEFINE_BEGIN(data_access)
++	IVEC=0x300
++	IDAR=1
++	IDSISR=1
++	IKVM_REAL=1
++INT_DEFINE_END(data_access)
+ 
+ EXC_REAL_BEGIN(data_access, 0x300, 0x80)
+-	INT_HANDLER data_access, 0x300, ool=1, dar=1, dsisr=1, kvm=1
++	GEN_INT_ENTRY data_access, virt=0, ool=1
+ EXC_REAL_END(data_access, 0x300, 0x80)
+ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
+-	INT_HANDLER data_access, 0x300, virt=1, dar=1, dsisr=1
++	GEN_INT_ENTRY data_access, virt=1
+ EXC_VIRT_END(data_access, 0x4300, 0x80)
+ INT_KVM_HANDLER data_access, 0x300, EXC_STD, PACA_EXGEN, 1
+ EXC_COMMON_BEGIN(data_access_common)
 -- 
 2.23.0
 
