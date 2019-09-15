@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8509AB2DBD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 04:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4180BB2DC0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 04:06:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WCN85VS0zF6BP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 12:03:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46WCQZ5jrBzF5jD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2019 12:05:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="tFH/lWxx"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="lp+7wPD7"; 
  dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WBcF0NBZzF5qB
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:29:16 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id m9so14941159pls.8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:29:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46WBcG3NXdzF5qf
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2019 11:29:18 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id y72so20244234pfb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2019 18:29:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=qO1cTnvV48lP79pf8aYl/XVEkyju6LgKodKnPL2OG/A=;
- b=tFH/lWxxp++ruIaX/kMm8uLROILGOYYCyU82bWjBFMaSbOKX0Bp7xCasN6oKyee4Gz
- sR2smEdV/bre3d3s/XBI8Zn1bYKlKs5GSki0O48CcYyTNjReq5idtXww75UrnpNumOc9
- eaK1bGrtYFRD9qsQbe8FmbIhwaJa2Nt679YIWgsz2qUd764cwdYNta9nCq6H+saOdUYI
- fI40ZBF6xfvyTLKLn7TnA/xbneP164YMUp1Zk3FeAXX60TgfpD+Er6nnakpnnsyWs2Aq
- /4M0l2Gt2cskYcelmXnVwuGgJdGFsGQAWRCDLjGZW0+uwoy7YHXhsspFlVxmPcswvTBe
- JCAg==
+ bh=Rvdd/Ft2i0qBDP/r6+IhtX2uynofSWU0jFrn00TgyQw=;
+ b=lp+7wPD7q7dAU9Ab/aOHxMymQqeL76bAwy1w5p0omMiDdwosWfzBE4YUZML26qfeCD
+ Oo1E/OyyeG/wb0bzGwOM9uV6CloBN33B7anFrng8Y78BPujUDXAzz8EyJCKF8ssIetNB
+ +CxfLsHkj12OJM+PGPEDLE5fbdl9AVgzNVnsWYi/+lvTLsZH4aYfa86z0tGOwHRqERo6
+ KZTWZPA8lG8QIBVYBq65idAbn32OeyoCJSTd0YkXYIhGApStYnDDTdyJ0pSq2oVj2S2I
+ 9h7NdDApM7DL9KyUel1ciNffjhJdry9uGQ2A2rU+YQILV72Hlurv++4CkNmMvNFAG8OV
+ ASNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=qO1cTnvV48lP79pf8aYl/XVEkyju6LgKodKnPL2OG/A=;
- b=c37CZhzWRLQbK0U0m5sHNILkUB8zS4XbweK/qGWiX8FZnm/Z9xJ9BImtcZaObxhiDS
- 5Y8xXp5/LmjFX5l278FsDi90Ho7uIzmGnRZlEzu4S/qUzW8Iv0Br0gVjXNTx9P6MM8D4
- 1vAVcL5fsa5/8icIIah+K2d0LJaAndZQBdyjDPvi6lF65OtZPe2HgflIxWTy4cGf0Yj2
- 9F3sPMKMzwPvge31vUleA+PsQcBqD2Lfh2pcChPzKsWm9jBUeLk9oS9lMxomnDrGJCW3
- fFKVe9gTs1FF4JImwCa6/ogaWxPOIqhjVqMSo6zj3z6VFfDLupYshrZkzbukSpJqrnC4
- GRAg==
-X-Gm-Message-State: APjAAAXZmjOY5ujun4RA1OuA/OBB2/T7SAJo1F/NhvWEXVqa6PEZvXHI
- k2NJYlwK+mIxaITsE+F6gYzEFA7O
-X-Google-Smtp-Source: APXvYqwh0f/VebzAGEM+P6ZXEE78wr+nhQqF6fzrjMKh9S/ReWq+YJ9drTUEj66DvY4FjQ6UxbGZzQ==
-X-Received: by 2002:a17:902:a50a:: with SMTP id
- s10mr48607986plq.336.1568510953556; 
- Sat, 14 Sep 2019 18:29:13 -0700 (PDT)
+ bh=Rvdd/Ft2i0qBDP/r6+IhtX2uynofSWU0jFrn00TgyQw=;
+ b=F6MwE+e1W57JSrLtdbv4EFegNZCcHCRG6DLeqEThixon9xwjRySdQPiY2/NdX98iuq
+ u7nO/IRWTZtr/JeXOim9XTfWszYjsdJpJStBucrU2a13k13X4HXitqLl1cfYrdTmGHTT
+ OMJpgAqHd0FEnES8/nTAtTwu6yyJJ1OtWmSUTp5yHf1FiWAhaqHpImNzB+NodgrAaOZP
+ ZRzGgyEg6Eh61ttKyutPXpyIFRhny/G/9lfSIAnT1ncS1W7LtNZZs9V1IWrhotFXwCXK
+ mFUMvGqR5mqAwRMhzOzzRfKOfGpONEyKV9O9KmW8F6PuuDjNIqqpwEU4DUeUuy/DAFv/
+ g+1w==
+X-Gm-Message-State: APjAAAU6futq2tuXlOtsbkrQSTC6Dx+ZPB2CD/ocYaLFX9rEc+9Rdv3z
+ /SnGK7rodPUb7xGEvEJg6iIhnoGa
+X-Google-Smtp-Source: APXvYqzwHP1w6QlazwVO2MG963VHwFA5gfNPIf4fD5lbGzSChNKyXpTRBt8fYqgwVWXqbHs6kGrL8g==
+X-Received: by 2002:a17:90a:be13:: with SMTP id
+ a19mr5129624pjs.55.1568510956168; 
+ Sat, 14 Sep 2019 18:29:16 -0700 (PDT)
 Received: from bobo.local0.net ([203.63.189.78])
- by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.29.11
+ by smtp.gmail.com with ESMTPSA id bt1sm6267043pjb.17.2019.09.14.18.29.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Sep 2019 18:29:13 -0700 (PDT)
+ Sat, 14 Sep 2019 18:29:15 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 17/27] powerpc/64s/exception: re-inline some handlers
-Date: Sun, 15 Sep 2019 11:28:03 +1000
-Message-Id: <20190915012813.29317-18-npiggin@gmail.com>
+Subject: [RFC PATCH 18/27] powerpc/64s/exception: Clean up SRR specifiers
+Date: Sun, 15 Sep 2019 11:28:04 +1000
+Message-Id: <20190915012813.29317-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190915012813.29317-1-npiggin@gmail.com>
 References: <20190915012813.29317-1-npiggin@gmail.com>
@@ -85,45 +85,283 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The reduction in interrupt entry size allows some handlers to be
-re-inlined.
+Remove more magic numbers and replace with nicely named bools.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 68 +++++++++++++---------------
+ 1 file changed, 32 insertions(+), 36 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 7a234e6d7bf5..9494403b9586 100644
+index 9494403b9586..ef37d0ab6594 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1186,7 +1186,7 @@ INT_DEFINE_BEGIN(data_access)
- INT_DEFINE_END(data_access)
+@@ -105,11 +105,6 @@ name:
+ 	ori	reg,reg,(ABS_ADDR(label))@l;				\
+ 	addis	reg,reg,(ABS_ADDR(label))@h
  
- EXC_REAL_BEGIN(data_access, 0x300, 0x80)
--	GEN_INT_ENTRY data_access, virt=0, ool=1
-+	GEN_INT_ENTRY data_access, virt=0
- EXC_REAL_END(data_access, 0x300, 0x80)
- EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
- 	GEN_INT_ENTRY data_access, virt=1
-@@ -1216,7 +1216,7 @@ INT_DEFINE_BEGIN(data_access_slb)
- INT_DEFINE_END(data_access_slb)
+-/* Exception register prefixes */
+-#define EXC_HV_OR_STD	2 /* depends on HVMODE */
+-#define EXC_HV		1
+-#define EXC_STD		0
+-
+ /*
+  * Branch to label using its 0xC000 address. This results in instruction
+  * address suitable for MSR[IR]=0 or 1, which allows relocation to be turned
+@@ -128,6 +123,7 @@ name:
+  */
+ #define IVEC		.L_IVEC_\name\()
+ #define IHSRR		.L_IHSRR_\name\()
++#define IHSRR_IF_HVMODE	.L_IHSRR_IF_HVMODE_\name\()
+ #define IAREA		.L_IAREA_\name\()
+ #define IVIRT		.L_IVIRT_\name\()
+ #define IISIDE		.L_IISIDE_\name\()
+@@ -159,7 +155,10 @@ do_define_int n
+ 		.error "IVEC not defined"
+ 	.endif
+ 	.ifndef IHSRR
+-		IHSRR=EXC_STD
++		IHSRR=0
++	.endif
++	.ifndef IHSRR_IF_HVMODE
++		IHSRR_IF_HVMODE=0
+ 	.endif
+ 	.ifndef IAREA
+ 		IAREA=PACA_EXGEN
+@@ -257,7 +256,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	ld	r9,IAREA+EX_R9(r13)
+ 	ld	r10,IAREA+EX_R10(r13)
+ 	/* HSRR variants have the 0x2 bit added to their trap number */
+-	.if IHSRR == EXC_HV_OR_STD
++	.if IHSRR_IF_HVMODE
+ 	BEGIN_FTR_SECTION
+ 	ori	r12,r12,(IVEC + 0x2)
+ 	FTR_SECTION_ELSE
+@@ -278,7 +277,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ 	ld	r10,IAREA+EX_R10(r13)
+ 	ld	r11,IAREA+EX_R11(r13)
+ 	ld	r12,IAREA+EX_R12(r13)
+-	.if IHSRR == EXC_HV_OR_STD
++	.if IHSRR_IF_HVMODE
+ 	BEGIN_FTR_SECTION
+ 	b	kvmppc_skip_Hinterrupt
+ 	FTR_SECTION_ELSE
+@@ -403,7 +402,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	stw	r10,IAREA+EX_DSISR(r13)
+ 	.endif
  
- EXC_REAL_BEGIN(data_access_slb, 0x380, 0x80)
--	GEN_INT_ENTRY data_access_slb, virt=0, ool=1
-+	GEN_INT_ENTRY data_access_slb, virt=0
- EXC_REAL_END(data_access_slb, 0x380, 0x80)
- EXC_VIRT_BEGIN(data_access_slb, 0x4380, 0x80)
- 	GEN_INT_ENTRY data_access_slb, virt=1
-@@ -1472,7 +1472,7 @@ INT_DEFINE_BEGIN(decrementer)
- INT_DEFINE_END(decrementer)
+-	.if IHSRR == EXC_HV_OR_STD
++	.if IHSRR_IF_HVMODE
+ 	BEGIN_FTR_SECTION
+ 	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
+ 	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
+@@ -485,7 +484,7 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
+ 		.abort "Bad maskable vector"
+ 		.endif
  
- EXC_REAL_BEGIN(decrementer, 0x900, 0x80)
--	GEN_INT_ENTRY decrementer, virt=0, ool=1
-+	GEN_INT_ENTRY decrementer, virt=0
- EXC_REAL_END(decrementer, 0x900, 0x80)
- EXC_VIRT_BEGIN(decrementer, 0x4900, 0x80)
- 	GEN_INT_ENTRY decrementer, virt=1
+-		.if IHSRR == EXC_HV_OR_STD
++		.if IHSRR_IF_HVMODE
+ 		BEGIN_FTR_SECTION
+ 		bne	masked_Hinterrupt
+ 		FTR_SECTION_ELSE
+@@ -618,12 +617,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+  * Restore all registers including H/SRR0/1 saved in a stack frame of a
+  * standard exception.
+  */
+-.macro EXCEPTION_RESTORE_REGS hsrr
++.macro EXCEPTION_RESTORE_REGS hsrr=0
+ 	/* Move original SRR0 and SRR1 into the respective regs */
+ 	ld	r9,_MSR(r1)
+-	.if \hsrr == EXC_HV_OR_STD
+-	.error "EXC_HV_OR_STD Not implemented for EXCEPTION_RESTORE_REGS"
+-	.endif
+ 	.if \hsrr
+ 	mtspr	SPRN_HSRR1,r9
+ 	.else
+@@ -898,7 +894,7 @@ EXC_COMMON_BEGIN(system_reset_common)
+ 	ld	r10,SOFTE(r1)
+ 	stb	r10,PACAIRQSOFTMASK(r13)
+ 
+-	EXCEPTION_RESTORE_REGS EXC_STD
++	EXCEPTION_RESTORE_REGS
+ 	RFI_TO_USER_OR_KERNEL
+ 
+ 	GEN_KVM system_reset
+@@ -952,7 +948,7 @@ TRAMP_REAL_BEGIN(machine_check_fwnmi)
+ 	lhz	r12,PACA_IN_MCE(r13);			\
+ 	subi	r12,r12,1;				\
+ 	sth	r12,PACA_IN_MCE(r13);			\
+-	EXCEPTION_RESTORE_REGS EXC_STD
++	EXCEPTION_RESTORE_REGS
+ 
+ EXC_COMMON_BEGIN(machine_check_early_common)
+ 	/*
+@@ -1321,7 +1317,7 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 
+ INT_DEFINE_BEGIN(hardware_interrupt)
+ 	IVEC=0x500
+-	IHSRR=EXC_HV_OR_STD
++	IHSRR_IF_HVMODE=1
+ 	IMASK=IRQS_DISABLED
+ 	IKVM_REAL=1
+ 	IKVM_VIRT=1
+@@ -1490,7 +1486,7 @@ EXC_COMMON_BEGIN(decrementer_common)
+ 
+ INT_DEFINE_BEGIN(hdecrementer)
+ 	IVEC=0x980
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	ISTACK=0
+ 	IRECONCILE=0
+ 	IKVM_REAL=1
+@@ -1732,7 +1728,7 @@ EXC_COMMON_BEGIN(single_step_common)
+ 
+ INT_DEFINE_BEGIN(h_data_storage)
+ 	IVEC=0xe00
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IDAR=1
+ 	IDSISR=1
+ 	IKVM_SKIP=1
+@@ -1764,7 +1760,7 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_TYPE_RADIX)
+ 
+ INT_DEFINE_BEGIN(h_instr_storage)
+ 	IVEC=0xe20
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IKVM_REAL=1
+ 	IKVM_VIRT=1
+ INT_DEFINE_END(h_instr_storage)
+@@ -1787,7 +1783,7 @@ EXC_COMMON_BEGIN(h_instr_storage_common)
+ 
+ INT_DEFINE_BEGIN(emulation_assist)
+ 	IVEC=0xe40
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IKVM_REAL=1
+ 	IKVM_VIRT=1
+ INT_DEFINE_END(emulation_assist)
+@@ -1815,7 +1811,7 @@ EXC_COMMON_BEGIN(emulation_assist_common)
+  */
+ INT_DEFINE_BEGIN(hmi_exception_early)
+ 	IVEC=0xe60
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IREALMODE_COMMON=1
+ 	ISTACK=0
+ 	IRECONCILE=0
+@@ -1825,7 +1821,7 @@ INT_DEFINE_END(hmi_exception_early)
+ 
+ INT_DEFINE_BEGIN(hmi_exception)
+ 	IVEC=0xe60
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IMASK=IRQS_DISABLED
+ 	IKVM_REAL=1
+ INT_DEFINE_END(hmi_exception)
+@@ -1847,7 +1843,7 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
+ 	cmpdi	cr0,r3,0
+ 	bne	1f
+ 
+-	EXCEPTION_RESTORE_REGS EXC_HV
++	EXCEPTION_RESTORE_REGS hsrr=1
+ 	HRFI_TO_USER_OR_KERNEL
+ 
+ 1:
+@@ -1855,7 +1851,7 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
+ 	 * Go to virtual mode and pull the HMI event information from
+ 	 * firmware.
+ 	 */
+-	EXCEPTION_RESTORE_REGS EXC_HV
++	EXCEPTION_RESTORE_REGS hsrr=1
+ 	GEN_INT_ENTRY hmi_exception, virt=0
+ 
+ 	GEN_KVM hmi_exception_early
+@@ -1874,7 +1870,7 @@ EXC_COMMON_BEGIN(hmi_exception_common)
+ 
+ INT_DEFINE_BEGIN(h_doorbell)
+ 	IVEC=0xe80
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IMASK=IRQS_DISABLED
+ 	IKVM_REAL=1
+ 	IKVM_VIRT=1
+@@ -1903,7 +1899,7 @@ EXC_COMMON_BEGIN(h_doorbell_common)
+ 
+ INT_DEFINE_BEGIN(h_virt_irq)
+ 	IVEC=0xea0
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IMASK=IRQS_DISABLED
+ 	IKVM_REAL=1
+ 	IKVM_VIRT=1
+@@ -2073,7 +2069,7 @@ EXC_COMMON_BEGIN(facility_unavailable_common)
+ 
+ INT_DEFINE_BEGIN(h_facility_unavailable)
+ 	IVEC=0xf80
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IKVM_REAL=1
+ 	IKVM_VIRT=1
+ INT_DEFINE_END(h_facility_unavailable)
+@@ -2109,7 +2105,7 @@ EXC_VIRT_NONE(0x5100, 0x100)
+ #ifdef CONFIG_CBE_RAS
+ INT_DEFINE_BEGIN(cbe_system_error)
+ 	IVEC=0x1200
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IKVM_SKIP=1
+ 	IKVM_REAL=1
+ INT_DEFINE_END(cbe_system_error)
+@@ -2160,8 +2156,8 @@ EXC_VIRT_NONE(0x5400, 0x100)
+ 
+ INT_DEFINE_BEGIN(denorm_exception)
+ 	IVEC=0x1500
+-	IHSRR=EXC_HV
+-	IBRANCH_TO_COMMON=0
++	IHSRR=1
++	IBRANCH_COMMON=0
+ 	IKVM_REAL=1
+ INT_DEFINE_END(denorm_exception)
+ 
+@@ -2269,7 +2265,7 @@ EXC_COMMON_BEGIN(denorm_exception_common)
+ #ifdef CONFIG_CBE_RAS
+ INT_DEFINE_BEGIN(cbe_maintenance)
+ 	IVEC=0x1600
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IKVM_SKIP=1
+ 	IKVM_REAL=1
+ INT_DEFINE_END(cbe_maintenance)
+@@ -2321,7 +2317,7 @@ EXC_COMMON_BEGIN(altivec_assist_common)
+ #ifdef CONFIG_CBE_RAS
+ INT_DEFINE_BEGIN(cbe_thermal)
+ 	IVEC=0x1800
+-	IHSRR=EXC_HV
++	IHSRR=1
+ 	IKVM_SKIP=1
+ 	IKVM_REAL=1
+ INT_DEFINE_END(cbe_thermal)
+@@ -2384,7 +2380,7 @@ EXC_COMMON_BEGIN(soft_nmi_common)
+  * - Else it is one of PACA_IRQ_MUST_HARD_MASK, so hard disable and return.
+  * This is called with r10 containing the value to OR to the paca field.
+  */
+-.macro MASKED_INTERRUPT hsrr
++.macro MASKED_INTERRUPT hsrr=0
+ 	.if \hsrr
+ masked_Hinterrupt:
+ 	.else
+@@ -2531,8 +2527,8 @@ TRAMP_REAL_BEGIN(hrfi_flush_fallback)
+ 	hrfid
+ 
+ USE_TEXT_SECTION()
+-	MASKED_INTERRUPT EXC_STD
+-	MASKED_INTERRUPT EXC_HV
++	MASKED_INTERRUPT
++	MASKED_INTERRUPT hsrr=1
+ 
+ #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+ kvmppc_skip_interrupt:
 -- 
 2.23.0
 
