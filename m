@@ -1,40 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F5EB3692
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 10:45:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E804B3786
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 11:51:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46X0Dt2kdFzF4MD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 18:45:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46X1hz3FWrzF4Rw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 19:51:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46X0C10f62zF33Y
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 18:43:39 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 67640AE5E;
- Mon, 16 Sep 2019 08:43:33 +0000 (UTC)
-Date: Mon, 16 Sep 2019 10:43:29 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Subject: Re: [PATCH v4] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20190916084328.GC10231@dhcp22.suse.cz>
-References: <1568535656-158979-1-git-send-email-linyunsheng@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46X1ff2166zF3yr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 19:49:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="oGRkaMBD"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46X1fc4hJ7z9sN1;
+ Mon, 16 Sep 2019 19:49:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1568627352;
+ bh=jsKmdD25O7E7b6MGCfKrIW2+0mm8jyNIg2YUIThNMJA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=oGRkaMBD72FH7Cn8BXHVlyi/oQ+HpD0kkFBDnkP5XIIZiu1N9KVyioRwdc+NKUDDX
+ 6i+svqkVcZ5fpGih0vUqDZazxbl/DC6l8jPSU6ZjfIi9dxZ7cfxcE59fR8/qPSvasr
+ PvVGAlp4KhpjzehlRzRvH9jtomjw17fL/jEz/wFmPs+VXQW8AXOwpR6lfhA+l4dDtP
+ GekrBf7jE4tvS3fjuY76DlGmr/0pkAFetaKwNFNMBpL+WzndVoUWfzM+mvbHFoLmVV
+ LBJeQXcQ86PDgTc/bpfjTl52OQUZQ4DBpMHIqrY6Oa+lNcNMEVz/gvIvwgZEKwJpry
+ vJR3Y23FnI1wQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] PPC: Set reserved PCR bits
+In-Reply-To: <20190910060102.21597-1-alistair@popple.id.au>
+References: <20190910060102.21597-1-alistair@popple.id.au>
+Date: Mon, 16 Sep 2019 19:49:26 +1000
+Message-ID: <877e68tvtl.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1568535656-158979-1-git-send-email-linyunsheng@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,107 +56,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, peterz@infradead.org,
- catalin.marinas@arm.com, dave.hansen@linux.intel.com,
- heiko.carstens@de.ibm.com, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org,
- mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
- sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
- linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, x86@kernel.org,
- rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
- mingo@redhat.com, jeffrey.t.kirsher@intel.com, jhogan@kernel.org,
- mattst88@gmail.com, len.brown@intel.com, gor@linux.ibm.com,
- anshuman.khandual@arm.com, gregkh@linuxfoundation.org, bp@alien8.de,
- luto@kernel.org, tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
- linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
- linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
- akpm@linux-foundation.org, robin.murphy@arm.com, davem@davemloft.net
+Cc: Alistair Popple <alistair@popple.id.au>, Joel Stanley <joel@jms.id.au>,
+ Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun 15-09-19 16:20:56, Yunsheng Lin wrote:
-> When passing the return value of dev_to_node() to cpumask_of_node()
-> without checking if the device's node id is NUMA_NO_NODE, there is
-> global-out-of-bounds detected by KASAN.
-> 
-> >From the discussion [1], NUMA_NO_NODE really means no node affinity,
-> which also means all cpus should be usable. So the cpumask_of_node()
-> should always return all cpus online when user passes the node id as
-> NUMA_NO_NODE, just like similar semantic that page allocator handles
-> NUMA_NO_NODE.
-> 
-> But we cannot really copy the page allocator logic. Simply because the
-> page allocator doesn't enforce the near node affinity. It just picks it
-> up as a preferred node but then it is free to fallback to any other numa
-> node. This is not the case here and node_to_cpumask_map will only restrict
-> to the particular node's cpus which would have really non deterministic
-> behavior depending on where the code is executed. So in fact we really
-> want to return cpu_online_mask for NUMA_NO_NODE.
-> 
-> Some arches were already NUMA_NO_NODE aware, so only change them to return
-> cpu_online_mask and use NUMA_NO_NODE instead of "-1".
-> 
-> Also there is a debugging version of node_to_cpumask_map() for x86 and
-> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
-> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
-> And "fix" a sign "bug" since it is for debugging and should catch all the
-> error cases.
-> 
-> [1] https://lore.kernel.org/patchwork/patch/1125789/
-> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-> Suggested-by: Michal Hocko <mhocko@kernel.org>
+Alistair Popple <alistair@popple.id.au> writes:
+> Currently the reserved bits of the Processor Compatibility Register
+> (PCR) are cleared as per the Programming Note in Section 1.3.3 of
+> version 3.0B of the Power ISA. This causes all new architecture
+> features to be made available when running on newer processors with
+> new architecture features added to the PCR as bits must be set to
+> disable a given feature.
+>
+> For example to disable new features added as part of Version 2.07 of
+> the ISA the corresponding bit in the PCR needs to be set.
+>
+> As new processor features generally require explicit kernel support
+> they should be disabled until such support is implemented. Therefore
+> kernels should set all unknown/reserved bits in the PCR such that any
+> new architecture features which the kernel does not currently know
+> about get disabled.
+>
+> An update is planned to the ISA to clarify that the PCR is an
+> exception to the Programming Note on reserved bits in Section 1.3.3.
+>
+> Signed-off-by: Alistair Popple <alistair@popple.id.au>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> Tested-by: Joel Stanley <joel@jms.id.au>
+> ---
+> v2: Added some clarifications to the commit message
+> ---
+>  arch/powerpc/include/asm/reg.h          |  3 +++
+>  arch/powerpc/kernel/cpu_setup_power.S   |  6 ++++++
+>  arch/powerpc/kernel/dt_cpu_ftrs.c       |  3 ++-
+>  arch/powerpc/kvm/book3s_hv.c            | 11 +++++++----
+>  arch/powerpc/kvm/book3s_hv_nested.c     |  6 +++---
+>  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 10 ++++++----
+>  6 files changed, 27 insertions(+), 12 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+> index 10caa145f98b..258435c75c43 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -475,6 +475,7 @@
+>  #define   PCR_VEC_DIS	(1ul << (63-0))	/* Vec. disable (bit NA since POWER8) */
+>  #define   PCR_VSX_DIS	(1ul << (63-1))	/* VSX disable (bit NA since POWER8) */
+>  #define   PCR_TM_DIS	(1ul << (63-2))	/* Trans. memory disable (POWER8) */
+> +#define   PCR_HIGH_BITS	(PCR_VEC_DIS | PCR_VSX_DIS | PCR_TM_DIS)
 
-The change makes sense to me. I wish this particular thing wasn't
-duplicated so heavily - maybe we can unify all of them and use a common
-code? In a separate patch most likely...
+This doesn't build with old binutils that don't support 'ul', eg:
 
-I would also not change cpu_all_mask -> cpu_online_mask in this patch.
-That is worth a patch on its own with some explanation. I haven't
-checked but I would suspect that alpha simply doesn't support cpu
-hotplug so the two things are the same. But this needs some explanation.
+  arch/powerpc/kvm/book3s_hv_rmhandlers.S:647: Error: junk at end of line, first unrecognized character is `u'
+  arch/powerpc/kvm/book3s_hv_rmhandlers.S:647: Error: missing ')'
+  arch/powerpc/kvm/book3s_hv_rmhandlers.S:647: Error: junk at end of line: `ul<<(63-0))|(1ul<<(63-1))|(1ul<<(63-2)))|(0x8|0x4|0x2)))>>32)@h'
+  arch/powerpc/kernel/cpu_setup_power.S:131: Error: syntax error; found `u', expected `,'
+  arch/powerpc/kernel/cpu_setup_power.S:131: Error: junk at end of line: `ul<<(63-0))|(1ul<<(63-1))|(1ul<<(63-2)))|(0x8|0x4|0x2)))@l'
 
-Other than that the patch looks good to me. Feel free to add
-Acked-by: Michal Hocko <mhocko@suse.com>
+etc. http://kisskb.ellerman.id.au/kisskb/buildresult/13957233/ 
 
-[...]
-> diff --git a/arch/alpha/include/asm/topology.h b/arch/alpha/include/asm/topology.h
-> index 5a77a40..836c9e2 100644
-> --- a/arch/alpha/include/asm/topology.h
-> +++ b/arch/alpha/include/asm/topology.h
-> @@ -31,7 +31,7 @@ static const struct cpumask *cpumask_of_node(int node)
->  	int cpu;
->  
->  	if (node == NUMA_NO_NODE)
-> -		return cpu_all_mask;
-> +		return cpu_online_mask;
->  
->  	cpumask_clear(&node_to_cpumask_map[node]);
->  
-[...]
+There's a gcc-4.6 with an old binutils on the ka's.
 
-> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> index e6dad60..c676ffb 100644
-> --- a/arch/x86/mm/numa.c
-> +++ b/arch/x86/mm/numa.c
-> @@ -861,9 +861,12 @@ void numa_remove_cpu(int cpu)
->   */
->  const struct cpumask *cpumask_of_node(int node)
->  {
-> -	if (node >= nr_node_ids) {
-> +	if (node == NUMA_NO_NODE)
-> +		return cpu_online_mask;
-> +
-> +	if ((unsigned int)node >= nr_node_ids) {
->  		printk(KERN_WARNING
-> -			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
-> +			"cpumask_of_node(%d): node >= nr_node_ids(%u)\n",
->  			node, nr_node_ids);
->  		dump_stack();
->  		return cpu_none_mask;
-
-Why do we need this?
--- 
-Michal Hocko
-SUSE Labs
+cheers
