@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22823B3972
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 13:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 707E1B3983
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 13:36:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46X3zq5WYbzF1M8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 21:34:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46X42r1b86zF4qG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 21:36:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,14 +19,14 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46X3bL21gfzF4M4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:16:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46X3bl6WdmzF4dx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:16:51 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 204819] KASAN still got problems loading some modules at boot
-Date: Mon, 16 Sep 2019 11:16:27 +0000
+Date: Mon, 16 Sep 2019 11:16:49 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -42,7 +42,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-204819-206035-3gZ1yZRXRr@https.bugzilla.kernel.org/>
+Message-ID: <bug-204819-206035-VzW4FM9iPx@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-204819-206035@https.bugzilla.kernel.org/>
 References: <bug-204819-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,10 +67,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204819
 
---- Comment #20 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 285007
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D285007&action=3Dedit
-objdump firewire-ohci v3 (5.3-rc8 + ptdump patch, NO SMP)
+--- Comment #21 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 285009
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D285009&action=3Dedit
+objdump ehci-pci v3 (5.3-rc8 + ptdump patch, NO SMP)
 
 --=20
 You are receiving this mail because:
