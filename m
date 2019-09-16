@@ -2,68 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DB4B34CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 08:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F5EB3692
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 10:45:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46WxZ757JtzDrWX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 16:45:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46X0Dt2kdFzF4MD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 18:45:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="XWXYRC5Z"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46WxWs2PxSzDqMC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 16:43:02 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46WxWc29kNz9ttmj;
- Mon, 16 Sep 2019 08:42:52 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=XWXYRC5Z; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id dbspjtamatqG; Mon, 16 Sep 2019 08:42:52 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46WxWc13hZz9ttgK;
- Mon, 16 Sep 2019 08:42:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1568616172; bh=iy5pWcaxPfj+RFVUzMwPR2y2giOotlzyIsxHa+QXuoE=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=XWXYRC5Z26xvcIVt4llblpG3rJJHthVQpI+evksAXJ7+3bzafo4dV3xi409I5F3o/
- sVCIAlJmARSPvFUiofSSp48KkM7KkSPy+ygHfRIaNg5vxj/k0Ki1XVo35UL9m2p5R8
- teZavv5jhsNNmFU8Ew06CARExKEprDybHK1wxon4=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BD0188B7CA;
- Mon, 16 Sep 2019 08:42:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 3LJc_fR88cfm; Mon, 16 Sep 2019 08:42:56 +0200 (CEST)
-Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 899098B752;
- Mon, 16 Sep 2019 08:42:56 +0200 (CEST)
-Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 510736B763; Mon, 16 Sep 2019 06:42:56 +0000 (UTC)
-Message-Id: <7f8f9747ef1ab2e1261cf83b03c1da321d47f7b7.1568616151.git.christophe.leroy@c-s.fr>
-In-Reply-To: <966e6d6a226f9786098d296239a6c65064e73a41.1568616151.git.christophe.leroy@c-s.fr>
-References: <966e6d6a226f9786098d296239a6c65064e73a41.1568616151.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2 2/2] powerpc/83xx: map IMMR with a BAT.
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- oss@buserror.net, galak@kernel.crashing.org
-Date: Mon, 16 Sep 2019 06:42:56 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46X0C10f62zF33Y
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 18:43:39 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 67640AE5E;
+ Mon, 16 Sep 2019 08:43:33 +0000 (UTC)
+Date: Mon, 16 Sep 2019 10:43:29 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Subject: Re: [PATCH v4] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20190916084328.GC10231@dhcp22.suse.cz>
+References: <1568535656-158979-1-git-send-email-linyunsheng@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1568535656-158979-1-git-send-email-linyunsheng@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,89 +46,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, peterz@infradead.org,
+ catalin.marinas@arm.com, dave.hansen@linux.intel.com,
+ heiko.carstens@de.ibm.com, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org,
+ mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
+ sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
+ linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, x86@kernel.org,
+ rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
+ mingo@redhat.com, jeffrey.t.kirsher@intel.com, jhogan@kernel.org,
+ mattst88@gmail.com, len.brown@intel.com, gor@linux.ibm.com,
+ anshuman.khandual@arm.com, gregkh@linuxfoundation.org, bp@alien8.de,
+ luto@kernel.org, tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
+ linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
+ linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
+ akpm@linux-foundation.org, robin.murphy@arm.com, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On mpc83xx with a QE, IMMR is 2Mbytes and aligned on 2Mbytes boundarie.
-On mpc83xx without a QE, IMMR is 1Mbyte and 1Mbyte aligned.
+On Sun 15-09-19 16:20:56, Yunsheng Lin wrote:
+> When passing the return value of dev_to_node() to cpumask_of_node()
+> without checking if the device's node id is NUMA_NO_NODE, there is
+> global-out-of-bounds detected by KASAN.
+> 
+> >From the discussion [1], NUMA_NO_NODE really means no node affinity,
+> which also means all cpus should be usable. So the cpumask_of_node()
+> should always return all cpus online when user passes the node id as
+> NUMA_NO_NODE, just like similar semantic that page allocator handles
+> NUMA_NO_NODE.
+> 
+> But we cannot really copy the page allocator logic. Simply because the
+> page allocator doesn't enforce the near node affinity. It just picks it
+> up as a preferred node but then it is free to fallback to any other numa
+> node. This is not the case here and node_to_cpumask_map will only restrict
+> to the particular node's cpus which would have really non deterministic
+> behavior depending on where the code is executed. So in fact we really
+> want to return cpu_online_mask for NUMA_NO_NODE.
+> 
+> Some arches were already NUMA_NO_NODE aware, so only change them to return
+> cpu_online_mask and use NUMA_NO_NODE instead of "-1".
+> 
+> Also there is a debugging version of node_to_cpumask_map() for x86 and
+> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+> And "fix" a sign "bug" since it is for debugging and should catch all the
+> error cases.
+> 
+> [1] https://lore.kernel.org/patchwork/patch/1125789/
+> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+> Suggested-by: Michal Hocko <mhocko@kernel.org>
 
-Each driver will map a part of it to access the registers it needs.
-Some drivers will map the same part of IMMR as other drivers.
+The change makes sense to me. I wish this particular thing wasn't
+duplicated so heavily - maybe we can unify all of them and use a common
+code? In a separate patch most likely...
 
-In order to reduce TLB misses, map the full IMMR with a BAT. If it is
-2Mbytes aligned, map 2Mbytes. If there is no QE, the upper part will
-remain unused, but it doesn't harm as it is mapped as guarded memory.
+I would also not change cpu_all_mask -> cpu_online_mask in this patch.
+That is worth a patch on its own with some explanation. I haven't
+checked but I would suspect that alpha simply doesn't support cpu
+hotplug so the two things are the same. But this needs some explanation.
 
-When the IMMR is not aligned on a 2Mbytes boundarie, only map 1Mbyte.
+Other than that the patch looks good to me. Feel free to add
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+[...]
+> diff --git a/arch/alpha/include/asm/topology.h b/arch/alpha/include/asm/topology.h
+> index 5a77a40..836c9e2 100644
+> --- a/arch/alpha/include/asm/topology.h
+> +++ b/arch/alpha/include/asm/topology.h
+> @@ -31,7 +31,7 @@ static const struct cpumask *cpumask_of_node(int node)
+>  	int cpu;
+>  
+>  	if (node == NUMA_NO_NODE)
+> -		return cpu_all_mask;
+> +		return cpu_online_mask;
+>  
+>  	cpumask_clear(&node_to_cpumask_map[node]);
+>  
+[...]
 
----
-v2:
-- use a fixmap area instead of playing with ioremap_bot
-- always map 2M unless IMMRBAR is only 1M aligned
----
- arch/powerpc/include/asm/fixmap.h  |  8 ++++++++
- arch/powerpc/platforms/83xx/misc.c | 11 +++++++++++
- 2 files changed, 19 insertions(+)
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index e6dad60..c676ffb 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -861,9 +861,12 @@ void numa_remove_cpu(int cpu)
+>   */
+>  const struct cpumask *cpumask_of_node(int node)
+>  {
+> -	if (node >= nr_node_ids) {
+> +	if (node == NUMA_NO_NODE)
+> +		return cpu_online_mask;
+> +
+> +	if ((unsigned int)node >= nr_node_ids) {
+>  		printk(KERN_WARNING
+> -			"cpumask_of_node(%d): node > nr_node_ids(%u)\n",
+> +			"cpumask_of_node(%d): node >= nr_node_ids(%u)\n",
+>  			node, nr_node_ids);
+>  		dump_stack();
+>  		return cpu_none_mask;
 
-diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
-index 0cfc365d814b..79c3aa55f43d 100644
---- a/arch/powerpc/include/asm/fixmap.h
-+++ b/arch/powerpc/include/asm/fixmap.h
-@@ -15,6 +15,7 @@
- #define _ASM_FIXMAP_H
- 
- #ifndef __ASSEMBLY__
-+#include <linux/sizes.h>
- #include <asm/page.h>
- #include <asm/pgtable.h>
- #ifdef CONFIG_HIGHMEM
-@@ -63,6 +64,13 @@ enum fixed_addresses {
- 	FIX_IMMR_BASE = __ALIGN_MASK(FIX_IMMR_START, FIX_IMMR_SIZE - 1) - 1 +
- 		       FIX_IMMR_SIZE,
- #endif
-+#ifdef CONFIG_PPC_83xx
-+	/* For IMMR we need an aligned 2M area */
-+#define FIX_IMMR_SIZE	(SZ_2M / PAGE_SIZE)
-+	FIX_IMMR_START,
-+	FIX_IMMR_BASE = __ALIGN_MASK(FIX_IMMR_START, FIX_IMMR_SIZE - 1) - 1 +
-+		       FIX_IMMR_SIZE,
-+#endif
- 	/* FIX_PCIE_MCFG, */
- 	__end_of_fixed_addresses
- };
-diff --git a/arch/powerpc/platforms/83xx/misc.c b/arch/powerpc/platforms/83xx/misc.c
-index f46d7bf3b140..d08216e2002d 100644
---- a/arch/powerpc/platforms/83xx/misc.c
-+++ b/arch/powerpc/platforms/83xx/misc.c
-@@ -18,6 +18,8 @@
- #include <sysdev/fsl_soc.h>
- #include <sysdev/fsl_pci.h>
- 
-+#include <mm/mmu_decl.h>
-+
- #include "mpc83xx.h"
- 
- static __be32 __iomem *restart_reg_base;
-@@ -145,6 +147,15 @@ void __init mpc83xx_setup_arch(void)
- 	if (ppc_md.progress)
- 		ppc_md.progress("mpc83xx_setup_arch()", 0);
- 
-+	if (!__map_without_bats) {
-+		phys_addr_t immrbase = get_immrbase();
-+		int immrsize = IS_ALIGNED(immrbase, SZ_2M) ? SZ_2M : SZ_1M;
-+		unsigned long va = __fix_to_virt(FIX_IMMR_BASE);
-+
-+		setbat(-1, va, immrbase, immrsize, PAGE_KERNEL_NCG);
-+		update_bats();
-+	}
-+
- 	mpc83xx_setup_pci();
- }
- 
+Why do we need this?
 -- 
-2.13.3
-
+Michal Hocko
+SUSE Labs
