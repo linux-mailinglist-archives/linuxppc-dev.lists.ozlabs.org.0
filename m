@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D07B398D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 13:39:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEA8B3997
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 13:41:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46X45W0XD8zF1SW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 21:39:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46X48Q5RGSzF4ss
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 21:41:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,14 +19,14 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46X3hb0MbJzF4hS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:21:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46X3xl1wPFzF4n8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:32:27 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 204819] KASAN still got problems loading some modules at boot
-Date: Mon, 16 Sep 2019 11:20:58 +0000
+Date: Mon, 16 Sep 2019 11:32:23 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -35,14 +35,14 @@ X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Who: christophe.leroy@c-s.fr
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-204819-206035-R5ruK1473Y@https.bugzilla.kernel.org/>
+Message-ID: <bug-204819-206035-a1juqETDTk@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-204819-206035@https.bugzilla.kernel.org/>
 References: <bug-204819-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,20 +67,26 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204819
 
---- Comment #22 from Erhard F. (erhard_f@mailbox.org) ---
-(In reply to Christophe Leroy from comment #11)
-> I have carefully reviewed the flushing calls and have not been able to
-> identify any issue.
->=20
-> Maybe a SMP issue ? Does this problem also happen without CONFIG_SMP ?
-For my 1st (v2) retest I applied the "powerpc/ptdump: Fix addresses display=
- on
-PPC32" patch you linked on top of -rc8.
+--- Comment #23 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+Thanks. The third one is interesting, as it shows :
 
-For my 2nd (v3) retest I applied the patch and disabled SMP in the .config.
+Sep 16 12:57:39 T600 kernel: BUG: Unable to handle kernel data access at
+0xfe295404
 
-As you can see the issue still persists without SMP. Also different
-'problematic' modules popup even without SMP.
+0xfe295000-0xfe295fff  0x00d05000         4K  user  r        present=20=20=
+=20=20=20=20=20=20=20=20=20
+      accessed=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+
+
+So unlike the other cases, this one shows that the area is still read-only =
+and
+pointing to the zero shadow area.
+Wondering whether for the other ones the area is not allocated to a further
+module loader after the failing one.
+
+Are you able to dump kernel_page_tables just after each module load failure
+before loading any additional module ?
 
 --=20
 You are receiving this mail because:
