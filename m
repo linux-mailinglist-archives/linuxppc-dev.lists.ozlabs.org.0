@@ -1,68 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8482B3FBE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 19:48:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA145B3FE6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2019 20:01:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XDHQ5v2pzDrPB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 03:48:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XDZ51WRDzF3XH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 04:01:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com;
+ (client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="sGHgEALC"; 
+ header.i=@intel-com.20150623.gappssmtp.com header.b="X6PKCigr"; 
  dkim-atps=neutral
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XDFM6NvLzF3FL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 03:46:24 +1000 (AEST)
-Received: by mail-ot1-x343.google.com with SMTP id z26so648843oto.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 10:46:24 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XDWb6pB6zF1qt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 03:58:51 +1000 (AEST)
+Received: by mail-ot1-x341.google.com with SMTP id h17so648907otn.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 10:58:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=QMOOvJcCOxvJGsQgO09ry9PIYgCnyHRaKHcmKjPMZDE=;
- b=sGHgEALCuEWB5ciy5vD0LBEP7OLBzMNFaPlQpilKVRzFeMz5JJHbuFQLj4PpNzUxPp
- FPdyG5nmqrAHieCHI3kNe4+51PPvluEc2panvSJRp/Vr78fXeOMN9J9AO8MNb2YDHmNY
- /B/x8b6XVp+VTZMNTlc4LHA6oWdGlrcPKrTrl0BLRV0W+5L1oFNWOqLJX5YXtM0en7/r
- orWUlsrnBAdgXUkqvm50ASXBbVpsUCnJMXSFFyNz3g675XJaH9ifvjpIjcc7Zpnm2tHU
- AHRzvUC/EUHEfUhb6CDI+p2UWpvUDtd/dXlfR4skq7vfp6oCyOXgqn9GU1VDcWJKaHL5
- 3piQ==
+ :cc; bh=ZBfYJ19Paf/hLNb6Ye+v7jwhGQnHf20AdY/r84fczKU=;
+ b=X6PKCigrLZVQCT1SP1gKVoiux5EZZKkTQj12/WROSndrvqr//HdL312ewutOhqJa88
+ jkSjVvdpMOeRtXnNEEGfzUj682H0ZmpXYakGVRHCeY1ceddIQo77hO5KjjJP73fQ0e42
+ HTXz9uuCKFJ440fC2CkILfkOOxAZL7RukPnCeTC0N3KJjVd1U7Lq5yi63ppcv6okwTWZ
+ b2Rz4OBPUjaTVYBGJb2qPPzRcxYu9oHDFhgDlUnoj90AesEAhmYB6so0O9S0AFNVZwjN
+ mI3PIxVPe9NcA4aINs/FCDbO6ubqumJ+HDpPWSdvlBm9xHq9YPQa93nL6RZwVYukz0at
+ vTmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=QMOOvJcCOxvJGsQgO09ry9PIYgCnyHRaKHcmKjPMZDE=;
- b=hlaNq1bHE2Z+HJS+XnibNGu0tcgQT44lzECjmk12bao2krCStfT3V8YJWsijOWRXhJ
- 7Dd9XSbjHtqi+MwHfgr8SVWGDBkAFnxpHIrLOJntJsNvrETmilT6j0YEh9S+AJ+zfY6i
- z+fq/VkQsH/2i+2ef6fZabMUdNp+y1FFsUVFuRVPF6Jc8n/dyt2vSXd2bwcAMRGh7wNK
- IrfYziZHjQKjNy5+KLl7juKuy+wHa+8Kj7WHIe9wUDT6B8kC7AxAOnFZ0ehcSNqcgWve
- zy2Y+iHvgiTrgo/c9DnvIyL9FU7yPigRdQGVUgHRHWQDRo+LJfAL2Nyp6VUZPhrONruK
- 5Isw==
-X-Gm-Message-State: APjAAAVZhXwACPv1OTAfqn/2b3DtQD2ogYa8K/wpGPaUZTB/rc0AJQPA
- DNrP1P2QTOLfLSk/0QSyEpothzjhHVG6NgEUvqP+HQ==
-X-Google-Smtp-Source: APXvYqz8wwo7dB4Y3wRdLSUJkJjWQZmRljho5XvoU+unxbG7cxvDpcHYJWPfu6CFzQU4tdjicuiHDUtxjbkXi176AnU=
-X-Received: by 2002:a9d:3a6:: with SMTP id f35mr263028otf.363.1568655981118;
- Mon, 16 Sep 2019 10:46:21 -0700 (PDT)
+ bh=ZBfYJ19Paf/hLNb6Ye+v7jwhGQnHf20AdY/r84fczKU=;
+ b=jZD5oUICu0sJ6fOibAEoZx0nT6G/Zs5jQ80tR7cHA8FNouPnM2Nt1Ff+Ui6zC7OPQC
+ +JPKdugTo7RtGHoY/ZCxbZTEeJk5maG95IpCXavTBhlUPEC+PQRbGiuMP4Td5OG2NOAH
+ bTn4dsh9cIwAhMuXMMlhBJtjoPt/MRcQZ2iQ67E2Te1OhHuErJc362VU8lMiM4Sjd6Mi
+ ZkCUNR947iY1MFRosqY9KOoE4tie21u2q0O2doIIHtXhtWqw88IoKZ/UkWORR4taI+Ip
+ OUc8mCCGp1lkLcofayPtln9/SxbMOeFc+DLn4tnHYkQA6c/7QdbbfmzSoby2/AhJBrT7
+ TIKg==
+X-Gm-Message-State: APjAAAUfBJmNK5w3yrbGFBL+I5fEriw3G4Eq10bCU7WhNMMxmNFSKULx
+ R0L2tqyQlVEG4OeIvBbEfRZ9JyFa7xqrNgAXalPZuA==
+X-Google-Smtp-Source: APXvYqzl+/Oe+SRra63pGxDCtiBTcyBjkrohjtozYl23XPCexO8fRxaxITWvLOiewMLUwPLPIcQcK4eZ0yf2bh7fVHs=
+X-Received: by 2002:a9d:3a6:: with SMTP id f35mr301938otf.363.1568656727910;
+ Mon, 16 Sep 2019 10:58:47 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
- <20190910062826.10041-2-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20190910062826.10041-2-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 16 Sep 2019 10:46:10 -0700
-Message-ID: <CAPcyv4ia0_GUu+=j-ecCuJkqaE5dVENNQxK_S-mO_KBmuA=9hw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/nvdimm: Update vmemmap_populated to check
- sub-section range
+Date: Mon, 16 Sep 2019 10:58:36 -0700
+Message-ID: <CAPcyv4g2jAGzQ3fxpZRTV16hoPfyXqzvB7Zny6D5g5JyAQ1Dkw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] libnvdimm/altmap: Track namespace boundaries in altmap
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,7 +74,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>,
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
@@ -86,80 +85,45 @@ Sender: "Linuxppc-dev"
 On Mon, Sep 9, 2019 at 11:29 PM Aneesh Kumar K.V
 <aneesh.kumar@linux.ibm.com> wrote:
 >
-> With commit: 7cc7867fb061 ("mm/devm_memremap_pages: enable sub-section remap")
-> pmem namespaces are remapped in 2M chunks. On architectures like ppc64 we
-> can map the memmap area using 16MB hugepage size and that can cover
-> a memory range of 16G.
+> With PFN_MODE_PMEM namespace, the memmap area is allocated from the device
+> area. Some architectures map the memmap area with large page size. On
+> architectures like ppc64, 16MB page for memap mapping can map 262144 pfns.
+> This maps a namespace size of 16G.
 >
-> While enabling new pmem namespaces, since memory is added in sub-section chunks,
-> before creating a new memmap mapping, kernel should check whether there is an
-> existing memmap mapping covering the new pmem namespace. Currently, this is
-> validated by checking whether the section covering the range is already
-> initialized or not. Considering there can be multiple namespaces in the same
-> section this can result in wrong validation. Update this to check for
-> sub-sections in the range. This is done by checking for all pfns in the range we
-> are mapping.
+> When populating memmap region with 16MB page from the device area,
+> make sure the allocated space is not used to map resources outside this
+> namespace. Such usage of device area will prevent a namespace destroy.
 >
-> We could optimize this by checking only just one pfn in each sub-section. But
-> since this is not fast-path we keep this simple.
+> Add resource end pnf in altmap and use that to check if the memmap area
+> allocation can map pfn outside the namespace. On ppc64 in such case we fallback
+> to allocation from memory.
 >
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/mm/init_64.c | 45 ++++++++++++++++++++-------------------
->  1 file changed, 23 insertions(+), 22 deletions(-)
+> This fix kernel crash reported below:
 >
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index 4e08246acd79..7710ccdc19a2 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -70,30 +70,24 @@ EXPORT_SYMBOL_GPL(kernstart_addr);
->
->  #ifdef CONFIG_SPARSEMEM_VMEMMAP
->  /*
-> - * Given an address within the vmemmap, determine the pfn of the page that
-> - * represents the start of the section it is within.  Note that we have to
-> - * do this by hand as the proffered address may not be correctly aligned.
-> - * Subtraction of non-aligned pointers produces undefined results.
-> - */
-> -static unsigned long __meminit vmemmap_section_start(unsigned long page)
-> -{
-> -       unsigned long offset = page - ((unsigned long)(vmemmap));
-> -
-> -       /* Return the pfn of the start of the section. */
-> -       return (offset / sizeof(struct page)) & PAGE_SECTION_MASK;
-> -}
-> -
-> -/*
-> - * Check if this vmemmap page is already initialised.  If any section
-> + * Check if this vmemmap page is already initialised.  If any sub section
->   * which overlaps this vmemmap page is initialised then this page is
->   * initialised already.
->   */
-> -static int __meminit vmemmap_populated(unsigned long start, int page_size)
-> +
-> +static int __meminit vmemmap_populated(unsigned long start, int size)
->  {
-> -       unsigned long end = start + page_size;
-> -       start = (unsigned long)(pfn_to_page(vmemmap_section_start(start)));
-> +       unsigned long end = start + size;
->
-> -       for (; start < end; start += (PAGES_PER_SECTION * sizeof(struct page)))
-> +       /* start is size aligned and it is always > sizeof(struct page) */
-> +       VM_BUG_ON(start & sizeof(struct page));
+> [  132.034989] WARNING: CPU: 13 PID: 13719 at mm/memremap.c:133 devm_memremap_pages_release+0x2d8/0x2e0
+> [  133.464754] BUG: Unable to handle kernel data access at 0xc00c00010b204000
+> [  133.464760] Faulting instruction address: 0xc00000000007580c
+> [  133.464766] Oops: Kernel access of bad area, sig: 11 [#1]
+> [  133.464771] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> .....
+> [  133.464901] NIP [c00000000007580c] vmemmap_free+0x2ac/0x3d0
+> [  133.464906] LR [c0000000000757f8] vmemmap_free+0x298/0x3d0
+> [  133.464910] Call Trace:
+> [  133.464914] [c000007cbfd0f7b0] [c0000000000757f8] vmemmap_free+0x298/0x3d0 (unreliable)
+> [  133.464921] [c000007cbfd0f8d0] [c000000000370a44] section_deactivate+0x1a4/0x240
+> [  133.464928] [c000007cbfd0f980] [c000000000386270] __remove_pages+0x3a0/0x590
+> [  133.464935] [c000007cbfd0fa50] [c000000000074158] arch_remove_memory+0x88/0x160
+> [  133.464942] [c000007cbfd0fae0] [c0000000003be8c0] devm_memremap_pages_release+0x150/0x2e0
+> [  133.464949] [c000007cbfd0fb70] [c000000000738ea0] devm_action_release+0x30/0x50
+> [  133.464955] [c000007cbfd0fb90] [c00000000073a5a4] release_nodes+0x344/0x400
+> [  133.464961] [c000007cbfd0fc40] [c00000000073378c] device_release_driver_internal+0x15c/0x250
+> [  133.464968] [c000007cbfd0fc80] [c00000000072fd14] unbind_store+0x104/0x110
+> [  133.464973] [c000007cbfd0fcd0] [c00000000072ee24] drv_attr_store+0x44/0x70
+> [  133.464981] [c000007cbfd0fcf0] [c0000000004a32bc] sysfs_kf_write+0x6c/0xa0
+> [  133.464987] [c000007cbfd0fd10] [c0000000004a1dfc] kernfs_fop_write+0x17c/0x250
+> [  133.464993] [c000007cbfd0fd60] [c0000000003c348c] __vfs_write+0x3c/0x70
+> [  133.464999] [c000007cbfd0fd80] [c0000000003c75d0] vfs_write+0xd0/0x250
 
-If start is size aligned why not include that assumption in the VM_BUG_ON()?
-
-Otherwise it seems this patch could be reduced simply by:
-
-s/PAGE_SECTION_MASK/PAGE_SUBSECTION_MASK/
-s/PAGES_PER_SECTION/PAGES_PER_SUBSECTION/
-
-...and leave the vmemmap_section_start() function in place? In other
-words this path used to guarantee that 'start' was aligned to the
-minimum mem-hotplug granularity, the change looks ok on the surface,
-but it seems a subtle change in semantics.
-
-Can you get an ack from a powerpc maintainer, or maybe this patch
-should route through the powerpc tree?
-
-I'll take patch1 through the nvdimm tree.
+Question, does this crash only happen when the namespace is not 16MB
+aligned? In other words was this bug exposed by the subsection-hotplug
+changes and should it contain Fixes: tag for those commits?
