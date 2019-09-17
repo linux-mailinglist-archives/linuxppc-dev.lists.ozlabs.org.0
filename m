@@ -1,74 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B7FB5155
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:22:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF54B5184
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:29:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Xn0k5xQczF43R
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 01:22:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Xn8f4x66zF1lQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 01:29:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=julietk@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="rVxhWBqZ"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XmbK4h5rzDrpw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 01:03:57 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8HEuNOD085107; Tue, 17 Sep 2019 11:03:51 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v315han28-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 11:03:50 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8HEjHpD028165;
- Tue, 17 Sep 2019 15:03:49 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 2v0svqqy7w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 15:03:49 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8HF3m9d52822422
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Sep 2019 15:03:48 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44D14124054;
- Tue, 17 Sep 2019 15:03:48 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E5606124058;
- Tue, 17 Sep 2019 15:03:47 +0000 (GMT)
-Received: from ltcfleet2-lp9.aus.stglabs.ibm.com (unknown [9.40.195.116])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 17 Sep 2019 15:03:47 +0000 (GMT)
-From: Juliet Kim <julietk@linux.vnet.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH v2 2/2] net/ibmvnic: prevent more than one thread from running
- in reset
-Date: Tue, 17 Sep 2019 10:52:49 -0400
-Message-Id: <20190917145249.15334-3-julietk@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20190917145249.15334-1-julietk@linux.vnet.ibm.com>
-References: <20190917145249.15334-1-julietk@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-17_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909170144
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Xn143yWDzF44R
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 01:22:47 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id g16so4847028qto.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 08:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id;
+ bh=DdZlDwcFPhh8rvrDyAJz9Ugy4zGsw4IHuoR+wrsMaI4=;
+ b=rVxhWBqZUXptSOUuNLwzM1QF914j9olYHZoIkK/w1mFyYdP8/hKVApoXbjxJzVEEMe
+ bYigUq5wm7A8aUIEVwR3V3QgtfN4RiurGYNjghCz390nLgTPjYyUifJ5E3X9KrpnB5MH
+ tusprRofm5unPUiBnSNB9gTWJo88OM+vsG4YjaBHC2hl1sRf1gC5YUmtMGnCRjXywtJF
+ bVfmr8nfc55ak855MGlSC7regqhjFilJcxINM9Gd/MpmZSKm1i/tUa40zPrL8DyjV2Sc
+ /fCKpLyVWb2+Kyoy9675rc1Kdfu/TkG1bjOcU0DUrxErpMV0Hpn0QH8kszCnRqKHk86U
+ m2jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=DdZlDwcFPhh8rvrDyAJz9Ugy4zGsw4IHuoR+wrsMaI4=;
+ b=NWKeNvG2MnpkNDkTgYsHIpGn7Ja/2WgOmm/8XsUCJhYWFESjGsGi8A3mLjvwUPh2+T
+ ctSK68aIn6+5sAWNTfZAKmCrhE5YjfnwdymE7qwTAgvPI5S4y4Vtx1rwMhOuSZ2pUwqc
+ WeDDJnAtLnKMK/qxfeiRLuKuwa1M7e6PU+n1XEsuRFEwdi6FPNLWOukm5/YGuIRNI3C0
+ PrUCsR5/iaHzsf0+jboSys2W4gJgcldTPiL8Q8YEIzv/kxRNSfybRX//SzS6NHFE4ibG
+ dsy6sxc5gf44wpyJa+mw7wyCKH2+eTefOBcAZYPLCEeKmJZuPPgVOzHjU3cFryb2UgpX
+ Buig==
+X-Gm-Message-State: APjAAAUjkLo2RmEQvTLmBcVNLz4OqEExCVN+29fSg3pVx5Q6roljncsi
+ 84SCzB1yZ2bPkcTCzh3IO/Fksg==
+X-Google-Smtp-Source: APXvYqxgmEOqbhOFoKOE8dOOPpUk78ORIvn/Vj2ugt6BXuvvexABhWqWrEVBLAGoUFHtZBDZIjDSCw==
+X-Received: by 2002:ac8:70d7:: with SMTP id g23mr4315285qtp.78.1568733763286; 
+ Tue, 17 Sep 2019 08:22:43 -0700 (PDT)
+Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id b16sm1697306qtk.65.2019.09.17.08.22.41
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 17 Sep 2019 08:22:42 -0700 (PDT)
+From: Qian Cai <cai@lca.pw>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/pkeys: remove unused pkey_allows_readwrite
+Date: Tue, 17 Sep 2019 11:22:30 -0400
+Message-Id: <1568733750-14580-1-git-send-email-cai@lca.pw>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,106 +72,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: julietk@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- tlfalcon@linux.vnet.ibm.com
+Cc: linuxram@us.ibm.com, linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The current code allows more than one thread to run in reset. This can 
-corrupt struct adapter data. Check adapter->resetting before performing 
-a reset, if there is another reset running delay (100 msec) before trying 
-again.
+pkey_allows_readwrite() was first introduced in the commit 5586cf61e108
+("powerpc: introduce execute-only pkey"), but the usage was removed
+entirely in the commit a4fcc877d4e1 ("powerpc/pkeys: Preallocate
+execute-only key").
 
-Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
+Found by the "-Wunused-function" compiler warning flag.
+
+Fixes: a4fcc877d4e1 ("powerpc/pkeys: Preallocate execute-only key")
+Signed-off-by: Qian Cai <cai@lca.pw>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 23 ++++++++++++++++++++++-
- drivers/net/ethernet/ibm/ibmvnic.h |  3 +++
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/pkeys.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index fc760c1eb0b0..d3ebf4caa09c 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2054,6 +2054,13 @@ static void __ibmvnic_reset(struct work_struct *work)
- 
- 	adapter = container_of(work, struct ibmvnic_adapter, ibmvnic_reset);
- 
-+	if (adapter->resetting) {
-+		schedule_delayed_work(&adapter->ibmvnic_delayed_reset,
-+				      IBMVNIC_RESET_DELAY);
-+		return;
-+	}
-+
-+	adapter->resetting = true;
- 	reset_state = adapter->state;
- 
- 	rwi = get_next_rwi(adapter);
-@@ -2094,6 +2101,10 @@ static void __ibmvnic_reset(struct work_struct *work)
- 			break;
- 
- 		rwi = get_next_rwi(adapter);
-+
-+		if (rwi && (rwi->reset_reason == VNIC_RESET_FAILOVER ||
-+			    rwi->reset_reason == VNIC_RESET_MOBILITY))
-+			adapter->force_reset_recovery = true;
- 	}
- 
- 	if (adapter->wait_for_reset) {
-@@ -2109,6 +2120,15 @@ static void __ibmvnic_reset(struct work_struct *work)
- 	adapter->resetting = false;
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index ae7fca40e5b3..59e0ebbd8036 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -307,16 +307,6 @@ void thread_pkey_regs_init(struct thread_struct *thread)
+ 	write_iamr(pkey_iamr_mask);
  }
  
-+static void __ibmvnic_delayed_reset(struct work_struct *work)
-+{
-+	struct ibmvnic_adapter *adapter;
-+
-+	adapter = container_of(work, struct ibmvnic_adapter,
-+			       ibmvnic_delayed_reset.work);
-+	__ibmvnic_reset(&adapter->ibmvnic_reset);
-+}
-+
- static int ibmvnic_reset(struct ibmvnic_adapter *adapter,
- 			 enum ibmvnic_reset_reason reason)
+-static inline bool pkey_allows_readwrite(int pkey)
+-{
+-	int pkey_shift = pkeyshift(pkey);
+-
+-	if (!is_pkey_enabled(pkey))
+-		return true;
+-
+-	return !(read_amr() & ((AMR_RD_BIT|AMR_WR_BIT) << pkey_shift));
+-}
+-
+ int __execute_only_pkey(struct mm_struct *mm)
  {
-@@ -2161,7 +2181,6 @@ static int ibmvnic_reset(struct ibmvnic_adapter *adapter,
- 	rwi->reset_reason = reason;
- 	list_add_tail(&rwi->list, &adapter->rwi_list);
- 	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
--	adapter->resetting = true;
- 	netdev_dbg(adapter->netdev, "Scheduling reset (reason %d)\n", reason);
- 	schedule_work(&adapter->ibmvnic_reset);
- 
-@@ -4932,6 +4951,8 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 	spin_lock_init(&adapter->stats_lock);
- 
- 	INIT_WORK(&adapter->ibmvnic_reset, __ibmvnic_reset);
-+	INIT_DELAYED_WORK(&adapter->ibmvnic_delayed_reset,
-+			  __ibmvnic_delayed_reset);
- 	INIT_LIST_HEAD(&adapter->rwi_list);
- 	spin_lock_init(&adapter->rwi_lock);
- 	init_completion(&adapter->init_done);
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-index 9d3d35cc91d6..4f4651d92cc1 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.h
-+++ b/drivers/net/ethernet/ibm/ibmvnic.h
-@@ -39,6 +39,8 @@
- #define IBMVNIC_MAX_LTB_SIZE ((1 << (MAX_ORDER - 1)) * PAGE_SIZE)
- #define IBMVNIC_BUFFER_HLEN 500
- 
-+#define IBMVNIC_RESET_DELAY 100
-+
- static const char ibmvnic_priv_flags[][ETH_GSTRING_LEN] = {
- #define IBMVNIC_USE_SERVER_MAXES 0x1
- 	"use-server-maxes"
-@@ -1077,6 +1079,7 @@ struct ibmvnic_adapter {
- 	spinlock_t rwi_lock;
- 	struct list_head rwi_list;
- 	struct work_struct ibmvnic_reset;
-+	struct delayed_work ibmvnic_delayed_reset;
- 	bool resetting;
- 	bool napi_enabled, from_passive_init;
- 
+ 	return mm->context.execute_only_pkey;
 -- 
-2.16.4
+1.8.3.1
 
