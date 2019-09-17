@@ -1,104 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00BAB4589
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 04:36:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1167BB45C5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 04:59:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XS1F5fPwzF3rF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 12:36:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XSWB0SJ9zF0k2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 12:59:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=2a01:111:f400:fe0d::617;
- helo=eur04-he1-obe.outbound.protection.outlook.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="V9WUgK+I"; 
- dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-he1eur04on0617.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe0d::617])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XRxs6gDFzF0VV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 12:33:49 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y3wiv+Rbv42z0ME2eQARZ4YFAiL7H+H824WqDZ7JcTJWUM8cZUMNeH4cwhQcVI+bmS20VoFzykdrO0+QwigeLv3v4v3vHDIziMAGrfwRA7qT4dqRiaDm2uehFBBzSvxt2WbJKqokk1p7Lhe7qqH3uHZB+mRTQTdSvrfh0dIj6djf+zjcBK+vw6KE76fUT13N2qagJ3W+T/l9RiV53fxSaPdCiW9hkL3Hcc+OOzXkM5BOss/jR7RqMagRFyfMbo0hJ6t+4D9fpCKZ0ks0hB1nq8p8D0N32noZsJkLHC6K3MHFPyt/TbGhmTdQy2LX9M20BRrt++lS1+ZzB+1kg6bZ8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DOgtOYpr1umvjl2CkcJARc0l8vpI6UR+FN/X9w3FiZM=;
- b=WqoF4ebSr4wQhq3T0/TeV6muQHS7mTx2rN5KrodJDPz3x6vrhdz6rjxYR1aqoyCrZrRv/sbMOiKhoJsVWqMmyVdvYJpQYiEmmzDqJRjQ1kxa9K8xL2MpOr7NLBZ88zbA057JyKf+aLOrbLlJlN8WC2oPlkM3zokrpNi4+Y1FPV8o0DzgSQE5YyjPliZnA2mUO8MS7hMSaT238OB1acrr6i+9MzOfYuIAOvk8kREYuLre0at+hopHreb2v5xufI0eH5JrXg4q2xOV6XGxetunMATQdNmFT1naGYITFEbDzaYwWfCxy3VFhB4YYg40pc+mjqsDM/0lalAPZZX1Gpp/Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DOgtOYpr1umvjl2CkcJARc0l8vpI6UR+FN/X9w3FiZM=;
- b=V9WUgK+Igjln4eUOyCXMAikwUTVZDOoSXaiehb4PNoE9vJbDWLY6mcIh2TYybfyUdpctzbIwrHB1/qcm5UV2y83tU0mvaoKi1FZXHzbPiiVm7WPKhR+BBSh4BPlAvECk3j713B6IaHiVkCqdVcGM6oqOrH/LMMLGOS/txkxErfg=
-Received: from DB8PR04MB6826.eurprd04.prod.outlook.com (52.133.240.82) by
- DB8PR04MB6412.eurprd04.prod.outlook.com (20.179.249.79) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2263.23; Tue, 17 Sep 2019 02:33:42 +0000
-Received: from DB8PR04MB6826.eurprd04.prod.outlook.com
- ([fe80::906f:1414:8cb:f7ee]) by DB8PR04MB6826.eurprd04.prod.outlook.com
- ([fe80::906f:1414:8cb:f7ee%2]) with mapi id 15.20.2263.023; Tue, 17 Sep 2019
- 02:33:42 +0000
-From: Ran Wang <ran.wang_1@nxp.com>
-To: "Rafael J . Wysocki" <rjw@rjwysocki.net>, Leo Li <leoyang.li@nxp.com>, Rob
- Herring <robh+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Pavel
- Machek <pavel@ucw.cz>
-Subject: RE: [PATCH v6 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
-Thread-Topic: [PATCH v6 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
-Thread-Index: AQHVV851gkIX3+N2p0ibde/0v+331KcvUDew
-Date: Tue, 17 Sep 2019 02:33:41 +0000
-Message-ID: <DB8PR04MB682662CA68F9F21F6DB82F72F18F0@DB8PR04MB6826.eurprd04.prod.outlook.com>
-References: <20190821031537.46824-1-ran.wang_1@nxp.com>
-In-Reply-To: <20190821031537.46824-1-ran.wang_1@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ran.wang_1@nxp.com; 
-x-originating-ip: [92.121.36.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: fd3fffbb-53ef-491f-5b51-08d73b177477
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
- SRVR:DB8PR04MB6412; 
-x-ms-traffictypediagnostic: DB8PR04MB6412:|DB8PR04MB6412:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB8PR04MB6412E4B10341F14D02F1797CF18F0@DB8PR04MB6412.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5797;
-x-forefront-prvs: 01630974C0
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(136003)(346002)(366004)(396003)(39860400002)(376002)(199004)(189003)(7736002)(476003)(305945005)(66446008)(478600001)(5660300002)(14454004)(33656002)(71190400001)(2906002)(6506007)(52536014)(25786009)(102836004)(256004)(316002)(86362001)(53546011)(4744005)(6116002)(4326008)(3846002)(11346002)(74316002)(7416002)(66476007)(66556008)(64756008)(6436002)(229853002)(6246003)(486006)(66946007)(76116006)(26005)(76176011)(71200400001)(66066001)(110136005)(446003)(54906003)(8676002)(81166006)(81156014)(8936002)(9686003)(7696005)(186003)(99286004)(55016002);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DB8PR04MB6412;
- H:DB8PR04MB6826.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: ixfzE8EjAN0FHv+fpGonwwcYsmLH7WxyhRUOCgULjZGUOuOla0Z2v1IbciD5onA4bcGawyPKoMYNW1Mq8DjvdZM3GR1somW9+sFtz1OwWp7g4YbPb6a1LD05WnqUESWxA/XgfgTOxyFTIwrkE0lXufQa3js3+oIyKSZQFGAuvu8L+hWP+NmtU4+UR28SCS84vCu/Clak3aYZJT1phnsmZU64pf+NLm/SYkqrsfNyuwuQJtPoEzrIXPGFz75Ldbx8YhW0I1td95FXaPTzIdPbuHzHEsloo6ppD2hmN8kex+2VxrsWOUFdYBcvXuo9Np1wOuV+KynNSWt65VulWbs7QiGJOJ9s2wfVf00EfQ2M+pg32x7rpesUcSO1dNt9/11zBFA1RkiUMuYkKJmU3++rDuOvZonvErDBx4Tqa/kEV/o=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XSSD2m1XzF3v4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 12:56:44 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8H2bfFr058044; Mon, 16 Sep 2019 22:56:25 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v2ju774j6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Sep 2019 22:56:25 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8H2lcWu078014;
+ Mon, 16 Sep 2019 22:56:24 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v2ju774ha-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Sep 2019 22:56:24 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8H2acQR008152;
+ Tue, 17 Sep 2019 02:56:22 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma02dal.us.ibm.com with ESMTP id 2v0svwtjs3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 02:56:22 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8H2uL7q56623548
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Sep 2019 02:56:21 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 103BF6A04D;
+ Tue, 17 Sep 2019 02:56:21 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3DA3E6A047;
+ Tue, 17 Sep 2019 02:56:06 +0000 (GMT)
+Received: from [9.199.46.123] (unknown [9.199.46.123])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Sep 2019 02:56:04 +0000 (GMT)
+Subject: Re: [PATCH 1/1] powerpc: mm: Check if serialize_against_pte_lookup()
+ really needs to run
+To: Leonardo Bras <leonardo@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20190916205527.1859-1-leonardo@linux.ibm.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <c1ff17e2-902d-87e6-3c1d-fc5db2428b69@linux.ibm.com>
+Date: Tue, 17 Sep 2019 08:26:01 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd3fffbb-53ef-491f-5b51-08d73b177477
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2019 02:33:42.0150 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: B+dgF9pf7IGN/lJPhY8Te8gtaMYyAajwnRhsd2l0yb4OrCkrhd+LkMPqGxNV7dViTGUL49en7+ndCusU4cYK4g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6412
+In-Reply-To: <20190916205527.1859-1-leonardo@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-17_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909170028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,41 +94,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Biwen Li <biwen.li@nxp.com>, Len Brown <len.brown@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Ran Wang <ran.wang_1@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Christoph Lameter <cl@linux.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Jann Horn <jannh@google.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
+ Dan Williams <dan.j.williams@intel.com>, Ralph Campbell <rcampbell@nvidia.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
+ "Tobin C. Harding" <tobin@kernel.org>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Souptick Joarder <jrdr.linux@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rafael,
+On 9/17/19 2:25 AM, Leonardo Bras wrote:
+> If a process (qemu) with a lot of CPUs (128) try to munmap() a large chunk
+> of memory (496GB) mapped with THP, it takes an average of 275 seconds,
+> which can cause a lot of problems to the load (in qemu case, the guest
+> will lock for this time).
+> 
+> Trying to find the source of this bug, I found out most of this time is
+> spent on serialize_against_pte_lookup(). This function will take a lot of
+> time in smp_call_function_many() if there is more than a couple CPUs
+> running the user process. Since it has to happen to all THP mapped, it will
+> take a very long time for large amounts of memory.
+> 
+> By the docs, serialize_against_pte_lookup() is needed in order to avoid
+> pmd_t to pte_t casting inside find_current_mm_pte() to happen concurrently
+> with the next part of the functions it's called in.
+> It does so by calling a do_nothing() on each CPU in mm->cpu_bitmap[];
+> 
+> So, by what I could understand, if there is no find_current_mm_pte()
+> running, there is no need to call serialize_against_pte_lookup().
+> 
+> So, to avoid the cost of running serialize_against_pte_lookup(), I propose
+> a counter that keeps track of how many find_current_mm_pte() are currently
+> running, and if there is none, just skip smp_call_function_many().
+> 
+> On my workload (qemu), I could see munmap's time reduction from 275 seconds
+> to 418ms.
+> 
+> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 
-On Wednesday, August 21, 2019 11:16, Ran Wang wrote:
->=20
-> Some user might want to go through all registered wakeup sources and doin=
-g
-> things accordingly. For example, SoC PM driver might need to do HW
-> programming to prevent powering down specific IP which wakeup source
-> depending on. So add this API to help walk through all registered wakeup =
-source
-> objects on that list and return them one by one.
->=20
-> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+We could possibly avoid that serialize for a full task exit unmap. ie, 
+when tlb->fullmm == 1 . But that won't help the Qemu case because it 
+does an umap of the guest ram range for which tlb->fullmm != 1.
+
+> 
 > ---
-> Change in v6:
-> 	- Add wakeup_source_get_star() and wakeup_source_get_stop() to
-> aligned
-> 	with wakeup_sources_stats_seq_start/nex/stop.
+> I need more experienced people's help in order to understand if this is
+> really a valid improvement, and if mm_struct is the best place to put such
+> counter.
+> 
+> Thanks!
+> ---
+>   arch/powerpc/include/asm/pte-walk.h | 3 +++
+>   arch/powerpc/mm/book3s64/pgtable.c  | 2 ++
+>   include/linux/mm_types.h            | 1 +
+>   3 files changed, 6 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/pte-walk.h b/arch/powerpc/include/asm/pte-walk.h
+> index 33fa5dd8ee6a..3b82cb3bd563 100644
+> --- a/arch/powerpc/include/asm/pte-walk.h
+> +++ b/arch/powerpc/include/asm/pte-walk.h
+> @@ -40,6 +40,8 @@ static inline pte_t *find_current_mm_pte(pgd_t *pgdir, unsigned long ea,
+>   {
+>   	pte_t *pte;
+>   
+> +	atomic64_inc(&current->mm->lockless_ptlookup_count);
+> +
+>   	VM_WARN(!arch_irqs_disabled(), "%s called with irq enabled\n", __func__);
+>   	VM_WARN(pgdir != current->mm->pgd,
+>   		"%s lock less page table lookup called on wrong mm\n", __func__);
+> @@ -53,6 +55,7 @@ static inline pte_t *find_current_mm_pte(pgd_t *pgdir, unsigned long ea,
+>   	if (hshift)
+>   		WARN_ON(*hshift);
+>   #endif
+> +	atomic64_dec(&current->mm->lockless_ptlookup_count);
+>   	return pte;
+>   }
 
-How about this version, could you please give any comment? Thanks.
 
-Regards,
-Ran=20
 
-<snip>
+That is not correct. We need to keep the count updated  across the 
+local_irq_disable()/local_irq_enable(). That is we mostly should have a 
+variant like start_lockless_pgtbl_walk()/end_lockless_pgtbl_walk(). Also 
+there is hash_page_mm which we need to make sure we are protected 
+against w.r.t collapse pmd.
 
+>   
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> index 7d0e0d0d22c4..8f6fc2f80071 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -95,6 +95,8 @@ static void do_nothing(void *unused)
+>   void serialize_against_pte_lookup(struct mm_struct *mm)
+>   {
+>   	smp_mb();
+> +	if (atomic64_read(&mm->lockless_ptlookup_count) == 0)
+> +		return;
+>   	smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
+>   }
+>   
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 6a7a1083b6fb..97fb2545e967 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -518,6 +518,7 @@ struct mm_struct {
+>   #endif
+>   	} __randomize_layout;
+>   
+> +	atomic64_t lockless_ptlookup_count;
+>   	/*
+>   	 * The mm_cpumask needs to be at the end of mm_struct, because it
+>   	 * is dynamically sized based on nr_cpu_ids.
+> 
+
+Move that to ppc64 specific mm_context_t.
+
+
+-aneesh
