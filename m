@@ -1,65 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764DDB46E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 07:34:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C44DEB470C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 07:49:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XWxj6pcYzF24p
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 15:34:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XXHg3jC6zF3wf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 15:49:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
- envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="UTCVmhSh"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="e2f6c1/X"; 
  dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XWrs5KSWzF43b
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 15:29:49 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id d17so4493929ios.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 22:29:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XXFS3rG7zF4FV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 15:47:40 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id f12so4594889iog.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 22:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Ab1BIaOVRlo45shl5hYF8+8KUoncf0raBSYUdPucCFE=;
- b=UTCVmhShBUCgw0+mGYlRpWkBbi/cAEzgrbyaQGBpqHPGsiNgWHNVo0uWL4pbK8b1q9
- 6EC+qTXt6he4zPYgD1O84oajwgx9tfNLUdNNP/qwO1sanzYWVUWK5HrtlP7agot8J3kt
- Rk2YY5d+JWJ9xqc9bThxoG9BkVISMWD8GneOGj918cPTtUq1pX2pnmXH5Og1dBv4kmye
- JfN3IfqBzLQ+LtHTl1XneDH0xH2NO/nF7FGmyHJ7yyz2ZURz/FgIeLW5xl6sU8AOaL9x
- SycjOvNYWyZgIAN3seQnD5JZzOVjIAHyXMCNmGyN2aPV9hbmzUy9D27H8lmoElXpVlxB
- 8iAw==
+ :cc; bh=6RTu8mE0v8dDzYFU771cljv6JSmKaSheGyrYg8GFnos=;
+ b=e2f6c1/XWZIUlyABDGWPqDH92TAnXh9UNCH7VsTpFc9v0ZEDy3QTX9wMTiiCb4JDqp
+ Omocuftdsg8gZIwEvldle+h+Fxmx2QAKREIn3gONWvw2KmaochhumihkIMdJv94n0bse
+ iQ2tz5j7/btzEo87BnOjDLw/TBA7mVLam4Cc619yAjLotJGwYLvqamHZfcvicWZWAdic
+ FXl/LZiTnLGJ4qDbxVILNJu0BDsA78Y0WAdBlWVooVhVJWRTeNa51miI+PxPnSjQ2Yeq
+ KXXx1WiAK5PyxZS9zLtPUH4tthuRhxJfaCAiGSpnVxpp9VZSQFfGd8sVXXwAiAv4kmlb
+ YD/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=Ab1BIaOVRlo45shl5hYF8+8KUoncf0raBSYUdPucCFE=;
- b=EPXohY0p00CVvOPfNb9hjZrtfcYwSbBUquieBasl859ibROJvdmwA9XSeip0STmr4A
- d+BaxasIey6LoI4dx9A1bhAkXalEkTeyyzzOidMeaIMi7oBwyuDBTgVgmztMYqiUJ1BA
- fErgUTAimNELipGXfgOhxth5L9NQEIyeV+ljGVDI1tUmCF16lMu/NJSIIDpd1geJQK3e
- W9XIGMeRn6JExoKobMbayDFnfDsgsDMU6sjPFL2A5BPUOzxUgv6YiCDAQsLJBwTjcSj7
- DHYAo0ghOeT29XJ7rwcRAfqsTM5R5/+Jmvz4zXP6UKraVkF4LoZ3c4Upk1QNFPUt0Xaw
- l2EQ==
-X-Gm-Message-State: APjAAAUpTwXRSKoHf/HYw6UJHKDg/1EW0bidmdryB1CVNKIQyFbS5CP0
- vaEYtz9z9b/BqGDwCPuPw4c1IaF4k2BKUT1K8KtI
-X-Google-Smtp-Source: APXvYqx6YyFP5lJ+JMKr/Nnwgdip0Lb8u+tQMxSdq0bqQTfdWp4cM3ZDBkMx7Ph6VW/mTl+Sb8E+jpK4K74RAu95/+Y=
-X-Received: by 2002:a02:65cd:: with SMTP id u196mr2198982jab.3.1568698187076; 
- Mon, 16 Sep 2019 22:29:47 -0700 (PDT)
+ bh=6RTu8mE0v8dDzYFU771cljv6JSmKaSheGyrYg8GFnos=;
+ b=bdUYA2q7b3i0PJ7IfaI+yr7czNw0yfWe6P5CcAtr4G4S/7zoUnZfrQEwDdj+X8rMbq
+ vVo6SLqNV3DeWJgSgzTRFr1EMI9FWhV6FEM1VHBd7CQ1oVOdUdK3IqBTaniKSFPLbBUK
+ 9pKpnDivaWH/Rqrp6ikeY6w/iQJOAUQ0IraKvwr4RrAkN/sfvWs4BeqjDy3r12LnuWrE
+ Co7sf9+l5kcz9p9Z1SPt4PxYhtcvI1tPCkikKELhPnSyMvNctNXtJR7vqATTD4oP2meu
+ w7ujlY+y/HAjyPftEMbNPv0lLWxtUez5XQtCuk5mnuwApDTLtpjctkg+bVRbfODyb0jE
+ 9PEQ==
+X-Gm-Message-State: APjAAAXJGHZkmnQy8dYttrTlywUzFyCM97FNE/g6O6KaGkb8X8EVhKB4
+ AYKQmFtDAiQTUGBBCP0UcjwqalOl7+FXp49OO8uAdA==
+X-Google-Smtp-Source: APXvYqxRbU0svRR+/zO+uKSQK699vKFI+qTrhvXN9zA9kBJkNttGfjNZu91MvkXroCin3BWBnyWEf9EQRv2FLHs7KHE=
+X-Received: by 2002:a5d:9b02:: with SMTP id y2mr1794945ion.146.1568699258149; 
+ Mon, 16 Sep 2019 22:47:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <1568256617-14030-1-git-send-email-kernelfans@gmail.com>
-In-Reply-To: <1568256617-14030-1-git-send-email-kernelfans@gmail.com>
-From: Pingfan Liu <kernelfans@gmail.com>
-Date: Tue, 17 Sep 2019 13:29:35 +0800
-Message-ID: <CAFgQCTvKpPEP1UywcGcC2Mo4mzzZR+ff7M3L9QN_U+hfk31ijQ@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/crashkernel: take mem option into account
-To: linuxppc-dev@lists.ozlabs.org
+References: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
+ <20190910062826.10041-2-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190910062826.10041-2-aneesh.kumar@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 17 Sep 2019 15:47:26 +1000
+Message-ID: <CAOSf1CH=6DZkVT5JK5wuFiq_y3EVefXoOdEc3m2E8CXp5_VfHA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/nvdimm: Update vmemmap_populated to check
+ sub-section range
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -72,61 +74,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Cc Kexec list. And keep the original content.
-
-On Thu, Sep 12, 2019 at 10:50 AM Pingfan Liu <kernelfans@gmail.com> wrote:
+On Tue, Sep 10, 2019 at 4:29 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
 >
-> 'mem=" option is an easy way to put high pressure on memory during some
-> test. Hence in stead of total mem, the effective usable memory size should
-> be considered when reserving mem for crashkernel. Otherwise the boot up may
-> experience oom issue.
+> With commit: 7cc7867fb061 ("mm/devm_memremap_pages: enable sub-section remap")
+> pmem namespaces are remapped in 2M chunks. On architectures like ppc64 we
+> can map the memmap area using 16MB hugepage size and that can cover
+> a memory range of 16G.
 >
-> E.g passing
-> crashkernel="2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G", and
-> mem=5G on a 256G machine.
+> While enabling new pmem namespaces, since memory is added in sub-section chunks,
+> before creating a new memmap mapping, kernel should check whether there is an
+> existing memmap mapping covering the new pmem namespace. Currently, this is
+> validated by checking whether the section covering the range is already
+> initialized or not. Considering there can be multiple namespaces in the same
+> section this can result in wrong validation. Update this to check for
+> sub-sections in the range. This is done by checking for all pfns in the range we
+> are mapping.
 >
-> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> To: linuxppc-dev@lists.ozlabs.org
+> We could optimize this by checking only just one pfn in each sub-section. But
+> since this is not fast-path we keep this simple.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
-> v1 -> v2: fix the printk info about the total mem
->  arch/powerpc/kernel/machine_kexec.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  arch/powerpc/mm/init_64.c | 45 ++++++++++++++++++++-------------------
+>  1 file changed, 23 insertions(+), 22 deletions(-)
 >
-> diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
-> index c4ed328..eec96dc 100644
-> --- a/arch/powerpc/kernel/machine_kexec.c
-> +++ b/arch/powerpc/kernel/machine_kexec.c
-> @@ -114,11 +114,12 @@ void machine_kexec(struct kimage *image)
+> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> index 4e08246acd79..7710ccdc19a2 100644
+> --- a/arch/powerpc/mm/init_64.c
+> +++ b/arch/powerpc/mm/init_64.c
+> @@ -70,30 +70,24 @@ EXPORT_SYMBOL_GPL(kernstart_addr);
 >
->  void __init reserve_crashkernel(void)
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>  /*
+> - * Given an address within the vmemmap, determine the pfn of the page that
+> - * represents the start of the section it is within.  Note that we have to
+> - * do this by hand as the proffered address may not be correctly aligned.
+> - * Subtraction of non-aligned pointers produces undefined results.
+> - */
+> -static unsigned long __meminit vmemmap_section_start(unsigned long page)
+> -{
+> -       unsigned long offset = page - ((unsigned long)(vmemmap));
+> -
+> -       /* Return the pfn of the start of the section. */
+> -       return (offset / sizeof(struct page)) & PAGE_SECTION_MASK;
+> -}
+
+If you want to go with Dan's suggestion of keeping the function and
+using PAGE_SUBSECTION_MASK then can you fold the pfn_to_page() below
+into vmemmap_section_start()? The current behaviour of returning a pfn
+makes no sense to me.
+
+> - * Check if this vmemmap page is already initialised.  If any section
+> + * Check if this vmemmap page is already initialised.  If any sub section
+>   * which overlaps this vmemmap page is initialised then this page is
+>   * initialised already.
+>   */
+> -static int __meminit vmemmap_populated(unsigned long start, int page_size)
+> +
+> +static int __meminit vmemmap_populated(unsigned long start, int size)
 >  {
-> -       unsigned long long crash_size, crash_base;
-> +       unsigned long long crash_size, crash_base, total_mem_sz;
->         int ret;
->
-> +       total_mem_sz = memory_limit ? memory_limit : memblock_phys_mem_size();
->         /* use common parsing */
-> -       ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
-> +       ret = parse_crashkernel(boot_command_line, total_mem_sz,
->                         &crash_size, &crash_base);
->         if (ret == 0 && crash_size > 0) {
->                 crashk_res.start = crash_base;
-> @@ -185,7 +186,7 @@ void __init reserve_crashkernel(void)
->                         "for crashkernel (System RAM: %ldMB)\n",
->                         (unsigned long)(crash_size >> 20),
->                         (unsigned long)(crashk_res.start >> 20),
-> -                       (unsigned long)(memblock_phys_mem_size() >> 20));
-> +                       (unsigned long)(total_mem_sz >> 20));
->
->         if (!memblock_is_region_memory(crashk_res.start, crash_size) ||
->             memblock_reserve(crashk_res.start, crash_size)) {
-> --
-> 2.7.5
->
+> -       unsigned long end = start + page_size;
+> -       start = (unsigned long)(pfn_to_page(vmemmap_section_start(start)));
+> +       unsigned long end = start + size;
+
+> -       for (; start < end; start += (PAGES_PER_SECTION * sizeof(struct page)))
+> +       /* start is size aligned and it is always > sizeof(struct page) */
+> +       VM_BUG_ON(start & sizeof(struct page));
+
+Shouldn't the test be: start & (sizeof(struct page) - 1)?
+VM_BUG_ON(start != ALIGN(start, page_size)) would be clearer.
+
+> +       for (; start < end; start += sizeof(struct page))
+> +               /*
+> +                * pfn valid check here is intended to really check
+> +                * whether we have any subsection already initialized
+> +                * in this range. We keep it simple by checking every
+> +                * pfn in the range.
+> +                */
+>                 if (pfn_valid(page_to_pfn((struct page *)start)))
+>                         return 1;
+
+Having a few lines of separation between the for () and the loop body
+always looks a bit sketch, even if it's just a comment. Wrapping the
+block in braces or moving the comment above the loop is probably a
+good idea.
+
+Looks fine otherwise
