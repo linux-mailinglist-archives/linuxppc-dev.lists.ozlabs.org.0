@@ -2,85 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDABB4830
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 09:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6FA2B4852
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 09:32:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XZLN5X7dzF47y
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:22:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XZZX60jtzF4DM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:32:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XZJG4QgXzF408
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 17:20:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="Je08zzCn"; 
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="r9ZCUHr7"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46XZJG3mSDz8xKq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 17:20:14 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46XZJG3ZxDz9sNx; Tue, 17 Sep 2019 17:20:14 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="Je08zzCn"; 
- dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46XZJF6pY6z9sNF
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Sep 2019 17:20:12 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id u17so1505840pgi.6
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Sep 2019 00:20:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=1b+U1Nzm9O0QA4glqcmO/uZ3v1M7siGCSMhNnLK7FJs=;
- b=Je08zzCnm0q36re4AEp6Lm98FBHaGD/6HQc6Lz3CHLTLdlE7ZRQNwFu706iBexv5Se
- SpoUWWulP3fy8ggO2a+Xi+laO5ygySjsu3oIqFibNbnR7fyOwFX/iXa5BvbfSwODOsA3
- 2etUXUaTCkZIIih5GG80xwxdF5vbesZDj7sKs=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XZXD5pDmzF485
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 17:30:33 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id h144so5199896iof.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 00:30:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=o9mDrR6NVyTxU2wGnDfpnoURFDe/e4NIzqR2/MNM9Is=;
+ b=r9ZCUHr7nG/DC+13dX9Ytc2LPNdfkwNd/4SYlQwt34mPek940+LJpyXcEmI6oK3+vd
+ XTgYK636+Qu5xNpfG9s/EAdUiVymeguV5Gf0JdxnHgF7ZHiV2KnJqw3eDWIJSkduWmwk
+ /MIEVpmVOb6snKVQjac/+G0fAt9SvtIeQFYT+sXZQxmkHC8SLVOVt9rEPTRDoGNiAYKb
+ YBusYnYH3TprU9aF1hDMhrJ3zhscXfv6RHkGBtzRYTKUQm3t36uDS1GoXPqAolej/QR/
+ AjL+vVuWmmJ0fvT7j1ywuB+49H8eT2tAmMHqY3z8utTuWCICtIEKmJzUU5bjroGEGkWg
+ yKgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=1b+U1Nzm9O0QA4glqcmO/uZ3v1M7siGCSMhNnLK7FJs=;
- b=STL7pTX5P0mO1IFdRCsd3pYdvB/5cB5LWO5KkiFF9BkPaz31zJBMzj6BTnwbXD0M+e
- G4yrR3FQcrN8tjvyAmTrpqJIA0YplAcCjjWLoNxSKd0TcURqCBa6ZPDiNywB01TE1awy
- bvLFq+tfleR5AiJZM1ECeku5yjRcj6LZUVSbOG9qcO0IbanDr9Ia/ZLnn6x8znGaxD6k
- 5CJFUuC7vOO7l2ILdrcYmKClQAuHY+RDPzPzI431xyIaDdR4ouLMQ/YjR7APnDwwxOgJ
- YX1furGQWjOFW5vvnn4rBni5XVYMjFYt2xH9qgZc81K9gaWoDZ2EblXRWg8oYTmAOwXV
- KaMQ==
-X-Gm-Message-State: APjAAAWSNprTp05IjpOp4qjTifZainjNBLL9wUK10pVdNWwwwN+kywcN
- ozpGxyooG/cHeNQeCedlMsfDWQ==
-X-Google-Smtp-Source: APXvYqy4kjiS5gpcI18fBUp34VEwJV58XddHH7tBOwgSkIm6SPQlr/wW6um4nq2Q5IUwAWuNNG+3ug==
-X-Received: by 2002:a63:67c6:: with SMTP id b189mr1994224pgc.163.1568704808022; 
- Tue, 17 Sep 2019 00:20:08 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id b5sm1230415pgb.68.2019.09.17.00.20.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Sep 2019 00:20:07 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
- kernel-hardening@lists.openwall.com, Matthew Garrett <mjg59@google.com>
-Subject: Re: [PATCH v7 0/2] Restrict xmon when kernel is locked down
-In-Reply-To: <20190907061124.1947-1-cmr@informatik.wtf>
-References: <20190907061124.1947-1-cmr@informatik.wtf>
-Date: Tue, 17 Sep 2019 17:20:03 +1000
-Message-ID: <87y2yngzj0.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=o9mDrR6NVyTxU2wGnDfpnoURFDe/e4NIzqR2/MNM9Is=;
+ b=DR3USFHh/PVT9HV99Enc3Ie99F2uNGa+1aVFzoCgDflvrHmwhSQtXKSluTA32RUICS
+ prRJ9zIugPnEQ6dkK2D6+WX//to4oS/m3vel4pBgU4aXHjKdaFqYx4nc5YCwS+Na2gib
+ Kt4IXVcTdRhnsl6xGGrQSlJhCziJEC8hHoYoaWJILinLVJyWm2XF8iUFgPVnETBNsqg1
+ gHlTymeT5V9O6YexKmBT4fg1RzHbz/NUcroKGNnrnZoQawrqx6RYyl7vN5Neyi/HMz/A
+ wcU9pJ/y99+YR0HY3AZ+2KaOYYTmpQrMTlDcXzfaBKYHU0F2unYztd7+h/yjXJojPrdF
+ ytKA==
+X-Gm-Message-State: APjAAAWrqep07MBzxXiqYyCV145LueSAZUWKn19APWTjrlpsNZyW07Wt
+ HjiA5xZCe18l1gTkwJTAMQcC2u1IXs8WhejECEk=
+X-Google-Smtp-Source: APXvYqzWaRqI1zZeIKQ43FK3n017lqxItMV911Lb+BZ+Cnwse80l9CSDKJxWA9jaI1IETpLyrxd54fAm3/l9otJv3ow=
+X-Received: by 2002:a02:2302:: with SMTP id u2mr1687201jau.70.1568705429875;
+ Tue, 17 Sep 2019 00:30:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20190903101605.2890-1-oohall@gmail.com>
+ <20190903101605.2890-8-oohall@gmail.com>
+ <20190917011542.GG21303@tungsten.ozlabs.ibm.com>
+In-Reply-To: <20190917011542.GG21303@tungsten.ozlabs.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 17 Sep 2019 17:30:18 +1000
+Message-ID: <CAOSf1CE9AuG_nS0F+pmejx8eX5XDJ06AGxKBMPs3xweZ-XWnrQ@mail.gmail.com>
+Subject: Re: [PATCH 07/14] powernv/eeh: Use generic code to handle hot resets
+To: Sam Bobroff <sbobroff@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,97 +74,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-So Matthew Garrett and I talked about this at Linux Plumbers. Matthew,
-if I understood correctly, your concern was that this doesn't sit well
-with the existing threat model for lockdown. As I understand it, the
-idea is that if you're able to get access to the physical console,
-you're already able to get around most restictions by just dropping into
-the BIOS/UEFI configuration, disabling secure boot and booting something
-of your choice. xmon, being a Linux feature that only operates on the
-physical console, therefore falls outside the threat model for lockdown.
-
-I've had a few chats with powerpc people about this, and I think our
-consensus is that the boundaries of our threat model are slightly
-different. Power machines are almost all server-class*, and therefore the
-console is almost always accessed over IPMI or the BMC. As such, we
-don't consider console access to be the same as physical access but
-instead consider it a form of, or akin to, remote access.
-
-This makes more sense on bare-metal powerpc than it does on x86: we
-don't have a boot-time configuration system that's accessible on the
-console, so you can't get around secure boot or any other lockdown
-restrictions that way.
-
-It's also consistent across our future plans: our planned assertion of
-physical presence for authorising unsigned keys for secureboot involves
-pressing a physical button on the case at a particular point in the boot
-sequence, rather than typing in something at the console.
-
-So I think that given that this doesn't disrupt anything else in
-lockdown or affect any other platforms, it's worth taking.
-
-Kind regards,
-Daniel
-
-* yes, there are 32-bit and even some 64-bit embedded systems still. But
-  I don't think that should preclude xmon going in to lockdown: the
-  existence of powerpc boxes where the physical console may be trusted
-  doesn't mean that this is true of all the powerpc systems.
-
-
-> Xmon should be either fully or partially disabled depending on the
-> kernel lockdown state.
+On Tue, Sep 17, 2019 at 11:15 AM Sam Bobroff <sbobroff@linux.ibm.com> wrote:
 >
-> Put xmon into read-only mode for lockdown=integrity and completely
-> disable xmon when lockdown=confidentiality. Since this can occur
-> dynamically, there may be pre-existing, active breakpoints in xmon when
-> transitioning into read-only mode. These breakpoints will still trigger,
-> so allow them to be listed and cleared using xmon.
+> On Tue, Sep 03, 2019 at 08:15:58PM +1000, Oliver O'Halloran wrote:
+> > When we reset PCI devices managed by a hotplug driver the reset may
+> > generate spurious hotplug events that cause the PCI device we're resetting
+> > to be torn down accidently. This is a problem for EEH (when the driver is
+> > EEH aware) since we want to leave the OS PCI device state intact so that
+> > the device can be re-set without losing any resources (network, disks,
+> > etc) provided by the driver.
+> >
+> > Generic PCI code provides the pci_bus_error_reset() function to handle
+> > resetting a PCI Device (or bus) by using the reset method provided by the
+> > hotplug slot driver. We can use this function if the EEH core has
+> > requested a hot reset (common case) without tripping over the hotplug
+> > driver.
+
+> Could you explain a bit more about how this change solves the problem?
+> Is it that the hotplug driver's reset method doesn't cause spurious
+> hotplug events?
+
+Yes, see the comment below.
+
+> > -     if (pci_is_root_bus(bus) ||
+> > -         pci_is_root_bus(bus->parent))
+> > +     if (pci_is_root_bus(bus))
+> >               return pnv_eeh_root_reset(hose, option);
+> >
+> > +     /*
+> > +      * For hot resets try use the generic PCI error recovery reset
+> > +      * functions. These correctly handles the case where the secondary
+> > +      * bus is behind a hotplug slot and it will use the slot provided
+> > +      * reset methods to prevent spurious hotplug events during the reset.
+> > +      *
+> > +      * Fundemental resets need to be handled internally to EEH since the
+> > +      * PCI core doesn't really have a concept of a fundemental reset,
+> > +      * mainly because there's no standard way to generate one. Only a
+> > +      * few devices require an FRESET so it should be fine.
+> > +      */
+> > +     if (option != EEH_RESET_FUNDAMENTAL) {
+> > +             /*
+> > +              * NB: Skiboot and pnv_eeh_bridge_reset() also no-op the
+> > +              *     de-assert step. It's like the OPAL reset API was
+> > +              *     poorly designed or something...
+> > +              */
+> > +             if (option == EEH_RESET_DEACTIVATE)
+> > +                     return 0;
 >
-> Changes since v6:
->  - Add lockdown check in sysrq-trigger to prevent entry into xmon_core
->  - Add lockdown check during init xmon setup for the case when booting
->    with compile-time or cmdline lockdown=confidentialiaty
+> It looks like this will prevent pnv_eeh_root_reset(bus->parent) (below)
+> from being called for EEH_RESET_DEACTIVATE, when it was before the
+> patch. Is that right?
+
+I agree it's a little awkward, but it works fine. OPAL has always
+treated the resets defined by opal_pci_reset() as being edge-triggered
+rather than level triggered since the de-assert step has always been
+implemented as a no-op. This behaviour is effectively part of the ABI
+between OPAL and the kernel since the kernel skips the de-assert step
+in pnv_eeh_bridge_reset(). Although pnv_eeh_reset() uses
+pnv_eeh_reset_root() to reset the secondary bus of the root port
+pnv_pci_reset_secondary_bus() still uses the bridge reset.
+
+I should probably update the OPAL API docs to mention that. Oh well.
+
+> > +             rc = pci_bus_error_reset(bus->self);
+> > +             if (!rc)
+> > +                     return 0;
 >
-> Changes since v5:
->  - Do not spam print messages when attempting to enter xmon when
->    lockdown=confidentiality
->
-> Changes since v4:
->  - Move lockdown state checks into xmon_core
->  - Allow clearing of breakpoints in xmon read-only mode
->  - Test simple scenarios (combinations of xmon and lockdown cmdline
->    options, setting breakpoints and changing lockdown state, etc) in
->    QEMU and on an actual POWER8 VM
->  - Rebase onto security/next-lockdown
->    b602614a81078bf29c82b2671bb96a63488f68d6
->
-> Changes since v3:
->  - Allow active breakpoints to be shown/listed in read-only mode
->
-> Changes since v2:
->  - Rebased onto v36 of https://patchwork.kernel.org/cover/11049461/
->    (based on: f632a8170a6b667ee4e3f552087588f0fe13c4bb)
->  - Do not clear existing breakpoints when transitioning from
->    lockdown=none to lockdown=integrity
->  - Remove line continuation and dangling quote (confuses checkpatch.pl)
->    from the xmon command help/usage string
->
-> Christopher M. Riedl (2):
->   powerpc/xmon: Allow listing and clearing breakpoints in read-only mode
->   powerpc/xmon: Restrict when kernel is locked down
->
->  arch/powerpc/xmon/xmon.c     | 119 +++++++++++++++++++++++++++--------
->  include/linux/security.h     |   2 +
->  security/lockdown/lockdown.c |   2 +
->  3 files changed, 97 insertions(+), 26 deletions(-)
->
-> -- 
-> 2.23.0
+> Is it correct to fall through and try a different reset if this fails?
+
+The only reason I can see for the generic code failing is when config
+space to the bridge is blocked by the EEH core. The internal
+pnv_eeh_bridge_reset() function has the option of calling
+opal_pci_reset() or using the internal EEH config accessors (which
+aren't filtered) so falling back makes sense to me.
