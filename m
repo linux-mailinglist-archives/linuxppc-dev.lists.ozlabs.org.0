@@ -2,67 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584A8B4553
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 03:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B965EB455E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 03:52:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XQw61kYhzF3mK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 11:47:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XR1x25jSzF3q8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 11:52:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Qr+aSMOP"; 
- dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XQt12Lh4zF3hQ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 11:45:28 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id j4so3617578iog.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 18:45:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=7bGwUfVbajk2F57st+1DWbahv0ujMqW2uHKJm+/hm+s=;
- b=Qr+aSMOPbOV9sRRVb5ORet69hg/Q83loY58UC+ExOepNtKfuf/fUAP9+jQG4qid9xM
- nxmTgR1nh5+JcfOt76xoeQ5HaBbfgeQKxHnD6wbxAhVFhLnvotVCcsEX5bqwkPk+dOQ0
- 5fJCMsv9RTDT1RYtnyzBboAit/GLAaAT6Jj3NNNH8ITFE0eAY3YThSc/PgcxjWE+T+YP
- QgO2ya4IDN7BaZNIly6BKPPEte6zkj6XvGRL+UuLUczJMtmKE3s2GcwP4alq1VzEQ/rm
- brpgumzdY2APOZA6zQZbioskWn3xLSxZVN9zr4ml4qqeykt//qhy+i4thCyZkMO0gs6S
- n97g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=7bGwUfVbajk2F57st+1DWbahv0ujMqW2uHKJm+/hm+s=;
- b=gt8/uf0Dys6FVAQ/D2w88cNIVPPZnODU1Oa1CwOSpqKc7yuAQPhvIRPdwrZV+FcOub
- e5nHVdqg5HOUVKGSSwSTTG/fGpPldirHC+T4369RAAaADDsEe6uN6XfTyNPTHcvkAQxH
- 5EhLK1c90bzLBchQ0h2HPbEeurOk5oLEHYAATw/mTSPzWYLldXfxmP2h8rhru+Q2SeN3
- dlA6XUI6LpIkqUpCI0rWLpy3Cyfzx+HEldxUhQRQ1rEDER3j6gEGVzFSnZ9GItkwHzXY
- fc/PVZgyc1hTROTiu2s6bfXje8fQYAbG980stfL2IYxbP5CpoJkElgVZ9W5Kt+dsRqbC
- zXJQ==
-X-Gm-Message-State: APjAAAWim+1yeSY+NyQ1vCUkbT/z5o3MMzK6bu/BUb7brWxQkicfAUa7
- cv+RcXKFx52aF+rvlRBRV6wc6DArJsV/+rDjl+k=
-X-Google-Smtp-Source: APXvYqyQt3yUL2bdC/ZdGqXpQ2nRnGzBVebRnxufuQErBFN1mNpISktuQab6MPF3tiniERIwz0d1UD8aJfV2iGbzRms=
-X-Received: by 2002:a6b:7503:: with SMTP id l3mr1013999ioh.293.1568684725290; 
- Mon, 16 Sep 2019 18:45:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XQwH4sHwzF3md
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 11:47:27 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8H1lFWv093836
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:47:22 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v2hkbfjb9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:47:22 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Tue, 17 Sep 2019 02:47:19 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 17 Sep 2019 02:47:13 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8H1lD3s26214562
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Sep 2019 01:47:13 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E644F52057;
+ Tue, 17 Sep 2019 01:47:12 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 93BF952051;
+ Tue, 17 Sep 2019 01:47:12 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 4E736A01F3;
+ Tue, 17 Sep 2019 11:47:11 +1000 (AEST)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: alastair@d-silva.org
+Subject: [PATCH 1/5] powerpc: Add OPAL calls for LPC memory alloc/release
+Date: Tue, 17 Sep 2019 11:42:57 +1000
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190917014307.30485-1-alastair@au1.ibm.com>
+References: <20190917014307.30485-1-alastair@au1.ibm.com>
 MIME-Version: 1.0
-References: <20190903101605.2890-1-oohall@gmail.com>
- <20190903101605.2890-6-oohall@gmail.com>
- <20190917010421.GE21303@tungsten.ozlabs.ibm.com>
-In-Reply-To: <20190917010421.GE21303@tungsten.ozlabs.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 17 Sep 2019 11:45:14 +1000
-Message-ID: <CAOSf1CERpP0aFKoTiBprLXfr-CwRhix0wGosXBYnMffFtzF+gQ@mail.gmail.com>
-Subject: Re: [PATCH 05/14] powerpc/eeh: Defer printing stack trace
-To: Sam Bobroff <sbobroff@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19091701-4275-0000-0000-000003675A49
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19091701-4276-0000-0000-00003879BDD7
+Message-Id: <20190917014307.30485-2-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-16_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=926 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909170019
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,56 +89,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Allison Randal <allison@lohutok.net>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 17, 2019 at 11:04 AM Sam Bobroff <sbobroff@linux.ibm.com> wrote:
->
-> On Tue, Sep 03, 2019 at 08:15:56PM +1000, Oliver O'Halloran wrote:
-> > Currently we print a stack trace in the event handler to help with
-> > debugging EEH issues. In the case of suprise hot-unplug this is unneeded,
-> > so we want to prevent printing the stack trace unless we know it's due to
-> > an actual device error. To accomplish this, we can save a stack trace at
-> > the point of detection and only print it once the EEH recovery handler has
-> > determined the freeze was due to an actual error.
-> >
-> > Since the whole point of this is to prevent spurious EEH output we also
-> > move a few prints out of the detection thread, or mark them as pr_debug
-> > so anyone interested can get output from the eeh_check_dev_failure()
-> > if they want.
-> >
-> > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
->
-> I think this is a good change, and even in the normal case it will place
-> the stacktrace closer to the rest of the recovery information.
->
-> But, I think it would make more sense to put the stacktrace into the
-> struct eeh_event, rather than the struct eeh_pe. Is there some reason
-> we can't do that? (It would save a fair bit of memory!)
+From: Alastair D'Silva <alastair@d-silva.org>
 
-Two reasons:
+Add OPAL calls for LPC memory alloc/release
 
-1) the eeh_event structures are allocated with GFP_ATOMIC since
-eeh_dev_check_failure() can be called from any context. Minimising the
-number of atomic allocations we do is a good idea as a matter of
-course.
-2) We don't pass the eeh_event structure to the event handler
-function. I guess we could, but... eh
+Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+---
+ arch/powerpc/include/asm/opal-api.h        | 4 +++-
+ arch/powerpc/include/asm/opal.h            | 3 +++
+ arch/powerpc/platforms/powernv/opal-call.c | 2 ++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-I don't see the memory saving as hugely significant either. There's
-always fewer eeh_pe structures than there are PCI devices since some
-will share PEs (e.g. switches, multifunction cards) so you'd be saving
-a dozen KB at most.
+diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
+index 383242eb0dea..c58161cd7cfb 100644
+--- a/arch/powerpc/include/asm/opal-api.h
++++ b/arch/powerpc/include/asm/opal-api.h
+@@ -208,7 +208,9 @@
+ #define OPAL_HANDLE_HMI2			166
+ #define	OPAL_NX_COPROC_INIT			167
+ #define OPAL_XIVE_GET_VP_STATE			170
+-#define OPAL_LAST				170
++#define OPAL_NPU_MEM_ALLOC			171
++#define OPAL_NPU_MEM_RELEASE			172
++#define OPAL_LAST				172
+ 
+ #define QUIESCE_HOLD			1 /* Spin all calls at entry */
+ #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
+diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
+index 57bd029c715e..8c957a003be4 100644
+--- a/arch/powerpc/include/asm/opal.h
++++ b/arch/powerpc/include/asm/opal.h
+@@ -39,6 +39,9 @@ int64_t opal_npu_spa_clear_cache(uint64_t phb_id, uint32_t bdfn,
+ 				uint64_t PE_handle);
+ int64_t opal_npu_tl_set(uint64_t phb_id, uint32_t bdfn, long cap,
+ 			uint64_t rate_phys, uint32_t size);
++int64_t opal_npu_mem_alloc(uint64_t phb_id, uint32_t bdfn,
++			uint64_t size, uint64_t *bar);
++int64_t opal_npu_mem_release(uint64_t phb_id, uint32_t bdfn);
+ int64_t opal_console_write(int64_t term_number, __be64 *length,
+ 			   const uint8_t *buffer);
+ int64_t opal_console_read(int64_t term_number, __be64 *length,
+diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
+index 29ca523c1c79..09a280446507 100644
+--- a/arch/powerpc/platforms/powernv/opal-call.c
++++ b/arch/powerpc/platforms/powernv/opal-call.c
+@@ -287,3 +287,5 @@ OPAL_CALL(opal_pci_set_pbcq_tunnel_bar,		OPAL_PCI_SET_PBCQ_TUNNEL_BAR);
+ OPAL_CALL(opal_sensor_read_u64,			OPAL_SENSOR_READ_U64);
+ OPAL_CALL(opal_sensor_group_enable,		OPAL_SENSOR_GROUP_ENABLE);
+ OPAL_CALL(opal_nx_coproc_init,			OPAL_NX_COPROC_INIT);
++OPAL_CALL(opal_npu_mem_alloc,			OPAL_NPU_MEM_ALLOC);
++OPAL_CALL(opal_npu_mem_release,			OPAL_NPU_MEM_RELEASE);
+-- 
+2.21.0
 
-root@zaius1:~# lspci | wc -l
-59
-root@zaius1:~# echo $(( $(lspci | wc -l) * 64 * 8))
-30208
-
-I think we'll live...
-
->
-> Cheers,
-> Sam.
