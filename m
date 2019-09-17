@@ -1,83 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D92DB4E19
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 14:42:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C38DB4E8B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 14:54:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XjRt0YcWzF400
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 22:42:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XjjM19FRzF0fR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 22:53:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XjNY0YGpzF3HB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 22:39:24 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8HCXZ6p170296; Tue, 17 Sep 2019 08:39:09 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v0u14847s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 08:39:08 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8HCY0DA171449;
- Tue, 17 Sep 2019 08:39:05 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v0u14842a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 08:39:05 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8HCTxtQ016645;
- Tue, 17 Sep 2019 12:38:57 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04wdc.us.ibm.com with ESMTP id 2v0t9arf41-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 12:38:57 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8HCcuJ266126124
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Sep 2019 12:38:56 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C00CC6A054;
- Tue, 17 Sep 2019 12:38:56 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 698396A04D;
- Tue, 17 Sep 2019 12:38:54 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.41.156])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 17 Sep 2019 12:38:54 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au,
- dan.j.williams@intel.com
-Subject: [PATCH v2] powerpc/nvdimm: Update vmemmap_populated to check
- sub-section range
-Date: Tue, 17 Sep 2019 18:08:51 +0530
-Message-Id: <20190917123851.22553-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XjfW2FRnzF43t
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 22:51:28 +1000 (AEST)
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 9DDFB6AEE488B1C6EA43;
+ Tue, 17 Sep 2019 20:51:23 +0800 (CST)
+Received: from localhost.localdomain (10.67.212.75) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 17 Sep 2019 20:51:18 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <catalin.marinas@arm.com>, <will@kernel.org>, <mingo@redhat.com>,
+ <bp@alien8.de>, <rth@twiddle.net>, <ink@jurassic.park.msu.ru>,
+ <mattst88@gmail.com>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <mpe@ellerman.id.au>, <heiko.carstens@de.ibm.com>, <gor@linux.ibm.com>,
+ <borntraeger@de.ibm.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+ <davem@davemloft.net>, <ralf@linux-mips.org>, <paul.burton@mips.com>,
+ <jhogan@kernel.org>, <jiaxun.yang@flygoat.com>, <chenhc@lemote.com>
+Subject: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Date: Tue, 17 Sep 2019 20:48:54 +0800
+Message-ID: <1568724534-146242-1-git-send-email-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-17_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909170127
+Content-Type: text/plain
+X-Originating-IP: [10.67.212.75]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,125 +53,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+Cc: linux-sh@vger.kernel.org, peterz@infradead.org, dave.hansen@linux.intel.com,
+ linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com, hpa@zytor.com,
+ sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ rppt@linux.ibm.com, dledford@redhat.com, jeffrey.t.kirsher@intel.com,
+ naveen.n.rao@linux.vnet.ibm.com, len.brown@intel.com,
+ anshuman.khandual@arm.com, gregkh@linuxfoundation.org, cai@lca.pw,
+ luto@kernel.org, tglx@linutronix.de, mhocko@kernel.org,
+ linux-arm-kernel@lists.infradead.org, axboe@kernel.dk, robin.murphy@arm.com,
+ linux-kernel@vger.kernel.org, tbogendoerfer@suse.de,
+ linux-alpha@vger.kernel.org, rafael@kernel.org, akpm@linux-foundation.org,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With commit: 7cc7867fb061 ("mm/devm_memremap_pages: enable sub-section remap")
-pmem namespaces are remapped in 2M chunks. On architectures like ppc64 we
-can map the memmap area using 16MB hugepage size and that can cover
-a memory range of 16G.
+When passing the return value of dev_to_node() to cpumask_of_node()
+without checking if the device's node id is NUMA_NO_NODE, there is
+global-out-of-bounds detected by KASAN.
 
-While enabling new pmem namespaces, since memory is added in sub-section chunks,
-before creating a new memmap mapping, kernel should check whether there is an
-existing memmap mapping covering the new pmem namespace. Currently, this is
-validated by checking whether the section covering the range is already
-initialized or not. Considering there can be multiple namespaces in the same
-section this can result in wrong validation. Update this to check for
-sub-sections in the range. This is done by checking for all pfns in the range we
-are mapping.
+From the discussion [1], NUMA_NO_NODE really means no node affinity,
+which also means all cpus should be usable. So the cpumask_of_node()
+should always return all cpus online when user passes the node id as
+NUMA_NO_NODE, just like similar semantic that page allocator handles
+NUMA_NO_NODE.
 
-We could optimize this by checking only just one pfn in each sub-section. But
-since this is not fast-path we keep this simple.
+But we cannot really copy the page allocator logic. Simply because the
+page allocator doesn't enforce the near node affinity. It just picks it
+up as a preferred node but then it is free to fallback to any other numa
+node. This is not the case here and node_to_cpumask_map will only restrict
+to the particular node's cpus which would have really non deterministic
+behavior depending on where the code is executed. So in fact we really
+want to return cpu_online_mask for NUMA_NO_NODE.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Also there is a debugging version of node_to_cpumask_map() for x86 and
+arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+
+[1] https://lore.kernel.org/patchwork/patch/1125789/
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Suggested-by: Michal Hocko <mhocko@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
 ---
- arch/powerpc/mm/init_64.c | 54 +++++++++++++++++++++++++++------------
- 1 file changed, 38 insertions(+), 16 deletions(-)
+V6: Drop the cpu_all_mask -> cpu_online_mask change for it seems a
+    little controversial, may need deeper investigation, and rebased
+    on the latest linux-next.
+V5: Drop unsigned "fix" change for x86/arm64, and change comment log
+    according to Michal's comment.
+V4: Have all these changes in a single patch.
+V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
+    for NUMA_NO_NODE case, and change the commit log to better justify
+    the change.
+V2: make the node id checking change to other arches too.
+---
+ arch/arm64/include/asm/numa.h                    | 3 +++
+ arch/arm64/mm/numa.c                             | 3 +++
+ arch/mips/include/asm/mach-loongson64/topology.h | 4 +++-
+ arch/s390/include/asm/topology.h                 | 3 +++
+ arch/x86/include/asm/topology.h                  | 3 +++
+ arch/x86/mm/numa.c                               | 3 +++
+ 6 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index 4e08246acd79..83d8c7122d13 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -70,31 +70,46 @@ EXPORT_SYMBOL_GPL(kernstart_addr);
- 
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
- /*
-- * Given an address within the vmemmap, determine the pfn of the page that
-- * represents the start of the section it is within.  Note that we have to
-+ * Given an address within the vmemmap, determine the page that
-+ * represents the start of the subsection it is within.  Note that we have to
-  * do this by hand as the proffered address may not be correctly aligned.
-  * Subtraction of non-aligned pointers produces undefined results.
-  */
--static unsigned long __meminit vmemmap_section_start(unsigned long page)
-+static struct page * __meminit vmemmap_subsection_start(unsigned long vmemmap_addr)
+diff --git a/arch/arm64/include/asm/numa.h b/arch/arm64/include/asm/numa.h
+index 626ad01..c8a4b31 100644
+--- a/arch/arm64/include/asm/numa.h
++++ b/arch/arm64/include/asm/numa.h
+@@ -25,6 +25,9 @@ const struct cpumask *cpumask_of_node(int node);
+ /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
+ static inline const struct cpumask *cpumask_of_node(int node)
  {
--	unsigned long offset = page - ((unsigned long)(vmemmap));
-+	unsigned long start_pfn;
-+	unsigned long offset = vmemmap_addr - ((unsigned long)(vmemmap));
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	return node_to_cpumask_map[node];
+ }
+ #endif
+diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+index 4decf16..5ae7eea 100644
+--- a/arch/arm64/mm/numa.c
++++ b/arch/arm64/mm/numa.c
+@@ -46,6 +46,9 @@ EXPORT_SYMBOL(node_to_cpumask_map);
+  */
+ const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	if (WARN_ON(node >= nr_node_ids))
+ 		return cpu_none_mask;
  
- 	/* Return the pfn of the start of the section. */
--	return (offset / sizeof(struct page)) & PAGE_SECTION_MASK;
-+	start_pfn = (offset / sizeof(struct page)) & PAGE_SUBSECTION_MASK;
-+	return pfn_to_page(start_pfn);
+diff --git a/arch/mips/include/asm/mach-loongson64/topology.h b/arch/mips/include/asm/mach-loongson64/topology.h
+index 7ff819a..e78daa6 100644
+--- a/arch/mips/include/asm/mach-loongson64/topology.h
++++ b/arch/mips/include/asm/mach-loongson64/topology.h
+@@ -5,7 +5,9 @@
+ #ifdef CONFIG_NUMA
+ 
+ #define cpu_to_node(cpu)	(cpu_logical_map(cpu) >> 2)
+-#define cpumask_of_node(node)	(&__node_data[(node)]->cpumask)
++#define cpumask_of_node(node)	((node) == NUMA_NO_NODE ?		\
++				 cpu_online_mask :			\
++				 &__node_data[(node)]->cpumask)
+ 
+ struct pci_bus;
+ extern int pcibus_to_node(struct pci_bus *);
+diff --git a/arch/s390/include/asm/topology.h b/arch/s390/include/asm/topology.h
+index cca406f..1bd2e73 100644
+--- a/arch/s390/include/asm/topology.h
++++ b/arch/s390/include/asm/topology.h
+@@ -78,6 +78,9 @@ static inline int cpu_to_node(int cpu)
+ #define cpumask_of_node cpumask_of_node
+ static inline const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	return &node_to_cpumask_map[node];
  }
  
- /*
-- * Check if this vmemmap page is already initialised.  If any section
-- * which overlaps this vmemmap page is initialised then this page is
-- * initialised already.
-+ * Since memory is added in sub-section chunks, before creating a new vmemmap
-+ * mapping, the kernel should check whether there is an existing memmap mapping
-+ * covering the new subsection added. This is needed because kernel can map
-+ * vmemmap area using 16MB pages which will cover a memory range of 16G. Such
-+ * a range covers multiple subsections (2M)
-+ *
-+ * If any subsection in the 16G range mapped by vmemmap is valid we consider the
-+ * vmemmap populated (There is a page table entry already present). We can't do
-+ * a page table lookup here because with the hash translation we don't keep
-+ * vmemmap details in linux page table.
-  */
--static int __meminit vmemmap_populated(unsigned long start, int page_size)
-+static int __meminit vmemmap_populated(unsigned long vmemmap_addr, int vmemmap_map_size)
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 4b14d23..7fa82e1 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -69,6 +69,9 @@ extern const struct cpumask *cpumask_of_node(int node);
+ /* Returns a pointer to the cpumask of CPUs on Node 'node'. */
+ static inline const struct cpumask *cpumask_of_node(int node)
  {
--	unsigned long end = start + page_size;
--	start = (unsigned long)(pfn_to_page(vmemmap_section_start(start)));
-+	struct page *start;
-+	unsigned long vmemmap_end = vmemmap_addr + vmemmap_map_size;
-+	start = vmemmap_subsection_start(vmemmap_addr);
- 
--	for (; start < end; start += (PAGES_PER_SECTION * sizeof(struct page)))
--		if (pfn_valid(page_to_pfn((struct page *)start)))
-+	for (; (unsigned long)start < vmemmap_end; start += PAGES_PER_SUBSECTION)
-+		/*
-+		 * pfn valid check here is intended to really check
-+		 * whether we have any subsection already initialized
-+		 * in this range.
-+		 */
-+		if (pfn_valid(page_to_pfn(start)))
- 			return 1;
- 
- 	return 0;
-@@ -201,6 +216,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 		void *p = NULL;
- 		int rc;
- 
-+		/*
-+		 * This vmemmap range is backing different subsections. If any
-+		 * of that subsection is marked valid, that means we already
-+		 * have initialized a page table covering this range and hence
-+		 * the vmemmap range is populated.
-+		 */
- 		if (vmemmap_populated(start, page_size))
- 			continue;
- 
-@@ -290,9 +311,10 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
- 		struct page *page;
- 
- 		/*
--		 * the section has already be marked as invalid, so
--		 * vmemmap_populated() true means some other sections still
--		 * in this page, so skip it.
-+		 * We have already marked the subsection we are trying to remove
-+		 * invalid. So if we want to remove the vmemmap range, we
-+		 * need to make sure there is no subsection marked valid
-+		 * in this range.
- 		 */
- 		if (vmemmap_populated(start, page_size))
- 			continue;
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	return node_to_cpumask_map[node];
+ }
+ #endif
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 4123100e..9859acb 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -861,6 +861,9 @@ void numa_remove_cpu(int cpu)
+  */
+ const struct cpumask *cpumask_of_node(int node)
+ {
++	if (node == NUMA_NO_NODE)
++		return cpu_online_mask;
++
+ 	if ((unsigned)node >= nr_node_ids) {
+ 		printk(KERN_WARNING
+ 			"cpumask_of_node(%d): (unsigned)node >= nr_node_ids(%u)\n",
 -- 
-2.21.0
+2.8.1
 
