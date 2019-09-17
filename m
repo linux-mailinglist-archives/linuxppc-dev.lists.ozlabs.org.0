@@ -2,85 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F22B5770
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 23:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11635B579F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 23:32:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Xx1V2Qd5zF0QC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 07:23:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XxD221M2zF3sZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 07:32:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=google.com
+ (client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
+ envelope-from=jannh@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.b="jUgafeXo"; 
+ dkim-atps=neutral
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
+ [IPv6:2607:f8b0:4864:20::242])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XwzF6DTJzF3j9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 07:21:44 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8HLHnVL042838; Tue, 17 Sep 2019 17:21:30 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v35wtu7b8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 17:21:30 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8HLIFKP044425;
- Tue, 17 Sep 2019 17:21:30 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v35wtu7av-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 17:21:30 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8HLJi7P026267;
- Tue, 17 Sep 2019 21:21:29 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma05wdc.us.ibm.com with ESMTP id 2v0tcyks9j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 21:21:29 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8HLLTEM39649586
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Sep 2019 21:21:29 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F1D83AC06A;
- Tue, 17 Sep 2019 21:21:28 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44E3EAC065;
- Tue, 17 Sep 2019 21:21:26 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.18.235.58])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 17 Sep 2019 21:21:26 +0000 (GMT)
-Message-ID: <bd6a2e6bc8981ced1b6693fdcfa1e111b1c609b7.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/1] powerpc: mm: Check if
- serialize_against_pte_lookup() really needs to run
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Date: Tue, 17 Sep 2019 18:21:22 -0300
-In-Reply-To: <c1ff17e2-902d-87e6-3c1d-fc5db2428b69@linux.ibm.com>
-References: <20190916205527.1859-1-leonardo@linux.ibm.com>
- <c1ff17e2-902d-87e6-3c1d-fc5db2428b69@linux.ibm.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-6lXjFATey8w+YYYmxG+7"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Xx9w2BpWzF3qh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 07:30:53 +1000 (AEST)
+Received: by mail-oi1-x242.google.com with SMTP id k25so4158051oiw.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 14:30:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ESCnXX2tcIZXxoYYdwBnYQ13kyLGDQXAfzDyU1IsljM=;
+ b=jUgafeXoQWRROVQcTu6YfyeHgWxQgQnh4jo0vXJb9gmwfB60c9yL42Xud+pRnhazvu
+ I55/SWoMFVopXjb7HLBe3ZwDp8YJ8AIZ8yE+MZ1ol1jCwWnIpfYZUGgVJMSnV8dTUt6g
+ Fj+f3RqGjAClmuMaYSKTGHkK+kbzWWV2PGu8pnhEDzRe1H1j/2nUdgWnUmqKQJs9XJhD
+ bcgWdPhYUHXwS43uDaRjRrlqwvcEMFzpAIgQXR+SQCsx7w3nXgWKc6kAeP7uC4P5GOpV
+ geTEa7Nd78q01D+rHdE0lfUUKO0VvNzXAoY9/ESlMRu9nFZIkRllJNqARaqGkFjsJcK8
+ RCrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ESCnXX2tcIZXxoYYdwBnYQ13kyLGDQXAfzDyU1IsljM=;
+ b=LAC3vy9JGaxKHPs/ULsFvPHS+GDflQy8Pb4wiNPBzTMg8XERhSckyux80I43MbJ0Vl
+ IakqG1q5Edxjt9zaAA0yi2OeKhax6YMw2zCs0xdplFlCbJjjXPrDtPME+WvTB5DskAtI
+ K9hRasNi2Vw6y25OwJjWkQAUh6OKqodJIioqWCwep4r83QXjmkassd//efOgdb/aj0nR
+ nVRn7lNGpeS2qBVPh+ZWvmoB8k1qA81k9Fwz9aFvHuCsQ8KIKN+5mwpLA6ojqXNO78Zq
+ laTlbOCX6/AsTbA+N5UGsBjzoj3UGs8OyLZVnKErh4FTbFCBrVq0Ox8D4bE02gVK0TnS
+ 0VPA==
+X-Gm-Message-State: APjAAAWwZB5IuGFEoPc06neSCq3coaDugInubcvdEKb1xHly6yk8QmRO
+ eeSYXmN7/tpAHF1hhOcudT8oEuCK+gn4f155cglNGQ==
+X-Google-Smtp-Source: APXvYqwxm+0NJ68SJt1aKiZMUXpTcHLshnMGNY9q+/BgS9qyQqvS1IrxODCZyEWbmarv3+IaDknKyiL8F7FGSmCNufY=
+X-Received: by 2002:aca:ed52:: with SMTP id l79mr129659oih.47.1568755849487;
+ Tue, 17 Sep 2019 14:30:49 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-17_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909170197
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-6-cyphar@cyphar.com>
+In-Reply-To: <20190904201933.10736-6-cyphar@cyphar.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 17 Sep 2019 23:30:23 +0200
+Message-ID: <CAG48ez1_64249RdX6Nj_32YS+jhuXZBAd_ZL9ozggbSQy+cc-A@mail.gmail.com>
+Subject: Re: [PATCH v12 05/12] namei: obey trailing magic-link DAC permissions
+To: Aleksa Sarai <cyphar@cyphar.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,88 +73,240 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ralph Campbell <rcampbell@nvidia.com>, Davidlohr Bueso <dave@stgolabs.net>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
- "Tobin C. Harding" <tobin@kernel.org>,
- Jesper Dangaard Brouer <brouer@redhat.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>, Christoph Lameter <cl@linux.com>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Souptick Joarder <jrdr.linux@gmail.com>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>,
+ kernel list <linux-kernel@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Linux Containers <containers@lists.linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Sep 4, 2019 at 10:21 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+> The ability for userspace to "re-open" file descriptors through
+> /proc/self/fd has been a very useful tool for all sorts of usecases
+> (container runtimes are one common example). However, the current
+> interface for doing this has resulted in some pretty subtle security
+> holes. Userspace can re-open a file descriptor with more permissions
+> than the original, which can result in cases such as /proc/$pid/exe
+> being re-opened O_RDWR at a later date even though (by definition)
+> /proc/$pid/exe cannot be opened for writing. When combined with O_PATH
+> the results can get even more confusing.
+[...]
+> Instead we have to restrict it in such a way that it doesn't break
+> (good) users but does block potential attackers. The solution applied in
+> this patch is to restrict *re-opening* (not resolution through)
+> magic-links by requiring that mode of the link be obeyed. Normal
+> symlinks have modes of a+rwx but magic-links have other modes. These
+> magic-link modes were historically ignored during path resolution, but
+> they've now been re-purposed for more useful ends.
 
---=-6lXjFATey8w+YYYmxG+7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thanks for dealing with this issue!
 
-Hello Aneesh, thanks for the feedback!
+[...]
+> diff --git a/fs/namei.c b/fs/namei.c
+> index 209c51a5226c..54d57dad0f91 100644
+> --- a/fs/namei.c
+> +++ b/fs/namei.c
+> @@ -872,7 +872,7 @@ void nd_jump_link(struct path *path)
+>
+>         nd->path = *path;
+>         nd->inode = nd->path.dentry->d_inode;
+> -       nd->flags |= LOOKUP_JUMPED;
+> +       nd->flags |= LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
+>  }
+[...]
+> +static int trailing_magiclink(struct nameidata *nd, int acc_mode,
+> +                             fmode_t *opath_mask)
+> +{
+> +       struct inode *inode = nd->link_inode;
+> +       fmode_t upgrade_mask = 0;
+> +
+> +       /* Was the trailing_symlink() a magic-link? */
+> +       if (!(nd->flags & LOOKUP_MAGICLINK_JUMPED))
+> +               return 0;
+> +
+> +       /*
+> +        * Figure out the upgrade-mask of the link_inode. Since these aren't
+> +        * strictly POSIX semantics we don't do an acl_permission_check() here,
+> +        * so we only care that at least one bit is set for each upgrade-mode.
+> +        */
+> +       if (inode->i_mode & S_IRUGO)
+> +               upgrade_mask |= FMODE_PATH_READ;
+> +       if (inode->i_mode & S_IWUGO)
+> +               upgrade_mask |= FMODE_PATH_WRITE;
+> +       /* Restrict the O_PATH upgrade-mask of the caller. */
+> +       if (opath_mask)
+> +               *opath_mask &= upgrade_mask;
+> +       return may_open_magiclink(upgrade_mask, acc_mode);
+>  }
 
-On Tue, 2019-09-17 at 08:26 +0530, Aneesh Kumar K.V wrote:
-> We could possibly avoid that serialize for a full task exit unmap. ie,=
-=20
-> when tlb->fullmm =3D=3D 1 . But that won't help the Qemu case because it=
-=20
-> does an umap of the guest ram range for which tlb->fullmm !=3D 1.
-Yes, in qemu we can hot-add memory to guests using memory allocated by
-qemu using mmap(). If we want/need to free this memory to other
-processes (or guests), we remove it from this guest and do a common
-munmap(). This happens without exiting qemu, or pausing the guest.
+This looks racy because entries in the file descriptor table can be
+switched out as long as task->files->file_lock isn't held. Unless I'm
+missing something, something like the following (untested) would
+bypass this restriction:
 
+int readonly_fd = ...; /* some read-only fd we want to reopen as writable */
+int writable_fd = open("/dev/null", O_RDWR);
+int flippy_fd = dup(writable_fd);
+char flippy_fd_path[100];
+sprintf(flippy_fd_path, "/proc/%d/fd/%d", getpid(), flippy_fd);
+if (fork() == 0) {
+  while (1) {
+    int reopened_fd = open(flippy_fd_path, O_RDWR);
+    if (reopened_fd == -1) continue;
+    char reopened_fd_path[100];
+    sprintf(reopened_fd_path, "/proc/self/fd/%d", reopened_fd);
+    char reopened_fd_target[1000];
+    int target_len = readlink(reopened_fd_path, reopened_fd_target,
+sizeof(reopened_fd_target)-1);
+    reopened_fd_target[target_len] = 0;
+    if (strcmp(reopened_fd_target, "/dev/null"))
+      printf("managed to reopen as writable\n");
+    close(reopened_fd);
+  }
+} else {
+  while (1) {
+    dup2(readonly_fd, flippy_fd);
+    dup2(writable_fd, flippy_fd);
+  }
+}
 
-> That is not correct. We need to keep the count updated  across the=20
-> local_irq_disable()/local_irq_enable().=20
-So, by that you mean incrementing the counter before
-local_irq_{disable,save} and decrementing only after
-local_irq_{enable,restore}?
+Perhaps you could change nd_jump_link() to "void nd_jump_link(struct
+path *path, umode_t link_mode)", and let proc_pid_get_link() pass the
+link_mode through from an out-argument of .proc_get_link()? Then
+proc_fd_link() could grab the proper mode in a race-free manner. And
+nd_jump_link() could stash the mode in the nameidata.
 
-> That is we mostly should have a variant like=20
-> start_lockless_pgtbl_walk()/end_lockless_pgtbl_walk().=20
-And with that, you mean replacing the current local_irq_{disable,save}
-with a start_lockless_pgtbl_walk() (that contains increment + irq
-disable)? (and doing similarly with local_irq_{enable,restore} and
-end_lockless_pgtbl_walk())=20
+A sketch of how I imagine that:
+===============================
+diff --git a/fs/namei.c b/fs/namei.c
+index 6b936038319b..14c6790203c7 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -506,6 +506,7 @@ struct nameidata {
+        struct inode    *link_inode;
+        unsigned        root_seq;
+        int             dfd;
++       umode_t         last_link_mode;
+ } __randomize_layout;
 
-> Also there is hash_page_mm which we need to make sure we are protected=
-=20
-> against w.r.t collapse pmd.
-I did not get what I need to do here.=20
-Is it a new thing to protect?=20
-If so, I need to better understand how to protect it.
-If not, I would like to understand how it's protected by current
-behavior.=20
+ static void set_nameidata(struct nameidata *p, int dfd, struct filename *name)
+@@ -890,7 +891,7 @@ static int nd_jump_root(struct nameidata *nd)
+  * Helper to directly jump to a known parsed path from ->get_link,
+  * caller must have taken a reference to path beforehand.
+  */
+-void nd_jump_link(struct path *path)
++void nd_jump_link(struct path *path, umode_t link_mode)
+ {
+        struct nameidata *nd = current->nameidata;
+        path_put(&nd->path);
+@@ -898,6 +899,7 @@ void nd_jump_link(struct path *path)
+        nd->path = *path;
+        nd->inode = nd->path.dentry->d_inode;
+        nd->flags |= LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
++       nd->last_link_mode = link_mode;
+ }
 
-> Move that to ppc64 specific mm_context_t.
-Ok, fixed! I will send that on v2.
+ static inline void put_link(struct nameidata *nd)
+@@ -3654,9 +3656,9 @@ static int trailing_magiclink(struct nameidata
+*nd, int acc_mode,
+         * strictly POSIX semantics we don't do an acl_permission_check() here,
+         * so we only care that at least one bit is set for each upgrade-mode.
+         */
+-       if (inode->i_mode & S_IRUGO)
++       if (nd->last_link_mode & S_IRUGO)
+                upgrade_mask |= FMODE_PATH_READ;
+-       if (inode->i_mode & S_IWUGO)
++       if (nd->last_link_mode & S_IWUGO)
+                upgrade_mask |= FMODE_PATH_WRITE;
+        /* Restrict the O_PATH upgrade-mask of the caller. */
+        if (opath_mask)
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 297242174402..af0218447571 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -1614,6 +1614,7 @@ static const char *proc_pid_get_link(struct
+dentry *dentry,
+ {
+        struct path path;
+        int error = -EACCES;
++       umode_t link_mode;
 
-Best regards,
-Leonardo Bras
+        if (!dentry)
+                return ERR_PTR(-ECHILD);
+@@ -1622,11 +1623,11 @@ static const char *proc_pid_get_link(struct
+dentry *dentry,
+        if (!proc_fd_access_allowed(inode))
+                goto out;
 
---=-6lXjFATey8w+YYYmxG+7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+-       error = PROC_I(inode)->op.proc_get_link(dentry, &path);
++       error = PROC_I(inode)->op.proc_get_link(dentry, &path, &link_mode);
+        if (error)
+                goto out;
 
------BEGIN PGP SIGNATURE-----
+-       nd_jump_link(&path);
++       nd_jump_link(&path, link_mode);
+        return NULL;
+ out:
+        return ERR_PTR(error);
+diff --git a/fs/proc/fd.c b/fs/proc/fd.c
+index 9b7d8becb002..9c1d247177b1 100644
+--- a/fs/proc/fd.c
++++ b/fs/proc/fd.c
+@@ -163,7 +163,8 @@ static const struct dentry_operations
+tid_fd_dentry_operations = {
+        .d_delete       = pid_delete_dentry,
+ };
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2BTlIACgkQlQYWtz9S
-ttTDMQ/9GtlMAVSX2mm7qIMVQyFd+TRDw0cTzYWqgWeI0bLCL2hpGQzsITDp5g79
-xwmr1luIfWZHIy2xWZuVL/EkLEtFyKQ6qCM7PVPzn+TdQsySiZMARYQV6BzqXAGl
-yzst2hxelN3OpXS+ukaBd/xfwXJHgV1XA8vsmkozjYRIglor1ADwR/czs3XPXC9c
-I9/oEg604NBBXmiN9n0rwuep9QF6IeRW7HrX8lv1qfUwlv98goK570MqVxf/JQF+
-jLpmO4U9/LtqEw1VcWbHSu/68saubEeZRPc60n2vrtZ5k0g5yu5NK2WYGV/bJpRo
-lDub6d1SJvsugf3CXCbTvAm3aOHhzLy0BFNWkAVfGJcD9vg01Suyeul6wyGny5Es
-ntBvyrSX4u9Xc4WKnapEi0l/wonf0IxptnEVek5081vJDr0dNIV22jIztXWSIbju
-cD93sWKPH6P1PBrqqR+A7C2e3tVTGnyUClz0JID9/QcUeCy3cC/SkEx3gzAV/0Wp
-aHyZuY/IaR3pdcd04MdZfRtIqe9CEJ/z/OC6vqZvwrOlfY9e3yJUxwtdJWhtAJiu
-KM+5db9kPtGWn1JMXhROs+ZMdoFz74P3YwwsvFlhIOzxclGPcpkp8cpHnUlGUm2+
-xjTdyvucWrZZBsT8vcTJDJR+jf0gdIzhrIhx+QC59YepJB3BAis=
-=T/Yh
------END PGP SIGNATURE-----
+-static int proc_fd_link(struct dentry *dentry, struct path *path)
++static int proc_fd_link(struct dentry *dentry, struct path *path,
++                       umode_t *link_mode)
+ {
+        struct files_struct *files = NULL;
+        struct task_struct *task;
+@@ -184,6 +185,7 @@ static int proc_fd_link(struct dentry *dentry,
+struct path *path)
+                if (fd_file) {
+                        *path = fd_file->f_path;
+                        path_get(&fd_file->f_path);
++                       *link_mode = /* something based on fd_file->f_mode */;
+                        ret = 0;
+                }
+                spin_unlock(&files->file_lock);
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index cd0c8d5ce9a1..a090fff984ed 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -74,7 +74,7 @@ extern struct kmem_cache *proc_dir_entry_cache;
+ void pde_free(struct proc_dir_entry *pde);
 
---=-6lXjFATey8w+YYYmxG+7--
-
+ union proc_op {
+-       int (*proc_get_link)(struct dentry *, struct path *);
++       int (*proc_get_link)(struct dentry *, struct path *, umode_t *);
+        int (*proc_show)(struct seq_file *m,
+                struct pid_namespace *ns, struct pid *pid,
+                struct task_struct *task);
+===============================
