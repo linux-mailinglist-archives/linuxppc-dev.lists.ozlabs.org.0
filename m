@@ -2,87 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1167BB45C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 04:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD291B45F1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 05:18:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XSWB0SJ9zF0k2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 12:59:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XSwr30MszDqBc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 13:18:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sbobroff@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XSSD2m1XzF3v4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 12:56:44 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8H2bfFr058044; Mon, 16 Sep 2019 22:56:25 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v2ju774j6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Sep 2019 22:56:25 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8H2lcWu078014;
- Mon, 16 Sep 2019 22:56:24 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v2ju774ha-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Sep 2019 22:56:24 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8H2acQR008152;
- Tue, 17 Sep 2019 02:56:22 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma02dal.us.ibm.com with ESMTP id 2v0svwtjs3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Sep 2019 02:56:22 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8H2uL7q56623548
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XSth3GDRzF3qp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 13:16:11 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8H3CRY8006827
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 23:16:08 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v2k7u6px1-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 23:16:08 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Tue, 17 Sep 2019 04:16:06 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 17 Sep 2019 04:16:04 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8H3G3Ud52625462
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Sep 2019 02:56:21 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 103BF6A04D;
- Tue, 17 Sep 2019 02:56:21 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3DA3E6A047;
- Tue, 17 Sep 2019 02:56:06 +0000 (GMT)
-Received: from [9.199.46.123] (unknown [9.199.46.123])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 17 Sep 2019 02:56:04 +0000 (GMT)
-Subject: Re: [PATCH 1/1] powerpc: mm: Check if serialize_against_pte_lookup()
- really needs to run
-To: Leonardo Bras <leonardo@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <20190916205527.1859-1-leonardo@linux.ibm.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <c1ff17e2-902d-87e6-3c1d-fc5db2428b69@linux.ibm.com>
-Date: Tue, 17 Sep 2019 08:26:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Tue, 17 Sep 2019 03:16:03 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3194D4C050;
+ Tue, 17 Sep 2019 03:16:03 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8F8044C040;
+ Tue, 17 Sep 2019 03:16:02 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Sep 2019 03:16:02 +0000 (GMT)
+Received: from tungsten.ozlabs.ibm.com (unknown [9.81.192.242])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id CC45FA019A;
+ Tue, 17 Sep 2019 13:16:00 +1000 (AEST)
+Date: Tue, 17 Sep 2019 13:15:59 +1000
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH 12/14] powerpc/eeh: Add debugfs interface to run an EEH
+ check
+References: <20190903101605.2890-1-oohall@gmail.com>
+ <20190903101605.2890-13-oohall@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190916205527.1859-1-leonardo@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="v2/QI0iRXglpx0hK"
+Content-Disposition: inline
+In-Reply-To: <20190903101605.2890-13-oohall@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
+x-cbid: 19091703-0020-0000-0000-0000036DEE36
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19091703-0021-0000-0000-000021C39003
+Message-Id: <20190917031558.GI21303@tungsten.ozlabs.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-09-17_01:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909170028
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909170035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,124 +96,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christoph Lameter <cl@linux.com>, Davidlohr Bueso <dave@stgolabs.net>,
- Jann Horn <jannh@google.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
- Dan Williams <dan.j.williams@intel.com>, Ralph Campbell <rcampbell@nvidia.com>,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
- "Tobin C. Harding" <tobin@kernel.org>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Souptick Joarder <jrdr.linux@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/17/19 2:25 AM, Leonardo Bras wrote:
-> If a process (qemu) with a lot of CPUs (128) try to munmap() a large chunk
-> of memory (496GB) mapped with THP, it takes an average of 275 seconds,
-> which can cause a lot of problems to the load (in qemu case, the guest
-> will lock for this time).
-> 
-> Trying to find the source of this bug, I found out most of this time is
-> spent on serialize_against_pte_lookup(). This function will take a lot of
-> time in smp_call_function_many() if there is more than a couple CPUs
-> running the user process. Since it has to happen to all THP mapped, it will
-> take a very long time for large amounts of memory.
-> 
-> By the docs, serialize_against_pte_lookup() is needed in order to avoid
-> pmd_t to pte_t casting inside find_current_mm_pte() to happen concurrently
-> with the next part of the functions it's called in.
-> It does so by calling a do_nothing() on each CPU in mm->cpu_bitmap[];
-> 
-> So, by what I could understand, if there is no find_current_mm_pte()
-> running, there is no need to call serialize_against_pte_lookup().
-> 
-> So, to avoid the cost of running serialize_against_pte_lookup(), I propose
-> a counter that keeps track of how many find_current_mm_pte() are currently
-> running, and if there is none, just skip smp_call_function_many().
-> 
-> On my workload (qemu), I could see munmap's time reduction from 275 seconds
-> to 418ms.
-> 
-> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 
-We could possibly avoid that serialize for a full task exit unmap. ie, 
-when tlb->fullmm == 1 . But that won't help the Qemu case because it 
-does an umap of the guest ram range for which tlb->fullmm != 1.
+--v2/QI0iRXglpx0hK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
+On Tue, Sep 03, 2019 at 08:16:03PM +1000, Oliver O'Halloran wrote:
+> Detecting an frozen EEH PE usually occurs when an MMIO load returns a 0xF=
+Fs
+> response. When performing EEH testing using the EEH error injection featu=
+re
+> available on some platforms there is no simple way to kick-off the kernel=
+'s
+> recovery process since any accesses from userspace (usually /dev/mem) will
+> bypass the MMIO helpers in the kernel which check if a 0xFF response is d=
+ue
+> to an EEH freeze or not.
+>=20
+> If a device contains a 0xFF byte in it's config space it's possible to
+> trigger the recovery process via config space read from userspace, but th=
+is
+> is not a reliable method. If a driver is bound to the device an in use it
+> will frequently trigger the MMIO check, but this is also inconsistent.
+>=20
+> To solve these problems this patch adds a debugfs file called
+> "eeh_dev_check" which accepts a <domain>:<bus>:<dev>.<fn> string and runs
+> eeh_dev_check_failure() on it. This is the same check that's done when the
+> kernel gets a 0xFF result from an config or MMIO read with the added
+> benifit that it can be reliably triggered from userspace.
+>=20
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+
+Looks good, and I tested it with the next patch and it seems to work.
+
+But I think you should make it clear that this does not work with
+the hardware "EEH error injection" facility accessible via debugfs in
+err_injct (that doesn't seem clear to me from the commit message).
+
+Tested-by: Sam Bobroff <sbobroff@linux.ibm.com>
+Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
 > ---
-> I need more experienced people's help in order to understand if this is
-> really a valid improvement, and if mm_struct is the best place to put such
-> counter.
-> 
-> Thanks!
-> ---
->   arch/powerpc/include/asm/pte-walk.h | 3 +++
->   arch/powerpc/mm/book3s64/pgtable.c  | 2 ++
->   include/linux/mm_types.h            | 1 +
->   3 files changed, 6 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/pte-walk.h b/arch/powerpc/include/asm/pte-walk.h
-> index 33fa5dd8ee6a..3b82cb3bd563 100644
-> --- a/arch/powerpc/include/asm/pte-walk.h
-> +++ b/arch/powerpc/include/asm/pte-walk.h
-> @@ -40,6 +40,8 @@ static inline pte_t *find_current_mm_pte(pgd_t *pgdir, unsigned long ea,
->   {
->   	pte_t *pte;
->   
-> +	atomic64_inc(&current->mm->lockless_ptlookup_count);
+>  arch/powerpc/kernel/eeh.c | 61 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 61 insertions(+)
+>=20
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index 46d17817b438..ace1c5a6b8ed 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1873,6 +1873,64 @@ static const struct file_operations eeh_force_reco=
+ver_fops =3D {
+>  	.llseek	=3D no_llseek,
+>  	.write	=3D eeh_force_recover_write,
+>  };
 > +
->   	VM_WARN(!arch_irqs_disabled(), "%s called with irq enabled\n", __func__);
->   	VM_WARN(pgdir != current->mm->pgd,
->   		"%s lock less page table lookup called on wrong mm\n", __func__);
-> @@ -53,6 +55,7 @@ static inline pte_t *find_current_mm_pte(pgd_t *pgdir, unsigned long ea,
->   	if (hshift)
->   		WARN_ON(*hshift);
->   #endif
-> +	atomic64_dec(&current->mm->lockless_ptlookup_count);
->   	return pte;
->   }
+> +static ssize_t eeh_debugfs_dev_usage(struct file *filp,
+> +				char __user *user_buf,
+> +				size_t count, loff_t *ppos)
+> +{
+> +	static const char usage[] =3D "input format: <domain>:<bus>:<dev>.<fn>\=
+n";
+> +
+> +	return simple_read_from_buffer(user_buf, count, ppos,
+> +				       usage, sizeof(usage) - 1);
+> +}
+> +
+> +static ssize_t eeh_dev_check_write(struct file *filp,
+> +				const char __user *user_buf,
+> +				size_t count, loff_t *ppos)
+> +{
+> +	uint32_t domain, bus, dev, fn;
+> +	struct pci_dev *pdev;
+> +	struct eeh_dev *edev;
+> +	char buf[20];
+> +	int ret;
+> +
+> +	ret =3D simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
+> +	if (!ret)
+> +		return -EFAULT;
+> +
+> +	ret =3D sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
+> +	if (ret !=3D 4) {
+> +		pr_err("%s: expected 4 args, got %d\n", __func__, ret);
+> +		return -EINVAL;
+> +	}
+> +
+> +	pdev =3D pci_get_domain_bus_and_slot(domain, bus, (dev << 3) | fn);
+> +	if (!pdev)
+> +		return -ENODEV;
+> +
+> +	edev =3D pci_dev_to_eeh_dev(pdev);
+> +	if (!edev) {
+> +		pci_err(pdev, "No eeh_dev for this device!\n");
+> +		pci_dev_put(pdev);
+> +		return -ENODEV;
+> +	}
+> +
+> +	ret =3D eeh_dev_check_failure(edev);
+> +	pci_info(pdev, "eeh_dev_check_failure(%04x:%02x:%02x.%01x) =3D %d\n",
+> +			domain, bus, dev, fn, ret);
+> +
+> +	pci_dev_put(pdev);
+> +
+> +	return count;
+> +}
+> +
+> +static const struct file_operations eeh_dev_check_fops =3D {
+> +	.open	=3D simple_open,
+> +	.llseek	=3D no_llseek,
+> +	.write	=3D eeh_dev_check_write,
+> +	.read   =3D eeh_debugfs_dev_usage,
+> +};
+> +
+>  #endif
+> =20
+>  static int __init eeh_init_proc(void)
+> @@ -1888,6 +1946,9 @@ static int __init eeh_init_proc(void)
+>  		debugfs_create_bool("eeh_disable_recovery", 0600,
+>  				powerpc_debugfs_root,
+>  				&eeh_debugfs_no_recover);
+> +		debugfs_create_file_unsafe("eeh_dev_check", 0600,
+> +				powerpc_debugfs_root, NULL,
+> +				&eeh_dev_check_fops);
+>  		debugfs_create_file_unsafe("eeh_force_recover", 0600,
+>  				powerpc_debugfs_root, NULL,
+>  				&eeh_force_recover_fops);
+> --=20
+> 2.21.0
+>=20
 
+--v2/QI0iRXglpx0hK
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-That is not correct. We need to keep the count updated  across the 
-local_irq_disable()/local_irq_enable(). That is we mostly should have a 
-variant like start_lockless_pgtbl_walk()/end_lockless_pgtbl_walk(). Also 
-there is hash_page_mm which we need to make sure we are protected 
-against w.r.t collapse pmd.
+iQEzBAABCgAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAl2AT+kACgkQMX8w6AQl
+/iITwQf+IcRphKrQtsVKIHQJgvfK5XL0zRbnEH+DMGIknARRi3boZ0c5XBmcp0pT
+HhjmRNgfSSaBTI/geGYEb1affM5WfJ8IoIfu2NqWMPmt34bhxJG7q1MYd7tZLvnP
+tCrXL5HkZ7Yd7oDNoXmHImSDLY/VFGb6E5gioobAGgm7fDPLjPQqIJwH5EQCTh4S
+T3LzkdfBi+89t4akHFsd2wJMPRoipx+6r1i0ahyxKVfYlu2xqfQzMyNnSWKLl6Qd
+i3LoYk9YK7n0nYB/ry7stmWqislEyRRWHP6OzJXyQMhgolb48hS4mx3+sSwx5NWC
+SZ4Ty1PwRJoRVQJkSBPr0EMexD6iPQ==
+=lY/H
+-----END PGP SIGNATURE-----
 
->   
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-> index 7d0e0d0d22c4..8f6fc2f80071 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -95,6 +95,8 @@ static void do_nothing(void *unused)
->   void serialize_against_pte_lookup(struct mm_struct *mm)
->   {
->   	smp_mb();
-> +	if (atomic64_read(&mm->lockless_ptlookup_count) == 0)
-> +		return;
->   	smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
->   }
->   
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 6a7a1083b6fb..97fb2545e967 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -518,6 +518,7 @@ struct mm_struct {
->   #endif
->   	} __randomize_layout;
->   
-> +	atomic64_t lockless_ptlookup_count;
->   	/*
->   	 * The mm_cpumask needs to be at the end of mm_struct, because it
->   	 * is dynamically sized based on nr_cpu_ids.
-> 
+--v2/QI0iRXglpx0hK--
 
-Move that to ppc64 specific mm_context_t.
-
-
--aneesh
