@@ -1,59 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936F2B485F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 09:39:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B44B486D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 09:42:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XZkV2ty4zF1cZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:39:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XZnR2WF3zF4Gt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:42:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+c9b8d48512c276be374a+5868+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="P18ypPHa"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XZhF51GFzF48D
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 17:37:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=+JXEYTnqyWlOW1rQWwizFJP/gYoExhOoqC5rCzivGV4=; b=P18ypPHaK51o7JCL7VL5koE7a
- JFRjwpGC6iR37jzkEtviCf3cIFCZ28m1RNUEs787tglr2bfrO94n7GJuXD1o8OyloaWzVtobMKaBk
- Cn5BgcuW6WmL+rig4Zhpnl1P30q0fojJXL7vCeHTqn3oOD9fily+nmIuth1WePCosx/SZ9x3D24zP
- iZPAvt0wyehpkJPCqtufmbiQ1vamNIgcapNDBc+yVXAOXasQvJYkM+512zsvtgKQaowPmwIzlOqC5
- ncemBECdGpjdi2WhEErvC3srT1yvd538WWf+WZk2pFlO0rjKXfaY4i/kPD3Cun6OZCAM7xam7E1PB
- /j0IUzejg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.2 #3 (Red
- Hat Linux)) id 1iA82h-0001Ud-Ec; Tue, 17 Sep 2019 07:36:55 +0000
-Date: Tue, 17 Sep 2019 00:36:55 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Alastair D'Silva <alastair@au1.ibm.com>
-Subject: Re: [PATCH 4/5] ocxl: Add functions to map/unmap LPC memory
-Message-ID: <20190917073655.GA31147@infradead.org>
-References: <20190917014307.30485-1-alastair@au1.ibm.com>
- <20190917014307.30485-5-alastair@au1.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XZl939VhzF49P
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 17:40:05 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8H7bDfD096042; Tue, 17 Sep 2019 03:39:56 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v2stvu75v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 03:39:56 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8H7bJk3096825;
+ Tue, 17 Sep 2019 03:39:55 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v2stvu75b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 03:39:55 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8H7dTdu012830;
+ Tue, 17 Sep 2019 07:39:54 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03dal.us.ibm.com with ESMTP id 2v0svqmjcf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 07:39:54 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8H7drf047513974
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Sep 2019 07:39:53 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3FE0CC6061;
+ Tue, 17 Sep 2019 07:39:53 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A313C6055;
+ Tue, 17 Sep 2019 07:39:51 +0000 (GMT)
+Received: from [9.124.35.113] (unknown [9.124.35.113])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Sep 2019 07:39:51 +0000 (GMT)
+Subject: Re: [PATCH 1/2] libnvdimm/altmap: Track namespace boundaries in altmap
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4g2jAGzQ3fxpZRTV16hoPfyXqzvB7Zny6D5g5JyAQ1Dkw@mail.gmail.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <94cff17c-bdf7-0395-bf5a-e2d72ca61893@linux.ibm.com>
+Date: Tue, 17 Sep 2019 13:09:50 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190917014307.30485-5-alastair@au1.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <CAPcyv4g2jAGzQ3fxpZRTV16hoPfyXqzvB7Zny6D5g5JyAQ1Dkw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-17_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909170084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,21 +93,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, alastair@d-silva.org,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Allison Randal <allison@lohutok.net>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Please submit this together with actual users instead of adding
-dead code to the kernel.  Same for any of the previous bits
-that arent used with our without this.
+On 9/16/19 11:28 PM, Dan Williams wrote:
+> On Mon, Sep 9, 2019 at 11:29 PM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+>>
+>> With PFN_MODE_PMEM namespace, the memmap area is allocated from the device
+>> area. Some architectures map the memmap area with large page size. On
+>> architectures like ppc64, 16MB page for memap mapping can map 262144 pfns.
+>> This maps a namespace size of 16G.
+>>
+>> When populating memmap region with 16MB page from the device area,
+>> make sure the allocated space is not used to map resources outside this
+>> namespace. Such usage of device area will prevent a namespace destroy.
+>>
+>> Add resource end pnf in altmap and use that to check if the memmap area
+>> allocation can map pfn outside the namespace. On ppc64 in such case we fallback
+>> to allocation from memory.
+>>
+>> This fix kernel crash reported below:
+>>
+>> [  132.034989] WARNING: CPU: 13 PID: 13719 at mm/memremap.c:133 devm_memremap_pages_release+0x2d8/0x2e0
+>> [  133.464754] BUG: Unable to handle kernel data access at 0xc00c00010b204000
+>> [  133.464760] Faulting instruction address: 0xc00000000007580c
+>> [  133.464766] Oops: Kernel access of bad area, sig: 11 [#1]
+>> [  133.464771] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+>> .....
+>> [  133.464901] NIP [c00000000007580c] vmemmap_free+0x2ac/0x3d0
+>> [  133.464906] LR [c0000000000757f8] vmemmap_free+0x298/0x3d0
+>> [  133.464910] Call Trace:
+>> [  133.464914] [c000007cbfd0f7b0] [c0000000000757f8] vmemmap_free+0x298/0x3d0 (unreliable)
+>> [  133.464921] [c000007cbfd0f8d0] [c000000000370a44] section_deactivate+0x1a4/0x240
+>> [  133.464928] [c000007cbfd0f980] [c000000000386270] __remove_pages+0x3a0/0x590
+>> [  133.464935] [c000007cbfd0fa50] [c000000000074158] arch_remove_memory+0x88/0x160
+>> [  133.464942] [c000007cbfd0fae0] [c0000000003be8c0] devm_memremap_pages_release+0x150/0x2e0
+>> [  133.464949] [c000007cbfd0fb70] [c000000000738ea0] devm_action_release+0x30/0x50
+>> [  133.464955] [c000007cbfd0fb90] [c00000000073a5a4] release_nodes+0x344/0x400
+>> [  133.464961] [c000007cbfd0fc40] [c00000000073378c] device_release_driver_internal+0x15c/0x250
+>> [  133.464968] [c000007cbfd0fc80] [c00000000072fd14] unbind_store+0x104/0x110
+>> [  133.464973] [c000007cbfd0fcd0] [c00000000072ee24] drv_attr_store+0x44/0x70
+>> [  133.464981] [c000007cbfd0fcf0] [c0000000004a32bc] sysfs_kf_write+0x6c/0xa0
+>> [  133.464987] [c000007cbfd0fd10] [c0000000004a1dfc] kernfs_fop_write+0x17c/0x250
+>> [  133.464993] [c000007cbfd0fd60] [c0000000003c348c] __vfs_write+0x3c/0x70
+>> [  133.464999] [c000007cbfd0fd80] [c0000000003c75d0] vfs_write+0xd0/0x250
+> 
+> Question, does this crash only happen when the namespace is not 16MB
+> aligned? In other words was this bug exposed by the subsection-hotplug
+> changes and should it contain Fixes: tag for those commits?
+> 
+
+We are able to hit this crash even with older kernels. This happens when 
+we have multiple namespaces from the same region of size 26G. In that 
+case we need to make sure we don't end up using altmap from one 
+namespace for mapping vmemmap of the adjacent namespace.
+
+Considering this impacts ppc64 and we got the ppc64 SCM support in 4.20. 
+may be  we can do just
+Cc: <stable@vger.kernel.org> # 4.20+
+
+-aneesh
