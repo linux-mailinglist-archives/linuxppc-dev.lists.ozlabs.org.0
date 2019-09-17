@@ -1,86 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41723B456D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 04:00:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00BAB4589
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 04:36:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XRC65fvCzF3rM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 12:00:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XS1F5fPwzF3rF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 12:36:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+ spf=permerror (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=2a01:111:f400:fe0d::617;
+ helo=eur04-he1-obe.outbound.protection.outlook.com;
+ envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="V9WUgK+I"; 
+ dkim-atps=neutral
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (mail-he1eur04on0617.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe0d::617])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XQwk4g0pzF3lv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 11:47:50 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8H1lQoc076006
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:47:45 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v2p2k83sh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2019 21:47:45 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Tue, 17 Sep 2019 02:47:43 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Sep 2019 02:47:39 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8H1lc2x47055088
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Sep 2019 01:47:38 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 17FD3A405D;
- Tue, 17 Sep 2019 01:47:38 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 72747A4040;
- Tue, 17 Sep 2019 01:47:37 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Sep 2019 01:47:37 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 24C7EA019A;
- Tue, 17 Sep 2019 11:47:36 +1000 (AEST)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: alastair@d-silva.org
-Subject: [PATCH 5/5] ocxl: Provide additional metadata to userspace
-Date: Tue, 17 Sep 2019 11:43:01 +1000
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190917014307.30485-1-alastair@au1.ibm.com>
-References: <20190917014307.30485-1-alastair@au1.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XRxs6gDFzF0VV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 12:33:49 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Y3wiv+Rbv42z0ME2eQARZ4YFAiL7H+H824WqDZ7JcTJWUM8cZUMNeH4cwhQcVI+bmS20VoFzykdrO0+QwigeLv3v4v3vHDIziMAGrfwRA7qT4dqRiaDm2uehFBBzSvxt2WbJKqokk1p7Lhe7qqH3uHZB+mRTQTdSvrfh0dIj6djf+zjcBK+vw6KE76fUT13N2qagJ3W+T/l9RiV53fxSaPdCiW9hkL3Hcc+OOzXkM5BOss/jR7RqMagRFyfMbo0hJ6t+4D9fpCKZ0ks0hB1nq8p8D0N32noZsJkLHC6K3MHFPyt/TbGhmTdQy2LX9M20BRrt++lS1+ZzB+1kg6bZ8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DOgtOYpr1umvjl2CkcJARc0l8vpI6UR+FN/X9w3FiZM=;
+ b=WqoF4ebSr4wQhq3T0/TeV6muQHS7mTx2rN5KrodJDPz3x6vrhdz6rjxYR1aqoyCrZrRv/sbMOiKhoJsVWqMmyVdvYJpQYiEmmzDqJRjQ1kxa9K8xL2MpOr7NLBZ88zbA057JyKf+aLOrbLlJlN8WC2oPlkM3zokrpNi4+Y1FPV8o0DzgSQE5YyjPliZnA2mUO8MS7hMSaT238OB1acrr6i+9MzOfYuIAOvk8kREYuLre0at+hopHreb2v5xufI0eH5JrXg4q2xOV6XGxetunMATQdNmFT1naGYITFEbDzaYwWfCxy3VFhB4YYg40pc+mjqsDM/0lalAPZZX1Gpp/Lg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DOgtOYpr1umvjl2CkcJARc0l8vpI6UR+FN/X9w3FiZM=;
+ b=V9WUgK+Igjln4eUOyCXMAikwUTVZDOoSXaiehb4PNoE9vJbDWLY6mcIh2TYybfyUdpctzbIwrHB1/qcm5UV2y83tU0mvaoKi1FZXHzbPiiVm7WPKhR+BBSh4BPlAvECk3j713B6IaHiVkCqdVcGM6oqOrH/LMMLGOS/txkxErfg=
+Received: from DB8PR04MB6826.eurprd04.prod.outlook.com (52.133.240.82) by
+ DB8PR04MB6412.eurprd04.prod.outlook.com (20.179.249.79) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2263.23; Tue, 17 Sep 2019 02:33:42 +0000
+Received: from DB8PR04MB6826.eurprd04.prod.outlook.com
+ ([fe80::906f:1414:8cb:f7ee]) by DB8PR04MB6826.eurprd04.prod.outlook.com
+ ([fe80::906f:1414:8cb:f7ee%2]) with mapi id 15.20.2263.023; Tue, 17 Sep 2019
+ 02:33:42 +0000
+From: Ran Wang <ran.wang_1@nxp.com>
+To: "Rafael J . Wysocki" <rjw@rjwysocki.net>, Leo Li <leoyang.li@nxp.com>, Rob
+ Herring <robh+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Pavel
+ Machek <pavel@ucw.cz>
+Subject: RE: [PATCH v6 1/3] PM: wakeup: Add routine to help fetch wakeup
+ source object.
+Thread-Topic: [PATCH v6 1/3] PM: wakeup: Add routine to help fetch wakeup
+ source object.
+Thread-Index: AQHVV851gkIX3+N2p0ibde/0v+331KcvUDew
+Date: Tue, 17 Sep 2019 02:33:41 +0000
+Message-ID: <DB8PR04MB682662CA68F9F21F6DB82F72F18F0@DB8PR04MB6826.eurprd04.prod.outlook.com>
+References: <20190821031537.46824-1-ran.wang_1@nxp.com>
+In-Reply-To: <20190821031537.46824-1-ran.wang_1@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ran.wang_1@nxp.com; 
+x-originating-ip: [92.121.36.198]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fd3fffbb-53ef-491f-5b51-08d73b177477
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
+ SRVR:DB8PR04MB6412; 
+x-ms-traffictypediagnostic: DB8PR04MB6412:|DB8PR04MB6412:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB8PR04MB6412E4B10341F14D02F1797CF18F0@DB8PR04MB6412.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5797;
+x-forefront-prvs: 01630974C0
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(136003)(346002)(366004)(396003)(39860400002)(376002)(199004)(189003)(7736002)(476003)(305945005)(66446008)(478600001)(5660300002)(14454004)(33656002)(71190400001)(2906002)(6506007)(52536014)(25786009)(102836004)(256004)(316002)(86362001)(53546011)(4744005)(6116002)(4326008)(3846002)(11346002)(74316002)(7416002)(66476007)(66556008)(64756008)(6436002)(229853002)(6246003)(486006)(66946007)(76116006)(26005)(76176011)(71200400001)(66066001)(110136005)(446003)(54906003)(8676002)(81166006)(81156014)(8936002)(9686003)(7696005)(186003)(99286004)(55016002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:DB8PR04MB6412;
+ H:DB8PR04MB6826.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: ixfzE8EjAN0FHv+fpGonwwcYsmLH7WxyhRUOCgULjZGUOuOla0Z2v1IbciD5onA4bcGawyPKoMYNW1Mq8DjvdZM3GR1somW9+sFtz1OwWp7g4YbPb6a1LD05WnqUESWxA/XgfgTOxyFTIwrkE0lXufQa3js3+oIyKSZQFGAuvu8L+hWP+NmtU4+UR28SCS84vCu/Clak3aYZJT1phnsmZU64pf+NLm/SYkqrsfNyuwuQJtPoEzrIXPGFz75Ldbx8YhW0I1td95FXaPTzIdPbuHzHEsloo6ppD2hmN8kex+2VxrsWOUFdYBcvXuo9Np1wOuV+KynNSWt65VulWbs7QiGJOJ9s2wfVf00EfQ2M+pg32x7rpesUcSO1dNt9/11zBFA1RkiUMuYkKJmU3++rDuOvZonvErDBx4Tqa/kEV/o=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19091701-0020-0000-0000-0000036DE340
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091701-0021-0000-0000-000021C384CF
-Message-Id: <20190917014307.30485-6-alastair@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-16_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=563 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909170019
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd3fffbb-53ef-491f-5b51-08d73b177477
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2019 02:33:42.0150 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: B+dgF9pf7IGN/lJPhY8Te8gtaMYyAajwnRhsd2l0yb4OrCkrhd+LkMPqGxNV7dViTGUL49en7+ndCusU4cYK4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6412
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,155 +110,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+Cc: Biwen Li <biwen.li@nxp.com>, Len Brown <len.brown@intel.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Ran Wang <ran.wang_1@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alastair D'Silva <alastair@d-silva.org>
+Hi Rafael,
 
-This patch exposes the OpenCAPI device serial number to
-userspace.
+On Wednesday, August 21, 2019 11:16, Ran Wang wrote:
+>=20
+> Some user might want to go through all registered wakeup sources and doin=
+g
+> things accordingly. For example, SoC PM driver might need to do HW
+> programming to prevent powering down specific IP which wakeup source
+> depending on. So add this API to help walk through all registered wakeup =
+source
+> objects on that list and return them one by one.
+>=20
+> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+> ---
+> Change in v6:
+> 	- Add wakeup_source_get_star() and wakeup_source_get_stop() to
+> aligned
+> 	with wakeup_sources_stats_seq_start/nex/stop.
 
-It also includes placeholders for the LPC & special purpose
-memory information (which will be populated in a subsequent patch)
-to avoid creating excessive versions of the IOCTL.
+How about this version, could you please give any comment? Thanks.
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- drivers/misc/ocxl/config.c | 46 ++++++++++++++++++++++++++++++++++++++
- drivers/misc/ocxl/file.c   |  3 ++-
- include/misc/ocxl.h        |  1 +
- include/uapi/misc/ocxl.h   |  9 +++++++-
- 4 files changed, 57 insertions(+), 2 deletions(-)
+Regards,
+Ran=20
 
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index fb0c3b6f8312..a9203c309365 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -71,6 +71,51 @@ static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
- 	return 0;
- }
- 
-+/**
-+ * Find a related PCI device (function 0)
-+ * @device: PCI device to match
-+ *
-+ * Returns a pointer to the related device, or null if not found
-+ */
-+static struct pci_dev *get_function_0(struct pci_dev *dev)
-+{
-+	unsigned int devfn = PCI_DEVFN(PCI_SLOT(dev->devfn), 0); // Look for function 0
-+
-+	return pci_get_domain_bus_and_slot(pci_domain_nr(dev->bus),
-+					dev->bus->number, devfn);
-+}
-+
-+static void read_serial(struct pci_dev *dev, struct ocxl_fn_config *fn)
-+{
-+	u32 low, high;
-+	int pos;
-+
-+	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DSN);
-+	if (pos) {
-+		pci_read_config_dword(dev, pos + 0x04, &low);
-+		pci_read_config_dword(dev, pos + 0x08, &high);
-+
-+		fn->serial = low | ((u64)high) << 32;
-+
-+		return;
-+	}
-+
-+	if (PCI_FUNC(dev->devfn) != 0) {
-+		struct pci_dev *related = get_function_0(dev);
-+
-+		if (!related) {
-+			fn->serial = 0;
-+			return;
-+		}
-+
-+		read_serial(related, fn);
-+		pci_dev_put(related);
-+		return;
-+	}
-+
-+	fn->serial = 0;
-+}
-+
- static void read_pasid(struct pci_dev *dev, struct ocxl_fn_config *fn)
- {
- 	u16 val;
-@@ -208,6 +253,7 @@ int ocxl_config_read_function(struct pci_dev *dev, struct ocxl_fn_config *fn)
- 	int rc;
- 
- 	read_pasid(dev, fn);
-+	read_serial(dev, fn);
- 
- 	rc = read_dvsec_tl(dev, fn);
- 	if (rc) {
-diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-index 2870c25da166..08f6f594a11d 100644
---- a/drivers/misc/ocxl/file.c
-+++ b/drivers/misc/ocxl/file.c
-@@ -98,13 +98,14 @@ static long afu_ioctl_get_metadata(struct ocxl_context *ctx,
- 
- 	memset(&arg, 0, sizeof(arg));
- 
--	arg.version = 0;
-+	arg.version = 1;
- 
- 	arg.afu_version_major = ctx->afu->config.version_major;
- 	arg.afu_version_minor = ctx->afu->config.version_minor;
- 	arg.pasid = ctx->pasid;
- 	arg.pp_mmio_size = ctx->afu->config.pp_mmio_stride;
- 	arg.global_mmio_size = ctx->afu->config.global_mmio_size;
-+	arg.serial = ctx->afu->fn->config.serial;
- 
- 	if (copy_to_user(uarg, &arg, sizeof(arg)))
- 		return -EFAULT;
-diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h
-index a1897737908d..da75db149e6c 100644
---- a/include/misc/ocxl.h
-+++ b/include/misc/ocxl.h
-@@ -46,6 +46,7 @@ struct ocxl_fn_config {
- 	int dvsec_afu_info_pos; /* offset of the AFU information DVSEC */
- 	s8 max_pasid_log;
- 	s8 max_afu_index;
-+	u64 serial;
- };
- 
- enum ocxl_endian {
-diff --git a/include/uapi/misc/ocxl.h b/include/uapi/misc/ocxl.h
-index 6d29a60a896a..d4c6bf10580c 100644
---- a/include/uapi/misc/ocxl.h
-+++ b/include/uapi/misc/ocxl.h
-@@ -45,7 +45,14 @@ struct ocxl_ioctl_metadata {
- 
- 	/* End version 0 fields */
- 
--	__u64 reserved[13]; /* Total of 16*u64 */
-+	// Version 1 fields
-+	__u64 lpc_mem_size;
-+	__u64 special_purpose_mem_size;
-+	__u64 serial;		// Device serial number
-+
-+	// End version 1 fields
-+
-+	__u64 reserved[10]; // Total of 16*u64
- };
- 
- struct ocxl_ioctl_p9_wait {
--- 
-2.21.0
+<snip>
 
