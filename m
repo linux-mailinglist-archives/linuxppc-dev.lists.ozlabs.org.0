@@ -2,66 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11635B579F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 23:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1869FB5814
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 00:37:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XxD221M2zF3sZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 07:32:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Xyg825KpzF3fZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 08:37:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
- envelope-from=jannh@google.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=intel.com
+ (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="jUgafeXo"; 
- dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Xx9w2BpWzF3qh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 07:30:53 +1000 (AEST)
-Received: by mail-oi1-x242.google.com with SMTP id k25so4158051oiw.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 14:30:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ESCnXX2tcIZXxoYYdwBnYQ13kyLGDQXAfzDyU1IsljM=;
- b=jUgafeXoQWRROVQcTu6YfyeHgWxQgQnh4jo0vXJb9gmwfB60c9yL42Xud+pRnhazvu
- I55/SWoMFVopXjb7HLBe3ZwDp8YJ8AIZ8yE+MZ1ol1jCwWnIpfYZUGgVJMSnV8dTUt6g
- Fj+f3RqGjAClmuMaYSKTGHkK+kbzWWV2PGu8pnhEDzRe1H1j/2nUdgWnUmqKQJs9XJhD
- bcgWdPhYUHXwS43uDaRjRrlqwvcEMFzpAIgQXR+SQCsx7w3nXgWKc6kAeP7uC4P5GOpV
- geTEa7Nd78q01D+rHdE0lfUUKO0VvNzXAoY9/ESlMRu9nFZIkRllJNqARaqGkFjsJcK8
- RCrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ESCnXX2tcIZXxoYYdwBnYQ13kyLGDQXAfzDyU1IsljM=;
- b=LAC3vy9JGaxKHPs/ULsFvPHS+GDflQy8Pb4wiNPBzTMg8XERhSckyux80I43MbJ0Vl
- IakqG1q5Edxjt9zaAA0yi2OeKhax6YMw2zCs0xdplFlCbJjjXPrDtPME+WvTB5DskAtI
- K9hRasNi2Vw6y25OwJjWkQAUh6OKqodJIioqWCwep4r83QXjmkassd//efOgdb/aj0nR
- nVRn7lNGpeS2qBVPh+ZWvmoB8k1qA81k9Fwz9aFvHuCsQ8KIKN+5mwpLA6ojqXNO78Zq
- laTlbOCX6/AsTbA+N5UGsBjzoj3UGs8OyLZVnKErh4FTbFCBrVq0Ox8D4bE02gVK0TnS
- 0VPA==
-X-Gm-Message-State: APjAAAWwZB5IuGFEoPc06neSCq3coaDugInubcvdEKb1xHly6yk8QmRO
- eeSYXmN7/tpAHF1hhOcudT8oEuCK+gn4f155cglNGQ==
-X-Google-Smtp-Source: APXvYqwxm+0NJ68SJt1aKiZMUXpTcHLshnMGNY9q+/BgS9qyQqvS1IrxODCZyEWbmarv3+IaDknKyiL8F7FGSmCNufY=
-X-Received: by 2002:aca:ed52:: with SMTP id l79mr129659oih.47.1568755849487;
- Tue, 17 Sep 2019 14:30:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XydM02fhzF1kn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 08:36:21 +1000 (AEST)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2019 15:36:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,518,1559545200"; 
+ d="gz'50?scan'50,208,50";a="191533770"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by orsmga006.jf.intel.com with ESMTP; 17 Sep 2019 15:36:16 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1iAM52-000AH7-3f; Wed, 18 Sep 2019 06:36:16 +0800
+Date: Wed, 18 Sep 2019 06:36:13 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH 1/2] powerpc/irq: bring back ksp_limit management in C
+ functions.
+Message-ID: <201909180600.orPJmOD8%lkp@intel.com>
+References: <512ec59433470a2dfb0d1168e0c660b843fe92d5.1568751807.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-6-cyphar@cyphar.com>
-In-Reply-To: <20190904201933.10736-6-cyphar@cyphar.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 17 Sep 2019 23:30:23 +0200
-Message-ID: <CAG48ez1_64249RdX6Nj_32YS+jhuXZBAd_ZL9ozggbSQy+cc-A@mail.gmail.com>
-Subject: Re: [PATCH v12 05/12] namei: obey trailing magic-link DAC permissions
-To: Aleksa Sarai <cyphar@cyphar.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/mixed; boundary="ce2mztgf5ijlvwdd"
+Content-Disposition: inline
+In-Reply-To: <512ec59433470a2dfb0d1168e0c660b843fe92d5.1568751807.git.christophe.leroy@c-s.fr>
+X-Patchwork-Hint: ignore
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,240 +58,267 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- kernel list <linux-kernel@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Linux Containers <containers@lists.linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ kbuild-all@01.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 4, 2019 at 10:21 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
-> The ability for userspace to "re-open" file descriptors through
-> /proc/self/fd has been a very useful tool for all sorts of usecases
-> (container runtimes are one common example). However, the current
-> interface for doing this has resulted in some pretty subtle security
-> holes. Userspace can re-open a file descriptor with more permissions
-> than the original, which can result in cases such as /proc/$pid/exe
-> being re-opened O_RDWR at a later date even though (by definition)
-> /proc/$pid/exe cannot be opened for writing. When combined with O_PATH
-> the results can get even more confusing.
-[...]
-> Instead we have to restrict it in such a way that it doesn't break
-> (good) users but does block potential attackers. The solution applied in
-> this patch is to restrict *re-opening* (not resolution through)
-> magic-links by requiring that mode of the link be obeyed. Normal
-> symlinks have modes of a+rwx but magic-links have other modes. These
-> magic-link modes were historically ignored during path resolution, but
-> they've now been re-purposed for more useful ends.
 
-Thanks for dealing with this issue!
+--ce2mztgf5ijlvwdd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-[...]
-> diff --git a/fs/namei.c b/fs/namei.c
-> index 209c51a5226c..54d57dad0f91 100644
-> --- a/fs/namei.c
-> +++ b/fs/namei.c
-> @@ -872,7 +872,7 @@ void nd_jump_link(struct path *path)
->
->         nd->path = *path;
->         nd->inode = nd->path.dentry->d_inode;
-> -       nd->flags |= LOOKUP_JUMPED;
-> +       nd->flags |= LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
->  }
-[...]
-> +static int trailing_magiclink(struct nameidata *nd, int acc_mode,
-> +                             fmode_t *opath_mask)
-> +{
-> +       struct inode *inode = nd->link_inode;
-> +       fmode_t upgrade_mask = 0;
-> +
-> +       /* Was the trailing_symlink() a magic-link? */
-> +       if (!(nd->flags & LOOKUP_MAGICLINK_JUMPED))
-> +               return 0;
-> +
-> +       /*
-> +        * Figure out the upgrade-mask of the link_inode. Since these aren't
-> +        * strictly POSIX semantics we don't do an acl_permission_check() here,
-> +        * so we only care that at least one bit is set for each upgrade-mode.
-> +        */
-> +       if (inode->i_mode & S_IRUGO)
-> +               upgrade_mask |= FMODE_PATH_READ;
-> +       if (inode->i_mode & S_IWUGO)
-> +               upgrade_mask |= FMODE_PATH_WRITE;
-> +       /* Restrict the O_PATH upgrade-mask of the caller. */
-> +       if (opath_mask)
-> +               *opath_mask &= upgrade_mask;
-> +       return may_open_magiclink(upgrade_mask, acc_mode);
->  }
+Hi Christophe,
 
-This looks racy because entries in the file descriptor table can be
-switched out as long as task->files->file_lock isn't held. Unless I'm
-missing something, something like the following (untested) would
-bypass this restriction:
+Thank you for the patch! Yet something to improve:
 
-int readonly_fd = ...; /* some read-only fd we want to reopen as writable */
-int writable_fd = open("/dev/null", O_RDWR);
-int flippy_fd = dup(writable_fd);
-char flippy_fd_path[100];
-sprintf(flippy_fd_path, "/proc/%d/fd/%d", getpid(), flippy_fd);
-if (fork() == 0) {
-  while (1) {
-    int reopened_fd = open(flippy_fd_path, O_RDWR);
-    if (reopened_fd == -1) continue;
-    char reopened_fd_path[100];
-    sprintf(reopened_fd_path, "/proc/self/fd/%d", reopened_fd);
-    char reopened_fd_target[1000];
-    int target_len = readlink(reopened_fd_path, reopened_fd_target,
-sizeof(reopened_fd_target)-1);
-    reopened_fd_target[target_len] = 0;
-    if (strcmp(reopened_fd_target, "/dev/null"))
-      printf("managed to reopen as writable\n");
-    close(reopened_fd);
-  }
-} else {
-  while (1) {
-    dup2(readonly_fd, flippy_fd);
-    dup2(writable_fd, flippy_fd);
-  }
-}
+[auto build test ERROR on linus/master]
+[cannot apply to v5.3 next-20190916]
+[if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
 
-Perhaps you could change nd_jump_link() to "void nd_jump_link(struct
-path *path, umode_t link_mode)", and let proc_pid_get_link() pass the
-link_mode through from an out-argument of .proc_get_link()? Then
-proc_fd_link() could grab the proper mode in a race-free manner. And
-nd_jump_link() could stash the mode in the nameidata.
+url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-irq-bring-back-ksp_limit-management-in-C-functions/20190918-042716
+config: powerpc-iss476-smp_defconfig (attached as .config)
+compiler: powerpc-linux-gcc (GCC) 7.4.0
+reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # save the attached .config to linux build tree
+        GCC_VERSION=7.4.0 make.cross ARCH=powerpc 
 
-A sketch of how I imagine that:
-===============================
-diff --git a/fs/namei.c b/fs/namei.c
-index 6b936038319b..14c6790203c7 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -506,6 +506,7 @@ struct nameidata {
-        struct inode    *link_inode;
-        unsigned        root_seq;
-        int             dfd;
-+       umode_t         last_link_mode;
- } __randomize_layout;
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
 
- static void set_nameidata(struct nameidata *p, int dfd, struct filename *name)
-@@ -890,7 +891,7 @@ static int nd_jump_root(struct nameidata *nd)
-  * Helper to directly jump to a known parsed path from ->get_link,
-  * caller must have taken a reference to path beforehand.
-  */
--void nd_jump_link(struct path *path)
-+void nd_jump_link(struct path *path, umode_t link_mode)
- {
-        struct nameidata *nd = current->nameidata;
-        path_put(&nd->path);
-@@ -898,6 +899,7 @@ void nd_jump_link(struct path *path)
-        nd->path = *path;
-        nd->inode = nd->path.dentry->d_inode;
-        nd->flags |= LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
-+       nd->last_link_mode = link_mode;
- }
+All errors (new ones prefixed by >>):
 
- static inline void put_link(struct nameidata *nd)
-@@ -3654,9 +3656,9 @@ static int trailing_magiclink(struct nameidata
-*nd, int acc_mode,
-         * strictly POSIX semantics we don't do an acl_permission_check() here,
-         * so we only care that at least one bit is set for each upgrade-mode.
-         */
--       if (inode->i_mode & S_IRUGO)
-+       if (nd->last_link_mode & S_IRUGO)
-                upgrade_mask |= FMODE_PATH_READ;
--       if (inode->i_mode & S_IWUGO)
-+       if (nd->last_link_mode & S_IWUGO)
-                upgrade_mask |= FMODE_PATH_WRITE;
-        /* Restrict the O_PATH upgrade-mask of the caller. */
-        if (opath_mask)
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 297242174402..af0218447571 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -1614,6 +1614,7 @@ static const char *proc_pid_get_link(struct
-dentry *dentry,
- {
-        struct path path;
-        int error = -EACCES;
-+       umode_t link_mode;
+   In file included from arch/powerpc/include/asm/prom.h:15:0,
+                    from arch/powerpc/sysdev/dcr.c:11:
+   arch/powerpc/include/asm/irq.h: In function 'get_ksp_limit':
+>> arch/powerpc/include/asm/irq.h:70:12: error: dereferencing pointer to incomplete type 'struct task_struct'
+     return tsk->thread.ksp_limit;
+               ^~
 
-        if (!dentry)
-                return ERR_PTR(-ECHILD);
-@@ -1622,11 +1623,11 @@ static const char *proc_pid_get_link(struct
-dentry *dentry,
-        if (!proc_fd_access_allowed(inode))
-                goto out;
+vim +70 arch/powerpc/include/asm/irq.h
 
--       error = PROC_I(inode)->op.proc_get_link(dentry, &path);
-+       error = PROC_I(inode)->op.proc_get_link(dentry, &path, &link_mode);
-        if (error)
-                goto out;
+    66	
+    67	#ifdef CONFIG_PPC32
+    68	static inline unsigned long get_ksp_limit(struct task_struct *tsk)
+    69	{
+  > 70		return tsk->thread.ksp_limit;
+    71	}
+    72	
 
--       nd_jump_link(&path);
-+       nd_jump_link(&path, link_mode);
-        return NULL;
- out:
-        return ERR_PTR(error);
-diff --git a/fs/proc/fd.c b/fs/proc/fd.c
-index 9b7d8becb002..9c1d247177b1 100644
---- a/fs/proc/fd.c
-+++ b/fs/proc/fd.c
-@@ -163,7 +163,8 @@ static const struct dentry_operations
-tid_fd_dentry_operations = {
-        .d_delete       = pid_delete_dentry,
- };
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
--static int proc_fd_link(struct dentry *dentry, struct path *path)
-+static int proc_fd_link(struct dentry *dentry, struct path *path,
-+                       umode_t *link_mode)
- {
-        struct files_struct *files = NULL;
-        struct task_struct *task;
-@@ -184,6 +185,7 @@ static int proc_fd_link(struct dentry *dentry,
-struct path *path)
-                if (fd_file) {
-                        *path = fd_file->f_path;
-                        path_get(&fd_file->f_path);
-+                       *link_mode = /* something based on fd_file->f_mode */;
-                        ret = 0;
-                }
-                spin_unlock(&files->file_lock);
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index cd0c8d5ce9a1..a090fff984ed 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -74,7 +74,7 @@ extern struct kmem_cache *proc_dir_entry_cache;
- void pde_free(struct proc_dir_entry *pde);
+--ce2mztgf5ijlvwdd
+Content-Type: application/gzip
+Content-Disposition: attachment; filename=".config.gz"
+Content-Transfer-Encoding: base64
 
- union proc_op {
--       int (*proc_get_link)(struct dentry *, struct path *);
-+       int (*proc_get_link)(struct dentry *, struct path *, umode_t *);
-        int (*proc_show)(struct seq_file *m,
-                struct pid_namespace *ns, struct pid *pid,
-                struct task_struct *task);
-===============================
+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
+rg0ftKBs7CPM9JEX5qf/BypTVx2dpgAA
+
+--ce2mztgf5ijlvwdd--
