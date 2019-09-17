@@ -1,89 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD47B4797
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 08:37:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDABB4830
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 09:22:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46XYLz4cwFzF441
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 16:37:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XZLN5X7dzF47y
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:22:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46XYJV3mnHzF3rx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 16:35:21 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8H6Xn3r125843
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 02:35:17 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v2rxytk89-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 02:35:17 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Tue, 17 Sep 2019 07:35:15 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 17 Sep 2019 07:35:10 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8H6ZAUH48103650
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Sep 2019 06:35:10 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1E6FAE055;
- Tue, 17 Sep 2019 06:35:09 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48D79AE045;
- Tue, 17 Sep 2019 06:35:09 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 17 Sep 2019 06:35:09 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46XZJG4QgXzF408
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 17:20:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="Je08zzCn"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46XZJG3mSDz8xKq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 17:20:14 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46XZJG3ZxDz9sNx; Tue, 17 Sep 2019 17:20:14 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="Je08zzCn"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id CE93DA019A;
- Tue, 17 Sep 2019 16:35:04 +1000 (AEST)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: "Alastair D'Silva" <alastair@au1.ibm.com>
-Date: Tue, 17 Sep 2019 16:35:04 +1000
-In-Reply-To: <20190917014307.30485-6-alastair@au1.ibm.com>
-References: <20190917014307.30485-1-alastair@au1.ibm.com>
- <20190917014307.30485-6-alastair@au1.ibm.com>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ by ozlabs.org (Postfix) with ESMTPS id 46XZJF6pY6z9sNF
+ for <linuxppc-dev@ozlabs.org>; Tue, 17 Sep 2019 17:20:12 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id u17so1505840pgi.6
+ for <linuxppc-dev@ozlabs.org>; Tue, 17 Sep 2019 00:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=1b+U1Nzm9O0QA4glqcmO/uZ3v1M7siGCSMhNnLK7FJs=;
+ b=Je08zzCnm0q36re4AEp6Lm98FBHaGD/6HQc6Lz3CHLTLdlE7ZRQNwFu706iBexv5Se
+ SpoUWWulP3fy8ggO2a+Xi+laO5ygySjsu3oIqFibNbnR7fyOwFX/iXa5BvbfSwODOsA3
+ 2etUXUaTCkZIIih5GG80xwxdF5vbesZDj7sKs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=1b+U1Nzm9O0QA4glqcmO/uZ3v1M7siGCSMhNnLK7FJs=;
+ b=STL7pTX5P0mO1IFdRCsd3pYdvB/5cB5LWO5KkiFF9BkPaz31zJBMzj6BTnwbXD0M+e
+ G4yrR3FQcrN8tjvyAmTrpqJIA0YplAcCjjWLoNxSKd0TcURqCBa6ZPDiNywB01TE1awy
+ bvLFq+tfleR5AiJZM1ECeku5yjRcj6LZUVSbOG9qcO0IbanDr9Ia/ZLnn6x8znGaxD6k
+ 5CJFUuC7vOO7l2ILdrcYmKClQAuHY+RDPzPzI431xyIaDdR4ouLMQ/YjR7APnDwwxOgJ
+ YX1furGQWjOFW5vvnn4rBni5XVYMjFYt2xH9qgZc81K9gaWoDZ2EblXRWg8oYTmAOwXV
+ KaMQ==
+X-Gm-Message-State: APjAAAWSNprTp05IjpOp4qjTifZainjNBLL9wUK10pVdNWwwwN+kywcN
+ ozpGxyooG/cHeNQeCedlMsfDWQ==
+X-Google-Smtp-Source: APXvYqy4kjiS5gpcI18fBUp34VEwJV58XddHH7tBOwgSkIm6SPQlr/wW6um4nq2Q5IUwAWuNNG+3ug==
+X-Received: by 2002:a63:67c6:: with SMTP id b189mr1994224pgc.163.1568704808022; 
+ Tue, 17 Sep 2019 00:20:08 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id b5sm1230415pgb.68.2019.09.17.00.20.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Sep 2019 00:20:07 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
+ kernel-hardening@lists.openwall.com, Matthew Garrett <mjg59@google.com>
+Subject: Re: [PATCH v7 0/2] Restrict xmon when kernel is locked down
+In-Reply-To: <20190907061124.1947-1-cmr@informatik.wtf>
+References: <20190907061124.1947-1-cmr@informatik.wtf>
+Date: Tue, 17 Sep 2019 17:20:03 +1000
+Message-ID: <87y2yngzj0.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19091706-0012-0000-0000-0000034D01C2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091706-0013-0000-0000-000021877A4D
-Message-Id: <832772dd7c22e100bfa81f77993f6cda5e40bfc4.camel@au1.ibm.com>
-Subject: Re:  [PATCH 5/5] ocxl: Provide additional metadata to userspace
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-17_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=778 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909170071
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,174 +92,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-09-17 at 11:43 +1000, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> This patch exposes the OpenCAPI device serial number to
-> userspace.
-> 
-> It also includes placeholders for the LPC & special purpose
-> memory information (which will be populated in a subsequent patch)
-> to avoid creating excessive versions of the IOCTL.
-> 
+Hi,
 
-I think it makes more sense to fold in the population of LPC & special
-purpose memory into this patch, I'll address this in the next spin.
+So Matthew Garrett and I talked about this at Linux Plumbers. Matthew,
+if I understood correctly, your concern was that this doesn't sit well
+with the existing threat model for lockdown. As I understand it, the
+idea is that if you're able to get access to the physical console,
+you're already able to get around most restictions by just dropping into
+the BIOS/UEFI configuration, disabling secure boot and booting something
+of your choice. xmon, being a Linux feature that only operates on the
+physical console, therefore falls outside the threat model for lockdown.
 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
->  drivers/misc/ocxl/config.c | 46
-> ++++++++++++++++++++++++++++++++++++++
->  drivers/misc/ocxl/file.c   |  3 ++-
->  include/misc/ocxl.h        |  1 +
->  include/uapi/misc/ocxl.h   |  9 +++++++-
->  4 files changed, 57 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-> index fb0c3b6f8312..a9203c309365 100644
-> --- a/drivers/misc/ocxl/config.c
-> +++ b/drivers/misc/ocxl/config.c
-> @@ -71,6 +71,51 @@ static int find_dvsec_afu_ctrl(struct pci_dev
-> *dev, u8 afu_idx)
->  	return 0;
->  }
->  
-> +/**
-> + * Find a related PCI device (function 0)
-> + * @device: PCI device to match
-> + *
-> + * Returns a pointer to the related device, or null if not found
-> + */
-> +static struct pci_dev *get_function_0(struct pci_dev *dev)
-> +{
-> +	unsigned int devfn = PCI_DEVFN(PCI_SLOT(dev->devfn), 0); //
-> Look for function 0
-> +
-> +	return pci_get_domain_bus_and_slot(pci_domain_nr(dev->bus),
-> +					dev->bus->number, devfn);
-> +}
-> +
-> +static void read_serial(struct pci_dev *dev, struct ocxl_fn_config
-> *fn)
-> +{
-> +	u32 low, high;
-> +	int pos;
-> +
-> +	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DSN);
-> +	if (pos) {
-> +		pci_read_config_dword(dev, pos + 0x04, &low);
-> +		pci_read_config_dword(dev, pos + 0x08, &high);
-> +
-> +		fn->serial = low | ((u64)high) << 32;
-> +
-> +		return;
-> +	}
-> +
-> +	if (PCI_FUNC(dev->devfn) != 0) {
-> +		struct pci_dev *related = get_function_0(dev);
-> +
-> +		if (!related) {
-> +			fn->serial = 0;
-> +			return;
-> +		}
-> +
-> +		read_serial(related, fn);
-> +		pci_dev_put(related);
-> +		return;
-> +	}
-> +
-> +	fn->serial = 0;
-> +}
-> +
->  static void read_pasid(struct pci_dev *dev, struct ocxl_fn_config
-> *fn)
->  {
->  	u16 val;
-> @@ -208,6 +253,7 @@ int ocxl_config_read_function(struct pci_dev
-> *dev, struct ocxl_fn_config *fn)
->  	int rc;
->  
->  	read_pasid(dev, fn);
-> +	read_serial(dev, fn);
->  
->  	rc = read_dvsec_tl(dev, fn);
->  	if (rc) {
-> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-> index 2870c25da166..08f6f594a11d 100644
-> --- a/drivers/misc/ocxl/file.c
-> +++ b/drivers/misc/ocxl/file.c
-> @@ -98,13 +98,14 @@ static long afu_ioctl_get_metadata(struct
-> ocxl_context *ctx,
->  
->  	memset(&arg, 0, sizeof(arg));
->  
-> -	arg.version = 0;
-> +	arg.version = 1;
->  
->  	arg.afu_version_major = ctx->afu->config.version_major;
->  	arg.afu_version_minor = ctx->afu->config.version_minor;
->  	arg.pasid = ctx->pasid;
->  	arg.pp_mmio_size = ctx->afu->config.pp_mmio_stride;
->  	arg.global_mmio_size = ctx->afu->config.global_mmio_size;
-> +	arg.serial = ctx->afu->fn->config.serial;
->  
->  	if (copy_to_user(uarg, &arg, sizeof(arg)))
->  		return -EFAULT;
-> diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h
-> index a1897737908d..da75db149e6c 100644
-> --- a/include/misc/ocxl.h
-> +++ b/include/misc/ocxl.h
-> @@ -46,6 +46,7 @@ struct ocxl_fn_config {
->  	int dvsec_afu_info_pos; /* offset of the AFU information DVSEC
-> */
->  	s8 max_pasid_log;
->  	s8 max_afu_index;
-> +	u64 serial;
->  };
->  
->  enum ocxl_endian {
-> diff --git a/include/uapi/misc/ocxl.h b/include/uapi/misc/ocxl.h
-> index 6d29a60a896a..d4c6bf10580c 100644
-> --- a/include/uapi/misc/ocxl.h
-> +++ b/include/uapi/misc/ocxl.h
-> @@ -45,7 +45,14 @@ struct ocxl_ioctl_metadata {
->  
->  	/* End version 0 fields */
->  
-> -	__u64 reserved[13]; /* Total of 16*u64 */
-> +	// Version 1 fields
-> +	__u64 lpc_mem_size;
-> +	__u64 special_purpose_mem_size;
-> +	__u64 serial;		// Device serial number
-> +
-> +	// End version 1 fields
-> +
-> +	__u64 reserved[10]; // Total of 16*u64
->  };
->  
->  struct ocxl_ioctl_p9_wait {
+I've had a few chats with powerpc people about this, and I think our
+consensus is that the boundaries of our threat model are slightly
+different. Power machines are almost all server-class*, and therefore the
+console is almost always accessed over IPMI or the BMC. As such, we
+don't consider console access to be the same as physical access but
+instead consider it a form of, or akin to, remote access.
+
+This makes more sense on bare-metal powerpc than it does on x86: we
+don't have a boot-time configuration system that's accessible on the
+console, so you can't get around secure boot or any other lockdown
+restrictions that way.
+
+It's also consistent across our future plans: our planned assertion of
+physical presence for authorising unsigned keys for secureboot involves
+pressing a physical button on the case at a particular point in the boot
+sequence, rather than typing in something at the console.
+
+So I think that given that this doesn't disrupt anything else in
+lockdown or affect any other platforms, it's worth taking.
+
+Kind regards,
+Daniel
+
+* yes, there are 32-bit and even some 64-bit embedded systems still. But
+  I don't think that should preclude xmon going in to lockdown: the
+  existence of powerpc boxes where the physical console may be trusted
+  doesn't mean that this is true of all the powerpc systems.
+
+
+> Xmon should be either fully or partially disabled depending on the
+> kernel lockdown state.
+>
+> Put xmon into read-only mode for lockdown=integrity and completely
+> disable xmon when lockdown=confidentiality. Since this can occur
+> dynamically, there may be pre-existing, active breakpoints in xmon when
+> transitioning into read-only mode. These breakpoints will still trigger,
+> so allow them to be listed and cleared using xmon.
+>
+> Changes since v6:
+>  - Add lockdown check in sysrq-trigger to prevent entry into xmon_core
+>  - Add lockdown check during init xmon setup for the case when booting
+>    with compile-time or cmdline lockdown=confidentialiaty
+>
+> Changes since v5:
+>  - Do not spam print messages when attempting to enter xmon when
+>    lockdown=confidentiality
+>
+> Changes since v4:
+>  - Move lockdown state checks into xmon_core
+>  - Allow clearing of breakpoints in xmon read-only mode
+>  - Test simple scenarios (combinations of xmon and lockdown cmdline
+>    options, setting breakpoints and changing lockdown state, etc) in
+>    QEMU and on an actual POWER8 VM
+>  - Rebase onto security/next-lockdown
+>    b602614a81078bf29c82b2671bb96a63488f68d6
+>
+> Changes since v3:
+>  - Allow active breakpoints to be shown/listed in read-only mode
+>
+> Changes since v2:
+>  - Rebased onto v36 of https://patchwork.kernel.org/cover/11049461/
+>    (based on: f632a8170a6b667ee4e3f552087588f0fe13c4bb)
+>  - Do not clear existing breakpoints when transitioning from
+>    lockdown=none to lockdown=integrity
+>  - Remove line continuation and dangling quote (confuses checkpatch.pl)
+>    from the xmon command help/usage string
+>
+> Christopher M. Riedl (2):
+>   powerpc/xmon: Allow listing and clearing breakpoints in read-only mode
+>   powerpc/xmon: Restrict when kernel is locked down
+>
+>  arch/powerpc/xmon/xmon.c     | 119 +++++++++++++++++++++++++++--------
+>  include/linux/security.h     |   2 +
+>  security/lockdown/lockdown.c |   2 +
+>  3 files changed, 97 insertions(+), 26 deletions(-)
+>
 > -- 
-> 2.21.0
-
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
-
+> 2.23.0
