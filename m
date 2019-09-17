@@ -2,65 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF54B5184
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 17:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC323B52CF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2019 18:19:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Xn8f4x66zF1lQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 01:29:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46XpGp2tytzF3vf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 02:19:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="rVxhWBqZ"; 
- dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Xn143yWDzF44R
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 01:22:47 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id g16so4847028qto.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2019 08:22:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id;
- bh=DdZlDwcFPhh8rvrDyAJz9Ugy4zGsw4IHuoR+wrsMaI4=;
- b=rVxhWBqZUXptSOUuNLwzM1QF914j9olYHZoIkK/w1mFyYdP8/hKVApoXbjxJzVEEMe
- bYigUq5wm7A8aUIEVwR3V3QgtfN4RiurGYNjghCz390nLgTPjYyUifJ5E3X9KrpnB5MH
- tusprRofm5unPUiBnSNB9gTWJo88OM+vsG4YjaBHC2hl1sRf1gC5YUmtMGnCRjXywtJF
- bVfmr8nfc55ak855MGlSC7regqhjFilJcxINM9Gd/MpmZSKm1i/tUa40zPrL8DyjV2Sc
- /fCKpLyVWb2+Kyoy9675rc1Kdfu/TkG1bjOcU0DUrxErpMV0Hpn0QH8kszCnRqKHk86U
- m2jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=DdZlDwcFPhh8rvrDyAJz9Ugy4zGsw4IHuoR+wrsMaI4=;
- b=NWKeNvG2MnpkNDkTgYsHIpGn7Ja/2WgOmm/8XsUCJhYWFESjGsGi8A3mLjvwUPh2+T
- ctSK68aIn6+5sAWNTfZAKmCrhE5YjfnwdymE7qwTAgvPI5S4y4Vtx1rwMhOuSZ2pUwqc
- WeDDJnAtLnKMK/qxfeiRLuKuwa1M7e6PU+n1XEsuRFEwdi6FPNLWOukm5/YGuIRNI3C0
- PrUCsR5/iaHzsf0+jboSys2W4gJgcldTPiL8Q8YEIzv/kxRNSfybRX//SzS6NHFE4ibG
- dsy6sxc5gf44wpyJa+mw7wyCKH2+eTefOBcAZYPLCEeKmJZuPPgVOzHjU3cFryb2UgpX
- Buig==
-X-Gm-Message-State: APjAAAUjkLo2RmEQvTLmBcVNLz4OqEExCVN+29fSg3pVx5Q6roljncsi
- 84SCzB1yZ2bPkcTCzh3IO/Fksg==
-X-Google-Smtp-Source: APXvYqxgmEOqbhOFoKOE8dOOPpUk78ORIvn/Vj2ugt6BXuvvexABhWqWrEVBLAGoUFHtZBDZIjDSCw==
-X-Received: by 2002:ac8:70d7:: with SMTP id g23mr4315285qtp.78.1568733763286; 
- Tue, 17 Sep 2019 08:22:43 -0700 (PDT)
-Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id b16sm1697306qtk.65.2019.09.17.08.22.41
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 17 Sep 2019 08:22:42 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/pkeys: remove unused pkey_allows_readwrite
-Date: Tue, 17 Sep 2019 11:22:30 -0400
-Message-Id: <1568733750-14580-1-git-send-email-cai@lca.pw>
-X-Mailer: git-send-email 1.8.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Xp7H5vmmzDqvP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 02:13:15 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8HGCJC3064345; Tue, 17 Sep 2019 12:13:03 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v327r9n33-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 12:13:02 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8HGCK2k064389;
+ Tue, 17 Sep 2019 12:13:02 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v327r9n2g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 12:13:02 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8HGAZsW013676;
+ Tue, 17 Sep 2019 16:13:01 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04wdc.us.ibm.com with ESMTP id 2v0t9asvr6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 16:13:01 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8HGCx3p45154578
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Sep 2019 16:12:59 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 978C2136072;
+ Tue, 17 Sep 2019 16:12:59 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D0D513606E;
+ Tue, 17 Sep 2019 16:12:57 +0000 (GMT)
+Received: from [9.199.41.201] (unknown [9.199.41.201])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Sep 2019 16:12:56 +0000 (GMT)
+Subject: Re: [PATCH v2 0/2] powerpc/mm: Conditionally call H_BLOCK_REMOVE
+To: Laurent Dufour <ldufour@linux.ibm.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20190916095543.17496-1-ldufour@linux.ibm.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <1ba1bfc7-66c2-5298-2ef2-4117cb72ee13@linux.ibm.com>
+Date: Tue, 17 Sep 2019 21:42:55 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190916095543.17496-1-ldufour@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-17_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909170154
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,46 +95,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pkey_allows_readwrite() was first introduced in the commit 5586cf61e108
-("powerpc: introduce execute-only pkey"), but the usage was removed
-entirely in the commit a4fcc877d4e1 ("powerpc/pkeys: Preallocate
-execute-only key").
+On 9/16/19 3:25 PM, Laurent Dufour wrote:
+> Since the commit ba2dd8a26baa ("powerpc/pseries/mm: call H_BLOCK_REMOVE"),
+> the call to H_BLOCK_REMOVE is always done if the feature is exhibited.
+> 
+> However, the hypervisor may not support all the block size for the hcall
+> H_BLOCK_REMOVE depending on the segment base page size and actual page
+> size.
+> 
+> When unsupported block size is used, the hcall H_BLOCK_REMOVE is returning
+> H_PARAM, which is triggering a BUG_ON check leading to a panic like this:
+> 
+> The PAPR document specifies the TLB Block Invalidate Characteristics which
+> tells for each couple segment base page size, actual page size, the size of
+> the block the hcall H_BLOCK_REMOVE is supporting.
+> 
+> Supporting various block sizes doesn't seem needed at that time since all
+> systems I was able to play with was supporting an 8 addresses block size,
+> which is the maximum through the hcall, or none at all. Supporting various
+> size would complexify the algorithm in call_block_remove() so unless this
+> is required, this is not done.
+> 
+> In the case of block size different from 8, a warning message is displayed
+> at boot time and that block size will be ignored checking for the
+> H_BLOCK_REMOVE support.
+> 
+> Due to the minimal amount of hardware showing a limited set of
+> H_BLOCK_REMOVE supported page size, I don't think there is a need to push
+> this series to the stable mailing list.
+> 
+> The first patch is reading the characteristic through the hcall
+> ibm,get-system-parameter and record the supported block size for each page
+> size.  The second patch is changing the check used to detect the
+> H_BLOCK_REMOVE availability to take care of the base page size and page
+> size couple.
+> 
+> Changes since V1:
+> 
+>   - Remove penc initialisation, this is already done in
+>     mmu_psize_set_default_penc()
+>   - Add details on the TLB Block Invalidate Characteristics's buffer format
+>   - Introduce #define instead of using direct numerical values
+>   - Function reading the characteristics is now directly called from
+>     pSeries_setup_arch()
+>   - The characteristics are now stored in a dedciated table static to lpar.c
+> 
 
-Found by the "-Wunused-function" compiler warning flag.
+you can use
 
-Fixes: a4fcc877d4e1 ("powerpc/pkeys: Preallocate execute-only key")
-Signed-off-by: Qian Cai <cai@lca.pw>
----
- arch/powerpc/mm/book3s64/pkeys.c | 10 ----------
- 1 file changed, 10 deletions(-)
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index ae7fca40e5b3..59e0ebbd8036 100644
---- a/arch/powerpc/mm/book3s64/pkeys.c
-+++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -307,16 +307,6 @@ void thread_pkey_regs_init(struct thread_struct *thread)
- 	write_iamr(pkey_iamr_mask);
- }
- 
--static inline bool pkey_allows_readwrite(int pkey)
--{
--	int pkey_shift = pkeyshift(pkey);
--
--	if (!is_pkey_enabled(pkey))
--		return true;
--
--	return !(read_amr() & ((AMR_RD_BIT|AMR_WR_BIT) << pkey_shift));
--}
--
- int __execute_only_pkey(struct mm_struct *mm)
- {
- 	return mm->context.execute_only_pkey;
--- 
-1.8.3.1
+for the series.
 
+-aneesh
