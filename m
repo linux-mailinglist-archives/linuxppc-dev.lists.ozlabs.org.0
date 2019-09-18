@@ -2,46 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54205B5AA5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 07:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A0BB5ABB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 07:16:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Y7HP0PjwzF4BJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 15:06:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Y7WC4YLLzF4GZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 15:16:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46Y7Dq0Pq3zF2Dd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 15:04:08 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7351F1000;
- Tue, 17 Sep 2019 22:04:05 -0700 (PDT)
-Received: from [10.162.40.136] (p8cg001049571a15.blr.arm.com [10.162.40.136])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- B280D3F575; Tue, 17 Sep 2019 22:03:54 -0700 (PDT)
-Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
-References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
- <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
- <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
- <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
- <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <f872e6f4-a5cb-069d-2034-78961930cb9f@arm.com>
-Date: Wed, 18 Sep 2019 10:34:09 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Y7SS42YFzF1fj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 15:14:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="gGLtIr9n"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46Y7SS0Mhrz9sN1;
+ Wed, 18 Sep 2019 15:14:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1568783656;
+ bh=0GX6a3OL2WvaYkMnFPk+VVZdxjAwGOt5xOGNqhn4mlQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=gGLtIr9nMwI9YwoMEUeLtp7f5u71ki3KIy8TL5NYP54WpXnmpJQ5XiaouuzzOXa4t
+ y103kXhg1KJCX399Zpi/Vt4JkeEn3Rfh+HMhivk2Ex3wcmFfClJwRdyCys1zUY411N
+ wAyzDTMB7P2cX1foXv/a6r/auuiPGVUsMRUzYFfNwml1PaBhg/LUTpBjpy7uyl+atr
+ sVvxhaELb5tp4r4hMIk5ci8T9OejZyG2EgtocNbQxlbPQYJhxy9rCA1sgSziBC7bHp
+ /ad3ZHvPnv7gnK+lYJ3JJQ5+r/IsbWmY2Uiv6VaYcNR8K56KaqEz4Nc4sNx2ahRMKd
+ /M3/ud+sEd4JQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH 0/2] pseries/hotplug: Change the default behaviour of
+ cede_offline
+In-Reply-To: <1568284541-15169-1-git-send-email-ego@linux.vnet.ibm.com>
+References: <1568284541-15169-1-git-send-email-ego@linux.vnet.ibm.com>
+Date: Wed, 18 Sep 2019 15:14:15 +1000
+Message-ID: <87r24ew5i0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,231 +59,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-arm-kernel@lists.infradead.org,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Kamalesh Babulal <kamaleshb@in.ibm.com>, linux-kernel@vger.kernel.org,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+"Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
+> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+>
+> Currently on Pseries Linux Guests, the offlined CPU can be put to one
+> of the following two states:
+>    - Long term processor cede (also called extended cede)
+>    - Returned to the Hypervisor via RTAS "stop-self" call.
+>
+> This is controlled by the kernel boot parameter "cede_offline=on/off".
+>
+> By default the offlined CPUs enter extended cede.
+
+Since commit 3aa565f53c39 ("powerpc/pseries: Add hooks to put the CPU into an appropriate offline state") (Nov 2009)
+
+Which you wrote :)
+
+Why was that wrong?
+
+> The PHYP hypervisor considers CPUs in extended cede to be "active"
+> since the CPUs are still under the control fo the Linux Guests. Hence, when we change the
+> SMT modes by offlining the secondary CPUs, the PURR and the RWMR SPRs
+> will continue to count the values for offlined CPUs in extended cede
+> as if they are online.
+>
+> One of the expectations with PURR is that the for an interval of time,
+> the sum of the PURR increments across the online CPUs of a core should
+> equal the number of timebase ticks for that interval.
+>
+> This is currently not the case.
+
+But why does that matter? It's just some accounting stuff, does it
+actually break something meaningful?
+
+Also what does this do to the latency of CPU online/offline.
+And what does this do on KVM?
 
 
-On 09/13/2019 03:31 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 13/09/2019 à 11:02, Anshuman Khandual a écrit :
->>
->>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
->>>
->>> #ifdefs have to be avoided as much as possible, see below
->>
->> Yeah but it has been bit difficult to avoid all these $ifdef because of the
->> availability (or lack of it) for all these pgtable helpers in various config
->> combinations on all platforms.
-> 
-> As far as I can see these pgtable helpers should exist everywhere at least via asm-generic/ files.
+> In the following data (Generated using
+> https://github.com/gautshen/misc/blob/master/purr_tb.py):
+>
+>
+> delta tb = tb ticks elapsed in 1 second.
+> delta purr = sum of PURR increments on online CPUs of that core in 1
+>        	     second
+>       
+> SMT=off
+> ===========================================
+> Core        	delta tb(apprx)  delta purr	
+> ===========================================
+> core00 [  0]	512000000	69883784	
+> core01 [  8]	512000000	88782536	
+> core02 [ 16]	512000000	94296824	
+> core03 [ 24]	512000000	80951968	
 
-But they might not actually do the right thing.
+Showing the expected value in another column would make this much
+clearer.
 
-> 
-> Can you spot a particular config which fails ?
+cheers
 
-Lets consider the following example (after removing the $ifdefs around it)
-which though builds successfully but fails to pass the intended test. This
-is with arm64 config 4K pages sizes with 39 bits VA space which ends up
-with a 3 level page table arrangement.
 
-static void __init p4d_clear_tests(p4d_t *p4dp)
-{
-        p4d_t p4d = READ_ONCE(*p4dp);
-
-        p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
-        WRITE_ONCE(*p4dp, p4d);
-        p4d_clear(p4dp);
-        p4d = READ_ONCE(*p4dp);
-        WARN_ON(!p4d_none(p4d));
-}
-
-The following test hits an error at WARN_ON(!p4d_none(p4d))
-
-[   16.757333] ------------[ cut here ]------------
-[   16.758019] WARNING: CPU: 11 PID: 1 at mm/arch_pgtable_test.c:187 arch_pgtable_tests_init+0x24c/0x474
-[   16.759455] Modules linked in:
-[   16.759952] CPU: 11 PID: 1 Comm: swapper/0 Not tainted 5.3.0-next-20190916-00005-g61c218153bb8-dirty #222
-[   16.761449] Hardware name: linux,dummy-virt (DT)
-[   16.762185] pstate: 00400005 (nzcv daif +PAN -UAO)
-[   16.762964] pc : arch_pgtable_tests_init+0x24c/0x474
-[   16.763750] lr : arch_pgtable_tests_init+0x174/0x474
-[   16.764534] sp : ffffffc011d7bd50
-[   16.765065] x29: ffffffc011d7bd50 x28: ffffffff1756bac0 
-[   16.765908] x27: ffffff85ddaf3000 x26: 00000000000002e8 
-[   16.766767] x25: ffffffc0111ce000 x24: ffffff85ddaf32e8 
-[   16.767606] x23: ffffff85ddaef278 x22: 00000045cc844000 
-[   16.768445] x21: 000000065daef003 x20: ffffffff17540000 
-[   16.769283] x19: ffffff85ddb60000 x18: 0000000000000014 
-[   16.770122] x17: 00000000980426bb x16: 00000000698594c6 
-[   16.770976] x15: 0000000066e25a88 x14: 0000000000000000 
-[   16.771813] x13: ffffffff17540000 x12: 000000000000000a 
-[   16.772651] x11: ffffff85fcfd0a40 x10: 0000000000000001 
-[   16.773488] x9 : 0000000000000008 x8 : ffffffc01143ab26 
-[   16.774336] x7 : 0000000000000000 x6 : 0000000000000000 
-[   16.775180] x5 : 0000000000000000 x4 : 0000000000000000 
-[   16.776018] x3 : ffffffff1756bbe8 x2 : 000000065daeb003 
-[   16.776856] x1 : 000000000065daeb x0 : fffffffffffff000 
-[   16.777693] Call trace:
-[   16.778092]  arch_pgtable_tests_init+0x24c/0x474
-[   16.778843]  do_one_initcall+0x74/0x1b0
-[   16.779458]  kernel_init_freeable+0x1cc/0x290
-[   16.780151]  kernel_init+0x10/0x100
-[   16.780710]  ret_from_fork+0x10/0x18
-[   16.781282] ---[ end trace 042e6c40c0a3b038 ]---
-
-On arm64 (4K page size|39 bits VA|3 level page table)
-
-#elif CONFIG_PGTABLE_LEVELS == 3	/* Applicable here */
-#define __ARCH_USE_5LEVEL_HACK
-#include <asm-generic/pgtable-nopud.h>
-
-Which pulls in 
-
-#include <asm-generic/pgtable-nop4d-hack.h>
-
-which pulls in
-
-#include <asm-generic/5level-fixup.h>
-
-which defines
-
-static inline int p4d_none(p4d_t p4d)
-{
-        return 0;
-}
-
-which will invariably trigger WARN_ON(!p4d_none(p4d)).
-
-Similarly for next test p4d_populate_tests() which will always be
-successful because p4d_bad() invariably returns negative.
-
-static inline int p4d_bad(p4d_t p4d)
-{
-        return 0;
-}
-
-static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
-                                      pud_t *pudp)
-{
-        p4d_t p4d;
-
-        /*
-         * This entry points to next level page table page.
-         * Hence this must not qualify as p4d_bad().
-         */
-        pud_clear(pudp);
-        p4d_clear(p4dp);
-        p4d_populate(mm, p4dp, pudp);
-        p4d = READ_ONCE(*p4dp);
-        WARN_ON(p4d_bad(p4d));
-}
-
-We should not run these tests for the above config because they are
-not applicable and will invariably produce same result.
-
-> 
->>
->>>
-> 
-> [...]
-> 
->>>> +#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
->>>
->>> The same can be done here.
->>
->> IIRC not only the page table helpers but there are data types (pxx_t) which
->> were not present on various configs and these wrappers help prevent build
->> failures. Any ways will try and see if this can be improved further. But
->> meanwhile if you have some suggestions, please do let me know.
-> 
-> pgt_t and pmd_t are everywhere I guess.
-> then pud_t and p4d_t have fallbacks in asm-generic files.
-
-Lets take another example where it fails to compile. On arm64 with 16K
-page size, 48 bits VA, 4 level page table arrangement in the following
-test, pgd_populate() does not have the required signature.
-
-static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
-{
-        pgd_t pgd;
-
-        if (mm_p4d_folded(mm))
-                return;
-
-       /*
-         * This entry points to next level page table page.
-         * Hence this must not qualify as pgd_bad().
-         */
-        p4d_clear(p4dp);
-        pgd_clear(pgdp);
-        pgd_populate(mm, pgdp, p4dp);
-        pgd = READ_ONCE(*pgdp);
-        WARN_ON(pgd_bad(pgd));
-}
-
-mm/arch_pgtable_test.c: In function ‘pgd_populate_tests’:
-mm/arch_pgtable_test.c:254:25: error: passing argument 3 of ‘pgd_populate’ from incompatible pointer type [-Werror=incompatible-pointer-types]
-  pgd_populate(mm, pgdp, p4dp);
-                         ^~~~
-In file included from mm/arch_pgtable_test.c:27:0:
-./arch/arm64/include/asm/pgalloc.h:81:20: note: expected ‘pud_t * {aka struct <anonymous> *}’ but argument is of type ‘pgd_t * {aka struct <anonymous> *}’
- static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, pud_t *pudp)
-
-The build failure is because p4d_t * maps to pgd_t * but the applicable
-(it does not fallback on generic ones) pgd_populate() expects a pud_t *.
-
-Except for archs which have 5 level page able, pgd_populate() always accepts
-lower level page table pointers as the last argument as they dont have that
-many levels.
-
-arch/x86/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
-arch/s390/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
-
-But others
-
-arch/arm64/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, pud_t *pudp)
-arch/m68k/include/asm/motorola_pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pmd_t *pmd)
-arch/mips/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pud_t *pud)
-arch/powerpc/include/asm/book3s/64/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pud_t *pud)
-
-I remember going through all these combinations before arriving at the
-current state of #ifdef exclusions. Probably, to solved this all platforms
-have to define pxx_populate() helpers assuming they support 5 level page
-table.
-
-> 
-> So it shouldn't be an issue. Maybe if a couple of arches miss them, the best would be to fix the arches, since that's the purpose of your testsuite isn't it ?
-
-The run time failures as explained previously is because of the folding which
-needs to be protected as they are not even applicable. The compile time
-failures are because pxx_populate() signatures are platform specific depending
-on how many page table levels they really support.
+> SMT=2
+> ===========================================
+> Core            delta tb(apprx)  delta purr	
+> ===========================================
+> core00 [  0,1]	512000000	136147792	
+> core01 [  8,9]	512000000	128636784	
+> core02 [ 16,17]	512000000	135426488	
+> core03 [ 24,25]	512000000	153027520	
+>
+> SMT=4
+> ===================================================
+> Core                   	delta tb(apprx)  delta purr	
+> ===================================================
+> core00 [  0,1,2,3]	512000000	258331616	
+> core01 [  8,9,10,11]	512000000	274220072	
+> core02 [ 16,17,18,19]	512000000	260013736	
+> core03 [ 24,25,26,27]	512000000	260079672	
+>
+> SMT=on
+> ===================================================================
+> Core                                   	delta tb(apprx)  delta purr	
+> ===================================================================
+> core00 [  0,1,2,3,4,5,6,7]		512000000	512941248	
+> core01 [  8,9,10,11,12,13,14,15]	512000000	512936544	
+> core02 [ 16,17,18,19,20,21,22,23]	512000000	512931544	
+> core03 [ 24,25,26,27,28,29,30,31]	512000000	512923800
+>
+> This patchset addresses this issue by ensuring that by default, the
+> offlined CPUs are returned to the Hypervisor via RTAS "stop-self" call
+> by changing the default value of "cede_offline_enabled" to false.
+>
+> The patchset also defines a new sysfs attribute
+> "/sys/device/system/cpu/cede_offline_enabled" on PSeries Linux guests
+> to allow userspace programs to change the state into which the
+> offlined CPU need to be put to at runtime. This is intended for
+> userspace programs that fold CPUs for the purpose of saving energy
+> when the utilization is low. Setting the value of this attribute
+> ensures that subsequent CPU offline operations will put the offlined
+> CPUs to extended cede. However, it will cause inconsistencies in the
+> PURR accounting. Clearing the attribute will make the offlined CPUs
+> call the RTAS "stop-self" call thereby returning the CPU to the
+> hypervisor.
+>
+> With the patches,
+>
+> SMT=off
+> ===========================================
+> Core        	delta tb(apprx)	 delta purr	
+> ===========================================
+> core00 [  0]	512000000	 512527568	
+> core01 [  8]	512000000	 512556128	
+> core02 [ 16]	512000000	 512590016	
+> core03 [ 24]	512000000	 512589440	
+>
+> SMT=2
+> ===========================================
+> Core            delta tb(apprx)	 delta purr	
+> ===========================================
+> core00 [  0,1]	512000000	512635328
+> core01 [  8,9]	512000000	512610416	
+> core02 [ 16,17]	512000000	512639360	
+> core03 [ 24,25]	512000000	512638720	
+>
+> SMT=4
+> ===================================================
+> Core                    delta tb(apprx)  delta purr	
+> ===================================================
+> core00 [  0,1,2,3]	512000000	512757328	
+> core01 [  8,9,10,11]	512000000	512727920	
+> core02 [ 16,17,18,19]	512000000	512754712	
+> core03 [ 24,25,26,27]	512000000	512739040	
+>
+> SMT=on
+> ==============================================================
+> Core                               delta tb(apprx)  delta purr	
+> ==============================================================
+> core00 [  0,1,2,3,4,5,6,7]	   512000000	   512920936	
+> core01 [  8,9,10,11,12,13,14,15]   512000000	   512878728	
+> core02 [ 16,17,18,19,20,21,22,23]  512000000	   512921192	
+> core03 [ 24,25,26,27,28,29,30,31]  512000000	   512924816	
+>
+> Gautham R. Shenoy (2):
+>   pseries/hotplug-cpu: Change default behaviour of cede_offline to "off"
+>   pseries/hotplug-cpu: Add sysfs attribute for cede_offline
+>
+>  Documentation/ABI/testing/sysfs-devices-system-cpu | 14 ++++
+>  Documentation/core-api/cpu_hotplug.rst             |  2 +-
+>  arch/powerpc/platforms/pseries/hotplug-cpu.c       | 80 ++++++++++++++++++++--
+>  3 files changed, 88 insertions(+), 8 deletions(-)
+>
+> -- 
+> 1.9.4
