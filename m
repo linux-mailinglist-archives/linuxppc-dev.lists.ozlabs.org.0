@@ -1,74 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C84B6754
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 17:44:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1F2B6774
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 17:48:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46YPRT5sDkzF2ZP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 01:44:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46YPXc64jFzF320
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 01:48:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=80.241.60.212; helo=mx1.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="nSSdgw+6"; 
- dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx1.mailbox.org (mx1.mailbox.org [80.241.60.212])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46YPNy0HvXzF38w
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 01:42:09 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id u184so8533069qkd.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 08:42:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=MxoYLfyiBUzPhqlCM4w4PwBwFKu/jtqQR2cCGb9YBT4=;
- b=nSSdgw+6FYaaStUyX2sA8rUkMZXoeQQ1Bhj98GeF7Gz7fo9nVGjBG+6KdBsfdcv5RB
- A34NyTjV5lYd/E//bk1eHCio4Y9+zd6V8vjqmhVzMVJgvx+ByAf2yrCUZtwkU8cOZgXO
- aMU83MmPolqXpB6/osYDW0cz5mf0aYSufpWrYJmFXoPR9+ZRrRozpVBP94KeBGHhpu20
- WN0SVFkgwuSDTkpCTSVtl3ieYTtGqEDj+JZHhWqnMrlilD7DCh1zsb5vtBGzIL/Vjr8H
- C17TB7sqDGFLObwXy71/6DeZR9PMN1q3y/MX/0MsB919oVmtLH6WRPbyq2ZWD9zCDc2D
- Spaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=MxoYLfyiBUzPhqlCM4w4PwBwFKu/jtqQR2cCGb9YBT4=;
- b=gCjszEFGXFg8skny6M+v7Iu/wck3fBCoEq3r7LLvcoMkbkTigNMPf7J6j6m4d0WZdY
- cJCB2YXCz9H6wYu3upt3gejCUVhONscKM2JfBqoSs+SBLGSmvKbQkj4SitRIgd6FyIrL
- XCt5dLTgmfgxw8F0YkjdnFhOU9eYlbSLqAjxurT8mrNdLu/exZTcvmpERc4YVeStnXO4
- GU+1+Uqli+me9cu1/P7izWnZCBXLLKedrCzmimJlSfVvN0zQdWccbRk283Tvj5QJq5J0
- cHROQHmHS9frRYLFyXXz7UftNrhdovdnRKDyuVdkDYR7C9UAYywnICIFDTW7HRw6s2WH
- 8H3w==
-X-Gm-Message-State: APjAAAXvUA1nqGBrJ1Rbn5BwrstJWj4I/JUD5QNLblj+DmYaWTBA6FlA
- wce1eurA7qAXJ5Frjb2NLpRWaw==
-X-Google-Smtp-Source: APXvYqwRPQBIvBID8wxxk+kHKEOudHk1TuWjSNq51em4yTV73znC4lOPaseqqlTF0JNOe7fXWkP9Tw==
-X-Received: by 2002:a37:67c6:: with SMTP id b189mr4597177qkc.472.1568821326580; 
- Wed, 18 Sep 2019 08:42:06 -0700 (PDT)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
- [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id n65sm2937218qkb.19.2019.09.18.08.42.05
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 18 Sep 2019 08:42:05 -0700 (PDT)
-Message-ID: <1568821324.5576.174.camel@lca.pw>
-Subject: Re: [PATCH v4] powerpc/setup_64: fix -Wempty-body warnings
-From: Qian Cai <cai@lca.pw>
-To: mpe@ellerman.id.au
-Date: Wed, 18 Sep 2019 11:42:04 -0400
-In-Reply-To: <1563215552-8166-1-git-send-email-cai@lca.pw>
-References: <1563215552-8166-1-git-send-email-cai@lca.pw>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46YPV92RyczF4dX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 01:46:36 +1000 (AEST)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx1.mailbox.org (Postfix) with ESMTPS id A4F6050D4B;
+ Wed, 18 Sep 2019 17:46:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de
+ [80.241.56.125]) (amavisd-new, port 10030)
+ with ESMTP id ZgCJrYNr5TyO; Wed, 18 Sep 2019 17:46:22 +0200 (CEST)
+Date: Wed, 18 Sep 2019 17:46:15 +0200
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v12 05/12] namei: obey trailing magic-link DAC permissions
+Message-ID: <20190918154615.suruy5v5xjftfwyl@yavin.microfocus.com>
+References: <20190904201933.10736-1-cyphar@cyphar.com>
+ <20190904201933.10736-6-cyphar@cyphar.com>
+ <CAG48ez1_64249RdX6Nj_32YS+jhuXZBAd_ZL9ozggbSQy+cc-A@mail.gmail.com>
+ <20190918135100.sdxdmdluq6wlwryv@yavin.microfocus.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="blplt4ksioniygek"
+Content-Disposition: inline
+In-Reply-To: <20190918135100.sdxdmdluq6wlwryv@yavin.microfocus.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,177 +55,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, paulus@samba.org, tyreld@linux.vnet.ibm.com,
- joe@perches.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>,
+ kernel list <linux-kernel@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Linux Containers <containers@lists.linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael, ping in case that you might forget this one forever as well.
 
-On Mon, 2019-07-15 at 14:32 -0400, Qian Cai wrote:
-> At the beginning of setup_64.c, it has,
-> 
->   #ifdef DEBUG
->   #define DBG(fmt...) udbg_printf(fmt)
->   #else
->   #define DBG(fmt...)
->   #endif
-> 
-> where DBG() could be compiled away, and generate warnings,
-> 
-> arch/powerpc/kernel/setup_64.c: In function 'initialize_cache_info':
-> arch/powerpc/kernel/setup_64.c:579:49: warning: suggest braces around
-> empty body in an 'if' statement [-Wempty-body]
->     DBG("Argh, can't find dcache properties !\n");
->                                                  ^
-> arch/powerpc/kernel/setup_64.c:582:49: warning: suggest braces around
-> empty body in an 'if' statement [-Wempty-body]
->     DBG("Argh, can't find icache properties !\n");
-> 
-> Fix it by using the suggestions from Michael:
-> 
-> "Neither of those sites should use DBG(), that's not really early boot
-> code, they should just use pr_warn().
-> 
-> And the other uses of DBG() in initialize_cache_info() should just be
-> removed.
-> 
-> In smp_release_cpus() the entry/exit DBG's should just be removed, and
-> the spinning_secondaries line should just be pr_debug().
-> 
-> That would just leave the two calls in early_setup(). If we taught
-> udbg_printf() to return early when udbg_putc is NULL, then we could just
-> call udbg_printf() unconditionally and get rid of the DBG macro
-> entirely."
-> 
-> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
-> 
-> v4: Use the suggestions from Michael and __func__ per checkpatch.
-> v3: Use no_printk() macro, and make sure that format and argument are always
->     verified by the compiler using a more generic form ##__VA_ARGS__ per Joe.
-> v2: Fix it by using a NOP while loop per Tyrel.
-> 
->  arch/powerpc/kernel/setup_64.c | 26 ++++++--------------------
->  arch/powerpc/kernel/udbg.c     | 14 ++++++++------
->  2 files changed, 14 insertions(+), 26 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-> index 44b4c432a273..d2af4c228970 100644
-> --- a/arch/powerpc/kernel/setup_64.c
-> +++ b/arch/powerpc/kernel/setup_64.c
-> @@ -68,12 +68,6 @@
->  
->  #include "setup.h"
->  
-> -#ifdef DEBUG
-> -#define DBG(fmt...) udbg_printf(fmt)
-> -#else
-> -#define DBG(fmt...)
-> -#endif
-> -
->  int spinning_secondaries;
->  u64 ppc64_pft_size;
->  
-> @@ -305,7 +299,7 @@ void __init early_setup(unsigned long dt_ptr)
->  	/* Enable early debugging if any specified (see udbg.h) */
->  	udbg_early_init();
->  
-> - 	DBG(" -> early_setup(), dt_ptr: 0x%lx\n", dt_ptr);
-> +	udbg_printf(" -> %s(), dt_ptr: 0x%lx\n", __func__, dt_ptr);
->  
->  	/*
->  	 * Do early initialization using the flattened device
-> @@ -362,11 +356,11 @@ void __init early_setup(unsigned long dt_ptr)
->  	 */
->  	this_cpu_enable_ftrace();
->  
-> -	DBG(" <- early_setup()\n");
-> +	udbg_printf(" <- %s()\n", __func__);
->  
->  #ifdef CONFIG_PPC_EARLY_DEBUG_BOOTX
->  	/*
-> -	 * This needs to be done *last* (after the above DBG() even)
-> +	 * This needs to be done *last* (after the above udbg_printf() even)
->  	 *
->  	 * Right after we return from this function, we turn on the MMU
->  	 * which means the real-mode access trick that btext does will
-> @@ -436,8 +430,6 @@ void smp_release_cpus(void)
->  	if (!use_spinloop())
->  		return;
->  
-> -	DBG(" -> smp_release_cpus()\n");
-> -
->  	/* All secondary cpus are spinning on a common spinloop, release them
->  	 * all now so they can start to spin on their individual paca
->  	 * spinloops. For non SMP kernels, the secondary cpus never get out
-> @@ -456,9 +448,7 @@ void smp_release_cpus(void)
->  			break;
->  		udelay(1);
->  	}
-> -	DBG("spinning_secondaries = %d\n", spinning_secondaries);
-> -
-> -	DBG(" <- smp_release_cpus()\n");
-> +	pr_debug("spinning_secondaries = %d\n", spinning_secondaries);
->  }
->  #endif /* CONFIG_SMP || CONFIG_KEXEC_CORE */
->  
-> @@ -551,8 +541,6 @@ void __init initialize_cache_info(void)
->  	struct device_node *cpu = NULL, *l2, *l3 = NULL;
->  	u32 pvr;
->  
-> -	DBG(" -> initialize_cache_info()\n");
-> -
->  	/*
->  	 * All shipping POWER8 machines have a firmware bug that
->  	 * puts incorrect information in the device-tree. This will
-> @@ -576,10 +564,10 @@ void __init initialize_cache_info(void)
->  	 */
->  	if (cpu) {
->  		if (!parse_cache_info(cpu, false, &ppc64_caches.l1d))
-> -			DBG("Argh, can't find dcache properties !\n");
-> +			pr_warn("Argh, can't find dcache properties !\n");
->  
->  		if (!parse_cache_info(cpu, true, &ppc64_caches.l1i))
-> -			DBG("Argh, can't find icache properties !\n");
-> +			pr_warn("Argh, can't find icache properties !\n");
->  
->  		/*
->  		 * Try to find the L2 and L3 if any. Assume they are
-> @@ -604,8 +592,6 @@ void __init initialize_cache_info(void)
->  
->  	cur_cpu_spec->dcache_bsize = dcache_bsize;
->  	cur_cpu_spec->icache_bsize = icache_bsize;
-> -
-> -	DBG(" <- initialize_cache_info()\n");
->  }
->  
->  /*
-> diff --git a/arch/powerpc/kernel/udbg.c b/arch/powerpc/kernel/udbg.c
-> index a384e7c8b01c..01595e8cafe7 100644
-> --- a/arch/powerpc/kernel/udbg.c
-> +++ b/arch/powerpc/kernel/udbg.c
-> @@ -120,13 +120,15 @@ int udbg_write(const char *s, int n)
->  #define UDBG_BUFSIZE 256
->  void udbg_printf(const char *fmt, ...)
->  {
-> -	char buf[UDBG_BUFSIZE];
-> -	va_list args;
-> +	if (udbg_putc) {
-> +		char buf[UDBG_BUFSIZE];
-> +		va_list args;
->  
-> -	va_start(args, fmt);
-> -	vsnprintf(buf, UDBG_BUFSIZE, fmt, args);
-> -	udbg_puts(buf);
-> -	va_end(args);
-> +		va_start(args, fmt);
-> +		vsnprintf(buf, UDBG_BUFSIZE, fmt, args);
-> +		udbg_puts(buf);
-> +		va_end(args);
-> +	}
->  }
->  
->  void __init udbg_progress(char *s, unsigned short hex)
+--blplt4ksioniygek
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 2019-09-18, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> On 2019-09-17, Jann Horn <jannh@google.com> wrote:
+> > On Wed, Sep 4, 2019 at 10:21 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+> > > The ability for userspace to "re-open" file descriptors through
+> > > /proc/self/fd has been a very useful tool for all sorts of usecases
+> > > (container runtimes are one common example). However, the current
+> > > interface for doing this has resulted in some pretty subtle security
+> > > holes. Userspace can re-open a file descriptor with more permissions
+> > > than the original, which can result in cases such as /proc/$pid/exe
+> > > being re-opened O_RDWR at a later date even though (by definition)
+> > > /proc/$pid/exe cannot be opened for writing. When combined with O_PATH
+> > > the results can get even more confusing.
+> > [...]
+> > > Instead we have to restrict it in such a way that it doesn't break
+> > > (good) users but does block potential attackers. The solution applied=
+ in
+> > > this patch is to restrict *re-opening* (not resolution through)
+> > > magic-links by requiring that mode of the link be obeyed. Normal
+> > > symlinks have modes of a+rwx but magic-links have other modes. These
+> > > magic-link modes were historically ignored during path resolution, but
+> > > they've now been re-purposed for more useful ends.
+> >=20
+> > Thanks for dealing with this issue!
+> >=20
+> > [...]
+> > > diff --git a/fs/namei.c b/fs/namei.c
+> > > index 209c51a5226c..54d57dad0f91 100644
+> > > --- a/fs/namei.c
+> > > +++ b/fs/namei.c
+> > > @@ -872,7 +872,7 @@ void nd_jump_link(struct path *path)
+> > >
+> > >         nd->path =3D *path;
+> > >         nd->inode =3D nd->path.dentry->d_inode;
+> > > -       nd->flags |=3D LOOKUP_JUMPED;
+> > > +       nd->flags |=3D LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
+> > >  }
+> > [...]
+> > > +static int trailing_magiclink(struct nameidata *nd, int acc_mode,
+> > > +                             fmode_t *opath_mask)
+> > > +{
+> > > +       struct inode *inode =3D nd->link_inode;
+> > > +       fmode_t upgrade_mask =3D 0;
+> > > +
+> > > +       /* Was the trailing_symlink() a magic-link? */
+> > > +       if (!(nd->flags & LOOKUP_MAGICLINK_JUMPED))
+> > > +               return 0;
+> > > +
+> > > +       /*
+> > > +        * Figure out the upgrade-mask of the link_inode. Since these=
+ aren't
+> > > +        * strictly POSIX semantics we don't do an acl_permission_che=
+ck() here,
+> > > +        * so we only care that at least one bit is set for each upgr=
+ade-mode.
+> > > +        */
+> > > +       if (inode->i_mode & S_IRUGO)
+> > > +               upgrade_mask |=3D FMODE_PATH_READ;
+> > > +       if (inode->i_mode & S_IWUGO)
+> > > +               upgrade_mask |=3D FMODE_PATH_WRITE;
+> > > +       /* Restrict the O_PATH upgrade-mask of the caller. */
+> > > +       if (opath_mask)
+> > > +               *opath_mask &=3D upgrade_mask;
+> > > +       return may_open_magiclink(upgrade_mask, acc_mode);
+> > >  }
+> >=20
+> > This looks racy because entries in the file descriptor table can be
+> > switched out as long as task->files->file_lock isn't held. Unless I'm
+> > missing something, something like the following (untested) would
+> > bypass this restriction:
+>=20
+> You're absolutely right -- good catch!
+>=20
+> > Perhaps you could change nd_jump_link() to "void nd_jump_link(struct
+> > path *path, umode_t link_mode)", and let proc_pid_get_link() pass the
+> > link_mode through from an out-argument of .proc_get_link()? Then
+> > proc_fd_link() could grab the proper mode in a race-free manner. And
+> > nd_jump_link() could stash the mode in the nameidata.
+>=20
+> This indeed does appear to be the simplest solution -- I'm currently
+> testing a variation of the patch you proposed (with a few extra bits to
+> deal with nd_jump_link and proc_get_link being used elsewhere).
+>=20
+> I'll include this change (assuming it fixes the flaw you found) in the
+> v13 series I'll send around next week. Thanks, Jann!
+
+In case you're interested -- I've also included a selftest based on this
+attack in my series (though it uses CLONE_FILES so that we could also
+test O_EMPTYPATH, which wasn't affected because it didn't go through
+procfs and thus couldn't hit the "outdated inode->i_mode" problem).
+
+The attack script succeeds around 20% of the time on the original
+patchset, and with the updated patchset it doesn't succeed in several
+hundred thousand attempts (which I've repeated a few times).
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--blplt4ksioniygek
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXYJRRAAKCRCdlLljIbnQ
+Ep3WAP0cvG8YTD9aS1zuiIbFfMQLKt1nuxBciHwn7LaCHk9Z0QEAtNdPaxztVO/p
+utsBd24Q6vZYzx6vj8OnW5nGpjaLpQA=
+=rL8c
+-----END PGP SIGNATURE-----
+
+--blplt4ksioniygek--
