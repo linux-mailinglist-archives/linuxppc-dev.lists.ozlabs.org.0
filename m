@@ -2,45 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613A4B6859
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 18:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97F4B68BB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 19:11:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46YQjW0Jg8zF3Q9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 02:41:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46YRMj3ftbzF4jS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 03:11:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46YQgF1qHZzF3K1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 02:39:36 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x8IGdKX3020595;
- Wed, 18 Sep 2019 11:39:20 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x8IGdJjs020591;
- Wed, 18 Sep 2019 11:39:19 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 18 Sep 2019 11:39:19 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v3 2/2] powerpc/irq: inline call_do_irq() and
- call_do_softirq()
-Message-ID: <20190918163919.GH9749@gate.crashing.org>
-References: <d0b002c96cfc069a1bc7bafcac28defe5d7d3643.1568821668.git.christophe.leroy@c-s.fr>
- <5fb4aedadbd28b9849cf2fabe13392fb3b5cd3ed.1568821668.git.christophe.leroy@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5fb4aedadbd28b9849cf2fabe13392fb3b5cd3ed.1568821668.git.christophe.leroy@c-s.fr>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46YRK45V1MzF1jq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 03:08:56 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8IH22vn038322; Wed, 18 Sep 2019 13:08:47 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v3rdbrpk4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Sep 2019 13:08:47 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8IH3QWk042500;
+ Wed, 18 Sep 2019 13:08:47 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v3rdbrpja-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Sep 2019 13:08:47 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8IGxX68002888;
+ Wed, 18 Sep 2019 17:08:46 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04wdc.us.ibm.com with ESMTP id 2v37jw6xmv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Sep 2019 17:08:45 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8IH8i9a60293628
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 18 Sep 2019 17:08:44 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4DF3E136067;
+ Wed, 18 Sep 2019 17:08:44 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3436B136059;
+ Wed, 18 Sep 2019 17:08:44 +0000 (GMT)
+Received: from localhost (unknown [9.41.179.186])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 18 Sep 2019 17:08:44 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH 0/2] pseries/hotplug: Change the default behaviour of
+ cede_offline
+In-Reply-To: <20190918123039.GA12534@in.ibm.com>
+References: <1568284541-15169-1-git-send-email-ego@linux.vnet.ibm.com>
+ <87impxr0am.fsf@linux.ibm.com> <20190915074217.GA943@in.ibm.com>
+ <87a7b2rfj0.fsf@linux.ibm.com> <20190918123039.GA12534@in.ibm.com>
+Date: Wed, 18 Sep 2019 12:08:43 -0500
+Message-ID: <874l19r0pw.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-18_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=998 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909180158
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,64 +91,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Kamalesh Babulal <kamaleshb@in.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+Gautham R Shenoy <ego@linux.vnet.ibm.com> writes:
+> The accounting problem in tools such as lparstat with
+> "cede_offline=on" is affecting customers who are using these tools for
+> capacity-planning. That problem needs a fix in the short-term, for
+> which Patch 1 changes the default behaviour of cede_offline from "on"
+> to "off". Since this patch would break the existing userspace tools
+> that use the CPU-Offline infrastructure to fold CPUs for saving power,
+> the sysfs interface allowing a runtime change of cede_offline_enabled
+> was provided to enable these userspace tools to cope with minimal
+> change.
 
-On Wed, Sep 18, 2019 at 03:48:20PM +0000, Christophe Leroy wrote:
-> call_do_irq() and call_do_softirq() are quite similar on PPC32 and
-> PPC64 and are simple enough to be worth inlining.
-> 
-> Inlining them avoids an mflr/mtlr pair plus a save/reload on stack.
+So we would be putting users in the position of choosing between folding
+and correct accounting. :-(
 
-But you hardcode the calling sequence in inline asm, which for various
-reasons is not a great idea.
-
-> +static inline void call_do_irq(struct pt_regs *regs, void *sp)
-> +{
-> +	register unsigned long r3 asm("r3") = (unsigned long)regs;
-> +
-> +	asm volatile(
-> +		"	"PPC_STLU"	1, %2(%1);\n"
-> +		"	mr		1, %1;\n"
-> +		"	bl		%3;\n"
-> +		"	"PPC_LL"	1, 0(1);\n" : "+r"(r3) :
-> +		"b"(sp), "i"(THREAD_SIZE - STACK_FRAME_OVERHEAD), "i"(__do_irq) :
-> +		"lr", "xer", "ctr", "memory", "cr0", "cr1", "cr5", "cr6", "cr7",
-> +		"r0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-> +}
-
-I realise the original code had this...  Loading the old stack pointer
-value back from the stack creates a bottleneck (via the store->load
-forwarding it requires).  It could just use
-  addi 1,1,-(%2)
-here, which can also be written as
-  addi 1,1,%n2
-(that is portable to all architectures btw).
-
-
-Please write the  "+r"(r3)  on the next line?  Not on the same line as
-the multi-line template.  This make things more readable.
-
-
-I don't know if using functions as an "i" works properly...  It probably
-does, it's just not something that you see often :-)
-
-
-What about r2?  Various ABIs handle that differently.  This might make
-it impossible to share implementation between 32-bit and 64-bit for this.
-But we could add it to the clobber list worst case, that will always work.
-
-
-So anyway, it looks to me like it will work.  Nice cleanup.  Would be
-better if you could do the call to __do_irq from C code, but maybe we
-cannot have everything ;-)
-
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-
-
-Segher
+Actually how does changing the offline mechanism to stop-self break the
+folding utility?
