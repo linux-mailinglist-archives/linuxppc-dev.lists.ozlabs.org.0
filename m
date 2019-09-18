@@ -1,49 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1F2B6774
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 17:48:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A47B677F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 17:51:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46YPXc64jFzF320
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 01:48:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46YPc12YmPzF4PF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 01:51:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=cyphar.com
- (client-ip=80.241.60.212; helo=mx1.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mx1.mailbox.org (mx1.mailbox.org [80.241.60.212])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="NObndLFA"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46YPV92RyczF4dX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 01:46:36 +1000 (AEST)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mx1.mailbox.org (Postfix) with ESMTPS id A4F6050D4B;
- Wed, 18 Sep 2019 17:46:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
- by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de
- [80.241.56.125]) (amavisd-new, port 10030)
- with ESMTP id ZgCJrYNr5TyO; Wed, 18 Sep 2019 17:46:22 +0200 (CEST)
-Date: Wed, 18 Sep 2019 17:46:15 +0200
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v12 05/12] namei: obey trailing magic-link DAC permissions
-Message-ID: <20190918154615.suruy5v5xjftfwyl@yavin.microfocus.com>
-References: <20190904201933.10736-1-cyphar@cyphar.com>
- <20190904201933.10736-6-cyphar@cyphar.com>
- <CAG48ez1_64249RdX6Nj_32YS+jhuXZBAd_ZL9ozggbSQy+cc-A@mail.gmail.com>
- <20190918135100.sdxdmdluq6wlwryv@yavin.microfocus.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="blplt4ksioniygek"
-Content-Disposition: inline
-In-Reply-To: <20190918135100.sdxdmdluq6wlwryv@yavin.microfocus.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46YPXD3xGLzF1XK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 01:48:28 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46YPX45FbMz9vKGg;
+ Wed, 18 Sep 2019 17:48:20 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=NObndLFA; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id jcKP-5oeem5n; Wed, 18 Sep 2019 17:48:20 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46YPX43wqRz9vBmq;
+ Wed, 18 Sep 2019 17:48:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1568821700; bh=RTNqVigtZCB9nfylpkba14XvqHQP0Sf91fjBXEqDk1o=;
+ h=From:Subject:To:Cc:Date:From;
+ b=NObndLFAumn+R2H3U9fzOqoel5nFrwV8dAtLKFtpOpPBMOkxwZTeEDvVw5umBj8hx
+ Hm8HYIFQOrU2AXQpgEjVfUVaUDWmPlw4ukk9rJbTKqk0+v+3Lh0tzcmaflBgbpJiod
+ O9h0TF1s9QCsCwxt3DSdIs4IoW1lCu+vkuCZdkEA=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 527868B93D;
+ Wed, 18 Sep 2019 17:48:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id jNrIB4eKvEUb; Wed, 18 Sep 2019 17:48:21 +0200 (CEST)
+Received: from pc16032vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6964D8B93A;
+ Wed, 18 Sep 2019 17:48:20 +0200 (CEST)
+Received: by pc16032vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id D16236B81B; Wed, 18 Sep 2019 15:48:19 +0000 (UTC)
+Message-Id: <d0b002c96cfc069a1bc7bafcac28defe5d7d3643.1568821668.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v3 1/2] powerpc/irq: bring back ksp_limit management in C
+ functions.
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ segher@kernel.crashing.org, npiggin@gmail.com
+Date: Wed, 18 Sep 2019 15:48:19 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,152 +74,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- kernel list <linux-kernel@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Linux Containers <containers@lists.linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Commit cbc9565ee826 ("powerpc: Remove ksp_limit on ppc64") moved
+PPC32 ksp_limit handling in assembly functions call_do_softirq()
+and call_do_irq() as they are different for PPC32 and PPC64.
 
---blplt4ksioniygek
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In preparation of replacing these functions by inline assembly,
+partialy revert that commit to bring back ksp_limit assignment
+in the callers.
 
-On 2019-09-18, Aleksa Sarai <cyphar@cyphar.com> wrote:
-> On 2019-09-17, Jann Horn <jannh@google.com> wrote:
-> > On Wed, Sep 4, 2019 at 10:21 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
-> > > The ability for userspace to "re-open" file descriptors through
-> > > /proc/self/fd has been a very useful tool for all sorts of usecases
-> > > (container runtimes are one common example). However, the current
-> > > interface for doing this has resulted in some pretty subtle security
-> > > holes. Userspace can re-open a file descriptor with more permissions
-> > > than the original, which can result in cases such as /proc/$pid/exe
-> > > being re-opened O_RDWR at a later date even though (by definition)
-> > > /proc/$pid/exe cannot be opened for writing. When combined with O_PATH
-> > > the results can get even more confusing.
-> > [...]
-> > > Instead we have to restrict it in such a way that it doesn't break
-> > > (good) users but does block potential attackers. The solution applied=
- in
-> > > this patch is to restrict *re-opening* (not resolution through)
-> > > magic-links by requiring that mode of the link be obeyed. Normal
-> > > symlinks have modes of a+rwx but magic-links have other modes. These
-> > > magic-link modes were historically ignored during path resolution, but
-> > > they've now been re-purposed for more useful ends.
-> >=20
-> > Thanks for dealing with this issue!
-> >=20
-> > [...]
-> > > diff --git a/fs/namei.c b/fs/namei.c
-> > > index 209c51a5226c..54d57dad0f91 100644
-> > > --- a/fs/namei.c
-> > > +++ b/fs/namei.c
-> > > @@ -872,7 +872,7 @@ void nd_jump_link(struct path *path)
-> > >
-> > >         nd->path =3D *path;
-> > >         nd->inode =3D nd->path.dentry->d_inode;
-> > > -       nd->flags |=3D LOOKUP_JUMPED;
-> > > +       nd->flags |=3D LOOKUP_JUMPED | LOOKUP_MAGICLINK_JUMPED;
-> > >  }
-> > [...]
-> > > +static int trailing_magiclink(struct nameidata *nd, int acc_mode,
-> > > +                             fmode_t *opath_mask)
-> > > +{
-> > > +       struct inode *inode =3D nd->link_inode;
-> > > +       fmode_t upgrade_mask =3D 0;
-> > > +
-> > > +       /* Was the trailing_symlink() a magic-link? */
-> > > +       if (!(nd->flags & LOOKUP_MAGICLINK_JUMPED))
-> > > +               return 0;
-> > > +
-> > > +       /*
-> > > +        * Figure out the upgrade-mask of the link_inode. Since these=
- aren't
-> > > +        * strictly POSIX semantics we don't do an acl_permission_che=
-ck() here,
-> > > +        * so we only care that at least one bit is set for each upgr=
-ade-mode.
-> > > +        */
-> > > +       if (inode->i_mode & S_IRUGO)
-> > > +               upgrade_mask |=3D FMODE_PATH_READ;
-> > > +       if (inode->i_mode & S_IWUGO)
-> > > +               upgrade_mask |=3D FMODE_PATH_WRITE;
-> > > +       /* Restrict the O_PATH upgrade-mask of the caller. */
-> > > +       if (opath_mask)
-> > > +               *opath_mask &=3D upgrade_mask;
-> > > +       return may_open_magiclink(upgrade_mask, acc_mode);
-> > >  }
-> >=20
-> > This looks racy because entries in the file descriptor table can be
-> > switched out as long as task->files->file_lock isn't held. Unless I'm
-> > missing something, something like the following (untested) would
-> > bypass this restriction:
->=20
-> You're absolutely right -- good catch!
->=20
-> > Perhaps you could change nd_jump_link() to "void nd_jump_link(struct
-> > path *path, umode_t link_mode)", and let proc_pid_get_link() pass the
-> > link_mode through from an out-argument of .proc_get_link()? Then
-> > proc_fd_link() could grab the proper mode in a race-free manner. And
-> > nd_jump_link() could stash the mode in the nameidata.
->=20
-> This indeed does appear to be the simplest solution -- I'm currently
-> testing a variation of the patch you proposed (with a few extra bits to
-> deal with nd_jump_link and proc_get_link being used elsewhere).
->=20
-> I'll include this change (assuming it fixes the flaw you found) in the
-> v13 series I'll send around next week. Thanks, Jann!
+To get and set ksp_limit without a forest of #ifdefs CONFIG_PPC32,
+use helpers that will void on PPC64.
 
-In case you're interested -- I've also included a selftest based on this
-attack in my series (though it uses CLONE_FILES so that we could also
-test O_EMPTYPATH, which wasn't affected because it didn't go through
-procfs and thus couldn't hit the "outdated inode->i_mode" problem).
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-The attack script succeeds around 20% of the time on the original
-patchset, and with the updated patchset it doesn't succeed in several
-hundred thousand attempts (which I've repeated a few times).
+---
+v2: added forward declaration of struct task_struct to avoid build failure.
+v3: included linux/sched.h, forward declaration is not enough.
+---
+ arch/powerpc/include/asm/irq.h | 22 ++++++++++++++++++++++
+ arch/powerpc/kernel/irq.c      | 14 +++++++++++++-
+ arch/powerpc/kernel/misc_32.S  | 14 --------------
+ 3 files changed, 35 insertions(+), 15 deletions(-)
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index 814dfab7e392..0c6469983c66 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -10,6 +10,7 @@
+ #include <linux/threads.h>
+ #include <linux/list.h>
+ #include <linux/radix-tree.h>
++#include <linux/sched.h>
+ 
+ #include <asm/types.h>
+ #include <linux/atomic.h>
+@@ -64,5 +65,26 @@ extern void __do_irq(struct pt_regs *regs);
+ 
+ int irq_choose_cpu(const struct cpumask *mask);
+ 
++#ifdef CONFIG_PPC32
++static inline unsigned long get_ksp_limit(struct task_struct *tsk)
++{
++	return tsk->thread.ksp_limit;
++}
++
++static inline void set_ksp_limit(struct task_struct *tsk, unsigned long limit)
++{
++	tsk->thread.ksp_limit = limit;
++}
++#else
++static inline unsigned long get_ksp_limit(struct task_struct *tsk)
++{
++	return 0;
++}
++
++static inline void set_ksp_limit(struct task_struct *tsk, unsigned long limit)
++{
++}
++#endif
++
+ #endif /* _ASM_IRQ_H */
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 5645bc9cbc09..04204be49577 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -646,6 +646,7 @@ void do_IRQ(struct pt_regs *regs)
+ {
+ 	struct pt_regs *old_regs = set_irq_regs(regs);
+ 	void *cursp, *irqsp, *sirqsp;
++	unsigned long saved_ksp_limit = get_ksp_limit(current);
+ 
+ 	/* Switch to the irq stack to handle this */
+ 	cursp = (void *)(current_stack_pointer() & ~(THREAD_SIZE - 1));
+@@ -658,9 +659,15 @@ void do_IRQ(struct pt_regs *regs)
+ 		set_irq_regs(old_regs);
+ 		return;
+ 	}
++	/* Adjust the stack limit */
++	set_ksp_limit(current, (unsigned long)irqsp);
++
+ 	/* Switch stack and call */
+ 	call_do_irq(regs, irqsp);
+ 
++	/* Restore stack limit */
++	set_ksp_limit(current, saved_ksp_limit);
++
+ 	set_irq_regs(old_regs);
+ }
+ 
+@@ -681,7 +688,12 @@ void *hardirq_ctx[NR_CPUS] __read_mostly;
+ 
+ void do_softirq_own_stack(void)
+ {
+-	call_do_softirq(softirq_ctx[smp_processor_id()]);
++	void *irqsp = softirq_ctx[smp_processor_id()];
++	unsigned long saved_ksp_limit = get_ksp_limit(current);
++
++	set_ksp_limit(current, (unsigned long)irqsp);
++	call_do_softirq(irqsp);
++	set_ksp_limit(current, saved_ksp_limit);
+ }
+ 
+ irq_hw_number_t virq_to_hw(unsigned int virq)
+diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+index 82df4b09e79f..a5422f7782b3 100644
+--- a/arch/powerpc/kernel/misc_32.S
++++ b/arch/powerpc/kernel/misc_32.S
+@@ -33,23 +33,14 @@
+ 
+ 	.text
+ 
+-/*
+- * We store the saved ksp_limit in the unused part
+- * of the STACK_FRAME_OVERHEAD
+- */
+ _GLOBAL(call_do_softirq)
+ 	mflr	r0
+ 	stw	r0,4(r1)
+-	lwz	r10,THREAD+KSP_LIMIT(r2)
+-	stw	r3, THREAD+KSP_LIMIT(r2)
+ 	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r3)
+ 	mr	r1,r3
+-	stw	r10,8(r1)
+ 	bl	__do_softirq
+-	lwz	r10,8(r1)
+ 	lwz	r1,0(r1)
+ 	lwz	r0,4(r1)
+-	stw	r10,THREAD+KSP_LIMIT(r2)
+ 	mtlr	r0
+ 	blr
+ 
+@@ -59,16 +50,11 @@ _GLOBAL(call_do_softirq)
+ _GLOBAL(call_do_irq)
+ 	mflr	r0
+ 	stw	r0,4(r1)
+-	lwz	r10,THREAD+KSP_LIMIT(r2)
+-	stw	r4, THREAD+KSP_LIMIT(r2)
+ 	stwu	r1,THREAD_SIZE-STACK_FRAME_OVERHEAD(r4)
+ 	mr	r1,r4
+-	stw	r10,8(r1)
+ 	bl	__do_irq
+-	lwz	r10,8(r1)
+ 	lwz	r1,0(r1)
+ 	lwz	r0,4(r1)
+-	stw	r10,THREAD+KSP_LIMIT(r2)
+ 	mtlr	r0
+ 	blr
+ 
+-- 
+2.13.3
 
---blplt4ksioniygek
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXYJRRAAKCRCdlLljIbnQ
-Ep3WAP0cvG8YTD9aS1zuiIbFfMQLKt1nuxBciHwn7LaCHk9Z0QEAtNdPaxztVO/p
-utsBd24Q6vZYzx6vj8OnW5nGpjaLpQA=
-=rL8c
------END PGP SIGNATURE-----
-
---blplt4ksioniygek--
