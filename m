@@ -1,55 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E902B5B76
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 07:58:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C78B5BB1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 08:14:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Y8RM5vYMzDqdR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 15:58:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Y8p812NyzF3Qx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2019 16:14:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=pqu6=xn=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Y8MQ1crZzF4Qr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 15:54:57 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204819] KASAN still got problems loading some modules at boot
-Date: Wed, 18 Sep 2019 05:54:54 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: INVALID
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-204819-206035-yQzeP7xDYA@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204819-206035@https.bugzilla.kernel.org/>
-References: <bug-204819-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Y8lq5LK0zDq7F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 16:12:39 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="QY/9K8+m"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46Y8lq3kqtz9sCJ;
+ Wed, 18 Sep 2019 16:12:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1568787159;
+ bh=rKbION4BRPZJT2pVRWztj3dezrjkCwmBEIqMY9p6PwM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=QY/9K8+m/yJdqnZ3LNdZBaa+TpfQPC3Ev3jRfcmfiOogz72qFx1Ge0VppqA0ik4sf
+ /pT+hFIbHBUlB/4gKA52zNc6pW83UbJE9nESuNFU8ayoAKY5s5LZJGFDAMYCbsilFE
+ N/R0TbJb+RcLzLfDL4O45/bepv7BWhiq0DdbuqVupmIVIBtoqVWLi8vAiErAAea6uK
+ ZvFEstiXYCGM8PnvqtiBktJ8PdbhoIZySgWJr+Wg91mhVnIXobZNcSoE4yUjPwg8O5
+ 3yJTH9fmEeruNdQVGGdclsxHlqhm7lEDO6YhU4qocUNRvNUcS1FXhv9gqTHzk+KPyY
+ JjBuIDdR8qmCw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Juliet Kim <julietk@linux.vnet.ibm.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] net/ibmvnic: prevent more than one thread from
+ running in reset
+In-Reply-To: <20190917171552.32498-3-julietk@linux.vnet.ibm.com>
+References: <20190917171552.32498-1-julietk@linux.vnet.ibm.com>
+ <20190917171552.32498-3-julietk@linux.vnet.ibm.com>
+Date: Wed, 18 Sep 2019 16:12:39 +1000
+Message-ID: <87ef0ew2so.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,23 +58,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: julietk@linux.vnet.ibm.com, tlfalcon@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204819
+Hi Juliet,
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+Juliet Kim <julietk@linux.vnet.ibm.com> writes:
+> Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/ibmvnic.c | 23 ++++++++++++++++++++++-
+>  drivers/net/ethernet/ibm/ibmvnic.h |  3 +++
+>  2 files changed, 25 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+> index ba340aaff1b3..f344ccd68ad9 100644
+> --- a/drivers/net/ethernet/ibm/ibmvnic.c
+> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+> @@ -2054,6 +2054,13 @@ static void __ibmvnic_reset(struct work_struct *work)
+>  
+>  	adapter = container_of(work, struct ibmvnic_adapter, ibmvnic_reset);
+>  
+> +	if (adapter->resetting) {
+> +		schedule_delayed_work(&adapter->ibmvnic_delayed_reset,
+> +				      IBMVNIC_RESET_DELAY);
+> +		return;
+> +	}
+> +
+> +	adapter->resetting = true;
+>  	reset_state = adapter->state;
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |michael@ellerman.id.au
+Is there some locking/serialisation around this?
 
---- Comment #26 from Michael Ellerman (michael@ellerman.id.au) ---
-If you want to test things that are not quite in mainline you can always try
-the "merge" branch of the powerpc tree. That is a merge of master, next and
-fixes, so should have any fixes that are in the pipeline.
+Otherwise that looks very racy. ie. two CPUs could both see
+adapter->resetting == false, then both set it to true, and then continue
+executing and stomp on each other.
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+cheers
