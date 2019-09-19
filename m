@@ -2,80 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73712B6F53
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 00:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A16B6FDC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 02:07:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46YZHb4FZHzDqVq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 08:23:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Ycbt6r9yzF4nq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 10:07:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=julietk@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::844; helo=mail-qt1-x844.google.com;
+ envelope-from=arnaldo.melo@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="F7fu/kCd"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
+ [IPv6:2607:f8b0:4864:20::844])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46YZFp0LyFzF4SM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 08:21:33 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8IMCWtc084362; Wed, 18 Sep 2019 18:21:27 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v3vdnhkyb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Sep 2019 18:21:27 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8IM9oEk011017;
- Wed, 18 Sep 2019 22:21:26 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma04dal.us.ibm.com with ESMTP id 2v3vbu8e2y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Sep 2019 22:21:26 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8IMLP128913546
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Sep 2019 22:21:25 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE9A312405A;
- Wed, 18 Sep 2019 22:21:25 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B244124055;
- Wed, 18 Sep 2019 22:21:25 +0000 (GMT)
-Received: from juliets-mbp.austin.ibm.com (unknown [9.41.174.202])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTPS;
- Wed, 18 Sep 2019 22:21:25 +0000 (GMT)
-Subject: Re: [PATCH v3 2/2] net/ibmvnic: prevent more than one thread from
- running in reset
-To: Michael Ellerman <mpe@ellerman.id.au>, netdev@vger.kernel.org
-References: <20190917171552.32498-1-julietk@linux.vnet.ibm.com>
- <20190917171552.32498-3-julietk@linux.vnet.ibm.com>
- <87ef0ew2so.fsf@mpe.ellerman.id.au>
-From: Juliet Kim <julietk@linux.vnet.ibm.com>
-Message-ID: <8afbe58f-4a4a-2b3b-37b7-90dad11de873@linux.vnet.ibm.com>
-Date: Wed, 18 Sep 2019 17:21:24 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46YcYv3kC4zF4gq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 10:05:38 +1000 (AEST)
+Received: by mail-qt1-x844.google.com with SMTP id r5so2044913qtd.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2019 17:05:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:date:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=NBGDkciQM96PlADwiS6Ecn8jjQWg9GBn83vtaVwDbH4=;
+ b=F7fu/kCdJpx4U0F7B82qRuisn7vshNg319dix7xkITNkq8ZJUHoY78k/2wG8bc5a0p
+ 2rsBNZ2L2VcRGViAUVMaIlCWStcCG+MSZtQBmMnix7zq0P3NbDWk++QjZsGwLmWnSMdU
+ hiaI0toddG/o78kORuJVD07nhuKEctHF7MhFajLYZykQUfzz4Pq+aFVRUPPKab5deUYR
+ JYyd9VBoIhk1GHu3Gz/h2/HH7yZV2ItCpEp+M4HHH/SLlM8V9vrNeNI2Eg7fb8lN+54Y
+ WqAqVHRDXBIhcR0pHOuxJSSvdQIkEnuL/8+PzmsmxP1Ih8LEeKDDFMmj7LH8O5Cq7mKM
+ InQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=NBGDkciQM96PlADwiS6Ecn8jjQWg9GBn83vtaVwDbH4=;
+ b=bXLEwAYopAwQlFMQI2T3yCrQw8AAjAlf5XB+0IcYsKH3lP9eHa/GYcz2q4S+HpnLX2
+ jXzlbFaYLLPlQdOZOPUpYLiNlq/ALPrayiYE1LqbifHj/sdHghdZdM2CKo9YcKjw1Hio
+ A7tlZaYYnYv0L/1712TY895G4zdadbmRIa/hPcJNQb7Qw5LOF5e2ogdc1DptynWeWk+a
+ YLbpdz62YVgY7zJ56flmvjOVDSCg7yCrmEHKHDXNPD7AV/HQWFmFKdE2YVfs+d2htR8v
+ GT57WlCM3OITRJbdJoxchkYdY2s2hKgYWNmahQRQxmfsYC0XpY6j5k53Brw9+kn1fX3h
+ Iy4A==
+X-Gm-Message-State: APjAAAX6ivs1E/0XDdWpKTke/JMTcSbQB9jJECD96PJbc5dVMYCUHczR
+ 7ratzw3tXbC7CetKKjA+UZk=
+X-Google-Smtp-Source: APXvYqwwvzYOGL92W3RbDuk2kMUHSwL/Jadn9bIMbGiMngW0Upv5wZjaWKRWMI3xC8w2fPTrEQy11g==
+X-Received: by 2002:aed:3f7d:: with SMTP id q58mr433021qtf.347.1568851536003; 
+ Wed, 18 Sep 2019 17:05:36 -0700 (PDT)
+Received: from quaco.ghostprotocols.net ([179.97.35.50])
+ by smtp.gmail.com with ESMTPSA id g3sm3655700qkb.117.2019.09.18.17.05.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Sep 2019 17:05:35 -0700 (PDT)
+From: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
+X-Google-Original-From: Arnaldo Carvalho de Melo <acme@kernel.org>
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+ id 8A55C40340; Wed, 18 Sep 2019 21:05:32 -0300 (-03)
+Date: Wed, 18 Sep 2019 21:05:32 -0300
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH v2 1/3] tools/perf: Move kvm-stat header file from
+ conditional inclusion to common include section
+Message-ID: <20190919000532.GE32051@kernel.org>
+References: <20190718181749.30612-1-anju@linux.vnet.ibm.com>
+ <1afefd12-b9c5-77b6-c371-bef9fd6f788b@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <87ef0ew2so.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-18_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909180187
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1afefd12-b9c5-77b6-c371-bef9fd6f788b@linux.ibm.com>
+X-Url: http://acmel.wordpress.com
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,47 +85,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, tlfalcon@linux.vnet.ibm.com
+Cc: maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ alexander.shishkin@linux.intel.com, Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ namhyung@kernel.org, jolsa@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Em Fri, Jul 19, 2019 at 10:58:37AM +0530, Ravi Bangoria escreveu:
+> 
+> LGTM. For the series,
+> 
+> Reviewed-By: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 
-On 9/18/19 1:12 AM, Michael Ellerman wrote:
-> Hi Juliet,
->
-> Juliet Kim <julietk@linux.vnet.ibm.com> writes:
->> Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
->> ---
->>  drivers/net/ethernet/ibm/ibmvnic.c | 23 ++++++++++++++++++++++-
->>  drivers/net/ethernet/ibm/ibmvnic.h |  3 +++
->>  2 files changed, 25 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
->> index ba340aaff1b3..f344ccd68ad9 100644
->> --- a/drivers/net/ethernet/ibm/ibmvnic.c
->> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
->> @@ -2054,6 +2054,13 @@ static void __ibmvnic_reset(struct work_struct *work)
->>  
->>  	adapter = container_of(work, struct ibmvnic_adapter, ibmvnic_reset);
->>  
->> +	if (adapter->resetting) {
->> +		schedule_delayed_work(&adapter->ibmvnic_delayed_reset,
->> +				      IBMVNIC_RESET_DELAY);
->> +		return;
->> +	}
->> +
->> +	adapter->resetting = true;
->>  	reset_state = adapter->state;
-> Is there some locking/serialisation around this?
->
-> Otherwise that looks very racy. ie. two CPUs could both see
-> adapter->resetting == false, then both set it to true, and then continue
-> executing and stomp on each other.
->
-> cheers
 
-I agree there may be a race here. Thank you for reviewing.
+Thanks, applied.
 
-I will address it in the next version.
-
+- Arnaldo
