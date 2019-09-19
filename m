@@ -2,67 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C09B880E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 01:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B6FB8835
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 01:46:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZCjh1bsQzF57c
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 09:29:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZD575dmxzF50S
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 09:46:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="iTuCc0OT"; 
- dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZCgq6zmqzF56t
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 09:27:51 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id r26so11867077ioh.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 16:27:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=2LDWW67l8rsaIp1vkKXtIfJA9WB1xQTna8zvtVp6Pz0=;
- b=iTuCc0OT88qEpt6/r9UFPi3DbCBMu2jCF2qdzbmTvn2yTzMi1ExCIWaUREx4bq7ig0
- Ea6+/vf/jXCea+sIgkGAJ5wYyIdJT9KTIu7DDPRO5Sl8hQ1YqMCpGdu/AH62MMDbYEan
- f4D/U8IvyAds3c7Iaq3ilTsPKA814p6c4AInlZPiUdLHDnGQtAd1R2yczp3NdYKiHWnJ
- k+de+/cWl2JtVu2tdqI+2lEctR3sLZwDwiRhCS+8Gr3hCxMKORRgRsyQ6Lj/pEPQkacI
- rP3dkLQ8Q/BDwBd4A+nlwefo7DDIHG+00+OOxAR4ZzuHbj2OXKrhLMblPUydJoFMQiou
- Qm0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=2LDWW67l8rsaIp1vkKXtIfJA9WB1xQTna8zvtVp6Pz0=;
- b=n9159w718xHh7T2oKRP26u57qLoGZ+eE/dGI/A0nOAOPxifRr304+hN/pIyRD7APIQ
- 8D0rygkIF/1z2gEBqe3j72ocEIywcvJuBqErQFYtMQmGU5/xIxB/gvS6FcNFpeOarCPJ
- j8JATrggLHLznu29eB2bfpKweGSxbZjL2zAZ9P9BYW1fj0MQqIApKufWpBuiuT6Icbbm
- FPUazEeDLdn5BTG6YrOHGkvf35Gi7eSH/QikNkQdWtOqYTzUS/8/HX+vjWuzbBnGezrM
- r5HouXsO9mHidp+CGY708zXJEhwgxHDEBbZwk9nR4cyF0vpqBj/NYuqDVi/TTpF7OAht
- ULKQ==
-X-Gm-Message-State: APjAAAUSyv6+P489CViKNKi1+O4jhFr41lXISTkWky1MzNDOOpzcjMMn
- vdQjd9TDnMb9TqHSvkjca8qSfatC7njs1r3BXd0=
-X-Google-Smtp-Source: APXvYqxVSVGsoHQsT2lpCnMlJXVKkXKUhPKanIBxkjY32EWvhobWD7MzdT/bcl9Hy29L7IhjyqPznBEP3aZIZo+9hFc=
-X-Received: by 2002:a5e:df04:: with SMTP id f4mr2102371ioq.192.1568935667808; 
- Thu, 19 Sep 2019 16:27:47 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZD2y2lg3zF566
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 09:44:26 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8JNbQk1168490; Thu, 19 Sep 2019 19:44:20 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v4f1hgpyk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Sep 2019 19:44:20 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8JNc05q169617;
+ Thu, 19 Sep 2019 19:44:20 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v4f1hgpyd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Sep 2019 19:44:20 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8JNdnLN007096;
+ Thu, 19 Sep 2019 23:44:19 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04dal.us.ibm.com with ESMTP id 2v3vbukrtp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Sep 2019 23:44:19 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8JNiHb957540926
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Sep 2019 23:44:18 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D5904BE051;
+ Thu, 19 Sep 2019 23:44:17 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7F954BE04F;
+ Thu, 19 Sep 2019 23:44:17 +0000 (GMT)
+Received: from localhost (unknown [9.80.223.117])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Sep 2019 23:44:17 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH v5 05/12] powerpc/eeh: EEH for pSeries hot plug
+In-Reply-To: <CAOSf1CEjNd3HJ8OGwPn1sBs7NEJme-+oPFu5EAG5NQaHw1ampQ@mail.gmail.com>
 References: <cover.1565930772.git.sbobroff@linux.ibm.com>
  <72ae8ae9c54097158894a52de23690448de38ea9.1565930772.git.sbobroff@linux.ibm.com>
  <871rwcqbd3.fsf@linux.ibm.com>
-In-Reply-To: <871rwcqbd3.fsf@linux.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 20 Sep 2019 09:27:36 +1000
-Message-ID: <CAOSf1CEjNd3HJ8OGwPn1sBs7NEJme-+oPFu5EAG5NQaHw1ampQ@mail.gmail.com>
-Subject: Re: [PATCH v5 05/12] powerpc/eeh: EEH for pSeries hot plug
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+ <CAOSf1CEjNd3HJ8OGwPn1sBs7NEJme-+oPFu5EAG5NQaHw1ampQ@mail.gmail.com>
+Date: Thu, 19 Sep 2019 18:44:16 -0500
+Message-ID: <87y2yjq2b3.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-19_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=5 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909190202
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,105 +98,400 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 20, 2019 at 6:28 AM Nathan Lynch <nathanl@linux.ibm.com> wrote:
->
-> Hello Sam,
->
-> Sam Bobroff <sbobroff@linux.ibm.com> writes:
->
-> With this change, I get a crash (use after free by the looks of it) when
-> I remove and then add a pci device in qemu:
->
-> $ qemu-system-ppc64 -M pseries -append 'debug console=hvc0' \
->   -nographic -vga none -m 1G,slots=32,maxmem=1024G -smp 2 \
->   -kernel vmlinux -initrd ~/b/br/ppc64le-initramfs/images/rootfs.cpio \
->   -nic model=e1000
+"Oliver O'Halloran" <oohall@gmail.com> writes:
 
-is there anything special in your kernel config? I tested this with
-pseries_le_defconfig and couldn't hit the crash.
+> On Fri, Sep 20, 2019 at 6:28 AM Nathan Lynch <nathanl@linux.ibm.com> wrote:
+>>
+>> Hello Sam,
+>>
+>> Sam Bobroff <sbobroff@linux.ibm.com> writes:
+>>
+>> With this change, I get a crash (use after free by the looks of it) when
+>> I remove and then add a pci device in qemu:
+>>
+>> $ qemu-system-ppc64 -M pseries -append 'debug console=hvc0' \
+>>   -nographic -vga none -m 1G,slots=32,maxmem=1024G -smp 2 \
+>>   -kernel vmlinux -initrd ~/b/br/ppc64le-initramfs/images/rootfs.cpio \
+>>   -nic model=e1000
+>
+> is there anything special in your kernel config? I tested this with
+> pseries_le_defconfig and couldn't hit the crash.
 
->
-> ...
->
-> # echo 1 > /sys/devices/pci0000:00/0000:00:00.0/remove ; \
->   echo 1 > /sys/devices/pci0000:00/pci_bus/0000:00/rescan
->
-> pci 0000:00:00.0: Removing from iommu group 0
-> pci 0000:00:00.0: [8086:100e] type 00 class 0x020000
-> pci 0000:00:00.0: reg 0x10: [mem 0x200080000000-0x20008001ffff]
-> pci 0000:00:00.0: reg 0x14: [io  0x10040-0x1007f]
-> pci 0000:00:00.0: reg 0x30: [mem 0x200080040000-0x20008007ffff pref]
-> pci 0000:00:00.0: Adding to iommu group 0
-> pci 0000:00:00.0: BAR 6: assigned [mem 0x200080000000-0x20008003ffff pref]
-> pci 0000:00:00.0: BAR 0: assigned [mem 0x200080040000-0x20008005ffff]
-> pci 0000:00:00.0: BAR 1: assigned [io  0x10000-0x1003f]
-> e1000 0000:00:00.0 eth0: (PCI:33MHz:32-bit) 52:54:00:12:34:56
-> e1000 0000:00:00.0 eth0: Intel(R) PRO/1000 Network Connection
-> pci 0000:00:00.0: Removing from iommu group 0
-> pci 0000:00:00.0: [8086:100e] type 00 class 0x020000
-> pci 0000:00:00.0: reg 0x10: [mem 0x200080040000-0x20008005ffff]
-> pci 0000:00:00.0: reg 0x14: [io  0x10000-0x1003f]
-> pci 0000:00:00.0: reg 0x30: [mem 0x200080040000-0x20008007ffff pref]
-> pci 0000:00:00.0: BAR 6: assigned [mem 0x200080000000-0x20008003ffff pref]
-> pci 0000:00:00.0: BAR 0: assigned [mem 0x200080040000-0x20008005ffff]
-> pci 0000:00:00.0: BAR 1: assigned [io  0x10000-0x1003f]
-> BUG: Unable to handle kernel data access at 0x6b6b6b6b6b6b6bfb
-> Faulting instruction address: 0xc000000000597270
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> Modules linked in:
-> CPU: 0 PID: 2464 Comm: pci-probe-vs-cp Not tainted 5.3.0-rc2-00092-gf381d5711f09 #76
-> NIP:  c000000000597270 LR: c000000000599470 CTR: c0000000002030b0
-> REGS: c00000003ee4f650 TRAP: 0380   Not tainted  (5.3.0-rc2-00092-gf381d5711f09)
-> MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002442  XER: 00000000
-> CFAR: c00000000059946c IRQMASK: 0
-> GPR00: c000000000599470 c00000003ee4f8e0 c000000003317a00 6b6b6b6b6b6b6b6b
-> GPR04: c000000001d0fa38 0000000000000000 0000000000000000 221a64979a66f870
-> GPR08: c00000000347b398 0000000000000000 c00000000336e070 ffffffffffffffff
-> GPR12: 0000000000002000 c000000004060000 0000000000000000 0000000000000000
-> GPR16: 00000000100a78d8 00007fffe9fdff96 00000000100a7898 0000000000000000
-> GPR20: 0000000000000000 00000000100e0ff0 0000000000000000 00000000100e0fe8
-> GPR24: 0000000000000000 000001002ae50260 c000000001d0fa38 6b6b6b6b6b6b6b6b
-> GPR28: fffffffffffffff2 c000000001d0fa38 0000000000000000 c000000003118c18
-> NIP [c000000000597270] kernfs_find_ns+0x50/0x3d0
-> LR [c000000000599470] kernfs_remove_by_name_ns+0x60/0xe0
-> Call Trace:
-> [c00000003ee4f8e0] [c00000000020950c] lockdep_hardirqs_on+0x10c/0x210 (unreliable)
-> [c00000003ee4f970] [c000000000599470] kernfs_remove_by_name_ns+0x60/0xe0
-> [c00000003ee4fa00] [c00000000059ca08] sysfs_remove_file_ns+0x28/0x40
-> [c00000003ee4fa20] [c000000000cbd70c] device_remove_file+0x2c/0x40
-> [c00000003ee4fa40] [c000000000051480] eeh_sysfs_remove_device+0x50/0xf0
-> [c00000003ee4fa80] [c00000000004a594] eeh_add_device_late.part.7+0x84/0x220
-> [c00000003ee4fb00] [c0000000000e94f0] pseries_pcibios_bus_add_device+0x60/0xb0
-> [c00000003ee4fb70] [c00000000006fc40] pcibios_bus_add_device+0x40/0x60
-> [c00000003ee4fb90] [c000000000bc5220] pci_bus_add_device+0x30/0x100
-> [c00000003ee4fc00] [c000000000bc5344] pci_bus_add_devices+0x54/0xb0
-> [c00000003ee4fc40] [c000000000bca058] pci_rescan_bus+0x48/0x70
-> [c00000003ee4fc70] [c000000000bd9adc] dev_bus_rescan_store+0xcc/0x100
-> [c00000003ee4fcb0] [c000000000cbc9d8] dev_attr_store+0x38/0x60
-> [c00000003ee4fcd0] [c00000000059c460] sysfs_kf_write+0x70/0xb0
-> [c00000003ee4fd10] [c00000000059aa98] kernfs_fop_write+0xf8/0x280
-> [c00000003ee4fd60] [c0000000004b3e5c] __vfs_write+0x3c/0x70
-> [c00000003ee4fd80] [c0000000004b81f0] vfs_write+0xd0/0x220
-> [c00000003ee4fdd0] [c0000000004b85ac] ksys_write+0x7c/0x140
-> [c00000003ee4fe20] [c00000000000bc6c] system_call+0x5c/0x70
->
-> FWIW during boot the EEH core reports:
->
->   EEH: No capable adapters found: recovery disabled.
->
-> > diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> > index ca8b0c58a6a7..87edac6f2fd9 100644
-> > --- a/arch/powerpc/kernel/eeh.c
-> > +++ b/arch/powerpc/kernel/eeh.c
-> > @@ -1272,7 +1272,7 @@ void eeh_add_device_late(struct pci_dev *dev)
-> >       struct pci_dn *pdn;
-> >       struct eeh_dev *edev;
-> >
-> > -     if (!dev || !eeh_enabled())
-> > +     if (!dev)
-> >               return;
-> >
-> >       pr_debug("EEH: Adding device %s\n", pci_name(dev));
->
-> Reverting this hunk works around (fixes?) it.
+My config is below; CONFIG_SLUB_DEBUG_ON=y probably makes the difference.
+
+CONFIG_SYSVIPC=y
+CONFIG_POSIX_MQUEUE=y
+CONFIG_AUDIT=y
+CONFIG_NO_HZ=y
+CONFIG_HIGH_RES_TIMERS=y
+CONFIG_TASKSTATS=y
+CONFIG_TASK_DELAY_ACCT=y
+CONFIG_TASK_XACCT=y
+CONFIG_TASK_IO_ACCOUNTING=y
+CONFIG_IKCONFIG=y
+CONFIG_IKCONFIG_PROC=y
+CONFIG_LOG_BUF_SHIFT=18
+CONFIG_LOG_CPU_MAX_BUF_SHIFT=13
+CONFIG_NUMA_BALANCING=y
+CONFIG_CGROUPS=y
+CONFIG_MEMCG=y
+CONFIG_MEMCG_SWAP=y
+CONFIG_CGROUP_SCHED=y
+CONFIG_CGROUP_FREEZER=y
+CONFIG_CPUSETS=y
+CONFIG_CGROUP_DEVICE=y
+CONFIG_CGROUP_CPUACCT=y
+CONFIG_CGROUP_PERF=y
+CONFIG_CGROUP_BPF=y
+CONFIG_USER_NS=y
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_INITRAMFS_SOURCE="rootfs.cpio"
+CONFIG_BPF_SYSCALL=y
+# CONFIG_COMPAT_BRK is not set
+CONFIG_PROFILING=y
+CONFIG_PPC64=y
+CONFIG_NR_CPUS=2048
+CONFIG_CPU_LITTLE_ENDIAN=y
+CONFIG_PPC_SPLPAR=y
+CONFIG_DTL=y
+CONFIG_SCANLOG=y
+CONFIG_PPC_SMLPAR=y
+CONFIG_RTAS_FLASH=y
+CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+CONFIG_HZ_100=y
+CONFIG_PPC_TRANSACTIONAL_MEM=y
+CONFIG_KEXEC=y
+CONFIG_KEXEC_FILE=y
+CONFIG_IRQ_ALL_CPUS=y
+CONFIG_PPC_64K_PAGES=y
+CONFIG_PPC_SUBPAGE_PROT=y
+CONFIG_SCHED_SMT=y
+CONFIG_PM_DEBUG=y
+CONFIG_VIRTUALIZATION=y
+CONFIG_KVM_BOOK3S_64=y
+CONFIG_KVM_BOOK3S_64_HV=y
+CONFIG_VHOST_NET=y
+CONFIG_OPROFILE=y
+CONFIG_KPROBES=y
+CONFIG_JUMP_LABEL=y
+CONFIG_REFCOUNT_FULL=y
+CONFIG_MODULES=y
+CONFIG_MODULE_UNLOAD=y
+CONFIG_MODVERSIONS=y
+CONFIG_MODULE_SRCVERSION_ALL=y
+CONFIG_PARTITION_ADVANCED=y
+CONFIG_BINFMT_MISC=y
+CONFIG_MEMORY_HOTPLUG=y
+CONFIG_MEMORY_HOTREMOVE=y
+CONFIG_KSM=y
+CONFIG_TRANSPARENT_HUGEPAGE=y
+CONFIG_NET=y
+CONFIG_PACKET=y
+CONFIG_UNIX=y
+CONFIG_XFRM_USER=y
+CONFIG_NET_KEY=y
+CONFIG_INET=y
+CONFIG_IP_MULTICAST=y
+CONFIG_NET_IPIP=y
+CONFIG_SYN_COOKIES=y
+CONFIG_INET_AH=y
+CONFIG_INET_ESP=y
+CONFIG_INET_IPCOMP=y
+# CONFIG_IPV6 is not set
+CONFIG_NETFILTER=y
+# CONFIG_NETFILTER_ADVANCED is not set
+CONFIG_NF_CONNTRACK=y
+CONFIG_NF_CONNTRACK_FTP=y
+CONFIG_NF_CONNTRACK_IRC=y
+CONFIG_NF_CONNTRACK_SIP=y
+CONFIG_NF_CT_NETLINK=y
+CONFIG_NETFILTER_XT_MARK=y
+CONFIG_NETFILTER_XT_TARGET_LOG=y
+CONFIG_NETFILTER_XT_TARGET_NFLOG=y
+CONFIG_NETFILTER_XT_TARGET_TCPMSS=y
+CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
+CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
+CONFIG_NETFILTER_XT_MATCH_POLICY=y
+CONFIG_NETFILTER_XT_MATCH_STATE=y
+CONFIG_NF_LOG_ARP=y
+CONFIG_IP_NF_IPTABLES=y
+CONFIG_IP_NF_FILTER=y
+CONFIG_IP_NF_TARGET_REJECT=y
+CONFIG_IP_NF_NAT=y
+CONFIG_IP_NF_TARGET_MASQUERADE=y
+CONFIG_IP_NF_MANGLE=y
+CONFIG_BRIDGE=y
+CONFIG_VLAN_8021Q=y
+CONFIG_NET_SCHED=y
+CONFIG_NET_CLS_BPF=y
+CONFIG_NET_CLS_ACT=y
+CONFIG_NET_ACT_BPF=y
+CONFIG_BPF_JIT=y
+CONFIG_HOTPLUG_PCI=y
+CONFIG_HOTPLUG_PCI_RPA=y
+CONFIG_HOTPLUG_PCI_RPA_DLPAR=y
+CONFIG_UEVENT_HELPER=y
+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+CONFIG_DEVTMPFS=y
+CONFIG_DEVTMPFS_MOUNT=y
+CONFIG_OF_UNITTEST=y
+CONFIG_PARPORT=y
+CONFIG_PARPORT_PC=y
+CONFIG_BLK_DEV_FD=y
+CONFIG_BLK_DEV_LOOP=y
+CONFIG_BLK_DEV_NBD=y
+CONFIG_BLK_DEV_RAM=y
+CONFIG_BLK_DEV_RAM_SIZE=65536
+CONFIG_VIRTIO_BLK=y
+CONFIG_CXL=y
+CONFIG_OCXL=y
+CONFIG_BLK_DEV_SD=y
+CONFIG_CHR_DEV_ST=y
+CONFIG_BLK_DEV_SR=y
+CONFIG_BLK_DEV_SR_VENDOR=y
+CONFIG_CHR_DEV_SG=y
+CONFIG_SCSI_CONSTANTS=y
+CONFIG_SCSI_FC_ATTRS=y
+CONFIG_SCSI_CXGB3_ISCSI=y
+CONFIG_SCSI_CXGB4_ISCSI=y
+CONFIG_SCSI_BNX2_ISCSI=y
+CONFIG_BE2ISCSI=y
+CONFIG_CXLFLASH=y
+CONFIG_SCSI_MPT2SAS=y
+CONFIG_SCSI_IBMVSCSI=y
+CONFIG_SCSI_IBMVFC=y
+CONFIG_SCSI_SYM53C8XX_2=y
+CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=0
+CONFIG_SCSI_IPR=y
+CONFIG_SCSI_QLA_FC=y
+CONFIG_SCSI_QLA_ISCSI=y
+CONFIG_SCSI_LPFC=y
+CONFIG_SCSI_VIRTIO=y
+CONFIG_SCSI_DH=y
+CONFIG_SCSI_DH_RDAC=y
+CONFIG_SCSI_DH_ALUA=y
+CONFIG_ATA=y
+CONFIG_SATA_AHCI=y
+CONFIG_PATA_AMD=y
+CONFIG_ATA_GENERIC=y
+CONFIG_MD=y
+CONFIG_BLK_DEV_MD=y
+CONFIG_MD_LINEAR=y
+CONFIG_MD_RAID0=y
+CONFIG_MD_RAID1=y
+CONFIG_MD_RAID10=y
+CONFIG_MD_RAID456=y
+CONFIG_MD_MULTIPATH=y
+CONFIG_MD_FAULTY=y
+CONFIG_BLK_DEV_DM=y
+CONFIG_DM_CRYPT=y
+CONFIG_DM_SNAPSHOT=y
+CONFIG_DM_THIN_PROVISIONING=y
+CONFIG_DM_MIRROR=y
+CONFIG_DM_ZERO=y
+CONFIG_DM_MULTIPATH=y
+CONFIG_DM_MULTIPATH_QL=y
+CONFIG_DM_MULTIPATH_ST=y
+CONFIG_DM_UEVENT=y
+CONFIG_BONDING=y
+CONFIG_DUMMY=y
+CONFIG_MACVLAN=y
+CONFIG_MACVTAP=y
+CONFIG_VXLAN=y
+CONFIG_NETCONSOLE=y
+CONFIG_TUN=y
+CONFIG_VETH=y
+CONFIG_VIRTIO_NET=y
+CONFIG_VORTEX=y
+CONFIG_ACENIC=y
+CONFIG_ACENIC_OMIT_TIGON_I=y
+CONFIG_PCNET32=y
+CONFIG_TIGON3=y
+CONFIG_BNX2X=y
+CONFIG_CHELSIO_T1=y
+CONFIG_BE2NET=y
+CONFIG_IBMVETH=y
+CONFIG_E100=y
+CONFIG_E1000=y
+CONFIG_E1000E=y
+CONFIG_IXGB=y
+CONFIG_IXGBE=y
+CONFIG_I40E=y
+CONFIG_MLX4_EN=y
+CONFIG_MYRI10GE=y
+CONFIG_S2IO=y
+CONFIG_QLGE=y
+CONFIG_NETXEN_NIC=y
+CONFIG_PPP=y
+CONFIG_PPP_BSDCOMP=y
+CONFIG_PPP_DEFLATE=y
+CONFIG_PPPOE=y
+CONFIG_PPP_ASYNC=y
+CONFIG_PPP_SYNC_TTY=y
+CONFIG_INPUT_EVDEV=y
+CONFIG_INPUT_MISC=y
+CONFIG_INPUT_PCSPKR=y
+# CONFIG_SERIO_SERPORT is not set
+CONFIG_SERIAL_8250=y
+CONFIG_SERIAL_8250_CONSOLE=y
+CONFIG_SERIAL_ICOM=y
+CONFIG_SERIAL_JSM=y
+CONFIG_HVC_CONSOLE=y
+CONFIG_HVC_RTAS=y
+CONFIG_HVCS=y
+CONFIG_VIRTIO_CONSOLE=y
+CONFIG_IBM_BSR=y
+CONFIG_POWERNV_OP_PANEL=y
+CONFIG_HW_RANDOM=y
+CONFIG_RAW_DRIVER=y
+CONFIG_MAX_RAW_DEVS=1024
+CONFIG_I2C_CHARDEV=y
+CONFIG_FB=y
+CONFIG_FIRMWARE_EDID=y
+CONFIG_FB_OF=y
+CONFIG_FB_MATROX=y
+CONFIG_FB_MATROX_MILLENIUM=y
+CONFIG_FB_MATROX_MYSTIQUE=y
+CONFIG_FB_MATROX_G=y
+CONFIG_FB_RADEON=y
+CONFIG_FB_IBM_GXT4500=y
+CONFIG_LCD_CLASS_DEVICE=y
+CONFIG_LCD_PLATFORM=y
+# CONFIG_VGA_CONSOLE is not set
+CONFIG_FRAMEBUFFER_CONSOLE=y
+CONFIG_LOGO=y
+CONFIG_HID_GYRATION=y
+CONFIG_HID_PANTHERLORD=y
+CONFIG_HID_PETALYNX=y
+CONFIG_HID_SAMSUNG=y
+CONFIG_HID_SUNPLUS=y
+CONFIG_USB_HIDDEV=y
+CONFIG_USB=y
+CONFIG_USB_MON=y
+CONFIG_USB_XHCI_HCD=y
+CONFIG_USB_EHCI_HCD=y
+# CONFIG_USB_EHCI_HCD_PPC_OF is not set
+CONFIG_USB_OHCI_HCD=y
+CONFIG_USB_STORAGE=y
+CONFIG_NEW_LEDS=y
+CONFIG_LEDS_CLASS=y
+CONFIG_LEDS_POWERNV=y
+CONFIG_INFINIBAND=y
+CONFIG_INFINIBAND_USER_MAD=y
+CONFIG_INFINIBAND_USER_ACCESS=y
+CONFIG_INFINIBAND_MTHCA=y
+CONFIG_INFINIBAND_CXGB3=y
+CONFIG_INFINIBAND_CXGB4=y
+CONFIG_MLX4_INFINIBAND=y
+CONFIG_INFINIBAND_IPOIB=y
+CONFIG_INFINIBAND_IPOIB_CM=y
+CONFIG_INFINIBAND_SRP=y
+CONFIG_INFINIBAND_ISER=y
+CONFIG_RTC_CLASS=y
+CONFIG_RTC_DRV_GENERIC=y
+CONFIG_VIRTIO_PCI=y
+CONFIG_VIRTIO_BALLOON=y
+CONFIG_VALIDATE_FS_PARSER=y
+CONFIG_EXT2_FS=y
+CONFIG_EXT2_FS_XATTR=y
+CONFIG_EXT2_FS_POSIX_ACL=y
+CONFIG_EXT2_FS_SECURITY=y
+CONFIG_EXT4_FS=y
+CONFIG_EXT4_FS_POSIX_ACL=y
+CONFIG_EXT4_FS_SECURITY=y
+CONFIG_JFS_FS=y
+CONFIG_JFS_POSIX_ACL=y
+CONFIG_JFS_SECURITY=y
+CONFIG_XFS_FS=y
+CONFIG_XFS_POSIX_ACL=y
+CONFIG_BTRFS_FS=y
+CONFIG_BTRFS_FS_POSIX_ACL=y
+CONFIG_NILFS2_FS=y
+CONFIG_FS_DAX=y
+CONFIG_AUTOFS4_FS=y
+CONFIG_FUSE_FS=y
+CONFIG_OVERLAY_FS=y
+CONFIG_ISO9660_FS=y
+CONFIG_UDF_FS=y
+CONFIG_MSDOS_FS=y
+CONFIG_VFAT_FS=y
+CONFIG_PROC_KCORE=y
+CONFIG_TMPFS=y
+CONFIG_TMPFS_POSIX_ACL=y
+CONFIG_HUGETLBFS=y
+CONFIG_CRAMFS=y
+CONFIG_SQUASHFS=y
+CONFIG_SQUASHFS_XATTR=y
+CONFIG_SQUASHFS_LZO=y
+CONFIG_SQUASHFS_XZ=y
+CONFIG_PSTORE=y
+CONFIG_NFS_FS=y
+CONFIG_NFS_V3_ACL=y
+CONFIG_NFS_V4=y
+CONFIG_NFSD=y
+CONFIG_NFSD_V3_ACL=y
+CONFIG_NFSD_V4=y
+CONFIG_CIFS=y
+CONFIG_CIFS_XATTR=y
+CONFIG_CIFS_POSIX=y
+CONFIG_NLS_DEFAULT="utf8"
+CONFIG_NLS_CODEPAGE_437=y
+CONFIG_NLS_ASCII=y
+CONFIG_NLS_ISO8859_1=y
+CONFIG_NLS_UTF8=y
+CONFIG_CRYPTO_TEST=m
+CONFIG_CRYPTO_PCBC=y
+CONFIG_CRYPTO_CRC32C_VPMSUM=y
+CONFIG_CRYPTO_MD5_PPC=y
+CONFIG_CRYPTO_MICHAEL_MIC=y
+CONFIG_CRYPTO_SHA1_PPC=y
+CONFIG_CRYPTO_TGR192=y
+CONFIG_CRYPTO_WP512=y
+CONFIG_CRYPTO_ANUBIS=y
+CONFIG_CRYPTO_ARC4=y
+CONFIG_CRYPTO_BLOWFISH=y
+CONFIG_CRYPTO_CAST6=y
+CONFIG_CRYPTO_KHAZAD=y
+CONFIG_CRYPTO_SALSA20=y
+CONFIG_CRYPTO_SERPENT=y
+CONFIG_CRYPTO_TEA=y
+CONFIG_CRYPTO_TWOFISH=y
+CONFIG_CRYPTO_LZO=y
+CONFIG_CRYPTO_DEV_NX=y
+CONFIG_CRYPTO_DEV_VMX=y
+CONFIG_CRYPTO_DEV_VMX_ENCRYPT=y
+CONFIG_CRYPTO_DEV_VIRTIO=y
+CONFIG_PRINTK_TIME=y
+CONFIG_DYNAMIC_DEBUG=y
+CONFIG_DEBUG_INFO=y
+CONFIG_DEBUG_INFO_REDUCED=y
+CONFIG_GDB_SCRIPTS=y
+CONFIG_MAGIC_SYSRQ=y
+CONFIG_DEBUG_KERNEL=y
+CONFIG_PAGE_EXTENSION=y
+CONFIG_PAGE_POISONING=y
+CONFIG_SLUB_DEBUG_ON=y
+CONFIG_DEBUG_STACK_USAGE=y
+CONFIG_DEBUG_VM=y
+CONFIG_DEBUG_PER_CPU_MAPS=y
+CONFIG_DEBUG_STACKOVERFLOW=y
+CONFIG_DEBUG_SHIRQ=y
+CONFIG_SOFTLOCKUP_DETECTOR=y
+CONFIG_HARDLOCKUP_DETECTOR=y
+CONFIG_WQ_WATCHDOG=y
+CONFIG_PANIC_ON_OOPS=y
+CONFIG_SCHED_STACK_END_CHECK=y
+CONFIG_PROVE_LOCKING=y
+CONFIG_DEBUG_ATOMIC_SLEEP=y
+CONFIG_DEBUG_LIST=y
+CONFIG_DEBUG_SG=y
+CONFIG_DEBUG_NOTIFIERS=y
+CONFIG_DEBUG_WQ_FORCE_RR_CPU=y
+CONFIG_LATENCYTOP=y
+CONFIG_FUNCTION_TRACER=y
+CONFIG_SCHED_TRACER=y
+CONFIG_BLK_DEV_IO_TRACE=y
+CONFIG_CODE_PATCHING_SELFTEST=y
+CONFIG_FTR_FIXUP_SELFTEST=y
+CONFIG_MSI_BITMAP_SELFTEST=y
+CONFIG_PPC_IRQ_SOFT_MASK_DEBUG=y
