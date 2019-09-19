@@ -2,90 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4091B7269
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 06:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2E4B726B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 07:00:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Yl392frbzF4Yg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 14:57:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Yl5y3SBXzF4X4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 15:00:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Yl0t2tLhzF4Lf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 14:55:57 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8J4pqYD039214
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 00:55:54 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v41aftmpn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 00:55:53 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Thu, 19 Sep 2019 05:55:51 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 19 Sep 2019 05:55:46 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8J4tjmj43516084
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Sep 2019 04:55:45 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B226A4054;
- Thu, 19 Sep 2019 04:55:45 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C5BEBA4060;
- Thu, 19 Sep 2019 04:55:44 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 19 Sep 2019 04:55:44 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 813DAA01EB;
- Thu, 19 Sep 2019 14:55:41 +1000 (AEST)
-Subject: Re: [PATCH 3/5] ocxl: Tally up the LPC memory on a link & allow it
- to be mapped
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 19 Sep 2019 14:55:41 +1000
-In-Reply-To: <268bcb76-fd37-6996-e5ff-43625b60a95a@linux.ibm.com>
-References: <20190917014307.30485-1-alastair@au1.ibm.com>
- <20190917014307.30485-4-alastair@au1.ibm.com>
- <268bcb76-fd37-6996-e5ff-43625b60a95a@linux.ibm.com>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46Yl130VNmzF4Nv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 14:56:04 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E38C337;
+ Wed, 18 Sep 2019 21:56:01 -0700 (PDT)
+Received: from [10.162.40.65] (p8cg001049571a15.blr.arm.com [10.162.40.65])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 452E53F67D;
+ Wed, 18 Sep 2019 21:55:50 -0700 (PDT)
+Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
+References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
+ <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
+ <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
+ <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
+ <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
+ <f872e6f4-a5cb-069d-2034-78961930cb9f@arm.com>
+ <64504101-d9dd-f273-02f9-e9a8b178eecc@c-s.fr>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <955491d9-d8aa-0a93-4fb9-3d15acfbcbf8@arm.com>
+Date: Thu, 19 Sep 2019 10:26:05 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <64504101-d9dd-f273-02f9-e9a8b178eecc@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19091904-0008-0000-0000-00000318413B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19091904-0009-0000-0000-00004A36C4DD
-Message-Id: <16a0270590e50a45854ae2e57a3b0ef969fd0c78.camel@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-19_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909190044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,296 +55,269 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
  Masahiro Yamada <yamada.masahiro@socionext.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- David Gibson <david@gibson.dropbear.id.au>, linuxppc-dev@lists.ozlabs.org,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-09-18 at 16:02 +0200, Frederic Barrat wrote:
-> 
-> Le 17/09/2019 à 03:42, Alastair D'Silva a écrit :
-> > From: Alastair D'Silva <alastair@d-silva.org>
-> > 
-> > Tally up the LPC memory on an OpenCAPI link & allow it to be mapped
-> > 
-> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> > ---
-> >   drivers/misc/ocxl/core.c          |  9 +++++
-> >   drivers/misc/ocxl/link.c          | 61
-> > +++++++++++++++++++++++++++++++
-> >   drivers/misc/ocxl/ocxl_internal.h | 42 +++++++++++++++++++++
-> >   3 files changed, 112 insertions(+)
-> > 
-> > diff --git a/drivers/misc/ocxl/core.c b/drivers/misc/ocxl/core.c
-> > index b7a09b21ab36..fdfe4e0a34e1 100644
-> > --- a/drivers/misc/ocxl/core.c
-> > +++ b/drivers/misc/ocxl/core.c
-> > @@ -230,8 +230,17 @@ static int configure_afu(struct ocxl_afu *afu,
-> > u8 afu_idx, struct pci_dev *dev)
-> >   	if (rc)
-> >   		goto err_free_pasid;
-> >   
-> > +	if (afu->config.lpc_mem_size || afu-
-> > >config.special_purpose_mem_size) {
-> > +		rc = ocxl_link_add_lpc_mem(afu->fn->link,
-> > +			afu->config.lpc_mem_size + afu-
-> > >config.special_purpose_mem_size);
-> 
-> I don't think we should count the special purpose memory, as it's
-> not 
-> meant to be accessed through the GPU mem BAR, but I'll check.
 
-At least for OpenCAPI 3.0, there is no other in-spec way to access the
-memory if it is not mapped by the NPU.
 
+On 09/18/2019 09:56 PM, Christophe Leroy wrote:
 > 
-> What happens when unconfiguring the AFU? We should reduce the range
-> (see 
-> also below). Partial reconfig doesn't seem so far off, so we should
-> take 
-> it into account.
+> 
+> Le 18/09/2019 à 07:04, Anshuman Khandual a écrit :
+>>
+>>
+>> On 09/13/2019 03:31 PM, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 13/09/2019 à 11:02, Anshuman Khandual a écrit :
+>>>>
+>>>>>> +#if !defined(__PAGETABLE_PMD_FOLDED) && !defined(__ARCH_HAS_4LEVEL_HACK)
+>>>>>
+>>>>> #ifdefs have to be avoided as much as possible, see below
+>>>>
+>>>> Yeah but it has been bit difficult to avoid all these $ifdef because of the
+>>>> availability (or lack of it) for all these pgtable helpers in various config
+>>>> combinations on all platforms.
+>>>
+>>> As far as I can see these pgtable helpers should exist everywhere at least via asm-generic/ files.
+>>
+>> But they might not actually do the right thing.
+>>
+>>>
+>>> Can you spot a particular config which fails ?
+>>
+>> Lets consider the following example (after removing the $ifdefs around it)
+>> which though builds successfully but fails to pass the intended test. This
+>> is with arm64 config 4K pages sizes with 39 bits VA space which ends up
+>> with a 3 level page table arrangement.
+>>
+>> static void __init p4d_clear_tests(p4d_t *p4dp)
+>> {
+>>          p4d_t p4d = READ_ONCE(*p4dp);
+> 
+> My suggestion was not to completely drop the #ifdef but to do like you did in pgd_clear_tests() for instance, ie to add the following test on top of the function:
+> 
+>     if (mm_pud_folded(mm) || is_defined(__ARCH_HAS_5LEVEL_HACK))
+>         return;
 > 
 
-The mapping is left until the last AFU on the link offlines it's
-memory, at which point we clear the mapping from the NPU.
+Sometimes this does not really work. On some platforms, combination of
+__PAGETABLE_PUD_FOLDED and __ARCH_HAS_5LEVEL_HACK decide whether the
+helpers such as __pud() or __pgd() is even available for that platform.
+Ideally it should have been through generic falls backs in include/*/
+but I guess there might be bugs on the platform or it has not been
+changed to adopt 5 level page table framework with required folding
+macros etc.
 
+>>
+>>          p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
+>>          WRITE_ONCE(*p4dp, p4d);
+>>          p4d_clear(p4dp);
+>>          p4d = READ_ONCE(*p4dp);
+>>          WARN_ON(!p4d_none(p4d));
+>> }
+>>
+>> The following test hits an error at WARN_ON(!p4d_none(p4d))
+>>
+>> [   16.757333] ------------[ cut here ]------------
+>> [   16.758019] WARNING: CPU: 11 PID: 1 at mm/arch_pgtable_test.c:187 arch_pgtable_tests_init+0x24c/0x474
+>> [   16.759455] Modules linked in:
+>> [   16.759952] CPU: 11 PID: 1 Comm: swapper/0 Not tainted 5.3.0-next-20190916-00005-g61c218153bb8-dirty #222
+>> [   16.761449] Hardware name: linux,dummy-virt (DT)
+>> [   16.762185] pstate: 00400005 (nzcv daif +PAN -UAO)
+>> [   16.762964] pc : arch_pgtable_tests_init+0x24c/0x474
+>> [   16.763750] lr : arch_pgtable_tests_init+0x174/0x474
+>> [   16.764534] sp : ffffffc011d7bd50
+>> [   16.765065] x29: ffffffc011d7bd50 x28: ffffffff1756bac0
+>> [   16.765908] x27: ffffff85ddaf3000 x26: 00000000000002e8
+>> [   16.766767] x25: ffffffc0111ce000 x24: ffffff85ddaf32e8
+>> [   16.767606] x23: ffffff85ddaef278 x22: 00000045cc844000
+>> [   16.768445] x21: 000000065daef003 x20: ffffffff17540000
+>> [   16.769283] x19: ffffff85ddb60000 x18: 0000000000000014
+>> [   16.770122] x17: 00000000980426bb x16: 00000000698594c6
+>> [   16.770976] x15: 0000000066e25a88 x14: 0000000000000000
+>> [   16.771813] x13: ffffffff17540000 x12: 000000000000000a
+>> [   16.772651] x11: ffffff85fcfd0a40 x10: 0000000000000001
+>> [   16.773488] x9 : 0000000000000008 x8 : ffffffc01143ab26
+>> [   16.774336] x7 : 0000000000000000 x6 : 0000000000000000
+>> [   16.775180] x5 : 0000000000000000 x4 : 0000000000000000
+>> [   16.776018] x3 : ffffffff1756bbe8 x2 : 000000065daeb003
+>> [   16.776856] x1 : 000000000065daeb x0 : fffffffffffff000
+>> [   16.777693] Call trace:
+>> [   16.778092]  arch_pgtable_tests_init+0x24c/0x474
+>> [   16.778843]  do_one_initcall+0x74/0x1b0
+>> [   16.779458]  kernel_init_freeable+0x1cc/0x290
+>> [   16.780151]  kernel_init+0x10/0x100
+>> [   16.780710]  ret_from_fork+0x10/0x18
+>> [   16.781282] ---[ end trace 042e6c40c0a3b038 ]---
+>>
+>> On arm64 (4K page size|39 bits VA|3 level page table)
+>>
+>> #elif CONFIG_PGTABLE_LEVELS == 3    /* Applicable here */
+>> #define __ARCH_USE_5LEVEL_HACK
+>> #include <asm-generic/pgtable-nopud.h>
+>>
+>> Which pulls in
+>>
+>> #include <asm-generic/pgtable-nop4d-hack.h>
+>>
+>> which pulls in
+>>
+>> #include <asm-generic/5level-fixup.h>
+>>
+>> which defines
+>>
+>> static inline int p4d_none(p4d_t p4d)
+>> {
+>>          return 0;
+>> }
+>>
+>> which will invariably trigger WARN_ON(!p4d_none(p4d)).
+>>
+>> Similarly for next test p4d_populate_tests() which will always be
+>> successful because p4d_bad() invariably returns negative.
+>>
+>> static inline int p4d_bad(p4d_t p4d)
+>> {
+>>          return 0;
+>> }
+>>
+>> static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
+>>                                        pud_t *pudp)
+>> {
+>>          p4d_t p4d;
+>>
+>>          /*
+>>           * This entry points to next level page table page.
+>>           * Hence this must not qualify as p4d_bad().
+>>           */
+>>          pud_clear(pudp);
+>>          p4d_clear(p4dp);
+>>          p4d_populate(mm, p4dp, pudp);
+>>          p4d = READ_ONCE(*p4dp);
+>>          WARN_ON(p4d_bad(p4d));
+>> }
+>>
+>> We should not run these tests for the above config because they are
+>> not applicable and will invariably produce same result.
+>>
+>>>
+>>>>
+>>>>>
+>>>
+>>> [...]
+>>>
+>>>>>> +#if !defined(__PAGETABLE_PUD_FOLDED) && !defined(__ARCH_HAS_5LEVEL_HACK)
+>>>>>
+>>>>> The same can be done here.
+>>>>
+>>>> IIRC not only the page table helpers but there are data types (pxx_t) which
+>>>> were not present on various configs and these wrappers help prevent build
+>>>> failures. Any ways will try and see if this can be improved further. But
+>>>> meanwhile if you have some suggestions, please do let me know.
+>>>
+>>> pgt_t and pmd_t are everywhere I guess.
+>>> then pud_t and p4d_t have fallbacks in asm-generic files.
+>>
+>> Lets take another example where it fails to compile. On arm64 with 16K
+>> page size, 48 bits VA, 4 level page table arrangement in the following
+>> test, pgd_populate() does not have the required signature.
+>>
+>> static void pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
+>> {
+>>          pgd_t pgd;
+>>
+>>          if (mm_p4d_folded(mm))
+>>                  return;
+>>
+>>         /*
+>>           * This entry points to next level page table page.
+>>           * Hence this must not qualify as pgd_bad().
+>>           */
+>>          p4d_clear(p4dp);
+>>          pgd_clear(pgdp);
+>>          pgd_populate(mm, pgdp, p4dp);
+>>          pgd = READ_ONCE(*pgdp);
+>>          WARN_ON(pgd_bad(pgd));
+>> }
+>>
+>> mm/arch_pgtable_test.c: In function ‘pgd_populate_tests’:
+>> mm/arch_pgtable_test.c:254:25: error: passing argument 3 of ‘pgd_populate’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+>>    pgd_populate(mm, pgdp, p4dp);
+>>                           ^~~~
+>> In file included from mm/arch_pgtable_test.c:27:0:
+>> ./arch/arm64/include/asm/pgalloc.h:81:20: note: expected ‘pud_t * {aka struct <anonymous> *}’ but argument is of type ‘pgd_t * {aka struct <anonymous> *}’
+>>   static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, pud_t *pudp)
+>>
+>> The build failure is because p4d_t * maps to pgd_t * but the applicable
+>> (it does not fallback on generic ones) pgd_populate() expects a pud_t *.
+>>
+>> Except for archs which have 5 level page able, pgd_populate() always accepts
+>> lower level page table pointers as the last argument as they dont have that
+>> many levels.
+>>
+>> arch/x86/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
+>> arch/s390/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
+>>
+>> But others
+>>
+>> arch/arm64/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, pud_t *pudp)
+>> arch/m68k/include/asm/motorola_pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pmd_t *pmd)
+>> arch/mips/include/asm/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pud_t *pud)
+>> arch/powerpc/include/asm/book3s/64/pgalloc.h:static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, pud_t *pud)
+>>
+>> I remember going through all these combinations before arriving at the
+>> current state of #ifdef exclusions. Probably, to solved this all platforms
+>> have to define pxx_populate() helpers assuming they support 5 level page
+>> table.
+>>
+>>>
+>>> So it shouldn't be an issue. Maybe if a couple of arches miss them, the best would be to fix the arches, since that's the purpose of your testsuite isn't it ?
+>>
+>> The run time failures as explained previously is because of the folding which
+>> needs to be protected as they are not even applicable. The compile time
+>> failures are because pxx_populate() signatures are platform specific depending
+>> on how many page table levels they really support.
+>>
 > 
-> > +		if (rc)
-> > +			goto err_free_mmio;
-> > +	}
-> > +
-> >   	return 0;
-> >   
-> > +err_free_mmio:
-> > +	unmap_mmio_areas(afu);
-> >   err_free_pasid:
-> >   	reclaim_afu_pasid(afu);
-> >   err_free_actag:
-> > diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-> > index 58d111afd9f6..2874811a4398 100644
-> > --- a/drivers/misc/ocxl/link.c
-> > +++ b/drivers/misc/ocxl/link.c
-> > @@ -84,6 +84,11 @@ struct ocxl_link {
-> >   	int dev;
-> >   	atomic_t irq_available;
-> >   	struct spa *spa;
-> > +	struct mutex lpc_mem_lock;
-> > +	u64 lpc_mem_sz; /* Total amount of LPC memory presented on the
-> > link */
-> > +	u64 lpc_mem;
-> > +	int lpc_consumers;
-> > +
-> >   	void *platform_data;
-> >   };
-> >   static struct list_head links_list = LIST_HEAD_INIT(links_list);
-> > @@ -396,6 +401,8 @@ static int alloc_link(struct pci_dev *dev, int
-> > PE_mask, struct ocxl_link **out_l
-> >   	if (rc)
-> >   		goto err_spa;
-> >   
-> > +	mutex_init(&link->lpc_mem_lock);
-> > +
-> >   	/* platform specific hook */
-> >   	rc = pnv_ocxl_spa_setup(dev, link->spa->spa_mem, PE_mask,
-> >   				&link->platform_data);
-> > @@ -711,3 +718,57 @@ void ocxl_link_free_irq(void *link_handle, int
-> > hw_irq)
-> >   	atomic_inc(&link->irq_available);
-> >   }
-> >   EXPORT_SYMBOL_GPL(ocxl_link_free_irq);
-> > +
-> > +int ocxl_link_add_lpc_mem(void *link_handle, u64 size)
-> > +{
-> > +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> > +
-> > +	u64 orig_size;
-> > +	bool good = false;
-> > +
-> > +	mutex_lock(&link->lpc_mem_lock);
-> > +	orig_size = link->lpc_mem_sz;
-> > +	link->lpc_mem_sz += size;
+> So IIUC, the compiletime problem is around __ARCH_HAS_5LEVEL_HACK. For all #if !defined(__PAGETABLE_PXX_FOLDED), something equivalent to the following should make the trick.
+> 
+>     if (mm_pxx_folded())
+>         return;
 > 
 > 
-> We have a choice to make here:
-> 1. either we only support one LPC memory-carrying AFU (and the above
-> is 
-> overkill)
-> 2. or we support multiple AFUs with LPC memory (on the same
-> function), 
-> but then I think the above is too simple.
-> 
->  From the opencapi spec, each AFU can define a chunk of memory with
-> a 
-> starting address and a size. There's no rule which says they have to
-> be 
-> contiguous. There's no rule which says it must start at 0. So to
-> support 
-> multiple AFUs with LPC memory, we should record the current maximum 
-> range instead of just the global size. Ultimately, we need to tell
-> the 
-> NPU the range of permissible addresses. It starts at 0, so we need
-> to 
-> take into account any intial offset and holes.
-> 
-> I would go for option 2, to at least be consistent within ocxl and 
-> support multiple AFUs. Even though I don't think we'll see FPGA
-> images 
-> with multiple AFUs with LPC memory any time soon.
-> 
+> For the __ARCH_HAS_5LEVEL_HACK stuff, I think we should be able to regroup all impacted functions inside a single #ifdef __ARCH_HAS_5LEVEL_HACK
 
-Ill rework this to take an offset & size, the NPU will map from the
-base address up to the largest offset + size provided across all AFUs
-on the link.
+I was wondering if it will be better to
 
-> 
-> > +	good = orig_size < link->lpc_mem_sz;
-> > +	mutex_unlock(&link->lpc_mem_lock);
-> > +
-> > +	// Check for overflow
-> > +	return (good) ? 0 : -EINVAL;
-> > +}
-> > +EXPORT_SYMBOL_GPL(ocxl_link_add_lpc_mem);
-> 
-> Do the symbol really need to be exported? IIUC, the next patch
-> defines a 
-> higher level ocxl_afu_map_lpc_mem() which is meant to be called by a 
-> calling driver.
-> 
+1) Minimize all #ifdefs in the code which might fail on some platforms
+2) Restrict proposed test module to platforms where it builds and runs
+3) Enable other platforms afterwards after fixing their build problems or other requirements
 
-No, I'll remove it.
-
-> 
-> > +
-> > +u64 ocxl_link_lpc_map(void *link_handle, struct pci_dev *pdev)
-> > +{
-> > +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> > +
-> > +	mutex_lock(&link->lpc_mem_lock);
-> > +	if (link->lpc_mem) {
-> > +		u64 lpc_mem = link->lpc_mem;
-> > +
-> > +		link->lpc_consumers++;
-> > +		mutex_unlock(&link->lpc_mem_lock);
-> > +		return lpc_mem;
-> > +	}
-> > +
-> > +	link->lpc_mem = pnv_ocxl_platform_lpc_setup(pdev, link-
-> > >lpc_mem_sz);
-> > +	if (link->lpc_mem)
-> > +		link->lpc_consumers++;
-> > +	mutex_unlock(&link->lpc_mem_lock);
-> > +
-> > +	return link->lpc_mem;
-> 
-> Should be cached in a temp variable, like on the fast path,
-> otherwise 
-> it's accessed with no lock.
-
-Good spotting, thanks.
-
-> 
-> > +}
-> > +
-> > +void ocxl_link_lpc_release(void *link_handle, struct pci_dev
-> > *pdev)
-> > +{
-> > +	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> > +
-> > +	mutex_lock(&link->lpc_mem_lock);
-> > +	link->lpc_consumers--;
-> > +	if (link->lpc_consumers == 0) {
-> > +		pnv_ocxl_platform_lpc_release(pdev);
-> > +		link->lpc_mem = 0;
-> > +	}
-> > +
-> > +	mutex_unlock(&link->lpc_mem_lock);
-> > +}
-> > diff --git a/drivers/misc/ocxl/ocxl_internal.h
-> > b/drivers/misc/ocxl/ocxl_internal.h
-> > index 97415afd79f3..db2647a90fc8 100644
-> > --- a/drivers/misc/ocxl/ocxl_internal.h
-> > +++ b/drivers/misc/ocxl/ocxl_internal.h
-> > @@ -141,4 +141,46 @@ int ocxl_irq_offset_to_id(struct ocxl_context
-> > *ctx, u64 offset);
-> >   u64 ocxl_irq_id_to_offset(struct ocxl_context *ctx, int irq_id);
-> >   void ocxl_afu_irq_free_all(struct ocxl_context *ctx);
-> >   
-> > +/**
-> > + * Increment the amount of memory required by an OpenCAPI link
-> > + *
-> > + * link_handle: The OpenCAPI link handle
-> > + * size: The amount of memory to increment by
-> > + *
-> > + * Return 0 on success, negative on overflow
-> > + */
-> > +extern int ocxl_link_add_lpc_mem(void *link_handle, u64 size);
-> 
-> We've removed all the 'extern' in a previous patch.
-
-Thanks, I spotted this too (after I posted it).
-
-> > +
-> > +/**
-> > + * Get the amount of memory required by an OpenCAPI link
-> > + *
-> > + * link_handle: The OpenCAPI link handle
-> > + *
-> > + * Return the amount of memory required by the link, this value is
-> > undefined if
-> > + * ocxl_link_add_lpc_mem failed.
-> > + */
-> > +extern u64 ocxl_link_get_lpc_mem_sz(void *link_handle);
-> 
-> I don't see that one defined anywhere.
-> 
-
-Whoops, I'll remove it.
-
->    Fred
-> 
-> 
-> > +
-> > +/**
-> > + * Map the LPC memory for an OpenCAPI device
-> > + *
-> > + * Since LPC memory belongs to a link, the whole LPC memory
-> > available
-> > + * on the link bust be mapped in order to make it accessible to a
-> > device.
-> > + *
-> > + * @link_handle: The OpenCAPI link handle
-> > + * @pdev: A device that is on the link
-> > + */
-> > +u64 ocxl_link_lpc_map(void *link_handle, struct pci_dev *pdev);
-> > +
-> > +/**
-> > + * Release the LPC memory device for an OpenCAPI device
-> > + *
-> > + * Releases LPC memory on an OpenCAPI link for a device. If this
-> > is the
-> > + * last device on the link to release the memory, unmap it from
-> > the link.
-> > + *
-> > + * @link_handle: The OpenCAPI link handle
-> > + * @pdev: A device that is on the link
-> > + */
-> > +void ocxl_link_lpc_release(void *link_handle, struct pci_dev
-> > *pdev);
-> > +
-> >   #endif /* _OCXL_INTERNAL_H_ */
-> > 
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
-
+Would that be a better approach instead ?
