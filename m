@@ -1,32 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0057BB77BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 12:49:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2CBB77DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 12:54:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46YtrV4HdxzF3Nc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 20:49:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Yty80fzBzF34J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 20:54:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46YtKb1LXszF4XM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 20:25:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46YtKZ6sBdzF4YG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 20:25:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 46YtKW5XYJz9s4Y; Thu, 19 Sep 2019 20:25:51 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46YtKZ1fS5z9sPj; Thu, 19 Sep 2019 20:25:53 +1000 (AEST)
+ id 46YtKW0Z7hz9sN1; Thu, 19 Sep 2019 20:25:50 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 5896163f7f91c0560cc41908c808661eee4c4121
-In-Reply-To: <20190910081850.26038-2-clg@kaod.org>
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+X-powerpc-patch-commit: aa497d4352414aad22e792b35d0aaaa12bbc37c5
+In-Reply-To: <c02ce4a573f3bac907e2c70957a2d1275f910013.1567605586.git.segher@kernel.crashing.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/xmon: Improve output of XIVE interrupts
-Message-Id: <46YtKZ1fS5z9sPj@ozlabs.org>
-Date: Thu, 19 Sep 2019 20:25:53 +1000 (AEST)
+Subject: Re: [PATCH] powerpc: Add attributes for setjmp/longjmp
+Message-Id: <46YtKW0Z7hz9sN1@ozlabs.org>
+Date: Thu, 19 Sep 2019 20:25:50 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,21 +41,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-09-10 at 08:18:49 UTC, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= wrote:
-> When looping on the list of interrupts, add the current value of the
-> PQ bits with a load on the ESB page. This has the side effect of
-> faulting the ESB page of all interrupts.
+On Wed, 2019-09-04 at 14:11:07 UTC, Segher Boessenkool wrote:
+> The setjmp function should be declared as "returns_twice", or bad
+> things can happen[1].  This does not actually change generated code
+> in my testing.
 > 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> The longjmp function should be declared as "noreturn", so that the
+> compiler can optimise calls to it better.  This makes the generated
+> code a little shorter.
+> 
+> Signed-off-by: Segher Boessenkool <segher@kernel.crashing.org>
 
-Series applied to powerpc next, thanks.
+Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/5896163f7f91c0560cc41908c808661eee4c4121
+https://git.kernel.org/powerpc/c/aa497d4352414aad22e792b35d0aaaa12bbc37c5
 
 cheers
