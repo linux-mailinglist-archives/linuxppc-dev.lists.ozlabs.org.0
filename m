@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284F8B7771
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 12:28:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47543B777A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 12:31:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46YtNn4S2nzF3CG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 20:28:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46YtRT5WKmzF4Yy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 20:31:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46YtKH33vJzF4XJ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46YtKH2Y6wzF4Kn
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 20:25:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46YtKG6Krmz9sP3; Thu, 19 Sep 2019 20:25:38 +1000 (AEST)
+ id 46YtKF1jchz9sP6; Thu, 19 Sep 2019 20:25:37 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: ec5b705c48365549c483fab17d68d15d83bef265
-In-Reply-To: <1566570120-16529-1-git-send-email-cai@lca.pw>
-To: Qian Cai <cai@lca.pw>
+X-powerpc-patch-commit: 67c87892e2e17b7083cb8b4289ed8ff69ad9ac1e
+In-Reply-To: <20190813051212.6387-1-jniethe5@gmail.com>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/mm/radix: remove useless kernel messages
-Message-Id: <46YtKG6Krmz9sP3@ozlabs.org>
-Date: Thu, 19 Sep 2019 20:25:38 +1000 (AEST)
+Subject: Re: [PATCH] powerpc: Remove empty comment
+Message-Id: <46YtKF1jchz9sP6@ozlabs.org>
+Date: Thu, 19 Sep 2019 20:25:37 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,33 +38,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Qian Cai <cai@lca.pw>, linux-kernel@vger.kernel.org, paulus@samba.org
+Cc: Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-08-23 at 14:22:00 UTC, Qian Cai wrote:
-> Booting a POWER9 PowerNV system generates a few messages below with
-> "____ptrval____" due to the pointers printed without a specifier
-> extension (i.e unadorned %p) are hashed to prevent leaking information
-> about the kernel memory layout.
+On Tue, 2019-08-13 at 05:12:12 UTC, Jordan Niethe wrote:
+> Commit 2874c5fd2842 ("treewide: Replace GPLv2 boilerplate/reference with
+> SPDX - rule 152") left an empty comment in machdep.h, as the boilerplate
+> was the only text in the comment. Remove the empty comment.
 > 
-> radix-mmu: Initializing Radix MMU
-> radix-mmu: Partition table (____ptrval____)
-> radix-mmu: Mapped 0x0000000000000000-0x0000000040000000 with 1.00 GiB
-> pages (exec)
-> radix-mmu: Mapped 0x0000000040000000-0x0000002000000000 with 1.00 GiB
-> pages
-> radix-mmu: Mapped 0x0000200000000000-0x0000202000000000 with 1.00 GiB
-> pages
-> radix-mmu: Process table (____ptrval____) and radix root for kernel:
-> (____ptrval____)
-> 
-> Signed-off-by: Qian Cai <cai@lca.pw>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/ec5b705c48365549c483fab17d68d15d83bef265
+https://git.kernel.org/powerpc/c/67c87892e2e17b7083cb8b4289ed8ff69ad9ac1e
 
 cheers
