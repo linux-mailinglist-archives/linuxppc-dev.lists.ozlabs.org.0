@@ -2,31 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF54B783B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 13:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD31B791C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 14:16:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46YvKJ09n4zF4Py
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 21:10:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Ywmg6GzNzF4yS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2019 22:16:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46YtKm4DNpzF4Y0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 20:26:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 46YtKl43Myz9sQq; Thu, 19 Sep 2019 20:26:03 +1000 (AEST)
-X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: ad9b48c52296ddb7620e3f2b66a7479b78632dff
-In-Reply-To: <20190915052905.13431-1-adam.zerella@gmail.com>
-To: Adam Zerella <adam.zerella@gmail.com>, 
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] docs: powerpc: Add missing documentation reference
-Message-Id: <46YtKl43Myz9sQq@ozlabs.org>
-Date: Thu, 19 Sep 2019 20:26:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Ywjb0ls2zF1KD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 22:13:19 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CCCA71A03F0;
+ Thu, 19 Sep 2019 14:13:16 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D4B471A0084;
+ Thu, 19 Sep 2019 14:13:09 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 8FF7C402E6;
+ Thu, 19 Sep 2019 20:13:01 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ robh+dt@kernel.org, mark.rutland@arm.com, devicetree@vger.kernel.org,
+ lars@metafoo.de
+Subject: [PATCH V3 2/4] ASoC: fsl_asrc: update supported sample format
+Date: Thu, 19 Sep 2019 20:11:40 +0800
+Message-Id: <5811f393692a7668564fd4b9ef5708c1e3db8dc0.1568861098.git.shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <cover.1568861098.git.shengjiu.wang@nxp.com>
+References: <cover.1568861098.git.shengjiu.wang@nxp.com>
+In-Reply-To: <cover.1568861098.git.shengjiu.wang@nxp.com>
+References: <cover.1568861098.git.shengjiu.wang@nxp.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,28 +58,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, corbet@lwn.net, paulus@samba.org,
- Adam Zerella <adam.zerella@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2019-09-15 at 05:29:05 UTC, Adam Zerella wrote:
-> The documentation pages for 'elfnote' and 'ultravisor'
-> are not included in the powerpc documentation index, this
-> generates Sphinx warnings:
-> 
-> WARNING: document isn't included in any toctree
-> 
-> Additionally, when one includes these missing doc pages,
-> more Sphinx warnings appear. Unused footnote references,
-> syntax highlighting and table of content ordering has
-> been adjusted.
-> 
-> Signed-off-by: Adam Zerella <adam.zerella@gmail.com>
+The ASRC support 24bit/16bit/8bit input width, which is
+data width, not slot width.
 
-Applied to powerpc next, thanks.
+For the S20_3LE format, the data with is 20bit, slot width
+is 24bit, if we set ASRMCR1n.IWD to be 24bits, the result
+is the volume is lower than expected, it likes 24bit data
+right shift 4 bits
 
-https://git.kernel.org/powerpc/c/ad9b48c52296ddb7620e3f2b66a7479b78632dff
+So replace S20_3LE with S24_3LE in supported list and add S8
+format in TX supported list
 
-cheers
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_asrc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index 4d3804a1ea55..584badf956d2 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -624,7 +624,7 @@ static int fsl_asrc_dai_probe(struct snd_soc_dai *dai)
+ 
+ #define FSL_ASRC_FORMATS	(SNDRV_PCM_FMTBIT_S24_LE | \
+ 				 SNDRV_PCM_FMTBIT_S16_LE | \
+-				 SNDRV_PCM_FMTBIT_S20_3LE)
++				 SNDRV_PCM_FMTBIT_S24_3LE)
+ 
+ static struct snd_soc_dai_driver fsl_asrc_dai = {
+ 	.probe = fsl_asrc_dai_probe,
+@@ -635,7 +635,8 @@ static struct snd_soc_dai_driver fsl_asrc_dai = {
+ 		.rate_min = 5512,
+ 		.rate_max = 192000,
+ 		.rates = SNDRV_PCM_RATE_KNOT,
+-		.formats = FSL_ASRC_FORMATS,
++		.formats = FSL_ASRC_FORMATS |
++			   SNDRV_PCM_FMTBIT_S8,
+ 	},
+ 	.capture = {
+ 		.stream_name = "ASRC-Capture",
+-- 
+2.21.0
+
