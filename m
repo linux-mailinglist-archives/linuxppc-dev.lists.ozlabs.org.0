@@ -1,85 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B6FB8835
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 01:46:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFE7B8843
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 01:51:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZD575dmxzF50S
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 09:46:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZDCW393qzF40l
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 09:51:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="kNWSnXv4"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZD2y2lg3zF566
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 09:44:26 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8JNbQk1168490; Thu, 19 Sep 2019 19:44:20 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v4f1hgpyk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2019 19:44:20 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8JNc05q169617;
- Thu, 19 Sep 2019 19:44:20 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v4f1hgpyd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2019 19:44:20 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8JNdnLN007096;
- Thu, 19 Sep 2019 23:44:19 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma04dal.us.ibm.com with ESMTP id 2v3vbukrtp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2019 23:44:19 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8JNiHb957540926
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Sep 2019 23:44:18 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D5904BE051;
- Thu, 19 Sep 2019 23:44:17 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F954BE04F;
- Thu, 19 Sep 2019 23:44:17 +0000 (GMT)
-Received: from localhost (unknown [9.80.223.117])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 19 Sep 2019 23:44:17 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: "Oliver O'Halloran" <oohall@gmail.com>
-Subject: Re: [PATCH v5 05/12] powerpc/eeh: EEH for pSeries hot plug
-In-Reply-To: <CAOSf1CEjNd3HJ8OGwPn1sBs7NEJme-+oPFu5EAG5NQaHw1ampQ@mail.gmail.com>
-References: <cover.1565930772.git.sbobroff@linux.ibm.com>
- <72ae8ae9c54097158894a52de23690448de38ea9.1565930772.git.sbobroff@linux.ibm.com>
- <871rwcqbd3.fsf@linux.ibm.com>
- <CAOSf1CEjNd3HJ8OGwPn1sBs7NEJme-+oPFu5EAG5NQaHw1ampQ@mail.gmail.com>
-Date: Thu, 19 Sep 2019 18:44:16 -0500
-Message-ID: <87y2yjq2b3.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZD9K3WWGzDqP1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 09:49:54 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id y5so3308889pfo.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 16:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=DO8lDkgH/09igYhmGE97oh8+8ahZBIflCShVrR9OrmU=;
+ b=kNWSnXv4Q9H2UbWOSwbkFDyDYqrw5V5FmU8EqdV7tUgMVaqW5UnRoGaPbLRxAC+hEd
+ 3daoRlbwjVz6K32Az6qna8OmyjDaxJuCA2WvshtxpT7DkMnbifHYEJ0BsKiMtLFSyUv3
+ xDtTO+b/VsYw08fNK30ntWhKO+BaL7AAi/8AlX1aHtOMrqbJ8T1WEIQpq9f5s4SWLwhz
+ bMbeKs2DUZAbkByeqfxDZXfHVfm4ozWqy8uoRaFUJ9B0hw9MOXly7hJRc2nommYb7OBW
+ jiKWP5+nLvTY4Ez/l9sDmXVwjP0y2WNKAAcZZMFAx8o/6PkqGygW6BcO7SHlaOPWr9Vk
+ I92g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=DO8lDkgH/09igYhmGE97oh8+8ahZBIflCShVrR9OrmU=;
+ b=WeiNWXgEISvrvuC6nXvxdcePNrDaTx36SkldWyZvMy3ppiHXfvq3yFG1dgInh8HMum
+ +w/b+Cpauyl+1H2gm58gITPBcuwuJGXlRtZbmhQ+DDdGlNXcDfJj0ZnaQyZOi3kRHR5R
+ psXQJRauQskuKaGp/jDBZZfymqflEj5rRgtNUzQNHFOYmkWrJskdOcXchd2AjcAWr0PM
+ QwNOA8OgnL1ableN5SOJdRmm/rcXFCsY8qAPqq92Ha8axnvRMhMZ+9JjBszdtH7pbomF
+ ugOeVk6FTOSB4962wwstNqhV6tZHbig9HvHxq3t64OQOhLH9C2ehHMff7EGlO106srCG
+ 9Rzw==
+X-Gm-Message-State: APjAAAXkFyLmDlaB41AANKBUWC1xapEBJgGmffOWrV73KBbtlaZjRH/E
+ PqfF2vDmpb9SH45uBy55lrg=
+X-Google-Smtp-Source: APXvYqxicFF4tS7Mcj+VMjT1qOkc2frSVMWmjKYUyhpoVLCZd7f7tLUEHubAzMDOxlG+EHV+svcZtA==
+X-Received: by 2002:a62:1c16:: with SMTP id c22mr13829974pfc.10.1568936990878; 
+ Thu, 19 Sep 2019 16:49:50 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id e21sm30169pgr.43.2019.09.19.16.49.49
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 19 Sep 2019 16:49:50 -0700 (PDT)
+Date: Thu, 19 Sep 2019 16:48:58 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH V3 2/4] ASoC: fsl_asrc: update supported sample format
+Message-ID: <20190919234857.GA14287@Asurada-Nvidia.nvidia.com>
+References: <cover.1568861098.git.shengjiu.wang@nxp.com>
+ <5811f393692a7668564fd4b9ef5708c1e3db8dc0.1568861098.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-19_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=5 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909190202
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5811f393692a7668564fd4b9ef5708c1e3db8dc0.1568861098.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,407 +81,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
+ Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com,
+ lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org,
+ festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Oliver O'Halloran" <oohall@gmail.com> writes:
+On Thu, Sep 19, 2019 at 08:11:40PM +0800, Shengjiu Wang wrote:
+> The ASRC support 24bit/16bit/8bit input width, which is
+> data width, not slot width.
+> 
+> For the S20_3LE format, the data with is 20bit, slot width
+> is 24bit, if we set ASRMCR1n.IWD to be 24bits, the result
+> is the volume is lower than expected, it likes 24bit data
+> right shift 4 bits
+> 
+> So replace S20_3LE with S24_3LE in supported list and add S8
+> format in TX supported list
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-> On Fri, Sep 20, 2019 at 6:28 AM Nathan Lynch <nathanl@linux.ibm.com> wrote:
->>
->> Hello Sam,
->>
->> Sam Bobroff <sbobroff@linux.ibm.com> writes:
->>
->> With this change, I get a crash (use after free by the looks of it) when
->> I remove and then add a pci device in qemu:
->>
->> $ qemu-system-ppc64 -M pseries -append 'debug console=hvc0' \
->>   -nographic -vga none -m 1G,slots=32,maxmem=1024G -smp 2 \
->>   -kernel vmlinux -initrd ~/b/br/ppc64le-initramfs/images/rootfs.cpio \
->>   -nic model=e1000
->
-> is there anything special in your kernel config? I tested this with
-> pseries_le_defconfig and couldn't hit the crash.
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
-My config is below; CONFIG_SLUB_DEBUG_ON=y probably makes the difference.
-
-CONFIG_SYSVIPC=y
-CONFIG_POSIX_MQUEUE=y
-CONFIG_AUDIT=y
-CONFIG_NO_HZ=y
-CONFIG_HIGH_RES_TIMERS=y
-CONFIG_TASKSTATS=y
-CONFIG_TASK_DELAY_ACCT=y
-CONFIG_TASK_XACCT=y
-CONFIG_TASK_IO_ACCOUNTING=y
-CONFIG_IKCONFIG=y
-CONFIG_IKCONFIG_PROC=y
-CONFIG_LOG_BUF_SHIFT=18
-CONFIG_LOG_CPU_MAX_BUF_SHIFT=13
-CONFIG_NUMA_BALANCING=y
-CONFIG_CGROUPS=y
-CONFIG_MEMCG=y
-CONFIG_MEMCG_SWAP=y
-CONFIG_CGROUP_SCHED=y
-CONFIG_CGROUP_FREEZER=y
-CONFIG_CPUSETS=y
-CONFIG_CGROUP_DEVICE=y
-CONFIG_CGROUP_CPUACCT=y
-CONFIG_CGROUP_PERF=y
-CONFIG_CGROUP_BPF=y
-CONFIG_USER_NS=y
-CONFIG_BLK_DEV_INITRD=y
-CONFIG_INITRAMFS_SOURCE="rootfs.cpio"
-CONFIG_BPF_SYSCALL=y
-# CONFIG_COMPAT_BRK is not set
-CONFIG_PROFILING=y
-CONFIG_PPC64=y
-CONFIG_NR_CPUS=2048
-CONFIG_CPU_LITTLE_ENDIAN=y
-CONFIG_PPC_SPLPAR=y
-CONFIG_DTL=y
-CONFIG_SCANLOG=y
-CONFIG_PPC_SMLPAR=y
-CONFIG_RTAS_FLASH=y
-CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
-CONFIG_HZ_100=y
-CONFIG_PPC_TRANSACTIONAL_MEM=y
-CONFIG_KEXEC=y
-CONFIG_KEXEC_FILE=y
-CONFIG_IRQ_ALL_CPUS=y
-CONFIG_PPC_64K_PAGES=y
-CONFIG_PPC_SUBPAGE_PROT=y
-CONFIG_SCHED_SMT=y
-CONFIG_PM_DEBUG=y
-CONFIG_VIRTUALIZATION=y
-CONFIG_KVM_BOOK3S_64=y
-CONFIG_KVM_BOOK3S_64_HV=y
-CONFIG_VHOST_NET=y
-CONFIG_OPROFILE=y
-CONFIG_KPROBES=y
-CONFIG_JUMP_LABEL=y
-CONFIG_REFCOUNT_FULL=y
-CONFIG_MODULES=y
-CONFIG_MODULE_UNLOAD=y
-CONFIG_MODVERSIONS=y
-CONFIG_MODULE_SRCVERSION_ALL=y
-CONFIG_PARTITION_ADVANCED=y
-CONFIG_BINFMT_MISC=y
-CONFIG_MEMORY_HOTPLUG=y
-CONFIG_MEMORY_HOTREMOVE=y
-CONFIG_KSM=y
-CONFIG_TRANSPARENT_HUGEPAGE=y
-CONFIG_NET=y
-CONFIG_PACKET=y
-CONFIG_UNIX=y
-CONFIG_XFRM_USER=y
-CONFIG_NET_KEY=y
-CONFIG_INET=y
-CONFIG_IP_MULTICAST=y
-CONFIG_NET_IPIP=y
-CONFIG_SYN_COOKIES=y
-CONFIG_INET_AH=y
-CONFIG_INET_ESP=y
-CONFIG_INET_IPCOMP=y
-# CONFIG_IPV6 is not set
-CONFIG_NETFILTER=y
-# CONFIG_NETFILTER_ADVANCED is not set
-CONFIG_NF_CONNTRACK=y
-CONFIG_NF_CONNTRACK_FTP=y
-CONFIG_NF_CONNTRACK_IRC=y
-CONFIG_NF_CONNTRACK_SIP=y
-CONFIG_NF_CT_NETLINK=y
-CONFIG_NETFILTER_XT_MARK=y
-CONFIG_NETFILTER_XT_TARGET_LOG=y
-CONFIG_NETFILTER_XT_TARGET_NFLOG=y
-CONFIG_NETFILTER_XT_TARGET_TCPMSS=y
-CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y
-CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
-CONFIG_NETFILTER_XT_MATCH_POLICY=y
-CONFIG_NETFILTER_XT_MATCH_STATE=y
-CONFIG_NF_LOG_ARP=y
-CONFIG_IP_NF_IPTABLES=y
-CONFIG_IP_NF_FILTER=y
-CONFIG_IP_NF_TARGET_REJECT=y
-CONFIG_IP_NF_NAT=y
-CONFIG_IP_NF_TARGET_MASQUERADE=y
-CONFIG_IP_NF_MANGLE=y
-CONFIG_BRIDGE=y
-CONFIG_VLAN_8021Q=y
-CONFIG_NET_SCHED=y
-CONFIG_NET_CLS_BPF=y
-CONFIG_NET_CLS_ACT=y
-CONFIG_NET_ACT_BPF=y
-CONFIG_BPF_JIT=y
-CONFIG_HOTPLUG_PCI=y
-CONFIG_HOTPLUG_PCI_RPA=y
-CONFIG_HOTPLUG_PCI_RPA_DLPAR=y
-CONFIG_UEVENT_HELPER=y
-CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-CONFIG_DEVTMPFS=y
-CONFIG_DEVTMPFS_MOUNT=y
-CONFIG_OF_UNITTEST=y
-CONFIG_PARPORT=y
-CONFIG_PARPORT_PC=y
-CONFIG_BLK_DEV_FD=y
-CONFIG_BLK_DEV_LOOP=y
-CONFIG_BLK_DEV_NBD=y
-CONFIG_BLK_DEV_RAM=y
-CONFIG_BLK_DEV_RAM_SIZE=65536
-CONFIG_VIRTIO_BLK=y
-CONFIG_CXL=y
-CONFIG_OCXL=y
-CONFIG_BLK_DEV_SD=y
-CONFIG_CHR_DEV_ST=y
-CONFIG_BLK_DEV_SR=y
-CONFIG_BLK_DEV_SR_VENDOR=y
-CONFIG_CHR_DEV_SG=y
-CONFIG_SCSI_CONSTANTS=y
-CONFIG_SCSI_FC_ATTRS=y
-CONFIG_SCSI_CXGB3_ISCSI=y
-CONFIG_SCSI_CXGB4_ISCSI=y
-CONFIG_SCSI_BNX2_ISCSI=y
-CONFIG_BE2ISCSI=y
-CONFIG_CXLFLASH=y
-CONFIG_SCSI_MPT2SAS=y
-CONFIG_SCSI_IBMVSCSI=y
-CONFIG_SCSI_IBMVFC=y
-CONFIG_SCSI_SYM53C8XX_2=y
-CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=0
-CONFIG_SCSI_IPR=y
-CONFIG_SCSI_QLA_FC=y
-CONFIG_SCSI_QLA_ISCSI=y
-CONFIG_SCSI_LPFC=y
-CONFIG_SCSI_VIRTIO=y
-CONFIG_SCSI_DH=y
-CONFIG_SCSI_DH_RDAC=y
-CONFIG_SCSI_DH_ALUA=y
-CONFIG_ATA=y
-CONFIG_SATA_AHCI=y
-CONFIG_PATA_AMD=y
-CONFIG_ATA_GENERIC=y
-CONFIG_MD=y
-CONFIG_BLK_DEV_MD=y
-CONFIG_MD_LINEAR=y
-CONFIG_MD_RAID0=y
-CONFIG_MD_RAID1=y
-CONFIG_MD_RAID10=y
-CONFIG_MD_RAID456=y
-CONFIG_MD_MULTIPATH=y
-CONFIG_MD_FAULTY=y
-CONFIG_BLK_DEV_DM=y
-CONFIG_DM_CRYPT=y
-CONFIG_DM_SNAPSHOT=y
-CONFIG_DM_THIN_PROVISIONING=y
-CONFIG_DM_MIRROR=y
-CONFIG_DM_ZERO=y
-CONFIG_DM_MULTIPATH=y
-CONFIG_DM_MULTIPATH_QL=y
-CONFIG_DM_MULTIPATH_ST=y
-CONFIG_DM_UEVENT=y
-CONFIG_BONDING=y
-CONFIG_DUMMY=y
-CONFIG_MACVLAN=y
-CONFIG_MACVTAP=y
-CONFIG_VXLAN=y
-CONFIG_NETCONSOLE=y
-CONFIG_TUN=y
-CONFIG_VETH=y
-CONFIG_VIRTIO_NET=y
-CONFIG_VORTEX=y
-CONFIG_ACENIC=y
-CONFIG_ACENIC_OMIT_TIGON_I=y
-CONFIG_PCNET32=y
-CONFIG_TIGON3=y
-CONFIG_BNX2X=y
-CONFIG_CHELSIO_T1=y
-CONFIG_BE2NET=y
-CONFIG_IBMVETH=y
-CONFIG_E100=y
-CONFIG_E1000=y
-CONFIG_E1000E=y
-CONFIG_IXGB=y
-CONFIG_IXGBE=y
-CONFIG_I40E=y
-CONFIG_MLX4_EN=y
-CONFIG_MYRI10GE=y
-CONFIG_S2IO=y
-CONFIG_QLGE=y
-CONFIG_NETXEN_NIC=y
-CONFIG_PPP=y
-CONFIG_PPP_BSDCOMP=y
-CONFIG_PPP_DEFLATE=y
-CONFIG_PPPOE=y
-CONFIG_PPP_ASYNC=y
-CONFIG_PPP_SYNC_TTY=y
-CONFIG_INPUT_EVDEV=y
-CONFIG_INPUT_MISC=y
-CONFIG_INPUT_PCSPKR=y
-# CONFIG_SERIO_SERPORT is not set
-CONFIG_SERIAL_8250=y
-CONFIG_SERIAL_8250_CONSOLE=y
-CONFIG_SERIAL_ICOM=y
-CONFIG_SERIAL_JSM=y
-CONFIG_HVC_CONSOLE=y
-CONFIG_HVC_RTAS=y
-CONFIG_HVCS=y
-CONFIG_VIRTIO_CONSOLE=y
-CONFIG_IBM_BSR=y
-CONFIG_POWERNV_OP_PANEL=y
-CONFIG_HW_RANDOM=y
-CONFIG_RAW_DRIVER=y
-CONFIG_MAX_RAW_DEVS=1024
-CONFIG_I2C_CHARDEV=y
-CONFIG_FB=y
-CONFIG_FIRMWARE_EDID=y
-CONFIG_FB_OF=y
-CONFIG_FB_MATROX=y
-CONFIG_FB_MATROX_MILLENIUM=y
-CONFIG_FB_MATROX_MYSTIQUE=y
-CONFIG_FB_MATROX_G=y
-CONFIG_FB_RADEON=y
-CONFIG_FB_IBM_GXT4500=y
-CONFIG_LCD_CLASS_DEVICE=y
-CONFIG_LCD_PLATFORM=y
-# CONFIG_VGA_CONSOLE is not set
-CONFIG_FRAMEBUFFER_CONSOLE=y
-CONFIG_LOGO=y
-CONFIG_HID_GYRATION=y
-CONFIG_HID_PANTHERLORD=y
-CONFIG_HID_PETALYNX=y
-CONFIG_HID_SAMSUNG=y
-CONFIG_HID_SUNPLUS=y
-CONFIG_USB_HIDDEV=y
-CONFIG_USB=y
-CONFIG_USB_MON=y
-CONFIG_USB_XHCI_HCD=y
-CONFIG_USB_EHCI_HCD=y
-# CONFIG_USB_EHCI_HCD_PPC_OF is not set
-CONFIG_USB_OHCI_HCD=y
-CONFIG_USB_STORAGE=y
-CONFIG_NEW_LEDS=y
-CONFIG_LEDS_CLASS=y
-CONFIG_LEDS_POWERNV=y
-CONFIG_INFINIBAND=y
-CONFIG_INFINIBAND_USER_MAD=y
-CONFIG_INFINIBAND_USER_ACCESS=y
-CONFIG_INFINIBAND_MTHCA=y
-CONFIG_INFINIBAND_CXGB3=y
-CONFIG_INFINIBAND_CXGB4=y
-CONFIG_MLX4_INFINIBAND=y
-CONFIG_INFINIBAND_IPOIB=y
-CONFIG_INFINIBAND_IPOIB_CM=y
-CONFIG_INFINIBAND_SRP=y
-CONFIG_INFINIBAND_ISER=y
-CONFIG_RTC_CLASS=y
-CONFIG_RTC_DRV_GENERIC=y
-CONFIG_VIRTIO_PCI=y
-CONFIG_VIRTIO_BALLOON=y
-CONFIG_VALIDATE_FS_PARSER=y
-CONFIG_EXT2_FS=y
-CONFIG_EXT2_FS_XATTR=y
-CONFIG_EXT2_FS_POSIX_ACL=y
-CONFIG_EXT2_FS_SECURITY=y
-CONFIG_EXT4_FS=y
-CONFIG_EXT4_FS_POSIX_ACL=y
-CONFIG_EXT4_FS_SECURITY=y
-CONFIG_JFS_FS=y
-CONFIG_JFS_POSIX_ACL=y
-CONFIG_JFS_SECURITY=y
-CONFIG_XFS_FS=y
-CONFIG_XFS_POSIX_ACL=y
-CONFIG_BTRFS_FS=y
-CONFIG_BTRFS_FS_POSIX_ACL=y
-CONFIG_NILFS2_FS=y
-CONFIG_FS_DAX=y
-CONFIG_AUTOFS4_FS=y
-CONFIG_FUSE_FS=y
-CONFIG_OVERLAY_FS=y
-CONFIG_ISO9660_FS=y
-CONFIG_UDF_FS=y
-CONFIG_MSDOS_FS=y
-CONFIG_VFAT_FS=y
-CONFIG_PROC_KCORE=y
-CONFIG_TMPFS=y
-CONFIG_TMPFS_POSIX_ACL=y
-CONFIG_HUGETLBFS=y
-CONFIG_CRAMFS=y
-CONFIG_SQUASHFS=y
-CONFIG_SQUASHFS_XATTR=y
-CONFIG_SQUASHFS_LZO=y
-CONFIG_SQUASHFS_XZ=y
-CONFIG_PSTORE=y
-CONFIG_NFS_FS=y
-CONFIG_NFS_V3_ACL=y
-CONFIG_NFS_V4=y
-CONFIG_NFSD=y
-CONFIG_NFSD_V3_ACL=y
-CONFIG_NFSD_V4=y
-CONFIG_CIFS=y
-CONFIG_CIFS_XATTR=y
-CONFIG_CIFS_POSIX=y
-CONFIG_NLS_DEFAULT="utf8"
-CONFIG_NLS_CODEPAGE_437=y
-CONFIG_NLS_ASCII=y
-CONFIG_NLS_ISO8859_1=y
-CONFIG_NLS_UTF8=y
-CONFIG_CRYPTO_TEST=m
-CONFIG_CRYPTO_PCBC=y
-CONFIG_CRYPTO_CRC32C_VPMSUM=y
-CONFIG_CRYPTO_MD5_PPC=y
-CONFIG_CRYPTO_MICHAEL_MIC=y
-CONFIG_CRYPTO_SHA1_PPC=y
-CONFIG_CRYPTO_TGR192=y
-CONFIG_CRYPTO_WP512=y
-CONFIG_CRYPTO_ANUBIS=y
-CONFIG_CRYPTO_ARC4=y
-CONFIG_CRYPTO_BLOWFISH=y
-CONFIG_CRYPTO_CAST6=y
-CONFIG_CRYPTO_KHAZAD=y
-CONFIG_CRYPTO_SALSA20=y
-CONFIG_CRYPTO_SERPENT=y
-CONFIG_CRYPTO_TEA=y
-CONFIG_CRYPTO_TWOFISH=y
-CONFIG_CRYPTO_LZO=y
-CONFIG_CRYPTO_DEV_NX=y
-CONFIG_CRYPTO_DEV_VMX=y
-CONFIG_CRYPTO_DEV_VMX_ENCRYPT=y
-CONFIG_CRYPTO_DEV_VIRTIO=y
-CONFIG_PRINTK_TIME=y
-CONFIG_DYNAMIC_DEBUG=y
-CONFIG_DEBUG_INFO=y
-CONFIG_DEBUG_INFO_REDUCED=y
-CONFIG_GDB_SCRIPTS=y
-CONFIG_MAGIC_SYSRQ=y
-CONFIG_DEBUG_KERNEL=y
-CONFIG_PAGE_EXTENSION=y
-CONFIG_PAGE_POISONING=y
-CONFIG_SLUB_DEBUG_ON=y
-CONFIG_DEBUG_STACK_USAGE=y
-CONFIG_DEBUG_VM=y
-CONFIG_DEBUG_PER_CPU_MAPS=y
-CONFIG_DEBUG_STACKOVERFLOW=y
-CONFIG_DEBUG_SHIRQ=y
-CONFIG_SOFTLOCKUP_DETECTOR=y
-CONFIG_HARDLOCKUP_DETECTOR=y
-CONFIG_WQ_WATCHDOG=y
-CONFIG_PANIC_ON_OOPS=y
-CONFIG_SCHED_STACK_END_CHECK=y
-CONFIG_PROVE_LOCKING=y
-CONFIG_DEBUG_ATOMIC_SLEEP=y
-CONFIG_DEBUG_LIST=y
-CONFIG_DEBUG_SG=y
-CONFIG_DEBUG_NOTIFIERS=y
-CONFIG_DEBUG_WQ_FORCE_RR_CPU=y
-CONFIG_LATENCYTOP=y
-CONFIG_FUNCTION_TRACER=y
-CONFIG_SCHED_TRACER=y
-CONFIG_BLK_DEV_IO_TRACE=y
-CONFIG_CODE_PATCHING_SELFTEST=y
-CONFIG_FTR_FIXUP_SELFTEST=y
-CONFIG_MSI_BITMAP_SELFTEST=y
-CONFIG_PPC_IRQ_SOFT_MASK_DEBUG=y
+> ---
+>  sound/soc/fsl/fsl_asrc.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index 4d3804a1ea55..584badf956d2 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
+> @@ -624,7 +624,7 @@ static int fsl_asrc_dai_probe(struct snd_soc_dai *dai)
+>  
+>  #define FSL_ASRC_FORMATS	(SNDRV_PCM_FMTBIT_S24_LE | \
+>  				 SNDRV_PCM_FMTBIT_S16_LE | \
+> -				 SNDRV_PCM_FMTBIT_S20_3LE)
+> +				 SNDRV_PCM_FMTBIT_S24_3LE)
+>  
+>  static struct snd_soc_dai_driver fsl_asrc_dai = {
+>  	.probe = fsl_asrc_dai_probe,
+> @@ -635,7 +635,8 @@ static struct snd_soc_dai_driver fsl_asrc_dai = {
+>  		.rate_min = 5512,
+>  		.rate_max = 192000,
+>  		.rates = SNDRV_PCM_RATE_KNOT,
+> -		.formats = FSL_ASRC_FORMATS,
+> +		.formats = FSL_ASRC_FORMATS |
+> +			   SNDRV_PCM_FMTBIT_S8,
+>  	},
+>  	.capture = {
+>  		.stream_name = "ASRC-Capture",
+> -- 
+> 2.21.0
+> 
