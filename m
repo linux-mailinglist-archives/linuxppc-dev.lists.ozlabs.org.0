@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A45B8DC6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 11:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30160B8DD4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 11:33:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZT1S0jqKzF3D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 19:29:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZT6S4lSKzF38Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 19:33:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZSxQ5pgFzF0kW
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZSxQ5kxqzF0dl
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 19:25:29 +1000 (AEST)
 Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 4930CF2E48C3FC197365;
+ by Forcepoint Email with ESMTP id 5106686FE8B226B0EF95;
  Fri, 20 Sep 2019 17:25:24 +0800 (CST)
 Received: from huawei.com (10.175.124.28) by DGGEMS406-HUB.china.huawei.com
  (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Fri, 20 Sep 2019
- 17:25:16 +0800
+ 17:25:17 +0800
 From: Jason Yan <yanaijie@huawei.com>
 To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
  <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
  <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
  <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
-Subject: [PATCH v7 00/12] implement KASLR for powerpc/fsl_booke/32
-Date: Fri, 20 Sep 2019 17:45:34 +0800
-Message-ID: <20190920094546.44948-1-yanaijie@huawei.com>
+Subject: [PATCH v7 01/12] powerpc: unify definition of M_IF_NEEDED
+Date: Fri, 20 Sep 2019 17:45:35 +0800
+Message-ID: <20190920094546.44948-2-yanaijie@huawei.com>
 X-Mailer: git-send-email 2.17.2
+In-Reply-To: <20190920094546.44948-1-yanaijie@huawei.com>
+References: <20190920094546.44948-1-yanaijie@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.124.28]
@@ -57,127 +59,134 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series implements KASLR for powerpc/fsl_booke/32, as a security
-feature that deters exploit attempts relying on knowledge of the location
-of kernel internals.
+M_IF_NEEDED is defined too many times. Move it to a common place and
+rename it to MAS2_M_IF_NEEDED which is much readable.
 
-Since CONFIG_RELOCATABLE has already supported, what we need to do is
-map or copy kernel to a proper place and relocate. Freescale Book-E
-parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
-entries are not suitable to map the kernel directly in a randomized
-region, so we chose to copy the kernel to a proper place and restart to
-relocate.
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+Cc: Diana Craciun <diana.craciun@nxp.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reviewed-by: Diana Craciun <diana.craciun@nxp.com>
+Tested-by: Diana Craciun <diana.craciun@nxp.com>
+---
+ arch/powerpc/include/asm/nohash/mmu-book3e.h  | 10 ++++++++++
+ arch/powerpc/kernel/exceptions-64e.S          | 12 +-----------
+ arch/powerpc/kernel/fsl_booke_entry_mapping.S | 14 ++------------
+ arch/powerpc/kernel/misc_64.S                 |  7 +------
+ 4 files changed, 14 insertions(+), 29 deletions(-)
 
-Entropy is derived from the banner and timer base, which will change every
-build and boot. This not so much safe so additionally the bootloader may
-pass entropy via the /chosen/kaslr-seed node in device tree.
-
-We will use the first 512M of the low memory to randomize the kernel
-image. The memory will be split in 64M zones. We will use the lower 8
-bit of the entropy to decide the index of the 64M zone. Then we chose a
-16K aligned offset inside the 64M zone to put the kernel in.
-
-    KERNELBASE
-
-        |-->   64M   <--|
-        |               |
-        +---------------+    +----------------+---------------+
-        |               |....|    |kernel|    |               |
-        +---------------+    +----------------+---------------+
-        |                         |
-        |----->   offset    <-----|
-
-                              kernstart_virt_addr
-
-We also check if we will overlap with some areas like the dtb area, the
-initrd area or the crashkernel area. If we cannot find a proper area,
-kaslr will be disabled and boot from the original kernel.
-
-Changes since v6:
- - Rename create_tlb_entry() to create_kaslr_tlb_entry()
- - Remove MAS2_VAL since there is no more users.
- - Move kaslr_booke.c to arch/powerpc/mm/nohash.
- - Call flush_icache_range() after copying the kernel.
- - Warning if no kaslr-seed provided by the bootloader
- - Use the right physical address when checking if the new position will overlap with other regions.
- - Do not clear bss for the second pass because some global variables will not be initialized again 
- - Use tabs instead of spaces between the mnemonic and the arguments(in fsl_booke_entry_mapping.S).
-
-Changes since v5:
- - Rename M_IF_NEEDED to MAS2_M_IF_NEEDED
- - Define some global variable as __ro_after_init
- - Replace kimage_vaddr with kernstart_virt_addr
- - Depend on RELOCATABLE, not select it
- - Modify the comment block below the SPDX tag
- - Remove some useless headers in kaslr_booke.c and move is_second_reloc
-   declarationto mmu_decl.h
- - Remove DBG() and use pr_debug() and rewrite comment above get_boot_seed().
- - Add a patch to document the KASLR implementation.
- - Split a patch from patch #10 which exports kaslr offset in VMCOREINFO ELF notes.
- - Remove extra logic around finding nokaslr string in cmdline.
- - Make regions static global and __initdata
-
-Changes since v4:
- - Add Reviewed-by tag from Christophe
- - Remove an unnecessary cast
- - Remove unnecessary parenthesis
- - Fix checkpatch warning
-
-Changes since v3:
- - Add Reviewed-by and Tested-by tag from Diana
- - Change the comment in fsl_booke_entry_mapping.S to be consistent
-   with the new code.
-
-Changes since v2:
- - Remove unnecessary #ifdef
- - Use SZ_64M instead of0x4000000
- - Call early_init_dt_scan_chosen() to init boot_command_line
- - Rename kaslr_second_init() to kaslr_late_init()
-
-Changes since v1:
- - Remove some useless 'extern' keyword.
- - Replace EXPORT_SYMBOL with EXPORT_SYMBOL_GPL
- - Improve some assembly code
- - Use memzero_explicit instead of memset
- - Use boot_command_line and remove early_command_line
- - Do not print kaslr offset if kaslr is disabled
-
-Jason Yan (12):
-  powerpc: unify definition of M_IF_NEEDED
-  powerpc: move memstart_addr and kernstart_addr to init-common.c
-  powerpc: introduce kernstart_virt_addr to store the kernel base
-  powerpc/fsl_booke/32: introduce create_kaslr_tlb_entry() helper
-  powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
-  powerpc/fsl_booke/32: implement KASLR infrastructure
-  powerpc/fsl_booke/32: randomize the kernel image offset
-  powerpc/fsl_booke/kaslr: clear the original kernel if randomized
-  powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
-  powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
-  powerpc/fsl_booke/kaslr: export offset in VMCOREINFO ELF notes
-  powerpc/fsl_booke/32: Document KASLR implementation
-
- Documentation/powerpc/kaslr-booke32.rst       |  42 ++
- arch/powerpc/Kconfig                          |  11 +
- arch/powerpc/include/asm/nohash/mmu-book3e.h  |  11 +-
- arch/powerpc/include/asm/page.h               |   7 +
- arch/powerpc/kernel/early_32.c                |   5 +-
- arch/powerpc/kernel/exceptions-64e.S          |  12 +-
- arch/powerpc/kernel/fsl_booke_entry_mapping.S |  25 +-
- arch/powerpc/kernel/head_fsl_booke.S          |  61 ++-
- arch/powerpc/kernel/machine_kexec.c           |   1 +
- arch/powerpc/kernel/misc_64.S                 |   7 +-
- arch/powerpc/kernel/setup-common.c            |  20 +
- arch/powerpc/mm/init-common.c                 |   7 +
- arch/powerpc/mm/init_32.c                     |   5 -
- arch/powerpc/mm/init_64.c                     |   5 -
- arch/powerpc/mm/mmu_decl.h                    |  11 +
- arch/powerpc/mm/nohash/Makefile               |   1 +
- arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-
- arch/powerpc/mm/nohash/kaslr_booke.c          | 401 ++++++++++++++++++
- 18 files changed, 587 insertions(+), 53 deletions(-)
- create mode 100644 Documentation/powerpc/kaslr-booke32.rst
- create mode 100644 arch/powerpc/mm/nohash/kaslr_booke.c
-
+diff --git a/arch/powerpc/include/asm/nohash/mmu-book3e.h b/arch/powerpc/include/asm/nohash/mmu-book3e.h
+index 4c9777d256fb..fa3efc2d310f 100644
+--- a/arch/powerpc/include/asm/nohash/mmu-book3e.h
++++ b/arch/powerpc/include/asm/nohash/mmu-book3e.h
+@@ -221,6 +221,16 @@
+ #define TLBILX_T_CLASS2			6
+ #define TLBILX_T_CLASS3			7
+ 
++/*
++ * The mapping only needs to be cache-coherent on SMP, except on
++ * Freescale e500mc derivatives where it's also needed for coherent DMA.
++ */
++#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
++#define MAS2_M_IF_NEEDED	MAS2_M
++#else
++#define MAS2_M_IF_NEEDED	0
++#endif
++
+ #ifndef __ASSEMBLY__
+ #include <asm/bug.h>
+ 
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index 1cfb3da4a84a..c5bc09b5e281 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -1342,16 +1342,6 @@ skpinv:	addi	r6,r6,1				/* Increment */
+ 	sync
+ 	isync
+ 
+-/*
+- * The mapping only needs to be cache-coherent on SMP, except on
+- * Freescale e500mc derivatives where it's also needed for coherent DMA.
+- */
+-#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
+-#define M_IF_NEEDED	MAS2_M
+-#else
+-#define M_IF_NEEDED	0
+-#endif
+-
+ /* 6. Setup KERNELBASE mapping in TLB[0]
+  *
+  * r3 = MAS0 w/TLBSEL & ESEL for the entry we started in
+@@ -1364,7 +1354,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
+ 	ori	r6,r6,(MAS1_TSIZE(BOOK3E_PAGESZ_1GB))@l
+ 	mtspr	SPRN_MAS1,r6
+ 
+-	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET | M_IF_NEEDED)
++	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET | MAS2_M_IF_NEEDED)
+ 	mtspr	SPRN_MAS2,r6
+ 
+ 	rlwinm	r5,r5,0,0,25
+diff --git a/arch/powerpc/kernel/fsl_booke_entry_mapping.S b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+index ea065282b303..f4d3eaae54a9 100644
+--- a/arch/powerpc/kernel/fsl_booke_entry_mapping.S
++++ b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+@@ -153,16 +153,6 @@ skpinv:	addi	r6,r6,1				/* Increment */
+ 	tlbivax 0,r9
+ 	TLBSYNC
+ 
+-/*
+- * The mapping only needs to be cache-coherent on SMP, except on
+- * Freescale e500mc derivatives where it's also needed for coherent DMA.
+- */
+-#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
+-#define M_IF_NEEDED	MAS2_M
+-#else
+-#define M_IF_NEEDED	0
+-#endif
+-
+ #if defined(ENTRY_MAPPING_BOOT_SETUP)
+ 
+ /* 6. Setup KERNELBASE mapping in TLB1[0] */
+@@ -171,8 +161,8 @@ skpinv:	addi	r6,r6,1				/* Increment */
+ 	lis	r6,(MAS1_VALID|MAS1_IPROT)@h
+ 	ori	r6,r6,(MAS1_TSIZE(BOOK3E_PAGESZ_64M))@l
+ 	mtspr	SPRN_MAS1,r6
+-	lis	r6,MAS2_VAL(PAGE_OFFSET, BOOK3E_PAGESZ_64M, M_IF_NEEDED)@h
+-	ori	r6,r6,MAS2_VAL(PAGE_OFFSET, BOOK3E_PAGESZ_64M, M_IF_NEEDED)@l
++	lis	r6,MAS2_VAL(PAGE_OFFSET, BOOK3E_PAGESZ_64M, MAS2_M_IF_NEEDED)@h
++	ori	r6,r6,MAS2_VAL(PAGE_OFFSET, BOOK3E_PAGESZ_64M, MAS2_M_IF_NEEDED)@l
+ 	mtspr	SPRN_MAS2,r6
+ 	mtspr	SPRN_MAS3,r8
+ 	tlbwe
+diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+index b55a7b4cb543..2062a299a22d 100644
+--- a/arch/powerpc/kernel/misc_64.S
++++ b/arch/powerpc/kernel/misc_64.S
+@@ -432,18 +432,13 @@ kexec_create_tlb:
+ 	rlwimi	r9,r10,16,4,15		/* Setup MAS0 = TLBSEL | ESEL(r9) */
+ 
+ /* Set up a temp identity mapping v:0 to p:0 and return to it. */
+-#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
+-#define M_IF_NEEDED	MAS2_M
+-#else
+-#define M_IF_NEEDED	0
+-#endif
+ 	mtspr	SPRN_MAS0,r9
+ 
+ 	lis	r9,(MAS1_VALID|MAS1_IPROT)@h
+ 	ori	r9,r9,(MAS1_TSIZE(BOOK3E_PAGESZ_1GB))@l
+ 	mtspr	SPRN_MAS1,r9
+ 
+-	LOAD_REG_IMMEDIATE(r9, 0x0 | M_IF_NEEDED)
++	LOAD_REG_IMMEDIATE(r9, 0x0 | MAS2_M_IF_NEEDED)
+ 	mtspr	SPRN_MAS2,r9
+ 
+ 	LOAD_REG_IMMEDIATE(r9, 0x0 | MAS3_SR | MAS3_SW | MAS3_SX)
 -- 
 2.17.2
 
