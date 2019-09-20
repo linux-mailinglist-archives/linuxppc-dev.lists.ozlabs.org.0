@@ -1,76 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311BDB986C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 22:27:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C303B9869
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 22:24:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Zlcf2Yy7zF3fm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 06:26:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZlZ33dCfzF4BJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 06:24:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nvidia.com
- (client-ip=216.228.121.143; helo=hqemgate14.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="NYjSKTkx"; 
- dkim-atps=neutral
-X-Greylist: delayed 311 seconds by postgrey-1.36 at bilbo;
- Sat, 21 Sep 2019 06:16:44 AEST
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZlNr6TXXzDrcZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 06:16:44 +1000 (AEST)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5d8532710000>; Fri, 20 Sep 2019 13:11:29 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Fri, 20 Sep 2019 13:11:27 -0700
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Fri, 20 Sep 2019 13:11:27 -0700
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 20 Sep
- 2019 20:11:26 +0000
-Received: from [10.110.48.28] (10.124.1.5) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 20 Sep
- 2019 20:11:26 +0000
-Subject: Re: [PATCH v2 11/11] powerpc/mm/book3s64/pgtable: Uses counting
- method to skip serializing
-To: Leonardo Bras <leonardo@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-kernel@vger.kernel.org>
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZlJ45t0gzF41w
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 06:12:36 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8KKBp49107401; Fri, 20 Sep 2019 16:12:14 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v55dx8k2e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 16:12:14 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8KKBsfE107895;
+ Fri, 20 Sep 2019 16:12:14 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v55dx8k1r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 16:12:14 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8KKAGVB020744;
+ Fri, 20 Sep 2019 20:12:13 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma04dal.us.ibm.com with ESMTP id 2v3vbuw0x5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 20:12:13 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8KKCB4C50004354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Sep 2019 20:12:11 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ECBBDC6059;
+ Fri, 20 Sep 2019 20:12:10 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 921CFC6055;
+ Fri, 20 Sep 2019 20:12:06 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.18.235.184])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Sep 2019 20:12:06 +0000 (GMT)
+Message-ID: <1f5d9380418ad8bb90c6bbdac34716c650b917a0.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 00/11] Introduces new count-based method for
+ monitoring lockless pagetable wakls
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Date: Fri, 20 Sep 2019 17:12:00 -0300
+In-Reply-To: <20190920195047.7703-1-leonardo@linux.ibm.com>
 References: <20190920195047.7703-1-leonardo@linux.ibm.com>
- <20190920195047.7703-12-leonardo@linux.ibm.com>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <1b39eaa7-751d-40bc-d3d7-41aaa15be42a@nvidia.com>
-Date: Fri, 20 Sep 2019 13:11:26 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-nucwkzcjL6z05I66cwMm"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-In-Reply-To: <20190920195047.7703-12-leonardo@linux.ibm.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1569010289; bh=giG+LNXXjbxC8WeWVOxqvbRTNUbcye64zKROed7j1Rg=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=NYjSKTkxR8Jv6mSyw8EQkBGsZs803apm76OV+kHnRZvgWtL7vdyeOgJFPWrdZVlGw
- gSHUXjlJFto0hTReKy3pknzVrWuO3+RGr0YOz5KSP86cQnNH8S5JatSIsTMGAkkmWW
- pv4tbuSfV1a9bENaBlTlyh90zz3HNLImV52S08ggCk7l+yzWEjH3b5O8PnoyNCQXwE
- A7dag24QsGttajumytUUX7cwL0EmesArdr8vrY/HWT91aFhSYPFckCBC+5tYeD40Dz
- jzzGdnLKg9L+gFeoP6qyyZo4GnWTeSfIZjEhMMrLjQNLRSVCLwNCX3Rh0FVzEo4p5R
- IukfxuSI3PC2Q==
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-20_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909200165
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,12 +92,12 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Jason Gunthorpe <jgg@ziepe.ca>, Thomas Gleixner <tglx@linutronix.de>,
- Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, YueHaibing <yuehaibing@huawei.com>,
- Keith Busch <keith.busch@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Mike Rapoport <rppt@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ YueHaibing <yuehaibing@huawei.com>, Keith Busch <keith.busch@intel.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
  Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
  Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ John Hubbard <jhubbard@nvidia.com>,
  "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  Ganesh Goudar <ganeshgr@linux.ibm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Ira Weiny <ira.weiny@intel.com>,
@@ -97,46 +106,113 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/20/19 12:50 PM, Leonardo Bras wrote:
-> Skips slow part of serialize_against_pte_lookup if there is no running
-> lockless pagetable walk.
-> 
-> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-> ---
->  arch/powerpc/mm/book3s64/pgtable.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-> index 13239b17a22c..41ca30269fa3 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -95,7 +95,8 @@ static void do_nothing(void *unused)
->  void serialize_against_pte_lookup(struct mm_struct *mm)
->  {
->  	smp_mb();
-> -	smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
-> +	if (running_lockless_pgtbl_walk(mm))
-> +		smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
 
-Hi,
+--=-nucwkzcjL6z05I66cwMm
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If you do this, then you are left without any synchronization. So it will
-have race conditions: a page table walk could begin right after the above
-check returns "false", and then code such as hash__pmdp_huge_get_and_clear()
-will continue on right away, under the false assumption that it has let
-all the current page table walks complete.
+If a process (qemu) with a lot of CPUs (128) try to munmap() a large
+chunk of memory (496GB) mapped with THP, it takes an average of 275
+seconds, which can cause a lot of problems to the load (in qemu case,
+the guest will lock for this time).
 
-The current code uses either interrupts or RCU to synchronize, and in
-either case, you end up scheduling something on each CPU. If you remove
-that entirely, I don't see anything left. ("Pure" atomic counting is not
-a synchronization technique all by itself.)
+Trying to find the source of this bug, I found out most of this time is
+spent on serialize_against_pte_lookup(). This function will take a lot
+of time in smp_call_function_many() if there is more than a couple CPUs
+running the user process. Since it has to happen to all THP mapped, it
+will take a very long time for large amounts of memory.
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+By the docs, serialize_against_pte_lookup() is needed in order to avoid
+pmd_t to pte_t casting inside find_current_mm_pte(), or any lockless
+pagetable walk, to happen concurrently with THP splitting/collapsing.
 
->  }
->  
->  void start_lockless_pgtbl_walk(struct mm_struct *mm)
-> 
+It does so by calling a do_nothing() on each CPU in mm->cpu_bitmap[],
+after interrupts are re-enabled.=20
+Since, interrupts are (usually) disabled during lockless pagetable
+walk, and serialize_against_pte_lookup will only return after
+interrupts are enabled, it is protected.
+
+So, by what I could understand, if there is no lockless pagetable walk
+running, there is no need to call serialize_against_pte_lookup().
+
+So, to avoid the cost of running serialize_against_pte_lookup(), I
+propose a counter that keeps track of how many find_current_mm_pte()
+are currently running, and if there is none, just skip=20
+smp_call_function_many().
+
+The related functions are:
+start_lockless_pgtbl_walk(mm)
+	Insert before starting any lockless pgtable walk
+end_lockless_pgtbl_walk(mm)
+	Insert after the end of any lockless pgtable walk
+	(Mostly after the ptep is last used)
+running_lockless_pgtbl_walk(mm)
+	Returns the number of lockless pgtable walks running
+
+
+On my workload (qemu), I could see munmap's time reduction from 275
+seconds to 418ms.
+
+> Leonardo Bras (11):
+>   powerpc/mm: Adds counting method to monitor lockless pgtable walks
+>   asm-generic/pgtable: Adds dummy functions to monitor lockless pgtable
+>     walks
+>   mm/gup: Applies counting method to monitor gup_pgd_range
+>   powerpc/mce_power: Applies counting method to monitor lockless pgtbl
+>     walks
+>   powerpc/perf: Applies counting method to monitor lockless pgtbl walks
+>   powerpc/mm/book3s64/hash: Applies counting method to monitor lockless
+>     pgtbl walks
+>   powerpc/kvm/e500: Applies counting method to monitor lockless pgtbl
+>     walks
+>   powerpc/kvm/book3s_hv: Applies counting method to monitor lockless
+>     pgtbl walks
+>   powerpc/kvm/book3s_64: Applies counting method to monitor lockless
+>     pgtbl walks
+>   powerpc/book3s_64: Enables counting method to monitor lockless pgtbl
+>     walk
+>   powerpc/mm/book3s64/pgtable: Uses counting method to skip serializing
+>=20
+>  arch/powerpc/include/asm/book3s/64/mmu.h     |  3 +++
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  5 +++++
+>  arch/powerpc/kernel/mce_power.c              | 13 ++++++++++---
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c          |  2 ++
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c       | 20 ++++++++++++++++++--
+>  arch/powerpc/kvm/book3s_64_vio_hv.c          |  4 ++++
+>  arch/powerpc/kvm/book3s_hv_nested.c          |  8 ++++++++
+>  arch/powerpc/kvm/book3s_hv_rm_mmu.c          |  9 ++++++++-
+>  arch/powerpc/kvm/e500_mmu_host.c             |  4 ++++
+>  arch/powerpc/mm/book3s64/hash_tlb.c          |  2 ++
+>  arch/powerpc/mm/book3s64/hash_utils.c        |  7 +++++++
+>  arch/powerpc/mm/book3s64/mmu_context.c       |  1 +
+>  arch/powerpc/mm/book3s64/pgtable.c           | 20 +++++++++++++++++++-
+>  arch/powerpc/perf/callchain.c                |  5 ++++-
+>  include/asm-generic/pgtable.h                |  9 +++++++++
+>  mm/gup.c                                     |  4 ++++
+>  16 files changed, 108 insertions(+), 8 deletions(-)
+>=20
+
+--=-nucwkzcjL6z05I66cwMm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2FMpAACgkQlQYWtz9S
+ttQJDRAAm7UrD3Hn32mqNVvo0il+czdU8CD0TY9JTgwQVy5w623VhAlNK0RSqdbX
+NN6XebcOau//QQleUrXseAf4kuniMJZn62qDeUj0wcQMaVqSlpqF7+4KDIINVS7K
+WbymiNSCTGFYDG7575+kcBPn3baKWV6EoGe80qmd5DTXN5W5pBKbfHqJ36u/rEZA
+cKzVlDLOHxvQ/VopYSydx4wl3T+CcUziVNf3ooT83ktwOHUcGRMfFLsuAMK3Ws5P
+fLUbK4iWQgda8DH4pvDb9ZtfH/01+lqR7VJSUu9fDbtis5JNRt7TxwglPN3zf1vw
+eF4p75mlIIxk6KM7/kCksSqn6ZBiHS5ldehaYaKWwsuM4leTP32TYMOB7woOOgDL
+xW/KNxja+CuFhoIt3dsSDwFWAYwt3cSPsCtgYgiN4t2CkWZQaw+W+6j2wBYg7SPn
+iGg04qGNDr3Um3OklxU8GHgbkPmBKZ2Yjhxx9mdf0sLoF9//o3td3BrqP8sw4AXK
+bBnixpOpbVnTvUbK1sc1PyxEJ5qMmmS9kE2I05ysIKHvSPMoDZiXwW92MesXotoi
+2Rocc4T0UP0tzTunADdc9iq2d8egHa1r9LjL49sP1FPNYUbYkeEJTjXyIXS07qVe
+sdQgYcZZ7NwvR0ZASqJCM2yKQBxMQ+Iv3pyUjXFyySlwhS2nSQk=
+=F3zh
+-----END PGP SIGNATURE-----
+
+--=-nucwkzcjL6z05I66cwMm--
+
