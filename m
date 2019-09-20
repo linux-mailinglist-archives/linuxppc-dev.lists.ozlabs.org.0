@@ -2,52 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28CD2B8B03
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 08:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF22CB8B2A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 08:36:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZNz538VMzF3VL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 16:26:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZP9p3krtzF1x3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 16:35:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-X-Greylist: delayed 930 seconds by postgrey-1.36 at bilbo;
- Fri, 20 Sep 2019 16:24:43 AEST
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZNwq4Rj5zF3P3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 16:24:41 +1000 (AEST)
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id BE7CD14304A4275B0757;
- Fri, 20 Sep 2019 14:09:06 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 20 Sep 2019 14:08:57 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>, 
- Ingo Molnar <mingo@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Arnaldo Carvalho de Melo <acme@redhat.com>, Andy Whitcroft
- <apw@canonical.com>, Peter Zijlstra <peterz@infradead.org>, "Alexei
- Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Sergey Senozhatsky
- <sergey.senozhatsky@gmail.com>, Petr Mladek <pmladek@suse.com>, Arnd Bergmann
- <arnd@arndb.de>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 15/32] macintosh: Use pr_warn instead of pr_warning
-Date: Fri, 20 Sep 2019 14:25:27 +0800
-Message-ID: <20190920062544.180997-16-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190920062544.180997-1-wangkefeng.wang@huawei.com>
-References: <20190920062544.180997-1-wangkefeng.wang@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46ZP6z0jlVzDqcW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 16:33:28 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5F5328;
+ Thu, 19 Sep 2019 23:33:25 -0700 (PDT)
+Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
+ [10.162.40.137])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 55D1F3F575;
+ Thu, 19 Sep 2019 23:35:44 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V3 0/2] mm/debug: Add tests for architecture exported page
+ table helpers
+Date: Fri, 20 Sep 2019 12:03:21 +0530
+Message-Id: <1568961203-18660-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,143 +43,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linux-s390@vger.kernel.org, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Kees Cook <keescook@chromium.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As said in commit f2c2cbcc35d4 ("powerpc: Use pr_warn instead of
-pr_warning"), removing pr_warning so all logging messages use a
-consistent <prefix>_warn style. Let's do it.
+This series adds a test validation for architecture exported page table
+helpers. Patch in the series adds basic transformation tests at various
+levels of the page table. Before that it exports gigantic page allocation
+function from HugeTLB.
 
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+This test was originally suggested by Catalin during arm64 THP migration
+RFC discussion earlier. Going forward it can include more specific tests
+with respect to various generic MM functions like THP, HugeTLB etc and
+platform specific tests.
+
+https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
+
+Testing:
+
+Successfully build and boot tested on both arm64 and x86 platforms without
+any test failing. Only build tested on some other platforms. Build failed
+on some platforms (known) in pud_clear_tests() as there were no available
+__pgd() definitions.
+
+- ARM32
+- IA64
+
+But I would really appreciate if folks can help validate this test on other
+architectures and report back problems. All suggestions, comments and inputs
+welcome. Thank you.
+
+Changes in V3:
+
+- Changed test trigger from module format into late_initcall()
+- Marked all functions with __init to be freed after completion
+- Changed all __PGTABLE_PXX_FOLDED checks as mm_pxx_folded()
+- Folded in PPC32 fixes from Christophe
+
+Changes in V2:
+
+https://lore.kernel.org/linux-mm/1568268173-31302-1-git-send-email-anshuman.khandual@arm.com/T/#t
+
+- Fixed small typo error in MODULE_DESCRIPTION()
+- Fixed m64k build problems for lvalue concerns in pmd_xxx_tests()
+- Fixed dynamic page table level folding problems on x86 as per Kirril
+- Fixed second pointers during pxx_populate_tests() per Kirill and Gerald
+- Allocate and free pte table with pte_alloc_one/pte_free per Kirill
+- Modified pxx_clear_tests() to accommodate s390 lower 12 bits situation
+- Changed RANDOM_NZVALUE value from 0xbe to 0xff
+- Changed allocation, usage, free sequence for saved_ptep
+- Renamed VMA_FLAGS as VMFLAGS
+- Implemented a new method for random vaddr generation
+- Implemented some other cleanups
+- Dropped extern reference to mm_alloc()
+- Created and exported new alloc_gigantic_page_order()
+- Dropped the custom allocator and used new alloc_gigantic_page_order()
+
+Changes in V1:
+
+https://lore.kernel.org/linux-mm/1567497706-8649-1-git-send-email-anshuman.khandual@arm.com/
+
+- Added fallback mechanism for PMD aligned memory allocation failure
+
+Changes in RFC V2:
+
+https://lore.kernel.org/linux-mm/1565335998-22553-1-git-send-email-anshuman.khandual@arm.com/T/#u
+
+- Moved test module and it's config from lib/ to mm/
+- Renamed config TEST_ARCH_PGTABLE as DEBUG_ARCH_PGTABLE_TEST
+- Renamed file from test_arch_pgtable.c to arch_pgtable_test.c
+- Added relevant MODULE_DESCRIPTION() and MODULE_AUTHOR() details
+- Dropped loadable module config option
+- Basic tests now use memory blocks with required size and alignment
+- PUD aligned memory block gets allocated with alloc_contig_range()
+- If PUD aligned memory could not be allocated it falls back on PMD aligned
+  memory block from page allocator and pud_* tests are skipped
+- Clear and populate tests now operate on real in memory page table entries
+- Dummy mm_struct gets allocated with mm_alloc()
+- Dummy page table entries get allocated with [pud|pmd|pte]_alloc_[map]()
+- Simplified [p4d|pgd]_basic_tests(), now has random values in the entries
+
+Original RFC V1:
+
+https://lore.kernel.org/linux-mm/1564037723-26676-1-git-send-email-anshuman.khandual@arm.com/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Steven Price <Steven.Price@arm.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Kirill A. Shutemov <kirill@shutemov.name>
+Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- drivers/macintosh/windfarm_fcu_controls.c |  4 +---
- drivers/macintosh/windfarm_lm87_sensor.c  |  4 ++--
- drivers/macintosh/windfarm_pm72.c         | 22 +++++++++++-----------
- drivers/macintosh/windfarm_rm31.c         |  6 +++---
- 4 files changed, 17 insertions(+), 19 deletions(-)
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-diff --git a/drivers/macintosh/windfarm_fcu_controls.c b/drivers/macintosh/windfarm_fcu_controls.c
-index 3c971297b6dc..67daeec94b44 100644
---- a/drivers/macintosh/windfarm_fcu_controls.c
-+++ b/drivers/macintosh/windfarm_fcu_controls.c
-@@ -468,9 +468,7 @@ static void wf_fcu_lookup_fans(struct wf_fcu_priv *pv)
- 			else
- 				id = ((*reg) - 0x30) / 2;
- 			if (id > 7) {
--				pr_warning("wf_fcu: Can't parse "
--				       "fan ID in device-tree for %pOF\n",
--					   np);
-+				pr_warn("wf_fcu: Can't parse fan ID in device-tree for %pOF\n", np);
- 				break;
- 			}
- 			wf_fcu_add_fan(pv, name, type, id);
-diff --git a/drivers/macintosh/windfarm_lm87_sensor.c b/drivers/macintosh/windfarm_lm87_sensor.c
-index e44525b19071..b03a33b803b7 100644
---- a/drivers/macintosh/windfarm_lm87_sensor.c
-+++ b/drivers/macintosh/windfarm_lm87_sensor.c
-@@ -124,8 +124,8 @@ static int wf_lm87_probe(struct i2c_client *client,
- 		}
- 	}
- 	if (!name) {
--		pr_warning("wf_lm87: Unsupported sensor %pOF\n",
--			   client->dev.of_node);
-+		pr_warn("wf_lm87: Unsupported sensor %pOF\n",
-+			client->dev.of_node);
- 		return -ENODEV;
- 	}
- 
-diff --git a/drivers/macintosh/windfarm_pm72.c b/drivers/macintosh/windfarm_pm72.c
-index c5da0fc24884..e81746b87cff 100644
---- a/drivers/macintosh/windfarm_pm72.c
-+++ b/drivers/macintosh/windfarm_pm72.c
-@@ -285,8 +285,8 @@ static void cpu_fans_tick_split(void)
- 		/* Apply result directly to exhaust fan */
- 		err = wf_control_set(cpu_rear_fans[cpu], sp->target);
- 		if (err) {
--			pr_warning("wf_pm72: Fan %s reports error %d\n",
--			       cpu_rear_fans[cpu]->name, err);
-+			pr_warn("wf_pm72: Fan %s reports error %d\n",
-+				cpu_rear_fans[cpu]->name, err);
- 			failure_state |= FAILURE_FAN;
- 			break;
- 		}
-@@ -296,8 +296,8 @@ static void cpu_fans_tick_split(void)
- 		DBG_LOTS("  CPU%d: intake = %d RPM\n", cpu, intake);
- 		err = wf_control_set(cpu_front_fans[cpu], intake);
- 		if (err) {
--			pr_warning("wf_pm72: Fan %s reports error %d\n",
--			       cpu_front_fans[cpu]->name, err);
-+			pr_warn("wf_pm72: Fan %s reports error %d\n",
-+				cpu_front_fans[cpu]->name, err);
- 			failure_state |= FAILURE_FAN;
- 			break;
- 		}
-@@ -367,22 +367,22 @@ static void cpu_fans_tick_combined(void)
- 	for (cpu = 0; cpu < nr_chips; cpu++) {
- 		err = wf_control_set(cpu_rear_fans[cpu], sp->target);
- 		if (err) {
--			pr_warning("wf_pm72: Fan %s reports error %d\n",
--				   cpu_rear_fans[cpu]->name, err);
-+			pr_warn("wf_pm72: Fan %s reports error %d\n",
-+				cpu_rear_fans[cpu]->name, err);
- 			failure_state |= FAILURE_FAN;
- 		}
- 		err = wf_control_set(cpu_front_fans[cpu], intake);
- 		if (err) {
--			pr_warning("wf_pm72: Fan %s reports error %d\n",
--				   cpu_front_fans[cpu]->name, err);
-+			pr_warn("wf_pm72: Fan %s reports error %d\n",
-+				cpu_front_fans[cpu]->name, err);
- 			failure_state |= FAILURE_FAN;
- 		}
- 		err = 0;
- 		if (cpu_pumps[cpu])
- 			err = wf_control_set(cpu_pumps[cpu], pump);
- 		if (err) {
--			pr_warning("wf_pm72: Pump %s reports error %d\n",
--				   cpu_pumps[cpu]->name, err);
-+			pr_warn("wf_pm72: Pump %s reports error %d\n",
-+				cpu_pumps[cpu]->name, err);
- 			failure_state |= FAILURE_FAN;
- 		}
- 	}
-@@ -561,7 +561,7 @@ static void drives_fan_tick(void)
- 
- 	err = wf_sensor_get(drives_temp, &temp);
- 	if (err) {
--		pr_warning("wf_pm72: drive bay temp sensor error %d\n", err);
-+		pr_warn("wf_pm72: drive bay temp sensor error %d\n", err);
- 		failure_state |= FAILURE_SENSOR;
- 		wf_control_set_max(drives_fan);
- 		return;
-diff --git a/drivers/macintosh/windfarm_rm31.c b/drivers/macintosh/windfarm_rm31.c
-index 8456eb67184b..7acd1684c451 100644
---- a/drivers/macintosh/windfarm_rm31.c
-+++ b/drivers/macintosh/windfarm_rm31.c
-@@ -281,8 +281,8 @@ static void cpu_fans_tick(void)
- 		for (i = 0; i < 3; i++) {
- 			err = wf_control_set(cpu_fans[cpu][i], speed);
- 			if (err) {
--				pr_warning("wf_rm31: Fan %s reports error %d\n",
--					   cpu_fans[cpu][i]->name, err);
-+				pr_warn("wf_rm31: Fan %s reports error %d\n",
-+					cpu_fans[cpu][i]->name, err);
- 				failure_state |= FAILURE_FAN;
- 			}
- 		}
-@@ -465,7 +465,7 @@ static void slots_fan_tick(void)
- 
- 	err = wf_sensor_get(slots_temp, &temp);
- 	if (err) {
--		pr_warning("wf_rm31: slots temp sensor error %d\n", err);
-+		pr_warn("wf_rm31: slots temp sensor error %d\n", err);
- 		failure_state |= FAILURE_SENSOR;
- 		wf_control_set_max(slots_fan);
- 		return;
+Anshuman Khandual (2):
+  mm/hugetlb: Make alloc_gigantic_page() available for general use
+  mm/pgtable/debug: Add test validating architecture page table helpers
+
+ arch/x86/include/asm/pgtable_64_types.h |   2 +
+ include/linux/hugetlb.h                 |   9 +
+ mm/Kconfig.debug                        |  14 +
+ mm/Makefile                             |   1 +
+ mm/arch_pgtable_test.c                  | 440 ++++++++++++++++++++++++++++++++
+ mm/hugetlb.c                            |  24 +-
+ 6 files changed, 488 insertions(+), 2 deletions(-)
+ create mode 100644 mm/arch_pgtable_test.c
+
 -- 
-2.20.1
+2.7.4
 
