@@ -1,75 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFE7B8843
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 01:51:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28648B8909
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 03:59:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZDCW393qzF40l
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 09:51:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZH2Z4S62zF4ky
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 11:59:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="kNWSnXv4"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZD9K3WWGzDqP1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 09:49:54 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id y5so3308889pfo.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2019 16:49:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=DO8lDkgH/09igYhmGE97oh8+8ahZBIflCShVrR9OrmU=;
- b=kNWSnXv4Q9H2UbWOSwbkFDyDYqrw5V5FmU8EqdV7tUgMVaqW5UnRoGaPbLRxAC+hEd
- 3daoRlbwjVz6K32Az6qna8OmyjDaxJuCA2WvshtxpT7DkMnbifHYEJ0BsKiMtLFSyUv3
- xDtTO+b/VsYw08fNK30ntWhKO+BaL7AAi/8AlX1aHtOMrqbJ8T1WEIQpq9f5s4SWLwhz
- bMbeKs2DUZAbkByeqfxDZXfHVfm4ozWqy8uoRaFUJ9B0hw9MOXly7hJRc2nommYb7OBW
- jiKWP5+nLvTY4Ez/l9sDmXVwjP0y2WNKAAcZZMFAx8o/6PkqGygW6BcO7SHlaOPWr9Vk
- I92g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=DO8lDkgH/09igYhmGE97oh8+8ahZBIflCShVrR9OrmU=;
- b=WeiNWXgEISvrvuC6nXvxdcePNrDaTx36SkldWyZvMy3ppiHXfvq3yFG1dgInh8HMum
- +w/b+Cpauyl+1H2gm58gITPBcuwuJGXlRtZbmhQ+DDdGlNXcDfJj0ZnaQyZOi3kRHR5R
- psXQJRauQskuKaGp/jDBZZfymqflEj5rRgtNUzQNHFOYmkWrJskdOcXchd2AjcAWr0PM
- QwNOA8OgnL1ableN5SOJdRmm/rcXFCsY8qAPqq92Ha8axnvRMhMZ+9JjBszdtH7pbomF
- ugOeVk6FTOSB4962wwstNqhV6tZHbig9HvHxq3t64OQOhLH9C2ehHMff7EGlO106srCG
- 9Rzw==
-X-Gm-Message-State: APjAAAXkFyLmDlaB41AANKBUWC1xapEBJgGmffOWrV73KBbtlaZjRH/E
- PqfF2vDmpb9SH45uBy55lrg=
-X-Google-Smtp-Source: APXvYqxicFF4tS7Mcj+VMjT1qOkc2frSVMWmjKYUyhpoVLCZd7f7tLUEHubAzMDOxlG+EHV+svcZtA==
-X-Received: by 2002:a62:1c16:: with SMTP id c22mr13829974pfc.10.1568936990878; 
- Thu, 19 Sep 2019 16:49:50 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id e21sm30169pgr.43.2019.09.19.16.49.49
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 19 Sep 2019 16:49:50 -0700 (PDT)
-Date: Thu, 19 Sep 2019 16:48:58 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH V3 2/4] ASoC: fsl_asrc: update supported sample format
-Message-ID: <20190919234857.GA14287@Asurada-Nvidia.nvidia.com>
-References: <cover.1568861098.git.shengjiu.wang@nxp.com>
- <5811f393692a7668564fd4b9ef5708c1e3db8dc0.1568861098.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZH0V5QSNzF4d8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 11:57:30 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8K1uY3Z074037; Thu, 19 Sep 2019 21:57:16 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v4m531xxu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Sep 2019 21:57:16 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8K1vCFt075541;
+ Thu, 19 Sep 2019 21:57:15 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v4m531xxh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Sep 2019 21:57:15 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8K1tJXY011729;
+ Fri, 20 Sep 2019 01:57:15 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma01wdc.us.ibm.com with ESMTP id 2v3vbtt6gr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 01:57:15 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8K1vDuv60031238
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Sep 2019 01:57:13 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A8C10BE053;
+ Fri, 20 Sep 2019 01:57:13 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 74FACBE04F;
+ Fri, 20 Sep 2019 01:57:09 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.172.122])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Sep 2019 01:57:09 +0000 (GMT)
+Message-ID: <5aa1d16d90b3fc4a4aa989a4082f0e2fb776998a.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 1/1] powerpc/pseries/hotplug-memory.c: Change rc
+ variable to bool
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 19 Sep 2019 22:57:04 -0300
+In-Reply-To: <dd417c2c-83f6-b3e0-0a87-25996af76db5@redhat.com>
+References: <20190802133914.30413-1-leonardo@linux.ibm.com>
+ <dd417c2c-83f6-b3e0-0a87-25996af76db5@redhat.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-ONyhHFL4Nn1SjgHz8m1T"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5811f393692a7668564fd4b9ef5708c1e3db8dc0.1568861098.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-19_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909200021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,58 +93,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
- Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com,
- lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org,
- festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ David Hildenbrand <david@redhat.com>, YueHaibing <yuehaibing@huawei.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 19, 2019 at 08:11:40PM +0800, Shengjiu Wang wrote:
-> The ASRC support 24bit/16bit/8bit input width, which is
-> data width, not slot width.
-> 
-> For the S20_3LE format, the data with is 20bit, slot width
-> is 24bit, if we set ASRMCR1n.IWD to be 24bits, the result
-> is the volume is lower than expected, it likes 24bit data
-> right shift 4 bits
-> 
-> So replace S20_3LE with S24_3LE in supported list and add S8
-> format in TX supported list
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+--=-ONyhHFL4Nn1SjgHz8m1T
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> ---
->  sound/soc/fsl/fsl_asrc.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> index 4d3804a1ea55..584badf956d2 100644
-> --- a/sound/soc/fsl/fsl_asrc.c
-> +++ b/sound/soc/fsl/fsl_asrc.c
-> @@ -624,7 +624,7 @@ static int fsl_asrc_dai_probe(struct snd_soc_dai *dai)
->  
->  #define FSL_ASRC_FORMATS	(SNDRV_PCM_FMTBIT_S24_LE | \
->  				 SNDRV_PCM_FMTBIT_S16_LE | \
-> -				 SNDRV_PCM_FMTBIT_S20_3LE)
-> +				 SNDRV_PCM_FMTBIT_S24_3LE)
->  
->  static struct snd_soc_dai_driver fsl_asrc_dai = {
->  	.probe = fsl_asrc_dai_probe,
-> @@ -635,7 +635,8 @@ static struct snd_soc_dai_driver fsl_asrc_dai = {
->  		.rate_min = 5512,
->  		.rate_max = 192000,
->  		.rates = SNDRV_PCM_RATE_KNOT,
-> -		.formats = FSL_ASRC_FORMATS,
-> +		.formats = FSL_ASRC_FORMATS |
-> +			   SNDRV_PCM_FMTBIT_S8,
->  	},
->  	.capture = {
->  		.stream_name = "ASRC-Capture",
-> -- 
-> 2.21.0
-> 
+Hello Michael,
+
+Any feedback on this patch?
+
+Best regards,
+
+
+On Fri, 2019-08-02 at 15:45 +0200, David Hildenbrand wrote:
+> On 02.08.19 15:39, Leonardo Bras wrote:
+> > Changes the return variable to bool (as the return value) and
+> > avoids doing a ternary operation before returning.
+> >=20
+> > Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+> > ---
+> > Changes in v2:
+> >   - Restore previous and-ing logic on rc.
+> >=20
+> >  arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/pow=
+erpc/platforms/pseries/hotplug-memory.c
+> > index 8e700390f3d6..c126b94d1943 100644
+> > --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> > +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> > @@ -338,7 +338,7 @@ static int pseries_remove_mem_node(struct device_no=
+de *np)
+> >  static bool lmb_is_removable(struct drmem_lmb *lmb)
+> >  {
+> >  	int i, scns_per_block;
+> > -	int rc =3D 1;
+> > +	bool rc =3D true;
+> >  	unsigned long pfn, block_sz;
+> >  	u64 phys_addr;
+> > =20
+> > @@ -363,11 +363,11 @@ static bool lmb_is_removable(struct drmem_lmb *lm=
+b)
+> >  		if (!pfn_present(pfn))
+> >  			continue;
+> > =20
+> > -		rc &=3D is_mem_section_removable(pfn, PAGES_PER_SECTION);
+> > +		rc =3D rc && is_mem_section_removable(pfn, PAGES_PER_SECTION);
+> >  		phys_addr +=3D MIN_MEMORY_BLOCK_SIZE;
+> >  	}
+> > =20
+> > -	return rc ? true : false;
+> > +	return rc;
+> >  }
+> > =20
+> >  static int dlpar_add_lmb(struct drmem_lmb *);
+> >=20
+>=20
+> Yeah, why not
+>=20
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+>=20
+
+--=-ONyhHFL4Nn1SjgHz8m1T
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2EMfAACgkQlQYWtz9S
+ttQDvRAAwUnVrutNNTkOUXjvHQgdRmF4pzxk4wHrWFA7lTYBdxd+cLK9+XUQEESk
+nevbtmOHkjztygsa7jHuN5GJHz3SMkU5nWnUsQE1pnDrfFW3uuLoTV/o/7FHy3ph
+wRUuwahCyAZ9e0viOlYAVZrzaXOStFYL87lFfB4DhUeK2XB/t4BlRazpXJeW++iV
+IKu3NZHwde6TJ1HnWxrDfJKGgXI3HFQyhIn4owPPCgX81L86z817nZX99t9E0FvQ
+lToxlei5I+gU/pzemowVmlU9gTVH/9rEonvq/PbL4QAsn/L5vfr/2OntEJjR9J0b
+wwcH9ezlgC/uJp94YuXvUQMnMuTEsBjg+hQyuUoDowXYbpsPxUgXcS4m5L+VuVM2
+ofg8uvhWHfl8g+8Wl1IuChS7Hj2oUBxYzpfICOak1aVsKiShuwv/kq+hmJf9iuom
+Lv7INPBCRGJ9AhzKfY6KSaX3PloE3BZs1D5auljymr/3MtrXaRReGFzmLWPDv7np
+dybb2e88BpO7h5lZR/bOrFXgw9ni0Pk2r9XfOg5uBBokJZgTiRoQMbBcPpHH+23M
+4mVIMswxby2UmcuVBqhcS3SkpdIyY1ywe1PU2QwaQw+IPzAE/ndnpFOp1/JU1ZUE
+ezwEQ0vbxym7/kHbfcoQk9X4kgqXIxNcYDKwrqvPabqfta5PPdw=
+=85wg
+-----END PGP SIGNATURE-----
+
+--=-ONyhHFL4Nn1SjgHz8m1T--
+
