@@ -2,74 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100D3B987D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 22:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EB9B9883
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 22:35:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZllM0fBFzF4H9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 06:32:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZlpB3fQszDqRS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 06:35:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=julietk@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZlWS3lRGzF3fD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 06:22:28 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZlgH5xkYzF4FB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 06:29:15 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8KKMKcN063618; Fri, 20 Sep 2019 16:22:26 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v53wf47wf-1
+ x8KKRUkP105910; Fri, 20 Sep 2019 16:28:53 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v53kcn9fr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Sep 2019 16:22:25 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8KKJcO9007895;
- Fri, 20 Sep 2019 20:22:25 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma03dal.us.ibm.com with ESMTP id 2v3vbuw2ww-1
+ Fri, 20 Sep 2019 16:28:53 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8KKS8FO108104;
+ Fri, 20 Sep 2019 16:28:52 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v53kcn9fc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Sep 2019 20:22:25 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8KKMNke45941060
+ Fri, 20 Sep 2019 16:28:52 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8KKOi38003907;
+ Fri, 20 Sep 2019 20:28:51 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04dal.us.ibm.com with ESMTP id 2v3vbuw4t6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 20:28:51 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8KKSnjn50004434
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Sep 2019 20:22:23 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F3326A047;
- Fri, 20 Sep 2019 20:22:23 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3CE706A051;
- Fri, 20 Sep 2019 20:22:23 +0000 (GMT)
-Received: from ltcfleet2-lp9.aus.stglabs.ibm.com (unknown [9.40.195.116])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 20 Sep 2019 20:22:23 +0000 (GMT)
-From: Juliet Kim <julietk@linux.vnet.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH v4 2/2] net/ibmvnic: prevent more than one thread from running
- in reset
-Date: Fri, 20 Sep 2019 16:11:23 -0400
-Message-Id: <20190920201123.18913-3-julietk@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20190920201123.18913-1-julietk@linux.vnet.ibm.com>
-References: <20190920201123.18913-1-julietk@linux.vnet.ibm.com>
+ Fri, 20 Sep 2019 20:28:49 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DA540C6057;
+ Fri, 20 Sep 2019 20:28:49 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 79BD1C6055;
+ Fri, 20 Sep 2019 20:28:45 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.18.235.184])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Sep 2019 20:28:45 +0000 (GMT)
+Message-ID: <24863d8904c6e05e5dd48cab57db4274675ae654.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 11/11] powerpc/mm/book3s64/pgtable: Uses counting
+ method to skip serializing
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Date: Fri, 20 Sep 2019 17:28:41 -0300
+In-Reply-To: <1b39eaa7-751d-40bc-d3d7-41aaa15be42a@nvidia.com>
+References: <20190920195047.7703-1-leonardo@linux.ibm.com>
+ <20190920195047.7703-12-leonardo@linux.ibm.com>
+ <1b39eaa7-751d-40bc-d3d7-41aaa15be42a@nvidia.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-EbNtHEwclx7KXmENRZAu"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-09-20_07:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=4 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909200167
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909200168
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,177 +94,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: julietk@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- tlfalcon@linux.vnet.ibm.com
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Thomas Gleixner <tglx@linutronix.de>,
+ Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ YueHaibing <yuehaibing@huawei.com>, Keith Busch <keith.busch@intel.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The current code allows more than one thread to run in reset. This can 
-corrupt struct adapter data. Check adapter->resetting before performing 
-a reset, if there is another reset running delay (100 msec) before trying 
-again.
 
-Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 40 ++++++++++++++++++++++++++++----------
- drivers/net/ethernet/ibm/ibmvnic.h |  5 ++++-
- 2 files changed, 34 insertions(+), 11 deletions(-)
+--=-EbNtHEwclx7KXmENRZAu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index ba340aaff1b3..6aef574acdf2 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1207,7 +1207,7 @@ static void ibmvnic_cleanup(struct net_device *netdev)
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
- 
- 	/* ensure that transmissions are stopped if called by do_reset */
--	if (adapter->resetting)
-+	if (test_bit(0, &adapter->resetting))
- 		netif_tx_disable(netdev);
- 	else
- 		netif_tx_stop_all_queues(netdev);
-@@ -1428,7 +1428,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	u8 proto = 0;
- 	netdev_tx_t ret = NETDEV_TX_OK;
- 
--	if (adapter->resetting) {
-+	if (test_bit(0, &adapter->resetting)) {
- 		if (!netif_subqueue_stopped(netdev, skb))
- 			netif_stop_subqueue(netdev, queue_num);
- 		dev_kfree_skb_any(skb);
-@@ -2054,6 +2054,12 @@ static void __ibmvnic_reset(struct work_struct *work)
- 
- 	adapter = container_of(work, struct ibmvnic_adapter, ibmvnic_reset);
- 
-+	if (test_and_set_bit_lock(0, &adapter->resetting)) {
-+		schedule_delayed_work(&adapter->ibmvnic_delayed_reset,
-+				      IBMVNIC_RESET_DELAY);
-+		return;
-+	}
-+
- 	reset_state = adapter->state;
- 
- 	rwi = get_next_rwi(adapter);
-@@ -2095,6 +2101,10 @@ static void __ibmvnic_reset(struct work_struct *work)
- 			break;
- 
- 		rwi = get_next_rwi(adapter);
-+
-+		if (rwi && (rwi->reset_reason == VNIC_RESET_FAILOVER ||
-+			    rwi->reset_reason == VNIC_RESET_MOBILITY))
-+			adapter->force_reset_recovery = true;
- 	}
- 
- 	if (adapter->wait_for_reset) {
-@@ -2107,7 +2117,16 @@ static void __ibmvnic_reset(struct work_struct *work)
- 		free_all_rwi(adapter);
- 	}
- 
--	adapter->resetting = false;
-+	clear_bit_unlock(0, &adapter->resetting);
-+}
-+
-+static void __ibmvnic_delayed_reset(struct work_struct *work)
-+{
-+	struct ibmvnic_adapter *adapter;
-+
-+	adapter = container_of(work, struct ibmvnic_adapter,
-+			       ibmvnic_delayed_reset.work);
-+	__ibmvnic_reset(&adapter->ibmvnic_reset);
- }
- 
- static int ibmvnic_reset(struct ibmvnic_adapter *adapter,
-@@ -2162,7 +2181,6 @@ static int ibmvnic_reset(struct ibmvnic_adapter *adapter,
- 	rwi->reset_reason = reason;
- 	list_add_tail(&rwi->list, &adapter->rwi_list);
- 	spin_unlock_irqrestore(&adapter->rwi_lock, flags);
--	adapter->resetting = true;
- 	netdev_dbg(adapter->netdev, "Scheduling reset (reason %d)\n", reason);
- 	schedule_work(&adapter->ibmvnic_reset);
- 
-@@ -2207,7 +2225,7 @@ static int ibmvnic_poll(struct napi_struct *napi, int budget)
- 		u16 offset;
- 		u8 flags = 0;
- 
--		if (unlikely(adapter->resetting &&
-+		if (unlikely(test_bit(0, &adapter->resetting) &&
- 			     adapter->reset_reason != VNIC_RESET_NON_FATAL)) {
- 			enable_scrq_irq(adapter, adapter->rx_scrq[scrq_num]);
- 			napi_complete_done(napi, frames_processed);
-@@ -2858,7 +2876,7 @@ static int enable_scrq_irq(struct ibmvnic_adapter *adapter,
- 		return 1;
- 	}
- 
--	if (adapter->resetting &&
-+	if (test_bit(0, &adapter->resetting) &&
- 	    adapter->reset_reason == VNIC_RESET_MOBILITY) {
- 		u64 val = (0xff000000) | scrq->hw_irq;
- 
-@@ -3408,7 +3426,7 @@ static int ibmvnic_send_crq(struct ibmvnic_adapter *adapter,
- 	if (rc) {
- 		if (rc == H_CLOSED) {
- 			dev_warn(dev, "CRQ Queue closed\n");
--			if (adapter->resetting)
-+			if (test_bit(0, &adapter->resetting))
- 				ibmvnic_reset(adapter, VNIC_RESET_FATAL);
- 		}
- 
-@@ -4483,7 +4501,7 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
- 	case IBMVNIC_CRQ_XPORT_EVENT:
- 		netif_carrier_off(netdev);
- 		adapter->crq.active = false;
--		if (adapter->resetting)
-+		if (test_bit(0, &adapter->resetting))
- 			adapter->force_reset_recovery = true;
- 		if (gen_crq->cmd == IBMVNIC_PARTITION_MIGRATED) {
- 			dev_info(dev, "Migrated, re-enabling adapter\n");
-@@ -4821,7 +4839,7 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
- 		return -1;
- 	}
- 
--	if (adapter->resetting && !adapter->wait_for_reset &&
-+	if (test_bit(0, &adapter->resetting) && !adapter->wait_for_reset &&
- 	    adapter->reset_reason != VNIC_RESET_MOBILITY) {
- 		if (adapter->req_rx_queues != old_num_rx_queues ||
- 		    adapter->req_tx_queues != old_num_tx_queues) {
-@@ -4933,10 +4951,12 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 	spin_lock_init(&adapter->stats_lock);
- 
- 	INIT_WORK(&adapter->ibmvnic_reset, __ibmvnic_reset);
-+	INIT_DELAYED_WORK(&adapter->ibmvnic_delayed_reset,
-+			  __ibmvnic_delayed_reset);
- 	INIT_LIST_HEAD(&adapter->rwi_list);
- 	spin_lock_init(&adapter->rwi_lock);
- 	init_completion(&adapter->init_done);
--	adapter->resetting = false;
-+	clear_bit(0, &adapter->resetting);
- 
- 	do {
- 		rc = init_crq_queue(adapter);
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-index 9d3d35cc91d6..ebc39248b334 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.h
-+++ b/drivers/net/ethernet/ibm/ibmvnic.h
-@@ -39,6 +39,8 @@
- #define IBMVNIC_MAX_LTB_SIZE ((1 << (MAX_ORDER - 1)) * PAGE_SIZE)
- #define IBMVNIC_BUFFER_HLEN 500
- 
-+#define IBMVNIC_RESET_DELAY 100
-+
- static const char ibmvnic_priv_flags[][ETH_GSTRING_LEN] = {
- #define IBMVNIC_USE_SERVER_MAXES 0x1
- 	"use-server-maxes"
-@@ -1077,7 +1079,8 @@ struct ibmvnic_adapter {
- 	spinlock_t rwi_lock;
- 	struct list_head rwi_list;
- 	struct work_struct ibmvnic_reset;
--	bool resetting;
-+	struct delayed_work ibmvnic_delayed_reset;
-+	unsigned long resetting;
- 	bool napi_enabled, from_passive_init;
- 
- 	bool failover_pending;
--- 
-2.16.4
+On Fri, 2019-09-20 at 13:11 -0700, John Hubbard wrote:
+> On 9/20/19 12:50 PM, Leonardo Bras wrote:
+> > Skips slow part of serialize_against_pte_lookup if there is no running
+> > lockless pagetable walk.
+> >=20
+> > Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+> > ---
+> >  arch/powerpc/mm/book3s64/pgtable.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3=
+s64/pgtable.c
+> > index 13239b17a22c..41ca30269fa3 100644
+> > --- a/arch/powerpc/mm/book3s64/pgtable.c
+> > +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> > @@ -95,7 +95,8 @@ static void do_nothing(void *unused)
+> >  void serialize_against_pte_lookup(struct mm_struct *mm)
+> >  {
+> >  	smp_mb();
+> > -	smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
+> > +	if (running_lockless_pgtbl_walk(mm))
+> > +		smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
+>=20
+> Hi,
+>=20
+> If you do this, then you are left without any synchronization. So it will
+> have race conditions: a page table walk could begin right after the above
+> check returns "false", and then code such as hash__pmdp_huge_get_and_clea=
+r()
+> will continue on right away, under the false assumption that it has let
+> all the current page table walks complete.
+>=20
+> The current code uses either interrupts or RCU to synchronize, and in
+> either case, you end up scheduling something on each CPU. If you remove
+> that entirely, I don't see anything left. ("Pure" atomic counting is not
+> a synchronization technique all by itself.)
+>=20
+> thanks,
+
+Hello John,
+Thanks for the fast feedback.
+
+See, before calling serialize_against_pte_lookup(), there is always an
+update or clear on the pmd. So, if a page table walk begin right after
+the check returns "false", there is no problem, since it will use the
+updated pmd.
+
+Think about serialize, on a process with a bunch of cpus. After you
+check the last processor (wait part), there is no guarantee that the
+first one is not starting a lockless pagetable walk.
+
+The same mechanism protect both methods.
+
+Does it make sense?
+
+Best regards,
+Leonardo Bras
+
+
+
+--=-EbNtHEwclx7KXmENRZAu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2FNnkACgkQlQYWtz9S
+ttSPMw//aJn7kdxYecY+MRvifVWoQyBdJ5umQJcly7LvttzqAl+3S5Q/uZgg75xp
+1Bw5gwlD7/PUEkgryL3CjdYgywmVWZVP9gu+//oyj0wMCeICEgNmaswQdZHgUF4y
+X86VJ2urZ1WSNesqcjoc7P65Q2WjxoBQiRwCAZfBRPaFKxELIc3jg2NuRDiTHPih
+CoKC1167Kzrl3LsEhFUwcTUO6zDMsDCfUY/+I+XeuvBQyQNlV6oazPhxH0XzRj+I
+e2dSZtnVQvzaD1a/GHbWQ4DdIl21kms6yQLVWE24h5voiAd8DloXlIcoL6oiEIeG
+00KWNLd7pcWyZXGWHRG9F7StTkeiRVCcGIut+k3lia9WKeTULC53h9l5JzwIwO5Q
+zVE+rPFuE9myUA8KRKTz4UyoLEpeuZEWD/EE8nRdcyvGYg0Eo7mYopiNb9vewhpi
+9XSsMFmaUR4PS0A64bpByLJE5nzq7vWim4AAEPMMzIa13ey8jaOXgb22NKGfVKVU
+b61o91K/miqsw17iGj+wknw8R6cR7fyWwRKQXJD7aF7zzW6P4acudkPdi/shKSNo
+mIxf6PJ5qyM6AKy8ZWY3fd7SNZBiH/mprXnNFbMDonVBZH/viejZwCce7DN8K8z4
+DBEkCKD1I/q7+QkFfylu/wz3m2gJg+CSCeivgY5wf7XlpZbK0co=
+=98u8
+-----END PGP SIGNATURE-----
+
+--=-EbNtHEwclx7KXmENRZAu--
 
