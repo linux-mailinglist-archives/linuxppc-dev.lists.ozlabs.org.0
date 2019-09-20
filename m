@@ -1,76 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28648B8909
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 03:59:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF19B8988
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 04:49:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZH2Z4S62zF4ky
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 11:59:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZJ8Q02jLzF3Cp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 12:49:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZH0V5QSNzF4d8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 11:57:30 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8K1uY3Z074037; Thu, 19 Sep 2019 21:57:16 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v4m531xxu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2019 21:57:16 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8K1vCFt075541;
- Thu, 19 Sep 2019 21:57:15 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZJ6Y3VVSzF39S
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 12:47:48 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8K2kRkV084893; Thu, 19 Sep 2019 22:47:44 -0400
 Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
  [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v4m531xxh-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v4mdy2upv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2019 21:57:15 -0400
+ Thu, 19 Sep 2019 22:47:44 -0400
 Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8K1tJXY011729;
- Fri, 20 Sep 2019 01:57:15 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma01wdc.us.ibm.com with ESMTP id 2v3vbtt6gr-1
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8K2imak025454;
+ Fri, 20 Sep 2019 02:47:43 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 2v3vbttfby-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Sep 2019 01:57:15 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8K1vDuv60031238
+ Fri, 20 Sep 2019 02:47:43 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8K2lgpV53018918
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Sep 2019 01:57:13 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8C10BE053;
- Fri, 20 Sep 2019 01:57:13 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74FACBE04F;
- Fri, 20 Sep 2019 01:57:09 +0000 (GMT)
+ Fri, 20 Sep 2019 02:47:42 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E9D3AE060;
+ Fri, 20 Sep 2019 02:47:42 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A223AE05C;
+ Fri, 20 Sep 2019 02:47:41 +0000 (GMT)
 Received: from LeoBras (unknown [9.85.172.122])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 20 Sep 2019 01:57:09 +0000 (GMT)
-Message-ID: <5aa1d16d90b3fc4a4aa989a4082f0e2fb776998a.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 1/1] powerpc/pseries/hotplug-memory.c: Change rc
- variable to bool
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Sep 2019 02:47:41 +0000 (GMT)
+Message-ID: <5af478e1da6c0b847fbaf3aff6ccce5720e8a23c.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/1] powerpc: kvm: Reduce calls to get current->mm by
+ storing the value locally
 From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+To: PaulMackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
-Date: Thu, 19 Sep 2019 22:57:04 -0300
-In-Reply-To: <dd417c2c-83f6-b3e0-0a87-25996af76db5@redhat.com>
-References: <20190802133914.30413-1-leonardo@linux.ibm.com>
- <dd417c2c-83f6-b3e0-0a87-25996af76db5@redhat.com>
+Date: Thu, 19 Sep 2019 23:47:36 -0300
+In-Reply-To: <20190919222748.20761-1-leonardo@linux.ibm.com>
+References: <20190919222748.20761-1-leonardo@linux.ibm.com>
 Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-ONyhHFL4Nn1SjgHz8m1T"
+ protocol="application/pgp-signature"; boundary="=-rctJ8lPs1EJcH0JFR0tD"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
@@ -79,9 +70,9 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909200021
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=849 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909200030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,100 +84,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pavel Tatashin <pavel.tatashin@microsoft.com>,
- David Hildenbrand <david@redhat.com>, YueHaibing <yuehaibing@huawei.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nathan Fontenot <nfont@linux.vnet.ibm.com>, Rob Herring <robh@kernel.org>,
- Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---=-ONyhHFL4Nn1SjgHz8m1T
+--=-rctJ8lPs1EJcH0JFR0tD
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hello Michael,
+Hello Paul,=20
+I sent this patch, but I have a question:
 
-Any feedback on this patch?
-
-Best regards,
-
-
-On Fri, 2019-08-02 at 15:45 +0200, David Hildenbrand wrote:
-> On 02.08.19 15:39, Leonardo Bras wrote:
-> > Changes the return variable to bool (as the return value) and
-> > avoids doing a ternary operation before returning.
-> >=20
-> > Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-> > ---
-> > Changes in v2:
-> >   - Restore previous and-ing logic on rc.
-> >=20
-> >  arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/pow=
-erpc/platforms/pseries/hotplug-memory.c
-> > index 8e700390f3d6..c126b94d1943 100644
-> > --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > @@ -338,7 +338,7 @@ static int pseries_remove_mem_node(struct device_no=
-de *np)
-> >  static bool lmb_is_removable(struct drmem_lmb *lmb)
-> >  {
-> >  	int i, scns_per_block;
-> > -	int rc =3D 1;
-> > +	bool rc =3D true;
-> >  	unsigned long pfn, block_sz;
-> >  	u64 phys_addr;
-> > =20
-> > @@ -363,11 +363,11 @@ static bool lmb_is_removable(struct drmem_lmb *lm=
-b)
-> >  		if (!pfn_present(pfn))
-> >  			continue;
-> > =20
-> > -		rc &=3D is_mem_section_removable(pfn, PAGES_PER_SECTION);
-> > +		rc =3D rc && is_mem_section_removable(pfn, PAGES_PER_SECTION);
-> >  		phys_addr +=3D MIN_MEMORY_BLOCK_SIZE;
-> >  	}
-> > =20
-> > -	return rc ? true : false;
-> > +	return rc;
-> >  }
-> > =20
-> >  static int dlpar_add_lmb(struct drmem_lmb *);
-> >=20
+On Thu, 2019-09-19 at 19:27 -0300, Leonardo Bras wrote:
+> Reduces the number of calls to get_current() in order to get the value of
+> current->mm by doing it once and storing the value, since it is not
+> supposed to change inside the same process).
 >=20
-> Yeah, why not
+> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
 >=20
-> Reviewed-by: David Hildenbrand <david@redhat.com>
->=20
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3=
+s_64_mmu_hv.c
+> index 9a75f0e1933b..f2b9aea43216 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> @@ -508,6 +508,7 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, =
+struct kvm_vcpu *vcpu,
+>  	struct vm_area_struct *vma;
+>  	unsigned long rcbits;
+>  	long mmio_update;
+> +	struct mm_struct *mm;
+> =20
+>  	if (kvm_is_radix(kvm))
+>  		return kvmppc_book3s_radix_page_fault(run, vcpu, ea, dsisr);
+> @@ -584,6 +585,7 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, =
+struct kvm_vcpu *vcpu,
+>  	is_ci =3D false;
+>  	pfn =3D 0;
+>  	page =3D NULL;
+> +	mm =3D current->mm;
 
---=-ONyhHFL4Nn1SjgHz8m1T
+Here, current->mm is not always the same as kvm->mm?=20
+
+>  	pte_size =3D PAGE_SIZE;
+>  	writing =3D (dsisr & DSISR_ISSTORE) !=3D 0;
+>  	/* If writing !=3D 0, then the HPTE must allow writing, if we get here =
+*/
+> @@ -592,8 +594,8 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, =
+struct kvm_vcpu *vcpu,
+>  	npages =3D get_user_pages_fast(hva, 1, writing ? FOLL_WRITE : 0, pages)=
+;
+>  	if (npages < 1) {
+>  		/* Check if it's an I/O mapping */
+> -		down_read(&current->mm->mmap_sem);
+> -		vma =3D find_vma(current->mm, hva);
+> +		down_read(&mm->mmap_sem);
+> +		vma =3D find_vma(mm, hva);
+>  		if (vma && vma->vm_start <=3D hva && hva + psize <=3D vma->vm_end &&
+>  		    (vma->vm_flags & VM_PFNMAP)) {
+>  			pfn =3D vma->vm_pgoff +
+> @@ -602,7 +604,7 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, =
+struct kvm_vcpu *vcpu,
+>  			is_ci =3D pte_ci(__pte((pgprot_val(vma->vm_page_prot))));
+>  			write_ok =3D vma->vm_flags & VM_WRITE;
+>  		}
+> -		up_read(&current->mm->mmap_sem);
+> +		up_read(&mm->mmap_sem);
+>  		if (!pfn)
+>  			goto out_put;
+>  	} else {
+> @@ -621,8 +623,7 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, =
+struct kvm_vcpu *vcpu,
+>  			 * hugepage split and collapse.
+>  			 */
+>  			local_irq_save(flags);
+> -			ptep =3D find_current_mm_pte(current->mm->pgd,
+> -						   hva, NULL, NULL);
+> +			ptep =3D find_current_mm_pte(mm->pgd, hva, NULL, NULL);
+>  			if (ptep) {
+>  				pte =3D kvmppc_read_update_linux_pte(ptep, 1);
+>  				if (__pte_write(pte))
+
+Thanks !
+
+--=-rctJ8lPs1EJcH0JFR0tD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2EMfAACgkQlQYWtz9S
-ttQDvRAAwUnVrutNNTkOUXjvHQgdRmF4pzxk4wHrWFA7lTYBdxd+cLK9+XUQEESk
-nevbtmOHkjztygsa7jHuN5GJHz3SMkU5nWnUsQE1pnDrfFW3uuLoTV/o/7FHy3ph
-wRUuwahCyAZ9e0viOlYAVZrzaXOStFYL87lFfB4DhUeK2XB/t4BlRazpXJeW++iV
-IKu3NZHwde6TJ1HnWxrDfJKGgXI3HFQyhIn4owPPCgX81L86z817nZX99t9E0FvQ
-lToxlei5I+gU/pzemowVmlU9gTVH/9rEonvq/PbL4QAsn/L5vfr/2OntEJjR9J0b
-wwcH9ezlgC/uJp94YuXvUQMnMuTEsBjg+hQyuUoDowXYbpsPxUgXcS4m5L+VuVM2
-ofg8uvhWHfl8g+8Wl1IuChS7Hj2oUBxYzpfICOak1aVsKiShuwv/kq+hmJf9iuom
-Lv7INPBCRGJ9AhzKfY6KSaX3PloE3BZs1D5auljymr/3MtrXaRReGFzmLWPDv7np
-dybb2e88BpO7h5lZR/bOrFXgw9ni0Pk2r9XfOg5uBBokJZgTiRoQMbBcPpHH+23M
-4mVIMswxby2UmcuVBqhcS3SkpdIyY1ywe1PU2QwaQw+IPzAE/ndnpFOp1/JU1ZUE
-ezwEQ0vbxym7/kHbfcoQk9X4kgqXIxNcYDKwrqvPabqfta5PPdw=
-=85wg
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2EPcgACgkQlQYWtz9S
+ttT92xAAlU6n/TDflKWVfsQt5/FJ3oTfcdrylpi8GIMzLpx5L3G7XRquJ/JEDBKe
+NyqID7oNkE1t3EV3jgazmSEnf6t03k33zM0K813pVGUhOXQMN7pHj3GMGtb7Tqji
+3PC+wN3IB+lH1quvhChiRQYYKnVSHgVZSI8T+dnmCklJJ3kSmIkr2t6IrIqZIShO
+24SJBGXSXtUspknpO3xkxs/CDMn7WoK24jIRrXkv/myInp2rrZG+9NCj1FnA7/4M
+TUXQ2tFCNQk5LHzx0wPS73Z8DqMGGb/goPxs7ODlGLgS+k7sQvz6OLGdAB7/C2kB
+CLDAHhUiSUArXjhv7hiigPZShnCQ0G0MWHjRY2CSHzP4kyoDnd9uQ9DW8zbuiY+D
+YKTbpXS8fYfUKIN3M26BUBWu7HeT6XtJ3rueSQ50VzZDLXeqq765r0Kl4vNdWmCj
+Vx4ZOazQG9OE8yPVfbzqIWAj+nCR9pHQIg98qqiaOw7sdjVyV9fuzuMO68/cAww5
+msZHyag7vcDWxR60I/I9f5k26aoUO+AMokGoPNKUASUZB3+xiHJEWxxhB21QzJXD
+K5STiGz0pyB7IOyGwoIItC/6mVTEIVLI4kqO0yYHbzigUtzWnr7rh9NsbvI5Yp4q
+UA8U8xwvzq4Atc0B+oejql+s6v0cZ7qQG0ah78bmwMXPLfmnu+E=
+=Hdjd
 -----END PGP SIGNATURE-----
 
---=-ONyhHFL4Nn1SjgHz8m1T--
+--=-rctJ8lPs1EJcH0JFR0tD--
 
