@@ -2,50 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24ACCB89E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 06:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CD2B8B03
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 08:26:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZKvD2h85zF3tt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 14:08:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZNz538VMzF3VL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 16:26:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46ZKs45nfJzF3XK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 14:06:13 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08718337;
- Thu, 19 Sep 2019 21:06:10 -0700 (PDT)
-Received: from [10.162.40.137] (p8cg001049571a15.blr.arm.com [10.162.40.137])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- 85C4F3F67D; Thu, 19 Sep 2019 21:05:57 -0700 (PDT)
-Subject: Re: [PATCH V2 2/2] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To: Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>
-References: <1568268173-31302-1-git-send-email-anshuman.khandual@arm.com>
- <1568268173-31302-3-git-send-email-anshuman.khandual@arm.com>
- <ab0ca38b-1e4f-b636-f8b4-007a15903984@c-s.fr>
- <502c497a-9bf1-7d2e-95f2-cfebcd9cf1d9@arm.com>
- <95ed9d92-dd43-4c45-2e52-738aed7f2fb5@c-s.fr>
- <f872e6f4-a5cb-069d-2034-78961930cb9f@arm.com>
- <64504101-d9dd-f273-02f9-e9a8b178eecc@c-s.fr>
- <20190918202243.37e709df@thinkpad>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <5a6045af-bcfb-12c2-0f4a-3b49a905ec4d@arm.com>
-Date: Fri, 20 Sep 2019 09:36:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=huawei.com
+X-Greylist: delayed 930 seconds by postgrey-1.36 at bilbo;
+ Fri, 20 Sep 2019 16:24:43 AEST
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZNwq4Rj5zF3P3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 16:24:41 +1000 (AEST)
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id BE7CD14304A4275B0757;
+ Fri, 20 Sep 2019 14:09:06 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 20 Sep 2019 14:08:57 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Ingo Molnar <mingo@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>, Andy Whitcroft
+ <apw@canonical.com>, Peter Zijlstra <peterz@infradead.org>, "Alexei
+ Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Sergey Senozhatsky
+ <sergey.senozhatsky@gmail.com>, Petr Mladek <pmladek@suse.com>, Arnd Bergmann
+ <arnd@arndb.de>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 15/32] macintosh: Use pr_warn instead of pr_warning
+Date: Fri, 20 Sep 2019 14:25:27 +0800
+Message-ID: <20190920062544.180997-16-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190920062544.180997-1-wangkefeng.wang@huawei.com>
+References: <20190920062544.180997-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20190918202243.37e709df@thinkpad>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,79 +59,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: wangkefeng.wang@huawei.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+As said in commit f2c2cbcc35d4 ("powerpc: Use pr_warn instead of
+pr_warning"), removing pr_warning so all logging messages use a
+consistent <prefix>_warn style. Let's do it.
 
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ drivers/macintosh/windfarm_fcu_controls.c |  4 +---
+ drivers/macintosh/windfarm_lm87_sensor.c  |  4 ++--
+ drivers/macintosh/windfarm_pm72.c         | 22 +++++++++++-----------
+ drivers/macintosh/windfarm_rm31.c         |  6 +++---
+ 4 files changed, 17 insertions(+), 19 deletions(-)
 
-On 09/18/2019 11:52 PM, Gerald Schaefer wrote:
-> On Wed, 18 Sep 2019 18:26:03 +0200
-> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-> 
-> [..] 
->> My suggestion was not to completely drop the #ifdef but to do like you 
->> did in pgd_clear_tests() for instance, ie to add the following test on 
->> top of the function:
->>
->> 	if (mm_pud_folded(mm) || is_defined(__ARCH_HAS_5LEVEL_HACK))
->> 		return;
->>
-> 
-> Ah, very nice, this would also fix the remaining issues for s390. Since
-> we have dynamic page table folding, neither __PAGETABLE_PXX_FOLDED nor
-> __ARCH_HAS_XLEVEL_HACK is defined, but mm_pxx_folded() will work.
+diff --git a/drivers/macintosh/windfarm_fcu_controls.c b/drivers/macintosh/windfarm_fcu_controls.c
+index 3c971297b6dc..67daeec94b44 100644
+--- a/drivers/macintosh/windfarm_fcu_controls.c
++++ b/drivers/macintosh/windfarm_fcu_controls.c
+@@ -468,9 +468,7 @@ static void wf_fcu_lookup_fans(struct wf_fcu_priv *pv)
+ 			else
+ 				id = ((*reg) - 0x30) / 2;
+ 			if (id > 7) {
+-				pr_warning("wf_fcu: Can't parse "
+-				       "fan ID in device-tree for %pOF\n",
+-					   np);
++				pr_warn("wf_fcu: Can't parse fan ID in device-tree for %pOF\n", np);
+ 				break;
+ 			}
+ 			wf_fcu_add_fan(pv, name, type, id);
+diff --git a/drivers/macintosh/windfarm_lm87_sensor.c b/drivers/macintosh/windfarm_lm87_sensor.c
+index e44525b19071..b03a33b803b7 100644
+--- a/drivers/macintosh/windfarm_lm87_sensor.c
++++ b/drivers/macintosh/windfarm_lm87_sensor.c
+@@ -124,8 +124,8 @@ static int wf_lm87_probe(struct i2c_client *client,
+ 		}
+ 	}
+ 	if (!name) {
+-		pr_warning("wf_lm87: Unsupported sensor %pOF\n",
+-			   client->dev.of_node);
++		pr_warn("wf_lm87: Unsupported sensor %pOF\n",
++			client->dev.of_node);
+ 		return -ENODEV;
+ 	}
+ 
+diff --git a/drivers/macintosh/windfarm_pm72.c b/drivers/macintosh/windfarm_pm72.c
+index c5da0fc24884..e81746b87cff 100644
+--- a/drivers/macintosh/windfarm_pm72.c
++++ b/drivers/macintosh/windfarm_pm72.c
+@@ -285,8 +285,8 @@ static void cpu_fans_tick_split(void)
+ 		/* Apply result directly to exhaust fan */
+ 		err = wf_control_set(cpu_rear_fans[cpu], sp->target);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-			       cpu_rear_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_rear_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 			break;
+ 		}
+@@ -296,8 +296,8 @@ static void cpu_fans_tick_split(void)
+ 		DBG_LOTS("  CPU%d: intake = %d RPM\n", cpu, intake);
+ 		err = wf_control_set(cpu_front_fans[cpu], intake);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-			       cpu_front_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_front_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 			break;
+ 		}
+@@ -367,22 +367,22 @@ static void cpu_fans_tick_combined(void)
+ 	for (cpu = 0; cpu < nr_chips; cpu++) {
+ 		err = wf_control_set(cpu_rear_fans[cpu], sp->target);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-				   cpu_rear_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_rear_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 		}
+ 		err = wf_control_set(cpu_front_fans[cpu], intake);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-				   cpu_front_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_front_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 		}
+ 		err = 0;
+ 		if (cpu_pumps[cpu])
+ 			err = wf_control_set(cpu_pumps[cpu], pump);
+ 		if (err) {
+-			pr_warning("wf_pm72: Pump %s reports error %d\n",
+-				   cpu_pumps[cpu]->name, err);
++			pr_warn("wf_pm72: Pump %s reports error %d\n",
++				cpu_pumps[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 		}
+ 	}
+@@ -561,7 +561,7 @@ static void drives_fan_tick(void)
+ 
+ 	err = wf_sensor_get(drives_temp, &temp);
+ 	if (err) {
+-		pr_warning("wf_pm72: drive bay temp sensor error %d\n", err);
++		pr_warn("wf_pm72: drive bay temp sensor error %d\n", err);
+ 		failure_state |= FAILURE_SENSOR;
+ 		wf_control_set_max(drives_fan);
+ 		return;
+diff --git a/drivers/macintosh/windfarm_rm31.c b/drivers/macintosh/windfarm_rm31.c
+index 8456eb67184b..7acd1684c451 100644
+--- a/drivers/macintosh/windfarm_rm31.c
++++ b/drivers/macintosh/windfarm_rm31.c
+@@ -281,8 +281,8 @@ static void cpu_fans_tick(void)
+ 		for (i = 0; i < 3; i++) {
+ 			err = wf_control_set(cpu_fans[cpu][i], speed);
+ 			if (err) {
+-				pr_warning("wf_rm31: Fan %s reports error %d\n",
+-					   cpu_fans[cpu][i]->name, err);
++				pr_warn("wf_rm31: Fan %s reports error %d\n",
++					cpu_fans[cpu][i]->name, err);
+ 				failure_state |= FAILURE_FAN;
+ 			}
+ 		}
+@@ -465,7 +465,7 @@ static void slots_fan_tick(void)
+ 
+ 	err = wf_sensor_get(slots_temp, &temp);
+ 	if (err) {
+-		pr_warning("wf_rm31: slots temp sensor error %d\n", err);
++		pr_warn("wf_rm31: slots temp sensor error %d\n", err);
+ 		failure_state |= FAILURE_SENSOR;
+ 		wf_control_set_max(slots_fan);
+ 		return;
+-- 
+2.20.1
 
-Like Christophe mentioned earlier on the other thread, we will convert
-all __PGTABLE_PXX_FOLDED checks as mm_pxx_folded() but looks like 
-ARCH_HAS_[4 and 5]LEVEL_HACK macros will still be around. Will respin
-the series with all agreed upon changes first and probably we can then
-discuss pending issues from there.
-
-> 
-> mm_alloc() returns with a 3-level page table by default on s390, so we
-> will run into issues in p4d_clear/populate_tests(), and also at the end
-> with p4d/pud_free() (double free).
-> 
-> So, adding the mm_pud_folded() check to p4d_clear/populate_tests(),
-> and also adding mm_p4d/pud_folded() checks at the end before calling> p4d/pud_free(), would make it all work on s390.
-
-Atleast p4d_clear/populate_tests() tests will be taken care.
-
-> 
-> BTW, regarding p4d/pud_free(), I'm not sure if we should rather check
-> the folding inside our s390 functions, similar to how we do it for
-> p4d/pud_free_tlb(), instead of relying on not being called for folded
-> p4d/pud. So far, I see no problem with this behavior, all callers of
-> p4d/pud_free() should be fine because of our folding check within
-> p4d/pud_present/none(). But that doesn't mean that it is correct not
-> to check for the folding inside p4d/pud_free(). At least, with this
-> test module we do now have a caller of p4d/pud_free() on potentially
-> folded entries, so instead of adding pxx_folded() checks to this
-> test module, we could add them to our p4d/pud_free() functions.
-> Any thoughts on this?
-Agreed, it seems better to do the check inside p4d/pud_free() functions.
