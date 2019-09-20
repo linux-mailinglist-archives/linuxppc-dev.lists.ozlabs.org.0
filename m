@@ -2,49 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989FFB97B0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 21:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE62BB982A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2019 21:57:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Zk6773VzzF3nC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 05:18:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZkyV4qBpzF3pj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 05:57:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="aZNMZqq2"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ZjwQ5yVLzDrR4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 05:10:30 +1000 (AEST)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.4-1 tag
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569006627;
- bh=9hcNYCOeUOjjlOWJPMNv/mdersVEM8D++nV/WuzHo40=;
- h=From:In-Reply-To:References:Date:To:Cc:From;
- b=aZNMZqq2wNAmzmnDKkHHG5Ltev23VVkdsyH5uYzMxya9T5FttzjhUCMzqk6PgL1vG
- yFehh5yRIpWHgi7GWAz1tPpbz7GA818IALVPrje1K0TN57W6ggdRTB7T3KNFBelDZk
- +uI/l6TalbDkAY8h/8+t8ENoO8WCA8D9UpyVBL7c=
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87blvft845.fsf@mpe.ellerman.id.au>
-References: <87blvft845.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87blvft845.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.4-1
-X-PR-Tracked-Commit-Id: d9101bfa6adc831bda8836c4d774820553c14942
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 45824fc0da6e46cc5d563105e1eaaf3098a686f9
-Message-Id: <156900662776.23740.6952253366695524692.pr-tracker-bot@kernel.org>
-Date: Fri, 20 Sep 2019 19:10:27 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Zkqx4bwFzF14V
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 05:51:41 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8KJnoru141617; Fri, 20 Sep 2019 15:51:18 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v55628774-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 15:51:18 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8KJp1mq144772;
+ Fri, 20 Sep 2019 15:51:17 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v5562876b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 15:51:17 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8KJoHol002669;
+ Fri, 20 Sep 2019 19:51:16 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03wdc.us.ibm.com with ESMTP id 2v3vburpp7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2019 19:51:16 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8KJpErb56557882
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Sep 2019 19:51:14 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D9347805C;
+ Fri, 20 Sep 2019 19:51:14 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8EC9478063;
+ Fri, 20 Sep 2019 19:51:09 +0000 (GMT)
+Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.184])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Sep 2019 19:51:09 +0000 (GMT)
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/11] Introduces new count-based method for monitoring
+ lockless pagetable wakls
+Date: Fri, 20 Sep 2019 16:50:36 -0300
+Message-Id: <20190920195047.7703-1-leonardo@linux.ibm.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-20_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=815 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909200161
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,36 +88,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com, adam.zerella@gmail.com,
- aik@ozlabs.ru, linuxram@us.ibm.com, maxiwell@linux.ibm.com,
- gromero@linux.vnet.ibm.com, yamada.masahiro@socionext.com, oohall@gmail.com,
- hbathini@linux.vnet.ibm.com, sukadev@linux.ibm.com, hch@lst.de,
- khandual@linux.vnet.ibm.com, hegdevasant@linux.vnet.ibm.com,
- santosh@fossix.org, aneesh.kumar@linux.ibm.com, ganeshgr@linux.ibm.com,
- jniethe5@gmail.com, tyreld@linux.ibm.com, leonardo@linux.ibm.com,
- naveen.n.rao@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
- nathanl@linux.ibm.com, ravi.bangoria@linux.ibm.com, ajd@linux.ibm.com,
- andmike@linux.ibm.com, groug@kaod.org, npiggin@gmail.com, cai@lca.pw,
- clg@kaod.org, rostedt@goodmis.org, natechancellor@gmail.com,
- arbab@linux.ibm.com, hbathini@linux.ibm.com, dja@axtens.net,
- gromero@linux.ibm.com, sbobroff@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- cmr@informatik.wtf, cclaudio@linux.ibm.com, linux-kernel@vger.kernel.org,
- grimm@linux.vnet.ibm.com, jsavitz@redhat.com, stewart@linux.ibm.com,
- christophe.jaillet@wanadoo.fr, Linus Torvalds <torvalds@linux-foundation.org>,
- bauerman@linux.ibm.com
+Cc: Keith Busch <keith.busch@intel.com>, Richard Fontana <rfontana@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Leonardo Bras <leonardo@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Fri, 20 Sep 2019 23:22:50 +1000:
+*** BLURB HERE ***
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.4-1
+Leonardo Bras (11):
+  powerpc/mm: Adds counting method to monitor lockless pgtable walks
+  asm-generic/pgtable: Adds dummy functions to monitor lockless pgtable
+    walks
+  mm/gup: Applies counting method to monitor gup_pgd_range
+  powerpc/mce_power: Applies counting method to monitor lockless pgtbl
+    walks
+  powerpc/perf: Applies counting method to monitor lockless pgtbl walks
+  powerpc/mm/book3s64/hash: Applies counting method to monitor lockless
+    pgtbl walks
+  powerpc/kvm/e500: Applies counting method to monitor lockless pgtbl
+    walks
+  powerpc/kvm/book3s_hv: Applies counting method to monitor lockless
+    pgtbl walks
+  powerpc/kvm/book3s_64: Applies counting method to monitor lockless
+    pgtbl walks
+  powerpc/book3s_64: Enables counting method to monitor lockless pgtbl
+    walk
+  powerpc/mm/book3s64/pgtable: Uses counting method to skip serializing
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/45824fc0da6e46cc5d563105e1eaaf3098a686f9
-
-Thank you!
+ arch/powerpc/include/asm/book3s/64/mmu.h     |  3 +++
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  5 +++++
+ arch/powerpc/kernel/mce_power.c              | 13 ++++++++++---
+ arch/powerpc/kvm/book3s_64_mmu_hv.c          |  2 ++
+ arch/powerpc/kvm/book3s_64_mmu_radix.c       | 20 ++++++++++++++++++--
+ arch/powerpc/kvm/book3s_64_vio_hv.c          |  4 ++++
+ arch/powerpc/kvm/book3s_hv_nested.c          |  8 ++++++++
+ arch/powerpc/kvm/book3s_hv_rm_mmu.c          |  9 ++++++++-
+ arch/powerpc/kvm/e500_mmu_host.c             |  4 ++++
+ arch/powerpc/mm/book3s64/hash_tlb.c          |  2 ++
+ arch/powerpc/mm/book3s64/hash_utils.c        |  7 +++++++
+ arch/powerpc/mm/book3s64/mmu_context.c       |  1 +
+ arch/powerpc/mm/book3s64/pgtable.c           | 20 +++++++++++++++++++-
+ arch/powerpc/perf/callchain.c                |  5 ++++-
+ include/asm-generic/pgtable.h                |  9 +++++++++
+ mm/gup.c                                     |  4 ++++
+ 16 files changed, 108 insertions(+), 8 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+2.20.1
+
