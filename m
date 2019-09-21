@@ -1,77 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB16B9AAF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 01:28:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A1CB9BBA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 02:54:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ZqdS4TFczF3nc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 09:27:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ZsYV2qYlzF4M1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2019 10:54:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nvidia.com
+ (client-ip=216.228.121.143; helo=hqemgate14.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="sv0ycOVZ"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="rq0bduDx"; 
  dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Zqbp1M4DzF3Nl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 09:26:27 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id q24so3870482plr.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2019 16:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=CA6mH2s7/mQqbWPAIxBYkadhzeqMoOn4kmubZpmIYQA=;
- b=sv0ycOVZPEhTBxFw+PhY1TKXnOl5DVN2Av+2c6JW39gGUGeaaPf9JWdZpzhfhjyDvO
- tHo5pFIxpbHshEplJahmcB28BZVO66DXVbj2Etn1qVpN/UyRaEys8guhMCBUGWa3Pdps
- RwEUfv849KjqGBzz5YzRqXMYHsE2hTKKND/lC1Ak9mBG11lytDDhN+YuEfWxOa7G7DG2
- 70IUKQm0VRf3zc5GtNZG2Sz8i3JA1ZgYokOXQL3Rp2Nl2Ri/jFFw2/ckRuCEF/dQ2nF8
- FRjZ4M/463RnpHE6i+2XVRXIkNXaaQzojkcpObFvr65CCoiwweYS2QoO8s5RYoJnpHod
- fXoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=CA6mH2s7/mQqbWPAIxBYkadhzeqMoOn4kmubZpmIYQA=;
- b=EpEx9VzpdpTNCAsTeP005l3vSL2Vf//bhlTj1Eci6otGr9YZ2PC4YK3/9225EQFG8f
- CfzSpc4kfaG0iD34SCkLKqurG6CnCIJuMyO9bL6FqElOR29djpiVCrskz1Iqy0uzeWbI
- 7+ruskph/gM60Xa5ifrCszJuqXGXHmiFq2HDATsb+kNC5NCe3l+pcFqjS9tdBKi0IIj5
- 8sZqc0b8pcJr8v8Cj23wXD3ibz4+g50/3SepYcK15erD+yo2AmK00yAvH5mKvJ/HZ+Pm
- da2/z6IBPFejuZsemzK5dUOGPtp1M45QY+MASmHM+kU7gWAyMn+u69N1oMY1i/M58z1z
- 73JA==
-X-Gm-Message-State: APjAAAVe3qIajbuzihmd/tJme8357XgG63TfYgp/CB5wbd7nvhvDaOED
- mvjLc565MT5y5R4ad0EYH/4=
-X-Google-Smtp-Source: APXvYqwAW5gxV9v80zvEtG/jnR4oL2FMp5gqh40w1OPjkDMijYj5VxPtPws76h5RT0qlX41fhMzS0g==
-X-Received: by 2002:a17:902:8f8c:: with SMTP id
- z12mr17751680plo.2.1569021985410; 
- Fri, 20 Sep 2019 16:26:25 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id k5sm3716946pfp.109.2019.09.20.16.26.24
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 20 Sep 2019 16:26:25 -0700 (PDT)
-Date: Fri, 20 Sep 2019 16:25:33 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH V3 4/4] ASoC: fsl_asrc: Fix error with S24_3LE format
- bitstream in i.MX8
-Message-ID: <20190920232533.GA29851@Asurada-Nvidia.nvidia.com>
-References: <cover.1568861098.git.shengjiu.wang@nxp.com>
- <0fe619f4c8f0898cf51c7324c9a0784c5782ed91.1568861098.git.shengjiu.wang@nxp.com>
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ZsWS3VXKzF3xw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2019 10:52:51 +1000 (AEST)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5d85745f0001>; Fri, 20 Sep 2019 17:52:48 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Fri, 20 Sep 2019 17:52:45 -0700
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Fri, 20 Sep 2019 17:52:45 -0700
+Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sat, 21 Sep
+ 2019 00:48:23 +0000
+Received: from [10.110.48.28] (10.124.1.5) by DRHQMAIL107.nvidia.com
+ (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sat, 21 Sep
+ 2019 00:48:22 +0000
+Subject: Re: [PATCH v2 11/11] powerpc/mm/book3s64/pgtable: Uses counting
+ method to skip serializing
+To: Leonardo Bras <leonardo@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>
+References: <20190920195047.7703-1-leonardo@linux.ibm.com>
+ <20190920195047.7703-12-leonardo@linux.ibm.com>
+ <1b39eaa7-751d-40bc-d3d7-41aaa15be42a@nvidia.com>
+ <24863d8904c6e05e5dd48cab57db4274675ae654.camel@linux.ibm.com>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <4ea26ffb-ad03-bdff-7893-95332b22a5fd@nvidia.com>
+Date: Fri, 20 Sep 2019 17:48:22 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0fe619f4c8f0898cf51c7324c9a0784c5782ed91.1568861098.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <24863d8904c6e05e5dd48cab57db4274675ae654.camel@linux.ibm.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ DRHQMAIL107.nvidia.com (10.27.9.16)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1569027168; bh=mxTrUqQC0LpHtZwDDpptnnmD6mLkuvDFdIcthA0LOFs=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=rq0bduDxx4OWdKvbShQZnzluimNygZGHLda9E0OPFQ08wPpjgp+RqimmmAwRCDzLa
+ 2uBX+v+EEZwmmxx7dXxlJHiFqLEbW0EvADvxbiU4KoGB8vQL6CjIAs0uLiELRLY2Ys
+ Mr49OULj0v7sG9XexjqHd89nasUVCJaD7YNg5K0nEmt48jjl8ZU/OEFZOxsEZMNXiV
+ Zhu1NyA4QIuhnXWxDtz2bsykXNzEVwgPam/TwYHQluNP5aWO4RCgm31RBGk8cv3ko5
+ 5MgNY+Uk6dsPZozW1WhaEpz/zoHb3o7sZWIEfP/yMYaP46Pis+vEnxVeupzhoAVZQ8
+ q6rXw+IIUmmUw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,90 +82,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
- Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com,
- lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org,
- festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Thomas Gleixner <tglx@linutronix.de>,
+ Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, YueHaibing <yuehaibing@huawei.com>,
+ Keith Busch <keith.busch@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Shengjiu,
-
-One issue for error-out and some nit-pickings inline. Thanks.
-
-On Thu, Sep 19, 2019 at 08:11:42PM +0800, Shengjiu Wang wrote:
-> There is error "aplay: pcm_write:2023: write error: Input/output error"
-> on i.MX8QM/i.MX8QXP platform for S24_3LE format.
+On 9/20/19 1:28 PM, Leonardo Bras wrote:
+> On Fri, 2019-09-20 at 13:11 -0700, John Hubbard wrote:
+>> On 9/20/19 12:50 PM, Leonardo Bras wrote:
+>>> Skips slow part of serialize_against_pte_lookup if there is no running
+>>> lockless pagetable walk.
+>>>
+>>> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+>>> ---
+>>>  arch/powerpc/mm/book3s64/pgtable.c | 3 ++-
+>>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+>>> index 13239b17a22c..41ca30269fa3 100644
+>>> --- a/arch/powerpc/mm/book3s64/pgtable.c
+>>> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+>>> @@ -95,7 +95,8 @@ static void do_nothing(void *unused)
+>>>  void serialize_against_pte_lookup(struct mm_struct *mm)
+>>>  {
+>>>  	smp_mb();
+>>> -	smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
+>>> +	if (running_lockless_pgtbl_walk(mm))
+>>> +		smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
+>>
+>> Hi,
+>>
+>> If you do this, then you are left without any synchronization. So it will
+>> have race conditions: a page table walk could begin right after the above
+>> check returns "false", and then code such as hash__pmdp_huge_get_and_clear()
+>> will continue on right away, under the false assumption that it has let
+>> all the current page table walks complete.
+>>
+>> The current code uses either interrupts or RCU to synchronize, and in
+>> either case, you end up scheduling something on each CPU. If you remove
+>> that entirely, I don't see anything left. ("Pure" atomic counting is not
+>> a synchronization technique all by itself.)
+>>
+>> thanks,
 > 
-> In i.MX8QM/i.MX8QXP, the DMA is EDMA, which don't support 24bit
-> sample, but we didn't add any constraint, that cause issues.
+> Hello John,
+> Thanks for the fast feedback.
 > 
-> So we need to query the caps of dma, then update the hw parameters
-> according to the caps.
+> See, before calling serialize_against_pte_lookup(), there is always an
+> update or clear on the pmd. So, if a page table walk begin right after
+> the check returns "false", there is no problem, since it will use the
+> updated pmd.
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  sound/soc/fsl/fsl_asrc.c     |  4 +--
->  sound/soc/fsl/fsl_asrc.h     |  3 +++
->  sound/soc/fsl/fsl_asrc_dma.c | 52 +++++++++++++++++++++++++++++++-----
->  3 files changed, 50 insertions(+), 9 deletions(-)
+> Think about serialize, on a process with a bunch of cpus. After you
+> check the last processor (wait part), there is no guarantee that the
+> first one is not starting a lockless pagetable walk.
 > 
-> @@ -276,6 +274,11 @@ static int fsl_asrc_dma_startup(struct snd_pcm_substream *substream)
->  	struct device *dev = component->dev;
->  	struct fsl_asrc *asrc_priv = dev_get_drvdata(dev);
->  	struct fsl_asrc_pair *pair;
-> +	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-> +	u8 dir = tx ? OUT : IN;
-> +	struct dma_chan *tmp_chan;
-> +	struct snd_dmaengine_dai_dma_data *dma_data;
-
-Nit: would it be possible to reorganize these a bit? Usually
-we put struct things together unless there is a dependency,
-similar to fsl_asrc_dma_hw_params().
-
-> @@ -285,9 +288,44 @@ static int fsl_asrc_dma_startup(struct snd_pcm_substream *substream)
->  
->  	runtime->private_data = pair;
->  
-> +	/* Request a temp pair, which is release in the end */
-
-Nit: "which will be released later" or "and will release it
-later"? And could we use a work like "dummy"? Or at least I
-would love to see the comments explaining the parameter "1"
-in the function call below.
-
-> +	ret = fsl_asrc_request_pair(1, pair);
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to request asrc pair\n");
-> +		return ret;
-> +	}
-> +
-> +	tmp_chan = fsl_asrc_get_dma_channel(pair, dir);
-> +	if (!tmp_chan) {
-> +		dev_err(dev, "can't get dma channel\n");
-
-Could we align with other error messages using "failed to"?
-
-> +	ret = snd_soc_set_runtime_hwparams(substream, &snd_imx_hardware);
-> +	if (ret)
-> +		return ret;
-> +
-[...]
-> +	dma_release_channel(tmp_chan);
-> +	fsl_asrc_release_pair(pair);
-
-I think we need an "out:" here for those error-out routines
-to goto. Otherwise, it'd be a pair leak?
-
-> +
-
-Could we drop this? There is a blank line below already :)
-
->  
->  	return 0;
->  }
-> -- 
-> 2.21.0
+> The same mechanism protect both methods.
 > 
+> Does it make sense?
+> 
+
+Yes, after working through this with Mark Hairgrove, I think I finally 
+realize that the new code will allow existing gup_fast() readers to drain,
+before proceeding. So that technically works (ignoring issues such as 
+whether it's desirable to use this approach, vs. for example batching
+the THP updates, etc), I agree.
+
+(And please ignore my other response that asked if the counting was 
+helping at all--I see that it does.)
+
+However, Mark pointed out a pre-existing question, which neither of us
+could figure out: are the irq disable/enable calls effective, given that
+they are (apparently) not memory barriers? 
+
+Given this claim from Documentation/memory-barriers.txt:
+
+INTERRUPT DISABLING FUNCTIONS
+-----------------------------
+
+Functions that disable interrupts (ACQUIRE equivalent) and enable interrupts
+(RELEASE equivalent) will act as compiler barriers only.  So if memory or I/O
+barriers are required in such a situation, they must be provided from some
+other means.
+
+...and given both the preexisting code, and the code you've added:
+
+mm/gup.c:
+
+	atomic_inc(readers); /* new code */
+	local_irq_disable();
+	gup_pgd_range();
+		...read page tables
+	local_irq_enable();
+	atomic_dec(readers); /* new code */
+ 
+...if the page table reads are allowed to speculatively happen *outside*
+of the irq enable/disable calls (which could happen if there are no run-time
+memory barriers in the above code), then nothing works anymore. 
+
+So it seems that full memory barriers (not just compiler barriers) are required.
+If the irq enable/disable somehow provides that, then your new code just goes
+along for the ride and Just Works. (You don't have any memory barriers in
+start_lockless_pgtbl_walk() / end_lockless_pgtbl_walk(), just the compiler
+barriers provided by the atomic inc/dec.)
+
+So it's really a pre-existing question about the correctness of the gup_fast()
+irq disabling approach.
+
++CC linux-mm
+
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
