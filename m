@@ -1,42 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C07BA244
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2019 14:05:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2109ABA402
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2019 20:49:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46bmPd0JpBzDq9Z
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2019 22:05:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46bxMc4wGpzDqPj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 04:49:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46bmMb4h8MzDqN3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2019 22:04:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="FjTFsT8t"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46bmMZ0TJPz9sCJ;
- Sun, 22 Sep 2019 22:04:09 +1000 (AEST)
-Date: Sun, 22 Sep 2019 22:03:59 +1000
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAPcyv4idejYpTS=ErsEJWgBxBsC1aS9=NCyvMEDO1rwqRktEmg@mail.gmail.com>
-References: <1568988209.5576.199.camel@lca.pw> <87r24bhwng.fsf@linux.ibm.com>
- <1569003478.5576.202.camel@lca.pw>
- <CAPcyv4idejYpTS=ErsEJWgBxBsC1aS9=NCyvMEDO1rwqRktEmg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46bxJF6FPTzDqL7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 04:46:53 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 69F0D21D56;
+ Sun, 22 Sep 2019 18:46:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1569178010;
+ bh=eMPlCWxTQpyconOk0Sr//jZgoyEkKBpyv80QPkFVPI4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=FjTFsT8tIpK/vNBKjgdeL78leIjHhrP6GEUDWV4oqp7VLukZL/48fJYLJjJOys1hK
+ E6NpZ1LAt0zIs5k2BuTnhKiHbBOG6KlpiRhpPMa0hC4sBpIYL1nVoguww502HLlEMm
+ F6cg0VLEGcKtGqpGlrO5VoaKYcpAzTJAvHX6yMSA=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.3 097/203] powerpc/Makefile: Always pass --synthetic
+ to nm if supported
+Date: Sun, 22 Sep 2019 14:42:03 -0400
+Message-Id: <20190922184350.30563-97-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
+References: <20190922184350.30563-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: "Pick the right alignment default when creating dax devices"
- failed to build on powerpc
-To: Dan Williams <dan.j.williams@intel.com>,Qian Cai <cai@lca.pw>
-From: Michael Ellerman <michael@ellerman.id.au>
-Message-ID: <A619A864-511D-4782-8789-5AEC8797A111@ellerman.id.au>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,53 +61,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Peter Collingbourne <pcc@google.com>,
+ linuxppc-dev@lists.ozlabs.org, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Michael Ellerman <mpe@ellerman.id.au>
 
+[ Upstream commit 117acf5c29dd89e4c86761c365b9724dba0d9763 ]
 
-On 21 September 2019 4:31:16 am AEST, Dan Williams <dan=2Ej=2Ewilliams@int=
-el=2Ecom> wrote:
->On Fri, Sep 20, 2019 at 11:18 AM Qian Cai <cai@lca=2Epw> wrote:
->>
->> On Fri, 2019-09-20 at 19:55 +0530, Aneesh Kumar K=2EV wrote:
->> > Qian Cai <cai@lca=2Epw> writes:
->> >
->> > > The linux-next commit "libnvdimm/dax: Pick the right alignment
->default when
->> > > creating dax devices" causes powerpc failed to build with this
->config=2E Reverted
->> > > it fixed the issue=2E
->> > >
->> > > ERROR: "hash__has_transparent_hugepage"
->[drivers/nvdimm/libnvdimm=2Eko] undefined!
->> > > ERROR: "radix__has_transparent_hugepage"
->[drivers/nvdimm/libnvdimm=2Eko]
->> > > undefined!
->> > > make[1]: *** [scripts/Makefile=2Emodpost:93: __modpost] Error 1
->> > > make: *** [Makefile:1305: modules] Error 2
->> > >
->> > > [1] https://patchwork=2Ekernel=2Eorg/patch/11133445/
->> > > [2]
->https://raw=2Egithubusercontent=2Ecom/cailca/linux-mm/master/powerpc=2Eco=
-nfig
->> >
->> > Sorry for breaking the build=2E How about?
->>
->> It works fine=2E
->
->Thanks, but let's delay "libnvdimm/dax: Pick the right alignment
->default when creating dax devices" until after -rc1 to allow Michael
->time to ack/nak this new export=2E
+Back in 2004 we added logic to arch/ppc64/Makefile to pass
+the --synthetic option to nm, if it was supported by nm.
 
-Thanks Dan=2E It looks fine to me:
+Then in 2005 when arch/ppc64 and arch/ppc were merged, the logic to
+add --synthetic was moved inside an #ifdef CONFIG_PPC64 block within
+arch/powerpc/Makefile, and has remained there since.
 
-Acked-by: Michael Ellerman <mpe@ellerman=2Eid=2Eau>
+That was fine, though crufty, until recently when a change to
+init/Kconfig added a config time check that uses $(NM). On powerpc
+that leads to an infinite loop because Kconfig uses $(NM) to calculate
+some values, then the powerpc Makefile changes $(NM), which Kconfig
+notices and restarts.
 
-cheers
---=20
-Sent from my Android phone with K-9 Mail=2E Please excuse my brevity=2E
+The original commit that added --synthetic simply said:
+  On new toolchains we need to use nm --synthetic or we miss code
+  symbols.
+
+And the nm man page says that the --synthetic option causes nm to:
+  Include synthetic symbols in the output. These are special symbols
+  created by the linker for various purposes.
+
+So it seems safe to always pass --synthetic if nm supports it, ie. on
+32-bit and 64-bit, it just means 32-bit kernels might have more
+symbols reported (and in practice I see no extra symbols). Making it
+unconditional avoids the #ifdef CONFIG_PPC64, which in turn avoids the
+infinite loop.
+
+Debugged-by: Peter Collingbourne <pcc@google.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index c345b79414a96..403f7e193833a 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -39,13 +39,11 @@ endif
+ uname := $(shell uname -m)
+ KBUILD_DEFCONFIG := $(if $(filter ppc%,$(uname)),$(uname),ppc64)_defconfig
+ 
+-ifdef CONFIG_PPC64
+ new_nm := $(shell if $(NM) --help 2>&1 | grep -- '--synthetic' > /dev/null; then echo y; else echo n; fi)
+ 
+ ifeq ($(new_nm),y)
+ NM		:= $(NM) --synthetic
+ endif
+-endif
+ 
+ # BITS is used as extension for files which are available in a 32 bit
+ # and a 64 bit version to simplify shared Makefiles.
+-- 
+2.20.1
+
