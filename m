@@ -1,88 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0347BBD8B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 23:04:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7326BBBD9C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 23:10:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ccJF21vBzDqP4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 07:04:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ccRm6wJRzDqQ1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 07:10:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nvidia.com
+ (client-ip=216.228.121.143; helo=hqemgate14.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ccG34d4gzDq9L
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 07:02:19 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8NL0l66006094; Mon, 23 Sep 2019 17:02:04 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v75kf81f9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 17:02:04 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8NL0oxS006303;
- Mon, 23 Sep 2019 17:02:04 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v75kf81e8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 17:02:04 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8NL0fZ7022838;
- Mon, 23 Sep 2019 21:02:02 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04wdc.us.ibm.com with ESMTP id 2v5bg6xnbc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 21:02:02 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8NL21tO48038320
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Sep 2019 21:02:01 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D9D07805F;
- Mon, 23 Sep 2019 21:02:00 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 568D87805E;
- Mon, 23 Sep 2019 21:01:56 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.18.235.184])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 23 Sep 2019 21:01:56 +0000 (GMT)
-Message-ID: <907304d0599684b3caa6773197fd40e09191b48e.camel@linux.ibm.com>
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="SzjH/eLj"; 
+ dkim-atps=neutral
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ccPy6CqVzDqF1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 07:09:10 +1000 (AEST)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5d8934750000>; Mon, 23 Sep 2019 14:09:09 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Mon, 23 Sep 2019 14:09:06 -0700
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Mon, 23 Sep 2019 14:09:06 -0700
+Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 23 Sep
+ 2019 21:09:06 +0000
+Received: from [10.110.48.28] (10.124.1.5) by DRHQMAIL107.nvidia.com
+ (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 23 Sep
+ 2019 21:09:05 +0000
 Subject: Re: [PATCH v2 03/11] mm/gup: Applies counting method to monitor
  gup_pgd_range
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Linux-MM <linux-mm@kvack.org>
-Date: Mon, 23 Sep 2019 18:01:54 -0300
-In-Reply-To: <2e060677-eadf-c32e-d8c5-8e22c8ca118e@nvidia.com>
+To: Leonardo Bras <leonardo@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>
 References: <20190920195047.7703-1-leonardo@linux.ibm.com>
  <20190920195047.7703-4-leonardo@linux.ibm.com>
  <2e060677-eadf-c32e-d8c5-8e22c8ca118e@nvidia.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-tW3aXB7tmQ0op8qOIhbV"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ <907304d0599684b3caa6773197fd40e09191b48e.camel@linux.ibm.com>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <badc1d09-a5aa-5252-f166-6ddc04891674@nvidia.com>
+Date: Mon, 23 Sep 2019 14:09:05 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-23_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909230177
+In-Reply-To: <907304d0599684b3caa6773197fd40e09191b48e.camel@linux.ibm.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ DRHQMAIL107.nvidia.com (10.27.9.16)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1569272949; bh=kycOKYOOy2iryJBYhGlRwbaTdWBiie5Bq6/GCZS4hXY=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=SzjH/eLjKmhoLsdLthIYRULuajkjfzwsxC5cfvPeKprHP8ZqFqoKlhre8Y1SfJQj3
+ WaoQI9wPCALeDOlyagDvFrHv8Pw6R6ibBycSeS5yMmiQWSKwjCh0Slsz3xXcQk1dV8
+ ZWYS9OT+/LcNisMDc390NxXpY8/KfZX9PDlMNAogbG08JCCLsSW5gychxYlRiLznj+
+ usbrB071y1DteIXCchE/i1a3XpyCvlL7Iz11URRwYsFCTNXObwY9n8jU/ulx/6jH/Q
+ PAopijqQbEHIp+wMsdVGyVXtZbWaqv31O+cDq7ycB1fMkj9bGjwiqTkSCP80EFj2tt
+ wPdc9SXpgIw4g==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,56 +97,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 9/23/19 2:01 PM, Leonardo Bras wrote:
+> On Mon, 2019-09-23 at 13:27 -0700, John Hubbard wrote:
+>> I'd also like a second opinion from the "core" -mm maintainers, but it seems like
+>> there is now too much code around the gup_pgd_range() call. Especially since there
+>> are two places where it's called--did you forget the other one in 
+>> __get_user_pages_fast(), btw??
+>>
+> Oh, sorry, I missed this one. I will put it on v3.
+> (Also I will make sure to include linux-mm on v3.)
+> 
+>> Maybe the irq handling and atomic counting should be moved into start/finish
+>> calls, like this:
+>>
+>>      start_gup_fast_walk()
+>>      gup_pgd_range()
+>>      finish_gup_fast_walk()
+> 
+> There are cases where interrupt disable/enable is not done around the
+> lockless pagetable walk.
+> It may come from functions called above on stack, that's why I opted it
+> to be only the atomic operation.
+> 
 
---=-tW3aXB7tmQ0op8qOIhbV
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+That doesn't prevent you from writing the above as shown, though, for mm/gup.c.
 
-On Mon, 2019-09-23 at 13:27 -0700, John Hubbard wrote:
-> I'd also like a second opinion from the "core" -mm maintainers, but it se=
-ems like
-> there is now too much code around the gup_pgd_range() call. Especially si=
-nce there
-> are two places where it's called--did you forget the other one in=20
-> __get_user_pages_fast(), btw??
->=20
-Oh, sorry, I missed this one. I will put it on v3.
-(Also I will make sure to include linux-mm on v3.)
+(Also, let's see on the other thread if it is even valid to be indicating
+a lockless walk, without also disabling interrupts.)
 
-> Maybe the irq handling and atomic counting should be moved into start/fin=
-ish
-> calls, like this:
->=20
->      start_gup_fast_walk()
->      gup_pgd_range()
->      finish_gup_fast_walk()
-
-There are cases where interrupt disable/enable is not done around the
-lockless pagetable walk.
-It may come from functions called above on stack, that's why I opted it
-to be only the atomic operation.
-
---=-tW3aXB7tmQ0op8qOIhbV
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2JMsMACgkQlQYWtz9S
-ttRQ0g//YQQCVV8UsFOhuPWAkbMot1RxhjkbduibAKFnSgd4mYSqLLz6n4ikZW+k
-qI4EbNxkdtBL5qiqM1PlXubAk8M1ShbBVRk7+cFbCyzPSWWbuzy4MsNJJY9YV8tR
-QuZEfqhaKyz+SCIz3yWUrVSwQjRkjkAkvRnipBuYa0eRcXtIuKFb2XRU4U085Ocg
-3KZFb+z+4QIiVoSSH03p9yFhh/k89S3ToHHEWdhbKpEblqiY64fsexSsoKOggcJ5
-R01gGhnaVcKxNNCnGvhA/uMF/Bcl6W3cV4MfwNluypWn6AqzxK3i97GtwHdESqez
-aNgyMyuCkLoxPsiBk1nh/AbeGL18dgiU+HXrQ5l49UbLAeW18LL/y3GC+UmITQKA
-F2tSnB8oq9k2lyJtoYj+5++ywSQDiyXxhLrUvgpQScgDV5IoQ5U4q2GgeRcy9CxN
-5ehqygvFulOdz099CrjZd2Nwna5GWEOgdeszgvFIzNZX7wHmOp2lbh6QbpgLerUC
-n/KNTIGN40KTBBm9YFNbMiMW3eBEdyf8hu7tapnO2mll8mWs2g/5+vwt5XDjkwei
-09uJNIRCsA68+8hyPC2c1I+U8ris1ZEFtJf4AL3F+yRtgLgcmlD/UI1xFOe5tdOH
-FUQvh2QN6u0xJfm8Mk+22PVVkadrS6F9BCxai/XpUZtQ73h1p9U=
-=svcq
------END PGP SIGNATURE-----
-
---=-tW3aXB7tmQ0op8qOIhbV--
-
+thanks,
+-- 
+John Hubbard
+NVIDIA
