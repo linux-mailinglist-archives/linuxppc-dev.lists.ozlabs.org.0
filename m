@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD24CBBD7E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 23:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0347BBD8B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 23:04:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ccFD4z2kzDqCc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 07:01:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ccJF21vBzDqP4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 07:04:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,58 +19,59 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ccB92GvXzDqDY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 06:58:57 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ccG34d4gzDq9L
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 07:02:19 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8NKvv1A006865; Mon, 23 Sep 2019 16:58:36 -0400
+ x8NL0l66006094; Mon, 23 Sep 2019 17:02:04 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v73bn40fj-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v75kf81f9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 16:58:35 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8NKvwOe006963;
- Mon, 23 Sep 2019 16:58:35 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v73bn40f0-1
+ Mon, 23 Sep 2019 17:02:04 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8NL0oxS006303;
+ Mon, 23 Sep 2019 17:02:04 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v75kf81e8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 16:58:35 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8NKtJiP027666;
- Mon, 23 Sep 2019 20:58:34 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 2v5bg7487t-1
+ Mon, 23 Sep 2019 17:02:04 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8NL0fZ7022838;
+ Mon, 23 Sep 2019 21:02:02 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma04wdc.us.ibm.com with ESMTP id 2v5bg6xnbc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 20:58:34 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8NKwXNW38011164
+ Mon, 23 Sep 2019 21:02:02 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8NL21tO48038320
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Sep 2019 20:58:33 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 20CF1AE05C;
- Mon, 23 Sep 2019 20:58:33 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2FB8AE05F;
- Mon, 23 Sep 2019 20:58:29 +0000 (GMT)
+ Mon, 23 Sep 2019 21:02:01 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9D9D07805F;
+ Mon, 23 Sep 2019 21:02:00 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 568D87805E;
+ Mon, 23 Sep 2019 21:01:56 +0000 (GMT)
 Received: from leobras.br.ibm.com (unknown [9.18.235.184])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 23 Sep 2019 20:58:29 +0000 (GMT)
-Message-ID: <43fb35d2f8cc1c488547ca20a566092f6098f093.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 00/11] Introduces new count-based method for
- monitoring lockless pagetable wakls
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Sep 2019 21:01:56 +0000 (GMT)
+Message-ID: <907304d0599684b3caa6773197fd40e09191b48e.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 03/11] mm/gup: Applies counting method to monitor
+ gup_pgd_range
 From: Leonardo Bras <leonardo@linux.ibm.com>
 To: John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org, Linux-MM <linux-mm@kvack.org>
-Date: Mon, 23 Sep 2019 17:58:28 -0300
-In-Reply-To: <b2d47f4b-2bf2-20a8-2438-4fd3f9b08a63@nvidia.com>
+Date: Mon, 23 Sep 2019 18:01:54 -0300
+In-Reply-To: <2e060677-eadf-c32e-d8c5-8e22c8ca118e@nvidia.com>
 References: <20190920195047.7703-1-leonardo@linux.ibm.com>
- <1f5d9380418ad8bb90c6bbdac34716c650b917a0.camel@linux.ibm.com>
- <b2d47f4b-2bf2-20a8-2438-4fd3f9b08a63@nvidia.com>
+ <20190920195047.7703-4-leonardo@linux.ibm.com>
+ <2e060677-eadf-c32e-d8c5-8e22c8ca118e@nvidia.com>
 Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-Ayjh91N4wxCaAZRIoOiI"
+ protocol="application/pgp-signature"; boundary="=-tW3aXB7tmQ0op8qOIhbV"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
@@ -93,66 +94,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Thomas Gleixner <tglx@linutronix.de>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- YueHaibing <yuehaibing@huawei.com>, Keith Busch <keith.busch@intel.com>,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
+Cc: Arnd Bergmann <arnd@arndb.de>, Richard Fontana <rfontana@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ YueHaibing <yuehaibing@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Keith Busch <keith.busch@intel.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
  "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>
+ Allison Randal <allison@lohutok.net>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ira Weiny <ira.weiny@intel.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---=-Ayjh91N4wxCaAZRIoOiI
+--=-tW3aXB7tmQ0op8qOIhbV
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2019-09-23 at 13:51 -0700, John Hubbard wrote:
-> Also, which tree do these patches apply to, please?=20
+On Mon, 2019-09-23 at 13:27 -0700, John Hubbard wrote:
+> I'd also like a second opinion from the "core" -mm maintainers, but it se=
+ems like
+> there is now too much code around the gup_pgd_range() call. Especially si=
+nce there
+> are two places where it's called--did you forget the other one in=20
+> __get_user_pages_fast(), btw??
 >=20
-> thanks,
+Oh, sorry, I missed this one. I will put it on v3.
+(Also I will make sure to include linux-mm on v3.)
 
-They should apply on top of v5.3 + one patch:=20
-https://patchwork.ozlabs.org/patch/1164925/
+> Maybe the irq handling and atomic counting should be moved into start/fin=
+ish
+> calls, like this:
+>=20
+>      start_gup_fast_walk()
+>      gup_pgd_range()
+>      finish_gup_fast_walk()
 
-I was working on top of this patch, because I thought it would be
-merged fast. But since I got no feedback, it was not merged and the
-present patchset became broken. :(
+There are cases where interrupt disable/enable is not done around the
+lockless pagetable walk.
+It may come from functions called above on stack, that's why I opted it
+to be only the atomic operation.
 
-But I will rebase v3 on top of plain v5.3.
-
-Thanks,
-Leonardo Bras
-
-
-
-
---=-Ayjh91N4wxCaAZRIoOiI
+--=-tW3aXB7tmQ0op8qOIhbV
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2JMfQACgkQlQYWtz9S
-ttQTdA/8CDV7ZfiTjTJT5utE6tAn94hWnwVq8zsELwHU1YAfpRgAfdsiMWjkrHY7
-MFYxevO7dxosWPW6TWOUtt5nPIvfQ5671t0rCgwyh2qZl/w8e9QwwxPHdZjHwIw1
-oUS/kjzsSBKPi7nQOGInW8I8sHHybpzQKASHmaQ7EhvJW/e52WeUIPR7/WxqSYVY
-YUZP5KRQrrvmVx9kns6+Lkn/yynMULXho6DZUQrn1it6gH9JUsQA1e4oBqLg7x63
-iKGhSyP30V1z7gym5pI3WKMY5zPVP5FbeN9tWblTfv1uLGKn6h9jdf4D14zgDAHN
-h21C5irYZTHL1nOci6S1+iRo9azBM9zIRTqsFO6nmmHD+yMYZR7zahKt8d2BJ1er
-p0nu9hU5a6s0kA2k6Al+MLA9i/Oadc7epqZujvcUXiTmSR8vxdklzlNaCOIrj9cO
-kA1Ept6WFEWUZsXxrnTPyGpWQBkFGCV1FsQELbo0Cp2pctqKPNlof6oAY+TU+t7d
-dCr5W9BqxgV37fgUP2GwXGj9EDH7ZixqjS7OXiwaZg/yywuX24E4nCIkcz3c8eXf
-6UE3ZOc0BVL63oZHPHbVEE9UruYyq5tFyFT9op6gIFg8Hdj1TVYT8XNcixjbKpn+
-0+DsZvgLazuFORtN2/shKeE3agEtU5KlhKP/TXHawuUVDLov9xQ=
-=Wyzu
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2JMsMACgkQlQYWtz9S
+ttRQ0g//YQQCVV8UsFOhuPWAkbMot1RxhjkbduibAKFnSgd4mYSqLLz6n4ikZW+k
+qI4EbNxkdtBL5qiqM1PlXubAk8M1ShbBVRk7+cFbCyzPSWWbuzy4MsNJJY9YV8tR
+QuZEfqhaKyz+SCIz3yWUrVSwQjRkjkAkvRnipBuYa0eRcXtIuKFb2XRU4U085Ocg
+3KZFb+z+4QIiVoSSH03p9yFhh/k89S3ToHHEWdhbKpEblqiY64fsexSsoKOggcJ5
+R01gGhnaVcKxNNCnGvhA/uMF/Bcl6W3cV4MfwNluypWn6AqzxK3i97GtwHdESqez
+aNgyMyuCkLoxPsiBk1nh/AbeGL18dgiU+HXrQ5l49UbLAeW18LL/y3GC+UmITQKA
+F2tSnB8oq9k2lyJtoYj+5++ywSQDiyXxhLrUvgpQScgDV5IoQ5U4q2GgeRcy9CxN
+5ehqygvFulOdz099CrjZd2Nwna5GWEOgdeszgvFIzNZX7wHmOp2lbh6QbpgLerUC
+n/KNTIGN40KTBBm9YFNbMiMW3eBEdyf8hu7tapnO2mll8mWs2g/5+vwt5XDjkwei
+09uJNIRCsA68+8hyPC2c1I+U8ris1ZEFtJf4AL3F+yRtgLgcmlD/UI1xFOe5tdOH
+FUQvh2QN6u0xJfm8Mk+22PVVkadrS6F9BCxai/XpUZtQ73h1p9U=
+=svcq
 -----END PGP SIGNATURE-----
 
---=-Ayjh91N4wxCaAZRIoOiI--
+--=-tW3aXB7tmQ0op8qOIhbV--
 
