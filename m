@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3236BBC7F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 21:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A3EBBC80
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 21:55:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cZkS4gTFzDqM7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 05:53:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cZmN4mlVzDqLV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 05:55:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,25 +16,25 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="A2hnGJRC"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="tlUw+OaX"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cTZF39TszDqFB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 02:00:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cTZW4pHQzDqFB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 02:01:07 +1000 (AEST)
 Received: from localhost.localdomain (unknown [194.230.155.145])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 56D1A214DA;
- Mon, 23 Sep 2019 16:00:37 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A0CD221655;
+ Mon, 23 Sep 2019 16:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569254451;
- bh=/+LyoCRrUerjwuAnSA+DSR15kK8PaY0lAt8D/IKo9wY=;
+ s=default; t=1569254465;
+ bh=2mKxiYbUqFAYC8HwEexsiuZjLowiVHlnF0alJUeeDSw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=A2hnGJRCENXhziQMuw0sdoR4GxOf83xqZKvSyZPu6x40OsGT0CE/lDq6q2qXvsCnS
- IWEV8SG5ZJ2ljUdA5xjahGEbjHx4ZyFwGAKru4UL0z2rLdvgdMNTSoT/+Qc4PHhr1G
- uwLcd7640CkyJ6awy4Z/Ts4T9P/t3PwvYqx8mjeg=
+ b=tlUw+OaXMxwYGECYkhgPaUozxql55SYqwVwPBLrRL4ny4z68kWASnB4tGsuYX90Yv
+ ajdP00xfMHnr1V20CV+zaEr4x2BNlLa45PQFUkcewuq9zOhEq1qi7njM8poF/fvBsq
+ PDvQCQOHkgE48vgBrCX8B7EZYAxBZsyIEK6NhBlI=
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org,
  linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -67,9 +67,9 @@ To: Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org,
  virtualization@lists.linux-foundation.org, xen-devel@lists.xenproject.org,
  linux-mm@kvack.org, linux-security-module@vger.kernel.org,
  linux-integrity@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: [PATCH trivial 2/3] treewide: Fix Kconfig indentation
-Date: Mon, 23 Sep 2019 18:00:12 +0200
-Message-Id: <20190923160013.8550-2-krzk@kernel.org>
+Subject: [PATCH trivial 3/3] treewide: arch: Fix Kconfig indentation
+Date: Mon, 23 Sep 2019 18:00:13 +0200
+Message-Id: <20190923160013.8550-3-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190923160013.8550-1-krzk@kernel.org>
 References: <20190923160013.8550-1-krzk@kernel.org>
@@ -96,452 +96,720 @@ coding style with command like:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- certs/Kconfig                  | 14 ++++++-------
- init/Kconfig                   | 28 +++++++++++++-------------
- kernel/trace/Kconfig           |  8 ++++----
- lib/Kconfig                    |  2 +-
- lib/Kconfig.debug              | 36 +++++++++++++++++-----------------
- lib/Kconfig.kgdb               |  8 ++++----
- mm/Kconfig                     | 28 +++++++++++++-------------
- samples/Kconfig                |  2 +-
- security/apparmor/Kconfig      |  2 +-
- security/integrity/Kconfig     | 24 +++++++++++------------
- security/integrity/ima/Kconfig | 12 ++++++------
- security/safesetid/Kconfig     | 24 +++++++++++------------
- 12 files changed, 94 insertions(+), 94 deletions(-)
+ arch/Kconfig                           |  4 ++--
+ arch/alpha/Kconfig                     |  2 +-
+ arch/arm/Kconfig.debug                 |  4 ++--
+ arch/arm/mach-ep93xx/Kconfig           |  8 ++++----
+ arch/arm/mach-hisi/Kconfig             |  2 +-
+ arch/arm/mach-ixp4xx/Kconfig           | 16 ++++++++--------
+ arch/arm/mach-mmp/Kconfig              |  2 +-
+ arch/arm/mach-omap1/Kconfig            | 14 +++++++-------
+ arch/arm/mach-prima2/Kconfig           |  6 +++---
+ arch/arm/mach-s3c24xx/Kconfig          |  4 ++--
+ arch/arm/mach-s3c64xx/Kconfig          |  6 +++---
+ arch/arm/plat-samsung/Kconfig          |  2 +-
+ arch/arm64/Kconfig                     |  6 +++---
+ arch/arm64/Kconfig.debug               |  2 +-
+ arch/h8300/Kconfig                     |  4 ++--
+ arch/h8300/Kconfig.cpu                 |  4 ++--
+ arch/m68k/Kconfig.bus                  |  2 +-
+ arch/m68k/Kconfig.debug                | 16 ++++++++--------
+ arch/m68k/Kconfig.machine              |  8 ++++----
+ arch/nds32/Kconfig.cpu                 | 18 +++++++++---------
+ arch/openrisc/Kconfig                  | 26 +++++++++++++-------------
+ arch/powerpc/Kconfig.debug             | 18 +++++++++---------
+ arch/powerpc/platforms/Kconfig.cputype |  2 +-
+ arch/riscv/Kconfig.socs                |  2 +-
+ arch/sh/boards/Kconfig                 |  2 +-
+ arch/sh/mm/Kconfig                     |  2 +-
+ arch/um/Kconfig                        |  2 +-
+ arch/x86/Kconfig                       | 18 +++++++++---------
+ 28 files changed, 101 insertions(+), 101 deletions(-)
 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index c94e93d8bccf..0358c66d3d7c 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -6,14 +6,14 @@ config MODULE_SIG_KEY
- 	default "certs/signing_key.pem"
- 	depends on MODULE_SIG
- 	help
--         Provide the file name of a private key/certificate in PEM format,
--         or a PKCS#11 URI according to RFC7512. The file should contain, or
--         the URI should identify, both the certificate and its corresponding
--         private key.
-+	 Provide the file name of a private key/certificate in PEM format,
-+	 or a PKCS#11 URI according to RFC7512. The file should contain, or
-+	 the URI should identify, both the certificate and its corresponding
-+	 private key.
- 
--         If this option is unchanged from its default "certs/signing_key.pem",
--         then the kernel will automatically generate the private key and
--         certificate as described in Documentation/admin-guide/module-signing.rst
-+	 If this option is unchanged from its default "certs/signing_key.pem",
-+	 then the kernel will automatically generate the private key and
-+	 certificate as described in Documentation/admin-guide/module-signing.rst
- 
- config SYSTEM_TRUSTED_KEYRING
- 	bool "Provide system-wide ring of trusted keys"
-diff --git a/init/Kconfig b/init/Kconfig
-index 6d4db887f696..f59c854839d2 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -169,10 +169,10 @@ config BUILD_SALT
-        string "Build ID Salt"
-        default ""
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 5f8a5d84dbbe..8d4f77bbed29 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -76,7 +76,7 @@ config JUMP_LABEL
+        depends on HAVE_ARCH_JUMP_LABEL
+        depends on CC_HAS_ASM_GOTO
         help
--          The build ID is used to link binaries and their debug info. Setting
--          this option will use the value in the calculation of the build id.
--          This is mostly useful for distributions which want to ensure the
--          build is unique between builds. It's safe to leave the default.
-+	  The build ID is used to link binaries and their debug info. Setting
-+	  this option will use the value in the calculation of the build id.
-+	  This is mostly useful for distributions which want to ensure the
-+	  build is unique between builds. It's safe to leave the default.
+-         This option enables a transparent branch optimization that
++	 This option enables a transparent branch optimization that
+ 	 makes certain almost-always-true or almost-always-false branch
+ 	 conditions even cheaper to execute within the kernel.
  
- config HAVE_KERNEL_GZIP
+@@ -84,7 +84,7 @@ config JUMP_LABEL
+ 	 scheduler functionality, networking code and KVM have such
+ 	 branches and include support for this optimization technique.
+ 
+-         If it is detected that the compiler has support for "asm goto",
++	 If it is detected that the compiler has support for "asm goto",
+ 	 the kernel will compile such branches with just a nop
+ 	 instruction. When the condition flag is toggled to true, the
+ 	 nop will be converted to a jump instruction to execute the
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index ef179033a7c2..30a6291355cb 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -545,7 +545,7 @@ config NR_CPUS
+ 	default "4" if !ALPHA_GENERIC && !ALPHA_MARVEL
+ 	help
+ 	  MARVEL support can handle a maximum of 32 CPUs, all the others
+-          with working support have a maximum of 4 CPUs.
++	  with working support have a maximum of 4 CPUs.
+ 
+ config ARCH_DISCONTIGMEM_ENABLE
+ 	bool "Discontiguous Memory Support"
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index 8bcbd0cd739b..0e5d52fbddbd 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -274,7 +274,7 @@ choice
+ 		select DEBUG_UART_8250
+ 		help
+ 		  Say Y here if you want the debug print routines to direct
+-                  their output to the CNS3xxx UART0.
++	          their output to the CNS3xxx UART0.
+ 
+ 	config DEBUG_DAVINCI_DA8XX_UART1
+ 		bool "Kernel low-level debugging on DaVinci DA8XX using UART1"
+@@ -828,7 +828,7 @@ choice
+ 		select DEBUG_UART_8250
+ 		help
+ 		  Say Y here if you want kernel low-level debugging support
+-                  on Rockchip RV1108 based platforms.
++	          on Rockchip RV1108 based platforms.
+ 
+ 	config DEBUG_RV1108_UART1
+ 		bool "Kernel low-level debugging messages via Rockchip RV1108 UART1"
+diff --git a/arch/arm/mach-ep93xx/Kconfig b/arch/arm/mach-ep93xx/Kconfig
+index f2db5fd38145..bf81dfab7f1b 100644
+--- a/arch/arm/mach-ep93xx/Kconfig
++++ b/arch/arm/mach-ep93xx/Kconfig
+@@ -126,10 +126,10 @@ config MACH_MICRO9S
+ 	  Contec Micro9-Slim board.
+ 
+ config MACH_SIM_ONE
+-        bool "Support Simplemachines Sim.One board"
+-        help
+-          Say 'Y' here if you want your kernel to support the
+-          Simplemachines Sim.One board.
++	bool "Support Simplemachines Sim.One board"
++	help
++	  Say 'Y' here if you want your kernel to support the
++	  Simplemachines Sim.One board.
+ 
+ config MACH_SNAPPER_CL15
+ 	bool "Support Bluewater Systems Snapper CL15 Module"
+diff --git a/arch/arm/mach-hisi/Kconfig b/arch/arm/mach-hisi/Kconfig
+index 98338a489921..4697a756f676 100644
+--- a/arch/arm/mach-hisi/Kconfig
++++ b/arch/arm/mach-hisi/Kconfig
+@@ -31,7 +31,7 @@ config ARCH_HIP01
+        select HAVE_ARM_TWD if SMP
+        select ARM_GLOBAL_TIMER
+        help
+-         Support for Hisilicon HIP01 SoC family
++	 Support for Hisilicon HIP01 SoC family
+ 
+ config ARCH_HIP04
+ 	bool "Hisilicon HiP04 Cortex A15 family"
+diff --git a/arch/arm/mach-ixp4xx/Kconfig b/arch/arm/mach-ixp4xx/Kconfig
+index f7211b57b1e7..484e8eb16baa 100644
+--- a/arch/arm/mach-ixp4xx/Kconfig
++++ b/arch/arm/mach-ixp4xx/Kconfig
+@@ -214,14 +214,14 @@ config IXP4XX_INDIRECT_PCI
+ 	bool "Use indirect PCI memory access"
+ 	depends on PCI
+ 	help
+-          IXP4xx provides two methods of accessing PCI memory space:
+-
+-          1) A direct mapped window from 0x48000000 to 0x4BFFFFFF (64MB).
+-             To access PCI via this space, we simply ioremap() the BAR
+-             into the kernel and we can use the standard read[bwl]/write[bwl]
+-             macros. This is the preferred method due to speed but it
+-             limits the system to just 64MB of PCI memory. This can be
+-             problematic if using video cards and other memory-heavy devices.
++	  IXP4xx provides two methods of accessing PCI memory space:
++
++	  1) A direct mapped window from 0x48000000 to 0x4BFFFFFF (64MB).
++	     To access PCI via this space, we simply ioremap() the BAR
++	     into the kernel and we can use the standard read[bwl]/write[bwl]
++	     macros. This is the preferred method due to speed but it
++	     limits the system to just 64MB of PCI memory. This can be
++	     problematic if using video cards and other memory-heavy devices.
+ 
+ 	  2) If > 64MB of memory space is required, the IXP4xx can be
+ 	     configured to use indirect registers to access the whole PCI
+diff --git a/arch/arm/mach-mmp/Kconfig b/arch/arm/mach-mmp/Kconfig
+index 0440109e973b..c549fc3938b8 100644
+--- a/arch/arm/mach-mmp/Kconfig
++++ b/arch/arm/mach-mmp/Kconfig
+@@ -150,7 +150,7 @@ config CPU_MMP2
+ 	  Select code specific to MMP2. MMP2 is ARMv7 compatible.
+ 
+ config USB_EHCI_MV_U2O
+-        bool "EHCI support for PXA USB OTG controller"
++	bool "EHCI support for PXA USB OTG controller"
+ 	depends on USB_EHCI_MV
+ 	help
+ 	  Enables support for OTG controller which can be switched to host mode.
+diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+index 2a17dc1d122c..89138d14d0f2 100644
+--- a/arch/arm/mach-omap1/Kconfig
++++ b/arch/arm/mach-omap1/Kconfig
+@@ -66,8 +66,8 @@ config MACH_OMAP_INNOVATOR
+ 	bool "TI Innovator"
+ 	depends on ARCH_OMAP1 && (ARCH_OMAP15XX || ARCH_OMAP16XX)
+ 	help
+-          TI OMAP 1510 or 1610 Innovator board support. Say Y here if you
+-          have such a board.
++	  TI OMAP 1510 or 1610 Innovator board support. Say Y here if you
++	  have such a board.
+ 
+ config MACH_OMAP_H2
+ 	bool "TI H2 Support"
+@@ -94,7 +94,7 @@ config MACH_OMAP_OSK
+ 	depends on ARCH_OMAP1 && ARCH_OMAP16XX
+     	help
+ 	  TI OMAP 5912 OSK (OMAP Starter Kit) board support. Say Y here
+-          if you have such a board.
++	  if you have such a board.
+ 
+ config OMAP_OSK_MISTRAL
+ 	bool "Mistral QVGA board Support"
+@@ -180,10 +180,10 @@ config MACH_OMAP_GENERIC
+ 	bool "Generic OMAP board"
+ 	depends on ARCH_OMAP1 && (ARCH_OMAP15XX || ARCH_OMAP16XX)
+ 	help
+-          Support for generic OMAP-1510, 1610 or 1710 board with
+-          no FPGA. Can be used as template for porting Linux to
+-          custom OMAP boards. Say Y here if you have a custom
+-          board.
++	  Support for generic OMAP-1510, 1610 or 1710 board with
++	  no FPGA. Can be used as template for porting Linux to
++	  custom OMAP boards. Say Y here if you have a custom
++	  board.
+ 
+ endmenu
+ 
+diff --git a/arch/arm/mach-prima2/Kconfig b/arch/arm/mach-prima2/Kconfig
+index 6f66785fab01..88a76d265fd9 100644
+--- a/arch/arm/mach-prima2/Kconfig
++++ b/arch/arm/mach-prima2/Kconfig
+@@ -22,7 +22,7 @@ config ARCH_ATLAS6
+ 	default y
+ 	select SIRF_IRQ
+ 	help
+-          Support for CSR SiRFSoC ARM Cortex A9 Platform
++	  Support for CSR SiRFSoC ARM Cortex A9 Platform
+ 
+ config ARCH_ATLAS7
+ 	bool "CSR SiRFSoC ATLAS7 ARM Cortex A7 Platform"
+@@ -32,7 +32,7 @@ config ARCH_ATLAS7
+ 	select HAVE_ARM_SCU if SMP
+ 	select HAVE_SMP
+ 	help
+-          Support for CSR SiRFSoC ARM Cortex A7 Platform
++	  Support for CSR SiRFSoC ARM Cortex A7 Platform
+ 
+ config ARCH_PRIMA2
+ 	bool "CSR SiRFSoC PRIMA2 ARM Cortex A9 Platform"
+@@ -41,7 +41,7 @@ config ARCH_PRIMA2
+ 	select ZONE_DMA
+ 	select PRIMA2_TIMER
+ 	help
+-          Support for CSR SiRFSoC ARM Cortex A9 Platform
++	  Support for CSR SiRFSoC ARM Cortex A9 Platform
+ 
+ config SIRF_IRQ
  	bool
-@@ -1327,9 +1327,9 @@ menuconfig EXPERT
- 	select DEBUG_KERNEL
- 	help
- 	  This option allows certain base kernel options and settings
--          to be disabled or tweaked. This is for specialized
--          environments which can tolerate a "non-standard" kernel.
--          Only use this if you really know what you are doing.
-+	  to be disabled or tweaked. This is for specialized
-+	  environments which can tolerate a "non-standard" kernel.
-+	  Only use this if you really know what you are doing.
+diff --git a/arch/arm/mach-s3c24xx/Kconfig b/arch/arm/mach-s3c24xx/Kconfig
+index 686f0bbde998..95db290637aa 100644
+--- a/arch/arm/mach-s3c24xx/Kconfig
++++ b/arch/arm/mach-s3c24xx/Kconfig
+@@ -141,8 +141,8 @@ config S3C2410_CPUFREQ_UTILS
+        bool
+        depends on ARM_S3C24XX_CPUFREQ
+        help
+-         Internal node to select timing code that is common to the s3c2410
+-         and s3c2440/s3c244 cpu frequency support.
++	 Internal node to select timing code that is common to the s3c2410
++	 and s3c2440/s3c244 cpu frequency support.
  
- config UID16
- 	bool "Enable 16-bit UID system calls" if EXPERT
-@@ -1439,11 +1439,11 @@ config BUG
- 	bool "BUG() support" if EXPERT
+ # cpu frequency support common to s3c2412, s3c2413 and s3c2442
+ 
+diff --git a/arch/arm/mach-s3c64xx/Kconfig b/arch/arm/mach-s3c64xx/Kconfig
+index 5700822e3c74..125e50301d2a 100644
+--- a/arch/arm/mach-s3c64xx/Kconfig
++++ b/arch/arm/mach-s3c64xx/Kconfig
+@@ -202,7 +202,7 @@ config SMDK6410_SD_CH0
+ 	bool "Use channel 0 only"
+ 	depends on MACH_SMDK6410
+ 	help
+-          Select CON7 (channel 0) as the MMC/SD slot, as
++	  Select CON7 (channel 0) as the MMC/SD slot, as
+ 	  at least some SMDK6410 boards come with the
+ 	  resistors fitted so that the card detects for
+ 	  channels 0 and 1 are the same.
+@@ -211,7 +211,7 @@ config SMDK6410_SD_CH1
+ 	bool "Use channel 1 only"
+ 	depends on MACH_SMDK6410
+ 	help
+-          Select CON6 (channel 1) as the MMC/SD slot, as
++	  Select CON6 (channel 1) as the MMC/SD slot, as
+ 	  at least some SMDK6410 boards come with the
+ 	  resistors fitted so that the card detects for
+ 	  channels 0 and 1 are the same.
+@@ -257,7 +257,7 @@ config MACH_NCP
+ 	select S3C_DEV_HSMMC1
+ 	select S3C_DEV_I2C1
+ 	help
+-          Machine support for the Samsung NCP
++	  Machine support for the Samsung NCP
+ 
+ config MACH_HMT
+ 	bool "Airgoo HMT"
+diff --git a/arch/arm/plat-samsung/Kconfig b/arch/arm/plat-samsung/Kconfig
+index 301e572651c0..99ae92fa452a 100644
+--- a/arch/arm/plat-samsung/Kconfig
++++ b/arch/arm/plat-samsung/Kconfig
+@@ -250,7 +250,7 @@ config S3C_PM_DEBUG_LED_SMDK
+        bool "SMDK LED suspend/resume debugging"
+        depends on PM && (MACH_SMDK6410)
+        help
+-         Say Y here to enable the use of the SMDK LEDs on the baseboard
++	 Say Y here to enable the use of the SMDK LEDs on the baseboard
+ 	 for debugging of the state of the suspend and resume process.
+ 
+ 	 Note, this currently only works for S3C64XX based SMDK boards.
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 41a9b4257b72..60233baf3f0f 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -262,7 +262,7 @@ config GENERIC_HWEIGHT
+ 	def_bool y
+ 
+ config GENERIC_CSUM
+-        def_bool y
++	def_bool y
+ 
+ config GENERIC_CALIBRATE_DELAY
+ 	def_bool y
+@@ -832,7 +832,7 @@ config ARM64_PA_BITS
+ config CPU_BIG_ENDIAN
+        bool "Build big-endian kernel"
+        help
+-         Say Y if you plan on running a kernel in big-endian mode.
++	 Say Y if you plan on running a kernel in big-endian mode.
+ 
+ config SCHED_MC
+ 	bool "Multi-core scheduler support"
+@@ -1593,7 +1593,7 @@ config EFI
+ 	help
+ 	  This option provides support for runtime services provided
+ 	  by UEFI firmware (such as non-volatile variables, realtime
+-          clock, and platform reset). A UEFI stub is also provided to
++	  clock, and platform reset). A UEFI stub is also provided to
+ 	  allow the kernel to be booted as an EFI application. This
+ 	  is only useful on systems that have UEFI firmware.
+ 
+diff --git a/arch/arm64/Kconfig.debug b/arch/arm64/Kconfig.debug
+index cf09010d825f..bb1eb10a7a62 100644
+--- a/arch/arm64/Kconfig.debug
++++ b/arch/arm64/Kconfig.debug
+@@ -8,7 +8,7 @@ config ARM64_PTDUMP_DEBUGFS
+ 	depends on DEBUG_KERNEL
+ 	select ARM64_PTDUMP_CORE
+ 	select DEBUG_FS
+-        help
++	help
+ 	  Say Y here if you want to show the kernel pagetable layout in a
+ 	  debugfs file. This information is only useful for kernel developers
+ 	  who are working in architecture specific areas of the kernel.
+diff --git a/arch/h8300/Kconfig b/arch/h8300/Kconfig
+index 14bb45644c0c..7a33141fd0b7 100644
+--- a/arch/h8300/Kconfig
++++ b/arch/h8300/Kconfig
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ config H8300
+-        def_bool y
++	def_bool y
+ 	select ARCH_32BIT_OFF_T
+ 	select ARCH_HAS_BINFMT_FLAT
+ 	select BINFMT_FLAT_ARGVP_ENVP_ON_STACK
+@@ -38,7 +38,7 @@ config NO_IOPORT_MAP
+ 	def_bool y
+ 
+ config GENERIC_CSUM
+-        def_bool y
++	def_bool y
+ 
+ config HZ
+ 	int
+diff --git a/arch/h8300/Kconfig.cpu b/arch/h8300/Kconfig.cpu
+index b5e14d513e62..59be62d0716b 100644
+--- a/arch/h8300/Kconfig.cpu
++++ b/arch/h8300/Kconfig.cpu
+@@ -90,11 +90,11 @@ config H8S_SIM
+ endchoice
+ 
+ config H8300_BUILTIN_DTB
+-        string "Builtin DTB"
++	string "Builtin DTB"
+ 	default ""
+ 
+ config OFFSET
+-        hex "Load offset"
++	hex "Load offset"
+ 	default 0
+ 
+ endmenu
+diff --git a/arch/m68k/Kconfig.bus b/arch/m68k/Kconfig.bus
+index 9d0a3a23d50e..f1be832e2b74 100644
+--- a/arch/m68k/Kconfig.bus
++++ b/arch/m68k/Kconfig.bus
+@@ -66,6 +66,6 @@ endif
+ if !MMU
+ 
+ config ISA_DMA_API
+-        def_bool !M5272
++	def_bool !M5272
+ 
+ endif
+diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
+index f43643111eaf..11b306bdd788 100644
+--- a/arch/m68k/Kconfig.debug
++++ b/arch/m68k/Kconfig.debug
+@@ -12,16 +12,16 @@ config EARLY_PRINTK
+ 	bool "Early printk"
+ 	depends on !(SUN3 || M68000 || COLDFIRE)
+ 	help
+-          Write kernel log output directly to a serial port.
+-          Where implemented, output goes to the framebuffer as well.
+-          PROM console functionality on Sun 3x is not affected by this option.
++	  Write kernel log output directly to a serial port.
++	  Where implemented, output goes to the framebuffer as well.
++	  PROM console functionality on Sun 3x is not affected by this option.
+ 
+-          Pass "earlyprintk" on the kernel command line to get a
+-          boot console.
++	  Pass "earlyprintk" on the kernel command line to get a
++	  boot console.
+ 
+-          This is useful for kernel debugging when your machine crashes very
+-          early, i.e. before the normal console driver is loaded.
+-          You should normally say N here, unless you want to debug such a crash.
++	  This is useful for kernel debugging when your machine crashes very
++	  early, i.e. before the normal console driver is loaded.
++	  You should normally say N here, unless you want to debug such a crash.
+ 
+ if !MMU
+ 
+diff --git a/arch/m68k/Kconfig.machine b/arch/m68k/Kconfig.machine
+index c01e103492fd..b23a66bac77f 100644
+--- a/arch/m68k/Kconfig.machine
++++ b/arch/m68k/Kconfig.machine
+@@ -269,10 +269,10 @@ config AMCORE
+ 	  Support for the Sysam AMCORE open-hardware generic board.
+ 
+ config STMARK2
+-        bool "Sysam stmark2 board support"
+-        depends on M5441x
+-        help
+-          Support for the Sysam stmark2 open-hardware generic board.
++	bool "Sysam stmark2 board support"
++	depends on M5441x
++	help
++	  Support for the Sysam stmark2 open-hardware generic board.
+ 
+ config FIREBEE
+ 	bool "FireBee board support"
+diff --git a/arch/nds32/Kconfig.cpu b/arch/nds32/Kconfig.cpu
+index f80a4ab63da2..2216cd789b29 100644
+--- a/arch/nds32/Kconfig.cpu
++++ b/arch/nds32/Kconfig.cpu
+@@ -13,8 +13,8 @@ config FPU
+ 	default n
+ 	help
+ 	  If FPU ISA is used in user space, this configuration shall be Y to
+-          enable required support in kerenl such as fpu context switch and
+-          fpu exception handler.
++	  enable required support in kerenl such as fpu context switch and
++	  fpu exception handler.
+ 
+ 	  If no FPU ISA is used in user space, say N.
+ 
+@@ -24,7 +24,7 @@ config LAZY_FPU
  	default y
  	help
--          Disabling this option eliminates support for BUG and WARN, reducing
--          the size of your kernel image and potentially quietly ignoring
--          numerous fatal conditions. You should only consider disabling this
--          option for embedded systems with no facilities for reporting errors.
--          Just say Y.
-+	  Disabling this option eliminates support for BUG and WARN, reducing
-+	  the size of your kernel image and potentially quietly ignoring
-+	  numerous fatal conditions. You should only consider disabling this
-+	  option for embedded systems with no facilities for reporting errors.
-+	  Just say Y.
+ 	  Say Y here to enable the lazy FPU scheme. The lazy FPU scheme can
+-          enhance system performance by reducing the context switch
++	  enhance system performance by reducing the context switch
+ 	  frequency of the FPU register.
  
- config ELF_CORE
- 	depends on COREDUMP
-@@ -1459,8 +1459,8 @@ config PCSPKR_PLATFORM
- 	select I8253_LOCK
+ 	  For nomal case, say Y.
+@@ -75,11 +75,11 @@ choice
+ 	  if its cache way size is larger than page size. You can specify the
+ 	  CPU type direcly or choose CPU_V3 if unsure.
+ 
+-          A kernel built for N10 is able to run on N15, D15, N13, N10 or D10.
+-          A kernel built for N15 is able to run on N15 or D15.
+-          A kernel built for D10 is able to run on D10 or D15.
+-          A kernel built for D15 is able to run on D15.
+-          A kernel built for N13 is able to run on N15, N13 or D15.
++	  A kernel built for N10 is able to run on N15, D15, N13, N10 or D10.
++	  A kernel built for N15 is able to run on N15 or D15.
++	  A kernel built for D10 is able to run on D10 or D15.
++	  A kernel built for D15 is able to run on D15.
++	  A kernel built for N13 is able to run on N15, N13 or D15.
+ 
+ config CPU_N15
+ 	bool "AndesCore N15"
+@@ -173,7 +173,7 @@ config HIGHMEM
+ 
+ config CACHE_L2
+ 	bool "Support L2 cache"
+-        default y
++	default y
+ 	help
+ 	  Say Y here to enable L2 cache if your SoC are integrated with L2CC.
+ 	  If unsure, say N.
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index bf326f0edd2f..1928e061ff96 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -13,7 +13,7 @@ config OPENRISC
+ 	select IRQ_DOMAIN
+ 	select HANDLE_DOMAIN_IRQ
+ 	select GPIOLIB
+-        select HAVE_ARCH_TRACEHOOK
++	select HAVE_ARCH_TRACEHOOK
+ 	select SPARSE_IRQ
+ 	select GENERIC_IRQ_CHIP
+ 	select GENERIC_IRQ_PROBE
+@@ -51,12 +51,12 @@ config NO_IOPORT_MAP
+ 	def_bool y
+ 
+ config TRACE_IRQFLAGS_SUPPORT
+-        def_bool y
++	def_bool y
+ 
+ # For now, use generic checksum functions
+ #These can be reimplemented in assembly later if so inclined
+ config GENERIC_CSUM
+-        def_bool y
++	def_bool y
+ 
+ config STACKTRACE_SUPPORT
+ 	def_bool y
+@@ -89,8 +89,8 @@ config DCACHE_WRITETHROUGH
+ 	  If unsure say N here
+ 
+ config OPENRISC_BUILTIN_DTB
+-        string "Builtin DTB"
+-        default ""
++	string "Builtin DTB"
++	default ""
+ 
+ menu "Class II Instructions"
+ 
+@@ -161,13 +161,13 @@ config OPENRISC_HAVE_SHADOW_GPRS
+ 	  On a unicore system it's safe to say N here if you are unsure.
+ 
+ config CMDLINE
+-        string "Default kernel command string"
+-        default ""
+-        help
+-          On some architectures there is currently no way for the boot loader
+-          to pass arguments to the kernel. For these architectures, you should
+-          supply some command-line options at build time by entering them
+-          here.
++	string "Default kernel command string"
++	default ""
++	help
++	  On some architectures there is currently no way for the boot loader
++	  to pass arguments to the kernel. For these architectures, you should
++	  supply some command-line options at build time by entering them
++	  here.
+ 
+ menu "Debugging options"
+ 
+@@ -185,7 +185,7 @@ config OPENRISC_ESR_EXCEPTION_BUG_CHECK
+ 	default n
+ 	help
+ 	  This option enables some checks that might expose some problems
+-          in kernel.
++	  in kernel.
+ 
+ 	  Say N if you are unsure.
+ 
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index c59920920ddc..4e1d39847462 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -122,8 +122,8 @@ config XMON_DEFAULT_RO_MODE
+ 	depends on XMON
  	default y
  	help
--          This option allows to disable the internal PC-Speaker
--          support, saving some memory.
-+	  This option allows to disable the internal PC-Speaker
-+	  support, saving some memory.
+-          Operate xmon in read-only mode. The cmdline options 'xmon=rw' and
+-          'xmon=ro' override this default.
++	  Operate xmon in read-only mode. The cmdline options 'xmon=rw' and
++	  'xmon=ro' override this default.
  
- config BASE_FULL
- 	default y
-diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
-index e08527f50d2a..0393003f102f 100644
---- a/kernel/trace/Kconfig
-+++ b/kernel/trace/Kconfig
-@@ -76,7 +76,7 @@ config FTRACE_NMI_ENTER
- 
- config EVENT_TRACING
- 	select CONTEXT_SWITCH_TRACER
--        select GLOB
-+	select GLOB
+ config DEBUGGER
  	bool
- 
- config CONTEXT_SWITCH_TRACER
-@@ -308,7 +308,7 @@ config TRACER_SNAPSHOT
- 	      cat snapshot
- 
- config TRACER_SNAPSHOT_PER_CPU_SWAP
--        bool "Allow snapshot to swap per CPU"
-+	bool "Allow snapshot to swap per CPU"
- 	depends on TRACER_SNAPSHOT
- 	select RING_BUFFER_ALLOW_SWAP
+@@ -222,7 +222,7 @@ config PPC_EARLY_DEBUG_44x
  	help
-@@ -675,7 +675,7 @@ config MMIOTRACE_TEST
- 	  Say N, unless you absolutely know what you are doing.
+ 	  Select this to enable early debugging for IBM 44x chips via the
+ 	  inbuilt serial port.  If you enable this, ensure you set
+-          PPC_EARLY_DEBUG_44x_PHYSLOW below to suit your target board.
++	  PPC_EARLY_DEBUG_44x_PHYSLOW below to suit your target board.
  
- config TRACEPOINT_BENCHMARK
--        bool "Add tracepoint that benchmarks tracepoints"
-+	bool "Add tracepoint that benchmarks tracepoints"
+ config PPC_EARLY_DEBUG_40x
+ 	bool "Early serial debugging for IBM/AMCC 40x CPUs"
+@@ -325,7 +325,7 @@ config PPC_EARLY_DEBUG_44x_PHYSLOW
+ 	default "0x40000200"
  	help
- 	 This option creates the tracepoint "benchmark:benchmark_event".
- 	 When the tracepoint is enabled, it kicks off a kernel thread that
-@@ -724,7 +724,7 @@ config RING_BUFFER_STARTUP_TEST
-        bool "Ring buffer startup self test"
-        depends on RING_BUFFER
+ 	  You probably want 0x40000200 for ebony boards and
+-          0x40000300 for taishan
++	  0x40000300 for taishan
+ 
+ config PPC_EARLY_DEBUG_44x_PHYSHIGH
+ 	hex "EPRN of early debug UART physical address"
+@@ -359,9 +359,9 @@ config FAIL_IOMMU
+ 	  If you are unsure, say N.
+ 
+ config PPC_PTDUMP
+-        bool "Export kernel pagetable layout to userspace via debugfs"
+-        depends on DEBUG_KERNEL && DEBUG_FS
+-        help
++	bool "Export kernel pagetable layout to userspace via debugfs"
++	depends on DEBUG_KERNEL && DEBUG_FS
++	help
+ 	  This option exports the state of the kernel pagetables to a
+ 	  debugfs file. This is only useful for kernel developers who are
+ 	  working in architecture specific areas of the kernel - probably
+@@ -390,8 +390,8 @@ config PPC_DEBUG_WX
+ 
+ config PPC_FAST_ENDIAN_SWITCH
+ 	bool "Deprecated fast endian-switch syscall"
+-        depends on DEBUG_KERNEL && PPC_BOOK3S_64
+-        help
++	depends on DEBUG_KERNEL && PPC_BOOK3S_64
++	help
+ 	  If you're unsure what this is, say N.
+ 
+ config KASAN_SHADOW_OFFSET
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 12543e53fa96..073b6cb6d1ac 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -421,7 +421,7 @@ config PPC_PERF_CTRS
+        def_bool y
+        depends on PERF_EVENTS && PPC_HAVE_PMU_SUPPORT
         help
--         Run a simple self test on the ring buffer on boot up. Late in the
-+	 Run a simple self test on the ring buffer on boot up. Late in the
- 	 kernel boot sequence, the test will start that kicks off
- 	 a thread per cpu. Each thread will write various size events
- 	 into the ring buffer. Another thread is created to send IPIs
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 4e6b1c3e4c98..0562296471c0 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -574,7 +574,7 @@ config OID_REGISTRY
- 	  Enable fast lookup object identifier registry.
+-         This enables the powerpc-specific perf_event back-end.
++	 This enables the powerpc-specific perf_event back-end.
  
- config UCS2_STRING
--        tristate
-+	tristate
- 
- #
- # generic vdso
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 10023dbac8e4..e5e7f9fc6839 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -128,8 +128,8 @@ config DYNAMIC_DEBUG
- 	  lineno : line number of the debug statement
- 	  module : module that contains the debug statement
- 	  function : function that contains the debug statement
--          flags : '=p' means the line is turned 'on' for printing
--          format : the format used for the debug statement
-+	  flags : '=p' means the line is turned 'on' for printing
-+	  format : the format used for the debug statement
- 
- 	  From a live system:
- 
-@@ -172,7 +172,7 @@ config DEBUG_INFO
- 	bool "Compile the kernel with debug info"
- 	depends on DEBUG_KERNEL && !COMPILE_TEST
- 	help
--          If you say Y here the resulting kernel image will include
-+	  If you say Y here the resulting kernel image will include
- 	  debugging info resulting in a larger kernel image.
- 	  This adds debug symbols to the kernel and modules (gcc -g), and
- 	  is needed if you intend to use kernel crashdump or binary object
-@@ -269,13 +269,13 @@ config STRIP_ASM_SYMS
- 	  get_wchan() and suchlike.
- 
- config READABLE_ASM
--        bool "Generate readable assembler code"
--        depends on DEBUG_KERNEL
--        help
--          Disable some compiler optimizations that tend to generate human unreadable
--          assembler output. This may make the kernel slightly slower, but it helps
--          to keep kernel developers who have to stare a lot at assembler listings
--          sane.
-+	bool "Generate readable assembler code"
-+	depends on DEBUG_KERNEL
-+	help
-+	  Disable some compiler optimizations that tend to generate human unreadable
-+	  assembler output. This may make the kernel slightly slower, but it helps
-+	  to keep kernel developers who have to stare a lot at assembler listings
-+	  sane.
- 
- config UNUSED_SYMBOLS
- 	bool "Enable unused/obsolete exported symbols"
-@@ -526,11 +526,11 @@ config DEBUG_OBJECTS_PERCPU_COUNTER
- 
- config DEBUG_OBJECTS_ENABLE_DEFAULT
- 	int "debug_objects bootup default value (0-1)"
--        range 0 1
--        default "1"
--        depends on DEBUG_OBJECTS
--        help
--          Debug objects boot parameter default value
-+	range 0 1
-+	default "1"
-+	depends on DEBUG_OBJECTS
-+	help
-+	  Debug objects boot parameter default value
- 
- config DEBUG_SLAB
- 	bool "Debug slab memory allocations"
-@@ -649,7 +649,7 @@ config DEBUG_VM
- 	depends on DEBUG_KERNEL
- 	help
- 	  Enable this to turn on extended checks in the virtual-memory system
--          that may impact performance.
-+	  that may impact performance.
- 
- 	  If unsure, say N.
- 
-@@ -1439,7 +1439,7 @@ config DEBUG_WQ_FORCE_RR_CPU
- 	  be impacted.
- 
- config DEBUG_BLOCK_EXT_DEVT
--        bool "Force extended block device numbers and spread them"
-+	bool "Force extended block device numbers and spread them"
- 	depends on DEBUG_KERNEL
- 	depends on BLOCK
- 	default n
-@@ -2158,7 +2158,7 @@ config DEBUG_AID_FOR_SYZBOT
-        bool "Additional debug code for syzbot"
-        default n
+ config FORCE_SMP
+ 	# Allow platforms to force SMP=y by selecting this
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index 536c0ef4aee8..85199004c6ef 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -8,6 +8,6 @@ config SOC_SIFIVE
+        select CLK_SIFIVE_FU540_PRCI
+        select SIFIVE_PLIC
         help
--         This option is intended for testing by syzbot.
-+	 This option is intended for testing by syzbot.
+-         This enables support for SiFive SoC platform hardware.
++	 This enables support for SiFive SoC platform hardware.
  
- source "arch/$(SRCARCH)/Kconfig.debug"
+ endmenu
+diff --git a/arch/sh/boards/Kconfig b/arch/sh/boards/Kconfig
+index cee24c308337..60a113114a76 100644
+--- a/arch/sh/boards/Kconfig
++++ b/arch/sh/boards/Kconfig
+@@ -231,7 +231,7 @@ config SH_MIGOR
+ 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
+ 	help
+ 	  Select Migo-R if configuring for the SH7722 Migo-R platform
+-          by Renesas System Solutions Asia Pte. Ltd.
++	  by Renesas System Solutions Asia Pte. Ltd.
  
-diff --git a/lib/Kconfig.kgdb b/lib/Kconfig.kgdb
-index bbe397df04a3..933680b59e2d 100644
---- a/lib/Kconfig.kgdb
-+++ b/lib/Kconfig.kgdb
-@@ -64,9 +64,9 @@ config KGDB_LOW_LEVEL_TRAP
-        depends on X86 || MIPS
-        default n
+ config SH_AP325RXA
+ 	bool "AP-325RXA"
+diff --git a/arch/sh/mm/Kconfig b/arch/sh/mm/Kconfig
+index 5c8a2ebfc720..d84316abaa81 100644
+--- a/arch/sh/mm/Kconfig
++++ b/arch/sh/mm/Kconfig
+@@ -2,7 +2,7 @@
+ menu "Memory management options"
+ 
+ config MMU
+-        bool "Support for memory management hardware"
++	bool "Support for memory management hardware"
+ 	depends on !CPU_SH2
+ 	default y
+ 	help
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index fec6b4ca2b6e..2a6d04fcb3e9 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -153,7 +153,7 @@ config KERNEL_STACK_ORDER
+ 	  It is possible to reduce the stack to 1 for 64BIT and 0 for 32BIT on
+ 	  older (pre-2017) CPUs. It is not recommended on newer CPUs due to the
+ 	  increase in the size of the state which needs to be saved when handling
+-          signals.
++	  signals.
+ 
+ config MMAPPER
+ 	tristate "iomem emulation driver"
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 96ea2c7449ef..989eaa96e3e6 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -806,9 +806,9 @@ config KVM_GUEST
+ 	  timing infrastructure such as time of day, and system time
+ 
+ config ARCH_CPUIDLE_HALTPOLL
+-        def_bool n
+-        prompt "Disable host haltpoll when loading haltpoll driver"
+-        help
++	def_bool n
++	prompt "Disable host haltpoll when loading haltpoll driver"
++	help
+ 	  If virtualized under KVM, disable host haltpoll.
+ 
+ config PVH
+@@ -892,11 +892,11 @@ config APB_TIMER
+        select DW_APB_TIMER
+        depends on X86_INTEL_MID && SFI
         help
--         This will add an extra call back to kgdb for the breakpoint
--         exception handler which will allow kgdb to step through a
--         notify handler.
-+	 This will add an extra call back to kgdb for the breakpoint
-+	 exception handler which will allow kgdb to step through a
-+	 notify handler.
+-         APB timer is the replacement for 8254, HPET on X86 MID platforms.
+-         The APBT provides a stable time base on SMP
+-         systems, unlike the TSC, but it is more expensive to access,
+-         as it is off-chip. APB timers are always running regardless of CPU
+-         C states, they are used as per CPU clockevent device when possible.
++	 APB timer is the replacement for 8254, HPET on X86 MID platforms.
++	 The APBT provides a stable time base on SMP
++	 systems, unlike the TSC, but it is more expensive to access,
++	 as it is off-chip. APB timers are always running regardless of CPU
++	 C states, they are used as per CPU clockevent device when possible.
  
- config KGDB_KDB
- 	bool "KGDB_KDB: include kdb frontend for kgdb"
-@@ -96,7 +96,7 @@ config KDB_DEFAULT_ENABLE
+ # Mark as expert because too many people got it wrong.
+ # The code disables itself when not needed.
+@@ -1962,7 +1962,7 @@ config EFI_STUB
+        depends on EFI && !X86_USE_3DNOW
+        select RELOCATABLE
+        ---help---
+-          This kernel feature allows a bzImage to be loaded directly
++	  This kernel feature allows a bzImage to be loaded directly
+ 	  by EFI firmware without the use of a bootloader.
  
- 	  The config option merely sets the default at boot time. Both
- 	  issuing 'echo X > /sys/module/kdb/parameters/cmd_enable' or
--          setting with kdb.cmd_enable=X kernel command line option will
-+	  setting with kdb.cmd_enable=X kernel command line option will
- 	  override the default settings.
- 
- config KDB_KEYBOARD
-diff --git a/mm/Kconfig b/mm/Kconfig
-index a5dae9a7eb51..e6e16d0ef544 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -160,9 +160,9 @@ config MEMORY_HOTPLUG_SPARSE
- 	depends on SPARSEMEM && MEMORY_HOTPLUG
- 
- config MEMORY_HOTPLUG_DEFAULT_ONLINE
--        bool "Online the newly added memory blocks by default"
--        depends on MEMORY_HOTPLUG
--        help
-+	bool "Online the newly added memory blocks by default"
-+	depends on MEMORY_HOTPLUG
-+	help
- 	  This option sets the default policy setting for memory hotplug
- 	  onlining policy (/sys/devices/system/memory/auto_online_blocks) which
- 	  determines what happens to newly added memory regions. Policy setting
-@@ -227,14 +227,14 @@ config COMPACTION
- 	select MIGRATION
- 	depends on MMU
- 	help
--          Compaction is the only memory management component to form
--          high order (larger physically contiguous) memory blocks
--          reliably. The page allocator relies on compaction heavily and
--          the lack of the feature can lead to unexpected OOM killer
--          invocations for high order memory requests. You shouldn't
--          disable this option unless there really is a strong reason for
--          it and then we would be really interested to hear about that at
--          linux-mm@kvack.org.
-+	  Compaction is the only memory management component to form
-+	  high order (larger physically contiguous) memory blocks
-+	  reliably. The page allocator relies on compaction heavily and
-+	  the lack of the feature can lead to unexpected OOM killer
-+	  invocations for high order memory requests. You shouldn't
-+	  disable this option unless there really is a strong reason for
-+	  it and then we would be really interested to hear about that at
-+	  linux-mm@kvack.org.
- 
- #
- # support for page migration
-@@ -301,10 +301,10 @@ config KSM
- 	  root has set /sys/kernel/mm/ksm/run to 1 (if CONFIG_SYSFS is set).
- 
- config DEFAULT_MMAP_MIN_ADDR
--        int "Low address space to protect from user allocation"
-+	int "Low address space to protect from user allocation"
- 	depends on MMU
--        default 4096
--        help
-+	default 4096
-+	help
- 	  This is the portion of low virtual memory which should be protected
- 	  from userspace allocation.  Keeping a user from writing to low pages
- 	  can help reduce the impact of kernel NULL pointer bugs.
-diff --git a/samples/Kconfig b/samples/Kconfig
-index 2c3e07addd38..c5937c5175d2 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -13,7 +13,7 @@ config SAMPLE_TRACE_EVENTS
- 	  This build trace event example modules.
- 
- config SAMPLE_TRACE_PRINTK
--        tristate "Build trace_printk module - tests various trace_printk formats"
-+	tristate "Build trace_printk module - tests various trace_printk formats"
- 	depends on EVENT_TRACING && m
- 	help
- 	 This builds a module that calls trace_printk() and can be used to
-diff --git a/security/apparmor/Kconfig b/security/apparmor/Kconfig
-index a422a349f926..1f0e712c5e50 100644
---- a/security/apparmor/Kconfig
-+++ b/security/apparmor/Kconfig
-@@ -32,7 +32,7 @@ config SECURITY_APPARMOR_HASH_DEFAULT
-        depends on SECURITY_APPARMOR_HASH
-        default y
-        help
--         This option selects whether sha1 hashing of loaded policy
-+	 This option selects whether sha1 hashing of loaded policy
- 	 is enabled by default. The generation of sha1 hashes for
- 	 loaded policy provide system administrators a quick way
- 	 to verify that policy in the kernel matches what is expected,
-diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
-index 0bae6adb63a9..f7f2df082f51 100644
---- a/security/integrity/Kconfig
-+++ b/security/integrity/Kconfig
-@@ -34,10 +34,10 @@ config INTEGRITY_ASYMMETRIC_KEYS
- 	bool "Enable asymmetric keys support"
- 	depends on INTEGRITY_SIGNATURE
- 	default n
--        select ASYMMETRIC_KEY_TYPE
--        select ASYMMETRIC_PUBLIC_KEY_SUBTYPE
--        select CRYPTO_RSA
--        select X509_CERTIFICATE_PARSER
-+	select ASYMMETRIC_KEY_TYPE
-+	select ASYMMETRIC_PUBLIC_KEY_SUBTYPE
-+	select CRYPTO_RSA
-+	select X509_CERTIFICATE_PARSER
- 	help
- 	  This option enables digital signature verification using
- 	  asymmetric keys.
-@@ -53,14 +53,14 @@ config INTEGRITY_TRUSTED_KEYRING
- 	   keyring.
- 
- config INTEGRITY_PLATFORM_KEYRING
--        bool "Provide keyring for platform/firmware trusted keys"
--        depends on INTEGRITY_ASYMMETRIC_KEYS
--        depends on SYSTEM_BLACKLIST_KEYRING
--        help
--         Provide a separate, distinct keyring for platform trusted keys, which
--         the kernel automatically populates during initialization from values
--         provided by the platform for verifying the kexec'ed kerned image
--         and, possibly, the initramfs signature.
-+	bool "Provide keyring for platform/firmware trusted keys"
-+	depends on INTEGRITY_ASYMMETRIC_KEYS
-+	depends on SYSTEM_BLACKLIST_KEYRING
-+	help
-+	 Provide a separate, distinct keyring for platform trusted keys, which
-+	 the kernel automatically populates during initialization from values
-+	 provided by the platform for verifying the kexec'ed kerned image
-+	 and, possibly, the initramfs signature.
- 
- config LOAD_UEFI_KEYS
-        depends on INTEGRITY_PLATFORM_KEYRING
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 838476d780e5..ec9259bd8115 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -159,13 +159,13 @@ config IMA_APPRAISE
- 	  If unsure, say N.
- 
- config IMA_ARCH_POLICY
--        bool "Enable loading an IMA architecture specific policy"
--        depends on (KEXEC_SIG && IMA) || IMA_APPRAISE \
-+	bool "Enable loading an IMA architecture specific policy"
-+	depends on (KEXEC_SIG && IMA) || IMA_APPRAISE \
- 		   && INTEGRITY_ASYMMETRIC_KEYS
--        default n
--        help
--          This option enables loading an IMA architecture specific policy
--          based on run time secure boot flags.
-+	default n
-+	help
-+	  This option enables loading an IMA architecture specific policy
-+	  based on run time secure boot flags.
- 
- config IMA_APPRAISE_BUILD_POLICY
- 	bool "IMA build time configured policy rules"
-diff --git a/security/safesetid/Kconfig b/security/safesetid/Kconfig
-index 18b5fb90417b..ab1a2c69b0b8 100644
---- a/security/safesetid/Kconfig
-+++ b/security/safesetid/Kconfig
-@@ -1,15 +1,15 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config SECURITY_SAFESETID
--        bool "Gate setid transitions to limit CAP_SET{U/G}ID capabilities"
--        depends on SECURITY
--        select SECURITYFS
--        default n
--        help
--          SafeSetID is an LSM module that gates the setid family of syscalls to
--          restrict UID/GID transitions from a given UID/GID to only those
--          approved by a system-wide whitelist. These restrictions also prohibit
--          the given UIDs/GIDs from obtaining auxiliary privileges associated
--          with CAP_SET{U/G}ID, such as allowing a user to set up user namespace
--          UID mappings.
-+	bool "Gate setid transitions to limit CAP_SET{U/G}ID capabilities"
-+	depends on SECURITY
-+	select SECURITYFS
-+	default n
-+	help
-+	  SafeSetID is an LSM module that gates the setid family of syscalls to
-+	  restrict UID/GID transitions from a given UID/GID to only those
-+	  approved by a system-wide whitelist. These restrictions also prohibit
-+	  the given UIDs/GIDs from obtaining auxiliary privileges associated
-+	  with CAP_SET{U/G}ID, such as allowing a user to set up user namespace
-+	  UID mappings.
- 
--          If you are unsure how to answer this question, answer N.
-+	  If you are unsure how to answer this question, answer N.
+ 	  See Documentation/admin-guide/efi-stub.rst for more information.
 -- 
 2.17.1
 
