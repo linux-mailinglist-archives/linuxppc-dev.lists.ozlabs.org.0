@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3412EBBBD2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 20:50:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA41BBBD7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 20:51:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cYKT1fb4zDqH5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 04:50:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cYMb6gSjzDqMn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 04:51:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,43 +19,43 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cYBV62NmzDqFw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 04:44:02 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cYBW4X6lzDqFw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 04:44:03 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8NIbRN5100702; Mon, 23 Sep 2019 14:43:57 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v73bn0e17-1
+ x8NIbUoL084013; Mon, 23 Sep 2019 14:43:58 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v71cdvhs4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 14:43:56 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8NIfLKK006387;
- Mon, 23 Sep 2019 18:43:55 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma03wdc.us.ibm.com with ESMTP id 2v5bg6nu92-1
+ Mon, 23 Sep 2019 14:43:58 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8NIgDAB030819;
+ Mon, 23 Sep 2019 18:43:57 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 2v5bg6u7cc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 18:43:55 +0000
+ Mon, 23 Sep 2019 18:43:57 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8NIhtXd51052840
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8NIhuqb14484162
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Sep 2019 18:43:55 GMT
+ Mon, 23 Sep 2019 18:43:56 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73987112065;
+ by IMSVA (Postfix) with ESMTP id B8BE9112061;
+ Mon, 23 Sep 2019 18:43:56 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BA92F112066;
  Mon, 23 Sep 2019 18:43:55 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 75D74112063;
- Mon, 23 Sep 2019 18:43:54 +0000 (GMT)
 Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.184])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 23 Sep 2019 18:43:54 +0000 (GMT)
+ Mon, 23 Sep 2019 18:43:55 +0000 (GMT)
 From: Leonardo Bras <leonardo@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] powerpc/kvm/book3e: Replace current->mm by kvm->mm
-Date: Mon, 23 Sep 2019 15:43:31 -0300
-Message-Id: <20190923184332.412-3-leonardo@linux.ibm.com>
+Subject: [PATCH 3/3] powerpc/kvm/e500: Replace current->mm by kvm->mm
+Date: Mon, 23 Sep 2019 15:43:32 -0300
+Message-Id: <20190923184332.412-4-leonardo@linux.ibm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190923184332.412-1-leonardo@linux.ibm.com>
 References: <20190923184332.412-1-leonardo@linux.ibm.com>
@@ -68,7 +68,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=878 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1908290000 definitions=main-1909230160
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,7 +91,7 @@ kvm->mm = current->mm;
 
 And that on every kvm_*_ioctl we have:
 if (kvm->mm != current->mm)
-	return -EIO;
+        return -EIO;
 
 I see no reason to keep using current->mm instead of kvm->mm.
 
@@ -100,22 +100,34 @@ more in the contents of kvm struct.
 
 Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 ---
- arch/powerpc/kvm/booke.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/e500_mmu_host.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index be9a45874194..383108263af5 100644
---- a/arch/powerpc/kvm/booke.c
-+++ b/arch/powerpc/kvm/booke.c
-@@ -775,7 +775,7 @@ int kvmppc_vcpu_run(struct kvm_run *kvm_run, struct kvm_vcpu *vcpu)
- 	debug = current->thread.debug;
- 	current->thread.debug = vcpu->arch.dbg_reg;
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index 321db0fdb9db..425d13806645 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -355,9 +355,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
  
--	vcpu->arch.pgdir = current->mm->pgd;
-+	vcpu->arch.pgdir = kvm->mm->pgd;
- 	kvmppc_fix_ee_before_entry();
+ 	if (tlbsel == 1) {
+ 		struct vm_area_struct *vma;
+-		down_read(&current->mm->mmap_sem);
++		down_read(&kvm->mm->mmap_sem);
  
- 	ret = __kvmppc_vcpu_run(kvm_run, vcpu);
+-		vma = find_vma(current->mm, hva);
++		vma = find_vma(kvm->mm, hva);
+ 		if (vma && hva >= vma->vm_start &&
+ 		    (vma->vm_flags & VM_PFNMAP)) {
+ 			/*
+@@ -441,7 +441,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 			tsize = max(BOOK3E_PAGESZ_4K, tsize & ~1);
+ 		}
+ 
+-		up_read(&current->mm->mmap_sem);
++		up_read(&kvm->mm->mmap_sem);
+ 	}
+ 
+ 	if (likely(!pfnmap)) {
 -- 
 2.20.1
 
