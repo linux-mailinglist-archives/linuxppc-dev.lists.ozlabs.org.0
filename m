@@ -2,46 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047CFBACA1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 04:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC96BAD01
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 06:16:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46c7ds1CRwzDqNH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 12:32:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46c9xb5PqGzDqHZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 14:16:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="nwaSJ039"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46c7c80JlMzDqH1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 12:31:17 +1000 (AEST)
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 7E713D4AB52CFE913988;
- Mon, 23 Sep 2019 10:31:11 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Mon, 23 Sep 2019
- 10:31:09 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Paul Burton <paul.burton@mips.com>
-References: <1568724534-146242-1-git-send-email-linyunsheng@huawei.com>
- <20190921223818.sodqc2ui7mpt7ig5@pburton-laptop>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <57b3f143-f83b-f96a-de7b-1eccecc81dbb@huawei.com>
-Date: Mon, 23 Sep 2019 10:31:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46c9vj5yJ0zDqDF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 14:14:55 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id b136so30168550iof.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2019 21:14:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=jxlkri8iTZ6op1DPH/fdxCtEyWTUyMc8H/zzMN3y2h0=;
+ b=nwaSJ039kb6cjx1GbqduqvZnzrpVIpR+qy1Ssd1FslfHstWd5ikR5tUI5AtmKWqt7Q
+ nt+7cMcVUsNozeDq45PhVDYbmxzsfwrkLoitaSwU7P9UHGnxElJwKdeP2+3Wqkg0yz/a
+ Ziib94fDIqmOh18/XNvS8eukpRF2tUP3XdSfz++YdhUp7LEQyNezpMTHeplXYjcma/2P
+ 4MfJ4y+XXQOqN/KBwx3C5DeAXtm80aPRhwH9Bllrf1lTxwthITP9n0ne/2AX1a4WaMv+
+ q3Klh9013I9CQ9zSJAHK0N+GGcFVx4F1T2uhRSv7EAkjHkvhzmTQ8N11kyWh7pLRh70u
+ 1+FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jxlkri8iTZ6op1DPH/fdxCtEyWTUyMc8H/zzMN3y2h0=;
+ b=InYF2k0NgNSxK0hucgxK3IbHbZRrrlwZKZExwMHuv5JzIiZajoUh6tuFsqW1gAM8fF
+ tLyjO1DvSoxy0rlWcQ4f5+6APZG0l9U4n4ulm7ydrtNzijnjb2j/RGaW+LAYORQzM5qz
+ ATDcix4IKkK1kjRWU8n7IVyjPDhTW5EUi3tfd5GFUGx+s2Ip4Tv+WdcqarKmLQNfO6wo
+ lGHs0skutx1TmVuOVOkHiQEQjlBpu3SGID+Rep0sSIpNh4XgVNR+VBYGom5Ei7JO9Z4q
+ r32VctdUYSHVIjCPNfkEP/gotHpTkTWyZGQ9+3h1uG0hLB1mjVKwxLnZBlkZtak9Rc7M
+ o4yw==
+X-Gm-Message-State: APjAAAUPnAHsbfgkMbYucl5lJOezIAG8flQpNWz9h+qz9JB1pc5Z1enx
+ 8EH3wrsl2g7ithQjFtPOWp8RUetJ3Ls1Ys1NTrb6EjE=
+X-Google-Smtp-Source: APXvYqw6HXqqqaJ6Ox6sSGQo69D1cLH81IStZrnvANht5v3jq0a24ntUUozA3mIqhEy0eJdlOtkAIYlp7HGTe/2azdI=
+X-Received: by 2002:a05:6638:294:: with SMTP id
+ c20mr33929106jaq.77.1569212091683; 
+ Sun, 22 Sep 2019 21:14:51 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190921223818.sodqc2ui7mpt7ig5@pburton-laptop>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+References: <1568256617-14030-1-git-send-email-kernelfans@gmail.com>
+ <CAFgQCTvKpPEP1UywcGcC2Mo4mzzZR+ff7M3L9QN_U+hfk31ijQ@mail.gmail.com>
+ <87a7b1x303.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87a7b1x303.fsf@mpe.ellerman.id.au>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Mon, 23 Sep 2019 12:14:40 +0800
+Message-ID: <CAFgQCTu4eU4xXOqgySmdZhOW-FtgoAFhVbvVHakWGY7k+9JwKA@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/crashkernel: take mem option into account
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,123 +75,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "dalias@libc.org" <dalias@libc.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "heiko.carstens@de.ibm.com" <heiko.carstens@de.ibm.com>,
- "jiaxun.yang@flygoat.com" <jiaxun.yang@flygoat.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "mwb@linux.vnet.ibm.com" <mwb@linux.vnet.ibm.com>,
- "paulus@samba.org" <paulus@samba.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "chenhc@lemote.com" <chenhc@lemote.com>, "will@kernel.org" <will@kernel.org>,
- "cai@lca.pw" <cai@lca.pw>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "ysato@users.sourceforge.jp" <ysato@users.sourceforge.jp>,
- "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
- "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
- "dledford@redhat.com" <dledford@redhat.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "jeffrey.t.kirsher@intel.com" <jeffrey.t.kirsher@intel.com>,
- "jhogan@kernel.org" <jhogan@kernel.org>,
- "mattst88@gmail.com" <mattst88@gmail.com>,
- "len.brown@intel.com" <len.brown@intel.com>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>,
- "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "bp@alien8.de" <bp@alien8.de>, "luto@kernel.org" <luto@kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "mhocko@kernel.org" <mhocko@kernel.org>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "rth@twiddle.net" <rth@twiddle.net>, "axboe@kernel.dk" <axboe@kernel.dk>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "ralf@linux-mips.org" <ralf@linux-mips.org>,
- "tbogendoerfer@suse.de" <tbogendoerfer@suse.de>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "rafael@kernel.org" <rafael@kernel.org>,
- "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "robin.murphy@arm.com" <robin.murphy@arm.com>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/9/22 6:38, Paul Burton wrote:
-> Hi Yunsheng,
-> 
-> On Tue, Sep 17, 2019 at 08:48:54PM +0800, Yunsheng Lin wrote:
->> When passing the return value of dev_to_node() to cpumask_of_node()
->> without checking if the device's node id is NUMA_NO_NODE, there is
->> global-out-of-bounds detected by KASAN.
->>
->> From the discussion [1], NUMA_NO_NODE really means no node affinity,
->> which also means all cpus should be usable. So the cpumask_of_node()
->> should always return all cpus online when user passes the node id as
->> NUMA_NO_NODE, just like similar semantic that page allocator handles
->> NUMA_NO_NODE.
->>
->> But we cannot really copy the page allocator logic. Simply because the
->> page allocator doesn't enforce the near node affinity. It just picks it
->> up as a preferred node but then it is free to fallback to any other numa
->> node. This is not the case here and node_to_cpumask_map will only restrict
->> to the particular node's cpus which would have really non deterministic
->> behavior depending on where the code is executed. So in fact we really
->> want to return cpu_online_mask for NUMA_NO_NODE.
->>
->> Also there is a debugging version of node_to_cpumask_map() for x86 and
->> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
->> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
->>
->> [1] https://lore.kernel.org/patchwork/patch/1125789/
->> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
->> Suggested-by: Michal Hocko <mhocko@kernel.org>
->> Acked-by: Michal Hocko <mhocko@suse.com>
-> 
-> If you end up sending another revision then I think it would be worth
-> replacing -1 with NUMA_NO_NODE in
-> arch/mips/include/asm/mach-ip27/topology.h for consistency, but in any
-> case:
+On Wed, Sep 18, 2019 at 7:23 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Pingfan Liu <kernelfans@gmail.com> writes:
+> > Cc Kexec list. And keep the original content.
+> >
+> > On Thu, Sep 12, 2019 at 10:50 AM Pingfan Liu <kernelfans@gmail.com> wrote:
+> >>
+> >> 'mem=" option is an easy way to put high pressure on memory during some
+> >> test. Hence in stead of total mem, the effective usable memory size
+>                ^                          ^
+>                instead                    "actual" would be clearer
+>
+> I think adding: "after applying the memory limit"
+>
+> would help here.
+>
+> >> should be considered when reserving mem for crashkernel. Otherwise
+> >> the boot up may experience oom issue.
+>                               ^
+>                               OOM
+> >>
+> >> E.g passing
+> >> crashkernel="2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G", and
+> >> mem=5G on a 256G machine.
+>
+> Spelling out the behaviour before and after would help here, eg:
+>
+> .. "would reserve 4G prior to the change and 512M afterward."
+>
+Thanks for kindly review. I will update the commit based on your suggestion.
+>
+> >> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> >> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> >> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> >> To: linuxppc-dev@lists.ozlabs.org
+> >> ---
+> >> v1 -> v2: fix the printk info about the total mem
+> >>  arch/powerpc/kernel/machine_kexec.c | 7 ++++---
+> >>  1 file changed, 4 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
+> >> index c4ed328..eec96dc 100644
+> >> --- a/arch/powerpc/kernel/machine_kexec.c
+> >> +++ b/arch/powerpc/kernel/machine_kexec.c
+> >> @@ -114,11 +114,12 @@ void machine_kexec(struct kimage *image)
+> >>
+> >>  void __init reserve_crashkernel(void)
+> >>  {
+> >> -       unsigned long long crash_size, crash_base;
+> >> +       unsigned long long crash_size, crash_base, total_mem_sz;
+> >>         int ret;
+> >>
+> >> +       total_mem_sz = memory_limit ? memory_limit : memblock_phys_mem_size();
+> >>         /* use common parsing */
+> >> -       ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+> >> +       ret = parse_crashkernel(boot_command_line, total_mem_sz,
+> >>                         &crash_size, &crash_base);
+>
+> I think this change makes sense. But we have multiple arches that
+> implement similar logic, and I wonder if we should keep them all the
+> same.
+>
+> eg:
+>
+>   arch/arm/kernel/setup.c:                ret = parse_crashkernel(boot_command_line, total_mem,
+>   arch/arm64/mm/init.c:                   ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+>   arch/ia64/kernel/setup.c:               ret = parse_crashkernel(boot_command_line, total,
+>   arch/mips/kernel/setup.c:               ret = parse_crashkernel(boot_command_line, total_mem,
+>   arch/powerpc/kernel/fadump.c:           ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+>   arch/powerpc/kernel/machine_kexec.c:    ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+>   arch/s390/kernel/setup.c:               rc = parse_crashkernel(boot_command_line, memory_end, &crash_size,
+>   arch/sh/kernel/machine_kexec.c:         ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+>   arch/x86/kernel/setup.c:                ret = parse_crashkernel(boot_command_line, total_mem, &crash_size, &crash_base);
+>
+>
+> From a quick glance most of them don't seem to take the memory limit
+> into account.
+>
+> So I guess the question is do we want all arches to implement the same
+> behaviour or do we think it doesn't matter if they differ in details
+> like this?
 
-Perhaps it is better to replace -1 with NUMA_NO_NODE along with cpu_all_mask
--> cpu_online_mask change if the cpu_all_mask -> cpu_online_mask change is
-reasonable.
+On powerpc, the current code make fadump/kdump a higher priority than
+"mem=" option, as the notes in fadump_reserve_mem() says
+"
+        /*
+         * Calculate the memory boundary.
+         * If memory_limit is less than actual memory boundary then reserve
+         * the memory for fadump beyond the memory_limit and adjust the
+         * memory_limit accordingly, so that the running kernel can run with
+         * specified memory_limit.
+         */
+"
 
-Anyway, will do that if there is another version needed.
+While on other archs, they pack "mem=" info into memblock before
+calling memblock_phys_mem_size(). So when parse_crashkernel() calls
+memblock_phys_mem_size(), the "mem=" takes effect.
 
-> 
->     Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
+E.g for x86 in arch/x86/kernel/e820.c
+static int __init parse_memopt(char *p)
+{
+...
+e820__range_remove(mem_size, ULLONG_MAX - mem_size, E820_TYPE_RAM, 1);
+// this pack the "mem=" info into e820, and is finally feed to
+memblock
+}
 
-Thanks for that.
-
-> 
-> Thanks,
->     Paul
-> 
->> ---
->> V6: Drop the cpu_all_mask -> cpu_online_mask change for it seems a
->>     little controversial, may need deeper investigation, and rebased
->>     on the latest linux-next.
->> V5: Drop unsigned "fix" change for x86/arm64, and change comment log
->>     according to Michal's comment.
->> V4: Have all these changes in a single patch.
->> V3: Change to only handle NUMA_NO_NODE, and return cpu_online_mask
->>     for NUMA_NO_NODE case, and change the commit log to better justify
->>     the change.
->> V2: make the node id checking change to other arches too.
->> ---
->>  arch/arm64/include/asm/numa.h                    | 3 +++
->>  arch/arm64/mm/numa.c                             | 3 +++
->>  arch/mips/include/asm/mach-loongson64/topology.h | 4 +++-
->>  arch/s390/include/asm/topology.h                 | 3 +++
->>  arch/x86/include/asm/topology.h                  | 3 +++
->>  arch/x86/mm/numa.c                               | 3 +++
->>  6 files changed, 18 insertions(+), 1 deletion(-)
-> 
-> .
-> 
-
+Thanks,
+Pingfan
