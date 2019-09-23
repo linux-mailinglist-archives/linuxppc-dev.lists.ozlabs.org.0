@@ -1,82 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29855BB8E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 18:01:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D5FBB8FB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 18:03:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cTZt4KYBzDqJH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 02:01:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cTdB33y0zDqGp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 02:03:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="NXlQx8He"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cTC81M2MzDqJS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 01:44:19 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8NFg7Tu010423
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 11:44:16 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v6yr436yw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 11:44:15 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <groug@kaod.org>;
- Mon, 23 Sep 2019 16:44:12 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 23 Sep 2019 16:44:08 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8NFi7SY27918574
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Sep 2019 15:44:07 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F39C642045;
- Mon, 23 Sep 2019 15:44:06 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8876942047;
- Mon, 23 Sep 2019 15:44:06 +0000 (GMT)
-Received: from bahia.lan (unknown [9.145.22.84])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 23 Sep 2019 15:44:06 +0000 (GMT)
-Subject: [PATCH 6/6] KVM: PPC: Book3S HV: XIVE: Allow userspace to set the #
- of VPs
-From: Greg Kurz <groug@kaod.org>
-To: Paul Mackerras <paulus@ozlabs.org>
-Date: Mon, 23 Sep 2019 17:44:06 +0200
-In-Reply-To: <156925341155.974393.11681611197111945710.stgit@bahia.lan>
-References: <156925341155.974393.11681611197111945710.stgit@bahia.lan>
-User-Agent: StGit/unknown-version
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cTLj2xf5zDqJS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 01:50:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=0RDd3iHkouZU1pRFRB48/lD4Y4fOddJfRH7mBxc6Vao=; b=NXlQx8HeAqeDb6yqEaTk/519B
+ dPw5dQx+43R/Xql9eX//W6l/1vbSDqJBsSKbX0+GgxGyR/lMzRBIJJLwaiBlYUPovHMUeZ4WuI2U9
+ pqR/T7IrCuH324g5O+5uhidav3oL5K11yioHiIVa88PxC9Lhl8Af25UBQiNsPQjgWAv5dhal7H8Pm
+ kjjT0b4sbkwdVtooJ5V/S1z3/O080RdL39Z8BxDGhymwdoNXrZ7KMaQqR08JJFpuEuA5JxPauwCNC
+ NwI5i96tju02O7rB8oB1RofYv2QQUL82ESd4By1d+WKKUSotGlAN05bG1WBwAaFYH+M7oRF/I/hUL
+ 8rRYpfeYg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iCQa9-0006CY-8C; Mon, 23 Sep 2019 15:49:02 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CEBBA303DFD;
+ Mon, 23 Sep 2019 17:48:07 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 0AF5F20D80D41; Mon, 23 Sep 2019 17:48:53 +0200 (CEST)
+Date: Mon, 23 Sep 2019 17:48:52 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20190923154852.GG2369@hirez.programming.kicks-ass.net>
+References: <1568724534-146242-1-git-send-email-linyunsheng@huawei.com>
+ <20190923151519.GE2369@hirez.programming.kicks-ass.net>
+ <20190923152856.GB17206@dhcp22.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19092315-0016-0000-0000-000002AFA2B1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19092315-0017-0000-0000-0000331060C1
-Message-Id: <156925344605.974393.13942051061218979129.stgit@bahia.lan>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-23_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1034 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909230148
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190923152856.GB17206@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,155 +73,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Radim =?utf-8?b?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- kvm-ppc@vger.kernel.org, =?utf-8?q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
+ will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
+ ysato@users.sourceforge.jp, x86@kernel.org,
+ Yunsheng Lin <linyunsheng@huawei.com>, rppt@linux.ibm.com,
+ borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
+ jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
+ len.brown@intel.com, gor@linux.ibm.com, anshuman.khandual@arm.com,
+ gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org, tglx@linutronix.de,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
+ paul.burton@mips.com, linux-alpha@vger.kernel.org, rafael@kernel.org,
+ ink@jurassic.park.msu.ru, akpm@linux-foundation.org, robin.murphy@arm.com,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new attribute to both legacy and native XIVE KVM devices so that
-userspace can require less interrupt servers than the current default
-(KVM_MAX_VCPUS, 2048). This will allow to allocate less VPs in OPAL,
-and likely increase the number of VMs that can run with an in-kernel
-XIVE implementation.
+On Mon, Sep 23, 2019 at 05:28:56PM +0200, Michal Hocko wrote:
+> On Mon 23-09-19 17:15:19, Peter Zijlstra wrote:
 
-Since the legacy XIVE KVM device is exposed to userspace through the
-XICS KVM API, a new attribute group is added to it for this purpose.
-While here, fix the syntax of the existing KVM_DEV_XICS_GRP_SOURCES
-in the XICS documentation.
+> > > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > > index 4123100e..9859acb 100644
+> > > --- a/arch/x86/mm/numa.c
+> > > +++ b/arch/x86/mm/numa.c
+> > > @@ -861,6 +861,9 @@ void numa_remove_cpu(int cpu)
+> > >   */
+> > >  const struct cpumask *cpumask_of_node(int node)
+> > >  {
+> > > +	if (node == NUMA_NO_NODE)
+> > > +		return cpu_online_mask;
+> > 
+> > This mandates the caller holds cpus_read_lock() or something, I'm pretty
+> > sure that if I put:
+> > 
+> > 	lockdep_assert_cpus_held();
+> 
+> Is this documented somewhere?
 
-Signed-off-by: Greg Kurz <groug@kaod.org>
----
- Documentation/virt/kvm/devices/xics.txt |   14 ++++++++++++--
- Documentation/virt/kvm/devices/xive.txt |    8 ++++++++
- arch/powerpc/include/uapi/asm/kvm.h     |    3 +++
- arch/powerpc/kvm/book3s_xive.c          |   10 ++++++++++
- arch/powerpc/kvm/book3s_xive_native.c   |    3 +++
- 5 files changed, 36 insertions(+), 2 deletions(-)
+No idea... common sense :-)
 
-diff --git a/Documentation/virt/kvm/devices/xics.txt b/Documentation/virt/kvm/devices/xics.txt
-index 42864935ac5d..1cf9621f8341 100644
---- a/Documentation/virt/kvm/devices/xics.txt
-+++ b/Documentation/virt/kvm/devices/xics.txt
-@@ -3,9 +3,19 @@ XICS interrupt controller
- Device type supported: KVM_DEV_TYPE_XICS
- 
- Groups:
--  KVM_DEV_XICS_SOURCES
-+  1. KVM_DEV_XICS_GRP_SOURCES
-   Attributes: One per interrupt source, indexed by the source number.
- 
-+  2. KVM_DEV_XICS_GRP_CTRL
-+  Attributes:
-+    2.1 KVM_DEV_XICS_NR_SERVERS (write only)
-+  The kvm_device_attr.addr points to a __u32 value which is the number of
-+  interrupt server numbers (ie, highest possible vcpu id plus one).
-+  Errors:
-+    -EINVAL: Value greater than KVM_MAX_VCPUS.
-+    -EFAULT: Invalid user pointer for attr->addr.
-+    -EBUSY:  A vcpu is already connected to the device.
-+
- This device emulates the XICS (eXternal Interrupt Controller
- Specification) defined in PAPR.  The XICS has a set of interrupt
- sources, each identified by a 20-bit source number, and a set of
-@@ -38,7 +48,7 @@ least-significant end of the word:
- 
- Each source has 64 bits of state that can be read and written using
- the KVM_GET_DEVICE_ATTR and KVM_SET_DEVICE_ATTR ioctls, specifying the
--KVM_DEV_XICS_SOURCES attribute group, with the attribute number being
-+KVM_DEV_XICS_GRP_SOURCES attribute group, with the attribute number being
- the interrupt source number.  The 64 bit state word has the following
- bitfields, starting from the least-significant end of the word:
- 
-diff --git a/Documentation/virt/kvm/devices/xive.txt b/Documentation/virt/kvm/devices/xive.txt
-index 9a24a4525253..fd418b907d0e 100644
---- a/Documentation/virt/kvm/devices/xive.txt
-+++ b/Documentation/virt/kvm/devices/xive.txt
-@@ -78,6 +78,14 @@ the legacy interrupt mode, referred as XICS (POWER7/8).
-     migrating the VM.
-     Errors: none
- 
-+    1.3 KVM_DEV_XIVE_NR_SERVERS (write only)
-+    The kvm_device_attr.addr points to a __u32 value which is the number of
-+    interrupt server numbers (ie, highest possible vcpu id plus one).
-+    Errors:
-+      -EINVAL: Value greater than KVM_KVM_VCPUS.
-+      -EFAULT: Invalid user pointer for attr->addr.
-+      -EBUSY:  A vCPU is already connected to the device.
-+
-   2. KVM_DEV_XIVE_GRP_SOURCE (write only)
-   Initializes a new source in the XIVE device and mask it.
-   Attributes:
-diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
-index b0f72dea8b11..264e266a85bf 100644
---- a/arch/powerpc/include/uapi/asm/kvm.h
-+++ b/arch/powerpc/include/uapi/asm/kvm.h
-@@ -667,6 +667,8 @@ struct kvm_ppc_cpu_char {
- 
- /* PPC64 eXternal Interrupt Controller Specification */
- #define KVM_DEV_XICS_GRP_SOURCES	1	/* 64-bit source attributes */
-+#define KVM_DEV_XICS_GRP_CTRL		2
-+#define   KVM_DEV_XICS_NR_SERVERS	1
- 
- /* Layout of 64-bit source attribute values */
- #define  KVM_XICS_DESTINATION_SHIFT	0
-@@ -683,6 +685,7 @@ struct kvm_ppc_cpu_char {
- #define KVM_DEV_XIVE_GRP_CTRL		1
- #define   KVM_DEV_XIVE_RESET		1
- #define   KVM_DEV_XIVE_EQ_SYNC		2
-+#define   KVM_DEV_XIVE_NR_SERVERS	3
- #define KVM_DEV_XIVE_GRP_SOURCE		2	/* 64-bit source identifier */
- #define KVM_DEV_XIVE_GRP_SOURCE_CONFIG	3	/* 64-bit source identifier */
- #define KVM_DEV_XIVE_GRP_EQ_CONFIG	4	/* 64-bit EQ identifier */
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index 4a333dcfddd8..c1901583e6c0 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -1905,6 +1905,11 @@ static int xive_set_attr(struct kvm_device *dev, struct kvm_device_attr *attr)
- 	switch (attr->group) {
- 	case KVM_DEV_XICS_GRP_SOURCES:
- 		return xive_set_source(xive, attr->attr, attr->addr);
-+	case KVM_DEV_XICS_GRP_CTRL:
-+		switch (attr->attr) {
-+		case KVM_DEV_XICS_NR_SERVERS:
-+			return kvmppc_xive_set_nr_servers(xive, attr->addr);
-+		}
- 	}
- 	return -ENXIO;
- }
-@@ -1930,6 +1935,11 @@ static int xive_has_attr(struct kvm_device *dev, struct kvm_device_attr *attr)
- 		    attr->attr < KVMPPC_XICS_NR_IRQS)
- 			return 0;
- 		break;
-+	case KVM_DEV_XICS_GRP_CTRL:
-+		switch (attr->attr) {
-+		case KVM_DEV_XICS_NR_SERVERS:
-+			return 0;
-+		}
- 	}
- 	return -ENXIO;
- }
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-index 5e18364d52a9..8e954c5d5efb 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -921,6 +921,8 @@ static int kvmppc_xive_native_set_attr(struct kvm_device *dev,
- 			return kvmppc_xive_reset(xive);
- 		case KVM_DEV_XIVE_EQ_SYNC:
- 			return kvmppc_xive_native_eq_sync(xive);
-+		case KVM_DEV_XIVE_NR_SERVERS:
-+			return kvmppc_xive_set_nr_servers(xive, attr->addr);
- 		}
- 		break;
- 	case KVM_DEV_XIVE_GRP_SOURCE:
-@@ -960,6 +962,7 @@ static int kvmppc_xive_native_has_attr(struct kvm_device *dev,
- 		switch (attr->attr) {
- 		case KVM_DEV_XIVE_RESET:
- 		case KVM_DEV_XIVE_EQ_SYNC:
-+		case KVM_DEV_XIVE_NR_SERVERS:
- 			return 0;
- 		}
- 		break;
+> Also how does that differ from a normal
+> case when a proper node is used? The cpumask will always be dynamic in
+> the cpu hotplug presence, right?
+
+As per normal yes, and I'm fairly sure there's a ton of bugs. Any
+'online' state is subject to change except when you're holding
+sufficient locks to stop it.
+
+Disabling preemption also stabilizes it, because cpu unplug relies on
+stop-machine.
+
+> > here, it comes apart real quick. Without holding the cpu hotplug lock,
+> > the online mask is gibberish.
+> 
+> Can the returned cpu mask go away?
+
+No, the cpu_online_mask itself has static storage, the contents OTOH can
+change at will. Very little practical difference :-)
+
 
