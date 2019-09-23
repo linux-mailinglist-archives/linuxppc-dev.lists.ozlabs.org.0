@@ -2,65 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA41BBBD7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 20:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B76BBBBC2F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 21:20:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cYMb6gSjzDqMn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 04:51:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cZ0Y2f4XzDqJs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 05:20:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cYBW4X6lzDqFw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 04:44:03 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8NIbUoL084013; Mon, 23 Sep 2019 14:43:58 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v71cdvhs4-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cYqh4kJ2zDqF5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 05:12:47 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8NJCcUa070698; Mon, 23 Sep 2019 15:12:38 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v72wrj6gv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 14:43:58 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8NIgDAB030819;
- Mon, 23 Sep 2019 18:43:57 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 2v5bg6u7cc-1
+ Mon, 23 Sep 2019 15:12:38 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8NJAU2E010098;
+ Mon, 23 Sep 2019 19:12:32 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma04dal.us.ibm.com with ESMTP id 2v5bg73f36-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 18:43:57 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8NIhuqb14484162
+ Mon, 23 Sep 2019 19:12:32 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8NJCV1l55181634
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Sep 2019 18:43:56 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8BE9112061;
- Mon, 23 Sep 2019 18:43:56 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BA92F112066;
- Mon, 23 Sep 2019 18:43:55 +0000 (GMT)
-Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.184])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 23 Sep 2019 18:43:55 +0000 (GMT)
+ Mon, 23 Sep 2019 19:12:31 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D623AC062;
+ Mon, 23 Sep 2019 19:12:31 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D446FAC059;
+ Mon, 23 Sep 2019 19:12:30 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.18.235.184])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Sep 2019 19:12:30 +0000 (GMT)
+Message-ID: <9f635f0348bc29274cfca573f5cd297bcd50a8e0.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/1] powerpc: kvm: Reduce calls to get current->mm by
+ storing the value locally
 From: Leonardo Bras <leonardo@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] powerpc/kvm/e500: Replace current->mm by kvm->mm
-Date: Mon, 23 Sep 2019 15:43:32 -0300
-Message-Id: <20190923184332.412-4-leonardo@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190923184332.412-1-leonardo@linux.ibm.com>
-References: <20190923184332.412-1-leonardo@linux.ibm.com>
+To: PaulMackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 23 Sep 2019 16:12:26 -0300
+In-Reply-To: <8da27002e60b1c974836fa418b2b54a6f38fcdde.camel@linux.ibm.com>
+References: <20190919222748.20761-1-leonardo@linux.ibm.com>
+ <5af478e1da6c0b847fbaf3aff6ccce5720e8a23c.camel@linux.ibm.com>
+ <8da27002e60b1c974836fa418b2b54a6f38fcdde.camel@linux.ibm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-S9Il0xSlMXtX+sMnu/9N"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-09-23_06:, , signatures=0
@@ -68,8 +73,8 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=878 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909230160
+ mlxlogscore=848 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909230164
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,53 +86,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Leonardo Bras <leonardo@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Given that in kvm_create_vm() there is:
-kvm->mm = current->mm;
 
-And that on every kvm_*_ioctl we have:
-if (kvm->mm != current->mm)
-        return -EIO;
+--=-S9Il0xSlMXtX+sMnu/9N
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I see no reason to keep using current->mm instead of kvm->mm.
+On Mon, 2019-09-23 at 15:35 -0300, Leonardo Bras wrote:
+> Could you please provide feedback on this patch?
 
-By doing so, we would reduce the use of 'global' variables on code, relying
-more in the contents of kvm struct.
+I have done a very simple comparison with gcc disassemble:
+By applying this patch, there was a reduction in the function size from
+882 to 878 instructions.
 
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
----
- arch/powerpc/kvm/e500_mmu_host.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+--=-S9Il0xSlMXtX+sMnu/9N
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index 321db0fdb9db..425d13806645 100644
---- a/arch/powerpc/kvm/e500_mmu_host.c
-+++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -355,9 +355,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 
- 	if (tlbsel == 1) {
- 		struct vm_area_struct *vma;
--		down_read(&current->mm->mmap_sem);
-+		down_read(&kvm->mm->mmap_sem);
- 
--		vma = find_vma(current->mm, hva);
-+		vma = find_vma(kvm->mm, hva);
- 		if (vma && hva >= vma->vm_start &&
- 		    (vma->vm_flags & VM_PFNMAP)) {
- 			/*
-@@ -441,7 +441,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 			tsize = max(BOOK3E_PAGESZ_4K, tsize & ~1);
- 		}
- 
--		up_read(&current->mm->mmap_sem);
-+		up_read(&kvm->mm->mmap_sem);
- 	}
- 
- 	if (likely(!pfnmap)) {
--- 
-2.20.1
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2JGRoACgkQlQYWtz9S
+ttRLoA//Zh5DTWvpKnXoQsuE35nXRS3iXFegz7gIAWIAXBbESJdsTECkQA+D98wu
+81suJuR7/n0t2Mk4NIi0/TGTF4W+4CFZUisCSMjDF2vJxHJFMaPfMBhp6F75Czd8
+s6Ee0bsGvqPf25VHo98gy/jZZK2/ngPjvxziLWZL6eYOYG+jt3oQpx2L8PtrAOP5
++eDSaIPCDOxkHDaduxf+Y8y4i1Mp8wI5E4t3zLsf+gZfsa7uL1hyL+kaazSoxGBY
+K98hDFX9LG4Js2xOA81V3b/FKXQyvnwCmjK9QoyNYKOeE9DrQ4XBcvDyXkkltPJF
+YR2setLxATXoytOtqU+jYz4qjsaJYXIL25eLZXA7IoXRexbBgZrqMQGMl/YTVwfm
+S5sgIvxlHatXS88/k7F+KtEheLyHIsH4y0EclI4OJSCFrIFKIGwH8RGBjkuLm1/3
+3ftcZBiPG1oxanK7qUY+Dr9qFaIOrqL24Ah+tsB+iRyVzdCm1euRakRp30Kzb+gx
+BGWMekNJZ/2kakau8xn8alzm8P0k8Q1JzkRO/T0TEqGtlsaGAmUfD+aYFbigMmBt
+EXtYsrLHcvovBSs/lbavZFhvzCna3t13rIJjm0G9vHdvjWpRd2eTjEz64C4hGFp8
+aAFgmu6BPZCCDZNbYs94Pk+/nqzjYpq3JMoITHXswHl/N5u86Iw=
+=x03n
+-----END PGP SIGNATURE-----
+
+--=-S9Il0xSlMXtX+sMnu/9N--
 
