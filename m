@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BB1BAEF2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 10:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BE5BAEFF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 10:12:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cH7x5CkjzDqHm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 18:10:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cHBH24dSzDqLM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 18:12:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="NMPojwyt"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="hf/PGcg1"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cH5s3pfbzDqF3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 18:09:04 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id d22so6185250pll.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 01:09:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cH7Y1Z93zDqHZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 18:10:33 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id s1so6466113pgv.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 01:10:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=fhYvz3kijb/fM47rg6uANfsjULtlr4efpcYA4goBwp8=;
- b=NMPojwyt0KZSiWOhegf/r5yjCr7oMgLoeZRd8iTdfZJW3O6LSRwKhyyk8EDjeujAvZ
- ISMeNga55PCLC/NdAJE1qGwOIGVZ4ak4PLfgEsli7lla9UwUhNLOJRk/dxiQ4YjD+te9
- iWTZiIXOQc3rm36JVXaBI2kGKss/br+JTbcwe4bu2b0qXPYzPBL5GMWhYaAL5pYIQxW/
- YcZh9XAB/PkOUmTuBmWnlRLnAxAVWHxZI+/ooPrsdis2wPtlEHYovNB/e6yYo9X42sIV
- eF3kKfwLJ+SFa2SST82y8mHyEphzxGHd9XQX1Bci/uefHCW+IpuzA0in6AgJqR0uyeoQ
- Y0rQ==
+ bh=9RVC5ut3VT7iyr+YW+wU3BVQnqJQ6ZyscMhiwkZ2jds=;
+ b=hf/PGcg17wSec3ucDItdciXxGdgdTH6ecbztpaoOIZ79IZFTbknYTGA+KpQivq81sl
+ 5/0gUEmIjBAFw0YDfldgVAXM2y44uwKL6VBuRfhCJNI6Vx5Fab3w3e9QcQB4oU0W+y2y
+ mDC1NX5zRgPIVvf8dWZCHjOfPBt32yPFHvaXTst8mF01K5rGRMaHRdxV4nRf0IXDLJ3c
+ kxJ8WhdD3Aeu93G4Z8uypwatjGX/V69Dncy8i+nWQegDPCyhN4KMXl+9o7tvU2y+RsFj
+ f1+LsTkWDzZnKkiLl73k5sqO1n8GVz9Dlw7Hc9Y6U2pKFSAbQHKGlh+RbZGtyTDmqW6t
+ wqzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
  :date:user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=fhYvz3kijb/fM47rg6uANfsjULtlr4efpcYA4goBwp8=;
- b=VYLklR2Veha/aIjUHN9o271fwoAmWWAM3/Te/LS57o4qzg0U/aRhF/m9VF+PJD1lP4
- 8vdCCwo055qgIucX8INnvbtHH4ztCvdihoXxms2BDhk8KLMpPTv2J7EHzI8NaXsUwQsv
- SPhF6IWXzTuExJakning3B3uy2H2K9c43Ndm4+ttJzhwQOESUbNiw3PW0n/p75kh4vUQ
- DKoAF+SXSjQH2QMuS9hPimXJWspnaU9z16SZFspZYGt8AB8b0XfVy4KMo/5ku2vMajLU
- MCfOU93S9rdpyDGdaI0xuXLbZCNa0R2EOoFdmShYfNMU8RNcn3iHj6GBWlXV+T00XPlm
- LPgg==
-X-Gm-Message-State: APjAAAVIHLM3IcUdGq3j8o9NY5pOlLp2aSsdtDtYW9LFE4HNbF8saKo8
- Tto+HRIq1WxP34q+WjfMxaitD35zhRE=
-X-Google-Smtp-Source: APXvYqxvnrSIpA8x5cvj1cOjn+NKId03wsMa/STI4+ox8UZJ4zFQltjZl35ly6wPLg6k8TDsIsjnTQ==
-X-Received: by 2002:a17:902:59da:: with SMTP id
- d26mr30839909plj.193.1569226139218; 
- Mon, 23 Sep 2019 01:08:59 -0700 (PDT)
+ bh=9RVC5ut3VT7iyr+YW+wU3BVQnqJQ6ZyscMhiwkZ2jds=;
+ b=gE1m+4iymZddbWsWQaUW4GF8zH52DRBRrZC4OtNw6myDO+RHRcZSZTp2LI+i0EnyZH
+ 9a8fXKdrWOAgYQhiaa33xfyVWJ9XLwnKdFePu8+rG8E4L696qNqx93RpbxcePrkF2MNF
+ TG9XJOLxGZ5+42Ti/nUCVcukAcPkm3LTAU3wrK9+szkBAJ7/szxCg0VpIZGMvOoWCgSy
+ OCCwkpmByIIIo89lwTJFUbm9xTgvMLQcoOrEEI9OMlXATvtd//VavzLvkDPSncKL7yZt
+ 7AvdLShnM3gH96P6+Bi+sK7q8VlTxQ9LPj3kwLYoLrSRDjZ1snUVr/axoTzbqB7trnmK
+ wIVw==
+X-Gm-Message-State: APjAAAWGiOnQmK5Of/kB33YBzWMvRH3WQzmny2YgW1Ws8DYOgY7+pQE1
+ 5NgZfvKW39e9qXc7AOAW/48r6P2lXJ8=
+X-Google-Smtp-Source: APXvYqzWuLhrLwoljd05N3+jWOazjFxb24VQETO1zZ1uaBWMB1vrPvznNEs6QlCpX3hUMWh/e9looQ==
+X-Received: by 2002:a17:90a:e56:: with SMTP id
+ p22mr19321796pja.133.1569226228914; 
+ Mon, 23 Sep 2019 01:10:28 -0700 (PDT)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id l24sm8393137pff.151.2019.09.23.01.08.57
+ by smtp.gmail.com with ESMTPSA id b123sm4540784pgc.72.2019.09.23.01.10.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Sep 2019 01:08:58 -0700 (PDT)
-Subject: Re: [PATCH 1/3] powernv/pci: Use pnv_phb as the private data for
- debugfs entries
+ Mon, 23 Sep 2019 01:10:28 -0700 (PDT)
+Subject: Re: [PATCH 3/3] powernv/pci: Add a debugfs entry to dump PHB's IODA
+ PE state
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20190912052945.12589-1-oohall@gmail.com>
+ <20190912052945.12589-3-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -139,12 +140,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <0eee191d-7bcb-0778-6d0a-100b977c436f@ozlabs.ru>
-Date: Mon, 23 Sep 2019 18:08:55 +1000
+Message-ID: <288632b8-71d6-3909-5958-226a3d2b2685@ozlabs.ru>
+Date: Mon, 23 Sep 2019 18:10:25 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <20190912052945.12589-1-oohall@gmail.com>
+In-Reply-To: <20190912052945.12589-3-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -166,55 +167,74 @@ Sender: "Linuxppc-dev"
 
 
 On 12/09/2019 15:29, Oliver O'Halloran wrote:
-> Use the pnv_phb structure as the private data pointer for the debugfs
-> files.  This lets us delete some code and an open-coded use of
-> hose->private_data.
+> Add a debugfs entry to dump the state of the active IODA PEs. The IODA PE
+> state reflects how the PHB's internal concept of a PE is configured. This
+> is separate to the EEH PE state and is managed power the PowerNV PCI
+> backend rather than the EEH core.
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ---
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index f684d3a..941902b 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -3061,6 +3061,33 @@ static int pnv_pci_diag_data_set(void *data, u64 val)
+>  DEFINE_SIMPLE_ATTRIBUTE(pnv_pci_diag_data_fops, NULL,
+>  			pnv_pci_diag_data_set, "%llu\n");
+>  
+> +static int pnv_pci_ioda_pe_dump(void *data, u64 val)
+> +{
+> +	struct pnv_phb *phb = data;
+> +	int pe_num;
+> +
+> +	for (pe_num = 0; pe_num < phb->ioda.total_pe_num; pe_num++) {
+> +		struct pnv_ioda_pe *pe = &phb->ioda.pe_array[pe_num];
+> +
+> +		if (!test_bit(pe_num, phb->ioda.pe_alloc))
+> +			continue;
+> +
+> +		pe_warn(pe, "rid: %04x dev count: %2d flags: %s%s%s%s%s%s\n",
+> +			pe->rid, pe->device_count,
+> +			(pe->flags & PNV_IODA_PE_DEV) ? "dev " : "",
+> +			(pe->flags & PNV_IODA_PE_BUS) ? "bus " : "",
+> +			(pe->flags & PNV_IODA_PE_BUS_ALL) ? "all " : "",
+> +			(pe->flags & PNV_IODA_PE_MASTER) ? "master " : "",
+> +			(pe->flags & PNV_IODA_PE_SLAVE) ? "slave " : "",
+> +			(pe->flags & PNV_IODA_PE_VF) ? "vf " : "");
+
+
+Printing raw flags value would hurt imho, just in case (we add some
+later and forget about debugfs? memory corruption?). Or not :)
 
 
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 
 
-> ---
->  arch/powerpc/platforms/powernv/pci-ioda.c | 11 ++---------
->  1 file changed, 2 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 2f650e1..b24339b 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -3044,19 +3044,12 @@ static void pnv_ioda_setup_pe_seg(struct pnv_ioda_pe *pe)
->  #ifdef CONFIG_DEBUG_FS
->  static int pnv_pci_diag_data_set(void *data, u64 val)
->  {
-> -	struct pci_controller *hose;
-> -	struct pnv_phb *phb;
-> +	struct pnv_phb *phb = data;
->  	s64 ret;
+
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +DEFINE_SIMPLE_ATTRIBUTE(pnv_pci_ioda_pe_dump_fops, NULL,
+> +			pnv_pci_ioda_pe_dump, "%llu\n");
+> +
+>  #endif /* CONFIG_DEBUG_FS */
 >  
->  	if (val != 1ULL)
->  		return -EINVAL;
+>  static void pnv_pci_ioda_create_dbgfs(void)
+> @@ -3086,6 +3113,8 @@ static void pnv_pci_ioda_create_dbgfs(void)
 >  
-> -	hose = (struct pci_controller *)data;
-> -	if (!hose || !hose->private_data)
-> -		return -ENODEV;
-> -
-> -	phb = hose->private_data;
-> -
->  	/* Retrieve the diag data from firmware */
->  	ret = opal_pci_get_phb_diag_data2(phb->opal_id, phb->diag_data,
->  					  phb->diag_data_size);
-> @@ -3094,7 +3087,7 @@ static void pnv_pci_ioda_create_dbgfs(void)
->  			continue;
->  		}
->  
-> -		debugfs_create_file("dump_diag_regs", 0200, phb->dbgfs, hose,
-> +		debugfs_create_file("dump_diag_regs", 0200, phb->dbgfs, phb,
+>  		debugfs_create_file("dump_diag_regs", 0200, phb->dbgfs, phb,
 >  				    &pnv_pci_diag_data_fops);
+> +		debugfs_create_file("dump_ioda_pe_state", 0200, phb->dbgfs, phb,
+> +				    &pnv_pci_ioda_pe_dump_fops);
 >  	}
 >  #endif /* CONFIG_DEBUG_FS */
+>  }
 > 
 
 -- 
