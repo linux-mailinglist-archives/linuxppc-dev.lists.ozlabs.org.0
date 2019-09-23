@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D779BB903
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 18:05:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69527BB92D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2019 18:11:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cTgc47rWzDqLR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 02:05:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cTnx43VhzDqDK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 02:11:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=87.98.184.159; helo=4.mo6.mail-out.ovh.net;
+ (client-ip=46.105.56.136; helo=1.mo6.mail-out.ovh.net;
  envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 408 seconds by postgrey-1.36 at bilbo;
- Tue, 24 Sep 2019 02:03:43 AEST
-Received: from 4.mo6.mail-out.ovh.net (4.mo6.mail-out.ovh.net [87.98.184.159])
+Received: from 1.mo6.mail-out.ovh.net (1.mo6.mail-out.ovh.net [46.105.56.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cTdW0Lx3zDqMC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 02:03:41 +1000 (AEST)
-Received: from player716.ha.ovh.net (unknown [10.108.35.124])
- by mo6.mail-out.ovh.net (Postfix) with ESMTP id 8D5421E27A0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 17:56:48 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cTlD3MPtzDqBv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 02:08:36 +1000 (AEST)
+Received: from player158.ha.ovh.net (unknown [10.109.143.238])
+ by mo6.mail-out.ovh.net (Postfix) with ESMTP id 1BAD91E26F5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 17:52:32 +0200 (CEST)
 Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
  (Authenticated sender: clg@kaod.org)
- by player716.ha.ovh.net (Postfix) with ESMTPSA id 229F0A12E2CB;
- Mon, 23 Sep 2019 15:56:38 +0000 (UTC)
-Subject: Re: [PATCH 6/6] KVM: PPC: Book3S HV: XIVE: Allow userspace to set the
- # of VPs
+ by player158.ha.ovh.net (Postfix) with ESMTPSA id 5974BA07B859;
+ Mon, 23 Sep 2019 15:52:22 +0000 (UTC)
+Subject: Re: [PATCH 3/6] KVM: PPC: Book3S HV: XIVE: Ensure VP isn't already in
+ use
 To: Greg Kurz <groug@kaod.org>, Paul Mackerras <paulus@ozlabs.org>
 References: <156925341155.974393.11681611197111945710.stgit@bahia.lan>
- <156925344605.974393.13942051061218979129.stgit@bahia.lan>
+ <156925342885.974393.4930571278578115883.stgit@bahia.lan>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <f02b7fa0-3267-90e3-3096-c3460c49af58@kaod.org>
-Date: Mon, 23 Sep 2019 17:56:37 +0200
+Message-ID: <2f772bd3-8ebe-214d-1d89-31eeb59df456@kaod.org>
+Date: Mon, 23 Sep 2019 17:52:21 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <156925344605.974393.13942051061218979129.stgit@bahia.lan>
+In-Reply-To: <156925342885.974393.4930571278578115883.stgit@bahia.lan>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 16951548998588271549
+X-Ovh-Tracer-Id: 16879491406414777277
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrvdekgdelhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrvdekgdelgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,154 +64,142 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23/09/2019 17:44, Greg Kurz wrote:
-> Add a new attribute to both legacy and native XIVE KVM devices so that
-> userspace can require less interrupt servers than the current default
-> (KVM_MAX_VCPUS, 2048). This will allow to allocate less VPs in OPAL,
-> and likely increase the number of VMs that can run with an in-kernel
-> XIVE implementation.
+On 23/09/2019 17:43, Greg Kurz wrote:
+> We currently prevent userspace to connect a new vCPU if we already have
+> one with the same vCPU id. This is good but unfortunately not enough,
+> because VP ids derive from the packed vCPU ids, and kvmppc_pack_vcpu_id()
+> can return colliding values. For examples, 348 stays unchanged since it
+> is < KVM_MAX_VCPUS, but it is also the packed value of 2392 when the
+> guest's core stride is 8. Nothing currently prevents userspace to connect
+> vCPUs with forged ids, that end up being associated to the same VP. This
+> confuses the irq layer and likely crashes the kernel:
 > 
-> Since the legacy XIVE KVM device is exposed to userspace through the
-> XICS KVM API, a new attribute group is added to it for this purpose.
-> While here, fix the syntax of the existing KVM_DEV_XICS_GRP_SOURCES
-> in the XICS documentation.
+> [96631.670454] genirq: Flags mismatch irq 4161. 00010000 (kvm-1-2392) vs. 00010000 (kvm-1-348)
+> 
+> Check the VP id instead of the vCPU id when a new vCPU is connected.
+> The allocation of the XIVE CPU structure in kvmppc_xive_connect_vcpu()
+> is moved after the check to avoid the need for rollback.
 > 
 > Signed-off-by: Greg Kurz <groug@kaod.org>
+
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
 C.
 
+
 > ---
->  Documentation/virt/kvm/devices/xics.txt |   14 ++++++++++++--
->  Documentation/virt/kvm/devices/xive.txt |    8 ++++++++
->  arch/powerpc/include/uapi/asm/kvm.h     |    3 +++
->  arch/powerpc/kvm/book3s_xive.c          |   10 ++++++++++
->  arch/powerpc/kvm/book3s_xive_native.c   |    3 +++
->  5 files changed, 36 insertions(+), 2 deletions(-)
+>  arch/powerpc/kvm/book3s_xive.c        |   24 ++++++++++++++++--------
+>  arch/powerpc/kvm/book3s_xive.h        |   12 ++++++++++++
+>  arch/powerpc/kvm/book3s_xive_native.c |    6 ++++--
+>  3 files changed, 32 insertions(+), 10 deletions(-)
 > 
-> diff --git a/Documentation/virt/kvm/devices/xics.txt b/Documentation/virt/kvm/devices/xics.txt
-> index 42864935ac5d..1cf9621f8341 100644
-> --- a/Documentation/virt/kvm/devices/xics.txt
-> +++ b/Documentation/virt/kvm/devices/xics.txt
-> @@ -3,9 +3,19 @@ XICS interrupt controller
->  Device type supported: KVM_DEV_TYPE_XICS
->  
->  Groups:
-> -  KVM_DEV_XICS_SOURCES
-> +  1. KVM_DEV_XICS_GRP_SOURCES
->    Attributes: One per interrupt source, indexed by the source number.
->  
-> +  2. KVM_DEV_XICS_GRP_CTRL
-> +  Attributes:
-> +    2.1 KVM_DEV_XICS_NR_SERVERS (write only)
-> +  The kvm_device_attr.addr points to a __u32 value which is the number of
-> +  interrupt server numbers (ie, highest possible vcpu id plus one).
-> +  Errors:
-> +    -EINVAL: Value greater than KVM_MAX_VCPUS.
-> +    -EFAULT: Invalid user pointer for attr->addr.
-> +    -EBUSY:  A vcpu is already connected to the device.
-> +
->  This device emulates the XICS (eXternal Interrupt Controller
->  Specification) defined in PAPR.  The XICS has a set of interrupt
->  sources, each identified by a 20-bit source number, and a set of
-> @@ -38,7 +48,7 @@ least-significant end of the word:
->  
->  Each source has 64 bits of state that can be read and written using
->  the KVM_GET_DEVICE_ATTR and KVM_SET_DEVICE_ATTR ioctls, specifying the
-> -KVM_DEV_XICS_SOURCES attribute group, with the attribute number being
-> +KVM_DEV_XICS_GRP_SOURCES attribute group, with the attribute number being
->  the interrupt source number.  The 64 bit state word has the following
->  bitfields, starting from the least-significant end of the word:
->  
-> diff --git a/Documentation/virt/kvm/devices/xive.txt b/Documentation/virt/kvm/devices/xive.txt
-> index 9a24a4525253..fd418b907d0e 100644
-> --- a/Documentation/virt/kvm/devices/xive.txt
-> +++ b/Documentation/virt/kvm/devices/xive.txt
-> @@ -78,6 +78,14 @@ the legacy interrupt mode, referred as XICS (POWER7/8).
->      migrating the VM.
->      Errors: none
->  
-> +    1.3 KVM_DEV_XIVE_NR_SERVERS (write only)
-> +    The kvm_device_attr.addr points to a __u32 value which is the number of
-> +    interrupt server numbers (ie, highest possible vcpu id plus one).
-> +    Errors:
-> +      -EINVAL: Value greater than KVM_KVM_VCPUS.
-> +      -EFAULT: Invalid user pointer for attr->addr.
-> +      -EBUSY:  A vCPU is already connected to the device.
-> +
->    2. KVM_DEV_XIVE_GRP_SOURCE (write only)
->    Initializes a new source in the XIVE device and mask it.
->    Attributes:
-> diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
-> index b0f72dea8b11..264e266a85bf 100644
-> --- a/arch/powerpc/include/uapi/asm/kvm.h
-> +++ b/arch/powerpc/include/uapi/asm/kvm.h
-> @@ -667,6 +667,8 @@ struct kvm_ppc_cpu_char {
->  
->  /* PPC64 eXternal Interrupt Controller Specification */
->  #define KVM_DEV_XICS_GRP_SOURCES	1	/* 64-bit source attributes */
-> +#define KVM_DEV_XICS_GRP_CTRL		2
-> +#define   KVM_DEV_XICS_NR_SERVERS	1
->  
->  /* Layout of 64-bit source attribute values */
->  #define  KVM_XICS_DESTINATION_SHIFT	0
-> @@ -683,6 +685,7 @@ struct kvm_ppc_cpu_char {
->  #define KVM_DEV_XIVE_GRP_CTRL		1
->  #define   KVM_DEV_XIVE_RESET		1
->  #define   KVM_DEV_XIVE_EQ_SYNC		2
-> +#define   KVM_DEV_XIVE_NR_SERVERS	3
->  #define KVM_DEV_XIVE_GRP_SOURCE		2	/* 64-bit source identifier */
->  #define KVM_DEV_XIVE_GRP_SOURCE_CONFIG	3	/* 64-bit source identifier */
->  #define KVM_DEV_XIVE_GRP_EQ_CONFIG	4	/* 64-bit EQ identifier */
 > diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-> index 4a333dcfddd8..c1901583e6c0 100644
+> index 2ef43d037a4f..01bff7befc9f 100644
 > --- a/arch/powerpc/kvm/book3s_xive.c
 > +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -1905,6 +1905,11 @@ static int xive_set_attr(struct kvm_device *dev, struct kvm_device_attr *attr)
->  	switch (attr->group) {
->  	case KVM_DEV_XICS_GRP_SOURCES:
->  		return xive_set_source(xive, attr->attr, attr->addr);
-> +	case KVM_DEV_XICS_GRP_CTRL:
-> +		switch (attr->attr) {
-> +		case KVM_DEV_XICS_NR_SERVERS:
-> +			return kvmppc_xive_set_nr_servers(xive, attr->addr);
-> +		}
+> @@ -1217,6 +1217,7 @@ int kvmppc_xive_connect_vcpu(struct kvm_device *dev,
+>  	struct kvmppc_xive *xive = dev->private;
+>  	struct kvmppc_xive_vcpu *xc;
+>  	int i, r = -EBUSY;
+> +	u32 vp_id;
+>  
+>  	pr_devel("connect_vcpu(cpu=%d)\n", cpu);
+>  
+> @@ -1228,25 +1229,32 @@ int kvmppc_xive_connect_vcpu(struct kvm_device *dev,
+>  		return -EPERM;
+>  	if (vcpu->arch.irq_type != KVMPPC_IRQ_DEFAULT)
+>  		return -EBUSY;
+> -	if (kvmppc_xive_find_server(vcpu->kvm, cpu)) {
+> -		pr_devel("Duplicate !\n");
+> -		return -EEXIST;
+> -	}
+>  	if (cpu >= (KVM_MAX_VCPUS * vcpu->kvm->arch.emul_smt_mode)) {
+>  		pr_devel("Out of bounds !\n");
+>  		return -EINVAL;
 >  	}
->  	return -ENXIO;
+> -	xc = kzalloc(sizeof(*xc), GFP_KERNEL);
+> -	if (!xc)
+> -		return -ENOMEM;
+>  
+>  	/* We need to synchronize with queue provisioning */
+>  	mutex_lock(&xive->lock);
+> +
+> +	vp_id = kvmppc_xive_vp(xive, cpu);
+> +	if (kvmppc_xive_vp_in_use(xive->kvm, vp_id)) {
+> +		pr_devel("Duplicate !\n");
+> +		r = -EEXIST;
+> +		goto bail;
+> +	}
+> +
+> +	xc = kzalloc(sizeof(*xc), GFP_KERNEL);
+> +	if (!xc) {
+> +		r = -ENOMEM;
+> +		goto bail;
+> +	}
+> +
+>  	vcpu->arch.xive_vcpu = xc;
+>  	xc->xive = xive;
+>  	xc->vcpu = vcpu;
+>  	xc->server_num = cpu;
+> -	xc->vp_id = kvmppc_xive_vp(xive, cpu);
+> +	xc->vp_id = vp_id;
+>  	xc->mfrr = 0xff;
+>  	xc->valid = true;
+>  
+> diff --git a/arch/powerpc/kvm/book3s_xive.h b/arch/powerpc/kvm/book3s_xive.h
+> index 955b820ffd6d..fe3ed50e0818 100644
+> --- a/arch/powerpc/kvm/book3s_xive.h
+> +++ b/arch/powerpc/kvm/book3s_xive.h
+> @@ -220,6 +220,18 @@ static inline u32 kvmppc_xive_vp(struct kvmppc_xive *xive, u32 server)
+>  	return xive->vp_base + kvmppc_pack_vcpu_id(xive->kvm, server);
 >  }
-> @@ -1930,6 +1935,11 @@ static int xive_has_attr(struct kvm_device *dev, struct kvm_device_attr *attr)
->  		    attr->attr < KVMPPC_XICS_NR_IRQS)
->  			return 0;
->  		break;
-> +	case KVM_DEV_XICS_GRP_CTRL:
-> +		switch (attr->attr) {
-> +		case KVM_DEV_XICS_NR_SERVERS:
-> +			return 0;
-> +		}
->  	}
->  	return -ENXIO;
->  }
+>  
+> +static inline bool kvmppc_xive_vp_in_use(struct kvm *kvm, u32 vp_id)
+> +{
+> +	struct kvm_vcpu *vcpu = NULL;
+> +	int i;
+> +
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> +		if (vcpu->arch.xive_vcpu && vp_id == vcpu->arch.xive_vcpu->vp_id)
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +
+>  /*
+>   * Mapping between guest priorities and host priorities
+>   * is as follow.
 > diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-> index 5e18364d52a9..8e954c5d5efb 100644
+> index 84a354b90f60..53a22771908c 100644
 > --- a/arch/powerpc/kvm/book3s_xive_native.c
 > +++ b/arch/powerpc/kvm/book3s_xive_native.c
-> @@ -921,6 +921,8 @@ static int kvmppc_xive_native_set_attr(struct kvm_device *dev,
->  			return kvmppc_xive_reset(xive);
->  		case KVM_DEV_XIVE_EQ_SYNC:
->  			return kvmppc_xive_native_eq_sync(xive);
-> +		case KVM_DEV_XIVE_NR_SERVERS:
-> +			return kvmppc_xive_set_nr_servers(xive, attr->addr);
->  		}
->  		break;
->  	case KVM_DEV_XIVE_GRP_SOURCE:
-> @@ -960,6 +962,7 @@ static int kvmppc_xive_native_has_attr(struct kvm_device *dev,
->  		switch (attr->attr) {
->  		case KVM_DEV_XIVE_RESET:
->  		case KVM_DEV_XIVE_EQ_SYNC:
-> +		case KVM_DEV_XIVE_NR_SERVERS:
->  			return 0;
->  		}
->  		break;
+> @@ -106,6 +106,7 @@ int kvmppc_xive_native_connect_vcpu(struct kvm_device *dev,
+>  	struct kvmppc_xive *xive = dev->private;
+>  	struct kvmppc_xive_vcpu *xc = NULL;
+>  	int rc;
+> +	u32 vp_id;
+>  
+>  	pr_devel("native_connect_vcpu(server=%d)\n", server_num);
+>  
+> @@ -124,7 +125,8 @@ int kvmppc_xive_native_connect_vcpu(struct kvm_device *dev,
+>  
+>  	mutex_lock(&xive->lock);
+>  
+> -	if (kvmppc_xive_find_server(vcpu->kvm, server_num)) {
+> +	vp_id = kvmppc_xive_vp(xive, server_num);
+> +	if (kvmppc_xive_vp_in_use(xive->kvm, vp_id)) {
+>  		pr_devel("Duplicate !\n");
+>  		rc = -EEXIST;
+>  		goto bail;
+> @@ -141,7 +143,7 @@ int kvmppc_xive_native_connect_vcpu(struct kvm_device *dev,
+>  	xc->vcpu = vcpu;
+>  	xc->server_num = server_num;
+>  
+> -	xc->vp_id = kvmppc_xive_vp(xive, server_num);
+> +	xc->vp_id = vp_id;
+>  	xc->valid = true;
+>  	vcpu->arch.irq_type = KVMPPC_IRQ_XIVE;
+>  
 > 
 
