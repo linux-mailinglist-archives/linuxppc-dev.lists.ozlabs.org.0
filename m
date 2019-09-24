@@ -1,85 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6AFBD49E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 23:50:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA10EBD4AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 23:53:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dFHS5mszzDqg5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 07:50:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dFM36m41zDqb9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 07:53:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="PiWxYZbA"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dDkz1JRgzDqP4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 07:26:02 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8OLMPZ0010840; Tue, 24 Sep 2019 17:25:43 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v7rb861ec-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 17:25:42 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8OLMXFY011580;
- Tue, 24 Sep 2019 17:25:42 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v7rb861dv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 17:25:42 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8OLPY5n008769;
- Tue, 24 Sep 2019 21:25:41 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04dal.us.ibm.com with ESMTP id 2v5bg7fyet-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 21:25:41 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8OLPd6U58130802
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Sep 2019 21:25:39 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73E20C605B;
- Tue, 24 Sep 2019 21:25:39 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2958C6055;
- Tue, 24 Sep 2019 21:25:34 +0000 (GMT)
-Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.184])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 24 Sep 2019 21:25:34 +0000 (GMT)
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v3 11/11] powerpc/mm/book3s64/pgtable: Uses counting method to
- skip serializing
-Date: Tue, 24 Sep 2019 18:24:28 -0300
-Message-Id: <20190924212427.7734-12-leonardo@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190924212427.7734-1-leonardo@linux.ibm.com>
-References: <20190924212427.7734-1-leonardo@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46dF8R1kmyzDqVb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 07:44:38 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id 4so1977331pgm.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 14:44:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=8TaXClZL44x6R6m23BGIIOYUw8sFdA7SimmvF1Bs6II=;
+ b=PiWxYZbA9Phtp8IDK7idRhXLPFpVl8Nivv0bnnYLe3e3GtA0prmh/cyb4fHtq4Gim9
+ aqlwpu5kw/gwGvZgr1PevcKG1YZRm4NRav9JQY8t4jD9ouA1/i6jCrKJGPq1MnRdm8Za
+ zcVcS52Iw7UOovvfOTsRw0smUUa/8C1pIbP5pRVkoBa2JcIuY3/NaibW6X98J/DrVnPP
+ u4jagDKOIj26zhiMKPopz6CkiPG+busIukqq/hxVnslcJhWs4Uqbf5clU765/Ug97tzP
+ vOBIcRr6706g6selmfD9KRihs4X4HljViLD/zguw80jjUXENnR6hn1v0FEDtWG+aN/C7
+ T+Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=8TaXClZL44x6R6m23BGIIOYUw8sFdA7SimmvF1Bs6II=;
+ b=pgrJ3oysd1gTdpKlY8742rFW2GU9WkMJwQEVpoWothCptVdkIY5LX9mE1KBIl7H2hR
+ OscEesY8JAjhN2EOL98ylU54hAhzfK4rwESEz/s4YmyGqZ4w1M3jeAvC/yOhpWyAbB8U
+ cEJHbV4LB29nzce+BMq9UYTp8P0u/Mr+TAdaE39uvC0U0LGnsu5UT7EVGN+EveopI0Tk
+ cP290Ye8c/ngqjRaoHx5kXe7syoIkCGtHobwSB9y9WWn449ct2/asOI3CIuHw+G/z3lG
+ d8GE3skOihaI3Ey+9gNsN4q6vKjOwpqP8n8D+OCVDVePeR8q1jdYd7/E3aGBw4X9ZdpH
+ zA1w==
+X-Gm-Message-State: APjAAAV6tjPnB05CBa/5i1caSbwMH5ZfLBQtR0MplFwsghiw+ZEBhF93
+ icQ8ea9GisWEPx50wGm+wyy7uFDhZas=
+X-Google-Smtp-Source: APXvYqx85giUVZhiQHsCv//r2YbURAPCdsrA+9rcufqztCRKD6LsbMJVknHc1eyohUWvf/YPUk/5ZA==
+X-Received: by 2002:a65:64d5:: with SMTP id t21mr5237437pgv.43.1569361472982; 
+ Tue, 24 Sep 2019 14:44:32 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id b22sm4651877pfo.85.2019.09.24.14.44.31
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 24 Sep 2019 14:44:32 -0700 (PDT)
+Date: Tue, 24 Sep 2019 14:43:44 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH V4 4/4] ASoC: fsl_asrc: Fix error with S24_3LE format
+ bitstream in i.MX8
+Message-ID: <20190924214343.GA964@Asurada-Nvidia.nvidia.com>
+References: <cover.1569296075.git.shengjiu.wang@nxp.com>
+ <b93ce3dced55bbad8e0b4b7e700cf394b1ae1551.1569296075.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-24_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=686 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909240173
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b93ce3dced55bbad8e0b4b7e700cf394b1ae1551.1569296075.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,42 +82,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Keith Busch <keith.busch@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>, YueHaibing <yuehaibing@huawei.com>,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Paul Mackerras <paulus@samba.org>, John Hubbard <jhubbard@nvidia.com>,
- Leonardo Bras <leonardo@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
+ Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com,
+ lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org,
+ festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Skips slow part of serialize_against_pte_lookup if there is no running
-lockless pagetable walk.
+On Tue, Sep 24, 2019 at 06:52:35PM +0800, Shengjiu Wang wrote:
+> There is error "aplay: pcm_write:2023: write error: Input/output error"
+> on i.MX8QM/i.MX8QXP platform for S24_3LE format.
+> 
+> In i.MX8QM/i.MX8QXP, the DMA is EDMA, which don't support 24bit
+> sample, but we didn't add any constraint, that cause issues.
+> 
+> So we need to query the caps of dma, then update the hw parameters
+> according to the caps.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  sound/soc/fsl/fsl_asrc.c     |  4 +--
+>  sound/soc/fsl/fsl_asrc.h     |  3 ++
+>  sound/soc/fsl/fsl_asrc_dma.c | 59 +++++++++++++++++++++++++++++++-----
+>  3 files changed, 56 insertions(+), 10 deletions(-)
+> 
+> @@ -270,12 +268,17 @@ static int fsl_asrc_dma_hw_free(struct snd_pcm_substream *substream)
+>  
+>  static int fsl_asrc_dma_startup(struct snd_pcm_substream *substream)
+>  {
+> +	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
+>  	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+>  	struct snd_pcm_runtime *runtime = substream->runtime;
+>  	struct snd_soc_component *component = snd_soc_rtdcom_lookup(rtd, DRV_NAME);
+> +	struct snd_dmaengine_dai_dma_data *dma_data;
+>  	struct device *dev = component->dev;
+>  	struct fsl_asrc *asrc_priv = dev_get_drvdata(dev);
+>  	struct fsl_asrc_pair *pair;
+> +	struct dma_chan *tmp_chan = NULL;
+> +	u8 dir = tx ? OUT : IN;
+> +	int ret = 0;
+>  
+>  	pair = kzalloc(sizeof(struct fsl_asrc_pair), GFP_KERNEL);
 
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
----
- arch/powerpc/mm/book3s64/pgtable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Sorry, I didn't catch it previously. We would need to release
+this memory also for all error-out paths, as the code doesn't
+have any error-out routine, prior to applying this change.
 
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 0b86884a8097..e2aa6572f03f 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -95,7 +95,8 @@ static void do_nothing(void *unused)
- void serialize_against_pte_lookup(struct mm_struct *mm)
- {
- 	smp_mb();
--	smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
-+	if (running_lockless_pgtbl_walk(mm))
-+		smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
- }
- 
- /*
--- 
-2.20.1
+>  	if (!pair)
+> @@ -285,11 +288,51 @@ static int fsl_asrc_dma_startup(struct snd_pcm_substream *substream)
 
+> +	/* Request a dummy pair, which will be released later.
+> +	 * Request pair function needs channel num as input, for this
+> +	 * dummy pair, we just request "1" channel temporary.
+> +	 */
+
+"temporary" => "temporarily"
+
+> +	ret = fsl_asrc_request_pair(1, pair);
+> +	if (ret < 0) {
+> +		dev_err(dev, "failed to request asrc pair\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Request a dummy dma channel, which will be release later. */
+
+"release" => "released"
