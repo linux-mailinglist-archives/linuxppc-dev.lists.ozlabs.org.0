@@ -2,49 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762ADBC076
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 04:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081D1BC08F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 05:00:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cm4v6Bh5zDq83
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 12:54:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cmCk1zNNzDq6M
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 13:00:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=xiaowei.bao@nxp.com; receiver=<UNKNOWN>)
+ (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=biwen.li@nxp.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nxp.com
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46clX30TCWzDqP7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 12:29:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cm6f2183zDqPw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 12:56:25 +1000 (AEST)
 Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3DB78200950;
- Tue, 24 Sep 2019 04:29:51 +0200 (CEST)
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A7A28200386;
+ Tue, 24 Sep 2019 04:56:21 +0200 (CEST)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
  [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 76F71200851;
- Tue, 24 Sep 2019 04:29:43 +0200 (CEST)
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0D92320021A;
+ Tue, 24 Sep 2019 04:56:17 +0200 (CEST)
 Received: from titan.ap.freescale.net (TITAN.ap.freescale.net [10.192.208.233])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id C4CAA40327;
- Tue, 24 Sep 2019 10:29:30 +0800 (SGT)
-From: Xiaowei Bao <xiaowei.bao@nxp.com>
-To: robh+dt@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
- leoyang.li@nxp.com, kishon@ti.com, lorenzo.pieralisi@arm.com,
- minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com,
- jingoohan1@gmail.com, gustavo.pimentel@synopsys.com, andrew.murray@arm.com,
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 11/11] misc: pci_endpoint_test: Add LS1088a in
- pci_device_id table
-Date: Tue, 24 Sep 2019 10:18:49 +0800
-Message-Id: <20190924021849.3185-12-xiaowei.bao@nxp.com>
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 7BA284029F;
+ Tue, 24 Sep 2019 10:56:11 +0800 (SGT)
+From: Biwen Li <biwen.li@nxp.com>
+To: leoyang.li@nxp.com, shawnguo@kernel.org, robh+dt@kernel.org,
+ mark.rutland@arm.com, ran.wang_1@nxp.com
+Subject: [v3,1/3] soc: fsl: handle RCPM errata A-008646 on SoC LS1021A
+Date: Tue, 24 Sep 2019 10:45:46 +0800
+Message-Id: <20190924024548.4356-1-biwen.li@nxp.com>
 X-Mailer: git-send-email 2.9.5
-In-Reply-To: <20190924021849.3185-1-xiaowei.bao@nxp.com>
-References: <20190924021849.3185-1-xiaowei.bao@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,46 +49,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Xiaowei Bao <xiaowei.bao@nxp.com>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Biwen Li <biwen.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add LS1088a in pci_device_id table so that pci-epf-test can be used
-for testing PCIe EP in LS1088a.
+Description:
+	- Reading configuration register RCPM_IPPDEXPCR1
+	  always return zero
 
-Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+Workaround:
+	- Save register RCPM_IPPDEXPCR1's value to
+	  register SCFG_SPARECR8.(uboot's psci also
+	  need reading value from the register SCFG_SPARECR8
+	  to set register RCPM_IPPDEXPCR1)
+
+Impact:
+	- FlexTimer module will cannot wakeup system in
+	  deep sleep on SoC LS1021A
+
+Signed-off-by: Biwen Li <biwen.li@nxp.com>
 ---
-v2:
- - No change.
-v3:
- - No change.
-v4:
- - Use a maco to define the LS1088a device ID.
- 
- drivers/misc/pci_endpoint_test.c | 2 ++
- 1 file changed, 2 insertions(+)
+Change in v3:
+	- update commit message
+	- rename property name
+	  fsl,rcpm-scfg -> fsl,ippdexpcr-alt-addr
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 6e208a0..8c222a6 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -65,6 +65,7 @@
- #define PCI_ENDPOINT_TEST_IRQ_NUMBER		0x28
+Change in v2:
+	- fix stype problems
+
+ drivers/soc/fsl/rcpm.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+index 82c0ad5e663e..7f42b17d3f29 100644
+--- a/drivers/soc/fsl/rcpm.c
++++ b/drivers/soc/fsl/rcpm.c
+@@ -13,6 +13,8 @@
+ #include <linux/slab.h>
+ #include <linux/suspend.h>
+ #include <linux/kernel.h>
++#include <linux/regmap.h>
++#include <linux/mfd/syscon.h>
  
- #define PCI_DEVICE_ID_TI_AM654			0xb00c
-+#define PCI_DEVICE_ID_LS1088A			0x80c0
+ #define RCPM_WAKEUP_CELL_MAX_SIZE	7
  
- #define is_am654_pci_dev(pdev)		\
- 		((pdev)->device == PCI_DEVICE_ID_TI_AM654)
-@@ -793,6 +794,7 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_DRA74x) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_DRA72x) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x81c0) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, PCI_DEVICE_ID_LS1088A) },
- 	{ PCI_DEVICE_DATA(SYNOPSYS, EDDA, NULL) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654),
- 	  .driver_data = (kernel_ulong_t)&am654_data
+@@ -29,6 +31,9 @@ static int rcpm_pm_prepare(struct device *dev)
+ 	struct rcpm		*rcpm;
+ 	u32 value[RCPM_WAKEUP_CELL_MAX_SIZE + 1], tmp;
+ 	int i, ret, idx;
++	struct regmap * scfg_addr_regmap = NULL;
++	u32 reg_offset[RCPM_WAKEUP_CELL_MAX_SIZE + 1];
++	u32 reg_value = 0;
+ 
+ 	rcpm = dev_get_drvdata(dev);
+ 	if (!rcpm)
+@@ -63,6 +68,22 @@ static int rcpm_pm_prepare(struct device *dev)
+ 					tmp |= value[i + 1];
+ 					iowrite32be(tmp, rcpm->ippdexpcr_base + i * 4);
+ 				}
++				/* Workaround of errata A-008646 on SoC LS1021A: There is a bug of
++				 * register ippdexpcr1. Reading configuration register RCPM_IPPDEXPCR1
++				 * always return zero. So save ippdexpcr1's value to register SCFG_SPARECR8.
++				 * And the value of ippdexpcr1 will be read from SCFG_SPARECR8.
++				 */
++				scfg_addr_regmap = syscon_regmap_lookup_by_phandle(np, "fsl,ippdexpcr-alt-addr");
++				if (scfg_addr_regmap) {
++					if (of_property_read_u32_array(dev->of_node,
++					    "fsl,ippdexpcr-alt-addr", reg_offset, rcpm->wakeup_cells + 1)) {
++						scfg_addr_regmap = NULL;
++						continue;
++					}
++					regmap_read(scfg_addr_regmap, reg_offset[i + 1], &reg_value);
++					/* Write value to register SCFG_SPARECR8 */
++					regmap_write(scfg_addr_regmap, reg_offset[i + 1], tmp | reg_value);
++				}
+ 			}
+ 		}
+ 	} while (ws = wakeup_source_get_next(ws));
 -- 
-2.9.5
+2.17.1
 
