@@ -1,152 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A78DBC10E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 06:26:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31C2BC110
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 06:27:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cp6D5StpzDqSP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 14:26:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cp8F2M1HzDqRK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 14:27:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="HxyEX9Yu"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cp405KftzDqQn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 14:24:14 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id x127so424244pfb.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 21:24:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=miYXv7qHHqlgJ4p/O0O5B54zhS0Fmj+q5TelGKYY+MQ=;
- b=HxyEX9YuoHHL/ZmvohKqv7UyMt6AAYUy6QBvOTBRkVC5nsqliWyrYDbBSkMNV2uhTx
- 8R/WaLz0Yifx/zvUfQtXl6urv7sZ57liiyH64xS8GvEnxNqLTqoqQt5lj3JRvwWYzlwD
- ipE8HB9wZWmyL9G8bh2UmR1ktThQP4uWRUyGnNPGkoWZuz3YERBwSLYTkR4z5h1A+Mqi
- fzmauIy5DpDhxK+xW878kzhc8d0yqasd+h3RJViqbk+kuUP/f++KCC2gdEaD1+ZchzOl
- raL1JI54HSJHiJOIKJXyySpeJoDB54/El1wln+foZF0xd6mO+SSel50X8lrJIPtqnpTF
- OBLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=miYXv7qHHqlgJ4p/O0O5B54zhS0Fmj+q5TelGKYY+MQ=;
- b=Eb7KhvOw+G/WI+kltd6yTCwXWsltnnqVqnnahxVdxihkfrAokJbuzKM2T5EDtMWdDp
- Ft9lwByRsgSIB1JQ/bAEv1Ocf1UKqDTJqFw22CM6Z1EXk5m/epm/bb+6BX9dwuXhfhX7
- OXUy4plho0SRUfTl1pjxl6N3Lq+pO8T7nZpb+MQfW787u4BTtMhvl/R6HzkSrBJBDAZg
- j3do7K3ahvYENHBodr855WRIZKYZx5+UX8m/LPy3Orio+OvXksdYMWS13AqwENUcolsP
- cqmhal2X8SYeyB1PsUgoIK3Fg9xgFHcKsHOZIAQ1EeX/YB3H0rdJnWDZ4AQBIeQaZwxL
- m8LQ==
-X-Gm-Message-State: APjAAAWvW6ux+LyhcnITL+nerbFGjj4Xcz345anZ19/MhBmG3WXjUPWU
- KvcXf0IbNF0kZsdv2g0UgYA7Ae1F9XE=
-X-Google-Smtp-Source: APXvYqygAM1rk5C3SbY+2vtZVNkMTYqP0Af3bdgGVCjKKrnK2ismwSwahlScZhhWXF1Nmr5GJ3CXEA==
-X-Received: by 2002:a63:515a:: with SMTP id r26mr1097117pgl.121.1569299051556; 
- Mon, 23 Sep 2019 21:24:11 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id ep10sm780020pjb.2.2019.09.23.21.24.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Sep 2019 21:24:10 -0700 (PDT)
-Subject: Re: [PATCH 00/11] opencapi: enable card reset and link retraining
-To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
-References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <7e29a072-f212-5d09-05b5-dbc1ee0916f0@ozlabs.ru>
-Date: Tue, 24 Sep 2019 14:24:05 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cp530JCczDqSL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 14:25:10 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8O4MEH0128436; Tue, 24 Sep 2019 00:25:04 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v782f82ea-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Sep 2019 00:25:04 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8O4Opkq006325;
+ Tue, 24 Sep 2019 04:25:03 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04wdc.us.ibm.com with ESMTP id 2v5bg71cwc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Sep 2019 04:25:03 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8O4P2Kd56295892
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Sep 2019 04:25:02 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 303EE6E050;
+ Tue, 24 Sep 2019 04:25:02 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6C4E86E04C;
+ Tue, 24 Sep 2019 04:25:00 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.124.35.207])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Sep 2019 04:25:00 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: [PATCH] powerpc/book3s64: Export has_transparent_hugepage() related
+ functions.
+Date: Tue, 24 Sep 2019 09:54:40 +0530
+Message-Id: <20190924042440.27946-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20190909154600.19917-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-24_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909240043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -158,65 +81,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: groug@kaod.org, alastair@au1.ibm.com
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Fred,
+In later patch, we want to use hash_transparent_hugepage() in a kernel module.
+Export two related functions.
 
-what is this made against of? It does not apply on the master. Thanks,
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/book3s/64/radix.h | 8 +++++++-
+ arch/powerpc/mm/book3s64/hash_pgtable.c    | 2 ++
+ arch/powerpc/mm/book3s64/radix_pgtable.c   | 7 -------
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
-
-On 10/09/2019 01:45, Frederic Barrat wrote:
-> This is the linux part of the work to use the PCI hotplug framework to
-> control an opencapi card so that it can be reset and re-read after
-> flashing a new FPGA image. I had posted it earlier as an RFC and this
-> version is mostly similar, with just some minor editing.
-> 
-> It needs support in skiboot:
-> http://patchwork.ozlabs.org/project/skiboot/list/?series=129724
-> On an old skiboot, it will do nothing.
-> 
-> A virtual PCI slot is created for the opencapi adapter, and its state
-> can be controlled through the pnv-php hotplug driver:
-> 
->   echo 0|1 > /sys/bus/pci/slots/OPENCAPI-<...>/power
-> 
-> Note that the power to the card is not really turned off, as the card
-> needs to stay on to be flashed with a new image. Instead the card is
-> in reset.
-> 
-> The first part of the series mostly deals with the pci/ioda state, as
-> the opencapi devices can now go away and the state needs to be cleaned
-> up.
-> 
-> The second part is modifications to the PCI hotplug driver on powernv,
-> so that a virtual slot is created for the opencapi adapters found in
-> the device tree.
-> 
-> 
-> 
-> Frederic Barrat (11):
->   powerpc/powernv/ioda: Fix ref count for devices with their own PE
->   powerpc/powernv/ioda: Protect PE list
->   powerpc/powernv/ioda: set up PE on opencapi device when enabling
->   powerpc/powernv/ioda: Release opencapi device
->   powerpc/powernv/ioda: Find opencapi slot for a device node
->   pci/hotplug/pnv-php: Remove erroneous warning
->   pci/hotplug/pnv-php: Improve error msg on power state change failure
->   pci/hotplug/pnv-php: Register opencapi slots
->   pci/hotplug/pnv-php: Relax check when disabling slot
->   pci/hotplug/pnv-php: Wrap warnings in macro
->   ocxl: Add PCI hotplug dependency to Kconfig
-> 
->  arch/powerpc/include/asm/pnv-pci.h        |   1 +
->  arch/powerpc/platforms/powernv/pci-ioda.c | 107 ++++++++++++++--------
->  arch/powerpc/platforms/powernv/pci.c      |  10 +-
->  drivers/misc/ocxl/Kconfig                 |   1 +
->  drivers/pci/hotplug/pnv_php.c             |  82 ++++++++++-------
->  5 files changed, 125 insertions(+), 76 deletions(-)
-> 
-
+diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
+index 574eca33f893..d97db3ad9aae 100644
+--- a/arch/powerpc/include/asm/book3s/64/radix.h
++++ b/arch/powerpc/include/asm/book3s/64/radix.h
+@@ -254,7 +254,13 @@ extern void radix__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
+ extern pgtable_t radix__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
+ extern pmd_t radix__pmdp_huge_get_and_clear(struct mm_struct *mm,
+ 				      unsigned long addr, pmd_t *pmdp);
+-extern int radix__has_transparent_hugepage(void);
++static inline int radix__has_transparent_hugepage(void)
++{
++	/* For radix 2M at PMD level means thp */
++	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
++		return 1;
++	return 0;
++}
+ #endif
+ 
+ extern int __meminit radix__vmemmap_create_mapping(unsigned long start,
+diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
+index d1f390ac9cdb..64733b9cb20a 100644
+--- a/arch/powerpc/mm/book3s64/hash_pgtable.c
++++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
+@@ -406,6 +406,8 @@ int hash__has_transparent_hugepage(void)
+ 
+ 	return 1;
+ }
++EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
++
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ #ifdef CONFIG_STRICT_KERNEL_RWX
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 3a1fbf9cb8f8..6ee17d09649c 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1027,13 +1027,6 @@ pmd_t radix__pmdp_huge_get_and_clear(struct mm_struct *mm,
+ 	return old_pmd;
+ }
+ 
+-int radix__has_transparent_hugepage(void)
+-{
+-	/* For radix 2M at PMD level means thp */
+-	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
+-		return 1;
+-	return 0;
+-}
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
 -- 
-Alexey
+2.21.0
+
