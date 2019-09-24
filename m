@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399B3BD0EA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 19:48:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C87FBD0EC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 19:49:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46d7vK5CWqzDqDB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 03:47:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46d7xS6HTtzDqKZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 03:49:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="sDZQdzLl"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="sCPnrbme"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46d6YG2G1fzDqTZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 02:47:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46d6YN3hpvzDqT9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 02:47:20 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 08BA821D6C;
- Tue, 24 Sep 2019 16:47:10 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2592920673;
+ Tue, 24 Sep 2019 16:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569343631;
- bh=XZeHI9WNQBBsr5LX0AFe24TjADJgl7zLNaRbvmxddCg=;
+ s=default; t=1569343637;
+ bh=ZrLi2JF1gXBIO8UjLt7eus8vyU6RSKJMJP9EwGTXIH8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sDZQdzLlYpPUfvxuswDFQ8Da1o+bldckB7/ZOeSRdZhwVUXLcS1Di5AzVDStXFxyZ
- CSWtwhdY4obLHoQbtza2gLGQIPTfFYmmFzzgMu6hMnX7Qs8QpegaWJj3+vaYhdNqaG
- qKoS/Cc30+s2O/G1sJ/7ewnGxZ3E9qmQcoOog/BI=
+ b=sCPnrbmemEN5ZURH77DR2omWFUNT57giK8n1HxFkt/pX666pZDcXo8mrmMxVmsLym
+ QTRlzPJZAp+RjWITIII3/qoZsG0YpchRwiqZumK8byxqGWyg3KMzNDA/sVYNsgHjah
+ 0Bj6+8ygXGT6Xc7+nftcl/6QETu9cJPPOxI0fBrc=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 35/70] powerpc/64s/radix: Remove redundant pfn_pte
- bitop, add VM_BUG_ON
-Date: Tue, 24 Sep 2019 12:45:14 -0400
-Message-Id: <20190924164549.27058-35-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 36/70] powerpc/64s/radix: Fix memory hotplug
+ section page table creation
+Date: Tue, 24 Sep 2019 12:45:15 -0400
+Message-Id: <20190924164549.27058-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190924164549.27058-1-sashal@kernel.org>
 References: <20190924164549.27058-1-sashal@kernel.org>
@@ -70,60 +70,44 @@ Sender: "Linuxppc-dev"
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 6bb25170d7a44ef0ed9677814600f0785e7421d1 ]
+[ Upstream commit 8f51e3929470942e6a8744061254fdeef646cd36 ]
 
-pfn_pte is never given a pte above the addressable physical memory
-limit, so the masking is redundant. In case of a software bug, it
-is not obviously better to silently truncate the pfn than to corrupt
-the pte (either one will result in memory corruption or crashes),
-so there is no reason to add this to the fast path.
+create_physical_mapping expects physical addresses, but creating and
+splitting these mappings after boot is supplying virtual (effective)
+addresses. This can be irritated by booting with mem= to limit memory
+then probing an unused physical memory range:
 
-Add VM_BUG_ON to catch cases where the pfn is invalid. These would
-catch the create_section_mapping bug fixed by a previous commit.
+  echo <addr> > /sys/devices/system/memory/probe
 
-  [16885.256466] ------------[ cut here ]------------
-  [16885.256492] kernel BUG at arch/powerpc/include/asm/book3s/64/pgtable.h:612!
-  cpu 0x0: Vector: 700 (Program Check) at [c0000000ee0a36d0]
-      pc: c000000000080738: __map_kernel_page+0x248/0x6f0
-      lr: c000000000080ac0: __map_kernel_page+0x5d0/0x6f0
-      sp: c0000000ee0a3960
-     msr: 9000000000029033
-    current = 0xc0000000ec63b400
-    paca    = 0xc0000000017f0000   irqmask: 0x03   irq_happened: 0x01
-      pid   = 85, comm = sh
-  kernel BUG at arch/powerpc/include/asm/book3s/64/pgtable.h:612!
-  Linux version 5.3.0-rc1-00001-g0fe93e5f3394
-  enter ? for help
-  [c0000000ee0a3a00] c000000000d37378 create_physical_mapping+0x260/0x360
-  [c0000000ee0a3b10] c000000000d370bc create_section_mapping+0x1c/0x3c
-  [c0000000ee0a3b30] c000000000071f54 arch_add_memory+0x74/0x130
+This mostly works by accident, firstly because __va(__va(x)) == __va(x)
+so the virtual address does not get corrupted. Secondly because pfn_pte
+masks out the upper bits of the pfn beyond the physical address limit,
+so a pfn constructed with a 0xc000000000000000 virtual linear address
+will be masked back to the correct physical address in the pte.
 
+Fixes: 6cc27341b21a8 ("powerpc/mm: add radix__create_section_mapping()")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20190724084638.24982-5-npiggin@gmail.com
+Link: https://lore.kernel.org/r/20190724084638.24982-1-npiggin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index ccf00a8b98c6a..c470f6370dccb 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -602,8 +602,10 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
-  */
- static inline pte_t pfn_pte(unsigned long pfn, pgprot_t pgprot)
- {
--	return __pte((((pte_basic_t)(pfn) << PAGE_SHIFT) & PTE_RPN_MASK) |
--		     pgprot_val(pgprot));
-+	VM_BUG_ON(pfn >> (64 - PAGE_SHIFT));
-+	VM_BUG_ON((pfn << PAGE_SHIFT) & ~PTE_RPN_MASK);
-+
-+	return __pte(((pte_basic_t)pfn << PAGE_SHIFT) | pgprot_val(pgprot));
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 8deb432c29754..2b6cc823046a3 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -901,7 +901,7 @@ int __meminit radix__create_section_mapping(unsigned long start, unsigned long e
+ 		return -1;
+ 	}
+ 
+-	return create_physical_mapping(start, end, nid);
++	return create_physical_mapping(__pa(start), __pa(end), nid);
  }
  
- static inline unsigned long pte_pfn(pte_t pte)
+ int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
 -- 
 2.20.1
 
