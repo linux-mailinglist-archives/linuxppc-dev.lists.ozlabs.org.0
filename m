@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19D9BD081
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 19:22:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 059AABD08A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 19:25:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46d7KY4vd3zDqCq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 03:22:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46d7P05hmJzDqGX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 03:25:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="2ONuYKs5"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Zf4+BgWA"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46d6Td2CSkzDqSw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 02:44:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46d6VL4ScCzDqTT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 02:44:42 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D111621783;
- Tue, 24 Sep 2019 16:44:01 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 94C6521783;
+ Tue, 24 Sep 2019 16:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569343442;
- bh=jujcImgHDYGHQ7uDDwkXOSgG2q4SgjbpIX6MY4h8sRk=;
+ s=default; t=1569343480;
+ bh=szCeKCu1HOCfG8Xa5dhnSRI7Vdwm04GAxX3XtKErotk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=2ONuYKs5zwe1cZhIivWVWUX2thS5S1xu4F61lZtVHddGW1Dgx7MfCLEb9lshAHD7o
- CjGCY7tIwMHre4KzJXRITaf5NoLuRjWb3zkWj/Ikfdz8axTM0hqWMSefr7yTspU1Vk
- 1mEc/JuIMsVCT431P0eFw/XMhCuIxptYc5szFHtA=
+ b=Zf4+BgWA9pk7T5TImcaCy108DnTvGzqEnxHy8Rqp5dIT2hIkNpaczeSxhmPeLdCJE
+ FAUwYq6FoKN8F1IIdaeHvgoumeANMB+0CoIXpdYY+2SrQZdthkeaV9VHay3BoboxqZ
+ f2JMHAiBcLKRj/FMndMPhH3HDPhdR5Dtm3WdMXKA=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 51/87] powerpc/eeh: Clear stale EEH_DEV_NO_HANDLER
- flag
-Date: Tue, 24 Sep 2019 12:41:07 -0400
-Message-Id: <20190924164144.25591-51-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 63/87] selftests/powerpc: Retry on host facility
+ unavailable
+Date: Tue, 24 Sep 2019 12:41:19 -0400
+Message-Id: <20190924164144.25591-63-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190924164144.25591-1-sashal@kernel.org>
 References: <20190924164144.25591-1-sashal@kernel.org>
@@ -61,79 +61,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+ "Desnes A . Nunes do Rosario" <desnesn@linux.ibm.com>,
+ Gustavo Romero <gromero@linux.vnet.ibm.com>, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sam Bobroff <sbobroff@linux.ibm.com>
+From: Gustavo Romero <gromero@linux.vnet.ibm.com>
 
-[ Upstream commit aa06e3d60e245284d1e55497eb3108828092818d ]
+[ Upstream commit 6652bf6408895b09d31fd4128a1589a1a0672823 ]
 
-The EEH_DEV_NO_HANDLER flag is used by the EEH system to prevent the
-use of driver callbacks in drivers that have been bound part way
-through the recovery process. This is necessary to prevent later stage
-handlers from being called when the earlier stage handlers haven't,
-which can be confusing for drivers.
+TM test tm-unavailable must take into account aborts due to host aborting
+a transactin because of a facility unavailable exception, just like it
+already does for aborts on reschedules (TM_CAUSE_KVM_RESCHED).
 
-However, the flag is set for all devices that are added after boot
-time and only cleared at the end of the EEH recovery process. This
-results in hot plugged devices erroneously having the flag set during
-the first recovery after they are added (causing their driver's
-handlers to be incorrectly ignored).
-
-To remedy this, clear the flag at the beginning of recovery
-processing. The flag is still cleared at the end of recovery
-processing, although it is no longer really necessary.
-
-Also clear the flag during eeh_handle_special_event(), for the same
-reasons.
-
-Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
+Reported-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+Tested-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+Signed-off-by: Gustavo Romero <gromero@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/b8ca5629d27de74c957d4f4b250177d1b6fc4bbd.1565930772.git.sbobroff@linux.ibm.com
+Link: https://lore.kernel.org/r/1566341651-19747-1-git-send-email-gromero@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_driver.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/testing/selftests/powerpc/tm/tm.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index 89623962c7275..1fbe541856f5e 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -793,6 +793,10 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		result = PCI_ERS_RESULT_DISCONNECT;
- 	}
- 
-+	eeh_for_each_pe(pe, tmp_pe)
-+		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
-+			edev->mode &= ~EEH_DEV_NO_HANDLER;
-+
- 	/* Walk the various device drivers attached to this slot through
- 	 * a reset sequence, giving each an opportunity to do what it needs
- 	 * to accomplish the reset.  Each child gets a report of the
-@@ -981,7 +985,8 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
-  */
- void eeh_handle_special_event(void)
+diff --git a/tools/testing/selftests/powerpc/tm/tm.h b/tools/testing/selftests/powerpc/tm/tm.h
+index 97f9f491c541a..c402464b038fc 100644
+--- a/tools/testing/selftests/powerpc/tm/tm.h
++++ b/tools/testing/selftests/powerpc/tm/tm.h
+@@ -55,7 +55,8 @@ static inline bool failure_is_unavailable(void)
+ static inline bool failure_is_reschedule(void)
  {
--	struct eeh_pe *pe, *phb_pe;
-+	struct eeh_pe *pe, *phb_pe, *tmp_pe;
-+	struct eeh_dev *edev, *tmp_edev;
- 	struct pci_bus *bus;
- 	struct pci_controller *hose;
- 	unsigned long flags;
-@@ -1050,6 +1055,10 @@ void eeh_handle_special_event(void)
- 				    (phb_pe->state & EEH_PE_RECOVERING))
- 					continue;
+ 	if ((failure_code() & TM_CAUSE_RESCHED) == TM_CAUSE_RESCHED ||
+-	    (failure_code() & TM_CAUSE_KVM_RESCHED) == TM_CAUSE_KVM_RESCHED)
++	    (failure_code() & TM_CAUSE_KVM_RESCHED) == TM_CAUSE_KVM_RESCHED ||
++	    (failure_code() & TM_CAUSE_KVM_FAC_UNAV) == TM_CAUSE_KVM_FAC_UNAV)
+ 		return true;
  
-+				eeh_for_each_pe(pe, tmp_pe)
-+					eeh_pe_for_each_dev(tmp_pe, edev, tmp_edev)
-+						edev->mode &= ~EEH_DEV_NO_HANDLER;
-+
- 				/* Notify all devices to be down */
- 				eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
- 				eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+ 	return false;
 -- 
 2.20.1
 
