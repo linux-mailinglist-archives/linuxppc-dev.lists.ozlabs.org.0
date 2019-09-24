@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059AABD08A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 19:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF34BD095
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 19:27:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46d7P05hmJzDqGX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 03:25:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46d7Rl0WJPzDqGq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 03:27:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Zf4+BgWA"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="fZD+ydD/"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46d6VL4ScCzDqTT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 02:44:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46d6VW1swdzDqT1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 02:44:51 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 94C6521783;
- Tue, 24 Sep 2019 16:44:39 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id F18E5222C1;
+ Tue, 24 Sep 2019 16:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569343480;
- bh=szCeKCu1HOCfG8Xa5dhnSRI7Vdwm04GAxX3XtKErotk=;
+ s=default; t=1569343487;
+ bh=EwefwZg1gkRd5D8AdLXuQmAzwpk0VAcJjXwCvpznLlA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Zf4+BgWA9pk7T5TImcaCy108DnTvGzqEnxHy8Rqp5dIT2hIkNpaczeSxhmPeLdCJE
- FAUwYq6FoKN8F1IIdaeHvgoumeANMB+0CoIXpdYY+2SrQZdthkeaV9VHay3BoboxqZ
- f2JMHAiBcLKRj/FMndMPhH3HDPhdR5Dtm3WdMXKA=
+ b=fZD+ydD/7E2nc+0SXG7CgdsMDOfF2TjypMfqOhFMtjETqNIBo3coO6n8ezXtTrFHU
+ uTEijIiW5VgIYA7mtygsJ+F4Ilev0rbAJB4rG93GSsgc7D7+Hom9hwSqA9CK/qamry
+ 9UWLbD0DpWswBOa2hlykB6aejC/VbaC/6kX7UrcM=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 63/87] selftests/powerpc: Retry on host facility
- unavailable
-Date: Tue, 24 Sep 2019 12:41:19 -0400
-Message-Id: <20190924164144.25591-63-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 66/87] powerpc/64s/exception: machine check use
+ correct cfar for late handler
+Date: Tue, 24 Sep 2019 12:41:22 -0400
+Message-Id: <20190924164144.25591-66-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190924164144.25591-1-sashal@kernel.org>
 References: <20190924164144.25591-1-sashal@kernel.org>
@@ -61,46 +61,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- "Desnes A . Nunes do Rosario" <desnesn@linux.ibm.com>,
- Gustavo Romero <gromero@linux.vnet.ibm.com>, linux-kselftest@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Gustavo Romero <gromero@linux.vnet.ibm.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 6652bf6408895b09d31fd4128a1589a1a0672823 ]
+[ Upstream commit 0b66370c61fcf5fcc1d6901013e110284da6e2bb ]
 
-TM test tm-unavailable must take into account aborts due to host aborting
-a transactin because of a facility unavailable exception, just like it
-already does for aborts on reschedules (TM_CAUSE_KVM_RESCHED).
+Bare metal machine checks run an "early" handler in real mode before
+running the main handler which reports the event.
 
-Reported-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
-Tested-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
-Signed-off-by: Gustavo Romero <gromero@linux.vnet.ibm.com>
+The main handler runs exactly as a normal interrupt handler, after the
+"windup" which sets registers back as they were at interrupt entry.
+CFAR does not get restored by the windup code, so that will be wrong
+when the handler is run.
+
+Restore the CFAR to the saved value before running the late handler.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/1566341651-19747-1-git-send-email-gromero@linux.vnet.ibm.com
+Link: https://lore.kernel.org/r/20190802105709.27696-8-npiggin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/tm/tm.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/exceptions-64s.S | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/powerpc/tm/tm.h b/tools/testing/selftests/powerpc/tm/tm.h
-index 97f9f491c541a..c402464b038fc 100644
---- a/tools/testing/selftests/powerpc/tm/tm.h
-+++ b/tools/testing/selftests/powerpc/tm/tm.h
-@@ -55,7 +55,8 @@ static inline bool failure_is_unavailable(void)
- static inline bool failure_is_reschedule(void)
- {
- 	if ((failure_code() & TM_CAUSE_RESCHED) == TM_CAUSE_RESCHED ||
--	    (failure_code() & TM_CAUSE_KVM_RESCHED) == TM_CAUSE_KVM_RESCHED)
-+	    (failure_code() & TM_CAUSE_KVM_RESCHED) == TM_CAUSE_KVM_RESCHED ||
-+	    (failure_code() & TM_CAUSE_KVM_FAC_UNAV) == TM_CAUSE_KVM_FAC_UNAV)
- 		return true;
- 
- 	return false;
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 6ba3cc2ef8abc..36c8a3652cf3a 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1211,6 +1211,10 @@ FTR_SECTION_ELSE
+ ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE)
+ 9:
+ 	/* Deliver the machine check to host kernel in V mode. */
++BEGIN_FTR_SECTION
++	ld	r10,ORIG_GPR3(r1)
++	mtspr	SPRN_CFAR,r10
++END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	MACHINE_CHECK_HANDLER_WINDUP
+ 	EXCEPTION_PROLOG_0 PACA_EXMC
+ 	b	machine_check_pSeries_0
 -- 
 2.20.1
 
