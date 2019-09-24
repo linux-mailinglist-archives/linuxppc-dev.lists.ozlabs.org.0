@@ -1,49 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E12BC8DA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 15:23:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100C9BCB6A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 17:31:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46d21y0DsBzDqV7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 23:23:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46d4sv6cDkzDqVH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 01:31:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=46.105.49.171; helo=4.mo178.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 12606 seconds by postgrey-1.36 at bilbo;
+ Wed, 25 Sep 2019 01:29:21 AEST
+Received: from 4.mo178.mail-out.ovh.net (4.mo178.mail-out.ovh.net
+ [46.105.49.171])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46d1xr6FjgzDqQC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 23:19:44 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id D8F48AE34;
- Tue, 24 Sep 2019 13:19:40 +0000 (UTC)
-Date: Tue, 24 Sep 2019 15:19:39 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20190924131939.GS23050@dhcp22.suse.cz>
-References: <20190923203410.GI2369@hirez.programming.kicks-ass.net>
- <20190924074751.GB23050@dhcp22.suse.cz>
- <20190924091714.GJ2369@hirez.programming.kicks-ass.net>
- <20190924105622.GH23050@dhcp22.suse.cz>
- <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
- <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46d4qP5LpfzDqSp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 01:29:17 +1000 (AEST)
+Received: from player157.ha.ovh.net (unknown [10.109.143.223])
+ by mo178.mail-out.ovh.net (Postfix) with ESMTP id 4747C75280
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 13:50:08 +0200 (CEST)
+Received: from kaod.org (deibp9eh1--blueice1n4.emea.ibm.com [195.212.29.166])
+ (Authenticated sender: groug@kaod.org)
+ by player157.ha.ovh.net (Postfix) with ESMTPSA id 69B17A1A10C8;
+ Tue, 24 Sep 2019 11:49:56 +0000 (UTC)
+Date: Tue, 24 Sep 2019 13:49:54 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH 1/6] KVM: PPC: Book3S HV: XIVE: initialize private
+ pointer when VPs are allocated
+Message-ID: <20190924134954.2a6bf5f4@bahia.lan>
+In-Reply-To: <20190924052855.GA7950@oak.ozlabs.ibm.com>
+References: <156925341155.974393.11681611197111945710.stgit@bahia.lan>
+ <156925341736.974393.18379970954169086891.stgit@bahia.lan>
+ <20190924052855.GA7950@oak.ozlabs.ibm.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190924125936.GR2349@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Ovh-Tracer-Id: 211669184222501307
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrfedtgdeggecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,57 +59,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
- will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
- ysato@users.sourceforge.jp, x86@kernel.org,
- Yunsheng Lin <linyunsheng@huawei.com>, rppt@linux.ibm.com,
- borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
- jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
- len.brown@intel.com, gor@linux.ibm.com, anshuman.khandual@arm.com,
- gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org, tglx@linutronix.de,
- naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
- rth@twiddle.net, axboe@kernel.dk, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
- paul.burton@mips.com, linux-alpha@vger.kernel.org, rafael@kernel.org,
- ink@jurassic.park.msu.ru, akpm@linux-foundation.org, robin.murphy@arm.com,
- davem@davemloft.net
+Cc: kvm@vger.kernel.org, Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ kvm-ppc@vger.kernel.org, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 24-09-19 14:59:36, Peter Zijlstra wrote:
-> On Tue, Sep 24, 2019 at 02:43:25PM +0200, Peter Zijlstra wrote:
-> > On Tue, Sep 24, 2019 at 02:25:00PM +0200, Michal Hocko wrote:
-> > > On Tue 24-09-19 14:09:43, Peter Zijlstra wrote:
-> > 
-> > > > We can push back and say we don't respect the specification because it
-> > > > is batshit insane ;-)
-> > > 
-> > > Here is my fingers crossed.
-> > > 
-> > > [...]
-> > > 
-> > > > Now granted; there's a number of virtual devices that really don't have
-> > > > a node affinity, but then, those are not hurt by forcing them onto a
-> > > > random node, they really don't do anything. Like:
-> > > 
-> > > Do you really consider a random node a better fix than simply living
-> > > with a more robust NUMA_NO_NODE which tells the actual state? Page
-> > > allocator would effectivelly use the local node in that case. Any code
-> > > using the cpumask will know that any of the online cpus are usable.
-> > 
-> > For the pmu devices? Yes, those 'devices' aren't actually used for
-> > anything other than sysfs entries.
-> > 
-> > Nothing else uses the struct device.
-> 
-> The below would get rid of the PMU and workqueue warnings with no
-> side-effects (the device isn't used for anything except sysfs).
+On Tue, 24 Sep 2019 15:28:55 +1000
+Paul Mackerras <paulus@ozlabs.org> wrote:
 
-Hardcoding to 0 is simply wrong, if the node0 is cpuless for example...
--- 
-Michal Hocko
-SUSE Labs
+> On Mon, Sep 23, 2019 at 05:43:37PM +0200, Greg Kurz wrote:
+> > From: C=C3=A9dric Le Goater <clg@kaod.org>
+> >=20
+> > Do not assign the device private pointer before making sure the XIVE
+> > VPs are allocated in OPAL and test pointer validity when releasing
+> > the device.
+> >=20
+> > Fixes: 5422e95103cf ("KVM: PPC: Book3S HV: XIVE: Replace the 'destroy' =
+method by a 'release' method")
+> > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> > Signed-off-by: Greg Kurz <groug@kaod.org>
+>=20
+> What happens in the case where the OPAL allocation fails?  Does the
+> host crash, or hang, or leak resources?  I presume that users can
+> trigger the allocation failure just by starting a suitably large
+> number of guests - is that right?  Is there an easier way?  I'm trying
+> to work out whether this is urgently needed in 5.4 and the stable
+> trees or not.
+>=20
+
+Wait... I don't quite remember how this patch landed in my tree but when
+I look at it again I have the impression it tries to fix something that
+cannot happen.
+
+It is indeed easy to trigger the allocation failure, eg. start more than
+127 guests on a Witherspoon system. But if this happens, the create
+function returns an error and the device isn't created. I don't see how
+the release function could hence get called with a "partially initialized"
+device.
+
+Please ignore this patch. Unfortunately the rest of the series doesn't
+apply cleanly without it... I'll rebase and post a v2.
+
+Sorry for the noise :-\
+
+> Paul.
+
