@@ -1,84 +1,152 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F96BC0DA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 06:01:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A78DBC10E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 06:26:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cnYn4YT1zDq6Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 14:01:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cp6D5StpzDqSP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 14:26:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="HxyEX9Yu"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cnNM27gVzDqSG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 13:53:22 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8O3qsZk030238; Mon, 23 Sep 2019 23:53:13 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v76mfsp8c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 23:53:13 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8O3rDOq031349;
- Mon, 23 Sep 2019 23:53:13 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2v76mfsp83-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2019 23:53:13 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8O3pkrR024691;
- Tue, 24 Sep 2019 03:53:12 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01dal.us.ibm.com with ESMTP id 2v5bg6yfah-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 03:53:12 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8O3rAs330671142
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Sep 2019 03:53:10 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5193BE056;
- Tue, 24 Sep 2019 03:53:10 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E71ABBE053;
- Tue, 24 Sep 2019 03:53:08 +0000 (GMT)
-Received: from skywalker.in.ibm.com (unknown [9.124.35.207])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 24 Sep 2019 03:53:08 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
-Subject: [PATCH 3/4] powerpc/mm: Fixup tlbie vs mtpidr/mtlpidr ordering issue
- on POWER9
-Date: Tue, 24 Sep 2019 09:22:53 +0530
-Message-Id: <20190924035254.24612-3-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190924035254.24612-1-aneesh.kumar@linux.ibm.com>
-References: <20190924035254.24612-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cp405KftzDqQn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 14:24:14 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id x127so424244pfb.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2019 21:24:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=miYXv7qHHqlgJ4p/O0O5B54zhS0Fmj+q5TelGKYY+MQ=;
+ b=HxyEX9YuoHHL/ZmvohKqv7UyMt6AAYUy6QBvOTBRkVC5nsqliWyrYDbBSkMNV2uhTx
+ 8R/WaLz0Yifx/zvUfQtXl6urv7sZ57liiyH64xS8GvEnxNqLTqoqQt5lj3JRvwWYzlwD
+ ipE8HB9wZWmyL9G8bh2UmR1ktThQP4uWRUyGnNPGkoWZuz3YERBwSLYTkR4z5h1A+Mqi
+ fzmauIy5DpDhxK+xW878kzhc8d0yqasd+h3RJViqbk+kuUP/f++KCC2gdEaD1+ZchzOl
+ raL1JI54HSJHiJOIKJXyySpeJoDB54/El1wln+foZF0xd6mO+SSel50X8lrJIPtqnpTF
+ OBLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=miYXv7qHHqlgJ4p/O0O5B54zhS0Fmj+q5TelGKYY+MQ=;
+ b=Eb7KhvOw+G/WI+kltd6yTCwXWsltnnqVqnnahxVdxihkfrAokJbuzKM2T5EDtMWdDp
+ Ft9lwByRsgSIB1JQ/bAEv1Ocf1UKqDTJqFw22CM6Z1EXk5m/epm/bb+6BX9dwuXhfhX7
+ OXUy4plho0SRUfTl1pjxl6N3Lq+pO8T7nZpb+MQfW787u4BTtMhvl/R6HzkSrBJBDAZg
+ j3do7K3ahvYENHBodr855WRIZKYZx5+UX8m/LPy3Orio+OvXksdYMWS13AqwENUcolsP
+ cqmhal2X8SYeyB1PsUgoIK3Fg9xgFHcKsHOZIAQ1EeX/YB3H0rdJnWDZ4AQBIeQaZwxL
+ m8LQ==
+X-Gm-Message-State: APjAAAWvW6ux+LyhcnITL+nerbFGjj4Xcz345anZ19/MhBmG3WXjUPWU
+ KvcXf0IbNF0kZsdv2g0UgYA7Ae1F9XE=
+X-Google-Smtp-Source: APXvYqygAM1rk5C3SbY+2vtZVNkMTYqP0Af3bdgGVCjKKrnK2ismwSwahlScZhhWXF1Nmr5GJ3CXEA==
+X-Received: by 2002:a63:515a:: with SMTP id r26mr1097117pgl.121.1569299051556; 
+ Mon, 23 Sep 2019 21:24:11 -0700 (PDT)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id ep10sm780020pjb.2.2019.09.23.21.24.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 23 Sep 2019 21:24:10 -0700 (PDT)
+Subject: Re: [PATCH 00/11] opencapi: enable card reset and link retraining
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
+References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
+ EePO1JqpVuIow/wGud9xaPA5uvuVgRS1q7RU8otD+7VLDFzPRiRE4Jfr2CW89Ox6BF+q5ZPV
+ /pS4v4G9eOrw1v09lEKHB9WtiBVhhxKK1LnUjPEH3ifkOkgW7jFfoYgTdtB3XaXVgYnNPDFo
+ PTBYsJy+wr89XfyHr2Ev7BB3Xaf7qICXdBF8MEVY8t/UFsesg4wFWOuzCfqxFmKEaPDZlTuR
+ tfLAeVpslNfWCi5ybPlowLx6KJqOsI9R2a9o4qRXWGP7IwiMRAC3iiPyk9cknt8ee6EUIxI6
+ t847eFaVKI/6WcxhszI0R6Cj+N4y+1rHfkGWYWupCiHwj9DjILW9iEAncVgQmkNPpUsZECLT
+ WQzMuVSxjuXW4nJ6f4OFHqL2dU//qR+BM/eJ0TT3OnfLcPqfucGxubhT7n/CXUxEy+mvWwnm
+ s9p4uqVpTfEuzQ0/bE6t7dZdPBua7eYox1AQnk8JQDwC3Rn9kZq2O7u5KuJP5MfludMmQevm
+ pHYEMF4vZuIpWcOrrSctJfIIEyhDoDmR34bCXAZfNJ4p4H6TPqPh671uMQV82CfTxTrMhGFq
+ 8WYU2AH86FrVQfWoH09z1WqhlOm/KZhAV5FndwVjQJs1MRXD8QARAQABtCRBbGV4ZXkgS2Fy
+ ZGFzaGV2c2tpeSA8YWlrQG96bGFicy5ydT6JAjgEEwECACIFAk+rT0sCGwMGCwkIBwMCBhUI
+ AgkKCwQWAgMBAh4BAheAAAoJEIYTPdgrwSC5fAIP/0wf/oSYaCq9PhO0UP9zLSEz66SSZUf7
+ AM9O1rau1lJpT8RoNa0hXFXIVbqPPKPZgorQV8SVmYRLr0oSmPnTiZC82x2dJGOR8x4E01gK
+ TanY53J/Z6+CpYykqcIpOlGsytUTBA+AFOpdaFxnJ9a8p2wA586fhCZHVpV7W6EtUPH1SFTQ
+ q5xvBmr3KkWGjz1FSLH4FeB70zP6uyuf/B2KPmdlPkyuoafl2UrU8LBADi/efc53PZUAREih
+ sm3ch4AxaL4QIWOmlE93S+9nHZSRo9jgGXB1LzAiMRII3/2Leg7O4hBHZ9Nki8/fbDo5///+
+ kD4L7UNbSUM/ACWHhd4m1zkzTbyRzvL8NAVQ3rckLOmju7Eu9whiPueGMi5sihy9VQKHmEOx
+ OMEhxLRQbzj4ypRLS9a+oxk1BMMu9cd/TccNy0uwx2UUjDQw/cXw2rRWTRCxoKmUsQ+eNWEd
+ iYLW6TCfl9CfHlT6A7Zmeqx2DCeFafqEd69DqR9A8W5rx6LQcl0iOlkNqJxxbbW3ddDsLU/Y
+ r4cY20++WwOhSNghhtrroP+gouTOIrNE/tvG16jHs8nrYBZuc02nfX1/gd8eguNfVX/ZTHiR
+ gHBWe40xBKwBEK2UeqSpeVTohYWGBkcd64naGtK9qHdo1zY1P55lHEc5Uhlk743PgAnOi27Q
+ ns5zuQINBE+rT0sBEACnV6GBSm+25ACT+XAE0t6HHAwDy+UKfPNaQBNTTt31GIk5aXb2Kl/p
+ AgwZhQFEjZwDbl9D/f2GtmUHWKcCmWsYd5M/6Ljnbp0Ti5/xi6FyfqnO+G/wD2VhGcKBId1X
+ Em/B5y1kZVbzcGVjgD3HiRTqE63UPld45bgK2XVbi2+x8lFvzuFq56E3ZsJZ+WrXpArQXib2
+ hzNFwQleq/KLBDOqTT7H+NpjPFR09Qzfa7wIU6pMNF2uFg5ihb+KatxgRDHg70+BzQfa6PPA
+ o1xioKXW1eHeRGMmULM0Eweuvpc7/STD3K7EJ5bBq8svoXKuRxoWRkAp9Ll65KTUXgfS+c0x
+ gkzJAn8aTG0z/oEJCKPJ08CtYQ5j7AgWJBIqG+PpYrEkhjzSn+DZ5Yl8r+JnZ2cJlYsUHAB9
+ jwBnWmLCR3gfop65q84zLXRQKWkASRhBp4JK3IS2Zz7Nd/Sqsowwh8x+3/IUxVEIMaVoUaxk
+ Wt8kx40h3VrnLTFRQwQChm/TBtXqVFIuv7/Mhvvcq11xnzKjm2FCnTvCh6T2wJw3de6kYjCO
+ 7wsaQ2y3i1Gkad45S0hzag/AuhQJbieowKecuI7WSeV8AOFVHmgfhKti8t4Ff758Z0tw5Fpc
+ BFDngh6Lty9yR/fKrbkkp6ux1gJ2QncwK1v5kFks82Cgj+DSXK6GUQARAQABiQIfBBgBAgAJ
+ BQJPq09LAhsMAAoJEIYTPdgrwSC5NYEP/2DmcEa7K9A+BT2+G5GXaaiFa098DeDrnjmRvumJ
+ BhA1UdZRdfqICBADmKHlJjj2xYo387sZpS6ABbhrFxM6s37g/pGPvFUFn49C47SqkoGcbeDz
+ Ha7JHyYUC+Tz1dpB8EQDh5xHMXj7t59mRDgsZ2uVBKtXj2ZkbizSHlyoeCfs1gZKQgQE8Ffc
+ F8eWKoqAQtn3j4nE3RXbxzTJJfExjFB53vy2wV48fUBdyoXKwE85fiPglQ8bU++0XdOr9oyy
+ j1llZlB9t3tKVv401JAdX8EN0++ETiOovQdzE1m+6ioDCtKEx84ObZJM0yGSEGEanrWjiwsa
+ nzeK0pJQM9EwoEYi8TBGhHC9ksaAAQipSH7F2OHSYIlYtd91QoiemgclZcSgrxKSJhyFhmLr
+ QEiEILTKn/pqJfhHU/7R7UtlDAmFMUp7ByywB4JLcyD10lTmrEJ0iyRRTVfDrfVP82aMBXgF
+ tKQaCxcmLCaEtrSrYGzd1sSPwJne9ssfq0SE/LM1J7VdCjm6OWV33SwKrfd6rOtvOzgadrG6
+ 3bgUVBw+bsXhWDd8tvuCXmdY4bnUblxF2B6GOwSY43v6suugBttIyW5Bl2tXSTwP+zQisOJo
+ +dpVG2pRr39h+buHB3NY83NEPXm1kUOhduJUA17XUY6QQCAaN4sdwPqHq938S3EmtVhsuQIN
+ BFq54uIBEACtPWrRdrvqfwQF+KMieDAMGdWKGSYSfoEGGJ+iNR8v255IyCMkty+yaHafvzpl
+ PFtBQ/D7Fjv+PoHdFq1BnNTk8u2ngfbre9wd9MvTDsyP/TmpF0wyyTXhhtYvE267Av4X/BQT
+ lT9IXKyAf1fP4BGYdTNgQZmAjrRsVUW0j6gFDrN0rq2J9emkGIPvt9rQt6xGzrd6aXonbg5V
+ j6Uac1F42ESOZkIh5cN6cgnGdqAQb8CgLK92Yc8eiCVCH3cGowtzQ2m6U32qf30cBWmzfSH0
+ HeYmTP9+5L8qSTA9s3z0228vlaY0cFGcXjdodBeVbhqQYseMF9FXiEyRs28uHAJEyvVZwI49
+ CnAgVV/n1eZa5qOBpBL+ZSURm8Ii0vgfvGSijPGbvc32UAeAmBWISm7QOmc6sWa1tobCiVmY
+ SNzj5MCNk8z4cddoKIc7Wt197+X/X5JPUF5nQRvg3SEHvfjkS4uEst9GwQBpsbQYH9MYWq2P
+ PdxZ+xQE6v7cNB/pGGyXqKjYCm6v70JOzJFmheuUq0Ljnfhfs15DmZaLCGSMC0Amr+rtefpA
+ y9FO5KaARgdhVjP2svc1F9KmTUGinSfuFm3quadGcQbJw+lJNYIfM7PMS9fftq6vCUBoGu3L
+ j4xlgA/uQl/LPneu9mcvit8JqcWGS3fO+YeagUOon1TRqQARAQABiQRsBBgBCAAgFiEEZSrP
+ ibrORRTHQ99dhhM92CvBILkFAlq54uICGwICQAkQhhM92CvBILnBdCAEGQEIAB0WIQQIhvWx
+ rCU+BGX+nH3N7sq0YorTbQUCWrni4gAKCRDN7sq0YorTbVVSD/9V1xkVFyUCZfWlRuryBRZm
+ S4GVaNtiV2nfUfcThQBfF0sSW/aFkLP6y+35wlOGJE65Riw1C2Ca9WQYk0xKvcZrmuYkK3DZ
+ 0M9/Ikkj5/2v0vxz5Z5w/9+IaCrnk7pTnHZuZqOh23NeVZGBls/IDIvvLEjpD5UYicH0wxv+
+ X6cl1RoP2Kiyvenf0cS73O22qSEw0Qb9SId8wh0+ClWet2E7hkjWFkQfgJ3hujR/JtwDT/8h
+ 3oCZFR0KuMPHRDsCepaqb/k7VSGTLBjVDOmr6/C9FHSjq0WrVB9LGOkdnr/xcISDZcMIpbRm
+ EkIQ91LkT/HYIImL33ynPB0SmA+1TyMgOMZ4bakFCEn1vxB8Ir8qx5O0lHMOiWMJAp/PAZB2
+ r4XSSHNlXUaWUg1w3SG2CQKMFX7vzA31ZeEiWO8tj/c2ZjQmYjTLlfDK04WpOy1vTeP45LG2
+ wwtMA1pKvQ9UdbYbovz92oyZXHq81+k5Fj/YA1y2PI4MdHO4QobzgREoPGDkn6QlbJUBf4To
+ pEbIGgW5LRPLuFlOPWHmIS/sdXDrllPc29aX2P7zdD/ivHABslHmt7vN3QY+hG0xgsCO1JG5
+ pLORF2N5XpM95zxkZqvYfC5tS/qhKyMcn1kC0fcRySVVeR3tUkU8/caCqxOqeMe2B6yTiU1P
+ aNDq25qYFLeYxg67D/4w/P6BvNxNxk8hx6oQ10TOlnmeWp1q0cuutccblU3ryRFLDJSngTEu
+ ZgnOt5dUFuOZxmMkqXGPHP1iOb+YDznHmC0FYZFG2KAc9pO0WuO7uT70lL6larTQrEneTDxQ
+ CMQLP3qAJ/2aBH6SzHIQ7sfbsxy/63jAiHiT3cOaxAKsWkoV2HQpnmPOJ9u02TPjYmdpeIfa
+ X2tXyeBixa3i/6dWJ4nIp3vGQicQkut1YBwR7dJq67/FCV3Mlj94jI0myHT5PIrCS2S8LtWX
+ ikTJSxWUKmh7OP5mrqhwNe0ezgGiWxxvyNwThOHc5JvpzJLd32VDFilbxgu4Hhnf6LcgZJ2c
+ Zd44XWqUu7FzVOYaSgIvTP0hNrBYm/E6M7yrLbs3JY74fGzPWGRbBUHTZXQEqQnZglXaVB5V
+ ZhSFtHopZnBSCUSNDbB+QGy4B/E++Bb02IBTGl/JxmOwG+kZUnymsPvTtnNIeTLHxN/H/ae0
+ c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
+ DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
+ XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
+Message-ID: <7e29a072-f212-5d09-05b5-dbc1ee0916f0@ozlabs.ru>
+Date: Tue, 24 Sep 2019 14:24:05 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-24_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909240037
+In-Reply-To: <20190909154600.19917-1-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,348 +158,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: groug@kaod.org, alastair@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On POWER9, under some circumstances, a broadcast TLB invalidation
-will fail to invalidate the ERAT cache on some threads when there are
-parallel mtpidr/mtlpidr happening on other threads of the same core.
-This can cause stores to continue to go to a page after it's unmapped.
+Hi Fred,
 
-The workaround is to force an ERAT flush using PID=0 or LPID=0
-tlbie flush. This additional TLB flush will cause the ERAT cache invalidation.
-Since we are using PID=0 or LPID=0, we don't get filtered out by the TLB snoop
-filtering logic.
+what is this made against of? It does not apply on the master. Thanks,
 
-We need to still follow this up with another tlbie to take care of store vs
-tlbie ordering issue explained in commit: a5d4b5891c2f ("powerpc/mm: Fixup tlbie vs
-store ordering issue on POWER9"). The presence of ERAT cache implies we can still
-get new stores and they may miss store queue marking flush.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/cputable.h    |  3 +-
- arch/powerpc/kernel/dt_cpu_ftrs.c      |  2 +
- arch/powerpc/kvm/book3s_hv_rm_mmu.c    | 42 +++++++++++----
- arch/powerpc/mm/book3s64/hash_native.c | 29 ++++++++--
- arch/powerpc/mm/book3s64/radix_tlb.c   | 74 +++++++++++++++++++++++---
- 5 files changed, 128 insertions(+), 22 deletions(-)
+On 10/09/2019 01:45, Frederic Barrat wrote:
+> This is the linux part of the work to use the PCI hotplug framework to
+> control an opencapi card so that it can be reset and re-read after
+> flashing a new FPGA image. I had posted it earlier as an RFC and this
+> version is mostly similar, with just some minor editing.
+> 
+> It needs support in skiboot:
+> http://patchwork.ozlabs.org/project/skiboot/list/?series=129724
+> On an old skiboot, it will do nothing.
+> 
+> A virtual PCI slot is created for the opencapi adapter, and its state
+> can be controlled through the pnv-php hotplug driver:
+> 
+>   echo 0|1 > /sys/bus/pci/slots/OPENCAPI-<...>/power
+> 
+> Note that the power to the card is not really turned off, as the card
+> needs to stay on to be flashed with a new image. Instead the card is
+> in reset.
+> 
+> The first part of the series mostly deals with the pci/ioda state, as
+> the opencapi devices can now go away and the state needs to be cleaned
+> up.
+> 
+> The second part is modifications to the PCI hotplug driver on powernv,
+> so that a virtual slot is created for the opencapi adapters found in
+> the device tree.
+> 
+> 
+> 
+> Frederic Barrat (11):
+>   powerpc/powernv/ioda: Fix ref count for devices with their own PE
+>   powerpc/powernv/ioda: Protect PE list
+>   powerpc/powernv/ioda: set up PE on opencapi device when enabling
+>   powerpc/powernv/ioda: Release opencapi device
+>   powerpc/powernv/ioda: Find opencapi slot for a device node
+>   pci/hotplug/pnv-php: Remove erroneous warning
+>   pci/hotplug/pnv-php: Improve error msg on power state change failure
+>   pci/hotplug/pnv-php: Register opencapi slots
+>   pci/hotplug/pnv-php: Relax check when disabling slot
+>   pci/hotplug/pnv-php: Wrap warnings in macro
+>   ocxl: Add PCI hotplug dependency to Kconfig
+> 
+>  arch/powerpc/include/asm/pnv-pci.h        |   1 +
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 107 ++++++++++++++--------
+>  arch/powerpc/platforms/powernv/pci.c      |  10 +-
+>  drivers/misc/ocxl/Kconfig                 |   1 +
+>  drivers/pci/hotplug/pnv_php.c             |  82 ++++++++++-------
+>  5 files changed, 125 insertions(+), 76 deletions(-)
+> 
 
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index f080fba48619..cf00ff0d121d 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -211,6 +211,7 @@ static inline void cpu_feature_keys_init(void) { }
- #define CPU_FTR_P9_TM_XER_SO_BUG	LONG_ASM_CONST(0x0000200000000000)
- #define CPU_FTR_P9_TLBIE_STQ_BUG	LONG_ASM_CONST(0x0000400000000000)
- #define CPU_FTR_P9_TIDR			LONG_ASM_CONST(0x0000800000000000)
-+#define CPU_FTR_P9_TLBIE_ERAT_BUG	LONG_ASM_CONST(0x0001000000000000)
- 
- #ifndef __ASSEMBLY__
- 
-@@ -457,7 +458,7 @@ static inline void cpu_feature_keys_init(void) { }
- 	    CPU_FTR_CFAR | CPU_FTR_HVMODE | CPU_FTR_VMX_COPY | \
- 	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
- 	    CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_PKEY | \
--	    CPU_FTR_P9_TLBIE_STQ_BUG | CPU_FTR_P9_TIDR)
-+	    CPU_FTR_P9_TLBIE_STQ_BUG | CPU_FTR_P9_TLBIE_ERAT_BUG | CPU_FTR_P9_TIDR)
- #define CPU_FTRS_POWER9_DD2_0 CPU_FTRS_POWER9
- #define CPU_FTRS_POWER9_DD2_1 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1)
- #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 4ddf2c7a7fb7..864cc55fa03c 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -714,6 +714,8 @@ static __init void update_tlbie_feature_flag(unsigned long pvr)
- 			WARN_ONCE(1, "Unknown PVR");
- 			cur_cpu_spec->cpu_features |= CPU_FTR_P9_TLBIE_STQ_BUG;
- 		}
-+
-+		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TLBIE_ERAT_BUG;
- 	}
- }
- 
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-index 7d89b1b10ea5..47f86252e8a1 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-@@ -433,6 +433,37 @@ static inline int is_mmio_hpte(unsigned long v, unsigned long r)
- 		(HPTE_R_KEY_HI | HPTE_R_KEY_LO));
- }
- 
-+static inline void fixup_tlbie_lpid(unsigned long rb_value, unsigned long lpid)
-+{
-+
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-+		/* Radix flush for a hash guest */
-+
-+		unsigned long rb,rs,prs,r,ric;
-+
-+		rb = PPC_BIT(52); /* IS = 2 */
-+		rs = 0;  /* lpid = 0 */
-+		prs = 0; /* partition scoped */
-+		r = 1;   /* radix format */
-+		ric = 0; /* RIC_FLSUH_TLB */
-+
-+		/*
-+		 * Need the extra ptesync to make sure we don't
-+		 * re-order the tlbie
-+		 */
-+		asm volatile("ptesync": : :"memory");
-+		asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
-+			     : : "r"(rb), "i"(r), "i"(prs),
-+			       "i"(ric), "r"(rs) : "memory");
-+	}
-+
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		asm volatile(PPC_TLBIE_5(%0,%1,0,0,0) : :
-+			     "r" (rb_value), "r" (lpid));
-+	}
-+}
-+
- static void do_tlbies(struct kvm *kvm, unsigned long *rbvalues,
- 		      long npages, int global, bool need_sync)
- {
-@@ -451,16 +482,7 @@ static void do_tlbies(struct kvm *kvm, unsigned long *rbvalues,
- 				     "r" (rbvalues[i]), "r" (kvm->arch.lpid));
- 		}
- 
--		if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
--			/*
--			 * Need the extra ptesync to make sure we don't
--			 * re-order the tlbie
--			 */
--			asm volatile("ptesync": : :"memory");
--			asm volatile(PPC_TLBIE_5(%0,%1,0,0,0) : :
--				     "r" (rbvalues[0]), "r" (kvm->arch.lpid));
--		}
--
-+		fixup_tlbie_lpid(rbvalues[i - 1], kvm->arch.lpid);
- 		asm volatile("eieio; tlbsync; ptesync" : : : "memory");
- 	} else {
- 		if (need_sync)
-diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
-index 02568dae4695..523e42eb11da 100644
---- a/arch/powerpc/mm/book3s64/hash_native.c
-+++ b/arch/powerpc/mm/book3s64/hash_native.c
-@@ -197,8 +197,31 @@ static inline unsigned long  ___tlbie(unsigned long vpn, int psize,
- 	return va;
- }
- 
--static inline void fixup_tlbie(unsigned long vpn, int psize, int apsize, int ssize)
-+static inline void fixup_tlbie_vpn(unsigned long vpn, int psize,
-+				   int apsize, int ssize)
- {
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-+		/* Radix flush for a hash guest */
-+
-+		unsigned long rb,rs,prs,r,ric;
-+
-+		rb = PPC_BIT(52); /* IS = 2 */
-+		rs = 0;  /* lpid = 0 */
-+		prs = 0; /* partition scoped */
-+		r = 1;   /* radix format */
-+		ric = 0; /* RIC_FLSUH_TLB */
-+
-+		/*
-+		 * Need the extra ptesync to make sure we don't
-+		 * re-order the tlbie
-+		 */
-+		asm volatile("ptesync": : :"memory");
-+		asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
-+			     : : "r"(rb), "i"(r), "i"(prs),
-+			       "i"(ric), "r"(rs) : "memory");
-+	}
-+
-+
- 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
- 		/* Need the extra ptesync to ensure we don't reorder tlbie*/
- 		asm volatile("ptesync": : :"memory");
-@@ -283,7 +306,7 @@ static inline void tlbie(unsigned long vpn, int psize, int apsize,
- 		asm volatile("ptesync": : :"memory");
- 	} else {
- 		__tlbie(vpn, psize, apsize, ssize);
--		fixup_tlbie(vpn, psize, apsize, ssize);
-+		fixup_tlbie_vpn(vpn, psize, apsize, ssize);
- 		asm volatile("eieio; tlbsync; ptesync": : :"memory");
- 	}
- 	if (lock_tlbie && !use_local)
-@@ -856,7 +879,7 @@ static void native_flush_hash_range(unsigned long number, int local)
- 		/*
- 		 * Just do one more with the last used values.
- 		 */
--		fixup_tlbie(vpn, psize, psize, ssize);
-+		fixup_tlbie_vpn(vpn, psize, psize, ssize);
- 		asm volatile("eieio; tlbsync; ptesync":::"memory");
- 
- 		if (lock_tlbie)
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 69fdc004d83f..99f202e0110c 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -196,21 +196,76 @@ static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid
- 	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
- }
- 
--static inline void fixup_tlbie(void)
-+
-+static inline void fixup_tlbie_va(unsigned long va, unsigned long pid,
-+				  unsigned long ap)
-+{
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_va(va, 0, ap, RIC_FLUSH_TLB);
-+	}
-+
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_va(va, pid, ap, RIC_FLUSH_TLB);
-+	}
-+}
-+
-+static inline void fixup_tlbie_va_range(unsigned long va, unsigned long pid,
-+					unsigned long ap)
- {
--	unsigned long pid = 0;
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_pid(0, RIC_FLUSH_TLB);
-+	}
-+
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_va(va, pid, ap, RIC_FLUSH_TLB);
-+	}
-+}
-+
-+static inline void fixup_tlbie_pid(unsigned long pid)
-+{
-+	/* Mostly Unmapped address */
- 	unsigned long va = ((1UL << 52) - 1);
- 
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_pid(0, RIC_FLUSH_TLB);
-+	}
-+
- 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
- 		asm volatile("ptesync": : :"memory");
- 		__tlbie_va(va, pid, mmu_get_ap(MMU_PAGE_64K), RIC_FLUSH_TLB);
- 	}
- }
- 
-+
-+static inline void fixup_tlbie_lpid_va(unsigned long va, unsigned long lpid,
-+				       unsigned long ap)
-+{
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_lpid_va(va, 0, ap, RIC_FLUSH_TLB);
-+	}
-+
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_lpid_va(va, lpid, ap, RIC_FLUSH_TLB);
-+	}
-+}
-+
- static inline void fixup_tlbie_lpid(unsigned long lpid)
- {
-+	/* Mostly Unmapped address */
- 	unsigned long va = ((1UL << 52) - 1);
- 
-+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-+		asm volatile("ptesync": : :"memory");
-+		__tlbie_lpid(0, RIC_FLUSH_TLB);
-+	}
-+
- 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
- 		asm volatile("ptesync": : :"memory");
- 		__tlbie_lpid_va(va, lpid, mmu_get_ap(MMU_PAGE_64K), RIC_FLUSH_TLB);
-@@ -258,6 +313,7 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
- 	switch (ric) {
- 	case RIC_FLUSH_TLB:
- 		__tlbie_pid(pid, RIC_FLUSH_TLB);
-+		fixup_tlbie_pid(pid);
- 		break;
- 	case RIC_FLUSH_PWC:
- 		__tlbie_pid(pid, RIC_FLUSH_PWC);
-@@ -265,8 +321,8 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
- 	case RIC_FLUSH_ALL:
- 	default:
- 		__tlbie_pid(pid, RIC_FLUSH_ALL);
-+		fixup_tlbie_pid(pid);
- 	}
--	fixup_tlbie();
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-@@ -315,6 +371,7 @@ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
- 	switch (ric) {
- 	case RIC_FLUSH_TLB:
- 		__tlbie_lpid(lpid, RIC_FLUSH_TLB);
-+		fixup_tlbie_lpid(lpid);
- 		break;
- 	case RIC_FLUSH_PWC:
- 		__tlbie_lpid(lpid, RIC_FLUSH_PWC);
-@@ -322,8 +379,8 @@ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
- 	case RIC_FLUSH_ALL:
- 	default:
- 		__tlbie_lpid(lpid, RIC_FLUSH_ALL);
-+		fixup_tlbie_lpid(lpid);
- 	}
--	fixup_tlbie_lpid(lpid);
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-@@ -390,6 +447,8 @@ static inline void __tlbie_va_range(unsigned long start, unsigned long end,
- 
- 	for (addr = start; addr < end; addr += page_size)
- 		__tlbie_va(addr, pid, ap, RIC_FLUSH_TLB);
-+
-+	fixup_tlbie_va_range(addr - page_size, pid, ap);
- }
- 
- static __always_inline void _tlbie_va(unsigned long va, unsigned long pid,
-@@ -399,7 +458,7 @@ static __always_inline void _tlbie_va(unsigned long va, unsigned long pid,
- 
- 	asm volatile("ptesync": : :"memory");
- 	__tlbie_va(va, pid, ap, ric);
--	fixup_tlbie();
-+	fixup_tlbie_va(va, pid, ap);
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-@@ -457,7 +516,7 @@ static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
- 
- 	asm volatile("ptesync": : :"memory");
- 	__tlbie_lpid_va(va, lpid, ap, ric);
--	fixup_tlbie_lpid(lpid);
-+	fixup_tlbie_lpid_va(va, lpid, ap);
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-@@ -469,7 +528,6 @@ static inline void _tlbie_va_range(unsigned long start, unsigned long end,
- 	if (also_pwc)
- 		__tlbie_pid(pid, RIC_FLUSH_PWC);
- 	__tlbie_va_range(start, end, pid, page_size, psize);
--	fixup_tlbie();
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-@@ -856,7 +914,7 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 			if (gflush)
- 				__tlbie_va_range(gstart, gend, pid,
- 						PUD_SIZE, MMU_PAGE_1G);
--			fixup_tlbie();
-+
- 			asm volatile("eieio; tlbsync; ptesync": : :"memory");
- 		} else {
- 			_tlbiel_va_range_multicast(mm,
 -- 
-2.21.0
-
+Alexey
