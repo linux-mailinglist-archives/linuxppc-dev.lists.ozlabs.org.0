@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74935BD466
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 23:40:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC637BD473
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 23:45:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dF3R4pNczDqWF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 07:40:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dF8n2q5MzDqWr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 07:44:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,53 +19,53 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dDkc1h2KzDqQJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 07:25:44 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8OLOH4N040050; Tue, 24 Sep 2019 17:25:13 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46dDkl4jR8zDqQ8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 07:25:51 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8OLMU5J124981; Tue, 24 Sep 2019 17:25:23 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v7u1f00ux-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v7r8x68d0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 17:25:13 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8OLPCLh041938;
- Tue, 24 Sep 2019 17:25:12 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v7u1f00ua-1
+ Tue, 24 Sep 2019 17:25:23 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8OLMkUk125689;
+ Tue, 24 Sep 2019 17:25:22 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v7r8x68cd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 17:25:12 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8OLJrLX003220;
- Tue, 24 Sep 2019 21:25:11 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04dal.us.ibm.com with ESMTP id 2v5bg7fya3-1
+ Tue, 24 Sep 2019 17:25:22 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8OLJxwa018560;
+ Tue, 24 Sep 2019 21:25:21 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02dal.us.ibm.com with ESMTP id 2v5bg7fy9d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 21:25:11 +0000
+ Tue, 24 Sep 2019 21:25:21 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8OLP9OB59244886
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8OLPJse36110624
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Sep 2019 21:25:09 GMT
+ Tue, 24 Sep 2019 21:25:19 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85516C605F;
- Tue, 24 Sep 2019 21:25:09 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 845F0C605D;
+ Tue, 24 Sep 2019 21:25:19 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ED123C605B;
- Tue, 24 Sep 2019 21:25:04 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E060BC605A;
+ Tue, 24 Sep 2019 21:25:14 +0000 (GMT)
 Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.184])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 24 Sep 2019 21:25:04 +0000 (GMT)
+ Tue, 24 Sep 2019 21:25:14 +0000 (GMT)
 From: Leonardo Bras <leonardo@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  kvm-ppc@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v3 05/11] powerpc/perf: Applies counting method to monitor
+Subject: [PATCH v3 07/11] powerpc/kvm/e500: Applies counting method to monitor
  lockless pgtbl walks
-Date: Tue, 24 Sep 2019 18:24:22 -0300
-Message-Id: <20190924212427.7734-6-leonardo@linux.ibm.com>
+Date: Tue, 24 Sep 2019 18:24:24 -0300
+Message-Id: <20190924212427.7734-8-leonardo@linux.ibm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190924212427.7734-1-leonardo@linux.ibm.com>
 References: <20190924212427.7734-1-leonardo@linux.ibm.com>
@@ -106,45 +106,41 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Applies the counting-based method for monitoring lockless pgtable walks on
-read_user_stack_slow.
+kvmppc_e500_shadow_map().
 
 Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 ---
- arch/powerpc/perf/callchain.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/e500_mmu_host.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
-index c84bbd4298a0..9d76194a2a8f 100644
---- a/arch/powerpc/perf/callchain.c
-+++ b/arch/powerpc/perf/callchain.c
-@@ -113,16 +113,18 @@ static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
- 	int ret = -EFAULT;
- 	pgd_t *pgdir;
- 	pte_t *ptep, pte;
-+	struct mm_struct *mm = current->mm;
- 	unsigned shift;
- 	unsigned long addr = (unsigned long) ptr;
- 	unsigned long offset;
- 	unsigned long pfn, flags;
- 	void *kaddr;
- 
--	pgdir = current->mm->pgd;
-+	pgdir = mm->pgd;
- 	if (!pgdir)
- 		return -EFAULT;
- 
-+	start_lockless_pgtbl_walk(mm);
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index 321db0fdb9db..a1b8bfe20bc8 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -473,6 +473,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 	 * We are holding kvm->mmu_lock so a notifier invalidate
+ 	 * can't run hence pfn won't change.
+ 	 */
++	start_lockless_pgtbl_walk(kvm->mm);
  	local_irq_save(flags);
- 	ptep = find_current_mm_pte(pgdir, addr, NULL, &shift);
- 	if (!ptep)
-@@ -146,6 +148,7 @@ static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
- 	ret = 0;
- err_out:
- 	local_irq_restore(flags);
-+	end_lockless_pgtbl_walk(mm);
- 	return ret;
- }
+ 	ptep = find_linux_pte(pgdir, hva, NULL, NULL);
+ 	if (ptep) {
+@@ -484,12 +485,15 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 			local_irq_restore(flags);
+ 		} else {
+ 			local_irq_restore(flags);
++			end_lockless_pgtbl_walk(kvm->mm);
+ 			pr_err_ratelimited("%s: pte not present: gfn %lx,pfn %lx\n",
+ 					   __func__, (long)gfn, pfn);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+ 	}
++	end_lockless_pgtbl_walk(kvm->mm);
++
+ 	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
  
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
 -- 
 2.20.1
 
