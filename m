@@ -1,50 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFADDBC16B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 07:31:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A109CBC187
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 07:54:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cqXy72VTzDqDW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 15:30:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cr4G4lPZzDqS7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 15:54:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46cqVm0zBqzDqQw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 15:29:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="lsHOd319"; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 46cqVk6xkmz9sPD; Tue, 24 Sep 2019 15:29:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1569302942; bh=cWBrw3Zi/RPCvFYg3Lc2bR5LpJV2EEerbQDk5nDnjws=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=lsHOd319ouBslKv0bWFJtvzzImr1S6O0NLCnWmG+GyWfg2pTck+2Y3NuS4E0CVwlP
- kXnqT54F182pmLGxgIx4KytqAGY9jUNTPe5EzqWqmxnSyNHHTM9AsFCIZLbpP9A2Of
- BaoUHhbor8++OsLNA3sKLw8wlXZ/DUSlSPUKsl0BUauUVKt3pXiXEgG4E/sLU64La1
- 7gMYQXc2E7YBc8pw86aNwenMwogFvwLRNtjp82e7bc6jd+ViH2ATx6e1JljlZWZbMY
- Rh9TJ1f7sqd+kU3mxQCJzKBjqXHnZDUTJSUMVDTCdEU4uNIvNnbyi07wdFgtVVGxcS
- OUTB74fxWWagQ==
-Date: Tue, 24 Sep 2019 15:28:55 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH 1/6] KVM: PPC: Book3S HV: XIVE: initialize private
- pointer when VPs are allocated
-Message-ID: <20190924052855.GA7950@oak.ozlabs.ibm.com>
-References: <156925341155.974393.11681611197111945710.stgit@bahia.lan>
- <156925341736.974393.18379970954169086891.stgit@bahia.lan>
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.191; helo=huawei.com; envelope-from=yanaijie@huawei.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46cr2S3dM8zDqHk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 15:53:02 +1000 (AEST)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id ADEDDB8AFFE7A7669F5A;
+ Tue, 24 Sep 2019 13:52:56 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.203) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Tue, 24 Sep 2019
+ 13:52:48 +0800
+Subject: Re: [PATCH v7 00/12] implement KASLR for powerpc/fsl_booke/32
+To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
+ <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
+References: <20190920094546.44948-1-yanaijie@huawei.com>
+From: Jason Yan <yanaijie@huawei.com>
+Message-ID: <9c2dd2a8-83f2-983c-383e-956e19a7803a@huawei.com>
+Date: Tue, 24 Sep 2019 13:52:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <156925341736.974393.18379970954169086891.stgit@bahia.lan>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190920094546.44948-1-yanaijie@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.203]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,30 +55,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- kvm-ppc@vger.kernel.org, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, oss@buserror.net, zhaohongjiang@huawei.com,
+ thunder.leizhen@huawei.com, yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 23, 2019 at 05:43:37PM +0200, Greg Kurz wrote:
-> From: Cédric Le Goater <clg@kaod.org>
-> 
-> Do not assign the device private pointer before making sure the XIVE
-> VPs are allocated in OPAL and test pointer validity when releasing
-> the device.
-> 
-> Fixes: 5422e95103cf ("KVM: PPC: Book3S HV: XIVE: Replace the 'destroy' method by a 'release' method")
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> Signed-off-by: Greg Kurz <groug@kaod.org>
+Hi Scott,
 
-What happens in the case where the OPAL allocation fails?  Does the
-host crash, or hang, or leak resources?  I presume that users can
-trigger the allocation failure just by starting a suitably large
-number of guests - is that right?  Is there an easier way?  I'm trying
-to work out whether this is urgently needed in 5.4 and the stable
-trees or not.
+Can you test v7 to see if it works to load a kernel at a non-zero address?
 
-Paul.
+Thanks,
+
+On 2019/9/20 17:45, Jason Yan wrote:
+> This series implements KASLR for powerpc/fsl_booke/32, as a security
+> feature that deters exploit attempts relying on knowledge of the location
+> of kernel internals.
+> 
+> Since CONFIG_RELOCATABLE has already supported, what we need to do is
+> map or copy kernel to a proper place and relocate. Freescale Book-E
+> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
+> entries are not suitable to map the kernel directly in a randomized
+> region, so we chose to copy the kernel to a proper place and restart to
+> relocate.
+> 
+> Entropy is derived from the banner and timer base, which will change every
+> build and boot. This not so much safe so additionally the bootloader may
+> pass entropy via the /chosen/kaslr-seed node in device tree.
+> 
+> We will use the first 512M of the low memory to randomize the kernel
+> image. The memory will be split in 64M zones. We will use the lower 8
+> bit of the entropy to decide the index of the 64M zone. Then we chose a
+> 16K aligned offset inside the 64M zone to put the kernel in.
+> 
+>      KERNELBASE
+> 
+>          |-->   64M   <--|
+>          |               |
+>          +---------------+    +----------------+---------------+
+>          |               |....|    |kernel|    |               |
+>          +---------------+    +----------------+---------------+
+>          |                         |
+>          |----->   offset    <-----|
+> 
+>                                kernstart_virt_addr
+> 
+> We also check if we will overlap with some areas like the dtb area, the
+> initrd area or the crashkernel area. If we cannot find a proper area,
+> kaslr will be disabled and boot from the original kernel.
+> 
+> Changes since v6:
+>   - Rename create_tlb_entry() to create_kaslr_tlb_entry()
+>   - Remove MAS2_VAL since there is no more users.
+>   - Move kaslr_booke.c to arch/powerpc/mm/nohash.
+>   - Call flush_icache_range() after copying the kernel.
+>   - Warning if no kaslr-seed provided by the bootloader
+>   - Use the right physical address when checking if the new position will overlap with other regions.
+>   - Do not clear bss for the second pass because some global variables will not be initialized again
+>   - Use tabs instead of spaces between the mnemonic and the arguments(in fsl_booke_entry_mapping.S).
+> 
+> Changes since v5:
+>   - Rename M_IF_NEEDED to MAS2_M_IF_NEEDED
+>   - Define some global variable as __ro_after_init
+>   - Replace kimage_vaddr with kernstart_virt_addr
+>   - Depend on RELOCATABLE, not select it
+>   - Modify the comment block below the SPDX tag
+>   - Remove some useless headers in kaslr_booke.c and move is_second_reloc
+>     declarationto mmu_decl.h
+>   - Remove DBG() and use pr_debug() and rewrite comment above get_boot_seed().
+>   - Add a patch to document the KASLR implementation.
+>   - Split a patch from patch #10 which exports kaslr offset in VMCOREINFO ELF notes.
+>   - Remove extra logic around finding nokaslr string in cmdline.
+>   - Make regions static global and __initdata
+> 
+> Changes since v4:
+>   - Add Reviewed-by tag from Christophe
+>   - Remove an unnecessary cast
+>   - Remove unnecessary parenthesis
+>   - Fix checkpatch warning
+> 
+> Changes since v3:
+>   - Add Reviewed-by and Tested-by tag from Diana
+>   - Change the comment in fsl_booke_entry_mapping.S to be consistent
+>     with the new code.
+> 
+> Changes since v2:
+>   - Remove unnecessary #ifdef
+>   - Use SZ_64M instead of0x4000000
+>   - Call early_init_dt_scan_chosen() to init boot_command_line
+>   - Rename kaslr_second_init() to kaslr_late_init()
+> 
+> Changes since v1:
+>   - Remove some useless 'extern' keyword.
+>   - Replace EXPORT_SYMBOL with EXPORT_SYMBOL_GPL
+>   - Improve some assembly code
+>   - Use memzero_explicit instead of memset
+>   - Use boot_command_line and remove early_command_line
+>   - Do not print kaslr offset if kaslr is disabled
+> 
+> Jason Yan (12):
+>    powerpc: unify definition of M_IF_NEEDED
+>    powerpc: move memstart_addr and kernstart_addr to init-common.c
+>    powerpc: introduce kernstart_virt_addr to store the kernel base
+>    powerpc/fsl_booke/32: introduce create_kaslr_tlb_entry() helper
+>    powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
+>    powerpc/fsl_booke/32: implement KASLR infrastructure
+>    powerpc/fsl_booke/32: randomize the kernel image offset
+>    powerpc/fsl_booke/kaslr: clear the original kernel if randomized
+>    powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
+>    powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
+>    powerpc/fsl_booke/kaslr: export offset in VMCOREINFO ELF notes
+>    powerpc/fsl_booke/32: Document KASLR implementation
+> 
+>   Documentation/powerpc/kaslr-booke32.rst       |  42 ++
+>   arch/powerpc/Kconfig                          |  11 +
+>   arch/powerpc/include/asm/nohash/mmu-book3e.h  |  11 +-
+>   arch/powerpc/include/asm/page.h               |   7 +
+>   arch/powerpc/kernel/early_32.c                |   5 +-
+>   arch/powerpc/kernel/exceptions-64e.S          |  12 +-
+>   arch/powerpc/kernel/fsl_booke_entry_mapping.S |  25 +-
+>   arch/powerpc/kernel/head_fsl_booke.S          |  61 ++-
+>   arch/powerpc/kernel/machine_kexec.c           |   1 +
+>   arch/powerpc/kernel/misc_64.S                 |   7 +-
+>   arch/powerpc/kernel/setup-common.c            |  20 +
+>   arch/powerpc/mm/init-common.c                 |   7 +
+>   arch/powerpc/mm/init_32.c                     |   5 -
+>   arch/powerpc/mm/init_64.c                     |   5 -
+>   arch/powerpc/mm/mmu_decl.h                    |  11 +
+>   arch/powerpc/mm/nohash/Makefile               |   1 +
+>   arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-
+>   arch/powerpc/mm/nohash/kaslr_booke.c          | 401 ++++++++++++++++++
+>   18 files changed, 587 insertions(+), 53 deletions(-)
+>   create mode 100644 Documentation/powerpc/kaslr-booke32.rst
+>   create mode 100644 arch/powerpc/mm/nohash/kaslr_booke.c
+> 
+
