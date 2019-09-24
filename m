@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB09BC068
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 04:51:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762ADBC076
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 04:54:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46cm0L2431zDq83
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 12:50:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46cm4v6Bh5zDq83
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2019 12:54:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
  envelope-from=xiaowei.bao@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46clX02sTLzDqQ8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 12:29:51 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 13E081A0398;
- Tue, 24 Sep 2019 04:29:48 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46clX30TCWzDqP7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 12:29:55 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3DB78200950;
+ Tue, 24 Sep 2019 04:29:51 +0200 (CEST)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
  [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 503261A0A01;
- Tue, 24 Sep 2019 04:29:40 +0200 (CEST)
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 76F71200851;
+ Tue, 24 Sep 2019 04:29:43 +0200 (CEST)
 Received: from titan.ap.freescale.net (TITAN.ap.freescale.net [10.192.208.233])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 2AFCF40326;
- Tue, 24 Sep 2019 10:29:29 +0800 (SGT)
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id C4CAA40327;
+ Tue, 24 Sep 2019 10:29:30 +0800 (SGT)
 From: Xiaowei Bao <xiaowei.bao@nxp.com>
 To: robh+dt@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
  leoyang.li@nxp.com, kishon@ti.com, lorenzo.pieralisi@arm.com,
@@ -38,9 +38,10 @@ To: robh+dt@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
  linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 10/11] arm64: dts: layerscape: Add PCIe EP node for ls1088a
-Date: Tue, 24 Sep 2019 10:18:48 +0800
-Message-Id: <20190924021849.3185-11-xiaowei.bao@nxp.com>
+Subject: [PATCH v4 11/11] misc: pci_endpoint_test: Add LS1088a in
+ pci_device_id table
+Date: Tue, 24 Sep 2019 10:18:49 +0800
+Message-Id: <20190924021849.3185-12-xiaowei.bao@nxp.com>
 X-Mailer: git-send-email 2.9.5
 In-Reply-To: <20190924021849.3185-1-xiaowei.bao@nxp.com>
 References: <20190924021849.3185-1-xiaowei.bao@nxp.com>
@@ -61,76 +62,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add PCIe EP node for ls1088a to support EP mode.
+Add LS1088a in pci_device_id table so that pci-epf-test can be used
+for testing PCIe EP in LS1088a.
 
 Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 ---
 v2:
- - Remove the pf-offset proparty.
+ - No change.
 v3:
  - No change.
 v4:
- - No change.
+ - Use a maco to define the LS1088a device ID.
  
- arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi | 31 ++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ drivers/misc/pci_endpoint_test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-index c676d07..da246ab 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-@@ -483,6 +483,17 @@
- 			status = "disabled";
- 		};
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index 6e208a0..8c222a6 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -65,6 +65,7 @@
+ #define PCI_ENDPOINT_TEST_IRQ_NUMBER		0x28
  
-+		pcie_ep@3400000 {
-+			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
-+			reg = <0x00 0x03400000 0x0 0x00100000
-+			       0x20 0x00000000 0x8 0x00000000>;
-+			reg-names = "regs", "addr_space";
-+			num-ib-windows = <24>;
-+			num-ob-windows = <128>;
-+			max-functions = /bits/ 8 <2>;
-+			status = "disabled";
-+		};
-+
- 		pcie@3500000 {
- 			compatible = "fsl,ls1088a-pcie";
- 			reg = <0x00 0x03500000 0x0 0x00100000   /* controller registers */
-@@ -508,6 +519,16 @@
- 			status = "disabled";
- 		};
+ #define PCI_DEVICE_ID_TI_AM654			0xb00c
++#define PCI_DEVICE_ID_LS1088A			0x80c0
  
-+		pcie_ep@3500000 {
-+			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
-+			reg = <0x00 0x03500000 0x0 0x00100000
-+			       0x28 0x00000000 0x8 0x00000000>;
-+			reg-names = "regs", "addr_space";
-+			num-ib-windows = <6>;
-+			num-ob-windows = <8>;
-+			status = "disabled";
-+		};
-+
- 		pcie@3600000 {
- 			compatible = "fsl,ls1088a-pcie";
- 			reg = <0x00 0x03600000 0x0 0x00100000   /* controller registers */
-@@ -533,6 +554,16 @@
- 			status = "disabled";
- 		};
- 
-+		pcie_ep@3600000 {
-+			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
-+			reg = <0x00 0x03600000 0x0 0x00100000
-+			       0x30 0x00000000 0x8 0x00000000>;
-+			reg-names = "regs", "addr_space";
-+			num-ib-windows = <6>;
-+			num-ob-windows = <8>;
-+			status = "disabled";
-+		};
-+
- 		smmu: iommu@5000000 {
- 			compatible = "arm,mmu-500";
- 			reg = <0 0x5000000 0 0x800000>;
+ #define is_am654_pci_dev(pdev)		\
+ 		((pdev)->device == PCI_DEVICE_ID_TI_AM654)
+@@ -793,6 +794,7 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_DRA74x) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_DRA72x) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x81c0) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, PCI_DEVICE_ID_LS1088A) },
+ 	{ PCI_DEVICE_DATA(SYNOPSYS, EDDA, NULL) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654),
+ 	  .driver_data = (kernel_ulong_t)&am654_data
 -- 
 2.9.5
 
