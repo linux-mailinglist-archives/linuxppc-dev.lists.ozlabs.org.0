@@ -1,111 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1C8BD75A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 06:27:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BA4BDD07
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 13:24:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dQ5K1fzTzDqRr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 14:27:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dbLF52ShzDqbk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 21:24:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.4.67; helo=eur03-db5-obe.outbound.protection.outlook.com;
- envelope-from=biwen.li@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
+ envelope-from=aford173@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="qmAZ0rtw"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="KDsJx0z1"; 
  dkim-atps=neutral
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com
- (mail-eopbgr40067.outbound.protection.outlook.com [40.107.4.67])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dPxw6XHSzDqjY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 14:21:06 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E1t+EWkSuOQNyJu+gTesN+AA092Mj2qMuYFxEpTmYhzQ6FyqZQii0teQ5WKY9YU8YfdvRFRSPqCqwy6iUo3W9PK3arIxqAJvkcAWx51Q/Jqjq2OZrKQ61YKkmX5Q6eaKh0WQ6EjK9VK2hNIsEyUQ8D+0y9rhnF9xVoGppDuo2o6ABBEcqA22XWunG5bWb0IKzx8hiv10dLRPqJWbGZI9d9q2gaGXLw7sBFZXE96kkegwNnyK5JHU9d1gmjVS6qirqlCzXZ2lAJctQuteey/0574DcjnnTZMLXDuzcWdBhJIIJj29xfXEm9JdlwxrNXMhnB2gITEjr5jzzstHr2T0EQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7bNViU+H4OT41P5xc4/eS9rZMyylBGXYUnt0p+fNMaM=;
- b=WFd77ANpSopNXs2nWWQu0AD2qvyN004VLbTgHgDLUNuSPt/tJLbXDoIr19VOh6G1rHOk3pHzqLFaitJkMf8FukCQNXKxwXuBA21LmZe2S8d5wz2YoANIWFA7XI/nG7Wr/cfDTGmy4anoVt9WEKhcxXq5ffl79gtaZYpo1r5ZC6QjhZqZZdzO1mYYDoVVwEngsoYrkomGgYunkSIXXaBNkvoj3fmK7lEeuyuwmIuF1//je2UEsVYaXAx3576XJkTmkijHKxnCaAXH6X+jHxvJBiVfnJfCZgKBiWGLI5XR6ykmXB6jLiFtt/TjZL6FvpatJ7hBpn3kydJKnSbzvHfs+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7bNViU+H4OT41P5xc4/eS9rZMyylBGXYUnt0p+fNMaM=;
- b=qmAZ0rtwE3EBZcabCJpiBIgv7XFcgUoKZRwu1vcfA5sKlwIDEYjvpvsr6VlBXC3/FUTT/VPsageMPIB3EicF+iWgKzr/crxOOhd0sE7do6vUhzmYUXHCfiEaA8UMVGZ/5oVQk3JeKZGofymxLFMi9C+WcZyTISkvwr0QRGzzB78=
-Received: from DB7PR04MB4490.eurprd04.prod.outlook.com (52.135.138.150) by
- DB7PR04MB4220.eurprd04.prod.outlook.com (52.135.131.18) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2284.20; Wed, 25 Sep 2019 04:21:01 +0000
-Received: from DB7PR04MB4490.eurprd04.prod.outlook.com
- ([fe80::4427:96f2:f651:6dfa]) by DB7PR04MB4490.eurprd04.prod.outlook.com
- ([fe80::4427:96f2:f651:6dfa%5]) with mapi id 15.20.2284.023; Wed, 25 Sep 2019
- 04:21:00 +0000
-From: Biwen Li <biwen.li@nxp.com>
-To: Leo Li <leoyang.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
- "robh+dt@kernel.org" <robh+dt@kernel.org>, "mark.rutland@arm.com"
- <mark.rutland@arm.com>, Ran Wang <ran.wang_1@nxp.com>
-Subject: RE: [v3,3/3] Documentation: dt: binding: fsl: Add
- 'fsl,ippdexpcr-alt-addr' property
-Thread-Topic: [v3,3/3] Documentation: dt: binding: fsl: Add
- 'fsl,ippdexpcr-alt-addr' property
-Thread-Index: AQHVcoOnab7d5ysBNkWsXmY0PrfSuKc6/L+AgAC3JZCAAAkFAIAAANMggAABmICAAAIKMIAAAb8AgAACHkCAAAZAMA==
-Date: Wed, 25 Sep 2019 04:21:00 +0000
-Message-ID: <DB7PR04MB4490684FE0E95695E89173948F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
-References: <20190924024548.4356-1-biwen.li@nxp.com>
- <20190924024548.4356-3-biwen.li@nxp.com>
- <AM0PR04MB667690EE76D327D0FC09F7818F840@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB449034C4BBAA89685A2130F78F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
- <AM0PR04MB66762594DDFC6E5B00BD103C8F870@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB4490FECDC76507AADC35948E8F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
- <AM0PR04MB6676BD24B814C3D1D67CF9F88F870@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB4490EAE9591B5AE7112C9D188F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
- <AM0PR04MB6676B8A6F7C7C3BC822B45B28F870@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB44902BADDDFD090BAF4178C68F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
-In-Reply-To: <DB7PR04MB44902BADDDFD090BAF4178C68F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=biwen.li@nxp.com; 
-x-originating-ip: [119.31.174.73]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4dddadb6-cadb-4864-3d9c-08d7416fc5ae
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
- SRVR:DB7PR04MB4220; 
-x-ms-traffictypediagnostic: DB7PR04MB4220:|DB7PR04MB4220:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB7PR04MB422053D18B496356B9510E718F870@DB7PR04MB4220.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 01713B2841
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(346002)(396003)(136003)(366004)(39860400002)(376002)(189003)(199004)(74316002)(26005)(305945005)(52536014)(7736002)(33656002)(66476007)(229853002)(64756008)(3846002)(66446008)(2906002)(86362001)(76116006)(66946007)(14444005)(5660300002)(25786009)(478600001)(6116002)(256004)(110136005)(14454004)(66066001)(476003)(71190400001)(55016002)(11346002)(9686003)(71200400001)(4326008)(99286004)(486006)(54906003)(2940100002)(81156014)(44832011)(6506007)(2501003)(6246003)(316002)(186003)(102836004)(446003)(8676002)(7696005)(8936002)(66556008)(6636002)(6436002)(81166006)(76176011)(142933001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DB7PR04MB4220;
- H:DB7PR04MB4490.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: GC8hJbU44SOz2jrg8HjT4lOVgwasMQGrqN1cktwoQuRJLQ0lCkNzdNz10cvkGabzFIKbqLT/C7T2p9CPFNnuQrs1FSybz4UnN5RrcDfPho41gT/DrPmNCMnTsiTFZTyp5r7ddhTD7+Pwbmf5tbZu+LFcy/0rlfDb7OxzxDFnD/3lYK0xzPmjBHcBpAlk7+f2w1i8lyUmQ0xn2gSWPbQfET4w6/oIg0lQmr1/E06CIkeM4Aih73fLf6QrhO6RJDdFYr0UvrShMwJvfN4iC3wNDvWAizyC2cqY55O1FHKmBC+buKe+7/ozDT4Xe7uwnWwSXVkzD3MkdAunAkcdr7Z8Nk5Pnxc0jLItTbWaTN4OWkvRd8GLzxm9Bj4qlTqhrwmLSOryHe5scg/oXC+OZ0PtmYyCfwwQBKGJZ6VJ8oCIJvI=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46d8120fnxzDqWp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 03:52:50 +1000 (AEST)
+Received: by mail-io1-xd43.google.com with SMTP id c6so6547882ioo.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 10:52:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=i7nOdUPQO8n52YcV67l4CYsUQMUzMn8oGMVoe1snO9A=;
+ b=KDsJx0z1LDZXVlzQqXRrdwBlzM09gGR/sb1O1xx0IBuRbKHHe5jHQgVafZu5mO7o/a
+ EMP5O+b5/zIGrE6jOB9HABkMWPsIzH2eY5i/TSXPnwFQVkaUmUlTCKG41j3IxWXoQqaI
+ 21ipDPaF2Gn8VudpwuI7M4ocIcbMZ4ylo/zwg99zZbEo2ciDuq1oRfl539G8TNPoUmIv
+ 6A3m5wKxFgOl9M6ihgmG8xwGKJnInS8A0/2CIuv3DGfrbhKa7BJ9lMnwYkHTc508Jt8Z
+ Gtbm0d/l5TPJkjEUOJReowOLVxpJTkSQyk3HMAW1PrmkFMKZr2+SFOHIVq//d7WpT5a1
+ wygw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=i7nOdUPQO8n52YcV67l4CYsUQMUzMn8oGMVoe1snO9A=;
+ b=K6Jjq/Cc6GmOt0RbjaloqnKxm0QYivB3wcgewuThOhX+HAC+pG+gzkfZbjHK6VFi8O
+ egYISnmHPYxzQy2buZ1Fo0XC5vNM9TmZDAneLQH3LmEwsl/eV15trhnhFiceAr9jVXza
+ sDFIxb1BCHkG4hR/6EUk6QaFEdR18JZJxJmtv5aoU4oPhBjfRyElMAlWtJkxcHUwGjXj
+ ygjcxfUr/IuthwafSmIo8q4NZWyQBvyd5G8tFFwepfMw1VC61m56urIBNPQ2ygtzgRha
+ a5sHjYURVcZQRf+PMOAk/3Vpc0IOapTwhVfnNWBoJNkOHDyPbhcJtlqdk5ksPmNFx+jf
+ 39qQ==
+X-Gm-Message-State: APjAAAWyLEq4GEBXfMS+lHP7pPyvw7IA/iiIvYjouVZ/GUQrc+FT4puR
+ WpINzpaRfmZvNrCPp65WSlJViW1GONSMBNKzfUU=
+X-Google-Smtp-Source: APXvYqzavLuw+fYyO/Ee/mlQ+iY4CvacUIYc3xWeyHRCeNGC5+bZUljuFpVga925HYErcNTBU0srAK1dAYx0mT418mM=
+X-Received: by 2002:a6b:cd81:: with SMTP id d123mr4933848iog.78.1569347566383; 
+ Tue, 24 Sep 2019 10:52:46 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4dddadb6-cadb-4864-3d9c-08d7416fc5ae
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2019 04:21:00.8411 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: a+1pcrM7oEO4ET9TkuPrI3cCiFdkMCe5PXaMfVtKn6Ae2vYbGrX4/C9zWkPrZWueFxBXb1YCQzufeV+CYH6rqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4220
+References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
+In-Reply-To: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
+From: Adam Ford <aford173@gmail.com>
+Date: Tue, 24 Sep 2019 12:52:35 -0500
+Message-ID: <CAHCN7x+Jv7yGPoB0Gm=TJ30ObLJduw2XomHkd++KqFEURYQcGg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/21] Refine memblock API
+To: Mike Rapoport <rppt@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Wed, 25 Sep 2019 21:11:23 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,146 +73,273 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Petr Mladek <pmladek@suse.com>, linux-sh@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ sparclinux@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Richard Weinberger <richard@nod.at>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, kasan-dev@googlegroups.com,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Mark Salter <msalter@redhat.com>,
+ Dennis Zhou <dennis@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
+ devicetree <devicetree@vger.kernel.org>, linux-xtensa@linux-xtensa.org,
+ linux-um@lists.infradead.org, etnaviv@lists.freedesktop.org,
+ linux-m68k@lists.linux-m68k.org, Rob Herring <robh+dt@kernel.org>,
+ Greentime Hu <green.hu@gmail.com>, xen-devel@lists.xenproject.org,
+ Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ arm-soc <linux-arm-kernel@lists.infradead.org>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ openrisc@lists.librecores.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> > >
-> > > > > > > > >
-> > > > > > > > > The 'fsl,ippdexpcr-alt-addr' property is used to handle
-> > > > > > > > > an errata
-> > > > > > > > > A-008646 on LS1021A
-> > > > > > > > >
-> > > > > > > > > Signed-off-by: Biwen Li <biwen.li@nxp.com>
-> > > > > > > > > ---
-> > > > > > > > > Change in v3:
-> > > > > > > > > 	- rename property name
-> > > > > > > > > 	  fsl,rcpm-scfg -> fsl,ippdexpcr-alt-addr
-> > > > > > > > >
-> > > > > > > > > Change in v2:
-> > > > > > > > > 	- update desc of the property 'fsl,rcpm-scfg'
-> > > > > > > > >
-> > > > > > > > >  Documentation/devicetree/bindings/soc/fsl/rcpm.txt | 14
-> > > > > > > > > ++++++++++++++
-> > > > > > > > >  1 file changed, 14 insertions(+)
-> > > > > > > > >
-> > > > > > > > > diff --git
-> > > > > > > > > a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > index 5a33619d881d..157dcf6da17c 100644
-> > > > > > > > > --- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > +++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > @@ -34,6 +34,11 @@ Chassis Version		Example
-> > > Chips
-> > > > > > > > >  Optional properties:
-> > > > > > > > >   - little-endian : RCPM register block is Little Endian.
-> > > > > > > > > Without it
-> > > > RCPM
-> > > > > > > > >     will be Big Endian (default case).
-> > > > > > > > > + - fsl,ippdexpcr-alt-addr : Must add the property for
-> > > > > > > > > + SoC LS1021A,
-> > > > > > > >
-> > > > > > > > You probably should mention this is related to a hardware
-> > > > > > > > issue on LS1021a and only needed on LS1021a.
-> > > > > > > Okay, got it, thanks, I will add this in v4.
-> > > > > > > >
-> > > > > > > > > +   Must include n + 1 entries (n =3D
-> > > > > > > > > + #fsl,rcpm-wakeup-cells, such
-> > as:
-> > > > > > > > > +   #fsl,rcpm-wakeup-cells equal to 2, then must include
-> > > > > > > > > + 2
-> > > > > > > > > + +
-> > > > > > > > > + 1
-> > > > entries).
-> > > > > > > >
-> > > > > > > > #fsl,rcpm-wakeup-cells is the number of IPPDEXPCR
-> > > > > > > > registers on an
-> > > > SoC.
-> > > > > > > > However you are defining an offset to scfg registers here.
-> > > > > > > > Why these two are related?  The length here should
-> > > > > > > > actually be related to the #address-cells of the soc/.
-> > > > > > > > But since this is only needed for LS1021, you can
-> > > > > > > just make it 3.
-> > > > > > > I need set the value of IPPDEXPCR resgiters from ftm_alarm0
-> > > > > > > device node(fsl,rcpm-wakeup =3D <&rcpm 0x0 0x20000000>;
-> > > > > > > 0x0 is a value for IPPDEXPCR0, 0x20000000 is a value for
-> > > > IPPDEXPCR1).
-> > > > > > > But because of the hardware issue on LS1021A, I need store
-> > > > > > > the value of IPPDEXPCR registers to an alt address. So I
-> > > > > > > defining an offset to scfg registers, then RCPM driver get
-> > > > > > > an abosolute address from offset, RCPM driver write the
-> > > > > > > value of IPPDEXPCR registers to these abosolute
-> > > > > > > addresses(backup the value of IPPDEXPCR
-> > > > registers).
-> > > > > >
-> > > > > > I understand what you are trying to do.  The problem is that
-> > > > > > the new fsl,ippdexpcr-alt-addr property contains a phandle and =
-an
-> offset.
-> > > > > > The size of it shouldn't be related to #fsl,rcpm-wakeup-cells.
-> > > > > You maybe like this: fsl,ippdexpcr-alt-addr =3D <&scfg 0x51c>;/*
-> > > > > SCFG_SPARECR8 */
-> > > >
-> > > > No.  The #address-cell for the soc/ is 2, so the offset to scfg
-> > > > should be 0x0 0x51c.  The total size should be 3, but it shouldn't
-> > > > be coming from #fsl,rcpm-wakeup-cells like you mentioned in the
-> binding.
-> > > Oh, I got it. You want that fsl,ippdexpcr-alt-add is relative with
-> > > #address-cells instead of #fsl,rcpm-wakeup-cells.
-> >
-> > Yes.
-> I got an example from drivers/pci/controller/dwc/pci-layerscape.c
-> and arch/arm/boot/dts/ls1021a.dtsi as follows:
-> fsl,pcie-scfg =3D <&scfg 0>, 0 is an index
->=20
-> In my fsl,ippdexpcr-alt-addr =3D <&scfg 0x0 0x51c>, It means that 0x0 is =
-an alt
-> offset address for IPPDEXPCR0, 0x51c is an alt offset address For
-> IPPDEXPCR1 instead of 0x0 and 0x51c compose to an alt address of
-> SCFG_SPARECR8.
-Maybe I need write it as:
-fsl,ippdexpcr-alt-addr =3D <&scfg 0x0 0x0 0x0 0x51c>;
-first two 0x0 compose an alt offset address for IPPDEXPCR0,
-last 0x0 and 0x51c compose an alt address for IPPDEXPCR1,
+On Mon, Jan 21, 2019 at 2:05 AM Mike Rapoport <rppt@linux.ibm.com> wrote:
+>
+> Hi,
+>
+> Current memblock API is quite extensive and, which is more annoying,
+> duplicated. Except the low-level functions that allow searching for a free
+> memory region and marking it as reserved, memblock provides three (well,
+> two and a half) sets of functions to allocate memory. There are several
+> overlapping functions that return a physical address and there are
+> functions that return virtual address. Those that return the virtual
+> address may also clear the allocated memory. And, on top of all that, some
+> allocators panic and some return NULL in case of error.
+>
+> This set tries to reduce the mess, and trim down the amount of memblock
+> allocation methods.
+>
+> Patches 1-10 consolidate the functions that return physical address of
+> the allocated memory
+>
+> Patches 11-13 are some trivial cleanups
+>
+> Patches 14-19 add checks for the return value of memblock_alloc*() and
+> panics in case of errors. The patches 14-18 include some minor refactoring
+> to have better readability of the resulting code and patch 19 is a
+> mechanical addition of
+>
+>         if (!ptr)
+>                 panic();
+>
+> after memblock_alloc*() calls.
+>
+> And, finally, patches 20 and 21 remove panic() calls memblock and _nopanic
+> variants from memblock.
+>
+> v2 changes:
+> * replace some more %lu with %zu
+> * remove panics where they are not needed in s390 and in printk
+> * collect Acked-by and Reviewed-by.
+>
+>
+> Christophe Leroy (1):
+>   powerpc: use memblock functions returning virtual address
+>
+> Mike Rapoport (20):
+>   openrisc: prefer memblock APIs returning virtual address
+>   memblock: replace memblock_alloc_base(ANYWHERE) with memblock_phys_alloc
+>   memblock: drop memblock_alloc_base_nid()
+>   memblock: emphasize that memblock_alloc_range() returns a physical address
+>   memblock: memblock_phys_alloc_try_nid(): don't panic
+>   memblock: memblock_phys_alloc(): don't panic
+>   memblock: drop __memblock_alloc_base()
+>   memblock: drop memblock_alloc_base()
+>   memblock: refactor internal allocation functions
+>   memblock: make memblock_find_in_range_node() and choose_memblock_flags() static
+>   arch: use memblock_alloc() instead of memblock_alloc_from(size, align, 0)
+>   arch: don't memset(0) memory returned by memblock_alloc()
+>   ia64: add checks for the return value of memblock_alloc*()
+>   sparc: add checks for the return value of memblock_alloc*()
+>   mm/percpu: add checks for the return value of memblock_alloc*()
+>   init/main: add checks for the return value of memblock_alloc*()
+>   swiotlb: add checks for the return value of memblock_alloc*()
+>   treewide: add checks for the return value of memblock_alloc*()
+>   memblock: memblock_alloc_try_nid: don't panic
+>   memblock: drop memblock_alloc_*_nopanic() variants
+>
+I know it's rather late, but this patch broke the Etnaviv 3D graphics
+in my i.MX6Q.
 
-Best Regards,
-Biwen Li=20
-> >
-> > Regards,
-> > Leo
-> > > >
-> > > > > >
-> > > > > > > >
-> > > > > > > > > +   The first entry must be a link to the SCFG device nod=
-e.
-> > > > > > > > > +   The non-first entry must be offset of registers of SC=
-FG.
-> > > > > > > > >
-> > > > > > > > >  Example:
-> > > > > > > > >  The RCPM node for T4240:
-> > > > > > > > > @@ -43,6 +48,15 @@ The RCPM node for T4240:
-> > > > > > > > >  		#fsl,rcpm-wakeup-cells =3D <2>;
-> > > > > > > > >  	};
-> > > > > > > > >
-> > > > > > > > > +The RCPM node for LS1021A:
-> > > > > > > > > +	rcpm: rcpm@1ee2140 {
-> > > > > > > > > +		compatible =3D "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-
-> > > > > 2.1+";
-> > > > > > > > > +		reg =3D <0x0 0x1ee2140 0x0 0x8>;
-> > > > > > > > > +		#fsl,rcpm-wakeup-cells =3D <2>;
-> > > > > > > > > +		fsl,ippdexpcr-alt-addr =3D <&scfg 0x0 0x51c>; /*
-> > > > > > > > > SCFG_SPARECR8 */
-> > > > > > > > > +	};
-> > > > > > > > > +
-> > > > > > > > > +
-> > > > > > > > >  * Freescale RCPM Wakeup Source Device Tree Bindings
-> > > > > > > > >  -------------------------------------------
-> > > > > > > > >  Required fsl,rcpm-wakeup property should be added to a
-> > > > > > > > > device node if the device
-> > > > > > > > > --
-> > > > > > > > > 2.17.1
+When I try to use the 3D, it returns some errors and the dmesg log
+shows some memory allocation errors too:
+[    3.682347] etnaviv etnaviv: bound 130000.gpu (ops gpu_ops)
+[    3.688669] etnaviv etnaviv: bound 134000.gpu (ops gpu_ops)
+[    3.695099] etnaviv etnaviv: bound 2204000.gpu (ops gpu_ops)
+[    3.700800] etnaviv-gpu 130000.gpu: model: GC2000, revision: 5108
+[    3.723013] etnaviv-gpu 130000.gpu: command buffer outside valid
+memory window
+[    3.731308] etnaviv-gpu 134000.gpu: model: GC320, revision: 5007
+[    3.752437] etnaviv-gpu 134000.gpu: command buffer outside valid
+memory window
+[    3.760583] etnaviv-gpu 2204000.gpu: model: GC355, revision: 1215
+[    3.766766] etnaviv-gpu 2204000.gpu: Ignoring GPU with VG and FE2.0
+[    3.776131] [drm] Initialized etnaviv 1.2.0 20151214 for etnaviv on minor 0
 
+# glmark2-es2-drm
+Error creating gpu
+Error: eglCreateWindowSurface failed with error: 0x3009
+Error: eglCreateWindowSurface failed with error: 0x3009
+Error: CanvasGeneric: Invalid EGL state
+Error: main: Could not initialize canvas
+
+
+Before this patch:
+
+[    3.691995] etnaviv etnaviv: bound 130000.gpu (ops gpu_ops)
+[    3.698356] etnaviv etnaviv: bound 134000.gpu (ops gpu_ops)
+[    3.704792] etnaviv etnaviv: bound 2204000.gpu (ops gpu_ops)
+[    3.710488] etnaviv-gpu 130000.gpu: model: GC2000, revision: 5108
+[    3.733649] etnaviv-gpu 134000.gpu: model: GC320, revision: 5007
+[    3.756115] etnaviv-gpu 2204000.gpu: model: GC355, revision: 1215
+[    3.762250] etnaviv-gpu 2204000.gpu: Ignoring GPU with VG and FE2.0
+[    3.771432] [drm] Initialized etnaviv 1.2.0 20151214 for etnaviv on minor 0
+
+and the 3D gemos work without this.
+
+I don't know enough about the i.MX6 nor the 3D accelerator to know how
+to fix it.
+I am hoping someone in the know might have some suggestions.
+
+>  arch/alpha/kernel/core_cia.c              |   5 +-
+>  arch/alpha/kernel/core_marvel.c           |   6 +
+>  arch/alpha/kernel/pci-noop.c              |  13 +-
+>  arch/alpha/kernel/pci.c                   |  11 +-
+>  arch/alpha/kernel/pci_iommu.c             |  16 +-
+>  arch/alpha/kernel/setup.c                 |   2 +-
+>  arch/arc/kernel/unwind.c                  |   3 +-
+>  arch/arc/mm/highmem.c                     |   4 +
+>  arch/arm/kernel/setup.c                   |   6 +
+>  arch/arm/mm/init.c                        |   6 +-
+>  arch/arm/mm/mmu.c                         |  14 +-
+>  arch/arm64/kernel/setup.c                 |   8 +-
+>  arch/arm64/mm/kasan_init.c                |  10 ++
+>  arch/arm64/mm/mmu.c                       |   2 +
+>  arch/arm64/mm/numa.c                      |   4 +
+>  arch/c6x/mm/dma-coherent.c                |   4 +
+>  arch/c6x/mm/init.c                        |   4 +-
+>  arch/csky/mm/highmem.c                    |   5 +
+>  arch/h8300/mm/init.c                      |   4 +-
+>  arch/ia64/kernel/mca.c                    |  25 +--
+>  arch/ia64/mm/contig.c                     |   8 +-
+>  arch/ia64/mm/discontig.c                  |   4 +
+>  arch/ia64/mm/init.c                       |  38 ++++-
+>  arch/ia64/mm/tlb.c                        |   6 +
+>  arch/ia64/sn/kernel/io_common.c           |   3 +
+>  arch/ia64/sn/kernel/setup.c               |  12 +-
+>  arch/m68k/atari/stram.c                   |   4 +
+>  arch/m68k/mm/init.c                       |   3 +
+>  arch/m68k/mm/mcfmmu.c                     |   7 +-
+>  arch/m68k/mm/motorola.c                   |   9 ++
+>  arch/m68k/mm/sun3mmu.c                    |   6 +
+>  arch/m68k/sun3/sun3dvma.c                 |   3 +
+>  arch/microblaze/mm/init.c                 |  10 +-
+>  arch/mips/cavium-octeon/dma-octeon.c      |   3 +
+>  arch/mips/kernel/setup.c                  |   3 +
+>  arch/mips/kernel/traps.c                  |   5 +-
+>  arch/mips/mm/init.c                       |   5 +
+>  arch/nds32/mm/init.c                      |  12 ++
+>  arch/openrisc/mm/init.c                   |   5 +-
+>  arch/openrisc/mm/ioremap.c                |   8 +-
+>  arch/powerpc/kernel/dt_cpu_ftrs.c         |   8 +-
+>  arch/powerpc/kernel/irq.c                 |   5 -
+>  arch/powerpc/kernel/paca.c                |   6 +-
+>  arch/powerpc/kernel/pci_32.c              |   3 +
+>  arch/powerpc/kernel/prom.c                |   5 +-
+>  arch/powerpc/kernel/rtas.c                |   6 +-
+>  arch/powerpc/kernel/setup-common.c        |   3 +
+>  arch/powerpc/kernel/setup_32.c            |  26 ++--
+>  arch/powerpc/kernel/setup_64.c            |   4 +
+>  arch/powerpc/lib/alloc.c                  |   3 +
+>  arch/powerpc/mm/hash_utils_64.c           |  11 +-
+>  arch/powerpc/mm/mmu_context_nohash.c      |   9 ++
+>  arch/powerpc/mm/numa.c                    |   4 +
+>  arch/powerpc/mm/pgtable-book3e.c          |  12 +-
+>  arch/powerpc/mm/pgtable-book3s64.c        |   3 +
+>  arch/powerpc/mm/pgtable-radix.c           |   9 +-
+>  arch/powerpc/mm/ppc_mmu_32.c              |   3 +
+>  arch/powerpc/platforms/pasemi/iommu.c     |   3 +
+>  arch/powerpc/platforms/powermac/nvram.c   |   3 +
+>  arch/powerpc/platforms/powernv/opal.c     |   3 +
+>  arch/powerpc/platforms/powernv/pci-ioda.c |   8 +
+>  arch/powerpc/platforms/ps3/setup.c        |   3 +
+>  arch/powerpc/sysdev/dart_iommu.c          |   3 +
+>  arch/powerpc/sysdev/msi_bitmap.c          |   3 +
+>  arch/s390/kernel/crash_dump.c             |   3 +
+>  arch/s390/kernel/setup.c                  |  16 ++
+>  arch/s390/kernel/smp.c                    |   9 +-
+>  arch/s390/kernel/topology.c               |   6 +
+>  arch/s390/numa/mode_emu.c                 |   3 +
+>  arch/s390/numa/numa.c                     |   6 +-
+>  arch/sh/boards/mach-ap325rxa/setup.c      |   5 +-
+>  arch/sh/boards/mach-ecovec24/setup.c      |  10 +-
+>  arch/sh/boards/mach-kfr2r09/setup.c       |   5 +-
+>  arch/sh/boards/mach-migor/setup.c         |   5 +-
+>  arch/sh/boards/mach-se/7724/setup.c       |  10 +-
+>  arch/sh/kernel/machine_kexec.c            |   3 +-
+>  arch/sh/mm/init.c                         |   8 +-
+>  arch/sh/mm/numa.c                         |   4 +
+>  arch/sparc/kernel/prom_32.c               |   6 +-
+>  arch/sparc/kernel/setup_64.c              |   6 +
+>  arch/sparc/kernel/smp_64.c                |  12 ++
+>  arch/sparc/mm/init_32.c                   |   2 +-
+>  arch/sparc/mm/init_64.c                   |  11 ++
+>  arch/sparc/mm/srmmu.c                     |  18 ++-
+>  arch/um/drivers/net_kern.c                |   3 +
+>  arch/um/drivers/vector_kern.c             |   3 +
+>  arch/um/kernel/initrd.c                   |   2 +
+>  arch/um/kernel/mem.c                      |  16 ++
+>  arch/unicore32/kernel/setup.c             |   4 +
+>  arch/unicore32/mm/mmu.c                   |  15 +-
+>  arch/x86/kernel/acpi/boot.c               |   3 +
+>  arch/x86/kernel/apic/io_apic.c            |   5 +
+>  arch/x86/kernel/e820.c                    |   5 +-
+>  arch/x86/kernel/setup_percpu.c            |  10 +-
+>  arch/x86/mm/kasan_init_64.c               |  14 +-
+>  arch/x86/mm/numa.c                        |  12 +-
+>  arch/x86/platform/olpc/olpc_dt.c          |   3 +
+>  arch/x86/xen/p2m.c                        |  11 +-
+>  arch/xtensa/mm/kasan_init.c               |  10 +-
+>  arch/xtensa/mm/mmu.c                      |   3 +
+>  drivers/clk/ti/clk.c                      |   3 +
+>  drivers/firmware/memmap.c                 |   2 +-
+>  drivers/macintosh/smu.c                   |   5 +-
+>  drivers/of/fdt.c                          |   8 +-
+>  drivers/of/of_reserved_mem.c              |   7 +-
+>  drivers/of/unittest.c                     |   8 +-
+>  drivers/usb/early/xhci-dbc.c              |   2 +-
+>  drivers/xen/swiotlb-xen.c                 |   7 +-
+>  include/linux/memblock.h                  |  59 +------
+>  init/main.c                               |  26 +++-
+>  kernel/dma/swiotlb.c                      |  21 ++-
+>  kernel/power/snapshot.c                   |   3 +
+>  kernel/printk/printk.c                    |   9 +-
+>  lib/cpumask.c                             |   3 +
+>  mm/cma.c                                  |  10 +-
+>  mm/kasan/init.c                           |  10 +-
+>  mm/memblock.c                             | 249 ++++++++++--------------------
+>  mm/page_alloc.c                           |  10 +-
+>  mm/page_ext.c                             |   2 +-
+>  mm/percpu.c                               |  84 +++++++---
+>  mm/sparse.c                               |  25 ++-
+>  121 files changed, 860 insertions(+), 412 deletions(-)
+>
+> --
+> 2.7.4
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
