@@ -1,76 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC11BDFAF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 16:11:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25ABBE10F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 17:19:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dg2k68CGzDqlh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 00:11:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dhYS0JsYzDqly
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 01:19:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com;
+ envelope-from=festevam@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eghD7xF1"; 
+ dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dfyY0crvzDqg7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 00:07:28 +1000 (AEST)
-Received: by mail-ot1-f65.google.com with SMTP id 67so4916925oto.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 07:07:28 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46dhWB1Lz6zDqXB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 01:17:25 +1000 (AEST)
+Received: by mail-lj1-x243.google.com with SMTP id y23so6069833lje.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 08:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=rTBq6P5OxsGLjoGVhyAwZM8k0vklyHGTB2oJI82Er7M=;
+ b=eghD7xF1O36vsBrF3R1Ol+O9tfU+0jO9JXTPAGDQj/eD9TEB4fS0VQFijoygPStgr3
+ 10lJjOrWc1bicRYqBtncYZdXUVZQzGo/mCRUFcwwwv+kexKbN1ES5l5Ac30Iyy/VSy6b
+ zUdkmBZi6iQtLRd1ksj9hb1AR/76sVMVefmq8BgklCKkDi+tVqaxFM4AvBWSG3sKDCRC
+ NPA4lDaeoCpS8CsgLxRZg802nWrQPQecGCdXqYctiynPyMIAzYncAW7BXnLuqZdmqiq7
+ lmNY1mZLDVoPD5SAcNNPdqQCcypDkXcAg+PaiFPMbfZqC2X+xM6M1pHyx+WOo3XdPYs0
+ eCpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=gNzfLxyphufZW7oX+loBgrNcosGjw89AhG0FkoAT9T0=;
- b=c3thwQgBKgpbqRd7dl4ekURNnju8ekq/nK/CC1udcl+nxGWSyHXDQREq/XEyZL6ieq
- 7OuCgQ6vVsjU8+yUI/fyslvguNShNMMcKWZeg7yfVeBmeK6ZvyVTdSDzByPlz/t2WrE1
- XIEzCYpXHAlG6DMF6Ehvw3CxdvR/rmoPtbNAJpEhehu28uFB5cTFyywF9Ccy1XpezKJO
- oR/3sx5ELDzdsdDIM9WsVVgReZdWG1dgaAicguuZZgX64qwi02WWNKHve5JO5UOBm4WY
- qGgtsmzzsBzUls0uWRLrrB4vWn9d11AMq+9uxzyh1sw2VfQZsE7WA7vWpQLtnRrnCnOC
- cOaw==
-X-Gm-Message-State: APjAAAUnKFxXrkfE6703rDDwaQwUCgue+4qY077i3HJfTaxHCcQQpb7T
- tFwHfR2Ys0rk/lIFn5OhfVKK+wOR
-X-Google-Smtp-Source: APXvYqyylUPZWSG2iQg22c0CH81/CF243Q5GvdlR98oKIkx6prFblSiZCokLjlWLvsnucid/GqWS8Q==
-X-Received: by 2002:a05:6830:1586:: with SMTP id
- i6mr6380614otr.346.1569420444934; 
- Wed, 25 Sep 2019 07:07:24 -0700 (PDT)
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com.
- [209.85.167.170])
- by smtp.gmail.com with ESMTPSA id a88sm1734918otb.0.2019.09.25.07.07.23
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Sep 2019 07:07:23 -0700 (PDT)
-Received: by mail-oi1-f170.google.com with SMTP id k20so4995903oih.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 07:07:23 -0700 (PDT)
-X-Received: by 2002:aca:d988:: with SMTP id q130mr4486320oig.13.1569420442960; 
- Wed, 25 Sep 2019 07:07:22 -0700 (PDT)
+ bh=rTBq6P5OxsGLjoGVhyAwZM8k0vklyHGTB2oJI82Er7M=;
+ b=F8Wf9BIUt+7SZ4zWiFvkwxPc1pbDIOA2GygRuQo31sjjqotegqcDs5UWRC2p9i3y3n
+ fjUKawvLIKNSvrnWSyQRzF2I3Yzw4pfHLdjE5R5h8sGuNT6QY67OJLsOsx9c/V1nTLL/
+ wyvBnLYlBZJa5o/9c7ntRHVs1aG4RM9rWn4pZ9t6P3J7x63TJjZDGsSHk21DiGnRc5t9
+ /jqauj0BpoidZwMPPzP9vv+FjkPn3MA/wDLckB22/xxr7E1fMib5bpPUJpRM1/hWsqVN
+ pCa+O7nWw8kA+mTBp3UKBswl79a5wqvg/wdmxXeqzeH6hHGh8ACbIEitKZmRk04DMLVN
+ tlCA==
+X-Gm-Message-State: APjAAAU84cP4lF2iZJlTWFDsqk6rfxHNVZ/7GR+7lFIlgvU5ZkxANPEu
+ xNV7UzXXwX1NvPIq8JSZoHxxFLntz8a4ixiR+Oc=
+X-Google-Smtp-Source: APXvYqzF1RqhBAB47TPrTDl3zKUBxVzKbXcvNvcrU2oxqh5sJKOV3USfSG9GeeJJkpUMrG8FnoJZki1WHtkUnydqfw8=
+X-Received: by 2002:a2e:b0f4:: with SMTP id h20mr1893730ljl.10.1569424639817; 
+ Wed, 25 Sep 2019 08:17:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190924024548.4356-1-biwen.li@nxp.com>
- <20190924024548.4356-3-biwen.li@nxp.com>
- <AM0PR04MB667690EE76D327D0FC09F7818F840@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB449034C4BBAA89685A2130F78F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
- <AM0PR04MB66762594DDFC6E5B00BD103C8F870@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB4490FECDC76507AADC35948E8F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
- <AM0PR04MB6676BD24B814C3D1D67CF9F88F870@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB4490EAE9591B5AE7112C9D188F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
- <AM0PR04MB6676B8A6F7C7C3BC822B45B28F870@AM0PR04MB6676.eurprd04.prod.outlook.com>
- <DB7PR04MB44902BADDDFD090BAF4178C68F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
- <DB7PR04MB4490684FE0E95695E89173948F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
-In-Reply-To: <DB7PR04MB4490684FE0E95695E89173948F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Wed, 25 Sep 2019 09:07:12 -0500
-X-Gmail-Original-Message-ID: <CADRPPNQ+=au2qRL2K-tzhH8HK1+sO+ut9YBhYw4UhWSv5FF88A@mail.gmail.com>
-Message-ID: <CADRPPNQ+=au2qRL2K-tzhH8HK1+sO+ut9YBhYw4UhWSv5FF88A@mail.gmail.com>
-Subject: Re: [v3, 3/3] Documentation: dt: binding: fsl: Add 'fsl,
- ippdexpcr-alt-addr' property
-To: Biwen Li <biwen.li@nxp.com>
+References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
+ <CAHCN7x+Jv7yGPoB0Gm=TJ30ObLJduw2XomHkd++KqFEURYQcGg@mail.gmail.com>
+ <CAOMZO5A_U4aYC4XZXK1r9JaLg-eRdXy8m6z4GatQp62rK4HZ6A@mail.gmail.com>
+ <CAHCN7xJdzEppn8-74SvzACsA25bUHGdV7v=CfS08xzSi59Z2uw@mail.gmail.com>
+In-Reply-To: <CAHCN7xJdzEppn8-74SvzACsA25bUHGdV7v=CfS08xzSi59Z2uw@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 25 Sep 2019 12:17:28 -0300
+Message-ID: <CAOMZO5D2uzR6Sz1QnX3G-Ce_juxU-0PO_vBZX+nR1mpQB8s8-w@mail.gmail.com>
+Subject: Re: [PATCH v2 00/21] Refine memblock API
+To: Adam Ford <aford173@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,151 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>, Ran Wang <ran.wang_1@nxp.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, devicetree <devicetree@vger.kernel.org>,
+ Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Richard Weinberger <richard@nod.at>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, kasan-dev <kasan-dev@googlegroups.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Mark Salter <msalter@redhat.com>, Dennis Zhou <dennis@kernel.org>,
+ Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
+ Chris Healy <cphealy@gmail.com>, uclinux-h8-devel@lists.sourceforge.jp,
+ Petr Mladek <pmladek@suse.com>, linux-xtensa@linux-xtensa.org,
+ linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
+ The etnaviv authors <etnaviv@lists.freedesktop.org>,
+ linux-m68k@lists.linux-m68k.org, Rob Herring <robh+dt@kernel.org>,
+ Greentime Hu <green.hu@gmail.com>, xen-devel@lists.xenproject.org,
+ Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ arm-soc <linux-arm-kernel@lists.infradead.org>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ USB list <linux-usb@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, openrisc@lists.librecores.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 24, 2019 at 11:27 PM Biwen Li <biwen.li@nxp.com> wrote:
->
-> > > >
-> > > > > > > > > >
-> > > > > > > > > > The 'fsl,ippdexpcr-alt-addr' property is used to handle
-> > > > > > > > > > an errata
-> > > > > > > > > > A-008646 on LS1021A
-> > > > > > > > > >
-> > > > > > > > > > Signed-off-by: Biwen Li <biwen.li@nxp.com>
-> > > > > > > > > > ---
-> > > > > > > > > > Change in v3:
-> > > > > > > > > >       - rename property name
-> > > > > > > > > >         fsl,rcpm-scfg -> fsl,ippdexpcr-alt-addr
-> > > > > > > > > >
-> > > > > > > > > > Change in v2:
-> > > > > > > > > >       - update desc of the property 'fsl,rcpm-scfg'
-> > > > > > > > > >
-> > > > > > > > > >  Documentation/devicetree/bindings/soc/fsl/rcpm.txt | 14
-> > > > > > > > > > ++++++++++++++
-> > > > > > > > > >  1 file changed, 14 insertions(+)
-> > > > > > > > > >
-> > > > > > > > > > diff --git
-> > > > > > > > > > a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > > b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > > index 5a33619d881d..157dcf6da17c 100644
-> > > > > > > > > > --- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > > +++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > > > > > > > > @@ -34,6 +34,11 @@ Chassis Version            Example
-> > > > Chips
-> > > > > > > > > >  Optional properties:
-> > > > > > > > > >   - little-endian : RCPM register block is Little Endian.
-> > > > > > > > > > Without it
-> > > > > RCPM
-> > > > > > > > > >     will be Big Endian (default case).
-> > > > > > > > > > + - fsl,ippdexpcr-alt-addr : Must add the property for
-> > > > > > > > > > + SoC LS1021A,
-> > > > > > > > >
-> > > > > > > > > You probably should mention this is related to a hardware
-> > > > > > > > > issue on LS1021a and only needed on LS1021a.
-> > > > > > > > Okay, got it, thanks, I will add this in v4.
-> > > > > > > > >
-> > > > > > > > > > +   Must include n + 1 entries (n =
-> > > > > > > > > > + #fsl,rcpm-wakeup-cells, such
-> > > as:
-> > > > > > > > > > +   #fsl,rcpm-wakeup-cells equal to 2, then must include
-> > > > > > > > > > + 2
-> > > > > > > > > > + +
-> > > > > > > > > > + 1
-> > > > > entries).
-> > > > > > > > >
-> > > > > > > > > #fsl,rcpm-wakeup-cells is the number of IPPDEXPCR
-> > > > > > > > > registers on an
-> > > > > SoC.
-> > > > > > > > > However you are defining an offset to scfg registers here.
-> > > > > > > > > Why these two are related?  The length here should
-> > > > > > > > > actually be related to the #address-cells of the soc/.
-> > > > > > > > > But since this is only needed for LS1021, you can
-> > > > > > > > just make it 3.
-> > > > > > > > I need set the value of IPPDEXPCR resgiters from ftm_alarm0
-> > > > > > > > device node(fsl,rcpm-wakeup = <&rcpm 0x0 0x20000000>;
-> > > > > > > > 0x0 is a value for IPPDEXPCR0, 0x20000000 is a value for
-> > > > > IPPDEXPCR1).
-> > > > > > > > But because of the hardware issue on LS1021A, I need store
-> > > > > > > > the value of IPPDEXPCR registers to an alt address. So I
-> > > > > > > > defining an offset to scfg registers, then RCPM driver get
-> > > > > > > > an abosolute address from offset, RCPM driver write the
-> > > > > > > > value of IPPDEXPCR registers to these abosolute
-> > > > > > > > addresses(backup the value of IPPDEXPCR
-> > > > > registers).
-> > > > > > >
-> > > > > > > I understand what you are trying to do.  The problem is that
-> > > > > > > the new fsl,ippdexpcr-alt-addr property contains a phandle and an
-> > offset.
-> > > > > > > The size of it shouldn't be related to #fsl,rcpm-wakeup-cells.
-> > > > > > You maybe like this: fsl,ippdexpcr-alt-addr = <&scfg 0x51c>;/*
-> > > > > > SCFG_SPARECR8 */
-> > > > >
-> > > > > No.  The #address-cell for the soc/ is 2, so the offset to scfg
-> > > > > should be 0x0 0x51c.  The total size should be 3, but it shouldn't
-> > > > > be coming from #fsl,rcpm-wakeup-cells like you mentioned in the
-> > binding.
-> > > > Oh, I got it. You want that fsl,ippdexpcr-alt-add is relative with
-> > > > #address-cells instead of #fsl,rcpm-wakeup-cells.
-> > >
-> > > Yes.
-> > I got an example from drivers/pci/controller/dwc/pci-layerscape.c
-> > and arch/arm/boot/dts/ls1021a.dtsi as follows:
-> > fsl,pcie-scfg = <&scfg 0>, 0 is an index
-> >
-> > In my fsl,ippdexpcr-alt-addr = <&scfg 0x0 0x51c>, It means that 0x0 is an alt
-> > offset address for IPPDEXPCR0, 0x51c is an alt offset address For
-> > IPPDEXPCR1 instead of 0x0 and 0x51c compose to an alt address of
-> > SCFG_SPARECR8.
-> Maybe I need write it as:
-> fsl,ippdexpcr-alt-addr = <&scfg 0x0 0x0 0x0 0x51c>;
-> first two 0x0 compose an alt offset address for IPPDEXPCR0,
-> last 0x0 and 0x51c compose an alt address for IPPDEXPCR1,
+On Wed, Sep 25, 2019 at 9:17 AM Adam Ford <aford173@gmail.com> wrote:
 
-I remember the hardware issue is only is only related to IPPDEXPCR1
-register, no idea why you need to define IPPDEXPCR0 in the binding.
+> I tried cma=256M and noticed the cma dump at the beginning didn't
+> change.  Do we need to setup a reserved-memory node like
+> imx6ul-ccimx6ulsom.dtsi did?
 
->
-> Best Regards,
-> Biwen Li
-> > >
-> > > Regards,
-> > > Leo
-> > > > >
-> > > > > > >
-> > > > > > > > >
-> > > > > > > > > > +   The first entry must be a link to the SCFG device node.
-> > > > > > > > > > +   The non-first entry must be offset of registers of SCFG.
-> > > > > > > > > >
-> > > > > > > > > >  Example:
-> > > > > > > > > >  The RCPM node for T4240:
-> > > > > > > > > > @@ -43,6 +48,15 @@ The RCPM node for T4240:
-> > > > > > > > > >               #fsl,rcpm-wakeup-cells = <2>;
-> > > > > > > > > >       };
-> > > > > > > > > >
-> > > > > > > > > > +The RCPM node for LS1021A:
-> > > > > > > > > > +     rcpm: rcpm@1ee2140 {
-> > > > > > > > > > +             compatible = "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-
-> > > > > > 2.1+";
-> > > > > > > > > > +             reg = <0x0 0x1ee2140 0x0 0x8>;
-> > > > > > > > > > +             #fsl,rcpm-wakeup-cells = <2>;
-> > > > > > > > > > +             fsl,ippdexpcr-alt-addr = <&scfg 0x0 0x51c>; /*
-> > > > > > > > > > SCFG_SPARECR8 */
-> > > > > > > > > > +     };
-> > > > > > > > > > +
-> > > > > > > > > > +
-> > > > > > > > > >  * Freescale RCPM Wakeup Source Device Tree Bindings
-> > > > > > > > > >  -------------------------------------------
-> > > > > > > > > >  Required fsl,rcpm-wakeup property should be added to a
-> > > > > > > > > > device node if the device
-> > > > > > > > > > --
-> > > > > > > > > > 2.17.1
->
+I don't think so.
+
+Were you able to identify what was the exact commit that caused such regression?
