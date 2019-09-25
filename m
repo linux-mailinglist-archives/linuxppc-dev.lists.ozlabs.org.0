@@ -1,35 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDB3BDAC5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 11:16:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 568E0BDC5D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 12:44:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dXVf1CGRzDqZw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 19:16:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dZRg1W6hzDqjW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 20:43:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dXST02qRzDqjv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 19:14:31 +1000 (AEST)
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 9C859387E7EFF1887A06;
- Wed, 25 Sep 2019 17:14:25 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Wed, 25 Sep 2019
- 17:14:21 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46dZPW1v2BzDqcj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 20:42:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=d7lghTIMPEPTT0CmEI9IOIRCSN8Pqv1AzwjK/NZgMoc=; b=EF9is3qV7hJK9YrtuWAbhlEIm
+ DekndHpzjsrksaaag1LJSMVUoulE98cUz7oizjkbOfOXxEmssM7sGMqqKccb2Dba+cSDW9rBnNwfe
+ 2UpDQDMtb09y+0tgEukWpBexY5AK+DVEeGNn9roPrVJ+aLpuBWgb7c7Q1ff0Cf7+J+jpQGwlQgoG7
+ LtHjxpt4IS2Sb3+pY6/sz1aWfh7ZSHQFImzu/QxoYJuRsvPm2CLfLPy+L9RhB1Zeyxbl+PwFimp7F
+ o+UMfznbeitQbiVxycephR2BVA4bOf9qtG4KwZIKNzuWzPnFAOwpu1g5eDG27DRdg+96Q6lOtcSxn
+ 3uCczntOA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iD4j4-0002gI-9T; Wed, 25 Sep 2019 10:40:50 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E6913305E1F;
+ Wed, 25 Sep 2019 12:39:54 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id DB4A620292D27; Wed, 25 Sep 2019 12:40:40 +0200 (CEST)
+Date: Wed, 25 Sep 2019 12:40:40 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michal Hocko <mhocko@kernel.org>
 Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Michal Hocko <mhocko@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-References: <20190923203410.GI2369@hirez.programming.kicks-ass.net>
- <20190924074751.GB23050@dhcp22.suse.cz>
+Message-ID: <20190925104040.GD4553@hirez.programming.kicks-ass.net>
+References: <20190924074751.GB23050@dhcp22.suse.cz>
  <20190924091714.GJ2369@hirez.programming.kicks-ass.net>
  <20190924105622.GH23050@dhcp22.suse.cz>
  <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
@@ -39,18 +61,11 @@ References: <20190923203410.GI2369@hirez.programming.kicks-ass.net>
  <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
  <20190924125936.GR2349@hirez.programming.kicks-ass.net>
  <20190924131939.GS23050@dhcp22.suse.cz>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
-Date: Wed, 25 Sep 2019 17:14:20 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20190924131939.GS23050@dhcp22.suse.cz>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,7 +82,8 @@ Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
  jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
  paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
  will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
- ysato@users.sourceforge.jp, x86@kernel.org, rppt@linux.ibm.com,
+ ysato@users.sourceforge.jp, x86@kernel.org,
+ Yunsheng Lin <linyunsheng@huawei.com>, rppt@linux.ibm.com,
  borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
  jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
  len.brown@intel.com, gor@linux.ibm.com, anshuman.khandual@arm.com,
@@ -82,44 +98,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/9/24 21:19, Michal Hocko wrote:
-> On Tue 24-09-19 14:59:36, Peter Zijlstra wrote:
->> On Tue, Sep 24, 2019 at 02:43:25PM +0200, Peter Zijlstra wrote:
->>> On Tue, Sep 24, 2019 at 02:25:00PM +0200, Michal Hocko wrote:
->>>> On Tue 24-09-19 14:09:43, Peter Zijlstra wrote:
->>>
->>>>> We can push back and say we don't respect the specification because it
->>>>> is batshit insane ;-)
->>>>
->>>> Here is my fingers crossed.
->>>>
->>>> [...]
->>>>
->>>>> Now granted; there's a number of virtual devices that really don't have
->>>>> a node affinity, but then, those are not hurt by forcing them onto a
->>>>> random node, they really don't do anything. Like:
->>>>
->>>> Do you really consider a random node a better fix than simply living
->>>> with a more robust NUMA_NO_NODE which tells the actual state? Page
->>>> allocator would effectivelly use the local node in that case. Any code
->>>> using the cpumask will know that any of the online cpus are usable.
->>>
->>> For the pmu devices? Yes, those 'devices' aren't actually used for
->>> anything other than sysfs entries.
->>>
->>> Nothing else uses the struct device.
->>
->> The below would get rid of the PMU and workqueue warnings with no
->> side-effects (the device isn't used for anything except sysfs).
+On Tue, Sep 24, 2019 at 03:19:39PM +0200, Michal Hocko wrote:
+
+> > The below would get rid of the PMU and workqueue warnings with no
+> > side-effects (the device isn't used for anything except sysfs).
 > 
 > Hardcoding to 0 is simply wrong, if the node0 is cpuless for example...
 
-Hi, Peter & Michal
+It doesn't matter.... that 0 is _never_ used. These are fake devices,
+and all we care about is getting rid of that error.
 
-From the discussion above, It seems making the node_to_cpumask_map()
-NUMA_NO_NODE aware is the most feasible way to move forwad.
-
-Any suggestion?
-
-> 
-
+If it makes you feel better we can make it -2 and have dev_to_node()
+WARN if it ever sees one.
