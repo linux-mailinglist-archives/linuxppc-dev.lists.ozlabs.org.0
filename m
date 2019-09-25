@@ -2,153 +2,105 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5EABD5B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 02:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8107FBD699
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 05:15:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dJfj5dm1zDqfp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 10:22:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dNTl59cczDqTq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 13:15:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+ spf=permerror (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=2a01:111:f400:fe1f::62c;
+ helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=biwen.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="T1bv2uLv"; 
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="ageJebil"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com
+ (mail-ve1eur01on062c.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe1f::62c])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dJcY2ZcDzDqdm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 10:20:42 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id u17so2169041pgi.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2019 17:20:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=U6y16sBtpZiQYwWNrbJW0cQ9Iy3/7FhncuCGKTgK4Gc=;
- b=T1bv2uLvf+vKVx+AYb1JZDUHlTqcF647iooUiEocV+eXGLxETlaAT5HrSzzVwwZiOB
- dNCgCry6G/QeQ0By9K1uMUgkaluJ7jChUzyo0kvX0onkihqk9ptFzVGOJQiAJ1X+iJdr
- zymWqTOMCXhyEgTB0nLnPOfrn/a7KjeNF94Z2LrCX2+dQql/8y12CFNnso/TNVN4AmVj
- RzdYwslaVHaCt+JwqWD2GkI37RyMjMtOCXgZzSAbf/3prHF+XgOgSY15Z36qaHL/uebP
- X24BjeNI9SLwCRAJUE+fB7LUdRN3XtV04m3t+glfKuwNn36MyGDOXGufXI+JW3cRE6lR
- ccJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=U6y16sBtpZiQYwWNrbJW0cQ9Iy3/7FhncuCGKTgK4Gc=;
- b=edR4Eq4D/wtPD0Lm+3HVcAXxZNZwhA9iJbocSTxEsRVfiTVHRlcneRkc+8XB/l+bwh
- n0tPPap3Z14AoqD0D//NdeLATNsEThVBLhTxFrZCR1AtExci2wBu+UFUkmWXNmYMYrrX
- /0Fn6CljutIQsuKY6Vezkz+rHZX4PGdwM92zCe+UUoWknHuc1RGJ59+sIIKqsFLZEV0t
- 8WttQRZ5cHA45dONCFcVNBtUTUc1LwECB+6DsOTIjuMWXt4J4saV2zNniZt6j1ow69Pf
- mJKpYXL5adLzaaGusiqtzUS35QPR1OyU7ZAWLbLLsU5M/1guo1MZRPCoookkMWHUZXek
- R16w==
-X-Gm-Message-State: APjAAAWAfcSM3rgLVlab9d4+DSxDm+GpMJj1Bc3svSyK3u+q4R48yzmM
- G0qg3tFNUxjL86Nr4R3xcrKvUA==
-X-Google-Smtp-Source: APXvYqyzP2MbSVXflWGDljk2PialvJoyVGopCKoHdj5pbZXVuUfyKeyWBykXsnRZ8xAzZOomd+wHDg==
-X-Received: by 2002:aa7:9d8d:: with SMTP id f13mr6618802pfq.196.1569370839899; 
- Tue, 24 Sep 2019 17:20:39 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id k15sm3581931pfa.65.2019.09.24.17.20.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Sep 2019 17:20:39 -0700 (PDT)
-Subject: Re: [PATCH 00/11] opencapi: enable card reset and link retraining
-To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
-References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
- <7e29a072-f212-5d09-05b5-dbc1ee0916f0@ozlabs.ru>
- <9ccce9b5-bba8-2fab-6d82-59bf03bf8b36@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <f5b18ff5-0810-1c68-d1bb-411153d0f311@ozlabs.ru>
-Date: Wed, 25 Sep 2019 10:20:34 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
-MIME-Version: 1.0
-In-Reply-To: <9ccce9b5-bba8-2fab-6d82-59bf03bf8b36@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46dNRh46P8zDqSj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 13:13:16 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gZt/p+meZcs9bTqCAS+LVS2t8lUQVOjQxOAicCpo28CC6hFP/tNbIkCSYjKgoUlc5Xa/WSV2tUFfBQDJpjpeAI42dt4FfIIWWo0ZgCARPYOTzMfmHBfUSKuKJnEsOkg87cElJLnqQHg38SNfgLlmGHjHcimCNJDGqXIl4A+cRPdbNg3BUcOaGrThlJp32CzYEziQyhWbdJCFkRafOgcBuAhXhdIce/xHfFOm8Tvw9KTfjO5qxLTlK0+FiuxfSHxTGFilrCN/THXzq2aT5vV0i0FWaj28+FMIMBeEai5VFchjrookY4dn6oZF0Myxee3XFu6W41kKZ3QPviM16Hbp2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9gPHhrxSS5RyrbR7T8Oh9S5esSP6LfVKH3fYxdNWa/I=;
+ b=Qu98TRwRabPNHMh+rwU0oJV1TAtEfNaGdGQqVgBV44Qsp8OhrGc1LVKI3Svi4IbtTl7rf6yx4xOtDsSgAARH0kaTiQGYAnrGw5QQOe4XzVs1tcBi6nT11m3MDHBdjJZtJgQmh7ZrrNz24WGVPFcRYdN8mKx0g5p9Qqyv74Bnu01HQNRIGeX/splCfhsAAAYKZymiNS2Mv9wsSyq69LJP2pu+I17m8rOfWk40uSB9D1CuxXHBwbWpZIV2uOC6xHoBPbgw3FBLQYE+QYTBEZ2weBfDwhwoL2LOqsRjPyRAo/5TY/E/cYiCZcSo0oTzdIxI4ln3UmMTJokkGXaGFAT8MA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9gPHhrxSS5RyrbR7T8Oh9S5esSP6LfVKH3fYxdNWa/I=;
+ b=ageJebilx9+uO8ZDHRp4WpElodreLQWZebpAqG9yTio1cqn+QJ4EDWs5ayFNK53H9QvX+fXrwR4c/w8TbsgAscaykz3eT5rp9b6vBxsJrWLBgVqvmokHlsGAs/QIE7vGmT8WpEdPunwAZJBm09lna+tVES3pPSNkDJEl9G+kC6E=
+Received: from DB7PR04MB4490.eurprd04.prod.outlook.com (52.135.138.150) by
+ DB7PR04MB4713.eurprd04.prod.outlook.com (20.176.233.217) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2284.20; Wed, 25 Sep 2019 03:13:08 +0000
+Received: from DB7PR04MB4490.eurprd04.prod.outlook.com
+ ([fe80::4427:96f2:f651:6dfa]) by DB7PR04MB4490.eurprd04.prod.outlook.com
+ ([fe80::4427:96f2:f651:6dfa%5]) with mapi id 15.20.2284.023; Wed, 25 Sep 2019
+ 03:13:08 +0000
+From: Biwen Li <biwen.li@nxp.com>
+To: Leo Li <leoyang.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
+ "robh+dt@kernel.org" <robh+dt@kernel.org>, "mark.rutland@arm.com"
+ <mark.rutland@arm.com>, Ran Wang <ran.wang_1@nxp.com>
+Subject: RE: [v3,3/3] Documentation: dt: binding: fsl: Add
+ 'fsl,ippdexpcr-alt-addr' property
+Thread-Topic: [v3,3/3] Documentation: dt: binding: fsl: Add
+ 'fsl,ippdexpcr-alt-addr' property
+Thread-Index: AQHVcoOnab7d5ysBNkWsXmY0PrfSuKc6/L+AgAC3JZA=
+Date: Wed, 25 Sep 2019 03:13:07 +0000
+Message-ID: <DB7PR04MB449034C4BBAA89685A2130F78F870@DB7PR04MB4490.eurprd04.prod.outlook.com>
+References: <20190924024548.4356-1-biwen.li@nxp.com>
+ <20190924024548.4356-3-biwen.li@nxp.com>
+ <AM0PR04MB667690EE76D327D0FC09F7818F840@AM0PR04MB6676.eurprd04.prod.outlook.com>
+In-Reply-To: <AM0PR04MB667690EE76D327D0FC09F7818F840@AM0PR04MB6676.eurprd04.prod.outlook.com>
+Accept-Language: zh-CN, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=biwen.li@nxp.com; 
+x-originating-ip: [119.31.174.73]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 382b4caf-c68b-46f1-f8a8-08d741664a10
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
+ SRVR:DB7PR04MB4713; 
+x-ms-traffictypediagnostic: DB7PR04MB4713:|DB7PR04MB4713:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB7PR04MB471346E0B8B912FAA0DDB0A48F870@DB7PR04MB4713.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 01713B2841
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(366004)(136003)(39860400002)(346002)(376002)(396003)(189003)(199004)(9686003)(55016002)(6436002)(33656002)(14454004)(229853002)(99286004)(71200400001)(71190400001)(76176011)(256004)(102836004)(7696005)(6506007)(6116002)(5660300002)(3846002)(64756008)(66446008)(14444005)(66556008)(66946007)(66476007)(2906002)(76116006)(52536014)(26005)(316002)(54906003)(110136005)(486006)(25786009)(2501003)(478600001)(44832011)(476003)(186003)(11346002)(446003)(6636002)(66066001)(8676002)(4326008)(81166006)(86362001)(81156014)(8936002)(6246003)(305945005)(74316002)(7736002)(142933001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:DB7PR04MB4713;
+ H:DB7PR04MB4490.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: UGiv/bNKp5XgxrqM7wAW4gqocxz2dt3Af46/b2DN0ctneUVjCpaioQcF6pyZ3x8vJBW6hT7icUvFXSExiVPeQctZjeSJrzZjGN6kN9aF2WgzNk0qzwER5boKx4x5xkxuXTbQrw2PqK2Ubv4sOgaLMUBCQc2Eaqom53ogmpKAxSGXdkVd/I0nP1Tgcq5Yf9XNzW3LRAlA8Dbg1m5WdyFHM6w1OaSyIO1Zxbp4aq1cjFTduH/9o0sKBJsDbuGVNdWBMHcCvzsh//Pb8XYbEPuY7a8rj1c0+OK5JKVpryOJ4dAVQRUQ59B+nUUq2sBdOI7y8X3YUuHijTn9mrfCGj0KVfyCKjx1un5kWQzQVvFmSE6vh11uGql7oQ1LN+MnU51TfL1Dt1umL9I1x8gpSFmo7zsXXKStlcpMd6SYkn9I/gM=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 382b4caf-c68b-46f1-f8a8-08d741664a10
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2019 03:13:07.7962 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zUYo23gCzHkhcFC+g3kwNSqUITfR5n0ZRynSq2s6Qd+K1q4sYJQURPy8FIqfFtnb9BbBcD7aNV/2hKQ6N63SHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4713
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -160,86 +112,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: groug@kaod.org, alastair@au1.ibm.com
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+> >
+> > The 'fsl,ippdexpcr-alt-addr' property is used to handle an errata
+> > A-008646 on LS1021A
+> >
+> > Signed-off-by: Biwen Li <biwen.li@nxp.com>
+> > ---
+> > Change in v3:
+> > 	- rename property name
+> > 	  fsl,rcpm-scfg -> fsl,ippdexpcr-alt-addr
+> >
+> > Change in v2:
+> > 	- update desc of the property 'fsl,rcpm-scfg'
+> >
+> >  Documentation/devicetree/bindings/soc/fsl/rcpm.txt | 14
+> > ++++++++++++++
+> >  1 file changed, 14 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> > b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> > index 5a33619d881d..157dcf6da17c 100644
+> > --- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> > +++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> > @@ -34,6 +34,11 @@ Chassis Version		Example Chips
+> >  Optional properties:
+> >   - little-endian : RCPM register block is Little Endian. Without it RC=
+PM
+> >     will be Big Endian (default case).
+> > + - fsl,ippdexpcr-alt-addr : Must add the property for SoC LS1021A,
+>=20
+> You probably should mention this is related to a hardware issue on LS1021=
+a
+> and only needed on LS1021a.
+Okay, got it, thanks, I will add this in v4.
+>=20
+> > +   Must include n + 1 entries (n =3D #fsl,rcpm-wakeup-cells, such as:
+> > +   #fsl,rcpm-wakeup-cells equal to 2, then must include 2 + 1 entries)=
+.
+>=20
+> #fsl,rcpm-wakeup-cells is the number of IPPDEXPCR registers on an SoC.
+> However you are defining an offset to scfg registers here.  Why these two
+> are related?  The length here should actually be related to the #address-=
+cells
+> of the soc/.  But since this is only needed for LS1021, you can just make=
+ it 3.
+I need set the value of IPPDEXPCR resgiters from ftm_alarm0 device node(fsl=
+,rcpm-wakeup =3D <&rcpm 0x0 0x20000000>;
+0x0 is a value for IPPDEXPCR0, 0x20000000 is a value for IPPDEXPCR1).
+But because of the hardware issue on LS1021A, I need store the value of IPP=
+DEXPCR registers
+to an alt address. So I defining an offset to scfg registers, then RCPM dri=
+ver get an abosolute address from offset,
+ RCPM driver write the value of IPPDEXPCR registers to these abosolute addr=
+esses(backup the value of IPPDEXPCR registers).
+>=20
+> > +   The first entry must be a link to the SCFG device node.
+> > +   The non-first entry must be offset of registers of SCFG.
+> >
+> >  Example:
+> >  The RCPM node for T4240:
+> > @@ -43,6 +48,15 @@ The RCPM node for T4240:
+> >  		#fsl,rcpm-wakeup-cells =3D <2>;
+> >  	};
+> >
+> > +The RCPM node for LS1021A:
+> > +	rcpm: rcpm@1ee2140 {
+> > +		compatible =3D "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-2.1+";
+> > +		reg =3D <0x0 0x1ee2140 0x0 0x8>;
+> > +		#fsl,rcpm-wakeup-cells =3D <2>;
+> > +		fsl,ippdexpcr-alt-addr =3D <&scfg 0x0 0x51c>; /*
+> > SCFG_SPARECR8 */
+> > +	};
+> > +
+> > +
+> >  * Freescale RCPM Wakeup Source Device Tree Bindings
+> >  -------------------------------------------
+> >  Required fsl,rcpm-wakeup property should be added to a device node if
+> > the device
+> > --
+> > 2.17.1
 
-
-On 24/09/2019 16:39, Frederic Barrat wrote:
-> 
-> 
-> Le 24/09/2019 à 06:24, Alexey Kardashevskiy a écrit :
->> Hi Fred,
->>
->> what is this made against of? It does not apply on the master. Thanks,
-> 
-> It applies on v5.3. And I can see there's a conflict with the current
-> state in the merge window. I'll resubmit.
-
-
-Not really necessary, just mention the exact sha1 or tag in the cover
-letter next time. Thanks,
-
-
-
-> 
->   Fred
-> 
-> 
-> 
->> On 10/09/2019 01:45, Frederic Barrat wrote:
->>> This is the linux part of the work to use the PCI hotplug framework to
->>> control an opencapi card so that it can be reset and re-read after
->>> flashing a new FPGA image. I had posted it earlier as an RFC and this
->>> version is mostly similar, with just some minor editing.
->>>
->>> It needs support in skiboot:
->>> http://patchwork.ozlabs.org/project/skiboot/list/?series=129724
->>> On an old skiboot, it will do nothing.
->>>
->>> A virtual PCI slot is created for the opencapi adapter, and its state
->>> can be controlled through the pnv-php hotplug driver:
->>>
->>>    echo 0|1 > /sys/bus/pci/slots/OPENCAPI-<...>/power
->>>
->>> Note that the power to the card is not really turned off, as the card
->>> needs to stay on to be flashed with a new image. Instead the card is
->>> in reset.
->>>
->>> The first part of the series mostly deals with the pci/ioda state, as
->>> the opencapi devices can now go away and the state needs to be cleaned
->>> up.
->>>
->>> The second part is modifications to the PCI hotplug driver on powernv,
->>> so that a virtual slot is created for the opencapi adapters found in
->>> the device tree.
->>>
->>>
->>>
->>> Frederic Barrat (11):
->>>    powerpc/powernv/ioda: Fix ref count for devices with their own PE
->>>    powerpc/powernv/ioda: Protect PE list
->>>    powerpc/powernv/ioda: set up PE on opencapi device when enabling
->>>    powerpc/powernv/ioda: Release opencapi device
->>>    powerpc/powernv/ioda: Find opencapi slot for a device node
->>>    pci/hotplug/pnv-php: Remove erroneous warning
->>>    pci/hotplug/pnv-php: Improve error msg on power state change failure
->>>    pci/hotplug/pnv-php: Register opencapi slots
->>>    pci/hotplug/pnv-php: Relax check when disabling slot
->>>    pci/hotplug/pnv-php: Wrap warnings in macro
->>>    ocxl: Add PCI hotplug dependency to Kconfig
->>>
->>>   arch/powerpc/include/asm/pnv-pci.h        |   1 +
->>>   arch/powerpc/platforms/powernv/pci-ioda.c | 107 ++++++++++++++--------
->>>   arch/powerpc/platforms/powernv/pci.c      |  10 +-
->>>   drivers/misc/ocxl/Kconfig                 |   1 +
->>>   drivers/pci/hotplug/pnv_php.c             |  82 ++++++++++-------
->>>   5 files changed, 125 insertions(+), 76 deletions(-)
->>>
->>
-> 
-
--- 
-Alexey
