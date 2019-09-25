@@ -1,69 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25ABBE10F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 17:19:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C9EBE28C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 18:34:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dhYS0JsYzDqly
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 01:19:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dkDC2TR4zDqjd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 02:34:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com;
- envelope-from=festevam@gmail.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="eghD7xF1"; 
- dkim-atps=neutral
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
- [IPv6:2a00:1450:4864:20::243])
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="bm/dhap0"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dhWB1Lz6zDqXB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 01:17:25 +1000 (AEST)
-Received: by mail-lj1-x243.google.com with SMTP id y23so6069833lje.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 08:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=rTBq6P5OxsGLjoGVhyAwZM8k0vklyHGTB2oJI82Er7M=;
- b=eghD7xF1O36vsBrF3R1Ol+O9tfU+0jO9JXTPAGDQj/eD9TEB4fS0VQFijoygPStgr3
- 10lJjOrWc1bicRYqBtncYZdXUVZQzGo/mCRUFcwwwv+kexKbN1ES5l5Ac30Iyy/VSy6b
- zUdkmBZi6iQtLRd1ksj9hb1AR/76sVMVefmq8BgklCKkDi+tVqaxFM4AvBWSG3sKDCRC
- NPA4lDaeoCpS8CsgLxRZg802nWrQPQecGCdXqYctiynPyMIAzYncAW7BXnLuqZdmqiq7
- lmNY1mZLDVoPD5SAcNNPdqQCcypDkXcAg+PaiFPMbfZqC2X+xM6M1pHyx+WOo3XdPYs0
- eCpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=rTBq6P5OxsGLjoGVhyAwZM8k0vklyHGTB2oJI82Er7M=;
- b=F8Wf9BIUt+7SZ4zWiFvkwxPc1pbDIOA2GygRuQo31sjjqotegqcDs5UWRC2p9i3y3n
- fjUKawvLIKNSvrnWSyQRzF2I3Yzw4pfHLdjE5R5h8sGuNT6QY67OJLsOsx9c/V1nTLL/
- wyvBnLYlBZJa5o/9c7ntRHVs1aG4RM9rWn4pZ9t6P3J7x63TJjZDGsSHk21DiGnRc5t9
- /jqauj0BpoidZwMPPzP9vv+FjkPn3MA/wDLckB22/xxr7E1fMib5bpPUJpRM1/hWsqVN
- pCa+O7nWw8kA+mTBp3UKBswl79a5wqvg/wdmxXeqzeH6hHGh8ACbIEitKZmRk04DMLVN
- tlCA==
-X-Gm-Message-State: APjAAAU84cP4lF2iZJlTWFDsqk6rfxHNVZ/7GR+7lFIlgvU5ZkxANPEu
- xNV7UzXXwX1NvPIq8JSZoHxxFLntz8a4ixiR+Oc=
-X-Google-Smtp-Source: APXvYqzF1RqhBAB47TPrTDl3zKUBxVzKbXcvNvcrU2oxqh5sJKOV3USfSG9GeeJJkpUMrG8FnoJZki1WHtkUnydqfw8=
-X-Received: by 2002:a2e:b0f4:: with SMTP id h20mr1893730ljl.10.1569424639817; 
- Wed, 25 Sep 2019 08:17:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46dkB36kKdzDqjd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 02:32:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Cp8u678gxU6rWkwDy/6jtdY/npvr9qVwuPGguClJ3Q0=; b=bm/dhap0jOx3jDv4S6/nBTafv
+ 67krTmzxr3/0gEAruaH+phtGC6GDn9QJiLrrAwIIpZ2ZtSxH11XCvlhGz3q0UyMr91UWYhpd4pl5d
+ dMUTFHTd56sBE4kRoFeDwpFJy319uOCg8levABupZnBj+4vxco/QhxT429KTPTyWjME7XEdK9/5cp
+ NWdUrHgOobsB5++MeEUfwlM9PNPH7uLonD/D/0MoEBxYs59QmYWaGFT9dtPOG8+9n+Sk76aYGiVCm
+ duwKCOw2ZU9RpLrr4344CMuDyZ4tXHVm7nIrPVWGZ2YYuD1pXvOd80TLgOcTBhr+/qZQ9UE7YNTjv
+ zsKlBG0iw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iDACw-0006La-W3; Wed, 25 Sep 2019 16:32:03 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 88A8D305E35;
+ Wed, 25 Sep 2019 18:31:08 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 9C71320249302; Wed, 25 Sep 2019 18:31:54 +0200 (CEST)
+Date: Wed, 25 Sep 2019 18:31:54 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20190925163154.GF4553@hirez.programming.kicks-ass.net>
+References: <20190924105622.GH23050@dhcp22.suse.cz>
+ <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
+ <20190924115401.GM23050@dhcp22.suse.cz>
+ <20190924120943.GP2349@hirez.programming.kicks-ass.net>
+ <20190924122500.GP23050@dhcp22.suse.cz>
+ <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
+ <20190924125936.GR2349@hirez.programming.kicks-ass.net>
+ <20190924131939.GS23050@dhcp22.suse.cz>
+ <20190925104040.GD4553@hirez.programming.kicks-ass.net>
+ <20190925132544.GL23050@dhcp22.suse.cz>
 MIME-Version: 1.0
-References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
- <CAHCN7x+Jv7yGPoB0Gm=TJ30ObLJduw2XomHkd++KqFEURYQcGg@mail.gmail.com>
- <CAOMZO5A_U4aYC4XZXK1r9JaLg-eRdXy8m6z4GatQp62rK4HZ6A@mail.gmail.com>
- <CAHCN7xJdzEppn8-74SvzACsA25bUHGdV7v=CfS08xzSi59Z2uw@mail.gmail.com>
-In-Reply-To: <CAHCN7xJdzEppn8-74SvzACsA25bUHGdV7v=CfS08xzSi59Z2uw@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 25 Sep 2019 12:17:28 -0300
-Message-ID: <CAOMZO5D2uzR6Sz1QnX3G-Ce_juxU-0PO_vBZX+nR1mpQB8s8-w@mail.gmail.com>
-Subject: Re: [PATCH v2 00/21] Refine memblock API
-To: Adam Ford <aford173@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190925132544.GL23050@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,44 +80,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, devicetree <devicetree@vger.kernel.org>,
- Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Richard Weinberger <richard@nod.at>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, kasan-dev <kasan-dev@googlegroups.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Mark Salter <msalter@redhat.com>, Dennis Zhou <dennis@kernel.org>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- Chris Healy <cphealy@gmail.com>, uclinux-h8-devel@lists.sourceforge.jp,
- Petr Mladek <pmladek@suse.com>, linux-xtensa@linux-xtensa.org,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- The etnaviv authors <etnaviv@lists.freedesktop.org>,
- linux-m68k@lists.linux-m68k.org, Rob Herring <robh+dt@kernel.org>,
- Greentime Hu <green.hu@gmail.com>, xen-devel@lists.xenproject.org,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- arm-soc <linux-arm-kernel@lists.infradead.org>,
- Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- USB list <linux-usb@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, openrisc@lists.librecores.org
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
+ will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
+ ysato@users.sourceforge.jp, x86@kernel.org,
+ Yunsheng Lin <linyunsheng@huawei.com>, rppt@linux.ibm.com,
+ borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
+ jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
+ len.brown@intel.com, gor@linux.ibm.com, anshuman.khandual@arm.com,
+ gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org, tglx@linutronix.de,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
+ paul.burton@mips.com, linux-alpha@vger.kernel.org, rafael@kernel.org,
+ ink@jurassic.park.msu.ru, akpm@linux-foundation.org, robin.murphy@arm.com,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 25, 2019 at 9:17 AM Adam Ford <aford173@gmail.com> wrote:
+On Wed, Sep 25, 2019 at 03:25:44PM +0200, Michal Hocko wrote:
+> I am sorry but I still do not understand why you consider this whack a
+> mole better then simply live with the fact that NUMA_NO_NODE is a
+> reality and that using the full cpu mask is a reasonable answer to that.
 
-> I tried cma=256M and noticed the cma dump at the beginning didn't
-> change.  Do we need to setup a reserved-memory node like
-> imx6ul-ccimx6ulsom.dtsi did?
-
-I don't think so.
-
-Were you able to identify what was the exact commit that caused such regression?
+Because it doesn't make physical sense. A device _cannot_ be local to
+all CPUs in a NUMA system.
