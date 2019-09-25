@@ -2,80 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DDDBD7C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 07:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134E3BD93B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 09:39:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46dRNW6CFqzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 15:25:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46dVLR6fz8zDqjJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2019 17:39:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46dQzG4s4DzDqg7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 15:07:22 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8P52mCw046566
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 01:07:20 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v80djap2p-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 01:07:20 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Wed, 25 Sep 2019 06:07:18 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 25 Sep 2019 06:07:15 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8P57DSK28967034
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Sep 2019 05:07:13 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 35769A4055;
- Wed, 25 Sep 2019 05:07:13 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F14A2A404D;
- Wed, 25 Sep 2019 05:07:10 +0000 (GMT)
-Received: from bharata.ibmuc.com (unknown [9.199.52.56])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 25 Sep 2019 05:07:10 +0000 (GMT)
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v9 8/8] KVM: PPC: Ultravisor: Add PPC_UV config option
-Date: Wed, 25 Sep 2019 10:36:49 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190925050649.14926-1-bharata@linux.ibm.com>
-References: <20190925050649.14926-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46dVJ82bD7zDqgP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2019 17:37:11 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 5B088307D96F;
+ Wed, 25 Sep 2019 07:37:08 +0000 (UTC)
+Received: from [10.36.117.14] (ovpn-117-14.ams2.redhat.com [10.36.117.14])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BFA3C5F9D2;
+ Wed, 25 Sep 2019 07:37:04 +0000 (UTC)
+Subject: Re: [PATCH v1] powerpc/pseries: CMM: Drop page array
+To: linux-kernel@vger.kernel.org
+References: <20190910163932.13160-1-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <a2c2f516-c37c-71f5-8f35-c357e8754b17@redhat.com>
+Date: Wed, 25 Sep 2019 09:37:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19092505-0016-0000-0000-000002B0446D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19092505-0017-0000-0000-000033110A5D
-Message-Id: <20190925050649.14926-9-bharata@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-25_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909250050
+In-Reply-To: <20190910163932.13160-1-david@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.48]); Wed, 25 Sep 2019 07:37:09 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,58 +101,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxram@us.ibm.com,
- cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, linux-mm@kvack.org, jglisse@redhat.com,
- aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, hch@lst.de,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>, linux-mm@kvack.org,
+ Arun KS <arunks@codeaurora.org>, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+On 10.09.19 18:39, David Hildenbrand wrote:
+> We can simply store the pages in a list (page->lru), no need for a
+> separate data structure (+ complicated handling). This is how most
+> other balloon drivers store allocated pages without additional tracking
+> data.
+> 
+> For the notifiers, use page_to_pfn() to check if a page is in the
+> applicable range. plpar_page_set_loaned()/plpar_page_set_active() were
+> called with __pa(page_address()) for now, I assume we can simply switch
+> to page_to_phys() here. The pfn_to_kaddr() handling is now mostly gone.
+> 
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Arun KS <arunks@codeaurora.org>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+> 
+> Only compile-tested. I hope the page_to_phys() thingy is correct and I
+> didn't mess up something else / ignoring something important why the array
+> is needed.
+> 
+> I stumbled over this while looking at how the memory isolation notifier is
+> used - and wondered why the additional array is necessary. Also, I think
+> by switching to the generic balloon compaction mechanism, we could get
+> rid of the memory hotplug notifier and the memory isolation notifier in
+> this code, as the migration capability of the inflated pages is the real
+> requirement:
+> 	commit 14b8a76b9d53346f2871bf419da2aaf219940c50
+> 	Author: Robert Jennings <rcj@linux.vnet.ibm.com>
+> 	Date:   Thu Dec 17 14:44:52 2009 +0000
+> 	
+> 	    powerpc: Make the CMM memory hotplug aware
+> 	
+> 	    The Collaborative Memory Manager (CMM) module allocates individual pages
+> 	    over time that are not migratable.  On a long running system this can
+> 	    severely impact the ability to find enough pages to support a hotplug
+> 	    memory remove operation.
+> 	[...]
+> 
+> Thoughts?
 
-CONFIG_PPC_UV adds support for ultravisor.
+Ping, is still feature still used at all?
 
-Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-[ Update config help and commit message ]
-Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-Reviewed-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
----
- arch/powerpc/Kconfig | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+If nobody can test, any advise on which HW I need and how to trigger it?
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index d8dcd8820369..044838794112 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -448,6 +448,23 @@ config PPC_TRANSACTIONAL_MEM
- 	help
- 	  Support user-mode Transactional Memory on POWERPC.
- 
-+config PPC_UV
-+	bool "Ultravisor support"
-+	depends on KVM_BOOK3S_HV_POSSIBLE
-+	select ZONE_DEVICE
-+	select DEV_PAGEMAP_OPS
-+	select DEVICE_PRIVATE
-+	select MEMORY_HOTPLUG
-+	select MEMORY_HOTREMOVE
-+	default n
-+	help
-+	  This option paravirtualizes the kernel to run in POWER platforms that
-+	  supports the Protected Execution Facility (PEF). On such platforms,
-+	  the ultravisor firmware runs at a privilege level above the
-+	  hypervisor.
-+
-+	  If unsure, say "N".
-+
- config LD_HEAD_STUB_CATCH
- 	bool "Reserve 256 bytes to cope with linker stubs in HEAD text" if EXPERT
- 	depends on PPC64
 -- 
-2.21.0
 
+Thanks,
+
+David / dhildenb
