@@ -1,74 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94415BF2EC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 14:26:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B5EBF2FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 14:29:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46fDgx2h6XzDqj4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 22:26:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46fDkL4HfXzDqp5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 22:28:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="hubXmZfA"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eIxKDVCs"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46fDdS42ckzDqgn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 22:24:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=afRaN/LY/H1zbCDadcDtmH+ZWsJBTHhKnFzc00nLmQ8=; b=hubXmZfA3To1Ex3YRmRRRH7lQ
- OepCjKKz8C5Ztc+dCXmmwxQq5WYAAdbGp0yfpxmb91trKituvJle34POlOe5cs18X3tN9aqJTyKh4
- gqLF/wgE7398CboKIwmyOl0R5cWmlS3RAiLmJJjTuU8xd5q8bajMm/w+CCndClH8TT+wDwVDIzwTR
- mdLwlKTZXtvAtRnY6YnviaDrIkl6xa5HqDB9QA3sk+H6nnwFeGiKdO5jq5uuT2J1oT5DPuXSgHsUm
- 5xNIHhsJAkaVrTLL+gEXO/XM/xmDp0I1AYSmlqMsDCrdmfaeO0cLvGGA1V3MxJLAt8KhPerUpY2rt
- KngGAuEVg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iDSoc-0005oB-To; Thu, 26 Sep 2019 12:24:11 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 941DD300F40;
- Thu, 26 Sep 2019 14:23:20 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id EB0F32013B75A; Thu, 26 Sep 2019 14:24:06 +0200 (CEST)
-Date: Thu, 26 Sep 2019 14:24:06 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-Message-ID: <20190926122406.GB4519@hirez.programming.kicks-ass.net>
-References: <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <20190925104040.GD4553@hirez.programming.kicks-ass.net>
- <20190925132544.GL23050@dhcp22.suse.cz>
- <20190925163154.GF4553@hirez.programming.kicks-ass.net>
- <CAMuHMdVJ6RbEbKc8s_rhJaUBNnA8sOByq9cJ3KH-qmcqQrm_UQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46fDf96NW1zDqhC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 22:25:21 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id 205so1773624pfw.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 05:25:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=KvpgeRcLn6/gXzLZ0yQfM/bGb7Xd6+CQF+YZn5Xb6jk=;
+ b=eIxKDVCs2cQBpTAOBXkJM2nYUG3IDOpcihnrSHIxZeysczOoxV6hxIuOgJPlGyr6W3
+ FGwwfVNt29F3xNd4qDnzBXPKLUH0n0dFvIkSRUYZSIb8W1p3v8GFWTotBstKuoODQKGg
+ TLNOmArxzb6iqH2hIXVt946a0lZ44eERhgchQBMDwT30WaZl/k658RMupQ9ytFu4p03Z
+ h9i6E25ojIkfPRBA7MVQWEYc/a9Jo2NKpbl7ukrPocIVZECo0ucKJ44lze2e9j1lArZw
+ 81e7Sv2incpw0+o/mtFb7T+CmqOVIvsebjNqIWAIzjhF0UCu9sk3VDMFJbsZI+/yqBlT
+ 3Ylw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=KvpgeRcLn6/gXzLZ0yQfM/bGb7Xd6+CQF+YZn5Xb6jk=;
+ b=YrJIvua5HYLAFMrjRiP8pkPYskygNQcMPssbnGnAEFf0aWNtLJe063yOMQRvaah/RE
+ 6+Tj3DcZeA3GF/q6np2ukO3jjbYcJcRWsqtS7/cdb0EOHKD+EqtQzyhFIcEHT8VkG6qw
+ IcQLKoX9NDXtrPbAPQnm6n84UrKmSjQC9pIEL4q8c+9OyohOSAeCJpG3EYcFHgn0CLMP
+ eKaJsW0uV7n3XNJUxqRtYUQFSZf/T9oDUddieonsOwA4rRVhO44OKg6f7bIb1/IYbArq
+ C8H4CPR6z7h1qr5Q4nB48TL+bxnXydrrJE3XoN2g/pJppHScSERmpDQ9SrPjno1+vbiA
+ bqMA==
+X-Gm-Message-State: APjAAAUnlyviJM3H+tQYB6GGepj26fGU7DpglDU8hA6XT300pLOsfwvA
+ dOMmMKK7sXEkCK0LxR2lXhr2DAYB
+X-Google-Smtp-Source: APXvYqzPT05DYkq1/PGQjHKSU3IvJGY2RDX1FkkHNnwOaFjiBL6G5A10mqk/m3jlHUhsMda0nWSckQ==
+X-Received: by 2002:aa7:90c7:: with SMTP id k7mr3393485pfk.39.1569500717789;
+ Thu, 26 Sep 2019 05:25:17 -0700 (PDT)
+Received: from localhost.ibm.com ([61.69.151.62])
+ by smtp.gmail.com with ESMTPSA id c1sm2671966pfb.135.2019.09.26.05.25.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Sep 2019 05:25:17 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/eeh: s/CONFIG_IOV/CONFIG_PCI_IOV/
+Date: Thu, 26 Sep 2019 22:25:02 +1000
+Message-Id: <20190926122502.14826-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVJ6RbEbKc8s_rhJaUBNnA8sOByq9cJ3KH-qmcqQrm_UQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,74 +76,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, jiaxun.yang@flygoat.com,
- Michal Hocko <mhocko@kernel.org>, Michael Bringmann <mwb@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux <sparclinux@vger.kernel.org>, Huacai Chen <chenhc@lemote.com>,
- Will Deacon <will@kernel.org>, Qian Cai <cai@lca.pw>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- the arch/x86 maintainers <x86@kernel.org>,
- Yunsheng Lin <linyunsheng@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Doug Ledford <dledford@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Jeff Kirsher <jeffrey.t.kirsher@intel.com>, James Hogan <jhogan@kernel.org>,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- Len Brown <len.brown@intel.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Greg KH <gregkh@linuxfoundation.org>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- naveen.n.rao@linux.vnet.ibm.com,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Richard Henderson <rth@twiddle.net>, Jens Axboe <axboe@kernel.dk>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ralf Baechle <ralf@linux-mips.org>,
- Thomas Bogendoerfer <tbogendoerfer@suse.de>,
- Paul Burton <paul.burton@mips.com>, alpha <linux-alpha@vger.kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Andrew Morton <akpm@linux-foundation.org>, Robin Murphy <robin.murphy@arm.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 26, 2019 at 01:45:53PM +0200, Geert Uytterhoeven wrote:
-> Hi Peter,
-> 
-> On Thu, Sep 26, 2019 at 11:42 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> > On Wed, Sep 25, 2019 at 03:25:44PM +0200, Michal Hocko wrote:
-> > > I am sorry but I still do not understand why you consider this whack a
-> > > mole better then simply live with the fact that NUMA_NO_NODE is a
-> > > reality and that using the full cpu mask is a reasonable answer to that.
-> >
-> > Because it doesn't make physical sense. A device _cannot_ be local to
-> > all CPUs in a NUMA system.
-> 
-> While it cannot be local to all CPUs, it can be at a uniform (equal) distance
-> to each CPU node, can't it?
+Whoops.
 
-Only in some really narrow cases; and I'm not sure those are realistic,
-nor if then not providing NUMA info is the best way to describe that.
+Fixes: bd6461cc7b3c ("powerpc/eeh: Add a eeh_dev_break debugfs interface")
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+ arch/powerpc/kernel/eeh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I suppose it is possible to have a PCI bridge shared between two nodes,
-such that the PCI devices have equidistance; esp. if that all lives in a
-package. But the moment you scale this out, you either get devices that
-are 'local' to a package while having multiple packages, or if you
-maintain a single bridge in a big system, things become so slow it all
-doesn't matter anyway (try having a equidistant device in a 16 node
-system).
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 0a91dee51245..7d744e2ee4d5 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1960,7 +1960,7 @@ static int eeh_debugfs_break_device(struct pci_dev *pdev)
+ 	pci_err(pdev, "Going to break: %pR\n", bar);
+ 
+ 	if (pdev->is_virtfn) {
+-#ifndef CONFIG_IOV
++#ifndef CONFIG_PCI_IOV
+ 		return -ENXIO;
+ #else
+ 		/*
+-- 
+2.21.0
 
-I'm saying that assigning a node (one of the shared) is, in the generic
-ase of multiple packages, the better solution over assigning all nodes.
-
-The other solution is migrating the device model over to a node mask,
-instead of a single node. But like said; I'm not sure anybody actually
-build something like this. So I'm not sure it matters.
-
-OTOH allowing to not describe NUMA has led to a whole host of crap,
-which if we don't become stricter will only get worse.
