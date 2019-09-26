@@ -2,49 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38134BF20E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 13:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D80EBF2A2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 14:13:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46fCpx2wYfzDqpB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 21:47:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46fDNf64bpzDqnk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 22:13:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.167.196; helo=mail-oi1-f196.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com
- [209.85.167.196])
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46fCn03wjXzDqkX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 21:46:08 +1000 (AEST)
-Received: by mail-oi1-f196.google.com with SMTP id i185so1768078oif.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 04:46:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=tLHR9Uzl4F2LlED7RayZ8GAF5ZPEPIZryaF57i4OLXI=;
- b=hUGdGKUz0vdUQVbhTWy+OiYg8vqj7b5XuSOSJwC6ikUbC3FsTxZrYcscH8bjCRo0OW
- /muVY8laQtIDXRFEi/qRVYIBP5p/wdK/OrGWx9UMB3k9AWMWKP0GInhK5yBfxyZsw/9t
- fNWSKqgaV1unamWZC0WW6+I3+7GtTbI7DRLu0hKVpd6FVvK6cpyXS4zz5zY3lWRM6dFz
- GlniIIxSSY5ll6gety9lSdPARUXxrbHDOVthRh4SLaAhNb3HC3QR+Ry3zIhLk2GIr1Q8
- Bi3gCmVDBcYY1Si+NSqM/8LbgKC1FjqRse2my1ysDxi8zdgcPcFp/TD8LSCpoquHMIYV
- RjOQ==
-X-Gm-Message-State: APjAAAUgV2DXnSJF9W1Gg+E18eNW7jwv2cKLGiYs5ERMiEa2el9KhFu6
- qvHHMaPaE/KuZOEsEin9w0MTB6b1Kyn9juxkxr8=
-X-Google-Smtp-Source: APXvYqyYkcWdXaYT2TKf8PpAyeMG4IMl80DMGSW9/4Yu/aIloKfMJRq08yVSuXrdrFqW4oG+5S2Rn1FqFklCYwm9zxE=
-X-Received: by 2002:aca:b654:: with SMTP id g81mr2137450oif.153.1569498365259; 
- Thu, 26 Sep 2019 04:46:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190924105622.GH23050@dhcp22.suse.cz>
- <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
- <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46fDL76HJzzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 22:11:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=QmSB+iJQpid0KK6OgKLqID3ggufRi3prpqIsy8HQWNc=; b=KVBm0ALWj1UZADG6S1S003WTm
+ 6Y/Z2mNgsSiMdagtvJlukp3nGNsy545VNOD+MXDGI+CgrWveZsq3kwIiK+W1LpQFSlw2FO8gUGdVM
+ W2VBJT0Xlb+/aHD/PsZOmPJdK4xvYogq73w0VV+DZOF+NK+Pw3EhlTl3L/B56oc0gDiH5L7IOTOmh
+ 9SS8hCDwrkF/LGwTT8i48Krgh9Vh7dcBpmex2wkYQ8Bfn7Fuyfe20YRVwniKWyJcj4Nza9/eRfeAA
+ s7HghavBEgLci7cWRly+tTQOqfAmcSTvyTWhdg9bVpOtanHW5Wossu0KBHPpav8mRaq/Jr31Cr0YE
+ u4u0ZZw0Q==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iDSb7-00059a-Ne; Thu, 26 Sep 2019 12:10:14 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 77211305BD3;
+ Thu, 26 Sep 2019 14:09:21 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id C40552013B759; Thu, 26 Sep 2019 14:10:07 +0200 (CEST)
+Date: Thu, 26 Sep 2019 14:10:07 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20190926121007.GB4581@hirez.programming.kicks-ass.net>
+References: <20190924120943.GP2349@hirez.programming.kicks-ass.net>
  <20190924122500.GP23050@dhcp22.suse.cz>
  <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
  <20190924125936.GR2349@hirez.programming.kicks-ass.net>
@@ -52,13 +59,13 @@ References: <20190924105622.GH23050@dhcp22.suse.cz>
  <20190925104040.GD4553@hirez.programming.kicks-ass.net>
  <20190925132544.GL23050@dhcp22.suse.cz>
  <20190925163154.GF4553@hirez.programming.kicks-ass.net>
-In-Reply-To: <20190925163154.GF4553@hirez.programming.kicks-ass.net>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 26 Sep 2019 13:45:53 +0200
-Message-ID: <CAMuHMdVJ6RbEbKc8s_rhJaUBNnA8sOByq9cJ3KH-qmcqQrm_UQ@mail.gmail.com>
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+ <20190925214526.GA4643@worktop.programming.kicks-ass.net>
+ <20190926090559.GA4581@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190926090559.GA4581@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,63 +77,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, jiaxun.yang@flygoat.com,
- Michal Hocko <mhocko@kernel.org>, Michael Bringmann <mwb@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux <sparclinux@vger.kernel.org>, Huacai Chen <chenhc@lemote.com>,
- Will Deacon <will@kernel.org>, Qian Cai <cai@lca.pw>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- the arch/x86 maintainers <x86@kernel.org>,
- Yunsheng Lin <linyunsheng@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Doug Ledford <dledford@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Jeff Kirsher <jeffrey.t.kirsher@intel.com>, James Hogan <jhogan@kernel.org>,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- Len Brown <len.brown@intel.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Greg KH <gregkh@linuxfoundation.org>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- naveen.n.rao@linux.vnet.ibm.com,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Richard Henderson <rth@twiddle.net>, Jens Axboe <axboe@kernel.dk>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ralf Baechle <ralf@linux-mips.org>,
- Thomas Bogendoerfer <tbogendoerfer@suse.de>,
- Paul Burton <paul.burton@mips.com>, alpha <linux-alpha@vger.kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Andrew Morton <akpm@linux-foundation.org>, Robin Murphy <robin.murphy@arm.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
+ will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
+ ysato@users.sourceforge.jp, x86@kernel.org,
+ Yunsheng Lin <linyunsheng@huawei.com>, rppt@linux.ibm.com,
+ borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
+ jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
+ len.brown@intel.com, gor@linux.ibm.com, anshuman.khandual@arm.com,
+ gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org, tglx@linutronix.de,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
+ paul.burton@mips.com, linux-alpha@vger.kernel.org, rafael@kernel.org,
+ ink@jurassic.park.msu.ru, akpm@linux-foundation.org, robin.murphy@arm.com,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Peter,
+On Thu, Sep 26, 2019 at 11:05:59AM +0200, Peter Zijlstra wrote:
+> On Wed, Sep 25, 2019 at 11:45:26PM +0200, Peter Zijlstra wrote:
+> > [    7.149889] [Firmware Bug]: device: 'pci0000:7f': no node assigned on NUMA capable HW
+> > [    7.882888] [Firmware Bug]: device: 'pci0000:ff': no node assigned on NUMA capable HW
+> 
+> Going by the limited number of intel numa boxes I have, it looks like:
+> 
+>   socket = (~busid) >> (8-n)
 
-On Thu, Sep 26, 2019 at 11:42 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> On Wed, Sep 25, 2019 at 03:25:44PM +0200, Michal Hocko wrote:
-> > I am sorry but I still do not understand why you consider this whack a
-> > mole better then simply live with the fact that NUMA_NO_NODE is a
-> > reality and that using the full cpu mask is a reasonable answer to that.
->
-> Because it doesn't make physical sense. A device _cannot_ be local to
-> all CPUs in a NUMA system.
+Bah, I got my notes mixed up, it should be: busid >> (8-n)
 
-While it cannot be local to all CPUs, it can be at a uniform (equal) distance
-to each CPU node, can't it?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> where 'n' is the number of bits required to encode the largest socket
+> id, ie 1 for 2-socket and 2 for 4 socket.
+> 
+> For 8 socket systems we start using pci domains, and things get more
+> 'interesting' :/
