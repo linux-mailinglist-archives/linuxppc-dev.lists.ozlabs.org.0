@@ -1,64 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A375BF9C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 21:05:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 138B4BF9BC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2019 21:03:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46fPWm27SrzDqRC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2019 05:05:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46fPTG0fJZzDqRs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2019 05:03:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="ZT90Hlbg";
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="ftNNGKyt";
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46fNBd0fg2zDqfp
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46fNBd0ffYzDqfN
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2019 04:05:28 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id q24so1355252plr.13
+Received: by mail-pg1-x542.google.com with SMTP id z12so1958934pgp.9
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2019 11:05:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=l1/coTYTe+wj6TaniwTTIjxs1/tlAJ4ZBZ+k2HAUhoc=;
- b=ZT90Hlbgza5mA13/d6UGS0pzfZxLKfXWME64PvV9Xl8CYO2kbvJSsEXc4JwWRHrHWB
- InrMjw1u0CbOHhrlMXR26Z9Pb5c7tAJ8jH6LE/YESZsEJSUAo4/QiXnuUcayFxkX0Me0
- dj1EzZmZAVOcOsMHTRIfYk2DcenQKhga/VkuQ=
+ bh=UZe87vLT1sniPvXW68EajTgvCPzHcGOx1KtJdkMO+C4=;
+ b=ftNNGKytJacyrySBqQdQBy+Wtbqo4hjOH8JbjKAUhiSKwHnh85Hu/NyJx15BBuO1wF
+ yvNx/PBqQnIZ6l+s3uDBiFHBJFB+mgrq10000RAmGyv/9dd3TBhxlAe1FDs1ODYyqFBp
+ 20hAVjREm+IqibqFYhMmuhOtQ05fbch5Col5A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=l1/coTYTe+wj6TaniwTTIjxs1/tlAJ4ZBZ+k2HAUhoc=;
- b=JA5buSNZ1CF5hnBdJ+grQPcOB3wzfSWJFGh9DfYZIFki8XPdG4MIeiL/Pa3mpGFrCu
- CDlmFp/H6a19iFJoCCMF1prVEU/6FzFaixztrju2IXFbAxKklBisAI69v/HQrOSQgEaO
- jViPTyKYgAhfb8f98l3i18tMnnUW4y1J0SIp0e7W7Az2N2S4pyROsx/f4MqKAbSkrMxJ
- 4Jba31oCORc4rUSXFEh/KL5boybNnkORI6zq2MvwLbp08zT2fu2hXvRPwXI+nVhXzqPE
- iTOUPOatntFTSgwcUzf+ABFALm6yQ6caNEGIeE2wbNacC6ggftQBr5Sd/skuxTXLXwaT
- 2img==
-X-Gm-Message-State: APjAAAVXhxJXhg5GxWXiRL+s0kVlg1j8NnhetgYfd9GqHhMXXH4vLSqj
- Eg9Y7Ncae6+Em+6aJOTHcHeX9Q==
-X-Google-Smtp-Source: APXvYqwfZ1Op5CLpaniFH9tifhvJSxbOiM4V28ay34Ix7SESkioQ0yE1zEBFSFMDhs1Uhrrf1XeYJQ==
-X-Received: by 2002:a17:902:ff0e:: with SMTP id
- f14mr5388358plj.325.1569521122967; 
- Thu, 26 Sep 2019 11:05:22 -0700 (PDT)
+ bh=UZe87vLT1sniPvXW68EajTgvCPzHcGOx1KtJdkMO+C4=;
+ b=uRrjaozlFx0Pzql7urhCpLb82bWmd7/GKCa4HBnv/FwDkgjCEUHyGbTER3BSyMB+zf
+ 7H8zl1YM/QtEV+VcUbDp/Rwtfz+UDZaiPs25bLBoZT9eLfN8KsFtuhr9Cx8pUEqaGW1G
+ sZoyKbSIHUXkBowKQorbpMefWsZhf+myJ0Joi/vX4Qq/XoCiooL3YxinOJwwOHzQFLXv
+ 9KaH/fRn0xMAi9AizPCb9eeB0veOP4VtZ/Yfjbk4oESm4+gdYcmCWVNDuhmtuFLqd4Rc
+ gdu7oBEfZDE4ujEiWlxMsWILRLUipTt8mDNBU/9lLuQ447kr+Na8R7WHcruoy04uZu1/
+ GT4g==
+X-Gm-Message-State: APjAAAWPaUNMs1xeVH8nEkdXqY3vAQ+YUR+P+dL9lt10ImUbG68B65SP
+ yd8hIWdWp6JGuwkM5jVX4xxC+Q==
+X-Google-Smtp-Source: APXvYqxQ+qIP8fVJv40/72tfoaela/T+aeXyqhEWc1AJXKMb1mslUhfwVxI+PEohiV5y6ZiRW2Bx2Q==
+X-Received: by 2002:a65:5689:: with SMTP id v9mr4732387pgs.228.1569521124506; 
+ Thu, 26 Sep 2019 11:05:24 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id b69sm3327625pfb.132.2019.09.26.11.05.19
+ by smtp.gmail.com with ESMTPSA id p17sm5229278pfn.50.2019.09.26.11.05.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Sep 2019 11:05:20 -0700 (PDT)
+ Thu, 26 Sep 2019 11:05:23 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 15/29] x86: Actually use _etext for end of text segment
-Date: Thu, 26 Sep 2019 10:55:48 -0700
-Message-Id: <20190926175602.33098-16-keescook@chromium.org>
+Subject: [PATCH 21/29] ia64: Move EXCEPTION_TABLE to RO_DATA segment
+Date: Thu, 26 Sep 2019 10:55:54 -0700
+Message-Id: <20190926175602.33098-22-keescook@chromium.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190926175602.33098-1-keescook@chromium.org>
 References: <20190926175602.33098-1-keescook@chromium.org>
@@ -87,98 +86,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Various calculations are using the end of the exception table (which
-does not need to be executable) as the end of the text segment. Instead,
-in preparation for moving the exception table into RO_DATA, move _etext
-after the exception table and update the calculations.
+The EXCEPTION_TABLE is read-only, so collapse it into RO_DATA.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/x86/include/asm/sections.h | 1 -
- arch/x86/kernel/vmlinux.lds.S   | 7 +++----
- arch/x86/mm/init_64.c           | 6 +++---
- arch/x86/mm/pti.c               | 2 +-
- 4 files changed, 7 insertions(+), 9 deletions(-)
+ arch/ia64/kernel/vmlinux.lds.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sections.h
-index 71b32f2570ab..036c360910c5 100644
---- a/arch/x86/include/asm/sections.h
-+++ b/arch/x86/include/asm/sections.h
-@@ -6,7 +6,6 @@
- #include <asm/extable.h>
+diff --git a/arch/ia64/kernel/vmlinux.lds.S b/arch/ia64/kernel/vmlinux.lds.S
+index 0d86fc8e88d5..18a732597112 100644
+--- a/arch/ia64/kernel/vmlinux.lds.S
++++ b/arch/ia64/kernel/vmlinux.lds.S
+@@ -6,6 +6,7 @@
+ #include <asm/thread_info.h>
  
- extern char __brk_base[], __brk_limit[];
--extern struct exception_table_entry __stop___ex_table[];
- extern char __end_rodata_aligned[];
+ #define EMITS_PT_NOTE
++#define RO_DATA_EXCEPTION_TABLE_ALIGN	16
  
- #if defined(CONFIG_X86_64)
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 41362e90142d..a1a758e25b2b 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -143,15 +143,14 @@ SECTIONS
- 		*(.text.__x86.indirect_thunk)
- 		__indirect_thunk_end = .;
- #endif
--
--		/* End of text section */
--		_etext = .;
- 	} :text = 0x9090
+ #include <asm-generic/vmlinux.lds.h>
  
- 	EXCEPTION_TABLE(16)
- 
--	/* .text should occupy whole number of pages */
-+	/* End of text section, which should occupy whole number of pages */
-+	_etext = .;
- 	. = ALIGN(PAGE_SIZE);
-+
- 	X86_ALIGN_RODATA_BEGIN
- 	RO_DATA(PAGE_SIZE)
- 	X86_ALIGN_RODATA_END
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index a6b5c653727b..26299e9ce6da 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1263,7 +1263,7 @@ int kernel_set_to_readonly;
- void set_kernel_text_rw(void)
- {
- 	unsigned long start = PFN_ALIGN(_text);
--	unsigned long end = PFN_ALIGN(__stop___ex_table);
-+	unsigned long end = PFN_ALIGN(_etext);
- 
- 	if (!kernel_set_to_readonly)
- 		return;
-@@ -1282,7 +1282,7 @@ void set_kernel_text_rw(void)
- void set_kernel_text_ro(void)
- {
- 	unsigned long start = PFN_ALIGN(_text);
--	unsigned long end = PFN_ALIGN(__stop___ex_table);
-+	unsigned long end = PFN_ALIGN(_etext);
- 
- 	if (!kernel_set_to_readonly)
- 		return;
-@@ -1301,7 +1301,7 @@ void mark_rodata_ro(void)
- 	unsigned long start = PFN_ALIGN(_text);
- 	unsigned long rodata_start = PFN_ALIGN(__start_rodata);
- 	unsigned long end = (unsigned long) &__end_rodata_hpage_align;
--	unsigned long text_end = PFN_ALIGN(&__stop___ex_table);
-+	unsigned long text_end = PFN_ALIGN(&_etext);
- 	unsigned long rodata_end = PFN_ALIGN(&__end_rodata);
- 	unsigned long all_end;
- 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index b196524759ec..bd3404fd9d80 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -572,7 +572,7 @@ static void pti_clone_kernel_text(void)
+@@ -70,7 +71,6 @@ SECTIONS {
+ 	/*
+ 	 * Read-only data
  	 */
- 	unsigned long start = PFN_ALIGN(_text);
- 	unsigned long end_clone  = (unsigned long)__end_rodata_aligned;
--	unsigned long end_global = PFN_ALIGN((unsigned long)__stop___ex_table);
-+	unsigned long end_global = PFN_ALIGN((unsigned long)_etext);
+-	EXCEPTION_TABLE(16)
  
- 	if (!pti_kernel_image_global_ok())
- 		return;
+ 	/* MCA table */
+ 	. = ALIGN(16);
 -- 
 2.17.1
 
