@@ -2,49 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B625C0556
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2019 14:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2430C0574
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2019 14:47:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46fryM4QfnzDr1D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2019 22:41:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46fs5V0h9TzDqvR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2019 22:47:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="NRxnvfmz"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46frvn6XqrzDqv3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2019 22:39:17 +1000 (AEST)
-Received: from localhost (173-25-179-30.client.mchsi.com [173.25.179.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8B22220673;
- Fri, 27 Sep 2019 12:39:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569587954;
- bh=uPN9RyW4YW0TDfK8hXhtBneW2YpzqT6rO2P64YR4jtY=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=NRxnvfmzKHdgaIuyshJwcS0iwIlp5AAK4eN8sypPK8Ovxr4/eroGgPG1+r5sQRX7A
- 3KFWMi6wdJsgsMRQZWfdUebtvWDnQbLYtSudyqLNLDHco79brtd4IujFXnsszDhK1L
- GxWTS19cUuSFAcz9fNLMQ7IHk+eLiCOA06ig3lP0=
-Date: Fri, 27 Sep 2019 07:39:13 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/2] PCI/AER: Use for_each_set_bit()
-Message-ID: <20190927123913.GA32321@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46fs2p5BcjzDqbs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2019 22:45:22 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8RCifk9036308
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2019 08:45:19 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2v9gbancq7-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2019 08:45:19 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Fri, 27 Sep 2019 13:45:14 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 27 Sep 2019 13:45:12 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8RCjAi059506932
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 27 Sep 2019 12:45:10 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6C1EA405E;
+ Fri, 27 Sep 2019 12:45:10 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6EE51A4040;
+ Fri, 27 Sep 2019 12:45:10 +0000 (GMT)
+Received: from bali.tls.ibm.com (unknown [9.101.4.17])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 27 Sep 2019 12:45:10 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: sbobroff@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH] powernv/eeh: Fix oops when probing cxl devices
+Date: Fri, 27 Sep 2019 14:45:10 +0200
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190827151823.75312-1-andriy.shevchenko@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19092712-0016-0000-0000-000002B14F81
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19092712-0017-0000-0000-0000331221A3
+Message-Id: <20190927124510.15518-1-fbarrat@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-27_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=923 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909270116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,83 +85,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org
+Cc: clombard@linux.ibm.com, andrew.donnellan@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 27, 2019 at 06:18:22PM +0300, Andy Shevchenko wrote:
-> This simplifies and standardizes slot manipulation code
-> by using for_each_set_bit() library function.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/pci/pcie/aer.c | 19 ++++++++-----------
->  1 file changed, 8 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index b45bc47d04fe..f883f81d759a 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -15,6 +15,7 @@
->  #define pr_fmt(fmt) "AER: " fmt
->  #define dev_fmt pr_fmt
->  
-> +#include <linux/bitops.h>
->  #include <linux/cper.h>
->  #include <linux/pci.h>
->  #include <linux/pci-acpi.h>
-> @@ -657,7 +658,8 @@ const struct attribute_group aer_stats_attr_group = {
->  static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
->  				   struct aer_err_info *info)
->  {
-> -	int status, i, max = -1;
-> +	unsigned long status = info->status & ~info->mask;
-> +	int i, max = -1;
->  	u64 *counter = NULL;
->  	struct aer_stats *aer_stats = pdev->aer_stats;
->  
-> @@ -682,10 +684,8 @@ static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
->  		break;
->  	}
->  
-> -	status = (info->status & ~info->mask);
-> -	for (i = 0; i < max; i++)
-> -		if (status & (1 << i))
-> -			counter[i]++;
-> +	for_each_set_bit(i, &status, max)
+Recent cleanup in the way EEH support is added to a device causes a
+kernel oops when the cxl driver probes a device and creates virtual
+devices discovered on the FPGA:
 
-I applied this, but I confess to being a little ambivalent.  It's
-arguably a little easier to read, but it's not nearly as efficient
-(not a great concern here) and more importantly much harder to verify
-that it's correct because you have to chase through
-for_each_set_bit(), find_first_bit(), _ffs(), etc, etc.  No doubt it's
-great for bitmaps of arbitrary size, but for a simple 32-bit register
-I'm a little hesitant.  But I applied it anyway.
+    BUG: Kernel NULL pointer dereference at 0x000000a0
+    Faulting instruction address: 0xc000000000048070
+    Oops: Kernel access of bad area, sig: 7 [#1]
+    ...
+    NIP [c000000000048070] eeh_add_device_late.part.9+0x50/0x1e0
+    LR [c00000000004805c] eeh_add_device_late.part.9+0x3c/0x1e0
+    Call Trace:
+    [c000200e43983900] [c00000000079e250] _dev_info+0x5c/0x6c (unreliable)
+    [c000200e43983980] [c0000000000d1ad0] pnv_pcibios_bus_add_device+0x60/0xb0
+    [c000200e439839f0] [c0000000000606d0] pcibios_bus_add_device+0x40/0x60
+    [c000200e43983a10] [c0000000006aa3a0] pci_bus_add_device+0x30/0x100
+    [c000200e43983a80] [c0000000006aa4d4] pci_bus_add_devices+0x64/0xd0
+    [c000200e43983ac0] [c00800001c429118] cxl_pci_vphb_add+0xe0/0x130 [cxl]
+    [c000200e43983b00] [c00800001c4242ac] cxl_probe+0x504/0x5b0 [cxl]
+    [c000200e43983bb0] [c0000000006bba1c] local_pci_probe+0x6c/0x110
+    [c000200e43983c30] [c000000000159278] work_for_cpu_fn+0x38/0x60
 
-> +		counter[i]++;
->  }
->  
->  static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
-> @@ -717,14 +717,11 @@ static void __print_tlp_header(struct pci_dev *dev,
->  static void __aer_print_error(struct pci_dev *dev,
->  			      struct aer_err_info *info)
->  {
-> -	int i, status;
-> +	unsigned long status = info->status & ~info->mask;
->  	const char *errmsg = NULL;
-> -	status = (info->status & ~info->mask);
-> -
-> -	for (i = 0; i < 32; i++) {
-> -		if (!(status & (1 << i)))
-> -			continue;
-> +	int i;
->  
-> +	for_each_set_bit(i, &status, 32) {
->  		if (info->severity == AER_CORRECTABLE)
->  			errmsg = i < ARRAY_SIZE(aer_correctable_error_string) ?
->  				aer_correctable_error_string[i] : NULL;
-> -- 
-> 2.23.0.rc1
-> 
+The root cause is that those cxl virtual devices don't have a
+representation in the device tree and therefore no associated pci_dn
+structure. In eeh_add_device_late(), pdn is NULL, so edev is NULL and
+we oops.
+
+We never had explicit support for EEH for those virtual
+devices. Instead, EEH events are reported to the (real) pci device and
+handled by the cxl driver. Which can then forward to the virtual
+devices and handle dependencies. The fact that we try adding EEH
+support for the virtual devices is new and a side-effect of the recent
+cleanup.
+
+This patch fixes it by skipping adding EEH support on powernv for
+devices which don't have a pci_dn structure.
+
+Fixes: b905f8cdca77 ("powerpc/eeh: EEH for pSeries hot plug")
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+---
+
+Sending as an RFC, as I'm afraid of hiding potential issues and would
+be interested in comments. The powernv eeh code expects a struct
+pci_dn, so the fix seems safe. I'm wondering if there could be cases
+(other than capi virtual devices) where we'd want to blow up and fix
+instead of going undetected with this patch.
+
+
+ arch/powerpc/platforms/powernv/eeh-powernv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+index 6bc24a47e9ef..6f300ab7f0e9 100644
+--- a/arch/powerpc/platforms/powernv/eeh-powernv.c
++++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+@@ -42,7 +42,7 @@ void pnv_pcibios_bus_add_device(struct pci_dev *pdev)
+ {
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+ 
+-	if (eeh_has_flag(EEH_FORCE_DISABLED))
++	if (!pdn || eeh_has_flag(EEH_FORCE_DISABLED))
+ 		return;
+ 
+ 	dev_dbg(&pdev->dev, "EEH: Setting up device\n");
+-- 
+2.21.0
+
