@@ -1,48 +1,157 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AF4C10CA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Sep 2019 14:16:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F22C10D1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Sep 2019 14:21:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46gSLv5QhgzDr1V
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Sep 2019 22:16:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46gSSt0stszDr1Y
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Sep 2019 22:21:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="N/Wh5R2g"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46gSJV0XTVzDqyn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Sep 2019 22:14:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="kJZb5wZ/"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46gSJT0YY7z9sNf;
- Sat, 28 Sep 2019 22:14:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1569672857;
- bh=PDWq9hH3YyXXTpq0KMTZ1nCLI7LcPLMFtlg8UcURUrs=;
- h=From:To:Cc:Subject:Date:From;
- b=kJZb5wZ/f3p0EjPUFmga2ShvnC2dFqPfIdU2wOPijcQsrwUw0ZG/OO+Wd4uVECGnF
- bIVyINu/glpNmW47ubYSohvC14DI5HTpyvnd3IhJPVJn3rlK37dPp/+rWyb3VaHIFx
- N4/fLB+1AZ9dWCCpYa6FzLR0LNw+Lw9XpV8bfeQ01JX5JpgtKftYUNf6NZ9nGUgFcc
- VUj0eRYuuRiRJ1zvKJ7JcrFIEmEoP/jfXLel/oICir4CP+PwBcXc7p2GE3ArvpuRea
- WrRjhIa51fxNJZafTNMg8Mr/n4xnKkuaDvkYbfrGYyV3dJ3YcQ2ZqTKCjxgDYzngh4
- LHXSpZCYdCEYg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.4-2 tag
-Date: Sat, 28 Sep 2019 22:14:15 +1000
-Message-ID: <877e5sr52g.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46gSPt3F8RzDq9L
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Sep 2019 22:18:55 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id z12so4840722pgp.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Sep 2019 05:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=jdZLuPNTFgvOoHNp69eH1B8co2PiEAYcoJ967WTM8uY=;
+ b=N/Wh5R2ge3Rm6OQQ4mxY0JVOMk7hSNfjog9d2+YgWbIibc/aGo4vnfYpl5Ix5lIWU4
+ 5sJDxFIjGnI1Ph37eezSSkCiAgnL+eYZW5/NWVXVBx8BS1QxDB/nm2yjflkou3qhaUaT
+ WaEa53bLQvy6mNvyr5PxS61Qr3G0j4pjqsesDPR4kOv4cbXccCM37yLwDtE2tR8uuFUm
+ CNiJ0+wkaM2+vIY+yPu/pApAf/VjcQInlB+rROCHgjmVd+Pk6uIyn4g2qW1an3BGwEdl
+ AQlvX69gggO9lA9TLooBvovsKn+gXS2yj96tt845VQ01fWlVmMTaobM4Bz6cP+yCE0LF
+ iIng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=jdZLuPNTFgvOoHNp69eH1B8co2PiEAYcoJ967WTM8uY=;
+ b=cGUFd+G9AkrJIFyE2pv0EjAMJB93AbbWk4z20O//331TkPyIo3Z7+K7WgejwBOy0+r
+ 8grBVrnrgQeSOKkcRxu1GLxH0H83caKpgDkptkjll7vg7qbLt/vrUvtatExXzvN5mcZ6
+ hHhxDv6Omx2Xq9zkPRHW2Ym/nf5TEdb57CDiFUJSQQdhf3tu+DWqQcKF9w/hnr13FpJU
+ HTegSoM5oCIW0ofRrS/3Pl/IJYOsMhrpgz8KziMq0ooc98wibPMRBQY4Kqnxxi9qw5VU
+ cfyvzEAVQKILPjeLiRdCSabFQALHzAARpl5fYecX1W6D8KkKii0yFVSxSJwiIOuB+QFo
+ rKPg==
+X-Gm-Message-State: APjAAAV41dEw6PMXfyaxpviPQa8+aVtfrV9zrYlI5LAI8tBNjkB9WpBc
+ L10E2017tGFkqNVD5ct95CiE3g==
+X-Google-Smtp-Source: APXvYqxH0Fo5Q6tOaUH/V8wGiWx0llNlPB60VpHMu2bCav3PmuDg2f+flerVQupKq89xwTF0Hmpneg==
+X-Received: by 2002:a17:90a:3847:: with SMTP id
+ l7mr15933437pjf.118.1569673131901; 
+ Sat, 28 Sep 2019 05:18:51 -0700 (PDT)
+Received: from [192.168.10.152] (203-206-37-215.dyn.iinet.net.au.
+ [203.206.37.215])
+ by smtp.gmail.com with ESMTPSA id h68sm6995367pfb.149.2019.09.28.05.18.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 28 Sep 2019 05:18:51 -0700 (PDT)
+Subject: Re: [PATCH v2 1/1] powerpc/pci: Fix pcibios_setup_device() ordering
+To: Shawn Anastasio <shawn@anastas.io>, linux-pci@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <20190905191343.2919-1-shawn@anastas.io>
+ <20190905191343.2919-2-shawn@anastas.io>
+ <e090d238-d452-6c82-d21b-aeda5f5310e6@ozlabs.ru>
+ <57bb4467-40ab-bdf7-4091-adc0236c3ea3@anastas.io>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <628b96b2-840c-b18e-538d-a70751b4105b@ozlabs.ru>
+Date: Sat, 28 Sep 2019 22:18:42 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <57bb4467-40ab-bdf7-4091-adc0236c3ea3@anastas.io>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,138 +163,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gromero@linux.ibm.com, alistair@popple.id.au, linux-kernel@vger.kernel.org,
- mdroth@linux.vnet.ibm.com, oohall@gmail.com, aneesh.kumar@linux.ibm.com,
- jniethe5@gmail.com, ldufour@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: sbobroff@linux.ibm.com, lukas@wunner.de, oohall@gmail.com,
+ bhelgaas@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
-
-Hi Linus,
-
-Please pull some more powerpc updates for 5.4:
-
-The following changes since commit 45824fc0da6e46cc5d563105e1eaaf3098a686f9:
-
-  Merge tag 'powerpc-5.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux (2019-09-20 11:48:06 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.4-2
-
-for you to fetch changes up to 253c892193ab58da6b1d94371285971b22c63260:
-
-  powerpc/eeh: Fix eeh eeh_debugfs_break_device() with SRIOV devices (2019-09-27 09:04:17 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.4 #2
-
-An assortment of fixes that were either missed by me, or didn't arrive quite in
-time for the first v5.4 pull.
-
-Most notable is a fix for an issue with tlbie (broadcast TLB invalidation) on
-Power9, when using the Radix MMU. The tlbie can race with an mtpid (move to PID
-register, essentially MMU context switch) on another thread of the core, which
-can cause stores to continue to go to a page after it's unmapped.
-
-A fix in our KVM code to add a missing barrier, the lack of which has been
-observed to cause missed IPIs and subsequently stuck CPUs in the host.
-
-A change to the way we initialise PCR (Processor Compatibility Register) to make
-it forward compatible with future CPUs.
-
-On some older PowerVM systems our H_BLOCK_REMOVE support could oops, fix it to
-detect such systems and fallback to the old invalidation method.
-
-A fix for an oops seen on some machines when using KASAN on 32-bit.
-
-A handful of other minor fixes, and two new selftests.
-
-Thanks to:
-  Alistair Popple, Aneesh Kumar K.V, Christophe Leroy, Gustavo Romero, Joel
-  Stanley, Jordan Niethe, Laurent Dufour, Michael Roth, Oliver O'Halloran.
-
-- ------------------------------------------------------------------
-Alistair Popple (1):
-      powerpc: Fix definition of PCR bits to work with old binutils
-
-Aneesh Kumar K.V (7):
-      powerpc/book3s64/radix: Remove WARN_ON in destroy_context()
-      powerpc/book3s64/mm: Don't do tlbie fixup for some hardware revisions
-      powerpc/book3s64/radix: Rename CPU_FTR_P9_TLBIE_BUG feature flag
-      powerpc/mm: Fixup tlbie vs mtpidr/mtlpidr ordering issue on POWER9
-      selftests/powerpc: Add test case for tlbie vs mtpidr ordering issue
-      powerpc/nvdimm: Use HCALL error as the return value
-      powerpc/nvdimm: use H_SCM_QUERY hcall on H_OVERLAP error
-
-Christophe Leroy (2):
-      powerpc/mm: Add a helper to select PAGE_KERNEL_RO or PAGE_READONLY
-      powerpc/mm: Fix an Oops in kasan_mmu_init()
-
-Gustavo Romero (1):
-      powerpc/tm: Add tm-poison test
-
-Jordan Niethe (1):
-      powerpc/64s: Set reserved PCR bits
-
-Laurent Dufour (2):
-      powerpc/pseries: Read TLB Block Invalidate Characteristics
-      powerpc/pseries: Call H_BLOCK_REMOVE when supported
-
-Michael Roth (1):
-      KVM: PPC: Book3S HV: use smp_mb() when setting/clearing host_ipi flag
-
-Oliver O'Halloran (1):
-      powerpc/eeh: Fix eeh eeh_debugfs_break_device() with SRIOV devices
 
 
- arch/powerpc/include/asm/cputable.h             |   5 +-
- arch/powerpc/include/asm/kvm_ppc.h              | 100 ++-
- arch/powerpc/include/asm/reg.h                  |   9 +-
- arch/powerpc/kernel/cpu_setup_power.S           |   6 +
- arch/powerpc/kernel/dbell.c                     |   6 +-
- arch/powerpc/kernel/dt_cpu_ftrs.c               |  35 +-
- arch/powerpc/kernel/eeh.c                       |   4 +-
- arch/powerpc/kvm/book3s_hv.c                    |  11 +-
- arch/powerpc/kvm/book3s_hv_nested.c             |   6 +-
- arch/powerpc/kvm/book3s_hv_rm_mmu.c             |  42 +-
- arch/powerpc/kvm/book3s_hv_rm_xics.c            |   2 +-
- arch/powerpc/kvm/book3s_hv_rmhandlers.S         |  10 +-
- arch/powerpc/mm/book3s64/hash_native.c          |  31 +-
- arch/powerpc/mm/book3s64/mmu_context.c          |  15 +-
- arch/powerpc/mm/book3s64/radix_tlb.c            |  84 ++-
- arch/powerpc/mm/kasan/kasan_init_32.c           |  34 +-
- arch/powerpc/platforms/powernv/smp.c            |   2 +-
- arch/powerpc/platforms/pseries/lpar.c           | 163 ++++-
- arch/powerpc/platforms/pseries/papr_scm.c       |  72 +-
- arch/powerpc/platforms/pseries/pseries.h        |   1 +
- arch/powerpc/platforms/pseries/setup.c          |   1 +
- arch/powerpc/sysdev/xics/icp-native.c           |   6 +-
- arch/powerpc/sysdev/xics/icp-opal.c             |   6 +-
- tools/testing/selftests/powerpc/mm/Makefile     |   2 +
- tools/testing/selftests/powerpc/mm/tlbie_test.c | 734 ++++++++++++++++++++
- tools/testing/selftests/powerpc/tm/.gitignore   |   1 +
- tools/testing/selftests/powerpc/tm/Makefile     |   2 +-
- tools/testing/selftests/powerpc/tm/tm-poison.c  | 179 +++++
- 28 files changed, 1476 insertions(+), 93 deletions(-)
- create mode 100644 tools/testing/selftests/powerpc/mm/tlbie_test.c
- create mode 100644 tools/testing/selftests/powerpc/tm/tm-poison.c
------BEGIN PGP SIGNATURE-----
+On 28/09/2019 04:33, Shawn Anastasio wrote:
+> On 9/9/19 2:59 AM, Alexey Kardashevskiy wrote:
+>>
+>>
+>> On 06/09/2019 05:13, Shawn Anastasio wrote:
+>>> Move PCI device setup from pcibios_add_device() and pcibios_fixup_bus() to
+>>> pcibios_bus_add_device(). This ensures that platform-specific DMA and IOMMU
+>>> setup occurs after the device has been registered in sysfs, which is a
+>>> requirement for IOMMU group assignment to work
+>>>
+>>> This fixes IOMMU group assignment for hotplugged devices on pseries, where
+>>> the existing behavior results in IOMMU assignment before registration.
+>>
+>>
+>> Although this is a correct approach which we should proceed with, this
+>> breaks adding of SRIOV VFs from pnv_tce_iommu_bus_notifier (and possibly
+>> the bare metal PCI hotplug), I am trying to fix that now...
+> 
+> Were you able to make any progress? I can think of a couple of ways
+> to fix SRIOV, but they're not particularly elegant and involve
+> duplication.
 
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl2PTlsACgkQUevqPMjh
-pYAFmw//XZUKzoMT+p2U1o/4sJ+bgR4tulFKZVykGAgcp99gtqbUINKItvDyz/yS
-FOudE1m+deEmf2lWlO+Z6Wd0Q8gEH2+3+mFm6WsBlPPj9KGzuLw+pabNgljW+Oz/
-C41WufCeyuEd8TbhYIz4wRUrPn+LNFdppPqNgkYNwhhjks2SIO5oGypd5S/NmtRS
-L0/F7Q9WL62NHUzgDXEa0AXF0h94hilOyHIfT5Ic+tfydoUHbj3CYP7d4Rk3ISrF
-TZ9PONfyROFbPew50mI1PuktQurYSnk3B1Y3Voc33wJqqDPiIa6rqduKHTAo97rh
-yMjyYSpZVN9q22/NGg3enXLSbLJGxWTGGBkcnrugA/7+D7TWaonfmmEJqFQBmKvN
-t0+06DCpu+0L93/sPUtF8vIHQYuRJZNO9cDFb85Zpy1OjOYMhnKFJvIvv8Oa93yx
-6Zn39Qf+SAdzdkzUah/kVK6ZEzOWGELrtqcQcUAFwNScs8OGVi9iQXsdhUib/HmA
-WSy+ZVem1HvUVAvZBNv7RjGFDFAmL2uJlzHZjEQ/q1FjHZFA8H8n2kcAwGnj1jYq
-sTwEhEnbjyC7sze0mGPuhNOMHcqjYisZlENlddfCde3/jP0CqQepqn9EfZFkTMLq
-cy4+J3evuyvcMSLMYrIQsODZAhcXxCPxU03yNiO+4HQLyZXQ0Cg=
-=+U4R
------END PGP SIGNATURE-----
+A bigger change for ppc+pci is coming from Oliver (I guess with your patch as well) which will tackle this one too, soon.
+
+
+-- 
+Alexey
