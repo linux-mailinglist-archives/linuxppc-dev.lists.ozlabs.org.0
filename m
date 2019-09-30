@@ -2,73 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FEAC2500
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 18:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C253C25B3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 19:11:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46hnfW3h0zzDqNB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 02:19:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46hppR3n2NzDqLc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 03:11:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=yadro.com
- (client-ip=89.207.88.252; helo=mta-01.yadro.com;
- envelope-from=s.miroshnichenko@yadro.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=yadro.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="LOV43/nm"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="j559wTc5"; 
  dkim-atps=neutral
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46hncN1DN9zDqL4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 02:17:39 +1000 (AEST)
-Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id 96250435D5;
- Mon, 30 Sep 2019 16:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
- content-transfer-encoding:content-language:content-type
- :content-type:in-reply-to:mime-version:user-agent:date:date
- :message-id:from:from:references:subject:subject:received
- :received:received; s=mta-01; t=1569860254; x=1571674655; bh=NWL
- ygga9rExfFZwxDh+/XNEofpiGFu+aCwixqG81NuI=; b=LOV43/nmmizxMT7CO5J
- Ymm9dG5qY6PcIs5tC4Bs8yyaSBh+bijXmj6kjUCrPGrtSHuxDXDLw9OO3e2ctdfz
- X75jetbGIw5NsOD56FhCaSQNgXcKABViKfV0Xp4SfogwdRoZR02bK8cGxvAWEV8o
- TDotQ1QfyNIiH+MCcVFeJ35E=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
- by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id JIhTgMSQHxpV; Mon, 30 Sep 2019 19:17:34 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
- [172.17.10.102])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46hpmf0Sp0zDqKW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 03:09:53 +1000 (AEST)
+Received: from localhost (unknown [69.71.4.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id 076A54200A;
- Mon, 30 Sep 2019 19:17:32 +0300 (MSK)
-Received: from [172.17.15.60] (172.17.15.60) by T-EXCH-02.corp.yadro.com
- (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 30
- Sep 2019 19:17:31 +0300
-Subject: Re: [PATCH v5 03/23] PCI: hotplug: Add a flag for the movable BARs
- feature
-To: David Laight <David.Laight@ACULAB.COM>, 'Bjorn Helgaas'
- <helgaas@kernel.org>
-References: <20190816165101.911-4-s.miroshnichenko@yadro.com>
- <20190927220219.GA57201@google.com>
- <16a86a9e4b464897acee0aeba34d9346@AcuMS.aculab.com>
-From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-Message-ID: <18a27e45-bcba-cdc5-e07e-e73efffce4d9@yadro.com>
-Date: Mon, 30 Sep 2019 19:17:31 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+ by mail.kernel.org (Postfix) with ESMTPSA id 338B92168B;
+ Mon, 30 Sep 2019 17:09:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1569863390;
+ bh=GtCtYYJj0VILK3yJLsyPIs1GLYKZuc6tDSMcqvj4HBw=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=j559wTc57uYUcg5PdQPxPOZ3WAiaJjf2l2EHBB9MH6SfgXIX1bpSsokXD5XHlVX+9
+ 7QCNW8UNV3XVCEy7SLBU5fLYHavG9wNHqJTrMMLdx8PR8x0cnzN9BwxqKgyyUVAAIq
+ z6N0l2LIMltPhhxuOM4CtfOeZQW3Am9YAEEy9rhk=
+Date: Mon, 30 Sep 2019 12:09:48 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Oliver O'Halloran <oohall@gmail.com>
+Subject: Re: [PATCH 1/3] powernv/iov: Ensure the pdn for VFs always contains
+ a valid PE number
+Message-ID: <20190930170948.GA154567@google.com>
 MIME-Version: 1.0
-In-Reply-To: <16a86a9e4b464897acee0aeba34d9346@AcuMS.aculab.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [172.17.15.60]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-02.corp.yadro.com (172.17.10.102)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190930020848.25767-2-oohall@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,117 +57,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux@yadro.com" <linux@yadro.com>, Lukas Wunner <lukas@wunner.de>,
- Oliver O'Halloran <oohall@gmail.com>, Rajat Jain <rajatja@google.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: aik@ozlabs.ru, shawn@anastas.io, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello David,
+On Mon, Sep 30, 2019 at 12:08:46PM +1000, Oliver O'Halloran wrote:
 
-On 9/30/19 11:44 AM, David Laight wrote:
-> From: Bjorn Helgaas
->> Sent: 27 September 2019 23:02
->> On Fri, Aug 16, 2019 at 07:50:41PM +0300, Sergey Miroshnichenko wrote:
->>> When hot-adding a device, the bridge may have windows not big enough (or
->>> fragmented too much) for newly requested BARs to fit in. And expanding
->>> these bridge windows may be impossible because blocked by "neighboring"
->>> BARs and bridge windows.
->>>
->>> Still, it may be possible to allocate a memory region for new BARs with the
->>> following procedure:
->>>
->>> 1) notify all the drivers which support movable BARs to pause and release
->>>     the BARs; the rest of the drivers are guaranteed that their devices will
->>>     not get BARs moved;
->>>
->>> 2) release all the bridge windows except of root bridges;
->>>
->>> 3) try to recalculate new bridge windows that will fit all the BAR types:
->>>     - fixed;
->>>     - immovable;
->>>     - movable;
->>>     - newly requested by hot-added devices;
->>>
->>> 4) if the previous step fails, disable BARs for one of the hot-added
->>>     devices and retry from step 3;
->>>
->>> 5) notify the drivers, so they remap BARs and resume.
->>
->> You don't do the actual recalculation in *this* patch, but since you
->> mention the procedure here, are we confident that we never make things
->> worse?
->>
->> It's possible that a hot-add will trigger this attempt to move things
->> around, and it's possible that we won't find space for the new device
->> even if we move things around.  But are we certain that every device
->> that worked *before* the hot-add will still work *afterwards*?
->>
->> Much of the assignment was probably done by the BIOS using different
->> algorithms than Linux has, so I think there's some chance that the
->> BIOS did a better job and if we lose that BIOS assignment, we might
->> not be able to recreate it.
+This is all powerpc, so I assume Michael will handle this.  Just
+random things I noticed; ignore if they don't make sense:
+
+> On PowerNV we use the pcibios_sriov_enable() hook to do two things:
 > 
-> Yep, removing everything and starting again is probably OTT and most of the churn won't help.
+> 1. Create a pci_dn structure for each of the VFs, and
+> 2. Configure the PHB's internal BARs that map MMIO ranges to PEs
+>    so that each VF has it's own PE. Note that the PE also determines
+
+s/it's/its/
+
+>    the IOMMU table the HW uses for the device.
 > 
-> I think you need to work out what can be moved in order to make the required resources available
-> to each bus and then make the required changes.
+> Currently we do not set the pe_number field of the pci_dn immediately after
+> assigning the PE number for the VF that it represents. Instead, we do that
+> in a fixup (see pnv_pci_dma_dev_setup) which is run inside the
+> pcibios_add_device() hook which is run prior to adding the device to the
+> bus.
 > 
-> In the simplest case you are trying to add resource below a bridge so need to 'shuffle'
-> everything allocated after that bridge to later addresses (etc).
+> On PowerNV we add the device to it's IOMMU group using a bus notifier and
+
+s/it's/its/
+
+> in order for this to work the PE number needs to be known when the bus
+> notifier is run. This works today since the PE number is set in the fixup
+> which runs before adding the device to the bus. However, if we want to move
+> the fixup to a later stage this will break.
 > 
+> We can fix this by setting the pdn->pe_number inside of
+> pcibios_sriov_enable(). There's no good to avoid this since we already have
 
-Thank you for the review and suggestions!
+s/no good/no good reason/ ?
 
-But a bridge window may be fragmented: its total free space is enough
-to fit everything, but no sufficient gaps for the new BARs. And this
-bridge window may be jammed between two immovable/fixed BARs.
+Not quite sure what "this" refers to ... "no good reason to avoid
+setting pdn->pe_number in pcibios_sriov_enable()"?  The double
+negative makes it a little hard to parse.
 
-Or there may be lots of empty spaces in lower addresses after un-plugs,
-but everything if fixed/immovable on higher addresses.
-
-I've spent some time thinking on an optimization technique which can
-be efficient enough (touch as few BARs as possible) with as high
-success rate as calculating from scratch - and concluded that it is
-not worth it: if only release the "obstructing" BARs and bridge
-windows, a hotplug event will affect a half of (n+m) on average, which
-is still O(n+m), where n is a number of endpoints, and m is a
-number of bridges. But it's still need to resize windows of a root and
-other common bridges.
-
-Calculating bridge windows from scratch is relatively straightforward
-and fast, so I have just added support for fixed/immovable BARs there
-and reused.
-
-> Many devices that support address reassignment might not need to be moved - so there is
-> no point remmapping them.
+> all the required information at that point, so... do that. Moving this
+> earlier does cause two problems:
 > 
-
-And it's the same algorithm that allocated BARs in first place, so it
-will reassign the same BARs for the non-affected part of the topology.
-
-> There is also the case when a device that is present but not currently is use could be taken
-> through a remove+insert sequence in order to change its resources.
-> Much easier to implement than 'remap while active'.
-> This would require a call into the driver (than can sleep) to request whether it is idle.
-> (and probably one at the end if the remove wasn't done).
+> 1. We trip the WARN_ON() in the fixup code, and
+> 2. The EEH core will clear pdn->pe_number while recovering VFs.
 > 
-
-Unbind+rebind the "immovable" drivers of non-opened devices may
-increase the probability of successful BAR allocation, but I'm afraid
-this will produce some amount of false hotplug-like events in the logs.
-Probably also some undesired effects like spikes in power consumption
-because of driver initialization.
-
-Best regards,
-Serge
-
-> 	David
+> The only justification for either of these is a comment in eeh_rmv_device()
+> suggesting that pdn->pe_number *must* be set to IODA_INVALID_PE in order
+> for the VF to be scanned. However, this comment appears to have no basis in
+> reality so just delete it.
 > 
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ---
+> Can't get rid of the fixup entirely since we need it to set the
+> ioda_pe->pdev back-pointer. I'll look at killing that another time.
+> ---
+>  arch/powerpc/kernel/eeh_driver.c          |  6 ------
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 19 +++++++++++++++----
+>  arch/powerpc/platforms/powernv/pci.c      |  4 ----
+>  3 files changed, 15 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+> index d9279d0..7955fba 100644
+> --- a/arch/powerpc/kernel/eeh_driver.c
+> +++ b/arch/powerpc/kernel/eeh_driver.c
+> @@ -541,12 +541,6 @@ static void eeh_rmv_device(struct eeh_dev *edev, void *userdata)
+>  
+>  		pci_iov_remove_virtfn(edev->physfn, pdn->vf_index);
+>  		edev->pdev = NULL;
 > -
-> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-> Registration No: 1397386 (Wales)
+> -		/*
+> -		 * We have to set the VF PE number to invalid one, which is
+> -		 * required to plug the VF successfully.
+> -		 */
+> -		pdn->pe_number = IODA_INVALID_PE;
+>  #endif
+>  		if (rmv_data)
+>  			list_add(&edev->rmv_entry, &rmv_data->removed_vf_list);
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index 5e3172d..70508b3 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -1558,6 +1558,10 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+>  
+>  	/* Reserve PE for each VF */
+>  	for (vf_index = 0; vf_index < num_vfs; vf_index++) {
+> +		int vf_devfn = pci_iov_virtfn_devfn(pdev, vf_index);
+> +		int vf_bus = pci_iov_virtfn_bus(pdev, vf_index);
+> +		struct pci_dn *vf_pdn;
+> +
+>  		if (pdn->m64_single_mode)
+>  			pe_num = pdn->pe_num_map[vf_index];
+>  		else
+> @@ -1570,13 +1574,11 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+>  		pe->pbus = NULL;
+>  		pe->parent_dev = pdev;
+>  		pe->mve_number = -1;
+> -		pe->rid = (pci_iov_virtfn_bus(pdev, vf_index) << 8) |
+> -			   pci_iov_virtfn_devfn(pdev, vf_index);
+> +		pe->rid = (vf_bus << 8) | vf_devfn;
+>  
+>  		pe_info(pe, "VF %04d:%02d:%02d.%d associated with PE#%x\n",
+
+Not related to *this* patch, but this looks like maybe it's supposed
+to match the pci_name(), e.g., "%04x:%02x:%02x.%d" from
+pci_setup_device()?  If so, the "%04d:%02d:%02d" here will be
+confusing since the decimal & hex won't always match.
+
+>  			hose->global_number, pdev->bus->number,
+
+Consider pci_domain_nr(bus) instead of hose->global_number?  It would
+be nice if you had the pci_dev * for each VF so you could just use
+pci_name(vf) instead of all this domain/bus/PCI_SLOT/FUNC.
+
+> -			PCI_SLOT(pci_iov_virtfn_devfn(pdev, vf_index)),
+> -			PCI_FUNC(pci_iov_virtfn_devfn(pdev, vf_index)), pe_num);
+> +			PCI_SLOT(vf_devfn), PCI_FUNC(vf_devfn), pe_num);
+>  
+>  		if (pnv_ioda_configure_pe(phb, pe)) {
+>  			/* XXX What do we do here ? */
+> @@ -1590,6 +1592,15 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+>  		list_add_tail(&pe->list, &phb->ioda.pe_list);
+>  		mutex_unlock(&phb->ioda.pe_list_mutex);
+>  
+> +		/* associate this pe to it's pdn */
+> +		list_for_each_entry(vf_pdn, &pdn->parent->child_list, list) {
+> +			if (vf_pdn->busno == vf_bus &&
+> +			    vf_pdn->devfn == vf_devfn) {
+> +				vf_pdn->pe_number = pe_num;
+> +				break;
+> +			}
+> +		}
+> +
+>  		pnv_pci_ioda2_setup_dma_pe(phb, pe);
+>  #ifdef CONFIG_IOMMU_API
+>  		iommu_register_group(&pe->table_group,
+> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+> index 2825d00..b7761e2 100644
+> --- a/arch/powerpc/platforms/powernv/pci.c
+> +++ b/arch/powerpc/platforms/powernv/pci.c
+> @@ -816,16 +816,12 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
+>  	struct pnv_phb *phb = hose->private_data;
+>  #ifdef CONFIG_PCI_IOV
+>  	struct pnv_ioda_pe *pe;
+> -	struct pci_dn *pdn;
+>  
+>  	/* Fix the VF pdn PE number */
+>  	if (pdev->is_virtfn) {
+> -		pdn = pci_get_pdn(pdev);
+> -		WARN_ON(pdn->pe_number != IODA_INVALID_PE);
+>  		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
+>  			if (pe->rid == ((pdev->bus->number << 8) |
+>  			    (pdev->devfn & 0xff))) {
+> -				pdn->pe_number = pe->pe_number;
+>  				pe->pdev = pdev;
+>  				break;
+>  			}
+> -- 
+> 2.9.5
 > 
