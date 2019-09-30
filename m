@@ -1,51 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C253C25B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 19:11:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D49C25E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 20:01:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46hppR3n2NzDqLc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 03:11:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46hqwX60qPzDqN9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 04:01:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nvidia.com
+ (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="j559wTc5"; 
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="SmdwlCKj"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46hpmf0Sp0zDqKW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 03:09:53 +1000 (AEST)
-Received: from localhost (unknown [69.71.4.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 338B92168B;
- Mon, 30 Sep 2019 17:09:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569863390;
- bh=GtCtYYJj0VILK3yJLsyPIs1GLYKZuc6tDSMcqvj4HBw=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=j559wTc57uYUcg5PdQPxPOZ3WAiaJjf2l2EHBB9MH6SfgXIX1bpSsokXD5XHlVX+9
- 7QCNW8UNV3XVCEy7SLBU5fLYHavG9wNHqJTrMMLdx8PR8x0cnzN9BwxqKgyyUVAAIq
- z6N0l2LIMltPhhxuOM4CtfOeZQW3Am9YAEEy9rhk=
-Date: Mon, 30 Sep 2019 12:09:48 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Oliver O'Halloran <oohall@gmail.com>
-Subject: Re: [PATCH 1/3] powernv/iov: Ensure the pdn for VFs always contains
- a valid PE number
-Message-ID: <20190930170948.GA154567@google.com>
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46hqsx4DRXzDqM6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 03:59:32 +1000 (AEST)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5d9242870000>; Mon, 30 Sep 2019 10:59:35 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Mon, 30 Sep 2019 10:59:27 -0700
+X-PGP-Universal: processed;
+ by hqpgpgate102.nvidia.com on Mon, 30 Sep 2019 10:59:27 -0700
+Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 30 Sep
+ 2019 17:59:27 +0000
+Received: from [10.2.173.141] (10.124.1.5) by DRHQMAIL107.nvidia.com
+ (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 30 Sep
+ 2019 17:59:26 +0000
+Subject: Re: [PATCH v4 01/11] powerpc/mm: Adds counting method to monitor
+ lockless pgtable walks
+To: Leonardo Bras <leonardo@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-kernel@vger.kernel.org>, <kvm-ppc@vger.kernel.org>,
+ <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20190927234008.11513-1-leonardo@linux.ibm.com>
+ <20190927234008.11513-2-leonardo@linux.ibm.com>
+ <4ff1e8e8-929b-9cfc-9bf8-ee88e34de888@nvidia.com>
+ <2533a13f226a6e1fab387669b6cced2aa8d2e129.camel@linux.ibm.com>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <48bf32ca-5d3e-5d69-4cd1-6720364a0d81@nvidia.com>
+Date: Mon, 30 Sep 2019 10:57:13 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190930020848.25767-2-oohall@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <2533a13f226a6e1fab387669b6cced2aa8d2e129.camel@linux.ibm.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ DRHQMAIL107.nvidia.com (10.27.9.16)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1569866375; bh=ida5NqYozcHsuQU0dgyz8EHV8y2ExlP90sInt7HRND4=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=SmdwlCKjTZ+a+Cb3C2kWIEHJFaIrrAUy8mamA5p9yPYcDeKEUc3vBUd9LATvsLusU
+ /XdXUFqrwMc8vNmqfFLjmbm8Ph/KPeIqr0B4ZsqRUDRjfcUisQDTB73NSBVk3a3p8x
+ IzsUs0ly7yhI3/d3xNuFOHshq5QR9xw1S0PXhHTofoCXY74b5xY+iWJ5yCSGuOWHYd
+ VBpMlM3WQFuQiiNxDaD2tJP+7wtdt7XbokYT0dvK54APzUTRbLR2wyKl3do65uGjWF
+ cBcFt/9WpKt6c5n5cl4a37M5zW7VRK91+UYeIxxfQAw7ig06qycHkdqySjZrtEYeOu
+ d4CxRscpuQBgQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,168 +83,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, shawn@anastas.io, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ YueHaibing <yuehaibing@huawei.com>, Nicholas
+ Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Keith Busch <keith.busch@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Allison Randal <allison@lohutok.net>, Mahesh
+ Salgaonkar <mahesh@linux.vnet.ibm.com>, Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ira Weiny <ira.weiny@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 30, 2019 at 12:08:46PM +1000, Oliver O'Halloran wrote:
-
-This is all powerpc, so I assume Michael will handle this.  Just
-random things I noticed; ignore if they don't make sense:
-
-> On PowerNV we use the pcibios_sriov_enable() hook to do two things:
+On 9/30/19 8:14 AM, Leonardo Bras wrote:
+> On Sun, 2019-09-29 at 15:40 -0700, John Hubbard wrote:
+>> Hi, Leonardo,
 > 
-> 1. Create a pci_dn structure for each of the VFs, and
-> 2. Configure the PHB's internal BARs that map MMIO ranges to PEs
->    so that each VF has it's own PE. Note that the PE also determines
-
-s/it's/its/
-
->    the IOMMU table the HW uses for the device.
+> Hello John, thanks for the feedback.
 > 
-> Currently we do not set the pe_number field of the pci_dn immediately after
-> assigning the PE number for the VF that it represents. Instead, we do that
-> in a fixup (see pnv_pci_dma_dev_setup) which is run inside the
-> pcibios_add_device() hook which is run prior to adding the device to the
-> bus.
+>> Can we please do it as shown below, instead (compile-tested only)?
+>>
+>> This addresses all of the comments that I was going to make about structure
+>> of this patch, which are:
+>>
+>> * The lockless synch is tricky, so it should be encapsulated in function
+>>     calls if possible.
 > 
-> On PowerNV we add the device to it's IOMMU group using a bus notifier and
+> As I told before, there are cases where this function is called from
+> 'real mode' in powerpc, which doesn't disable irqs and may have a
+> tricky behavior if we do. So, encapsulate the irq disable in this
+> function can be a bad choice.
 
-s/it's/its/
+You still haven't explained how this works in that case. So far, the
+synchronization we've discussed has depended upon interrupt disabling
+as part of the solution, in order to hold off page splitting and page
+table freeing.
 
-> in order for this to work the PE number needs to be known when the bus
-> notifier is run. This works today since the PE number is set in the fixup
-> which runs before adding the device to the bus. However, if we want to move
-> the fixup to a later stage this will break.
+Simply skipping that means that an additional mechanism is required...which
+btw might involve a new, ppc-specific routine, so maybe this is going to end
+up pretty close to what I pasted in after all...
+
 > 
-> We can fix this by setting the pdn->pe_number inside of
-> pcibios_sriov_enable(). There's no good to avoid this since we already have
-
-s/no good/no good reason/ ?
-
-Not quite sure what "this" refers to ... "no good reason to avoid
-setting pdn->pe_number in pcibios_sriov_enable()"?  The double
-negative makes it a little hard to parse.
-
-> all the required information at that point, so... do that. Moving this
-> earlier does cause two problems:
+> Of course, if we really need that, we can add a bool parameter to the
+> function to choose about disabling/enabling irqs.
+>>
+>> * This is really a core mm function, so don't hide it away in arch layers.
+>>     (If you're changing mm/ files, that's a big hint.)
 > 
-> 1. We trip the WARN_ON() in the fixup code, and
-> 2. The EEH core will clear pdn->pe_number while recovering VFs.
+> My idea here is to let the arch decide on how this 'register' is going
+> to work, as archs may have different needs (in powerpc for example, we
+> can't always disable irqs, since we may be in realmode).
 > 
-> The only justification for either of these is a comment in eeh_rmv_device()
-> suggesting that pdn->pe_number *must* be set to IODA_INVALID_PE in order
-> for the VF to be scanned. However, this comment appears to have no basis in
-> reality so just delete it.
-> 
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> ---
-> Can't get rid of the fixup entirely since we need it to set the
-> ioda_pe->pdev back-pointer. I'll look at killing that another time.
-> ---
->  arch/powerpc/kernel/eeh_driver.c          |  6 ------
->  arch/powerpc/platforms/powernv/pci-ioda.c | 19 +++++++++++++++----
->  arch/powerpc/platforms/powernv/pci.c      |  4 ----
->  3 files changed, 15 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-> index d9279d0..7955fba 100644
-> --- a/arch/powerpc/kernel/eeh_driver.c
-> +++ b/arch/powerpc/kernel/eeh_driver.c
-> @@ -541,12 +541,6 @@ static void eeh_rmv_device(struct eeh_dev *edev, void *userdata)
->  
->  		pci_iov_remove_virtfn(edev->physfn, pdn->vf_index);
->  		edev->pdev = NULL;
-> -
-> -		/*
-> -		 * We have to set the VF PE number to invalid one, which is
-> -		 * required to plug the VF successfully.
-> -		 */
-> -		pdn->pe_number = IODA_INVALID_PE;
->  #endif
->  		if (rmv_data)
->  			list_add(&edev->rmv_entry, &rmv_data->removed_vf_list);
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 5e3172d..70508b3 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1558,6 +1558,10 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  
->  	/* Reserve PE for each VF */
->  	for (vf_index = 0; vf_index < num_vfs; vf_index++) {
-> +		int vf_devfn = pci_iov_virtfn_devfn(pdev, vf_index);
-> +		int vf_bus = pci_iov_virtfn_bus(pdev, vf_index);
-> +		struct pci_dn *vf_pdn;
-> +
->  		if (pdn->m64_single_mode)
->  			pe_num = pdn->pe_num_map[vf_index];
->  		else
-> @@ -1570,13 +1574,11 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  		pe->pbus = NULL;
->  		pe->parent_dev = pdev;
->  		pe->mve_number = -1;
-> -		pe->rid = (pci_iov_virtfn_bus(pdev, vf_index) << 8) |
-> -			   pci_iov_virtfn_devfn(pdev, vf_index);
-> +		pe->rid = (vf_bus << 8) | vf_devfn;
->  
->  		pe_info(pe, "VF %04d:%02d:%02d.%d associated with PE#%x\n",
+> Maybe we can create a generic function instead of a dummy, and let it
+> be replaced in case the arch needs to do so.
 
-Not related to *this* patch, but this looks like maybe it's supposed
-to match the pci_name(), e.g., "%04x:%02x:%02x.%d" from
-pci_setup_device()?  If so, the "%04d:%02d:%02d" here will be
-confusing since the decimal & hex won't always match.
+Yes, that might be what we need, if it turns out that ppc can't use this
+approach (although let's see about that).
 
->  			hose->global_number, pdev->bus->number,
 
-Consider pci_domain_nr(bus) instead of hose->global_number?  It would
-be nice if you had the pci_dev * for each VF so you could just use
-pci_name(vf) instead of all this domain/bus/PCI_SLOT/FUNC.
-
-> -			PCI_SLOT(pci_iov_virtfn_devfn(pdev, vf_index)),
-> -			PCI_FUNC(pci_iov_virtfn_devfn(pdev, vf_index)), pe_num);
-> +			PCI_SLOT(vf_devfn), PCI_FUNC(vf_devfn), pe_num);
->  
->  		if (pnv_ioda_configure_pe(phb, pe)) {
->  			/* XXX What do we do here ? */
-> @@ -1590,6 +1592,15 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  		list_add_tail(&pe->list, &phb->ioda.pe_list);
->  		mutex_unlock(&phb->ioda.pe_list_mutex);
->  
-> +		/* associate this pe to it's pdn */
-> +		list_for_each_entry(vf_pdn, &pdn->parent->child_list, list) {
-> +			if (vf_pdn->busno == vf_bus &&
-> +			    vf_pdn->devfn == vf_devfn) {
-> +				vf_pdn->pe_number = pe_num;
-> +				break;
-> +			}
-> +		}
-> +
->  		pnv_pci_ioda2_setup_dma_pe(phb, pe);
->  #ifdef CONFIG_IOMMU_API
->  		iommu_register_group(&pe->table_group,
-> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-> index 2825d00..b7761e2 100644
-> --- a/arch/powerpc/platforms/powernv/pci.c
-> +++ b/arch/powerpc/platforms/powernv/pci.c
-> @@ -816,16 +816,12 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
->  	struct pnv_phb *phb = hose->private_data;
->  #ifdef CONFIG_PCI_IOV
->  	struct pnv_ioda_pe *pe;
-> -	struct pci_dn *pdn;
->  
->  	/* Fix the VF pdn PE number */
->  	if (pdev->is_virtfn) {
-> -		pdn = pci_get_pdn(pdev);
-> -		WARN_ON(pdn->pe_number != IODA_INVALID_PE);
->  		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
->  			if (pe->rid == ((pdev->bus->number << 8) |
->  			    (pdev->devfn & 0xff))) {
-> -				pdn->pe_number = pe->pe_number;
->  				pe->pdev = pdev;
->  				break;
->  			}
-> -- 
-> 2.9.5
-> 
+thanks,
+-- 
+John Hubbard
+NVIDIA
