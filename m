@@ -2,74 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EC2C292A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 23:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B46DC29D9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 00:44:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46hx3T350BzDqCc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 07:53:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46hyBk6d3bzDqJ7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 08:44:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nvidia.com
- (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=2001:67c:2050:104:0:2:25:2; helo=mx2.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="UzrMa92U"; 
- dkim-atps=neutral
-Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46hx1l74l5zDqPK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 07:51:39 +1000 (AEST)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5d9278ef0000>; Mon, 30 Sep 2019 14:51:43 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Mon, 30 Sep 2019 14:51:35 -0700
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Mon, 30 Sep 2019 14:51:35 -0700
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 30 Sep
- 2019 21:51:35 +0000
-Received: from [10.110.48.28] (10.124.1.5) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 30 Sep
- 2019 21:51:35 +0000
-Subject: Re: [PATCH v4 03/11] mm/gup: Applies counting method to monitor
- gup_pgd_range
-To: Leonardo Bras <leonardo@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-kernel@vger.kernel.org>, <kvm-ppc@vger.kernel.org>,
- <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20190927234008.11513-1-leonardo@linux.ibm.com>
- <20190927234008.11513-4-leonardo@linux.ibm.com>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <ce0a4110-9f83-36db-dc85-6a727d30d030@nvidia.com>
-Date: Mon, 30 Sep 2019 14:51:34 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx2.mailbox.org (mx2a.mailbox.org
+ [IPv6:2001:67c:2050:104:0:2:25:2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46hy8q2JbMzDqGt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 08:42:48 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp1.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:1:0])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx2.mailbox.org (Postfix) with ESMTPS id 83B48A1A1C;
+ Tue,  1 Oct 2019 00:42:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.240])
+ by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de
+ [80.241.56.125]) (amavisd-new, port 10030)
+ with ESMTP id i0Vf_5Qcnyhu; Tue,  1 Oct 2019 00:42:25 +0200 (CEST)
+Date: Tue, 1 Oct 2019 08:41:59 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: kbuild test robot <lkp@intel.com>
+Subject: Re: [PATCH v13 7/9] open: openat2(2) syscall
+Message-ID: <20190930224159.gp2hqm57qxlm2eat@yavin.dot.cyphar.com>
+References: <20190930183316.10190-8-cyphar@cyphar.com>
+ <201910010404.WLqR1mUW%lkp@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20190927234008.11513-4-leonardo@linux.ibm.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1569880303; bh=RhTgQNvZ8M45lzVl6hQTIIr5nfDQ7NW7gfdMi34LNhk=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=UzrMa92UkK/ugI5rJmLH6VcSHCFZgd+8pGsK+O76TQtxxe31sawf/JbOhpwudc/sS
- damkLuyQvWeeGxVj27E21Eymd67cSEVzDQH3++PnzXsSVS65C5Y/LURmdnD64THCSg
- 84QKUMhgHJ9PgAoywb3hxCtJw13PuG7Rh+GZJb9kfxzIwoMkTww2a4yBdQl65LtD1r
- gO9QJ4Gtv+pe7iYDIviNS97kO4OlCkYpCxW61218mxU9ngl1Tk4W1EJZGhLmBHrxc3
- ruhDm3XLYrDqzSxy00xKbZ49nSK0O27crTbp/i4he5sCOwb7FST40wueaM69J3/IEs
- jOVD0C7+kMDwg==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="t4elbyhlilsmpd4b"
+Content-Disposition: inline
+In-Reply-To: <201910010404.WLqR1mUW%lkp@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,94 +55,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Keith Busch <keith.busch@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- YueHaibing <yuehaibing@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
- Mike Rapoport <rppt@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Shuah Khan <shuah@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Christian Brauner <christian@brauner.io>,
+ Eric Biederman <ebiederm@xmission.com>, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
+ linux-m68k@lists.linux-m68k.org, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
+ linux-arm-kernel@lists.infradead.org, "J. Bruce Fields" <bfields@fieldses.org>,
+ libc-alpha@sourceware.org, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
+ kbuild-all@01.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/27/19 4:40 PM, Leonardo Bras wrote:
-> As decribed, gup_pgd_range is a lockless pagetable walk. So, in order to
-> monitor against THP split/collapse with the couting method, it's necessary
 
-s/couting/counting/
+--t4elbyhlilsmpd4b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> to bound it with {start,end}_lockless_pgtbl_walk.
-> 
-> There are dummy functions, so it is not going to add any overhead on archs
-> that don't use this method.
-> 
-> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+On 2019-10-01, kbuild test robot <lkp@intel.com> wrote:
+> Hi Aleksa,
+>=20
+> Thank you for the patch! Yet something to improve:
+>=20
+> [auto build test ERROR on linus/master]
+> [cannot apply to v5.4-rc1 next-20190930]
+> [if your patch is applied to the wrong git tree, please drop us a note to=
+ help
+> improve the system. BTW, we also suggest to use '--base' option to specif=
+y the
+> base tree in git format-patch, please see https://stackoverflow.com/a/374=
+06982]
+
+I forgot to include --base to signify this series depends on the
+copy_struct_from_user() one. I'll include it in the next version.
+
+> url:    https://github.com/0day-ci/linux/commits/Aleksa-Sarai/namei-opena=
+t2-2-path-resolution-restrictions/20191001-025628
+> config: i386-defconfig (attached as .config)
+> compiler: gcc-7 (Debian 7.4.0-13) 7.4.0
+> reproduce:
+>         # save the attached .config to linux build tree
+>         make ARCH=3Di386=20
+>=20
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+>=20
+> All errors (new ones prefixed by >>):
+>=20
+>    fs/open.c: In function '__do_sys_openat2':
+> >> fs/open.c:1173:8: error: implicit declaration of function 'copy_struct=
+_from_user'; did you mean 'copy_siginfo_from_user'? [-Werror=3Dimplicit-fun=
+ction-declaration]
+>      err =3D copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
+>            ^~~~~~~~~~~~~~~~~~~~~
+>            copy_siginfo_from_user
+>    cc1: some warnings being treated as errors
+>=20
+> vim +1173 fs/open.c
+>=20
+>   1163=09
+>   1164	SYSCALL_DEFINE4(openat2, int, dfd, const char __user *, filename,
+>   1165			const struct open_how __user *, how, size_t, usize)
+>   1166	{
+>   1167		int err;
+>   1168		struct open_how tmp;
+>   1169=09
+>   1170		if (unlikely(usize < OPEN_HOW_SIZE_VER0))
+>   1171			return -EINVAL;
+>   1172=09
+> > 1173		err =3D copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
+>   1174		if (err)
+>   1175			return err;
+>   1176=09
+>   1177		if (force_o_largefile())
+>   1178			tmp.flags |=3D O_LARGEFILE;
+>   1179=09
+>   1180		return do_sys_open(dfd, filename, &tmp);
+>   1181	}
+>   1182=09
+>=20
 > ---
->  mm/gup.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 98f13ab37bac..7105c829cf44 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2325,6 +2325,7 @@ static bool gup_fast_permitted(unsigned long start, unsigned long end)
->  int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
->  			  struct page **pages)
->  {
-> +	struct mm_struct *mm;
+> 0-DAY kernel test infrastructure                Open Source Technology Ce=
+nter
+> https://lists.01.org/pipermail/kbuild-all                   Intel Corpora=
+tion
 
-I don't think that this local variable adds any value, so let's not use it.
-Similar point in a few other patches too.
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
->  	unsigned long len, end;
->  	unsigned long flags;
->  	int nr = 0;
-> @@ -2352,9 +2353,12 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
->  
->  	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP) &&
->  	    gup_fast_permitted(start, end)) {
-> +		mm = current->mm;
-> +		start_lockless_pgtbl_walk(mm);
->  		local_irq_save(flags);
->  		gup_pgd_range(start, end, write ? FOLL_WRITE : 0, pages, &nr);
->  		local_irq_restore(flags);
-> +		end_lockless_pgtbl_walk(mm);
->  	}
->  
->  	return nr;
-> @@ -2404,6 +2408,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
->  			unsigned int gup_flags, struct page **pages)
->  {
->  	unsigned long addr, len, end;
-> +	struct mm_struct *mm;
+--t4elbyhlilsmpd4b
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Same here.
+-----BEGIN PGP SIGNATURE-----
 
->  	int nr = 0, ret = 0;
->  
->  	if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM)))
-> @@ -2421,9 +2426,12 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
->  
->  	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP) &&
->  	    gup_fast_permitted(start, end)) {
-> +		mm = current->mm;
-> +		start_lockless_pgtbl_walk(mm);
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXZKEtAAKCRCdlLljIbnQ
+EmxJAQDTSUj176CMMvs56b+zPL9VCZGAIFkQ+0fXCW8y6GyasAD/d8NBlZ2zmc9b
+DdtZcltEmeWc0Rd4LR1wAUrHajuvTAU=
+=sSPC
+-----END PGP SIGNATURE-----
 
-Minor: I'd like to rename this register_lockless_pgtable_walker().
-
->  		local_irq_disable();
->  		gup_pgd_range(addr, end, gup_flags, pages, &nr);
->  		local_irq_enable();
-> +		end_lockless_pgtbl_walk(mm);
-
-...and deregister_lockless_pgtable_walker().
-
-
-thanks,
--- 
-John Hubbard
-NVIDIA
+--t4elbyhlilsmpd4b--
