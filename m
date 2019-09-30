@@ -1,88 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6C4C241D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 17:18:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0FEAC2500
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 18:19:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46hmJ91NHgzDqLx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 01:18:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46hnfW3h0zzDqNB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 02:19:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=yadro.com
+ (client-ip=89.207.88.252; helo=mta-01.yadro.com;
+ envelope-from=s.miroshnichenko@yadro.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=yadro.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="LOV43/nm"; 
+ dkim-atps=neutral
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46hmD96XtYzDqLl
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 01:15:04 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8UFCi8t044603; Mon, 30 Sep 2019 11:14:42 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2va35s98ex-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Sep 2019 11:14:42 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8UFCiFI044587;
- Mon, 30 Sep 2019 11:14:40 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2va35s98cc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Sep 2019 11:14:40 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8UFAwxE003947;
- Mon, 30 Sep 2019 15:14:36 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 2v9y57gp4v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Sep 2019 15:14:36 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8UFEZmo34537918
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Sep 2019 15:14:35 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7DB1FAC05E;
- Mon, 30 Sep 2019 15:14:35 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3FC0EAC059;
- Mon, 30 Sep 2019 15:14:32 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.18.235.58])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 30 Sep 2019 15:14:32 +0000 (GMT)
-Message-ID: <2533a13f226a6e1fab387669b6cced2aa8d2e129.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 01/11] powerpc/mm: Adds counting method to monitor
- lockless pgtable walks
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org
-Date: Mon, 30 Sep 2019 12:14:31 -0300
-In-Reply-To: <4ff1e8e8-929b-9cfc-9bf8-ee88e34de888@nvidia.com>
-References: <20190927234008.11513-1-leonardo@linux.ibm.com>
- <20190927234008.11513-2-leonardo@linux.ibm.com>
- <4ff1e8e8-929b-9cfc-9bf8-ee88e34de888@nvidia.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-z3BiED0HRCK0SvQzWnl4"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46hncN1DN9zDqL4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 02:17:39 +1000 (AEST)
+Received: from localhost (unknown [127.0.0.1])
+ by mta-01.yadro.com (Postfix) with ESMTP id 96250435D5;
+ Mon, 30 Sep 2019 16:17:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+ content-transfer-encoding:content-language:content-type
+ :content-type:in-reply-to:mime-version:user-agent:date:date
+ :message-id:from:from:references:subject:subject:received
+ :received:received; s=mta-01; t=1569860254; x=1571674655; bh=NWL
+ ygga9rExfFZwxDh+/XNEofpiGFu+aCwixqG81NuI=; b=LOV43/nmmizxMT7CO5J
+ Ymm9dG5qY6PcIs5tC4Bs8yyaSBh+bijXmj6kjUCrPGrtSHuxDXDLw9OO3e2ctdfz
+ X75jetbGIw5NsOD56FhCaSQNgXcKABViKfV0Xp4SfogwdRoZR02bK8cGxvAWEV8o
+ TDotQ1QfyNIiH+MCcVFeJ35E=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+ by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id JIhTgMSQHxpV; Mon, 30 Sep 2019 19:17:34 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
+ [172.17.10.102])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mta-01.yadro.com (Postfix) with ESMTPS id 076A54200A;
+ Mon, 30 Sep 2019 19:17:32 +0300 (MSK)
+Received: from [172.17.15.60] (172.17.15.60) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 30
+ Sep 2019 19:17:31 +0300
+Subject: Re: [PATCH v5 03/23] PCI: hotplug: Add a flag for the movable BARs
+ feature
+To: David Laight <David.Laight@ACULAB.COM>, 'Bjorn Helgaas'
+ <helgaas@kernel.org>
+References: <20190816165101.911-4-s.miroshnichenko@yadro.com>
+ <20190927220219.GA57201@google.com>
+ <16a86a9e4b464897acee0aeba34d9346@AcuMS.aculab.com>
+From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Message-ID: <18a27e45-bcba-cdc5-e07e-e73efffce4d9@yadro.com>
+Date: Mon, 30 Sep 2019 19:17:31 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-30_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909300156
+In-Reply-To: <16a86a9e4b464897acee0aeba34d9346@AcuMS.aculab.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [172.17.15.60]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,105 +80,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- YueHaibing <yuehaibing@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Keith Busch <keith.busch@intel.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Allison Randal <allison@lohutok.net>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ira Weiny <ira.weiny@intel.com>, Andrew Morton <akpm@linux-foundation.org>,
- Dan Williams <dan.j.williams@intel.com>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux@yadro.com" <linux@yadro.com>, Lukas Wunner <lukas@wunner.de>,
+ Oliver O'Halloran <oohall@gmail.com>, Rajat Jain <rajatja@google.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello David,
 
---=-z3BiED0HRCK0SvQzWnl4
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 9/30/19 11:44 AM, David Laight wrote:
+> From: Bjorn Helgaas
+>> Sent: 27 September 2019 23:02
+>> On Fri, Aug 16, 2019 at 07:50:41PM +0300, Sergey Miroshnichenko wrote:
+>>> When hot-adding a device, the bridge may have windows not big enough (or
+>>> fragmented too much) for newly requested BARs to fit in. And expanding
+>>> these bridge windows may be impossible because blocked by "neighboring"
+>>> BARs and bridge windows.
+>>>
+>>> Still, it may be possible to allocate a memory region for new BARs with the
+>>> following procedure:
+>>>
+>>> 1) notify all the drivers which support movable BARs to pause and release
+>>>     the BARs; the rest of the drivers are guaranteed that their devices will
+>>>     not get BARs moved;
+>>>
+>>> 2) release all the bridge windows except of root bridges;
+>>>
+>>> 3) try to recalculate new bridge windows that will fit all the BAR types:
+>>>     - fixed;
+>>>     - immovable;
+>>>     - movable;
+>>>     - newly requested by hot-added devices;
+>>>
+>>> 4) if the previous step fails, disable BARs for one of the hot-added
+>>>     devices and retry from step 3;
+>>>
+>>> 5) notify the drivers, so they remap BARs and resume.
+>>
+>> You don't do the actual recalculation in *this* patch, but since you
+>> mention the procedure here, are we confident that we never make things
+>> worse?
+>>
+>> It's possible that a hot-add will trigger this attempt to move things
+>> around, and it's possible that we won't find space for the new device
+>> even if we move things around.  But are we certain that every device
+>> that worked *before* the hot-add will still work *afterwards*?
+>>
+>> Much of the assignment was probably done by the BIOS using different
+>> algorithms than Linux has, so I think there's some chance that the
+>> BIOS did a better job and if we lose that BIOS assignment, we might
+>> not be able to recreate it.
+> 
+> Yep, removing everything and starting again is probably OTT and most of the churn won't help.
+> 
+> I think you need to work out what can be moved in order to make the required resources available
+> to each bus and then make the required changes.
+> 
+> In the simplest case you are trying to add resource below a bridge so need to 'shuffle'
+> everything allocated after that bridge to later addresses (etc).
+> 
 
-On Sun, 2019-09-29 at 15:40 -0700, John Hubbard wrote:
-> Hi, Leonardo,
+Thank you for the review and suggestions!
 
-Hello John, thanks for the feedback.
+But a bridge window may be fragmented: its total free space is enough
+to fit everything, but no sufficient gaps for the new BARs. And this
+bridge window may be jammed between two immovable/fixed BARs.
 
-> Can we please do it as shown below, instead (compile-tested only)?
->=20
-> This addresses all of the comments that I was going to make about structu=
-re
-> of this patch, which are:
->=20
-> * The lockless synch is tricky, so it should be encapsulated in function
->    calls if possible.
+Or there may be lots of empty spaces in lower addresses after un-plugs,
+but everything if fixed/immovable on higher addresses.
 
-As I told before, there are cases where this function is called from
-'real mode' in powerpc, which doesn't disable irqs and may have a
-tricky behavior if we do. So, encapsulate the irq disable in this
-function can be a bad choice.
+I've spent some time thinking on an optimization technique which can
+be efficient enough (touch as few BARs as possible) with as high
+success rate as calculating from scratch - and concluded that it is
+not worth it: if only release the "obstructing" BARs and bridge
+windows, a hotplug event will affect a half of (n+m) on average, which
+is still O(n+m), where n is a number of endpoints, and m is a
+number of bridges. But it's still need to resize windows of a root and
+other common bridges.
 
-Of course, if we really need that, we can add a bool parameter to the
-function to choose about disabling/enabling irqs.
->=20
-> * This is really a core mm function, so don't hide it away in arch layers=
-.
->    (If you're changing mm/ files, that's a big hint.)
+Calculating bridge windows from scratch is relatively straightforward
+and fast, so I have just added support for fixed/immovable BARs there
+and reused.
 
-My idea here is to let the arch decide on how this 'register' is going
-to work, as archs may have different needs (in powerpc for example, we
-can't always disable irqs, since we may be in realmode).
+> Many devices that support address reassignment might not need to be moved - so there is
+> no point remmapping them.
+> 
 
-Maybe we can create a generic function instead of a dummy, and let it
-be replaced in case the arch needs to do so.
+And it's the same algorithm that allocated BARs in first place, so it
+will reassign the same BARs for the non-affected part of the topology.
 
-> * Other things need parts of this: gup.c needs the memory barriers; IMHO =
-you'll
->    be fixing a pre-existing, theoretical (we've never seen bug reports) p=
-roblem.
+> There is also the case when a device that is present but not currently is use could be taken
+> through a remove+insert sequence in order to change its resources.
+> Much easier to implement than 'remap while active'.
+> This would require a call into the driver (than can sleep) to request whether it is idle.
+> (and probably one at the end if the remove wasn't done).
+> 
 
-Humm, you are right. Here I would suggest adding the barrier to the
-generic function.
+Unbind+rebind the "immovable" drivers of non-opened devices may
+increase the probability of successful BAR allocation, but I'm afraid
+this will produce some amount of false hotplug-like events in the logs.
+Probably also some undesired effects like spikes in power consumption
+because of driver initialization.
 
-> * The documentation needs to accurately explain what's going on here.
+Best regards,
+Serge
 
-Yes, my documentation was probably not good enough due to my lack of
-experience with memory barriers (I learnt about using them last week,
-and tried to come with the best solution.)
-
-> (Not shown: one or more of the PPC Kconfig files should select
-> LOCKLESS_PAGE_TABLE_WALK_TRACKING.)
-
-The way it works today is defining it on platform pgtable.h. I agree
-that using Kconfig may be a better solution that can make this config
-more visible to disable/enable.=20
-
-Thanks for the feedback,
-
-Leonardo Bras
-
---=-z3BiED0HRCK0SvQzWnl4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2SG9cACgkQlQYWtz9S
-ttQkeBAAx0Ae0+jxZ1EEdiZHaIu+kj0HWBBAg+YW5DdbPJSTzQYna9TEMmAmBeT0
-CQ7BI8sDaz54d/59tm5cNRPc142RU5w/QTRv7OE+0IQJBL1BxLb1XoaCTRqtnnts
-gf3fSukTddDt2zm3/8Gx9Q160AZdCLK1I4NtW1rtqFbUH3EFhCaPM4ydwhy9WOzO
-jpMacVjvfqJey8NKeo12RCkKLObhAdYwdJlfVM+j7srREfe/e9Hdz/hF+m5XYFt8
-PlMTsWAuOpjEJG09E8yttF/Zog2ZRLnaFeY05tRcd9n3jqKXClMcP5En5nyAMl49
-vSUr6+RE72lMt6xzK8mkX5V3WfTS6NvR4N95hLjLKwdW3gPAeZrXb+4SJRq/vWbE
-24iALWVQZodVwQ44tEBFiVgSfPTSIjzBT6FoQkwqFYebo5gAYf3ObVM+OmFSHhmd
-GZ93Mnoj/3k2Em/NOwjGFSYbDZi5H3NHHTL04jJ3gGEqceGvd55OXtHfYIuDs6it
-9hFQrU8n265wmsNJmcQGjj8NK62QIqsGcYLfNp1mVpseKVhakpDbLeBiG/PG/w7I
-FoSj52zaJVheB7tgSEEMkUxeBLgY7OmywnTedYFVhOFlwD/81wMkZAxz/fgvAmXK
-IxXI+ZP410dboTHEija3m4Z+m2BMb6wamF4Q1J5Ys8wWeQ3QhGc=
-=+FFG
------END PGP SIGNATURE-----
-
---=-z3BiED0HRCK0SvQzWnl4--
-
+> 	David
+> 
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+> Registration No: 1397386 (Wales)
+> 
