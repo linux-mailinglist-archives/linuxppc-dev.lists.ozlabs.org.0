@@ -1,153 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C437C1E85
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 11:57:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8076AC1EE2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 12:26:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46hdB06rdbzDqQm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 19:57:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46hdpb6xXSzDqLX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 20:25:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=46.105.58.91; helo=7.mo178.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="uRTPOj/r"; 
- dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 599 seconds by postgrey-1.36 at bilbo;
+ Mon, 30 Sep 2019 20:24:05 AEST
+Received: from 7.mo178.mail-out.ovh.net (7.mo178.mail-out.ovh.net
+ [46.105.58.91])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46hd8T2MNdzDqLZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 19:56:23 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id y35so7125141pgl.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 02:56:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=2rsHqLuZXmp2eTZBu/Om1/AiuIPEJCbFeS8aJCNb0jg=;
- b=uRTPOj/rfssH6t7zuXtmH7qAR861TwCLJXq4snpilzH/TgMENuOr0WmzOOvRamwrMA
- oGxGeMQL0diUDiGL8L80Yq/mKOqMa46XgcnazbMFUf7cbPdLtmrtQYIHtslh3Y3Ecwo9
- SRndyADNJEv/7L9R7x7ZpcvC8pSAG76ay2OyehJqmHRu9Rjj82FSy/WTMaM6xl0k1cHW
- sB6Qmqzs5PBQFRQTMvwnljWdaIW0/fQyZg1lgT4NocQjqWTiCG6H5fcl25GndpzrWfV3
- WAIePPXe2ap1ArV4wDP4qshtr5BAtGB9O9750kHu/x4NWcG9ElYKPa81brLNn+azCdlA
- Cl2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=2rsHqLuZXmp2eTZBu/Om1/AiuIPEJCbFeS8aJCNb0jg=;
- b=RRqPWjgRLG6O+NbSjlN4VXqqdgnFmPq1HWycG1vHuN4OCR8P7g1qwnsvqgzZXWjlGd
- InIu4Flhl9xa4WnI89GgAL+JmXZmecCet8WAQEdO16qHyv8gqqFRQw6YkDSt7QQn7znJ
- 6gGN78V1NARCpvGj2KOAHcLcRfu9isw62wz1xt6oOvEsd6ag0+6n+nQbHShndHsWZAYc
- kqMSn9lu8MF31Yuiqao+dQ4hH2UkMaHwf70Q0do3IDGppYafGc2HiEybWwdNQ/8d1kG7
- TFepkCQwwnNEOn8mU8k4aa2ESU9uc7KqnLXxK69hxRIcPGJp+/se4MQPZPIRLP6PtMAR
- zALg==
-X-Gm-Message-State: APjAAAVxLvA4hSpc4KQrrMumCGs3oWpFZEz8L6Df1TSg1/ULK62UGlOa
- 3OvNkZJOBrtZJCiWPASNV/IqEtEPCDn56w==
-X-Google-Smtp-Source: APXvYqw3DrqvY5S/p6jtlaYSUqIe7vELMPZdlbv6yuoA59CxjHeGGmTZITPrcpPYs40T2QuxRHOlAg==
-X-Received: by 2002:a62:d14c:: with SMTP id t12mr20559384pfl.185.1569837381774; 
- Mon, 30 Sep 2019 02:56:21 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id q88sm15810283pjq.9.2019.09.30.02.56.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Sep 2019 02:56:21 -0700 (PDT)
-Subject: Re: [PATCH 1/2] powerpc: Fix definition of PCR bits to work with old
- binutils
-To: Michael Ellerman <patch-notifications@ellerman.id.au>,
- Alistair Popple <alistair@popple.id.au>
-References: <46dZwK6vZdz9sPn@ozlabs.org>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <6ff2fcb2-bf0d-5782-cf7d-69e18d0b4f84@ozlabs.ru>
-Date: Mon, 30 Sep 2019 19:56:16 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46hdmP6YlnzDqMG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 20:24:04 +1000 (AEST)
+Received: from player692.ha.ovh.net (unknown [10.109.143.201])
+ by mo178.mail-out.ovh.net (Postfix) with ESMTP id 128727AA6D
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 12:08:10 +0200 (CEST)
+Received: from kaod.org (lfbn-1-2229-223.w90-76.abo.wanadoo.fr [90.76.50.223])
+ (Authenticated sender: clg@kaod.org)
+ by player692.ha.ovh.net (Postfix) with ESMTPSA id 3BA53A40CB9B;
+ Mon, 30 Sep 2019 10:07:55 +0000 (UTC)
+Subject: Re: [PATCH v2 3/6] KVM: PPC: Book3S HV: XIVE: Show VP id in debugfs
+To: Greg Kurz <groug@kaod.org>, Paul Mackerras <paulus@ozlabs.org>
+References: <156958521220.1503771.2119482814236775333.stgit@bahia.lan>
+ <156958522955.1503771.11724507735868652914.stgit@bahia.lan>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <a164000d-284a-3ca7-a6b2-a5977a4b169f@kaod.org>
+Date: Mon, 30 Sep 2019 12:07:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <46dZwK6vZdz9sPn@ozlabs.org>
+In-Reply-To: <156958522955.1503771.11724507735868652914.stgit@bahia.lan>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 15278743213254937460
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrgedvgddvudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -159,70 +59,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ kvm-ppc@vger.kernel.org, stable@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 25/09/2019 21:05, Michael Ellerman wrote:
-> On Tue, 2019-09-17 at 00:46:04 UTC, Alistair Popple wrote:
->> Commit 388cc6e133132 ("KVM: PPC: Book3S HV: Support POWER6
->> compatibility mode on POWER7") introduced new macros defining the PCR
->> bits. When used from assembly files these definitions lead to build
->> errors using older versions of binutils that don't support the 'ul'
->> suffix. This fixes the build errors by updating the definitions to use
->> the __MASK() macro which selects the appropriate suffix.
->>
->> Signed-off-by: Alistair Popple <alistair@popple.id.au>
+On 27/09/2019 13:53, Greg Kurz wrote:
+> Print out the VP id of each connected vCPU, this allow to see:
+> - the VP block base in which OPAL encodes information that may be
+>   useful when debugging
+> - the packed vCPU id which may differ from the raw vCPU id if the
+>   latter is >= KVM_MAX_VCPUS (2048)
 > 
-> Series applied to powerpc fixes, thanks.
+> Signed-off-by: Greg Kurz <groug@kaod.org>
+
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/kvm/book3s_xive.c        |    4 ++--
+>  arch/powerpc/kvm/book3s_xive_native.c |    4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> https://git.kernel.org/powerpc/c/c6fadabb2868f817299ddb338ac15885e25d12d2
+> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+> index baa740815b3c..0b7859e40f66 100644
+> --- a/arch/powerpc/kvm/book3s_xive.c
+> +++ b/arch/powerpc/kvm/book3s_xive.c
+> @@ -2107,9 +2107,9 @@ static int xive_debug_show(struct seq_file *m, void *private)
+>  		if (!xc)
+>  			continue;
+>  
+> -		seq_printf(m, "cpu server %#x CPPR:%#x HWCPPR:%#x"
+> +		seq_printf(m, "cpu server %#x VP:%#x CPPR:%#x HWCPPR:%#x"
+>  			   " MFRR:%#x PEND:%#x h_xirr: R=%lld V=%lld\n",
+> -			   xc->server_num, xc->cppr, xc->hw_cppr,
+> +			   xc->server_num, xc->vp_id, xc->cppr, xc->hw_cppr,
+>  			   xc->mfrr, xc->pending,
+>  			   xc->stat_rm_h_xirr, xc->stat_vm_h_xirr);
+>  
+> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+> index ebb4215baf45..43a86858390a 100644
+> --- a/arch/powerpc/kvm/book3s_xive_native.c
+> +++ b/arch/powerpc/kvm/book3s_xive_native.c
+> @@ -1204,8 +1204,8 @@ static int xive_native_debug_show(struct seq_file *m, void *private)
+>  		if (!xc)
+>  			continue;
+>  
+> -		seq_printf(m, "cpu server %#x NSR=%02x CPPR=%02x IBP=%02x PIPR=%02x w01=%016llx w2=%08x\n",
+> -			   xc->server_num,
+> +		seq_printf(m, "cpu server %#x VP=%#x NSR=%02x CPPR=%02x IBP=%02x PIPR=%02x w01=%016llx w2=%08x\n",
+> +			   xc->server_num, xc->vp_id,
+>  			   vcpu->arch.xive_saved_state.nsr,
+>  			   vcpu->arch.xive_saved_state.cppr,
+>  			   vcpu->arch.xive_saved_state.ipb,
+> 
 
-
-It breaks KVM on POWER8's garrison:
-===
-KVM: CPU 1 seems to be stuck
-KVM: CPU 2 seems to be stuck
-KVM: CPU 3 seems to be stuck
-KVM: CPU 4 seems to be stuck
-KVM: CPU 5 seems to be stuck
-KVM: CPU 6 seems to be stuck
-KVM: CPU 7 seems to be stuck
-===
-in a loop.
-
-
-Run as: "taskset -c 0 qemu-system-ppc64 -smp 8,threads=8"
-
-
-The patch below fixes it and I have no idea why. 0x1ffffffffffffff1 is the PCR after the mask applied to it.
-
-
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 709cf1fd4cf4..9df9865b2e5b 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -406,6 +406,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
-         * Also set all reserved PCR bits
-         */
-        vc->pcr = (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
-+       vc->pcr &= 0xffffffffffffff00UL;
-        spin_unlock(&vc->lock);
-
-        return 0;
-@@ -3413,7 +3414,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
-        }
-
-        if (vc->pcr)
--               mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
-+               mtspr(SPRN_PCR, vc->pcr);
-        mtspr(SPRN_DPDES, vc->dpdes);
-        mtspr(SPRN_VTB, vc->vtb);
-
-
--- 
-Alexey
