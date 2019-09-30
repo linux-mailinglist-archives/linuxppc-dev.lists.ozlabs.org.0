@@ -1,76 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A61C19C1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 01:20:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E12AC19D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 02:15:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46hM3D1pdPzDqMd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 09:20:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46hNG03LKmzDqCD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2019 10:15:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nvidia.com
- (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46hND84lmgzDqC4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 10:13:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="YjWTNeT0"; 
- dkim-atps=neutral
-Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46hM1l3rbszDqLh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 09:19:39 +1000 (AEST)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5d913c0e0000>; Sun, 29 Sep 2019 16:19:42 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Sun, 29 Sep 2019 16:19:35 -0700
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Sun, 29 Sep 2019 16:19:35 -0700
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sun, 29 Sep
- 2019 23:19:35 +0000
-Received: from [10.2.173.141] (172.20.13.39) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sun, 29 Sep
- 2019 23:19:34 +0000
-Subject: Re: [PATCH v4 01/11] powerpc/mm: Adds counting method to monitor
- lockless pgtable walks
-From: John Hubbard <jhubbard@nvidia.com>
-To: Leonardo Bras <leonardo@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-kernel@vger.kernel.org>, <kvm-ppc@vger.kernel.org>,
- <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20190927234008.11513-1-leonardo@linux.ibm.com>
- <20190927234008.11513-2-leonardo@linux.ibm.com>
- <4ff1e8e8-929b-9cfc-9bf8-ee88e34de888@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <f8fca251-e31a-1d50-49e9-e69a893d9059@nvidia.com>
-Date: Sun, 29 Sep 2019 16:17:20 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.b="A0YA+Mbb"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46hND75Gcfz9sP7;
+ Mon, 30 Sep 2019 10:13:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1569802424;
+ bh=ogk0hlYIoBCOu2Vho4ZY5MeUcLlebA5N8aJ7TT616wQ=;
+ h=Date:From:To:Cc:Subject:From;
+ b=A0YA+Mbbuj4wlaLbzPIug3ttR4qGgEwEOeWOvQD5atl2fLpFGGYtDrX/53W9MurmK
+ 6d2q4WWFgULpPva/Tlw+y32hLQvYkDyxfOjjT5L79zvzsTqx94hjVhPTAiZe1WWjo9
+ zXX21AY8MWW/E59EHtDGWZQ00lrkeTuMWnQejMBlPnxBceXG78O5nO0+gSx3xZ5zXI
+ 1ecY4ch806DE2vef0wPHjViXSALXH7n8+HazB0z8HGDdXMQvo9eo+8RaFhmry3XeBs
+ L1QlZ709Ojusn0Le22kUbN8+d56iJ7dw5Pb1CEWbY32IBdYfmyyitF1sJWuifFPYjY
+ YX6Tcfx3BYrww==
+Date: Mon, 30 Sep 2019 10:13:42 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: build failure after merge of the powerpc tree
+Message-ID: <20190930101342.36c1afa0@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <4ff1e8e8-929b-9cfc-9bf8-ee88e34de888@nvidia.com>
-X-Originating-IP: [172.20.13.39]
-X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1569799183; bh=cuUpAejunirY1oVB4xqJhAFbQh4uc7B1ykg3wBoKKZs=;
- h=X-PGP-Universal:Subject:From:To:CC:References:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=YjWTNeT0CKiy9o+jGIp6KtWT7AvUC9MjQefsgmJQTtk7jdKDbA6WjFQ9JoKMOVBVx
- 6C7SwiTGmjYkn5+tZPcgR0XtRz7TfihkWkQORs+3CDC+f0s8P4fPbHRlQl7oe3HAZW
- nrxf5kbcgk+ker4DiB23UJ2izp3Os3fz8miMQxXdGrwPK8X5Lt+idjpD6foHYfWZVr
- w3ztaYXbj0fG9ryOzoGhDspATQNBZuyoeb3i/cvNce3LrgwKUfLxo5qJNZT3gtZsI4
- NOz4ZBOs6z/j4VuUFKxFcU1NF9kxF4C22OplZjoArvqsyPljPn2jofEe5dcLYmdJe5
- CuLqlhxPTaTCA==
+Content-Type: multipart/signed; boundary="Sig_/2k83OivJyP3s+fo16M7TyT4";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,53 +56,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Keith Busch <keith.busch@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- YueHaibing <yuehaibing@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
- Mike Rapoport <rppt@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/29/19 3:40 PM, John Hubbard wrote:
-> On 9/27/19 4:39 PM, Leonardo Bras wrote:
-...
-> +config LOCKLESS_PAGE_TABLE_WALK_TRACKING
-> +=C2=A0=C2=A0=C2=A0 bool "Tracking (and optimization) of lockless page ta=
-ble walkers"
-> +=C2=A0=C2=A0=C2=A0 default n
-> +
-> +=C2=A0=C2=A0=C2=A0 help
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Maintain a reference count of active lock=
-less page table
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 walkers. This adds 4 bytes to struct mm s=
-ize, and two atomic
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 operations to calls such as get_user_page=
-s_fast(). Some
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 architectures can optimize page table ope=
-rations if this
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 is enabled.
-> +
->  =C2=A0endmenu
+--Sig_/2k83OivJyP3s+fo16M7TyT4
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Actually, the above should be an internal-only config option (PPC arch can
-auto-select it), so just:
+Hi all,
 
-+config LOCKLESS_PAGE_TABLE_WALK_TRACKING
-+	bool
+After merging the powerpc tree, today's linux-next build (powerpc64
+allnoconfig) failed like this:
 
-...because it's entirely up to other code (as opposed to other people)
-as to whether this should be selected.
+arch/powerpc/mm/book3s64/pgtable.c: In function 'flush_partition':
+arch/powerpc/mm/book3s64/pgtable.c:216:3: error: implicit declaration of fu=
+nction 'radix__flush_all_lpid_guest'; did you mean 'radix__flush_all_lpid'?=
+ [-Werror=3Dimplicit-function-declaration]
+  216 |   radix__flush_all_lpid_guest(lpid);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |   radix__flush_all_lpid
 
-I got carried away. :)
+Caused by commit
 
-thanks,
+  99161de3a283 ("powerpc/64s/radix: tidy up TLB flushing code")
+
+radix__flush_all_lpid_guest() is only declared for CONFIG_PPC_RADIX_MMU
+which is not set for this build.
+
+I am not sure why this did not show up earlier (maybe a Kconfig
+change?).
+
+I added the following hack for today.
+
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Mon, 30 Sep 2019 10:09:17 +1000
+Subject: [PATCH] powerpc/64s/radix: fix for "tidy up TLB flushing code" and
+ !CONFIG_PPC_RADIX_MMU
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/include/asm/book3s/64/tlbflush-radix.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/pow=
+erpc/include/asm/book3s/64/tlbflush-radix.h
+index 4ce795d30377..ca8db193ae38 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+@@ -35,6 +35,10 @@ static inline void radix__flush_all_lpid(unsigned int lp=
+id)
+ {
+ 	WARN_ON(1);
+ }
++static inline void radix__flush_all_lpid_guest(unsigned int lpid)
++{
++	WARN_ON(1);
++}
+ #endif
+=20
+ extern void radix__flush_hugetlb_tlb_range(struct vm_area_struct *vma,
 --=20
-John Hubbard
-NVIDIA
+2.23.0.rc1
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/2k83OivJyP3s+fo16M7TyT4
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl2RSLYACgkQAVBC80lX
+0GxK5Qf/fRl1qjSxW74ZnbNlM9Qp3qgavwY8JTJA7WHERAFQxwC38n8CoHxMQ+RA
+AIHhKJf9OSJj6gULfJROQDFj7oLYSFKor0gsZBkWsz9hzKlv/l0JnAmmScaxApAM
+LjZJJnLg95JhLgwkjrBK6uoYlGW2gLnI2PxKPUSgGZJ2AO2Ylsg0aMamRNz4p7/H
+6HHxYxk6gN5Idi0333uHjam1KQaa48NBxRisbPSHAv4ZhcxsqWbdaetc/h5FqDbY
+LPqyJz5se9DECd6rxVB0iivvCWYHiTIXLCu54Ga3sHBIUARuTsNEUPurQ2jehn4e
+3VT8pq/g5bo27xFXrrkR7hRDyn08ag==
+=MWB0
+-----END PGP SIGNATURE-----
+
+--Sig_/2k83OivJyP3s+fo16M7TyT4--
