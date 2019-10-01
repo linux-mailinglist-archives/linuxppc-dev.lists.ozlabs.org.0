@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BA6C30BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 12:00:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E475C30E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 12:06:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46jFBP6sz8zDqSY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 20:00:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46jFKy40XyzDqSk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 20:06:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,14 +19,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46jF6v2dFkzDqSZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 19:57:11 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46jFHw00H2zDqR7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 20:04:59 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204789] Boot failure with more than 256G of memory on POWER/ppc64
-Date: Tue, 01 Oct 2019 09:57:08 +0000
+Subject: [Bug 204789] Boot failure with more than 256G of memory on Power9
+ with 4K pages & Hash MMU
+Date: Tue, 01 Oct 2019 10:04:56 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -41,8 +42,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status
-Message-ID: <bug-204789-206035-M3h0OeoR69@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204789-206035-qRqpzf4aDq@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-204789-206035@https.bugzilla.kernel.org/>
 References: <bug-204789-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -67,11 +68,16 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204789
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+--- Comment #10 from Michael Ellerman (michael@ellerman.id.au) ---
+Can you boot a good kernel and do:
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |ASSIGNED
+$ sudo grep RAM /proc/iomem
+
+And paste the output. Just to confirm what your memory layout is.
+
+What arrangement of DIMMs do you have? It's possible you could work around =
+the
+bug by changing that, depending on how many DIMMs and slots you have.
 
 --=20
 You are receiving this mail because:
