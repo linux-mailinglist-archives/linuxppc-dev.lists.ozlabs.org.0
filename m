@@ -1,98 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5080C38C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 17:20:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C839C3982
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 17:50:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46jNHl4C6LzDqVL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 01:20:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46jNyt2SXJzDqTT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 01:50:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=chromium.org
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="jpLjP0sV";
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46jMw70ygSzDq9G
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 01:03:19 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 61E713058359;
- Tue,  1 Oct 2019 15:03:17 +0000 (UTC)
-Received: from [10.36.116.54] (ovpn-116-54.ams2.redhat.com [10.36.116.54])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A669C19C7F;
- Tue,  1 Oct 2019 15:03:14 +0000 (UTC)
-Subject: Re: [PATCH v5 01/10] mm/memunmap: Use the correct start and end pfn
- when removing pages from zone
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>
-References: <20191001144011.3801-1-david@redhat.com>
- <20191001144011.3801-2-david@redhat.com>
- <933f9cd8-9a32-8566-bd97-7e475a009275@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <09b61ab1-6099-d825-8e04-fbfb43abe4d2@redhat.com>
-Date: Tue, 1 Oct 2019 17:03:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46jNw34jwBzDqRH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 01:48:17 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id b128so8300325pfa.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Oct 2019 08:48:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=aHMpO9J+CUbgrwJq2FPC5hQWPjIgrqNx/lVINe55yAg=;
+ b=jpLjP0sVOqJ1io2GkUXKgc45cxfb7B1taqxOFsmCAMNJmlj5/fV9ZG/T16NITs4W9q
+ cvbqYDNjPkgubuNgZtxJd+JdNRYNQcuTsRwBP+njU1INPXE7gYMZOi6b7xlFMKDrD14J
+ DKcbIR540vNINUnM0FJ0c/BvYD5Gp0RtEXiDQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=aHMpO9J+CUbgrwJq2FPC5hQWPjIgrqNx/lVINe55yAg=;
+ b=ZieQD4kMDj3B7y10Pr33Y63HQUd3nilz0GUrfuvuRDf2D3kZbR0/OxLpYA9damMtv2
+ 16z4cx8JvIhXNcLFqU80cX/7krGEooKWp2iu99K+0QaVx3zfK1BoQsn8kWuJYWwXkadd
+ L8UgpaDag62uiHtsKbEPSPfex3xbB2oXQgH2waQOyan9B9RkttNr7/IGmVBlXE9j8TuI
+ pnMIByvPceYys8Cgqd0XDSYmvehBMHGSQnwfDw5B6i4DX8mHCcn6Aws0IYkAt2yk14kH
+ GMchDiFYDyJEtf3d5AbjkWDmdbX0lT8zDE1tdUQnIsrWhSvxJnE2R8faPI7OAckxuHTJ
+ q/Mw==
+X-Gm-Message-State: APjAAAXfTHMiRaihEoEJuyFjJ3QsoX25RpbmiQ/gxPRL0mO4rj7Ojn6C
+ YE0yDx96ukNM0QiFN5BE5hAGhA==
+X-Google-Smtp-Source: APXvYqyO5jsKdDXhDO3bZGk1Keogaj2M/8EIIuQkcNmk5YSzFsJ5w0LY+0szmD2PzpB1320gFGeS9A==
+X-Received: by 2002:a62:14c2:: with SMTP id 185mr27818394pfu.47.1569944893417; 
+ Tue, 01 Oct 2019 08:48:13 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id x18sm1559678pge.76.2019.10.01.08.48.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Oct 2019 08:48:12 -0700 (PDT)
+Date: Tue, 1 Oct 2019 08:48:11 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 18/29] arm64: Move EXCEPTION_TABLE to RO_DATA segment
+Message-ID: <201910010846.D0712C1@keescook>
+References: <20190926175602.33098-1-keescook@chromium.org>
+ <20190926175602.33098-19-keescook@chromium.org>
+ <20191001090355.blnaqlf4rfzucpb2@willie-the-truck>
 MIME-Version: 1.0
-In-Reply-To: <933f9cd8-9a32-8566-bd97-7e475a009275@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.42]); Tue, 01 Oct 2019 15:03:17 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191001090355.blnaqlf4rfzucpb2@willie-the-truck>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,116 +77,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, linux-sh@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Pankaj Gupta <pagupta@redhat.com>, linux-mm@kvack.org,
- Logan Gunthorpe <logang@deltatee.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Michal Simek <monstr@monstr.eu>, linux-alpha@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org,
+ linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ linux-parisc@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01.10.19 16:57, David Hildenbrand wrote:
-> On 01.10.19 16:40, David Hildenbrand wrote:
->> From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
->>
->> With altmap, all the resource pfns are not initialized. While initializing
->> pfn, altmap reserve space is skipped. Hence when removing pfn from zone
->> skip pfns that were never initialized.
->>
->> Update memunmap_pages to calculate start and end pfn based on altmap
->> values. This fixes a kernel crash that is observed when destroying
->> a namespace.
->>
->> [   81.356173] kernel BUG at include/linux/mm.h:1107!
->> cpu 0x1: Vector: 700 (Program Check) at [c000000274087890]
->>     pc: c0000000004b9728: memunmap_pages+0x238/0x340
->>     lr: c0000000004b9724: memunmap_pages+0x234/0x340
->> ...
->>     pid   = 3669, comm = ndctl
->> kernel BUG at include/linux/mm.h:1107!
->> [c000000274087ba0] c0000000009e3500 devm_action_release+0x30/0x50
->> [c000000274087bc0] c0000000009e4758 release_nodes+0x268/0x2d0
->> [c000000274087c30] c0000000009dd144 device_release_driver_internal+0x174/0x240
->> [c000000274087c70] c0000000009d9dfc unbind_store+0x13c/0x190
->> [c000000274087cb0] c0000000009d8a24 drv_attr_store+0x44/0x60
->> [c000000274087cd0] c0000000005a7470 sysfs_kf_write+0x70/0xa0
->> [c000000274087d10] c0000000005a5cac kernfs_fop_write+0x1ac/0x290
->> [c000000274087d60] c0000000004be45c __vfs_write+0x3c/0x70
->> [c000000274087d80] c0000000004c26e4 vfs_write+0xe4/0x200
->> [c000000274087dd0] c0000000004c2a6c ksys_write+0x7c/0x140
->> [c000000274087e20] c00000000000bbd0 system_call+0x5c/0x68
->>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Jason Gunthorpe <jgg@ziepe.ca>
->> Cc: Logan Gunthorpe <logang@deltatee.com>
->> Cc: Ira Weiny <ira.weiny@intel.com>
->> Reviewed-by: Pankaj Gupta <pagupta@redhat.com>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> [ move all pfn-realted declarations into a single line ]
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->>  mm/memremap.c | 13 ++++++++-----
->>  1 file changed, 8 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/memremap.c b/mm/memremap.c
->> index 557e53c6fb46..026788b2ac69 100644
->> --- a/mm/memremap.c
->> +++ b/mm/memremap.c
->> @@ -123,7 +123,7 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
->>  void memunmap_pages(struct dev_pagemap *pgmap)
->>  {
->>  	struct resource *res = &pgmap->res;
->> -	unsigned long pfn;
->> +	unsigned long pfn, nr_pages, start_pfn, end_pfn;
->>  	int nid;
->>  
->>  	dev_pagemap_kill(pgmap);
->> @@ -131,14 +131,17 @@ void memunmap_pages(struct dev_pagemap *pgmap)
->>  		put_page(pfn_to_page(pfn));
->>  	dev_pagemap_cleanup(pgmap);
->>  
->> +	start_pfn = pfn_first(pgmap);
->> +	end_pfn = pfn_end(pgmap);
->> +	nr_pages = end_pfn - start_pfn;
->> +
->>  	/* pages are dead and unused, undo the arch mapping */
->> -	nid = page_to_nid(pfn_to_page(PHYS_PFN(res->start)));
->> +	nid = page_to_nid(pfn_to_page(start_pfn));
->>  
->>  	mem_hotplug_begin();
->>  	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
->> -		pfn = PHYS_PFN(res->start);
->> -		__remove_pages(page_zone(pfn_to_page(pfn)), pfn,
->> -				 PHYS_PFN(resource_size(res)), NULL);
->> +		__remove_pages(page_zone(pfn_to_page(start_pfn)), start_pfn,
->> +			       nr_pages, NULL);
->>  	} else {
->>  		arch_remove_memory(nid, res->start, resource_size(res),
->>  				pgmap_altmap(pgmap));
->>
+On Tue, Oct 01, 2019 at 10:03:56AM +0100, Will Deacon wrote:
+> Hi Kees,
 > 
-> Aneesh, I was wondering why the use of "res->start" is correct (and we
-> shouldn't also witch to start_pfn/nr_pages here. It would be good if Dan
-> could review.
+> On Thu, Sep 26, 2019 at 10:55:51AM -0700, Kees Cook wrote:
+> > The EXCEPTION_TABLE is read-only, so collapse it into RO_DATA.
+> > 
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  arch/arm64/kernel/vmlinux.lds.S | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+> > index 81d94e371c95..c6ba2eee0ee8 100644
+> > --- a/arch/arm64/kernel/vmlinux.lds.S
+> > +++ b/arch/arm64/kernel/vmlinux.lds.S
+> > @@ -5,6 +5,8 @@
+> >   * Written by Martin Mares <mj@atrey.karlin.mff.cuni.cz>
+> >   */
+> >  
+> > +#define RO_DATA_EXCEPTION_TABLE_ALIGN	8
+> > +
+> >  #include <asm-generic/vmlinux.lds.h>
+> >  #include <asm/cache.h>
+> >  #include <asm/kernel-pgtable.h>
+> > @@ -135,8 +137,8 @@ SECTIONS
+> >  	. = ALIGN(SEGMENT_ALIGN);
+> >  	_etext = .;			/* End of text section */
+> >  
+> > -	RO_DATA(PAGE_SIZE)		/* everything from this point to     */
+> > -	EXCEPTION_TABLE(8)		/* __init_begin will be marked RO NX */
+> > +	/* everything from this point to __init_begin will be marked RO NX */
+> > +	RO_DATA(PAGE_SIZE)
+> >  
+> >  	. = ALIGN(PAGE_SIZE);
 > 
+> Do you reckon it would be worth merging this last ALIGN directive into the
+> RO_DATA definition too? Given that we want to map the thing read-only, it
+> really has to be aligned either side.
 
-To be more precise, I wonder if it should actually be
+Actually, taking a closer look, this appears to be redundant: RO_DATA()
+ends with:
 
-__remove_pages(page_zone(pfn_to_page(start_pfn)), res->start,
-               resource_size(res))
+	. = ALIGN(align)
 
-IOW, keep calling __remove_pages() with the same parameters but read
-nid/zone from the offset one.
+(where "align" is the "PAGE_SIZE" argument to RO_DATA())
 
-Hope some memunmap_pages() expert can clarify.
+> Anyway, that's only a nit, so:
+> 
+> Acked-by: Will Deacon <will@kernel.org>
+
+Thanks!
+
+> P.S. Please CC the arm64 maintainers on arm64 patches -- I nearly missed
+> this one!
+
+Okay, I can re-expand my list. I originally had done this but it was
+getting to be a rather large set of people. :)
 
 -- 
-
-Thanks,
-
-David / dhildenb
+Kees Cook
