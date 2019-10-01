@@ -2,49 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E117AC4189
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 22:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0081CC445E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 01:39:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46jVbF33q1zDq8g
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 06:04:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46jbMW09GhzDqSh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 09:39:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46jbKk562GzDqS4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 09:37:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="FFLjlRze"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46jbKk2Dr9z8syX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 09:37:46 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46jbKk1QZgz9sPj; Wed,  2 Oct 2019 09:37:46 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nayna@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46jVYS21MTzDq6k
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 06:02:35 +1000 (AEST)
-Received: from localhost (unknown [69.71.4.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 78D2D2133F;
- Tue,  1 Oct 2019 20:02:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569960153;
- bh=xlZUpmFgQH3QfurVZdSrkgPMpFDOx60wfJXzh3sZXxw=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=FFLjlRze/atn4kWOCCQKFsH7ZBBfCicUGw/oLbnxK2WLl8cWAK4piR7quUce1iz0O
- nRiQ7YL6cW8yjjOxD6tHV962n70GJFkFsZb9rgGt6Fbe5ZZYwqJFTPEX5p+1VIfB7m
- 4Jf/HaE0mI31eofang7CrhVoZNh+HUO1lLncVXDE=
-Date: Tue, 1 Oct 2019 15:02:29 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [RFC PATCH 0/9] Fixes and Enablement of ibm,drc-info property
-Message-ID: <20191001200229.GA64312@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by ozlabs.org (Postfix) with ESMTPS id 46jbKj41Fjz9s4Y
+ for <linuxppc-dev@ozlabs.org>; Wed,  2 Oct 2019 09:37:45 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x91NafDQ113945
+ for <linuxppc-dev@ozlabs.org>; Tue, 1 Oct 2019 19:37:36 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vcdj4d7w9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 01 Oct 2019 19:37:35 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
+ Wed, 2 Oct 2019 00:37:33 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 2 Oct 2019 00:37:29 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x91NbRx136372604
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Oct 2019 23:37:28 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BE242AE04D;
+ Tue,  1 Oct 2019 23:37:27 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35D86AE051;
+ Tue,  1 Oct 2019 23:37:25 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.80.224.222])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Oct 2019 23:37:25 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: [PATCH] sysfs: Fixes __BIN_ATTR_WO() macro
+Date: Tue,  1 Oct 2019 19:37:18 -0400
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 19100123-0020-0000-0000-000003742318
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19100123-0021-0000-0000-000021CA2488
+Message-Id: <1569973038-2710-1-git-send-email-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-01_10:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=730 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910010201
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,60 +98,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 01, 2019 at 01:12:05AM -0500, Tyrel Datwyler wrote:
-> There was an initial previous effort yo add support for the PAPR
-> architected ibm,drc-info property. This property provides a more
-> memory compact representation of a paritions Dynamic Reconfig
-> Connectors (DRC). These can otherwise be thought of the currently
-> partitioned, or available, but yet to be partitioned, system resources
-> such as cpus, memory, and physical/logical IOA devices.
-> 
-> The initial implementation proved buggy and was fully turned of by
-> disabling the bit in the appropriate CAS support vector. We now have
-> PowerVM firmware in the field that supports this new property, and 
-> further to suppport partitions with 24TB+ or possible memory this
-> property is required to perform platform migration.
-> 
-> This serious fixup the short comings of the previous implementation
-> in the areas of general implementation, cpu hotplug, and IOA hotplug.
-> 
-> Tyrel Datwyler (9):
->   powerpc/pseries: add cpu DLPAR support for drc-info property
->   powerpc/pseries: fix bad drc_index_start value parsing of drc-info
->     entry
->   powerpc/pseries: fix drc-info mappings of logical cpus to drc-index
->   PCI: rpaphp: fix up pointer to first drc-info entry
->   PCI: rpaphp: don't rely on firmware feature to imply drc-info support
->   PCI: rpaphp: add drc-info support for hotplug slot registration
->   PCI: rpaphp: annotate and correctly byte swap DRC properties
->   PCI: rpaphp: correctly match ibm,my-drc-index to drc-name when using
->     drc-info
->   powerpc: Enable support for ibm,drc-info property
-> 
->  arch/powerpc/kernel/prom_init.c                 |   2 +-
->  arch/powerpc/platforms/pseries/hotplug-cpu.c    | 117 ++++++++++++++++------
->  arch/powerpc/platforms/pseries/of_helpers.c     |   8 +-
->  arch/powerpc/platforms/pseries/pseries_energy.c |  23 ++---
->  drivers/pci/hotplug/rpaphp_core.c               | 124 +++++++++++++++++-------
->  5 files changed, 191 insertions(+), 83 deletions(-)
+This patch fixes the size and write parameter for the macro
+__BIN_ATTR_WO().
 
-Michael, I assume you'll take care of this.  If I were applying, I
-would capitalize the commit subjects and fix the typos in the commit
-logs, e.g.,
+Fixes: 7f905761e15a8 ("sysfs: add BIN_ATTR_WO() macro")
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+---
+ include/linux/sysfs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  s/the this/the/
-  s/the the/that the/
-  s/short coming/shortcoming/
-  s/seperate/separate/
-  s/bid endian/big endian/
-  s/were appropriate/where appropriate/
-  s/name form/name from/
+diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+index 5420817ed317..fa7ee503fb76 100644
+--- a/include/linux/sysfs.h
++++ b/include/linux/sysfs.h
+@@ -196,9 +196,9 @@ struct bin_attribute {
+ 	.size	= _size,						\
+ }
+ 
+-#define __BIN_ATTR_WO(_name) {						\
++#define __BIN_ATTR_WO(_name, _size) {					\
+ 	.attr	= { .name = __stringify(_name), .mode = 0200 },		\
+-	.store	= _name##_store,					\
++	.write	= _name##_write,					\
+ 	.size	= _size,						\
+ }
+ 
+-- 
+2.20.1
 
-etc.  git am also complains about space before tab whitespace errors.
-And it adds a few lines >80 chars.
