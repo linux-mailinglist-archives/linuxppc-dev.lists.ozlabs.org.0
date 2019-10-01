@@ -1,68 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1996AC2BB5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 03:35:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2FBC2CD8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 07:08:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46j1zR45sHzDqQ1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 11:34:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46j6k64bdvzDqQf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 15:08:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d44; helo=mail-io1-xd44.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=intel.com
+ (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="al4gRHae"; 
- dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46j1xV4bRQzDqHh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 11:33:16 +1000 (AEST)
-Received: by mail-io1-xd44.google.com with SMTP id n197so43532794iod.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 18:33:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=19/fqplMu5ncq+Zw3uRvu3m9c9STNF0irlcsoosW0Co=;
- b=al4gRHaeGg/cZqiZI795Rd78SRxqG84CjjJTGgVD1hrh/KEltmD3zrD7H7/JYMFpBj
- TWOtxGhfwU6fvTlF4F5oyov/65ob151+ZQd6YcgauSjW5ZulZxQpInvwLyCDUCl0UwFk
- s3t6vgSPNZ23BO6hvuEd/qDhD0lgGxHMrXoD2rZbjAkcd4G7CACCMeOtSQ+EW/rd0D1N
- ioClIyw4FzduHEDixVPXOzkX5qTCzOpv4ZS5g/OAacc8/JrLD2NVK8xYPsVOd5PLclIy
- XlxI8ZG1RPMy0TEc5EV+CpInsE6nRicSA+IIz1NipKdrArZxV72biLTev5UNbuDG8qcq
- i3PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=19/fqplMu5ncq+Zw3uRvu3m9c9STNF0irlcsoosW0Co=;
- b=FuhNVxLk1MxvsE6kgGf6Q7XDvZ4oaAMffUNVLulCvEkeRimAcubZjh0lx3/HQs3WD/
- yTiWxnGppqWMzoI8iqsWaLBJ+39dkiPxAB/rb+7G6JH3YMPzeqaM1ElOiomMTXL3atDN
- bwLY0/Ovq8EGgdyoYsaitmkslEkSumh0yI2f5mLteY0bvtxIpmXa7jdHWKDkGwqZRaGp
- UFdzm8r6DCZF+qiwYgagJpaHYoDhOwe+OjE5frfe/huHSvFTDGk7oGlFMNhNNCgmMTTe
- gmwsxRC0AzPqPLcv5I1iqI+aUATpEn81VHA3TUjnqQocXxU7ZmdNpysYAtgva/XVwx5K
- JN4Q==
-X-Gm-Message-State: APjAAAUcy99RY681/tziQnKHd/h9e4vx7EY3hkRNlGog06OnbRepzxeN
- lHBs6RGLqE3nt1D0gd8yepyKBLhY93PAx5lms88=
-X-Google-Smtp-Source: APXvYqxoGSYSEq5KLwzbStd2aIGE9OIH0/k7KW8mb3xU3296xqnpTkwrsSzxIartHroxhzkiuVdW4vGI6APRF88Vwg0=
-X-Received: by 2002:a92:cecc:: with SMTP id z12mr24175183ilq.293.1569893592169; 
- Mon, 30 Sep 2019 18:33:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46j6hL5QlMzDqNj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 15:07:07 +1000 (AEST)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2019 22:07:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,569,1559545200"; d="scan'208";a="190474561"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by fmsmga008.fm.intel.com with ESMTP; 30 Sep 2019 22:06:56 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1iFANE-000IpB-8f; Tue, 01 Oct 2019 13:06:56 +0800
+Date: Tue, 1 Oct 2019 13:06:23 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v13 7/9] open: openat2(2) syscall
+Message-ID: <201910011326.iTYOtJYo%lkp@intel.com>
+References: <20190930183316.10190-8-cyphar@cyphar.com>
 MIME-Version: 1.0
-References: <20190930020848.25767-2-oohall@gmail.com>
- <20190930170948.GA154567@google.com>
-In-Reply-To: <20190930170948.GA154567@google.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 1 Oct 2019 11:33:01 +1000
-Message-ID: <CAOSf1CH0hmhrDNpi0TVeGD2uKfcEnv8+hd_z+KLuL-4=sOVeeA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] powernv/iov: Ensure the pdn for VFs always contains a
- valid PE number
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190930183316.10190-8-cyphar@cyphar.com>
+X-Patchwork-Hint: ignore
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,138 +56,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Shawn Anastasio <shawn@anastas.io>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-pci@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Shuah Khan <shuah@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Christian Brauner <christian@brauner.io>,
+ Eric Biederman <ebiederm@xmission.com>, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
+ Aleksa Sarai <cyphar@cyphar.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
+ linux-arm-kernel@lists.infradead.org, "J. Bruce Fields" <bfields@fieldses.org>,
+ libc-alpha@sourceware.org, linux-parisc@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-api@vger.kernel.org,
+ Chanho Min <chanho.min@lge.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
+ kbuild-all@01.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 1, 2019 at 3:09 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> On Mon, Sep 30, 2019 at 12:08:46PM +1000, Oliver O'Halloran wrote:
->
-> This is all powerpc, so I assume Michael will handle this.  Just
-> random things I noticed; ignore if they don't make sense:
->
-> > On PowerNV we use the pcibios_sriov_enable() hook to do two things:
-> >
-> > 1. Create a pci_dn structure for each of the VFs, and
-> > 2. Configure the PHB's internal BARs that map MMIO ranges to PEs
-> >    so that each VF has it's own PE. Note that the PE also determines
->
-> s/it's/its/
->
-> >    the IOMMU table the HW uses for the device.
-> >
-> > Currently we do not set the pe_number field of the pci_dn immediately after
-> > assigning the PE number for the VF that it represents. Instead, we do that
-> > in a fixup (see pnv_pci_dma_dev_setup) which is run inside the
-> > pcibios_add_device() hook which is run prior to adding the device to the
-> > bus.
-> >
-> > On PowerNV we add the device to it's IOMMU group using a bus notifier and
->
-> s/it's/its/
->
-> > in order for this to work the PE number needs to be known when the bus
-> > notifier is run. This works today since the PE number is set in the fixup
-> > which runs before adding the device to the bus. However, if we want to move
-> > the fixup to a later stage this will break.
-> >
-> > We can fix this by setting the pdn->pe_number inside of
-> > pcibios_sriov_enable(). There's no good to avoid this since we already have
->
-> s/no good/no good reason/ ?
->
-> Not quite sure what "this" refers to ... "no good reason to avoid
-> setting pdn->pe_number in pcibios_sriov_enable()"?  The double
-> negative makes it a little hard to parse.
+Hi Aleksa,
 
-I agree it's a bit vague, I'll re-word it.
+Thank you for the patch! Perhaps something to improve:
 
-> > all the required information at that point, so... do that. Moving this
-> > earlier does cause two problems:
-> >
-> > 1. We trip the WARN_ON() in the fixup code, and
-> > 2. The EEH core will clear pdn->pe_number while recovering VFs.
-> >
-> > The only justification for either of these is a comment in eeh_rmv_device()
-> > suggesting that pdn->pe_number *must* be set to IODA_INVALID_PE in order
-> > for the VF to be scanned. However, this comment appears to have no basis in
-> > reality so just delete it.
-> >
-> > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> > ---
-> > Can't get rid of the fixup entirely since we need it to set the
-> > ioda_pe->pdev back-pointer. I'll look at killing that another time.
-> > ---
-> >  arch/powerpc/kernel/eeh_driver.c          |  6 ------
-> >  arch/powerpc/platforms/powernv/pci-ioda.c | 19 +++++++++++++++----
-> >  arch/powerpc/platforms/powernv/pci.c      |  4 ----
-> >  3 files changed, 15 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-> > index d9279d0..7955fba 100644
-> > --- a/arch/powerpc/kernel/eeh_driver.c
-> > +++ b/arch/powerpc/kernel/eeh_driver.c
-> > @@ -541,12 +541,6 @@ static void eeh_rmv_device(struct eeh_dev *edev, void *userdata)
-> >
-> >               pci_iov_remove_virtfn(edev->physfn, pdn->vf_index);
-> >               edev->pdev = NULL;
-> > -
-> > -             /*
-> > -              * We have to set the VF PE number to invalid one, which is
-> > -              * required to plug the VF successfully.
-> > -              */
-> > -             pdn->pe_number = IODA_INVALID_PE;
-> >  #endif
-> >               if (rmv_data)
-> >                       list_add(&edev->rmv_entry, &rmv_data->removed_vf_list);
-> > diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> > index 5e3172d..70508b3 100644
-> > --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> > +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> > @@ -1558,6 +1558,10 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
-> >
-> >       /* Reserve PE for each VF */
-> >       for (vf_index = 0; vf_index < num_vfs; vf_index++) {
-> > +             int vf_devfn = pci_iov_virtfn_devfn(pdev, vf_index);
-> > +             int vf_bus = pci_iov_virtfn_bus(pdev, vf_index);
-> > +             struct pci_dn *vf_pdn;
-> > +
-> >               if (pdn->m64_single_mode)
-> >                       pe_num = pdn->pe_num_map[vf_index];
-> >               else
-> > @@ -1570,13 +1574,11 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
-> >               pe->pbus = NULL;
-> >               pe->parent_dev = pdev;
-> >               pe->mve_number = -1;
-> > -             pe->rid = (pci_iov_virtfn_bus(pdev, vf_index) << 8) |
-> > -                        pci_iov_virtfn_devfn(pdev, vf_index);
-> > +             pe->rid = (vf_bus << 8) | vf_devfn;
-> >
-> >               pe_info(pe, "VF %04d:%02d:%02d.%d associated with PE#%x\n",
->
-> Not related to *this* patch, but this looks like maybe it's supposed
-> to match the pci_name(), e.g., "%04x:%02x:%02x.%d" from
-> pci_setup_device()?  If so, the "%04d:%02d:%02d" here will be
-> confusing since the decimal & hex won't always match.
+[auto build test WARNING on linus/master]
+[cannot apply to v5.4-rc1 next-20191001]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-That looks plain wrong. I'll send a separate patch to fix it.
+url:    https://github.com/0day-ci/linux/commits/Aleksa-Sarai/namei-openat2-2-path-resolution-restrictions/20191001-025628
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-rc1-37-gd466a02-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 
-> >                       hose->global_number, pdev->bus->number,
->
-> Consider pci_domain_nr(bus) instead of hose->global_number?  It would
-> be nice if you had the pci_dev * for each VF so you could just use
-> pci_name(vf) instead of all this domain/bus/PCI_SLOT/FUNC.
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
 
-Unfortunately, we don't have pci_devs for the VFs when
-pcibios_sriov_enable() is called. On powernv (and pseries) we only
-permit config accesses to a BDF when a pci_dn exists for that BDF
-because the platform code assumes that one will exist. As a result we
-can't scan the VFs until after pcibios_sriov_enable() is called since
-that's where pci_dn's are created for the VFs. I'm working on removing
-the use of pci_dn from powernv entirely though. Once that's done we
-should revisit whether any of this infrastructure is necessary...
 
-Oliver
+sparse warnings: (new ones prefixed by >>)
+
+   fs/open.c:757:13: sparse: sparse: restricted fmode_t degrades to integer
+   fs/open.c:983:18: sparse: sparse: restricted fmode_t degrades to integer
+>> fs/open.c:1011:36: sparse: sparse: invalid assignment: |=
+>> fs/open.c:1011:36: sparse:    left side has type int
+>> fs/open.c:1011:36: sparse:    right side has type restricted fmode_t
+   fs/open.c:1013:36: sparse: sparse: invalid assignment: |=
+   fs/open.c:1013:36: sparse:    left side has type int
+   fs/open.c:1013:36: sparse:    right side has type restricted fmode_t
+>> fs/open.c:1029:24: sparse: sparse: incorrect type in assignment (different base types) @@    expected restricted fmode_t [usertype] opath_mask @@    got pe] opath_mask @@
+>> fs/open.c:1029:24: sparse:    expected restricted fmode_t [usertype] opath_mask
+>> fs/open.c:1029:24: sparse:    got int opath_mask
+>> fs/open.c:1011:36: sparse: sparse: invalid assignment: |=
+>> fs/open.c:1011:36: sparse:    left side has type int
+>> fs/open.c:1011:36: sparse:    right side has type restricted fmode_t
+   fs/open.c:1013:36: sparse: sparse: invalid assignment: |=
+   fs/open.c:1013:36: sparse:    left side has type int
+   fs/open.c:1013:36: sparse:    right side has type restricted fmode_t
+>> fs/open.c:1029:24: sparse: sparse: incorrect type in assignment (different base types) @@    expected restricted fmode_t [usertype] opath_mask @@    got pe] opath_mask @@
+>> fs/open.c:1029:24: sparse:    expected restricted fmode_t [usertype] opath_mask
+>> fs/open.c:1029:24: sparse:    got int opath_mask
+>> fs/open.c:1011:36: sparse: sparse: invalid assignment: |=
+>> fs/open.c:1011:36: sparse:    left side has type int
+>> fs/open.c:1011:36: sparse:    right side has type restricted fmode_t
+   fs/open.c:1013:36: sparse: sparse: invalid assignment: |=
+   fs/open.c:1013:36: sparse:    left side has type int
+   fs/open.c:1013:36: sparse:    right side has type restricted fmode_t
+>> fs/open.c:1029:24: sparse: sparse: incorrect type in assignment (different base types) @@    expected restricted fmode_t [usertype] opath_mask @@    got pe] opath_mask @@
+>> fs/open.c:1029:24: sparse:    expected restricted fmode_t [usertype] opath_mask
+>> fs/open.c:1029:24: sparse:    got int opath_mask
+   fs/open.c:1173:15: sparse: sparse: undefined identifier 'copy_struct_from_user'
+
+vim +1011 fs/open.c
+
+   957	
+   958	static inline int build_open_flags(const struct open_how *how,
+   959					   struct open_flags *op)
+   960	{
+   961		int flags = how->flags;
+   962		int lookup_flags = 0;
+   963		int opath_mask = 0;
+   964		int acc_mode = ACC_MODE(flags);
+   965	
+   966		/*
+   967		 * Older syscalls still clear these bits before calling
+   968		 * build_open_flags(), but openat2(2) checks all its arguments.
+   969		 */
+   970		if (flags & ~VALID_OPEN_FLAGS)
+   971			return -EINVAL;
+   972		if (how->resolve & ~VALID_RESOLVE_FLAGS)
+   973			return -EINVAL;
+   974		if (!(how->flags & (O_PATH | O_CREAT | __O_TMPFILE)) && how->mode != 0)
+   975			return -EINVAL;
+   976	
+   977		if (flags & (O_CREAT | __O_TMPFILE))
+   978			op->mode = (how->mode & S_IALLUGO) | S_IFREG;
+   979		else
+   980			op->mode = 0;
+   981	
+   982		/* Must never be set by userspace */
+ > 983		flags &= ~FMODE_NONOTIFY & ~O_CLOEXEC;
+   984	
+   985		/*
+   986		 * O_SYNC is implemented as __O_SYNC|O_DSYNC.  As many places only
+   987		 * check for O_DSYNC if the need any syncing at all we enforce it's
+   988		 * always set instead of having to deal with possibly weird behaviour
+   989		 * for malicious applications setting only __O_SYNC.
+   990		 */
+   991		if (flags & __O_SYNC)
+   992			flags |= O_DSYNC;
+   993	
+   994		if (flags & __O_TMPFILE) {
+   995			if ((flags & O_TMPFILE_MASK) != O_TMPFILE)
+   996				return -EINVAL;
+   997			if (!(acc_mode & MAY_WRITE))
+   998				return -EINVAL;
+   999		} else if (flags & O_PATH) {
+  1000			/*
+  1001			 * If we have O_PATH in the open flag. Then we
+  1002			 * cannot have anything other than the below set of flags
+  1003			 */
+  1004			flags &= O_DIRECTORY | O_NOFOLLOW | O_PATH;
+  1005			acc_mode = 0;
+  1006	
+  1007			/* Allow userspace to restrict the re-opening of O_PATH fds. */
+  1008			if (how->upgrade_mask & ~VALID_UPGRADE_FLAGS)
+  1009				return -EINVAL;
+  1010			if (!(how->upgrade_mask & UPGRADE_NOREAD))
+> 1011				opath_mask |= FMODE_PATH_READ;
+  1012			if (!(how->upgrade_mask & UPGRADE_NOWRITE))
+  1013				opath_mask |= FMODE_PATH_WRITE;
+  1014		}
+  1015	
+  1016		op->open_flag = flags;
+  1017	
+  1018		/* O_TRUNC implies we need access checks for write permissions */
+  1019		if (flags & O_TRUNC)
+  1020			acc_mode |= MAY_WRITE;
+  1021	
+  1022		/* Allow the LSM permission hook to distinguish append
+  1023		   access from general write access. */
+  1024		if (flags & O_APPEND)
+  1025			acc_mode |= MAY_APPEND;
+  1026	
+  1027		op->acc_mode = acc_mode;
+  1028		op->intent = flags & O_PATH ? 0 : LOOKUP_OPEN;
+> 1029		op->opath_mask = opath_mask;
+  1030	
+  1031		if (flags & O_CREAT) {
+  1032			op->intent |= LOOKUP_CREATE;
+  1033			if (flags & O_EXCL)
+  1034				op->intent |= LOOKUP_EXCL;
+  1035		}
+  1036	
+  1037		if (flags & O_DIRECTORY)
+  1038			lookup_flags |= LOOKUP_DIRECTORY;
+  1039		if (!(flags & O_NOFOLLOW))
+  1040			lookup_flags |= LOOKUP_FOLLOW;
+  1041		if (flags & O_EMPTYPATH)
+  1042			lookup_flags |= LOOKUP_EMPTY;
+  1043	
+  1044		if (how->resolve & RESOLVE_NO_XDEV)
+  1045			lookup_flags |= LOOKUP_NO_XDEV;
+  1046		if (how->resolve & RESOLVE_NO_MAGICLINKS)
+  1047			lookup_flags |= LOOKUP_NO_MAGICLINKS;
+  1048		if (how->resolve & RESOLVE_NO_SYMLINKS)
+  1049			lookup_flags |= LOOKUP_NO_SYMLINKS;
+  1050		if (how->resolve & RESOLVE_BENEATH)
+  1051			lookup_flags |= LOOKUP_BENEATH;
+  1052		if (how->resolve & RESOLVE_IN_ROOT)
+  1053			lookup_flags |= LOOKUP_IN_ROOT;
+  1054	
+  1055		op->lookup_flags = lookup_flags;
+  1056		return 0;
+  1057	}
+  1058	
+
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
