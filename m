@@ -1,79 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3642FC3F2F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 19:58:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E573C3F7C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 20:10:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46jRpl271vzDqTv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 03:58:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46jS4L10FNzDqVK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 04:10:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46jS2c35xLzDqQf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 04:09:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46jS2b6X7tz8t9t
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 04:09:11 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46jS2b5vrvz9sN1; Wed,  2 Oct 2019 04:09:11 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+ envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46jRmP0DsVzDqTl
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 03:56:52 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 46jS2Z60d6z9sDB;
+ Wed,  2 Oct 2019 04:09:09 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x91HqXqS091810; Tue, 1 Oct 2019 13:56:35 -0400
+ x91I7NcM062724; Tue, 1 Oct 2019 14:09:03 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vc9bgd7m5-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vc8ycxsqf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 13:56:35 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x91HrgD1102759;
- Tue, 1 Oct 2019 13:56:34 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vc9bgd7kt-1
+ Tue, 01 Oct 2019 14:09:02 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x91I7Qd0062990;
+ Tue, 1 Oct 2019 14:09:02 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vc8ycxsnc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 13:56:34 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x91Hsvcl006471;
- Tue, 1 Oct 2019 17:56:33 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 2v9y59cnss-1
+ Tue, 01 Oct 2019 14:09:02 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x91I4Vna001343;
+ Tue, 1 Oct 2019 18:08:58 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma03dal.us.ibm.com with ESMTP id 2v9y584twp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 17:56:33 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x91HuW1h53674482
+ Tue, 01 Oct 2019 18:08:58 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x91I8ux752035904
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Oct 2019 17:56:32 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 525DEAC05B;
- Tue,  1 Oct 2019 17:56:32 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83046AC059;
- Tue,  1 Oct 2019 17:56:28 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.18.235.47])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  1 Oct 2019 17:56:28 +0000 (GMT)
-Message-ID: <2cebe169221ae9270963d4bc4fd8e43066745f98.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 03/11] mm/gup: Applies counting method to monitor
- gup_pgd_range
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org
-Date: Tue, 01 Oct 2019 14:56:19 -0300
-In-Reply-To: <ce0a4110-9f83-36db-dc85-6a727d30d030@nvidia.com>
-References: <20190927234008.11513-1-leonardo@linux.ibm.com>
- <20190927234008.11513-4-leonardo@linux.ibm.com>
- <ce0a4110-9f83-36db-dc85-6a727d30d030@nvidia.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-WOdEGhITyKTGCaqMIiwf"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ Tue, 1 Oct 2019 18:08:56 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B24FEBE051;
+ Tue,  1 Oct 2019 18:08:56 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6BF25BE04F;
+ Tue,  1 Oct 2019 18:08:54 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.80.224.222])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Oct 2019 18:08:54 +0000 (GMT)
+Subject: Re: [PATCH] sysfs: add BIN_ATTR_WO() macro
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <1566825818-9731-1-git-send-email-nayna@linux.ibm.com>
+ <1566825818-9731-3-git-send-email-nayna@linux.ibm.com>
+ <20190826140131.GA15270@kroah.com>
+ <ff9674e1-1b27-783a-38f3-4fd725353186@linux.vnet.ibm.com>
+ <20190826150153.GD18418@kroah.com>
+From: Nayna <nayna@linux.vnet.ibm.com>
+Message-ID: <7546990b-8060-9451-129a-19aaa856d2e1@linux.vnet.ibm.com>
+Date: Tue, 1 Oct 2019 14:08:53 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <20190826150153.GD18418@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-10-01_08:, , signatures=0
@@ -81,8 +97,8 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910010145
+ mlxlogscore=974 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910010147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,148 +110,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- YueHaibing <yuehaibing@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Keith Busch <keith.busch@intel.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Allison Randal <allison@lohutok.net>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ira Weiny <ira.weiny@intel.com>, Andrew Morton <akpm@linux-foundation.org>,
- Dan Williams <dan.j.williams@intel.com>
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linux-integrity@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Greg,
 
---=-WOdEGhITyKTGCaqMIiwf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2019-09-30 at 14:51 -0700, John Hubbard wrote:
-> On 9/27/19 4:40 PM, Leonardo Bras wrote:
-> > As decribed, gup_pgd_range is a lockless pagetable walk. So, in order t=
-o
-> > monitor against THP split/collapse with the couting method, it's necess=
-ary
->=20
-> s/couting/counting/
->=20
+On 08/26/2019 11:01 AM, Greg Kroah-Hartman wrote:
+> This variant was missing from sysfs.h, I guess no one noticed it before.
+>
+> Turns out the powerpc secure variable code can use it, so add it to the
+> tree for it, and potentially others to take advantage of, instead of
+> open-coding it.
+>
+> Reported-by: Nayna Jain <nayna@linux.ibm.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>
+> I'll queue this up to my tree for 5.4-rc1, but if you want to take this
+> in your tree earlier, feel free to do so.
+>
+>   include/linux/sysfs.h | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+>
+> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+> index 965236795750..5420817ed317 100644
+> --- a/include/linux/sysfs.h
+> +++ b/include/linux/sysfs.h
+> @@ -196,6 +196,12 @@ struct bin_attribute {
+>   	.size	= _size,						\
+>   }
+>   
+> +#define __BIN_ATTR_WO(_name) {						\
+> +	.attr	= { .name = __stringify(_name), .mode = 0200 },		\
+> +	.store	= _name##_store,					\
+> +	.size	= _size,						\
+> +}
+> +
+>   #define __BIN_ATTR_RW(_name, _size)					\
+>   	__BIN_ATTR(_name, 0644, _name##_read, _name##_write, _size)
+>   
+> @@ -208,6 +214,9 @@ struct bin_attribute bin_attr_##_name = __BIN_ATTR(_name, _mode, _read,	\
+>   #define BIN_ATTR_RO(_name, _size)					\
+>   struct bin_attribute bin_attr_##_name = __BIN_ATTR_RO(_name, _size)
+>   
+> +#define BIN_ATTR_WO(_name, _size)					\
+> +struct bin_attribute bin_attr_##_name = __BIN_ATTR_WO(_name, _size)
+> +
+>   #define BIN_ATTR_RW(_name, _size)					\
+>   struct bin_attribute bin_attr_##_name = __BIN_ATTR_RW(_name, _size)
+>   
 
-Thanks, fixed for v5.
+I am sorry. I didn't notice it via inspection but there is a bug in this 
+macro. When I actually try using it, compilation fails. Here's a likely 
+patch:
 
-> > to bound it with {start,end}_lockless_pgtbl_walk.
-> >=20
-> > There are dummy functions, so it is not going to add any overhead on ar=
-chs
-> > that don't use this method.
-> >=20
-> > Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-> > ---
-> >  mm/gup.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >=20
-> > diff --git a/mm/gup.c b/mm/gup.c
-> > index 98f13ab37bac..7105c829cf44 100644
-> > --- a/mm/gup.c
-> > +++ b/mm/gup.c
-> > @@ -2325,6 +2325,7 @@ static bool gup_fast_permitted(unsigned long star=
-t, unsigned long end)
-> >  int __get_user_pages_fast(unsigned long start, int nr_pages, int write=
-,
-> >  			  struct page **pages)
-> >  {
-> > +	struct mm_struct *mm;
->=20
-> I don't think that this local variable adds any value, so let's not use i=
-t.
-> Similar point in a few other patches too.
+diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+index 5420817ed317..fa7ee503fb76 100644
+--- a/include/linux/sysfs.h
++++ b/include/linux/sysfs.h
+@@ -196,9 +196,9 @@ struct bin_attribute {
+         .size   = _size,                                                \
+  }
+  
+-#define __BIN_ATTR_WO(_name) {                                         \
++#define __BIN_ATTR_WO(_name, _size) {                                  \
+         .attr   = { .name = __stringify(_name), .mode = 0200 },         \
+-       .store  = _name##_store,                                        \
++       .write  = _name##_write,                                        \
+         .size   = _size,                                                \
+  }
 
-It avoids 1 deference of current->mm, it's a little performance gain.
 
->=20
-> >  	unsigned long len, end;
-> >  	unsigned long flags;
-> >  	int nr =3D 0;
-> > @@ -2352,9 +2353,12 @@ int __get_user_pages_fast(unsigned long start, i=
-nt nr_pages, int write,
-> > =20
-> >  	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP) &&
-> >  	    gup_fast_permitted(start, end)) {
-> > +		mm =3D current->mm;
-> > +		start_lockless_pgtbl_walk(mm);
-> >  		local_irq_save(flags);
-> >  		gup_pgd_range(start, end, write ? FOLL_WRITE : 0, pages, &nr);
-> >  		local_irq_restore(flags);
-> > +		end_lockless_pgtbl_walk(mm);
-> >  	}
-> > =20
-> >  	return nr;
-> > @@ -2404,6 +2408,7 @@ int get_user_pages_fast(unsigned long start, int =
-nr_pages,
-> >  			unsigned int gup_flags, struct page **pages)
-> >  {
-> >  	unsigned long addr, len, end;
-> > +	struct mm_struct *mm;
->=20
-> Same here.
->=20
-> >  	int nr =3D 0, ret =3D 0;
-> > =20
-> >  	if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM)))
-> > @@ -2421,9 +2426,12 @@ int get_user_pages_fast(unsigned long start, int=
- nr_pages,
-> > =20
-> >  	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP) &&
-> >  	    gup_fast_permitted(start, end)) {
-> > +		mm =3D current->mm;
-> > +		start_lockless_pgtbl_walk(mm);
->=20
-> Minor: I'd like to rename this register_lockless_pgtable_walker().
->=20
-> >  		local_irq_disable();
-> >  		gup_pgd_range(addr, end, gup_flags, pages, &nr);
-> >  		local_irq_enable();
-> > +		end_lockless_pgtbl_walk(mm);
->=20
-> ...and deregister_lockless_pgtable_walker().
->=20
-
-I have no problem changing the name, but I don't register/deregister
-are good terms for this.=20
-
-I would rather use start/finish, begin/end, and so on. Register sounds
-like something more complicated than what we are trying to achieve
-here.=20
-
->=20
-> thanks,
-
-Thank you!
-
---=-WOdEGhITyKTGCaqMIiwf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2Tk0MACgkQlQYWtz9S
-ttSDXw//YSv3GiwCNDmsVJYOkdVFcj9OsgYOCNmhsQY5guIaKQj+/1//EG97F9yt
-PVnM+822c/fwYhTZgA9SQQRA0BYZ4LwU4eBiSjPemSX10vLznjt32E9JvACZkvFN
-mhkmdooGndyVd4pEJsYjJ8bMwGYHf4BXliXCOgGR0GfbXBvIe/GWV+pYRsrd9jnx
-Q1R8k4bCO9O2FKwtEOpCPNFQPn/4D+mxLwcOuKliFMe/XHCUjv7RIrJMV41N3epk
-H3O5S7ML1m7A4i496+vDJvWb3zBFdWb0nqHQ7sp4gM5x2RzIZODtayIBRFs8Dgvy
-602F5XVDxsSY3irS27+OTtRGhV2aE3lhdZeWIeJMWY7b00vZJASO8fZd9mkatBeS
-Dj56JTFDmKVtqh//4kJwSDZKz5+y3LRfqONXgeIL5M0Rthc5tm+3XRztOxSDKZw/
-N9wxJBmeVOonSR1ngdQVnKu3B5gyQDNrJCQdCBcqLTOVIVCMjHjyf6l/jZu7VNH5
-wESlZ/gwBZ2iJ4CG0YeF6ObMC7/UjsjVRdvH39oA+KwErMOWjMZi6CbdEdzUnFI9
-Jo4f1nZ3/1bVGbCxlaaDoQxtfThRPCk9CJiMoyTG19HB2T0mUImtOt0VIH5Y/bQu
-T7wDnek8r9G1HwB++kVRFYELvmzfP4YSiUPAEDTNPlHFup2phZQ=
-=JHbX
------END PGP SIGNATURE-----
-
---=-WOdEGhITyKTGCaqMIiwf--
+Thanks & Regards,
+     - Nayna
 
