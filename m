@@ -1,74 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AE2C3FB2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 20:18:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C8EC4012
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 20:42:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46jSFR49yqzDqTv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 04:18:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46jSnV2GbDzDqTN
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 04:42:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46jSCR4cGXzDqSf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 04:16:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="XJsPkZ+j"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46jSCR1yhkz8tCq
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 04:16:51 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46jSCR1cSPz9sPJ; Wed,  2 Oct 2019 04:16:51 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="XJsPkZ+j"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46jSCQ3GwKz9sN1;
- Wed,  2 Oct 2019 04:16:50 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3CCA420815;
- Tue,  1 Oct 2019 18:16:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1569953807;
- bh=URWEvpqEPZZw2zcAevFFbA8yQME/4wiIjpDJ7FcpsdE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=XJsPkZ+jZl2+AUEnqAq6lSM/s8DyCVx6LUJMP+/Np0MkQAeL71jL5gsa5Mn7Q86a2
- uTfBx8fqyWt1NnSsbz8Kwv6F8m2+9WsLXM83IUJBBRUrhImavvhgzh4dYXvOi1oB7U
- MuE4gbxlIECr316C0KJCDmkRDv5t+hqeuqfKZ1kU=
-Date: Tue, 1 Oct 2019 20:16:01 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Nayna <nayna@linux.vnet.ibm.com>
-Subject: Re: [PATCH] sysfs: add BIN_ATTR_WO() macro
-Message-ID: <20191001181601.GA3705194@kroah.com>
-References: <1566825818-9731-1-git-send-email-nayna@linux.ibm.com>
- <1566825818-9731-3-git-send-email-nayna@linux.ibm.com>
- <20190826140131.GA15270@kroah.com>
- <ff9674e1-1b27-783a-38f3-4fd725353186@linux.vnet.ibm.com>
- <20190826150153.GD18418@kroah.com>
- <7546990b-8060-9451-129a-19aaa856d2e1@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46jSkj5ZBPzDqJL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 04:40:28 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x91IMMFM051038; Tue, 1 Oct 2019 14:40:11 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vc9y5n2y7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2019 14:40:11 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x91IO2K5054774;
+ Tue, 1 Oct 2019 14:40:10 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vc9y5n2xs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2019 14:40:10 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x91IdmKj024723;
+ Tue, 1 Oct 2019 18:40:09 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma01dal.us.ibm.com with ESMTP id 2v9y59d1gm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2019 18:40:09 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x91Ie7dl60293438
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Oct 2019 18:40:07 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D48EC6055;
+ Tue,  1 Oct 2019 18:40:07 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A702C605D;
+ Tue,  1 Oct 2019 18:40:03 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.18.235.47])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Oct 2019 18:40:02 +0000 (GMT)
+Message-ID: <9cd8e83334047b9144133781be9abd25a5678f3d.camel@linux.ibm.com>
+Subject: Re: [PATCH v4 01/11] powerpc/mm: Adds counting method to monitor
+ lockless pgtable walks
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org
+Date: Tue, 01 Oct 2019 15:39:59 -0300
+In-Reply-To: <8534727b-72ed-b974-219e-02155bcd17a8@nvidia.com>
+References: <20190927234008.11513-1-leonardo@linux.ibm.com>
+ <20190927234008.11513-2-leonardo@linux.ibm.com>
+ <4ff1e8e8-929b-9cfc-9bf8-ee88e34de888@nvidia.com>
+ <2533a13f226a6e1fab387669b6cced2aa8d2e129.camel@linux.ibm.com>
+ <48bf32ca-5d3e-5d69-4cd1-6720364a0d81@nvidia.com>
+ <673bcb94b7752e086cc4133fb6cceb24394c02c0.camel@linux.ibm.com>
+ <8534727b-72ed-b974-219e-02155bcd17a8@nvidia.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-UnsfXxKPo94uksuiKXvu"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7546990b-8060-9451-129a-19aaa856d2e1@linux.vnet.ibm.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-01_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910010148
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,86 +99,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- linux-integrity@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ YueHaibing <yuehaibing@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Keith Busch <keith.busch@intel.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 01, 2019 at 02:08:53PM -0400, Nayna wrote:
-> Hi Greg,
-> 
-> 
-> On 08/26/2019 11:01 AM, Greg Kroah-Hartman wrote:
-> > This variant was missing from sysfs.h, I guess no one noticed it before.
-> > 
-> > Turns out the powerpc secure variable code can use it, so add it to the
-> > tree for it, and potentially others to take advantage of, instead of
-> > open-coding it.
-> > 
-> > Reported-by: Nayna Jain <nayna@linux.ibm.com>
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> > 
-> > I'll queue this up to my tree for 5.4-rc1, but if you want to take this
-> > in your tree earlier, feel free to do so.
-> > 
-> >   include/linux/sysfs.h | 9 +++++++++
-> >   1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-> > index 965236795750..5420817ed317 100644
-> > --- a/include/linux/sysfs.h
-> > +++ b/include/linux/sysfs.h
-> > @@ -196,6 +196,12 @@ struct bin_attribute {
-> >   	.size	= _size,						\
-> >   }
-> > +#define __BIN_ATTR_WO(_name) {						\
-> > +	.attr	= { .name = __stringify(_name), .mode = 0200 },		\
-> > +	.store	= _name##_store,					\
-> > +	.size	= _size,						\
-> > +}
-> > +
-> >   #define __BIN_ATTR_RW(_name, _size)					\
-> >   	__BIN_ATTR(_name, 0644, _name##_read, _name##_write, _size)
-> > @@ -208,6 +214,9 @@ struct bin_attribute bin_attr_##_name = __BIN_ATTR(_name, _mode, _read,	\
-> >   #define BIN_ATTR_RO(_name, _size)					\
-> >   struct bin_attribute bin_attr_##_name = __BIN_ATTR_RO(_name, _size)
-> > +#define BIN_ATTR_WO(_name, _size)					\
-> > +struct bin_attribute bin_attr_##_name = __BIN_ATTR_WO(_name, _size)
-> > +
-> >   #define BIN_ATTR_RW(_name, _size)					\
-> >   struct bin_attribute bin_attr_##_name = __BIN_ATTR_RW(_name, _size)
-> 
-> I am sorry. I didn't notice it via inspection but there is a bug in this
-> macro. When I actually try using it, compilation fails. Here's a likely
-> patch:
-> 
-> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-> index 5420817ed317..fa7ee503fb76 100644
-> --- a/include/linux/sysfs.h
-> +++ b/include/linux/sysfs.h
-> @@ -196,9 +196,9 @@ struct bin_attribute {
->         .size   = _size,                                                \
->  }
-> -#define __BIN_ATTR_WO(_name) {                                         \
-> +#define __BIN_ATTR_WO(_name, _size) {                                  \
->         .attr   = { .name = __stringify(_name), .mode = 0200 },         \
-> -       .store  = _name##_store,                                        \
-> +       .write  = _name##_write,                                        \
->         .size   = _size,                                                \
->  }
-> 
 
-Heh, good catch.  Can you send a real patch for this that I can apply to
-give you the proper credit for finding and fixing this?
+--=-UnsfXxKPo94uksuiKXvu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-thanks,
+On Mon, 2019-09-30 at 14:47 -0700, John Hubbard wrote:
+> On 9/30/19 11:42 AM, Leonardo Bras wrote:
+> > On Mon, 2019-09-30 at 10:57 -0700, John Hubbard wrote:
+> > > > As I told before, there are cases where this function is called fro=
+m
+> > > > 'real mode' in powerpc, which doesn't disable irqs and may have a
+> > > > tricky behavior if we do. So, encapsulate the irq disable in this
+> > > > function can be a bad choice.
+> > >=20
+> > > You still haven't explained how this works in that case. So far, the
+> > > synchronization we've discussed has depended upon interrupt disabling
+> > > as part of the solution, in order to hold off page splitting and page
+> > > table freeing.
+> >=20
+> > The irqs are already disabled by another mechanism (hw): MSR_EE=3D0.
+> > So, serialize will work as expected.
+>=20
+> I get that they're disabled. But will this interlock with the code that
+> issues IPIs?? Because it's not just disabling interrupts that matters, bu=
+t
+> rather, synchronizing with the code (TLB flushing) that *happens* to=20
+> require issuing IPIs, which in turn interact with disabling interrupts.
+>=20
+> So I'm still not seeing how that could work here, unless there is somethi=
+ng
+> interesting about the smp_call_function_many() on ppc with MSR_EE=3D0 mod=
+e...?
+>=20
 
-greg k-h
+I am failing to understand the issue.
+I mean, smp_call_function_many() will issue a IPI to each CPU in
+CPUmask and wait it to run before returning.=20
+If interrupts are disabled (either by MSR_EE=3D0 or local_irq_disable),
+the IPI will not run on that CPU, and the wait part will make sure to
+lock the thread until the interrupts are enabled again.=20
+
+Could you please point the issue there?
+
+> > > Simply skipping that means that an additional mechanism is required..=
+.which
+> > > btw might involve a new, ppc-specific routine, so maybe this is going=
+ to end
+> > > up pretty close to what I pasted in after all...
+> > > > Of course, if we really need that, we can add a bool parameter to t=
+he
+> > > > function to choose about disabling/enabling irqs.
+> > > > > * This is really a core mm function, so don't hide it away in arc=
+h layers.
+> > > > >     (If you're changing mm/ files, that's a big hint.)
+> > > >=20
+> > > > My idea here is to let the arch decide on how this 'register' is go=
+ing
+> > > > to work, as archs may have different needs (in powerpc for example,=
+ we
+> > > > can't always disable irqs, since we may be in realmode).
+>=20
+> Yes, the tension there is that a) some things are per-arch, and b) it's e=
+asy=20
+> to get it wrong. The commit below (d9101bfa6adc) is IMHO a perfect exampl=
+e of
+> that.
+>=20
+> So, I would like core mm/ functions that guide the way, but the interrupt
+> behavior complicates it. I think your original passing of just struct_mm
+> is probably the right balance, assuming that I'm wrong about interrupts.
+>=20
+
+I think, for the generic function, that including {en,dis}abling the
+interrupt is fine. I mean, if disabling the interrupt is the generic
+behavior, it's ok.=20
+I will just make sure to explain that the interrupt {en,dis}abling is
+part of the sync process. If an arch don't like it, it can write a
+specific function that does the sync in a better way. (and defining
+__HAVE_ARCH_LOCKLESS_PGTBL_WALK_COUNTER to ignore the generic function)
+
+In this case, the generic function would also include the ifdef'ed
+atomic inc and the memory barrier.=20
+
+>=20
+> > > > Maybe we can create a generic function instead of a dummy, and let =
+it
+> > > > be replaced in case the arch needs to do so.
+> > >=20
+> > > Yes, that might be what we need, if it turns out that ppc can't use t=
+his
+> > > approach (although let's see about that).
+> > >=20
+> >=20
+> > I initially used the dummy approach because I did not see anything like
+> > serialize in other archs.=20
+> >=20
+> > I mean, even if I put some generic function here, if there is no
+> > function to use the 'lockless_pgtbl_walk_count', it becomes only a
+> > overhead.
+> >=20
+>=20
+> Not really: the memory barrier is required in all cases, and this code
+> would be good I think:
+>=20
+> +void register_lockless_pgtable_walker(struct mm_struct *mm)
+> +{
+> +#ifdef LOCKLESS_PAGE_TABLE_WALK_TRACKING
+> +       atomic_inc(&mm->lockless_pgtbl_nr_walkers);
+> +#endif
+> +       /*
+> +        * This memory barrier pairs with any code that is either trying =
+to
+> +        * delete page tables, or split huge pages.
+> +        */
+> +       smp_mb();
+> +}
+> +EXPORT_SYMBOL_GPL(gup_fast_lock_acquire);
+>=20
+> And this is the same as your original patch, with just a minor name chang=
+e:
+>=20
+> @@ -2341,9 +2395,11 @@ int __get_user_pages_fast(unsigned long start, int=
+ nr_pages, int write,
+> =20
+>         if (IS_ENABLED(CONFIG_HAVE_FAST_GUP) &&
+>             gup_fast_permitted(start, end)) {
+> +               register_lockless_pgtable_walker(current->mm);
+>                 local_irq_save(flags);
+>                 gup_pgd_range(start, end, write ? FOLL_WRITE : 0, pages, =
+&nr);
+>                 local_irq_restore(flags);
+> +               deregister_lockless_pgtable_walker(current->mm);
+>=20
+>=20
+> Btw, hopefully minor note: it also looks like there's a number of changes=
+ in the same=20
+> area that conflict, for example:
+>=20
+>     commit d9101bfa6adc ("powerpc/mm/mce: Keep irqs disabled during lockl=
+ess=20
+>          page table walk") <Aneesh Kumar K.V> (Thu, 19 Sep 2019)
+>=20
+> ...so it would be good to rebase this onto 5.4-rc1, now that that's here.
+>=20
+
+Yeap, agree. Already rebased on top of v5.4-rc1.
+
+>=20
+> thanks,
+
+Thank you!
+
+--=-UnsfXxKPo94uksuiKXvu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2TnX8ACgkQlQYWtz9S
+ttRifhAAmPtPB1RIc4lme5/Hg5KtBhs6AMuOvwhLnDNb1F/9ArPOgle8lH/3vgzr
+kkB5zwbTMbPTqO863MHUfmGe3ySVthmBVWUmFVyPbJ9tLxVYirYc4kXHP6b+Bt+L
+eP2uAZzyTiyEgZFqVArmyoTCnjKi/0EpDzKz3HLcNCMf1BrWFShR83zHt2WaGhcg
+CSbTAdNSmzHTjzJcp8i68Mm6YXh9EABeAuZBNzkcAiOW6BQR8IETNFXQnI2lGgio
+jgGFHC4NhS3FiwX50U7Ks107G64sB78YY79Qws732lNjiBB+wGsOnBnIyAHlQPKL
+ZaPDkzuhiXLmS+WbjDc6VwTqSjsvUbpRvPDsFC/fXmv7RZbMliP/OSozsi62O0p8
+UnF8mA3+ihr8wYxoZi0qcTfiZRvopxGNCSCdIFeSAa7XBRm8+5bI4CWFsozrLqXC
+FK0zBunozKpubMMvgum2ZwBhGx/HL9QgATaDXRdBKRSdjxXfCzFL/CfyB0trmVZA
+ioAKjOPBHcAI1DrO5B61rntDk59qlGsapxwMhI+c4TWkx9IMbcp2frRb1MSDDZRY
+lxmog/vD/mX2SxCSMnrvg14pKHBjq+6N+p0t/gwPdeKlfx8qW/Zw4Xgbb9hP5VZD
+93eqb6MPe1+MKpx7cNAyWQmE6RzoZ0HIX7GQnoCw384Kz2bPmCM=
+=ol9F
+-----END PGP SIGNATURE-----
+
+--=-UnsfXxKPo94uksuiKXvu--
+
