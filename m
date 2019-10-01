@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698A9C2D73
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 08:22:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F024C2D6E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 08:20:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46j8M00Yy8zDqFp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 16:22:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46j8KC1FSHzDqP8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 16:20:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,50 +19,51 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46j87d1lFWzDqGJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 16:12:28 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46j87d2XQNzDqGY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 16:12:29 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9168CKG071114; Tue, 1 Oct 2019 02:12:24 -0400
+ x9168LWS018935; Tue, 1 Oct 2019 02:12:25 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vc18984xy-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vbypdthk0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 01 Oct 2019 02:12:24 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9168GnQ071960;
- Tue, 1 Oct 2019 02:12:23 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vc18984xk-1
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9168Rqp019490;
+ Tue, 1 Oct 2019 02:12:24 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vbypdthj5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 02:12:23 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x916A34j005808;
+ Tue, 01 Oct 2019 02:12:24 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x916A4uK022633;
  Tue, 1 Oct 2019 06:12:23 GMT
 Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma04dal.us.ibm.com with ESMTP id 2v9y57q4jx-1
+ [9.57.198.26]) by ppma03wdc.us.ibm.com with ESMTP id 2v9y56rvhf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 01 Oct 2019 06:12:23 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
  by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x916CMkD14942894
+ x916CMEF14484334
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Oct 2019 06:12:22 GMT
+ Tue, 1 Oct 2019 06:12:23 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 46CD4112061;
+ by IMSVA (Postfix) with ESMTP id DE86F112063;
  Tue,  1 Oct 2019 06:12:22 +0000 (GMT)
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C52FE112063;
- Tue,  1 Oct 2019 06:12:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 68D7A112061;
+ Tue,  1 Oct 2019 06:12:22 +0000 (GMT)
 Received: from ltcalpine2-lp18.aus.stglabs.ibm.com (unknown [9.40.195.201])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  1 Oct 2019 06:12:21 +0000 (GMT)
+ Tue,  1 Oct 2019 06:12:22 +0000 (GMT)
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
 To: mpe@ellerman.id.au, bhelgaas@google.com
-Subject: [RFC PATCH 4/9] PCI: rpaphp: fix up pointer to first drc-info entry
-Date: Tue,  1 Oct 2019 01:12:09 -0500
-Message-Id: <1569910334-5972-5-git-send-email-tyreld@linux.ibm.com>
+Subject: [RFC PATCH 5/9] PCI: rpaphp: don't rely on firmware feature to imply
+ drc-info support
+Date: Tue,  1 Oct 2019 01:12:10 -0500
+Message-Id: <1569910334-5972-6-git-send-email-tyreld@linux.ibm.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
 References: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
@@ -92,32 +93,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The first entry of the ibm,drc-info property is an int encoded count
-of the number of drc-info entries that follow. The "value" pointer
-returned by of_prop_next_u32() is still pointing at the this value
-when we call of_read_drc_info_cell().
+In the event that the partition is migrated to a platform with older
+firmware that doesn't support the ibm,drc-info property the device
+tree is modified to remove the ibm,drc-info property and replace it
+with the older style ibm,drc-* properties for types, names, indexes,
+and power-domains. One of the requirements of the drc-info firmware
+feature is the the client is able to handle both the new property,
+and old properties. Therefore we can't rely on the firmware feature
+alone to dictate which property is currently present in the device
+tree.
 
-Fix up by incrementing the "value" pointer to point at the first
-element of the first drc-info entry prior.
+Fix this short coming by checking explicitly for the ibm,drc-info
+property, and falling back to the older ibm,drc-* properties if it
+doesn't exist.
 
 Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 ---
- drivers/pci/hotplug/rpaphp_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/hotplug/rpaphp_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
-index 18627bb..e350264 100644
+index e350264..e18e9a0 100644
 --- a/drivers/pci/hotplug/rpaphp_core.c
 +++ b/drivers/pci/hotplug/rpaphp_core.c
-@@ -239,6 +239,8 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
- 	value = of_prop_next_u32(info, NULL, &entries);
- 	if (!value)
+@@ -275,7 +275,7 @@ int rpaphp_check_drc_props(struct device_node *dn, char *drc_name,
  		return -EINVAL;
-+	else
-+		value++;
+ 	}
  
- 	for (j = 0; j < entries; j++) {
- 		of_read_drc_info_cell(&info, &value, &drc);
+-	if (firmware_has_feature(FW_FEATURE_DRC_INFO))
++	if (of_find_property(dn->parent, "ibm,drc-info", NULL))
+ 		return rpaphp_check_drc_props_v2(dn, drc_name, drc_type,
+ 						*my_index);
+ 	else
 -- 
 2.7.4
 
