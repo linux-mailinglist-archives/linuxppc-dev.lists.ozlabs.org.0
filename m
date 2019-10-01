@@ -2,80 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92ADC2D82
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 08:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB66CC2DA6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 09:01:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46j8Y81TLpzDq6K
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 16:31:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46j9Cq4cQqzDqPQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 17:01:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="oq7mxXzD"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46j87h1MLXzDqFw
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 16:12:31 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9168E7S031289; Tue, 1 Oct 2019 02:12:27 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vbyueaaa6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 02:12:27 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x91694C4033724;
- Tue, 1 Oct 2019 02:12:26 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vbyueaa9v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 02:12:26 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x916A4ku005198;
- Tue, 1 Oct 2019 06:12:25 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 2v9y5972v2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 06:12:25 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x916CO5852560380
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Oct 2019 06:12:24 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B9C9C112061;
- Tue,  1 Oct 2019 06:12:24 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 433A9112062;
- Tue,  1 Oct 2019 06:12:24 +0000 (GMT)
-Received: from ltcalpine2-lp18.aus.stglabs.ibm.com (unknown [9.40.195.201])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  1 Oct 2019 06:12:24 +0000 (GMT)
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-To: mpe@ellerman.id.au, bhelgaas@google.com
-Subject: [RFC PATCH 8/9] PCI: rpaphp: correctly match ibm,
- my-drc-index to drc-name when using drc-info
-Date: Tue,  1 Oct 2019 01:12:13 -0500
-Message-Id: <1569910334-5972-9-git-send-email-tyreld@linux.ibm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
-References: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-01_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910010060
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46j99409TPzDqPM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 16:58:44 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id q15so4968365pll.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 23:58:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=b5QJN2+41L3WFDMkHvmVhhmne8r1m1bjlvikNn9ZaWo=;
+ b=oq7mxXzD7mktOBQuf3nC3diwM26fudtogiDGDX6nHiqprad5Ms9PG/WgNAgkOdpYfh
+ iYHI/Gmx/fOLELQIWtxsxzpK/ocpF4oay8L/DJwhzBOPrrTF0zp7nmcLM3kV3dSgVNtb
+ rsQsI77ldEJ3T7W4ISMvM6oiCEcGIMrBrYrPE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=b5QJN2+41L3WFDMkHvmVhhmne8r1m1bjlvikNn9ZaWo=;
+ b=hjgsZkXiaENsJ5W8iyplkIQguF6POLvi95Jz/CLTOpZJiSxCQB7FMhzsM0ini6dC2C
+ wvI+Rg3j24ulv0AAp5xtAfA8BFCrTHWNT28GgfS/lkTXOxjMODkp3rYzwbfp6ufOPW2L
+ dn1JAWUIXhpLgOVDJ+altcNbfa64frYvHVT9NasHw5jwOlqoR5suBp4CUcdp2sl4lV+4
+ WHHpolZBcG3VPi1bbUiDLksNOH8Xd/W46WzMR2idBhQPY1tIpLDWtxDvZAE1Nt3Zlnit
+ UNlw8YqWs5zmpYfWr8mfu3pMNnqlX0Npw9WcVEDRq+7dBXQrY+amWaVn/b9Aei143Wa8
+ 2FCQ==
+X-Gm-Message-State: APjAAAU46tN99lm7NdKe6bnJ31k3J6HJRG8swws1SQ+/dVXDkQzZuS/f
+ 6vTFl4kCZLTQSE0ZNuM4TyOgZg==
+X-Google-Smtp-Source: APXvYqzqQ2SP4fixuRIKQXyzC5KWE0huLiu20WrA3ePCSN/PC1TpOjbiWo4StEzpxBZdknnQ2lZC0A==
+X-Received: by 2002:a17:902:ab82:: with SMTP id
+ f2mr24901353plr.220.1569913121508; 
+ Mon, 30 Sep 2019 23:58:41 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id l62sm21800452pfl.167.2019.09.30.23.58.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Sep 2019 23:58:40 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
+ aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr
+Subject: [PATCH v8 0/5] kasan: support backing vmalloc space with real shadow
+ memory
+Date: Tue,  1 Oct 2019 16:58:29 +1000
+Message-Id: <20191001065834.8880-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,46 +79,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The newer ibm,drc-info property is a condensed description of the old
-ibm,drc-* properties (ie. names, types, indexes, and power-domains).
-When matching a drc-index to a drc-name we need to verify that the
-index is within the start and last drc-index range and map it to a
-drc-name using the drc-name-prefix and logical index.
+Currently, vmalloc space is backed by the early shadow page. This
+means that kasan is incompatible with VMAP_STACK.
 
-Fix the mapping by checking that the index is within the range of the
-current drc-info entry, and build the name form the drc-name-prefix
-and by adding the starting drc-name-suffix value with the sequential
-index of subtracting ibm,my-drc-index from this entries
-drc-start-index.
+This series provides a mechanism to back vmalloc space with real,
+dynamically allocated memory. I have only wired up x86, because that's
+the only currently supported arch I can work with easily, but it's
+very easy to wire up other architectures, and it appears that there is
+some work-in-progress code to do this on arm64 and s390.
 
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
----
- drivers/pci/hotplug/rpaphp_core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+This has been discussed before in the context of VMAP_STACK:
+ - https://bugzilla.kernel.org/show_bug.cgi?id=202009
+ - https://lkml.org/lkml/2018/7/22/198
+ - https://lkml.org/lkml/2019/7/19/822
 
-diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
-index eabc0c51..5327606 100644
---- a/drivers/pci/hotplug/rpaphp_core.c
-+++ b/drivers/pci/hotplug/rpaphp_core.c
-@@ -248,9 +248,10 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
- 		/* Should now know end of current entry */
- 
- 		/* Found it */
--		if (my_index <= drc.last_drc_index) {
-+		if (my_index >= drc.drc_index_start && my_index <= drc.last_drc_index) {
-+			int index = my_index - drc.drc_index_start;
- 			sprintf(cell_drc_name, "%s%d", drc.drc_name_prefix,
--				my_index);
-+				drc.drc_name_suffix_start + index);
- 			break;
- 		}
- 	}
+In terms of implementation details:
+
+Most mappings in vmalloc space are small, requiring less than a full
+page of shadow space. Allocating a full shadow page per mapping would
+therefore be wasteful. Furthermore, to ensure that different mappings
+use different shadow pages, mappings would have to be aligned to
+KASAN_SHADOW_SCALE_SIZE * PAGE_SIZE.
+
+Instead, share backing space across multiple mappings. Allocate a
+backing page when a mapping in vmalloc space uses a particular page of
+the shadow region. This page can be shared by other vmalloc mappings
+later on.
+
+We hook in to the vmap infrastructure to lazily clean up unused shadow
+memory.
+
+v1: https://lore.kernel.org/linux-mm/20190725055503.19507-1-dja@axtens.net/
+v2: https://lore.kernel.org/linux-mm/20190729142108.23343-1-dja@axtens.net/
+ Address review comments:
+ - Patch 1: use kasan_unpoison_shadow's built-in handling of
+            ranges that do not align to a full shadow byte
+ - Patch 3: prepopulate pgds rather than faulting things in
+v3: https://lore.kernel.org/linux-mm/20190731071550.31814-1-dja@axtens.net/
+ Address comments from Mark Rutland:
+ - kasan_populate_vmalloc is a better name
+ - handle concurrency correctly
+ - various nits and cleanups
+ - relax module alignment in KASAN_VMALLOC case
+v4: https://lore.kernel.org/linux-mm/20190815001636.12235-1-dja@axtens.net/
+ Changes to patch 1 only:
+ - Integrate Mark's rework, thanks Mark!
+ - handle the case where kasan_populate_shadow might fail
+ - poision shadow on free, allowing the alloc path to just
+     unpoision memory that it uses
+v5: https://lore.kernel.org/linux-mm/20190830003821.10737-1-dja@axtens.net/
+ Address comments from Christophe Leroy:
+ - Fix some issues with my descriptions in commit messages and docs
+ - Dynamically free unused shadow pages by hooking into the vmap book-keeping
+ - Split out the test into a separate patch
+ - Optional patch to track the number of pages allocated
+ - minor checkpatch cleanups
+v6: https://lore.kernel.org/linux-mm/20190902112028.23773-1-dja@axtens.net/
+ Properly guard freeing pages in patch 1, drop debugging code.
+v7: https://lore.kernel.org/linux-mm/20190903145536.3390-1-dja@axtens.net/
+    Add a TLB flush on freeing, thanks Mark Rutland.
+    Explain more clearly how I think freeing is concurrency-safe.
+v8: rename kasan_vmalloc/shadow_pages to kasan/vmalloc_shadow_pages
+
+Daniel Axtens (5):
+  kasan: support backing vmalloc space with real shadow memory
+  kasan: add test for vmalloc
+  fork: support VMAP_STACK with KASAN_VMALLOC
+  x86/kasan: support KASAN_VMALLOC
+  kasan debug: track pages allocated for vmalloc shadow
+
+ Documentation/dev-tools/kasan.rst |  63 ++++++++
+ arch/Kconfig                      |   9 +-
+ arch/x86/Kconfig                  |   1 +
+ arch/x86/mm/kasan_init_64.c       |  60 ++++++++
+ include/linux/kasan.h             |  31 ++++
+ include/linux/moduleloader.h      |   2 +-
+ include/linux/vmalloc.h           |  12 ++
+ kernel/fork.c                     |   4 +
+ lib/Kconfig.kasan                 |  16 +++
+ lib/test_kasan.c                  |  26 ++++
+ mm/kasan/common.c                 | 230 ++++++++++++++++++++++++++++++
+ mm/kasan/generic_report.c         |   3 +
+ mm/kasan/kasan.h                  |   1 +
+ mm/vmalloc.c                      |  45 +++++-
+ 14 files changed, 497 insertions(+), 6 deletions(-)
+
 -- 
-2.7.4
+2.20.1
 
