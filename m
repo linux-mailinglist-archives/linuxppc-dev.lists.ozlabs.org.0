@@ -1,69 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A33A0C2CFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 07:42:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 531C4C2CFF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 07:44:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46j7TQ3pxxzDqN0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 15:42:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46j7Wh6YJLzDqPS
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 15:44:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="fpZTrB5W"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="tyhztGZ8"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46j7Q96pgFzDqPc
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 15:40:01 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id x10so8822836pgi.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 22:40:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46j7QS3xjCzDqQR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2019 15:40:16 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id q15so4885716pll.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2019 22:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=6/Kap4nu6MbGqnLhW3rESTHtfSQrQHLiJCxKyYeZJLk=;
- b=fpZTrB5WFyfqYdVh3pLORfNYzt/EadZNz+rwfIhuPQOViPSat51+fIVFIY7Fcfm93+
- lBM3nJjO7Q26pT0qyYMrPsHzevtBywx8Qxwrp4tu0GCzOnbIqJ5I39y0iMZEle/uoi4R
- zu+bIairXN3xWbNIjFJDQlOQ0pDwkVQxcZMpL6V/ziieHii9wqmDf/HpKCRKxIHd4SjA
- XuV5bC1wAcYbKvTqBtdn12yIGywniWsVdUqEu6XUwafBG9PX5njvl/HRKIuQKEa3LMuY
- NCNRNqSU2Xigjze6aOoiGzgMHRHf7cxe8cHVDLijAhUN4Pjkv4wocr3aSja30bJDHSen
- lYdA==
+ bh=UQbr0yQjseRgFfbw/LKfeNkkPgccfJkRMWBnK0BgSSc=;
+ b=tyhztGZ85F5U9Wb/zfZ1IFboVFlVJPQXbfuWDkYlSM0Ee0aGD8CmJWqpzK7bWhcLB+
+ Wm+RwGofsLFAIcamv68KWMqNt4TVKZFQST5iJwucOpoyMuphz/nzdxhSvJj39u02/s9Z
+ qeDRojDXKsJMl7K/FOoino00D/qoZ/sjBeL8hQCkg4rgA935pd1s+SZZlE21oIo3iWIx
+ W/ldnQIThaPE3TrVD8R+EQPd/mzTtVjCcIus4M33aso2bLCCQ/iIr91pvta+zj2Bvz/S
+ SiteIL9XH++G8z6QYmP24TOxSE3M8w/pJ38VPzgVAjLaKEpeD6mjH2alhanWKSPzRFTt
+ 4YFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=6/Kap4nu6MbGqnLhW3rESTHtfSQrQHLiJCxKyYeZJLk=;
- b=orZxxg1FD+J9w6Lce/bSvbUI6RE1VEWBsFamj8TLY2DZFFs9k7v3KXN7SftMfsgyKY
- iefI0oYwmqmCK3anudZla3XnHOqWFocXUQjETitn0FqHaWBaQo0l8TgAFyft9By+9OMw
- NLbqTyGQJj2tMJrIbbNo5dNLi4hnWoHz9Xu68bkcif2xVj7enZGIOaNNUFSjssb3PSlc
- rFX5ggUezJopEd3zf1HGD/fACuBE1KD8FPQdK+aVEIPj9QBKCYniFAMEErrr9o40lmVx
- ufezDOh8B9YYfOZwirxVkvglfX32ShwNkdh+XpzKkO293BuCK/bQ+r1y3AWMQiSIdVTZ
- 5KRQ==
-X-Gm-Message-State: APjAAAV871E/OzYGXr6M/bzpeJ0dAA9SgnuLsCGsGeCRy9IUSs50/rG4
- 2S6DnckIh9WxqaXdnR0xCT9BzA==
-X-Google-Smtp-Source: APXvYqzM/WUDxsd4TCLeBMV4zXWr4ldrFUer2oxkYf5ItXgfMLywaDUyeBJXRmw6r42yiTSZDitkZQ==
-X-Received: by 2002:aa7:97b0:: with SMTP id d16mr26169646pfq.54.1569908399623; 
- Mon, 30 Sep 2019 22:39:59 -0700 (PDT)
+ bh=UQbr0yQjseRgFfbw/LKfeNkkPgccfJkRMWBnK0BgSSc=;
+ b=UvZrpdl05BW5zqsioA+2v1aDYrqa3PuUp1FsYf97ygAWWKUqKO+rW1Mc9YAvA5znbf
+ 8iCqEIAC37ElMHjFMz4eZU4hftX8t2i28ZnAFehNiIqwIZJhB7zI7t3wqjB2H2Aq9E+6
+ sFosT7RiFzwfE5phcxNZMdV9aTezKH26KpDghCYGaihSVolm27AjVIbyxXuVWqaCoMun
+ YZ8A3hqWsQLr0Z/bsfcmCi5P5GdClQekBS0Q0A5V/3U+LhRutI8b1DMRYRQZljPW4xL8
+ C1yj/g0exDC4pWVMwFav8i4c6fdGSjrcoRyTKenG1mHNfSfeS6LJzF3ZS/+xJZhZA5zU
+ zq+w==
+X-Gm-Message-State: APjAAAX9o9fPj9isZhX3G55cHPjS42gcpNYX9zf3tjiJk7+Elu7wOa98
+ B7yJppU/oGY391zoSVinsbLoPA==
+X-Google-Smtp-Source: APXvYqx55yQw1QGD6v/UO3U0O+wtmQmC9cfQwSZ8G3WIZXpgVuZqoHtSaOKhuTqeLfeKH2zwg1IeEQ==
+X-Received: by 2002:a17:902:690c:: with SMTP id
+ j12mr2439554plk.83.1569908413951; 
+ Mon, 30 Sep 2019 22:40:13 -0700 (PDT)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id r24sm13374145pfh.69.2019.09.30.22.39.57
+ by smtp.gmail.com with ESMTPSA id o64sm2863191pjb.24.2019.09.30.22.40.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Sep 2019 22:39:59 -0700 (PDT)
-Subject: Re: [PATCH 2/3] powerpc/pci: Fix pcibios_setup_device() ordering
+ Mon, 30 Sep 2019 22:40:13 -0700 (PDT)
+Subject: Re: [PATCH 3/3] powerpc/pci: Remove pcibios_setup_bus_devices()
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20190930020848.25767-1-oohall@gmail.com>
- <20190930020848.25767-3-oohall@gmail.com>
+ <20190930020848.25767-4-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -138,12 +139,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <f657eeb4-a1d1-a68e-c656-9b1bc2f1fef3@ozlabs.ru>
-Date: Tue, 1 Oct 2019 15:39:56 +1000
+Message-ID: <c316c419-130e-0cf7-8584-e6c1b62237fc@ozlabs.ru>
+Date: Tue, 1 Oct 2019 15:40:10 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20190930020848.25767-3-oohall@gmail.com>
+In-Reply-To: <20190930020848.25767-4-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -166,19 +167,17 @@ Sender: "Linuxppc-dev"
 
 
 On 30/09/2019 12:08, Oliver O'Halloran wrote:
-> From: Shawn Anastasio <shawn@anastas.io>
+> With the previous patch applied pcibios_setup_device() will always be run
+> when pcibios_bus_add_device() is called. There are several code paths where
+> pcibios_setup_bus_device() is still called (the PowerPC specific PCI
+> hotplug support is one) so with just the previous patch applied the setup
+> can be run multiple times on a device, once before the device is added
+> to the bus and once after.
 > 
-> Move PCI device setup from pcibios_add_device() and pcibios_fixup_bus() to
-> pcibios_bus_add_device(). This ensures that platform-specific DMA and IOMMU
-> setup occurs after the device has been registered in sysfs, which is a
-> requirement for IOMMU group assignment to work
+> There's no need to run the setup in the early case any more so just
+> remove it entirely.
 > 
-> This fixes IOMMU group assignment for hotplugged devices on pseries, where
-> the existing behavior results in IOMMU assignment before registration.
-> 
-> Thanks to Lukas Wunner <lukas@wunner.de> for the suggestion.
-> 
-> Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
 
 
@@ -186,61 +185,91 @@ Tested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 > ---
->  arch/powerpc/kernel/pci-common.c | 25 +++++++++----------------
->  1 file changed, 9 insertions(+), 16 deletions(-)
+>  arch/powerpc/include/asm/pci.h    |  1 -
+>  arch/powerpc/kernel/pci-common.c  | 25 -------------------------
+>  arch/powerpc/kernel/pci-hotplug.c |  1 -
+>  arch/powerpc/kernel/pci_of_scan.c |  1 -
+>  4 files changed, 28 deletions(-)
 > 
+> diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+> index 327567b..63ed7e3 100644
+> --- a/arch/powerpc/include/asm/pci.h
+> +++ b/arch/powerpc/include/asm/pci.h
+> @@ -113,7 +113,6 @@ extern pgprot_t	pci_phys_mem_access_prot(struct file *file,
+>  					 pgprot_t prot);
+>  
+>  extern resource_size_t pcibios_io_space_offset(struct pci_controller *hose);
+> -extern void pcibios_setup_bus_devices(struct pci_bus *bus);
+>  extern void pcibios_setup_bus_self(struct pci_bus *bus);
+>  extern void pcibios_setup_phb_io_space(struct pci_controller *hose);
+>  extern void pcibios_scan_phb(struct pci_controller *hose);
 > diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-> index 1c448cf..b89925ed 100644
+> index b89925ed..f8a59d7 100644
 > --- a/arch/powerpc/kernel/pci-common.c
 > +++ b/arch/powerpc/kernel/pci-common.c
-> @@ -261,12 +261,6 @@ int pcibios_sriov_disable(struct pci_dev *pdev)
->  
->  #endif /* CONFIG_PCI_IOV */
->  
-> -void pcibios_bus_add_device(struct pci_dev *pdev)
-> -{
-> -	if (ppc_md.pcibios_bus_add_device)
-> -		ppc_md.pcibios_bus_add_device(pdev);
-> -}
-> -
->  static resource_size_t pcibios_io_size(const struct pci_controller *hose)
->  {
->  #ifdef CONFIG_PPC64
-> @@ -987,15 +981,17 @@ static void pcibios_setup_device(struct pci_dev *dev)
->  		ppc_md.pci_irq_fixup(dev);
+> @@ -1000,24 +1000,6 @@ int pcibios_add_device(struct pci_dev *dev)
+>  	return 0;
 >  }
 >  
-> -int pcibios_add_device(struct pci_dev *dev)
-> +void pcibios_bus_add_device(struct pci_dev *pdev)
->  {
-> -	/*
-> -	 * We can only call pcibios_setup_device() after bus setup is complete,
-> -	 * since some of the platform specific DMA setup code depends on it.
-> -	 */
-> -	if (dev->bus->is_added)
-> -		pcibios_setup_device(dev);
-> +	/* Perform platform-specific device setup */
-> +	pcibios_setup_device(pdev);
-> +
-> +	if (ppc_md.pcibios_bus_add_device)
-> +		ppc_md.pcibios_bus_add_device(pdev);
-> +}
->  
-> +int pcibios_add_device(struct pci_dev *dev)
-> +{
->  #ifdef CONFIG_PCI_IOV
->  	if (ppc_md.pcibios_fixup_sriov)
->  		ppc_md.pcibios_fixup_sriov(dev);
-> @@ -1037,9 +1033,6 @@ void pcibios_fixup_bus(struct pci_bus *bus)
->  
->  	/* Now fixup the bus bus */
->  	pcibios_setup_bus_self(bus);
+> -void pcibios_setup_bus_devices(struct pci_bus *bus)
+> -{
+> -	struct pci_dev *dev;
 > -
-> -	/* Now fixup devices on that bus */
-> -	pcibios_setup_bus_devices(bus);
+> -	pr_debug("PCI: Fixup bus devices %d (%s)\n",
+> -		 bus->number, bus->self ? pci_name(bus->self) : "PHB");
+> -
+> -	list_for_each_entry(dev, &bus->devices, bus_list) {
+> -		/* Cardbus can call us to add new devices to a bus, so ignore
+> -		 * those who are already fully discovered
+> -		 */
+> -		if (pci_dev_is_added(dev))
+> -			continue;
+> -
+> -		pcibios_setup_device(dev);
+> -	}
+> -}
+> -
+>  void pcibios_set_master(struct pci_dev *dev)
+>  {
+>  	/* No special bus mastering setup handling */
+> @@ -1036,13 +1018,6 @@ void pcibios_fixup_bus(struct pci_bus *bus)
 >  }
 >  EXPORT_SYMBOL(pcibios_fixup_bus);
 >  
+> -void pci_fixup_cardbus(struct pci_bus *bus)
+> -{
+> -	/* Now fixup devices on that bus */
+> -	pcibios_setup_bus_devices(bus);
+> -}
+> -
+> -
+>  static int skip_isa_ioresource_align(struct pci_dev *dev)
+>  {
+>  	if (pci_has_flag(PCI_CAN_SKIP_ISA_ALIGN) &&
+> diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
+> index fc62c4b..d6a67f8 100644
+> --- a/arch/powerpc/kernel/pci-hotplug.c
+> +++ b/arch/powerpc/kernel/pci-hotplug.c
+> @@ -134,7 +134,6 @@ void pci_hp_add_devices(struct pci_bus *bus)
+>  		 */
+>  		slotno = PCI_SLOT(PCI_DN(dn->child)->devfn);
+>  		pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
+> -		pcibios_setup_bus_devices(bus);
+>  		max = bus->busn_res.start;
+>  		/*
+>  		 * Scan bridges that are already configured. We don't touch
+> diff --git a/arch/powerpc/kernel/pci_of_scan.c b/arch/powerpc/kernel/pci_of_scan.c
+> index f91d7e9..c3024f1 100644
+> --- a/arch/powerpc/kernel/pci_of_scan.c
+> +++ b/arch/powerpc/kernel/pci_of_scan.c
+> @@ -414,7 +414,6 @@ static void __of_scan_bus(struct device_node *node, struct pci_bus *bus,
+>  	 */
+>  	if (!rescan_existing)
+>  		pcibios_setup_bus_self(bus);
+> -	pcibios_setup_bus_devices(bus);
+>  
+>  	/* Now scan child busses */
+>  	for_each_pci_bridge(dev, bus)
 > 
 
 -- 
