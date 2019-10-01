@@ -2,105 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A78C4080
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 20:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF578C40A1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2019 21:07:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46jT6b1SBFzDqHJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 04:57:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46jTL727tTzDqMl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 05:07:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46jT4m0nT6zDqFS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 04:56:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46jT4l1BsPz8vsm
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 04:56:07 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46jT4l0n9fz9sP7; Wed,  2 Oct 2019 04:56:07 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46jT4k3R7nz9sN1;
- Wed,  2 Oct 2019 04:56:06 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x91IpkHO037151; Tue, 1 Oct 2019 14:55:55 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vcc22rwxw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 14:55:55 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x91IqCau038177;
- Tue, 1 Oct 2019 14:55:54 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vcc22rwxr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 14:55:54 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x91IrRcc005347;
- Tue, 1 Oct 2019 18:55:54 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02wdc.us.ibm.com with ESMTP id 2v9y585qkv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2019 18:55:54 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x91ItqbP60031400
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Oct 2019 18:55:52 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B22EBE04F;
- Tue,  1 Oct 2019 18:55:52 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 41B77BE051;
- Tue,  1 Oct 2019 18:55:50 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.80.224.222])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue,  1 Oct 2019 18:55:49 +0000 (GMT)
-Subject: Re: [PATCH] sysfs: add BIN_ATTR_WO() macro
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <1566825818-9731-1-git-send-email-nayna@linux.ibm.com>
- <1566825818-9731-3-git-send-email-nayna@linux.ibm.com>
- <20190826140131.GA15270@kroah.com>
- <ff9674e1-1b27-783a-38f3-4fd725353186@linux.vnet.ibm.com>
- <20190826150153.GD18418@kroah.com>
- <7546990b-8060-9451-129a-19aaa856d2e1@linux.vnet.ibm.com>
- <20191001181601.GA3705194@kroah.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <30330438-bd1d-000f-a9ec-57fd993eb569@linux.vnet.ibm.com>
-Date: Tue, 1 Oct 2019 14:55:49 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=nvidia.com
+ (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="sFKmagTn"; 
+ dkim-atps=neutral
+Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46jTGS60mQzDqFS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 05:04:32 +1000 (AEST)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5d93a33d0000>; Tue, 01 Oct 2019 12:04:29 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 01 Oct 2019 12:04:29 -0700
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Tue, 01 Oct 2019 12:04:29 -0700
+Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 1 Oct
+ 2019 19:04:28 +0000
+Received: from [10.110.48.28] (10.124.1.5) by DRHQMAIL107.nvidia.com
+ (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 1 Oct 2019
+ 19:04:28 +0000
+Subject: Re: [PATCH v4 03/11] mm/gup: Applies counting method to monitor
+ gup_pgd_range
+To: Leonardo Bras <leonardo@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-kernel@vger.kernel.org>, <kvm-ppc@vger.kernel.org>,
+ <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20190927234008.11513-1-leonardo@linux.ibm.com>
+ <20190927234008.11513-4-leonardo@linux.ibm.com>
+ <ce0a4110-9f83-36db-dc85-6a727d30d030@nvidia.com>
+ <2cebe169221ae9270963d4bc4fd8e43066745f98.camel@linux.ibm.com>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <a5e86058-7950-b832-b042-8cc864de761d@nvidia.com>
+Date: Tue, 1 Oct 2019 12:04:28 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20191001181601.GA3705194@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <2cebe169221ae9270963d4bc4fd8e43066745f98.camel@linux.ibm.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ DRHQMAIL107.nvidia.com (10.27.9.16)
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-01_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=933 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910010151
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1569956669; bh=mU2o66EzpiKq/VTOcPIA3Ya6nMDGuoufi0g71k1FY5k=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=sFKmagTnvrqulDybiAEutlUnORPR4yV0qiLmx94LqM0/kVZd+OSM9/3klZd40UgBO
+ 7NsbvQGccOcm6Ar12WMXwvIKC6L9sj/9SYQrzJC+Dz+vB0rAMpZ0Onh/Ip9Xjzks8s
+ mjkAk4LdHJ8dfB+Imob53rBQzTt+G+1Sbfs/MCPsqLLU141T5k2gPk/SFIwER/bars
+ PSXpJw6U6xQKG1L+itgn9d8sn5ia8AYdBkIJFDpHuo+FFV5BQc7tgvcIDKvDhmx+4E
+ hHTFu34yHmbOrnUfFk7G9KE5ZyKUA5uVBg9YKtMgQmstkM506MWpQasXlrHCO9cWRA
+ fLwbBnh4IVlVg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,88 +83,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- linux-integrity@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ YueHaibing <yuehaibing@huawei.com>, Nicholas
+ Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Keith Busch <keith.busch@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Allison Randal <allison@lohutok.net>, Mahesh
+ Salgaonkar <mahesh@linux.vnet.ibm.com>, Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ira Weiny <ira.weiny@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10/1/19 10:56 AM, Leonardo Bras wrote:
+> On Mon, 2019-09-30 at 14:51 -0700, John Hubbard wrote:
+>> On 9/27/19 4:40 PM, Leonardo Bras wrote:
+...
+>>> diff --git a/mm/gup.c b/mm/gup.c
+>>> index 98f13ab37bac..7105c829cf44 100644
+>>> --- a/mm/gup.c
+>>> +++ b/mm/gup.c
+>>> @@ -2325,6 +2325,7 @@ static bool gup_fast_permitted(unsigned long start, unsigned long end)
+>>>  int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+>>>  			  struct page **pages)
+>>>  {
+>>> +	struct mm_struct *mm;
+>>
+>> I don't think that this local variable adds any value, so let's not use it.
+>> Similar point in a few other patches too.
+> 
+> It avoids 1 deference of current->mm, it's a little performance gain.
+> 
+
+No, it isn't. :) 
+
+Longer answer: at this level (by which I mean, "wrote the C code, haven't looked
+at the generated asm yet, and haven't done a direct perf test yet"), none of us
+C programmers are entitled to imagine that we can second guess both the compiler 
+and the CPU well enough to claim that  declaring a local pointer variable on the
+stack will even *affect* performance, much less know which way it will go!
+
+The compiler at -O2 will *absolutely* optimize away any local variables that
+it doesn't need.
+
+And that leads to how kernel programmers routinely decide about that kind of 
+variable: "does the variable's added clarity compensate for the extra visual 
+noise and for the need to manage the variable?"
+
+Here, and in most (all?) other points in the patchset where you've added an
+mm local variable, the answer is no.
 
 
-On 10/01/2019 02:16 PM, Greg Kroah-Hartman wrote:
-> On Tue, Oct 01, 2019 at 02:08:53PM -0400, Nayna wrote:
->> Hi Greg,
 >>
+...	start_lockless_pgtbl_walk(mm);
 >>
->> On 08/26/2019 11:01 AM, Greg Kroah-Hartman wrote:
->>> This variant was missing from sysfs.h, I guess no one noticed it before.
->>>
->>> Turns out the powerpc secure variable code can use it, so add it to the
->>> tree for it, and potentially others to take advantage of, instead of
->>> open-coding it.
->>>
->>> Reported-by: Nayna Jain <nayna@linux.ibm.com>
->>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> ---
->>>
->>> I'll queue this up to my tree for 5.4-rc1, but if you want to take this
->>> in your tree earlier, feel free to do so.
->>>
->>>    include/linux/sysfs.h | 9 +++++++++
->>>    1 file changed, 9 insertions(+)
->>>
->>> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
->>> index 965236795750..5420817ed317 100644
->>> --- a/include/linux/sysfs.h
->>> +++ b/include/linux/sysfs.h
->>> @@ -196,6 +196,12 @@ struct bin_attribute {
->>>    	.size	= _size,						\
->>>    }
->>> +#define __BIN_ATTR_WO(_name) {						\
->>> +	.attr	= { .name = __stringify(_name), .mode = 0200 },		\
->>> +	.store	= _name##_store,					\
->>> +	.size	= _size,						\
->>> +}
->>> +
->>>    #define __BIN_ATTR_RW(_name, _size)					\
->>>    	__BIN_ATTR(_name, 0644, _name##_read, _name##_write, _size)
->>> @@ -208,6 +214,9 @@ struct bin_attribute bin_attr_##_name = __BIN_ATTR(_name, _mode, _read,	\
->>>    #define BIN_ATTR_RO(_name, _size)					\
->>>    struct bin_attribute bin_attr_##_name = __BIN_ATTR_RO(_name, _size)
->>> +#define BIN_ATTR_WO(_name, _size)					\
->>> +struct bin_attribute bin_attr_##_name = __BIN_ATTR_WO(_name, _size)
->>> +
->>>    #define BIN_ATTR_RW(_name, _size)					\
->>>    struct bin_attribute bin_attr_##_name = __BIN_ATTR_RW(_name, _size)
->> I am sorry. I didn't notice it via inspection but there is a bug in this
->> macro. When I actually try using it, compilation fails. Here's a likely
->> patch:
+>> Minor: I'd like to rename this register_lockless_pgtable_walker().
 >>
->> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
->> index 5420817ed317..fa7ee503fb76 100644
->> --- a/include/linux/sysfs.h
->> +++ b/include/linux/sysfs.h
->> @@ -196,9 +196,9 @@ struct bin_attribute {
->>          .size   = _size,                                                \
->>   }
->> -#define __BIN_ATTR_WO(_name) {                                         \
->> +#define __BIN_ATTR_WO(_name, _size) {                                  \
->>          .attr   = { .name = __stringify(_name), .mode = 0200 },         \
->> -       .store  = _name##_store,                                        \
->> +       .write  = _name##_write,                                        \
->>          .size   = _size,                                                \
->>   }
+>>>  		local_irq_disable();
+>>>  		gup_pgd_range(addr, end, gup_flags, pages, &nr);
+>>>  		local_irq_enable();
+>>> +		end_lockless_pgtbl_walk(mm);
 >>
-> Heh, good catch.  Can you send a real patch for this that I can apply to
-> give you the proper credit for finding and fixing this?
+>> ...and deregister_lockless_pgtable_walker().
+>>
+> 
+> I have no problem changing the name, but I don't register/deregister
+> are good terms for this. 
+> 
+> I would rather use start/finish, begin/end, and so on. Register sounds
+> like something more complicated than what we are trying to achieve
+> here. 
+> 
 
-Sure.. Thanks Greg !!
+OK, well, I don't want to bikeshed on naming more than I usually do, and 
+what you have is reasonable, so I'll leave that alone. :)
 
-Thanks & Regards,
-       - Nayna
+thanks,
+-- 
+John Hubbard
+NVIDIA
+
