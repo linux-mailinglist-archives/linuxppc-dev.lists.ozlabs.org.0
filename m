@@ -1,75 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783E5C44D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 02:16:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71949C44F7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 02:25:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46jcB36fTZzDqT8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 10:16:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46jcNf0lcRzDqQL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 10:25:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d44; helo=mail-io1-xd44.google.com;
- envelope-from=aford173@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="nJtPZChL"; 
- dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46jc8510KkzDqSW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 10:14:28 +1000 (AEST)
-Received: by mail-io1-xd44.google.com with SMTP id w12so24665828iol.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Oct 2019 17:14:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Qp6mpPjoJw8IpL230TwztYNGcdXtc2wRumjJPrYIsQE=;
- b=nJtPZChLaez2QyIvdw5xpQM+gY+4nNfutZP/DX1GosRihN1p8Y/jzvzU5+zZVVXLDq
- DNW5rNxAEWMfY4DML2WBa4k8L6N9BKjZt+S1WhSwJylMRWekm8bQGBEDcBvcSstJLeH7
- osBNQPoC6vhf9EY6DvGZUS8bjPCLVbggq0vpLSG6o0qgZ68mHanhcK7N3A/k0zMXrBbT
- Myz3NcGtILKbjxYen8N4nInaRBIm801lXbpfCzyfiuoGv9mi3cSKUjp9iAirGweypF7I
- T5mChO7ltGRoxOnD6pn9vRPircx8cSspNsbQ9S+cDzRYkEkb4WMfK2l7wEZANDZnvpgU
- 4hTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Qp6mpPjoJw8IpL230TwztYNGcdXtc2wRumjJPrYIsQE=;
- b=MgMgMGTuWceq7DQqYai+LEL9E9ibgGKRdlFxu4TunULuHFnVb11RV3ILoVGxCkzmYg
- Xz1i1Cx6PCEypZJCglnwyZYuO7+oBHbJUti4wyP8JBxTMUV3qvPK1TY1eZxd8/a8IEfs
- cuj7DrbwfAlOd37gT2opX7AR+rVMhydlLVcS1zRfifs4fYkjYvhT8fsGZc2kHcjQxb+y
- i46Uo4wNM+XbvbOv7OFidqE5Vt+ZOfWS0lt3N607SpiFKxUXVOPdc+9pqj1ySekGDr6y
- J689dyZn0ExSKshhgFYgxybDQUbvq6XRC8XINKgdV+z2C0BYfcRAyLeqGVWpt7uCXUtD
- nATQ==
-X-Gm-Message-State: APjAAAUlyo3KOPWcXRvYt5oFG6Qt50FISi2tOUAkjd+6zisqeTwPuUr6
- PQQT05MdoJK5KIKgSUP959t0M0dJtxLCb/J8WcA=
-X-Google-Smtp-Source: APXvYqw1icrX5CgHqYJTBX6lKVXwK6z5wdputtkAh6YFSqMaOhm8xmij6KJaNr2N6b3kx+nme5PxuCv6WXWh+UvZaMU=
-X-Received: by 2002:a92:3314:: with SMTP id a20mr890351ilf.276.1569975265009; 
- Tue, 01 Oct 2019 17:14:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46jcLt4VKMzDq61
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 10:23:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46jcLs6zMCz8wG3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2019 10:23:49 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46jcLs6cgsz9sPj; Wed,  2 Oct 2019 10:23:49 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46jcLs2p8pz9sPL;
+ Wed,  2 Oct 2019 10:23:48 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x920MDcf155641; Tue, 1 Oct 2019 20:23:39 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vbsjt75s7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2019 20:23:39 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x920MEUP155678;
+ Tue, 1 Oct 2019 20:23:38 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vbsjt75re-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2019 20:23:38 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x920H4E2032344;
+ Wed, 2 Oct 2019 00:23:35 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02wdc.us.ibm.com with ESMTP id 2v9y587q2v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Oct 2019 00:23:35 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x920NYta41812442
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Oct 2019 00:23:34 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 47D4BBE05A;
+ Wed,  2 Oct 2019 00:23:34 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 85469BE054;
+ Wed,  2 Oct 2019 00:23:29 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.154.167])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Wed,  2 Oct 2019 00:23:29 +0000 (GMT)
+References: <1569594360-7141-1-git-send-email-nayna@linux.ibm.com>
+ <1569594360-7141-4-git-send-email-nayna@linux.ibm.com>
+ <877e5pwa1b.fsf@morokweng.localdomain>
+ <84f057d0-6a0b-d486-0eb6-f1590f32e377@linux.vnet.ibm.com>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Nayna <nayna@linux.vnet.ibm.com>
+Subject: Re: [PATCH v6 3/9] powerpc: add support to initialize ima policy rules
+In-reply-to: <84f057d0-6a0b-d486-0eb6-f1590f32e377@linux.vnet.ibm.com>
+Date: Tue, 01 Oct 2019 21:23:25 -0300
+Message-ID: <87eezwvvuq.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-References: <1548057848-15136-1-git-send-email-rppt@linux.ibm.com>
- <CAHCN7x+Jv7yGPoB0Gm=TJ30ObLJduw2XomHkd++KqFEURYQcGg@mail.gmail.com>
- <CAOMZO5A_U4aYC4XZXK1r9JaLg-eRdXy8m6z4GatQp62rK4HZ6A@mail.gmail.com>
- <CAHCN7xJdzEppn8-74SvzACsA25bUHGdV7v=CfS08xzSi59Z2uw@mail.gmail.com>
- <CAOMZO5D2uzR6Sz1QnX3G-Ce_juxU-0PO_vBZX+nR1mpQB8s8-w@mail.gmail.com>
- <CAHCN7xJ32BYZu-DVTVLSzv222U50JDb8F0A_tLDERbb8kPdRxg@mail.gmail.com>
- <20190926160433.GD32311@linux.ibm.com>
- <CAHCN7xL1sFXDhKUpj04d3eDZNgLA1yGAOqwEeCxedy1Qm-JOfQ@mail.gmail.com>
- <20190928073331.GA5269@linux.ibm.com>
- <CAHCN7xJEvS2Si=M+BYtz+kY0M4NxmqDjiX9Nwq6_3GGBh3yg=w@mail.gmail.com>
-In-Reply-To: <CAHCN7xJEvS2Si=M+BYtz+kY0M4NxmqDjiX9Nwq6_3GGBh3yg=w@mail.gmail.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Tue, 1 Oct 2019 19:14:13 -0500
-Message-ID: <CAHCN7xKLhWw4P9-sZKXQcfSfh2r3J_+rLxuxACW0UVgimCzyVw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/21] Refine memblock API
-To: Mike Rapoport <rppt@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-01_10:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910020000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,127 +106,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, devicetree <devicetree@vger.kernel.org>,
- Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
- Fabio Estevam <festevam@gmail.com>, Christoph Hellwig <hch@lst.de>,
- linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Richard Weinberger <richard@nod.at>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, kasan-dev <kasan-dev@googlegroups.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Mark Salter <msalter@redhat.com>,
- Dennis Zhou <dennis@kernel.org>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, Chris Healy <cphealy@gmail.com>,
- uclinux-h8-devel@lists.sourceforge.jp, Petr Mladek <pmladek@suse.com>,
- linux-xtensa@linux-xtensa.org, linux-alpha@vger.kernel.org,
- linux-um@lists.infradead.org,
- The etnaviv authors <etnaviv@lists.freedesktop.org>,
- linux-m68k@lists.linux-m68k.org, Rob Herring <robh+dt@kernel.org>,
- Greentime Hu <green.hu@gmail.com>, xen-devel@lists.xenproject.org,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- arm-soc <linux-arm-kernel@lists.infradead.org>,
- Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- USB list <linux-usb@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, openrisc@lists.librecores.org
+ Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, linux-integrity@vger.kernel.org,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Sep 29, 2019 at 8:33 AM Adam Ford <aford173@gmail.com> wrote:
->
-> I am attaching two logs.  I now the mailing lists will be unhappy, but
->  don't want to try and spam a bunch of log through the mailing liast.
-> The two logs show the differences between the working and non-working
-> imx6q 3D accelerator when trying to run a simple glmark2-es2-drm demo.
->
-> The only change between them is the 2 line code change you suggested.
->
-> In both cases, I have cma=128M set in my bootargs.  Historically this
-> has been sufficient, but cma=256M has not made a difference.
->
 
-Mike any suggestions on how to move forward?
-I was hoping to get the fixes tested and pushed before 5.4 is released
-if at all possible
+Hi Nayna,
 
-> adam
+Nayna <nayna@linux.vnet.ibm.com> writes:
+
+> On 09/30/2019 09:04 PM, Thiago Jung Bauermann wrote:
+>>> diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+>>> new file mode 100644
+>>> index 000000000000..39401b67f19e
+>>> --- /dev/null
+>>> +++ b/arch/powerpc/kernel/ima_arch.c
+>>> @@ -0,0 +1,33 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +/*
+>>> + * Copyright (C) 2019 IBM Corporation
+>>> + * Author: Nayna Jain
+>>> + */
+>>> +
+>>> +#include <linux/ima.h>
+>>> +#include <asm/secure_boot.h>
+>>> +
+>>> +bool arch_ima_get_secureboot(void)
+>>> +{
+>>> +	return is_powerpc_os_secureboot_enabled();
+>>> +}
+>>> +
+>>> +/* Defines IMA appraise rules for secureboot */
+>>> +static const char *const arch_rules[] = {
+>>> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+>>> +#if !IS_ENABLED(CONFIG_MODULE_SIG)
+>>> +	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+>>> +#endif
+>>> +	NULL
+>>> +};
+>>> +
+>>> +/*
+>>> + * Returns the relevant IMA arch policies based on the system secureboot state.
+>>> + */
+>>> +const char *const *arch_get_ima_policy(void)
+>>> +{
+>>> +	if (is_powerpc_os_secureboot_enabled())
+>>> +		return arch_rules;
+>>> +
+>>> +	return NULL;
+>>> +}
+>> If CONFIG_MODULE_SIG is enabled but module signatures aren't enforced,
+>> then IMA won't enforce module signature either. x86's
+>> arch_get_ima_policy() calls set_module_sig_enforced(). Doesn't the
+>> powerpc version need to do that as well?
+>>
+>> On the flip side, if module signatures are enforced by the module
+>> subsystem then IMA will verify the signature a second time since there's
+>> no sharing of signature verification results between the module
+>> subsystem and IMA (this was observed by Mimi).
+>>
+>> IMHO this is a minor issue, since module loading isn't a hot path and
+>> the duplicate work shouldn't impact anything. But it could be avoided by
+>> having a NULL entry in arch_rules, which arch_get_ima_policy() would
+>> dynamically update with the "appraise func=MODULE_CHECK" rule if
+>> is_module_sig_enforced() is true.
 >
-> On Sat, Sep 28, 2019 at 2:33 AM Mike Rapoport <rppt@linux.ibm.com> wrote:
-> >
-> > On Thu, Sep 26, 2019 at 02:35:53PM -0500, Adam Ford wrote:
-> > > On Thu, Sep 26, 2019 at 11:04 AM Mike Rapoport <rppt@linux.ibm.com> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > On Thu, Sep 26, 2019 at 08:09:52AM -0500, Adam Ford wrote:
-> > > > > On Wed, Sep 25, 2019 at 10:17 AM Fabio Estevam <festevam@gmail.com> wrote:
-> > > > > >
-> > > > > > On Wed, Sep 25, 2019 at 9:17 AM Adam Ford <aford173@gmail.com> wrote:
-> > > > > >
-> > > > > > > I tried cma=256M and noticed the cma dump at the beginning didn't
-> > > > > > > change.  Do we need to setup a reserved-memory node like
-> > > > > > > imx6ul-ccimx6ulsom.dtsi did?
-> > > > > >
-> > > > > > I don't think so.
-> > > > > >
-> > > > > > Were you able to identify what was the exact commit that caused such regression?
-> > > > >
-> > > > > I was able to narrow it down the 92d12f9544b7 ("memblock: refactor
-> > > > > internal allocation functions") that caused the regression with
-> > > > > Etnaviv.
-> > > >
-> > > >
-> > > > Can you please test with this change:
-> > > >
-> > >
-> > > That appears to have fixed my issue.  I am not sure what the impact
-> > > is, but is this a safe option?
-> >
-> > It's not really a fix, I just wanted to see how exactly 92d12f9544b7 ("memblock:
-> > refactor internal allocation functions") broke your setup.
-> >
-> > Can you share the dts you are using and the full kernel log?
-> >
-> > > adam
-> > >
-> > > > diff --git a/mm/memblock.c b/mm/memblock.c
-> > > > index 7d4f61a..1f5a0eb 100644
-> > > > --- a/mm/memblock.c
-> > > > +++ b/mm/memblock.c
-> > > > @@ -1356,9 +1356,6 @@ static phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
-> > > >                 align = SMP_CACHE_BYTES;
-> > > >         }
-> > > >
-> > > > -       if (end > memblock.current_limit)
-> > > > -               end = memblock.current_limit;
-> > > > -
-> > > >  again:
-> > > >         found = memblock_find_in_range_node(size, align, start, end, nid,
-> > > >                                             flags);
-> > > >
-> > > > > I also noticed that if I create a reserved memory node as was done one
-> > > > > imx6ul-ccimx6ulsom.dtsi the 3D seems to work again, but without it, I
-> > > > > was getting errors regardless of the 'cma=256M' or not.
-> > > > > I don't have a problem using the reserved memory, but I guess I am not
-> > > > > sure what the amount should be.  I know for the video decoding 1080p,
-> > > > > I have historically used cma=128M, but with the 3D also needing some
-> > > > > memory allocation, is that enough or should I use 256M?
-> > > > >
-> > > > > adam
-> > > >
-> > > > --
-> > > > Sincerely yours,
-> > > > Mike.
-> > > >
-> >
-> > --
-> > Sincerely yours,
-> > Mike.
-> >
+> Thanks Thiago for reviewing.  I am wondering that this will give two meanings
+> for NULL.
+
+What are the two meanings? My understanding is that it only means "end
+of array". The additional NULL just allows arch_get_ima_policy() to
+dynamically append one item to the array.
+
+But I hadn't thought of your other alternatives. They should work just
+as well. Among those, I think option 1 is cleaner.
+
+This addresses the second issue I mentioned, but not the first.
+
+Also, one other thing I just noticed is that x86's arch policy has
+measure rules but powerpc's policy doesn't. What is different in our
+case?
+
+> Can we do something like below, there are possibly two options ?
+>
+> 1. Set IMA_APPRAISED in the iint->flags if is_module_sig_enforced().
+>
+> OR
+>
+> 2. Let ima_get_action() check for is_module_sig_enforced() when policy is
+> appraise and func is MODULE_CHECK.
+>
+> Thanks & Regards,
+>    - Nayna
+
+
+--
+Thiago Jung Bauermann
+IBM Linux Technology Center
