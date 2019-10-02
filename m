@@ -1,71 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B10EC93C4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 23:51:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EC2C93D5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 23:53:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46k8wv1xWvzDqWk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 07:51:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46k8zC1q3jzDqW5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 07:53:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
- envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="s1o8WyOS"; 
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46k8sr4v6NzDqVT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 07:49:00 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id j11so482180plk.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Oct 2019 14:49:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:mime-version:content-disposition
- :user-agent; bh=RFVF+j79EjljD0tVvhEtyc3AyrhKV124n0ydAPhrM+E=;
- b=s1o8WyOSTetOs7i/TyZ7bWKmiE5YytBY8KouyaeIsXVPy+x50AJu4eQwAOPEAb0wAn
- log2uzAGye9wdJeiOONQJkLrpzsYSavLUy644Md7fg0mGPL1xifKeJ288qFu9VzmbxPP
- 4pJ3YhTgGh1RV8dbIckfBhTjOXYj7TRoA2laSVfLzmlqAdHqhHzqulJp6lFub9k4kliS
- JlIvvmqUq1gs9RajERkCcphcFACMCT4O7kbgRn+y3tmjaTeS6Go752MPSQPXHwoKA0jN
- IrvZcejgO4hGS3oK+bbaoNEXqcHGiOkSD86NC9AMwQ8kizxeuBOpVi87KUnESeKuvWqo
- KLIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
- :content-disposition:user-agent;
- bh=RFVF+j79EjljD0tVvhEtyc3AyrhKV124n0ydAPhrM+E=;
- b=iWHc3mJSjuAvNJI8DjehaFVDCz3izt6lETxJGoerMDdJbHGBk83lFThtNApov/YBQt
- P0XbSSeUpGCF9l0VEmrGtecEmSdmpNdAe8vN88O1WuJXFPeIfoIMkOSG3MwQDL9nrXra
- OVXhiBHBQQrjQJKyHTRxD51QQDMMJOmAzFxhDabwRFwJWCne8G4kMPn3ZHHPXsyd5zms
- TMDphLT33yXlwNu2l5wcQQx5rXCIZ6MaFlTlqAy3MrJIMU+lYbjtMrUsKK0p7opH9dF/
- GDmPfw9UFNd6hrjEQHp/hBxNRiKleMmr8labA4ocIiKmfYVBQE1UicTsFAdLeKbJH1xT
- xCkg==
-X-Gm-Message-State: APjAAAXQkG3m7kluFu22/amYZ3DwWw1cdFNSFSLcYjswpcOHdqjQZjkb
- tGAazB6/3FcwuyLZXiaxzxY=
-X-Google-Smtp-Source: APXvYqxAfLm0/jfISiBS2nvwoxUKwsHgY8bnFrRyuhIUlGQnKXVFONyO3/7Q7F+XLp7oSm2O/fhsaA==
-X-Received: by 2002:a17:902:222:: with SMTP id
- 31mr6197015plc.167.1570052937135; 
- Wed, 02 Oct 2019 14:48:57 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
- by smtp.gmail.com with ESMTPSA id d4sm204525pjs.9.2019.10.02.14.48.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Oct 2019 14:48:56 -0700 (PDT)
-Date: Wed, 2 Oct 2019 14:48:54 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PATCH] macintosh/ams-input: switch to using input device polling mode
-Message-ID: <20191002214854.GA114387@dtor-ws>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46k8tK0dLzzDqX0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 07:49:29 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46k8tF4Q1xz8swG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 07:49:25 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46k8tF32mHz9sPd; Thu,  3 Oct 2019 07:49:25 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46k8tD2gPjz9sPL
+ for <linuxppc-dev@ozlabs.org>; Thu,  3 Oct 2019 07:49:24 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x92LkkwN067898
+ for <linuxppc-dev@ozlabs.org>; Wed, 2 Oct 2019 17:49:21 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vd3pf0n05-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 02 Oct 2019 17:49:21 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <zohar@linux.ibm.com>;
+ Wed, 2 Oct 2019 22:49:19 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 2 Oct 2019 22:49:14 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x92LnDE019792014
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Oct 2019 21:49:13 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2BA8A4C044;
+ Wed,  2 Oct 2019 21:49:13 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 339C64C040;
+ Wed,  2 Oct 2019 21:49:11 +0000 (GMT)
+Received: from dhcp-9-31-103-196.watson.ibm.com (unknown [9.31.103.196])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Oct 2019 21:49:11 +0000 (GMT)
+Subject: Re: [PATCH v6 3/9] powerpc: add support to initialize ima policy rules
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Nayna <nayna@linux.vnet.ibm.com>, Thiago Jung Bauermann
+ <bauerman@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>
+Date: Wed, 02 Oct 2019 17:49:10 -0400
+In-Reply-To: <84f057d0-6a0b-d486-0eb6-f1590f32e377@linux.vnet.ibm.com>
+References: <1569594360-7141-1-git-send-email-nayna@linux.ibm.com>
+ <1569594360-7141-4-git-send-email-nayna@linux.ibm.com>
+ <877e5pwa1b.fsf@morokweng.localdomain>
+ <84f057d0-6a0b-d486-0eb6-f1590f32e377@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19100221-0016-0000-0000-000002B37556
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19100221-0017-0000-0000-000033147C3D
+Message-Id: <1570052950.4421.70.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-02_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910020172
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,134 +106,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jean Delvare <jdelvare@suse.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, linux-integrity@vger.kernel.org,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that instances of input_dev support polling mode natively,
-we no longer need to create input_polled_dev instance.
+On Tue, 2019-10-01 at 12:07 -0400, Nayna wrote:
+> 
+> On 09/30/2019 09:04 PM, Thiago Jung Bauermann wrote:
+> > Hello,
+> 
+> Hi,
+> 
+> >
+> >> diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+> >> new file mode 100644
+> >> index 000000000000..39401b67f19e
+> >> --- /dev/null
+> >> +++ b/arch/powerpc/kernel/ima_arch.c
+> >> @@ -0,0 +1,33 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +/*
+> >> + * Copyright (C) 2019 IBM Corporation
+> >> + * Author: Nayna Jain
+> >> + */
+> >> +
+> >> +#include <linux/ima.h>
+> >> +#include <asm/secure_boot.h>
+> >> +
+> >> +bool arch_ima_get_secureboot(void)
+> >> +{
+> >> +	return is_powerpc_os_secureboot_enabled();
+> >> +}
+> >> +
+> >> +/* Defines IMA appraise rules for secureboot */
+> >> +static const char *const arch_rules[] = {
+> >> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+> >> +#if !IS_ENABLED(CONFIG_MODULE_SIG)
+> >> +	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+> >> +#endif
+> >> +	NULL
+> >> +};
+> >> +
+> >> +/*
+> >> + * Returns the relevant IMA arch policies based on the system secureboot state.
+> >> + */
+> >> +const char *const *arch_get_ima_policy(void)
+> >> +{
+> >> +	if (is_powerpc_os_secureboot_enabled())
+> >> +		return arch_rules;
+> >> +
+> >> +	return NULL;
+> >> +}
+> > If CONFIG_MODULE_SIG is enabled but module signatures aren't enforced,
+> > then IMA won't enforce module signature either. x86's
+> > arch_get_ima_policy() calls set_module_sig_enforced(). Doesn't the
+> > powerpc version need to do that as well?
+> >
+> > On the flip side, if module signatures are enforced by the module
+> > subsystem then IMA will verify the signature a second time since there's
+> > no sharing of signature verification results between the module
+> > subsystem and IMA (this was observed by Mimi).
+> >
+> > IMHO this is a minor issue, since module loading isn't a hot path and
+> > the duplicate work shouldn't impact anything. But it could be avoided by
+> > having a NULL entry in arch_rules, which arch_get_ima_policy() would
+> > dynamically update with the "appraise func=MODULE_CHECK" rule if
+> > is_module_sig_enforced() is true.
+> 
+> Thanks Thiago for reviewing.  I am wondering that this will give two 
+> meanings for NULL. Can we do something like below, there are possibly 
+> two options ?
+> 
+> 1. Set IMA_APPRAISED in the iint->flags if is_module_sig_enforced().
+> 
+> OR
+> 
+> 2. Let ima_get_action() check for is_module_sig_enforced() when policy 
+> is appraise and func is MODULE_CHECK.
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
----
- drivers/macintosh/Kconfig         |  1 -
- drivers/macintosh/ams/ams-input.c | 37 +++++++++++++++----------------
- drivers/macintosh/ams/ams.h       |  4 ++--
- 3 files changed, 20 insertions(+), 22 deletions(-)
+I'm a bit hesitant about mixing the module subsystem signature
+verification method with the IMA measure "template=ima-modsig" rules.
+ Does it actually work?
 
-diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
-index 574e122ae105..da6a943ad746 100644
---- a/drivers/macintosh/Kconfig
-+++ b/drivers/macintosh/Kconfig
-@@ -247,7 +247,6 @@ config PMAC_RACKMETER
- config SENSORS_AMS
- 	tristate "Apple Motion Sensor driver"
- 	depends on PPC_PMAC && !PPC64 && INPUT && ((ADB_PMU && I2C = y) || (ADB_PMU && !I2C) || I2C)
--	select INPUT_POLLDEV
- 	help
- 	  Support for the motion sensor included in PowerBooks. Includes
- 	  implementations for PMU and I2C.
-diff --git a/drivers/macintosh/ams/ams-input.c b/drivers/macintosh/ams/ams-input.c
-index 06a96b3f11de..0da493d449b2 100644
---- a/drivers/macintosh/ams/ams-input.c
-+++ b/drivers/macintosh/ams/ams-input.c
-@@ -25,9 +25,8 @@ MODULE_PARM_DESC(invert, "Invert input data on X and Y axis");
- 
- static DEFINE_MUTEX(ams_input_mutex);
- 
--static void ams_idev_poll(struct input_polled_dev *dev)
-+static void ams_idev_poll(struct input_dev *idev)
- {
--	struct input_dev *idev = dev->input;
- 	s8 x, y, z;
- 
- 	mutex_lock(&ams_info.lock);
-@@ -59,14 +58,10 @@ static int ams_input_enable(void)
- 	ams_info.ycalib = y;
- 	ams_info.zcalib = z;
- 
--	ams_info.idev = input_allocate_polled_device();
--	if (!ams_info.idev)
-+	input = input_allocate_device();
-+	if (!input)
- 		return -ENOMEM;
- 
--	ams_info.idev->poll = ams_idev_poll;
--	ams_info.idev->poll_interval = 25;
--
--	input = ams_info.idev->input;
- 	input->name = "Apple Motion Sensor";
- 	input->id.bustype = ams_info.bustype;
- 	input->id.vendor = 0;
-@@ -75,28 +70,32 @@ static int ams_input_enable(void)
- 	input_set_abs_params(input, ABS_X, -50, 50, 3, 0);
- 	input_set_abs_params(input, ABS_Y, -50, 50, 3, 0);
- 	input_set_abs_params(input, ABS_Z, -50, 50, 3, 0);
-+	input_set_capability(input, EV_KEY, BTN_TOUCH);
- 
--	set_bit(EV_ABS, input->evbit);
--	set_bit(EV_KEY, input->evbit);
--	set_bit(BTN_TOUCH, input->keybit);
-+	error = input_setup_polling(input, ams_idev_poll);
-+	if (error)
-+		goto err_free_input;
- 
--	error = input_register_polled_device(ams_info.idev);
--	if (error) {
--		input_free_polled_device(ams_info.idev);
--		ams_info.idev = NULL;
--		return error;
--	}
-+	input_set_poll_interval(input, 25);
- 
-+	error = input_register_device(input);
-+	if (error)
-+		goto err_free_input;
-+
-+	ams_info.idev = input;
- 	joystick = true;
- 
- 	return 0;
-+
-+err_free_input:
-+	input_free_device(input);
-+	return error;
- }
- 
- static void ams_input_disable(void)
- {
- 	if (ams_info.idev) {
--		input_unregister_polled_device(ams_info.idev);
--		input_free_polled_device(ams_info.idev);
-+		input_unregister_device(ams_info.idev);
- 		ams_info.idev = NULL;
- 	}
- 
-diff --git a/drivers/macintosh/ams/ams.h b/drivers/macintosh/ams/ams.h
-index fe8d596f9845..935bdd9cd9a6 100644
---- a/drivers/macintosh/ams/ams.h
-+++ b/drivers/macintosh/ams/ams.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #include <linux/i2c.h>
--#include <linux/input-polldev.h>
-+#include <linux/input.h>
- #include <linux/kthread.h>
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
-@@ -51,7 +51,7 @@ struct ams {
- #endif
- 
- 	/* Joystick emulation */
--	struct input_polled_dev *idev;
-+	struct input_dev *idev;
- 	__u16 bustype;
- 
- 	/* calibrated null values */
--- 
-2.23.0.444.g18eeb5a265-goog
+We can at least limit verifying the same appended signature twice to
+when "module.sig_enforce" is specified on the boot command line, by
+changing "!IS_ENABLED(CONFIG_MODULE_SIG)" to test
+"CONFIG_MODULE_SIG_FORCE".
 
+Mimi
 
--- 
-Dmitry
