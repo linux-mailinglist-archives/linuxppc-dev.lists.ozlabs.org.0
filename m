@@ -1,52 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D42C928D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 21:42:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F1BC9304
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2019 22:46:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46k63k3BdNzDq6M
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 05:42:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46k7TL4ZryzDqWH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 06:46:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46k7R86RV4zDqVq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 06:44:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=decadent.org.uk
- (client-ip=88.96.1.126; helo=shadbolt.e.decadent.org.uk;
- envelope-from=ben@decadent.org.uk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=decadent.org.uk
-X-Greylist: delayed 1938 seconds by postgrey-1.36 at bilbo;
- Thu, 03 Oct 2019 05:40:46 AEST
-Received: from shadbolt.e.decadent.org.uk (shadbolt.e.decadent.org.uk
- [88.96.1.126])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46k7R85p3Sz8t2S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 06:44:20 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46k7R85Mp1z9sP7; Thu,  3 Oct 2019 06:44:20 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46k61p0tHpzDqSM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 05:40:45 +1000 (AEST)
-Received: from [192.168.4.242] (helo=deadeye)
- by shadbolt.decadent.org.uk with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
- (envelope-from <ben@decadent.org.uk>)
- id 1iFjyu-000368-RX; Wed, 02 Oct 2019 20:08:12 +0100
-Received: from ben by deadeye with local (Exim 4.92.1)
- (envelope-from <ben@decadent.org.uk>)
- id 1iFjyq-0003fy-10; Wed, 02 Oct 2019 20:08:08 +0100
+ by ozlabs.org (Postfix) with ESMTPS id 46k7R76wh7z9sPc
+ for <linuxppc-dev@ozlabs.org>; Thu,  3 Oct 2019 06:44:19 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x92KfXxb003783
+ for <linuxppc-dev@ozlabs.org>; Wed, 2 Oct 2019 16:44:13 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vd22thvvu-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 02 Oct 2019 16:44:13 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <zohar@linux.ibm.com>;
+ Wed, 2 Oct 2019 21:44:11 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 2 Oct 2019 21:44:06 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x92Ki5FD63176838
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Oct 2019 20:44:05 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E6E57AE045;
+ Wed,  2 Oct 2019 20:44:04 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ED43CAE051;
+ Wed,  2 Oct 2019 20:44:02 +0000 (GMT)
+Received: from dhcp-9-31-103-196.watson.ibm.com (unknown [9.31.103.196])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Oct 2019 20:44:02 +0000 (GMT)
+Subject: Re: [PATCH v6 7/9] ima: check against blacklisted hashes for files
+ with modsig
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
+ devicetree@vger.kernel.org
+Date: Wed, 02 Oct 2019 16:44:01 -0400
+In-Reply-To: <1569594360-7141-8-git-send-email-nayna@linux.ibm.com>
+References: <1569594360-7141-1-git-send-email-nayna@linux.ibm.com>
+ <1569594360-7141-8-git-send-email-nayna@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From: Ben Hutchings <ben@decadent.org.uk>
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 02 Oct 2019 20:06:51 +0100
-Message-ID: <lsq.1570043211.910896713@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-X-Patchwork-Hint: ignore
-Subject: [PATCH 3.16 76/87] perf/ioctl: Add check for the sample_period value
-In-Reply-To: <lsq.1570043210.379046399@decadent.org.uk>
-X-SA-Exim-Connect-IP: 192.168.4.242
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk);
- SAEximRunCond expanded to false
+X-TM-AS-GCONF: 00
+x-cbid: 19100220-0028-0000-0000-000003A57027
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19100220-0029-0000-0000-0000246774F9
+Message-Id: <1570049041.4421.40.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-02_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910020164
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,70 +106,228 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
- Vince Weaver <vincent.weaver@maine.edu>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Denis Kirjanov <kda@linux-powerpc.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Stephane Eranian <eranian@google.com>, Ingo Molnar <mingo@kernel.org>,
- Arnaldo Carvalho de Melo <acme@redhat.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, acme@kernel.org,
- Jiri Olsa <jolsa@redhat.com>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>, Oliver
+ O'Halloran <oohall@gmail.com>, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-3.16.75-rc1 review patch.  If anyone has any objections, please let me know.
+On Fri, 2019-09-27 at 10:25 -0400, Nayna Jain wrote:
+> Asymmetric private keys are used to sign multiple files. The kernel
+> currently support checking against the blacklisted keys. However, if the
+> public key is blacklisted, any file signed by the blacklisted key will
+> automatically fail signature verification. We might not want to blacklist
+> all the files signed by a particular key, but just a single file. 
+> Blacklisting the public key is not fine enough granularity.
+> 
+> This patch adds support for blacklisting binaries with appended signatures,
+> based on the IMA policy.  Defined is a new policy option
+> "appraise_flag=check_blacklist".
+> 
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+>  Documentation/ABI/testing/ima_policy  |  1 +
+>  security/integrity/ima/ima.h          | 12 +++++++++
+>  security/integrity/ima/ima_appraise.c | 35 +++++++++++++++++++++++++++
+>  security/integrity/ima/ima_main.c     |  8 ++++--
+>  security/integrity/ima/ima_policy.c   | 10 ++++++--
+>  security/integrity/integrity.h        |  1 +
+>  6 files changed, 63 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/ABI/testing/ima_policy b/Documentation/ABI/testing/ima_policy
+> index 29ebe9afdac4..4c97afcc0f3c 100644
+> --- a/Documentation/ABI/testing/ima_policy
+> +++ b/Documentation/ABI/testing/ima_policy
+> @@ -25,6 +25,7 @@ Description:
+>  			lsm:	[[subj_user=] [subj_role=] [subj_type=]
+>  				 [obj_user=] [obj_role=] [obj_type=]]
+>  			option:	[[appraise_type=]] [template=] [permit_directio]
+> +				[appraise_flag=[check_blacklist]]
+>  		base: 	func:= [BPRM_CHECK][MMAP_CHECK][CREDS_CHECK][FILE_CHECK][MODULE_CHECK]
+>  				[FIRMWARE_CHECK]
+>  				[KEXEC_KERNEL_CHECK] [KEXEC_INITRAMFS_CHECK]
+> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
+> index 9bf509217e8e..2c034728b239 100644
+> --- a/security/integrity/ima/ima.h
+> +++ b/security/integrity/ima/ima.h
+> @@ -254,6 +254,9 @@ int ima_policy_show(struct seq_file *m, void *v);
+>  #define IMA_APPRAISE_KEXEC	0x40
+>  
+>  #ifdef CONFIG_IMA_APPRAISE
+> +int ima_blacklist_measurement(struct integrity_iint_cache *iint,
+> +			      const struct modsig *modsig, int action,
+> +			      int pcr, struct ima_template_desc *template_desc);
+>  int ima_appraise_measurement(enum ima_hooks func,
+>  			     struct integrity_iint_cache *iint,
+>  			     struct file *file, const unsigned char *filename,
+> @@ -269,6 +272,15 @@ int ima_read_xattr(struct dentry *dentry,
+>  		   struct evm_ima_xattr_data **xattr_value);
+>  
+>  #else
+> +static inline int ima_blacklist_measurement(struct integrity_iint_cache *iint,
+> +					    const struct modsig *modsig,
+> +					    int action, int pcr,
+> +					    struct ima_template_desc
+> +					    *template_desc)
+> +{
+> +	return 0;
+> +}
+> +
+>  static inline int ima_appraise_measurement(enum ima_hooks func,
+>  					   struct integrity_iint_cache *iint,
+>  					   struct file *file,
+> diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
+> index 136ae4e0ee92..a5a82e870e24 100644
+> --- a/security/integrity/ima/ima_appraise.c
+> +++ b/security/integrity/ima/ima_appraise.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/magic.h>
+>  #include <linux/ima.h>
+>  #include <linux/evm.h>
+> +#include <keys/system_keyring.h>
+>  
+>  #include "ima.h"
+>  
+> @@ -303,6 +304,40 @@ static int modsig_verify(enum ima_hooks func, const struct modsig *modsig,
+>  	return rc;
+>  }
+>  
+> +/*
+> + * ima_blacklist_measurement - checks if the file measurement is blacklisted
+> + *
+> + * Returns -EKEYREJECTED if the hash is blacklisted.
+> + */
 
-------------------
 
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+In the function comment, please mention that blacklisted binaries are
+included in the IMA measurement list.
 
-commit 913a90bc5a3a06b1f04c337320e9aeee2328dd77 upstream.
+> +int ima_blacklist_measurement(struct integrity_iint_cache *iint,
+> +			      const struct modsig *modsig, int action, int pcr,
+> +			      struct ima_template_desc *template_desc)
+> +{
+> +	enum hash_algo hash_algo;
+> +	const u8 *digest = NULL;
+> +	u32 digestsize = 0;
+> +	u32 secid;
+> +	int rc = 0;
+> +
+> +	if (!(iint->flags & IMA_CHECK_BLACKLIST))
+> +		return 0;
+> +
+> +	if (iint->flags & IMA_MODSIG_ALLOWED) {
+> +		security_task_getsecid(current, &secid);
+> +		ima_get_modsig_digest(modsig, &hash_algo, &digest, &digestsize);
+> +
+> +		rc = is_hash_blacklisted(digest, digestsize, "bin");
+> +
+> +		/* Returns -EKEYREJECTED on blacklisted hash found */
 
-perf_event_open() limits the sample_period to 63 bits. See:
+is_hash_blacklisted() returning -EKEYREJECTED makes sense if the key
+is blacklisted, not so much for a binary.  It would make more sense to
+define is_binary_blacklisted(), as a wrapper for
+is_hash_blacklisted().
 
-  0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
 
-Make ioctl() consistent with it.
+> +		if ((rc == -EKEYREJECTED) && (iint->flags & IMA_MEASURE))
+> +			process_buffer_measurement(digest, digestsize,
+> +						   "blacklisted-hash", pcr,
+> +						   template_desc);
 
-Also on PowerPC, negative sample_period could cause a recursive
-PMIs leading to a hang (reported when running perf-fuzzer).
+For appended signatures, the IMA policy measurement rule would
+normally be "template=ima-modsig".  Shouldn't the "template_desc" for
+blacklisted binaries be "template=ima-buf"?
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vince Weaver <vincent.weaver@maine.edu>
-Cc: acme@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.vnet.ibm.com
-Cc: mpe@ellerman.id.au
-Fixes: 0819b2e30ccb ("perf: Limit perf_event_attr::sample_period to 63 bits")
-Link: https://lkml.kernel.org/r/20190604042953.914-1-ravi.bangoria@linux.ibm.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-[bwh: Backported to 3.16: adjust context]
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- kernel/events/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+>  /*
+>   * ima_appraise_measurement - appraise file measurement
+>   *
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+> index ae0c1bdc4eaf..92c446045637 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -336,8 +336,12 @@ static int process_measurement(struct file *file, const struct cred *cred,
+>  				      template_desc);
+>  	if (rc == 0 && (action & IMA_APPRAISE_SUBMASK)) {
+>  		inode_lock(inode);
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -3823,6 +3823,9 @@ static int perf_event_period(struct perf
- 	if (perf_event_check_period(event, value))
- 		return -EINVAL;
- 
-+	if (!event->attr.freq && (value & (1ULL << 63)))
-+		return -EINVAL;
-+
- 	task = ctx->task;
- 	pe.value = value;
- 
+The lock is needed for updating the extended attributes (in IMA fix
+mode).  Please limit taking the lock to ima_appraise_measurement().
+
+> -		rc = ima_appraise_measurement(func, iint, file, pathname,
+> -					      xattr_value, xattr_len, modsig);
+> +		rc = ima_blacklist_measurement(iint, modsig, action, pcr,
+> +					       template_desc);
+
+process_measurement() calls a number of functions: ima_collect_measurement(), ima_store_measurement(), ima_appraise_measurement() and ima_audit_measurement().  The action is contained within the name (eg. collect, store, appraise, audit).   "blacklist" implies the function is blacklisting a file hash, as opposed to checking whether the file hash is already black listed.  Changing the tense from "blacklist" to "blacklisted" would help.
+
+Renaming the function to "ima_is_binary_blacklisted" would be even better.
+
+Mimi
+
+> +		if (rc != -EKEYREJECTED)
+> +			rc = ima_appraise_measurement(func, iint, file,
+> +						      pathname, xattr_value,
+> +						      xattr_len, modsig);
+>  		inode_unlock(inode);
+>  		if (!rc)
+>  			rc = mmap_violation_check(func, file, &pathbuf,
+> diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+> index 4badc4fcda98..ad3b3af69460 100644
+> --- a/security/integrity/ima/ima_policy.c
+> +++ b/security/integrity/ima/ima_policy.c
+> @@ -765,8 +765,8 @@ enum {
+>  	Opt_fsuuid, Opt_uid_eq, Opt_euid_eq, Opt_fowner_eq,
+>  	Opt_uid_gt, Opt_euid_gt, Opt_fowner_gt,
+>  	Opt_uid_lt, Opt_euid_lt, Opt_fowner_lt,
+> -	Opt_appraise_type, Opt_permit_directio,
+> -	Opt_pcr, Opt_template, Opt_err
+> +	Opt_appraise_type, Opt_appraise_flag,
+> +	Opt_permit_directio, Opt_pcr, Opt_template, Opt_err
+>  };
+>  
+>  static const match_table_t policy_tokens = {
+> @@ -798,6 +798,7 @@ static const match_table_t policy_tokens = {
+>  	{Opt_euid_lt, "euid<%s"},
+>  	{Opt_fowner_lt, "fowner<%s"},
+>  	{Opt_appraise_type, "appraise_type=%s"},
+> +	{Opt_appraise_flag, "appraise_flag=%s"},
+>  	{Opt_permit_directio, "permit_directio"},
+>  	{Opt_pcr, "pcr=%s"},
+>  	{Opt_template, "template=%s"},
+> @@ -1172,6 +1173,11 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
+>  			else
+>  				result = -EINVAL;
+>  			break;
+> +		case Opt_appraise_flag:
+> +			ima_log_string(ab, "appraise_flag", args[0].from);
+> +			if (strstr(args[0].from, "blacklist"))
+> +				entry->flags |= IMA_CHECK_BLACKLIST;
+> +			break;
+>  		case Opt_permit_directio:
+>  			entry->flags |= IMA_PERMIT_DIRECTIO;
+>  			break;
+> diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
+> index d9323d31a3a8..73fc286834d7 100644
+> --- a/security/integrity/integrity.h
+> +++ b/security/integrity/integrity.h
+> @@ -32,6 +32,7 @@
+>  #define EVM_IMMUTABLE_DIGSIG	0x08000000
+>  #define IMA_FAIL_UNVERIFIABLE_SIGS	0x10000000
+>  #define IMA_MODSIG_ALLOWED	0x20000000
+> +#define IMA_CHECK_BLACKLIST	0x40000000
+>  
+>  #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
+>  				 IMA_HASH | IMA_APPRAISE_SUBMASK)
 
