@@ -1,87 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6563CAF1A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 21:23:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A44BCAF17
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 21:21:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46kjbS07YMzDqWy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 05:23:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46kjY90bp7zDqZC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 05:21:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=canonical.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=dan.streetman@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=fail (p=none dis=none) header.from=canonical.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46kjJg5VgqzDqXv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 05:10:43 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x93IqPVr031308; Thu, 3 Oct 2019 15:09:00 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vdkqyfe0t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Oct 2019 15:09:00 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x93IqbGP031821;
- Thu, 3 Oct 2019 15:08:59 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vdkqyfdyu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Oct 2019 15:08:59 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x93IttdU020332;
- Thu, 3 Oct 2019 19:08:57 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma04dal.us.ibm.com with ESMTP id 2v9y58j9yd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Oct 2019 19:08:57 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x93J8taL56426992
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 3 Oct 2019 19:08:55 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 62F4878064;
- Thu,  3 Oct 2019 19:08:55 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 843A97805F;
- Thu,  3 Oct 2019 19:08:46 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.18.235.190])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  3 Oct 2019 19:08:46 +0000 (GMT)
-Message-ID: <43648fe1bb12a7627a14a49405ec18289f3dbbe8.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 10/11] mm/Kconfig: Adds config option to track
- lockless pagetable walks
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Qian Cai <cai@lca.pw>
-Date: Thu, 03 Oct 2019 16:08:45 -0300
-In-Reply-To: <08c43176fcf46c768d474f7d3620e07f3f71b140.camel@linux.ibm.com>
-References: <20191003013325.2614-11-leonardo@linux.ibm.com>
- <88228CE0-81B2-4F2F-8C1D-F3376DB25A16@lca.pw>
- <08c43176fcf46c768d474f7d3620e07f3f71b140.camel@linux.ibm.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-VybRhkfSRVywgfzTr45C"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46kjJk1DgKzDqJM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 05:10:45 +1000 (AEST)
+Received: from mail-io1-f72.google.com ([209.85.166.72])
+ by youngberry.canonical.com with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <dan.streetman@canonical.com>) id 1iG6Ur-0007Fj-HA
+ for linuxppc-dev@lists.ozlabs.org; Thu, 03 Oct 2019 19:10:41 +0000
+Received: by mail-io1-f72.google.com with SMTP id r5so6902299iop.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Oct 2019 12:10:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=zN8BjvlVM6Yfmn/ry19EbJlWmoqgSPYEwTG104xKOok=;
+ b=N0EMndsegS5tuOYpxSDkz0EwVVuCGCEdyMNPw5g5CbYUpn6uu9GY9ITuuf+xELKMkz
+ TTE0j0NqTPvJ7wcRoQ9JFtO3ey9bvGj/WnmYEfAA55oqCmeSz4gJ1XmbUmxLISsPuWkY
+ Sj41i4nnm2SKjR1rhLPgrohtIB/dYuyyenUsUjRAwQRvG3C/tPOZ03r5qNiEh3ZbesA0
+ /s9YG9BgSg1nXeAYxRjp58iBkxrkJpzn+po46OYILD8nXk4mxx1DQgN/lNuFZk3NRPQr
+ Trl2/vxU9D7J+VTOQQyHVkJVXVjdiAP4vxjpxRYLeMEiVAGYbbciwCwoonUltImgDmak
+ J9sA==
+X-Gm-Message-State: APjAAAWENo8uUAniMxUz42qIQcQIZ9SWYfvQtWLws6GwD59bMqV2xkpe
+ /4tEo6K1xAZbPhjWNEfGYoDKmbchnedPVUYpJJyUL9127oo3dDqnQ52ibe3uzGfRxBKtjjFI4hG
+ qgHv1b4zox27F0DBt85Dh6/7GQTRdDyz+AVfRi6eMXpGaxGj6MI/ovlo4giM=
+X-Received: by 2002:a5e:990f:: with SMTP id t15mr9541019ioj.270.1570129840488; 
+ Thu, 03 Oct 2019 12:10:40 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqy26sjHplQ5R9JDlngxIv5FBinKJp1W9/0TUghKMgjbwSflwXhiPbCTEtAtCFOgD+s1gxXlZTcQYgC4B3bmccg=
+X-Received: by 2002:a5e:990f:: with SMTP id t15mr9540974ioj.270.1570129840027; 
+ Thu, 03 Oct 2019 12:10:40 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-03_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=27 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910030155
+References: <20190927130402.687-1-ddstreet@canonical.com>
+ <20190927181856.GD1804168@kroah.com>
+In-Reply-To: <20190927181856.GD1804168@kroah.com>
+From: Dan Streetman <ddstreet@canonical.com>
+Date: Thu, 3 Oct 2019 15:10:03 -0400
+Message-ID: <CAOZ2QJM+qgiYR+15rydwT6ebuL7UBfPcVp9vXCug6NSWDRS-Cg@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/vio: use simple dummy struct device as bus parent
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,81 +68,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "Dmitry
- V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>, linux-arch@vger.kernel.org,
- Santosh Sivaraj <santosh@fossix.org>, Davidlohr Bueso <dave@stgolabs.net>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Alexey Dobriyan <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Andrea Arcangeli <aarcange@redhat.com>, Ralph Campbell <rcampbell@nvidia.com>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- John Hubbard <jhubbard@nvidia.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm-ppc@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Reza Arbab <arbab@linux.ibm.com>,
- Allison Randal <allison@lohutok.net>,
- Christian Brauner <christian.brauner@ubuntu.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Logan Gunthorpe <logang@deltatee.com>, Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Roman Gushchin <guro@fb.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Al Viro <viro@zeniv.linux.org.uk>
+Cc: Rob Herring <robh@kernel.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Sep 27, 2019 at 2:19 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Sep 27, 2019 at 09:04:02AM -0400, Dan Streetman wrote:
+> > The dummy vio_bus_device creates the /sys/devices/vio directory, which
+> > contains real vio devices under it; since it represents itself as having
+> > a bus = &vio_bus_type, its /sys/devices/vio/uevent does call the bus's
+> > .uevent function, vio_hotplug(), and as that function won't find a real
+> > device for the dummy vio_dev, it will return -ENODEV.
+> >
+> > One of the main users of the uevent node is udevadm, e.g. when it is called
+> > with 'udevadm trigger --devices'.  Up until recently, it would ignore any
+> > errors returned when writing to devices' uevent file, but it was recently
+> > changed to start returning error if it gets an error writing to any uevent
+> > file:
+> > https://github.com/systemd/systemd/commit/97afc0351a96e0daa83964df33937967c75c644f
+> >
+> > since the /sys/devices/vio/uevent file has always returned ENODEV from
+> > any write to it, this now causes the udevadm trigger command to return
+> > an error.  This may be fixed in udevadm to ignore ENODEV errors, but the
+> > vio driver should still be fixed.
+> >
+> > This patch changes the arch/powerpc/platform/pseries/vio.c 'dummy'
+> > parent device into a real dummy device with no .bus, so its uevent
+> > file will stop returning ENODEV and simply do nothing and return 0.
+> >
+> > Signed-off-by: Dan Streetman <ddstreet@canonical.com>
+> > ---
+> >  arch/powerpc/platforms/pseries/vio.c | 11 ++++-------
+> >  1 file changed, 4 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
+> > index 79e2287991db..63bc16631680 100644
+> > --- a/arch/powerpc/platforms/pseries/vio.c
+> > +++ b/arch/powerpc/platforms/pseries/vio.c
+> > @@ -32,11 +32,8 @@
+> >  #include <asm/page.h>
+> >  #include <asm/hvcall.h>
+> >
+> > -static struct vio_dev vio_bus_device  = { /* fake "parent" device */
+> > -     .name = "vio",
+> > -     .type = "",
+> > -     .dev.init_name = "vio",
+> > -     .dev.bus = &vio_bus_type,
+> > +static struct device vio_bus = {
+> > +     .init_name      = "vio",
+>
+> Eeek, no!  Why are you creating a static device that will then be
+> reference counted?  Not nice :(
 
---=-VybRhkfSRVywgfzTr45C
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+so, I looked again and it seems quite a few places appear to do
+exactly this, is it something that should be fixed?
 
-On Thu, 2019-10-03 at 16:04 -0300, Leonardo Bras wrote:
-> On Wed, 2019-10-02 at 22:08 -0400, Qian Cai wrote:
-> > Can=E2=80=99t this name and all those new *lockless* function names be =
-shorter?=20
-> > There are many functions name with *_locked, so how about dropping=20
-> > lockless at all, i.e., PAGE_TABLE_WALK_TRACKING blah blah?
->=20
-> Thanks for the feedback!
->=20
-> Well, in this case it only tracks the 'lockless pagetable walks'. In
-> this approach, the 'locked pagetable walks' don't need to be tracked.
+$ git grep 'static struct device [^*{]*{'
+arch/arm/kernel/dma-isa.c:static struct device isa_dma_dev = {
+arch/arm/mach-rpc/dma.c:static struct device isa_dma_dev = {
+arch/arm/mach-s3c24xx/s3c2410.c:static struct device s3c2410_dev = {
+arch/arm/mach-s3c24xx/s3c2412.c:static struct device s3c2412_dev = {
+arch/arm/mach-s3c24xx/s3c2416.c:static struct device s3c2416_dev = {
+arch/arm/mach-s3c24xx/s3c2440.c:static struct device s3c2440_dev = {
+arch/arm/mach-s3c24xx/s3c2442.c:static struct device s3c2442_dev = {
+arch/arm/mach-s3c24xx/s3c2443.c:static struct device s3c2443_dev = {
+arch/arm/mach-s3c64xx/common.c:static struct device s3c64xx_dev = {
+arch/arm/mach-s3c64xx/s3c6400.c:static struct device s3c6400_dev = {
+arch/arm/mach-s3c64xx/s3c6410.c:static struct device s3c6410_dev = {
+arch/mips/sgi-ip22/ip22-gio.c:static struct device gio_bus = {
+arch/parisc/kernel/drivers.c:static struct device root = {
+arch/powerpc/platforms/ps3/system-bus.c:static struct device ps3_system_bus = {
+arch/powerpc/platforms/pseries/ibmebus.c:static struct device
+ibmebus_bus_device = { /* fake "parent" device */
+arch/powerpc/platforms/pseries/vio.c:static struct device vio_bus = {
+arch/um/drivers/virtio_uml.c:static struct device vu_cmdline_parent = {
+drivers/base/isa.c:static struct device isa_bus = {
+drivers/block/rbd.c:static struct device rbd_root_dev = {
+drivers/gpu/drm/ttm/ttm_module.c:static struct device ttm_drm_class_device = {
+drivers/iio/dummy/iio_dummy_evgen.c:static struct device iio_evgen_dev = {
+drivers/iio/trigger/iio-trig-sysfs.c:static struct device iio_sysfs_trig_dev = {
+drivers/misc/sgi-gru/grumain.c:static struct device gru_device = {
+drivers/nubus/bus.c:static struct device nubus_parent = {
+drivers/sh/maple/maple.c:static struct device maple_bus = {
+drivers/sh/superhyway/superhyway.c:static struct device
+superhyway_bus_device = {
+drivers/soc/fsl/qe/qe_ic.c:static struct device device_qe_ic = {
+drivers/virtio/virtio_mmio.c:static struct device vm_cmdline_parent = {
+kernel/time/clockevents.c:static struct device tick_bc_dev = {
+kernel/time/clocksource.c:static struct device device_clocksource = {
 
-So, using PAGE_TABLE_WALK_TRACKING would not be very accurate (as said
-before, there are the locked ones).
 
---=-VybRhkfSRVywgfzTr45C
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIyBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2WRz0ACgkQlQYWtz9S
-ttT+TA/1FSJfZVTq1e5fFW17J/V8Y4SiHa0K5xFAs/GWhR8M24yCyXUhMXz/liQT
-IDOViKxoVkc1e1NwSBePEDZkaEvl0XtMPPsGMbZ5Jb1XIJglqGKhr5mBSFXzd8nt
-XjImtXNN8JGR/Tx/2C9ThYfdcqmbDmntDsmSBZyIZXqOJUiICJmrpZHx6/ZPmCPb
-k0fdWqC8GE8H8DbvbW72a5iOh176EogGVduOryjx/N+vD9+xYhxj28lIWimRs/+A
-pesIWhFCE0ZuRDz6/Ud/WSun2aqad1x/fLgW0xMuSTA9/pies0PdZtAMS/89yrRY
-b4YPZM3iL6y/stdTfRc7Eu3S+gdCnp4avKWE+84MlwnM1Zq0p8+MTClRyX+tJbc2
-s1QcmkOW8T70VkqnsBqGKkSa3RqNDDUySpuCJZKe9nr3ZRqyXEuXRwJkFmESAR9a
-xmsGrPIG0vSKCijHdPsANOc4iXPN63YfxZBR0iszJvBadcBqVgMBQ/w4HnXQo8pX
-h1jZSPaxosfSTWo/UHP3fQAhYMFZpRlx/EK0/LyS1EbO0acl+ZLUkJ0Hcg3fm2BM
-VEhDNmphdCspj/+XWFscz3iSnZAaofFRHvxN3GDtz6VW0gahUaEUjpDuCk2C4fhL
-9qPLuxKZoGWQG5F2t4QGqxz17CsUEP4YCWsvt4DjW46qMhreVQ==
-=8m6H
------END PGP SIGNATURE-----
-
---=-VybRhkfSRVywgfzTr45C--
-
+>
+> What's wrong with a simple call to device_create() for your "fake"
+> device you want to make here?  That's what it is there for :)
+>
+> thanks,
+>
+> greg k-h
