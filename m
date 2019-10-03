@@ -2,76 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86E1C9CC1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 12:57:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D891FC9DD4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 13:54:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46kVLz4BZmzDqW9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 20:56:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46kWdC0mcvzDqZT
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 21:54:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="poByP+b3"; dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46kVK04b3GzDqW9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 20:55:15 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x93AsG2q015216
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 3 Oct 2019 06:55:12 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vdfe18efk-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Oct 2019 06:55:11 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
- Thu, 3 Oct 2019 11:55:10 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 3 Oct 2019 11:55:07 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x93At6T139387246
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 3 Oct 2019 10:55:06 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50FCF5205F;
- Thu,  3 Oct 2019 10:55:06 +0000 (GMT)
-Received: from localhost.in.ibm.com (unknown [9.124.35.61])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 68BAF5204F;
- Thu,  3 Oct 2019 10:55:05 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/kernel/sysfs: Add PERF_EVENT config option check
- to PMU SPRs
-Date: Thu,  3 Oct 2019 16:25:00 +0530
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46kWbC5jvhzDq61
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 21:52:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=2RsgaW4dRBY/+tPdpgEQuWJrn0m0JZs7JZKItphvsrQ=; b=poByP+b3n6HNOdDnf/qGJvHAS
+ pRXqXpuNZ5w4zB1+HX+MqRhfIs4qQZ01AcR9SEjX50dtaei+hC1Zaj3CiApO0agSJncV9ovMLgDUw
+ 9/uEPRGsGKaokZWwQISYwto97A6/ZRQyCqhOpAspu0qBX5fhYnphFLXbGxE6KrWlZMHmwAp6z3B4B
+ 5IDz5zPe7k8WbDoNC6I9oDE70/AnswPYgYH2TfiNQyBjzAnQunl4O//21nwspoAuQlYWRw134hOZZ
+ +LCm7w5mWztLLvOsBIjYGDagQrOBPTbgN7YbGIxWo6778ed9wR/5evpPxlYBSacHl6Dds3Fr+ZCe8
+ jqnFb5bog==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iFze6-0006QH-Dw; Thu, 03 Oct 2019 11:51:46 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 393FE301B59;
+ Thu,  3 Oct 2019 13:50:52 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 6CEBE20D8F669; Thu,  3 Oct 2019 13:51:41 +0200 (CEST)
+Date: Thu, 3 Oct 2019 13:51:41 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Leonardo Bras <leonardo@linux.ibm.com>
+Subject: Re: [PATCH v5 01/11] asm-generic/pgtable: Adds generic functions to
+ monitor lockless pgtable walks
+Message-ID: <20191003115141.GJ4581@hirez.programming.kicks-ass.net>
+References: <20191003013325.2614-1-leonardo@linux.ibm.com>
+ <20191003013325.2614-2-leonardo@linux.ibm.com>
+ <20191003071145.GM4536@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19100310-0008-0000-0000-0000031DA0FF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19100310-0009-0000-0000-00004A3CA7E2
-Message-Id: <20191003105500.12415-1-kjain@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-03_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910030101
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191003071145.GM4536@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,141 +74,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: anju@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com
+Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
+ "Dmitry V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>, linux-arch@vger.kernel.org,
+ Santosh Sivaraj <santosh@fossix.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Andrea Arcangeli <aarcange@redhat.com>, Ralph Campbell <rcampbell@nvidia.com>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ John Hubbard <jhubbard@nvidia.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm-ppc@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Reza Arbab <arbab@linux.ibm.com>,
+ Allison Randal <allison@lohutok.net>,
+ Christian Brauner <christian.brauner@ubuntu.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>, Souptick Joarder <jrdr.linux@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Roman Gushchin <guro@fb.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Perf is the primary interface to program performance monitoring
-unit (pmu) and collect counter data in system.
-But currently pmu register files are created in the
-/sys/devices/system/cpu/cpu* without checking CONFIG_PERF_EVENTS
-option. These includes PMC* and MMCR* sprs.
-Patch ties sysfs pmu spr file creation with CONFIG_PERF_EVENTS options.
+On Thu, Oct 03, 2019 at 09:11:45AM +0200, Peter Zijlstra wrote:
+> On Wed, Oct 02, 2019 at 10:33:15PM -0300, Leonardo Bras wrote:
+> > diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
+> > index 818691846c90..3043ea9812d5 100644
+> > --- a/include/asm-generic/pgtable.h
+> > +++ b/include/asm-generic/pgtable.h
+> > @@ -1171,6 +1171,64 @@ static inline bool arch_has_pfn_modify_check(void)
+> >  #endif
+> >  #endif
+> >  
+> > +#ifndef __HAVE_ARCH_LOCKLESS_PGTBL_WALK_CONTROL
+> > +static inline unsigned long begin_lockless_pgtbl_walk(struct mm_struct *mm)
+> > +{
+> > +	unsigned long irq_mask;
+> > +
+> > +	if (IS_ENABLED(CONFIG_LOCKLESS_PAGE_TABLE_WALK_TRACKING))
+> > +		atomic_inc(&mm->lockless_pgtbl_walkers);
+> 
+> This will not work for file backed THP. Also, this is a fairly serious
+> contention point all on its own.
 
-Tested this patch with enable/disable CONFIG_PERF_EVENTS option
-in powernv and pseries machines.
-Also did compilation testing with book3s_32.config.
+Kiryl says we have tmpfs-thp, this would be broken vs that, as would
+your (PowerPC) use of mm_cpumask() for that IPI.
 
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> > +	/*
+> > +	 * Interrupts must be disabled during the lockless page table walk.
+> > +	 * That's because the deleting or splitting involves flushing TLBs,
+> > +	 * which in turn issues interrupts, that will block when disabled.
+> > +	 */
+> > +	local_irq_save(irq_mask);
+> > +
+> > +	/*
+> > +	 * This memory barrier pairs with any code that is either trying to
+> > +	 * delete page tables, or split huge pages. Without this barrier,
+> > +	 * the page tables could be read speculatively outside of interrupt
+> > +	 * disabling.
+> > +	 */
+> > +	smp_mb();
+> 
+> I don't think this is something smp_mb() can guarantee. smp_mb() is
+> defined to order memory accesses, in this case the store of the old
+> flags vs whatever comes after this.
+> 
+> It cannot (in generic) order against completion of prior instructions,
+> like clearing the interrupt enabled flags.
+> 
+> Possibly you want barrier_nospec().
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- arch/powerpc/kernel/sysfs.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+I'm still really confused about this barrier. It just doesn't make
+sense.
 
-diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-index e2147d7c9e72..263023cc6308 100644
---- a/arch/powerpc/kernel/sysfs.c
-+++ b/arch/powerpc/kernel/sysfs.c
-@@ -456,16 +456,21 @@ static ssize_t __used \
- 
- #if defined(CONFIG_PPC64)
- #define HAS_PPC_PMC_CLASSIC	1
-+#if defined(CONFIG_PERF_EVENTS)
- #define HAS_PPC_PMC_IBM		1
-+#endif
- #define HAS_PPC_PMC_PA6T	1
- #elif defined(CONFIG_PPC_BOOK3S_32)
- #define HAS_PPC_PMC_CLASSIC	1
-+#if defined(CONFIG_PERF_EVENTS)
- #define HAS_PPC_PMC_IBM		1
- #define HAS_PPC_PMC_G4		1
- #endif
-+#endif
- 
- 
- #ifdef HAS_PPC_PMC_CLASSIC
-+#ifdef HAS_PPC_PMC_IBM
- SYSFS_PMCSETUP(mmcr0, SPRN_MMCR0);
- SYSFS_PMCSETUP(mmcr1, SPRN_MMCR1);
- SYSFS_PMCSETUP(pmc1, SPRN_PMC1);
-@@ -484,6 +489,10 @@ SYSFS_PMCSETUP(pmc7, SPRN_PMC7);
- SYSFS_PMCSETUP(pmc8, SPRN_PMC8);
- 
- SYSFS_PMCSETUP(mmcra, SPRN_MMCRA);
-+#endif /* CONFIG_PPC64 */
-+#endif /* HAS_PPC_PMC_IBM */
-+
-+#ifdef CONFIG_PPC64
- SYSFS_SPRSETUP(purr, SPRN_PURR);
- SYSFS_SPRSETUP(spurr, SPRN_SPURR);
- SYSFS_SPRSETUP(pir, SPRN_PIR);
-@@ -494,7 +503,9 @@ SYSFS_SPRSETUP(tscr, SPRN_TSCR);
-   enable write when needed with a separate function.
-   Lets be conservative and default to pseries.
- */
-+#ifdef HAS_PPC_PMC_IBM
- static DEVICE_ATTR(mmcra, 0600, show_mmcra, store_mmcra);
-+#endif /* HAS_PPC_PMC_IBM */
- static DEVICE_ATTR(spurr, 0400, show_spurr, NULL);
- static DEVICE_ATTR(purr, 0400, show_purr, store_purr);
- static DEVICE_ATTR(pir, 0400, show_pir, NULL);
-@@ -605,12 +616,14 @@ static void sysfs_create_dscr_default(void)
- #endif /* CONFIG_PPC64 */
- 
- #ifdef HAS_PPC_PMC_PA6T
-+#ifdef HAS_PPC_PMC_IBM
- SYSFS_PMCSETUP(pa6t_pmc0, SPRN_PA6T_PMC0);
- SYSFS_PMCSETUP(pa6t_pmc1, SPRN_PA6T_PMC1);
- SYSFS_PMCSETUP(pa6t_pmc2, SPRN_PA6T_PMC2);
- SYSFS_PMCSETUP(pa6t_pmc3, SPRN_PA6T_PMC3);
- SYSFS_PMCSETUP(pa6t_pmc4, SPRN_PA6T_PMC4);
- SYSFS_PMCSETUP(pa6t_pmc5, SPRN_PA6T_PMC5);
-+#endif /* HAS_PPC_PMC_IBM */
- #ifdef CONFIG_DEBUG_MISC
- SYSFS_SPRSETUP(hid0, SPRN_HID0);
- SYSFS_SPRSETUP(hid1, SPRN_HID1);
-@@ -648,7 +661,6 @@ static struct device_attribute ibm_common_attrs[] = {
- 	__ATTR(mmcr0, 0600, show_mmcr0, store_mmcr0),
- 	__ATTR(mmcr1, 0600, show_mmcr1, store_mmcr1),
- };
--#endif /* HAS_PPC_PMC_G4 */
- 
- #ifdef HAS_PPC_PMC_G4
- static struct device_attribute g4_common_attrs[] = {
-@@ -670,9 +682,11 @@ static struct device_attribute classic_pmc_attrs[] = {
- 	__ATTR(pmc8, 0600, show_pmc8, store_pmc8),
- #endif
- };
-+#endif /* HAS_PPC_PMC_IBM */
- 
- #ifdef HAS_PPC_PMC_PA6T
- static struct device_attribute pa6t_attrs[] = {
-+#ifdef HAS_PPC_PMC_IBM
- 	__ATTR(mmcr0, 0600, show_mmcr0, store_mmcr0),
- 	__ATTR(mmcr1, 0600, show_mmcr1, store_mmcr1),
- 	__ATTR(pmc0, 0600, show_pa6t_pmc0, store_pa6t_pmc0),
-@@ -681,6 +695,7 @@ static struct device_attribute pa6t_attrs[] = {
- 	__ATTR(pmc3, 0600, show_pa6t_pmc3, store_pa6t_pmc3),
- 	__ATTR(pmc4, 0600, show_pa6t_pmc4, store_pa6t_pmc4),
- 	__ATTR(pmc5, 0600, show_pa6t_pmc5, store_pa6t_pmc5),
-+#endif /* HAS_PPC_PMC_IBM */
- #ifdef CONFIG_DEBUG_MISC
- 	__ATTR(hid0, 0600, show_hid0, store_hid0),
- 	__ATTR(hid1, 0600, show_hid1, store_hid1),
-@@ -769,8 +784,10 @@ static int register_cpu_online(unsigned int cpu)
- 			device_create_file(s, &pmc_attrs[i]);
- 
- #ifdef CONFIG_PPC64
-+#ifdef HAS_PPC_PMC_IBM
- 	if (cpu_has_feature(CPU_FTR_MMCRA))
- 		device_create_file(s, &dev_attr_mmcra);
-+#endif
- 
- 	if (cpu_has_feature(CPU_FTR_PURR)) {
- 		if (!firmware_has_feature(FW_FEATURE_LPAR))
-@@ -858,8 +875,10 @@ static int unregister_cpu_online(unsigned int cpu)
- 			device_remove_file(s, &pmc_attrs[i]);
- 
- #ifdef CONFIG_PPC64
-+#ifdef HAS_PPC_PMC_IBM
- 	if (cpu_has_feature(CPU_FTR_MMCRA))
- 		device_remove_file(s, &dev_attr_mmcra);
-+#endif
- 
- 	if (cpu_has_feature(CPU_FTR_PURR))
- 		device_remove_file(s, &dev_attr_purr);
--- 
-2.21.0
+If an interrupt happens before the local_irq_disable()/save(), then it
+will discard any and all speculation that would be in progress to handle
+the exception.
 
+If there isn't an interrupt (or it happens after disable) it is
+irrelevant.
+
+Specifically, that serialize-IPI thing wants to ensure in-progress
+lookups are complete, and I can't find a scenario where
+local_irq_disable/enable() needs additional help vs IPIs. The moment an
+interrupt lands it kills speculation and forces things into
+program-order.
+
+Did you perhaps want something like:
+
+	if (IS_ENABLED(CONFIG_LOCKLESS_PAGE_TABLE_WALK_TRACKING)) {
+		atomic_inc(&foo);
+		smp_mb__after_atomic();
+	}
+
+	...
+
+	if (IS_ENABLED(CONFIG_LOCKLESS_PAGE_TABLE_WALK_TRACKING)) {
+		smp_mb__before_atomic();
+		atomic_dec(&foo);
+	}
+
+To ensure everything happens inside of the increment?
+
+And I still think all that wrong, you really shouldn't need to wait on
+munmap().
