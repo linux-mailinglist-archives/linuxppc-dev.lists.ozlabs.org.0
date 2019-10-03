@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB16AC9683
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 03:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE8CC9686
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 03:54:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46kGGL1zMQzDqWc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 11:52:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46kGJp1Zf8zDqDm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 11:54:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com;
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46kFvt1wdHzDqWP
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 11:36:09 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46kFw60HJkzDqW6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 11:36:21 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x931WV9W003339; Wed, 2 Oct 2019 21:35:39 -0400
+ x931WW4c021212; Wed, 2 Oct 2019 21:35:53 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vd1sg80vv-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vd3wfmxrw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Oct 2019 21:35:39 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x931Wam8003549;
- Wed, 2 Oct 2019 21:35:39 -0400
+ Wed, 02 Oct 2019 21:35:53 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x931ZqlQ027954;
+ Wed, 2 Oct 2019 21:35:52 -0400
 Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
  [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vd1sg80va-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vd3wfmxrj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Oct 2019 21:35:38 -0400
+ Wed, 02 Oct 2019 21:35:52 -0400
 Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x931ZKKL030145;
- Thu, 3 Oct 2019 01:35:37 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma04wdc.us.ibm.com with ESMTP id 2v9y588ee4-1
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x931U5BN025461;
+ Thu, 3 Oct 2019 01:35:51 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04wdc.us.ibm.com with ESMTP id 2v9y588efe-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Oct 2019 01:35:37 +0000
+ Thu, 03 Oct 2019 01:35:51 +0000
 Received: from b03ledav004.gho.boulder.ibm.com
  (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x931Zare60686794
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x931ZnV461800724
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 3 Oct 2019 01:35:36 GMT
+ Thu, 3 Oct 2019 01:35:49 GMT
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C9BF78063;
+ by IMSVA (Postfix) with ESMTP id 435947805F;
+ Thu,  3 Oct 2019 01:35:49 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BF7CB78060;
  Thu,  3 Oct 2019 01:35:36 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D898F7805C;
- Thu,  3 Oct 2019 01:35:23 +0000 (GMT)
 Received: from LeoBras.ibmuc.com (unknown [9.85.174.224])
  by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  3 Oct 2019 01:35:23 +0000 (GMT)
+ Thu,  3 Oct 2019 01:35:36 +0000 (GMT)
 From: Leonardo Bras <leonardo@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  kvm-ppc@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v5 08/11] powerpc/kvm/book3s_hv: Applies counting method to
+Subject: [PATCH v5 09/11] powerpc/kvm/book3s_64: Applies counting method to
  monitor lockless pgtbl walks
-Date: Wed,  2 Oct 2019 22:33:22 -0300
-Message-Id: <20191003013325.2614-9-leonardo@linux.ibm.com>
+Date: Wed,  2 Oct 2019 22:33:23 -0300
+Message-Id: <20191003013325.2614-10-leonardo@linux.ibm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191003013325.2614-1-leonardo@linux.ibm.com>
 References: <20191003013325.2614-1-leonardo@linux.ibm.com>
@@ -78,7 +78,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=997 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=459 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1908290000 definitions=main-1910030012
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -124,169 +124,192 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Applies the counting-based method for monitoring all book3s_hv related
+Applies the counting-based method for monitoring all book3s_64-related
 functions that do lockless pagetable walks.
 
 Adds comments explaining that some lockless pagetable walks don't need
 protection due to guest pgd not being a target of THP collapse/split, or
-due to being called from Realmode + MSR_EE = 0
+due to being called from Realmode + MSR_EE = 0.
 
-kvmppc_do_h_enter: Fixes where local_irq_restore() must be placed (after
-the last usage of ptep).
+Given that some of these functions always are called in realmode,  we use
+__{begin,end}_lockless_pgtbl_walk so we can decide when to disable
+interrupts.
 
-Given that some of these functions can be called in real mode, and others
-always are, we use __{begin,end}_lockless_pgtbl_walk so we can decide when
-to disable interrupts.
+local_irq_{save,restore} is already inside {begin,end}_lockless_pgtbl_walk,
+so there is no need to repeat it here.
+
+Variable that saves the	irq mask was renamed from flags to irq_mask so it
+doesn't lose meaning now it's not directly passed to local_irq_* functions.
+
+There are also a function that uses local_irq_{en,dis}able, so the return
+value of begin_lockless_pgtbl_walk() is ignored and we pass IRQS_ENABLED to
+end_lockless_pgtbl_walk() to mimic the effect of local_irq_enable().
 
 Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 ---
- arch/powerpc/kvm/book3s_hv_nested.c | 22 ++++++++++++++++++--
- arch/powerpc/kvm/book3s_hv_rm_mmu.c | 32 ++++++++++++++++-------------
- 2 files changed, 38 insertions(+), 16 deletions(-)
+ arch/powerpc/kvm/book3s_64_mmu_hv.c    |  6 ++---
+ arch/powerpc/kvm/book3s_64_mmu_radix.c | 34 +++++++++++++++++++++++---
+ arch/powerpc/kvm/book3s_64_vio_hv.c    |  7 +++++-
+ 3 files changed, 40 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index cdf30c6eaf54..89944c699fd6 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -803,7 +803,11 @@ static void kvmhv_update_nest_rmap_rc(struct kvm *kvm, u64 n_rmap,
- 	if (!gp)
- 		return;
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+index 9a75f0e1933b..d8f374c979f5 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+@@ -615,12 +615,12 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, struct kvm_vcpu *vcpu,
+ 		/* if the guest wants write access, see if that is OK */
+ 		if (!writing && hpte_is_writable(r)) {
+ 			pte_t *ptep, pte;
+-			unsigned long flags;
++			unsigned long irq_mask;
+ 			/*
+ 			 * We need to protect against page table destruction
+ 			 * hugepage split and collapse.
+ 			 */
+-			local_irq_save(flags);
++			irq_mask = begin_lockless_pgtbl_walk(kvm->mm);
+ 			ptep = find_current_mm_pte(current->mm->pgd,
+ 						   hva, NULL, NULL);
+ 			if (ptep) {
+@@ -628,7 +628,7 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, struct kvm_vcpu *vcpu,
+ 				if (__pte_write(pte))
+ 					write_ok = 1;
+ 			}
+-			local_irq_restore(flags);
++			end_lockless_pgtbl_walk(kvm->mm, irq_mask);
+ 		}
+ 	}
  
--	/* Find the pte */
-+	/* Find the pte:
-+	 * We are walking the nested guest (partition-scoped) page table here.
-+	 * We can do this without disabling irq because the Linux MM
-+	 * subsystem doesn't do THP splits and collapses on this tree.
-+	 */
- 	ptep = __find_linux_pte(gp->shadow_pgtable, gpa, NULL, &shift);
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 2d415c36a61d..8ba9742e2fc8 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -813,20 +813,20 @@ int kvmppc_book3s_instantiate_page(struct kvm_vcpu *vcpu,
+ 	 * Read the PTE from the process' radix tree and use that
+ 	 * so we get the shift and attribute bits.
+ 	 */
+-	local_irq_disable();
++	begin_lockless_pgtbl_walk(kvm->mm);
+ 	ptep = __find_linux_pte(vcpu->arch.pgdir, hva, NULL, &shift);
  	/*
- 	 * If the pte is present and the pfn is still the same, update the pte.
-@@ -853,7 +857,11 @@ static void kvmhv_remove_nest_rmap(struct kvm *kvm, u64 n_rmap,
- 	if (!gp)
- 		return;
+ 	 * If the PTE disappeared temporarily due to a THP
+ 	 * collapse, just return and let the guest try again.
+ 	 */
+ 	if (!ptep) {
+-		local_irq_enable();
++		end_lockless_pgtbl_walk(kvm->mm, IRQS_ENABLED);
+ 		if (page)
+ 			put_page(page);
+ 		return RESUME_GUEST;
+ 	}
+ 	pte = *ptep;
+-	local_irq_enable();
++	end_lockless_pgtbl_walk(kvm->mm, IRQS_ENABLED);
  
--	/* Find and invalidate the pte */
-+	/* Find and invalidate the pte:
-+	 * We are walking the nested guest (partition-scoped) page table here.
-+	 * We can do this without disabling irq because the Linux MM
-+	 * subsystem doesn't do THP splits and collapses on this tree.
-+	 */
- 	ptep = __find_linux_pte(gp->shadow_pgtable, gpa, NULL, &shift);
- 	/* Don't spuriously invalidate ptes if the pfn has changed */
- 	if (ptep && pte_present(*ptep) && ((pte_val(*ptep) & mask) == hpa))
-@@ -921,6 +929,11 @@ static bool kvmhv_invalidate_shadow_pte(struct kvm_vcpu *vcpu,
- 	int shift;
+ 	/* If we're logging dirty pages, always map single pages */
+ 	large_enable = !(memslot->flags & KVM_MEM_LOG_DIRTY_PAGES);
+@@ -972,10 +972,16 @@ int kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+ 	unsigned long gpa = gfn << PAGE_SHIFT;
+ 	unsigned int shift;
  
- 	spin_lock(&kvm->mmu_lock);
-+	/*
-+	 * We are walking the nested guest (partition-scoped) page table here.
-+	 * We can do this without disabling irq because the Linux MM
-+	 * subsystem doesn't do THP splits and collapses on this tree.
-+	 */
- 	ptep = __find_linux_pte(gp->shadow_pgtable, gpa, NULL, &shift);
- 	if (!shift)
- 		shift = PAGE_SHIFT;
-@@ -1362,6 +1375,11 @@ static long int __kvmhv_nested_page_fault(struct kvm_run *run,
- 	/* See if can find translation in our partition scoped tables for L1 */
- 	pte = __pte(0);
- 	spin_lock(&kvm->mmu_lock);
 +	/*
 +	 * We are walking the secondary (partition-scoped) page table here.
 +	 * We can do this without disabling irq because the Linux MM
 +	 * subsystem doesn't do THP splits and collapses on this tree.
 +	 */
- 	pte_p = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
+ 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
+ 	if (ptep && pte_present(*ptep))
+ 		kvmppc_unmap_pte(kvm, ptep, gpa, shift, memslot,
+ 				 kvm->arch.lpid);
++
+ 	return 0;				
+ }
+ 
+@@ -989,6 +995,11 @@ int kvm_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+ 	int ref = 0;
+ 	unsigned long old, *rmapp;
+ 
++	/*
++	 * We are walking the secondary (partition-scoped) page table here.
++	 * We can do this without disabling irq because the Linux MM
++	 * subsystem doesn't do THP splits and collapses on this tree.
++	 */
+ 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
+ 	if (ptep && pte_present(*ptep) && pte_young(*ptep)) {
+ 		old = kvmppc_radix_update_pte(kvm, ptep, _PAGE_ACCESSED, 0,
+@@ -1013,6 +1024,11 @@ int kvm_test_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
+ 	unsigned int shift;
+ 	int ref = 0;
+ 
++	/*
++	 * We are walking the secondary (partition-scoped) page table here.
++	 * We can do this without disabling irq because the Linux MM
++	 * subsystem doesn't do THP splits and collapses on this tree.
++	 */
+ 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
+ 	if (ptep && pte_present(*ptep) && pte_young(*ptep))
+ 		ref = 1;
+@@ -1030,6 +1046,11 @@ static int kvm_radix_test_clear_dirty(struct kvm *kvm,
+ 	int ret = 0;
+ 	unsigned long old, *rmapp;
+ 
++	/*
++	 * We are walking the secondary (partition-scoped) page table here.
++	 * We can do this without disabling irq because the Linux MM
++	 * subsystem doesn't do THP splits and collapses on this tree.
++	 */
+ 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
+ 	if (ptep && pte_present(*ptep) && pte_dirty(*ptep)) {
+ 		ret = 1;
+@@ -1046,6 +1067,7 @@ static int kvm_radix_test_clear_dirty(struct kvm *kvm,
+ 					       1UL << shift);
+ 		spin_unlock(&kvm->mmu_lock);
+ 	}
++
+ 	return ret;
+ }
+ 
+@@ -1085,6 +1107,12 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
+ 	gpa = memslot->base_gfn << PAGE_SHIFT;
+ 	spin_lock(&kvm->mmu_lock);
+ 	for (n = memslot->npages; n; --n) {
++		/*
++		 * We are walking the secondary (partition-scoped) page table
++		 * here.
++		 * We can do this without disabling irq because the Linux MM
++		 * subsystem doesn't do THP splits and collapses on this tree.
++		 */
+ 		ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
+ 		if (ptep && pte_present(*ptep))
+ 			kvmppc_unmap_pte(kvm, ptep, gpa, shift, memslot,
+diff --git a/arch/powerpc/kvm/book3s_64_vio_hv.c b/arch/powerpc/kvm/book3s_64_vio_hv.c
+index ab6eeb8e753e..0091c3d0ce89 100644
+--- a/arch/powerpc/kvm/book3s_64_vio_hv.c
++++ b/arch/powerpc/kvm/book3s_64_vio_hv.c
+@@ -441,6 +441,7 @@ long kvmppc_rm_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
+ static long kvmppc_rm_ua_to_hpa(struct kvm_vcpu *vcpu,
+ 		unsigned long ua, unsigned long *phpa)
+ {
++	struct kvm *kvm = vcpu->kvm;
+ 	pte_t *ptep, pte;
+ 	unsigned shift = 0;
+ 
+@@ -453,10 +454,14 @@ static long kvmppc_rm_ua_to_hpa(struct kvm_vcpu *vcpu,
+ 	 * to exit which will agains result in the below page table walk
+ 	 * to finish.
+ 	 */
++	__begin_lockless_pgtbl_walk(kvm->mm, false);
+ 	ptep = __find_linux_pte(vcpu->arch.pgdir, ua, NULL, &shift);
+-	if (!ptep || !pte_present(*ptep))
++	if (!ptep || !pte_present(*ptep)) {
++		__end_lockless_pgtbl_walk(kvm->mm, 0, false);
+ 		return -ENXIO;
++	}
+ 	pte = *ptep;
++	__end_lockless_pgtbl_walk(kvm->mm, 0, false);
+ 
  	if (!shift)
  		shift = PAGE_SHIFT;
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-index 220305454c23..a8be42f5be1e 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-@@ -210,7 +210,7 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
- 	pte_t *ptep;
- 	unsigned int writing;
- 	unsigned long mmu_seq;
--	unsigned long rcbits, irq_flags = 0;
-+	unsigned long rcbits, irq_mask = 0;
- 
- 	if (kvm_is_radix(kvm))
- 		return H_FUNCTION;
-@@ -252,12 +252,8 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
- 	 * If we had a page table table change after lookup, we would
- 	 * retry via mmu_notifier_retry.
- 	 */
--	if (!realmode)
--		local_irq_save(irq_flags);
--	/*
--	 * If called in real mode we have MSR_EE = 0. Otherwise
--	 * we disable irq above.
--	 */
-+	irq_mask = __begin_lockless_pgtbl_walk(kvm->mm, !realmode);
-+
- 	ptep = __find_linux_pte(pgdir, hva, NULL, &hpage_shift);
- 	if (ptep) {
- 		pte_t pte;
-@@ -272,8 +268,7 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
- 		 * to <= host page size, if host is using hugepage
- 		 */
- 		if (host_pte_size < psize) {
--			if (!realmode)
--				local_irq_restore(flags);
-+			__end_lockless_pgtbl_walk(kvm->mm, irq_mask, !realmode);
- 			return H_PARAMETER;
- 		}
- 		pte = kvmppc_read_update_linux_pte(ptep, writing);
-@@ -287,8 +282,6 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
- 			pa |= gpa & ~PAGE_MASK;
- 		}
- 	}
--	if (!realmode)
--		local_irq_restore(irq_flags);
- 
- 	ptel &= HPTE_R_KEY | HPTE_R_PP0 | (psize-1);
- 	ptel |= pa;
-@@ -302,8 +295,10 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
- 
- 	/*If we had host pte mapping then  Check WIMG */
- 	if (ptep && !hpte_cache_flags_ok(ptel, is_ci)) {
--		if (is_ci)
-+		if (is_ci) {
-+			__end_lockless_pgtbl_walk(kvm->mm, irq_mask, !realmode);
- 			return H_PARAMETER;
-+		}
- 		/*
- 		 * Allow guest to map emulated device memory as
- 		 * uncacheable, but actually make it cacheable.
-@@ -311,6 +306,7 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
- 		ptel &= ~(HPTE_R_W|HPTE_R_I|HPTE_R_G);
- 		ptel |= HPTE_R_M;
- 	}
-+	__end_lockless_pgtbl_walk(kvm->mm, irq_mask, !realmode);
- 
- 	/* Find and lock the HPTEG slot to use */
-  do_insert:
-@@ -907,11 +903,19 @@ static int kvmppc_get_hpa(struct kvm_vcpu *vcpu, unsigned long gpa,
- 	/* Translate to host virtual address */
- 	hva = __gfn_to_hva_memslot(memslot, gfn);
- 
--	/* Try to find the host pte for that virtual address */
-+	/* Try to find the host pte for that virtual address :
-+	 * Called by hcall_real_table (real mode + MSR_EE=0)
-+	 * Interrupts are disabled here.
-+	 */
-+	__begin_lockless_pgtbl_walk(kvm->mm, false);
- 	ptep = __find_linux_pte(vcpu->arch.pgdir, hva, NULL, &shift);
--	if (!ptep)
-+	if (!ptep) {
-+		__end_lockless_pgtbl_walk(kvm->mm, 0, false);
- 		return H_TOO_HARD;
-+	}
- 	pte = kvmppc_read_update_linux_pte(ptep, writing);
-+	__end_lockless_pgtbl_walk(kvm->mm, 0, false);
-+
- 	if (!pte_present(pte))
- 		return H_TOO_HARD;
- 
 -- 
 2.20.1
 
