@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C81CB082
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 22:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4B1CB0E0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 23:12:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46klYD09P4zDqZQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 06:51:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46km114hdszDqbC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 07:12:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nvidia.com
- (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=desnesn@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="E7t56r4C"; 
- dkim-atps=neutral
-Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46klWJ0L3rzDqSv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 06:50:03 +1000 (AEST)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5d965ef70000>; Thu, 03 Oct 2019 13:49:59 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
- Thu, 03 Oct 2019 13:49:59 -0700
-X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Thu, 03 Oct 2019 13:49:59 -0700
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 3 Oct
- 2019 20:49:58 +0000
-Received: from [10.110.48.28] (10.124.1.5) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 3 Oct 2019
- 20:49:57 +0000
-Subject: Re: [PATCH v5 00/11] Introduces new count-based method for tracking
- lockless pagetable walks
-To: Leonardo Bras <leonardo@linux.ibm.com>, Peter Zijlstra
- <peterz@infradead.org>
-References: <20191003013325.2614-1-leonardo@linux.ibm.com>
- <20191003072952.GN4536@hirez.programming.kicks-ass.net>
- <c46d6c7301314a2d998cffc47d69b404f2c26ad3.camel@linux.ibm.com>
-X-Nvconfidentiality: public
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <99754d82-33c5-a54f-8607-b6bf151069d4@nvidia.com>
-Date: Thu, 3 Oct 2019 13:49:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46klz805nYzDqYn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 07:10:37 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x93L7PaN080535; Thu, 3 Oct 2019 17:10:28 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vdq9navx6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Oct 2019 17:10:28 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x93LA1uu007419;
+ Thu, 3 Oct 2019 21:10:29 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma01wdc.us.ibm.com with ESMTP id 2v9y57yfgj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Oct 2019 21:10:29 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x93LAQhU64094704
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 3 Oct 2019 21:10:26 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2B76D7805E;
+ Thu,  3 Oct 2019 21:10:26 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB0FD7805C;
+ Thu,  3 Oct 2019 21:10:23 +0000 (GMT)
+Received: from ibm.ibmuc.com (unknown [9.85.155.156])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  3 Oct 2019 21:10:23 +0000 (GMT)
+From: "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] selftests/powerpc: Fix compiling error on tlbie_test due to
+ newer gcc
+Date: Thu,  3 Oct 2019 18:10:10 -0300
+Message-Id: <20191003211010.9711-1-desnesn@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <c46d6c7301314a2d998cffc47d69b404f2c26ad3.camel@linux.ibm.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1570135799; bh=8tX3/lygYnCsJanQP8X8WsxfvR7VJcUfXDFMU2I/nGk=;
- h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=E7t56r4CLhvhUPdEAoY67ZDe6oNO4KK3vWmxNrojsg4pYH3aDVGJaDvHpf43EargH
- 6VLoRvpcEGsHy2m7jPwe1MAdsVJNi17Iz+qSjXfvvIkyjACUbiQusaP1jknD8WLbIV
- l0ucIoMQynb/6d7D3LoH9D2LrX48WHelHpcmAtp/6Otdk/Jw1tC380ZU7IZ1oNS5M6
- KspIyHKE8SsBbAwTdDqzzRES4O4MTX47Q3XHe2a17wWshTSg3w/LFAwUKVhNEdVhSz
- aDR4zE4TyLQiRd0IPEIj+tdpCYZzxgqc7okXUWc6YwhLmFMrPb1qR1mM2eEWq88TWN
- /BSPHMCl2A2Ug==
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-03_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910030170
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,62 +81,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, "Dmitry
- V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
- Ingo Molnar <mingo@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
- linux-arch@vger.kernel.org, Santosh Sivaraj <santosh@fossix.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Jann Horn <jannh@google.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Allison Randal <allison@lohutok.net>,
- Jesper Dangaard Brouer <brouer@redhat.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Alexey Dobriyan <adobriyan@gmail.com>, Andrea Arcangeli <aarcange@redhat.com>,
- Ralph Campbell <rcampbell@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm-ppc@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, Reza Arbab <arbab@linux.ibm.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Christian Brauner <christian.brauner@ubuntu.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Logan Gunthorpe <logang@deltatee.com>, Roman Gushchin <guro@fb.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Al
- Viro <viro@zeniv.linux.org.uk>
+Cc: desnesn@linux.ibm.com, shuah@kernel.org, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/3/19 1:36 PM, Leonardo Bras wrote:
-> On Thu, 2019-10-03 at 09:29 +0200, Peter Zijlstra wrote:
->> On Wed, Oct 02, 2019 at 10:33:14PM -0300, Leonardo Bras wrote:
-...
->> This is something entirely specific to Power, you shouldn't be touching
->> generic code at all.
-> 
-> Up to v4, I was declaring dummy functions so it would not mess up with
-> other archs: http://patchwork.ozlabs.org/patch/1168779/
-> 
-> But I was recommended to create a generic function that could guide the
-> way to archs: http://patchwork.ozlabs.org/patch/1168775/
+Newer versions of GCC demand that the size of the string to be copied must
+be explicitly smaller than the size of the destination. Thus, the NULL
+char has to be taken into account on strncpy.
 
-Yes. And to clarify, I was assuming that the changes to mm/gup.c were 
-required in order to accomplish your goals. Given that assumption, I 
-wanted the generic code to be "proper", and that's what that feedback
-is about.
+This will avoid the following compiling error:
 
-If you can somehow do it entirely as an arch-specific thing, then probably
-that's even better. Although the other questions about file-backed THP
-make it sound like some rethinking across the board is required now.
+  tlbie_test.c: In function 'main':
+  tlbie_test.c:639:4: error: 'strncpy' specified bound 100 equals destination size [-Werror=stringop-truncation]
+      strncpy(logdir, optarg, LOGDIR_NAME_SIZE);
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: all warnings being treated as errors
 
+Signed-off-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+---
+ tools/testing/selftests/powerpc/mm/tlbie_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks,
+diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+index 9868a5ddd847..0d0aee462f8e 100644
+--- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
++++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+@@ -636,7 +636,7 @@ int main(int argc, char *argv[])
+ 			nrthreads = strtoul(optarg, NULL, 10);
+ 			break;
+ 		case 'l':
+-			strncpy(logdir, optarg, LOGDIR_NAME_SIZE);
++			strncpy(logdir, optarg, LOGDIR_NAME_SIZE-1);
+ 			break;
+ 		case 't':
+ 			run_time = strtoul(optarg, NULL, 10);
 -- 
-John Hubbard
-NVIDIA
+2.21.0
+
