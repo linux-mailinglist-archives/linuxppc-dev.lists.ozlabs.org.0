@@ -1,68 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D891FC9DD4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 13:54:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A15CA5AB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 18:52:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46kWdC0mcvzDqZT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 21:54:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46kfDY4fWqzDqXq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 02:51:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="poByP+b3"; dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46kWbC5jvhzDq61
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 21:52:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=2RsgaW4dRBY/+tPdpgEQuWJrn0m0JZs7JZKItphvsrQ=; b=poByP+b3n6HNOdDnf/qGJvHAS
- pRXqXpuNZ5w4zB1+HX+MqRhfIs4qQZ01AcR9SEjX50dtaei+hC1Zaj3CiApO0agSJncV9ovMLgDUw
- 9/uEPRGsGKaokZWwQISYwto97A6/ZRQyCqhOpAspu0qBX5fhYnphFLXbGxE6KrWlZMHmwAp6z3B4B
- 5IDz5zPe7k8WbDoNC6I9oDE70/AnswPYgYH2TfiNQyBjzAnQunl4O//21nwspoAuQlYWRw134hOZZ
- +LCm7w5mWztLLvOsBIjYGDagQrOBPTbgN7YbGIxWo6778ed9wR/5evpPxlYBSacHl6Dds3Fr+ZCe8
- jqnFb5bog==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
- id 1iFze6-0006QH-Dw; Thu, 03 Oct 2019 11:51:46 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 393FE301B59;
- Thu,  3 Oct 2019 13:50:52 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 6CEBE20D8F669; Thu,  3 Oct 2019 13:51:41 +0200 (CEST)
-Date: Thu, 3 Oct 2019 13:51:41 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Leonardo Bras <leonardo@linux.ibm.com>
-Subject: Re: [PATCH v5 01/11] asm-generic/pgtable: Adds generic functions to
- monitor lockless pgtable walks
-Message-ID: <20191003115141.GJ4581@hirez.programming.kicks-ass.net>
-References: <20191003013325.2614-1-leonardo@linux.ibm.com>
- <20191003013325.2614-2-leonardo@linux.ibm.com>
- <20191003071145.GM4536@hirez.programming.kicks-ass.net>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46kf8k4DnjzDqV7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 02:48:36 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x93GkLBj076306; Thu, 3 Oct 2019 12:48:20 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vdm7ksfkn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Oct 2019 12:48:19 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x93GkUCH077867;
+ Thu, 3 Oct 2019 12:48:19 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vdm7ksfjy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Oct 2019 12:48:19 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x93GlTUY018767;
+ Thu, 3 Oct 2019 16:48:18 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma02dal.us.ibm.com with ESMTP id 2v9y589719-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Oct 2019 16:48:17 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x93GmGHr44695846
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 3 Oct 2019 16:48:16 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 999B06A05D;
+ Thu,  3 Oct 2019 16:48:16 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 011646A047;
+ Thu,  3 Oct 2019 16:48:11 +0000 (GMT)
+Received: from [9.199.43.217] (unknown [9.199.43.217])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  3 Oct 2019 16:48:11 +0000 (GMT)
+Subject: Re: [PATCH v5 01/10] mm/memunmap: Use the correct start and end pfn
+ when removing pages from zone
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>
+References: <20191001144011.3801-1-david@redhat.com>
+ <20191001144011.3801-2-david@redhat.com>
+ <933f9cd8-9a32-8566-bd97-7e475a009275@redhat.com>
+ <09b61ab1-6099-d825-8e04-fbfb43abe4d2@redhat.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <cb6807a4-93c8-3964-bd65-e7087a0c7bf1@linux.ibm.com>
+Date: Thu, 3 Oct 2019 22:18:10 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191003071145.GM4536@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <09b61ab1-6099-d825-8e04-fbfb43abe4d2@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-03_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910030146
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,118 +97,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
- "Dmitry V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>, linux-arch@vger.kernel.org,
- Santosh Sivaraj <santosh@fossix.org>, Davidlohr Bueso <dave@stgolabs.net>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Alexey Dobriyan <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Andrea Arcangeli <aarcange@redhat.com>, Ralph Campbell <rcampbell@nvidia.com>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- John Hubbard <jhubbard@nvidia.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm-ppc@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Reza Arbab <arbab@linux.ibm.com>,
- Allison Randal <allison@lohutok.net>,
- Christian Brauner <christian.brauner@ubuntu.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Logan Gunthorpe <logang@deltatee.com>, Souptick Joarder <jrdr.linux@gmail.com>,
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, linux-sh@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Logan Gunthorpe <logang@deltatee.com>,
+ Pankaj Gupta <pagupta@redhat.com>, linux-mm@kvack.org,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Roman Gushchin <guro@fb.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Al Viro <viro@zeniv.linux.org.uk>
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 03, 2019 at 09:11:45AM +0200, Peter Zijlstra wrote:
-> On Wed, Oct 02, 2019 at 10:33:15PM -0300, Leonardo Bras wrote:
-> > diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-> > index 818691846c90..3043ea9812d5 100644
-> > --- a/include/asm-generic/pgtable.h
-> > +++ b/include/asm-generic/pgtable.h
-> > @@ -1171,6 +1171,64 @@ static inline bool arch_has_pfn_modify_check(void)
-> >  #endif
-> >  #endif
-> >  
-> > +#ifndef __HAVE_ARCH_LOCKLESS_PGTBL_WALK_CONTROL
-> > +static inline unsigned long begin_lockless_pgtbl_walk(struct mm_struct *mm)
-> > +{
-> > +	unsigned long irq_mask;
-> > +
-> > +	if (IS_ENABLED(CONFIG_LOCKLESS_PAGE_TABLE_WALK_TRACKING))
-> > +		atomic_inc(&mm->lockless_pgtbl_walkers);
+On 10/1/19 8:33 PM, David Hildenbrand wrote:
+> On 01.10.19 16:57, David Hildenbrand wrote:
+>> On 01.10.19 16:40, David Hildenbrand wrote:
+>>> From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+>>>
+>>> With altmap, all the resource pfns are not initialized. While initializing
+>>> pfn, altmap reserve space is skipped. Hence when removing pfn from zone
+>>> skip pfns that were never initialized.
+>>>
+>>> Update memunmap_pages to calculate start and end pfn based on altmap
+>>> values. This fixes a kernel crash that is observed when destroying
+>>> a namespace.
+>>>
+>>> [   81.356173] kernel BUG at include/linux/mm.h:1107!
+>>> cpu 0x1: Vector: 700 (Program Check) at [c000000274087890]
+>>>      pc: c0000000004b9728: memunmap_pages+0x238/0x340
+>>>      lr: c0000000004b9724: memunmap_pages+0x234/0x340
+>>> ...
+>>>      pid   = 3669, comm = ndctl
+>>> kernel BUG at include/linux/mm.h:1107!
+>>> [c000000274087ba0] c0000000009e3500 devm_action_release+0x30/0x50
+>>> [c000000274087bc0] c0000000009e4758 release_nodes+0x268/0x2d0
+>>> [c000000274087c30] c0000000009dd144 device_release_driver_internal+0x174/0x240
+>>> [c000000274087c70] c0000000009d9dfc unbind_store+0x13c/0x190
+>>> [c000000274087cb0] c0000000009d8a24 drv_attr_store+0x44/0x60
+>>> [c000000274087cd0] c0000000005a7470 sysfs_kf_write+0x70/0xa0
+>>> [c000000274087d10] c0000000005a5cac kernfs_fop_write+0x1ac/0x290
+>>> [c000000274087d60] c0000000004be45c __vfs_write+0x3c/0x70
+>>> [c000000274087d80] c0000000004c26e4 vfs_write+0xe4/0x200
+>>> [c000000274087dd0] c0000000004c2a6c ksys_write+0x7c/0x140
+>>> [c000000274087e20] c00000000000bbd0 system_call+0x5c/0x68
+>>>
+>>> Cc: Dan Williams <dan.j.williams@intel.com>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+>>> Cc: Logan Gunthorpe <logang@deltatee.com>
+>>> Cc: Ira Weiny <ira.weiny@intel.com>
+>>> Reviewed-by: Pankaj Gupta <pagupta@redhat.com>
+>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>> [ move all pfn-realted declarations into a single line ]
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>   mm/memremap.c | 13 ++++++++-----
+>>>   1 file changed, 8 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/mm/memremap.c b/mm/memremap.c
+>>> index 557e53c6fb46..026788b2ac69 100644
+>>> --- a/mm/memremap.c
+>>> +++ b/mm/memremap.c
+>>> @@ -123,7 +123,7 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
+>>>   void memunmap_pages(struct dev_pagemap *pgmap)
+>>>   {
+>>>   	struct resource *res = &pgmap->res;
+>>> -	unsigned long pfn;
+>>> +	unsigned long pfn, nr_pages, start_pfn, end_pfn;
+>>>   	int nid;
+>>>   
+>>>   	dev_pagemap_kill(pgmap);
+>>> @@ -131,14 +131,17 @@ void memunmap_pages(struct dev_pagemap *pgmap)
+>>>   		put_page(pfn_to_page(pfn));
+>>>   	dev_pagemap_cleanup(pgmap);
+>>>   
+>>> +	start_pfn = pfn_first(pgmap);
+>>> +	end_pfn = pfn_end(pgmap);
+>>> +	nr_pages = end_pfn - start_pfn;
+>>> +
+>>>   	/* pages are dead and unused, undo the arch mapping */
+>>> -	nid = page_to_nid(pfn_to_page(PHYS_PFN(res->start)));
+>>> +	nid = page_to_nid(pfn_to_page(start_pfn));
+>>>   
+>>>   	mem_hotplug_begin();
+>>>   	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
+>>> -		pfn = PHYS_PFN(res->start);
+>>> -		__remove_pages(page_zone(pfn_to_page(pfn)), pfn,
+>>> -				 PHYS_PFN(resource_size(res)), NULL);
+>>> +		__remove_pages(page_zone(pfn_to_page(start_pfn)), start_pfn,
+>>> +			       nr_pages, NULL);
+>>>   	} else {
+>>>   		arch_remove_memory(nid, res->start, resource_size(res),
+>>>   				pgmap_altmap(pgmap));
+>>>
+>>
+>> Aneesh, I was wondering why the use of "res->start" is correct (and we
+>> shouldn't also witch to start_pfn/nr_pages here. It would be good if Dan
+>> could review.
+>>
 > 
-> This will not work for file backed THP. Also, this is a fairly serious
-> contention point all on its own.
-
-Kiryl says we have tmpfs-thp, this would be broken vs that, as would
-your (PowerPC) use of mm_cpumask() for that IPI.
-
-> > +	/*
-> > +	 * Interrupts must be disabled during the lockless page table walk.
-> > +	 * That's because the deleting or splitting involves flushing TLBs,
-> > +	 * which in turn issues interrupts, that will block when disabled.
-> > +	 */
-> > +	local_irq_save(irq_mask);
-> > +
-> > +	/*
-> > +	 * This memory barrier pairs with any code that is either trying to
-> > +	 * delete page tables, or split huge pages. Without this barrier,
-> > +	 * the page tables could be read speculatively outside of interrupt
-> > +	 * disabling.
-> > +	 */
-> > +	smp_mb();
+> To be more precise, I wonder if it should actually be
 > 
-> I don't think this is something smp_mb() can guarantee. smp_mb() is
-> defined to order memory accesses, in this case the store of the old
-> flags vs whatever comes after this.
+> __remove_pages(page_zone(pfn_to_page(start_pfn)), res->start,
+>                 resource_size(res))
 > 
-> It cannot (in generic) order against completion of prior instructions,
-> like clearing the interrupt enabled flags.
+
+yes, that would be make it much clear.
+
+But for MEMORY_DEVICE_PRIVATE start_pfn and pfn should be same?
+
+
+> IOW, keep calling __remove_pages() with the same parameters but read
+> nid/zone from the offset one.
 > 
-> Possibly you want barrier_nospec().
+> Hope some memunmap_pages() expert can clarify.
+> 
 
-I'm still really confused about this barrier. It just doesn't make
-sense.
-
-If an interrupt happens before the local_irq_disable()/save(), then it
-will discard any and all speculation that would be in progress to handle
-the exception.
-
-If there isn't an interrupt (or it happens after disable) it is
-irrelevant.
-
-Specifically, that serialize-IPI thing wants to ensure in-progress
-lookups are complete, and I can't find a scenario where
-local_irq_disable/enable() needs additional help vs IPIs. The moment an
-interrupt lands it kills speculation and forces things into
-program-order.
-
-Did you perhaps want something like:
-
-	if (IS_ENABLED(CONFIG_LOCKLESS_PAGE_TABLE_WALK_TRACKING)) {
-		atomic_inc(&foo);
-		smp_mb__after_atomic();
-	}
-
-	...
-
-	if (IS_ENABLED(CONFIG_LOCKLESS_PAGE_TABLE_WALK_TRACKING)) {
-		smp_mb__before_atomic();
-		atomic_dec(&foo);
-	}
-
-To ensure everything happens inside of the increment?
-
-And I still think all that wrong, you really shouldn't need to wait on
-munmap().
+-aneesh
