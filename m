@@ -2,93 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440F2C9C4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 12:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E86E1C9CC1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 12:57:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46kTpG6KjfzDqZx
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 20:32:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46kVLz4BZmzDqW9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 20:56:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46kTlq2gXWzDqY5
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 20:29:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46kTlp4nGLz8syX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 20:29:58 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 46kTlp4F2fz9sPJ; Thu,  3 Oct 2019 20:29:58 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=svaidy@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+ envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46kTlp05p2z9sP7
- for <linuxppc-dev@ozlabs.org>; Thu,  3 Oct 2019 20:29:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46kVK04b3GzDqW9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 20:55:15 +1000 (AEST)
 Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x93AQ0QH093931
- for <linuxppc-dev@ozlabs.org>; Thu, 3 Oct 2019 06:29:52 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vdbwe65ry-1
+ x93AsG2q015216
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 3 Oct 2019 06:55:12 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vdfe18efk-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Thu, 03 Oct 2019 06:29:51 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Oct 2019 06:55:11 -0400
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <svaidy@linux.ibm.com>;
- Thu, 3 Oct 2019 11:29:50 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
+ Thu, 3 Oct 2019 11:55:10 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 3 Oct 2019 11:29:46 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x93ATHPC39059840
+ Thu, 3 Oct 2019 11:55:07 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x93At6T139387246
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 3 Oct 2019 10:29:17 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DFB414C044;
- Thu,  3 Oct 2019 10:29:45 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F1E2E4C046;
- Thu,  3 Oct 2019 10:29:43 +0000 (GMT)
-Received: from drishya.in.ibm.com (unknown [9.102.17.136])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu,  3 Oct 2019 10:29:43 +0000 (GMT)
-Date: Thu, 3 Oct 2019 15:59:40 +0530
-From: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-To: Jeremy Kerr <jk@ozlabs.org>
-Subject: Re: [PATCH] powerpc/powernv/prd: Validate whether address to be
- mapped is part of system RAM
-References: <20191002074856.15014-1-hegdevasant@linux.vnet.ibm.com>
- <2bb75b409a1159d5524be2d661e548e32fed152e.camel@ozlabs.org>
- <0e8a4057-fbe7-9b1a-6613-ad500ebe8b67@linux.vnet.ibm.com>
- <049794f6a16f548bcb418d31fecf268cb4a335e5.camel@ozlabs.org>
- <9b9b529d-cad7-0ace-acf6-e07d0dea5670@linux.vnet.ibm.com>
- <452718dfe591c4718498aab6b5c7b68a95cf6c5a.camel@ozlabs.org>
+ Thu, 3 Oct 2019 10:55:06 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 50FCF5205F;
+ Thu,  3 Oct 2019 10:55:06 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.124.35.61])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 68BAF5204F;
+ Thu,  3 Oct 2019 10:55:05 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/kernel/sysfs: Add PERF_EVENT config option check
+ to PMU SPRs
+Date: Thu,  3 Oct 2019 16:25:00 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <452718dfe591c4718498aab6b5c7b68a95cf6c5a.camel@ozlabs.org>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19100310-0028-0000-0000-000003A59E10
+x-cbid: 19100310-0008-0000-0000-0000031DA0FF
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19100310-0029-0000-0000-00002467A4AA
-Message-Id: <20191003102940.GC3181@drishya.in.ibm.com>
+x-cbparentid: 19100310-0009-0000-0000-00004A3CA7E2
+Message-Id: <20191003105500.12415-1-kjain@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-10-03_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -96,7 +71,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910030095
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910030101
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,82 +83,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: svaidy@linux.ibm.com
-Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>
+Cc: anju@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Jeremy Kerr <jk@ozlabs.org> [2019-10-03 15:07:24]:
+Perf is the primary interface to program performance monitoring
+unit (pmu) and collect counter data in system.
+But currently pmu register files are created in the
+/sys/devices/system/cpu/cpu* without checking CONFIG_PERF_EVENTS
+option. These includes PMC* and MMCR* sprs.
+Patch ties sysfs pmu spr file creation with CONFIG_PERF_EVENTS options.
 
-> Hi Vasant,
-> 
-> > > OK. How about we just don't do that?
-> > 
-> > Yes. Hostboot will fix that. It will make sure that HBRT is loaded
-> > into regular memory.
-> 
-> Super.
-> 
-> > > It sounds like we're just trying to work around an invalid
-> > > representation of the mappings.
-> > 
-> > Its not workaround. Its additional check.
-> 
-> The issue is that you've added a check for stuff that the kernel doesn't
-> (and shouldn't) know about, and assumed that the kernel knows better
-> than the device tree. It may be the correct thing to do in this case,
-> but we can't guarantee that it's always correct.
+Tested this patch with enable/disable CONFIG_PERF_EVENTS option
+in powernv and pseries machines.
+Also did compilation testing with book3s_32.config.
 
-Good point on the policy ownership.
+Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 
-> For example, what if there is a future HBRT range that is fine to go
-> into NVRAM? With this change, that's not possible.
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+---
+ arch/powerpc/kernel/sysfs.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-The current topic is who owns setting up the ATT bits for that piece
-of memory.  It is the kernel today.  Kernel decides to set this up as
-normal memory or I/O memory and sets the bits in page table entry.
-
-> Or, what if there's a range of address-space that isn't backed by system
-> RAM (say, some MMIO-mapped hardware) that we want to expose to a future
-> HBRT implementation? This change will block that.
-> 
-> The kernel doesn't know what is and is not valid for a HBRT mapping, so
-> it has no reason to override what's specified in the device tree. We've
-> designed this so that the kernel provides the mechanism for mapping
-> pages, and not the policy of which pages can be mapped.
-
-The features altered are cache inhibit and guarding which affects
-ability to fetch instructions.  If we allow HBRT to reside in an I/O
-memory, the we need to tell kernel that it is ok to allow caching and
-instruction execution in that region and accordingly change the ATT
-bits.
-
-This patch does not block a working function, but actually makes
-debugging a failed case easier.  The failing scenario without this
-check is such that HBRT cannot fetch from the region of memory and
-loops in minor page faults doing nothing.  
-
-As Vasant mentioned hostboot team will add code to relocate the HBRT
-to the right place.  Addressing your concern, if we end up allowing
-HBRT in non system-RAM area, we need to add some more flags in device
-tree to instruct the driver to force change the page protection bits
-as page_prot = pgprot_cached(page_prot); It does not make sense to
-keep the region cache inhibited and just clear the Guard bit
-(ATT=0b10 - non-idempotent I/O) so we should force to normal memory
-ATT=0b00.
-
-In summary, this check does not block any working function today.  We
-fail to execute HBRT code after we successfully mmap() the memory
-anyway.
-
-When we need to move firmware components to other types of memory, we
-should do a future patch to indicate in device tree that this is non
-system-RAM and kernel should change PTE permissions and then setup the
-mmap(). Or HBRT really has a use for NVRAM in which case we explicitly
-need to indicate (via device-tree) the required attribute for this
-mapping.
-
---Vaidy
+diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+index e2147d7c9e72..263023cc6308 100644
+--- a/arch/powerpc/kernel/sysfs.c
++++ b/arch/powerpc/kernel/sysfs.c
+@@ -456,16 +456,21 @@ static ssize_t __used \
+ 
+ #if defined(CONFIG_PPC64)
+ #define HAS_PPC_PMC_CLASSIC	1
++#if defined(CONFIG_PERF_EVENTS)
+ #define HAS_PPC_PMC_IBM		1
++#endif
+ #define HAS_PPC_PMC_PA6T	1
+ #elif defined(CONFIG_PPC_BOOK3S_32)
+ #define HAS_PPC_PMC_CLASSIC	1
++#if defined(CONFIG_PERF_EVENTS)
+ #define HAS_PPC_PMC_IBM		1
+ #define HAS_PPC_PMC_G4		1
+ #endif
++#endif
+ 
+ 
+ #ifdef HAS_PPC_PMC_CLASSIC
++#ifdef HAS_PPC_PMC_IBM
+ SYSFS_PMCSETUP(mmcr0, SPRN_MMCR0);
+ SYSFS_PMCSETUP(mmcr1, SPRN_MMCR1);
+ SYSFS_PMCSETUP(pmc1, SPRN_PMC1);
+@@ -484,6 +489,10 @@ SYSFS_PMCSETUP(pmc7, SPRN_PMC7);
+ SYSFS_PMCSETUP(pmc8, SPRN_PMC8);
+ 
+ SYSFS_PMCSETUP(mmcra, SPRN_MMCRA);
++#endif /* CONFIG_PPC64 */
++#endif /* HAS_PPC_PMC_IBM */
++
++#ifdef CONFIG_PPC64
+ SYSFS_SPRSETUP(purr, SPRN_PURR);
+ SYSFS_SPRSETUP(spurr, SPRN_SPURR);
+ SYSFS_SPRSETUP(pir, SPRN_PIR);
+@@ -494,7 +503,9 @@ SYSFS_SPRSETUP(tscr, SPRN_TSCR);
+   enable write when needed with a separate function.
+   Lets be conservative and default to pseries.
+ */
++#ifdef HAS_PPC_PMC_IBM
+ static DEVICE_ATTR(mmcra, 0600, show_mmcra, store_mmcra);
++#endif /* HAS_PPC_PMC_IBM */
+ static DEVICE_ATTR(spurr, 0400, show_spurr, NULL);
+ static DEVICE_ATTR(purr, 0400, show_purr, store_purr);
+ static DEVICE_ATTR(pir, 0400, show_pir, NULL);
+@@ -605,12 +616,14 @@ static void sysfs_create_dscr_default(void)
+ #endif /* CONFIG_PPC64 */
+ 
+ #ifdef HAS_PPC_PMC_PA6T
++#ifdef HAS_PPC_PMC_IBM
+ SYSFS_PMCSETUP(pa6t_pmc0, SPRN_PA6T_PMC0);
+ SYSFS_PMCSETUP(pa6t_pmc1, SPRN_PA6T_PMC1);
+ SYSFS_PMCSETUP(pa6t_pmc2, SPRN_PA6T_PMC2);
+ SYSFS_PMCSETUP(pa6t_pmc3, SPRN_PA6T_PMC3);
+ SYSFS_PMCSETUP(pa6t_pmc4, SPRN_PA6T_PMC4);
+ SYSFS_PMCSETUP(pa6t_pmc5, SPRN_PA6T_PMC5);
++#endif /* HAS_PPC_PMC_IBM */
+ #ifdef CONFIG_DEBUG_MISC
+ SYSFS_SPRSETUP(hid0, SPRN_HID0);
+ SYSFS_SPRSETUP(hid1, SPRN_HID1);
+@@ -648,7 +661,6 @@ static struct device_attribute ibm_common_attrs[] = {
+ 	__ATTR(mmcr0, 0600, show_mmcr0, store_mmcr0),
+ 	__ATTR(mmcr1, 0600, show_mmcr1, store_mmcr1),
+ };
+-#endif /* HAS_PPC_PMC_G4 */
+ 
+ #ifdef HAS_PPC_PMC_G4
+ static struct device_attribute g4_common_attrs[] = {
+@@ -670,9 +682,11 @@ static struct device_attribute classic_pmc_attrs[] = {
+ 	__ATTR(pmc8, 0600, show_pmc8, store_pmc8),
+ #endif
+ };
++#endif /* HAS_PPC_PMC_IBM */
+ 
+ #ifdef HAS_PPC_PMC_PA6T
+ static struct device_attribute pa6t_attrs[] = {
++#ifdef HAS_PPC_PMC_IBM
+ 	__ATTR(mmcr0, 0600, show_mmcr0, store_mmcr0),
+ 	__ATTR(mmcr1, 0600, show_mmcr1, store_mmcr1),
+ 	__ATTR(pmc0, 0600, show_pa6t_pmc0, store_pa6t_pmc0),
+@@ -681,6 +695,7 @@ static struct device_attribute pa6t_attrs[] = {
+ 	__ATTR(pmc3, 0600, show_pa6t_pmc3, store_pa6t_pmc3),
+ 	__ATTR(pmc4, 0600, show_pa6t_pmc4, store_pa6t_pmc4),
+ 	__ATTR(pmc5, 0600, show_pa6t_pmc5, store_pa6t_pmc5),
++#endif /* HAS_PPC_PMC_IBM */
+ #ifdef CONFIG_DEBUG_MISC
+ 	__ATTR(hid0, 0600, show_hid0, store_hid0),
+ 	__ATTR(hid1, 0600, show_hid1, store_hid1),
+@@ -769,8 +784,10 @@ static int register_cpu_online(unsigned int cpu)
+ 			device_create_file(s, &pmc_attrs[i]);
+ 
+ #ifdef CONFIG_PPC64
++#ifdef HAS_PPC_PMC_IBM
+ 	if (cpu_has_feature(CPU_FTR_MMCRA))
+ 		device_create_file(s, &dev_attr_mmcra);
++#endif
+ 
+ 	if (cpu_has_feature(CPU_FTR_PURR)) {
+ 		if (!firmware_has_feature(FW_FEATURE_LPAR))
+@@ -858,8 +875,10 @@ static int unregister_cpu_online(unsigned int cpu)
+ 			device_remove_file(s, &pmc_attrs[i]);
+ 
+ #ifdef CONFIG_PPC64
++#ifdef HAS_PPC_PMC_IBM
+ 	if (cpu_has_feature(CPU_FTR_MMCRA))
+ 		device_remove_file(s, &dev_attr_mmcra);
++#endif
+ 
+ 	if (cpu_has_feature(CPU_FTR_PURR))
+ 		device_remove_file(s, &dev_attr_purr);
+-- 
+2.21.0
 
