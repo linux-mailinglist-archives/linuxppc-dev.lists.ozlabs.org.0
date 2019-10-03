@@ -1,85 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4004BC9689
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 03:56:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57813C9692
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 04:02:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46kGMM449VzDq9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 11:56:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46kGVk730YzDqVq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2019 12:02:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46kFx151PpzDqW8
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 11:37:09 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x931Wa4r039539; Wed, 2 Oct 2019 21:36:19 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vd39knu4f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Oct 2019 21:36:19 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x931Wb5A039693;
- Wed, 2 Oct 2019 21:36:18 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vd39knu3y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Oct 2019 21:36:18 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x931RA9i013458;
- Thu, 3 Oct 2019 01:36:17 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma01dal.us.ibm.com with ESMTP id 2v9y59tn27-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Oct 2019 01:36:17 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x931aFKI48365826
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 3 Oct 2019 01:36:15 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2DD6C78064;
- Thu,  3 Oct 2019 01:36:15 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C1A3A78060;
- Thu,  3 Oct 2019 01:36:02 +0000 (GMT)
-Received: from LeoBras.ibmuc.com (unknown [9.85.174.224])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  3 Oct 2019 01:36:02 +0000 (GMT)
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v5 11/11] powerpc/mm/book3s64/pgtable: Uses counting method to
- skip serializing
-Date: Wed,  2 Oct 2019 22:33:25 -0300
-Message-Id: <20191003013325.2614-12-leonardo@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191003013325.2614-1-leonardo@linux.ibm.com>
-References: <20191003013325.2614-1-leonardo@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46kG925XhNzDqSK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2019 11:47:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="WBotX7+O"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 46kG906NMKz9sDB; Thu,  3 Oct 2019 11:47:32 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46kG902W4Tz9sCJ;
+ Thu,  3 Oct 2019 11:47:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1570067252; bh=GTIyz0yKEF3jYHEusTqus7mlajcbyoXLsW6mg8gBA4w=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=WBotX7+OPZmjUAXgsmDdncGSnZkxYEaSLTw+9Fw+rwqBfYqCT7fvyWGw/SjyDHih6
+ IS+6+CchY0ICAxYvmIF8qxS2oKhUQ+3I+sf9gC45WH3QNIQwlJ8K9Hof75DBBlKL5z
+ 3Ou0uHw2McsAK3Hoygfkk0VA3qK154tfnUQFPagX7k+2E0AweZuterfTy2j/4Ow1b5
+ WVYeEOIcKeduXevJLWo/fAGVVMmN6Ih/8CtnrwgNiNYjYm4qdC81+VqStkpQroJq2E
+ WGg/ZScg0OwMf82UUNxggJ4LQUpAQcQU+WoKwPMbmbYcnQD19fVlC5Z4AkpNCptXm6
+ NqQrHBzzfPX9w==
+Message-ID: <2bb75b409a1159d5524be2d661e548e32fed152e.camel@ozlabs.org>
+Subject: Re: [PATCH] powerpc/powernv/prd: Validate whether address to be
+ mapped is part of system RAM
+From: Jeremy Kerr <jk@ozlabs.org>
+To: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org
+Date: Thu, 03 Oct 2019 09:47:31 +0800
+In-Reply-To: <20191002074856.15014-1-hegdevasant@linux.vnet.ibm.com>
+References: <20191002074856.15014-1-hegdevasant@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-03_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=636 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910030012
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,61 +61,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- "Dmitry V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
- Paul Mackerras <paulus@samba.org>, Christoph Lameter <cl@linux.com>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Andrea Arcangeli <aarcange@redhat.com>, Santosh Sivaraj <santosh@fossix.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Allison Randal <allison@lohutok.net>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Leonardo Bras <leonardo@linux.ibm.com>, Alexey Dobriyan <adobriyan@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, Ralph Campbell <rcampbell@nvidia.com>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- John Hubbard <jhubbard@nvidia.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Dan Williams <dan.j.williams@intel.com>, Reza Arbab <arbab@linux.ibm.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Christian Brauner <christian.brauner@ubuntu.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Logan Gunthorpe <logang@deltatee.com>, Roman Gushchin <guro@fb.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Skips slow part of serialize_against_pte_lookup if there is no running
-lockless pagetable walk.
+Hi Vasant,
 
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
----
- arch/powerpc/mm/book3s64/pgtable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> Add check to validate whether requested page is part of system RAM
+> or not before mmap() and error out if its not part of system RAM.
 
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index ae557fdce9a3..0fef9400f210 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -95,7 +95,8 @@ static void do_nothing(void *unused)
- void serialize_against_pte_lookup(struct mm_struct *mm)
- {
- 	smp_mb();
--	smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
-+	if (running_lockless_pgtbl_walk(mm))
-+		smp_call_function_many(mm_cpumask(mm), do_nothing, NULL, 1);
- }
- 
- /*
--- 
-2.20.1
+opal_prd_range_is_valid() will return false if the reserved memory range
+does not have an ibm,prd-label property. If this you're getting invalid
+memory mapped through the PRD interface, that means the device tree is
+incorrectly describing those ranges.
+
+Or am I missing something?
+
+Cheers,
+
+
+Jeremy
+
 
