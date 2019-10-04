@@ -1,81 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A615CB82C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 12:24:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F13CB915
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 13:27:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46l5b82fbDzDqfB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 20:24:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46l6zd0W3XzDqf3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 21:27:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=oracle.com
- (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.b="A4a38goz"; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46l5Y06rdRzDq61
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 20:22:38 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x94AKnml190786;
- Fri, 4 Oct 2019 10:22:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=2UV26P4ketlNysONmYpv3j5Ps/gkGQhgfAYzlI/2ahg=;
- b=A4a38gozyBdoeQc9ASrTN/Fa+X/05grnIq2WWzMHtluSNH11XaCStdCVogznvJSqUeJH
- ZHHKOh5Wu4Hh1Bzzu3DtHeE+DdQG+kPgY66KKs3+KhKqywN9OILeSrERQOsFj1xir/pE
- 9g1aniKkLti48S8THnT+71uAIhOzxP1x8FlhVgvkIpkoFiUbCmu5OBUud3DF+rEWHB5v
- FUBwv+PJNn6JtN8lcFkvIeUzbpfTqB4bLV2Xx3q1O2BTLPymxpGINqwLeyTJYxHPc24S
- IczrGB/ev2kr3JGvGCp9V4oNNX1tHV6LEYfJ/X+w+ioqU/D10lKwmSwhv5MF+n4broR+ 1g== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
- by aserp2120.oracle.com with ESMTP id 2v9yfqtame-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 04 Oct 2019 10:22:27 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
- by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x94AIrHZ153294;
- Fri, 4 Oct 2019 10:22:27 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3030.oracle.com with ESMTP id 2vdxu8g5uc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 04 Oct 2019 10:22:27 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x94AMM31028990;
- Fri, 4 Oct 2019 10:22:23 GMT
-Received: from mwanda (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Fri, 04 Oct 2019 03:22:21 -0700
-Date: Fri, 4 Oct 2019 13:22:09 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Timur Tabi <timur@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: [PATCH] ASoC: fsl_mqs: Fix error handling in probe
-Message-ID: <20191004102208.GB823@mwanda>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46l6x00YmczDqcn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 21:25:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=RXKGx8X/1FKuOuVTe5a+zqWHCcREtJtzpf0mmOIuvz8=; b=ZnsQjPYPqZqfl38X4184WJZaF
+ IYI0tUAi3WvtFfwDF0F7a/z/9DOD3bKMVBAWXGmHRNf7hNtFvXJvmis0Vx2M21gA7KXvL/dhCzCb/
+ u5a5KdVT6IZKTbJ44Y1idOc//bRcOX9/SKd8UzoqsZkGsVLIY1NjnS2kkt+LesFbCQy0e0E+HXzMk
+ EjbwXR2oPQO67RrgJR4a2azNCgtEzeN2UpIRClq45dXeObg7fRoZC+8hTQpdNmwXMmhSVkwSRczJv
+ Sgtn+GLMpXxswWi2KXhjwrRntT6prFNu60S3ZLgFuy3kWbwoYAIc5BDl8xIJwPWMPOI5wQzyTOcWz
+ YAkdtWSzA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iGLhD-0000Hy-LH; Fri, 04 Oct 2019 11:24:27 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id DD6E9305ED5;
+ Fri,  4 Oct 2019 13:23:31 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 60366203E50D2; Fri,  4 Oct 2019 13:24:21 +0200 (CEST)
+Date: Fri, 4 Oct 2019 13:24:21 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v5 01/11] asm-generic/pgtable: Adds generic functions to
+ monitor lockless pgtable walks
+Message-ID: <20191004112421.GB19463@hirez.programming.kicks-ass.net>
+References: <20191003013325.2614-1-leonardo@linux.ibm.com>
+ <20191003013325.2614-2-leonardo@linux.ibm.com>
+ <20191003071145.GM4536@hirez.programming.kicks-ass.net>
+ <20191003115141.GJ4581@hirez.programming.kicks-ass.net>
+ <c127ee98-094b-d5c0-0a42-6d01c16a72d9@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <c127ee98-094b-d5c0-0a42-6d01c16a72d9@nvidia.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9399
- signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910040096
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9399
- signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910040096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,108 +73,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>,
- kernel-janitors@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- linux-kernel@vger.kernel.org
+Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
+ "Dmitry V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>, linux-arch@vger.kernel.org,
+ Santosh Sivaraj <santosh@fossix.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Leonardo Bras <leonardo@linux.ibm.com>, Alexey Dobriyan <adobriyan@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Andrea Arcangeli <aarcange@redhat.com>,
+ Ralph Campbell <rcampbell@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm-ppc@vger.kernel.org,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Reza Arbab <arbab@linux.ibm.com>,
+ Allison Randal <allison@lohutok.net>, Paul McKenney <Paul.McKenney@us.ibm.com>,
+ Christian Brauner <christian.brauner@ubuntu.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>, Souptick Joarder <jrdr.linux@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Roman Gushchin <guro@fb.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are several problems in the error handling in fsl_mqs_probe().
+On Thu, Oct 03, 2019 at 01:40:38PM -0700, John Hubbard wrote:
+> On 10/3/19 4:51 AM, Peter Zijlstra wrote:
+> > On Thu, Oct 03, 2019 at 09:11:45AM +0200, Peter Zijlstra wrote:
+> >> On Wed, Oct 02, 2019 at 10:33:15PM -0300, Leonardo Bras wrote:
+> ...
+> > 
+> > I'm still really confused about this barrier. It just doesn't make
+> > sense.
+> > 
+> > If an interrupt happens before the local_irq_disable()/save(), then it
+> > will discard any and all speculation that would be in progress to handle
+> > the exception.
+> > 
+> 
+> Hi Peter,
+> 
+> So, would that imply that it's correct to apply approximately the following
+> patch:
+> 
+> diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
+> index 1adbb8a371c7..cf41eff37e24 100644
+> --- a/Documentation/memory-barriers.txt
+> +++ b/Documentation/memory-barriers.txt
+> @@ -2099,9 +2099,9 @@ INTERRUPT DISABLING FUNCTIONS
+>  -----------------------------
+>  
+>  Functions that disable interrupts (ACQUIRE equivalent) and enable interrupts
+> -(RELEASE equivalent) will act as compiler barriers only.  So if memory or I/O
+> -barriers are required in such a situation, they must be provided from some
+> -other means.
+> +(RELEASE equivalent) will act as full memory barriers. This is because, for
+> +all supported CPU architectures, interrupt arrival causes all speculative
+> +memory accesses to be discarded.
+>  
+> ?
 
-1) "ret" isn't initialized on some paths.  GCC has a feature which
-   warns about uninitialized variables but the code initializes "ret"
-   to zero at the start of the function so the checking is turned off.
-2) "gpr_np" is a pointer so initializing it to zero is confusing and
-   generates a Sparse warning.
-3) of_parse_phandle() doesn't return error pointers on error, it returns
-   NULL.
-4) If devm_snd_soc_register_component() fails then the function should
-   free the "gpr_np".
-
-Fixes: 9e28f6532c61 ("ASoC: fsl_mqs: Add MQS component driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- sound/soc/fsl/fsl_mqs.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
-index c1619a553514..f5f2f659bcbf 100644
---- a/sound/soc/fsl/fsl_mqs.c
-+++ b/sound/soc/fsl/fsl_mqs.c
-@@ -179,10 +179,10 @@ static const struct regmap_config fsl_mqs_regmap_config = {
- static int fsl_mqs_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	struct device_node *gpr_np = 0;
-+	struct device_node *gpr_np = NULL;
- 	struct fsl_mqs *mqs_priv;
- 	void __iomem *regs;
--	int ret = 0;
-+	int ret;
- 
- 	mqs_priv = devm_kzalloc(&pdev->dev, sizeof(*mqs_priv), GFP_KERNEL);
- 	if (!mqs_priv)
-@@ -199,17 +199,16 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 
- 	if (mqs_priv->use_gpr) {
- 		gpr_np = of_parse_phandle(np, "gpr", 0);
--		if (IS_ERR(gpr_np)) {
-+		if (!gpr_np) {
- 			dev_err(&pdev->dev, "failed to get gpr node by phandle\n");
--			ret = PTR_ERR(gpr_np);
--			goto out;
-+			return -EINVAL;
- 		}
- 
- 		mqs_priv->regmap = syscon_node_to_regmap(gpr_np);
- 		if (IS_ERR(mqs_priv->regmap)) {
- 			dev_err(&pdev->dev, "failed to get gpr regmap\n");
- 			ret = PTR_ERR(mqs_priv->regmap);
--			goto out;
-+			goto err_free_gpr_np;
- 		}
- 	} else {
- 		regs = devm_platform_ioremap_resource(pdev, 0);
-@@ -230,7 +229,7 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 		if (IS_ERR(mqs_priv->ipg)) {
- 			dev_err(&pdev->dev, "failed to get the clock: %ld\n",
- 				PTR_ERR(mqs_priv->ipg));
--			goto out;
-+			return PTR_ERR(mqs_priv->ipg);
- 		}
- 	}
- 
-@@ -238,17 +237,21 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 	if (IS_ERR(mqs_priv->mclk)) {
- 		dev_err(&pdev->dev, "failed to get the clock: %ld\n",
- 			PTR_ERR(mqs_priv->mclk));
--		goto out;
-+		ret = PTR_ERR(mqs_priv->mclk);
-+		goto err_free_gpr_np;
- 	}
- 
- 	dev_set_drvdata(&pdev->dev, mqs_priv);
- 	pm_runtime_enable(&pdev->dev);
- 
--	return devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
-+	ret = devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
- 			&fsl_mqs_dai, 1);
--out:
--	if (!IS_ERR(gpr_np))
--		of_node_put(gpr_np);
-+	if (ret)
-+		goto err_free_gpr_np;
-+	return 0;
-+
-+err_free_gpr_np:
-+	of_node_put(gpr_np);
- 
- 	return ret;
- }
--- 
-2.20.1
-
+No, you're misunderstanding. They imply nothing of the sort.
