@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D981CB58C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 09:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7B6CB588
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 09:55:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46l2KT3ZJQzDqBy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 17:57:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46l2HF1YDWzDqC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 17:55:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,61 +16,61 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="WmvP+8v0"; 
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="Gt4jIzSc"; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="mFPAc+GO"; dkim-atps=neutral
+ header.b="XxRBTMbV"; dkim-atps=neutral
 Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
  [64.147.123.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46l2BZ6TsPzDqbk
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 17:51:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46l2Bb3FJHzDqbm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 17:51:32 +1000 (AEST)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id 00FCA51D;
- Fri,  4 Oct 2019 03:51:25 -0400 (EDT)
+ by mailout.west.internal (Postfix) with ESMTP id 92613527;
+ Fri,  4 Oct 2019 03:51:29 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Fri, 04 Oct 2019 03:51:26 -0400
+ by compute6.internal (MEProxy); Fri, 04 Oct 2019 03:51:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm3; bh=2+HlUQKeP5NUw
- AG28BrzwAWEjn5cqHZMQi5EL+7gFgI=; b=WmvP+8v0jgZcuNaAlcJ6vUahsqOck
- MhIQq74GDHHI7SQX1b7KQs0zuqXg/q7mdAq4glTHM99tGdtRk048KRC8UyP3YwjK
- IOWySHExsPmJN53eGgEEOCYfTSp2XMliZyzKXIsysOkE5TvYduu959rDFF4FffIR
- 0BQcP2qSMwOkF+sE8qd/x2BjBX2p2nlkEB+cPdYvuJMUnVGdeVTHOsChSk1d2n46
- 2q9N7EsF/5yGMBr1B74vDNOyuNktYlpYmVM5YRLAg9mxN3gc4/NfPVY0CvD0RwVJ
- YbsS6LNHN+aMUCGSWgfYWZuJYTM9jA8FsILKXxEcfhKSUbtBDCPGAaMyA==
+ :mime-version:content-transfer-encoding; s=fm3; bh=84GAe97wSSrJ+
+ RLtJE/uwAKdBCLCrrIFVnAIva0xZlw=; b=Gt4jIzSceMH89g7CK4vVme7Pn+wv8
+ Y8y1VZxjQ89NGMI2qAPx5orArDtPfYBEibxKQKkgN/VYlT8fbEI1wzUOJmcbvKFu
+ 6j06uco9gA2dCdvhvMO/iQof2hmsz4SQ/k3TGmjK4qqaWAgMinwRlTaCZzxO2JIL
+ 5OGM0bEqMtmdlGo8VHvlJlZQHN8cTLUePeXO9bxKqi1d3/UWeu+RueQTuluK283X
+ 0hZFSrrVXBum0nKgAt3uRhKYJFHx+1pIyB/mn9UynlZVeixRk9UgW7I/5NLeHOvs
+ lCSGA3c0Xy9oj5XnsY3AmIHqo9VTwV7SNXzmfpQrxro4KAbikdWMJAl+w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
  :in-reply-to:message-id:mime-version:references:subject:to
  :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; bh=2+HlUQKeP5NUwAG28BrzwAWEjn5cqHZMQi5EL+7gFgI=; b=mFPAc+GO
- xU/bI5PvCOwzRDoAtnv8dV+B6WhaXKj9Z9cDY5qqRVJ/G7bnHtwm8hCVA842u38+
- L1WqY3ARCLxh3SWwrckfp17W/z11cQkfD+HBC6JHMXzEARKmZcB625VqYfjoW4sP
- DV8E82bK9oOxRwWn52J75jY+BYMJZURqfKTHe5SC1Z0Gk/1Dikpg4JcGzWwSo6Po
- ZvRfhJUPGz/l7g40sjaA4B7FASlORMIIv7Xhm8gjPROd+8fRte07Mq140rnQ2xwk
- 0HCyQ8frSgJzCZcv5/phqwmKnD7eMPJq6Fy5FeP5WiIWmegHkl2vFucXbTUf8v19
- ipfvQWqPRS1NLA==
-X-ME-Sender: <xms:_fmWXdpa-5eDqM7To9dCYqikEbSXHcdXrZuJgGFai9eptyz0ni4Aag>
+ fm3; bh=84GAe97wSSrJ+RLtJE/uwAKdBCLCrrIFVnAIva0xZlw=; b=XxRBTMbV
+ KYeFcOPaQ25G/uC7wnMlGtjT0Zzwhsgi3VNX/7NjUSKk1tMJ2guYB2UmNMllvqsE
+ 526/Jf8CbZbu5umNIh0VfO2d/YT6V0O1CkisQQrxMXATsKfbbNgthNlPZ2LQELT4
+ rzASmncGSWyRupOcNZ5Gjg+b0pwez97bJeYtOw11bXM7BQaJzlk19C4EnNxyXmO4
+ uTe7wiWEM+CJnereLzdJjGt75wucKlvIrf1ioWpw0kNwfYHoeYfS8wkKIcaB6SDH
+ d5QkkzXNpJBE1GjRn8PKzzqm9TqQLEVz5gn8P/3tqB5lfOpwL/3prHnal3BBQgXD
+ +DDPmP2iYVut5w==
+X-ME-Sender: <xms:AfqWXQZG7eqVTlBgPdRKHmjq7D22Idt9P5OFA_CrLOtYOVYrS7l7VQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrhedtgdehlecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
  uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephffvuf
  ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
  hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvd
  druddtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdr
- tggtnecuvehluhhsthgvrhfuihiivgeptd
-X-ME-Proxy: <xmx:_fmWXYl_TzwZ8NWSPU4tNqdTNKnLJ1_-p94JC66TDZNGLvWy8duQUQ>
- <xmx:_fmWXS-JNuEGbVYHNsGARooA3NrypNEqtTGuczEc52aZoztCfolRHQ>
- <xmx:_fmWXcC9Vkf5nPIogen53p8YXt5Emo45QENixqNUwkjLes2anCoTlw>
- <xmx:_fmWXWc-_-gq8QkMVEaDHikKpLlA8sQXc1tLuzk6iE1dmHsjZOjFzQ>
+ tggtnecuvehluhhsthgvrhfuihiivgepud
+X-ME-Proxy: <xmx:AfqWXXshI7fd9usBPRLl-2k3lyucis2ehyWddnxmxSjZG7koOLCRxQ>
+ <xmx:AfqWXdvMbCAJO_CzKKXSmySTS6bzlkZGazalnv2KmTaWRq9HqNKU7A>
+ <xmx:AfqWXcea1yrlAtn5bSmXyO6Hj1by-T_F3nnRd9wiyS17vHu_inKJqw>
+ <xmx:AfqWXbS-wS7PpuDuvHCF9_JdwD8ApPZ6oLaRU0fcT00291WL_v5BjQ>
 Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 776BE80061;
- Fri,  4 Oct 2019 03:51:22 -0400 (EDT)
+ by mail.messagingengine.com (Postfix) with ESMTPA id 17A5E80064;
+ Fri,  4 Oct 2019 03:51:25 -0400 (EDT)
 From: Russell Currey <ruscur@russell.cc>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 1/4] powerpc/mm: Implement set_memory() routines
-Date: Fri,  4 Oct 2019 17:50:47 +1000
-Message-Id: <20191004075050.73327-2-ruscur@russell.cc>
+Subject: [PATCH v3 2/4] powerpc/kprobes: Mark newly allocated probes as RO
+Date: Fri,  4 Oct 2019 17:50:48 +1000
+Message-Id: <20191004075050.73327-3-ruscur@russell.cc>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191004075050.73327-1-ruscur@russell.cc>
 References: <20191004075050.73327-1-ruscur@russell.cc>
@@ -93,149 +93,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The set_memory_{ro/rw/nx/x}() functions are required for STRICT_MODULE_RWX,
-and are generally useful primitives to have.  This implementation is
-designed to be completely generic across powerpc's many MMUs.
+With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will be one
+W+X page at boot by default.  This can be tested with
+CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking the
+kernel log during boot.
 
-It's possible that this could be optimised to be faster for specific
-MMUs, but the focus is on having a generic and safe implementation for
-now.
+powerpc doesn't implement its own alloc() for kprobes like other
+architectures do, but we couldn't immediately mark RO anyway since we do
+a memcpy to the page we allocate later.  After that, nothing should be
+allowed to modify the page, and write permissions are removed well
+before the kprobe is armed.
 
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 ---
- arch/powerpc/Kconfig                  |  1 +
- arch/powerpc/include/asm/set_memory.h | 32 ++++++++++++++
- arch/powerpc/mm/Makefile              |  1 +
- arch/powerpc/mm/pageattr.c            | 60 +++++++++++++++++++++++++++
- 4 files changed, 94 insertions(+)
- create mode 100644 arch/powerpc/include/asm/set_memory.h
- create mode 100644 arch/powerpc/mm/pageattr.c
+ arch/powerpc/kernel/kprobes.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 3e56c9c2f16e..8f7005f0d097 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -133,6 +133,7 @@ config PPC
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
-+	select ARCH_HAS_SET_MEMORY
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
-diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-new file mode 100644
-index 000000000000..5230ddb2fefd
---- /dev/null
-+++ b/arch/powerpc/include/asm/set_memory.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_POWERPC_SET_MEMORY_H
-+#define _ASM_POWERPC_SET_MEMORY_H
-+
-+#define SET_MEMORY_RO	1
-+#define SET_MEMORY_RW	2
-+#define SET_MEMORY_NX	3
-+#define SET_MEMORY_X	4
-+
-+int change_memory_attr(unsigned long addr, int numpages, int action);
-+
-+static inline int set_memory_ro(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_RO);
-+}
-+
-+static inline int set_memory_rw(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_RW);
-+}
-+
-+static inline int set_memory_nx(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_NX);
-+}
-+
-+static inline int set_memory_x(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_X);
-+}
-+
-+#endif
-diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-index 5e147986400d..d0a0bcbc9289 100644
---- a/arch/powerpc/mm/Makefile
-+++ b/arch/powerpc/mm/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_HIGHMEM)		+= highmem.o
- obj-$(CONFIG_PPC_COPRO_BASE)	+= copro_fault.o
- obj-$(CONFIG_PPC_PTDUMP)	+= ptdump/
- obj-$(CONFIG_KASAN)		+= kasan/
-+obj-$(CONFIG_ARCH_HAS_SET_MEMORY) += pageattr.o
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-new file mode 100644
-index 000000000000..fe3ecbfb8e10
---- /dev/null
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * MMU-generic set_memory implementation for powerpc
-+ *
-+ * Author: Russell Currey <ruscur@russell.cc>
-+ *
-+ * Copyright 2019, IBM Corporation.
-+ */
-+
-+#include <linux/mm.h>
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index 2d27ec4feee4..2610496de7c7 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -24,6 +24,7 @@
+ #include <asm/sstep.h>
+ #include <asm/sections.h>
+ #include <linux/uaccess.h>
 +#include <linux/set_memory.h>
+ 
+ DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
+ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+@@ -131,6 +132,8 @@ int arch_prepare_kprobe(struct kprobe *p)
+ 			(unsigned long)p->ainsn.insn + sizeof(kprobe_opcode_t));
+ 	}
+ 
++	set_memory_ro((unsigned long)p->ainsn.insn, 1);
 +
-+#include <asm/mmu.h>
-+#include <asm/page.h>
-+#include <asm/pgtable.h>
-+
-+static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
-+{
-+	int action = *((int *)data);
-+	pte_t pte_val;
-+
-+	// invalidate the PTE so it's safe to modify
-+	pte_val = ptep_get_and_clear(&init_mm, addr, ptep);
-+	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+
-+	// modify the PTE bits as desired, then apply
-+	switch (action) {
-+	case SET_MEMORY_RO:
-+		pte_val = pte_wrprotect(pte_val);
-+		break;
-+	case SET_MEMORY_RW:
-+		pte_val = pte_mkwrite(pte_val);
-+		break;
-+	case SET_MEMORY_NX:
-+		pte_val = pte_exprotect(pte_val);
-+		break;
-+	case SET_MEMORY_X:
-+		pte_val = pte_mkexec(pte_val);
-+		break;
-+	default:
-+		WARN_ON(true);
-+		return -EINVAL;
-+	}
-+
-+	set_pte_at(&init_mm, addr, ptep, pte_val);
-+
-+	return 0;
-+}
-+
-+int change_memory_attr(unsigned long addr, int numpages, int action)
-+{
-+	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
-+	unsigned long size = numpages * PAGE_SIZE;
-+
-+	if (!numpages)
-+		return 0;
-+
-+	return apply_to_page_range(&init_mm, start, size, change_page_attr, &action);
-+}
+ 	p->ainsn.boostable = 0;
+ 	return ret;
+ }
 -- 
 2.23.0
 
