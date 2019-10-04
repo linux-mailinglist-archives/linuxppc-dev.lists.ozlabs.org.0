@@ -2,68 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3A5CB794
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 11:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A615CB82C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 12:24:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46l4l51DbmzDqbq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 19:46:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46l5b82fbDzDqfB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 20:24:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=oracle.com
+ (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
+ envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="PlQzWAeK"; 
+ unprotected) header.d=oracle.com header.i=@oracle.com header.b="A4a38goz"; 
  dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46l4j2308xzDqZx
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 19:44:36 +1000 (AEST)
-Received: by mail-io1-xd41.google.com with SMTP id z19so12248442ior.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Oct 2019 02:44:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=2AeOCuVNvbOiNRDsDLGaL1iRipTK66ZXvkDhGlOCNx0=;
- b=PlQzWAeK//l4dai5Q9PEC9E6SBkq/KqPOfoaLJEayRsUvoUoGXxI1BIpQmUk5IHU9x
- YQHN6e7vAgLrTVmTDs3Ju7MDwxozTWGElVuQ1kcLN8L+dytjPR+wdyQX6N0fEIdW5LXI
- D9VXgjieTqfOqZS+lvVYhegTd0VJzaYrvE7N3oNA8Pkxn68RkjwDmdV6aCtX8zU+QHXV
- mBZnhGbBIlfc3T4zGaoVMAjLaUV+p8wsw/NLLJDarU7/3oesnXEeDkcVJLGmt+vO/fK5
- h/E1cKWZ0B7aBaKOmFybXmLyyaCVI9GXonsF9m4K59qNYhprJVMss0oTGtC4QC1S17KD
- BpSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=2AeOCuVNvbOiNRDsDLGaL1iRipTK66ZXvkDhGlOCNx0=;
- b=BSKTzeU2yUoNH4+kwUoewTmZkQzGtonIZXGUfLGbItkP4wY96NoHPt8vge2oRSGlMd
- BHHxzeKSBLPOXbX13isNQBJ3j9FdcU5ptFz+CMysPl/vvVLkiGcLLHpv4RMJ3O34sL/n
- yAUTvoSmPi1RluK9yfk5xhd6DqN+Fp/9fxn6c5Vf1Sx4enK2Q07RWN0Ax2jgNMKEakJi
- mnJ8UHBietFsJCS1lghVofQfvQ1t21c5sLO/HikmN78X253p39TE7wdRQcsDhsLJf4u3
- lqmdQ710d1qN2MSRqAKhiMboB3bgtq3Hl6lqrSeihPqHIXYldWZY571bZ8CyMPIN1K8K
- o+8w==
-X-Gm-Message-State: APjAAAX7d4hJ7qQxGaBC6Y1hDMgBYYrjxlmmKvpYG8UzNJzLdABphSzY
- 1AYHhIrtG1kGfa1x1L1Mg5SAD63hekEmC7b3C60=
-X-Google-Smtp-Source: APXvYqxf69UnOPQlf1qEE2cUjLoLtiZyhIUG2CWiRBxhgOeXnw3vG1YvqS5BVpKmzz9TPpdBP242GzGCgDEkqTA6xtk=
-X-Received: by 2002:a6b:2b91:: with SMTP id
- r139mr12672354ior.293.1570182272541; 
- Fri, 04 Oct 2019 02:44:32 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46l5Y06rdRzDq61
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 20:22:38 +1000 (AEST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+ by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x94AKnml190786;
+ Fri, 4 Oct 2019 10:22:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=2UV26P4ketlNysONmYpv3j5Ps/gkGQhgfAYzlI/2ahg=;
+ b=A4a38gozyBdoeQc9ASrTN/Fa+X/05grnIq2WWzMHtluSNH11XaCStdCVogznvJSqUeJH
+ ZHHKOh5Wu4Hh1Bzzu3DtHeE+DdQG+kPgY66KKs3+KhKqywN9OILeSrERQOsFj1xir/pE
+ 9g1aniKkLti48S8THnT+71uAIhOzxP1x8FlhVgvkIpkoFiUbCmu5OBUud3DF+rEWHB5v
+ FUBwv+PJNn6JtN8lcFkvIeUzbpfTqB4bLV2Xx3q1O2BTLPymxpGINqwLeyTJYxHPc24S
+ IczrGB/ev2kr3JGvGCp9V4oNNX1tHV6LEYfJ/X+w+ioqU/D10lKwmSwhv5MF+n4broR+ 1g== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by aserp2120.oracle.com with ESMTP id 2v9yfqtame-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 04 Oct 2019 10:22:27 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x94AIrHZ153294;
+ Fri, 4 Oct 2019 10:22:27 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3030.oracle.com with ESMTP id 2vdxu8g5uc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 04 Oct 2019 10:22:27 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x94AMM31028990;
+ Fri, 4 Oct 2019 10:22:23 GMT
+Received: from mwanda (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Fri, 04 Oct 2019 03:22:21 -0700
+Date: Fri, 4 Oct 2019 13:22:09 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: Timur Tabi <timur@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: [PATCH] ASoC: fsl_mqs: Fix error handling in probe
+Message-ID: <20191004102208.GB823@mwanda>
 MIME-Version: 1.0
-References: <20191004084335.16157-2-oohall@gmail.com>
- <201910041712.WAe5vxcJ%lkp@intel.com>
-In-Reply-To: <201910041712.WAe5vxcJ%lkp@intel.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 4 Oct 2019 19:44:21 +1000
-Message-ID: <CAOSf1CHwRgvwiygsSD_wFwe07nLKeaPMadP3VWHc2RAPfDQ-zg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/powernv: Use common code for the symbol_map
- export
-To: kbuild test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9399
+ signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910040096
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9399
+ signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910040096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,89 +87,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kbuild-all@01.org
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>,
+ kernel-janitors@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 4, 2019 at 7:24 PM kbuild test robot <lkp@intel.com> wrote:
->
-> Hi Oliver,
->
-> I love your patch! Yet something to improve:
->
-> [auto build test ERROR on powerpc/next]
-> [cannot apply to v5.4-rc1 next-20191004]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
->
-> url:    https://github.com/0day-ci/linux/commits/Oliver-O-Halloran/powerpc-powernv-Rework-exports-to-support-subnodes/20191004-165257
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-> config: powerpc-allyesconfig (attached as .config)
-> compiler: powerpc64-linux-gcc (GCC) 7.4.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         GCC_VERSION=7.4.0 make.cross ARCH=powerpc
->
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
->
-> All errors (new ones prefixed by >>):
->
->    arch/powerpc/platforms/powernv/opal.c: In function 'opal_export_attrs':
-> >> arch/powerpc/platforms/powernv/opal.c:817:2: error: 'rc' undeclared (first use in this function); did you mean 'rq'?
->      rc = opal_add_one_export(opal_kobj, "symbol_map",
->      ^~
->      rq
->    arch/powerpc/platforms/powernv/opal.c:817:2: note: each undeclared identifier is reported only once for each function it appears in
->
+There are several problems in the error handling in fsl_mqs_probe().
 
-I really need to start checking stuff still compiles after a rebase
+1) "ret" isn't initialized on some paths.  GCC has a feature which
+   warns about uninitialized variables but the code initializes "ret"
+   to zero at the start of the function so the checking is turned off.
+2) "gpr_np" is a pointer so initializing it to zero is confusing and
+   generates a Sparse warning.
+3) of_parse_phandle() doesn't return error pointers on error, it returns
+   NULL.
+4) If devm_snd_soc_register_component() fails then the function should
+   free the "gpr_np".
 
-*sigh*
+Fixes: 9e28f6532c61 ("ASoC: fsl_mqs: Add MQS component driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ sound/soc/fsl/fsl_mqs.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
->    787
->    788  /*
->    789   * opal_export_attrs: creates a sysfs node for each property listed in
->    790   * the device-tree under /ibm,opal/firmware/exports/
->    791   * All new sysfs nodes are created under /opal/exports/.
->    792   * This allows for reserved memory regions (e.g. HDAT) to be read.
->    793   * The new sysfs nodes are only readable by root.
->    794   */
->    795  static void opal_export_attrs(void)
->    796  {
->    797          struct device_node *np;
->    798          struct kobject *kobj;
->    799
->    800          np = of_find_node_by_path("/ibm,opal/firmware/exports");
->    801          if (!np)
->    802                  return;
->    803
->    804          /* Create new 'exports' directory - /sys/firmware/opal/exports */
->    805          kobj = kobject_create_and_add("exports", opal_kobj);
->    806          if (!kobj) {
->    807                  pr_warn("kobject_create_and_add() of exports failed\n");
->    808                  return;
->    809          }
->    810
->    811          opal_add_exported_attrs(np, kobj);
->    812
->    813          /*
->    814           * NB: symbol_map existed before the generic export interface so it
->    815           * lives under the top level opal_kobj.
->    816           */
->  > 817          rc = opal_add_one_export(opal_kobj, "symbol_map",
->    818                                   np->parent, "symbol-map");
->    819          if (rc)
->    820                  pr_warn("Error %d creating OPAL symbols file\n", rc);
->    821
->    822          of_node_put(np);
->    823  }
->    824
->
-> ---
-> 0-DAY kernel test infrastructure                Open Source Technology Center
-> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
+index c1619a553514..f5f2f659bcbf 100644
+--- a/sound/soc/fsl/fsl_mqs.c
++++ b/sound/soc/fsl/fsl_mqs.c
+@@ -179,10 +179,10 @@ static const struct regmap_config fsl_mqs_regmap_config = {
+ static int fsl_mqs_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+-	struct device_node *gpr_np = 0;
++	struct device_node *gpr_np = NULL;
+ 	struct fsl_mqs *mqs_priv;
+ 	void __iomem *regs;
+-	int ret = 0;
++	int ret;
+ 
+ 	mqs_priv = devm_kzalloc(&pdev->dev, sizeof(*mqs_priv), GFP_KERNEL);
+ 	if (!mqs_priv)
+@@ -199,17 +199,16 @@ static int fsl_mqs_probe(struct platform_device *pdev)
+ 
+ 	if (mqs_priv->use_gpr) {
+ 		gpr_np = of_parse_phandle(np, "gpr", 0);
+-		if (IS_ERR(gpr_np)) {
++		if (!gpr_np) {
+ 			dev_err(&pdev->dev, "failed to get gpr node by phandle\n");
+-			ret = PTR_ERR(gpr_np);
+-			goto out;
++			return -EINVAL;
+ 		}
+ 
+ 		mqs_priv->regmap = syscon_node_to_regmap(gpr_np);
+ 		if (IS_ERR(mqs_priv->regmap)) {
+ 			dev_err(&pdev->dev, "failed to get gpr regmap\n");
+ 			ret = PTR_ERR(mqs_priv->regmap);
+-			goto out;
++			goto err_free_gpr_np;
+ 		}
+ 	} else {
+ 		regs = devm_platform_ioremap_resource(pdev, 0);
+@@ -230,7 +229,7 @@ static int fsl_mqs_probe(struct platform_device *pdev)
+ 		if (IS_ERR(mqs_priv->ipg)) {
+ 			dev_err(&pdev->dev, "failed to get the clock: %ld\n",
+ 				PTR_ERR(mqs_priv->ipg));
+-			goto out;
++			return PTR_ERR(mqs_priv->ipg);
+ 		}
+ 	}
+ 
+@@ -238,17 +237,21 @@ static int fsl_mqs_probe(struct platform_device *pdev)
+ 	if (IS_ERR(mqs_priv->mclk)) {
+ 		dev_err(&pdev->dev, "failed to get the clock: %ld\n",
+ 			PTR_ERR(mqs_priv->mclk));
+-		goto out;
++		ret = PTR_ERR(mqs_priv->mclk);
++		goto err_free_gpr_np;
+ 	}
+ 
+ 	dev_set_drvdata(&pdev->dev, mqs_priv);
+ 	pm_runtime_enable(&pdev->dev);
+ 
+-	return devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
++	ret = devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
+ 			&fsl_mqs_dai, 1);
+-out:
+-	if (!IS_ERR(gpr_np))
+-		of_node_put(gpr_np);
++	if (ret)
++		goto err_free_gpr_np;
++	return 0;
++
++err_free_gpr_np:
++	of_node_put(gpr_np);
+ 
+ 	return ret;
+ }
+-- 
+2.20.1
+
