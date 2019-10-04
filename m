@@ -2,61 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8D9CB37B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 05:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B48BFCB591
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 09:59:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46kwNH6z40zDqcS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 13:29:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46l2Md08KWzDqcg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 17:59:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46kwLK2cZ8zDqZm
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 13:27:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+ spf=pass (mailfrom) smtp.mailfrom=russell.cc
+ (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com;
+ envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="pK3CJJg5"; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 46kwLJ3y35z9sPv; Fri,  4 Oct 2019 13:27:52 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="BvjX+2QR"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="J/TEhDlQ"; dkim-atps=neutral
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
+ [64.147.123.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46kwLJ0dyWz9sPq;
- Fri,  4 Oct 2019 13:27:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1570159672; bh=TcbKMW5KH27R1xtA9D4Gjb+DmQsJsuiNBmb43VsXBBY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=pK3CJJg5Iz26eZzXO6aDT4OO1pSbBNtg0MaiclYPM8CXAZQMmy81Q6LfTGMYk21rJ
- OiyF7aE37uI26NHUZeBZtQuMm3Q5fn0eZvwtW7EuxCBkWR/PJRdGTI2SpJmKegoHr0
- qvyQZCNduvJYL/7SKVYzWWQ+JOoOflF2ZcGBjAcTO/3wjaniU6P8Vx4kWMl18YLD2q
- Rt0V90CqKPSe6iaIZLq1hmhATl6nwOVnUmE+QmYqyldwfrk8zOEqKY1PN7gEq0d879
- v1rgwQoaQbZhajPq21GU52W+Icn07sZ4mdZBZj/doh25o5xtzmO14NJaOgp9CvGuX5
- YbVzqUnmEOcYQ==
-Subject: Re: [PATCH] powerpc/powernv/prd: Validate whether address to be
- mapped is part of system RAM
-To: svaidy@linux.ibm.com
-References: <20191002074856.15014-1-hegdevasant@linux.vnet.ibm.com>
- <2bb75b409a1159d5524be2d661e548e32fed152e.camel@ozlabs.org>
- <0e8a4057-fbe7-9b1a-6613-ad500ebe8b67@linux.vnet.ibm.com>
- <049794f6a16f548bcb418d31fecf268cb4a335e5.camel@ozlabs.org>
- <9b9b529d-cad7-0ace-acf6-e07d0dea5670@linux.vnet.ibm.com>
- <452718dfe591c4718498aab6b5c7b68a95cf6c5a.camel@ozlabs.org>
- <20191003102940.GC3181@drishya.in.ibm.com>
-From: Jeremy Kerr <jk@ozlabs.org>
-Message-ID: <0b130833-6521-17eb-c693-8de4b6ef4d95@ozlabs.org>
-Date: Fri, 4 Oct 2019 11:27:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46l2Bb0CR4zDqbl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 17:51:27 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id 7CD8C50B;
+ Fri,  4 Oct 2019 03:51:23 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute6.internal (MEProxy); Fri, 04 Oct 2019 03:51:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm3; bh=yjVBuN8fDyv2tKTpnfD9VXR9yu
+ le3zNbO8vI7Gi7jkA=; b=BvjX+2QRkFCoBv32EqvQLN9iaT9oKWC6PTDWjpllaM
+ UVhEDDf16SrRjJHwy604muzyt4XPAbnm5SQMUHaXJBRCaWFFJe2Y4CLCAvzKxXm0
+ EDnuHTYuhKB5jk6ejKMB8BmK/yN32seZ17qCygbC+4lwkqpDL9lyzPNvii4TP6+q
+ qS66a+FttaCS/iKAg9vpnmR0Klgge8zbN0fFvn1HGzUhQOVMJjM5Le4UaJatze4T
+ ZONM9ulgPDXxSfSrfcY7w9Hy+iGYUEEpNzR0XIXNqEvH1RmdRoIe/RG48M3QTK/V
+ xPbFSC7GIeGhZ2evlqWClxl2dXnqalVKVwjWY83BPsHQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=yjVBuN8fDyv2tKTpn
+ fD9VXR9yule3zNbO8vI7Gi7jkA=; b=J/TEhDlQfM6dVOyu8glYBIjlrn4CmtObo
+ 2i+jrjmj9QXwuv9EhiHsvWB0yNG4/sIOhQJyNFOpotSef/9mOAH6QMWGZicq2MhA
+ OgF4ftNtEELvvQXP8c07xBKwICzOrvZKQLP1Wj93tawNtaQdU+bIMg0L4ZN/pd6f
+ AQ22jYUTy33vpH+uIGZJWj52x0+6vo08rznnXkJNHfx8aKwHHJ4/IJQ0gt8+EA3q
+ XfYaIpFY1Kh40SvaMVSphqIuchMgJ/+gkck7kDWo857kd1HGnEdJxII7te1Ta/rw
+ OcI3SQrP4w3wGxLN9yf45Dkps6XAkTnewGeqyNfeUQfAguJOqQeyw==
+X-ME-Sender: <xms:-vmWXeZAY-WQkUfFHXQxMKofBW2-q73iTRf7zFDTlMLdnJPy8ChAjw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrhedtgdehlecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephffvuf
+ ffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicu
+ oehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvddrud
+ dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggt
+ necuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:-vmWXeJv_r3S9sGywlDfI5ecCCJd2jJKrc6sE_NWVqo1nTksUnm-PA>
+ <xmx:-vmWXYh5VGYLihXBSxA0eE1RJYuKs4-LKACFKEZEsRdO0X2p2xJUQA>
+ <xmx:-vmWXZRJ7EPl71IVcz6m_kOHrppPpk_ulrrqFJ5qHjIzVjmBeT4bDg>
+ <xmx:-_mWXct1tUI3S251qf550jm4p9wxHbVKyZtXjhH1U4mDElhj704sCA>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 16AA480060;
+ Fri,  4 Oct 2019 03:51:18 -0400 (EDT)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 0/4] Implement STRICT_MODULE_RWX for powerpc
+Date: Fri,  4 Oct 2019 17:50:46 +1000
+Message-Id: <20191004075050.73327-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20191003102940.GC3181@drishya.in.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,63 +84,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>
+Cc: ajd@linux.ibm.com, npiggin@gmail.com, joel@jms.id.au,
+ Russell Currey <ruscur@russell.cc>, rashmica.g@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vaidy,
+It's been quite a while since the last iteration, there were a few
+things to hunt down and fix.
 
-> The current topic is who owns setting up the ATT bits for that piece
-> of memory.  It is the kernel today.  Kernel decides to set this up as
-> normal memory or I/O memory and sets the bits in page table entry.
-> 
->> Or, what if there's a range of address-space that isn't backed by system
->> RAM (say, some MMIO-mapped hardware) that we want to expose to a future
->> HBRT implementation? This change will block that.
->> 
->> The kernel doesn't know what is and is not valid for a HBRT mapping, so
->> it has no reason to override what's specified in the device tree. We've
->> designed this so that the kernel provides the mechanism for mapping
->> pages, and not the policy of which pages can be mapped.
-> 
-> The features altered are cache inhibit and guarding which affects
-> ability to fetch instructions.  If we allow HBRT to reside in an I/O
-> memory, the we need to tell kernel that it is ok to allow caching and
-> instruction execution in that region and accordingly change the ATT
-> bits.
+The first was the way that I was updating PTEs was using set_pte_at()
+unsafely - now, each page is updated by clearing -> flushing -> setting.
+This should be generic across all MMUs, I know that there are some
+potential inefficiencies - for example, Hash flushes the entire PID
+regardless of the given page range - but I don't think it's a very big
+deal.
 
-But this isn't only about the HBRT range itself (ie., the memory 
-containing the HBRT binary). Everything that HBRT needs to map will come 
-through this path. We may not need to fetch instructions from those ranges.
+The next was that there is an errant page that was tricky to hunt down,
+it turned out to be that kprobes never get marked RO after creation,    
+leading to (at least) one W+X page present in the kernel, even with both
+STRICT_KERNEL_RWX and STRICT_MODULE_RWX on.
 
-> This patch does not block a working function, but actually makes
-> debugging a failed case easier.  The failing scenario without this
-> check is such that HBRT cannot fetch from the region of memory and
-> loops in minor page faults doing nothing.
+I added a debugfs handler to call ptdump_check_wx() to facilitate making
+sure module RWX continues to work after boot.
 
-Yep, that's not great, but the alternative means applying this kernel 
-policy, which we can't guarantee is correct.
+There's more detail in the final patch about exactly how "on by default"
+module RWX is, but it doesn't really matter until STRICT_KERNEL_RWX is  
+on by default too.
 
-That is, unless the page protection bits mean that this won't work 
-anyway, but we can probably fix that without a kernel policy, by 
-applying the appropriate pgprot_t, perhaps.
+Thanks to Nick Piggin, Michael Ellerman, Daniel Axtens, and others for  
+helping.
 
-> As Vasant mentioned hostboot team will add code to relocate the HBRT
-> to the right place.  Addressing your concern, if we end up allowing
-> HBRT in non system-RAM area
+Christophe, I did test this in qemu mac99 so hopefully it works for all
+32bit, I'm sure you'll let me know if it doesn't.
 
-Not just HBRT, but anything that HBRT maps too.
+Would appreciate an ack from Joel to enable this in skiroot_defconfig.
 
-> we need to add some more flags in device
-> tree to instruct the driver to force change the page protection bits
-> as page_prot = pgprot_cached(page_prot);
+Russell Currey (4):
+  powerpc/mm: Implement set_memory() routines
+  powerpc/kprobes: Mark newly allocated probes as RO
+  powerpc/mm/ptdump: debugfs handler for W+X checks at runtime
+  powerpc: Enable STRICT_MODULE_RWX
 
-Doesn't phys_mem_access_prot() handle that for us? Or do I have my 
-_noncached/_cached logic inverted?
+ arch/powerpc/Kconfig                   |  2 +
+ arch/powerpc/configs/skiroot_defconfig |  1 +
+ arch/powerpc/include/asm/set_memory.h  | 32 ++++++++++++++
+ arch/powerpc/kernel/kprobes.c          |  3 ++
+ arch/powerpc/mm/Makefile               |  1 +
+ arch/powerpc/mm/pageattr.c             | 60 ++++++++++++++++++++++++++
+ arch/powerpc/mm/ptdump/ptdump.c        | 31 ++++++++++---
+ 7 files changed, 124 insertions(+), 6 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/set_memory.h
+ create mode 100644 arch/powerpc/mm/pageattr.c
 
-Cheers,
+-- 
+2.23.0
 
-
-Jeremy
