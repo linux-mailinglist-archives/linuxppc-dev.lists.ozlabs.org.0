@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221E9CB698
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 10:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E51ECB69A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 10:47:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46l3Nm4NY8zDqbW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 18:45:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46l3R53N7NzDqcw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 18:47:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="iwZ5coGj"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="so29s6Mq"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46l3Lw6VYDzDqWq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 18:43:51 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id y22so3485595pfr.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Oct 2019 01:43:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46l3Lw6SszzDqWH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 18:43:52 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id x10so3374648pgi.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Oct 2019 01:43:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=vHPt0ardHBNX+4ZLd/OLKWAm1qyLd2m5H1uRxVlgqZM=;
- b=iwZ5coGjQ6masjaABnqfaUVM9P3y0QRFaRLFCpX+p4eovHZrhYfviI3ZqU80MsufrB
- 7o4wDT8BHPuLMucAXPMQa307HV3+FeISEg1Vg/Y3iyVbAsBI+JavSY4rX9WYs1Knc8gg
- Gmy685yFn8OnJV0JHlWbwUcGdIdWwWa6eRpNZcut3Tbdec6om8d0+dPN0kj1XQWJkFso
- xOulUPNs8dcJ8m11d+UkJyEsrlCmDZPdDMPCcJi2zUnsn4RcY7nmAZogLssYplmzk+SR
- kHsiTssRCRNoyZ+zaK5ukY6CnvU3mMv26w5D02cE1TntA46mvCRHsSF4qtTkk67fKS2d
- apUw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=Z0o11s4aZYrLLEA48Sys9gTcMTLetu6gq0VnNDHxr4A=;
+ b=so29s6MqLsLbWs/+27c16D8A7yQ8GKiaMuQtovmceE7xQyCsKZUgE1l6mjCMomVo1e
+ zF5aWfNPTouELnSviR1xqh0zH0/ZoqWWinASbC+Wp33pO2DVXMByRZR4gyPVxHy4Pz+7
+ TS8KJcacjvqDr+GprZh+oxMkTjz+kMKsEOtwQKWWdAoQ8dbmkifdKLSre9h5isvx9BVx
+ XeCIq3Q+uVal9trJKAmqB6WkJZ3XLUlRGu3Ux64AsuXSo/d5ZlbfjHJ4YPyVgTwOr279
+ mu1dLffczbf83QFA6JadbkxQw72kYv2bJ/J7OxaJGkejh7SDJYOnMrDjjscnpxwZVbJS
+ 8UrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=vHPt0ardHBNX+4ZLd/OLKWAm1qyLd2m5H1uRxVlgqZM=;
- b=jH1hGRjbxsY5a5aZo37+MCIo695/A3Nb0qY2hXtIeW0ZPQTSBH8ei+dfgTDwzm06WB
- w83biWmiLnssm01VIqATE/OziYLpVRbbTYf2+8nxWnxh6DmxspuJ9evqFlf6DXUsVdCs
- 2S+HKmNNirK6YbDznPxv+pAhJdlwhHcJ4A5R1gRCH9M1ZrRmY4aovfzXieThV+m/YKPO
- sJQRNRehO6XajBKpAcyNMDSg9/D9FJttCygVmjsPMXTfeI/xxwtyAdDSiZcr1MtstjYh
- R47ArNoZSMFWdgdD/l19cQs3SL1eD6esRu1yiA0Etbg/ZZgqIaVQrsuj10/lcU5KSeIn
- 5EAw==
-X-Gm-Message-State: APjAAAXXQWFQYa4rf6Cw1Gsmw5eQnGgPsnURF/j1LoybCz3P4Md/s7KN
- duLXs6QJmzzvhyJz4U5XnseIQARc
-X-Google-Smtp-Source: APXvYqyyljwRq+sOKs1Bai+8+3yonFSD6pLcx8sIfFlYGbhR73PX24IQbdgVaOWG6Xtbzm/gjqnYsw==
-X-Received: by 2002:a17:90a:9483:: with SMTP id
- s3mr15927584pjo.42.1570178627933; 
- Fri, 04 Oct 2019 01:43:47 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=Z0o11s4aZYrLLEA48Sys9gTcMTLetu6gq0VnNDHxr4A=;
+ b=JhOLYVgBccDAhbWLPPbZJ6cF6Zr/+ESTkE/bsAKG6LnsyFzBHgnLeFGv5S1fC3l4IC
+ oJhcT9A7yv7mCC6yd8hibNri6N/7uiJGwCAQk+t3ReQwbL1jsWK/oepILgo3R/xstAtH
+ 8+suW9cxMW+W9mKUjeiEUQf+t9VBY0wutPp+UpAeRosBmD9OQ5wvuxKH9si6JmdHzgFm
+ 6QufQSZpnRHgnn0LYCX+CpRvDUOWcgODVffeMRQoz3cwuZ9NNAx1OaGo8JL3kkNcCeuk
+ NIoIztQhONZxec/06+DnWqWK4/zmB1yKbYTGtrmDfWzj65B8DyX0uKZtpu2tgRkyFx0X
+ 0nKA==
+X-Gm-Message-State: APjAAAVI3Hp/eeSzSdZPddNUdEbNPbwjrgbruXfAxLz4HfDlqfvPgP4a
+ jy2h74insxIsfjEV20Ez7Nf9AlPZ
+X-Google-Smtp-Source: APXvYqxVrOsEUnrGFF01qom7crIsbYOBFanf4n+Q/UvaSl3wm1tG9IR31SjU0N0R6sVpEpfKZyfBVA==
+X-Received: by 2002:a17:90a:5886:: with SMTP id
+ j6mr15125013pji.137.1570178629686; 
+ Fri, 04 Oct 2019 01:43:49 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id y138sm5110708pfb.174.2019.10.04.01.43.45
+ by smtp.gmail.com with ESMTPSA id y138sm5110708pfb.174.2019.10.04.01.43.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Oct 2019 01:43:47 -0700 (PDT)
+ Fri, 04 Oct 2019 01:43:49 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc/powernv: Rework exports to support subnodes
-Date: Fri,  4 Oct 2019 18:43:34 +1000
-Message-Id: <20191004084335.16157-1-oohall@gmail.com>
+Subject: [PATCH 2/2] powerpc/powernv: Use common code for the symbol_map export
+Date: Fri,  4 Oct 2019 18:43:35 +1000
+Message-Id: <20191004084335.16157-2-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20191004084335.16157-1-oohall@gmail.com>
+References: <20191004084335.16157-1-oohall@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,166 +84,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Originally we only had a handful of exported memory ranges, but we'd to
-export the per-core trace buffers. This results in a lot of files in the
-exports directory which is a but unfortunate. We can clean things up a bit
-by turning subnodes into subdirectories of the exports directory.
+Long before we had a generic way for firmware to export memory ranges of
+interest we added a special case for the skiboot symbol map. The code is
+pretty much identical to the generic export so re-use the code.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/opal.c | 114 +++++++++++++++++++++-------------
- 1 file changed, 72 insertions(+), 42 deletions(-)
+ arch/powerpc/platforms/powernv/opal.c | 47 +++++++----------------------------
+ 1 file changed, 9 insertions(+), 38 deletions(-)
 
 diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-index 38e9027..0373da5 100644
+index 0373da5..1ef26e2 100644
 --- a/arch/powerpc/platforms/powernv/opal.c
 +++ b/arch/powerpc/platforms/powernv/opal.c
-@@ -752,6 +752,75 @@ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
- 				       bin_attr->size);
+@@ -708,42 +708,6 @@ static int opal_sysfs_init(void)
+ 	return 0;
  }
  
-+static int opal_add_one_export(struct kobject *parent, const char *export_name,
-+			       struct device_node *np, const char *prop_name)
-+{
-+	struct bin_attribute *attr = NULL;
-+	const char *name = NULL;
-+	u64 vals[2];
-+	int rc;
-+
-+	rc = of_property_read_u64_array(np, prop_name, &vals[0], 2);
-+	if (rc)
-+		goto out;
-+
-+	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
-+	name = kstrdup(export_name, GFP_KERNEL);
-+	if (!name) {
-+		rc = -ENOMEM;
-+		goto out;
-+	}
-+
-+	sysfs_bin_attr_init(attr);
-+	attr->attr.name = name;
-+	attr->attr.mode = 0400;
-+	attr->read = export_attr_read;
-+	attr->private = __va(vals[0]);
-+	attr->size = vals[1];
-+
-+	rc = sysfs_create_bin_file(parent, attr);
-+out:
-+	if (rc) {
-+		kfree(name);
-+		kfree(attr);
-+	}
-+
-+	return rc;
-+}
-+
-+static void opal_add_exported_attrs(struct device_node *np,
-+				    struct kobject *kobj)
-+{
-+	struct device_node *child;
-+	struct property *prop;
-+
-+	for_each_property_of_node(np, prop) {
-+		int rc;
-+
-+		if (!strcmp(prop->name, "name") ||
-+		    !strcmp(prop->name, "phandle"))
-+			continue;
-+
-+		rc = opal_add_one_export(kobj, prop->name, np, prop->name);
-+		if (rc) {
-+			pr_warn("Unable to add export %pOF/%s, rc = %d!\n",
-+				np, prop->name, rc);
-+		}
-+	}
-+
-+	for_each_child_of_node(np, child) {
-+		struct kobject *child_kobj;
-+
-+		child_kobj = kobject_create_and_add(child->name, kobj);
-+		if (!child_kobj) {
-+			pr_err("Unable to create export dir for %pOF\n", child);
-+			continue;
-+		}
-+
-+		opal_add_exported_attrs(child, child_kobj);
-+	}
-+}
-+
- /*
-  * opal_export_attrs: creates a sysfs node for each property listed in
-  * the device-tree under /ibm,opal/firmware/exports/
-@@ -761,12 +830,8 @@ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
-  */
- static void opal_export_attrs(void)
- {
--	struct bin_attribute *attr;
- 	struct device_node *np;
--	struct property *prop;
- 	struct kobject *kobj;
--	u64 vals[2];
+-static ssize_t symbol_map_read(struct file *fp, struct kobject *kobj,
+-			       struct bin_attribute *bin_attr,
+-			       char *buf, loff_t off, size_t count)
+-{
+-	return memory_read_from_buffer(buf, count, &off, bin_attr->private,
+-				       bin_attr->size);
+-}
+-
+-static struct bin_attribute symbol_map_attr = {
+-	.attr = {.name = "symbol_map", .mode = 0400},
+-	.read = symbol_map_read
+-};
+-
+-static void opal_export_symmap(void)
+-{
+-	const __be64 *syms;
+-	unsigned int size;
+-	struct device_node *fw;
 -	int rc;
+-
+-	fw = of_find_node_by_path("/ibm,opal/firmware");
+-	if (!fw)
+-		return;
+-	syms = of_get_property(fw, "symbol-map", &size);
+-	if (!syms || size != 2 * sizeof(__be64))
+-		return;
+-
+-	/* Setup attributes */
+-	symbol_map_attr.private = __va(be64_to_cpu(syms[0]));
+-	symbol_map_attr.size = be64_to_cpu(syms[1]);
+-
+-	rc = sysfs_create_bin_file(opal_kobj, &symbol_map_attr);
+-	if (rc)
+-		pr_warn("Error %d creating OPAL symbols file\n", rc);
+-}
+-
+ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
+ 				struct bin_attribute *bin_attr, char *buf,
+ 				loff_t off, size_t count)
+@@ -846,6 +810,15 @@ static void opal_export_attrs(void)
  
- 	np = of_find_node_by_path("/ibm,opal/firmware/exports");
- 	if (!np)
-@@ -779,41 +844,7 @@ static void opal_export_attrs(void)
- 		return;
- 	}
+ 	opal_add_exported_attrs(np, kobj);
  
--	for_each_property_of_node(np, prop) {
--		if (!strcmp(prop->name, "name") || !strcmp(prop->name, "phandle"))
--			continue;
--
--		if (of_property_read_u64_array(np, prop->name, &vals[0], 2))
--			continue;
--
--		attr = kzalloc(sizeof(*attr), GFP_KERNEL);
--
--		if (attr == NULL) {
--			pr_warn("Failed kmalloc for bin_attribute!");
--			continue;
--		}
--
--		sysfs_bin_attr_init(attr);
--		attr->attr.name = kstrdup(prop->name, GFP_KERNEL);
--		attr->attr.mode = 0400;
--		attr->read = export_attr_read;
--		attr->private = __va(vals[0]);
--		attr->size = vals[1];
--
--		if (attr->attr.name == NULL) {
--			pr_warn("Failed kstrdup for bin_attribute attr.name");
--			kfree(attr);
--			continue;
--		}
--
--		rc = sysfs_create_bin_file(kobj, attr);
--		if (rc) {
--			pr_warn("Error %d creating OPAL sysfs exports/%s file\n",
--				 rc, prop->name);
--			kfree(attr->attr.name);
--			kfree(attr);
--		}
--	}
-+	opal_add_exported_attrs(np, kobj);
- 
++	/*
++	 * NB: symbol_map existed before the generic export interface so it
++	 * lives under the top level opal_kobj.
++	 */
++	rc = opal_add_one_export(opal_kobj, "symbol_map",
++				 np->parent, "symbol-map");
++	if (rc)
++		pr_warn("Error %d creating OPAL symbols file\n", rc);
++
  	of_node_put(np);
  }
-@@ -974,11 +1005,10 @@ static int __init opal_init(void)
- 		opal_sys_param_init();
- 		/* Setup message log sysfs interface. */
- 		opal_msglog_sysfs_init();
-+		/* Add all export properties*/
-+		opal_export_attrs();
- 	}
  
--	/* Export all properties */
--	opal_export_attrs();
--
- 	/* Initialize platform devices: IPMI backend, PRD & flash interface */
- 	opal_pdev_init("ibm,opal-ipmi");
- 	opal_pdev_init("ibm,opal-flash");
+@@ -991,8 +964,6 @@ static int __init opal_init(void)
+ 	/* Create "opal" kobject under /sys/firmware */
+ 	rc = opal_sysfs_init();
+ 	if (rc == 0) {
+-		/* Export symbol map to userspace */
+-		opal_export_symmap();
+ 		/* Setup dump region interface */
+ 		opal_dump_region_init();
+ 		/* Setup error log interface */
 -- 
 2.9.5
 
