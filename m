@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4BFCCB57D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 09:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71430CB59E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 10:01:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46l2Dk34whzDqC0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 17:53:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46l2QB74gjzDqcy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 18:01:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,62 +16,61 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="cPFMyuF6"; 
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="Dg9Djbf/"; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="OXRlT0pj"; dkim-atps=neutral
+ header.b="hLaaM5jx"; dkim-atps=neutral
 Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
  [64.147.123.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46l2Bb4DBJzDqbq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 17:51:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46l2Bf72rQzDqbk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 17:51:38 +1000 (AEST)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id EBECD528;
- Fri,  4 Oct 2019 03:51:32 -0400 (EDT)
+ by mailout.west.internal (Postfix) with ESMTP id 51C8E52D;
+ Fri,  4 Oct 2019 03:51:36 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Fri, 04 Oct 2019 03:51:33 -0400
+ by compute6.internal (MEProxy); Fri, 04 Oct 2019 03:51:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm3; bh=g9XZdQcihsL+T
- J0g40gPwfSRXv7Xn33lm7ZkFfhvlr8=; b=cPFMyuF6x1Gt5X1r0XiOrLe1sDKXQ
- mZiDQcjAK2je2Qa8WOEpQv7HP7wZe7ancmiXBjKp0NzoHbeDvQ77pxnyW2oLvM2l
- J/ktGQkDJa1Mt+pD2ZFwBC0kXfc76iL6w8I0LVaFhxnfTDkqdXCKrbi3BnahuADB
- vb8RG+QVm4G9McgLlNYVlaOh3jj7qcS2uP3EayM3nktigmqrsHLpmm8Rj3xFG7ts
- s14ZgQswBOpZXSlJwiIACrCtZpMXY4RNxL286JGV6jhaM2roWjfeXTrxj0elLKhX
- njMbzbtHAYun/bLeTBTFyJ4EfFu6+EOj/Kwgwmn1PLeV+JMCtpKW/XiCg==
+ :mime-version:content-transfer-encoding; s=fm3; bh=zIJvcs+zIUjZ8
+ LxbvoggHqZjSIKDAr2YAIXC3G/ShgU=; b=Dg9Djbf/Fus47p4nx2rhh06INfmTI
+ TWa2D6hz+BWWFqIQDUVTCVUWM2odDh0fJP9egSox4Pm0+4FXQ7HJ8v21Ig8ngo4x
+ 7OCx20U5NPwro6841X5n46GmEQrQVSbwnGQM3q2Ns5zDauqaGxif1i65QJzoCnYD
+ 51RyFRp7euoPZcEjf8m+zVUJAobOZbCN3zHG/0xARmukZ1LtSyIC1/4cGw5ChfxE
+ zG8KLgsq3OXp02Sjmt0+B0a9XChH5hLhjHTMplCXbSm1aKifUOku5U1B7NqeJc2p
+ qbsBnrUmblXttEEx8jLUGzfjwlukYqp3DpkrqMSptqzhznfmI8hLDF0Nw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
  :in-reply-to:message-id:mime-version:references:subject:to
  :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; bh=g9XZdQcihsL+TJ0g40gPwfSRXv7Xn33lm7ZkFfhvlr8=; b=OXRlT0pj
- vjznrR0DQSNO5ZvEiUhM/c3A189OFEF4+XbTbePzR4Hp1dBFsEcW632wZj+xVXiA
- Hzd3VeAx67sPZruYkDy+kyH3c6tG4UKynugi0LLk4CDToQLSdXcPBbj7pQPN+jJS
- 4fNzvWXXquZZiuy2ykLJA+vMmWDRXiCSpmJzVLPvDM5aFm90LhS+fFC04IkSor6I
- IWKANxtHUpK3rjmAmX1qLenoWiQ8LUAa7bkONqibpQzgGeASFKwtwp70NG998CLc
- VEWO/QHZ0Bklrk+w+4N1WCFZhDtUcYxpZgKJ1XGQq1F8+LTD0bknXg0nYdbIXQ4V
- NIN4fxZAuQaGQw==
-X-ME-Sender: <xms:BPqWXUDsQd8UFrIcWj7zZZYA-rZV9Znh1HFET6vbvExdPZN2gO-fVg>
+ fm3; bh=zIJvcs+zIUjZ8LxbvoggHqZjSIKDAr2YAIXC3G/ShgU=; b=hLaaM5jx
+ LqIhTTr0IG4s73qB/CjM2cDiJN0aLeBGl7OVv2vdccyjF60SOq4LKkl8aSJP3ygq
+ Mn2dn0CPmZo0I/2jKNSRlLjlESuIChxMiCq2w5lwrwyFydDlwHX3x4dTl1AcbQJs
+ Pe/Q7N1UmIlnSuouVXysPZm1Z5YILivhjZ2xV4bkz1NZQ70u08Enyd8/QtJYYEdm
+ wKMXkmdr3DrAomqpHaxxJXFxlytJ/nGflpzTFlQlTwaONwSQwBhaL7s/3S16Rmz8
+ gXqW2MfCdOiuuWhXnyD9Fd5RLfaMcTYY5vb/0Rzq7atqcEItrcECJYg+lNk8/CFx
+ 8kjplprZnn8ALw==
+X-ME-Sender: <xms:B_qWXVDa4XA4-O51TJdJoU9bm1CYDSBo1vpzfTyz7UbdlW34hyhjcw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrhedtgdehlecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
  uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephffvuf
  ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
  hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvd
  druddtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdr
- tggtnecuvehluhhsthgvrhfuihiivgepud
-X-ME-Proxy: <xmx:BPqWXSkgmL8eRvslAGCIqn5EIOQOwazZMJhhUfogKVGO2VI5GMw4tQ>
- <xmx:BPqWXdhBFQvU4dkO4sNy9v255jhGrtTsjmf7YgRnzHuTzdiDh1uX5A>
- <xmx:BPqWXbsmp8o1ARcTDcuiGoWIwLQ5Kdtl-PuL7UP8NtOyxzPHoSgGcw>
- <xmx:BPqWXWeX855JYIx3QWf5NR1_4S8KBxArgKARkPBL-rtXVaHBuugS6A>
+ tggtnecuvehluhhsthgvrhfuihiivgepfe
+X-ME-Proxy: <xmx:B_qWXbeKBKCYeXj3JDIxF2JqQnvk7w7jimTqlFUjMk3_xekrQ5-g9A>
+ <xmx:B_qWXXyD6d5NjxIzY-ICxgV_tWXUtWXdsTmHHzuI8Dv-BsxFaYF_6g>
+ <xmx:B_qWXWPBwYh2_vDaoT76_enAiWwgMmN57A5XToCMLqR8-i5e3PewFw>
+ <xmx:B_qWXSKVgVnynCVOlPMeSPMtN5kNSrtX66nrcdD9i9qK_QT5VTg4Rw>
 Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 71CB88005C;
- Fri,  4 Oct 2019 03:51:29 -0400 (EDT)
+ by mail.messagingengine.com (Postfix) with ESMTPA id CC11D80061;
+ Fri,  4 Oct 2019 03:51:32 -0400 (EDT)
 From: Russell Currey <ruscur@russell.cc>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 3/4] powerpc/mm/ptdump: debugfs handler for W+X checks at
- runtime
-Date: Fri,  4 Oct 2019 17:50:49 +1000
-Message-Id: <20191004075050.73327-4-ruscur@russell.cc>
+Subject: [PATCH v3 4/4] powerpc: Enable STRICT_MODULE_RWX
+Date: Fri,  4 Oct 2019 17:50:50 +1000
+Message-Id: <20191004075050.73327-5-ruscur@russell.cc>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191004075050.73327-1-ruscur@russell.cc>
 References: <20191004075050.73327-1-ruscur@russell.cc>
@@ -94,73 +93,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Very rudimentary, just
+Whether STRICT_MODULE_RWX is enabled by default depends on powerpc
+platform - in arch/Kconfig, STRICT_MODULE_RWX depends on
+ARCH_OPTIONAL_KERNEL_RWX, which in arch/powerpc/Kconfig is selected if
+ARCH_HAS_STRICT_KERNEL_RWX is selected, which is only true with
+CONFIG_RELOCATABLE *disabled*.
 
-	echo 1 > [debugfs]/check_wx_pages
+defconfigs like skiroot_defconfig which turn STRICT_KERNEL_RWX on when
+it is not already on by default also do NOT enable STRICT_MODULE_RWX
+automatically, so it is explicitly enabled there in this patch.
 
-and check the kernel log.  Useful for testing strict module RWX.
-
-Also fixed a typo.
+Thus, on by default for ppc32 only.  Module RWX doesn't provide a whole
+lot of value with Kernel RWX off, but it doesn't hurt, either.  The next
+step is to make STRICT_KERNEL_RWX compatible with RELOCATABLE so it can
+be on by default.
 
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 ---
- arch/powerpc/mm/ptdump/ptdump.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ arch/powerpc/Kconfig                   | 1 +
+ arch/powerpc/configs/skiroot_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-index 2f9ddc29c535..0547cd9f264e 100644
---- a/arch/powerpc/mm/ptdump/ptdump.c
-+++ b/arch/powerpc/mm/ptdump/ptdump.c
-@@ -4,7 +4,7 @@
-  *
-  * This traverses the kernel pagetables and dumps the
-  * information about the used sections of memory to
-- * /sys/kernel/debug/kernel_pagetables.
-+ * /sys/kernel/debug/kernel_page_tables.
-  *
-  * Derived from the arm64 implementation:
-  * Copyright (c) 2014, The Linux Foundation, Laura Abbott.
-@@ -409,16 +409,35 @@ void ptdump_check_wx(void)
- 	else
- 		pr_info("Checked W+X mappings: passed, no W+X pages found\n");
- }
-+
-+static int check_wx_debugfs_set(void *data, u64 val)
-+{
-+	if (val != 1ULL)
-+		return -EINVAL;
-+
-+	ptdump_check_wx();
-+
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(check_wx_fops, NULL, check_wx_debugfs_set, "%llu\n");
- #endif
- 
- static int ptdump_init(void)
- {
--	struct dentry *debugfs_file;
--
- 	populate_markers();
- 	build_pgtable_complete_mask();
--	debugfs_file = debugfs_create_file("kernel_page_tables", 0400, NULL,
--			NULL, &ptdump_fops);
--	return debugfs_file ? 0 : -ENOMEM;
-+
-+	if (!debugfs_create_file("kernel_page_tables", 0400, NULL,
-+				 NULL, &ptdump_fops))
-+		return -ENOMEM;
-+
-+#ifdef CONFIG_PPC_DEBUG_WX
-+	if (!debugfs_create_file("check_wx_pages", 0200, NULL,
-+				 NULL, &check_wx_fops))
-+		return -ENOMEM;
-+#endif
-+
-+	return 0;
- }
- device_initcall(ptdump_init);
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8f7005f0d097..212c4d02be40 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -135,6 +135,7 @@ config PPC
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+ 	select ARCH_HAS_SET_MEMORY
+ 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
++	select ARCH_HAS_STRICT_MODULE_RWX
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE
+ 	select ARCH_HAS_UACCESS_MCSAFE		if PPC64
+diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
+index 1253482a67c0..719d899081b3 100644
+--- a/arch/powerpc/configs/skiroot_defconfig
++++ b/arch/powerpc/configs/skiroot_defconfig
+@@ -31,6 +31,7 @@ CONFIG_PERF_EVENTS=y
+ CONFIG_SLAB_FREELIST_HARDENED=y
+ CONFIG_JUMP_LABEL=y
+ CONFIG_STRICT_KERNEL_RWX=y
++CONFIG_STRICT_MODULE_RWX=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODULE_SIG=y
 -- 
 2.23.0
 
