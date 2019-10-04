@@ -1,79 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71430CB59E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 10:01:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221E9CB698
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 10:45:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46l2QB74gjzDqcy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 18:01:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46l3Nm4NY8zDqbW
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2019 18:45:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=russell.cc
- (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com;
- envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="Dg9Djbf/"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="hLaaM5jx"; dkim-atps=neutral
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
- [64.147.123.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="iwZ5coGj"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46l2Bf72rQzDqbk
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 17:51:38 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id 51C8E52D;
- Fri,  4 Oct 2019 03:51:36 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Fri, 04 Oct 2019 03:51:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm3; bh=zIJvcs+zIUjZ8
- LxbvoggHqZjSIKDAr2YAIXC3G/ShgU=; b=Dg9Djbf/Fus47p4nx2rhh06INfmTI
- TWa2D6hz+BWWFqIQDUVTCVUWM2odDh0fJP9egSox4Pm0+4FXQ7HJ8v21Ig8ngo4x
- 7OCx20U5NPwro6841X5n46GmEQrQVSbwnGQM3q2Ns5zDauqaGxif1i65QJzoCnYD
- 51RyFRp7euoPZcEjf8m+zVUJAobOZbCN3zHG/0xARmukZ1LtSyIC1/4cGw5ChfxE
- zG8KLgsq3OXp02Sjmt0+B0a9XChH5hLhjHTMplCXbSm1aKifUOku5U1B7NqeJc2p
- qbsBnrUmblXttEEx8jLUGzfjwlukYqp3DpkrqMSptqzhznfmI8hLDF0Nw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :in-reply-to:message-id:mime-version:references:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; bh=zIJvcs+zIUjZ8LxbvoggHqZjSIKDAr2YAIXC3G/ShgU=; b=hLaaM5jx
- LqIhTTr0IG4s73qB/CjM2cDiJN0aLeBGl7OVv2vdccyjF60SOq4LKkl8aSJP3ygq
- Mn2dn0CPmZo0I/2jKNSRlLjlESuIChxMiCq2w5lwrwyFydDlwHX3x4dTl1AcbQJs
- Pe/Q7N1UmIlnSuouVXysPZm1Z5YILivhjZ2xV4bkz1NZQ70u08Enyd8/QtJYYEdm
- wKMXkmdr3DrAomqpHaxxJXFxlytJ/nGflpzTFlQlTwaONwSQwBhaL7s/3S16Rmz8
- gXqW2MfCdOiuuWhXnyD9Fd5RLfaMcTYY5vb/0Rzq7atqcEItrcECJYg+lNk8/CFx
- 8kjplprZnn8ALw==
-X-ME-Sender: <xms:B_qWXVDa4XA4-O51TJdJoU9bm1CYDSBo1vpzfTyz7UbdlW34hyhjcw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrhedtgdehlecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephffvuf
- ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
- hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvd
- druddtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdr
- tggtnecuvehluhhsthgvrhfuihiivgepfe
-X-ME-Proxy: <xmx:B_qWXbeKBKCYeXj3JDIxF2JqQnvk7w7jimTqlFUjMk3_xekrQ5-g9A>
- <xmx:B_qWXXyD6d5NjxIzY-ICxgV_tWXUtWXdsTmHHzuI8Dv-BsxFaYF_6g>
- <xmx:B_qWXWPBwYh2_vDaoT76_enAiWwgMmN57A5XToCMLqR8-i5e3PewFw>
- <xmx:B_qWXSKVgVnynCVOlPMeSPMtN5kNSrtX66nrcdD9i9qK_QT5VTg4Rw>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id CC11D80061;
- Fri,  4 Oct 2019 03:51:32 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46l3Lw6VYDzDqWq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2019 18:43:51 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id y22so3485595pfr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Oct 2019 01:43:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=vHPt0ardHBNX+4ZLd/OLKWAm1qyLd2m5H1uRxVlgqZM=;
+ b=iwZ5coGjQ6masjaABnqfaUVM9P3y0QRFaRLFCpX+p4eovHZrhYfviI3ZqU80MsufrB
+ 7o4wDT8BHPuLMucAXPMQa307HV3+FeISEg1Vg/Y3iyVbAsBI+JavSY4rX9WYs1Knc8gg
+ Gmy685yFn8OnJV0JHlWbwUcGdIdWwWa6eRpNZcut3Tbdec6om8d0+dPN0kj1XQWJkFso
+ xOulUPNs8dcJ8m11d+UkJyEsrlCmDZPdDMPCcJi2zUnsn4RcY7nmAZogLssYplmzk+SR
+ kHsiTssRCRNoyZ+zaK5ukY6CnvU3mMv26w5D02cE1TntA46mvCRHsSF4qtTkk67fKS2d
+ apUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=vHPt0ardHBNX+4ZLd/OLKWAm1qyLd2m5H1uRxVlgqZM=;
+ b=jH1hGRjbxsY5a5aZo37+MCIo695/A3Nb0qY2hXtIeW0ZPQTSBH8ei+dfgTDwzm06WB
+ w83biWmiLnssm01VIqATE/OziYLpVRbbTYf2+8nxWnxh6DmxspuJ9evqFlf6DXUsVdCs
+ 2S+HKmNNirK6YbDznPxv+pAhJdlwhHcJ4A5R1gRCH9M1ZrRmY4aovfzXieThV+m/YKPO
+ sJQRNRehO6XajBKpAcyNMDSg9/D9FJttCygVmjsPMXTfeI/xxwtyAdDSiZcr1MtstjYh
+ R47ArNoZSMFWdgdD/l19cQs3SL1eD6esRu1yiA0Etbg/ZZgqIaVQrsuj10/lcU5KSeIn
+ 5EAw==
+X-Gm-Message-State: APjAAAXXQWFQYa4rf6Cw1Gsmw5eQnGgPsnURF/j1LoybCz3P4Md/s7KN
+ duLXs6QJmzzvhyJz4U5XnseIQARc
+X-Google-Smtp-Source: APXvYqyyljwRq+sOKs1Bai+8+3yonFSD6pLcx8sIfFlYGbhR73PX24IQbdgVaOWG6Xtbzm/gjqnYsw==
+X-Received: by 2002:a17:90a:9483:: with SMTP id
+ s3mr15927584pjo.42.1570178627933; 
+ Fri, 04 Oct 2019 01:43:47 -0700 (PDT)
+Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id y138sm5110708pfb.174.2019.10.04.01.43.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 04 Oct 2019 01:43:47 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 4/4] powerpc: Enable STRICT_MODULE_RWX
-Date: Fri,  4 Oct 2019 17:50:50 +1000
-Message-Id: <20191004075050.73327-5-ruscur@russell.cc>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191004075050.73327-1-ruscur@russell.cc>
-References: <20191004075050.73327-1-ruscur@russell.cc>
+Subject: [PATCH 1/2] powerpc/powernv: Rework exports to support subnodes
+Date: Fri,  4 Oct 2019 18:43:34 +1000
+Message-Id: <20191004084335.16157-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,57 +77,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, npiggin@gmail.com, joel@jms.id.au,
- Russell Currey <ruscur@russell.cc>, rashmica.g@gmail.com, dja@axtens.net
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Whether STRICT_MODULE_RWX is enabled by default depends on powerpc
-platform - in arch/Kconfig, STRICT_MODULE_RWX depends on
-ARCH_OPTIONAL_KERNEL_RWX, which in arch/powerpc/Kconfig is selected if
-ARCH_HAS_STRICT_KERNEL_RWX is selected, which is only true with
-CONFIG_RELOCATABLE *disabled*.
+Originally we only had a handful of exported memory ranges, but we'd to
+export the per-core trace buffers. This results in a lot of files in the
+exports directory which is a but unfortunate. We can clean things up a bit
+by turning subnodes into subdirectories of the exports directory.
 
-defconfigs like skiroot_defconfig which turn STRICT_KERNEL_RWX on when
-it is not already on by default also do NOT enable STRICT_MODULE_RWX
-automatically, so it is explicitly enabled there in this patch.
-
-Thus, on by default for ppc32 only.  Module RWX doesn't provide a whole
-lot of value with Kernel RWX off, but it doesn't hurt, either.  The next
-step is to make STRICT_KERNEL_RWX compatible with RELOCATABLE so it can
-be on by default.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/Kconfig                   | 1 +
- arch/powerpc/configs/skiroot_defconfig | 1 +
- 2 files changed, 2 insertions(+)
+ arch/powerpc/platforms/powernv/opal.c | 114 +++++++++++++++++++++-------------
+ 1 file changed, 72 insertions(+), 42 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 8f7005f0d097..212c4d02be40 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -135,6 +135,7 @@ config PPC
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
- 	select ARCH_HAS_SET_MEMORY
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
-+	select ARCH_HAS_STRICT_MODULE_RWX
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
- 	select ARCH_HAS_UACCESS_MCSAFE		if PPC64
-diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
-index 1253482a67c0..719d899081b3 100644
---- a/arch/powerpc/configs/skiroot_defconfig
-+++ b/arch/powerpc/configs/skiroot_defconfig
-@@ -31,6 +31,7 @@ CONFIG_PERF_EVENTS=y
- CONFIG_SLAB_FREELIST_HARDENED=y
- CONFIG_JUMP_LABEL=y
- CONFIG_STRICT_KERNEL_RWX=y
-+CONFIG_STRICT_MODULE_RWX=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_SIG=y
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index 38e9027..0373da5 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -752,6 +752,75 @@ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
+ 				       bin_attr->size);
+ }
+ 
++static int opal_add_one_export(struct kobject *parent, const char *export_name,
++			       struct device_node *np, const char *prop_name)
++{
++	struct bin_attribute *attr = NULL;
++	const char *name = NULL;
++	u64 vals[2];
++	int rc;
++
++	rc = of_property_read_u64_array(np, prop_name, &vals[0], 2);
++	if (rc)
++		goto out;
++
++	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
++	name = kstrdup(export_name, GFP_KERNEL);
++	if (!name) {
++		rc = -ENOMEM;
++		goto out;
++	}
++
++	sysfs_bin_attr_init(attr);
++	attr->attr.name = name;
++	attr->attr.mode = 0400;
++	attr->read = export_attr_read;
++	attr->private = __va(vals[0]);
++	attr->size = vals[1];
++
++	rc = sysfs_create_bin_file(parent, attr);
++out:
++	if (rc) {
++		kfree(name);
++		kfree(attr);
++	}
++
++	return rc;
++}
++
++static void opal_add_exported_attrs(struct device_node *np,
++				    struct kobject *kobj)
++{
++	struct device_node *child;
++	struct property *prop;
++
++	for_each_property_of_node(np, prop) {
++		int rc;
++
++		if (!strcmp(prop->name, "name") ||
++		    !strcmp(prop->name, "phandle"))
++			continue;
++
++		rc = opal_add_one_export(kobj, prop->name, np, prop->name);
++		if (rc) {
++			pr_warn("Unable to add export %pOF/%s, rc = %d!\n",
++				np, prop->name, rc);
++		}
++	}
++
++	for_each_child_of_node(np, child) {
++		struct kobject *child_kobj;
++
++		child_kobj = kobject_create_and_add(child->name, kobj);
++		if (!child_kobj) {
++			pr_err("Unable to create export dir for %pOF\n", child);
++			continue;
++		}
++
++		opal_add_exported_attrs(child, child_kobj);
++	}
++}
++
+ /*
+  * opal_export_attrs: creates a sysfs node for each property listed in
+  * the device-tree under /ibm,opal/firmware/exports/
+@@ -761,12 +830,8 @@ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
+  */
+ static void opal_export_attrs(void)
+ {
+-	struct bin_attribute *attr;
+ 	struct device_node *np;
+-	struct property *prop;
+ 	struct kobject *kobj;
+-	u64 vals[2];
+-	int rc;
+ 
+ 	np = of_find_node_by_path("/ibm,opal/firmware/exports");
+ 	if (!np)
+@@ -779,41 +844,7 @@ static void opal_export_attrs(void)
+ 		return;
+ 	}
+ 
+-	for_each_property_of_node(np, prop) {
+-		if (!strcmp(prop->name, "name") || !strcmp(prop->name, "phandle"))
+-			continue;
+-
+-		if (of_property_read_u64_array(np, prop->name, &vals[0], 2))
+-			continue;
+-
+-		attr = kzalloc(sizeof(*attr), GFP_KERNEL);
+-
+-		if (attr == NULL) {
+-			pr_warn("Failed kmalloc for bin_attribute!");
+-			continue;
+-		}
+-
+-		sysfs_bin_attr_init(attr);
+-		attr->attr.name = kstrdup(prop->name, GFP_KERNEL);
+-		attr->attr.mode = 0400;
+-		attr->read = export_attr_read;
+-		attr->private = __va(vals[0]);
+-		attr->size = vals[1];
+-
+-		if (attr->attr.name == NULL) {
+-			pr_warn("Failed kstrdup for bin_attribute attr.name");
+-			kfree(attr);
+-			continue;
+-		}
+-
+-		rc = sysfs_create_bin_file(kobj, attr);
+-		if (rc) {
+-			pr_warn("Error %d creating OPAL sysfs exports/%s file\n",
+-				 rc, prop->name);
+-			kfree(attr->attr.name);
+-			kfree(attr);
+-		}
+-	}
++	opal_add_exported_attrs(np, kobj);
+ 
+ 	of_node_put(np);
+ }
+@@ -974,11 +1005,10 @@ static int __init opal_init(void)
+ 		opal_sys_param_init();
+ 		/* Setup message log sysfs interface. */
+ 		opal_msglog_sysfs_init();
++		/* Add all export properties*/
++		opal_export_attrs();
+ 	}
+ 
+-	/* Export all properties */
+-	opal_export_attrs();
+-
+ 	/* Initialize platform devices: IPMI backend, PRD & flash interface */
+ 	opal_pdev_init("ibm,opal-ipmi");
+ 	opal_pdev_init("ibm,opal-flash");
 -- 
-2.23.0
+2.9.5
 
