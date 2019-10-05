@@ -1,91 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AEA9CC8CE
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2019 10:38:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CDFCCCA2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2019 22:10:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46lgBJ1WbkzDqcm
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2019 18:38:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46lyXC33YZzDqHx
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Oct 2019 07:10:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=yxab=x6=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46lg8Y1ScYzDqMC
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2019 18:37:00 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x958XMgh070699; Sat, 5 Oct 2019 04:35:55 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2veqbx0jut-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 05 Oct 2019 04:35:55 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x958Zs4n074295;
- Sat, 5 Oct 2019 04:35:54 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2veqbx0juh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 05 Oct 2019 04:35:54 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x958WOMc029006;
- Sat, 5 Oct 2019 08:35:53 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma04wdc.us.ibm.com with ESMTP id 2vejt69pd5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 05 Oct 2019 08:35:53 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x958ZqWZ53608730
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 5 Oct 2019 08:35:52 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3154BBE053;
- Sat,  5 Oct 2019 08:35:52 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86E3BBE056;
- Sat,  5 Oct 2019 08:35:31 +0000 (GMT)
-Received: from [9.199.38.126] (unknown [9.199.38.126])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sat,  5 Oct 2019 08:35:31 +0000 (GMT)
-Subject: Re: [PATCH v5 01/11] asm-generic/pgtable: Adds generic functions to
- monitor lockless pgtable walks
-To: Peter Zijlstra <peterz@infradead.org>,
- Leonardo Bras <leonardo@linux.ibm.com>
-References: <20191003013325.2614-1-leonardo@linux.ibm.com>
- <20191003013325.2614-2-leonardo@linux.ibm.com>
- <20191003071145.GM4536@hirez.programming.kicks-ass.net>
- <20191003115141.GJ4581@hirez.programming.kicks-ass.net>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <651856af-30de-15ad-2312-158f3ad5292e@linux.ibm.com>
-Date: Sat, 5 Oct 2019 14:05:29 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46lySn37ChzDqDF
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Oct 2019 07:07:03 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204789] Boot failure with more than 256G of memory on Power9
+ with 4K pages & Hash MMU
+Date: Sat, 05 Oct 2019 20:07:01 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: high
+X-Bugzilla-Who: samuel@sholland.org
+X-Bugzilla-Status: ASSIGNED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-204789-206035-vLVyW1CYLf@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204789-206035@https.bugzilla.kernel.org/>
+References: <bug-204789-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <20191003115141.GJ4581@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-05_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=933 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910050083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,85 +62,223 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
- "Dmitry V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Elena Reshetova <elena.reshetova@intel.com>, linux-arch@vger.kernel.org,
- Santosh Sivaraj <santosh@fossix.org>, Davidlohr Bueso <dave@stgolabs.net>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Alexey Dobriyan <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Andrea Arcangeli <aarcange@redhat.com>, Ralph Campbell <rcampbell@nvidia.com>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- John Hubbard <jhubbard@nvidia.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
- kvm-ppc@vger.kernel.org, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Nicholas Piggin <npiggin@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
- Reza Arbab <arbab@linux.ibm.com>, Allison Randal <allison@lohutok.net>,
- Christian Brauner <christian.brauner@ubuntu.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Logan Gunthorpe <logang@deltatee.com>, Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Roman Gushchin <guro@fb.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/3/19 5:21 PM, Peter Zijlstra wrote:
-> On Thu, Oct 03, 2019 at 09:11:45AM +0200, Peter Zijlstra wrote:
->> On Wed, Oct 02, 2019 at 10:33:15PM -0300, Leonardo Bras wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204789
 
+Samuel Holland (samuel@sholland.org) changed:
 
-....
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |samuel@sholland.org
 
+--- Comment #12 from Samuel Holland (samuel@sholland.org) ---
+I am also experiencing this issue on a Talos II, however with much less RAM.
+Right now I have 16 GB attached to each CPU:
 
-> 
-> And I still think all that wrong, you really shouldn't need to wait on
-> munmap().
-> 
+# grep RAM /proc/iomem=20
+00000000-3ffffffff : System RAM
+200000000000-2003ffffffff : System RAM
 
-I do have a patch that does something like that.
+Without the patchset linked above, I also have a failure to boot with 5.2 a=
+nd
+later kernels.
 
+(/proc/cmdline)
+console=3Dhvc0 disable_radix ignore_loglevel no_console_suspend
 
-+#define __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR_FULL
-+static inline pmd_t pmdp_huge_get_and_clear_full(struct mm_struct *mm,
-+						 unsigned long address, pmd_t *pmdp,
-+						 int full)
-+{
-+	bool serialize = true;
-+	/*
-+	 * We don't need to serialze against a lockless page table walk if
-+	 * we are clearing the pmd due to task exit. For regular mnumap, we
-+	 * still need to serialize due the possibility of MADV_DONTNEED running
-+	 * parallel to a page fault which can convert a THP pte entry to a
-+	 * pointer to level 4 table.
-+	 * Here MADV_DONTNEED is removing the THP entry and the fault is filling
-+	 * a level 4 pte.
-+	 */
-+	if (full == 1)
-+		serialize = false;
-+	return __pmdp_huge_get_and_clear(mm, address, pmdp, serialize);
-  }
+With the first patch from the patchset linked above, the RAM attached to the
+second node is ignored, as expected, but the system boots and otherwise runs
+fine.
 
+With the full patchset linked above, I get panics on boot, as mentioned in
+comment 9:
 
-if it is a fullmm flush we can skip that serialize, But for everything 
-else we need to serialize. MADV_DONTNEED is another case. I haven't sent 
-this yet, because I was trying to look at what it takes to switch that 
-MADV variant to take mmap_sem in write mode.
+[    5.286513] Oops: Machine check, sig: 7 [#1]
+[    5.286536] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D256 NUMA PowerNV
+[    5.286545] Modules linked in: soundcore
+[    5.286554] CPU: 4 PID: 0 Comm: swapper/4 Tainted: G   M=20=20=20=20=20=
+=20=20=20=20=20=20=20=20
+5.3.4-00012-g8fc24abb8c31 #1
+[    5.286569] NIP:  0000000000000000 LR: 7265677368657265 CTR:
+0000000000000000
+[    5.286590] REGS: c0000003ffb66fb0 TRAP: c00000000120dd00   Tainted: G  =
+ M=20=20
+            (5.3.4-00012-g8fc24abb8c31)
+[    5.286602] MSR:  0000000000000000 <>  CR: c000000000036f04  XER: 000000=
+00
+[    5.286611] CFAR: 0000000000000000 IRQMASK: c0000003ffb67370
+[    5.286611] GPR00: 0000000000000000 c0003d0000083d28 ffffffffffffffff
+0000000006000000
+[    5.286611] GPR04: 0500000002010101 00c75e1bc4c00a58 ffffffffffffffff
+c000000000036530
+[    5.286611] GPR08: c0003d0000083d28 c0000003ffb67510 0000000000000000
+c0000003ffb670e0
+[    5.286611] GPR12: c0000003ffb67040 8804422200000000 c0000000000804ec
+c00000000120dd00
+[    5.286611] GPR16: 0000000000000000 c0000003ffb673fc c0000003ffb67070
+0000000000000000
+[    5.286611] GPR20: c0000000000367f4 c00000000120dd00 0000000000000000
+c0000003ffb670e0
+[    5.286611] GPR24: c0000003ffb67370 0000000000000000 c000000000008380
+0000000000000000
+[    5.286611] GPR28: 0000000000000000 0000000000000000 0000000000000000
+0000000000000000
+[    5.286777] NIP [0000000000000000] 0x0
+[    5.286792] LR [7265677368657265] 0x7265677368657265
+[    5.286809] Call Trace:
+[    5.286823] Instruction dump:
+[    5.286838] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXX=
+XX
+XXXXXXXX
+[    5.286858] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX 60000000 60000000 600000=
+00
+60000000
+[    5.286889] ---[ end trace 60912b64b73c973e ]---
+[    5.819189]
+[    5.819203] Oops: Machine check, sig: 7 [#2]
+[    5.819205] Disabling lock debugging due to kernel taint
+[    5.819223] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D256 NUMA PowerNV
+[    5.819233] Modules linked in: snd_hda_intel(+) snd_hda_codec snd_hwdep
+snd_hda_core snd_pcm tg3(+) snd_timer snd libphy ttm soundcore
+[    5.819264] CPU: 3 PID: 0 Comm: swapper/3 Tainted: G   M  D=20=20=20=20=
+=20=20=20=20=20=20
+5.3.4-00012-g8fc24abb8c31 #1=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20
+[    5.819286] NIP:  0000000000000000 LR: 7265677368657265 CTR:
+0000000000000000
+[    5.819315] REGS: c0000003ffb7efb0 TRAP: c00000000120dd00   Tainted: G  =
+ M=20
+D            (5.3.4-00012-g8fc24abb8c31)=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20
+[    5.819328] MSR:  0000000000000000 <>  CR: c000000000036f04  XER: 000000=
+00
+[    5.819347] CFAR: 0000000000000000 IRQMASK: c0000003ffb7f370
+[    5.819347] GPR00: 0000000000000000 c0003d0000063d28 ffffffffffffffff
+0000000006000000
+[    5.819347] GPR04: 0500000002010101 000ed5d8325a5873 ffffffffffffffff
+c000000000036530
+[    5.819347] GPR08: c0003d0000063d28 c0000003ffb7f510 0000000000000000
+c0000003ffb7f0e0
+[    5.819347] GPR12: c0000003ffb7f040 8804424200000000 c0000000000804ec
+c00000000120dd00
+[    5.819347] GPR16: 0000000000000000 c0000003ffb7f3fc c0000003ffb7f070
+0000000000000000
+[    5.819347] GPR20: c0000000000367f4 c00000000120dd00 0000000000000000
+c0000003ffb7f0e0
+[    5.819347] GPR24: c0000003ffb7f370 0000000000000000 c000000000008380
+0000000000000000
+[    5.819347] GPR28: 0000000000000000 0000000000000000 0000000000000000
+0000000000000000
+[    5.819537] NIP [0000000000000000] 0x0
+[    5.819554] LR [7265677368657265] 0x7265677368657265
+[    5.819562] Call Trace:
+[    5.819567] Instruction dump:
+[    5.819573] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXX=
+XX
+XXXXXXXX=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    5.819603] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX 60000000 60000000 600000=
+00
+60000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    5.819648] ---[ end trace 60912b64b73c973f ]---=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311806]=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311820] Oops: Machine check, sig: 7 [#3]=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311829] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D256 NUMA PowerNV=
+=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311839] Modules linked in: snd_hda_intel(+) snd_hda_codec snd_hwdep
+snd_hda_core snd_pcm tg3(+) snd_timer snd libphy ttm soundcore=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311869] CPU: 0 PID: 734 Comm: udevd Tainted: G   M  D=20=20=20=20=20=
+=20=20=20=20=20
+5.3.4-00012-g8fc24abb8c31 #1=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311882] NIP:  0000000000000000 LR: 7265677368657265 CTR:
+0000000000000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311903] REGS: c0000003ffbc6fb0 TRAP: c00000000120dd00   Tainted: G  =
+ M=20
+D            (5.3.4-00012-g8fc24abb8c31)=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20
+[    6.311917] MSR:  0000000000000000 <>  CR: c000000000036f04  XER: 000000=
+00=20=20=20
+[    6.311937] CFAR: 0000000000000000 IRQMASK: c0000003ffbc7370=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR00: 0000000000000000 c0003d0000003d28 ffffffffffffffff
+0000000006000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR04: 0500000002010101 00b492f4c8c2175c ffffffffffffffff
+c000000000036530=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR08: c0003d0000003d28 c0000003ffbc7510 0000000000000000
+c0000003ffbc70e0=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR12: c0000003ffbc7040 8024428200000000 c0000000000804ec
+c00000000120dd00=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR16: 0000000000000000 c0000003ffbc73fc c0000003ffbc7070
+0000000000000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR20: c0000000000367f4 c00000000120dd00 0000000000000000
+c0000003ffbc70e0=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR24: c0000003ffbc7370 0000000000000000 c000000000008380
+0000000000000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.311937] GPR28: 0000000000000000 0000000000000000 0000000000000000
+0000000000000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.312109] NIP [0000000000000000] 0x0=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20
+[    6.312126] LR [7265677368657265] 0x7265677368657265=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.312143] Call Trace:=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.312148] Instruction dump:=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20
+[    6.312155] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXX=
+XX
+XXXXXXXX=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.312190] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX 60000000 60000000 600000=
+00
+60000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.312226] ---[ end trace 60912b64b73c9740 ]---=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[    6.819242] Kernel panic - not syncing: Fatal
 
-MADV_DONTNEED has caused us multiple issues due to the fact that it can 
-run in parallel to page fault. I am not sure whether we have a 
-known/noticeable performance gain in allowing that with mmap_sem held in 
-read mode.
+I have easy physical access to this machine, so I'd be able to try out patc=
+hes
+if needed.
 
-
-
-
--aneesh
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
