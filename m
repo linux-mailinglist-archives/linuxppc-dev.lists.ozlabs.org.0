@@ -2,153 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44D9CC765
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2019 04:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBD3CC816
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2019 07:11:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46lVyv6fbyzDqJB
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2019 12:28:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46lZbM0hPkzDqf0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2019 15:11:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="CuJ6MD/b"; 
- dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46lVx30PYWzDqNk
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2019 12:26:28 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id q21so4952504pfn.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Oct 2019 19:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=omAclChltO04YsfT2hvjgK/4q2VsTNCpr9hYICxOS2U=;
- b=CuJ6MD/bfgwVjiXHXbt/xqGxsVD40N21BUQhNVZyVRVdn1DCJ6IensuBVN2f4/Z1XF
- 80yRKUki4uSMKSYxqbUtNUB9Abu1oulrTqDDSbRkYZkMa6Oag426bORiGjwIkVoXI+Xh
- Oa11TPEsZKdPbfHaTl3splo0of2ojlV4+wmsyQLoE16XeS3ToGOA2qIDkhCgv7oKIx/b
- 6Qugvq7YJuA7+hxtyQC7QmBNOO6xuGckJ5zvIoAfyaklPUYUdd5ucgUKrgv0ST7lGGri
- /lD+IMTF+A6SGzt2H4R1Sbcp3ynTl+zjf0a9H2sCso3lqtg9L/pA0Mp/PxDoMDf1OKE6
- Pqog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=omAclChltO04YsfT2hvjgK/4q2VsTNCpr9hYICxOS2U=;
- b=NKc0zMrZU+1J3CmCaOjPEY/WCfRxCgF946jFzkWkc15tMVni1f0BusKfOfFqp42gEJ
- Du7+acfUEDkyu3YVnGYnKgCufYmfAxjj1vbpjCUkTm+4PF52HJ29GYXnh8b0BI4QXjVF
- J6VKVZL/pWnfrNTBQIoUdBFqX3bcipdjfO4fC6sQ/kVdi7pZ3fLXLFCaRvwMCJuaDM7Z
- g8bUAMlvld+9PsOkgkZ5E00pvkyZYETjiSn3EMT9Maff3BCoLbGZIHNn2UM+OibM9kTV
- E1xfefA2UNTEecI4B7g9LS4XQnCqJrdohjhectXX8SrA+s71VWIWDMR+NLt5ceQic9fu
- Id6g==
-X-Gm-Message-State: APjAAAUAkJTugrXc6DD4G9GJAjwFSZvku14VQRotTsz1BLnJbcNO4d3J
- A5+hwq8FnDHQYHpHp3Cu9pzvtw==
-X-Google-Smtp-Source: APXvYqz4TaZs7Zy01mUdRVSrbsVNzR87AqMqS+HWV0JbGsKaK/EX6+3JvKuTvOFNcpr2+pJxvdpIMg==
-X-Received: by 2002:a17:90a:284c:: with SMTP id
- p12mr20638609pjf.87.1570242385005; 
- Fri, 04 Oct 2019 19:26:25 -0700 (PDT)
-Received: from [192.168.10.86] (203-206-37-215.dyn.iinet.net.au.
- [203.206.37.215])
- by smtp.gmail.com with ESMTPSA id n23sm382969pgk.87.2019.10.04.19.26.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Oct 2019 19:26:24 -0700 (PDT)
-Subject: Re: [PATCH] powerpc/kvm: Fix kvmppc_vcore->in_guest value in
- kvmhv_switch_to_host
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20191004025317.19340-1-jniethe5@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <6123d441-1915-8b58-57c7-4254e3aea6a3@ozlabs.ru>
-Date: Sat, 5 Oct 2019 12:26:19 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46lZXk2WKfzDqcw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2019 15:09:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46lZXk0LmCz8t4D
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2019 15:09:10 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 46lZXj74mhz9sPh; Sat,  5 Oct 2019 15:09:09 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=svaidy@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46lZXj1W9Gz9sPw
+ for <linuxppc-dev@ozlabs.org>; Sat,  5 Oct 2019 15:09:08 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9552OV2077675
+ for <linuxppc-dev@ozlabs.org>; Sat, 5 Oct 2019 01:09:05 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vehkrv5fk-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Sat, 05 Oct 2019 01:09:04 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <svaidy@linux.ibm.com>;
+ Sat, 5 Oct 2019 06:09:02 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sat, 5 Oct 2019 06:09:00 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x955900K49414222
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 5 Oct 2019 05:09:00 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE052AE051;
+ Sat,  5 Oct 2019 05:08:59 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40355AE057;
+ Sat,  5 Oct 2019 05:08:57 +0000 (GMT)
+Received: from drishya.in.ibm.com (unknown [9.85.87.251])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Sat,  5 Oct 2019 05:08:57 +0000 (GMT)
+Date: Sat, 5 Oct 2019 10:38:54 +0530
+From: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+To: Jeremy Kerr <jk@ozlabs.org>
+Subject: Re: [PATCH] powerpc/powernv/prd: Validate whether address to be
+ mapped is part of system RAM
+References: <20191002074856.15014-1-hegdevasant@linux.vnet.ibm.com>
+ <2bb75b409a1159d5524be2d661e548e32fed152e.camel@ozlabs.org>
+ <0e8a4057-fbe7-9b1a-6613-ad500ebe8b67@linux.vnet.ibm.com>
+ <049794f6a16f548bcb418d31fecf268cb4a335e5.camel@ozlabs.org>
+ <9b9b529d-cad7-0ace-acf6-e07d0dea5670@linux.vnet.ibm.com>
+ <452718dfe591c4718498aab6b5c7b68a95cf6c5a.camel@ozlabs.org>
+ <20191003102940.GC3181@drishya.in.ibm.com>
+ <0b130833-6521-17eb-c693-8de4b6ef4d95@ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <20191004025317.19340-1-jniethe5@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <0b130833-6521-17eb-c693-8de4b6ef4d95@ozlabs.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19100505-0008-0000-0000-0000031E3343
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19100505-0009-0000-0000-00004A3D4045
+Message-Id: <20191005050854.GD3181@drishya.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-05_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910050045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -160,81 +110,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, patch-notifications@ellerman.id.au,
- kvm-ppc@vger.kernel.org
+Reply-To: svaidy@linux.ibm.com
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Jeremy Kerr <jk@ozlabs.org> [2019-10-04 11:27:46]:
 
+> Hi Vaidy,
+> 
+> > The current topic is who owns setting up the ATT bits for that piece
+> > of memory.  It is the kernel today.  Kernel decides to set this up as
+> > normal memory or I/O memory and sets the bits in page table entry.
+> > 
+> > > Or, what if there's a range of address-space that isn't backed by system
+> > > RAM (say, some MMIO-mapped hardware) that we want to expose to a future
+> > > HBRT implementation? This change will block that.
+> > > 
+> > > The kernel doesn't know what is and is not valid for a HBRT mapping, so
+> > > it has no reason to override what's specified in the device tree. We've
+> > > designed this so that the kernel provides the mechanism for mapping
+> > > pages, and not the policy of which pages can be mapped.
+> > 
+> > The features altered are cache inhibit and guarding which affects
+> > ability to fetch instructions.  If we allow HBRT to reside in an I/O
+> > memory, the we need to tell kernel that it is ok to allow caching and
+> > instruction execution in that region and accordingly change the ATT
+> > bits.
+> 
+> But this isn't only about the HBRT range itself (ie., the memory containing
+> the HBRT binary). Everything that HBRT needs to map will come through this
+> path. We may not need to fetch instructions from those ranges.
 
-On 04/10/2019 12:53, Jordan Niethe wrote:
-> kvmhv_switch_to_host() in arch/powerpc/kvm/book3s_hv_rmhandlers.S needs
-> to set kvmppc_vcore->in_guest to 0 to signal secondary CPUs to continue.
-> This happens after resetting the PCR. Before commit 13c7bb3c57dc
-> ("powerpc/64s: Set reserved PCR bits"), r0 would always be 0 before it
-> was stored to kvmppc_vcore->in_guest. However because of this change in
-> the commit:
-> 
->         /* Reset PCR */
->         ld      r0, VCORE_PCR(r5)
-> -       cmpdi   r0, 0
-> +       LOAD_REG_IMMEDIATE(r6, PCR_MASK)
-> +       cmpld   r0, r6
->         beq     18f
-> -       li      r0, 0
-> -       mtspr   SPRN_PCR, r0
-> +       mtspr   SPRN_PCR, r6
->  18:
->         /* Signal secondary CPUs to continue */
->         stb     r0,VCORE_IN_GUEST(r5)
-> 
-> We are no longer comparing r0 against 0 and loading it with 0 if it
-> contains something else. Hence when we store r0 to
-> kvmppc_vcore->in_guest, it might not be 0.  This means that secondary
-> CPUs will not be signalled to continue. Those CPUs get stuck and errors
-> like the following are logged:
-> 
->     KVM: CPU 1 seems to be stuck
->     KVM: CPU 2 seems to be stuck
->     KVM: CPU 3 seems to be stuck
->     KVM: CPU 4 seems to be stuck
->     KVM: CPU 5 seems to be stuck
->     KVM: CPU 6 seems to be stuck
->     KVM: CPU 7 seems to be stuck
-> 
-> This can be reproduced with:
->     $ for i in `seq 1 7` ; do chcpu -d $i ; done ;
->     $ taskset -c 0 qemu-system-ppc64 -smp 8,threads=8 \
->        -M pseries,accel=kvm,kvm-type=HV -m 1G -nographic -vga none \
->        -kernel vmlinux -initrd initrd.cpio.xz
-> 
-> Fix by making sure r0 is 0 before storing it to kvmppc_vcore->in_guest.
-> 
-> Fixes: 13c7bb3c57dc ("powerpc/64s: Set reserved PCR bits")
-> Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+Correct. Only HBRT code cannot be fetched, but data can be mapped and
+used.  However cache inhibit mapping is unnecessary unless explicitly
+requested by firmware.
 
-
-Tested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-> ---
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 1 +
->  1 file changed, 1 insertion(+)
+> > This patch does not block a working function, but actually makes
+> > debugging a failed case easier.  The failing scenario without this
+> > check is such that HBRT cannot fetch from the region of memory and
+> > loops in minor page faults doing nothing.
 > 
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index 74a9cfe84aee..faebcbb8c4db 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1921,6 +1921,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
->  	mtspr	SPRN_PCR, r6
->  18:
->  	/* Signal secondary CPUs to continue */
-> +	li	r0, 0
->  	stb	r0,VCORE_IN_GUEST(r5)
->  19:	lis	r8,0x7fff		/* MAX_INT@h */
->  	mtspr	SPRN_HDEC,r8
+> Yep, that's not great, but the alternative means applying this kernel
+> policy, which we can't guarantee is correct.
 > 
+> That is, unless the page protection bits mean that this won't work anyway,
+> but we can probably fix that without a kernel policy, by applying the
+> appropriate pgprot_t, perhaps.
 
--- 
-Alexey
+Currently if we allow the mapping, it won't work at all for code.  But
+can work for data pages.  However cache inhibit mapping will cause
+side effects apart from poor performance.  We should not do this
+unless firmware has a reason to request for this.  We should pass
+additional info from OPAL to driver to set/override permission.
+
+> > As Vasant mentioned hostboot team will add code to relocate the HBRT
+> > to the right place.  Addressing your concern, if we end up allowing
+> > HBRT in non system-RAM area
+> 
+> Not just HBRT, but anything that HBRT maps too.
+
+Correct.
+
+> > we need to add some more flags in device
+> > tree to instruct the driver to force change the page protection bits
+> > as page_prot = pgprot_cached(page_prot);
+> 
+> Doesn't phys_mem_access_prot() handle that for us? Or do I have my
+> _noncached/_cached logic inverted?
+
+The kernel permission policy is implemented via phys_mem_access_prot().
+
+pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+			      unsigned long size, pgprot_t vma_prot)
+{
+	if (ppc_md.phys_mem_access_prot)
+		return ppc_md.phys_mem_access_prot(file, pfn, size, vma_prot);
+
+	if (!page_is_ram(pfn))
+		vma_prot = pgprot_noncached(vma_prot);
+
+	return vma_prot;
+}
+
+The problem for firmware (HBRT) mapping is precisely this policy that
+forces a different defaults pgprot_noncached() if the memory page is
+not in system-RAM.
+
+If !page_is_ram(pfn) check is how defaults will change.  This check is
+what changes pgprot for us now for NVRAM.  We can override this
+permission in opal-prd driver since we know the nature of the use
+case. But I would expect OPAL to indicate that we should override and
+then proceed to do it in the driver.
+
+If we really architect a usage model where firmware uses NVRAM, then
+it should be in its own namespace and not really pick just an address.
+Also as per our opal-prd design, other than firmware memory, all
+device access should come via host-kernel driver and not directly
+mapped to application.
+
+--Vaidy
+
