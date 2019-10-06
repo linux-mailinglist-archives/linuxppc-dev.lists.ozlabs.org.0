@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78ECCCFD1
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Oct 2019 11:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B06CCFD4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Oct 2019 11:13:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46mHsg4lFrzDqRq
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Oct 2019 20:11:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46mHvt2yB1zDqS9
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Oct 2019 20:13:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,30 +18,30 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46mHYw6MsLzDqCb
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Oct 2019 19:57:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46mHZ00fXKzDqPy
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Oct 2019 19:57:44 +1100 (AEDT)
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
  [10.5.11.15])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 2CB58C057EC0;
- Sun,  6 Oct 2019 08:57:39 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id 5382B308123B;
+ Sun,  6 Oct 2019 08:57:42 +0000 (UTC)
 Received: from t460s.redhat.com (ovpn-116-58.ams2.redhat.com [10.36.116.58])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 60EC55EE1D;
- Sun,  6 Oct 2019 08:57:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 85A435EE1D;
+ Sun,  6 Oct 2019 08:57:39 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v6 08/10] mm/memory_hotplug: Don't check for "all holes" in
+Subject: [PATCH v6 09/10] mm/memory_hotplug: Drop local variables in
  shrink_zone_span()
-Date: Sun,  6 Oct 2019 10:56:44 +0200
-Message-Id: <20191006085646.5768-9-david@redhat.com>
+Date: Sun,  6 Oct 2019 10:56:45 +0200
+Message-Id: <20191006085646.5768-10-david@redhat.com>
 In-Reply-To: <20191006085646.5768-1-david@redhat.com>
 References: <20191006085646.5768-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.32]); Sun, 06 Oct 2019 08:57:39 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.49]); Sun, 06 Oct 2019 08:57:42 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,75 +64,71 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If we have holes, the holes will automatically get detected and removed
-once we remove the next bigger/smaller section. The extra checks can
-go.
+Get rid of the unnecessary local variables.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>
 Cc: David Hildenbrand <david@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
 Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
 Cc: Dan Williams <dan.j.williams@intel.com>
 Cc: Wei Yang <richardw.yang@linux.intel.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/memory_hotplug.c | 34 +++++++---------------------------
- 1 file changed, 7 insertions(+), 27 deletions(-)
+ mm/memory_hotplug.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index f294918f7211..8dafa1ba8d9f 100644
+index 8dafa1ba8d9f..843481bd507d 100644
 --- a/mm/memory_hotplug.c
 +++ b/mm/memory_hotplug.c
-@@ -393,6 +393,9 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
- 		if (pfn) {
- 			zone->zone_start_pfn = pfn;
- 			zone->spanned_pages = zone_end_pfn - pfn;
-+		} else {
-+			zone->zone_start_pfn = 0;
-+			zone->spanned_pages = 0;
- 		}
- 	} else if (zone_end_pfn == end_pfn) {
+@@ -374,14 +374,11 @@ static unsigned long find_biggest_section_pfn(int nid, struct zone *zone,
+ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 			     unsigned long end_pfn)
+ {
+-	unsigned long zone_start_pfn = zone->zone_start_pfn;
+-	unsigned long z = zone_end_pfn(zone); /* zone_end_pfn namespace clash */
+-	unsigned long zone_end_pfn = z;
+ 	unsigned long pfn;
+ 	int nid = zone_to_nid(zone);
+ 
+ 	zone_span_writelock(zone);
+-	if (zone_start_pfn == start_pfn) {
++	if (zone->zone_start_pfn == start_pfn) {
  		/*
-@@ -405,34 +408,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 		 * If the section is smallest section in the zone, it need
+ 		 * shrink zone->zone_start_pfn and zone->zone_spanned_pages.
+@@ -389,25 +386,25 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 		 * for shrinking zone.
+ 		 */
+ 		pfn = find_smallest_section_pfn(nid, zone, end_pfn,
+-						zone_end_pfn);
++						zone_end_pfn(zone));
+ 		if (pfn) {
++			zone->spanned_pages = zone_end_pfn(zone) - pfn;
+ 			zone->zone_start_pfn = pfn;
+-			zone->spanned_pages = zone_end_pfn - pfn;
+ 		} else {
+ 			zone->zone_start_pfn = 0;
+ 			zone->spanned_pages = 0;
+ 		}
+-	} else if (zone_end_pfn == end_pfn) {
++	} else if (zone_end_pfn(zone) == end_pfn) {
+ 		/*
+ 		 * If the section is biggest section in the zone, it need
+ 		 * shrink zone->spanned_pages.
+ 		 * In this case, we find second biggest valid mem_section for
+ 		 * shrinking zone.
+ 		 */
+-		pfn = find_biggest_section_pfn(nid, zone, zone_start_pfn,
++		pfn = find_biggest_section_pfn(nid, zone, zone->zone_start_pfn,
  					       start_pfn);
  		if (pfn)
- 			zone->spanned_pages = pfn - zone_start_pfn + 1;
-+		else {
-+			zone->zone_start_pfn = 0;
-+			zone->spanned_pages = 0;
-+		}
- 	}
--
--	/*
--	 * The section is not biggest or smallest mem_section in the zone, it
--	 * only creates a hole in the zone. So in this case, we need not
--	 * change the zone. But perhaps, the zone has only hole data. Thus
--	 * it check the zone has only hole or not.
--	 */
--	pfn = zone_start_pfn;
--	for (; pfn < zone_end_pfn; pfn += PAGES_PER_SUBSECTION) {
--		if (unlikely(!pfn_to_online_page(pfn)))
--			continue;
--
--		if (page_zone(pfn_to_page(pfn)) != zone)
--			continue;
--
--		/* Skip range to be removed */
--		if (pfn >= start_pfn && pfn < end_pfn)
--			continue;
--
--		/* If we find valid section, we have nothing to do */
--		zone_span_writeunlock(zone);
--		return;
--	}
--
--	/* The zone has no valid section */
--	zone->zone_start_pfn = 0;
--	zone->spanned_pages = 0;
- 	zone_span_writeunlock(zone);
- }
- 
+-			zone->spanned_pages = pfn - zone_start_pfn + 1;
++			zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
+ 		else {
+ 			zone->zone_start_pfn = 0;
+ 			zone->spanned_pages = 0;
 -- 
 2.21.0
 
