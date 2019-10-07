@@ -1,90 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C82CCD966
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 00:07:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA61BCDB97
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 07:47:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46md5W40k8zDqGg
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 09:07:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46mqJ03XhRzDqNw
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 16:47:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
- envelope-from=damian.tometzki@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="FoOm9beX"; 
- dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46mZDn2GJ3zDqMF
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Oct 2019 06:58:45 +1100 (AEDT)
-Received: by mail-qk1-x741.google.com with SMTP id 4so10707827qki.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 06 Oct 2019 12:58:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:mail-followup-to:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=APg736jg0ah1Nn8uMNYIJkW2DcUQUmQs6qDMcBNTRSY=;
- b=FoOm9beXdYeuD1c+g8rePWP5H+HcWgPE076sSAqfiTel4Q0Td54IlBGRZMjKxlUk8L
- HVRy25IZMnNbc8SWFbKQpgGlvGFGDOWhUN+AgLYL92MXWhih+qj8A2fL3VALNocwTpqP
- FQgKEQ9d+gNs/CWsBfMg2M9N1HgEO7l4VgKTRdNRP7srbptNIvK1yLiq9PQFzN97hwJD
- PQqjTJBI9iBcbCgHfkAQivSS8ZhZGWhp7euCX2oVGNcFVVabiEBZ2YQtPZM3E2PwhQNC
- l3CHuJVy6xsLzc6ZK3Xl6/ZmPZbZyzn+7BrsOpcQQthNYmztIX5TH3rU39i5J11LksM6
- OUWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id
- :mail-followup-to:references:mime-version:content-disposition
- :in-reply-to:user-agent;
- bh=APg736jg0ah1Nn8uMNYIJkW2DcUQUmQs6qDMcBNTRSY=;
- b=r1VWyw9qgiLBYkoNx2TQXHXA5RdROqIFXBcpl0GIYGhKxqJXoxVc6SdPtqhqJrSGXD
- 6oON864bIUoYNVdTGDEnfkDc69vnbXsjD10GvxgnQf+XzahXIfaWi1zfpm4bW+tY6IKk
- XDLfLcmq/H8mnv41TZDnh2m2bPvN/2Vgf2bc/vIOJjfqbsR+K6VbXdfa3t3PpvJtT78x
- ZjQ7Xh1jnNOdMVTE/h4ATqcSvZT+pH8t18lhmcs8U9niMyFI+YzZHUByRw/QJPsZjMwQ
- tY2P9qqW0bkWlqR9f1H2OSzTHDBksB9JxjJQdXQuK9TxWq+6qbHk/2S/f3Ib9+0i6Qfc
- DBpg==
-X-Gm-Message-State: APjAAAW1SOYHaEQeETmde/iP5neclTjKrgeYRqa6dSiOMDxKQUIa/yfa
- c9RUYwQQ+HcRATV4QcJTTyE=
-X-Google-Smtp-Source: APXvYqwd63qnLz5/ty0+jRrhUrnVAvecut6TehXBQWTOiWh9hSCC+3s41ChbAphbo9+h6ZSP8hjXUA==
-X-Received: by 2002:a37:4e84:: with SMTP id
- c126mr19418006qkb.334.1570391921654; 
- Sun, 06 Oct 2019 12:58:41 -0700 (PDT)
-Received: from freebsd.route53-aws-cloud.de
- (ec2-3-95-91-234.compute-1.amazonaws.com. [3.95.91.234])
- by smtp.gmail.com with ESMTPSA id k2sm6645230qti.24.2019.10.06.12.58.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 06 Oct 2019 12:58:41 -0700 (PDT)
-Date: Sun, 6 Oct 2019 21:58:39 +0200
-From: Damian Tometzki <damian.tometzki@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v6 01/10] mm/memunmap: Don't access uninitialized memmap
- in memunmap_pages()
-Message-ID: <20191006195838.GA27160@freebsd.route53-aws-cloud.de>
-Mail-Followup-To: David Hildenbrand <david@redhat.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, x86@kernel.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Logan Gunthorpe <logang@deltatee.com>,
- Ira Weiny <ira.weiny@intel.com>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-2-david@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191006085646.5768-2-david@redhat.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-Mailman-Approved-At: Mon, 07 Oct 2019 09:06:10 +1100
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46mqFm42flzDqM2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Oct 2019 16:45:29 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6259115AB;
+ Sun,  6 Oct 2019 22:45:26 -0700 (PDT)
+Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
+ [10.162.40.136])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 381113F68E;
+ Sun,  6 Oct 2019 22:47:54 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V4 0/2] mm/debug: Add tests for architecture exported page
+ table helpers
+Date: Mon,  7 Oct 2019 11:15:22 +0530
+Message-Id: <1570427124-21887-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,102 +43,164 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, linux-sh@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Logan Gunthorpe <logang@deltatee.com>, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linux-s390@vger.kernel.org, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Kees Cook <keescook@chromium.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello David,
+This series adds a test validation for architecture exported page table
+helpers. Patch in the series adds basic transformation tests at various
+levels of the page table. Before that it exports gigantic page allocation
+function from HugeTLB.
 
-patch 05/10 is missing in the patch series. 
+This test was originally suggested by Catalin during arm64 THP migration
+RFC discussion earlier. Going forward it can include more specific tests
+with respect to various generic MM functions like THP, HugeTLB etc and
+platform specific tests.
 
+https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
 
-On Sun, 06. Oct 10:56, David Hildenbrand wrote:
-> From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> 
-> With an altmap, the memmap falling into the reserved altmap space are
-> not initialized and, therefore, contain a garbage NID and a garbage
-> zone. Make sure to read the NID/zone from a memmap that was initialzed.
-> 
-> This fixes a kernel crash that is observed when destroying a namespace:
-> 
-> [   81.356173] kernel BUG at include/linux/mm.h:1107!
-> cpu 0x1: Vector: 700 (Program Check) at [c000000274087890]
->     pc: c0000000004b9728: memunmap_pages+0x238/0x340
->     lr: c0000000004b9724: memunmap_pages+0x234/0x340
-> ...
->     pid   = 3669, comm = ndctl
-> kernel BUG at include/linux/mm.h:1107!
-> [c000000274087ba0] c0000000009e3500 devm_action_release+0x30/0x50
-> [c000000274087bc0] c0000000009e4758 release_nodes+0x268/0x2d0
-> [c000000274087c30] c0000000009dd144 device_release_driver_internal+0x174/0x240
-> [c000000274087c70] c0000000009d9dfc unbind_store+0x13c/0x190
-> [c000000274087cb0] c0000000009d8a24 drv_attr_store+0x44/0x60
-> [c000000274087cd0] c0000000005a7470 sysfs_kf_write+0x70/0xa0
-> [c000000274087d10] c0000000005a5cac kernfs_fop_write+0x1ac/0x290
-> [c000000274087d60] c0000000004be45c __vfs_write+0x3c/0x70
-> [c000000274087d80] c0000000004c26e4 vfs_write+0xe4/0x200
-> [c000000274087dd0] c0000000004c2a6c ksys_write+0x7c/0x140
-> [c000000274087e20] c00000000000bbd0 system_call+0x5c/0x68
-> 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Logan Gunthorpe <logang@deltatee.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> [ minimze code changes, rephrase description ]
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  mm/memremap.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 557e53c6fb46..8c2fb44c3b4d 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -123,6 +123,7 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
->  void memunmap_pages(struct dev_pagemap *pgmap)
->  {
->  	struct resource *res = &pgmap->res;
-> +	struct page *first_page;
->  	unsigned long pfn;
->  	int nid;
->  
-> @@ -131,14 +132,16 @@ void memunmap_pages(struct dev_pagemap *pgmap)
->  		put_page(pfn_to_page(pfn));
->  	dev_pagemap_cleanup(pgmap);
->  
-> +	/* make sure to access a memmap that was actually initialized */
-> +	first_page = pfn_to_page(pfn_first(pgmap));
-> +
->  	/* pages are dead and unused, undo the arch mapping */
-> -	nid = page_to_nid(pfn_to_page(PHYS_PFN(res->start)));
-> +	nid = page_to_nid(first_page);
+Changes in V4:
 
-Why we need 'nid = page_to_nid(first_page)' we didnt use it anymore in this function ?
+- Disable DEBUG_ARCH_PGTABLE_TEST for ARM and IA64 platforms
 
->  
->  	mem_hotplug_begin();
->  	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
-> -		pfn = PHYS_PFN(res->start);
-> -		__remove_pages(page_zone(pfn_to_page(pfn)), pfn,
-> -				 PHYS_PFN(resource_size(res)), NULL);
-> +		__remove_pages(page_zone(first_page), PHYS_PFN(res->start),
-> +			       PHYS_PFN(resource_size(res)), NULL);
->  	} else {
->  		arch_remove_memory(nid, res->start, resource_size(res),
->  				pgmap_altmap(pgmap));
-> -- 
-> 2.21.0
->
-Best regards
-Damian
- 
+Changes in V3: (https://lore.kernel.org/patchwork/project/lkml/list/?series=411216)
+
+- Changed test trigger from module format into late_initcall()
+- Marked all functions with __init to be freed after completion
+- Changed all __PGTABLE_PXX_FOLDED checks as mm_pxx_folded()
+- Folded in PPC32 fixes from Christophe
+
+Changes in V2:
+
+https://lore.kernel.org/linux-mm/1568268173-31302-1-git-send-email-anshuman.khandual@arm.com/T/#t
+
+- Fixed small typo error in MODULE_DESCRIPTION()
+- Fixed m64k build problems for lvalue concerns in pmd_xxx_tests()
+- Fixed dynamic page table level folding problems on x86 as per Kirril
+- Fixed second pointers during pxx_populate_tests() per Kirill and Gerald
+- Allocate and free pte table with pte_alloc_one/pte_free per Kirill
+- Modified pxx_clear_tests() to accommodate s390 lower 12 bits situation
+- Changed RANDOM_NZVALUE value from 0xbe to 0xff
+- Changed allocation, usage, free sequence for saved_ptep
+- Renamed VMA_FLAGS as VMFLAGS
+- Implemented a new method for random vaddr generation
+- Implemented some other cleanups
+- Dropped extern reference to mm_alloc()
+- Created and exported new alloc_gigantic_page_order()
+- Dropped the custom allocator and used new alloc_gigantic_page_order()
+
+Changes in V1:
+
+https://lore.kernel.org/linux-mm/1567497706-8649-1-git-send-email-anshuman.khandual@arm.com/
+
+- Added fallback mechanism for PMD aligned memory allocation failure
+
+Changes in RFC V2:
+
+https://lore.kernel.org/linux-mm/1565335998-22553-1-git-send-email-anshuman.khandual@arm.com/T/#u
+
+- Moved test module and it's config from lib/ to mm/
+- Renamed config TEST_ARCH_PGTABLE as DEBUG_ARCH_PGTABLE_TEST
+- Renamed file from test_arch_pgtable.c to arch_pgtable_test.c
+- Added relevant MODULE_DESCRIPTION() and MODULE_AUTHOR() details
+- Dropped loadable module config option
+- Basic tests now use memory blocks with required size and alignment
+- PUD aligned memory block gets allocated with alloc_contig_range()
+- If PUD aligned memory could not be allocated it falls back on PMD aligned
+  memory block from page allocator and pud_* tests are skipped
+- Clear and populate tests now operate on real in memory page table entries
+- Dummy mm_struct gets allocated with mm_alloc()
+- Dummy page table entries get allocated with [pud|pmd|pte]_alloc_[map]()
+- Simplified [p4d|pgd]_basic_tests(), now has random values in the entries
+
+Original RFC V1:
+
+https://lore.kernel.org/linux-mm/1564037723-26676-1-git-send-email-anshuman.khandual@arm.com/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Steven Price <Steven.Price@arm.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Kirill A. Shutemov <kirill@shutemov.name>
+Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (2):
+  mm/hugetlb: Make alloc_gigantic_page() available for general use
+  mm/pgtable/debug: Add test validating architecture page table helpers
+
+ arch/x86/include/asm/pgtable_64_types.h |   2 +
+ include/linux/hugetlb.h                 |   9 +
+ mm/Kconfig.debug                        |  15 +
+ mm/Makefile                             |   1 +
+ mm/arch_pgtable_test.c                  | 440 ++++++++++++++++++++++++
+ mm/hugetlb.c                            |  24 +-
+ 6 files changed, 489 insertions(+), 2 deletions(-)
+ create mode 100644 mm/arch_pgtable_test.c
+
+-- 
+2.20.1
+
