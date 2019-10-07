@@ -2,76 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AF1CDCCC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 10:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85978CE2B5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 15:08:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46mtKf4Mh1zDqMF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 19:04:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46n14Q1ssfzDqCb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2019 00:08:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::143; helo=mail-lf1-x143.google.com;
- envelope-from=urezki@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=sirena.co.uk
+ (client-ip=172.104.155.198; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.co.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="YKX80zqK"; 
- dkim-atps=neutral
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="THWXo8Rq"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [172.104.155.198])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46mtHm29DNzDq6l
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Oct 2019 19:02:25 +1100 (AEDT)
-Received: by mail-lf1-x143.google.com with SMTP id r2so8535992lfn.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Oct 2019 01:02:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:date:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=dD+rwXY/nYOWBAq4CYmtKPehya96hW8MC3evJji/Yec=;
- b=YKX80zqK9BnbAJeglBJloTgyzdIqVvyc8qZo+JZ3ztomB/oSL2bR0cdAskjskLkt7W
- V9UDSFbbXRmNPZ33L0D1wU65+1nH2oAp6y8pZPleWLLZCun4eCXakWs8mS4RWb6C/ker
- JW+RSQDoEOrmeywy1usBuMsnExaiprDjukREATWF2vWVXQ4YtCLFHEdtes6ohAKHQKtf
- q+L1AWmRm9SfD1K0Iykdhz4e4rb4yRZA5P2ouhEARMWWMz9rxMUok+sY7y4FKuV75C8t
- 0xbcdLUk2/EkgOxlDRwB9q8u6xQVYUzdRCjrlrEYJnWvIf4sPd888A9bqnH++YKjN+jF
- dmZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:date:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=dD+rwXY/nYOWBAq4CYmtKPehya96hW8MC3evJji/Yec=;
- b=IeVlyWKdPG9TOnkzmKNwXj3k7YvULD2bzYZioqO4cHbg/MYesT+pIHdpG6kdHlG6O8
- adzETf1b03u9uVpRUaA7EqtF74IxfSOgkbOlus7fUlEl0nJ/l/4zelUEYJr/0jgt4Xg4
- Q+6BqG8EUcQLIlkubiqBMeuJWgtddaGVbNjF7dHldzcjKnnIqKvOXRuklGD2xs9Nz2Xt
- 9ST2iWoRTnsUsipK1z3LBi1kpWklCbQDMNgG/d0kkBOLmG+7VnDisfpPxLI/eSlRgR84
- Z09cCeWvEIZ7VnpSLfsiUCLdJMj3BiK8zUMI7vWBzGDkaIahFrf6gwjR/4Hd6DsS1Ycm
- ngeg==
-X-Gm-Message-State: APjAAAUJf5A1NDFrd3WQYJT7D52Vrl1xdVngSZOeVQ8V3Pcj4Cfy7SFg
- e6EzlHxKNKhSPDBg+/wnI1I=
-X-Google-Smtp-Source: APXvYqyYVjjEk4t55bliwrB5kqrPSByuGmBtIo84DXhVvDur8OAwQWGVhoAdoOt78OMFi9yojAsMng==
-X-Received: by 2002:ac2:4a8f:: with SMTP id l15mr16241092lfp.21.1570435338163; 
- Mon, 07 Oct 2019 01:02:18 -0700 (PDT)
-Received: from pc636 (h5ef52e31.seluork.dyn.perspektivbredband.net.
- [94.245.46.49])
- by smtp.gmail.com with ESMTPSA id f21sm3218392lfm.90.2019.10.07.01.02.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Oct 2019 01:02:17 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 7 Oct 2019 10:02:09 +0200
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH v8 1/5] kasan: support backing vmalloc space with real
- shadow memory
-Message-ID: <20191007080209.GA22997@pc636>
-References: <20191001065834.8880-1-dja@axtens.net>
- <20191001065834.8880-2-dja@axtens.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191001065834.8880-2-dja@axtens.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46n0yw33rNzDqKT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Oct 2019 00:03:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+ Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+ List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+ List-Archive; bh=FXvSV90ORQdMKdGNJr1bG4jNw0ZoYKo8tYhWNdgsM1E=; b=THWXo8Rq7TGt
+ 02XMx0KXdK0VMe4ALiMPT583icsjkQOpUdjLZgye3FLvlAhyIRR+hAanzLWoVSwNbh7Awf4lW9/0I
+ 1aYHWZuYWuJdCvXfu0odTFZZtNlRv0ts3/oHlsXYAPipHHFPgWEktruoRmDyOqRrJjxXWa/gcvUGn
+ Jodhs=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
+ ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <broonie@sirena.co.uk>)
+ id 1iHSfO-0003Qo-Td; Mon, 07 Oct 2019 13:03:10 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+ id 8F1AB274124F; Mon,  7 Oct 2019 14:03:09 +0100 (BST)
+From: Mark Brown <broonie@kernel.org>
+To: YueHaibing <yuehaibing@huawei.com>
+Subject: Applied "ASoC: fsl_mqs: remove set but not used variable 'bclk'" to
+ the asoc tree
+In-Reply-To: <20191006105522.58560-1-yuehaibing@huawei.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20191007130309.8F1AB274124F@ypsilon.sirena.org.uk>
+Date: Mon,  7 Oct 2019 14:03:09 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,141 +62,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, gor@linux.ibm.com, x86@kernel.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- glider@google.com, luto@kernel.org, aryabinin@virtuozzo.com,
- linuxppc-dev@lists.ozlabs.org, dvyukov@google.com
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com,
+ Hulk Robot <hulkci@huawei.com>, Mark Brown <broonie@kernel.org>,
+ perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index a3c70e275f4e..9fb7a16f42ae 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -690,8 +690,19 @@ merge_or_add_vmap_area(struct vmap_area *va,
->  	struct list_head *next;
->  	struct rb_node **link;
->  	struct rb_node *parent;
-> +	unsigned long orig_start, orig_end;
->  	bool merged = false;
->  
-> +	/*
-> +	 * To manage KASAN vmalloc memory usage, we use this opportunity to
-> +	 * clean up the shadow memory allocated to back this allocation.
-> +	 * Because a vmalloc shadow page covers several pages, the start or end
-> +	 * of an allocation might not align with a shadow page. Use the merging
-> +	 * opportunities to try to extend the region we can release.
-> +	 */
-> +	orig_start = va->va_start;
-> +	orig_end = va->va_end;
-> +
->  	/*
->  	 * Find a place in the tree where VA potentially will be
->  	 * inserted, unless it is merged with its sibling/siblings.
-> @@ -741,6 +752,10 @@ merge_or_add_vmap_area(struct vmap_area *va,
->  		if (sibling->va_end == va->va_start) {
->  			sibling->va_end = va->va_end;
->  
-> +			kasan_release_vmalloc(orig_start, orig_end,
-> +					      sibling->va_start,
-> +					      sibling->va_end);
-> +
->  			/* Check and update the tree if needed. */
->  			augment_tree_propagate_from(sibling);
->  
-> @@ -754,6 +769,8 @@ merge_or_add_vmap_area(struct vmap_area *va,
->  	}
->  
->  insert:
-> +	kasan_release_vmalloc(orig_start, orig_end, va->va_start, va->va_end);
-> +
->  	if (!merged) {
->  		link_va(va, root, parent, link, head);
->  		augment_tree_propagate_from(va);
-Hello, Daniel.
+The patch
 
-Looking at it one more, i think above part of code is a bit wrong
-and should be separated from merge_or_add_vmap_area() logic. The
-reason is to keep it simple and do only what it is supposed to do:
-merging or adding.
+   ASoC: fsl_mqs: remove set but not used variable 'bclk'
 
-Also the kasan_release_vmalloc() gets called twice there and looks like
-a duplication. Apart of that, merge_or_add_vmap_area() can be called via
-recovery path when vmap/vmaps is/are not even setup. See percpu
-allocator.
+has been applied to the asoc tree at
 
-I guess your part could be moved directly to the __purge_vmap_area_lazy()
-where all vmaps are lazily freed. To do so, we also need to modify
-merge_or_add_vmap_area() to return merged area:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.5
 
-<snip>
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index e92ff5f7dd8b..fecde4312d68 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -683,7 +683,7 @@ insert_vmap_area_augment(struct vmap_area *va,
-  * free area is inserted. If VA has been merged, it is
-  * freed.
-  */
--static __always_inline void
-+static __always_inline struct vmap_area *
- merge_or_add_vmap_area(struct vmap_area *va,
-        struct rb_root *root, struct list_head *head)
- {
-@@ -750,7 +750,10 @@ merge_or_add_vmap_area(struct vmap_area *va,
- 
-                        /* Free vmap_area object. */
-                        kmem_cache_free(vmap_area_cachep, va);
--                       return;
-+
-+                       /* Point to the new merged area. */
-+                       va = sibling;
-+                       merged = true;
-                }
-        }
- 
-@@ -759,6 +762,8 @@ merge_or_add_vmap_area(struct vmap_area *va,
-                link_va(va, root, parent, link, head);
-                augment_tree_propagate_from(va);
-        }
-+
-+       return va;
- }
- 
- static __always_inline bool
-@@ -1172,7 +1177,7 @@ static void __free_vmap_area(struct vmap_area *va)
-        /*
-         * Merge VA with its neighbors, otherwise just add it.
-         */
--       merge_or_add_vmap_area(va,
-+       (void) merge_or_add_vmap_area(va,
-                &free_vmap_area_root, &free_vmap_area_list);
- }
- 
-@@ -1279,15 +1284,20 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end)
-        spin_lock(&vmap_area_lock);
-        llist_for_each_entry_safe(va, n_va, valist, purge_list) {
-                unsigned long nr = (va->va_end - va->va_start) >> PAGE_SHIFT;
-+               unsigned long orig_start = va->va_start;
-+               unsigned long orig_end = va->va_end;
- 
-                /*
-                 * Finally insert or merge lazily-freed area. It is
-                 * detached and there is no need to "unlink" it from
-                 * anything.
-                 */
--               merge_or_add_vmap_area(va,
-+               va = merge_or_add_vmap_area(va,
-                        &free_vmap_area_root, &free_vmap_area_list);
- 
-+               kasan_release_vmalloc(orig_start,
-+                       orig_end, va->va_start, va->va_end);
-+
-                atomic_long_sub(nr, &vmap_lazy_nr);
- 
-                if (atomic_long_read(&vmap_lazy_nr) < resched_threshold)
-<snip>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---
-Vlad Rezki
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From e9e8fc9ed63e7e0fb30f8612f628924fbd868467 Mon Sep 17 00:00:00 2001
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Sun, 6 Oct 2019 18:55:22 +0800
+Subject: [PATCH] ASoC: fsl_mqs: remove set but not used variable 'bclk'
+
+Fixes gcc '-Wunused-but-set-variable' warning:
+
+sound/soc/fsl/fsl_mqs.c: In function fsl_mqs_hw_params:
+sound/soc/fsl/fsl_mqs.c:54:6: warning: variable bclk set but not used [-Wunused-but-set-variable]
+
+It is never used, so can be removed.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Link: https://lore.kernel.org/r/20191006105522.58560-1-yuehaibing@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/fsl/fsl_mqs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
+index c1619a553514..7b9cab3a62e7 100644
+--- a/sound/soc/fsl/fsl_mqs.c
++++ b/sound/soc/fsl/fsl_mqs.c
+@@ -51,10 +51,9 @@ static int fsl_mqs_hw_params(struct snd_pcm_substream *substream,
+ 	struct fsl_mqs *mqs_priv = snd_soc_component_get_drvdata(component);
+ 	unsigned long mclk_rate;
+ 	int div, res;
+-	int bclk, lrclk;
++	int lrclk;
+ 
+ 	mclk_rate = clk_get_rate(mqs_priv->mclk);
+-	bclk = snd_soc_params_to_bclk(params);
+ 	lrclk = params_rate(params);
+ 
+ 	/*
+-- 
+2.20.1
+
