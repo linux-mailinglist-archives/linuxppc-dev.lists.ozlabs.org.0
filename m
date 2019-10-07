@@ -2,82 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B901ACE495
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 16:03:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8064CE847
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 17:50:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46n2Hj6nD0zDqLc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2019 01:02:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46n4gh2z9jzDqLt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2019 02:50:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=shutemov.name
- (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com;
- envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=shutemov-name.20150623.gappssmtp.com
- header.i=@shutemov-name.20150623.gappssmtp.com header.b="1dC/oO7K"; 
- dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46n2FY34JkzDqKD
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Oct 2019 01:01:04 +1100 (AEDT)
-Received: by mail-ed1-x544.google.com with SMTP id a15so12548438edt.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Oct 2019 07:01:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=shutemov-name.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=rKL1w3iXknpln9Ux2lFi8nURmFThC0ACAB38j7xMJOw=;
- b=1dC/oO7KYUhQk3Cp+gPvQQFfNUhXo7xBP7fOg6lJXEJoNi4xqoFx/+Z/eteEJO7TfS
- beXRbX34FM5TGrxRC9UtlPyVu0dSHSWxoZtuR+BBMIz3ysIcWEMjUC0trYfvncn0/S1K
- bedaHLGes2jPFyGX3hZIeFJI6nEWOI1RFwcmLQ/j5X/1FPSdYeaocVmbj1FV4QMO0Ct3
- gzIXMAqry05u2l85X3+0Gg6QDGEktesNKTlT1AuPCVLEt0ZvIsj2v9MyWo4Idq82kDyc
- ct/NK1YDtzPjx53EMdfO2f0gZjT1d4J5zb0WVTYkaD/x8lXnVmFKIb86ehHVrjIfm46m
- og+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=rKL1w3iXknpln9Ux2lFi8nURmFThC0ACAB38j7xMJOw=;
- b=qz7Cd4r751UHpXnpUKH6P0kMZCN/RZV1XJ5x3DUfW97zElI3cDpHJTxJG07wOO9kDX
- HxbHVHzdkeIDOV1EVxjWMtHd402Hfp3tuyNJFKsMX2Ijig/b+ez43R3FXXMrDh+WzvNa
- IACBML47pI25NGAJWP3FsfdF8IVQtDjedaamSsnpoZvY3bTc4hsM+pCMNjwZWnnZbACX
- jRXSw9gxnoSFJEACMikBDkw/NPNwh3HZpGM/iCqBUrNCQU2R7P3G5PjoDcBzg8s+HYSU
- Vghd9hQc+/pbQUfB1Lc09jdj9Aj8mwcpyuAEHtfXHuO7DQua+j0+Uoj8knfLL9ztHW7Z
- xNRA==
-X-Gm-Message-State: APjAAAXyM54EaBW2QTtm8hldlD6EYjvTeVuDBoBZeHjsKLkrCRQnTWVA
- Ylgle1Y/r4C5m2wHWihYvlpbTg==
-X-Google-Smtp-Source: APXvYqxuYtPtzk9H5R4kXUotDVtZLwRxmHkom44kwHAzQPnIVU9Dw79/zIRyaunZCbGIUeO/BsAK1g==
-X-Received: by 2002:a17:906:4d08:: with SMTP id
- r8mr10168700eju.283.1570456860258; 
- Mon, 07 Oct 2019 07:01:00 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
- by smtp.gmail.com with ESMTPSA id r18sm3382249edl.6.2019.10.07.07.00.59
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 07 Oct 2019 07:00:59 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
- id BDCFF100287; Mon,  7 Oct 2019 17:00:58 +0300 (+03)
-Date: Mon, 7 Oct 2019 17:00:58 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Ingo Molnar <mingo@kernel.org>
-Subject: Re: [PATCH V4 2/2] mm/pgtable/debug: Add test validating
- architecture page table helpers
-Message-ID: <20191007140058.um5g44rvxyzyiref@box>
-References: <1570427124-21887-1-git-send-email-anshuman.khandual@arm.com>
- <1570427124-21887-3-git-send-email-anshuman.khandual@arm.com>
- <20191007130617.GB56546@gmail.com>
- <20191007132607.4q537nauwfn5thol@box>
- <20191007135158.GA36360@gmail.com>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46n4db0Km5zDqDs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Oct 2019 02:48:33 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BB1C15A2;
+ Mon,  7 Oct 2019 08:38:59 -0700 (PDT)
+Received: from e112269-lin.arm.com (unknown [10.1.197.21])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A9C53F6C4;
+ Mon,  7 Oct 2019 08:38:56 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH v11 06/22] powerpc: mm: Add p?d_leaf() definitions
+Date: Mon,  7 Oct 2019 16:38:06 +0100
+Message-Id: <20191007153822.16518-7-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191007153822.16518-1-steven.price@arm.com>
+References: <20191007153822.16518-1-steven.price@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191007135158.GA36360@gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,92 +45,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- linux-s390@vger.kernel.org, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Kees Cook <keescook@chromium.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Mark Rutland <Mark.Rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, "Liang,
+ Kan" <kan.liang@linux.intel.com>, x86@kernel.org,
+ Steven Price <steven.price@arm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ kvm-ppc@vger.kernel.org,
+ =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-kernel@vger.kernel.org,
+ James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 07, 2019 at 03:51:58PM +0200, Ingo Molnar wrote:
-> 
-> * Kirill A. Shutemov <kirill@shutemov.name> wrote:
-> 
-> > On Mon, Oct 07, 2019 at 03:06:17PM +0200, Ingo Molnar wrote:
-> > > 
-> > > * Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> > > 
-> > > > This adds a test module which will validate architecture page table helpers
-> > > > and accessors regarding compliance with generic MM semantics expectations.
-> > > > This will help various architectures in validating changes to the existing
-> > > > page table helpers or addition of new ones.
-> > > > 
-> > > > Test page table and memory pages creating it's entries at various level are
-> > > > all allocated from system memory with required alignments. If memory pages
-> > > > with required size and alignment could not be allocated, then all depending
-> > > > individual tests are skipped.
-> > > 
-> > > > diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-> > > > index 52e5f5f2240d..b882792a3999 100644
-> > > > --- a/arch/x86/include/asm/pgtable_64_types.h
-> > > > +++ b/arch/x86/include/asm/pgtable_64_types.h
-> > > > @@ -40,6 +40,8 @@ static inline bool pgtable_l5_enabled(void)
-> > > >  #define pgtable_l5_enabled() 0
-> > > >  #endif /* CONFIG_X86_5LEVEL */
-> > > >  
-> > > > +#define mm_p4d_folded(mm) (!pgtable_l5_enabled())
-> > > > +
-> > > >  extern unsigned int pgdir_shift;
-> > > >  extern unsigned int ptrs_per_p4d;
-> > > 
-> > > Any deep reason this has to be a macro instead of proper C?
-> > 
-> > It's a way to override the generic mm_p4d_folded(). It can be rewritten
-> > as inline function + define. Something like:
-> > 
-> > #define mm_p4d_folded mm_p4d_folded
-> > static inline bool mm_p4d_folded(struct mm_struct *mm)
-> > {
-> > 	return !pgtable_l5_enabled();
-> > }
-> > 
-> > But I don't see much reason to be more verbose here than needed.
-> 
-> C type checking? Documentation? Yeah, I know it's just a one-liner, but 
-> the principle of the death by a thousand cuts applies here.
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
-Okay, if you think it worth it. Anshuman, could you fix it up for the next
-submission?
+For powerpc pmd_large() already exists and does what we want, so hoist
+it out of the CONFIG_TRANSPARENT_HUGEPAGE condition and implement the
+other levels. Macros are used to provide the generic p?d_leaf() names.
 
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC: Paul Mackerras <paulus@samba.org>
+CC: Michael Ellerman <mpe@ellerman.id.au>
+CC: linuxppc-dev@lists.ozlabs.org
+CC: kvm-ppc@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 30 ++++++++++++++------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-> BTW., any reason this must be in the low level pgtable_64_types.h type 
-> header, instead of one of the API level header files?
-
-I defined it next pgtable_l5_enabled(). What is more appropriate place to
-you? pgtable_64.h? Yeah, it makes sense.
-
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index b01624e5c467..3dd7b6f5edd0 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -923,6 +923,12 @@ static inline int pud_present(pud_t pud)
+ 	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PRESENT));
+ }
+ 
++#define pud_leaf	pud_large
++static inline int pud_large(pud_t pud)
++{
++	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
++}
++
+ extern struct page *pud_page(pud_t pud);
+ extern struct page *pmd_page(pmd_t pmd);
+ static inline pte_t pud_pte(pud_t pud)
+@@ -966,6 +972,12 @@ static inline int pgd_present(pgd_t pgd)
+ 	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PRESENT));
+ }
+ 
++#define pgd_leaf	pgd_large
++static inline int pgd_large(pgd_t pgd)
++{
++	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ static inline pte_t pgd_pte(pgd_t pgd)
+ {
+ 	return __pte_raw(pgd_raw(pgd));
+@@ -1133,6 +1145,15 @@ static inline bool pmd_access_permitted(pmd_t pmd, bool write)
+ 	return pte_access_permitted(pmd_pte(pmd), write);
+ }
+ 
++#define pmd_leaf	pmd_large
++/*
++ * returns true for pmd migration entries, THP, devmap, hugetlb
++ */
++static inline int pmd_large(pmd_t pmd)
++{
++	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ extern pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot);
+ extern pmd_t mk_pmd(struct page *page, pgprot_t pgprot);
+@@ -1159,15 +1180,6 @@ pmd_hugepage_update(struct mm_struct *mm, unsigned long addr, pmd_t *pmdp,
+ 	return hash__pmd_hugepage_update(mm, addr, pmdp, clr, set);
+ }
+ 
+-/*
+- * returns true for pmd migration entries, THP, devmap, hugetlb
+- * But compile time dependent on THP config
+- */
+-static inline int pmd_large(pmd_t pmd)
+-{
+-	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
+-}
+-
+ static inline pmd_t pmd_mknotpresent(pmd_t pmd)
+ {
+ 	return __pmd(pmd_val(pmd) & ~_PAGE_PRESENT);
 -- 
- Kirill A. Shutemov
+2.20.1
+
