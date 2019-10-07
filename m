@@ -1,55 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA754CE2CC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 15:12:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D29DCE2DE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2019 15:15:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46n19D4X2LzDqLJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2019 00:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46n1DV6qwHzDqLC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2019 00:15:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=sirena.co.uk
- (client-ip=172.104.155.198; helo=heliosphere.sirena.org.uk;
- envelope-from=broonie@sirena.co.uk; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::344; helo=mail-wm1-x344.google.com;
+ envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="DxajtVCI"; dkim-atps=neutral
-Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
- [172.104.155.198])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="tJAewuqA"; 
+ dkim-atps=neutral
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46n0yw2FLczDqKM
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Oct 2019 00:03:18 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
- Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
- List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=Cfep0rIWMWln/JuLOxx1Em6o0m/piiYjUQUP4jMHOv0=; b=DxajtVCIZ7TS
- LUoA4FeiAcAzoPTrmWvtbEN1KtrYBEv1W9u2aZ7c252BXAw0zAjorz8kqWIqIWS228TtPZyt0OlxW
- ypNHjM2RHffgNnU33MjcMIYZEikgtRvvIWjOYveK0Bd7yLHxEBw4HE4OlNyfCBKHboLT8B1KdT8jZ
- dZuck=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
- ([82.37.168.47] helo=ypsilon.sirena.org.uk)
- by heliosphere.sirena.org.uk with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <broonie@sirena.co.uk>)
- id 1iHSfP-0003Qq-3C; Mon, 07 Oct 2019 13:03:11 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
- id 5DBE7274162F; Mon,  7 Oct 2019 14:03:09 +0100 (BST)
-From: Mark Brown <broonie@kernel.org>
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Applied "ASoC: fsl_mqs: Fix error handling in probe" to the asoc tree
-In-Reply-To: <20191004102208.GB823@mwanda>
-X-Patchwork-Hint: ignore
-Message-Id: <20191007130309.5DBE7274162F@ypsilon.sirena.org.uk>
-Date: Mon,  7 Oct 2019 14:03:09 +0100 (BST)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46n12X0GwCzDqL8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Oct 2019 00:06:25 +1100 (AEDT)
+Received: by mail-wm1-x344.google.com with SMTP id v17so12258193wml.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Oct 2019 06:06:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=RZE8Cj868kn5EJS/0QY29Orx1bZsg1Fle+VfrZSmgF8=;
+ b=tJAewuqAmBMfjpkJA/1enuzflTjuI48UJZ0Z0fdDtpXMvjWt8JagrRMgnZLLai9UeY
+ mkbErQhWM39j4Hm1s7MX9m/lzVTnkp+OMeG5ZXtiir6jn8BLfHkzXnUShAGoykAHXOnf
+ zYcGSR++z2tbIUzuTH5tpf5m9vIc8eF3O3REAZ36+mr/kHp8w4U5Z+7uVFz79ksG8TIC
+ eqab017gzKxysvQg39onykCPqr4VZgoidG0IKRK7bzgdYmIjLQ14xRLyhnknxrgOj8o1
+ kkqFWIhWiVMX57N1WUPYfE6wABoyQFZVbrbpv3hVtkeFHgU3i9sImWF4xz9fwLCh2ch6
+ oGzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=RZE8Cj868kn5EJS/0QY29Orx1bZsg1Fle+VfrZSmgF8=;
+ b=GlJX1eoXB1Lnm565fn9I9p+8eu78hYPFHHKwuKZJOTr6EX5TXTlbfGal3CwmNaLr+H
+ HxRY/QjEA04b+uqkQ/HRaPWU8CCOYx0y2PipNrUvHhZaVIrWKfHjKbWnecd0d4bsscUd
+ FigH5e6Q+Jd26kBnKLsXz1fer0Etx19EBunFh2mnvMyF1dQysy2y6uH9nYgZZhs642vQ
+ rOTHN+BVCuUgiS5U/6uV1bccY35Wct1j5mz3HgJI4p6tVpKqfMS4m4FjI0e75Jh5Qdb8
+ CN8QBPdqCBTrkWvEbovwlZM2zrR2V1degRdalJCzYakJwHoLan/rAGFl3vR2GS5bR57j
+ rgdg==
+X-Gm-Message-State: APjAAAVIC7Nb3hj9eGjojLzwEvdALeOvbL/X7lUiIXTwMan0MH9VMaIA
+ 8QpCmjnJLqt96V9xgNKjaXM=
+X-Google-Smtp-Source: APXvYqwnZjlpL4PUUAvfK5d4pYWeE31TwsXrlSV5mEiGcVQWwRB9VHCMKlpm1WOlkrkBBukHu/Su/w==
+X-Received: by 2002:a1c:7fcc:: with SMTP id a195mr21060937wmd.27.1570453581529; 
+ Mon, 07 Oct 2019 06:06:21 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+ by smtp.gmail.com with ESMTPSA id l4sm14525979wrw.6.2019.10.07.06.06.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Oct 2019 06:06:20 -0700 (PDT)
+Date: Mon, 7 Oct 2019 15:06:17 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V4 2/2] mm/pgtable/debug: Add test validating
+ architecture page table helpers
+Message-ID: <20191007130617.GB56546@gmail.com>
+References: <1570427124-21887-1-git-send-email-anshuman.khandual@arm.com>
+ <1570427124-21887-3-git-send-email-anshuman.khandual@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1570427124-21887-3-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,143 +81,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- kernel-janitors@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
- linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Fabio Estevam <festevam@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The patch
 
-   ASoC: fsl_mqs: Fix error handling in probe
+* Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-has been applied to the asoc tree at
+> This adds a test module which will validate architecture page table helpers
+> and accessors regarding compliance with generic MM semantics expectations.
+> This will help various architectures in validating changes to the existing
+> page table helpers or addition of new ones.
+> 
+> Test page table and memory pages creating it's entries at various level are
+> all allocated from system memory with required alignments. If memory pages
+> with required size and alignment could not be allocated, then all depending
+> individual tests are skipped.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.5
+> diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
+> index 52e5f5f2240d..b882792a3999 100644
+> --- a/arch/x86/include/asm/pgtable_64_types.h
+> +++ b/arch/x86/include/asm/pgtable_64_types.h
+> @@ -40,6 +40,8 @@ static inline bool pgtable_l5_enabled(void)
+>  #define pgtable_l5_enabled() 0
+>  #endif /* CONFIG_X86_5LEVEL */
+>  
+> +#define mm_p4d_folded(mm) (!pgtable_l5_enabled())
+> +
+>  extern unsigned int pgdir_shift;
+>  extern unsigned int ptrs_per_p4d;
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Any deep reason this has to be a macro instead of proper C?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+> index 327b3ebf23bf..683131b1ee7d 100644
+> --- a/mm/Kconfig.debug
+> +++ b/mm/Kconfig.debug
+> @@ -117,3 +117,18 @@ config DEBUG_RODATA_TEST
+>      depends on STRICT_KERNEL_RWX
+>      ---help---
+>        This option enables a testcase for the setting rodata read-only.
+> +
+> +config DEBUG_ARCH_PGTABLE_TEST
+> +	bool "Test arch page table helpers for semantics compliance"
+> +	depends on MMU
+> +	depends on DEBUG_KERNEL
+> +	depends on !(ARM || IA64)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Please add a proper enabling switch for architectures to opt in.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Please also add it to Documentation/features/list-arch.sh so that it's 
+listed as a 'TODO' entry on architectures where the tests are not enabled 
+yet.
+
+> +	help
+> +	  This options provides a kernel module which can be used to test
+> +	  architecture page table helper functions on various platform in
+> +	  verifying if they comply with expected generic MM semantics. This
+> +	  will help architectures code in making sure that any changes or
+> +	  new additions of these helpers will still conform to generic MM
+> +	  expected semantics.
+
+Typos and grammar fixed:
+
+	help
+	  This option provides a kernel module which can be used to test
+	  architecture page table helper functions on various platforms in
+	  verifying if they comply with expected generic MM semantics. This
+	  will help architecture code in making sure that any changes or
+	  new additions of these helpers still conform to expected 
+	  semantics of the generic MM.
+
+Also, more fundamentally: isn't a kernel module too late for such a debug 
+check, should something break due to a core MM change? Have these debug 
+checks caught any bugs or inconsistencies before?
+
+Why not call this as some earlier MM debug check, after enabling paging 
+but before executing user-space binaries or relying on complex MM ops 
+within the kernel, called at a stage when those primitives are all 
+expected to work fine?
+
+It seems to me that arch_pgtable_tests_init) won't even context-switch 
+normally, right?
+
+Finally, instead of inventing yet another randomly named .config debug 
+switch, please fit it into the regular MM debug options which go along 
+the CONFIG_DEBUG_VM* naming scheme.
+
+Might even make sense to enable these new debug checks by default if 
+CONFIG_DEBUG_VM=y, that way we'll get a *lot* more debug coverage than 
+some random module somewhere that few people will know about, let alone 
+run.
 
 Thanks,
-Mark
 
-From a9d273671440c439c4f236123c59dd839c1a0eb7 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Fri, 4 Oct 2019 13:22:09 +0300
-Subject: [PATCH] ASoC: fsl_mqs: Fix error handling in probe
-
-There are several problems in the error handling in fsl_mqs_probe().
-
-1) "ret" isn't initialized on some paths.  GCC has a feature which
-   warns about uninitialized variables but the code initializes "ret"
-   to zero at the start of the function so the checking is turned off.
-2) "gpr_np" is a pointer so initializing it to zero is confusing and
-   generates a Sparse warning.
-3) of_parse_phandle() doesn't return error pointers on error, it returns
-   NULL.
-4) If devm_snd_soc_register_component() fails then the function should
-   free the "gpr_np".
-
-Fixes: 9e28f6532c61 ("ASoC: fsl_mqs: Add MQS component driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Link: https://lore.kernel.org/r/20191004102208.GB823@mwanda
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/fsl/fsl_mqs.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
-index 7b9cab3a62e7..f7fc44e8fb27 100644
---- a/sound/soc/fsl/fsl_mqs.c
-+++ b/sound/soc/fsl/fsl_mqs.c
-@@ -178,10 +178,10 @@ static const struct regmap_config fsl_mqs_regmap_config = {
- static int fsl_mqs_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	struct device_node *gpr_np = 0;
-+	struct device_node *gpr_np = NULL;
- 	struct fsl_mqs *mqs_priv;
- 	void __iomem *regs;
--	int ret = 0;
-+	int ret;
- 
- 	mqs_priv = devm_kzalloc(&pdev->dev, sizeof(*mqs_priv), GFP_KERNEL);
- 	if (!mqs_priv)
-@@ -198,17 +198,16 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 
- 	if (mqs_priv->use_gpr) {
- 		gpr_np = of_parse_phandle(np, "gpr", 0);
--		if (IS_ERR(gpr_np)) {
-+		if (!gpr_np) {
- 			dev_err(&pdev->dev, "failed to get gpr node by phandle\n");
--			ret = PTR_ERR(gpr_np);
--			goto out;
-+			return -EINVAL;
- 		}
- 
- 		mqs_priv->regmap = syscon_node_to_regmap(gpr_np);
- 		if (IS_ERR(mqs_priv->regmap)) {
- 			dev_err(&pdev->dev, "failed to get gpr regmap\n");
- 			ret = PTR_ERR(mqs_priv->regmap);
--			goto out;
-+			goto err_free_gpr_np;
- 		}
- 	} else {
- 		regs = devm_platform_ioremap_resource(pdev, 0);
-@@ -229,7 +228,7 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 		if (IS_ERR(mqs_priv->ipg)) {
- 			dev_err(&pdev->dev, "failed to get the clock: %ld\n",
- 				PTR_ERR(mqs_priv->ipg));
--			goto out;
-+			return PTR_ERR(mqs_priv->ipg);
- 		}
- 	}
- 
-@@ -237,17 +236,21 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 	if (IS_ERR(mqs_priv->mclk)) {
- 		dev_err(&pdev->dev, "failed to get the clock: %ld\n",
- 			PTR_ERR(mqs_priv->mclk));
--		goto out;
-+		ret = PTR_ERR(mqs_priv->mclk);
-+		goto err_free_gpr_np;
- 	}
- 
- 	dev_set_drvdata(&pdev->dev, mqs_priv);
- 	pm_runtime_enable(&pdev->dev);
- 
--	return devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
-+	ret = devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
- 			&fsl_mqs_dai, 1);
--out:
--	if (!IS_ERR(gpr_np))
--		of_node_put(gpr_np);
-+	if (ret)
-+		goto err_free_gpr_np;
-+	return 0;
-+
-+err_free_gpr_np:
-+	of_node_put(gpr_np);
- 
- 	return ret;
- }
--- 
-2.20.1
-
+	Ingo
