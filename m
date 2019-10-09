@@ -2,53 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC40D0EB5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 14:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E07F7D1055
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 15:39:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46pD733PWyzDqKq
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 23:29:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46pFhC63wXzDqRr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 00:39:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46pD2Q33zzzDqJM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2019 23:25:27 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF15D142F;
- Wed,  9 Oct 2019 05:25:24 -0700 (PDT)
-Received: from [10.37.12.37] (unknown [10.37.12.37])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E022B3F703;
- Wed,  9 Oct 2019 05:25:16 -0700 (PDT)
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Yunsheng Lin <linyunsheng@huawei.com>,
- Peter Zijlstra <peterz@infradead.org>
-References: <20190924091714.GJ2369@hirez.programming.kicks-ass.net>
- <20190924105622.GH23050@dhcp22.suse.cz>
- <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
- <20190924115401.GM23050@dhcp22.suse.cz>
- <20190924120943.GP2349@hirez.programming.kicks-ass.net>
- <20190924122500.GP23050@dhcp22.suse.cz>
- <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
-Date: Wed, 9 Oct 2019 13:25:14 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="l0SUFH/C"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46pFds1BvSzDqMM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 00:37:50 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46pFdg6jxgz9v0tt;
+ Wed,  9 Oct 2019 15:37:43 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=l0SUFH/C; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id gai2MFR_wdEX; Wed,  9 Oct 2019 15:37:43 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46pFdg5d9Xz9v06Z;
+ Wed,  9 Oct 2019 15:37:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1570628263; bh=8Qdv5FuJwm79jqYF5/Ft1YdqyZGh8baYlRjV6rSPdwU=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=l0SUFH/CzinnBVUxOj7SsSXzKlvYANQaokKSuedFvNYGvWS+P2c1LQ8/9ZJHn2Cex
+ yxBlYWtMF8EpU6vOPC+VzKtNHZuKI4jNwt5KGG/sf4nJl1Q4kk+LOpUrWKooP4glir
+ EBphrvhKqVqzVkzt1IKZWECLhS+EiI0m4HgCTIcM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E433F8B87E;
+ Wed,  9 Oct 2019 15:37:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Vg5Rl6wZSHxx; Wed,  9 Oct 2019 15:37:44 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 514318B8A5;
+ Wed,  9 Oct 2019 15:37:44 +0200 (CEST)
+Subject: Re: [PATCH v4 0/5] Powerpc/Watchpoint: Few important fixes
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au,
+ mikey@neuling.org
+References: <20190925040630.6948-1-ravi.bangoria@linux.ibm.com>
+ <19b222ce-3013-7de5-1c04-48c6fd00fe81@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <0d98e256-44ee-f920-cb2f-f79545584769@c-s.fr>
+Date: Wed, 9 Oct 2019 15:37:44 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
+In-Reply-To: <19b222ce-3013-7de5-1c04-48c6fd00fe81@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,73 +79,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, Michal Hocko <mhocko@kernel.org>,
- mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
- sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
- linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, x86@kernel.org,
- rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
- mingo@redhat.com, jeffrey.t.kirsher@intel.com, jhogan@kernel.org,
- mattst88@gmail.com, linux-mips@vger.kernel.org, len.brown@intel.com,
- gor@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, luto@kernel.org,
- tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
- linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, ralf@linux-mips.org,
- tbogendoerfer@suse.de, paul.burton@mips.com, linux-alpha@vger.kernel.org,
- rafael@kernel.org, ink@jurassic.park.msu.ru, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019-10-08 9:38 am, Yunsheng Lin wrote:
-> On 2019/9/25 18:41, Peter Zijlstra wrote:
->> On Wed, Sep 25, 2019 at 05:14:20PM +0800, Yunsheng Lin wrote:
->>>  From the discussion above, It seems making the node_to_cpumask_map()
->>> NUMA_NO_NODE aware is the most feasible way to move forwad.
+
+
+Le 07/10/2019 à 08:35, Ravi Bangoria a écrit :
+> 
+> 
+> On 9/25/19 9:36 AM, Ravi Bangoria wrote:
+>> v3: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-July/193339.html
 >>
->> That's still wrong.
+>> v3->v4:
+>>   - Instead of considering exception as extraneous when dar is outside of
+>>     user specified range, analyse the instruction and check for overlap
+>>     between user specified range and actual load/store range.
+>>   - Add selftest for the same in perf-hwbreak.c
+>>   - Make ptrace-hwbreak.c selftest more strict by checking address in
+>>     check_success.
+>>   - Support for 8xx in ptrace-hwbreak.c selftest (Build tested only)
+>>   - Rebase to powerpc/next
+>>
+>> @Christope, Can you please check Patch 5. I've just build-tested it
+>> with ep88xc_defconfig.
 > 
-> Hi, Peter
+> @mpe, @mikey, Any feedback?
 > 
-> It seems this has trapped in the dead circle.
+> @Christophe, Is patch5 works for you on 8xx?
 > 
->  From my understanding, NUMA_NO_NODE which means not node numa preference
-> is the state to describe the node of virtual device or the physical device
-> that has equal distance to all cpu.
-> 
-> We can be stricter if the device does have a nearer node, but we can not
-> deny that a device does not have a node numa preference or node affinity,
-> which also means the control or data buffer can be allocated at the node where
-> the process is running.
-> 
-> As you has proposed, making it -2 and have dev_to_node() warn if the device does
-> have a nearer node and not set by the fw is a way to be stricter.
-> 
-> But I think maybe being stricter is not really relevant to NUMA_NO_NODE, because
-> we does need a state to describe the device that have equal distance to all node,
-> even if it is not physically scalable.
-> 
-> Any better suggestion to move this forward?
 
-FWIW (since this is in my inbox), it sounds like the fundamental issue 
-is that NUMA_NO_NODE is conflated for at least two different purposes, 
-so trying to sort that out would be a good first step. AFAICS we have 
-genuine "don't care" cases like alloc_pages_node(), where if the 
-producer says it doesn't matter then the consumer is free to make its 
-own judgement on what to do, and fundamentally different "we expect this 
-thing to have an affinity but it doesn't, so we can't say what's 
-appropriate" cases which could really do with some separate indicator 
-like "NUMA_INVALID_NODE".
+Getting the following :
 
-The tricky part is then bestowed on the producers to decide whether they 
-can downgrade "invalid" to "don't care". You can technically build 'a 
-device' whose internal logic is distributed between nodes and thus 
-appears to have equal affinity - interrupt controllers, for example, may 
-have per-CPU or per-node interfaces that end up looking like that - so 
-although it's unlikely it's not outright nonsensical. Similarly a 
-'device' that's actually emulated behind a firmware call interface may 
-well effectively have no real affinity.
+root@vgoip:~# ./ptrace-hwbreak
+test: ptrace-hwbreak
+tags: git_version:v5.4-rc2-710-gf0082e173fe4-dirty
+PTRACE_SET_DEBUGREG, WO, len: 1: Ok
+PTRACE_SET_DEBUGREG, WO, len: 2: Ok
+PTRACE_SET_DEBUGREG, WO, len: 4: Ok
+PTRACE_SET_DEBUGREG, WO, len: 8: Ok
+PTRACE_SET_DEBUGREG, RO, len: 1: Ok
+PTRACE_SET_DEBUGREG, RO, len: 2: Ok
+PTRACE_SET_DEBUGREG, RO, len: 4: Ok
+PTRACE_SET_DEBUGREG, RO, len: 8: Ok
+PTRACE_SET_DEBUGREG, RW, len: 1: Ok
+PTRACE_SET_DEBUGREG, RW, len: 2: Ok
+PTRACE_SET_DEBUGREG, RW, len: 4: Ok
+PTRACE_SET_DEBUGREG, RW, len: 8: Ok
+PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
+PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
+PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
+PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
+PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Fail
+failure: ptrace-hwbreak
 
-Robin.
+Christophe
