@@ -1,69 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C0F1D17C1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 20:50:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2866FD1AC6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 23:21:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46pNb061VWzDqdR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 05:50:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46pRx65CmTzDqXL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 08:21:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=wh7q=yc=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46pNXs2yMrzDqBM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 05:48:59 +1100 (AEDT)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1iIGyv-000329-9o; Wed, 09 Oct 2019 13:46:41 -0500
-Message-ID: <34ef1980887c8a6d635c20bdaf748bb0548e51b5.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au, 
- linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
- christophe.leroy@c-s.fr,  benh@kernel.crashing.org, paulus@samba.org,
- npiggin@gmail.com,  keescook@chromium.org,
- kernel-hardening@lists.openwall.com
-Date: Wed, 09 Oct 2019 13:46:38 -0500
-In-Reply-To: <90bb659a-bde4-3b8e-8f01-bf22d7534f44@huawei.com>
-References: <20190920094546.44948-1-yanaijie@huawei.com>
- <9c2dd2a8-83f2-983c-383e-956e19a7803a@huawei.com>
- <c4769b34-95f6-81b9-4856-50459630aa0d@huawei.com>
- <38141b946f3376ce471e46eaf065e357ac540354.camel@buserror.net>
- <90bb659a-bde4-3b8e-8f01-bf22d7534f44@huawei.com>
-Organization: Red Hat
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46pRtr6vmXzDqSB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 08:19:48 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
+ data access at 0x00f0fd0d
+Date: Wed, 09 Oct 2019 21:19:45 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-205099-206035-9zXViNkg3P@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
+References: <bug-205099-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: yanaijie@huawei.com, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, christophe.leroy@c-s.fr,
- benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
- keescook@chromium.org, kernel-hardening@lists.openwall.com,
- wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
- jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
- yebin10@huawei.com
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH v7 00/12] implement KASLR for powerpc/fsl_booke/32
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,63 +62,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
- jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
- yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-10-09 at 16:41 +0800, Jason Yan wrote:
-> Hi Scott,
-> 
-> On 2019/10/9 15:13, Scott Wood wrote:
-> > On Wed, 2019-10-09 at 14:10 +0800, Jason Yan wrote:
-> > > Hi Scott,
-> > > 
-> > > Would you please take sometime to test this?
-> > > 
-> > > Thank you so much.
-> > > 
-> > > On 2019/9/24 13:52, Jason Yan wrote:
-> > > > Hi Scott,
-> > > > 
-> > > > Can you test v7 to see if it works to load a kernel at a non-zero
-> > > > address?
-> > > > 
-> > > > Thanks,
-> > 
-> > Sorry for the delay.  Here's the output:
-> > 
-> 
-> Thanks for the test.
-> 
-> > ## Booting kernel from Legacy Image at 10000000 ...
-> >     Image Name:   Linux-5.4.0-rc2-00050-g8ac2cf5b4
-> >     Image Type:   PowerPC Linux Kernel Image (gzip compressed)
-> >     Data Size:    7521134 Bytes = 7.2 MiB
-> >     Load Address: 04000000
-> >     Entry Point:  04000000
-> >     Verifying Checksum ... OK
-> > ## Flattened Device Tree blob at 1fc00000
-> >     Booting using the fdt blob at 0x1fc00000
-> >     Uncompressing Kernel Image ... OK
-> >     Loading Device Tree to 07fe0000, end 07fff65c ... OK
-> > KASLR: No safe seed for randomizing the kernel base.
-> > OF: reserved mem: initialized node qman-fqd, compatible id fsl,qman-fqd
-> > OF: reserved mem: initialized node qman-pfdr, compatible id fsl,qman-pfdr
-> > OF: reserved mem: initialized node bman-fbpr, compatible id fsl,bman-fbpr
-> > Memory CAM mapping: 64/64/64 Mb, residual: 12032Mb
-> 
-> When boot from 04000000, the max CAM value is 64M. And
-> you have a board with 12G memory, CONFIG_LOWMEM_CAM_NUM=3 means only
-> 192M memory is mapped and when kernel is randomized at the middle of 
-> this 192M memory, we will not have enough continuous memory for node map.
-> 
-> Can you set CONFIG_LOWMEM_CAM_NUM=8 and see if it works?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
-OK, that worked.
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+As a side effect of this bug the btrfs module fails to load. If btrfs is not
+built as a module, but built into the kernel the machine fails to boot.
 
--Scott
+Btrfs behaves normal again when I set KASAN_SANITIZE :=3D n in
+lib/raid6/Makefile.
 
-
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
