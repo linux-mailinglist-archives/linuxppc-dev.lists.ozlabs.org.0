@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65121D0A12
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 10:44:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC40D0EB5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 14:29:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46p7714rtfzDqMM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 19:44:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46pD733PWyzDqKq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 23:29:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.35; helo=huawei.com; envelope-from=yanaijie@huawei.com;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46p74h71mRzDqJN
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2019 19:42:11 +1100 (AEDT)
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 2430E4051D3B32D1B745;
- Wed,  9 Oct 2019 16:42:07 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.203) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Wed, 9 Oct 2019
- 16:42:00 +0800
-Subject: Re: [PATCH v7 00/12] implement KASLR for powerpc/fsl_booke/32
-To: Scott Wood <oss@buserror.net>, <mpe@ellerman.id.au>,
- <linuxppc-dev@lists.ozlabs.org>, <diana.craciun@nxp.com>,
- <christophe.leroy@c-s.fr>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <npiggin@gmail.com>, <keescook@chromium.org>,
- <kernel-hardening@lists.openwall.com>
-References: <20190920094546.44948-1-yanaijie@huawei.com>
- <9c2dd2a8-83f2-983c-383e-956e19a7803a@huawei.com>
- <c4769b34-95f6-81b9-4856-50459630aa0d@huawei.com>
- <38141b946f3376ce471e46eaf065e357ac540354.camel@buserror.net>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <90bb659a-bde4-3b8e-8f01-bf22d7534f44@huawei.com>
-Date: Wed, 9 Oct 2019 16:41:59 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.5.0
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46pD2Q33zzzDqJM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2019 23:25:27 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF15D142F;
+ Wed,  9 Oct 2019 05:25:24 -0700 (PDT)
+Received: from [10.37.12.37] (unknown [10.37.12.37])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E022B3F703;
+ Wed,  9 Oct 2019 05:25:16 -0700 (PDT)
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+To: Yunsheng Lin <linyunsheng@huawei.com>,
+ Peter Zijlstra <peterz@infradead.org>
+References: <20190924091714.GJ2369@hirez.programming.kicks-ass.net>
+ <20190924105622.GH23050@dhcp22.suse.cz>
+ <20190924112349.GJ2332@hirez.programming.kicks-ass.net>
+ <20190924115401.GM23050@dhcp22.suse.cz>
+ <20190924120943.GP2349@hirez.programming.kicks-ass.net>
+ <20190924122500.GP23050@dhcp22.suse.cz>
+ <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
+ <20190924125936.GR2349@hirez.programming.kicks-ass.net>
+ <20190924131939.GS23050@dhcp22.suse.cz>
+ <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
+ <20190925104108.GE4553@hirez.programming.kicks-ass.net>
+ <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
+Date: Wed, 9 Oct 2019 13:25:14 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <38141b946f3376ce471e46eaf065e357ac540354.camel@buserror.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+In-Reply-To: <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.203]
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,106 +60,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
- jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
- yebin10@huawei.com
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, Michal Hocko <mhocko@kernel.org>,
+ mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
+ sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
+ linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, x86@kernel.org,
+ rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
+ mingo@redhat.com, jeffrey.t.kirsher@intel.com, jhogan@kernel.org,
+ mattst88@gmail.com, linux-mips@vger.kernel.org, len.brown@intel.com,
+ gor@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, luto@kernel.org,
+ tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
+ linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+ tbogendoerfer@suse.de, paul.burton@mips.com, linux-alpha@vger.kernel.org,
+ rafael@kernel.org, ink@jurassic.park.msu.ru, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Scott,
-
-On 2019/10/9 15:13, Scott Wood wrote:
-> On Wed, 2019-10-09 at 14:10 +0800, Jason Yan wrote:
->> Hi Scott,
+On 2019-10-08 9:38 am, Yunsheng Lin wrote:
+> On 2019/9/25 18:41, Peter Zijlstra wrote:
+>> On Wed, Sep 25, 2019 at 05:14:20PM +0800, Yunsheng Lin wrote:
+>>>  From the discussion above, It seems making the node_to_cpumask_map()
+>>> NUMA_NO_NODE aware is the most feasible way to move forwad.
 >>
->> Would you please take sometime to test this?
->>
->> Thank you so much.
->>
->> On 2019/9/24 13:52, Jason Yan wrote:
->>> Hi Scott,
->>>
->>> Can you test v7 to see if it works to load a kernel at a non-zero address?
->>>
->>> Thanks,
+>> That's still wrong.
 > 
-> Sorry for the delay.  Here's the output:
+> Hi, Peter
 > 
-
-Thanks for the test.
-
-> ## Booting kernel from Legacy Image at 10000000 ...
->     Image Name:   Linux-5.4.0-rc2-00050-g8ac2cf5b4
->     Image Type:   PowerPC Linux Kernel Image (gzip compressed)
->     Data Size:    7521134 Bytes = 7.2 MiB
->     Load Address: 04000000
->     Entry Point:  04000000
->     Verifying Checksum ... OK
-> ## Flattened Device Tree blob at 1fc00000
->     Booting using the fdt blob at 0x1fc00000
->     Uncompressing Kernel Image ... OK
->     Loading Device Tree to 07fe0000, end 07fff65c ... OK
-> KASLR: No safe seed for randomizing the kernel base.
-> OF: reserved mem: initialized node qman-fqd, compatible id fsl,qman-fqd
-> OF: reserved mem: initialized node qman-pfdr, compatible id fsl,qman-pfdr
-> OF: reserved mem: initialized node bman-fbpr, compatible id fsl,bman-fbpr
-> Memory CAM mapping: 64/64/64 Mb, residual: 12032Mb
-
-When boot from 04000000, the max CAM value is 64M. And
-you have a board with 12G memory, CONFIG_LOWMEM_CAM_NUM=3 means only
-192M memory is mapped and when kernel is randomized at the middle of 
-this 192M memory, we will not have enough continuous memory for node map.
-
-Can you set CONFIG_LOWMEM_CAM_NUM=8 and see if it works?
-
-Thanks.
-
-> Linux version 5.4.0-rc2-00050-g8ac2cf5b4e4a-dirty (scott@snotra) (gcc version 8.
-> 1.0 (GCC)) #26 SMP Wed Oct 9 01:50:40 CDT 2019
-> Using CoreNet Generic machine description
-> printk: bootconsole [udbg0] enabled
-> CPU maps initialized for 1 thread per core
-> -----------------------------------------------------
-> phys_mem_size     = 0x2fc000000
-> dcache_bsize      = 0x40
-> icache_bsize      = 0x40
-> cpu_features      = 0x00000000000003b4
->    possible        = 0x00000000010103bc
->    always          = 0x0000000000000020
-> cpu_user_features = 0x8c008000 0x08000000
-> mmu_features      = 0x000a0010
-> physical_start    = 0xc7c4000
-> -----------------------------------------------------
-> CoreNet Generic board
-> mpc85xx_qe_init: Could not find Quicc Engine node
-> barrier-nospec: using isync; sync as speculation barrier
-> Zone ranges:
->    Normal   [mem 0x0000000004000000-0x000000000fffffff]
->    HighMem  [mem 0x0000000010000000-0x00000002ffffffff]
-> Movable zone start for each node
-> Early memory node ranges
->    node   0: [mem 0x0000000004000000-0x00000002ffffffff]
-> Initmem setup node 0 [mem 0x0000000004000000-0x00000002ffffffff]
-> Kernel panic - not syncing: Failed to allocate 125173760 bytes for node 0 memory
->   map
-> CPU: 0 PID: 0 Comm: swapper Not tainted 5.4.0-rc2-00050-g8ac2cf5b4e4a-dirty #26
-> Call Trace:
-> [c989fe10] [c924bfb0] dump_stack+0x84/0xb4 (unreliable)
-> [c989fe30] [c880badc] panic+0x140/0x334
-> [c989fe90] [c89a1144] alloc_node_mem_map.constprop.117+0xa0/0x11c
-> [c989feb0] [c95481c4] free_area_init_node+0x314/0x5b8
-> [c989ff30] [c9548b34] free_area_init_nodes+0x57c/0x5c0
-> [c989ff80] [c952cbb4] setup_arch+0x250/0x270
-> [c989ffa0] [c95278e0] start_kernel+0x74/0x4e8
-> [c989fff0] [c87c4478] set_ivor+0x150/0x18c
-> Kernel Offset: 0x87c4000 from 0xc0000000
-> Rebooting in 180 seconds..
+> It seems this has trapped in the dead circle.
 > 
-> -Scott
+>  From my understanding, NUMA_NO_NODE which means not node numa preference
+> is the state to describe the node of virtual device or the physical device
+> that has equal distance to all cpu.
 > 
+> We can be stricter if the device does have a nearer node, but we can not
+> deny that a device does not have a node numa preference or node affinity,
+> which also means the control or data buffer can be allocated at the node where
+> the process is running.
 > 
+> As you has proposed, making it -2 and have dev_to_node() warn if the device does
+> have a nearer node and not set by the fw is a way to be stricter.
 > 
-> .
+> But I think maybe being stricter is not really relevant to NUMA_NO_NODE, because
+> we does need a state to describe the device that have equal distance to all node,
+> even if it is not physically scalable.
 > 
+> Any better suggestion to move this forward?
 
+FWIW (since this is in my inbox), it sounds like the fundamental issue 
+is that NUMA_NO_NODE is conflated for at least two different purposes, 
+so trying to sort that out would be a good first step. AFAICS we have 
+genuine "don't care" cases like alloc_pages_node(), where if the 
+producer says it doesn't matter then the consumer is free to make its 
+own judgement on what to do, and fundamentally different "we expect this 
+thing to have an affinity but it doesn't, so we can't say what's 
+appropriate" cases which could really do with some separate indicator 
+like "NUMA_INVALID_NODE".
+
+The tricky part is then bestowed on the producers to decide whether they 
+can downgrade "invalid" to "don't care". You can technically build 'a 
+device' whose internal logic is distributed between nodes and thus 
+appears to have equal affinity - interrupt controllers, for example, may 
+have per-CPU or per-node interfaces that end up looking like that - so 
+although it's unlikely it's not outright nonsensical. Similarly a 
+'device' that's actually emulated behind a firmware call interface may 
+well effectively have no real affinity.
+
+Robin.
