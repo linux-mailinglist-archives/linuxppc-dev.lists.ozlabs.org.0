@@ -2,88 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06062D1773
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 20:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0F1D17C1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 20:50:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46pMqv3GlzzDqbY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 05:16:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46pNb061VWzDqdR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 05:50:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46pMhy0fB4zDqT3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 05:10:57 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x99I9owp129875; Wed, 9 Oct 2019 14:10:14 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vhjs9m70u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Oct 2019 14:10:13 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x99IA150131746;
- Wed, 9 Oct 2019 14:10:12 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vhjs9m6mn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Oct 2019 14:10:12 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x99I5Y9f024475;
- Wed, 9 Oct 2019 18:09:57 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 2vejt7mrc4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Oct 2019 18:09:57 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x99I9ueU31654326
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Oct 2019 18:09:56 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 35CA0AC05B;
- Wed,  9 Oct 2019 18:09:56 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 95788AC059;
- Wed,  9 Oct 2019 18:09:46 +0000 (GMT)
-Received: from LeoBras (unknown [9.80.237.3])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  9 Oct 2019 18:09:46 +0000 (GMT)
-Message-ID: <ebf5d7357f194debc3bd6e91e0a8da4202c87653.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 01/11] asm-generic/pgtable: Adds generic functions to
- monitor lockless pgtable walks
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Date: Wed, 09 Oct 2019 15:09:41 -0300
-In-Reply-To: <20191004112844.GC19463@hirez.programming.kicks-ass.net>
-References: <20191003013325.2614-1-leonardo@linux.ibm.com>
- <20191003013325.2614-2-leonardo@linux.ibm.com>
- <20191003071145.GM4536@hirez.programming.kicks-ass.net>
- <20191003115141.GJ4581@hirez.programming.kicks-ass.net>
- <c46ba8cec981ad28383bb7b23161fb83ccda4a60.camel@linux.ibm.com>
- <20191004112844.GC19463@hirez.programming.kicks-ass.net>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-lwxk+g4NX3v4aiRY1x8z"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-09_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=830 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910090151
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46pNXs2yMrzDqBM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 05:48:59 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1iIGyv-000329-9o; Wed, 09 Oct 2019 13:46:41 -0500
+Message-ID: <34ef1980887c8a6d635c20bdaf748bb0548e51b5.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au, 
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
+ christophe.leroy@c-s.fr,  benh@kernel.crashing.org, paulus@samba.org,
+ npiggin@gmail.com,  keescook@chromium.org,
+ kernel-hardening@lists.openwall.com
+Date: Wed, 09 Oct 2019 13:46:38 -0500
+In-Reply-To: <90bb659a-bde4-3b8e-8f01-bf22d7534f44@huawei.com>
+References: <20190920094546.44948-1-yanaijie@huawei.com>
+ <9c2dd2a8-83f2-983c-383e-956e19a7803a@huawei.com>
+ <c4769b34-95f6-81b9-4856-50459630aa0d@huawei.com>
+ <38141b946f3376ce471e46eaf065e357ac540354.camel@buserror.net>
+ <90bb659a-bde4-3b8e-8f01-bf22d7534f44@huawei.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: yanaijie@huawei.com, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, christophe.leroy@c-s.fr,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ keescook@chromium.org, kernel-hardening@lists.openwall.com,
+ wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
+ yebin10@huawei.com
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+ * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+ *      this recipient and sender
+Subject: Re: [PATCH v7 00/12] implement KASLR for powerpc/fsl_booke/32
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,87 +75,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- "Dmitry V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
- Ingo Molnar <mingo@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
- linux-arch@vger.kernel.org, Santosh Sivaraj <santosh@fossix.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Jann Horn <jannh@google.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Allison Randal <allison@lohutok.net>,
- Jesper Dangaard Brouer <brouer@redhat.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Alexey Dobriyan <adobriyan@gmail.com>, Andrea Arcangeli <aarcange@redhat.com>,
- Ralph Campbell <rcampbell@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>,
- =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm-ppc@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, Reza Arbab <arbab@linux.ibm.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Christian Brauner <christian.brauner@ubuntu.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Logan Gunthorpe <logang@deltatee.com>, Roman Gushchin <guro@fb.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Al Viro <viro@zeniv.linux.org.uk>
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
+ yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, 2019-10-09 at 16:41 +0800, Jason Yan wrote:
+> Hi Scott,
+> 
+> On 2019/10/9 15:13, Scott Wood wrote:
+> > On Wed, 2019-10-09 at 14:10 +0800, Jason Yan wrote:
+> > > Hi Scott,
+> > > 
+> > > Would you please take sometime to test this?
+> > > 
+> > > Thank you so much.
+> > > 
+> > > On 2019/9/24 13:52, Jason Yan wrote:
+> > > > Hi Scott,
+> > > > 
+> > > > Can you test v7 to see if it works to load a kernel at a non-zero
+> > > > address?
+> > > > 
+> > > > Thanks,
+> > 
+> > Sorry for the delay.  Here's the output:
+> > 
+> 
+> Thanks for the test.
+> 
+> > ## Booting kernel from Legacy Image at 10000000 ...
+> >     Image Name:   Linux-5.4.0-rc2-00050-g8ac2cf5b4
+> >     Image Type:   PowerPC Linux Kernel Image (gzip compressed)
+> >     Data Size:    7521134 Bytes = 7.2 MiB
+> >     Load Address: 04000000
+> >     Entry Point:  04000000
+> >     Verifying Checksum ... OK
+> > ## Flattened Device Tree blob at 1fc00000
+> >     Booting using the fdt blob at 0x1fc00000
+> >     Uncompressing Kernel Image ... OK
+> >     Loading Device Tree to 07fe0000, end 07fff65c ... OK
+> > KASLR: No safe seed for randomizing the kernel base.
+> > OF: reserved mem: initialized node qman-fqd, compatible id fsl,qman-fqd
+> > OF: reserved mem: initialized node qman-pfdr, compatible id fsl,qman-pfdr
+> > OF: reserved mem: initialized node bman-fbpr, compatible id fsl,bman-fbpr
+> > Memory CAM mapping: 64/64/64 Mb, residual: 12032Mb
+> 
+> When boot from 04000000, the max CAM value is 64M. And
+> you have a board with 12G memory, CONFIG_LOWMEM_CAM_NUM=3 means only
+> 192M memory is mapped and when kernel is randomized at the middle of 
+> this 192M memory, we will not have enough continuous memory for node map.
+> 
+> Can you set CONFIG_LOWMEM_CAM_NUM=8 and see if it works?
 
---=-lwxk+g4NX3v4aiRY1x8z
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+OK, that worked.
 
-On Fri, 2019-10-04 at 13:28 +0200, Peter Zijlstra wrote:
-> > Could you please explain it?
-> > I mean, why this breaks tmpfs-thp?
-> > Also, why mm_cpumask() is also broken?
->=20
-> Because shared pages are not bound by a mm; or does it not share the thp
-> state between mappings?
+-Scott
 
-By what I could understand, even though the memory is shared, the
-mapping may differ for different processes (i.e. the same physical
-memory that is mapped as a hugepage in process A can be mapped as a lot
-of smallpages in process B).
-
-Did I miss something here? =20
-
-> And once you (re)figure it out, please write it down. It is a crucial
-> bit of the puzzle and needs to be part of the Changelogs.
-
-I am still investing time studying this. More on this later :)
-
-Thanks!
-
---=-lwxk+g4NX3v4aiRY1x8z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2eImUACgkQlQYWtz9S
-ttRfWhAA4tFyyNfL3tzIUMnu8uw6K7QisutRwYllutuFzPwBZqnh8+20uDzo8fp0
-eA/nbsP+kFkkBEjmx/jugDsXJnT3dpXW+E48iqr0HJpRBDbARAY6WA1qx26ETJHz
-c+MiB+agAJ2rfYAkE3FUEKVNZgyybhBhIlTuYhLvi1UWtqFIqncT5CA5OsgXFIU5
-vpJWMCFzDr/ZMWivf2bH06LlCTOIq85q+MzrPEKdxknUiG3U8nXKWgmbLeiqK/zt
-9soJaF83cDkrYCkko8vTAadVOS7KDgn+iwucU0DTsvB7NoJbrIJsSRl2+33DWoz1
-bD1cyw6yks+h+qFUjlq19Q6n6aVBy0em2uiIr7HNoYff5YIulrfsdcneNcwnp0Jv
-tzKOaCvajRE9PfH0bNyoWI9BSXNbY4RqcWnnwOWM2uPRNGUIUpoIJbWKl7VRKRuC
-t3ojliLkUWGvNkTMdFzg3XJl2+ZU05/o8UdXJ21pwhArJDkb6DmKZU4dMz9YQ9fc
-B38gZY1N8rthws2UgK1frOgHjUtzHuAkoo89aAnkQwVyQ6e61JfKTgxkb/0dabDs
-Gsn+Yd/b36oQK6jOxhsef+zTzawX0pWrq49dJzmB2wD4oyQl10I5JWFiSdboGGJs
-uItrX4TN3i1fvlsyVE0b4ZwM5Nwzzd8yC+cTXHTQJOAm8PWh5Vk=
-=xgUX
------END PGP SIGNATURE-----
-
---=-lwxk+g4NX3v4aiRY1x8z--
 
