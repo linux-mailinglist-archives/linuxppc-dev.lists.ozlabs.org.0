@@ -1,95 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46707D12D2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 17:32:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06062D1773
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 20:17:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46pJ9Z6yxPzDqXZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 02:32:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46pMqv3GlzzDqbY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 05:16:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46pJ4Q24zWzDqDC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 02:27:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46pJ4P44Lhz8tTR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 02:27:33 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 46pJ4P1wdJz9sN1; Thu, 10 Oct 2019 02:27:33 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46pJ4N4Nhwz9sDQ
- for <linuxppc-dev@ozlabs.org>; Thu, 10 Oct 2019 02:27:31 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46pMhy0fB4zDqT3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 05:10:57 +1100 (AEDT)
 Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x99FMm4D124674
- for <linuxppc-dev@ozlabs.org>; Wed, 9 Oct 2019 11:27:29 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vhgcgvx2m-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 09 Oct 2019 11:27:28 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Wed, 9 Oct 2019 16:27:26 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 9 Oct 2019 16:27:24 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x99FRNeB47317428
+ x99I9owp129875; Wed, 9 Oct 2019 14:10:14 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vhjs9m70u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Oct 2019 14:10:13 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x99IA150131746;
+ Wed, 9 Oct 2019 14:10:12 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vhjs9m6mn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Oct 2019 14:10:12 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x99I5Y9f024475;
+ Wed, 9 Oct 2019 18:09:57 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 2vejt7mrc4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Oct 2019 18:09:57 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x99I9ueU31654326
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Oct 2019 15:27:23 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E96B7A4057;
- Wed,  9 Oct 2019 15:27:22 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ADD6FA4053;
- Wed,  9 Oct 2019 15:27:21 +0000 (GMT)
-Received: from hbathini.in.ibm.com (unknown [9.85.68.172])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  9 Oct 2019 15:27:21 +0000 (GMT)
-Subject: [PATCH] powerpc: make syntax for FADump config options in
- kernel/Makefile readable
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@ozlabs.org>
-Date: Wed, 09 Oct 2019 20:57:20 +0530
-User-Agent: StGit/0.17.1-dirty
+ Wed, 9 Oct 2019 18:09:56 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35CA0AC05B;
+ Wed,  9 Oct 2019 18:09:56 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95788AC059;
+ Wed,  9 Oct 2019 18:09:46 +0000 (GMT)
+Received: from LeoBras (unknown [9.80.237.3])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  9 Oct 2019 18:09:46 +0000 (GMT)
+Message-ID: <ebf5d7357f194debc3bd6e91e0a8da4202c87653.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 01/11] asm-generic/pgtable: Adds generic functions to
+ monitor lockless pgtable walks
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Date: Wed, 09 Oct 2019 15:09:41 -0300
+In-Reply-To: <20191004112844.GC19463@hirez.programming.kicks-ass.net>
+References: <20191003013325.2614-1-leonardo@linux.ibm.com>
+ <20191003013325.2614-2-leonardo@linux.ibm.com>
+ <20191003071145.GM4536@hirez.programming.kicks-ass.net>
+ <20191003115141.GJ4581@hirez.programming.kicks-ass.net>
+ <c46ba8cec981ad28383bb7b23161fb83ccda4a60.camel@linux.ibm.com>
+ <20191004112844.GC19463@hirez.programming.kicks-ass.net>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-lwxk+g4NX3v4aiRY1x8z"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19100915-0016-0000-0000-000002B6864E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19100915-0017-0000-0000-000033178E13
-Message-Id: <157063484064.11906.3586824898111397624.stgit@hbathini.in.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-09_07:, , signatures=0
+ definitions=2019-10-09_08:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910090143
+ mlxlogscore=830 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910090151
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,35 +95,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: joel@jms.id.au, Vasant Hegde <hegdevasant@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: Song Liu <songliubraving@fb.com>, Michal Hocko <mhocko@suse.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ "Dmitry V. Levin" <ldv@altlinux.org>, Keith Busch <keith.busch@intel.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Christoph Lameter <cl@linux.com>, Ira Weiny <ira.weiny@intel.com>,
+ Ingo Molnar <mingo@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
+ linux-arch@vger.kernel.org, Santosh Sivaraj <santosh@fossix.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Jann Horn <jannh@google.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Allison Randal <allison@lohutok.net>,
+ Jesper Dangaard Brouer <brouer@redhat.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ Ralph Campbell <rcampbell@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ John Hubbard <jhubbard@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm-ppc@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, Reza Arbab <arbab@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Christian Brauner <christian.brauner@ubuntu.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Souptick Joarder <jrdr.linux@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Logan Gunthorpe <logang@deltatee.com>, Roman Gushchin <guro@fb.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch/powerpc/kernel/fadump.c file needs to be compiled in if 'config
-FA_DUMP' or 'config PRESERVE_FA_DUMP' is set. The current syntax
-achieves that but looks a bit odd. Fix it for better readability.
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
- arch/powerpc/kernel/Makefile |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+--=-lwxk+g4NX3v4aiRY1x8z
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index a7ca8fe..4fdd8a3 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -78,9 +78,8 @@ obj-$(CONFIG_EEH)              += eeh.o eeh_pe.o eeh_dev.o eeh_cache.o \
- 				  eeh_driver.o eeh_event.o eeh_sysfs.o
- obj-$(CONFIG_GENERIC_TBSYNC)	+= smp-tbsync.o
- obj-$(CONFIG_CRASH_DUMP)	+= crash_dump.o
--ifneq ($(CONFIG_FA_DUMP)$(CONFIG_PRESERVE_FA_DUMP),)
--obj-y				+= fadump.o
--endif
-+obj-$(CONFIG_FA_DUMP)		+= fadump.o
-+obj-$(CONFIG_PRESERVE_FA_DUMP)	+= fadump.o
- ifdef CONFIG_PPC32
- obj-$(CONFIG_E500)		+= idle_e500.o
- endif
+On Fri, 2019-10-04 at 13:28 +0200, Peter Zijlstra wrote:
+> > Could you please explain it?
+> > I mean, why this breaks tmpfs-thp?
+> > Also, why mm_cpumask() is also broken?
+>=20
+> Because shared pages are not bound by a mm; or does it not share the thp
+> state between mappings?
+
+By what I could understand, even though the memory is shared, the
+mapping may differ for different processes (i.e. the same physical
+memory that is mapped as a hugepage in process A can be mapped as a lot
+of smallpages in process B).
+
+Did I miss something here? =20
+
+> And once you (re)figure it out, please write it down. It is a crucial
+> bit of the puzzle and needs to be part of the Changelogs.
+
+I am still investing time studying this. More on this later :)
+
+Thanks!
+
+--=-lwxk+g4NX3v4aiRY1x8z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl2eImUACgkQlQYWtz9S
+ttRfWhAA4tFyyNfL3tzIUMnu8uw6K7QisutRwYllutuFzPwBZqnh8+20uDzo8fp0
+eA/nbsP+kFkkBEjmx/jugDsXJnT3dpXW+E48iqr0HJpRBDbARAY6WA1qx26ETJHz
+c+MiB+agAJ2rfYAkE3FUEKVNZgyybhBhIlTuYhLvi1UWtqFIqncT5CA5OsgXFIU5
+vpJWMCFzDr/ZMWivf2bH06LlCTOIq85q+MzrPEKdxknUiG3U8nXKWgmbLeiqK/zt
+9soJaF83cDkrYCkko8vTAadVOS7KDgn+iwucU0DTsvB7NoJbrIJsSRl2+33DWoz1
+bD1cyw6yks+h+qFUjlq19Q6n6aVBy0em2uiIr7HNoYff5YIulrfsdcneNcwnp0Jv
+tzKOaCvajRE9PfH0bNyoWI9BSXNbY4RqcWnnwOWM2uPRNGUIUpoIJbWKl7VRKRuC
+t3ojliLkUWGvNkTMdFzg3XJl2+ZU05/o8UdXJ21pwhArJDkb6DmKZU4dMz9YQ9fc
+B38gZY1N8rthws2UgK1frOgHjUtzHuAkoo89aAnkQwVyQ6e61JfKTgxkb/0dabDs
+Gsn+Yd/b36oQK6jOxhsef+zTzawX0pWrq49dJzmB2wD4oyQl10I5JWFiSdboGGJs
+uItrX4TN3i1fvlsyVE0b4ZwM5Nwzzd8yC+cTXHTQJOAm8PWh5Vk=
+=xgUX
+-----END PGP SIGNATURE-----
+
+--=-lwxk+g4NX3v4aiRY1x8z--
 
