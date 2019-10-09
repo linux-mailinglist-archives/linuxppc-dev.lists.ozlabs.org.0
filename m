@@ -2,99 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A8AD07D7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 09:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F51D0824
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 09:17:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46p51W4FjrzDqLp
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 18:09:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46p5CN2Ps6zDqBm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2019 18:17:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.7.70; helo=eur04-he1-obe.outbound.protection.outlook.com;
- envelope-from=biwen.li@nxp.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="UQ+hXdxb"; 
- dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr70070.outbound.protection.outlook.com [40.107.7.70])
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46p4zd51DBzDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2019 18:07:38 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M0dX4yT4orrJTl64wj1ssS3uTjx2Vaa1I5f0Q/z/B4XR4IQWTBrcRIQckzScn3shLB817WlNz3fp2hW+hpLlQ08TD1auFrl3zlfzYJZFGe3NQEcFMGXXtDqJeIen+uuUnfkxXfUQXbYbp310+ToGmc6c7fKtrxXbBBvJPOTjVl0oBbPY4N3qooSoTkJKQrTMuBY8HncApnviQt56N97ZgCHOZK33EXO+1nNZ4uIrZL+osJ0Pd14FPor4/RKTccaAdzsLpHSzTxBP/jRMqLWBFm58b/BKzde6ro/veesfJOecye9aa5y2xhDZCVWplgE5UoZtTWeClNU1EuH0uEDYqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lo9ZzsD/FaizBaQirx94P85jK9kqal0x2gPoaVP+df8=;
- b=oFjrsbEPLXIyu8CjIpCyAJ1LuhpnvgyZeXTBZsm7z5zmb8bnNlOgxc1uITQs6iy/NFgxwxyXekye5KjGI2qNG5QcyQ+VQGmiYEtFWQ2x4pw5eRmPUow+xzwzb/n3052DtYdRJeYwAegl8cJ77e3MimRZZDuTCUx9QnpKLlBUH/cNMd3eMwrNkVkps6W3WyG7FjzKwUv7fe1PWXkI+BT66k2IiRHZoVQH+jv3LPBUrrRsaJrUmoKZXO9CGYgRi8WTe07KtUUzVuSbPN9MxB+msV3vOhifQO3SEgd1wBNscBsYngxDmYg5CLTih0PN5uRecPNsQmCsQ4jlwsEDD86soQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lo9ZzsD/FaizBaQirx94P85jK9kqal0x2gPoaVP+df8=;
- b=UQ+hXdxbkr1yPD/5NtOYCRxwQPQJf7bJ12ql0bLMCVJ7nYA+JD1X/b2AXVHooeNYKtgFFtOj9iNubx8JEtgYXyT7F0A6Dz2VikTW32fXZ4w/mFzwd9QGk69nZvy4rEYuG0v9yR6UvfefGjLznkPTCFKFsW824cdfuYf6lMe+lnQ=
-Received: from DB7PR04MB4490.eurprd04.prod.outlook.com (52.135.138.150) by
- DB7PR04MB4684.eurprd04.prod.outlook.com (52.135.137.139) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2327.24; Wed, 9 Oct 2019 07:07:31 +0000
-Received: from DB7PR04MB4490.eurprd04.prod.outlook.com
- ([fe80::7804:558a:eef9:cc11]) by DB7PR04MB4490.eurprd04.prod.outlook.com
- ([fe80::7804:558a:eef9:cc11%7]) with mapi id 15.20.2347.016; Wed, 9 Oct 2019
- 07:07:31 +0000
-From: Biwen Li <biwen.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Subject: RE: [EXT] Re: [v4,3/3] Documentation: dt: binding: fsl: Add
- 'fsl,ippdexpcr1-alt-addr' property
-Thread-Topic: [EXT] Re: [v4,3/3] Documentation: dt: binding: fsl: Add
- 'fsl,ippdexpcr1-alt-addr' property
-Thread-Index: AQHVdBVfjfPwF+3qiEeWnk+Mu250Hac/xdUAgBIws9A=
-Date: Wed, 9 Oct 2019 07:07:31 +0000
-Message-ID: <DB7PR04MB4490AAF196950B43FA11590A8F950@DB7PR04MB4490.eurprd04.prod.outlook.com>
-References: <20190926024118.15931-1-biwen.li@nxp.com>
- <20190926024118.15931-3-biwen.li@nxp.com> <20190927171420.GA28375@bogus>
-In-Reply-To: <20190927171420.GA28375@bogus>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=biwen.li@nxp.com; 
-x-originating-ip: [119.31.174.73]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 092bf8f0-2797-4071-747e-08d74c875a62
-x-ms-office365-filtering-ht: Tenant
-x-ms-traffictypediagnostic: DB7PR04MB4684:|DB7PR04MB4684:
-x-ms-exchange-purlcount: 1
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB7PR04MB4684433CBC4CCA2AB7CD5C7D8F950@DB7PR04MB4684.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 018577E36E
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(979002)(4636009)(366004)(396003)(39860400002)(136003)(376002)(346002)(199004)(189003)(6306002)(64756008)(66476007)(476003)(14454004)(6436002)(6116002)(66946007)(8676002)(66446008)(33656002)(6916009)(66556008)(76116006)(478600001)(66066001)(14444005)(256004)(9686003)(229853002)(3846002)(966005)(25786009)(55016002)(6246003)(71190400001)(74316002)(7736002)(5660300002)(71200400001)(44832011)(99286004)(446003)(316002)(4326008)(305945005)(11346002)(486006)(8936002)(52536014)(26005)(6506007)(54906003)(81166006)(81156014)(2906002)(186003)(76176011)(102836004)(86362001)(7696005)(142933001)(969003)(989001)(999001)(1009001)(1019001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DB7PR04MB4684;
- H:DB7PR04MB4490.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: vX+3lJkJqFNOl7bm3tXMx+rQmNNRxwfl0NyeChm9CIS29nLAbU1v4gVp/QLQ1dftyMqrJdCMIwa15Pkn1K7KWq89gUVTe0d7dQxSavHIm93eT4Rp/LDtTnT3OrJ9BKXvqNPNcwYmXjsCTuRB3pXRgFynVaO2CbHyNHwwXdtGRLqs0kcj01UEOE8Poba64Gqql8O/RVTJ02nbjST/Vq9h+v6rwLgW3tvVBDZkkWYdzlUa4Y49lnpEQ9iTJ6oUZcq3IS7d1RQO/oJDEhnaXbXSbxxBBCU+kK6zNYAAlQ0TmJqzPPkOhi1hlI8qhYQ5Bw/uW8r60u+FFuGnragRtNxsJJ798TzCuBuq74rKDxwrKZwZ1ZxtQuzH91Cu41y7aKf8F/ipz5sJ2n5A+49amA0v5q4Lee4tW3tclgp/5eN/rt2Ys/En+wjZ6/nQ05r6uyQ/3G7qKmB1cab1Cxv1YNm2Sw==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 092bf8f0-2797-4071-747e-08d74c875a62
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2019 07:07:31.5183 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: y7rcta2MxEfQa8BuyRLSJ4ELq8BvDY5IWNxxMMxbcUpDVTlpwos3Q86M9Eimn0ASXgZZWcKh10e5oBU3qDtW2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4684
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46p59R4slzzDqKr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2019 18:16:10 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1iI6AQ-0000r8-Fp; Wed, 09 Oct 2019 02:13:50 -0500
+Message-ID: <38141b946f3376ce471e46eaf065e357ac540354.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au, 
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
+ christophe.leroy@c-s.fr,  benh@kernel.crashing.org, paulus@samba.org,
+ npiggin@gmail.com,  keescook@chromium.org,
+ kernel-hardening@lists.openwall.com
+Date: Wed, 09 Oct 2019 02:13:48 -0500
+In-Reply-To: <c4769b34-95f6-81b9-4856-50459630aa0d@huawei.com>
+References: <20190920094546.44948-1-yanaijie@huawei.com>
+ <9c2dd2a8-83f2-983c-383e-956e19a7803a@huawei.com>
+ <c4769b34-95f6-81b9-4856-50459630aa0d@huawei.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: yanaijie@huawei.com, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, christophe.leroy@c-s.fr,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ keescook@chromium.org, kernel-hardening@lists.openwall.com,
+ linux-kernel@vger.kernel.org, wangkefeng.wang@huawei.com, yebin10@huawei.com,
+ thunder.leizhen@huawei.com, jingxiangfeng@huawei.com, zhaohongjiang@huawei.com
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
+ autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+Subject: Re: [PATCH v7 00/12] implement KASLR for powerpc/fsl_booke/32
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,95 +70,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, Ran Wang <ran.wang_1@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
+ yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->=20
-> On Thu, Sep 26, 2019 at 10:41:18AM +0800, Biwen Li wrote:
-> > The 'fsl,ippdexpcr1-alt-addr' property is used to handle an errata
-> > A-008646 on LS1021A
-> >
-> > Signed-off-by: Biwen Li <biwen.li@nxp.com>
-> > ---
-> > Change in v4:
-> >       - rename property name
-> >         fsl,ippdexpcr-alt-addr -> fsl,ippdexpcr1-alt-addr
-> >
-> > Change in v3:
-> >       - rename property name
-> >         fsl,rcpm-scfg -> fsl,ippdexpcr-alt-addr
-> >
-> > Change in v2:
-> >       - update desc of the property 'fsl,rcpm-scfg'
-> >
-> >  .../devicetree/bindings/soc/fsl/rcpm.txt      | 21
-> +++++++++++++++++++
-> >  1 file changed, 21 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > index 5a33619d881d..751a7655b694 100644
-> > --- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > +++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > @@ -34,6 +34,13 @@ Chassis Version            Example Chips
-> >  Optional properties:
-> >   - little-endian : RCPM register block is Little Endian. Without it RC=
-PM
-> >     will be Big Endian (default case).
-> > + - fsl,ippdexpcr1-alt-addr : The property is related to a hardware iss=
-ue
-> > +   on SoC LS1021A and only needed on SoC LS1021A.
-> > +   Must include 1 + 2 entries.
-> > +   The first entry must be a link to the SCFG device node.
-> > +   The non-first entry must be offset of registers of SCFG.
-> > +   The second and third entry compose an alt offset address
-> > +   for IPPDEXPCR1(SCFG_SPARECR8)
->=20
-> If only on 1 SoC, can't all this be implied by "fsl,ls1021a-rcpm"?
-Currently on SoC LS1021A. Maybe other soc need this!
->=20
-> Adding a property means you need both a new dtb and kernel to fix the
-> errata. Using the compatible string means you only need a new kernel.
-You are right, but it will be more flexible. Thanks.
->=20
-> >
-> >  Example:
-> >  The RCPM node for T4240:
-> > @@ -43,6 +50,20 @@ The RCPM node for T4240:
-> >               #fsl,rcpm-wakeup-cells =3D <2>;
-> >       };
-> >
-> > +The RCPM node for LS1021A:
-> > +     rcpm: rcpm@1ee2140 {
-> > +             compatible =3D "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-2.1+";
->=20
-> Both of these compatible strings aren't documented.
-These compatible strings is here: https://patchwork.kernel.org/patch/111052=
-81/
->=20
-> > +             reg =3D <0x0 0x1ee2140 0x0 0x8>;
-> > +             #fsl,rcpm-wakeup-cells =3D <2>;
-> > +
-> > +             /*
-> > +              * The second and third entry compose an alt offset
-> > +              * address for IPPDEXPCR1(SCFG_SPARECR8)
-> > +              */
-> > +             fsl,ippdexpcr1-alt-addr =3D <&scfg 0x0 0x51c>;
-> > +     };
-> > +
-> > +
-> >  * Freescale RCPM Wakeup Source Device Tree Bindings
-> >  -------------------------------------------
-> >  Required fsl,rcpm-wakeup property should be added to a device node if
-> > the device
-> > --
-> > 2.17.1
-> >
+On Wed, 2019-10-09 at 14:10 +0800, Jason Yan wrote:
+> Hi Scott,
+> 
+> Would you please take sometime to test this?
+> 
+> Thank you so much.
+> 
+> On 2019/9/24 13:52, Jason Yan wrote:
+> > Hi Scott,
+> > 
+> > Can you test v7 to see if it works to load a kernel at a non-zero address?
+> > 
+> > Thanks,
+
+Sorry for the delay.  Here's the output:
+
+## Booting kernel from Legacy Image at 10000000 ...
+   Image Name:   Linux-5.4.0-rc2-00050-g8ac2cf5b4
+   Image Type:   PowerPC Linux Kernel Image (gzip compressed)
+   Data Size:    7521134 Bytes = 7.2 MiB
+   Load Address: 04000000
+   Entry Point:  04000000
+   Verifying Checksum ... OK
+## Flattened Device Tree blob at 1fc00000
+   Booting using the fdt blob at 0x1fc00000
+   Uncompressing Kernel Image ... OK
+   Loading Device Tree to 07fe0000, end 07fff65c ... OK
+KASLR: No safe seed for randomizing the kernel base.
+OF: reserved mem: initialized node qman-fqd, compatible id fsl,qman-fqd
+OF: reserved mem: initialized node qman-pfdr, compatible id fsl,qman-pfdr
+OF: reserved mem: initialized node bman-fbpr, compatible id fsl,bman-fbpr
+Memory CAM mapping: 64/64/64 Mb, residual: 12032Mb
+Linux version 5.4.0-rc2-00050-g8ac2cf5b4e4a-dirty (scott@snotra) (gcc version 8.
+1.0 (GCC)) #26 SMP Wed Oct 9 01:50:40 CDT 2019
+Using CoreNet Generic machine description
+printk: bootconsole [udbg0] enabled
+CPU maps initialized for 1 thread per core
+-----------------------------------------------------
+phys_mem_size     = 0x2fc000000
+dcache_bsize      = 0x40
+icache_bsize      = 0x40
+cpu_features      = 0x00000000000003b4
+  possible        = 0x00000000010103bc
+  always          = 0x0000000000000020
+cpu_user_features = 0x8c008000 0x08000000
+mmu_features      = 0x000a0010
+physical_start    = 0xc7c4000
+-----------------------------------------------------
+CoreNet Generic board
+mpc85xx_qe_init: Could not find Quicc Engine node
+barrier-nospec: using isync; sync as speculation barrier
+Zone ranges:
+  Normal   [mem 0x0000000004000000-0x000000000fffffff]
+  HighMem  [mem 0x0000000010000000-0x00000002ffffffff]
+Movable zone start for each node
+Early memory node ranges
+  node   0: [mem 0x0000000004000000-0x00000002ffffffff]
+Initmem setup node 0 [mem 0x0000000004000000-0x00000002ffffffff]
+Kernel panic - not syncing: Failed to allocate 125173760 bytes for node 0 memory
+ map
+CPU: 0 PID: 0 Comm: swapper Not tainted 5.4.0-rc2-00050-g8ac2cf5b4e4a-dirty #26
+Call Trace:
+[c989fe10] [c924bfb0] dump_stack+0x84/0xb4 (unreliable)
+[c989fe30] [c880badc] panic+0x140/0x334
+[c989fe90] [c89a1144] alloc_node_mem_map.constprop.117+0xa0/0x11c
+[c989feb0] [c95481c4] free_area_init_node+0x314/0x5b8
+[c989ff30] [c9548b34] free_area_init_nodes+0x57c/0x5c0
+[c989ff80] [c952cbb4] setup_arch+0x250/0x270
+[c989ffa0] [c95278e0] start_kernel+0x74/0x4e8
+[c989fff0] [c87c4478] set_ivor+0x150/0x18c
+Kernel Offset: 0x87c4000 from 0xc0000000
+Rebooting in 180 seconds..
+
+-Scott
+
+
