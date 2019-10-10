@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AD0D343A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 01:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC25D34BC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 01:59:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46q6Tv3bTXzDqSS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 10:18:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46q7NR4860zDqS4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 10:59:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::b43; helo=mail-yb1-xb43.google.com;
- envelope-from=carlojpisani@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=chromium.org
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="eVz4uwN6"; 
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="Db/oz2S5";
  dkim-atps=neutral
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com
- [IPv6:2607:f8b0:4864:20::b43])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46q2Rj025zzDqRF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 07:16:45 +1100 (AEDT)
-Received: by mail-yb1-xb43.google.com with SMTP id q143so2354164ybg.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 13:16:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=MLMwabB3+kykUPlj4jwFPRNN9g+7Qjcts+1oVZQGP5I=;
- b=eVz4uwN6L4dlHnUbeDQytnIklKCYBFfhG/Zy9JsZAQBI1p0jIq0WSUytwJJlVbxGRF
- XybqcC5miLvyo9M7y28N7S1cKDjsdlH8fHwHmEeQIvNKNYO6OuZMSHv/1nFAkhG8/aOP
- 7/+p+wL1oHoUS9nTHTXESUqaddpYHvpM/sMhkGdgs/C9jpN/yuxybF5MT5Jza0sdMicO
- YlKgsAIoyoBuZwEkQoCccV4WE8jdMmvadeaHjqPL6w0E59TB8TIy5IRKqeDfwohYYB/n
- AzQokFhzDGo536XFMrcvWXPLXMYBv2q8Q/WVbJK7m/2L9OwIxXKlNR6zLgPto+YbWXs9
- u6sw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46q7Lb5jV5zDqL8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 10:57:41 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id e10so685963pgd.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 16:57:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=JDPAnamTFIBp8EbgTewpJ7Tw/YLIi8XdRk99n5ihTZ0=;
+ b=Db/oz2S5lstBws+DqElygyxc81UBHBsr+H3aP9d7X1Exv8x5nrqyE8LlbCfAHNDI33
+ C0Lez0UyqONC9IaOea8gT8nPL1/x5uCEuR2jRaabo/Im85fb5YQ8dXKHBhHzlSwEU26t
+ LMRAjaDuj9AVfrjyE4E00p9tS9qPnDSjC8rv8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=MLMwabB3+kykUPlj4jwFPRNN9g+7Qjcts+1oVZQGP5I=;
- b=Zno1rvfes4V/Bj/tn/kbYerrcQ6vKnDHgemEgGlXCn4XeLSl3aRBKSEMGbI8nPY9AP
- PwZLInnPdPetQaOzD2mBYPnjYH6ZqzRuy/2SULDPqGyERStuVmp1b9zFUgvJ4cRKc4T/
- Se5AtdCmTb4AsXoNqsXXEwGHPGM/N/u1wdzDwI95priIjOYXQ0xagkcLzElMUHThXUVV
- XPe+W1E+XZ0Wn8hCQQxGfJsc8cvppzqQMBbgYS4WgssZX0xruisFEd+5lGNwJdRUZqbd
- Ng/xbW5CXEgYYtrUPi73yFqOsS3be88m1csZ8YSM34zHQYM/uqiMSUNYOG2pzu/QiVqi
- r97Q==
-X-Gm-Message-State: APjAAAU+V7SeCOFGBWKzYpwe+RBcoBdKyNdInmWR4eBh5Rr7OXfetV+o
- WR13rVGMKehDetT8nO224RAD5v68a2F4NM8mkhTIisym
-X-Google-Smtp-Source: APXvYqw45WqLwJrlA9w4vRZEoPfpmGaWyJjZCcGQsGhxt43neVBftJ2Br3H3WUvylDOh7nKkh+WLs6EaxXbtb3yU2fc=
-X-Received: by 2002:a25:8309:: with SMTP id s9mr368139ybk.34.1570738600160;
- Thu, 10 Oct 2019 13:16:40 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=JDPAnamTFIBp8EbgTewpJ7Tw/YLIi8XdRk99n5ihTZ0=;
+ b=LbvH1YlVtmLyPqo2wyTzivRdi8CEwFaaJ6u+nsODqooKCjh7ZwB0b89B+VN60rWlB6
+ GtGISyphDY5eW79GaV8xdZzI64O/NCAse20gC/TwIcUa/kcNGQWYPIXONXruvYf/YS7U
+ 4fxuWyvHADosi1gQd+TW+p4Dn9SHdtJ45jQCx2C+5CyXChfUQQv52h2KxJ59Pr2jddya
+ DwhKFqGfiydbLUBNkLFMw/MGe71iDz2O2KAOTvXjmcBbChUWRa0+Z1JX66k89Ttsuwrz
+ yogXihYG15w1U0vTpJBs7KFT3TS6HWNjuKZue5ooOUNHpad+TwugCBwF3OqWS7ved+F6
+ pN7g==
+X-Gm-Message-State: APjAAAUaeV490o2cDDv9MqxG5RY3QmsuTCLVqfjUASK3GFkv4UH+QPdy
+ ynVQ0kOuVV49jEXexQa9XyDvZQ==
+X-Google-Smtp-Source: APXvYqxc417dQnyKwr23xDZjX8PoZldCbCNE524Aqa25++NjX1n3K1nM+hIHdvRdzpYCGpdnTHOJmw==
+X-Received: by 2002:a17:90a:cc12:: with SMTP id
+ b18mr13644961pju.141.1570751858072; 
+ Thu, 10 Oct 2019 16:57:38 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id b4sm5035339pju.16.2019.10.10.16.57.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Oct 2019 16:57:37 -0700 (PDT)
+Date: Thu, 10 Oct 2019 16:57:36 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH 00/29] vmlinux.lds.h: Refactor EXCEPTION_TABLE and NOTES
+Message-ID: <201910101657.234CB71E53@keescook>
+References: <20190926175602.33098-1-keescook@chromium.org>
+ <20191010180331.GI7658@zn.tnic>
 MIME-Version: 1.0
-References: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
- <1569910334-5972-3-git-send-email-tyreld@linux.ibm.com>
- <87y2xsifqc.fsf@linux.ibm.com>
-In-Reply-To: <87y2xsifqc.fsf@linux.ibm.com>
-From: Carlo Pisani <carlojpisani@gmail.com>
-Date: Thu, 10 Oct 2019 22:16:30 +0200
-Message-ID: <CA+QBN9Ae1aB-F0MBFF_5xWO=NLT9exG-2X+xS2RKXepKcHYRTg@mail.gmail.com>
-Subject: powerpc/405GP, cuImage and PCI support
-To: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Fri, 11 Oct 2019 10:17:08 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191010180331.GI7658@zn.tnic>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,59 +77,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhelgaas@google.com, Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Michal Simek <monstr@monstr.eu>, linux-alpha@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org,
+ linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Ingo Molnar <mingo@redhat.com>, linux-parisc@vger.kernel.org,
+ Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-hi
-I wrote here (1) a couple of years ago, I am still working with kernel
-4.11.0 and there is broken support for initializing the PCI.
+On Thu, Oct 10, 2019 at 08:03:31PM +0200, Borislav Petkov wrote:
+> On Thu, Sep 26, 2019 at 10:55:33AM -0700, Kees Cook wrote:
+> > This series works to move the linker sections for NOTES and
+> > EXCEPTION_TABLE into the RO_DATA area, where they belong on most
+> > (all?) architectures. The problem being addressed was the discovery
+> > by Rick Edgecombe that the exception table was accidentally marked
+> > executable while he was developing his execute-only-memory series. When
+> > permissions were flipped from readable-and-executable to only-executable,
+> > the exception table became unreadable, causing things to explode rather
+> > badly. :)
+> > 
+> > Roughly speaking, the steps are:
+> > 
+> > - regularize the linker names for PT_NOTE and PT_LOAD program headers
+> >   (to "note" and "text" respectively)
+> > - regularize restoration of linker section to program header assignment
+> >   (when PT_NOTE exists)
+> > - move NOTES into RO_DATA
+> > - finish macro naming conversions for RO_DATA and RW_DATA
+> > - move EXCEPTION_TABLE into RO_DATA on architectures where this is clear
+> > - clean up some x86-specific reporting of kernel memory resources
+> > - switch x86 linker fill byte from x90 (NOP) to 0xcc (INT3), just because
+> >   I finally realized what that trailing ": 0x9090" meant -- and we should
+> >   trap, not slide, if execution lands in section padding
+> 
+> Yap, nice patchset overall.
 
-arch/powerpc/book/cuimage-walnut.c requires "/plb" compatible with
-"fsl,pq2-localbus", while the device-tree file (walnut.dts) defines
-"/plb" compatible with "ibm,plb3"
+Thanks!
 
-I am not an expert, but "fsl,pq2-localbus" != "ibm,plb3"
+> > Since these changes are treewide, I'd love to get architecture-maintainer
+> > Acks and either have this live in x86 -tip or in my own tree, however
+> > people think it should go.
+> 
+> Sure, I don't mind taking v2 through tip once I get ACKs from the
+> respective arch maintainers.
 
-Therefore the PCI initialization of the PPC405GP seems wrong and every
-kernel >= 2.6.26 is not able to correctly address the PDC20265
+Okay, excellent. I've only had acks from arm64, but I'll call it out
+again in v2. Thanks for the review!
 
-(1) https://bugzilla.kernel.org/show_bug.cgi?id=195933
-
-an interesting not is:
-kernel 2.6.26 can be compiled with arch=ppc and arch=powerpc
-
-with arch=ppc the promise PDC20265 chip is correctly managed
-with arch=powerpc the PDC20265 is not correctly managed
-
-
-any idea? help? suggestion?
-
-thanks
-Carlo
-
-
---------------------------------------------------------------------------------------
-    bus_node = finddevice("/plb");
-    if (!bus_node)
-    {
-        notify_error(module, id, "device /plb not found");
-        return;
-    }
-    if (!dt_is_compatible(bus_node, "fsl,pq2-localbus"))
-    {
-        notify_warn(module, id, "device fsl,pq2-localbus");
-        notify_error(module, id, "device /plb is not compatible");
---------------------------------------------------------------------------------------
-plb
-        {
-                /*
-                 * Processor Local Bus (PLB)
-                 */
-                compatible = "ibm,plb3";
---------------------------------------------------------------------------------------
-
-
-ide0 at 0x1f0-0x1f7,0x3f6 on irq 31
-ide1 at 0x170-0x177,0x376 on irq 31
+-- 
+Kees Cook
