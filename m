@@ -1,90 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC468D33FF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 00:36:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AD0D343A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 01:19:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46q5Xt15YLzDqSM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 09:36:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46q6Tv3bTXzDqSS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 10:18:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::b43; helo=mail-yb1-xb43.google.com;
+ envelope-from=carlojpisani@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eVz4uwN6"; 
+ dkim-atps=neutral
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com
+ [IPv6:2607:f8b0:4864:20::b43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46q5Vy5N8HzDqRD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 09:34:50 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9AMVxN0131903
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 18:34:41 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vj9r1evkb-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 18:34:41 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Thu, 10 Oct 2019 23:34:39 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 10 Oct 2019 23:34:36 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x9AMY5sd39977334
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:05 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CEAD411C064
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:35 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7E85411C069
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:35 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:35 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 97FF2A01C1;
- Fri, 11 Oct 2019 09:34:33 +1100 (AEDT)
-Subject: Re: [PATCH 0/2] ocxl: Move SPA and TL definitions
-To: christophe lombard <clombard@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com
-References: <20191009151109.13752-1-clombard@linux.vnet.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 11 Oct 2019 09:34:33 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46q2Rj025zzDqRF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 07:16:45 +1100 (AEDT)
+Received: by mail-yb1-xb43.google.com with SMTP id q143so2354164ybg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 13:16:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=MLMwabB3+kykUPlj4jwFPRNN9g+7Qjcts+1oVZQGP5I=;
+ b=eVz4uwN6L4dlHnUbeDQytnIklKCYBFfhG/Zy9JsZAQBI1p0jIq0WSUytwJJlVbxGRF
+ XybqcC5miLvyo9M7y28N7S1cKDjsdlH8fHwHmEeQIvNKNYO6OuZMSHv/1nFAkhG8/aOP
+ 7/+p+wL1oHoUS9nTHTXESUqaddpYHvpM/sMhkGdgs/C9jpN/yuxybF5MT5Jza0sdMicO
+ YlKgsAIoyoBuZwEkQoCccV4WE8jdMmvadeaHjqPL6w0E59TB8TIy5IRKqeDfwohYYB/n
+ AzQokFhzDGo536XFMrcvWXPLXMYBv2q8Q/WVbJK7m/2L9OwIxXKlNR6zLgPto+YbWXs9
+ u6sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=MLMwabB3+kykUPlj4jwFPRNN9g+7Qjcts+1oVZQGP5I=;
+ b=Zno1rvfes4V/Bj/tn/kbYerrcQ6vKnDHgemEgGlXCn4XeLSl3aRBKSEMGbI8nPY9AP
+ PwZLInnPdPetQaOzD2mBYPnjYH6ZqzRuy/2SULDPqGyERStuVmp1b9zFUgvJ4cRKc4T/
+ Se5AtdCmTb4AsXoNqsXXEwGHPGM/N/u1wdzDwI95priIjOYXQ0xagkcLzElMUHThXUVV
+ XPe+W1E+XZ0Wn8hCQQxGfJsc8cvppzqQMBbgYS4WgssZX0xruisFEd+5lGNwJdRUZqbd
+ Ng/xbW5CXEgYYtrUPi73yFqOsS3be88m1csZ8YSM34zHQYM/uqiMSUNYOG2pzu/QiVqi
+ r97Q==
+X-Gm-Message-State: APjAAAU+V7SeCOFGBWKzYpwe+RBcoBdKyNdInmWR4eBh5Rr7OXfetV+o
+ WR13rVGMKehDetT8nO224RAD5v68a2F4NM8mkhTIisym
+X-Google-Smtp-Source: APXvYqw45WqLwJrlA9w4vRZEoPfpmGaWyJjZCcGQsGhxt43neVBftJ2Br3H3WUvylDOh7nKkh+WLs6EaxXbtb3yU2fc=
+X-Received: by 2002:a25:8309:: with SMTP id s9mr368139ybk.34.1570738600160;
+ Thu, 10 Oct 2019 13:16:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20191009151109.13752-1-clombard@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19101022-0016-0000-0000-000002B6FA6D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101022-0017-0000-0000-000033180986
-Message-Id: <c54128b1-6576-9758-f9ac-eb748cc98de5@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-10_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=893 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910100195
+References: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
+ <1569910334-5972-3-git-send-email-tyreld@linux.ibm.com>
+ <87y2xsifqc.fsf@linux.ibm.com>
+In-Reply-To: <87y2xsifqc.fsf@linux.ibm.com>
+From: Carlo Pisani <carlojpisani@gmail.com>
+Date: Thu, 10 Oct 2019 22:16:30 +0200
+Message-ID: <CA+QBN9Ae1aB-F0MBFF_5xWO=NLT9exG-2X+xS2RKXepKcHYRTg@mail.gmail.com>
+Subject: powerpc/405GP, cuImage and PCI support
+To: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Fri, 11 Oct 2019 10:17:08 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,47 +75,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: bhelgaas@google.com, Tyrel Datwyler <tyreld@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/10/19 2:11 am, christophe lombard wrote:
-> This series moves the definition and the management of scheduled process area
-> (SPA) and of the templates (Transaction Layer) for an ocxl card, using the
-> OCAPI interface. The code is now located in the specific arch powerpc platform.
-> These patches will help for a futur implementation of the ocxl driver in QEMU.
+hi
+I wrote here (1) a couple of years ago, I am still working with kernel
+4.11.0 and there is broken support for initializing the PCI.
 
-Could you explain more about this?
+arch/powerpc/book/cuimage-walnut.c requires "/plb" compatible with
+"fsl,pq2-localbus", while the device-tree file (walnut.dts) defines
+"/plb" compatible with "ibm,plb3"
+
+I am not an expert, but "fsl,pq2-localbus" != "ibm,plb3"
+
+Therefore the PCI initialization of the PPC405GP seems wrong and every
+kernel >= 2.6.26 is not able to correctly address the PDC20265
+
+(1) https://bugzilla.kernel.org/show_bug.cgi?id=195933
+
+an interesting not is:
+kernel 2.6.26 can be compiled with arch=ppc and arch=powerpc
+
+with arch=ppc the promise PDC20265 chip is correctly managed
+with arch=powerpc the PDC20265 is not correctly managed
 
 
-Andrew
+any idea? help? suggestion?
+
+thanks
+Carlo
 
 
-> 
-> The Open Coherently Attached Processor Interface (OCAPI) is used to
-> allow an Attached Functional Unit (AFU) to connect to the Processor
-> Chip's system bus in a high speed and cache coherent manner.
-> 
-> It builds on top of the existing ocxl driver.
-> 
-> It has been tested in a bare-metal environment using the memcpy and
-> the AFP AFUs.
-> 
-> christophe lombard (2):
->    powerpc/powernv: ocxl move SPA definition
->    powerpc/powernv: ocxl move TL definition
-> 
->   arch/powerpc/include/asm/pnv-ocxl.h   |  30 +-
->   arch/powerpc/platforms/powernv/ocxl.c | 378 +++++++++++++++++++++++---
->   drivers/misc/ocxl/afu_irq.c           |   1 -
->   drivers/misc/ocxl/config.c            |  89 +-----
->   drivers/misc/ocxl/link.c              | 347 +++++++----------------
->   drivers/misc/ocxl/ocxl_internal.h     |  12 -
->   drivers/misc/ocxl/trace.h             |  34 +--
->   7 files changed, 467 insertions(+), 424 deletions(-)
-> 
+--------------------------------------------------------------------------------------
+    bus_node = finddevice("/plb");
+    if (!bus_node)
+    {
+        notify_error(module, id, "device /plb not found");
+        return;
+    }
+    if (!dt_is_compatible(bus_node, "fsl,pq2-localbus"))
+    {
+        notify_warn(module, id, "device fsl,pq2-localbus");
+        notify_error(module, id, "device /plb is not compatible");
+--------------------------------------------------------------------------------------
+plb
+        {
+                /*
+                 * Processor Local Bus (PLB)
+                 */
+                compatible = "ibm,plb3";
+--------------------------------------------------------------------------------------
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
 
+ide0 at 0x1f0-0x1f7,0x3f6 on irq 31
+ide1 at 0x170-0x177,0x376 on irq 31
