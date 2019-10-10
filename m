@@ -2,82 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3CED311C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 21:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC468D33FF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 00:36:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46q0vF4MrWzDqNr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 06:07:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46q5Xt15YLzDqSM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 09:36:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46q0s41MnpzDqJR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 06:05:11 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9AInmke003534; Thu, 10 Oct 2019 15:05:02 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vj9n1sjdf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Oct 2019 15:05:01 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9AInnSp003570;
- Thu, 10 Oct 2019 15:05:00 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vj9n1sjcq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Oct 2019 15:05:00 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9AIpi5i011947;
- Thu, 10 Oct 2019 19:05:02 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 2vejt7cxgh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Oct 2019 19:05:02 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9AJ4xH553346728
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Oct 2019 19:04:59 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BE725AC05F;
- Thu, 10 Oct 2019 19:04:59 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A34FFAC05E;
- Thu, 10 Oct 2019 19:04:59 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.186])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 10 Oct 2019 19:04:59 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [RFC PATCH 2/9] powerpc/pseries: fix bad drc_index_start value
- parsing of drc-info entry
-In-Reply-To: <1569910334-5972-3-git-send-email-tyreld@linux.ibm.com>
-References: <1569910334-5972-1-git-send-email-tyreld@linux.ibm.com>
- <1569910334-5972-3-git-send-email-tyreld@linux.ibm.com>
-Date: Thu, 10 Oct 2019 14:04:59 -0500
-Message-ID: <87y2xsifqc.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46q5Vy5N8HzDqRD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 09:34:50 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9AMVxN0131903
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 18:34:41 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vj9r1evkb-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 18:34:41 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Thu, 10 Oct 2019 23:34:39 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 10 Oct 2019 23:34:36 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x9AMY5sd39977334
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:05 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CEAD411C064
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:35 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7E85411C069
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:35 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:34:35 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 97FF2A01C1;
+ Fri, 11 Oct 2019 09:34:33 +1100 (AEDT)
+Subject: Re: [PATCH 0/2] ocxl: Move SPA and TL definitions
+To: christophe lombard <clombard@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com
+References: <20191009151109.13752-1-clombard@linux.vnet.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 11 Oct 2019 09:34:33 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191009151109.13752-1-clombard@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
+x-cbid: 19101022-0016-0000-0000-000002B6FA6D
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101022-0017-0000-0000-000033180986
+Message-Id: <c54128b1-6576-9758-f9ac-eb748cc98de5@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-10_06:, , signatures=0
+ definitions=2019-10-10_08:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=442 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910100160
+ mlxlogscore=893 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910100195
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,28 +96,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhelgaas@google.com, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tyrel Datwyler <tyreld@linux.ibm.com> writes:
-> The ibm,drc-info property is an array property that contains drc-info
-> entries such that each entry is made up of 2 string encoded elements
-> followed by 5 int encoded elements. The of_read_drc_info_cell()
-> helper contains comments that correctly name the expected elements
-> and their encoding. However, the usage of of_prop_next_string() and
-> of_prop_next_u32() introduced a subtle skippage of the first u32.
-> This is a result of of_prop_next_string() returns a pointer to the
-> next property value which is not a string, but actually a (__be32 *).
-> As, a result the following call to of_prop_next_u32() passes over the
-> current int encoded value and actually stores the next one wrongly.
->
-> Simply endian swap the current value in place after reading the first
-> two string values. The remaining int encoded values can then be read
-> correctly using of_prop_next_u32().
+On 10/10/19 2:11 am, christophe lombard wrote:
+> This series moves the definition and the management of scheduled process area
+> (SPA) and of the templates (Transaction Layer) for an ocxl card, using the
+> OCAPI interface. The code is now located in the specific arch powerpc platform.
+> These patches will help for a futur implementation of the ocxl driver in QEMU.
 
-Good but I think it would make more sense for a fix for
-of_read_drc_info_cell() to precede any patch in the series which
-introduces new callers, such as patch #1.
+Could you explain more about this?
+
+
+Andrew
+
+
+> 
+> The Open Coherently Attached Processor Interface (OCAPI) is used to
+> allow an Attached Functional Unit (AFU) to connect to the Processor
+> Chip's system bus in a high speed and cache coherent manner.
+> 
+> It builds on top of the existing ocxl driver.
+> 
+> It has been tested in a bare-metal environment using the memcpy and
+> the AFP AFUs.
+> 
+> christophe lombard (2):
+>    powerpc/powernv: ocxl move SPA definition
+>    powerpc/powernv: ocxl move TL definition
+> 
+>   arch/powerpc/include/asm/pnv-ocxl.h   |  30 +-
+>   arch/powerpc/platforms/powernv/ocxl.c | 378 +++++++++++++++++++++++---
+>   drivers/misc/ocxl/afu_irq.c           |   1 -
+>   drivers/misc/ocxl/config.c            |  89 +-----
+>   drivers/misc/ocxl/link.c              | 347 +++++++----------------
+>   drivers/misc/ocxl/ocxl_internal.h     |  12 -
+>   drivers/misc/ocxl/trace.h             |  34 +--
+>   7 files changed, 467 insertions(+), 424 deletions(-)
+> 
+
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
+
