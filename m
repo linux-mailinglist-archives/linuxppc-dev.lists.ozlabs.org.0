@@ -2,73 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FCCD2668
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 11:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FC3D2747
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 12:35:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46pm8Z5zfCzDqf2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 20:32:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46pnXm3Mz4zDr3y
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 21:35:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=alien8.de
+ (client-ip=2a01:4f8:190:11c2::b:1457; helo=mail.skyhub.de;
+ envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Mi+LBXie"; 
+ unprotected) header.d=alien8.de header.i=@alien8.de header.b="QrtsacxT"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46pm616pcDzDr0Q
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 20:30:32 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46pm5t70dPz9tyg3;
- Thu, 10 Oct 2019 11:30:26 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Mi+LBXie; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id bGdkoNBMdE8L; Thu, 10 Oct 2019 11:30:26 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46pm5t5kgwz9tyfl;
- Thu, 10 Oct 2019 11:30:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1570699826; bh=AykK97M7er2vvsv5jIrpdgMqJu5mfszKCg1SulVxerg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=Mi+LBXieYs1bXqMMcVBxGt0xJEsWJQxna+rH76Uo5f8WlQ8yvbgQynDlslYkEmKP9
- wDxkjFiEtlOjZhz9hE2b1rpXa76g7GNgWkt39bnymL7AWiPXOQZMJWSfZu1GfSkHTc
- BjMG7D4v7nWbpz3LA4ZXlm7AUWOSWU8hwKG6rFTA=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DE7468B7B2;
- Thu, 10 Oct 2019 11:30:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id vHcJKjrjLiae; Thu, 10 Oct 2019 11:30:27 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4699B8B78B;
- Thu, 10 Oct 2019 11:30:27 +0200 (CEST)
-Subject: Re: [PATCH v4 0/5] Powerpc/Watchpoint: Few important fixes
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-References: <20190925040630.6948-1-ravi.bangoria@linux.ibm.com>
- <19b222ce-3013-7de5-1c04-48c6fd00fe81@linux.ibm.com>
- <0d98e256-44ee-f920-cb2f-f79545584769@c-s.fr>
- <3e31e5f7-f948-512a-054c-9ad10103ccc0@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b77485b4-39ea-aeb7-432f-44ec4963d25f@c-s.fr>
-Date: Thu, 10 Oct 2019 11:30:27 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46pnVn226jzDqsp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 21:33:36 +1100 (AEDT)
+Received: from zn.tnic (p200300EC2F0A6300C5CFCA1B921AC096.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f0a:6300:c5cf:ca1b:921a:c096])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 606201EC090E;
+ Thu, 10 Oct 2019 12:33:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1570703593;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=61VcXOO6OC0TSDKYRbLOk7EXig9eCgXyOc1Sw8qjbMo=;
+ b=QrtsacxT1YtNlQnr0l29ht/E0oAvW+TPvKSyK2g0/hm1JIpJUv3weRvTAKtk5um+tIL7NZ
+ sMKAq2cd3qZJrCB8QeMiLz+W0PHOQeM7u7ISY1ucpnilVubyTseLgfkDcEzyeyNOoeMuUd
+ DvcpBmRi6/Jkc81xIBQiQ4XT3IX11oI=
+Date: Thu, 10 Oct 2019 12:33:05 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 07/29] x86: Restore "text" Program Header with dummy
+ section
+Message-ID: <20191010103305.GD7658@zn.tnic>
+References: <20190926175602.33098-1-keescook@chromium.org>
+ <20190926175602.33098-8-keescook@chromium.org>
 MIME-Version: 1.0
-In-Reply-To: <3e31e5f7-f948-512a-054c-9ad10103ccc0@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190926175602.33098-8-keescook@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,75 +62,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Michal Simek <monstr@monstr.eu>, linux-alpha@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org,
+ linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Ingo Molnar <mingo@redhat.com>, linux-parisc@vger.kernel.org,
+ Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Sep 26, 2019 at 10:55:40AM -0700, Kees Cook wrote:
+> Instead of depending on markings in the section following NOTES to
+> restore the associated Program Header, use a dummy section, as done
+> in other architectures.
 
+This is very laconic and after some staring at ld.info, I think you mean
+this:
 
-Le 10/10/2019 à 06:44, Ravi Bangoria a écrit :
+"   If you place a section in one or more segments using ':PHDR', then
+the linker will place all subsequent allocatable sections which do not
+specify ':PHDR' in the same segments."
+
+but I could be way off. Yes, no?
+
+IOW, please write in the commit messages first what the problem is
+you're addressing.
+
+> This is preparation for moving NOTES into the
+> RO_DATA macro.
 > 
->>> @Christophe, Is patch5 works for you on 8xx?
->>>
->>
->> Getting the following :
->>
->> root@vgoip:~# ./ptrace-hwbreak
->> test: ptrace-hwbreak
->> tags: git_version:v5.4-rc2-710-gf0082e173fe4-dirty
->> PTRACE_SET_DEBUGREG, WO, len: 1: Ok
->> PTRACE_SET_DEBUGREG, WO, len: 2: Ok
->> PTRACE_SET_DEBUGREG, WO, len: 4: Ok
->> PTRACE_SET_DEBUGREG, WO, len: 8: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 1: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 2: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 4: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 8: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 1: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 2: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 4: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 8: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Fail
->> failure: ptrace-hwbreak
->>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/x86/kernel/vmlinux.lds.S | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> Thanks Christophe. I don't have any 8xx box. I checked qemu and it seems
-> qemu emulation for 8xx is not yet supported. So I can't debug this. Can
-> you please check why it's failing?
-> 
+> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+> index e2feacf921a0..788e78978030 100644
+> --- a/arch/x86/kernel/vmlinux.lds.S
+> +++ b/arch/x86/kernel/vmlinux.lds.S
+> @@ -147,8 +147,9 @@ SECTIONS
+>  	} :text = 0x9090
+>  
+>  	NOTES :text :note
+> +	.dummy : { *(.dummy) } :text
+>  
+> -	EXCEPTION_TABLE(16) :text = 0x9090
+> +	EXCEPTION_TABLE(16)
 
-First issue: we get a mismatch between the parent and the child, because 
-len 8 test generates two reads/writes while the parent installs the 
-breakpoint only once.
+This is killing the filler byte but I have a suspicion that'll change
+eventually to INT3... :)
 
-Changing glvar from __u64 to unsigned long fixes the problem.
+-- 
+Regards/Gruss,
+    Boris.
 
-Then I get:
-
-test: ptrace-hwbreak
-tags: git_version:v5.4-rc2-710-gf0082e173fe4-dirty
-PTRACE_SET_DEBUGREG, WO, len: 1: Ok
-PTRACE_SET_DEBUGREG, WO, len: 2: Ok
-PTRACE_SET_DEBUGREG, WO, len: 4: Ok
-PTRACE_SET_DEBUGREG, RO, len: 1: Ok
-PTRACE_SET_DEBUGREG, RO, len: 2: Ok
-PTRACE_SET_DEBUGREG, RO, len: 4: Ok
-PTRACE_SET_DEBUGREG, RW, len: 1: Ok
-PTRACE_SET_DEBUGREG, RW, len: 2: Ok
-PTRACE_SET_DEBUGREG, RW, len: 4: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Fail
-failure: ptrace-hwbreak
-
-Which shows that PPC_PTRACE_SETHWDEBUG doesn't work in MODE_RANGE
-
-Christophe
+https://people.kernel.org/tglx/notes-about-netiquette
