@@ -2,75 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BC8D2F46
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 19:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B222D2FE4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2019 20:02:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46pyHx4l2DzDqLN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 04:09:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46pzSv3WhDzDqPC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 05:02:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com;
- envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
+ spf=pass (mailfrom) smtp.mailfrom=alien8.de
+ (client-ip=2a01:4f8:190:11c2::b:1457; helo=mail.skyhub.de;
+ envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.b="Xol/3a0t"; dkim-atps=neutral
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
- [IPv6:2a00:1450:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=alien8.de header.i=@alien8.de header.b="ho8GObx8"; 
+ dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46pyFx2HcKzDqGY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 04:08:00 +1100 (AEDT)
-Received: by mail-lj1-x242.google.com with SMTP id 7so6980157ljw.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 10:08:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=bqvz+afB1Rg3ieCrlwoBKML7ipcOdiXJ/q/XXxTUovI=;
- b=Xol/3a0t0AtCulvKJeuAKS1uo5PWCjeyeDeHYLSA1FXKSnOkgSTF276gwVNHa4nPiN
- l58RJ3zV8SDjz5HcQUbk/k9PwAg2ytkBSxmhuzf7L/EFmiieyqeQcJuKFBVQbWUjfXE1
- U4t1RhqK0BT10C1Atodrl5m0eWGZPM7fTB2Dk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=bqvz+afB1Rg3ieCrlwoBKML7ipcOdiXJ/q/XXxTUovI=;
- b=gmC90GEX42rozQRxxAnTubzFz5Re1v2wtnpa9nkMpGxdi/62bYWIFUQKTOU6nRg/XW
- zuiSh6H6NTPpUaXjxSO0uj4rApm6sV3iyDKDwDFjU0bOMdgs6TtL1+aKpP2fJ/KJvsP4
- q/P50cwX1plDInDmtz3dz+BK+2/8QqDslHcizeTBX6yDwj21WnuLkMIPu/taMzXBKJjg
- Lv0r95vubGQYPoO0/RXNl322zXRe5bpq1DSKpBXdAla1dt7XKk1CaJt14FSSnfPCtNWo
- fe1GyROBU1J8FeOO158KfSla9DdvO1WQ5flzzQNDlRaVlFMB3j4AQ5IyuX7sCOPvn0yt
- QxnQ==
-X-Gm-Message-State: APjAAAVHkSqsyzoe/4iVNgYDTPqBPbL+wG16Dlk/wMQy76562KKlKEiY
- TXdv2brZ4EGE3YckcI9Odtd9IHL8GIM=
-X-Google-Smtp-Source: APXvYqww/r+vuJfERJc4zeBBjMDscVsdH7+fd6fHsiyHPU6gNhcZPTVr2F5eyOqGUHWVPV1f3nR+Ig==
-X-Received: by 2002:a2e:8941:: with SMTP id b1mr4406864ljk.40.1570727274336;
- Thu, 10 Oct 2019 10:07:54 -0700 (PDT)
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com.
- [209.85.167.50])
- by smtp.gmail.com with ESMTPSA id t24sm1356631ljc.23.2019.10.10.10.07.51
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Oct 2019 10:07:53 -0700 (PDT)
-Received: by mail-lf1-f50.google.com with SMTP id r22so4976788lfm.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 10:07:51 -0700 (PDT)
-X-Received: by 2002:a19:f709:: with SMTP id z9mr6611392lfe.170.1570727268603; 
- Thu, 10 Oct 2019 10:07:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46pzQL2ZVwzDqKT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 05:00:24 +1100 (AEDT)
+Received: from zn.tnic (p200300EC2F0A6300D1C0EB70E9B309BA.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f0a:6300:d1c0:eb70:e9b3:9ba])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4B7011EC090E;
+ Thu, 10 Oct 2019 20:00:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1570730415;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=Xe1SX//dDoWeX+ij/nDraOaVSkSMgvg4F8+xxebszBM=;
+ b=ho8GObx8x8ogaRx5uJLjl31cqJAZGDuZNy/gKli2vkRXyewbGzasCVSSCyhDoQQwLUSAdB
+ 6Ch+ilhWD9WU/Q44lP40VOutBHAqCxDcNCYXoLlw0x0BYwbf3EhUuehrKk4qWbR8joF/Uh
+ MKxwSv/3EwfqYFCfTb6K2+9UEj5t1ns=
+Date: Thu, 10 Oct 2019 20:00:08 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 28/29] x86/mm: Report actual image regions in /proc/iomem
+Message-ID: <20191010180008.GH7658@zn.tnic>
+References: <20190926175602.33098-1-keescook@chromium.org>
+ <20190926175602.33098-29-keescook@chromium.org>
 MIME-Version: 1.0
-References: <20191010054140.8483-1-cyphar@cyphar.com>
- <20191010054140.8483-3-cyphar@cyphar.com>
-In-Reply-To: <20191010054140.8483-3-cyphar@cyphar.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 10 Oct 2019 10:07:32 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
-Message-ID: <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
-Subject: Re: [PATCH v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path resolution
-To: Aleksa Sarai <cyphar@cyphar.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190926175602.33098-29-keescook@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,100 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>,
- GNU C Library <libc-alpha@sourceware.org>, linux-parisc@vger.kernel.org,
- Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, alpha <linux-alpha@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Linux Containers <containers@lists.linux-foundation.org>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Michal Simek <monstr@monstr.eu>, linux-alpha@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org,
+ linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Ingo Molnar <mingo@redhat.com>, linux-parisc@vger.kernel.org,
+ Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 9, 2019 at 10:42 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
->
-> --- a/fs/namei.c
-> +++ b/fs/namei.c
-> @@ -2277,6 +2277,11 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
->
->         nd->m_seq = read_seqbegin(&mount_lock);
->
-> +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-dirfd. */
-> +       if (flags & LOOKUP_IN_ROOT)
-> +               while (*s == '/')
-> +                       s++;
-> +
->         /* Figure out the starting path and root (if needed). */
->         if (*s == '/') {
->                 error = nd_jump_root(nd);
+On Thu, Sep 26, 2019 at 10:56:01AM -0700, Kees Cook wrote:
+> The resource reservations in made for the kernel image did not reflect
+			      ^
+			      /proc/iomem
 
-Hmm. Wouldn't this make more sense all inside the if (*s =- '/') test?
-That way if would be where we check for "should we start at the root",
-which seems to make more sense conceptually.
+> the gaps between text, rodata, and data. This adds the rodata resource
 
-That test for '/' currently has a "} else if (..)", but that's
-pointless since it ends with a "return" anyway. So the "else" logic is
-just noise.
+s/This adds/Add/
 
-And if you get rid of the unnecessary else, moving the LOOKUP_IN_ROOT
-inside the if-statement works fine.
+> and updates the start/end calculations to match the respective calls to
 
-So this could be something like
+s/updates/update/
 
-    --- a/fs/namei.c
-    +++ b/fs/namei.c
-    @@ -2194,11 +2196,19 @@ static const char *path_init(struct
-nameidata *nd, unsigned flags)
+> free_kernel_image_pages().
+> 
+> Before (booted with "nokaslr" for easier comparison):
 
-        nd->m_seq = read_seqbegin(&mount_lock);
-        if (*s == '/') {
-    -           set_root(nd);
-    -           if (likely(!nd_jump_root(nd)))
-    -                   return s;
-    -           return ERR_PTR(-ECHILD);
-    -   } else if (nd->dfd == AT_FDCWD) {
-    +           /* LOOKUP_IN_ROOT treats absolute paths as being
-relative-to-dirfd. */
-    +           if (!(flags & LOOKUP_IN_ROOT)) {
-    +                   set_root(nd);
-    +                   if (likely(!nd_jump_root(nd)))
-    +                           return s;
-    +                   return ERR_PTR(-ECHILD);
-    +           }
-    +
-    +           /* Skip initial '/' for LOOKUP_IN_ROOT */
-    +           do { s++; } while (*s == '/');
-    +   }
-    +
-    +   if (nd->dfd == AT_FDCWD) {
-                if (flags & LOOKUP_RCU) {
-                        struct fs_struct *fs = current->fs;
-                        unsigned seq;
+...
 
-instead. The patch ends up slightly bigger (due to the re-indentation)
-but now it handles all the "start at root" in the same place. Doesn't
-that make sense?
+-- 
+Regards/Gruss,
+    Boris.
 
-             Linus
+https://people.kernel.org/tglx/notes-about-netiquette
