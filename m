@@ -1,67 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3C4D36A8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 03:01:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C04D3767
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 04:09:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46q8lm6wxKzDqWx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 12:01:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qBGW0ryJzDqYS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 13:09:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=zytor.com
+ (client-ip=198.137.202.136; helo=terminus.zytor.com;
+ envelope-from=hpa@zytor.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="TKF/H7IX";
+ dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: lists.ozlabs.org;
+ dkim=fail reason="signature verification failed" (2048-bit key;
+ unprotected) header.d=zytor.com header.i=@zytor.com header.b="oW9dfaaR"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+X-Greylist: delayed 1710 seconds by postgrey-1.36 at bilbo;
+ Fri, 11 Oct 2019 13:07:36 AEDT
+Received: from terminus.zytor.com (terminus.zytor.com [198.137.202.136])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46q7hH3wcjzDqJQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 11:13:03 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id y72so4932142pfb.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 17:13:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=Wn91QvvOWXGcdAukdBFPOsAS+V9wjbJFfxE/dszqFsM=;
- b=TKF/H7IXE7UJDzb3rMUleub9owN4KR+Kc5MridCe/6j0nlzZqoEI/zttKy0QHihDrJ
- 2ZeHmtUNHexo6bQLRtT0gDvTipRD0K5TGW8Q7FVWpvhcmLBUGnPT1TySO+nYDUITKTZu
- 3WNoDW0bVMFt0uCMT6eBCSnH00RkY54ViUTLk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=Wn91QvvOWXGcdAukdBFPOsAS+V9wjbJFfxE/dszqFsM=;
- b=JUD2ujzhcIOJYMrUgJ6DhxDXcSMoDmd/nu5BSD8/TAsBCx62FY+IqXZ3gHodpyCHG1
- r6DKP7B23JrM3FnZQqHJKyfEzjA46LBLcZMXsjD9G3l5vKu3WWdXRvZ+r7N21PAum1ID
- 5xLolN0/LtXHv02IOL2g3eBILaQJS7x2wj84xf4sjoUZNmfBTcFOx9WH5LkkzsCYUW/W
- ziLX7cbczMNuLFe3JlXsl1i95W6WiCTORrkK+uvcXM6ZNF/saKYaLVvoj6O9gedGxi0x
- P8H0rJ0tnkHoUmmnH9+72iOe4fnbEW4bDxove9Up+w7dKK97C5mpgr50s6KQRrDCVoI+
- nBdw==
-X-Gm-Message-State: APjAAAX4nDdg5DuNUyT45RvnHZYRgulhrjN34sZQVkFmDl/mEkl0RBhj
- x0rUOPnSQAOXX/ZRvS04IAOWpw==
-X-Google-Smtp-Source: APXvYqwhzx8QmNWMryCruzS69inQpCD817u3s0gzfMeJwk1Bb2iOQgca7Hto534MUkNuyGvUJAkyfA==
-X-Received: by 2002:a17:90a:ff0f:: with SMTP id
- ce15mr14913883pjb.14.1570752780484; 
- Thu, 10 Oct 2019 17:13:00 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id y144sm7993803pfb.188.2019.10.10.17.12.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2019 17:12:56 -0700 (PDT)
-From: Kees Cook <keescook@chromium.org>
-To: Borislav Petkov <bp@alien8.de>
-Subject: [PATCH v2 29/29] x86: Use INT3 instead of NOP for linker fill bytes
-Date: Thu, 10 Oct 2019 17:06:09 -0700
-Message-Id: <20191011000609.29728-30-keescook@chromium.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191011000609.29728-1-keescook@chromium.org>
-References: <20191011000609.29728-1-keescook@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qBDS66sXzDqTR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 13:07:36 +1100 (AEDT)
+Received: from [IPv6:2601:646:8600:3281:14ec:615e:cb9c:4171]
+ ([IPv6:2601:646:8600:3281:14ec:615e:cb9c:4171])
+ (authenticated bits=0)
+ by mail.zytor.com (8.15.2/8.15.2) with ESMTPSA id x9B1cDnV301404
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Thu, 10 Oct 2019 18:38:14 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com x9B1cDnV301404
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+ s=2019091901; t=1570757896;
+ bh=TUIhoFcV+31eZTr1kONofaEMms3/RhBG/iU3TdNS+pY=;
+ h=Date:In-Reply-To:References:Subject:To:CC:From:From;
+ b=oW9dfaaRmKd2dWoG3cgkzVO7BvegyKalCQTxvCkvgSHMMP1aHzoAgAKgrdfUT1oLy
+ knMJjvPLF83nLOn/ZAN3CPvsjjRfkJ0aerhHPcT19nudWK5NOitM033cLOnaGvI2e1
+ LSFP3+8NCXofkKyTku2Ig+hd5GPCzdOhgJdURHIZGaQ2FvCQboeNg++CFWqgbXefQR
+ /SpG4FYMCfGdB5IJbLA+2mNkqs5PSktOsAiaYQAYgeDgNBG+PkAvJWstHjn+LuCQM9
+ xfo1Giy+1NXKFUnN4iD3tpGhUd+JWd6VRGxDGhkAiURF0SGwTc0cH1h/qmMomAnUUS
+ wkKqLjoRiDOug==
+Date: Thu, 10 Oct 2019 18:38:03 -0700
+User-Agent: K-9 Mail for Android
+In-Reply-To: <201910101657.234CB71E53@keescook>
+References: <20190926175602.33098-1-keescook@chromium.org>
+ <20191010180331.GI7658@zn.tnic> <201910101657.234CB71E53@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 00/29] vmlinux.lds.h: Refactor EXCEPTION_TABLE and NOTES
+To: Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@alien8.de>
+From: hpa@zytor.com
+Message-ID: <A020A6D1-C7DB-480B-826E-AE18308CD3E5@zytor.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,70 +70,70 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
  Michal Simek <monstr@monstr.eu>, x86@kernel.org, linux-ia64@vger.kernel.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ linux-c6x-dev@linux-c6x.org, Arnd Bergmann <arnd@arndb.de>,
  linux-xtensa@linux-xtensa.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Ingo Molnar <mingo@redhat.com>, linux-parisc@vger.kernel.org,
  Andy Lutomirski <luto@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-c6x-dev@linux-c6x.org
+ Thomas Gleixner <tglx@linutronix.de>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of using 0x90 (NOP) to fill bytes between functions, which makes
-it easier to sloppily target functions in function pointer overwrite
-attacks, fill with 0xCC (INT3) to force a trap. Also drop the space
-between "=" and the value to better match the binutils documentation
-https://sourceware.org/binutils/docs/ld/Output-Section-Fill.html#Output-Section-Fill
+On October 10, 2019 4:57:36 PM PDT, Kees Cook <keescook@chromium=2Eorg> wro=
+te:
+>On Thu, Oct 10, 2019 at 08:03:31PM +0200, Borislav Petkov wrote:
+>> On Thu, Sep 26, 2019 at 10:55:33AM -0700, Kees Cook wrote:
+>> > This series works to move the linker sections for NOTES and
+>> > EXCEPTION_TABLE into the RO_DATA area, where they belong on most
+>> > (all?) architectures=2E The problem being addressed was the discovery
+>> > by Rick Edgecombe that the exception table was accidentally marked
+>> > executable while he was developing his execute-only-memory series=2E
+>When
+>> > permissions were flipped from readable-and-executable to
+>only-executable,
+>> > the exception table became unreadable, causing things to explode
+>rather
+>> > badly=2E :)
+>> >=20
+>> > Roughly speaking, the steps are:
+>> >=20
+>> > - regularize the linker names for PT_NOTE and PT_LOAD program
+>headers
+>> >   (to "note" and "text" respectively)
+>> > - regularize restoration of linker section to program header
+>assignment
+>> >   (when PT_NOTE exists)
+>> > - move NOTES into RO_DATA
+>> > - finish macro naming conversions for RO_DATA and RW_DATA
+>> > - move EXCEPTION_TABLE into RO_DATA on architectures where this is
+>clear
+>> > - clean up some x86-specific reporting of kernel memory resources
+>> > - switch x86 linker fill byte from x90 (NOP) to 0xcc (INT3), just
+>because
+>> >   I finally realized what that trailing ": 0x9090" meant -- and we
+>should
+>> >   trap, not slide, if execution lands in section padding
+>>=20
+>> Yap, nice patchset overall=2E
+>
+>Thanks!
+>
+>> > Since these changes are treewide, I'd love to get
+>architecture-maintainer
+>> > Acks and either have this live in x86 -tip or in my own tree,
+>however
+>> > people think it should go=2E
+>>=20
+>> Sure, I don't mind taking v2 through tip once I get ACKs from the
+>> respective arch maintainers=2E
+>
+>Okay, excellent=2E I've only had acks from arm64, but I'll call it out
+>again in v2=2E Thanks for the review!
 
-Example "objdump -d" before:
-
-...
-ffffffff810001e0 <start_cpu0>:
-ffffffff810001e0:       48 8b 25 e1 b1 51 01    mov 0x151b1e1(%rip),%rsp        # ffffffff8251b3c8 <initial_stack>
-ffffffff810001e7:       e9 d5 fe ff ff          jmpq   ffffffff810000c1 <secondary_startup_64+0x91>
-ffffffff810001ec:       90                      nop
-ffffffff810001ed:       90                      nop
-ffffffff810001ee:       90                      nop
-ffffffff810001ef:       90                      nop
-
-ffffffff810001f0 <__startup_64>:
-...
-
-After:
-
-...
-ffffffff810001e0 <start_cpu0>:
-ffffffff810001e0:       48 8b 25 41 79 53 01    mov 0x1537941(%rip),%rsp        # ffffffff82537b28 <initial_stack>
-ffffffff810001e7:       e9 d5 fe ff ff          jmpq   ffffffff810000c1 <secondary_startup_64+0x91>
-ffffffff810001ec:       cc                      int3
-ffffffff810001ed:       cc                      int3
-ffffffff810001ee:       cc                      int3
-ffffffff810001ef:       cc                      int3
-
-ffffffff810001f0 <__startup_64>:
-...
-
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/x86/kernel/vmlinux.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index b06d6e1188de..3a1a819da137 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -144,7 +144,7 @@ SECTIONS
- 		*(.text.__x86.indirect_thunk)
- 		__indirect_thunk_end = .;
- #endif
--	} :text = 0x9090
-+	} :text =0xcccc
- 
- 	/* End of text section, which should occupy whole number of pages */
- 	_etext = .;
--- 
-2.17.1
-
+I would like to once again advocate for the generalized link table mechani=
+sm=2E It is nuts that each individual table should need vmlinux=2Elds hacki=
+ng across architectures=2E
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
