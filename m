@@ -2,63 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB95ED36AD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 03:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A73D36B1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 03:07:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46q8rk28RyzDqXL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 12:05:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46q8tq70yBzDqXL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 12:07:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="Vo/YkX68";
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="fp0EZsT2";
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46q7hJ3xH3zDqCR
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46q7hJ5RYMzDqJQ
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 11:13:04 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id y5so4959539pfo.4
+Received: by mail-pf1-x444.google.com with SMTP id y22so4955556pfr.3
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 17:13:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=OvLPSIr20MO1GrkJ0OvwvGngd4/e51+GSaoElj9X+Gc=;
- b=Vo/YkX68H3JSVeYxOg0wgKZHM0DDpLq1uGIDRlC9At7IoYDSFTbfrL3kzgv//JSf1l
- wfMMq2ZZ1sw3ulG7OB/Al6Lb7yhUEHFwVbMy0hx6CDWOUEDVNEPAVOGo2TBJff56wZsX
- 1wJpR43jEKVUBiVd5MS1y8q4VLWL+t/un7fCg=
+ bh=8/x+eaVk+ss1aFRFRC2BuuTBFLP58LLEcIBPNJoL2cs=;
+ b=fp0EZsT2tyBJy4pMM0BrQdWNH3jIqPiiR0OFuPR3KKp9NlEmrHQgmL/ZBNM1hxDEVj
+ gMnsWemWjREXcL9c9lek/rM89s9e/l7HiEkBH/KqKwR6byArefKYaaiKWxjJgqllWaPD
+ 6nPt+boxm7/SK9xvW9TYHnHh28YvJaU9w+77g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=OvLPSIr20MO1GrkJ0OvwvGngd4/e51+GSaoElj9X+Gc=;
- b=Q8K+5fSiCANeESKy8XxjTv1OFthdIq+2sJbYXvrohn/nv913h4RRtyxzkIcAeRZzAH
- FzbykKQD4QAutaARG4RHwLvjY18sz+mc0mom1EcH4u+0/7R2pYGGNsq3pXxDgv+L/g7w
- Lt5412yrre5Gd+qEUUtauElGYAO0+soHH7QoM611pv6OWLjvANXCONWiob9E015aMVbS
- SljP03ed7nPkfZqmzq2GnD4KJQYkev5YN7c2iwkJ0qWHEgoy+eGGSPTG8UpTFSGUZCWB
- F7KPL2h1XfVBqQrSOuM//Av6r3jA6qqtknoCOefFKlAnHGoPiGwXmweWzPL5Cdfn4XcQ
- GuJA==
-X-Gm-Message-State: APjAAAVHd8ykov9eQAKIpE7O48K1cIOcTx92eVCzAaUqOXwYh7/aqrxa
- 2ThnIvJOPIrxDbuqCwprkTDWIQ==
-X-Google-Smtp-Source: APXvYqwcXL9IUcA1NwWjkBG6ihgZ1mTQNQKZY+myfeizvcbcy9RQ9+vXBtLYoNyG3c9FkCNmz89Vqw==
-X-Received: by 2002:a63:4383:: with SMTP id
- q125mr13830250pga.373.1570752781928; 
- Thu, 10 Oct 2019 17:13:01 -0700 (PDT)
+ bh=8/x+eaVk+ss1aFRFRC2BuuTBFLP58LLEcIBPNJoL2cs=;
+ b=YBzPPYNe9PD/PaurMkgPHVnPXHv60jICkomEsFX5pk1/YrMCYvI8TndtT25kc9VXXf
+ riRJieN6O4F07karJVZp3GBdmMVGCzmeQjKANE6ouZsFZfOCkCY1GBxarmtJFdDgZnYi
+ ghq2DT5Mb7RdrkJoAB8kFSe6fkKSdURfsZyj/tGByi6CbJ6iXoDXaqI3ZTLYbqdkcIKt
+ STti10q+tJlmkw44QIwBGdA1w6vHeTCcKt5JRFdg8J6wRJBR0Q2Vlxg5gfrVj3XcVrbg
+ hw3+lJat4xw1YTBtJ7hqsaO8ioOAr9n9QapK6u1OTUSUKXzInwIRAzNTGbl7i0R4DAZb
+ gudQ==
+X-Gm-Message-State: APjAAAWG75YEoalIQ7tSV8Azlrmuf/kheE/3u/KH/JdrzlruhRzxwjn9
+ kSFxMM9/3TMsywcR2mcmpNTERg==
+X-Google-Smtp-Source: APXvYqzYV7Ta2O1ssdo06WBxZ2tymf8EVzlYCRiZUZ2NeL/vJyas9bBJT97ICY4x4F39C1qUjsxcog==
+X-Received: by 2002:a63:2350:: with SMTP id u16mr1550233pgm.103.1570752782606; 
+ Thu, 10 Oct 2019 17:13:02 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id v68sm8097683pfv.47.2019.10.10.17.12.55
+ by smtp.gmail.com with ESMTPSA id q36sm7238812pgb.34.2019.10.10.17.12.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 10 Oct 2019 17:12:56 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: Borislav Petkov <bp@alien8.de>
-Subject: [PATCH v2 24/29] powerpc: Move EXCEPTION_TABLE to RO_DATA segment
-Date: Thu, 10 Oct 2019 17:06:04 -0700
-Message-Id: <20191011000609.29728-25-keescook@chromium.org>
+Subject: [PATCH v2 26/29] x86/mm: Remove redundant &s on addresses
+Date: Thu, 10 Oct 2019 17:06:06 -0700
+Message-Id: <20191011000609.29728-27-keescook@chromium.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191011000609.29728-1-keescook@chromium.org>
 References: <20191011000609.29728-1-keescook@chromium.org>
@@ -87,33 +86,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since the EXCEPTION_TABLE is read-only, collapse it into RO_DATA.
+The &s on addresses are redundant. Remove them to match all the other
+similar functions.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mm/init_64.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 4e7cec088c8b..8834220036a5 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -7,6 +7,7 @@
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index 26299e9ce6da..e67ddca8b7a8 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -1300,9 +1300,9 @@ void mark_rodata_ro(void)
+ {
+ 	unsigned long start = PFN_ALIGN(_text);
+ 	unsigned long rodata_start = PFN_ALIGN(__start_rodata);
+-	unsigned long end = (unsigned long) &__end_rodata_hpage_align;
+-	unsigned long text_end = PFN_ALIGN(&_etext);
+-	unsigned long rodata_end = PFN_ALIGN(&__end_rodata);
++	unsigned long end = (unsigned long)__end_rodata_hpage_align;
++	unsigned long text_end = PFN_ALIGN(_etext);
++	unsigned long rodata_end = PFN_ALIGN(__end_rodata);
+ 	unsigned long all_end;
  
- #define BSS_FIRST_SECTIONS *(.bss.prominit)
- #define EMITS_PT_NOTE
-+#define RO_EXCEPTION_TABLE_ALIGN	0
- 
- #include <asm/page.h>
- #include <asm-generic/vmlinux.lds.h>
-@@ -162,7 +163,6 @@ SECTIONS
- 		__stop__btb_flush_fixup = .;
- 	}
- #endif
--	EXCEPTION_TABLE(0)
- 
- /*
-  * Init sections discarded at runtime
+ 	printk(KERN_INFO "Write protecting the kernel read-only data: %luk\n",
 -- 
 2.17.1
 
