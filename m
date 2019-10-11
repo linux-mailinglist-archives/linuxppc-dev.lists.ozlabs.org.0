@@ -2,52 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1EF6D3B4F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 10:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 150EBD3BFF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 11:12:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qLtQ6X5xzDqYP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 19:37:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qMfR3HWQzDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 20:12:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qLfg2dpHzDqXV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 19:27:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=clombard@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="MXLBopwZ"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46qLff52K5z9sPF;
- Fri, 11 Oct 2019 19:27:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1570782442;
- bh=TQWscCQZrv8dWhGb1t8nqO+BTCaGRvGG2f3iz/N32TI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MXLBopwZbP77m5qzU/JjASDvknvbjq3UPQf0x1vyTd+tQSY4Wcv7hHP9uHMl6e+RI
- zvcPWMGricW97lzjOMhrCIXSsNgAf2Z2posZOFNDNWPi5xz5j2TPYxfc3H5rxrdSuV
- LKY33Ri7gafu0mijgN6wE98ED9ZglOfH9kZ8aSVa4y73ONeRSXamqW8YCYevZpLiQE
- CVYSgQnHMykJsUF30r7U+4RHvbqZa0l8V/f1uo4NsOZfBnlTkuYDIqQnqfBSvkF7rb
- esTJzWDfkSPqOGeG4fnBYezKwGvTTLDiDkclzMybA731Rv5wtnpSGTmN3vGL9uAfzH
- PPGGdThZkYYbA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH 1/3] powernv/iov: Ensure the pdn for VFs always contains a
- valid PE number
-In-Reply-To: <CAOSf1CH0hmhrDNpi0TVeGD2uKfcEnv8+hd_z+KLuL-4=sOVeeA@mail.gmail.com>
-References: <20190930020848.25767-2-oohall@gmail.com>
- <20190930170948.GA154567@google.com>
- <CAOSf1CH0hmhrDNpi0TVeGD2uKfcEnv8+hd_z+KLuL-4=sOVeeA@mail.gmail.com>
-Date: Fri, 11 Oct 2019 19:27:09 +1100
-Message-ID: <8736fzwuua.fsf@mpe.ellerman.id.au>
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qMcD5GDjzDqZL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 20:10:19 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9B932LW039507
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 05:10:13 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vjbne23p4-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 05:10:11 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <clombard@linux.vnet.ibm.com>;
+ Fri, 11 Oct 2019 10:10:05 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 11 Oct 2019 10:10:03 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x9B99VbE12583182
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Oct 2019 09:09:31 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E8C8C11C050;
+ Fri, 11 Oct 2019 09:10:01 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C315811C04C;
+ Fri, 11 Oct 2019 09:10:01 +0000 (GMT)
+Received: from [9.134.167.65] (unknown [9.134.167.65])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 11 Oct 2019 09:10:01 +0000 (GMT)
+Subject: Re: [PATCH 0/2] ocxl: Move SPA and TL definitions
+From: christophe lombard <clombard@linux.vnet.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ fbarrat@linux.vnet.ibm.com
+References: <20191009151109.13752-1-clombard@linux.vnet.ibm.com>
+ <c54128b1-6576-9758-f9ac-eb748cc98de5@linux.ibm.com>
+ <f15fbc65-c14f-a75d-92b0-8f7619dfda36@linux.vnet.ibm.com>
+Date: Fri, 11 Oct 2019 11:10:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <f15fbc65-c14f-a75d-92b0-8f7619dfda36@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19101109-0012-0000-0000-000003571DD5
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101109-0013-0000-0000-0000219229B4
+Message-Id: <791d02d6-cf9c-b2da-59a5-669d14451780@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-11_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910110087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,55 +93,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Shawn Anastasio <shawn@anastas.io>, linux-pci@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Oliver O'Halloran" <oohall@gmail.com> writes:
-> On Tue, Oct 1, 2019 at 3:09 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
->> On Mon, Sep 30, 2019 at 12:08:46PM +1000, Oliver O'Halloran wrote:
->> This is all powerpc, so I assume Michael will handle this.  Just
->> random things I noticed; ignore if they don't make sense:
+On 11/10/2019 10:06, christophe lombard wrote:
+> On 11/10/2019 00:34, Andrew Donnellan wrote:
+>> On 10/10/19 2:11 am, christophe lombard wrote:
+>>> This series moves the definition and the management of scheduled 
+>>> process area
+>>> (SPA) and of the templates (Transaction Layer) for an ocxl card, 
+>>> using the
+>>> OCAPI interface. The code is now located in the specific arch powerpc 
+>>> platform.
+>>> These patches will help for a futur implementation of the ocxl driver 
+>>> in QEMU.
 >>
->> > On PowerNV we use the pcibios_sriov_enable() hook to do two things:
->> >
->> > 1. Create a pci_dn structure for each of the VFs, and
->> > 2. Configure the PHB's internal BARs that map MMIO ranges to PEs
->> >    so that each VF has it's own PE. Note that the PE also determines
+>> Could you explain more about this?
 >>
->> s/it's/its/
->>
->> >    the IOMMU table the HW uses for the device.
->> >
->> > Currently we do not set the pe_number field of the pci_dn immediately after
->> > assigning the PE number for the VF that it represents. Instead, we do that
->> > in a fixup (see pnv_pci_dma_dev_setup) which is run inside the
->> > pcibios_add_device() hook which is run prior to adding the device to the
->> > bus.
->> >
->> > On PowerNV we add the device to it's IOMMU group using a bus notifier and
->>
->> s/it's/its/
->>
->> > in order for this to work the PE number needs to be known when the bus
->> > notifier is run. This works today since the PE number is set in the fixup
->> > which runs before adding the device to the bus. However, if we want to move
->> > the fixup to a later stage this will break.
->> >
->> > We can fix this by setting the pdn->pe_number inside of
->> > pcibios_sriov_enable(). There's no good to avoid this since we already have
->>
->> s/no good/no good reason/ ?
->>
->> Not quite sure what "this" refers to ... "no good reason to avoid
->> setting pdn->pe_number in pcibios_sriov_enable()"?  The double
->> negative makes it a little hard to parse.
->
-> I agree it's a bit vague, I'll re-word it.
+> 
+> The Scheduled Processes Area and the configuration of the Transaction
+> Layer are specific to the AFU and more generally to the Opencapi
+> device.
+> Running the ocxl module in a guest environment, and later in several 
+> guests in parallel, using the same Opencapi device and the same AFus, 
+> involves to have a common code handling the SPA. This explains why these 
+> parts of the ocxl driver will move to arch powerpc platform running on 
+> the host.
+> 
+> Thanks.
+> 
 
-So I'm expecting a v2?
+Implementation of the ocxl driver running on a QEMU guest environment 
+will be detailed in the following patches but basically, a new ocxl vfio 
+driver, running in the host, will interact, in side, with the SPA, using 
+the pnv_ api(s) and on the other hand will interact, through ioctl 
+commands, with the guest(s). Ocxl, running in the guest, through hcalls 
+(handled by QEMU) will configure the device and interact with the vfio 
+through ioctl commands.
 
-cheers
+> 
+>>
+>> Andrew
+>>
+>>
+>>>
+>>> The Open Coherently Attached Processor Interface (OCAPI) is used to
+>>> allow an Attached Functional Unit (AFU) to connect to the Processor
+>>> Chip's system bus in a high speed and cache coherent manner.
+>>>
+>>> It builds on top of the existing ocxl driver.
+>>>
+>>> It has been tested in a bare-metal environment using the memcpy and
+>>> the AFP AFUs.
+>>>
+>>> christophe lombard (2):
+>>>    powerpc/powernv: ocxl move SPA definition
+>>>    powerpc/powernv: ocxl move TL definition
+>>>
+>>>   arch/powerpc/include/asm/pnv-ocxl.h   |  30 +-
+>>>   arch/powerpc/platforms/powernv/ocxl.c | 378 +++++++++++++++++++++++---
+>>>   drivers/misc/ocxl/afu_irq.c           |   1 -
+>>>   drivers/misc/ocxl/config.c            |  89 +-----
+>>>   drivers/misc/ocxl/link.c              | 347 +++++++----------------
+>>>   drivers/misc/ocxl/ocxl_internal.h     |  12 -
+>>>   drivers/misc/ocxl/trace.h             |  34 +--
+>>>   7 files changed, 467 insertions(+), 424 deletions(-)
+>>>
+>>
+> 
+
