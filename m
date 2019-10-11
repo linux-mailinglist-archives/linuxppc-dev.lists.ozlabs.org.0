@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4034D35AA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 02:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03461D35AD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 02:18:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46q7ls1Y13zDqLK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 11:16:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46q7q155b6zDqY5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 11:18:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="TBJeuKMY";
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="h/B19WCk";
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46q7Xf1KRtzDqQl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 11:06:25 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id v4so4946295pff.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 17:06:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46q7Xg30htzDqL8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 11:06:27 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id x10so4692106pgi.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 17:06:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=7MxClQbH59XRrbTRajW1Gh8uACzcU2+htsVcXyM7D1g=;
- b=TBJeuKMY2z8zTRQ1bFw/ImZS5YFoYQAHk+uSCJMry9jQKOeGheQ5i7gXGHU01GWcTB
- uOgoFqPErAXZia+mP12x9qnkRfY1Ys9PjUB5SmB5We4kWHLZQ5n99yhQi0dIKcFUZu6/
- hILLkVhE9upOn1PuRtaesOlh4SL00TV9kLm5U=
+ bh=9QIZQEEx86BzYrPbnl0U6tW2XkUfCUBHfootbZQ3f/s=;
+ b=h/B19WCkyL+xymsA4HFl8hqcGsybKIgVl1/uhhhVSgPKYo6NP7vZ5rRibvBcc9cHi0
+ dKUj61YWLvd6Paq9o21PGCwAwApZ0KSVPAqMWPWlFGYXaNSsjI/dS7B2W11htDcOzgnE
+ DitiicKTEnEB0ngjDQf+AmKVkG49ZOcGoE0gQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=7MxClQbH59XRrbTRajW1Gh8uACzcU2+htsVcXyM7D1g=;
- b=uOzGuJCf70E7H2MhlhuoXn2QfsOQdXpgWBwH8Aw0Onq1emDlGfERBqzHkUz5ap/yLr
- 8TfPz0UtBLKCHWcZPAhOL28OiBZu4AjUN8dymwGTy4Hh0CaXlG34dQtTIsY7CvgBLpu8
- rHaoqe4W4fCsvD2FJnyAdys18GeB/ZeJOpHoN2PmfmSH9MHjoLFKWtVcMgNh/Qbbdg55
- 1fLiVdaOx94dRoLKjG9jhJaCOJ0/viaFK3/cSdV611foFKqhnKX/xQTcqG2A3+aOnCi9
- hPQ3IbSE4PHByN3fAuCy436ZNmqC++9iXoGi/4ITqwwTcICxYTAaaoCEvYKgDBrQdQRq
- lTZA==
-X-Gm-Message-State: APjAAAWezZp8Mcj7a1QGKQLO2yWRbHZ94c4MAsKyGWLWFERHtjczYYCP
- 14npDC8prGm/ufSz3nO6kgQd+ky+3lY=
-X-Google-Smtp-Source: APXvYqwg7IWyK5GALjp45zOGgCtbjryTtA5MoWvVIZiHDTE9GJEt+Ue8rYJCs4VD37qrCGGbQgqtBg==
-X-Received: by 2002:a62:5bc1:: with SMTP id
- p184mr12930072pfb.180.1570752383534; 
- Thu, 10 Oct 2019 17:06:23 -0700 (PDT)
+ bh=9QIZQEEx86BzYrPbnl0U6tW2XkUfCUBHfootbZQ3f/s=;
+ b=UgAJukJ9QtdgoNkXlij20QgpC86uKaDRnLS1TSCf0SC5qxCNQZUWGDrtGiA1INkuv9
+ WZqF0gbez+5DcgyH1WjzkRT/yxj/hyasF+73/EjCrlfkamtbxqgNNTdI8qsdIJZOdmWW
+ jaFf7q+hKg6SdwugOstc57r9uSErOysl274kNrU50MWHF2ECnYn33XmA5lDsNYOiiAHY
+ WdalVDxmsFzcVkXfJBOrqBlFR89wP0ylX4cav4G0ts3VFRZLboqyAL1twKpANkYs9vVI
+ H0ccgMuVFgdMEhnPybm2OW7Qu3BfoCrVHGW/hXCxJt7ileOxpDGs4gViW+0/fibw+MYC
+ 1KwA==
+X-Gm-Message-State: APjAAAWjn0kTwjjVJya9LTJISSRN2dZFiR1j7GKvIPEU02Yyc3z9dJPK
+ uWAIm13EcIHz1dfX4jGZqBw9Ug==
+X-Google-Smtp-Source: APXvYqx4W7fel1DIaEF8YA2JM9DuPiq7TPvvITPEvxb/fDK3Ll5VL5/FYyAVhRaQT1eulT76dS3lTQ==
+X-Received: by 2002:a62:3387:: with SMTP id
+ z129mr13444661pfz.185.1570752385625; 
+ Thu, 10 Oct 2019 17:06:25 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id d5sm5372814pjw.31.2019.10.10.17.06.19
+ by smtp.gmail.com with ESMTPSA id 127sm8449250pfw.6.2019.10.10.17.06.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2019 17:06:20 -0700 (PDT)
+ Thu, 10 Oct 2019 17:06:24 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: Borislav Petkov <bp@alien8.de>
-Subject: [PATCH v2 04/29] alpha: Rename PT_LOAD identifier "kernel" to "text"
-Date: Thu, 10 Oct 2019 17:05:44 -0700
-Message-Id: <20191011000609.29728-5-keescook@chromium.org>
+Subject: [PATCH v2 05/29] ia64: Rename PT_LOAD identifier "code" to "text"
+Date: Thu, 10 Oct 2019 17:05:45 -0700
+Message-Id: <20191011000609.29728-6-keescook@chromium.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191011000609.29728-1-keescook@chromium.org>
 References: <20191011000609.29728-1-keescook@chromium.org>
@@ -88,45 +88,69 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 In preparation for moving NOTES into RO_DATA, rename the linker script
-internal identifier for the PT_LOAD Program Header from "kernel" to
-"text" to match other architectures.
+internal identifier for the PT_LOAD Program Header from "code" to "text"
+to match other architectures.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/alpha/kernel/vmlinux.lds.S | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/ia64/kernel/vmlinux.lds.S | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/alpha/kernel/vmlinux.lds.S b/arch/alpha/kernel/vmlinux.lds.S
-index c4b5ceceab52..781090cacc96 100644
---- a/arch/alpha/kernel/vmlinux.lds.S
-+++ b/arch/alpha/kernel/vmlinux.lds.S
-@@ -8,7 +8,7 @@
- OUTPUT_FORMAT("elf64-alpha")
- OUTPUT_ARCH(alpha)
- ENTRY(__start)
--PHDRS { kernel PT_LOAD; note PT_NOTE; }
-+PHDRS { text PT_LOAD; note PT_NOTE; }
+diff --git a/arch/ia64/kernel/vmlinux.lds.S b/arch/ia64/kernel/vmlinux.lds.S
+index d9d4e21107cd..2c4f23c390ad 100644
+--- a/arch/ia64/kernel/vmlinux.lds.S
++++ b/arch/ia64/kernel/vmlinux.lds.S
+@@ -13,7 +13,7 @@ ENTRY(phys_start)
  jiffies = jiffies_64;
- SECTIONS
- {
-@@ -27,14 +27,14 @@ SECTIONS
- 		LOCK_TEXT
- 		*(.fixup)
- 		*(.gnu.warning)
--	} :kernel
-+	} :text
- 	swapper_pg_dir = SWAPPER_PGD;
- 	_etext = .;	/* End of text section */
  
--	NOTES :kernel :note
-+	NOTES :text :note
- 	.dummy : {
- 		*(.dummy)
--	} :kernel
+ PHDRS {
+-	code   PT_LOAD;
++	text   PT_LOAD;
+ 	percpu PT_LOAD;
+ 	data   PT_LOAD;
+ 	note   PT_NOTE;
+@@ -36,7 +36,7 @@ SECTIONS {
+ 	phys_start = _start - LOAD_OFFSET;
+ 
+ 	code : {
+-	} :code
++	} :text
+ 	. = KERNEL_START;
+ 
+ 	_text = .;
+@@ -68,9 +68,9 @@ SECTIONS {
+ 	/*
+ 	 * Read-only data
+ 	 */
+-	NOTES :code :note       /* put .notes in text and mark in PT_NOTE  */
++	NOTES :text :note       /* put .notes in text and mark in PT_NOTE  */
+ 	code_continues : {
+-	} : code               /* switch back to regular program...  */
++	} :text                /* switch back to regular program...  */
+ 
+ 	EXCEPTION_TABLE(16)
+ 
+@@ -102,9 +102,9 @@ SECTIONS {
+ 		__start_unwind = .;
+ 		*(.IA_64.unwind*)
+ 		__end_unwind = .;
+-	} :code :unwind
++	} :text :unwind
+ 	code_continues2 : {
+-	} : code
 +	} :text
  
  	RODATA
- 	EXCEPTION_TABLE(16)
+ 
+@@ -214,7 +214,7 @@ SECTIONS {
+ 	_end = .;
+ 
+ 	code : {
+-	} :code
++	} :text
+ 
+ 	STABS_DEBUG
+ 	DWARF_DEBUG
 -- 
 2.17.1
 
