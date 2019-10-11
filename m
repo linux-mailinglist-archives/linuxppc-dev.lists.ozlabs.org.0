@@ -1,70 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C38D38A8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 07:17:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A2ED38F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 07:55:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qGRv68SRzDqXt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 16:17:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qHGq1k3pzDqXZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 16:54:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="AOu22roD"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qGQ11R8dzDqXQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 16:16:08 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id q7so5339656pfh.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 22:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=JNE3qIp3GwZhiIaVERKeTReBCbfaT6qnnngWA97+jmk=;
- b=AOu22roDAjo2Iw+3ow0fVFNymLA4XBqbwMDgFJZyPjBxC4xlTXYjrRBrz2nneQ5BxF
- sbxK7nQd39Xz28F4U95JzmCvqagYnkud8AjfEHFfy1gzZ0Xf5ELRIiKXZHiGMtS6LAgp
- 5GYBEWP2o+WH4nxjrWEq08XdmsoVQ9uFUxcWY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=JNE3qIp3GwZhiIaVERKeTReBCbfaT6qnnngWA97+jmk=;
- b=PtTssBaCIopgYs7ij2MPIl7WGvSBU5nkBx/fSj/4zWgke/PzrMCBxEshdefyMSESdQ
- jiOWhFNWtCn8g+mXCRfgWnLBiIcwiLtTmY0FN7q8BlOYMIrDbx3BIKAL44aNqSjH8c6P
- zJ22CA2i0jAZZsTuIopGLaUDKLAZJjiaM3MN/0RjEGTcnqkzFJpgj7fFJAzVP6wAV3lu
- yPr5vUP2wbmTwnxJMjmGfKvKMMAbLhOHdL2D37EBfkuujFfZ13ia3OTYt16ANP1U4jnk
- y7dkzM8/+Ss6LLR6sqoYqRbWUfXBKuoAWZ7HZSjSGevuQ89HgMevd/7RlMFfoCiL4kA0
- I47g==
-X-Gm-Message-State: APjAAAVuco3k089/U3wH9T2538FnNE0gUvyGTIEOnzjWZQAmc/o8jRfL
- 5xeg0ivw8QhL+h/pautDvyD11Q==
-X-Google-Smtp-Source: APXvYqyssA7gSzANSBd3uHeJuSuJcZZ6Tgu3LYuU0Dw0BEbm5M5u9xetMF08ol8pUsyxy0slgFZujw==
-X-Received: by 2002:aa7:8dd9:: with SMTP id j25mr12341886pfr.94.1570770964627; 
- Thu, 10 Oct 2019 22:16:04 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id x125sm7795793pfb.93.2019.10.10.22.16.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Oct 2019 22:16:03 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH v8 1/5] kasan: support backing vmalloc space with real
- shadow memory
-In-Reply-To: <20191007080209.GA22997@pc636>
-References: <20191001065834.8880-1-dja@axtens.net>
- <20191001065834.8880-2-dja@axtens.net> <20191007080209.GA22997@pc636>
-Date: Fri, 11 Oct 2019 16:15:59 +1100
-Message-ID: <87sgnzuak0.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qHDt13F9zDqT1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 16:53:14 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9B5pv9C072526
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 01:53:11 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vjjvksqs9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 01:53:10 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <clg@kaod.org>;
+ Fri, 11 Oct 2019 06:53:08 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 11 Oct 2019 06:53:07 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9B5r4P245875388
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Oct 2019 05:53:04 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6FAC24C04E;
+ Fri, 11 Oct 2019 05:53:04 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 594AC4C044;
+ Fri, 11 Oct 2019 05:53:04 +0000 (GMT)
+Received: from smtp.tls.ibm.com (unknown [9.101.4.1])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 11 Oct 2019 05:53:04 +0000 (GMT)
+Received: from yukon.kaod.org.com (sig-9-145-63-191.uk.ibm.com [9.145.63.191])
+ by smtp.tls.ibm.com (Postfix) with ESMTP id 844492200D8;
+ Fri, 11 Oct 2019 07:53:03 +0200 (CEST)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: Juliet Kim <julietk@linux.vnet.ibm.com>,
+ Thomas Falcon <tlfalcon@linux.ibm.com>
+Subject: [PATCH] net/ibmvnic: Fix EOI when running in XIVE mode.
+Date: Fri, 11 Oct 2019 07:52:54 +0200
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19101105-4275-0000-0000-0000037112B8
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101105-4276-0000-0000-000038841C94
+Message-Id: <20191011055254.8347-1-clg@kaod.org>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-11_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1034 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=635 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910110055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,106 +90,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, gor@linux.ibm.com, x86@kernel.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- glider@google.com, luto@kernel.org, aryabinin@virtuozzo.com,
- linuxppc-dev@lists.ozlabs.org, dvyukov@google.com
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>, John Allen <jallen@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Uladzislau,
+pSeries machines on POWER9 processors can run with the XICS (legacy)
+interrupt mode or with the XIVE exploitation interrupt mode. These
+interrupt contollers have different interfaces for interrupt
+management : XICS uses hcalls and XIVE loads and stores on a page.
+H_EOI being a XICS interface the enable_scrq_irq() routine can fail
+when the machine runs in XIVE mode.
 
+Fix that by calling the EOI handler of the interrupt chip.
 
-> Looking at it one more, i think above part of code is a bit wrong
-> and should be separated from merge_or_add_vmap_area() logic. The
-> reason is to keep it simple and do only what it is supposed to do:
-> merging or adding.
->
-> Also the kasan_release_vmalloc() gets called twice there and looks like
-> a duplication. Apart of that, merge_or_add_vmap_area() can be called via
-> recovery path when vmap/vmaps is/are not even setup. See percpu
-> allocator.
->
-> I guess your part could be moved directly to the __purge_vmap_area_lazy()
-> where all vmaps are lazily freed. To do so, we also need to modify
-> merge_or_add_vmap_area() to return merged area:
+Fixes: f23e0643cd0b ("ibmvnic: Clear pending interrupt after device reset")
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Thanks for the review. I've integrated your snippet - it seems to work
-fine, and I agree that it is much simpler and clearer. so I've rolled it
-in to v9 which I will post soon.
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 2b073a3c0b84..f59d9a8e35e2 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2878,12 +2878,10 @@ static int enable_scrq_irq(struct ibmvnic_adapter *adapter,
+ 
+ 	if (test_bit(0, &adapter->resetting) &&
+ 	    adapter->reset_reason == VNIC_RESET_MOBILITY) {
+-		u64 val = (0xff000000) | scrq->hw_irq;
++		struct irq_desc *desc = irq_to_desc(scrq->irq);
++		struct irq_chip *chip = irq_desc_get_chip(desc);
+ 
+-		rc = plpar_hcall_norets(H_EOI, val);
+-		if (rc)
+-			dev_err(dev, "H_EOI FAILED irq 0x%llx. rc=%ld\n",
+-				val, rc);
++		chip->irq_eoi(&desc->irq_data);
+ 	}
+ 
+ 	rc = plpar_hcall_norets(H_VIOCTL, adapter->vdev->unit_address,
+-- 
+2.21.0
 
-Regards,
-Daniel
-
->
-> <snip>
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index e92ff5f7dd8b..fecde4312d68 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -683,7 +683,7 @@ insert_vmap_area_augment(struct vmap_area *va,
->   * free area is inserted. If VA has been merged, it is
->   * freed.
->   */
-> -static __always_inline void
-> +static __always_inline struct vmap_area *
->  merge_or_add_vmap_area(struct vmap_area *va,
->         struct rb_root *root, struct list_head *head)
->  {
-> @@ -750,7 +750,10 @@ merge_or_add_vmap_area(struct vmap_area *va,
->  
->                         /* Free vmap_area object. */
->                         kmem_cache_free(vmap_area_cachep, va);
-> -                       return;
-> +
-> +                       /* Point to the new merged area. */
-> +                       va = sibling;
-> +                       merged = true;
->                 }
->         }
->  
-> @@ -759,6 +762,8 @@ merge_or_add_vmap_area(struct vmap_area *va,
->                 link_va(va, root, parent, link, head);
->                 augment_tree_propagate_from(va);
->         }
-> +
-> +       return va;
->  }
->  
->  static __always_inline bool
-> @@ -1172,7 +1177,7 @@ static void __free_vmap_area(struct vmap_area *va)
->         /*
->          * Merge VA with its neighbors, otherwise just add it.
->          */
-> -       merge_or_add_vmap_area(va,
-> +       (void) merge_or_add_vmap_area(va,
->                 &free_vmap_area_root, &free_vmap_area_list);
->  }
->  
-> @@ -1279,15 +1284,20 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end)
->         spin_lock(&vmap_area_lock);
->         llist_for_each_entry_safe(va, n_va, valist, purge_list) {
->                 unsigned long nr = (va->va_end - va->va_start) >> PAGE_SHIFT;
-> +               unsigned long orig_start = va->va_start;
-> +               unsigned long orig_end = va->va_end;
->  
->                 /*
->                  * Finally insert or merge lazily-freed area. It is
->                  * detached and there is no need to "unlink" it from
->                  * anything.
->                  */
-> -               merge_or_add_vmap_area(va,
-> +               va = merge_or_add_vmap_area(va,
->                         &free_vmap_area_root, &free_vmap_area_list);
->  
-> +               kasan_release_vmalloc(orig_start,
-> +                       orig_end, va->va_start, va->va_end);
-> +
->                 atomic_long_sub(nr, &vmap_lazy_nr);
->  
->                 if (atomic_long_read(&vmap_lazy_nr) < resched_threshold)
-> <snip>
->
-> --
-> Vlad Rezki
