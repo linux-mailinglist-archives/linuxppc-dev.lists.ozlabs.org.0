@@ -2,98 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A582D4151
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 15:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63991D4214
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 16:04:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qTR34q28zDqbh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 00:32:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qV876M4YzDqX0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 01:04:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qT8W06pjzDqT7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 00:20:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46qT8T6c6cz8wNt
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 00:20:09 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 46qT8T4zrsz9sP6; Sat, 12 Oct 2019 00:20:09 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.32; helo=huawei.com; envelope-from=yuehaibing@huawei.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46qT8T0PP2z9sPK
- for <linuxppc-dev@ozlabs.org>; Sat, 12 Oct 2019 00:20:08 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9BD9BuS046518
- for <linuxppc-dev@ozlabs.org>; Fri, 11 Oct 2019 09:20:07 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vjqre76h2-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Fri, 11 Oct 2019 09:20:07 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <zohar@linux.ibm.com>;
- Fri, 11 Oct 2019 14:20:04 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 11 Oct 2019 14:19:59 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9BDJvhB56229980
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 11 Oct 2019 13:19:58 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2F7BA405F;
- Fri, 11 Oct 2019 13:19:57 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B531DA405C;
- Fri, 11 Oct 2019 13:19:55 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.178.57])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 11 Oct 2019 13:19:55 +0000 (GMT)
-Subject: Re: [PATCH v7 7/8] ima: check against blacklisted hashes for files
- with modsig
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Date: Fri, 11 Oct 2019 09:19:55 -0400
-In-Reply-To: <1570497267-13672-8-git-send-email-nayna@linux.ibm.com>
-References: <1570497267-13672-1-git-send-email-nayna@linux.ibm.com>
- <1570497267-13672-8-git-send-email-nayna@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19101113-4275-0000-0000-000003713200
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101113-4276-0000-0000-000038843D45
-Message-Id: <1570799995.5250.81.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-11_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910110124
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qV5q1HJCzDqQQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 01:02:53 +1100 (AEDT)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 76EFCB49CA212EB64715;
+ Fri, 11 Oct 2019 22:02:47 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0;
+ Fri, 11 Oct 2019 22:02:44 +0800
+Subject: Re: [PATCH -next] ASoC: fsl_mqs: fix old-style function declaration
+To: Andreas Schwab <schwab@linux-m68k.org>
+References: <20191011105606.19428-1-yuehaibing@huawei.com>
+ <87mue7ifxw.fsf@igel.home>
+From: Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <35eea200-2f74-05f8-c5e6-729f7f60cd44@huawei.com>
+Date: Fri, 11 Oct 2019 22:02:43 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <87mue7ifxw.fsf@igel.home>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,226 +52,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, Oliver
- O'Halloran <oohall@gmail.com>, George Wilson <gcwilson@linux.ibm.com>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-10-07 at 21:14 -0400, Nayna Jain wrote:
-> Asymmetric private keys are used to sign multiple files. The kernel
-> currently support checking against the blacklisted keys. However, if the
-> public key is blacklisted, any file signed by the blacklisted key will
-> automatically fail signature verification. We might not want to blacklist
-> all the files signed by a particular key, but just a single file.
-> Blacklisting the public key is not fine enough granularity.
+On 2019/10/11 21:12, Andreas Schwab wrote:
+> On Okt 11 2019, YueHaibing <yuehaibing@huawei.com> wrote:
 > 
-> This patch adds support for blacklisting binaries with appended signatures,
-> based on the IMA policy.  Defined is a new policy option
-> "appraise_flag=check_blacklist".
+>> gcc warn about this:
+>>
+>> sound/soc/fsl/fsl_mqs.c:146:1: warning:
+>>  static is not at beginning of declaration [-Wold-style-declaration]
+> 
+> It's not a function, though.
 
-The blacklisted hash is not the same as the file hash, but is the file
-hash without the appended signature.  Are there tools for calculating
-the blacklisted hash?  Can you provide an example?
+Oh..., will fix this, thanks!
 
 > 
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> ---
->  Documentation/ABI/testing/ima_policy  |  1 +
->  security/integrity/ima/ima.h          |  9 +++++++
->  security/integrity/ima/ima_appraise.c | 39 +++++++++++++++++++++++++++
->  security/integrity/ima/ima_main.c     | 12 ++++++---
->  security/integrity/ima/ima_policy.c   | 10 +++++--
->  security/integrity/integrity.h        |  1 +
->  6 files changed, 66 insertions(+), 6 deletions(-)
+> Andreas.
 > 
-> diff --git a/Documentation/ABI/testing/ima_policy b/Documentation/ABI/testing/ima_policy
-> index 29ebe9afdac4..4c97afcc0f3c 100644
-> --- a/Documentation/ABI/testing/ima_policy
-> +++ b/Documentation/ABI/testing/ima_policy
-> @@ -25,6 +25,7 @@ Description:
->  			lsm:	[[subj_user=] [subj_role=] [subj_type=]
->  				 [obj_user=] [obj_role=] [obj_type=]]
->  			option:	[[appraise_type=]] [template=] [permit_directio]
-> +				[appraise_flag=[check_blacklist]]
->  		base: 	func:= [BPRM_CHECK][MMAP_CHECK][CREDS_CHECK][FILE_CHECK][MODULE_CHECK]
->  				[FIRMWARE_CHECK]
->  				[KEXEC_KERNEL_CHECK] [KEXEC_INITRAMFS_CHECK]
-> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-> index ed86c1f70d7f..63e20ccc91ce 100644
-> --- a/security/integrity/ima/ima.h
-> +++ b/security/integrity/ima/ima.h
-> @@ -256,6 +256,8 @@ int ima_policy_show(struct seq_file *m, void *v);
->  #define IMA_APPRAISE_KEXEC	0x40
->  
->  #ifdef CONFIG_IMA_APPRAISE
-> +int ima_check_blacklist(struct integrity_iint_cache *iint,
-> +			const struct modsig *modsig, int action, int pcr);
->  int ima_appraise_measurement(enum ima_hooks func,
->  			     struct integrity_iint_cache *iint,
->  			     struct file *file, const unsigned char *filename,
-> @@ -271,6 +273,13 @@ int ima_read_xattr(struct dentry *dentry,
->  		   struct evm_ima_xattr_data **xattr_value);
->  
->  #else
-> +static inline int ima_check_blacklist(struct integrity_iint_cache *iint,
-> +				      const struct modsig *modsig, int action,
-> +				      int pcr)
-> +{
-> +	return 0;
-> +}
-> +
->  static inline int ima_appraise_measurement(enum ima_hooks func,
->  					   struct integrity_iint_cache *iint,
->  					   struct file *file,
-> diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
-> index 136ae4e0ee92..fe34d64a684c 100644
-> --- a/security/integrity/ima/ima_appraise.c
-> +++ b/security/integrity/ima/ima_appraise.c
-> @@ -12,6 +12,7 @@
->  #include <linux/magic.h>
->  #include <linux/ima.h>
->  #include <linux/evm.h>
-> +#include <keys/system_keyring.h>
->  
->  #include "ima.h"
->  
-> @@ -303,6 +304,44 @@ static int modsig_verify(enum ima_hooks func, const struct modsig *modsig,
->  	return rc;
->  }
->  
-> +/*
-> + * ima_blacklist_measurement - Checks whether the binary is blacklisted. If
-> + * yes, then adds the hash of the blacklisted binary to the measurement list.
-> + *
-> + * Returns -EPERM if the hash is blacklisted.
-> + */
-> +int ima_check_blacklist(struct integrity_iint_cache *iint,
-> +			const struct modsig *modsig, int action, int pcr)
-> +{
-> +	enum hash_algo hash_algo;
-> +	const u8 *digest = NULL;
-> +	u32 digestsize = 0;
-> +	u32 secid;
-> +	int rc = 0;
-> +	struct ima_template_desc *template_desc;
-> +
-> +	template_desc = lookup_template_desc("ima-buf");
-> +	template_desc_init_fields(template_desc->fmt, &(template_desc->fields),
-> +				  &(template_desc->num_fields));
-
-Before using template_desc, make sure that template_desc isn't NULL.
- For completeness, check the return code of
-template_desc_init_fields()
-
-> +
-> +	if (!(iint->flags & IMA_CHECK_BLACKLIST))
-> +		return 0;
-
-Move this check before getting the template_desc and make sure that
-modsig isn't NULL.
-
-> +
-> +	if (iint->flags & IMA_MODSIG_ALLOWED) {
-> +		security_task_getsecid(current, &secid);
-
-secid isn't being used.
-
-> +		ima_get_modsig_digest(modsig, &hash_algo, &digest, &digestsize);
-> +		rc = is_binary_blacklisted(digest, digestsize);
-> +
-> +		/* Returns -EPERM on blacklisted hash found */
-
-Now that it is returning a sane errno, the comment isn't needed.
-
-Mimi
-
-> +		if ((rc == -EPERM) && (iint->flags & IMA_MEASURE))
-> +			process_buffer_measurement(digest, digestsize,
-> +						   "blacklisted-hash", pcr,
-> +						   template_desc);
-> +	}
-> +
-> +	return rc;
-> +}
-> +
->  /*
->   * ima_appraise_measurement - appraise file measurement
->   *
-> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-> index 77115e884496..40d30ab17cbe 100644
-> --- a/security/integrity/ima/ima_main.c
-> +++ b/security/integrity/ima/ima_main.c
-> @@ -335,10 +335,14 @@ static int process_measurement(struct file *file, const struct cred *cred,
->  				      xattr_value, xattr_len, modsig, pcr,
->  				      template_desc);
->  	if (rc == 0 && (action & IMA_APPRAISE_SUBMASK)) {
-> -		inode_lock(inode);
-> -		rc = ima_appraise_measurement(func, iint, file, pathname,
-> -					      xattr_value, xattr_len, modsig);
-> -		inode_unlock(inode);
-> +		rc = ima_check_blacklist(iint, modsig, action, pcr);
-> +		if (rc != -EPERM) {
-> +			inode_lock(inode);
-> +			rc = ima_appraise_measurement(func, iint, file,
-> +						      pathname, xattr_value,
-> +						      xattr_len, modsig);
-> +			inode_unlock(inode);
-> +		}
->  		if (!rc)
->  			rc = mmap_violation_check(func, file, &pathbuf,
->  						  &pathname, filename);
-> diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-> index 5380aca2b351..bfaae7a8443a 100644
-> --- a/security/integrity/ima/ima_policy.c
-> +++ b/security/integrity/ima/ima_policy.c
-> @@ -765,8 +765,8 @@ enum {
->  	Opt_fsuuid, Opt_uid_eq, Opt_euid_eq, Opt_fowner_eq,
->  	Opt_uid_gt, Opt_euid_gt, Opt_fowner_gt,
->  	Opt_uid_lt, Opt_euid_lt, Opt_fowner_lt,
-> -	Opt_appraise_type, Opt_permit_directio,
-> -	Opt_pcr, Opt_template, Opt_err
-> +	Opt_appraise_type, Opt_appraise_flag,
-> +	Opt_permit_directio, Opt_pcr, Opt_template, Opt_err
->  };
->  
->  static const match_table_t policy_tokens = {
-> @@ -798,6 +798,7 @@ static const match_table_t policy_tokens = {
->  	{Opt_euid_lt, "euid<%s"},
->  	{Opt_fowner_lt, "fowner<%s"},
->  	{Opt_appraise_type, "appraise_type=%s"},
-> +	{Opt_appraise_flag, "appraise_flag=%s"},
->  	{Opt_permit_directio, "permit_directio"},
->  	{Opt_pcr, "pcr=%s"},
->  	{Opt_template, "template=%s"},
-> @@ -1172,6 +1173,11 @@ static int ima_parse_rule(char *rule, struct ima_rule_entry *entry)
->  			else
->  				result = -EINVAL;
->  			break;
-> +		case Opt_appraise_flag:
-> +			ima_log_string(ab, "appraise_flag", args[0].from);
-> +			if (strstr(args[0].from, "blacklist"))
-> +				entry->flags |= IMA_CHECK_BLACKLIST;
-> +			break;
->  		case Opt_permit_directio:
->  			entry->flags |= IMA_PERMIT_DIRECTIO;
->  			break;
-> diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-> index d9323d31a3a8..73fc286834d7 100644
-> --- a/security/integrity/integrity.h
-> +++ b/security/integrity/integrity.h
-> @@ -32,6 +32,7 @@
->  #define EVM_IMMUTABLE_DIGSIG	0x08000000
->  #define IMA_FAIL_UNVERIFIABLE_SIGS	0x10000000
->  #define IMA_MODSIG_ALLOWED	0x20000000
-> +#define IMA_CHECK_BLACKLIST	0x40000000
->  
->  #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
->  				 IMA_HASH | IMA_APPRAISE_SUBMASK)
 
