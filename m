@@ -2,56 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B1BD40D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 15:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D72CD40F8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 15:20:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qT3z1JSnzDqXq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 00:16:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qT8N1FG8zDqTV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 00:20:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qT0f0kzKzDqSw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 00:13:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nefkom.net
- (client-ip=212.18.0.10; helo=mail-out.m-online.net;
- envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46qT0Z3SVLz8tCr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 00:13:18 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 46qT0Z0f7Lz9sPn; Sat, 12 Oct 2019 00:13:18 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qT065n8GzDqSZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 00:12:51 +1100 (AEDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 46qSzx30QXz1rdjb;
- Fri, 11 Oct 2019 15:12:45 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 46qSzx0Xm2z1qqkW;
- Fri, 11 Oct 2019 15:12:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
- port 10024)
- with ESMTP id 1iBTdqjoxA5y; Fri, 11 Oct 2019 15:12:44 +0200 (CEST)
-X-Auth-Info: P6pHhQefh826x5I3OGRMQajpdWG1pcG3yVxAquADxtTDkGfuDnxuuMluprMpWmf5
-Received: from igel.home (ppp-46-244-181-31.dynamic.mnet-online.de
- [46.244.181.31])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Fri, 11 Oct 2019 15:12:43 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
- id 4F2242C01FC; Fri, 11 Oct 2019 15:12:43 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [PATCH -next] ASoC: fsl_mqs: fix old-style function declaration
-References: <20191011105606.19428-1-yuehaibing@huawei.com>
-X-Yow: I'll show you MY telex number if you show me YOURS...
-Date: Fri, 11 Oct 2019 15:12:43 +0200
-In-Reply-To: <20191011105606.19428-1-yuehaibing@huawei.com>
- (yuehaibing@huawei.com's message of "Fri, 11 Oct 2019 18:56:06 +0800")
-Message-ID: <87mue7ifxw.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+ by ozlabs.org (Postfix) with ESMTPS id 46qT0X6YSxz9sPk
+ for <linuxppc-dev@ozlabs.org>; Sat, 12 Oct 2019 00:13:16 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9BD8gFn124547
+ for <linuxppc-dev@ozlabs.org>; Fri, 11 Oct 2019 09:13:12 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vjsjjtdns-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 11 Oct 2019 09:13:11 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <zohar@linux.ibm.com>;
+ Fri, 11 Oct 2019 14:13:08 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 11 Oct 2019 14:13:04 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9BDD2OD50135232
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Oct 2019 13:13:02 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 54091A4053;
+ Fri, 11 Oct 2019 13:13:02 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C7CF1A4040;
+ Fri, 11 Oct 2019 13:12:59 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.178.57])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 11 Oct 2019 13:12:59 +0000 (GMT)
+Subject: Re: [PATCH v7 2/8] powerpc: add support to initialize ima policy rules
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+Date: Fri, 11 Oct 2019 09:12:59 -0400
+In-Reply-To: <1570497267-13672-3-git-send-email-nayna@linux.ibm.com>
+References: <1570497267-13672-1-git-send-email-nayna@linux.ibm.com>
+ <1570497267-13672-3-git-send-email-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19101113-0008-0000-0000-000003212EDE
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101113-0009-0000-0000-00004A403B8F
+Message-Id: <1570799579.5250.72.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-11_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=909 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910110124
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,26 +104,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver
+ O'Halloran <oohall@gmail.com>, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Okt 11 2019, YueHaibing <yuehaibing@huawei.com> wrote:
+On Mon, 2019-10-07 at 21:14 -0400, Nayna Jain wrote:
+> PowerNV systems uses kernel based bootloader, thus its secure boot
+> implementation uses kernel IMA security subsystem to verify the kernel
+> before kexec. 
 
-> gcc warn about this:
->
-> sound/soc/fsl/fsl_mqs.c:146:1: warning:
->  static is not at beginning of declaration [-Wold-style-declaration]
+^use a Linux based bootloader, which rely on the IMA subsystem to
+enforce different secure boot modes.
 
-It's not a function, though.
+> Since the verification policy might differ based on the
+> secure boot mode of the system, the policies are defined at runtime.
 
-Andreas.
+^the policies need to be defined at runtime.
+> 
+> This patch implements the arch-specific support to define the IMA policy
+> rules based on the runtime secure boot mode of the system.
+> 
+> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
+> config is enabled.
+> 
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+>  arch/powerpc/Kconfig           |  2 ++
+>  arch/powerpc/kernel/Makefile   |  2 +-
+>  arch/powerpc/kernel/ima_arch.c | 33 +++++++++++++++++++++++++++++++++
+>  include/linux/ima.h            |  3 ++-
+>  4 files changed, 38 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/powerpc/kernel/ima_arch.c
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index b4a221886fcf..deb19ec6ba3d 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -938,6 +938,8 @@ config PPC_SECURE_BOOT
+>  	prompt "Enable secure boot support"
+>  	bool
+>  	depends on PPC_POWERNV
+> +	depends on IMA
+> +	depends on IMA_ARCH_POLICY
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+As IMA_ARCH_POLICY is dependent on IMA, I don't see a need for
+depending on both IMA and IMA_ARCH_POLICY.
+
+Mimi
+
