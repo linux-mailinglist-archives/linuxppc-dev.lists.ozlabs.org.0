@@ -2,33 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C17BD3B15
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 10:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A664D3B25
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 10:30:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qLh52CR3zDqT1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 19:28:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qLkV2CtgzDq77
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 19:30:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qLXY505mzDqQ1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 19:22:05 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qLXg5wQzzDqYn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 19:22:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 46qLXY3v7wz9sP7; Fri, 11 Oct 2019 19:22:05 +1100 (AEDT)
+ id 46qLXg19TWz9sPk; Fri, 11 Oct 2019 19:22:10 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 5b216ea1c40cf06eead15054c70e238c9bd4729e
-In-Reply-To: <20191003211010.9711-1-desnesn@linux.ibm.com>
-To: "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: 7fe4e1176dfe47a243d8edd98d26abd11f91b042
+In-Reply-To: <20191004025317.19340-1-jniethe5@gmail.com>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] selftests/powerpc: Fix compiling error on tlbie_test due
- to newer gcc
-Message-Id: <46qLXY3v7wz9sP7@ozlabs.org>
-Date: Fri, 11 Oct 2019 19:22:05 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc/kvm: Fix kvmppc_vcore->in_guest value in
+ kvmhv_switch_to_host
+Message-Id: <46qLXg19TWz9sPk@ozlabs.org>
+Date: Fri, 11 Oct 2019 19:22:10 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,28 +39,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, desnesn@linux.ibm.com, shuah@kernel.org
+Cc: aik@ozlabs.ru, alistair@popple.id.au, patch-notifications@ellerman.id.au,
+ kvm-ppc@vger.kernel.org, Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-10-03 at 21:10:10 UTC, "Desnes A. Nunes do Rosario" wrote:
-> Newer versions of GCC demand that the size of the string to be copied must
-> be explicitly smaller than the size of the destination. Thus, the NULL
-> char has to be taken into account on strncpy.
+On Fri, 2019-10-04 at 02:53:17 UTC, Jordan Niethe wrote:
+> kvmhv_switch_to_host() in arch/powerpc/kvm/book3s_hv_rmhandlers.S needs
+> to set kvmppc_vcore->in_guest to 0 to signal secondary CPUs to continue.
+> This happens after resetting the PCR. Before commit 13c7bb3c57dc
+> ("powerpc/64s: Set reserved PCR bits"), r0 would always be 0 before it
+> was stored to kvmppc_vcore->in_guest. However because of this change in
+> the commit:
 > 
-> This will avoid the following compiling error:
+>         /* Reset PCR */
+>         ld      r0, VCORE_PCR(r5)
+> -       cmpdi   r0, 0
+> +       LOAD_REG_IMMEDIATE(r6, PCR_MASK)
+> +       cmpld   r0, r6
+>         beq     18f
+> -       li      r0, 0
+> -       mtspr   SPRN_PCR, r0
+> +       mtspr   SPRN_PCR, r6
+>  18:
+>         /* Signal secondary CPUs to continue */
+>         stb     r0,VCORE_IN_GUEST(r5)
 > 
->   tlbie_test.c: In function 'main':
->   tlbie_test.c:639:4: error: 'strncpy' specified bound 100 equals destination size [-Werror=stringop-truncation]
->       strncpy(logdir, optarg, LOGDIR_NAME_SIZE);
->       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   cc1: all warnings being treated as errors
+> We are no longer comparing r0 against 0 and loading it with 0 if it
+> contains something else. Hence when we store r0 to
+> kvmppc_vcore->in_guest, it might not be 0.  This means that secondary
+> CPUs will not be signalled to continue. Those CPUs get stuck and errors
+> like the following are logged:
 > 
-> Signed-off-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+>     KVM: CPU 1 seems to be stuck
+>     KVM: CPU 2 seems to be stuck
+>     KVM: CPU 3 seems to be stuck
+>     KVM: CPU 4 seems to be stuck
+>     KVM: CPU 5 seems to be stuck
+>     KVM: CPU 6 seems to be stuck
+>     KVM: CPU 7 seems to be stuck
+> 
+> This can be reproduced with:
+>     $ for i in `seq 1 7` ; do chcpu -d $i ; done ;
+>     $ taskset -c 0 qemu-system-ppc64 -smp 8,threads=8 \
+>        -M pseries,accel=kvm,kvm-type=HV -m 1G -nographic -vga none \
+>        -kernel vmlinux -initrd initrd.cpio.xz
+> 
+> Fix by making sure r0 is 0 before storing it to kvmppc_vcore->in_guest.
+> 
+> Fixes: 13c7bb3c57dc ("powerpc/64s: Set reserved PCR bits")
+> Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 
-Reapplied to powerpc fixes, thanks.
+Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/5b216ea1c40cf06eead15054c70e238c9bd4729e
+https://git.kernel.org/powerpc/c/7fe4e1176dfe47a243d8edd98d26abd11f91b042
 
 cheers
