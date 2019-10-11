@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03461D35AD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 02:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C96BDD35AF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 02:20:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46q7q155b6zDqY5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 11:18:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46q7s16Vz5zDqXb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2019 11:20:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="h/B19WCk";
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="MPX+iPje";
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46q7Xg30htzDqL8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46q7Xg5zDzzDqQl
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 11:06:27 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id x10so4692106pgi.5
+Received: by mail-pg1-x544.google.com with SMTP id i76so4704646pgc.0
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2019 17:06:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=9QIZQEEx86BzYrPbnl0U6tW2XkUfCUBHfootbZQ3f/s=;
- b=h/B19WCkyL+xymsA4HFl8hqcGsybKIgVl1/uhhhVSgPKYo6NP7vZ5rRibvBcc9cHi0
- dKUj61YWLvd6Paq9o21PGCwAwApZ0KSVPAqMWPWlFGYXaNSsjI/dS7B2W11htDcOzgnE
- DitiicKTEnEB0ngjDQf+AmKVkG49ZOcGoE0gQ=
+ bh=bl12US5Yp4ZwWvaEnQTrcBCg3LoqQRPWnxt7WskOqWM=;
+ b=MPX+iPjeGRBi9W7v8BaGtEQ7Z0gPfVJ+oEGukA1Qx5FZM3UbvHSgUUNTtJdbrvF0DJ
+ Lniffb/JdJpDuc2hFDvI6xqzg3lDsRa6goVJDwHcZqncxHEEePqIwXD0wmcvebpFmc8f
+ hOMnZpwmNvMPGn7QBG585RWKNTpfnKyDCS46Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=9QIZQEEx86BzYrPbnl0U6tW2XkUfCUBHfootbZQ3f/s=;
- b=UgAJukJ9QtdgoNkXlij20QgpC86uKaDRnLS1TSCf0SC5qxCNQZUWGDrtGiA1INkuv9
- WZqF0gbez+5DcgyH1WjzkRT/yxj/hyasF+73/EjCrlfkamtbxqgNNTdI8qsdIJZOdmWW
- jaFf7q+hKg6SdwugOstc57r9uSErOysl274kNrU50MWHF2ECnYn33XmA5lDsNYOiiAHY
- WdalVDxmsFzcVkXfJBOrqBlFR89wP0ylX4cav4G0ts3VFRZLboqyAL1twKpANkYs9vVI
- H0ccgMuVFgdMEhnPybm2OW7Qu3BfoCrVHGW/hXCxJt7ileOxpDGs4gViW+0/fibw+MYC
- 1KwA==
-X-Gm-Message-State: APjAAAWjn0kTwjjVJya9LTJISSRN2dZFiR1j7GKvIPEU02Yyc3z9dJPK
- uWAIm13EcIHz1dfX4jGZqBw9Ug==
-X-Google-Smtp-Source: APXvYqx4W7fel1DIaEF8YA2JM9DuPiq7TPvvITPEvxb/fDK3Ll5VL5/FYyAVhRaQT1eulT76dS3lTQ==
-X-Received: by 2002:a62:3387:: with SMTP id
- z129mr13444661pfz.185.1570752385625; 
- Thu, 10 Oct 2019 17:06:25 -0700 (PDT)
+ bh=bl12US5Yp4ZwWvaEnQTrcBCg3LoqQRPWnxt7WskOqWM=;
+ b=Ver7Y7CBo0XxFhWLxE+L+in7PIZkMaZRVwyM/YHlXzknUZG2bZCl0hs+jsFVpPinxx
+ 14xIyMIzNv28Z9+hljpaw3el1enfra7HvI2NBcScYDIHf0i17rIctIX6LrAiI5v9xRV2
+ /uYn0UJwknei+IphETAoh79lEWZ6T2JtcV4FBcGT9td9tKwg4jE0gbhvb7YhGHdy/Kqf
+ FO1+Fg93b3+clPgyNdGVG9GUF0wWsG++UYiXEeHxwD5MAlQYCCKTaC/VyttfE/AXdvED
+ UEqg9wUsGJeYYAApBjEhlq1qZlkUWN0y1n9gWzD9JowYgpOGeFomVzbo3SLrStTfJ6uS
+ 0VHA==
+X-Gm-Message-State: APjAAAX8ElSKvf3+1atZuM1Z1F2Cpk4ZioeWVcipNINIEFPKPArlmZDY
+ neRvil+1kjHE2EH4mkykpyjGhw==
+X-Google-Smtp-Source: APXvYqx/QRL/EGj1UNqOw9cSZc5qNyXaSBqEdm+ZR6Z42olkPMiWXRzScwFI4gnTT7Nu98OPft+Atg==
+X-Received: by 2002:a17:90a:9318:: with SMTP id
+ p24mr14062359pjo.31.1570752386117; 
+ Thu, 10 Oct 2019 17:06:26 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id 127sm8449250pfw.6.2019.10.10.17.06.21
+ by smtp.gmail.com with ESMTPSA id 6sm10807049pfa.162.2019.10.10.17.06.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 10 Oct 2019 17:06:24 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: Borislav Petkov <bp@alien8.de>
-Subject: [PATCH v2 05/29] ia64: Rename PT_LOAD identifier "code" to "text"
-Date: Thu, 10 Oct 2019 17:05:45 -0700
-Message-Id: <20191011000609.29728-6-keescook@chromium.org>
+Subject: [PATCH v2 06/29] s390: Move RO_DATA into "text" PT_LOAD Program Header
+Date: Thu, 10 Oct 2019 17:05:46 -0700
+Message-Id: <20191011000609.29728-7-keescook@chromium.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191011000609.29728-1-keescook@chromium.org>
 References: <20191011000609.29728-1-keescook@chromium.org>
@@ -87,70 +87,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for moving NOTES into RO_DATA, rename the linker script
-internal identifier for the PT_LOAD Program Header from "code" to "text"
-to match other architectures.
+In preparation for moving NOTES into RO_DATA, move RO_DATA back into the
+"text" PT_LOAD Program Header, as done with other architectures. The
+"data" PT_LOAD now starts with the writable data section.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/ia64/kernel/vmlinux.lds.S | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/s390/kernel/vmlinux.lds.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/ia64/kernel/vmlinux.lds.S b/arch/ia64/kernel/vmlinux.lds.S
-index d9d4e21107cd..2c4f23c390ad 100644
---- a/arch/ia64/kernel/vmlinux.lds.S
-+++ b/arch/ia64/kernel/vmlinux.lds.S
-@@ -13,7 +13,7 @@ ENTRY(phys_start)
- jiffies = jiffies_64;
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 7e0eb4020917..13294fef473e 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -52,7 +52,7 @@ SECTIONS
  
- PHDRS {
--	code   PT_LOAD;
-+	text   PT_LOAD;
- 	percpu PT_LOAD;
- 	data   PT_LOAD;
- 	note   PT_NOTE;
-@@ -36,7 +36,7 @@ SECTIONS {
- 	phys_start = _start - LOAD_OFFSET;
+ 	NOTES :text :note
  
- 	code : {
--	} :code
-+	} :text
- 	. = KERNEL_START;
+-	.dummy : { *(.dummy) } :data
++	.dummy : { *(.dummy) } :text
  
- 	_text = .;
-@@ -68,9 +68,9 @@ SECTIONS {
- 	/*
- 	 * Read-only data
- 	 */
--	NOTES :code :note       /* put .notes in text and mark in PT_NOTE  */
-+	NOTES :text :note       /* put .notes in text and mark in PT_NOTE  */
- 	code_continues : {
--	} : code               /* switch back to regular program...  */
-+	} :text                /* switch back to regular program...  */
+ 	RO_DATA_SECTION(PAGE_SIZE)
  
+@@ -64,7 +64,7 @@ SECTIONS
+ 	.data..ro_after_init : {
+ 		 *(.data..ro_after_init)
+ 		JUMP_TABLE_DATA
+-	}
++	} :data
  	EXCEPTION_TABLE(16)
- 
-@@ -102,9 +102,9 @@ SECTIONS {
- 		__start_unwind = .;
- 		*(.IA_64.unwind*)
- 		__end_unwind = .;
--	} :code :unwind
-+	} :text :unwind
- 	code_continues2 : {
--	} : code
-+	} :text
- 
- 	RODATA
- 
-@@ -214,7 +214,7 @@ SECTIONS {
- 	_end = .;
- 
- 	code : {
--	} :code
-+	} :text
- 
- 	STABS_DEBUG
- 	DWARF_DEBUG
+ 	. = ALIGN(PAGE_SIZE);
+ 	__end_ro_after_init = .;
 -- 
 2.17.1
 
