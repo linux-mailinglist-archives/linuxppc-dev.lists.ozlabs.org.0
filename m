@@ -1,74 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963A1D4E55
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 10:53:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67553D4EC2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 11:50:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qzB75JjBzDqcT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 19:53:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46r0Rj70x8zDqcw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 20:50:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="kaskJOs6"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qz8C4XydzDqRJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 19:51:38 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46qz8544J8z9v1HD;
- Sat, 12 Oct 2019 10:51:33 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=kaskJOs6; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id B0OR5hSp-zT2; Sat, 12 Oct 2019 10:51:33 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46qz8530SLz9v1HC;
- Sat, 12 Oct 2019 10:51:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1570870293; bh=T37HV7ylGEfqox/Ndhtqj4kx82M+0XG0UqFJoDFdeOs=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=kaskJOs6P8/hdZk+A3A9SQGwS19Qp7FUZcf4xw+OK49TrrNqPavsQvmqT8pL7GyBV
- p79MIP4ShRcg7odcZIi1OlbKzwQBDup+YQxchlqmUTV62jiuwZ0do/KVgVNQAUqKvm
- Ce44rJ/bXvvAh0nrikLBb0bcgcKIcTl+C7WweG4w=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7FB888B790;
- Sat, 12 Oct 2019 10:51:34 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VDCM2eOBBYtA; Sat, 12 Oct 2019 10:51:34 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E2B908B752;
- Sat, 12 Oct 2019 10:51:33 +0200 (CEST)
-Subject: Re: [PATCH v4 0/5] Powerpc/Watchpoint: Few important fixes
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-References: <20190925040630.6948-1-ravi.bangoria@linux.ibm.com>
- <19b222ce-3013-7de5-1c04-48c6fd00fe81@linux.ibm.com>
- <0d98e256-44ee-f920-cb2f-f79545584769@c-s.fr>
- <3e31e5f7-f948-512a-054c-9ad10103ccc0@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <de06dac0-3103-64ed-0e97-c2b6972c59c2@c-s.fr>
-Date: Sat, 12 Oct 2019 10:51:33 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46r0Ps0jjkzDqbC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 20:48:31 +1100 (AEDT)
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id C55FA89947D5590388D6;
+ Sat, 12 Oct 2019 17:48:25 +0800 (CST)
+Received: from [127.0.0.1] (10.74.191.121) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Sat, 12 Oct 2019
+ 17:48:24 +0800
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20190924131939.GS23050@dhcp22.suse.cz>
+ <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
+ <20190925104108.GE4553@hirez.programming.kicks-ass.net>
+ <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
+ <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
+ <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
+ <20191010073212.GB18412@dhcp22.suse.cz>
+ <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
+ <20191011111539.GX2311@hirez.programming.kicks-ass.net>
+ <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
+ <20191012074014.GA2037204@kroah.com>
+From: Yunsheng Lin <linyunsheng@huawei.com>
+Message-ID: <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
+Date: Sat, 12 Oct 2019 17:47:56 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
-In-Reply-To: <3e31e5f7-f948-512a-054c-9ad10103ccc0@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191012074014.GA2037204@kroah.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.191.121]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,70 +62,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: dalias@libc.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, Michal Hocko <mhocko@kernel.org>,
+ mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
+ sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
+ linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+ linux-acpi@vger.kernel.org, x86@kernel.org, rppt@linux.ibm.com,
+ borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
+ jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
+ linux-mips@vger.kernel.org, lenb@kernel.org, len.brown@intel.com,
+ gor@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, luto@kernel.org,
+ bhelgaas@google.com, tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
+ linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
+ linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
+ linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
+ akpm@linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 10/10/2019 à 06:44, Ravi Bangoria a écrit :
-> 
->>> @Christophe, Is patch5 works for you on 8xx?
+On 2019/10/12 15:40, Greg KH wrote:
+> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
+>> add pci and acpi maintainer
+>> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
+>>
+>> On 2019/10/11 19:15, Peter Zijlstra wrote:
+>>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
+>>>> But I failed to see why the above is related to making node_to_cpumask_map()
+>>>> NUMA_NO_NODE aware?
+>>>
+>>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
+>>> have a node assigned.
+>>>
+>>> It not having one, is a straight up bug. We must not silently accept
+>>> NO_NODE there, ever.
 >>>
 >>
->> Getting the following :
+>> I suppose you mean reporting a lack of affinity when the node of a pcie
+>> device is not set by "not silently accept NO_NODE".
+> 
+> If the firmware of a pci device does not provide the node information,
+> then yes, warn about that.
+> 
+>> As Greg has asked about in [1]:
+>> what is a user to do when the user sees the kernel reporting that?
 >>
->> root@vgoip:~# ./ptrace-hwbreak
->> test: ptrace-hwbreak
->> tags: git_version:v5.4-rc2-710-gf0082e173fe4-dirty
->> PTRACE_SET_DEBUGREG, WO, len: 1: Ok
->> PTRACE_SET_DEBUGREG, WO, len: 2: Ok
->> PTRACE_SET_DEBUGREG, WO, len: 4: Ok
->> PTRACE_SET_DEBUGREG, WO, len: 8: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 1: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 2: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 4: Ok
->> PTRACE_SET_DEBUGREG, RO, len: 8: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 1: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 2: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 4: Ok
->> PTRACE_SET_DEBUGREG, RW, len: 8: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
->> PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Fail
->> failure: ptrace-hwbreak
->>
+>> We may tell user to contact their vendor for info or updates about
+>> that when they do not know about their system well enough, but their
+>> vendor may get away with this by quoting ACPI spec as the spec
+>> considering this optional. Should the user believe this is indeed a
+>> fw bug or a misreport from the kernel?
+> 
+> Say it is a firmware bug, if it is a firmware bug, that's simple.
+> 
+>> If this kind of reporting is common pratice and will not cause any
+>> misunderstanding, then maybe we can report that.
+> 
+> Yes, please do so, that's the only way those boxes are ever going to get
+> fixed.  And go add the test to the "firmware testing" tool that is based
+> on Linux that Intel has somewhere, to give vendors a chance to fix this
+> before they ship hardware.
+> 
+> This shouldn't be a big deal, we warn of other hardware bugs all the
+> time.
+
+Ok, thanks for clarifying.
+
+Will send a patch to catch the case when a pcie device without numa node
+being set and warn about it.
+
+Maybe use dev->bus to verify if it is a pci device?
+
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> .
 > 
 
-I also tried on a 83xx (book3s/32). This one has a regular DABR :
-
-root@vgoippro:~# ./ptrace-hwbreak
-test: ptrace-hwbreak
-tags: git_version:v5.4-rc2-710-gf0082e173fe4-dirty
-PTRACE_SET_DEBUGREG, WO, len: 1: Ok
-PTRACE_SET_DEBUGREG, WO, len: 2: Ok
-PTRACE_SET_DEBUGREG, WO, len: 4: Ok
-PTRACE_SET_DEBUGREG, WO, len: 8: Ok
-PTRACE_SET_DEBUGREG, RO, len: 1: Ok
-PTRACE_SET_DEBUGREG, RO, len: 2: Ok
-PTRACE_SET_DEBUGREG, RO, len: 4: Ok
-PTRACE_SET_DEBUGREG, RO, len: 8: Ok
-PTRACE_SET_DEBUGREG, RW, len: 1: Ok
-PTRACE_SET_DEBUGREG, RW, len: 2: Ok
-PTRACE_SET_DEBUGREG, RW, len: 4: Ok
-PTRACE_SET_DEBUGREG, RW, len: 8: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Ok
-PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RW, len: 6: Ok
-PPC_PTRACE_SETHWDEBUG failed: Invalid argument
-failure: ptrace-hwbreak
-
-Christophe
