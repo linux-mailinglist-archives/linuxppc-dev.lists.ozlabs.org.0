@@ -2,82 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0486D4BE2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 03:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAACD4C24
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 04:34:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qnX85TgpzDqd2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 12:38:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qpmv6xkLzDqSV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 13:34:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=us.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=linuxram@us.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=ebiggers@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="jQoXmCm9"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qnVK50wzzDqYp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 12:36:41 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9C1XxAD143863
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 21:36:39 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vk59d02ch-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 21:36:39 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Sat, 12 Oct 2019 02:36:36 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 12 Oct 2019 02:36:31 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9C1aUUm52691120
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 12 Oct 2019 01:36:30 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40343A404D;
- Sat, 12 Oct 2019 01:36:30 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A1B33A4040;
- Sat, 12 Oct 2019 01:36:25 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.85.130.213])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Sat, 12 Oct 2019 01:36:25 +0000 (GMT)
-Date: Fri, 11 Oct 2019 18:36:22 -0700
-From: Ram Pai <linuxram@us.ibm.com>
-To: linux-kernel@vger.kernel.org, mst@redhat.com, bauerman@linux.ibm.com
-Subject: Re: [PATCH 0/2] virtio: Support encrypted memory on powerpc secure
- guests
-References: <1570843519-8696-1-git-send-email-linuxram@us.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qpl76BT8zDqMH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 13:32:51 +1100 (AEDT)
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net
+ [24.5.143.220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0C229206CD;
+ Sat, 12 Oct 2019 02:32:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1570847568;
+ bh=+AMvyR14zChVgw/2tR2wL9jrlZyIrnBSDj6FuEZnR9s=;
+ h=From:To:Cc:Subject:Date:From;
+ b=jQoXmCm9woQu5M7tg94y77Ow3ij60ms0+KzDNyytKogLpTmQkil08zYg6cTAHhBuH
+ tdFdSXzQohScDLSxVfOEI652lLrN7Wdh7v1w+6wYdt/DEB4P4fyyaHkITshUbv11TX
+ aJJsJSpRLNsfesynw1ys9CawpHH0F79qMFdskDE0=
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH] crypto: powerpc - convert SPE AES algorithms to skcipher API
+Date: Fri, 11 Oct 2019 19:29:46 -0700
+Message-Id: <20191012022946.185320-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1570843519-8696-1-git-send-email-linuxram@us.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19101201-4275-0000-0000-0000037158C9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101201-4276-0000-0000-000038846517
-Message-Id: <20191012013622.GC17661@oc0525413822.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-11_12:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910120006
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,86 +56,617 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: andmike@us.ibm.com, sukadev@linux.vnet.ibm.com, b.zolnierkie@samsung.com,
- jasowang@redhat.com, aik@linux.ibm.com, mdroth@linux.vnet.ibm.com,
- virtualization@lists.linux-foundation.org, iommu@lists.linux-foundation.org,
- paul.burton@mips.com, robin.murphy@arm.com, m.szyprowski@samsung.com,
- linuxppc-dev@lists.ozlabs.org, hch@lst.de, david@gibson.dropbear.id.au
+Cc: Markus Stockhausen <stockhausen@collogia.de>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hmm.. git-send-email forgot to CC  Michael Tsirkin, and Thiago; the
-original author, who is on vacation.
+From: Eric Biggers <ebiggers@google.com>
 
-Adding them now.
-RP
+Convert the glue code for the PowerPC SPE implementations of AES-ECB,
+AES-CBC, AES-CTR, and AES-XTS from the deprecated "blkcipher" API to the
+"skcipher" API.
 
-On Fri, Oct 11, 2019 at 06:25:17PM -0700, Ram Pai wrote:
->  **We would like the patches to be merged through the virtio tree.  Please
->  review, and ack merging the DMA mapping change through that tree. Thanks!**
-> 
->  The memory of powerpc secure guests can't be accessed by the hypervisor /
->  virtio device except for a few memory regions designated as 'shared'.
-> 
->  At the moment, Linux uses bounce-buffering to communicate with the
->  hypervisor, with a bounce buffer marked as shared. This is how the DMA API
->  is implemented on this platform.
-> 
->  In particular, the most convenient way to use virtio on this platform is by
->  making virtio use the DMA API: in fact, this is exactly what happens if the
->  virtio device exposes the flag VIRTIO_F_ACCESS_PLATFORM.  However, bugs in the
->  hypervisor on the powerpc platform do not allow setting this flag, with some
->  hypervisors already in the field that don't set this flag. At the moment they
->  are forced to use emulated devices when guest is in secure mode; virtio is
->  only useful when guest is not secure.
-> 
->  Normally, both device and driver must support VIRTIO_F_ACCESS_PLATFORM:
->  if one of them doesn't, the other mustn't assume it for communication
->  to work.
-> 
->  However, a guest-side work-around is possible to enable virtio
->  for these hypervisors with guest in secure mode: it so happens that on
->  powerpc secure platform the DMA address is actually a physical address -
->  that of the bounce buffer. For these platforms we can make the virtio
->  driver go through the DMA API even though the device itself ignores
->  the DMA API.
-> 
->  These patches implement this work around for virtio: we detect that
->  - secure guest mode is enabled - so we know that since we don't share
->    most memory and Hypervisor has not enabled VIRTIO_F_ACCESS_PLATFORM,
->    regular virtio code won't work.
->  - DMA API is giving us addresses that are actually also physical
->    addresses.
->  - Hypervisor has not enabled VIRTIO_F_ACCESS_PLATFORM.
-> 
->  and if all conditions are true, we force all data through the bounce
->  buffer.
-> 
->  To put it another way, from hypervisor's point of view DMA API is
->  not required: hypervisor would be happy to get access to all of guest
->  memory. That's why it does not set VIRTIO_F_ACCESS_PLATFORM. However,
->  guest decides that it does not trust the hypervisor and wants to force
->  a bounce buffer for its own reasons.
-> 
-> 
-> Thiago Jung Bauermann (2):
->   dma-mapping: Add dma_addr_is_phys_addr()
->   virtio_ring: Use DMA API if memory is encrypted
-> 
->  arch/powerpc/include/asm/dma-mapping.h | 21 +++++++++++++++++++++
->  arch/powerpc/platforms/pseries/Kconfig |  1 +
->  drivers/virtio/virtio.c                | 18 ++++++++++++++++++
->  drivers/virtio/virtio_ring.c           |  8 ++++++++
->  include/linux/dma-mapping.h            | 20 ++++++++++++++++++++
->  include/linux/virtio_config.h          | 14 ++++++++++++++
->  kernel/dma/Kconfig                     |  3 +++
->  7 files changed, 85 insertions(+)
-> 
-> -- 
-> 1.8.3.1
+Tested with:
 
+	export ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu-
+	make mpc85xx_defconfig
+	cat >> .config << EOF
+	# CONFIG_MODULES is not set
+	# CONFIG_CRYPTO_MANAGER_DISABLE_TESTS is not set
+	CONFIG_DEBUG_KERNEL=y
+	CONFIG_CRYPTO_MANAGER_EXTRA_TESTS=y
+	CONFIG_CRYPTO_AES=y
+	CONFIG_CRYPTO_CBC=y
+	CONFIG_CRYPTO_CTR=y
+	CONFIG_CRYPTO_ECB=y
+	CONFIG_CRYPTO_XTS=y
+	CONFIG_CRYPTO_AES_PPC_SPE=y
+	EOF
+	make olddefconfig
+	make -j32
+	qemu-system-ppc -M mpc8544ds -cpu e500 -nographic \
+		-kernel arch/powerpc/boot/zImage \
+		-append cryptomgr.fuzz_iterations=1000
+
+Note that xts-ppc-spe still fails the comparison tests due to the lack
+of ciphertext stealing support.  This is not addressed by this patch.
+
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ arch/powerpc/crypto/aes-spe-glue.c | 416 +++++++++++++----------------
+ crypto/Kconfig                     |   1 +
+ 2 files changed, 186 insertions(+), 231 deletions(-)
+
+diff --git a/arch/powerpc/crypto/aes-spe-glue.c b/arch/powerpc/crypto/aes-spe-glue.c
+index 3a4ca7d32477..374e3e51e998 100644
+--- a/arch/powerpc/crypto/aes-spe-glue.c
++++ b/arch/powerpc/crypto/aes-spe-glue.c
+@@ -17,6 +17,7 @@
+ #include <asm/byteorder.h>
+ #include <asm/switch_to.h>
+ #include <crypto/algapi.h>
++#include <crypto/internal/skcipher.h>
+ #include <crypto/xts.h>
+ 
+ /*
+@@ -86,17 +87,13 @@ static void spe_end(void)
+ 	preempt_enable();
+ }
+ 
+-static int ppc_aes_setkey(struct crypto_tfm *tfm, const u8 *in_key,
+-		unsigned int key_len)
++static int expand_key(struct ppc_aes_ctx *ctx,
++		      const u8 *in_key, unsigned int key_len)
+ {
+-	struct ppc_aes_ctx *ctx = crypto_tfm_ctx(tfm);
+-
+ 	if (key_len != AES_KEYSIZE_128 &&
+ 	    key_len != AES_KEYSIZE_192 &&
+-	    key_len != AES_KEYSIZE_256) {
+-		tfm->crt_flags |= CRYPTO_TFM_RES_BAD_KEY_LEN;
++	    key_len != AES_KEYSIZE_256)
+ 		return -EINVAL;
+-	}
+ 
+ 	switch (key_len) {
+ 	case AES_KEYSIZE_128:
+@@ -114,17 +111,40 @@ static int ppc_aes_setkey(struct crypto_tfm *tfm, const u8 *in_key,
+ 	}
+ 
+ 	ppc_generate_decrypt_key(ctx->key_dec, ctx->key_enc, key_len);
++	return 0;
++}
+ 
++static int ppc_aes_setkey(struct crypto_tfm *tfm, const u8 *in_key,
++		unsigned int key_len)
++{
++	struct ppc_aes_ctx *ctx = crypto_tfm_ctx(tfm);
++
++	if (expand_key(ctx, in_key, key_len) != 0) {
++		tfm->crt_flags |= CRYPTO_TFM_RES_BAD_KEY_LEN;
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int ppc_aes_setkey_skcipher(struct crypto_skcipher *tfm,
++				   const u8 *in_key, unsigned int key_len)
++{
++	struct ppc_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
++
++	if (expand_key(ctx, in_key, key_len) != 0) {
++		crypto_skcipher_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
++		return -EINVAL;
++	}
+ 	return 0;
+ }
+ 
+-static int ppc_xts_setkey(struct crypto_tfm *tfm, const u8 *in_key,
++static int ppc_xts_setkey(struct crypto_skcipher *tfm, const u8 *in_key,
+ 		   unsigned int key_len)
+ {
+-	struct ppc_xts_ctx *ctx = crypto_tfm_ctx(tfm);
++	struct ppc_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
+ 	int err;
+ 
+-	err = xts_check_key(tfm, in_key, key_len);
++	err = xts_verify_key(tfm, in_key, key_len);
+ 	if (err)
+ 		return err;
+ 
+@@ -133,7 +153,7 @@ static int ppc_xts_setkey(struct crypto_tfm *tfm, const u8 *in_key,
+ 	if (key_len != AES_KEYSIZE_128 &&
+ 	    key_len != AES_KEYSIZE_192 &&
+ 	    key_len != AES_KEYSIZE_256) {
+-		tfm->crt_flags |= CRYPTO_TFM_RES_BAD_KEY_LEN;
++		crypto_skcipher_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -178,208 +198,154 @@ static void ppc_aes_decrypt(struct crypto_tfm *tfm, u8 *out, const u8 *in)
+ 	spe_end();
+ }
+ 
+-static int ppc_ecb_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+-			   struct scatterlist *src, unsigned int nbytes)
++static int ppc_ecb_crypt(struct skcipher_request *req, bool enc)
+ {
+-	struct ppc_aes_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+-	struct blkcipher_walk walk;
+-	unsigned int ubytes;
++	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
++	struct ppc_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
++	struct skcipher_walk walk;
++	unsigned int nbytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+-	blkcipher_walk_init(&walk, dst, src, nbytes);
+-	err = blkcipher_walk_virt(desc, &walk);
++	err = skcipher_walk_virt(&walk, req, false);
+ 
+-	while ((nbytes = walk.nbytes)) {
+-		ubytes = nbytes > MAX_BYTES ?
+-			 nbytes - MAX_BYTES : nbytes & (AES_BLOCK_SIZE - 1);
+-		nbytes -= ubytes;
++	while ((nbytes = walk.nbytes) != 0) {
++		nbytes = min_t(unsigned int, nbytes, MAX_BYTES);
++		nbytes = round_down(nbytes, AES_BLOCK_SIZE);
+ 
+ 		spe_begin();
+-		ppc_encrypt_ecb(walk.dst.virt.addr, walk.src.virt.addr,
+-				ctx->key_enc, ctx->rounds, nbytes);
++		if (enc)
++			ppc_encrypt_ecb(walk.dst.virt.addr, walk.src.virt.addr,
++					ctx->key_enc, ctx->rounds, nbytes);
++		else
++			ppc_decrypt_ecb(walk.dst.virt.addr, walk.src.virt.addr,
++					ctx->key_dec, ctx->rounds, nbytes);
+ 		spe_end();
+ 
+-		err = blkcipher_walk_done(desc, &walk, ubytes);
++		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
+ 	}
+ 
+ 	return err;
+ }
+ 
+-static int ppc_ecb_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+-			   struct scatterlist *src, unsigned int nbytes)
++static int ppc_ecb_encrypt(struct skcipher_request *req)
+ {
+-	struct ppc_aes_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+-	struct blkcipher_walk walk;
+-	unsigned int ubytes;
+-	int err;
+-
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+-	blkcipher_walk_init(&walk, dst, src, nbytes);
+-	err = blkcipher_walk_virt(desc, &walk);
+-
+-	while ((nbytes = walk.nbytes)) {
+-		ubytes = nbytes > MAX_BYTES ?
+-			 nbytes - MAX_BYTES : nbytes & (AES_BLOCK_SIZE - 1);
+-		nbytes -= ubytes;
+-
+-		spe_begin();
+-		ppc_decrypt_ecb(walk.dst.virt.addr, walk.src.virt.addr,
+-				ctx->key_dec, ctx->rounds, nbytes);
+-		spe_end();
+-
+-		err = blkcipher_walk_done(desc, &walk, ubytes);
+-	}
++	return ppc_ecb_crypt(req, true);
++}
+ 
+-	return err;
++static int ppc_ecb_decrypt(struct skcipher_request *req)
++{
++	return ppc_ecb_crypt(req, false);
+ }
+ 
+-static int ppc_cbc_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+-			   struct scatterlist *src, unsigned int nbytes)
++static int ppc_cbc_crypt(struct skcipher_request *req, bool enc)
+ {
+-	struct ppc_aes_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+-	struct blkcipher_walk walk;
+-	unsigned int ubytes;
++	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
++	struct ppc_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
++	struct skcipher_walk walk;
++	unsigned int nbytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+-	blkcipher_walk_init(&walk, dst, src, nbytes);
+-	err = blkcipher_walk_virt(desc, &walk);
++	err = skcipher_walk_virt(&walk, req, false);
+ 
+-	while ((nbytes = walk.nbytes)) {
+-		ubytes = nbytes > MAX_BYTES ?
+-			 nbytes - MAX_BYTES : nbytes & (AES_BLOCK_SIZE - 1);
+-		nbytes -= ubytes;
++	while ((nbytes = walk.nbytes) != 0) {
++		nbytes = min_t(unsigned int, nbytes, MAX_BYTES);
++		nbytes = round_down(nbytes, AES_BLOCK_SIZE);
+ 
+ 		spe_begin();
+-		ppc_encrypt_cbc(walk.dst.virt.addr, walk.src.virt.addr,
+-				ctx->key_enc, ctx->rounds, nbytes, walk.iv);
++		if (enc)
++			ppc_encrypt_cbc(walk.dst.virt.addr, walk.src.virt.addr,
++					ctx->key_enc, ctx->rounds, nbytes,
++					walk.iv);
++		else
++			ppc_decrypt_cbc(walk.dst.virt.addr, walk.src.virt.addr,
++					ctx->key_dec, ctx->rounds, nbytes,
++					walk.iv);
+ 		spe_end();
+ 
+-		err = blkcipher_walk_done(desc, &walk, ubytes);
++		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
+ 	}
+ 
+ 	return err;
+ }
+ 
+-static int ppc_cbc_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+-			   struct scatterlist *src, unsigned int nbytes)
++static int ppc_cbc_encrypt(struct skcipher_request *req)
+ {
+-	struct ppc_aes_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+-	struct blkcipher_walk walk;
+-	unsigned int ubytes;
+-	int err;
+-
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+-	blkcipher_walk_init(&walk, dst, src, nbytes);
+-	err = blkcipher_walk_virt(desc, &walk);
+-
+-	while ((nbytes = walk.nbytes)) {
+-		ubytes = nbytes > MAX_BYTES ?
+-			 nbytes - MAX_BYTES : nbytes & (AES_BLOCK_SIZE - 1);
+-		nbytes -= ubytes;
+-
+-		spe_begin();
+-		ppc_decrypt_cbc(walk.dst.virt.addr, walk.src.virt.addr,
+-				ctx->key_dec, ctx->rounds, nbytes, walk.iv);
+-		spe_end();
+-
+-		err = blkcipher_walk_done(desc, &walk, ubytes);
+-	}
++	return ppc_cbc_crypt(req, true);
++}
+ 
+-	return err;
++static int ppc_cbc_decrypt(struct skcipher_request *req)
++{
++	return ppc_cbc_crypt(req, false);
+ }
+ 
+-static int ppc_ctr_crypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+-			 struct scatterlist *src, unsigned int nbytes)
++static int ppc_ctr_crypt(struct skcipher_request *req)
+ {
+-	struct ppc_aes_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+-	struct blkcipher_walk walk;
+-	unsigned int pbytes, ubytes;
++	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
++	struct ppc_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
++	struct skcipher_walk walk;
++	unsigned int nbytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+-	blkcipher_walk_init(&walk, dst, src, nbytes);
+-	err = blkcipher_walk_virt_block(desc, &walk, AES_BLOCK_SIZE);
++	err = skcipher_walk_virt(&walk, req, false);
+ 
+-	while ((pbytes = walk.nbytes)) {
+-		pbytes = pbytes > MAX_BYTES ? MAX_BYTES : pbytes;
+-		pbytes = pbytes == nbytes ?
+-			 nbytes : pbytes & ~(AES_BLOCK_SIZE - 1);
+-		ubytes = walk.nbytes - pbytes;
++	while ((nbytes = walk.nbytes) != 0) {
++		nbytes = min_t(unsigned int, nbytes, MAX_BYTES);
++		if (nbytes < walk.total)
++			nbytes = round_down(nbytes, AES_BLOCK_SIZE);
+ 
+ 		spe_begin();
+ 		ppc_crypt_ctr(walk.dst.virt.addr, walk.src.virt.addr,
+-			      ctx->key_enc, ctx->rounds, pbytes , walk.iv);
++			      ctx->key_enc, ctx->rounds, nbytes, walk.iv);
+ 		spe_end();
+ 
+-		nbytes -= pbytes;
+-		err = blkcipher_walk_done(desc, &walk, ubytes);
++		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
+ 	}
+ 
+ 	return err;
+ }
+ 
+-static int ppc_xts_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+-			   struct scatterlist *src, unsigned int nbytes)
++static int ppc_xts_crypt(struct skcipher_request *req, bool enc)
+ {
+-	struct ppc_xts_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+-	struct blkcipher_walk walk;
+-	unsigned int ubytes;
++	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
++	struct ppc_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
++	struct skcipher_walk walk;
++	unsigned int nbytes;
+ 	int err;
+ 	u32 *twk;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+-	blkcipher_walk_init(&walk, dst, src, nbytes);
+-	err = blkcipher_walk_virt(desc, &walk);
++	err = skcipher_walk_virt(&walk, req, false);
+ 	twk = ctx->key_twk;
+ 
+-	while ((nbytes = walk.nbytes)) {
+-		ubytes = nbytes > MAX_BYTES ?
+-			 nbytes - MAX_BYTES : nbytes & (AES_BLOCK_SIZE - 1);
+-		nbytes -= ubytes;
++	while ((nbytes = walk.nbytes) != 0) {
++		nbytes = min_t(unsigned int, nbytes, MAX_BYTES);
++		nbytes = round_down(nbytes, AES_BLOCK_SIZE);
+ 
+ 		spe_begin();
+-		ppc_encrypt_xts(walk.dst.virt.addr, walk.src.virt.addr,
+-				ctx->key_enc, ctx->rounds, nbytes, walk.iv, twk);
++		if (enc)
++			ppc_encrypt_xts(walk.dst.virt.addr, walk.src.virt.addr,
++					ctx->key_enc, ctx->rounds, nbytes,
++					walk.iv, twk);
++		else
++			ppc_decrypt_xts(walk.dst.virt.addr, walk.src.virt.addr,
++					ctx->key_dec, ctx->rounds, nbytes,
++					walk.iv, twk);
+ 		spe_end();
+ 
+ 		twk = NULL;
+-		err = blkcipher_walk_done(desc, &walk, ubytes);
++		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
+ 	}
+ 
+ 	return err;
+ }
+ 
+-static int ppc_xts_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+-			   struct scatterlist *src, unsigned int nbytes)
++static int ppc_xts_encrypt(struct skcipher_request *req)
+ {
+-	struct ppc_xts_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+-	struct blkcipher_walk walk;
+-	unsigned int ubytes;
+-	int err;
+-	u32 *twk;
+-
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+-	blkcipher_walk_init(&walk, dst, src, nbytes);
+-	err = blkcipher_walk_virt(desc, &walk);
+-	twk = ctx->key_twk;
+-
+-	while ((nbytes = walk.nbytes)) {
+-		ubytes = nbytes > MAX_BYTES ?
+-			 nbytes - MAX_BYTES : nbytes & (AES_BLOCK_SIZE - 1);
+-		nbytes -= ubytes;
+-
+-		spe_begin();
+-		ppc_decrypt_xts(walk.dst.virt.addr, walk.src.virt.addr,
+-				ctx->key_dec, ctx->rounds, nbytes, walk.iv, twk);
+-		spe_end();
+-
+-		twk = NULL;
+-		err = blkcipher_walk_done(desc, &walk, ubytes);
+-	}
++	return ppc_xts_crypt(req, true);
++}
+ 
+-	return err;
++static int ppc_xts_decrypt(struct skcipher_request *req)
++{
++	return ppc_xts_crypt(req, false);
+ }
+ 
+ /*
+@@ -388,9 +354,9 @@ static int ppc_xts_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+  * This improves IPsec thoughput by another few percent. Additionally we assume
+  * that AES context is always aligned to at least 8 bytes because it is created
+  * with kmalloc() in the crypto infrastructure
+- *
+  */
+-static struct crypto_alg aes_algs[] = { {
++
++static struct crypto_alg aes_cipher_alg = {
+ 	.cra_name		=	"aes",
+ 	.cra_driver_name	=	"aes-ppc-spe",
+ 	.cra_priority		=	300,
+@@ -408,96 +374,84 @@ static struct crypto_alg aes_algs[] = { {
+ 			.cia_decrypt		=	ppc_aes_decrypt
+ 		}
+ 	}
+-}, {
+-	.cra_name		=	"ecb(aes)",
+-	.cra_driver_name	=	"ecb-ppc-spe",
+-	.cra_priority		=	300,
+-	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER,
+-	.cra_blocksize		=	AES_BLOCK_SIZE,
+-	.cra_ctxsize		=	sizeof(struct ppc_aes_ctx),
+-	.cra_alignmask		=	0,
+-	.cra_type		=	&crypto_blkcipher_type,
+-	.cra_module		=	THIS_MODULE,
+-	.cra_u = {
+-		.blkcipher = {
+-			.min_keysize		=	AES_MIN_KEY_SIZE,
+-			.max_keysize		=	AES_MAX_KEY_SIZE,
+-			.ivsize			=	AES_BLOCK_SIZE,
+-			.setkey			=	ppc_aes_setkey,
+-			.encrypt		=	ppc_ecb_encrypt,
+-			.decrypt		=	ppc_ecb_decrypt,
+-		}
+-	}
+-}, {
+-	.cra_name		=	"cbc(aes)",
+-	.cra_driver_name	=	"cbc-ppc-spe",
+-	.cra_priority		=	300,
+-	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER,
+-	.cra_blocksize		=	AES_BLOCK_SIZE,
+-	.cra_ctxsize		=	sizeof(struct ppc_aes_ctx),
+-	.cra_alignmask		=	0,
+-	.cra_type		=	&crypto_blkcipher_type,
+-	.cra_module		=	THIS_MODULE,
+-	.cra_u = {
+-		.blkcipher = {
+-			.min_keysize		=	AES_MIN_KEY_SIZE,
+-			.max_keysize		=	AES_MAX_KEY_SIZE,
+-			.ivsize			=	AES_BLOCK_SIZE,
+-			.setkey			=	ppc_aes_setkey,
+-			.encrypt		=	ppc_cbc_encrypt,
+-			.decrypt		=	ppc_cbc_decrypt,
+-		}
+-	}
+-}, {
+-	.cra_name		=	"ctr(aes)",
+-	.cra_driver_name	=	"ctr-ppc-spe",
+-	.cra_priority		=	300,
+-	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER,
+-	.cra_blocksize		=	1,
+-	.cra_ctxsize		=	sizeof(struct ppc_aes_ctx),
+-	.cra_alignmask		=	0,
+-	.cra_type		=	&crypto_blkcipher_type,
+-	.cra_module		=	THIS_MODULE,
+-	.cra_u = {
+-		.blkcipher = {
+-			.min_keysize		=	AES_MIN_KEY_SIZE,
+-			.max_keysize		=	AES_MAX_KEY_SIZE,
+-			.ivsize			=	AES_BLOCK_SIZE,
+-			.setkey			=	ppc_aes_setkey,
+-			.encrypt		=	ppc_ctr_crypt,
+-			.decrypt		=	ppc_ctr_crypt,
+-		}
+-	}
+-}, {
+-	.cra_name		=	"xts(aes)",
+-	.cra_driver_name	=	"xts-ppc-spe",
+-	.cra_priority		=	300,
+-	.cra_flags		=	CRYPTO_ALG_TYPE_BLKCIPHER,
+-	.cra_blocksize		=	AES_BLOCK_SIZE,
+-	.cra_ctxsize		=	sizeof(struct ppc_xts_ctx),
+-	.cra_alignmask		=	0,
+-	.cra_type		=	&crypto_blkcipher_type,
+-	.cra_module		=	THIS_MODULE,
+-	.cra_u = {
+-		.blkcipher = {
+-			.min_keysize		=	AES_MIN_KEY_SIZE * 2,
+-			.max_keysize		=	AES_MAX_KEY_SIZE * 2,
+-			.ivsize			=	AES_BLOCK_SIZE,
+-			.setkey			=	ppc_xts_setkey,
+-			.encrypt		=	ppc_xts_encrypt,
+-			.decrypt		=	ppc_xts_decrypt,
+-		}
++};
++
++static struct skcipher_alg aes_skcipher_algs[] = {
++	{
++		.base.cra_name		=	"ecb(aes)",
++		.base.cra_driver_name	=	"ecb-ppc-spe",
++		.base.cra_priority	=	300,
++		.base.cra_blocksize	=	AES_BLOCK_SIZE,
++		.base.cra_ctxsize	=	sizeof(struct ppc_aes_ctx),
++		.base.cra_module	=	THIS_MODULE,
++		.min_keysize		=	AES_MIN_KEY_SIZE,
++		.max_keysize		=	AES_MAX_KEY_SIZE,
++		.setkey			=	ppc_aes_setkey_skcipher,
++		.encrypt		=	ppc_ecb_encrypt,
++		.decrypt		=	ppc_ecb_decrypt,
++	}, {
++		.base.cra_name		=	"cbc(aes)",
++		.base.cra_driver_name	=	"cbc-ppc-spe",
++		.base.cra_priority	=	300,
++		.base.cra_blocksize	=	AES_BLOCK_SIZE,
++		.base.cra_ctxsize	=	sizeof(struct ppc_aes_ctx),
++		.base.cra_module	=	THIS_MODULE,
++		.min_keysize		=	AES_MIN_KEY_SIZE,
++		.max_keysize		=	AES_MAX_KEY_SIZE,
++		.ivsize			=	AES_BLOCK_SIZE,
++		.setkey			=	ppc_aes_setkey_skcipher,
++		.encrypt		=	ppc_cbc_encrypt,
++		.decrypt		=	ppc_cbc_decrypt,
++	}, {
++		.base.cra_name		=	"ctr(aes)",
++		.base.cra_driver_name	=	"ctr-ppc-spe",
++		.base.cra_priority	=	300,
++		.base.cra_blocksize	=	1,
++		.base.cra_ctxsize	=	sizeof(struct ppc_aes_ctx),
++		.base.cra_module	=	THIS_MODULE,
++		.min_keysize		=	AES_MIN_KEY_SIZE,
++		.max_keysize		=	AES_MAX_KEY_SIZE,
++		.ivsize			=	AES_BLOCK_SIZE,
++		.setkey			=	ppc_aes_setkey_skcipher,
++		.encrypt		=	ppc_ctr_crypt,
++		.decrypt		=	ppc_ctr_crypt,
++		.chunksize		=	AES_BLOCK_SIZE,
++	}, {
++		.base.cra_name		=	"xts(aes)",
++		.base.cra_driver_name	=	"xts-ppc-spe",
++		.base.cra_priority	=	300,
++		.base.cra_blocksize	=	AES_BLOCK_SIZE,
++		.base.cra_ctxsize	=	sizeof(struct ppc_xts_ctx),
++		.base.cra_module	=	THIS_MODULE,
++		.min_keysize		=	AES_MIN_KEY_SIZE * 2,
++		.max_keysize		=	AES_MAX_KEY_SIZE * 2,
++		.ivsize			=	AES_BLOCK_SIZE,
++		.setkey			=	ppc_xts_setkey,
++		.encrypt		=	ppc_xts_encrypt,
++		.decrypt		=	ppc_xts_decrypt,
+ 	}
+-} };
++};
+ 
+ static int __init ppc_aes_mod_init(void)
+ {
+-	return crypto_register_algs(aes_algs, ARRAY_SIZE(aes_algs));
++	int err;
++
++	err = crypto_register_alg(&aes_cipher_alg);
++	if (err)
++		return err;
++
++	err = crypto_register_skciphers(aes_skcipher_algs,
++					ARRAY_SIZE(aes_skcipher_algs));
++	if (err)
++		crypto_unregister_alg(&aes_cipher_alg);
++	return err;
+ }
+ 
+ static void __exit ppc_aes_mod_fini(void)
+ {
+-	crypto_unregister_algs(aes_algs, ARRAY_SIZE(aes_algs));
++	crypto_unregister_alg(&aes_cipher_alg);
++	crypto_unregister_skciphers(aes_skcipher_algs,
++				    ARRAY_SIZE(aes_skcipher_algs));
+ }
+ 
+ module_init(ppc_aes_mod_init);
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index 29472fb795f3..03699657fb5d 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -1126,6 +1126,7 @@ config CRYPTO_AES_SPARC64
+ config CRYPTO_AES_PPC_SPE
+ 	tristate "AES cipher algorithms (PPC SPE)"
+ 	depends on PPC && SPE
++	select CRYPTO_BLKCIPHER
+ 	help
+ 	  AES cipher algorithms (FIPS-197). Additionally the acceleration
+ 	  for popular block cipher modes ECB, CBC, CTR and XTS is supported.
 -- 
-Ram Pai
+2.23.0
 
