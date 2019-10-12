@@ -2,55 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B99D4D84
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 08:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F00CD4DFA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 09:33:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qvmm3FnczDqdn
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 17:19:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qxQ60TmRzDqcT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 18:33:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="OpoUpGRI"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qvky543XzDqby
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 17:18:01 +1100 (AEDT)
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 3323C80206F36887AE0D;
- Sat, 12 Oct 2019 14:17:54 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Sat, 12 Oct 2019
- 14:17:52 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Peter Zijlstra <peterz@infradead.org>
-References: <20190924124325.GQ2349@hirez.programming.kicks-ass.net>
- <20190924125936.GR2349@hirez.programming.kicks-ass.net>
- <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
- <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
- <20191010073212.GB18412@dhcp22.suse.cz>
- <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
-Date: Sat, 12 Oct 2019 14:17:26 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qxN62r5yzDqHr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 18:31:48 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46qxMx55lqz9v1Dp;
+ Sat, 12 Oct 2019 09:31:41 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=OpoUpGRI; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id O_PEinIXgLoa; Sat, 12 Oct 2019 09:31:41 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46qxMx42Dtz9v1Dl;
+ Sat, 12 Oct 2019 09:31:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1570865501; bh=VsMk4k5KWSekIMCZq0ixP3GE+1fnGp+O8WXTjCgDDoQ=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=OpoUpGRIwAKeP5d6Infu9JC4zPojTWf1n4o7MdGtarj4xsz/Z391llxNFGiw4soMe
+ 2tMxpZ5Z/HZ/fYAzYU6nCS1DjPfS+j786EBliHIfoc1jj4tBBX4W/IIadvCa3xzpX6
+ 9P7aFQo5U/RjK2Tn80IRNKpO2FHFTfLi5voerO8g=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8F0A08B790;
+ Sat, 12 Oct 2019 09:31:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id CzilGxpF1BE8; Sat, 12 Oct 2019 09:31:42 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E1CEC8B752;
+ Sat, 12 Oct 2019 09:31:41 +0200 (CEST)
+Subject: Re: [PATCH v4 0/5] Powerpc/Watchpoint: Few important fixes
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20190925040630.6948-1-ravi.bangoria@linux.ibm.com>
+ <19b222ce-3013-7de5-1c04-48c6fd00fe81@linux.ibm.com>
+ <0d98e256-44ee-f920-cb2f-f79545584769@c-s.fr>
+ <3e31e5f7-f948-512a-054c-9ad10103ccc0@linux.ibm.com>
+ <8d0ad57b-72ad-b77c-d558-86b46982ddeb@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <b1defb08-6983-b909-9011-71753905fa02@c-s.fr>
+Date: Sat, 12 Oct 2019 09:31:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191011111539.GX2311@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+In-Reply-To: <8d0ad57b-72ad-b77c-d558-86b46982ddeb@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,61 +81,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, Michal Hocko <mhocko@kernel.org>,
- mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
- sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
- linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
- linux-acpi@vger.kernel.org, x86@kernel.org, rppt@linux.ibm.com,
- borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
- jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
- linux-mips@vger.kernel.org, lenb@kernel.org, len.brown@intel.com,
- gor@linux.ibm.com, anshuman.khandual@arm.com, gregkh@linuxfoundation.org,
- bp@alien8.de, luto@kernel.org, bhelgaas@google.com, tglx@linutronix.de,
- naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
- rth@twiddle.net, axboe@kernel.dk, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-kernel@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
- paul.burton@mips.com, linux-alpha@vger.kernel.org, rafael@kernel.org,
- ink@jurassic.park.msu.ru, akpm@linux-foundation.org,
- Robin Murphy <robin.murphy@arm.com>, davem@davemloft.net
+Cc: mikey@neuling.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-add pci and acpi maintainer
-cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
 
-On 2019/10/11 19:15, Peter Zijlstra wrote:
-> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
->> But I failed to see why the above is related to making node_to_cpumask_map()
->> NUMA_NO_NODE aware?
+
+Le 10/10/2019 à 08:25, Ravi Bangoria a écrit :
 > 
-> Your initial bug is for hns3, which is a PCI device, which really _MUST_
-> have a node assigned.
 > 
-> It not having one, is a straight up bug. We must not silently accept
-> NO_NODE there, ever.
+> On 10/10/19 10:14 AM, Ravi Bangoria wrote:
+>>
+>>>> @Christophe, Is patch5 works for you on 8xx?
+>>>>
+>>>
+>>> Getting the following :
+>>>
+>>> root@vgoip:~# ./ptrace-hwbreak
+>>> test: ptrace-hwbreak
+>>> tags: git_version:v5.4-rc2-710-gf0082e173fe4-dirty
+>>> PTRACE_SET_DEBUGREG, WO, len: 1: Ok
+>>> PTRACE_SET_DEBUGREG, WO, len: 2: Ok
+>>> PTRACE_SET_DEBUGREG, WO, len: 4: Ok
+>>> PTRACE_SET_DEBUGREG, WO, len: 8: Ok
+>>> PTRACE_SET_DEBUGREG, RO, len: 1: Ok
+>>> PTRACE_SET_DEBUGREG, RO, len: 2: Ok
+>>> PTRACE_SET_DEBUGREG, RO, len: 4: Ok
+>>> PTRACE_SET_DEBUGREG, RO, len: 8: Ok
+>>> PTRACE_SET_DEBUGREG, RW, len: 1: Ok
+>>> PTRACE_SET_DEBUGREG, RW, len: 2: Ok
+>>> PTRACE_SET_DEBUGREG, RW, len: 4: Ok
+>>> PTRACE_SET_DEBUGREG, RW, len: 8: Ok
+>>> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
+>>> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
+>>> PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
+>>> PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
+>>> PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Fail
+>>> failure: ptrace-hwbreak
+>>>
+>>
+>> Thanks Christophe. I don't have any 8xx box. I checked qemu and it seems
+>> qemu emulation for 8xx is not yet supported. So I can't debug this. Can
+>> you please check why it's failing?
 > 
+> PPC_PTRACE_SETHWDEBUG internally uses DAWR register and probably 8xx does
+> not emulate DAWR logic, it only uses DABR to emulate double-word 
+> watchpoint.
+> In that case, all testcases that uses PPC_PTRACE_SETHWDEBUG should be
+> disabled for 8xx. I'll change [PATCH 5] accordingly and resend.
 
-I suppose you mean reporting a lack of affinity when the node of a pcie
-device is not set by "not silently accept NO_NODE".
+I think the MODE_EXACT ones are OK with the 8xx at the time being.
 
-As Greg has asked about in [1]:
-what is a user to do when the user sees the kernel reporting that?
-
-We may tell user to contact their vendor for info or updates about
-that when they do not know about their system well enough, but their
-vendor may get away with this by quoting ACPI spec as the spec
-considering this optional. Should the user believe this is indeed a
-fw bug or a misreport from the kernel?
-
-If this kind of reporting is common pratice and will not cause any
-misunderstanding, then maybe we can report that.
-
-[1] https://lore.kernel.org/lkml/20190905055727.GB23826@kroah.com/
-
-> .
 > 
+> Also, do you think I should fix hw_breakpoint_validate_len() from [PARCH 1]
+> for 8xx? I re-checked you recent patch* to allow any address range size for
+> 8xx. With that patch, hw_breakpoint_validate_len() won't get called at all
+> for 8xx.
 
+At the time being, the 8xx emulates DABR so it has the same limitations 
+as BOOK3S.
+My patch needs to be rebased on top of your series and I think it needs 
+some modifications, as it seems it doesn't properly handle size 1 and 
+size 2 breakpoints at least.
+So I think that you should leave your Patch1 as is, and I'll modify the 
+validate_len() logic while rebasing my patch.
+
+Christophe
