@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EE7D4BD4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 03:29:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF7AD4BD8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 03:31:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46qnL7655mzDqby
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 12:29:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46qnNL3n5RzDqZX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 12:31:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=us.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=linuxram@us.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46qnGB0HtFzDqXL
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 12:26:09 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9C1N043060838
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 21:26:06 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vk0tmxudr-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46qnGB1WxmzDqYM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 12:26:10 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9C1N0Wi010588
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 21:26:01 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vk1vtw0c5-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 21:26:06 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2019 21:26:00 -0400
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Sat, 12 Oct 2019 02:26:03 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Sat, 12 Oct 2019 02:25:59 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 12 Oct 2019 02:25:58 +0100
+ Sat, 12 Oct 2019 02:25:53 +0100
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x9C1PR4D13828398
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9C1PqrE56623206
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 12 Oct 2019 01:25:27 GMT
+ Sat, 12 Oct 2019 01:25:52 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 95DD352050;
- Sat, 12 Oct 2019 01:25:57 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.85.130.213])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D71705204F;
+ by IMSVA (Postfix) with ESMTP id 7E0E352052;
  Sat, 12 Oct 2019 01:25:52 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.85.130.213])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0F9CF52051;
+ Sat, 12 Oct 2019 01:25:47 +0000 (GMT)
 From: Ram Pai <linuxram@us.ibm.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] virtio_ring: Use DMA API if memory is encrypted
-Date: Fri, 11 Oct 2019 18:25:19 -0700
+Subject: [PATCH 1/2] dma-mapping: Add dma_addr_is_phys_addr()
+Date: Fri, 11 Oct 2019 18:25:18 -0700
 X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1570843519-8696-2-git-send-email-linuxram@us.ibm.com>
+In-Reply-To: <1570843519-8696-1-git-send-email-linuxram@us.ibm.com>
 References: <1570843519-8696-1-git-send-email-linuxram@us.ibm.com>
- <1570843519-8696-2-git-send-email-linuxram@us.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19101201-0020-0000-0000-0000037855A2
+x-cbid: 19101201-0016-0000-0000-000002B7553B
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101201-0021-0000-0000-000021CE68A1
-Message-Id: <1570843519-8696-3-git-send-email-linuxram@us.ibm.com>
+x-cbparentid: 19101201-0017-0000-0000-00003318696D
+Message-Id: <1570843519-8696-2-git-send-email-linuxram@us.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-10-11_12:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -95,17 +94,9 @@ Sender: "Linuxppc-dev"
 
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
-Normally, virtio enables DMA API with VIRTIO_F_IOMMU_PLATFORM, which must
-be set by both device and guest driver. However, as a hack, when DMA API
-returns physical addresses, guest driver can use the DMA API; even though
-device does not set VIRTIO_F_IOMMU_PLATFORM and just uses physical
-addresses.
-
-Doing this works-around POWER secure guests for which only the bounce
-buffer is accessible to the device, but which don't set
-VIRTIO_F_IOMMU_PLATFORM due to a set of hypervisor and architectural bugs.
-To guard against platform changes, breaking any of these assumptions down
-the road, we check at probe time and fail if that's not the case.
+In order to safely use the DMA API, virtio needs to know whether DMA
+addresses are in fact physical addresses and for that purpose,
+dma_addr_is_phys_addr() is introduced.
 
 cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 cc: David Gibson <david@gibson.dropbear.id.au>
@@ -113,104 +104,115 @@ cc: Michael Ellerman <mpe@ellerman.id.au>
 cc: Paul Mackerras <paulus@ozlabs.org>
 cc: Michael Roth <mdroth@linux.vnet.ibm.com>
 cc: Alexey Kardashevskiy <aik@linux.ibm.com>
-cc: Jason Wang <jasowang@redhat.com>
+cc: Paul Burton <paul.burton@mips.com>
+cc: Robin Murphy <robin.murphy@arm.com>
+cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+cc: Marek Szyprowski <m.szyprowski@samsung.com>
 cc: Christoph Hellwig <hch@lst.de>
 Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Ram Pai <linuxram@us.ibm.com>
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- drivers/virtio/virtio.c       | 18 ++++++++++++++++++
- drivers/virtio/virtio_ring.c  |  8 ++++++++
- include/linux/virtio_config.h | 14 ++++++++++++++
- 3 files changed, 40 insertions(+)
+ arch/powerpc/include/asm/dma-mapping.h | 21 +++++++++++++++++++++
+ arch/powerpc/platforms/pseries/Kconfig |  1 +
+ include/linux/dma-mapping.h            | 20 ++++++++++++++++++++
+ kernel/dma/Kconfig                     |  3 +++
+ 4 files changed, 45 insertions(+)
 
-diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index a977e32..77a3baf 100644
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -4,6 +4,7 @@
- #include <linux/virtio_config.h>
- #include <linux/module.h>
- #include <linux/idr.h>
-+#include <linux/dma-mapping.h>
- #include <uapi/linux/virtio_ids.h>
+diff --git a/arch/powerpc/include/asm/dma-mapping.h b/arch/powerpc/include/asm/dma-mapping.h
+index 565d6f7..f92c0a4b 100644
+--- a/arch/powerpc/include/asm/dma-mapping.h
++++ b/arch/powerpc/include/asm/dma-mapping.h
+@@ -5,6 +5,8 @@
+ #ifndef _ASM_DMA_MAPPING_H
+ #define _ASM_DMA_MAPPING_H
  
- /* Unique numbering for virtio devices. */
-@@ -245,6 +246,23 @@ static int virtio_dev_probe(struct device *_d)
- 	if (err)
- 		goto err;
- 
-+	/*
-+	 * If memory is encrypted, but VIRTIO_F_IOMMU_PLATFORM is not set, then
-+	 * the device is broken: DMA API is required for these platforms, but
-+	 * the only way using the DMA API is going to work at all is if the
-+	 * device is ready for it. So we need a flag on the virtio device,
-+	 * exposed by the hypervisor (or hardware for hw virtio devices) that
-+	 * says: hey, I'm real, don't take a shortcut.
-+	 *
-+	 * There's one exception where guest can make things work, and that is
-+	 * when DMA API is guaranteed to always return physical addresses.
-+	 */
-+	if (mem_encrypt_active() && !virtio_can_use_dma_api(dev)) {
-+		dev_err(_d, "virtio: device unable to access encrypted memory\n");
-+		err = -EINVAL;
-+		goto err;
-+	}
++#include <asm/svm.h>
 +
- 	err = drv->probe(dev);
- 	if (err)
- 		goto err;
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index c8be1c4..9c56b61 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -255,6 +255,14 @@ static bool vring_use_dma_api(struct virtio_device *vdev)
- 	if (xen_domain())
- 		return true;
- 
-+	/*
-+	 * Also, if guest memory is encrypted the host can't access it
-+	 * directly. We need to either use an IOMMU or do bounce buffering.
-+	 * Both are done via the DMA API.
-+	 */
-+	if (mem_encrypt_active() && virtio_can_use_dma_api(vdev))
-+		return true;
-+
- 	return false;
+ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ {
+ 	/* We don't handle the NULL dev case for ISA for now. We could
+@@ -15,4 +17,23 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ 	return NULL;
  }
  
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index bb4cc49..57bc25c 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/err.h>
- #include <linux/bug.h>
-+#include <linux/dma-mapping.h>
- #include <linux/virtio.h>
- #include <linux/virtio_byteorder.h>
- #include <uapi/linux/virtio_config.h>
-@@ -174,6 +175,19 @@ static inline bool virtio_has_iommu_quirk(const struct virtio_device *vdev)
- 	return !virtio_has_feature(vdev, VIRTIO_F_IOMMU_PLATFORM);
- }
- 
++#ifdef CONFIG_ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
 +/**
-+ * virtio_can_use_dma_api - determine whether the DMA API can be used
-+ * @vdev: the device
++ * dma_addr_is_phys_addr - check whether a device DMA address is a physical
++ *		address
++ * @dev:	device to check
 + *
-+ * The DMA API can be used either when the device doesn't have the IOMMU quirk,
-+ * or when the DMA API is guaranteed to always return physical addresses.
++ * Returns %true if any DMA address for this device happens to also be a valid
++ * physical address (not necessarily of the same page).
 + */
-+static inline bool virtio_can_use_dma_api(const struct virtio_device *vdev)
++static inline bool dma_addr_is_phys_addr(struct device *dev)
 +{
-+	return !virtio_has_iommu_quirk(vdev) ||
-+	       dma_addr_is_phys_addr(vdev->dev.parent);
++	/*
++	 * Secure guests always use the SWIOTLB, therefore DMA addresses are
++	 * actually the physical address of the bounce buffer.
++	 */
++	return is_secure_guest();
 +}
++#endif
 +
- static inline
- struct virtqueue *virtio_find_single_vq(struct virtio_device *vdev,
- 					vq_callback_t *c, const char *n)
+ #endif	/* _ASM_DMA_MAPPING_H */
+diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+index 9e35cdd..0108150 100644
+--- a/arch/powerpc/platforms/pseries/Kconfig
++++ b/arch/powerpc/platforms/pseries/Kconfig
+@@ -152,6 +152,7 @@ config PPC_SVM
+ 	select SWIOTLB
+ 	select ARCH_HAS_MEM_ENCRYPT
+ 	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
++	select ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
+ 	help
+ 	 There are certain POWER platforms which support secure guests using
+ 	 the Protected Execution Facility, with the help of an Ultravisor
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index f7d1eea..6df5664 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -693,6 +693,26 @@ static inline bool dma_addressing_limited(struct device *dev)
+ 			    dma_get_required_mask(dev);
+ }
+ 
++#ifndef CONFIG_ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
++/**
++ * dma_addr_is_phys_addr - check whether a device DMA address is a physical
++ *		address
++ * @dev:	device to check
++ *
++ * Returns %true if any DMA address for this device happens to also be a valid
++ * physical address (not necessarily of the same page).
++ */
++static inline bool dma_addr_is_phys_addr(struct device *dev)
++{
++	/*
++	 * Except in very specific setups, DMA addresses exist in a different
++	 * address space from CPU physical addresses and cannot be directly used
++	 * to reference system memory.
++	 */
++	return false;
++}
++#endif
++
+ #ifdef CONFIG_ARCH_HAS_SETUP_DMA_OPS
+ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+ 		const struct iommu_ops *iommu, bool coherent);
+diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+index 9decbba..6209b46 100644
+--- a/kernel/dma/Kconfig
++++ b/kernel/dma/Kconfig
+@@ -51,6 +51,9 @@ config ARCH_HAS_DMA_MMAP_PGPROT
+ config ARCH_HAS_FORCE_DMA_UNENCRYPTED
+ 	bool
+ 
++config ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
++	bool
++
+ config DMA_NONCOHERENT_CACHE_SYNC
+ 	bool
+ 
 -- 
 1.8.3.1
 
