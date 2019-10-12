@@ -1,56 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67553D4EC2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 11:50:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2AED4ED0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 11:58:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46r0Rj70x8zDqcw
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 20:50:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46r0dh1nHvzDqdk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2019 20:58:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmx.de
+ (client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=deller@gmx.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=none (p=none dis=none) header.from=gmx.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gmx.net header.i=@gmx.net header.b="RqMmW15n"; 
+ dkim-atps=neutral
+X-Greylist: delayed 354 seconds by postgrey-1.36 at bilbo;
+ Sat, 12 Oct 2019 20:57:08 AEDT
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46r0Ps0jjkzDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 20:48:31 +1100 (AEDT)
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id C55FA89947D5590388D6;
- Sat, 12 Oct 2019 17:48:25 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Sat, 12 Oct 2019
- 17:48:24 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
- <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
- <20191010073212.GB18412@dhcp22.suse.cz>
- <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
- <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
- <20191012074014.GA2037204@kroah.com>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
-Date: Sat, 12 Oct 2019 17:47:56 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46r0bm5dmXzDqJX
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2019 20:57:08 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1570874216;
+ bh=8pjS8qqP1wCmF9jdsKwpdm/zvDW8dZCWsbuGTUYmHnw=;
+ h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+ b=RqMmW15nAnwDzmqoV69UQ31LUDWSB3+1ius8qxvPVxJZjqo+LkXWxnFhaJyhA5+1o
+ rAUb4PHSn2t62guJ5ypEWfFuIMPxkOBaPkX6zqnxm1F+Ooi3Yl5KdOg+lbyqxT/x9M
+ XE/2+gbrDyCu10eskjggqIzZx0e53WfhbHbw6iXE=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.179.223]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCsPy-1iAOLl3LOK-008rpL; Sat, 12
+ Oct 2019 11:50:13 +0200
+Subject: Re: [PATCH v2 23/29] parisc: Move EXCEPTION_TABLE to RO_DATA segment
+To: Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@alien8.de>
+References: <20191011000609.29728-1-keescook@chromium.org>
+ <20191011000609.29728-24-keescook@chromium.org>
+From: Helge Deller <deller@gmx.de>
+Message-ID: <8b3c27ec-9880-5957-a802-ca740d9ad6c5@gmx.de>
+Date: Sat, 12 Oct 2019 11:50:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <20191012074014.GA2037204@kroah.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20191011000609.29728-24-keescook@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:OW210CNt72Zupg9+ou7uinpWv/FzSz2oE2Zp/PdnIFvmfis7zNJ
+ P3Rp9iclPc+rsBMguDEUPJQm8Yn1SvGGtGHcdrp+KJhkV5wbrDyLG2gmCL/OgLYlrwnF1m9
+ LNy0UJ3GCHEE7hTl/1RD6xsBIN/bKRXCoTcyxTI5LmvAywZVxlNm8MA7F9Ig8LsAryEJ8IL
+ JZhR1dSDqg/a+ayH7Komw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2DZxdbNNvEg=:V973EefSV0sBTurrSjbpxV
+ jQU+km6Ejqf5pxHtwKH72vB1tf1djYUa7BoNFYOuy6oMLBBc2lKFD8L7pTaXTQZRSMi7YOEA4
+ EsoiosLuvi+P6S2qUIA3rMNLKLCtB7Z7DL7pA8787EJbeIufopjEz1q3t6YzFG+2/r1IQYa9i
+ 82ZBst9/aQtMBtEfkxmz26lOBOtdrM6+FyHg7hRquaU6Hf0xVlsnpq1dlWObn8A/jAJY2tTpt
+ f3SBm7cgKsaDIo8NxBH8ctmTTQAJobJexlwckYnO845TnyZra38aOlLgtmE1LTYE58Wq4s0Wi
+ 8afqskdLbWAMGqSD2giNPXccRNVXi2oRAW++dx+0Bi7Ei+qIbZyvMzySB+re1x8PSd0+SXJdX
+ 3P5CjoblTIyQ+nq+V1Lx0vEr4kl+R6CMWpPD1dDTTX1D/9Y+9fRpRWkQqI9nBbz3rc2NF5qDr
+ vkAbdhGVFeRtVZ3bIY99TphUJxLLxgs7tUTlMSzKm1fUtlivBnHHZZRGbjYUxDAHD0CnstdGe
+ hUDaENugdUv2H2CBpMdA2XuIP/jshIVlyW/10k42jBUI1t7fsdn568K1ve/ogZavkD3zN3z5m
+ z4UQ76AUypepNWO95jhVyw/6CMNqb85RDzRfcNNur5/Ip3pebOpqw3/jlpiMonfJXYjAGTvx1
+ aqQyZomZbrsMcPOnAF3a9tMP/rlAA8/7LWacN9CcLH6aJhFMCtIx81Q8tnobGwuegXbmozNuT
+ 3Du7JQC2DH7FmNYWF/9UY2qWoPzt2WlmQaZD/6c0cAib9GFfwrM3OWUnKgofKJoAbTRXzazG7
+ 0hGzT3/xBez+/Q5Tv2td/wn9qH976aIT7//6piXoJxi/m1h+D3hqqXhu77qTkALJHVc2luO+C
+ fo81h6PMwN8mH+yM40zDYaoJ9HrXyOdaFUCEJLczjAdyMaJLmNCD/bwGfu4WbwSG5tVTRQZtH
+ x+LA9tWE85sFzgzgvZoSR44HK2VylRGPkyf0Y9R0Z86nVTEHsjrGpM9GsXcodBYdg3YZikZvI
+ 6jNEAr1gasikBjqNDQvni+yDf2sC3zVcbCdKY3GO9d0PcSy2F9PZDHndjzsbDaS0d+S1ZmJa4
+ XXXYg9qfihxhuKn3gMbaOW3UvvBG4czf5OT7j1v2jQ7C6Vme2+oEkbP5Y/WNns5dzjpnpF8KC
+ jg0WPXmnbIlBw3mgSDAAMQuvOQq+Tel0H2cwMi5xi1+4vEpEBVLBpPX6kGfIglgNCM/fIbcpa
+ Vv0brossOBLeOafr315YQXWtHfxOwBASnCSDKzA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,87 +85,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, Michal Hocko <mhocko@kernel.org>,
- mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
- sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
- linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
- linux-acpi@vger.kernel.org, x86@kernel.org, rppt@linux.ibm.com,
- borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
- jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
- linux-mips@vger.kernel.org, lenb@kernel.org, len.brown@intel.com,
- gor@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, luto@kernel.org,
- bhelgaas@google.com, tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
- linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
- linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
- linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
- akpm@linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- davem@davemloft.net
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Michal Simek <monstr@monstr.eu>, x86@kernel.org, linux-ia64@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Arnd Bergmann <arnd@arndb.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-parisc@vger.kernel.org,
+ Andy Lutomirski <luto@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/10/12 15:40, Greg KH wrote:
-> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
->> add pci and acpi maintainer
->> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
->>
->> On 2019/10/11 19:15, Peter Zijlstra wrote:
->>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
->>>> But I failed to see why the above is related to making node_to_cpumask_map()
->>>> NUMA_NO_NODE aware?
->>>
->>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
->>> have a node assigned.
->>>
->>> It not having one, is a straight up bug. We must not silently accept
->>> NO_NODE there, ever.
->>>
->>
->> I suppose you mean reporting a lack of affinity when the node of a pcie
->> device is not set by "not silently accept NO_NODE".
-> 
-> If the firmware of a pci device does not provide the node information,
-> then yes, warn about that.
-> 
->> As Greg has asked about in [1]:
->> what is a user to do when the user sees the kernel reporting that?
->>
->> We may tell user to contact their vendor for info or updates about
->> that when they do not know about their system well enough, but their
->> vendor may get away with this by quoting ACPI spec as the spec
->> considering this optional. Should the user believe this is indeed a
->> fw bug or a misreport from the kernel?
-> 
-> Say it is a firmware bug, if it is a firmware bug, that's simple.
-> 
->> If this kind of reporting is common pratice and will not cause any
->> misunderstanding, then maybe we can report that.
-> 
-> Yes, please do so, that's the only way those boxes are ever going to get
-> fixed.  And go add the test to the "firmware testing" tool that is based
-> on Linux that Intel has somewhere, to give vendors a chance to fix this
-> before they ship hardware.
-> 
-> This shouldn't be a big deal, we warn of other hardware bugs all the
-> time.
+On 11.10.19 02:06, Kees Cook wrote:
+> Since the EXCEPTION_TABLE is read-only, collapse it into RO_DATA.
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>   arch/parisc/kernel/vmlinux.lds.S | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
 
-Ok, thanks for clarifying.
 
-Will send a patch to catch the case when a pcie device without numa node
-being set and warn about it.
+Acked-by: Helge Deller <deller@gmx.de>  # parisc
 
-Maybe use dev->bus to verify if it is a pci device?
+Helge
 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> .
-> 
+>
+> diff --git a/arch/parisc/kernel/vmlinux.lds.S b/arch/parisc/kernel/vmlin=
+ux.lds.S
+> index 12b3d7d5e9e4..53e29d88f99c 100644
+> --- a/arch/parisc/kernel/vmlinux.lds.S
+> +++ b/arch/parisc/kernel/vmlinux.lds.S
+> @@ -19,6 +19,7 @@
+>   				*(.data..vm0.pte)
+>
+>   #define CC_USING_PATCHABLE_FUNCTION_ENTRY
+> +#define RO_EXCEPTION_TABLE_ALIGN	8
+>
+>   #include <asm-generic/vmlinux.lds.h>
+>
+> @@ -129,9 +130,6 @@ SECTIONS
+>
+>   	RO_DATA(8)
+>
+> -	/* RO because of BUILDTIME_EXTABLE_SORT */
+> -	EXCEPTION_TABLE(8)
+> -
+>   	/* unwind info */
+>   	.PARISC.unwind : {
+>   		__start___unwind =3D .;
+>
 
