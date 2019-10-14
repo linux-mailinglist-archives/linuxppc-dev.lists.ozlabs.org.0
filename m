@@ -1,54 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FFDED6A02
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 21:20:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0252D6A90
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 22:05:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sT0H0n0nzDqwY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 06:19:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sV092qPGzDqwg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 07:04:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux-foundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="FR3WzbMF"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=pass (mailfrom) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sSxG4dQkzDqvr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 06:17:22 +1100 (AEDT)
-Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E75B9217F9;
- Mon, 14 Oct 2019 19:17:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1571080640;
- bh=GVOpKJU8+fX2Cvw0U5HfH5hzn91D4G2Rk4nes27+pag=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=FR3WzbMF70HWxk7LTH30/6dEQ8O2Dy6iHIYsz3roW7gGsiv/bCa+/sQvvUktTZ/BO
- sea8B8Iv2qQrW/t9KU/O3J+J0m3QYNRD0hYc9BPn9xPN45izvaOitFObeTCJxIolf7
- oGAogT4n2dH58KrM+gstDU8nD3TYaBLq3dqW2/DM=
-Date: Mon, 14 Oct 2019 12:17:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v6 04/10] mm/memory_hotplug: Don't access uninitialized
- memmaps in shrink_zone_span()
-Message-Id: <20191014121719.cb9b9efe51a7e9e985b38075@linux-foundation.org>
-In-Reply-To: <5a4573de-bd8a-6cd3-55d0-86d503a236fd@redhat.com>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-5-david@redhat.com>
- <5a4573de-bd8a-6cd3-55d0-86d503a236fd@redhat.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sTy61m1vzDqfH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 07:03:08 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 15560B636;
+ Mon, 14 Oct 2019 20:03:04 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id 2B23F1E4A89; Mon, 14 Oct 2019 22:03:03 +0200 (CEST)
+Date: Mon, 14 Oct 2019 22:03:03 +0200
+From: Jan Kara <jack@suse.cz>
+To: Eric Sandeen <sandeen@sandeen.net>
+Subject: Re: [PATCH] xfs: introduce "metasync" api to sync metadata to fsblock
+Message-ID: <20191014200303.GF5939@quack2.suse.cz>
+References: <1570977420-3944-1-git-send-email-kernelfans@gmail.com>
+ <20191013163417.GQ13108@magnolia> <20191014083315.GA10091@mypc>
+ <20191014094311.GD5939@quack2.suse.cz>
+ <d3ffa114-8b73-90dc-8ba6-3f44f47135d7@sandeen.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d3ffa114-8b73-90dc-8ba6-3f44f47135d7@sandeen.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,27 +51,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-sh@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, Oscar Salvador <osalvador@suse.de>
+Cc: Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>,
+ "Darrick J. Wong" <darrick.wong@oracle.com>, Jan Kara <jack@suse.com>,
+ Pingfan Liu <kernelfans@gmail.com>, linux-xfs@vger.kernel.org,
+ Dave Chinner <dchinner@redhat.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 14 Oct 2019 11:32:13 +0200 David Hildenbrand <david@redhat.com> wrote:
+On Mon 14-10-19 08:23:39, Eric Sandeen wrote:
+> On 10/14/19 4:43 AM, Jan Kara wrote:
+> > On Mon 14-10-19 16:33:15, Pingfan Liu wrote:
+> > > On Sun, Oct 13, 2019 at 09:34:17AM -0700, Darrick J. Wong wrote:
+> > > > On Sun, Oct 13, 2019 at 10:37:00PM +0800, Pingfan Liu wrote:
+> > > > > When using fadump (fireware assist dump) mode on powerpc, a mismatch
+> > > > > between grub xfs driver and kernel xfs driver has been obsevered.  Note:
+> > > > > fadump boots up in the following sequence: fireware -> grub reads kernel
+> > > > > and initramfs -> kernel boots.
+> > > > > 
+> > > > > The process to reproduce this mismatch:
+> > > > >    - On powerpc, boot kernel with fadump=on and edit /etc/kdump.conf.
+> > > > >    - Replacing "path /var/crash" with "path /var/crashnew", then, "kdumpctl
+> > > > >      restart" to rebuild the initramfs. Detail about the rebuilding looks
+> > > > >      like: mkdumprd /boot/initramfs-`uname -r`.img.tmp;
+> > > > >            mv /boot/initramfs-`uname -r`.img.tmp /boot/initramfs-`uname -r`.img
+> > > > >            sync
+> > > > >    - "echo c >/proc/sysrq-trigger".
+> > > > > 
+> > > > > The result:
+> > > > > The dump image will not be saved under /var/crashnew/* as expected, but
+> > > > > still saved under /var/crash.
+> > > > > 
+> > > > > The root cause:
+> > > > > As Eric pointed out that on xfs, 'sync' ensures the consistency by writing
+> > > > > back metadata to xlog, but not necessary to fsblock. This raises issue if
+> > > > > grub can not replay the xlog before accessing the xfs files. Since the
+> > > > > above dir entry of initramfs should be saved as inline data with xfs_inode,
+> > > > > so xfs_fs_sync_fs() does not guarantee it written to fsblock.
+> > > > > 
+> > > > > umount can be used to write metadata fsblock, but the filesystem can not be
+> > > > > umounted if still in use.
+> > > > > 
+> > > > > There are two ways to fix this mismatch, either grub or xfs. It may be
+> > > > > easier to do this in xfs side by introducing an interface to flush metadata
+> > > > > to fsblock explicitly.
+> > > > > 
+> > > > > With this patch, metadata can be written to fsblock by:
+> > > > >    # update AIL
+> > > > >    sync
+> > > > >    # new introduced interface to flush metadata to fsblock
+> > > > >    mount -o remount,metasync mountpoint
+> > > > 
+> > > > I think this ought to be an ioctl or some sort of generic call since the
+> > > > jbd2 filesystems (ext3, ext4, ocfs2) suffer from the same "$BOOTLOADER
+> > > > is too dumb to recover logs but still wants to write to the fs"
+> > > > checkpointing problem.
+> > > Yes, a syscall sounds more reasonable.
+> > > > 
+> > > > (Or maybe we should just put all that stuff in a vfat filesystem, I
+> > > > don't know...)
+> > > I think it is unavoidable to involve in each fs' implementation. What
+> > > about introducing an interface sync_to_fsblock(struct super_block *sb) in
+> > > the struct super_operations, then let each fs manage its own case?
+> > 
+> > Well, we already have a way to achieve what you need: fsfreeze.
+> > Traditionally, that is guaranteed to put fs into a "clean" state very much
+> > equivalent to the fs being unmounted and that seems to be what the
+> > bootloader wants so that it can access the filesystem without worrying
+> > about some recovery details. So do you see any problem with replacing
+> > 'sync' in your example above with 'fsfreeze /boot && fsfreeze -u /boot'?
+> > 
+> > 								Honza
+> 
+> The problem with fsfreeze is that if the device you want to quiesce is, say,
+> the root fs, freeze isn't really a good option.
 
-> > Fixes: d0dc12e86b31 ("mm/memory_hotplug: optimize memory hotplug")
-> 
-> @Andrew, can you convert that to
-> 
-> Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded 
-> memory to zones until online") # visible after d0dc12e86b319
-> 
-> and add
-> 
-> Cc: stable@vger.kernel.org # v4.13+
+I agree you need to be really careful not to deadlock against yourself in
+that case. But this particular use actually has a chance to work.
 
-Done, thanks.
+> But the other thing I want to highlight about this approach is that it does not
+> solve the root problem: something is trying to read the block device without
+> first replaying the log.
+> 
+> A call such as the proposal here is only going to leave consistent metadata at
+> the time the call returns; at any time after that, all guarantees are off again,
+> so the problem hasn't been solved.
+
+Oh, absolutely agreed. I was also thinking about this before sending my
+reply. Once you unfreeze, the log can start filling with changes and
+there's no guarantee that e.g. inode does not move as part of these
+changes. But to be fair, replaying the log isn't easy either, even more so
+from a bootloader. You cannot write the changes from the log back into the
+filesystem as e.g. in case of suspend-to-disk the resumed kernel gets
+surprised and corrupts the fs under its hands (been there, tried that). So
+you must keep changes only in memory and that's not really easy in the
+constrained bootloader environment.
+
+So I guess we are left with hacks that kind of mostly work and fsfreeze is
+one of those. If you don't mess with the files after fsfreeze, you're
+likely to find what you need even without replaying the log.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
