@@ -1,69 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CC0D68E2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 19:54:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C17D6953
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 20:18:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sR5r26bbzDqnM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 04:54:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sRcw66S7zDqrX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 05:18:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linaro.org
- (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
- envelope-from=ard.biesheuvel@linaro.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=sandeen.net
+ (client-ip=63.231.237.45; helo=sandeen.net; envelope-from=sandeen@sandeen.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="RSHWB5Sf"; 
- dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=sandeen.net
+Received: from sandeen.net (sandeen.net [63.231.237.45])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46sRWB4VdhzDqnT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 05:13:09 +1100 (AEDT)
+Received: from Liberator-6.local (liberator [10.0.0.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sR4337NlzDqV7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 04:53:06 +1100 (AEDT)
-Received: by mail-wr1-x442.google.com with SMTP id y19so20759319wrd.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 10:53:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=zpqA0b5GNBkHRyGXS/9MbK6KgSVMH9XT5Yg8Y8UcE2E=;
- b=RSHWB5Sf9WJG2+fZoo+Cp+IsHOiImB1XOzWrkwma3/X2ux1ZjrFfIclMeKgA5yvtag
- XbHv/+AwWMblwvKlG8ALBp1/glrUxzUnls/din6V+or8QI5SPqqpW060bRjn9Xf3/KG6
- yd3VUTi9QZs0XzbfMIx2+lWiWytB4p31vN7LMQ4mwcn8GB4s5VGO1Z357+CIU5VoiC6X
- uAy5icYv8DVXGXOq31+o8+Hp9TAGoJIsxy9bwuuzdvEoD0J+20sUSraEy1CoadwUojRO
- qgoWYgcWh4cj8lC5vcnCMQbifiYrAZdssKtEkpZzCo2QkvuoHBU+8/4bk6JGTDH8Q0ve
- dh4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=zpqA0b5GNBkHRyGXS/9MbK6KgSVMH9XT5Yg8Y8UcE2E=;
- b=EKx/Rkn2iusrCT+m/9bfHhyqmCivo0M/qEHP9ASkdc3p0Ei1oVT3Il/Eq72K5QXUJp
- KfnlYj+esYbiLT4ctjmAdPHv3pSPejKj5+QB1Ybuni0UHnxqqpUVVc33ud/sKI5M5Xi2
- S/t+hGCrhe1Q71X/pC9j59YyI/B1zNPg8VeQFvFuuMQDkHk8dmSXVObWlMjZ3R+od5Pj
- niKRh1LPsZHNPagUag3I+AOCKWmD4eJmvIVIJQvmiFD2axrHUqnInzBR4pdcleK+XTkz
- GQ+apaNqSLnO/OOJ33TGVPSS466hxsirR1C3CKAmYeE7CoF6Xyw55nHM6ALQkG6QmSHC
- OmxA==
-X-Gm-Message-State: APjAAAVglrteWEaIBgixWRvU6nXEk24/nGC2oVdP42IDdUB8pIuhaDaC
- w5fE93R3Im0AVuAOADygGbD0/21TD4F9/nYAvmMOhA==
-X-Google-Smtp-Source: APXvYqxQkpXYu5NfircmOBfak8JaBK0rdp0cYqchJqVdxT3Xn/TO+VN3yY4zSjF4pSU3ceyOrS4mzx/nnBXl7+kZhPY=
-X-Received: by 2002:a5d:6449:: with SMTP id d9mr28195789wrw.246.1571075582156; 
- Mon, 14 Oct 2019 10:53:02 -0700 (PDT)
+ by sandeen.net (Postfix) with ESMTPSA id F3139544;
+ Mon, 14 Oct 2019 08:23:04 -0500 (CDT)
+Subject: Re: [PATCH] xfs: introduce "metasync" api to sync metadata to fsblock
+To: Jan Kara <jack@suse.cz>, Pingfan Liu <kernelfans@gmail.com>
+References: <1570977420-3944-1-git-send-email-kernelfans@gmail.com>
+ <20191013163417.GQ13108@magnolia> <20191014083315.GA10091@mypc>
+ <20191014094311.GD5939@quack2.suse.cz>
+From: Eric Sandeen <sandeen@sandeen.net>
+Message-ID: <d3ffa114-8b73-90dc-8ba6-3f44f47135d7@sandeen.net>
+Date: Mon, 14 Oct 2019 08:23:39 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.1.2
 MIME-Version: 1.0
-References: <20191012022946.185320-1-ebiggers@kernel.org>
- <CAKv+Gu9qS838o+jJv3My=ibvfgE=3yeVbH5SB=yraKb3S7sV6A@mail.gmail.com>
- <20191014173848.GA104009@gmail.com>
-In-Reply-To: <20191014173848.GA104009@gmail.com>
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date: Mon, 14 Oct 2019 19:52:51 +0200
-Message-ID: <CAKv+Gu_5f-mx9zoEvvQXsVb+r+9z-YCtOHzrQJ5f73_QYt4e8Q@mail.gmail.com>
-Subject: Re: [PATCH] crypto: powerpc - convert SPE AES algorithms to skcipher
- API
-To: Eric Biggers <ebiggers@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191014094311.GD5939@quack2.suse.cz>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,173 +49,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
- Markus Stockhausen <stockhausen@collogia.de>,
- "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
- <linux-crypto@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Eric Sandeen <esandeen@redhat.com>,
+ "Darrick J. Wong" <darrick.wong@oracle.com>,
+ Dave Chinner <dchinner@redhat.com>, linux-xfs@vger.kernel.org,
+ Jan Kara <jack@suse.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 14 Oct 2019 at 19:38, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Mon, Oct 14, 2019 at 10:45:22AM +0200, Ard Biesheuvel wrote:
-> > Hi Eric,
-> >
-> > On Sat, 12 Oct 2019 at 04:32, Eric Biggers <ebiggers@kernel.org> wrote:
-> > >
-> > > From: Eric Biggers <ebiggers@google.com>
-> > >
-> > > Convert the glue code for the PowerPC SPE implementations of AES-ECB,
-> > > AES-CBC, AES-CTR, and AES-XTS from the deprecated "blkcipher" API to the
-> > > "skcipher" API.
-> > >
-> > > Tested with:
-> > >
-> > >         export ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu-
-> > >         make mpc85xx_defconfig
-> > >         cat >> .config << EOF
-> > >         # CONFIG_MODULES is not set
-> > >         # CONFIG_CRYPTO_MANAGER_DISABLE_TESTS is not set
-> > >         CONFIG_DEBUG_KERNEL=y
-> > >         CONFIG_CRYPTO_MANAGER_EXTRA_TESTS=y
-> > >         CONFIG_CRYPTO_AES=y
-> > >         CONFIG_CRYPTO_CBC=y
-> > >         CONFIG_CRYPTO_CTR=y
-> > >         CONFIG_CRYPTO_ECB=y
-> > >         CONFIG_CRYPTO_XTS=y
-> > >         CONFIG_CRYPTO_AES_PPC_SPE=y
-> > >         EOF
-> > >         make olddefconfig
-> > >         make -j32
-> > >         qemu-system-ppc -M mpc8544ds -cpu e500 -nographic \
-> > >                 -kernel arch/powerpc/boot/zImage \
-> > >                 -append cryptomgr.fuzz_iterations=1000
-> > >
-> > > Note that xts-ppc-spe still fails the comparison tests due to the lack
-> > > of ciphertext stealing support.  This is not addressed by this patch.
-> > >
-> > > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > > ---
-> > >  arch/powerpc/crypto/aes-spe-glue.c | 416 +++++++++++++----------------
-> > >  crypto/Kconfig                     |   1 +
-> > >  2 files changed, 186 insertions(+), 231 deletions(-)
-> > >
-> > > diff --git a/arch/powerpc/crypto/aes-spe-glue.c b/arch/powerpc/crypto/aes-spe-glue.c
-> > > index 3a4ca7d32477..374e3e51e998 100644
-> > > --- a/arch/powerpc/crypto/aes-spe-glue.c
-> > > +++ b/arch/powerpc/crypto/aes-spe-glue.c
-> > > @@ -17,6 +17,7 @@
-> > >  #include <asm/byteorder.h>
-> > >  #include <asm/switch_to.h>
-> > >  #include <crypto/algapi.h>
-> > > +#include <crypto/internal/skcipher.h>
-> > >  #include <crypto/xts.h>
-> > >
-> > >  /*
-> > > @@ -86,17 +87,13 @@ static void spe_end(void)
-> > >         preempt_enable();
-> > >  }
-> > >
-> > > -static int ppc_aes_setkey(struct crypto_tfm *tfm, const u8 *in_key,
-> > > -               unsigned int key_len)
-> > > +static int expand_key(struct ppc_aes_ctx *ctx,
-> > > +                     const u8 *in_key, unsigned int key_len)
-> > >  {
-> > > -       struct ppc_aes_ctx *ctx = crypto_tfm_ctx(tfm);
-> > > -
-> > >         if (key_len != AES_KEYSIZE_128 &&
-> > >             key_len != AES_KEYSIZE_192 &&
-> > > -           key_len != AES_KEYSIZE_256) {
-> > > -               tfm->crt_flags |= CRYPTO_TFM_RES_BAD_KEY_LEN;
-> > > +           key_len != AES_KEYSIZE_256)
-> > >                 return -EINVAL;
-> > > -       }
-> > >
-> > >         switch (key_len) {
-> > >         case AES_KEYSIZE_128:
-> > > @@ -114,17 +111,40 @@ static int ppc_aes_setkey(struct crypto_tfm *tfm, const u8 *in_key,
-> > >         }
-> > >
-> > >         ppc_generate_decrypt_key(ctx->key_dec, ctx->key_enc, key_len);
-> > > +       return 0;
-> > > +}
-> > >
-> > > +static int ppc_aes_setkey(struct crypto_tfm *tfm, const u8 *in_key,
-> > > +               unsigned int key_len)
-> > > +{
-> > > +       struct ppc_aes_ctx *ctx = crypto_tfm_ctx(tfm);
-> > > +
-> > > +       if (expand_key(ctx, in_key, key_len) != 0) {
-> > > +               tfm->crt_flags |= CRYPTO_TFM_RES_BAD_KEY_LEN;
-> > > +               return -EINVAL;
-> > > +       }
-> > > +       return 0;
-> > > +}
-> > > +
-> > > +static int ppc_aes_setkey_skcipher(struct crypto_skcipher *tfm,
-> > > +                                  const u8 *in_key, unsigned int key_len)
-> > > +{
-> > > +       struct ppc_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-> > > +
-> > > +       if (expand_key(ctx, in_key, key_len) != 0) {
-> > > +               crypto_skcipher_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
-> > > +               return -EINVAL;
-> > > +       }
-> > >         return 0;
-> > >  }
-> > >
-> > > -static int ppc_xts_setkey(struct crypto_tfm *tfm, const u8 *in_key,
-> > > +static int ppc_xts_setkey(struct crypto_skcipher *tfm, const u8 *in_key,
-> > >                    unsigned int key_len)
-> > >  {
-> > > -       struct ppc_xts_ctx *ctx = crypto_tfm_ctx(tfm);
-> > > +       struct ppc_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
-> > >         int err;
-> > >
-> > > -       err = xts_check_key(tfm, in_key, key_len);
-> > > +       err = xts_verify_key(tfm, in_key, key_len);
-> > >         if (err)
-> > >                 return err;
-> > >
-> > > @@ -133,7 +153,7 @@ static int ppc_xts_setkey(struct crypto_tfm *tfm, const u8 *in_key,
-> > >         if (key_len != AES_KEYSIZE_128 &&
-> > >             key_len != AES_KEYSIZE_192 &&
-> > >             key_len != AES_KEYSIZE_256) {
-> > > -               tfm->crt_flags |= CRYPTO_TFM_RES_BAD_KEY_LEN;
-> > > +               crypto_skcipher_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
-> > >                 return -EINVAL;
-> > >         }
-> > >
-> > > @@ -178,208 +198,154 @@ static void ppc_aes_decrypt(struct crypto_tfm *tfm, u8 *out, const u8 *in)
-> > >         spe_end();
-> > >  }
-> > >
-> > > -static int ppc_ecb_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
-> > > -                          struct scatterlist *src, unsigned int nbytes)
-> > > +static int ppc_ecb_crypt(struct skcipher_request *req, bool enc)
-> > >  {
-> > > -       struct ppc_aes_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
-> > > -       struct blkcipher_walk walk;
-> > > -       unsigned int ubytes;
-> > > +       struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
-> > > +       struct ppc_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-> > > +       struct skcipher_walk walk;
-> > > +       unsigned int nbytes;
-> > >         int err;
-> > >
-> > > -       desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
-> > > -       blkcipher_walk_init(&walk, dst, src, nbytes);
-> > > -       err = blkcipher_walk_virt(desc, &walk);
-> > > +       err = skcipher_walk_virt(&walk, req, false);
-> > >
-> >
-> > Shouldn't atomic be set to 'true' here to retain the non-sleeping behavior?
->
-> This was intentional since the non-sleeping behavior is unnecessary, as the call
-> to skcipher_walk_done() is not within the spe_begin() / spe_end() section.
-> I can split this into a separate patch if it would make it clearer, though.
->
+On 10/14/19 4:43 AM, Jan Kara wrote:
+> On Mon 14-10-19 16:33:15, Pingfan Liu wrote:
+>> On Sun, Oct 13, 2019 at 09:34:17AM -0700, Darrick J. Wong wrote:
+>>> On Sun, Oct 13, 2019 at 10:37:00PM +0800, Pingfan Liu wrote:
+>>>> When using fadump (fireware assist dump) mode on powerpc, a mismatch
+>>>> between grub xfs driver and kernel xfs driver has been obsevered.  Note:
+>>>> fadump boots up in the following sequence: fireware -> grub reads kernel
+>>>> and initramfs -> kernel boots.
+>>>>
+>>>> The process to reproduce this mismatch:
+>>>>    - On powerpc, boot kernel with fadump=on and edit /etc/kdump.conf.
+>>>>    - Replacing "path /var/crash" with "path /var/crashnew", then, "kdumpctl
+>>>>      restart" to rebuild the initramfs. Detail about the rebuilding looks
+>>>>      like: mkdumprd /boot/initramfs-`uname -r`.img.tmp;
+>>>>            mv /boot/initramfs-`uname -r`.img.tmp /boot/initramfs-`uname -r`.img
+>>>>            sync
+>>>>    - "echo c >/proc/sysrq-trigger".
+>>>>
+>>>> The result:
+>>>> The dump image will not be saved under /var/crashnew/* as expected, but
+>>>> still saved under /var/crash.
+>>>>
+>>>> The root cause:
+>>>> As Eric pointed out that on xfs, 'sync' ensures the consistency by writing
+>>>> back metadata to xlog, but not necessary to fsblock. This raises issue if
+>>>> grub can not replay the xlog before accessing the xfs files. Since the
+>>>> above dir entry of initramfs should be saved as inline data with xfs_inode,
+>>>> so xfs_fs_sync_fs() does not guarantee it written to fsblock.
+>>>>
+>>>> umount can be used to write metadata fsblock, but the filesystem can not be
+>>>> umounted if still in use.
+>>>>
+>>>> There are two ways to fix this mismatch, either grub or xfs. It may be
+>>>> easier to do this in xfs side by introducing an interface to flush metadata
+>>>> to fsblock explicitly.
+>>>>
+>>>> With this patch, metadata can be written to fsblock by:
+>>>>    # update AIL
+>>>>    sync
+>>>>    # new introduced interface to flush metadata to fsblock
+>>>>    mount -o remount,metasync mountpoint
+>>>
+>>> I think this ought to be an ioctl or some sort of generic call since the
+>>> jbd2 filesystems (ext3, ext4, ocfs2) suffer from the same "$BOOTLOADER
+>>> is too dumb to recover logs but still wants to write to the fs"
+>>> checkpointing problem.
+>> Yes, a syscall sounds more reasonable.
+>>>
+>>> (Or maybe we should just put all that stuff in a vfat filesystem, I
+>>> don't know...)
+>> I think it is unavoidable to involve in each fs' implementation. What
+>> about introducing an interface sync_to_fsblock(struct super_block *sb) in
+>> the struct super_operations, then let each fs manage its own case?
+> 
+> Well, we already have a way to achieve what you need: fsfreeze.
+> Traditionally, that is guaranteed to put fs into a "clean" state very much
+> equivalent to the fs being unmounted and that seems to be what the
+> bootloader wants so that it can access the filesystem without worrying
+> about some recovery details. So do you see any problem with replacing
+> 'sync' in your example above with 'fsfreeze /boot && fsfreeze -u /boot'?
+> 
+> 								Honza
 
-No, I guess that is fine, but it deserves a mention in the commit log.
+The problem with fsfreeze is that if the device you want to quiesce is, say,
+the root fs, freeze isn't really a good option.
+
+But the other thing I want to highlight about this approach is that it does not
+solve the root problem: something is trying to read the block device without
+first replaying the log.
+
+A call such as the proposal here is only going to leave consistent metadata at
+the time the call returns; at any time after that, all guarantees are off again,
+so the problem hasn't been solved.
+
+-Eric
