@@ -2,48 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D41D69F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 21:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A39F0D69FD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 21:18:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sSs42xrZzDqWp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 06:13:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sSy65VKJzDqwD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 06:18:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux-foundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="vp9iyD2q"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sSpy3lq9zDqcY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 06:11:54 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9EJBhSD000977;
- Mon, 14 Oct 2019 14:11:43 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x9EJBgBM000976;
- Mon, 14 Oct 2019 14:11:42 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 14 Oct 2019 14:11:41 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH v4 3/3] powerpc/prom_init: Use -ffreestanding to avoid a
- reference to bcmp
-Message-ID: <20191014191141.GK28442@gate.crashing.org>
-References: <20190911182049.77853-1-natechancellor@gmail.com>
- <20191014025101.18567-1-natechancellor@gmail.com>
- <20191014025101.18567-4-natechancellor@gmail.com>
- <20191014093501.GE28442@gate.crashing.org>
- <CAKwvOdmcUT2A9FG0JD9jd0s=gAavRc_h+RLG6O3mBz4P1FfF8w@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sSw5478YzDqTP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 06:16:21 +1100 (AEDT)
+Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C96F320663;
+ Mon, 14 Oct 2019 19:16:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1571080578;
+ bh=xAhTwx3cc7EYSDe7w82pOCAqNtuJH1ZXf29Uvq/kgu0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=vp9iyD2qWVjvKft483nbT1rKVVTbaUXvYLM6HXOYNXDn2Mc5hCFIETVZE68PPV20R
+ G2HeGZMmIffWLxnrhr8EWhpDDJSCErtPlbGPMh1L5M4ZiqDVgcHF5rx+/IxNuOJyfn
+ hhhsqxR1Lk+B5WwQdSiPAoR8wfIIQh34ILfBpDNs=
+Date: Mon, 14 Oct 2019 12:16:16 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v6 05/10] mm/memory_hotplug: Shrink zones when offlining
+ memory
+Message-Id: <20191014121616.eeb6a405ed18be3502686c41@linux-foundation.org>
+In-Reply-To: <f9d67085-a02a-a693-6a72-6aaf8a243add@redhat.com>
+References: <20191006085646.5768-1-david@redhat.com>
+ <20191006085646.5768-6-david@redhat.com>
+ <f9d67085-a02a-a693-6a72-6aaf8a243add@redhat.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdmcUT2A9FG0JD9jd0s=gAavRc_h+RLG6O3mBz4P1FfF8w@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,72 +60,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Michal Hocko <mhocko@suse.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, linux-s390@vger.kernel.org,
+ Yu Zhao <yuzhao@google.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ x86@kernel.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Jun Yao <yaojun8558363@gmail.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>, Ira Weiny <ira.weiny@intel.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Oscar Salvador <osalvador@suse.de>, Tony Luck <tony.luck@intel.com>,
+ Steve Capper <steve.capper@arm.com>, Robin Murphy <robin.murphy@arm.com>,
+ linux-kernel@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Qian Cai <cai@lca.pw>,
+ Tom Lendacky <thomas.lendacky@amd.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 14, 2019 at 08:56:12AM -0700, Nick Desaulniers wrote:
-> On Mon, Oct 14, 2019 at 2:35 AM Segher Boessenkool
-> <segher@kernel.crashing.org> wrote:
-> >
-> > On Sun, Oct 13, 2019 at 07:51:01PM -0700, Nathan Chancellor wrote:
-> > > r374662 gives LLVM the ability to convert certain loops into a reference
-> > > to bcmp as an optimization; this breaks prom_init_check.sh:
-> >
-> > When/why does LLVM think this is okay?  This function has been removed
-> > from POSIX over a decade ago (and before that it always was marked as
-> > legacy).
+On Mon, 14 Oct 2019 11:39:13 +0200 David Hildenbrand <david@redhat.com> wrote:
+
+> > Fixes: d0dc12e86b31 ("mm/memory_hotplug: optimize memory hotplug")
 > 
-> Segher, do you have links for any of the above? If so, that would be
-> helpful to me.
+> @Andrew, can you convert that to
+> 
+> Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online") # visible after d0dc12e86b319
 
-Sure!
+Done.
 
-https://pubs.opengroup.org/onlinepubs/9699919799/xrat/V4_xsh_chap03.html
+> While adding cc'ing stable@vger.kernel.org # v4.13+ would be nice,
+> I doubt it will be easily possible to backport, as we are missing
+> some prereq patches (e.g., from Oscar like 2c2a5af6fed2 ("mm,
+> memory_hotplug: add nid parameter to arch_remove_memory")). But, it could
+> be done with some work.
+> 
+> I think "Cc: stable@vger.kernel.org # v5.0+" could be done more
+> easily. Maybe it's okay to not cc:stable this one. We usually
+> online all memory (except s390x), however, s390x does not remove that
+> memory ever. Devmem with driver reserved memory would be, however,
+> worth backporting this.
 
-Older versions are harder to find online, unfortunately.  But there is
+I added 
 
-https://kernel.org/pub/linux/docs/man-pages/man-pages-posix/
-
-in which man3p/bcmp.3p says:
-
-FUTURE DIRECTIONS
-       This function may be withdrawn in a future version.
-
-Finally, the Linux man pages say (man bcmp):
-
-CONFORMING TO
-       4.3BSD.   This  function   is   deprecated   (marked   as   LEGACY   in
-       POSIX.1-2001): use memcmp(3) in new programs.  POSIX.1-2008 removes the
-       specification of bcmp().
-
-
-> I'm arguing against certain transforms that assume that
-> one library function is faster than another, when such claims are
-> based on measurements from one stdlib implementation.
-
-Wow.  The difference between memcmp and bcmp is trivial (just the return
-value is different, and that costs hardly anything to add).  And memcmp
-is guaranteed to exist since C89/C90 at least.
-
-> The rationale for why it was added was that memcmp takes a measurable
-> amount of time in Google's fleet, and most calls to memcmp don't care
-> about the position of the mismatch; bcmp is lower overhead (or at
-> least for our libc implementation, not sure about others).
-
-You just have to do the read of the last words you compare as big-endian,
-and then you can just subtract the two words, convert that to "int" (which
-is very inconvenient to do, but hardly expensive), and there you go.
-
-Or on x86 use the bswap insn, or something like it.
-
-Or, if you use GCC, it has __builtin_memcmp but also __builtin_memcmp_eq,
-and those are automatically used, too.
-
-
-Segher
+Cc: <stable@vger.kernel.org>	[5.0+]
