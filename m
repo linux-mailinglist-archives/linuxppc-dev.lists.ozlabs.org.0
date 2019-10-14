@@ -1,70 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D6BD66A9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 17:58:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABC7D66D2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 18:05:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sNWg6668zDqpG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 02:58:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sNgp53ypzDqtr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 03:05:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="piPpFXEn"; 
+ unprotected) header.d=google.com header.i=@google.com header.b="FJRy+r/z"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sNTV0ntgzDqpy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 02:56:28 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id t10so8197347plr.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 08:56:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sNds4nPtzDqPw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 03:03:44 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id w3so3454037pgt.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 09:03:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ysKHeAWhWiDqGIO4lKEHL4zmOQ8xwTlvBSOxqXeT+Gg=;
- b=piPpFXEnmFYl2yN5xlBQ8v7jl+7es3ZESwSR23NsPFjmV+VSDOXWWzPfxkmdL5bPpI
- yxUz3Z//K3ZDelbiqMeDuDMpHXxUax1O6OeBwi0E9jYed6D7xqWrfkBbqfVNkW6e/Vbo
- HMUqA9aVLm6NH25Bk1mWbz22RvMIuTRjRoHIKO46oq7dW/bgMyZ5pN22PPv8C43YDdTx
- /QeE5zVtKwe63NL9k2LgAXCcAx+AVWKyKkxNHsO7fyG0l6WH15wEshK2jiwNJDk9x7oC
- o6A6NDynOkZRzaEb7dEfWYEtltI1XFyVLJYpsyNBdeC+PQ7i1OXwrAxiiJdh5BwK3PYs
- XKEA==
+ :cc; bh=PrIaBUAl4Zs70Rvgh9Rg9A2Po5PtzGSRs+KQTItvpaE=;
+ b=FJRy+r/zmSx0gTnh8nKk1MPaEhd9110EYn+G/+d4CpMIFscpk01MlyLHoHm5nqZ8ue
+ CuEul5WqlGE6j/Va+TR2Yui1YW7GVr2UUJY+9m2nC1JwH5BH8lcHf9U9XardiDiGlOoi
+ LaSSoXJLXvlrU+VQVXnO4lV/hae2O2+UoHmjSciqevrjzzXyJTp2d2+Y56+KcxRdCA6F
+ 7jmUcI5EAM3RTKj4p1Vaa6PDjBLCH1AKMAuK0N4y1tOSRYdnDC35vB3Mw9OlU6bctebd
+ 2KNziMABLbLEYIGJg85nQqt/hgKI9d4QgqspA9b11El3xetBfiuEmVrbjpRyRnhgYpcf
+ TsJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=ysKHeAWhWiDqGIO4lKEHL4zmOQ8xwTlvBSOxqXeT+Gg=;
- b=p2g9coaXrmfQcQULcymc2vopR4IrISBH29iH+GfrTArh6nPEBP9ZY9cgZq/zhnrgH6
- yjE/CVD3h/Un/Bj4KI2yVyNBGeQQwX8Mhd3eFrY0sYYlBZIh9DQNy3kzxW1kvneWoy6f
- AJuEQnGSeXmlpsQlMBWSSXydON545AceAixvTh187xa4TM7YfXS0/cJ3cc9KzF8RMPDu
- u668a6iXnpiGzPVS1P4xNDYGxE2A6u7tnH1NNvxl+4syrFCUo7y1mF4ClO+eZnVM5n6w
- cE6oQJNMyL8ZgDN0tkY4UJ64ucKRsw50gwSJyTFzpPL2mSU7FpZDtMXfbsqy4wNQUzZG
- e4PA==
-X-Gm-Message-State: APjAAAX1qePmABtG2m7VxaF8WLsIjYjnvE9PfBKk0JJbyomG5RSoSg5Y
- xm7uNPLEsLT9P5rn5tFzXt4kkvIQ/q1oL2jAhtlQRA==
-X-Google-Smtp-Source: APXvYqz/xhBeS3yRQP8QI+260d6U9shHcuPTuMGyKyNKNIVgIxg2p2GheW0ZfaMUeplnFXv2gl+6LVj7eNvm2RFQGS0=
-X-Received: by 2002:a17:902:9b83:: with SMTP id
- y3mr30287723plp.179.1571068583499; 
- Mon, 14 Oct 2019 08:56:23 -0700 (PDT)
+ bh=PrIaBUAl4Zs70Rvgh9Rg9A2Po5PtzGSRs+KQTItvpaE=;
+ b=bYjOR2WNNTrlzPpl64QXL+2d/B7BSHDtz7k14BJlJ9YI6L93nu+ZWUcuonrOIMGnXe
+ h9/LITUJXjTR5bkoGQPcfqTNoTXjA8g0SH7f3PUZ/+6I+ioRB1GxLkwwi5UD2AHn90wg
+ DVBVx0TV27K5j8kZkGlqp7+K+qO5JaGzetE9WMOLwi017e5B9yLQEStEKbHWj2LnOrWR
+ MhlLcJ/BGWmXjgRBWjN3rRA2uwpoUq2urUf9Su762bjMs8FBHS5nv7GXgjVaIKVU0QjK
+ 5/MbJtKASeGgeHVhyF8dDPzpxQ0aOv0Wx18nSu5uiAwymQ6rocjhB5FyRaGsvrGrnFOF
+ tRqg==
+X-Gm-Message-State: APjAAAVZwUbWEbKuWwC8zBCE8I3jN7eNQ+lrmgpUA55SWM+5OWp+Gkg/
+ YxR7+L01xJpefS3bgEZHOS0uwEjcuxv2gm45yrmPfA==
+X-Google-Smtp-Source: APXvYqzU0iN+S7UXYs1uP8WMChehRjsMrIbH3W7hJo7ZotpsfsIfMcdj3QGiw3CN0MtVD1Q6FSaHcabb11NtrnpteRQ=
+X-Received: by 2002:a65:464b:: with SMTP id k11mr15727142pgr.263.1571069020713; 
+ Mon, 14 Oct 2019 09:03:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190911182049.77853-1-natechancellor@gmail.com>
  <20191014025101.18567-1-natechancellor@gmail.com>
- <20191014025101.18567-4-natechancellor@gmail.com>
- <20191014093501.GE28442@gate.crashing.org>
-In-Reply-To: <20191014093501.GE28442@gate.crashing.org>
+In-Reply-To: <20191014025101.18567-1-natechancellor@gmail.com>
 From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 14 Oct 2019 08:56:12 -0700
-Message-ID: <CAKwvOdmcUT2A9FG0JD9jd0s=gAavRc_h+RLG6O3mBz4P1FfF8w@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] powerpc/prom_init: Use -ffreestanding to avoid a
- reference to bcmp
-To: Segher Boessenkool <segher@kernel.crashing.org>
+Date: Mon, 14 Oct 2019 09:03:29 -0700
+Message-ID: <CAKwvOdm+xxo=Qm7N8CznSExFNL=GxoJ0Da4Td2D0zUYH4mOLvg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] LLVM/Clang fixes for pseries_defconfig
+To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,27 +82,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 14, 2019 at 2:35 AM Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
+On Sun, Oct 13, 2019 at 7:51 PM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
 >
-> On Sun, Oct 13, 2019 at 07:51:01PM -0700, Nathan Chancellor wrote:
-> > r374662 gives LLVM the ability to convert certain loops into a reference
-> > to bcmp as an optimization; this breaks prom_init_check.sh:
+> Hi all,
 >
-> When/why does LLVM think this is okay?  This function has been removed
-> from POSIX over a decade ago (and before that it always was marked as
-> legacy).
+> This series includes a set of fixes for LLVM/Clang when building
+> pseries_defconfig. These have been floating around as standalone
+> patches so I decided to gather them up as a series so it was easier
+> to review/apply them.
+>
+> This has been broken for a bit now, it would be nice to get these
+> reviewed and applied. Please let me know if I need to do anything
+> to move these along.
 
-Segher, do you have links for any of the above? If so, that would be
-helpful to me. I'm arguing against certain transforms that assume that
-one library function is faster than another, when such claims are
-based on measurements from one stdlib implementation. (There's others
-in the pipeline I'm not too thrilled about, too).
++1, we've been carrying these out of tree for some time now, with this
+series merged, we can get back to 0 out of tree patches.
 
-The rationale for why it was added was that memcmp takes a measurable
-amount of time in Google's fleet, and most calls to memcmp don't care
-about the position of the mismatch; bcmp is lower overhead (or at
-least for our libc implementation, not sure about others).
+>
+> Previous versions:
+>
+> https://lore.kernel.org/lkml/20190911182049.77853-1-natechancellor@gmail.com/
+>
+> Cheers,
+> Nathan
+>
+>
+
+
 -- 
 Thanks,
 ~Nick Desaulniers
