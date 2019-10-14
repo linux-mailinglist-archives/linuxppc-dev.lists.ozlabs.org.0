@@ -1,55 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A77AD5D09
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 10:03:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DDCD5D94
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 10:35:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46s9zF5P4pzDqZD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 19:03:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sBhQ3YkCzDqfK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 19:35:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.35; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="rFnb1Ijo"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46s9wp2gd6zDqWw
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 19:00:56 +1100 (AEDT)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 043818491006F9A592D1;
- Mon, 14 Oct 2019 16:00:49 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Mon, 14 Oct 2019
- 16:00:46 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
- <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
- <20191010073212.GB18412@dhcp22.suse.cz>
- <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
- <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
- <20191012074014.GA2037204@kroah.com>
- <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
- <20191012104001.GA2052933@kroah.com> <20191012104742.GA2053473@kroah.com>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
-Date: Mon, 14 Oct 2019 16:00:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sBfP1xF2zDqQj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 19:33:30 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id q12so9973560pff.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 01:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=spiyR7phEd+F5UPvSSzYYiVKM1p+8Dq3IVuEyi3f1wA=;
+ b=rFnb1Ijow6i2Cl8vtpAXVx5BCDyOTZsePFsF3JuFaXjwKogTDYdYDCI9bNfOq3xRY7
+ lLx42TlxI86mGWBVcJ1nxzCOBkJ8moUHuo0LG2Clqyybccb6K7nnXoXD4YuMRO0t6Vkq
+ 2v7LBjkQkCws2iwM9QbAXRgQ7NboRyEZZdNpAp4NhfSc4/8tmmyG3sBpMWb2kP/+RLW4
+ GkSekaI8Cev1XcBVoX2jy8bLLF3wA2+d7zRJq66FMQYbU8uhwVcqtEVJkM5cceRrc60q
+ 9nxEjpqFGDFwXflLRlFSA342BeDW1UHouuRko3/WUWerpPmdnTH6uu5B6AKrsNR5+3+z
+ LWiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=spiyR7phEd+F5UPvSSzYYiVKM1p+8Dq3IVuEyi3f1wA=;
+ b=rBf1ErF0Hu2v14ZzaGUQ6rTKpItcIr9lO4cmC2QHKbuTZk1hxiAUI5nXFfvU9n7T3l
+ NzMabTEh5HznrCU4i6fQOMLb2spYDReFoVHN4KBLPpC8Iz7sUFF2cUSGdiwcH/KIGsHd
+ Mw7Orzz7S4X1JUKbJxW7rT9vMz/e0UNMQzKpRJTzgiUB265WPOW51VcKR7L595aKpYmm
+ 30pDxO2yHNKJ+oi0BBSsVvS4IOKbBBDQzczDifkLU7uHiiyjOyIyI0UkgZz7t11V3gCm
+ kmzXhNkwB2qnUb0KB1KHle+Qg36pjl25xGUkh5naZ4vv0/H8hOMw2ib2FPLQOqjqGTYa
+ 9vfg==
+X-Gm-Message-State: APjAAAUpXGH00O4VVK/KmpjEz+L/G1Jdulj1vAjzBvqk6uyZvjDayc6V
+ r2gtkgyqL/EawP3QiMSTAz1WKZQ=
+X-Google-Smtp-Source: APXvYqx5vmDUy+m+Bda/d6VNQg7//NaxLe07eZci1+AKagtbYwNsisTUX9xCJqxddg19dzfKb5FdrQ==
+X-Received: by 2002:a17:90a:c684:: with SMTP id
+ n4mr34844259pjt.33.1571042006613; 
+ Mon, 14 Oct 2019 01:33:26 -0700 (PDT)
+Received: from mypc ([209.132.188.80])
+ by smtp.gmail.com with ESMTPSA id r28sm21797162pfg.62.2019.10.14.01.33.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Oct 2019 01:33:25 -0700 (PDT)
+Date: Mon, 14 Oct 2019 16:33:15 +0800
+From: Pingfan Liu <kernelfans@gmail.com>
+To: "Darrick J. Wong" <darrick.wong@oracle.com>
+Subject: Re: [PATCH] xfs: introduce "metasync" api to sync metadata to fsblock
+Message-ID: <20191014083315.GA10091@mypc>
+References: <1570977420-3944-1-git-send-email-kernelfans@gmail.com>
+ <20191013163417.GQ13108@magnolia>
 MIME-Version: 1.0
-In-Reply-To: <20191012104742.GA2053473@kroah.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191013163417.GQ13108@magnolia>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,137 +81,247 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, Michal Hocko <mhocko@kernel.org>,
- mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
- sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
- linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
- linux-acpi@vger.kernel.org, x86@kernel.org, rppt@linux.ibm.com,
- borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
- jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
- linux-mips@vger.kernel.org, lenb@kernel.org, len.brown@intel.com,
- gor@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, luto@kernel.org,
- bhelgaas@google.com, tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
- linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
- linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
- linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
- akpm@linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- davem@davemloft.net
+Cc: Eric Sandeen <esandeen@redhat.com>, Jan Kara <jack@suse.com>,
+ linux-xfs@vger.kernel.org, Dave Chinner <dchinner@redhat.com>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/10/12 18:47, Greg KH wrote:
-> On Sat, Oct 12, 2019 at 12:40:01PM +0200, Greg KH wrote:
->> On Sat, Oct 12, 2019 at 05:47:56PM +0800, Yunsheng Lin wrote:
->>> On 2019/10/12 15:40, Greg KH wrote:
->>>> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
->>>>> add pci and acpi maintainer
->>>>> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
->>>>>
->>>>> On 2019/10/11 19:15, Peter Zijlstra wrote:
->>>>>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
->>>>>>> But I failed to see why the above is related to making node_to_cpumask_map()
->>>>>>> NUMA_NO_NODE aware?
->>>>>>
->>>>>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
->>>>>> have a node assigned.
->>>>>>
->>>>>> It not having one, is a straight up bug. We must not silently accept
->>>>>> NO_NODE there, ever.
->>>>>>
->>>>>
->>>>> I suppose you mean reporting a lack of affinity when the node of a pcie
->>>>> device is not set by "not silently accept NO_NODE".
->>>>
->>>> If the firmware of a pci device does not provide the node information,
->>>> then yes, warn about that.
->>>>
->>>>> As Greg has asked about in [1]:
->>>>> what is a user to do when the user sees the kernel reporting that?
->>>>>
->>>>> We may tell user to contact their vendor for info or updates about
->>>>> that when they do not know about their system well enough, but their
->>>>> vendor may get away with this by quoting ACPI spec as the spec
->>>>> considering this optional. Should the user believe this is indeed a
->>>>> fw bug or a misreport from the kernel?
->>>>
->>>> Say it is a firmware bug, if it is a firmware bug, that's simple.
->>>>
->>>>> If this kind of reporting is common pratice and will not cause any
->>>>> misunderstanding, then maybe we can report that.
->>>>
->>>> Yes, please do so, that's the only way those boxes are ever going to get
->>>> fixed.  And go add the test to the "firmware testing" tool that is based
->>>> on Linux that Intel has somewhere, to give vendors a chance to fix this
->>>> before they ship hardware.
->>>>
->>>> This shouldn't be a big deal, we warn of other hardware bugs all the
->>>> time.
->>>
->>> Ok, thanks for clarifying.
->>>
->>> Will send a patch to catch the case when a pcie device without numa node
->>> being set and warn about it.
->>>
->>> Maybe use dev->bus to verify if it is a pci device?
->>
->> No, do that in the pci bus core code itself, when creating the devices
->> as that is when you know, or do not know, the numa node, right?
->>
->> This can't be in the driver core only, as each bus type will have a
->> different way of determining what the node the device is on.  For some
->> reason, I thought the PCI core code already does this, right?
+On Sun, Oct 13, 2019 at 09:34:17AM -0700, Darrick J. Wong wrote:
+> On Sun, Oct 13, 2019 at 10:37:00PM +0800, Pingfan Liu wrote:
+> > When using fadump (fireware assist dump) mode on powerpc, a mismatch
+> > between grub xfs driver and kernel xfs driver has been obsevered.  Note:
+> > fadump boots up in the following sequence: fireware -> grub reads kernel
+> > and initramfs -> kernel boots.
+> > 
+> > The process to reproduce this mismatch:
+> >   - On powerpc, boot kernel with fadump=on and edit /etc/kdump.conf.
+> >   - Replacing "path /var/crash" with "path /var/crashnew", then, "kdumpctl
+> >     restart" to rebuild the initramfs. Detail about the rebuilding looks
+> >     like: mkdumprd /boot/initramfs-`uname -r`.img.tmp;
+> >           mv /boot/initramfs-`uname -r`.img.tmp /boot/initramfs-`uname -r`.img
+> >           sync
+> >   - "echo c >/proc/sysrq-trigger".
+> > 
+> > The result:
+> > The dump image will not be saved under /var/crashnew/* as expected, but
+> > still saved under /var/crash.
+> > 
+> > The root cause:
+> > As Eric pointed out that on xfs, 'sync' ensures the consistency by writing
+> > back metadata to xlog, but not necessary to fsblock. This raises issue if
+> > grub can not replay the xlog before accessing the xfs files. Since the
+> > above dir entry of initramfs should be saved as inline data with xfs_inode,
+> > so xfs_fs_sync_fs() does not guarantee it written to fsblock.
+> > 
+> > umount can be used to write metadata fsblock, but the filesystem can not be
+> > umounted if still in use.
+> > 
+> > There are two ways to fix this mismatch, either grub or xfs. It may be
+> > easier to do this in xfs side by introducing an interface to flush metadata
+> > to fsblock explicitly.
+> > 
+> > With this patch, metadata can be written to fsblock by:
+> >   # update AIL
+> >   sync
+> >   # new introduced interface to flush metadata to fsblock
+> >   mount -o remount,metasync mountpoint
 > 
-> Yes, pci_irq_get_node(), which NO ONE CALLS!  I should go delete that
-> thing...
+> I think this ought to be an ioctl or some sort of generic call since the
+> jbd2 filesystems (ext3, ext4, ocfs2) suffer from the same "$BOOTLOADER
+> is too dumb to recover logs but still wants to write to the fs"
+> checkpointing problem.
+Yes, a syscall sounds more reasonable.
 > 
-> Anyway, it looks like the pci core code does call set_dev_node() based
-> on the PCI bridge, so if that is set up properly, all should be fine.
+> (Or maybe we should just put all that stuff in a vfat filesystem, I
+> don't know...)
+I think it is unavoidable to involve in each fs' implementation. What
+about introducing an interface sync_to_fsblock(struct super_block *sb) in
+the struct super_operations, then let each fs manage its own case?
 > 
-> If not, well, you have buggy firmware and you need to warn about that at
-> the time you are creating the bridge.  Look at the call to
-> pcibus_to_node() in pci_register_host_bridge().
-
-Thanks for pointing out the specific function.
-Maybe we do not need to warn about the case when the device has a parent,
-because we must have warned about the parent if the device has a parent
-and the parent also has a node of NO_NODE, so do not need to warn the child
-device anymore? like blew:
-
-@@ -932,6 +932,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
-        list_add_tail(&bus->node, &pci_root_buses);
-        up_write(&pci_bus_sem);
-
-+       if (nr_node_ids > 1 && !parent &&
-+           dev_to_node(bus->bridge) == NUMA_NO_NODE)
-+               dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW. Please contact your vendor for updates.\n");
-+
-        return 0;
-
-
-Also, we do not need to warn about that in pci_device_add(), Right?
-Because we must have warned about the pci host bridge of the pci device.
-
-I may be wrong about above because I am not so familiar with the pci.
-
+> --D
 > 
-> And yes, you need to do this all on a per-bus-type basis, as has been
-> pointed out.  It's up to the bus to create the device and set this up
-> properly.
+> > Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> > Cc: "Darrick J. Wong" <darrick.wong@oracle.com>
+> > Cc: Dave Chinner <dchinner@redhat.com>
+> > Cc: Eric Sandeen <esandeen@redhat.com>
+> > Cc: Hari Bathini <hbathini@linux.ibm.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > To: linux-xfs@vger.kernel.org
+> > ---
+> >  fs/xfs/xfs_mount.h      |  1 +
+> >  fs/xfs/xfs_super.c      | 15 ++++++++++++++-
+> >  fs/xfs/xfs_trans.h      |  2 ++
+> >  fs/xfs/xfs_trans_ail.c  | 26 +++++++++++++++++++++++++-
+> >  fs/xfs/xfs_trans_priv.h |  1 +
+> >  5 files changed, 43 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/fs/xfs/xfs_mount.h b/fs/xfs/xfs_mount.h
+> > index fdb60e0..85f32e6 100644
+> > --- a/fs/xfs/xfs_mount.h
+> > +++ b/fs/xfs/xfs_mount.h
+> > @@ -243,6 +243,7 @@ typedef struct xfs_mount {
+> >  #define XFS_MOUNT_FILESTREAMS	(1ULL << 24)	/* enable the filestreams
+> >  						   allocator */
+> >  #define XFS_MOUNT_NOATTR2	(1ULL << 25)	/* disable use of attr2 format */
+> > +#define XFS_MOUNT_METASYNC	(1ull << 26)	/* write meta to fsblock */
+> >  
+> >  #define XFS_MOUNT_DAX		(1ULL << 62)	/* TEST ONLY! */
+> >  
+> > diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+> > index 8d1df9f..41df810 100644
+> > --- a/fs/xfs/xfs_super.c
+> > +++ b/fs/xfs/xfs_super.c
+> > @@ -59,7 +59,7 @@ enum {
+> >  	Opt_filestreams, Opt_quota, Opt_noquota, Opt_usrquota, Opt_grpquota,
+> >  	Opt_prjquota, Opt_uquota, Opt_gquota, Opt_pquota,
+> >  	Opt_uqnoenforce, Opt_gqnoenforce, Opt_pqnoenforce, Opt_qnoenforce,
+> > -	Opt_discard, Opt_nodiscard, Opt_dax, Opt_err,
+> > +	Opt_discard, Opt_nodiscard, Opt_dax, Opt_metasync, Opt_err
+> >  };
+> >  
+> >  static const match_table_t tokens = {
+> > @@ -106,6 +106,7 @@ static const match_table_t tokens = {
+> >  	{Opt_discard,	"discard"},	/* Discard unused blocks */
+> >  	{Opt_nodiscard,	"nodiscard"},	/* Do not discard unused blocks */
+> >  	{Opt_dax,	"dax"},		/* Enable direct access to bdev pages */
+> > +	{Opt_metasync,	"metasync"},	/* one shot to write meta to fsblock */
+> >  	{Opt_err,	NULL},
+> >  };
+> >  
+> > @@ -338,6 +339,9 @@ xfs_parseargs(
+> >  			mp->m_flags |= XFS_MOUNT_DAX;
+> >  			break;
+> >  #endif
+> > +		case Opt_metasync:
+> > +			mp->m_flags |= XFS_MOUNT_METASYNC;
+> > +			break;
+> >  		default:
+> >  			xfs_warn(mp, "unknown mount option [%s].", p);
+> >  			return -EINVAL;
+> > @@ -1259,6 +1263,9 @@ xfs_fs_remount(
+> >  			mp->m_flags |= XFS_MOUNT_SMALL_INUMS;
+> >  			mp->m_maxagi = xfs_set_inode_alloc(mp, sbp->sb_agcount);
+> >  			break;
+> > +		case Opt_metasync:
+> > +			mp->m_flags |= XFS_MOUNT_METASYNC;
+> > +			break;
+> >  		default:
+> >  			/*
+> >  			 * Logically we would return an error here to prevent
+> > @@ -1286,6 +1293,12 @@ xfs_fs_remount(
+> >  		}
+> >  	}
+> >  
+> > +	if (mp->m_flags & XFS_MOUNT_METASYNC) {
+> > +		xfs_ail_push_sync(mp->m_ail);
+> > +		/* one shot flag */
+> > +		mp->m_flags &= ~XFS_MOUNT_METASYNC;
+> 
+> Wait, so the mount flag magically disables itself?
+> 
+> This really sounds like a system call, not the kinds of long term
+> behavioral modifications that mount options are for.
+> 
+Yeah, this one-shot behavior is not suitable for mount.
+> > +	}
+> > +
+> >  	/* ro -> rw */
+> >  	if ((mp->m_flags & XFS_MOUNT_RDONLY) && !(*flags & SB_RDONLY)) {
+> >  		if (mp->m_flags & XFS_MOUNT_NORECOVERY) {
+> > diff --git a/fs/xfs/xfs_trans.h b/fs/xfs/xfs_trans.h
+> > index 64d7f17..fcdb902 100644
+> > --- a/fs/xfs/xfs_trans.h
+> > +++ b/fs/xfs/xfs_trans.h
+> > @@ -242,6 +242,8 @@ void		xfs_trans_buf_set_type(struct xfs_trans *, struct xfs_buf *,
+> >  void		xfs_trans_buf_copy_type(struct xfs_buf *dst_bp,
+> >  					struct xfs_buf *src_bp);
+> >  
+> > +void		xfs_ail_push_sync(struct xfs_ail *ailp);
+> > +
+> >  extern kmem_zone_t	*xfs_trans_zone;
+> >  
+> >  #endif	/* __XFS_TRANS_H__ */
+> > diff --git a/fs/xfs/xfs_trans_ail.c b/fs/xfs/xfs_trans_ail.c
+> > index 6ccfd75..b8d8df1 100644
+> > --- a/fs/xfs/xfs_trans_ail.c
+> > +++ b/fs/xfs/xfs_trans_ail.c
+> > @@ -488,7 +488,11 @@ xfsaild_push(
+> >  	xfs_trans_ail_cursor_done(&cur);
+> >  	spin_unlock(&ailp->ail_lock);
+> >  
+> > -	if (xfs_buf_delwri_submit_nowait(&ailp->ail_buf_list))
+> > +	if (unlikely(mp->m_flags & XFS_MOUNT_METASYNC)) {
+> > +		xfs_buf_delwri_submit(&ailp->ail_buf_list);
+> 
+> I guess this never fails, because write IO is 100% successful?
+No, unfortunately, xfs_buf_delwri_submit() can return error. Do you
+suggest to pass the error to the sync call?
 
-Thanks.
-Will do that on per-bus-type basis.
+Thanks for your kindly review.
 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> .
-> 
+Regards,
+	Pingfan
 
+[Keep the following original content unchanged. And cc Jan Kara, linux-fsdevel due to this
+design may touch the vfs layer]
+> 
+> --D
+> 
+> > +		ailp->ail_log_flush++;
+> > +		wake_up_all(&ailp->pushed_que);
+> > +	} else if (xfs_buf_delwri_submit_nowait(&ailp->ail_buf_list))
+> >  		ailp->ail_log_flush++;
+> >  
+> >  	if (!count || XFS_LSN_CMP(lsn, target) >= 0) {
+> > @@ -641,6 +645,25 @@ xfs_ail_push(
+> >  	wake_up_process(ailp->ail_task);
+> >  }
+> >  
+> > +void
+> > +xfs_ail_push_sync(
+> > +	struct xfs_ail		*ailp)
+> > +{
+> > +	xfs_lsn_t		sync_lsn;
+> > +	DEFINE_WAIT(wait);
+> > +
+> > +	sync_lsn = xfs_ail_max_lsn(ailp);
+> > +	for (;;) {
+> > +		xfs_ail_push(ailp, sync_lsn);
+> > +		prepare_to_wait(&ailp->pushed_que, &wait, TASK_INTERRUPTIBLE);
+> > +		if (XFS_LSN_CMP(READ_ONCE(ailp->ail_target_prev),
+> > +			sync_lsn) >= 0)
+> > +			break;
+> > +		schedule();
+> > +	}
+> > +	finish_wait(&ailp->pushed_que, &wait);
+> > +}
+> > +
+> >  /*
+> >   * Push out all items in the AIL immediately
+> >   */
+> > @@ -834,6 +857,7 @@ xfs_trans_ail_init(
+> >  	spin_lock_init(&ailp->ail_lock);
+> >  	INIT_LIST_HEAD(&ailp->ail_buf_list);
+> >  	init_waitqueue_head(&ailp->ail_empty);
+> > +	init_waitqueue_head(&ailp->pushed_que);
+> >  
+> >  	ailp->ail_task = kthread_run(xfsaild, ailp, "xfsaild/%s",
+> >  			ailp->ail_mount->m_fsname);
+> > diff --git a/fs/xfs/xfs_trans_priv.h b/fs/xfs/xfs_trans_priv.h
+> > index 2e073c1..9fe3cc6 100644
+> > --- a/fs/xfs/xfs_trans_priv.h
+> > +++ b/fs/xfs/xfs_trans_priv.h
+> > @@ -61,6 +61,7 @@ struct xfs_ail {
+> >  	int			ail_log_flush;
+> >  	struct list_head	ail_buf_list;
+> >  	wait_queue_head_t	ail_empty;
+> > +	wait_queue_head_t	pushed_que;
+> >  };
+> >  
+> >  /*
+> > -- 
+> > 2.7.5
+> > 
