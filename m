@@ -2,45 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FDAD5992
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 04:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D30ED5996
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 04:38:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46s2dV5ShQzDqQs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 13:32:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46s2my64qzzDqSx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 13:38:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46s2bm6gczzDqQc
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 13:30:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=russell.cc
+ (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com;
+ envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="aQlqvITR"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 46s2bm5ll1z9sPd; Mon, 14 Oct 2019 13:30:44 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 46s2bm4s0qz9sPh; Mon, 14 Oct 2019 13:30:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1571020244;
- bh=ciYHuybzkxwIDr/8c0wuOHkok+1FQxie1pOMRcO6BLU=;
- h=From:To:Subject:Date:From;
- b=aQlqvITRWf+9ZjfzVAjLZGUCWRUfo5T/0MlEZDJDINtBK3BlvAEPkxEW2ST9nIobt
- 92Cd7aIb8r3IKASiyFo/qyOB3it7o8ogWqJaFn5zF+nwdPi0SqeIF3niGQNBLByTzH
- jv6+Sk1/+7RaRoGho/TQzwkarQbwlFMgTCWQMMrv09e7ToDe9Xk/X8dDdP0m9GNabB
- 9rAUSf1KVLdHczun252dSgVyDnl0OIxix4KROop02D5FS/iKoG6SU03LPaksVrjvsQ
- DlzG1HFYM+o/WhMPEP0eIZdMqZoRKLuFXR5mX9CT3g5OrZou5VOkAq8nPW+5gFeBbH
- red/N/qCzAyKA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] selftests/powerpc: Don't list r1 in clobbers for TM tests
-Date: Mon, 14 Oct 2019 13:30:43 +1100
-Message-Id: <20191014023043.2969-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="KTjjCxHh"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="w/l9fZx3"; dkim-atps=neutral
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
+ [64.147.123.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46s2l36zSyzDqPy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 13:37:03 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id E472F2FD;
+ Sun, 13 Oct 2019 22:36:59 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Sun, 13 Oct 2019 22:37:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
+ t5nuBRtp7xovMqn6s3e4o50CTo3WgPcK1r+jGdzfIWY=; b=KTjjCxHhV9bZvhYh
+ lsUYOtPOmwGm/i0rbIJaFuQCBMeuakbVGChYy35uuOZmi/v8qUqY3wF+Iqa63wnT
+ kov5gH0uSrPF9C3ZF29v6QIZ+EXog8nuMCtwZHWkJBq2Tc8cdOljRGXMXMBVBKaf
+ Ws1te24d49c0rIM1FSlghMVFKvXLRs7sWAu8P9/+NaWKt9GY1Vv2GjIybPXdNmxo
+ 0i7NDSkvE7gToGQ+nx5ApY5qbYgqdgTgg5yDCRsWp2RGVfxNgo3itFzUfJaib9fm
+ Yz88SdRgIP8rvdCekd5X4fqqQATMjzdfDY6nWZ57BtoGRKH6S+KDKRj2njl+4xJL
+ rdq0tA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=t5nuBRtp7xovMqn6s3e4o50CTo3WgPcK1r+jGdzfI
+ WY=; b=w/l9fZx3nYXf0vItp4gEBkplPbh0yN0vSVsCqUpcbnkUecaKO99+dKX8/
+ gOqrHL9wqdKSIPxBslx0ydalU6hEp5DuGcmpypyHT3txy1eyCsb0+3aWjZTWsC3a
+ EyV7o6H5/ToPiH6MLoXniP+cRrvTl3pTpheODQ58yOYAYk2WsdOU2J+BQvGDFATm
+ s9uj9vR1/PB9xNS6iy7mtyyfmYyvo/a26QuZ0y7aJi5Rcv3ZGADUiZ6JQjvUyfHq
+ OC/bpNG6esb1OxHSVFKs2hec95W9UQTvwGYEeGRCth4SJkREJXRFFWscSLFubxFW
+ vix02+32ZCCqgbTvbl3nj1iypbgpA==
+X-ME-Sender: <xms:St-jXd11y-pxb697bxI3XFxfjA4Arbk0IZY1wX9lsjaDzsrTCtlafQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrjedtgdeiudcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculdeftddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttder
+ jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
+ gvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrddutdenucfrrghrrghmpehmrghi
+ lhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttgenucevlhhushhtvghrufhiii
+ gvpedt
+X-ME-Proxy: <xmx:St-jXTqn_PayRUWbdqjhaLkjoNTLYWuGPjcWj_dVBU05A6Px9Xio9A>
+ <xmx:St-jXXTTlBmH8q3h3ICTmSaVWtbCe8kWeJShZMFAe503Mby9VAGU7g>
+ <xmx:St-jXTqorU3A1j0KWnFjfuHGg-huAyDXVcoejrKiAOmw9h5ivCfFfw>
+ <xmx:S9-jXXmb8nLcmP8xKqIb2eH_Ofz_IDa5-2R94Y52yVFMuUt34MRq_w>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id A7294D60057;
+ Sun, 13 Oct 2019 22:36:55 -0400 (EDT)
+Message-ID: <764cfbeb7233e3532a89820ff7cb242531aa63ea.camel@russell.cc>
+Subject: Re: [PATCH v3 3/4] powerpc/mm/ptdump: debugfs handler for W+X
+ checks at runtime
+From: Russell Currey <ruscur@russell.cc>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 14 Oct 2019 13:36:52 +1100
+In-Reply-To: <665bacec-036f-f392-7e0f-95a57b0a7d22@c-s.fr>
+References: <20191004075050.73327-1-ruscur@russell.cc>
+ <20191004075050.73327-4-ruscur@russell.cc>
+ <665bacec-036f-f392-7e0f-95a57b0a7d22@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -54,87 +93,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ajd@linux.ibm.com, npiggin@gmail.com, joel@jms.id.au, rashmica.g@gmail.com,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some of our TM (Transactional Memory) tests, list "r1" (the stack
-pointer) as a clobbered register.
+On Tue, 2019-10-08 at 08:21 +0200, Christophe Leroy wrote:
+> 
+> Le 04/10/2019 à 09:50, Russell Currey a écrit :
+> > Very rudimentary, just
+> > 
+> > 	echo 1 > [debugfs]/check_wx_pages
+> > 
+> > and check the kernel log.  Useful for testing strict module RWX.
+> > 
+> > Also fixed a typo.
+> > 
+> > Signed-off-by: Russell Currey <ruscur@russell.cc>
+> > ---
+> >   arch/powerpc/mm/ptdump/ptdump.c | 31 +++++++++++++++++++++++++---
+> > ---
+> >   1 file changed, 25 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/mm/ptdump/ptdump.c
+> > b/arch/powerpc/mm/ptdump/ptdump.c
+> > index 2f9ddc29c535..0547cd9f264e 100644
+> > --- a/arch/powerpc/mm/ptdump/ptdump.c
+> > +++ b/arch/powerpc/mm/ptdump/ptdump.c
+> > @@ -4,7 +4,7 @@
+> >    *
+> >    * This traverses the kernel pagetables and dumps the
+> >    * information about the used sections of memory to
+> > - * /sys/kernel/debug/kernel_pagetables.
+> > + * /sys/kernel/debug/kernel_page_tables.
+> >    *
+> >    * Derived from the arm64 implementation:
+> >    * Copyright (c) 2014, The Linux Foundation, Laura Abbott.
+> > @@ -409,16 +409,35 @@ void ptdump_check_wx(void)
+> >   	else
+> >   		pr_info("Checked W+X mappings: passed, no W+X pages
+> > found\n");
+> >   }
+> > +
+> > +static int check_wx_debugfs_set(void *data, u64 val)
+> > +{
+> > +	if (val != 1ULL)
+> > +		return -EINVAL;
+> > +
+> > +	ptdump_check_wx();
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +DEFINE_SIMPLE_ATTRIBUTE(check_wx_fops, NULL, check_wx_debugfs_set,
+> > "%llu\n");
+> >   #endif
+> >   
+> >   static int ptdump_init(void)
+> >   {
+> > -	struct dentry *debugfs_file;
+> > -
+> >   	populate_markers();
+> >   	build_pgtable_complete_mask();
+> > -	debugfs_file = debugfs_create_file("kernel_page_tables", 0400,
+> > NULL,
+> > -			NULL, &ptdump_fops);
+> > -	return debugfs_file ? 0 : -ENOMEM;
+> > +
+> > +	if (!debugfs_create_file("kernel_page_tables", 0400, NULL,
+> > +				 NULL, &ptdump_fops))
+> > +		return -ENOMEM;
+> > +
+> > +#ifdef CONFIG_PPC_DEBUG_WX
+> > +	if (!debugfs_create_file("check_wx_pages", 0200, NULL,
+> > +				 NULL, &check_wx_fops))
+> > +		return -ENOMEM;
+> > +#endif
+> 
+> The above seems to be completely independant from everything else in 
+> ptdump_init().
+> 
+> Could we avoid this #ifdef block inside ptdump_init() by creating a 
+> selfstanding device_initcall() for that through a function called 
+> ptdump_check_wx_init() defined inside the same #ifdef block as 
+> ptdump_check_wx() ?
 
-GCC >= 9 doesn't accept this, and the build breaks:
+Yes that would be nicer, thanks
 
-  ptrace-tm-spd-tar.c: In function 'tm_spd_tar':
-  ptrace-tm-spd-tar.c:31:2: error: listing the stack pointer register 'r1' in a clobber list is deprecated [-Werror=deprecated]
-     31 |  asm __volatile__(
-        |  ^~~
-  ptrace-tm-spd-tar.c:31:2: note: the value of the stack pointer after an 'asm' statement must be the same as it was before the statement
-
-We do have some fairly large inline asm blocks in these tests, and
-some of them do change the value of r1. However they should all return
-to C with the value in r1 restored, so I think it's legitimate to say
-r1 is not clobbered. We should probably rewrite some of these in real
-assembler one day.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c | 2 +-
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c | 2 +-
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c     | 2 +-
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c     | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-index 25e23e73c72e..7b835ef4f8a6 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-@@ -73,7 +73,7 @@ void tm_spd_tar(void)
- 		[sprn_texasr]"i"(SPRN_TEXASR), [tar_1]"i"(TAR_1),
- 		[dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2), [dscr_2]"i"(DSCR_2),
- 		[tar_3]"i"(TAR_3), [dscr_3]"i"(DSCR_3)
--		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
-+		: "memory", "r0", "r3", "r4", "r5", "r6"
- 		);
- 
- 	/* TM failed, analyse */
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-index f603fe5a445b..f497c2cbbdc3 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-@@ -74,7 +74,7 @@ void tm_spd_vsx(void)
- 		"3: ;"
- 		: [res] "=r" (result), [texasr] "=r" (texasr)
- 		: [sprn_texasr] "i"  (SPRN_TEXASR)
--		: "memory", "r0", "r1", "r3", "r4",
-+		: "memory", "r0", "r3", "r4",
- 		"r7", "r8", "r9", "r10", "r11"
- 		);
- 
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-index e0d37f07bdeb..46ef378a15ec 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-@@ -62,7 +62,7 @@ void tm_tar(void)
- 		[sprn_ppr]"i"(SPRN_PPR), [sprn_texasr]"i"(SPRN_TEXASR),
- 		[tar_1]"i"(TAR_1), [dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2),
- 		[dscr_2]"i"(DSCR_2), [cptr1] "b" (&cptr[1])
--		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
-+		: "memory", "r0", "r3", "r4", "r5", "r6"
- 		);
- 
- 	/* TM failed, analyse */
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-index 8027457b97b7..a72fcea16876 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-@@ -62,7 +62,7 @@ void tm_vsx(void)
- 		"3: ;"
- 		: [res] "=r" (result), [texasr] "=r" (texasr)
- 		: [sprn_texasr] "i"  (SPRN_TEXASR), [cptr1] "b" (&cptr[1])
--		: "memory", "r0", "r1", "r3", "r4",
-+		: "memory", "r0", "r3", "r4",
- 		"r7", "r8", "r9", "r10", "r11"
- 		);
- 
--- 
-2.21.0
+> 
+> Christophe
+> 
+> > +
+> > +	return 0;
+> >   }
+> >   device_initcall(ptdump_init);
+> > 
 
