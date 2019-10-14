@@ -2,86 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4B8D600C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 12:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A7BD602D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 12:31:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sF5K0SMzzDql8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 21:23:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sFGf6cSHzDqjQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 21:31:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sF3J5vNCzDqF6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 21:21:48 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9EAHnpq033475
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 06:21:46 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vmm7ephuq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 06:21:46 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Mon, 14 Oct 2019 11:21:44 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 14 Oct 2019 11:21:43 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9EALgX554657214
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Oct 2019 10:21:42 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1F62AAE045;
- Mon, 14 Oct 2019 10:21:42 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC918AE053;
- Mon, 14 Oct 2019 10:21:41 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.92.233])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 14 Oct 2019 10:21:41 +0000 (GMT)
-Subject: Re: [PATCH 2/2] powerpc/powernv: ocxl move TL definition
-To: christophe lombard <clombard@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
- ajd@linux.ibm.com
-References: <20191009151109.13752-1-clombard@linux.vnet.ibm.com>
- <20191009151109.13752-3-clombard@linux.vnet.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Mon, 14 Oct 2019 12:21:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46sFDD47zTzDqS7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 21:29:31 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDE68337;
+ Mon, 14 Oct 2019 03:29:27 -0700 (PDT)
+Received: from [10.1.197.57] (e110467-lin.cambridge.arm.com [10.1.197.57])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C3363F718;
+ Mon, 14 Oct 2019 03:29:25 -0700 (PDT)
+Subject: Re: [PATCH 1/2] dma-mapping: Add dma_addr_is_phys_addr()
+To: David Gibson <david@gibson.dropbear.id.au>, Ram Pai <linuxram@us.ibm.com>
+References: <1570843519-8696-1-git-send-email-linuxram@us.ibm.com>
+ <1570843519-8696-2-git-send-email-linuxram@us.ibm.com>
+ <20191014045139.GN4080@umbus.fritz.box>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <37609731-5539-b906-aa94-2ef0242795ac@arm.com>
+Date: Mon, 14 Oct 2019 11:29:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20191009151109.13752-3-clombard@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19101410-0008-0000-0000-00000321DE37
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101410-0009-0000-0000-00004A40EFD8
-Message-Id: <f98b61b7-247f-6180-a008-a588cd984ad5@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-14_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910140100
+In-Reply-To: <20191014045139.GN4080@umbus.fritz.box>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,287 +50,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: andmike@us.ibm.com, mdroth@linux.vnet.ibm.com, b.zolnierkie@samsung.com,
+ jasowang@redhat.com, aik@linux.ibm.com, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, iommu@lists.linux-foundation.org,
+ paul.burton@mips.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 14/10/2019 05:51, David Gibson wrote:
+> On Fri, Oct 11, 2019 at 06:25:18PM -0700, Ram Pai wrote:
+>> From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+>>
+>> In order to safely use the DMA API, virtio needs to know whether DMA
+>> addresses are in fact physical addresses and for that purpose,
+>> dma_addr_is_phys_addr() is introduced.
+>>
+>> cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> cc: David Gibson <david@gibson.dropbear.id.au>
+>> cc: Michael Ellerman <mpe@ellerman.id.au>
+>> cc: Paul Mackerras <paulus@ozlabs.org>
+>> cc: Michael Roth <mdroth@linux.vnet.ibm.com>
+>> cc: Alexey Kardashevskiy <aik@linux.ibm.com>
+>> cc: Paul Burton <paul.burton@mips.com>
+>> cc: Robin Murphy <robin.murphy@arm.com>
+>> cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+>> cc: Marek Szyprowski <m.szyprowski@samsung.com>
+>> cc: Christoph Hellwig <hch@lst.de>
+>> Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+>> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+>> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> 
+> The change itself looks ok, so
+> 
+> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+> 
+> However, I would like to see the commit message (and maybe the inline
+> comments) expanded a bit on what the distinction here is about.  Some
+> of the text from the next patch would be suitable, about DMA addresses
+> usually being in a different address space but not in the case of
+> bounce buffering.
 
+Right, this needs a much tighter definition. "DMA address happens to be 
+a valid physical address" is true of various IOMMU setups too, but I 
+can't believe it's meaningful in such cases.
 
-Le 09/10/2019 à 17:11, christophe lombard a écrit :
-> Specifies the templates in the Transaction Layer that the OpenCAPI device/host
-> support when transmitting/receiving DL/DLX frames to or from the OpenCAPI
-> device/host.
-> Update, rename and create new few platform-specific calls which can be used by
-> drivers.
-> 
-> No functional change.
-> 
-> Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/include/asm/pnv-ocxl.h   |   5 +-
->   arch/powerpc/platforms/powernv/ocxl.c | 103 ++++++++++++++++++++++++--
->   drivers/misc/ocxl/config.c            |  89 +---------------------
->   3 files changed, 99 insertions(+), 98 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
-> index 8e516e339e6c..b8c68878b4ba 100644
-> --- a/arch/powerpc/include/asm/pnv-ocxl.h
-> +++ b/arch/powerpc/include/asm/pnv-ocxl.h
-> @@ -13,10 +13,7 @@ extern int pnv_ocxl_get_actag(struct pci_dev *dev, u16 *base, u16 *enabled,
->   			u16 *supported);
->   extern int pnv_ocxl_get_pasid_count(struct pci_dev *dev, int *count);
-> 
-> -extern int pnv_ocxl_get_tl_cap(struct pci_dev *dev, long *cap,
-> -			char *rate_buf, int rate_buf_size);
-> -extern int pnv_ocxl_set_tl_conf(struct pci_dev *dev, long cap,
-> -			uint64_t rate_buf_phys, int rate_buf_size);
-> +extern int pnv_ocxl_set_TL(struct pci_dev *dev, int tl_dvsec);
-> 
->   extern int pnv_ocxl_platform_setup(struct pci_dev *dev,
->   				   int PE_mask, int *hwirq,
-> diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-> index 4d26cba12b63..351324cffc2b 100644
-> --- a/arch/powerpc/platforms/powernv/ocxl.c
-> +++ b/arch/powerpc/platforms/powernv/ocxl.c
-> @@ -369,8 +369,8 @@ static void set_templ_rate(unsigned int templ, unsigned int rate, char *buf)
->   	buf[idx] |= rate << shift;
->   }
-> 
-> -int pnv_ocxl_get_tl_cap(struct pci_dev *dev, long *cap,
-> -			char *rate_buf, int rate_buf_size)
-> +static int get_tl_cap(struct pci_dev *dev, long *cap,
-> +		      char *rate_buf, int rate_buf_size)
->   {
->   	if (rate_buf_size != PNV_OCXL_TL_RATE_BUF_SIZE)
->   		return -EINVAL;
-> @@ -390,10 +390,9 @@ int pnv_ocxl_get_tl_cap(struct pci_dev *dev, long *cap,
->   	*cap = PNV_OCXL_TL_P9_RECV_CAP;
->   	return 0;
->   }
-> -EXPORT_SYMBOL_GPL(pnv_ocxl_get_tl_cap);
-> 
-> -int pnv_ocxl_set_tl_conf(struct pci_dev *dev, long cap,
-> -			uint64_t rate_buf_phys, int rate_buf_size)
-> +static int set_tl_conf(struct pci_dev *dev, long cap,
-> +		       uint64_t rate_buf_phys, int rate_buf_size)
->   {
->   	struct pci_controller *hose = pci_bus_to_host(dev->bus);
->   	struct pnv_phb *phb = hose->private_data;
-> @@ -410,7 +409,99 @@ int pnv_ocxl_set_tl_conf(struct pci_dev *dev, long cap,
->   	}
->   	return 0;
->   }
-> -EXPORT_SYMBOL_GPL(pnv_ocxl_set_tl_conf);
-> +
-> +int pnv_ocxl_set_TL(struct pci_dev *dev, int tl_dvsec)
-> +{
-> +	u32 val;
-> +	__be32 *be32ptr;
-> +	u8 timers;
-> +	int i, rc;
-> +	long recv_cap;
-> +	char *recv_rate;
-> +
-> +	recv_rate = kzalloc(PNV_OCXL_TL_RATE_BUF_SIZE, GFP_KERNEL);
-> +	if (!recv_rate)
-> +		return -ENOMEM;
-> +	/*
-> +	 * The spec defines 64 templates for messages in the
-> +	 * Transaction Layer (TL).
-> +	 *
-> +	 * The host and device each support a subset, so we need to
-> +	 * configure the transmitters on each side to send only
-> +	 * templates the receiver understands, at a rate the receiver
-> +	 * can process.  Per the spec, template 0 must be supported by
-> +	 * everybody. That's the template which has been used by the
-> +	 * host and device so far.
-> +	 *
-> +	 * The sending rate limit must be set before the template is
-> +	 * enabled.
-> +	 */
-> +
-> +	/*
-> +	 * Device -> host
-> +	 */
-> +	rc = get_tl_cap(dev, &recv_cap, recv_rate,
-> +			PNV_OCXL_TL_RATE_BUF_SIZE);
-> +	if (rc)
-> +		goto out;
-> +
-> +	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
-> +		be32ptr = (__be32 *) &recv_rate[i];
-> +		pci_write_config_dword(dev,
-> +				tl_dvsec + OCXL_DVSEC_TL_SEND_RATE + i,
-> +				be32_to_cpu(*be32ptr));
-> +	}
-> +	val = recv_cap >> 32;
-> +	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP, val);
-> +	val = recv_cap & GENMASK(31, 0);
-> +	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP + 4, val);
-> +
-> +	/*
-> +	 * Host -> device
-> +	 */
-> +	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
-> +		pci_read_config_dword(dev,
-> +				tl_dvsec + OCXL_DVSEC_TL_RECV_RATE + i,
-> +				&val);
-> +		be32ptr = (__be32 *) &recv_rate[i];
-> +		*be32ptr = cpu_to_be32(val);
-> +	}
-> +	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP, &val);
-> +	recv_cap = (long) val << 32;
-> +	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP + 4, &val);
-> +	recv_cap |= val;
-> +
-> +	rc = set_tl_conf(dev, recv_cap, __pa(recv_rate),
-> +			 PNV_OCXL_TL_RATE_BUF_SIZE);
-> +	if (rc)
-> +		goto out;
-> +
-> +	/*
-> +	 * Opencapi commands needing to be retried are classified per
-> +	 * the TL in 2 groups: short and long commands.
-> +	 *
-> +	 * The short back off timer it not used for now. It will be
-> +	 * for opencapi 4.0.
-> +	 *
-> +	 * The long back off timer is typically used when an AFU hits
-> +	 * a page fault but the NPU is already processing one. So the
-> +	 * AFU needs to wait before it can resubmit. Having a value
-> +	 * too low doesn't break anything, but can generate extra
-> +	 * traffic on the link.
-> +	 * We set it to 1.6 us for now. It's shorter than, but in the
-> +	 * same order of magnitude as the time spent to process a page
-> +	 * fault.
-> +	 */
-> +	timers = 0x2 << 4; /* long timer = 1.6 us */
-> +	pci_write_config_byte(dev, tl_dvsec + OCXL_DVSEC_TL_BACKOFF_TIMERS,
-> +			timers);
-> +
+If what you actually want is "DMA is direct or SWIOTLB" - i.e. "DMA 
+address is physical address of DMA data (not necessarily the original 
+buffer)" - wouldn't dma_is_direct() suffice?
 
+Robin.
 
-How does it work in the virtualized case? We would also need to do those 
-config space reads and writes. I'm guessing it's all handled in the host 
-behind a hcall, as we don't really want to have the guest mess with the 
-link configuration?
-
-   Fred
-
-
-> +	rc = 0;
-> +out:
-> +	kfree(recv_rate);
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_GPL(pnv_ocxl_set_TL);
+>> ---
+>>   arch/powerpc/include/asm/dma-mapping.h | 21 +++++++++++++++++++++
+>>   arch/powerpc/platforms/pseries/Kconfig |  1 +
+>>   include/linux/dma-mapping.h            | 20 ++++++++++++++++++++
+>>   kernel/dma/Kconfig                     |  3 +++
+>>   4 files changed, 45 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/dma-mapping.h b/arch/powerpc/include/asm/dma-mapping.h
+>> index 565d6f7..f92c0a4b 100644
+>> --- a/arch/powerpc/include/asm/dma-mapping.h
+>> +++ b/arch/powerpc/include/asm/dma-mapping.h
+>> @@ -5,6 +5,8 @@
+>>   #ifndef _ASM_DMA_MAPPING_H
+>>   #define _ASM_DMA_MAPPING_H
+>>   
+>> +#include <asm/svm.h>
+>> +
+>>   static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+>>   {
+>>   	/* We don't handle the NULL dev case for ISA for now. We could
+>> @@ -15,4 +17,23 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+>>   	return NULL;
+>>   }
+>>   
+>> +#ifdef CONFIG_ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
+>> +/**
+>> + * dma_addr_is_phys_addr - check whether a device DMA address is a physical
+>> + *		address
+>> + * @dev:	device to check
+>> + *
+>> + * Returns %true if any DMA address for this device happens to also be a valid
+>> + * physical address (not necessarily of the same page).
+>> + */
+>> +static inline bool dma_addr_is_phys_addr(struct device *dev)
+>> +{
+>> +	/*
+>> +	 * Secure guests always use the SWIOTLB, therefore DMA addresses are
+>> +	 * actually the physical address of the bounce buffer.
+>> +	 */
+>> +	return is_secure_guest();
+>> +}
+>> +#endif
+>> +
+>>   #endif	/* _ASM_DMA_MAPPING_H */
+>> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+>> index 9e35cdd..0108150 100644
+>> --- a/arch/powerpc/platforms/pseries/Kconfig
+>> +++ b/arch/powerpc/platforms/pseries/Kconfig
+>> @@ -152,6 +152,7 @@ config PPC_SVM
+>>   	select SWIOTLB
+>>   	select ARCH_HAS_MEM_ENCRYPT
+>>   	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
+>> +	select ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
+>>   	help
+>>   	 There are certain POWER platforms which support secure guests using
+>>   	 the Protected Execution Facility, with the help of an Ultravisor
+>> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+>> index f7d1eea..6df5664 100644
+>> --- a/include/linux/dma-mapping.h
+>> +++ b/include/linux/dma-mapping.h
+>> @@ -693,6 +693,26 @@ static inline bool dma_addressing_limited(struct device *dev)
+>>   			    dma_get_required_mask(dev);
+>>   }
+>>   
+>> +#ifndef CONFIG_ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
+>> +/**
+>> + * dma_addr_is_phys_addr - check whether a device DMA address is a physical
+>> + *		address
+>> + * @dev:	device to check
+>> + *
+>> + * Returns %true if any DMA address for this device happens to also be a valid
+>> + * physical address (not necessarily of the same page).
+>> + */
+>> +static inline bool dma_addr_is_phys_addr(struct device *dev)
+>> +{
+>> +	/*
+>> +	 * Except in very specific setups, DMA addresses exist in a different
+>> +	 * address space from CPU physical addresses and cannot be directly used
+>> +	 * to reference system memory.
+>> +	 */
+>> +	return false;
+>> +}
+>> +#endif
+>> +
+>>   #ifdef CONFIG_ARCH_HAS_SETUP_DMA_OPS
+>>   void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+>>   		const struct iommu_ops *iommu, bool coherent);
+>> diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+>> index 9decbba..6209b46 100644
+>> --- a/kernel/dma/Kconfig
+>> +++ b/kernel/dma/Kconfig
+>> @@ -51,6 +51,9 @@ config ARCH_HAS_DMA_MMAP_PGPROT
+>>   config ARCH_HAS_FORCE_DMA_UNENCRYPTED
+>>   	bool
+>>   
+>> +config ARCH_HAS_DMA_ADDR_IS_PHYS_ADDR
+>> +	bool
+>> +
+>>   config DMA_NONCOHERENT_CACHE_SYNC
+>>   	bool
+>>   
 > 
->   static int get_xsl_irq(struct pci_dev *dev, int *hwirq)
->   {
-> diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-> index c8e19bfb5ef9..7ca0f6744125 100644
-> --- a/drivers/misc/ocxl/config.c
-> +++ b/drivers/misc/ocxl/config.c
-> @@ -709,100 +709,13 @@ EXPORT_SYMBOL_GPL(ocxl_config_set_afu_state);
-> 
->   int ocxl_config_set_TL(struct pci_dev *dev, int tl_dvsec)
->   {
-> -	u32 val;
-> -	__be32 *be32ptr;
-> -	u8 timers;
-> -	int i, rc;
-> -	long recv_cap;
-> -	char *recv_rate;
-> -
->   	/*
->   	 * Skip on function != 0, as the TL can only be defined on 0
->   	 */
->   	if (PCI_FUNC(dev->devfn) != 0)
->   		return 0;
-> 
-> -	recv_rate = kzalloc(PNV_OCXL_TL_RATE_BUF_SIZE, GFP_KERNEL);
-> -	if (!recv_rate)
-> -		return -ENOMEM;
-> -	/*
-> -	 * The spec defines 64 templates for messages in the
-> -	 * Transaction Layer (TL).
-> -	 *
-> -	 * The host and device each support a subset, so we need to
-> -	 * configure the transmitters on each side to send only
-> -	 * templates the receiver understands, at a rate the receiver
-> -	 * can process.  Per the spec, template 0 must be supported by
-> -	 * everybody. That's the template which has been used by the
-> -	 * host and device so far.
-> -	 *
-> -	 * The sending rate limit must be set before the template is
-> -	 * enabled.
-> -	 */
-> -
-> -	/*
-> -	 * Device -> host
-> -	 */
-> -	rc = pnv_ocxl_get_tl_cap(dev, &recv_cap, recv_rate,
-> -				PNV_OCXL_TL_RATE_BUF_SIZE);
-> -	if (rc)
-> -		goto out;
-> -
-> -	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
-> -		be32ptr = (__be32 *) &recv_rate[i];
-> -		pci_write_config_dword(dev,
-> -				tl_dvsec + OCXL_DVSEC_TL_SEND_RATE + i,
-> -				be32_to_cpu(*be32ptr));
-> -	}
-> -	val = recv_cap >> 32;
-> -	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP, val);
-> -	val = recv_cap & GENMASK(31, 0);
-> -	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP + 4, val);
-> -
-> -	/*
-> -	 * Host -> device
-> -	 */
-> -	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
-> -		pci_read_config_dword(dev,
-> -				tl_dvsec + OCXL_DVSEC_TL_RECV_RATE + i,
-> -				&val);
-> -		be32ptr = (__be32 *) &recv_rate[i];
-> -		*be32ptr = cpu_to_be32(val);
-> -	}
-> -	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP, &val);
-> -	recv_cap = (long) val << 32;
-> -	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP + 4, &val);
-> -	recv_cap |= val;
-> -
-> -	rc = pnv_ocxl_set_tl_conf(dev, recv_cap, __pa(recv_rate),
-> -				PNV_OCXL_TL_RATE_BUF_SIZE);
-> -	if (rc)
-> -		goto out;
-> -
-> -	/*
-> -	 * Opencapi commands needing to be retried are classified per
-> -	 * the TL in 2 groups: short and long commands.
-> -	 *
-> -	 * The short back off timer it not used for now. It will be
-> -	 * for opencapi 4.0.
-> -	 *
-> -	 * The long back off timer is typically used when an AFU hits
-> -	 * a page fault but the NPU is already processing one. So the
-> -	 * AFU needs to wait before it can resubmit. Having a value
-> -	 * too low doesn't break anything, but can generate extra
-> -	 * traffic on the link.
-> -	 * We set it to 1.6 us for now. It's shorter than, but in the
-> -	 * same order of magnitude as the time spent to process a page
-> -	 * fault.
-> -	 */
-> -	timers = 0x2 << 4; /* long timer = 1.6 us */
-> -	pci_write_config_byte(dev, tl_dvsec + OCXL_DVSEC_TL_BACKOFF_TIMERS,
-> -			timers);
-> -
-> -	rc = 0;
-> -out:
-> -	kfree(recv_rate);
-> -	return rc;
-> +	return pnv_ocxl_set_TL(dev, tl_dvsec);
->   }
->   EXPORT_SYMBOL_GPL(ocxl_config_set_TL);
-> 
-
