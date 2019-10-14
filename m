@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABC7D66D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 18:05:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9692AD67CA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 18:56:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sNgp53ypzDqtr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 03:05:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sPpK0jJDzDqsK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 03:56:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="FJRy+r/z"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="smvGD9Gq"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sNds4nPtzDqPw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 03:03:44 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id w3so3454037pgt.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 09:03:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=PrIaBUAl4Zs70Rvgh9Rg9A2Po5PtzGSRs+KQTItvpaE=;
- b=FJRy+r/zmSx0gTnh8nKk1MPaEhd9110EYn+G/+d4CpMIFscpk01MlyLHoHm5nqZ8ue
- CuEul5WqlGE6j/Va+TR2Yui1YW7GVr2UUJY+9m2nC1JwH5BH8lcHf9U9XardiDiGlOoi
- LaSSoXJLXvlrU+VQVXnO4lV/hae2O2+UoHmjSciqevrjzzXyJTp2d2+Y56+KcxRdCA6F
- 7jmUcI5EAM3RTKj4p1Vaa6PDjBLCH1AKMAuK0N4y1tOSRYdnDC35vB3Mw9OlU6bctebd
- 2KNziMABLbLEYIGJg85nQqt/hgKI9d4QgqspA9b11El3xetBfiuEmVrbjpRyRnhgYpcf
- TsJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=PrIaBUAl4Zs70Rvgh9Rg9A2Po5PtzGSRs+KQTItvpaE=;
- b=bYjOR2WNNTrlzPpl64QXL+2d/B7BSHDtz7k14BJlJ9YI6L93nu+ZWUcuonrOIMGnXe
- h9/LITUJXjTR5bkoGQPcfqTNoTXjA8g0SH7f3PUZ/+6I+ioRB1GxLkwwi5UD2AHn90wg
- DVBVx0TV27K5j8kZkGlqp7+K+qO5JaGzetE9WMOLwi017e5B9yLQEStEKbHWj2LnOrWR
- MhlLcJ/BGWmXjgRBWjN3rRA2uwpoUq2urUf9Su762bjMs8FBHS5nv7GXgjVaIKVU0QjK
- 5/MbJtKASeGgeHVhyF8dDPzpxQ0aOv0Wx18nSu5uiAwymQ6rocjhB5FyRaGsvrGrnFOF
- tRqg==
-X-Gm-Message-State: APjAAAVZwUbWEbKuWwC8zBCE8I3jN7eNQ+lrmgpUA55SWM+5OWp+Gkg/
- YxR7+L01xJpefS3bgEZHOS0uwEjcuxv2gm45yrmPfA==
-X-Google-Smtp-Source: APXvYqzU0iN+S7UXYs1uP8WMChehRjsMrIbH3W7hJo7ZotpsfsIfMcdj3QGiw3CN0MtVD1Q6FSaHcabb11NtrnpteRQ=
-X-Received: by 2002:a65:464b:: with SMTP id k11mr15727142pgr.263.1571069020713; 
- Mon, 14 Oct 2019 09:03:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190911182049.77853-1-natechancellor@gmail.com>
- <20191014025101.18567-1-natechancellor@gmail.com>
-In-Reply-To: <20191014025101.18567-1-natechancellor@gmail.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 14 Oct 2019 09:03:29 -0700
-Message-ID: <CAKwvOdm+xxo=Qm7N8CznSExFNL=GxoJ0Da4Td2D0zUYH4mOLvg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] LLVM/Clang fixes for pseries_defconfig
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sPly3vLkzDqng
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 03:54:04 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46sPlh5Rfnz9vBK2;
+ Mon, 14 Oct 2019 18:53:52 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=smvGD9Gq; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id mS0_ARcL3Rjz; Mon, 14 Oct 2019 18:53:52 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46sPlh3ySvz9vBJy;
+ Mon, 14 Oct 2019 18:53:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1571072032; bh=F+FqcoHNzTzUli2Rd3wOSO58hJBknlQ50ktIOzFIMx0=;
+ h=From:Subject:To:Cc:Date:From;
+ b=smvGD9Gq+OGPg0XkhvxiDvGLTKuTFKYycUPbI8fZElapLKBIncGL56ViH2eptl89A
+ nMQMMN8z1FnfbKTPosH20g+GYfevOwQtg0X4084aowt9U/JhV/IUOPiAWa7g1hKR3P
+ TTaNZ3WS9F9fIxhjfXzmn3Jd3fdaqIDhNPv62cM4=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 08C858B89C;
+ Mon, 14 Oct 2019 18:53:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id H2ksinrXYDvu; Mon, 14 Oct 2019 18:53:57 +0200 (CEST)
+Received: from po16098vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 808A38B88F;
+ Mon, 14 Oct 2019 18:53:55 +0200 (CEST)
+Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id B0F9668DED; Mon, 14 Oct 2019 16:51:28 +0000 (UTC)
+Message-Id: <067a1b09f15f421d40797c2d04c22d4049a1cee8.1571071875.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/32s: fix allow/prevent_user_access() when crossing
+ segment boundaries.
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 14 Oct 2019 16:51:28 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,43 +73,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Oct 13, 2019 at 7:51 PM Nathan Chancellor
-<natechancellor@gmail.com> wrote:
->
-> Hi all,
->
-> This series includes a set of fixes for LLVM/Clang when building
-> pseries_defconfig. These have been floating around as standalone
-> patches so I decided to gather them up as a series so it was easier
-> to review/apply them.
->
-> This has been broken for a bit now, it would be nice to get these
-> reviewed and applied. Please let me know if I need to do anything
-> to move these along.
+Make sure starting addr is aligned to segment boundary so that when
+incrementing the segment, the starting address of the new segment is
+below the end address. Otherwise the last segment might get  missed.
 
-+1, we've been carrying these out of tree for some time now, with this
-series merged, we can get back to 0 out of tree patches.
+Fixes: a68c31fc01ef ("powerpc/32s: Implement Kernel Userspace Access Protection")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/book3s/32/kup.h | 1 +
+ 1 file changed, 1 insertion(+)
 
->
-> Previous versions:
->
-> https://lore.kernel.org/lkml/20190911182049.77853-1-natechancellor@gmail.com/
->
-> Cheers,
-> Nathan
->
->
-
-
+diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
+index 677e9babef80..f9dc597b0b86 100644
+--- a/arch/powerpc/include/asm/book3s/32/kup.h
++++ b/arch/powerpc/include/asm/book3s/32/kup.h
+@@ -91,6 +91,7 @@
+ 
+ static inline void kuap_update_sr(u32 sr, u32 addr, u32 end)
+ {
++	addr &= 0xf0000000;	/* align addr to start of segment */
+ 	barrier();	/* make sure thread.kuap is updated before playing with SRs */
+ 	while (addr < end) {
+ 		mtsrin(sr, addr);
 -- 
-Thanks,
-~Nick Desaulniers
+2.13.3
+
