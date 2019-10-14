@@ -1,81 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0695D5AB9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 07:31:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9122D5C95
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 09:43:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46s6bp1Gg1zDqWW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 16:31:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46s9Xf2fL3zDqc1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2019 18:43:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=russell.cc
- (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com;
- envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::c41; helo=mail-yw1-xc41.google.com;
+ envelope-from=jcmvbkbc@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="TmJFP6kp"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="MAJ10Txl"; dkim-atps=neutral
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
- [64.147.123.25])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="ULg0x+kV"; 
+ dkim-atps=neutral
+Received: from mail-yw1-xc41.google.com (mail-yw1-xc41.google.com
+ [IPv6:2607:f8b0:4864:20::c41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46s6NM3jtFzDqWF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 16:21:07 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id CB319420;
- Mon, 14 Oct 2019 01:13:49 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Mon, 14 Oct 2019 01:13:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm3; bh=2+HlUQKeP5NUw
- AG28BrzwAWEjn5cqHZMQi5EL+7gFgI=; b=TmJFP6kpW2a04aZ9AUAfbnClxYDWz
- SikmJbvzLHJjxVE8IOPFXcPlMtswSwmQALOcWwNp4OsqZBSrq6LsL3fi5bbee5EI
- Duyy68mPazV7X5dlr4g4EQJG4XeqMuvBnjjvKZ/63LIgnS2QM4kv6VfrcQOegzK/
- PmOgll+lNlIsYwjN6ErYp7VNJ2vYwzOKC0VPeXtvflFZtHYWMk+X0qD/q+qL8yoo
- 09FaM4fu6H302my3Y3YGygdBChLKmWDX9GIiP5vwzE2c0P+EBHi84Qe08jc0JvZ/
- jkORoOOsTiLxD9X1LsIrGGGzUKM+iQFfmbh8PfYT2DUEr6qlMFk63JM6w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :in-reply-to:message-id:mime-version:references:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm1; bh=2+HlUQKeP5NUwAG28BrzwAWEjn5cqHZMQi5EL+7gFgI=; b=MAJ10Txl
- 1DvN2K78EYsrlriivzsIBoZmJbbaNwGQ2gNFUI2yMi6855EjXh4uoatFcyJKvSM/
- rXYTYse6FUbgDmh1ekIGI7X2cMTuLi1iDcbqUJ9fLO0mSmotufyNzB/Gp89KbA0j
- PxIMyG5L11wwR67OfbtOqbmZwhUpe+t3nL9PRj/Oip5jVCttY3SV/vnVPdKxWh9Y
- E4e8ODYOishLNLlgamL1LkRIF9zSSKh3EoApupoOaO+KU1yeJ97jeuVyXH4x6ew8
- GAesMv42Lbdmw7ZT9jz61bExBjZZvR7RD+1K4JL0kEm+4rKHnj7WNMOB4E81FTmo
- YDqXf5zYohWGLw==
-X-ME-Sender: <xms:DQSkXV5_9gnBjXKA84HXc2i1EKUfJ7BUCNQB_a0LlkDLXFfLAyBcEg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrjedtgdelgecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephffvuf
- ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
- hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvd
- druddtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdr
- tggtnecuvehluhhsthgvrhfuihiivgeptd
-X-ME-Proxy: <xmx:DQSkXeZBHUYZ9j-vBmU1y3pnAY3vK9I-i8CG2dhaLjepIv0DlcV56Q>
- <xmx:DQSkXS7dUt22hfCKeZCNiQjuhYq3RXpFqor4FT563FwF6_QQUeXzkA>
- <xmx:DQSkXZA9fa7Ndetv-uvpSJ2BUuV9PVef0-dSEqitB_reWbfQTVOfqw>
- <xmx:DQSkXedzoRfeftHXbBnFUTAgNnXrZZ36c0ZYBgYFP8ncwAiohiOMNA>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 3A25580060;
- Mon, 14 Oct 2019 01:13:45 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 1/4] powerpc/mm: Implement set_memory() routines
-Date: Mon, 14 Oct 2019 16:13:17 +1100
-Message-Id: <20191014051320.158682-2-ruscur@russell.cc>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191014051320.158682-1-ruscur@russell.cc>
-References: <20191014051320.158682-1-ruscur@russell.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46s9VD2fn6zDqT2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 18:41:20 +1100 (AEDT)
+Received: by mail-yw1-xc41.google.com with SMTP id q7so5790279ywe.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 00:41:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=sEN7o3yuO56xvPDuUwKgUiAGNAgWvdh9IYFyMwir9eg=;
+ b=ULg0x+kVwo2eT+iIl7xEqgOGbAzw68nEs+Tf1EX6WbkwD6JZiL1PJq9RZFvkDJEthU
+ ocfdC+Pu3HU8yKboyYft824CwBNxjIEzx8zyCCvt9khKX2P3rnlv1B/RrEDuwgE/1mG/
+ dO9bqvuIwHg7kYFJ6cR8Rxh98z5xxnACgBkXR6UU0aSIjsvAx7CLSTrvS1W1Yc6B2hbM
+ xVKkvAsHm4h5LvwOcL7O3xZNwPSbX/1EH8Ha7BFbRmH59L7FLoc17rAHr/p/fi2/0aQd
+ XhR8EuPvAa5rR0cGHGbuZEBAsY6jzipW6b/VsB7pAItTeOGbyHWLGnGRGwAir0skqH6K
+ QqgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=sEN7o3yuO56xvPDuUwKgUiAGNAgWvdh9IYFyMwir9eg=;
+ b=kAhI+ql4L+OhtpELoYQyvMAF/ER6vAcMJ2/yT6pdXWpDPzKCkJjhshCFXVc0vudz12
+ F4WU/yvCfUJ3Vuf1I0dFmjvRwrBzzVU/oIy8TE3oKXh5xhjY6GGVhYbA46DRFoP1gviK
+ xtMiR5rrkx1CoHq6XsTNN5/2df26XODQ/0B+jHAkttZ4bgeIZg1ampD04C5eEgdYi8DW
+ ms+GxU++wtOQ83vqHvGG3ruWtfHjaetqJwVgHGkk/+1VB88t9HOQDuA0WogrUkNaq7xO
+ vhbu6to8Q0fnlJJ2lv3DB/eilWf5YKP4NvrYeYXaqPsnX73qMSg0hzQxm8wptopupXeA
+ 9nXQ==
+X-Gm-Message-State: APjAAAVbXjdC6MVmdIWlAVn0QRnz4TD7LZg4uA4En6wK9UG0z882+jFk
+ /70tfxS+70jHUVQ29UJbtbpJbB5A72kS/iize1w=
+X-Google-Smtp-Source: APXvYqw4VB+FAxVRs0lcX+ZIr7P8ykk483BJkOe9a1ta9sipUpx8Dmb1cwz7VKpxf94e6Vopzx6wAvxttFQCwsQ1L0I=
+X-Received: by 2002:a81:254d:: with SMTP id l74mr12130385ywl.409.1571038877410; 
+ Mon, 14 Oct 2019 00:41:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191011000609.29728-1-keescook@chromium.org>
+ <20191011000609.29728-26-keescook@chromium.org>
+In-Reply-To: <20191011000609.29728-26-keescook@chromium.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Mon, 14 Oct 2019 00:41:06 -0700
+Message-ID: <CAMo8BfKexMmMusB3XOeaMOZHdU4ccz+PMGA=Jy+KQhgD8H_8UQ@mail.gmail.com>
+Subject: Re: [PATCH v2 25/29] xtensa: Move EXCEPTION_TABLE to RO_DATA segment
+To: Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,155 +73,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
- joel@jms.id.au, Russell Currey <ruscur@russell.cc>, dja@axtens.net
+Cc: Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Michal Simek <monstr@monstr.eu>,
+ "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>,
+ "open list:IA64 \(Itanium\) PL..." <linux-ia64@vger.kernel.org>,
+ linux-c6x-dev@linux-c6x.org, Arnd Bergmann <arnd@arndb.de>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Borislav Petkov <bp@alien8.de>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ Andy Lutomirski <luto@kernel.org>,
+ "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The set_memory_{ro/rw/nx/x}() functions are required for STRICT_MODULE_RWX,
-and are generally useful primitives to have.  This implementation is
-designed to be completely generic across powerpc's many MMUs.
+On Thu, Oct 10, 2019 at 5:16 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> Since the EXCEPTION_TABLE is read-only, collapse it into RO_DATA.
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/xtensa/kernel/vmlinux.lds.S | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-It's possible that this could be optimised to be faster for specific
-MMUs, but the focus is on having a generic and safe implementation for
-now.
+Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
- arch/powerpc/Kconfig                  |  1 +
- arch/powerpc/include/asm/set_memory.h | 32 ++++++++++++++
- arch/powerpc/mm/Makefile              |  1 +
- arch/powerpc/mm/pageattr.c            | 60 +++++++++++++++++++++++++++
- 4 files changed, 94 insertions(+)
- create mode 100644 arch/powerpc/include/asm/set_memory.h
- create mode 100644 arch/powerpc/mm/pageattr.c
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 3e56c9c2f16e..8f7005f0d097 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -133,6 +133,7 @@ config PPC
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
-+	select ARCH_HAS_SET_MEMORY
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
-diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-new file mode 100644
-index 000000000000..5230ddb2fefd
---- /dev/null
-+++ b/arch/powerpc/include/asm/set_memory.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_POWERPC_SET_MEMORY_H
-+#define _ASM_POWERPC_SET_MEMORY_H
-+
-+#define SET_MEMORY_RO	1
-+#define SET_MEMORY_RW	2
-+#define SET_MEMORY_NX	3
-+#define SET_MEMORY_X	4
-+
-+int change_memory_attr(unsigned long addr, int numpages, int action);
-+
-+static inline int set_memory_ro(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_RO);
-+}
-+
-+static inline int set_memory_rw(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_RW);
-+}
-+
-+static inline int set_memory_nx(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_NX);
-+}
-+
-+static inline int set_memory_x(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_X);
-+}
-+
-+#endif
-diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-index 5e147986400d..d0a0bcbc9289 100644
---- a/arch/powerpc/mm/Makefile
-+++ b/arch/powerpc/mm/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_HIGHMEM)		+= highmem.o
- obj-$(CONFIG_PPC_COPRO_BASE)	+= copro_fault.o
- obj-$(CONFIG_PPC_PTDUMP)	+= ptdump/
- obj-$(CONFIG_KASAN)		+= kasan/
-+obj-$(CONFIG_ARCH_HAS_SET_MEMORY) += pageattr.o
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-new file mode 100644
-index 000000000000..fe3ecbfb8e10
---- /dev/null
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * MMU-generic set_memory implementation for powerpc
-+ *
-+ * Author: Russell Currey <ruscur@russell.cc>
-+ *
-+ * Copyright 2019, IBM Corporation.
-+ */
-+
-+#include <linux/mm.h>
-+#include <linux/set_memory.h>
-+
-+#include <asm/mmu.h>
-+#include <asm/page.h>
-+#include <asm/pgtable.h>
-+
-+static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
-+{
-+	int action = *((int *)data);
-+	pte_t pte_val;
-+
-+	// invalidate the PTE so it's safe to modify
-+	pte_val = ptep_get_and_clear(&init_mm, addr, ptep);
-+	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+
-+	// modify the PTE bits as desired, then apply
-+	switch (action) {
-+	case SET_MEMORY_RO:
-+		pte_val = pte_wrprotect(pte_val);
-+		break;
-+	case SET_MEMORY_RW:
-+		pte_val = pte_mkwrite(pte_val);
-+		break;
-+	case SET_MEMORY_NX:
-+		pte_val = pte_exprotect(pte_val);
-+		break;
-+	case SET_MEMORY_X:
-+		pte_val = pte_mkexec(pte_val);
-+		break;
-+	default:
-+		WARN_ON(true);
-+		return -EINVAL;
-+	}
-+
-+	set_pte_at(&init_mm, addr, ptep, pte_val);
-+
-+	return 0;
-+}
-+
-+int change_memory_attr(unsigned long addr, int numpages, int action)
-+{
-+	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
-+	unsigned long size = numpages * PAGE_SIZE;
-+
-+	if (!numpages)
-+		return 0;
-+
-+	return apply_to_page_range(&init_mm, start, size, change_page_attr, &action);
-+}
 -- 
-2.23.0
-
+Thanks.
+-- Max
