@@ -2,55 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119DBD75BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 14:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C98A2D7619
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 14:13:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46svHC434mzDr3B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 23:04:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46svT60rK7zDqPS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 23:12:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ spf=softfail (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46svD41RCGzDr13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 23:01:39 +1100 (AEDT)
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id D3B8F1056F8C;
- Tue, 15 Oct 2019 12:01:36 +0000 (UTC)
-Received: from [10.36.116.26] (ovpn-116-26.ams2.redhat.com [10.36.116.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6B2745C548;
- Tue, 15 Oct 2019 12:01:28 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46svPm5NH4zDqnc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 23:10:04 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 574D7B316;
+ Tue, 15 Oct 2019 12:09:59 +0000 (UTC)
+Date: Tue, 15 Oct 2019 14:09:56 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: David Hildenbrand <david@redhat.com>
 Subject: Re: [PATCH V6 1/2] mm/page_alloc: Make alloc_gigantic_page()
  available for general use
-From: David Hildenbrand <david@redhat.com>
-To: Michal Hocko <mhocko@kernel.org>
+Message-ID: <20191015120956.GF317@dhcp22.suse.cz>
 References: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
  <1571131302-32290-2-git-send-email-anshuman.khandual@arm.com>
  <9da1f196-51bd-06ac-c5dc-b55776fce2be@redhat.com>
  <20191015114723.GD317@dhcp22.suse.cz>
  <513bc2f7-8110-58f7-36c1-a04b59f11f7e@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <3eaa50db-0b66-9d9d-3293-77216f3df91e@redhat.com>
-Date: Tue, 15 Oct 2019 14:01:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <513bc2f7-8110-58f7-36c1-a04b59f11f7e@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
- (mx1.redhat.com [10.5.110.64]); Tue, 15 Oct 2019 12:01:37 +0000 (UTC)
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,36 +84,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15.10.19 13:50, David Hildenbrand wrote:
+On Tue 15-10-19 13:50:02, David Hildenbrand wrote:
 > On 15.10.19 13:47, Michal Hocko wrote:
->> On Tue 15-10-19 13:42:03, David Hildenbrand wrote:
->> [...]
->>>> -static bool pfn_range_valid_gigantic(struct zone *z,
->>>> -			unsigned long start_pfn, unsigned long nr_pages)
->>>> -{
->>>> -	unsigned long i, end_pfn = start_pfn + nr_pages;
->>>> -	struct page *page;
->>>> -
->>>> -	for (i = start_pfn; i < end_pfn; i++) {
->>>> -		if (!pfn_valid(i))
->>>> -			return false;
->>>> -
->>>> -		page = pfn_to_page(i);
->>>
->>> Am I missing something or should here really be a pfn_to_online_page() here
->>> instead of a pfn_valid() ?
->>
->> http://lkml.kernel.org/r/20180423000943.GO17484@dhcp22.suse.cz
->>
+> > On Tue 15-10-19 13:42:03, David Hildenbrand wrote:
+> > [...]
+> > > > -static bool pfn_range_valid_gigantic(struct zone *z,
+> > > > -			unsigned long start_pfn, unsigned long nr_pages)
+> > > > -{
+> > > > -	unsigned long i, end_pfn = start_pfn + nr_pages;
+> > > > -	struct page *page;
+> > > > -
+> > > > -	for (i = start_pfn; i < end_pfn; i++) {
+> > > > -		if (!pfn_valid(i))
+> > > > -			return false;
+> > > > -
+> > > > -		page = pfn_to_page(i);
+> > > 
+> > > Am I missing something or should here really be a pfn_to_online_page() here
+> > > instead of a pfn_valid() ?
+> > 
+> > http://lkml.kernel.org/r/20180423000943.GO17484@dhcp22.suse.cz
+> > 
 > 
-> So we managed to add PageReserved(page) but not pfn_to_online_page().
-> But it is the right thing to do? (or am I missing something?)
-> 
+> So we managed to add PageReserved(page) but not pfn_to_online_page(). But it
+> is the right thing to do? (or am I missing something?)
 
-Will send a patch.
-
+Yeah, pfn_to_online_page is better. But please note that this is an
+optimistic check. The real check has to be done when isolating the
+pageblock because things might change in the meantime.
 -- 
-
-Thanks,
-
-David / dhildenb
+Michal Hocko
+SUSE Labs
