@@ -2,44 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A262D7439
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 13:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19959D7505
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 13:32:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46st3Z6jn4zDr30
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 22:09:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46stZ64CKGzDqyZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 22:32:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46st1K4zs1zDqWK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 22:07:16 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FCDE28;
- Tue, 15 Oct 2019 04:07:14 -0700 (PDT)
-Received: from [10.162.42.142] (p8cg001049571a15.blr.arm.com [10.162.42.142])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- D3D3B3F68E; Tue, 15 Oct 2019 04:07:00 -0700 (PDT)
-Subject: Re: [PATCH V6 1/2] mm/page_alloc: Make alloc_gigantic_page()
- available for general use
-To: Michal Hocko <mhocko@kernel.org>
-References: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
- <1571131302-32290-2-git-send-email-anshuman.khandual@arm.com>
- <20191015104521.GY317@dhcp22.suse.cz>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <2d4e7b28-67bf-baf3-b8a0-a5b3a58e3b31@arm.com>
-Date: Tue, 15 Oct 2019 16:37:27 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46stVY0x6yzDqtr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 22:29:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="pSwXFH/T"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 46stVW5js0z9sPT; Tue, 15 Oct 2019 22:29:07 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46stVV0Fdwz9sPF;
+ Tue, 15 Oct 2019 22:29:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1571138947;
+ bh=eiKZbgxz3hog9R6u0egOQIZApWFVFlSoBtdgdYJ0/7M=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=pSwXFH/TU4AQEX6P4+z7GJgQHQpZIu4f600CBCxsdk7/jdhlUsPsBqITeS3a2SO38
+ WgDfoyvdxP0b5cyDRcSlwQcdMBhxyjzC4jtXjoYkGrVyL1XSGjnQQ3EDN25UB/zKQy
+ LhEvwLbABdpgn4rLBDMqSPiFjk9tIB6WIH1Mrxw82EaCdZx3jZWqRAKADTJFzeZKRS
+ gfcqU5PIuXq34hKfsvjBN5EkdBuhcAYBthiH8enDclevZBoX+zkD0grkbpJyCs2m3n
+ oqLoBOudkskUdlLWT61d3/Kt7z1h+wJGq6X1vrA70Eoq3f8Lb1YyHilhr8474UWPJq
+ 3RDu+U0k8sRow==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v7 4/8] powerpc/ima: add measurement rules to ima arch
+ specific policy
+In-Reply-To: <1570497267-13672-5-git-send-email-nayna@linux.ibm.com>
+References: <1570497267-13672-1-git-send-email-nayna@linux.ibm.com>
+ <1570497267-13672-5-git-send-email-nayna@linux.ibm.com>
+Date: Tue, 15 Oct 2019 22:29:02 +1100
+Message-ID: <8736fuuu0x.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20191015104521.GY317@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,69 +62,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390@vger.kernel.org, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- David Rientjes <rientjes@google.com>, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>, linuxppc-dev@lists.ozlabs.org,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Oscar Salvador <osalvador@suse.de>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mel Gorman <mgorman@techsingularity.net>,
- "David S. Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, Paul Mackerras <paulus@samba.org>,
+ Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Oliver O'Halloran <oohall@gmail.com>, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nayna Jain <nayna@linux.ibm.com> writes:
+> This patch adds the measurement rules to the arch specific policies on
+> trusted boot enabled systems.
+>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/ima_arch.c | 45 +++++++++++++++++++++++++++++++---
+>  1 file changed, 42 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+> index c22d82965eb4..88bfe4a1a9a5 100644
+> --- a/arch/powerpc/kernel/ima_arch.c
+> +++ b/arch/powerpc/kernel/ima_arch.c
+> @@ -12,8 +12,19 @@ bool arch_ima_get_secureboot(void)
+>  	return is_powerpc_os_secureboot_enabled();
+>  }
+>  
+> -/* Defines IMA appraise rules for secureboot */
+> +/*
+> + * The "arch_rules" contains both the securebot and trustedboot rules for adding
+> + * the kexec kernel image and kernel modules file hashes to the IMA measurement
+> + * list and verifying the file signatures against known good values.
+> + *
+> + * The "appraise_type=imasig|modsig" option allows the good signature to be
+> + * stored as an xattr or as an appended signature. The "template=ima-modsig"
+> + * option includes the appended signature, when available, in the IMA
+> + * measurement list.
+> + */
+>  static const char *const arch_rules[] = {
+> +	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
+> +	"measure func=MODULE_CHECK template=ima-modsig",
+>  	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+>  #if !IS_ENABLED(CONFIG_MODULE_SIG_FORCE)
+>  	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+> @@ -22,12 +33,40 @@ static const char *const arch_rules[] = {
+>  };
+>  
+>  /*
+> - * Returns the relevant IMA arch policies based on the system secureboot state.
+> + * The "measure_rules" are enabled only on "trustedboot" enabled systems.
+> + * These rules add the kexec kernel image and kernel modules file hashes to
+> + * the IMA measurement list.
+> + */
+> +static const char *const measure_rules[] = {
+> +	"measure func=KEXEC_KERNEL_CHECK",
+> +	"measure func=MODULE_CHECK",
+
+Why do these ones not have "template=ima-modsig" on the end?
+
+> +	NULL
+> +};
+> +
+> +/*
+> + * Returns the relevant IMA arch policies based on the system secureboot
+> + * and trustedboot state.
+>   */
+>  const char *const *arch_get_ima_policy(void)
+>  {
+> -	if (is_powerpc_os_secureboot_enabled())
+> +	const char *const *rules;
+> +	int offset = 0;
+> +
+> +	for (rules = arch_rules; *rules != NULL; rules++) {
+> +		if (strncmp(*rules, "appraise", 8) == 0)
+> +			break;
+> +		offset++;
+> +	}
+
+This seems like kind of a hack, doesn't it? :)
+
+What we really want is three sets of rules isn't it? But some of them
+are shared between the different sets. But they just have to be flat
+arrays of strings.
+
+I think it would probably be cleaner to just use a #define for the
+shared part of the rules, eg something like:
+
+#ifdef CONFIG_MODULE_SIG_FORCE
+#define APPRAISE_MODULE
+#else
+#define APPRAISE_MODULE \
+	"appraise func=MODULE_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
+#endif
+
+#define APPRAISE_KERNEL \
+	"appraise func=KEXEC_KERNEL_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig"
+
+#define MEASURE_KERNEL \
+	"measure func=KEXEC_KERNEL_CHECK"
+
+#define MEASURE_MODULE \
+	"measure func=MODULE_CHECK"
+
+#define APPEND_TEMPLATE_IMA_MODSIG		\
+	" template=ima-modsig"
+
+static const char *const secure_and_trusted_rules[] = {
+	MEASURE_KERNEL APPEND_TEMPLATE_IMA_MODSIG,
+	MEASURE_MODULE APPEND_TEMPLATE_IMA_MODSIG,
+	APPRAISE_KERNEL,
+	APPRAISE_MODULE
+	NULL
+};
+
+static const char *const secure_rules[] = {
+	APPRAISE_KERNEL,
+	APPRAISE_MODULE
+	NULL
+};
+
+static const char *const trusted_rules[] = {
+	MEASURE_KERNEL,
+	MEASURE_MODULE,
+	NULL
+};
 
 
-On 10/15/2019 04:15 PM, Michal Hocko wrote:
-> On Tue 15-10-19 14:51:41, Anshuman Khandual wrote:
-> [...]
->> +/**
->> + * alloc_gigantic_page_order() -- tries to allocate given order of pages
->> + * @order:	allocation order (greater than MAX_ORDER)
->> + * @gfp_mask:	GFP mask to use during compaction
->> + * @nid:	allocation node
->> + * @nodemask:	allocation nodemask
->> + *
->> + * This routine is an wrapper around alloc_contig_range() which scans over
->> + * all zones on an applicable zonelist to find a contiguous pfn range which
->> + * can the be allocated with alloc_contig_range(). This routine is intended
->> + * to be used for allocations greater than MAX_ORDER.
->> + *
->> + * Return: page on success or NULL on failure. On success a memory block
->> + * of 'order' starting with 'page' has been allocated successfully. Memory
->> + * allocated here needs to be freed with free_contig_range().
->> + */
->> +struct page *alloc_gigantic_page_order(unsigned int order, gfp_t gfp_mask,
->> +				       int nid, nodemask_t *nodemask)
-> 
-> One of the objections when Mike has proposed a similar thing last year
-> was that the interface shouldn't be order bases
-> http://lkml.kernel.org/r/20180423000943.GO17484@dhcp22.suse.cz
-> 
-> Order based API makes sense for the buddy allocator but why should we
-> restrict sizes like that for an allocator that is capable to allocate
-> arbitrary page sized requests?
+> +
+> +	if (is_powerpc_os_secureboot_enabled()
+> +	    && is_powerpc_trustedboot_enabled())
+>  		return arch_rules;
+>  
+> +	if (is_powerpc_os_secureboot_enabled())
+> +		return arch_rules + offset;
+> +
+> +	if (is_powerpc_trustedboot_enabled())
+> +		return measure_rules;
 
-Fair enough, will change it. Anyways we calculate nr_pages from the order 
-argument at the very beginning.
+Those is_foo() routines print each time they're called don't they? So on
+a system with only trusted boot I think that will print:
+
+	secureboot mode disabled
+	secureboot mode disabled
+	trustedboot mode enabled
+
+Which is a bit verbose :)
+
+cheers
