@@ -1,78 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73240D6D32
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 04:22:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87BBAD6D4E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 04:47:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sfMd3pMkzDqss
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 13:22:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sfwd4NhhzDqpG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 13:47:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=ebiggers@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="dltxS1i1"; 
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="F96iiTbN"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sfKj3B2wzDqsD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 13:20:41 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id p30so11153558pgl.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 19:20:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=8H4x/0PzSc+cFgDx1YZ5+BsoHRjAf/XAcn/2vvNKiII=;
- b=dltxS1i19yhHH709eXXysC7QrJFjh2Ra7frwS53c0XKyRv95OMf9qIQd+7bqlNHGoJ
- x+DF9gvatAOdsY6Vz414vk54AyAU2eQ0TD5eNQ4hWJYvBwo9Mal8FUWnXkoie8e2JxVb
- MIkOVxxE9jhdAGZsbUXCIqnloynfoEuSOeWr43Rr2qE4TeaxWVrkYYCcySX5x058AC/C
- BIdgJnOJ/plwzzw4OBia4mLfcA6oZt+B5FtinPCw5tkXEBb3P8xBVQwmkrEfuvioc5P4
- paqo9h8erqF+ZMX5z2IUJpVCEVkmlQFC2VXoZHAP71gIvejmGAE1+SGFpX0i9Hlfd24d
- RvJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=8H4x/0PzSc+cFgDx1YZ5+BsoHRjAf/XAcn/2vvNKiII=;
- b=kygj1GITON1EI/ly5sBXBXItFt1LyKUenBBW1rEg8S8IdaDYpABNkGjsc4ysufxyiw
- xqqmvyieNUISjTTecQxIFynI1+KPxBSs3DXIpIPtMWdwgjCZcu0BBONY8MCF7Rzg7sDX
- QW0CymnayR6xZMDkptnLtWZzAM9HO6PwXs/qxLewS/4MiR1xzOJryKP+w1te/KL+p+Ko
- wIkkMZJWrkLt92vUoP9NsWgR+suDd2veWjj/6rRAKGK4ho57XBgvFpRpgOQzMk9x7k9Q
- izj3ZwhXu1NJcoDHtRnQ7BlaDZgEhVoBT1pK84h2sB3e2/cudY9TI5BSdhWthusaujOq
- 0eew==
-X-Gm-Message-State: APjAAAW7azmvDQikcjCEPqPZDm0kdINWiN6wwyNjy3oQso5RBbTBtjW0
- qGpJ6DT9CRQG2isnxxGBbQ==
-X-Google-Smtp-Source: APXvYqzOXpShh56uDCVPgANcyM3B+A2AAhIkbDujovTmxMJALaZxxy0iXsrKcX4LEPjKigJevZPUYw==
-X-Received: by 2002:a17:90a:c094:: with SMTP id
- o20mr39731453pjs.37.1571106037499; 
- Mon, 14 Oct 2019 19:20:37 -0700 (PDT)
-Received: from mypc ([209.132.188.80])
- by smtp.gmail.com with ESMTPSA id m5sm18914736pgt.15.2019.10.14.19.20.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2019 19:20:36 -0700 (PDT)
-Date: Tue, 15 Oct 2019 10:20:26 +0800
-From: Pingfan Liu <kernelfans@gmail.com>
-To: Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH] xfs: introduce "metasync" api to sync metadata to fsblock
-Message-ID: <20191015022026.GC14327@mypc>
-References: <1570977420-3944-1-git-send-email-kernelfans@gmail.com>
- <20191013163417.GQ13108@magnolia> <20191014083315.GA10091@mypc>
- <20191014094311.GD5939@quack2.suse.cz>
- <d3ffa114-8b73-90dc-8ba6-3f44f47135d7@sandeen.net>
- <20191014200303.GF5939@quack2.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sftd1mpLzDqv4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 13:45:44 +1100 (AEDT)
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net
+ [24.5.143.220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 02830217F9;
+ Tue, 15 Oct 2019 02:45:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1571107542;
+ bh=rEgridOr8x0Q5MuTsLI43vItUDgIo4mn9nzaQ9Vl67w=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=F96iiTbN+pwBwSuudvaRKiotVJp0wfe0Jic4ohAgo+DLyt2dJ/uAeAqplBMMVpIv+
+ Hqe4aGidB8cMgFC2IZiaPU5f6NwBkfQ6kwOpN/sCjr7TZ/KYVbNh6t5fEougninXcY
+ 8UOSBpMpVUx2Iwdr9/deFzDazTEqvVXCLyZrubWU=
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH v2 1/3] crypto: powerpc - don't unnecessarily use atomic
+ scatterwalk
+Date: Mon, 14 Oct 2019 19:45:15 -0700
+Message-Id: <20191015024517.52790-2-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191015024517.52790-1-ebiggers@kernel.org>
+References: <20191015024517.52790-1-ebiggers@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191014200303.GF5939@quack2.suse.cz>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,118 +59,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Sandeen <esandeen@redhat.com>,
- "Darrick J. Wong" <darrick.wong@oracle.com>, Jan Kara <jack@suse.com>,
- Eric Sandeen <sandeen@sandeen.net>, linux-xfs@vger.kernel.org,
- Dave Chinner <dchinner@redhat.com>, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
+Cc: Markus Stockhausen <stockhausen@collogia.de>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 14, 2019 at 10:03:03PM +0200, Jan Kara wrote:
-> On Mon 14-10-19 08:23:39, Eric Sandeen wrote:
-> > On 10/14/19 4:43 AM, Jan Kara wrote:
-> > > On Mon 14-10-19 16:33:15, Pingfan Liu wrote:
-> > > > On Sun, Oct 13, 2019 at 09:34:17AM -0700, Darrick J. Wong wrote:
-> > > > > On Sun, Oct 13, 2019 at 10:37:00PM +0800, Pingfan Liu wrote:
-> > > > > > When using fadump (fireware assist dump) mode on powerpc, a mismatch
-> > > > > > between grub xfs driver and kernel xfs driver has been obsevered.  Note:
-> > > > > > fadump boots up in the following sequence: fireware -> grub reads kernel
-> > > > > > and initramfs -> kernel boots.
-> > > > > > 
-> > > > > > The process to reproduce this mismatch:
-> > > > > >    - On powerpc, boot kernel with fadump=on and edit /etc/kdump.conf.
-> > > > > >    - Replacing "path /var/crash" with "path /var/crashnew", then, "kdumpctl
-> > > > > >      restart" to rebuild the initramfs. Detail about the rebuilding looks
-> > > > > >      like: mkdumprd /boot/initramfs-`uname -r`.img.tmp;
-> > > > > >            mv /boot/initramfs-`uname -r`.img.tmp /boot/initramfs-`uname -r`.img
-> > > > > >            sync
-> > > > > >    - "echo c >/proc/sysrq-trigger".
-> > > > > > 
-> > > > > > The result:
-> > > > > > The dump image will not be saved under /var/crashnew/* as expected, but
-> > > > > > still saved under /var/crash.
-> > > > > > 
-> > > > > > The root cause:
-> > > > > > As Eric pointed out that on xfs, 'sync' ensures the consistency by writing
-> > > > > > back metadata to xlog, but not necessary to fsblock. This raises issue if
-> > > > > > grub can not replay the xlog before accessing the xfs files. Since the
-> > > > > > above dir entry of initramfs should be saved as inline data with xfs_inode,
-> > > > > > so xfs_fs_sync_fs() does not guarantee it written to fsblock.
-> > > > > > 
-> > > > > > umount can be used to write metadata fsblock, but the filesystem can not be
-> > > > > > umounted if still in use.
-> > > > > > 
-> > > > > > There are two ways to fix this mismatch, either grub or xfs. It may be
-> > > > > > easier to do this in xfs side by introducing an interface to flush metadata
-> > > > > > to fsblock explicitly.
-> > > > > > 
-> > > > > > With this patch, metadata can be written to fsblock by:
-> > > > > >    # update AIL
-> > > > > >    sync
-> > > > > >    # new introduced interface to flush metadata to fsblock
-> > > > > >    mount -o remount,metasync mountpoint
-> > > > > 
-> > > > > I think this ought to be an ioctl or some sort of generic call since the
-> > > > > jbd2 filesystems (ext3, ext4, ocfs2) suffer from the same "$BOOTLOADER
-> > > > > is too dumb to recover logs but still wants to write to the fs"
-> > > > > checkpointing problem.
-> > > > Yes, a syscall sounds more reasonable.
-> > > > > 
-> > > > > (Or maybe we should just put all that stuff in a vfat filesystem, I
-> > > > > don't know...)
-> > > > I think it is unavoidable to involve in each fs' implementation. What
-> > > > about introducing an interface sync_to_fsblock(struct super_block *sb) in
-> > > > the struct super_operations, then let each fs manage its own case?
-> > > 
-> > > Well, we already have a way to achieve what you need: fsfreeze.
-> > > Traditionally, that is guaranteed to put fs into a "clean" state very much
-> > > equivalent to the fs being unmounted and that seems to be what the
-> > > bootloader wants so that it can access the filesystem without worrying
-> > > about some recovery details. So do you see any problem with replacing
-> > > 'sync' in your example above with 'fsfreeze /boot && fsfreeze -u /boot'?
-> > > 
-> > > 								Honza
-> > 
-> > The problem with fsfreeze is that if the device you want to quiesce is, say,
-> > the root fs, freeze isn't really a good option.
-> 
-> I agree you need to be really careful not to deadlock against yourself in
-> that case. But this particular use actually has a chance to work.
-> 
-Yeah, normally there is a /boot partition in system, and if so, fsfreeze
-can work.
-> > But the other thing I want to highlight about this approach is that it does not
-> > solve the root problem: something is trying to read the block device without
-> > first replaying the log.
-> > 
-> > A call such as the proposal here is only going to leave consistent metadata at
-> > the time the call returns; at any time after that, all guarantees are off again,
-> > so the problem hasn't been solved.
-> 
-> Oh, absolutely agreed. I was also thinking about this before sending my
-> reply. Once you unfreeze, the log can start filling with changes and
-> there's no guarantee that e.g. inode does not move as part of these
-But just as fsync, we only guarantee the consistency before a sync. If
-the involved files change again, we need another sync.
-> changes. But to be fair, replaying the log isn't easy either, even more so
-> from a bootloader. You cannot write the changes from the log back into the
-> filesystem as e.g. in case of suspend-to-disk the resumed kernel gets
-> surprised and corrupts the fs under its hands (been there, tried that). So
-> you must keep changes only in memory and that's not really easy in the
-> constrained bootloader environment.
-Sigh, this is more complicated than I had thought. I guess it will be a
-long time to go with this bug, and use fsfreeze as a work around.
+From: Eric Biggers <ebiggers@google.com>
 
-Thanks and regards,
-	Pingfan
-> 
-> So I guess we are left with hacks that kind of mostly work and fsfreeze is
-> one of those. If you don't mess with the files after fsfreeze, you're
-> likely to find what you need even without replaying the log.
-> 
-> 								Honza
-> -- 
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+The PowerPC SPE implementations of AES modes only disable preemption
+during the actual encryption/decryption, not during the scatterwalk
+functions.  It's therefore unnecessary to request an atomic scatterwalk.
+So don't do so.
+
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ arch/powerpc/crypto/aes-spe-glue.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/arch/powerpc/crypto/aes-spe-glue.c b/arch/powerpc/crypto/aes-spe-glue.c
+index 3a4ca7d32477..319f1dbb3a70 100644
+--- a/arch/powerpc/crypto/aes-spe-glue.c
++++ b/arch/powerpc/crypto/aes-spe-glue.c
+@@ -186,7 +186,6 @@ static int ppc_ecb_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+ 	unsigned int ubytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+ 	blkcipher_walk_init(&walk, dst, src, nbytes);
+ 	err = blkcipher_walk_virt(desc, &walk);
+ 
+@@ -214,7 +213,6 @@ static int ppc_ecb_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+ 	unsigned int ubytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+ 	blkcipher_walk_init(&walk, dst, src, nbytes);
+ 	err = blkcipher_walk_virt(desc, &walk);
+ 
+@@ -242,7 +240,6 @@ static int ppc_cbc_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+ 	unsigned int ubytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+ 	blkcipher_walk_init(&walk, dst, src, nbytes);
+ 	err = blkcipher_walk_virt(desc, &walk);
+ 
+@@ -270,7 +267,6 @@ static int ppc_cbc_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+ 	unsigned int ubytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+ 	blkcipher_walk_init(&walk, dst, src, nbytes);
+ 	err = blkcipher_walk_virt(desc, &walk);
+ 
+@@ -298,7 +294,6 @@ static int ppc_ctr_crypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+ 	unsigned int pbytes, ubytes;
+ 	int err;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+ 	blkcipher_walk_init(&walk, dst, src, nbytes);
+ 	err = blkcipher_walk_virt_block(desc, &walk, AES_BLOCK_SIZE);
+ 
+@@ -329,7 +324,6 @@ static int ppc_xts_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+ 	int err;
+ 	u32 *twk;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+ 	blkcipher_walk_init(&walk, dst, src, nbytes);
+ 	err = blkcipher_walk_virt(desc, &walk);
+ 	twk = ctx->key_twk;
+@@ -360,7 +354,6 @@ static int ppc_xts_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+ 	int err;
+ 	u32 *twk;
+ 
+-	desc->flags &= ~CRYPTO_TFM_REQ_MAY_SLEEP;
+ 	blkcipher_walk_init(&walk, dst, src, nbytes);
+ 	err = blkcipher_walk_virt(desc, &walk);
+ 	twk = ctx->key_twk;
+-- 
+2.23.0
+
