@@ -2,39 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DD3D7046
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 09:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1124D707C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 09:50:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46snLx181VzDqX3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 18:37:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sndx06zLzDqxl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 18:50:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46snJZ04WHzDq8X
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 18:35:10 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 4C96D68CEE; Tue, 15 Oct 2019 09:35:02 +0200 (CEST)
-Date: Tue, 15 Oct 2019 09:35:01 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH 2/2] virtio_ring: Use DMA API if memory is encrypted
-Message-ID: <20191015073501.GA32345@lst.de>
-References: <1570843519-8696-1-git-send-email-linuxram@us.ibm.com>
- <1570843519-8696-2-git-send-email-linuxram@us.ibm.com>
- <1570843519-8696-3-git-send-email-linuxram@us.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46snby6h06zDqwB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 18:48:29 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id D6A5EB650;
+ Tue, 15 Oct 2019 07:48:24 +0000 (UTC)
+Message-ID: <384b42df01c0af973002fba0d5f02068e7f2e7b3.camel@suse.de>
+Subject: Re: [PATCH RFC 0/5] ARM: Raspberry Pi 4 DMA support
+From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Date: Tue, 15 Oct 2019 09:48:22 +0200
+In-Reply-To: <20191014205859.GA7634@iMac-3.local>
+References: <20191014183108.24804-1-nsaenzjulienne@suse.de>
+ <20191014205859.GA7634@iMac-3.local>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-4pilC0luxewnjymcvLYk"
+User-Agent: Evolution 3.32.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1570843519-8696-3-git-send-email-linuxram@us.ibm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,31 +47,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, sukadev@linux.vnet.ibm.com, mdroth@linux.vnet.ibm.com,
- b.zolnierkie@samsung.com, jasowang@redhat.com, aik@linux.ibm.com,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- iommu@lists.linux-foundation.org, paul.burton@mips.com, robin.murphy@arm.com,
- m.szyprowski@samsung.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de,
- david@gibson.dropbear.id.au
+Cc: linux-s390@vger.kernel.org, f.fainelli@gmail.com,
+ Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
+ hch@infradead.org, iommu@lists.linux-foundation.org, mbrugger@suse.com,
+ bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ wahrenst@gmx.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 11, 2019 at 06:25:19PM -0700, Ram Pai wrote:
-> From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> 
-> Normally, virtio enables DMA API with VIRTIO_F_IOMMU_PLATFORM, which must
-> be set by both device and guest driver. However, as a hack, when DMA API
-> returns physical addresses, guest driver can use the DMA API; even though
-> device does not set VIRTIO_F_IOMMU_PLATFORM and just uses physical
-> addresses.
 
-Sorry, but this is a complete bullshit hack.  Driver must always use
-the DMA API if they do DMA, and if virtio devices use physical addresses
-that needs to be returned through the platform firmware interfaces for
-the dma setup.  If you don't do that yet (which based on previous
-informations you don't), you need to fix it, and we can then quirk
-old implementations that already are out in the field.
+--=-4pilC0luxewnjymcvLYk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In other words: we finally need to fix that virtio mess and not pile
-hacks on top of hacks.
+On Mon, 2019-10-14 at 21:59 +0100, Catalin Marinas wrote:
+> On Mon, Oct 14, 2019 at 08:31:02PM +0200, Nicolas Saenz Julienne wrote:
+> > the Raspberry Pi 4 offers up to 4GB of memory, of which only the first
+> > is DMA capable device wide. This forces us to use of bounce buffers,
+> > which are currently not very well supported by ARM's custom DMA ops.
+> > Among other things the current mechanism (see dmabounce.c) isn't
+> > suitable for high memory. Instead of fixing it, this series introduces =
+a
+> > way of selecting dma-direct as the default DMA ops provider which allow=
+s
+> > for the Raspberry Pi to make use of swiotlb.
+>=20
+> I presume these patches go on top of this series:
+>=20
+> http://lkml.kernel.org/r/20190911182546.17094-1-nsaenzjulienne@suse.de
+
+Yes, forgot to mention it. It's relevant for the first patch.
+
+>=20
+> which I queued here:
+>=20
+>=20
+https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?h=3Dfo=
+r-next/zone-dma
+
+Thanks!
+
+A little off topic but I was wondering if you have a preferred way to refer=
+ to
+the arm architecture in a way that it unambiguously excludes arm64 (for exa=
+mple
+arm32 would work).
+
+Regards,
+Nicolas
+
+
+--=-4pilC0luxewnjymcvLYk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl2lecYACgkQlfZmHno8
+x/7lZQf7BpuyTA7KitVkqMXl3L4hWPGTsvKYE4a6JPGwACQaRTlyPLU+YRDvD5uG
+3ulte/b7C+OKAXzI17fdpJvO8SBHGO+E0Y2G/j46W9pVezPmyccfF+M0uGKsP9d7
+/tcaYEm0X5vNtneMFYydutqLSqQT1uFUcPdJ6M0AJVUcLOtANEfXEJjYEnj6s7wd
+OyV2QaOXth+V85DGT+wgaPPOLRmxBmlMbVfZYJUVJ7+9o2FiuWBYDvQ4OA3dHAXf
+mVw+II6YIOo4WghksiGES3JYt/0yd0cjqf6Qq7MbB9RIUdvhbJC28ZzRdKSgOA9Q
+8PLdonhaeyOJ5k3hZqN+MFiGPt6QGw==
+=0lDM
+-----END PGP SIGNATURE-----
+
+--=-4pilC0luxewnjymcvLYk--
+
