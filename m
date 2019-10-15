@@ -1,70 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB17D6F96
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 08:29:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FD6D6F99
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 08:31:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sls91XPGzDqrM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 17:29:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46slvX0BbKzDqtK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 17:31:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="BrUhn4gp"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="fvMKJxrK"; 
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46slqC0QrJzDqnp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 17:28:05 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id q5so11760414pfg.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 23:28:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sls83gCmzDqnr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 17:29:48 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id h195so11795247pfe.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 23:29:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=NXE3NjexAQXsjlqVk+3nF0FjJ7hypONs1Weo4aM4img=;
- b=BrUhn4gpvpU5Z1D3BIYiGb5+BX15AlS0UBGrN2TfSOqnRdqvz5ESw5SxNRYtS6rfNu
- yEEKByqH3yonfpP8XawOOPCfeNQSFnK5jX/7PnK2qG0KaOjg7QKYKECvhz/2DsUi6qL3
- idKHz9QtT8s/JH4+qA0A7Xc0ogpK60OJ9OHFA=
+ :mime-version; bh=EVslka8YIIComg0Mb0g4qEN93Z7Bcof6eewif1bv3wA=;
+ b=fvMKJxrKgp9CYweCSx4MbPgFiuWurTltPjobUhlnzb8Cmkn10UhyDvibnvLfhdCaPZ
+ iAcFBr/ToDPczF6SCfKJW4c8wPd2bWUyqCWkL1mx5drZ4hYuVcGff1H76UgQlLjMw/Fk
+ yNZnuw4mvgPV/E9nzi6lE81E6UMI/dcXYr0qA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=NXE3NjexAQXsjlqVk+3nF0FjJ7hypONs1Weo4aM4img=;
- b=XqDv2dSwuMV1b+m/ffiviXHqn/7nbDQ3xK3Urbdfng6IkGR6ftB9EqlrW+MCOdxky3
- cPM75sGNi8qbDkU+sNiI/TflOPw1EJTLzqzwb5Vons/Zst7gG1VaC2v3uwn/AqL434Pw
- nbFTHy20dTcsQC8+Rmt1oEMKP7IIAl33rzYloE3qqYL27acyUXahDDJLMAbCs28YsJQj
- qTLc2Bpg7USBwLTZ4NCFDraBXArLqptjV4BFwEwNeW507IdYeZgvs8I7RRYyRm6R7sxL
- z0VLD6M2t0z0/fQafW87+sxiDyl0J+VsL512H5AaY0eVjgeHx8/ucF5qtmmGWnkB1rUS
- jyHA==
-X-Gm-Message-State: APjAAAXDk6wc6HewtxVdimZKKlIxuhAnajB4eRrBJidxbgg7s8dLunx3
- yxCfl1G4AXLi2TFHG3abGHWfMg==
-X-Google-Smtp-Source: APXvYqx2YnPD7idhykG7qGhqI/5d0pFVNgvu+VZ7HdsMybk4ZNBm9CymFRlu6abFrzqOPws1e0wZyg==
-X-Received: by 2002:a17:90a:6302:: with SMTP id
- e2mr39528114pjj.20.1571120881762; 
- Mon, 14 Oct 2019 23:28:01 -0700 (PDT)
+ bh=EVslka8YIIComg0Mb0g4qEN93Z7Bcof6eewif1bv3wA=;
+ b=nVVKDmiNMhFcQ/SGQqk9ZdeKDXcVSFyQeFH6YRqP606Q8ZHyvB05AxETQOrHu+ylqW
+ siCeU+dwJI24mObyJwvFf+4wttVLbP6tnjKrVZWNDnAOT3BEd1vaHVwzr5fzh8C8cH/M
+ ffR+rwfkoMJQCCn5QCswmzQa3A+Lrf7Meb6dsUhNFMgYVkk+0KdmQEUlDWPk0dGovMOk
+ t2ty8e+CsBt8CuaEV6UIMJELDBJbY4NhrKZGr5iYktMkrJGCEPxcyiJZ/8fbyF2voBw1
+ xqYvNuaum6UdkvbGhP3kCpCsm5mFTwwtR6fc6iPYOgXKSFRRrZfltWgaiXcJA5TiIGCR
+ v8yw==
+X-Gm-Message-State: APjAAAXK6TBFKdEjCSrBslxSa/XRy+T9ic4vxoFapIc/9vyu0l7F0Ru2
+ xgy+b22YkTULNrvSxrjVnB747Q==
+X-Google-Smtp-Source: APXvYqzYXrgvkLqJx+T8uaM5IYuUGK7SLiyvcJPx/6JLaQ1UBHy/P4sYrgAY4hiObjyQROeFg8fEOg==
+X-Received: by 2002:a17:90a:9201:: with SMTP id
+ m1mr41063558pjo.42.1571120984449; 
+ Mon, 14 Oct 2019 23:29:44 -0700 (PDT)
 Received: from localhost (ppp167-251-205.static.internode.on.net.
  [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id q76sm44206995pfc.86.2019.10.14.23.28.00
+ by smtp.gmail.com with ESMTPSA id s191sm14125845pgc.94.2019.10.14.23.29.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2019 23:28:00 -0700 (PDT)
+ Mon, 14 Oct 2019 23:29:43 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
-To: Mark Rutland <mark.rutland@arm.com>
+To: Andrey Ryabinin <aryabinin@virtuozzo.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, x86@kernel.org, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr
 Subject: Re: [PATCH v8 1/5] kasan: support backing vmalloc space with real
  shadow memory
-In-Reply-To: <20191014154359.GC20438@lakrids.cambridge.arm.com>
+In-Reply-To: <87ftjvtoo7.fsf@dja-thinkpad.axtens.net>
 References: <20191001065834.8880-1-dja@axtens.net>
  <20191001065834.8880-2-dja@axtens.net>
- <20191014154359.GC20438@lakrids.cambridge.arm.com>
-Date: Tue, 15 Oct 2019 17:27:57 +1100
-Message-ID: <87a7a2ttea.fsf@dja-thinkpad.axtens.net>
+ <352cb4fa-2e57-7e3b-23af-898e113bbe22@virtuozzo.com>
+ <87ftjvtoo7.fsf@dja-thinkpad.axtens.net>
+Date: Tue, 15 Oct 2019 17:29:40 +1100
+Message-ID: <878spmttbf.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,90 +82,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gor@linux.ibm.com, x86@kernel.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com,
- luto@kernel.org, aryabinin@virtuozzo.com, linuxppc-dev@lists.ozlabs.org,
- dvyukov@google.com
+Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mark Rutland <mark.rutland@arm.com> writes:
+>>> @@ -2497,6 +2533,9 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
+>>>  	if (!addr)
+>>>  		return NULL;
+>>>  
+>>> +	if (kasan_populate_vmalloc(real_size, area))
+>>> +		return NULL;
+>>> +
+>>
+>> KASAN itself uses __vmalloc_node_range() to allocate and map shadow in memory online callback.
+>> So we should either skip non-vmalloc and non-module addresses here or teach kasan's memory online/offline
+>> callbacks to not use __vmalloc_node_range() (do something similar to kasan_populate_vmalloc() perhaps?). 
+>
+> Ah, right you are. I haven't been testing that.
+>
+> I am a bit nervous about further restricting kasan_populate_vmalloc: I
+> seem to remember having problems with code using the vmalloc family of
+> functions to map memory that doesn't lie within vmalloc space but which
+> still has instrumented accesses.
 
-> On Tue, Oct 01, 2019 at 04:58:30PM +1000, Daniel Axtens wrote:
->> Hook into vmalloc and vmap, and dynamically allocate real shadow
->> memory to back the mappings.
->> 
->> Most mappings in vmalloc space are small, requiring less than a full
->> page of shadow space. Allocating a full shadow page per mapping would
->> therefore be wasteful. Furthermore, to ensure that different mappings
->> use different shadow pages, mappings would have to be aligned to
->> KASAN_SHADOW_SCALE_SIZE * PAGE_SIZE.
->> 
->> Instead, share backing space across multiple mappings. Allocate a
->> backing page when a mapping in vmalloc space uses a particular page of
->> the shadow region. This page can be shared by other vmalloc mappings
->> later on.
->> 
->> We hook in to the vmap infrastructure to lazily clean up unused shadow
->> memory.
->> 
->> To avoid the difficulties around swapping mappings around, this code
->> expects that the part of the shadow region that covers the vmalloc
->> space will not be covered by the early shadow page, but will be left
->> unmapped. This will require changes in arch-specific code.
->> 
->> This allows KASAN with VMAP_STACK, and may be helpful for architectures
->> that do not have a separate module space (e.g. powerpc64, which I am
->> currently working on). It also allows relaxing the module alignment
->> back to PAGE_SIZE.
->> 
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=202009
->> Acked-by: Vasily Gorbik <gor@linux.ibm.com>
->> Signed-off-by: Daniel Axtens <dja@axtens.net>
->> [Mark: rework shadow allocation]
->> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
->
-> Sorry to point this out so late, but your S-o-B should come last in the
-> chain per Documentation/process/submitting-patches.rst. Judging by the
-> rest of that, I think you want something like:
->
-> Co-developed-by: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com> [shadow rework]
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
->
-> ... leaving yourself as the Author in the headers.
+I was wrong or remembering early implementation bugs.
 
-no worries, I wasn't really sure how best to arrange them, so thanks for
-clarifying!
+If the memory we're allocating in __vmalloc_node_range falls outside of
+vmalloc and module space, it shouldn't be getting shadow mapped for it
+by kasan_populate_vmalloc. For v9, I've guarded the call with
+is_vmalloc_or_module. It seems to work fine when tested with hotplugged
+memory.
 
->
-> Sorry to have made that more complicated!
->
-> [...]
->
->> +static int kasan_depopulate_vmalloc_pte(pte_t *ptep, unsigned long addr,
->> +					void *unused)
->> +{
->> +	unsigned long page;
->> +
->> +	page = (unsigned long)__va(pte_pfn(*ptep) << PAGE_SHIFT);
->> +
->> +	spin_lock(&init_mm.page_table_lock);
->> +
->> +	if (likely(!pte_none(*ptep))) {
->> +		pte_clear(&init_mm, addr, ptep);
->> +		free_page(page);
->> +	}
->
-> There should be TLB maintenance between clearing the PTE and freeing the
-> page here.
-
-Fixed for v9.
+Thanks again.
 
 Regards,
 Daniel
 
+> On the other hand, I'm not keen on rewriting any of the memory
+> on/offline code if I can avoid it!
 >
-> Thanks,
-> Mark.
+> I'll have a look and get back you as soon as I can.
+>
+> Thanks for catching this.
+>
+> Kind regards,
+> Daniel
+>
+>>
+>> -- 
+>> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
+>> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
+>> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/352cb4fa-2e57-7e3b-23af-898e113bbe22%40virtuozzo.com.
