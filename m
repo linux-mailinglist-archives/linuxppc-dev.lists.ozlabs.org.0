@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECB8D7224
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 11:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992E8D7231
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 11:25:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sqjm3VsFzDr10
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 20:23:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sqmC2l34zDqyw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 20:25:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,22 +16,24 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=arm.com
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46sqgN6SD1zDqnf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 20:21:33 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 46sqgY75g0zDqyn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 20:21:45 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3CD728;
- Tue, 15 Oct 2019 02:21:30 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89C7828;
+ Tue, 15 Oct 2019 02:21:43 -0700 (PDT)
 Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
  [10.162.42.142])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9AF7D3F718;
- Tue, 15 Oct 2019 02:21:19 -0700 (PDT)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5D3623F718;
+ Tue, 15 Oct 2019 02:21:31 -0700 (PDT)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org
-Subject: [PATCH V6 0/2] mm/debug: Add tests validating architecture page table
- helpers
-Date: Tue, 15 Oct 2019 14:51:40 +0530
-Message-Id: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
+Subject: [PATCH V6 1/2] mm/page_alloc: Make alloc_gigantic_page() available
+ for general use
+Date: Tue, 15 Oct 2019 14:51:41 +0530
+Message-Id: <1571131302-32290-2-git-send-email-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
+References: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,16 +52,17 @@ Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
  Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
  Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
  sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- linux-s390@vger.kernel.org, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
  Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
  Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Kees Cook <keescook@chromium.org>,
+ David Rientjes <rientjes@google.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, Kees Cook <keescook@chromium.org>,
  Anshuman Khandual <anshuman.khandual@arm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, linuxppc-dev@lists.ozlabs.org,
  Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
  Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Oscar Salvador <osalvador@suse.de>,
  Sri Krishna chowdary <schowdary@nvidia.com>,
  Ard Biesheuvel <ard.biesheuvel@linaro.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
@@ -67,107 +70,29 @@ Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
  Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
  Vineet Gupta <vgupta@synopsys.com>,
  Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Mel Gorman <mgorman@techsingularity.net>,
  "David S. Miller" <davem@davemloft.net>,
  Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series adds a test validation for architecture exported page table
-helpers. Patch in the series adds basic transformation tests at various
-levels of the page table. Before that it exports gigantic page allocation
-function from HugeTLB.
-
-This test was originally suggested by Catalin during arm64 THP migration
-RFC discussion earlier. Going forward it can include more specific tests
-with respect to various generic MM functions like THP, HugeTLB etc and
-platform specific tests.
-
-https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
-
-Changes in V6:
-
-- Moved alloc_gigantic_page_order() into mm/page_alloc.c per Michal
-- Moved alloc_gigantic_page_order() within CONFIG_CONTIG_ALLOC in the test
-- Folded Andrew's include/asm-generic/pgtable.h fix into the test patch 2/2
-
-Changes in V5: (https://patchwork.kernel.org/project/linux-mm/list/?series=185991)
-
-- Redefined and moved X86 mm_p4d_folded() into a different header per Kirill/Ingo
-- Updated the config option comment per Ingo and dropped 'kernel module' reference
-- Updated the commit message and dropped 'kernel module' reference
-- Changed DEBUG_ARCH_PGTABLE_TEST into DEBUG_VM_PGTABLE per Ingo
-- Moved config option from mm/Kconfig.debug into lib/Kconfig.debug
-- Renamed core test function arch_pgtable_tests() as debug_vm_pgtable()
-- Renamed mm/arch_pgtable_test.c as mm/debug_vm_pgtable.c
-- debug_vm_pgtable() gets called from kernel_init_freeable() after init_mm_internals()
-- Added an entry in Documentation/features/debug/ per Ingo
-- Enabled the test on arm64 and x86 platforms for now
-
-Changes in V4: (https://patchwork.kernel.org/project/linux-mm/list/?series=183465)
-
-- Disable DEBUG_ARCH_PGTABLE_TEST for ARM and IA64 platforms
-
-Changes in V3: (https://lore.kernel.org/patchwork/project/lkml/list/?series=411216)
-
-- Changed test trigger from module format into late_initcall()
-- Marked all functions with __init to be freed after completion
-- Changed all __PGTABLE_PXX_FOLDED checks as mm_pxx_folded()
-- Folded in PPC32 fixes from Christophe
-
-Changes in V2:
-
-https://lore.kernel.org/linux-mm/1568268173-31302-1-git-send-email-anshuman.khandual@arm.com/T/#t
-
-- Fixed small typo error in MODULE_DESCRIPTION()
-- Fixed m64k build problems for lvalue concerns in pmd_xxx_tests()
-- Fixed dynamic page table level folding problems on x86 as per Kirril
-- Fixed second pointers during pxx_populate_tests() per Kirill and Gerald
-- Allocate and free pte table with pte_alloc_one/pte_free per Kirill
-- Modified pxx_clear_tests() to accommodate s390 lower 12 bits situation
-- Changed RANDOM_NZVALUE value from 0xbe to 0xff
-- Changed allocation, usage, free sequence for saved_ptep
-- Renamed VMA_FLAGS as VMFLAGS
-- Implemented a new method for random vaddr generation
-- Implemented some other cleanups
-- Dropped extern reference to mm_alloc()
-- Created and exported new alloc_gigantic_page_order()
-- Dropped the custom allocator and used new alloc_gigantic_page_order()
-
-Changes in V1:
-
-https://lore.kernel.org/linux-mm/1567497706-8649-1-git-send-email-anshuman.khandual@arm.com/
-
-- Added fallback mechanism for PMD aligned memory allocation failure
-
-Changes in RFC V2:
-
-https://lore.kernel.org/linux-mm/1565335998-22553-1-git-send-email-anshuman.khandual@arm.com/T/#u
-
-- Moved test module and it's config from lib/ to mm/
-- Renamed config TEST_ARCH_PGTABLE as DEBUG_ARCH_PGTABLE_TEST
-- Renamed file from test_arch_pgtable.c to arch_pgtable_test.c
-- Added relevant MODULE_DESCRIPTION() and MODULE_AUTHOR() details
-- Dropped loadable module config option
-- Basic tests now use memory blocks with required size and alignment
-- PUD aligned memory block gets allocated with alloc_contig_range()
-- If PUD aligned memory could not be allocated it falls back on PMD aligned
-  memory block from page allocator and pud_* tests are skipped
-- Clear and populate tests now operate on real in memory page table entries
-- Dummy mm_struct gets allocated with mm_alloc()
-- Dummy page table entries get allocated with [pud|pmd|pte]_alloc_[map]()
-- Simplified [p4d|pgd]_basic_tests(), now has random values in the entries
-
-Original RFC V1:
-
-https://lore.kernel.org/linux-mm/1564037723-26676-1-git-send-email-anshuman.khandual@arm.com/
+alloc_gigantic_page() implements an allocation method where it scans over
+various zones looking for a large contiguous memory block which could not
+have been allocated through the buddy allocator. A subsequent patch which
+tests arch page table helpers needs such a method to allocate PUD_SIZE
+sized memory block. In the future such methods might have other use cases
+as well. So alloc_gigantic_page() has been split carving out actual memory
+allocation method and made available via new alloc_gigantic_page_order()
+which is wrapped under CONFIG_CONTIG_ALLOC.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
 Cc: Jason Gunthorpe <jgg@ziepe.ca>
 Cc: Dan Williams <dan.j.williams@intel.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
@@ -195,7 +120,10 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Kirill A. Shutemov <kirill@shutemov.name>
 Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
 Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Mel Gorman <mgorman@techsingularity.net>
 Cc: linux-snps-arc@lists.infradead.org
 Cc: linux-mips@vger.kernel.org
 Cc: linux-arm-kernel@lists.infradead.org
@@ -206,28 +134,228 @@ Cc: linux-sh@vger.kernel.org
 Cc: sparclinux@vger.kernel.org
 Cc: x86@kernel.org
 Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ include/linux/gfp.h |  3 ++
+ mm/hugetlb.c        | 76 +----------------------------------
+ mm/page_alloc.c     | 98 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 102 insertions(+), 75 deletions(-)
 
-
-Anshuman Khandual (2):
-  mm/page_alloc: Make alloc_gigantic_page() available for general use
-  mm/debug: Add tests validating architecture page table helpers
-
- .../debug/debug-vm-pgtable/arch-support.txt   |  34 ++
- arch/arm64/Kconfig                            |   1 +
- arch/x86/Kconfig                              |   1 +
- arch/x86/include/asm/pgtable_64.h             |   6 +
- include/asm-generic/pgtable.h                 |   6 +
- include/linux/gfp.h                           |   3 +
- init/main.c                                   |   1 +
- lib/Kconfig.debug                             |  21 +
- mm/Makefile                                   |   1 +
- mm/debug_vm_pgtable.c                         | 450 ++++++++++++++++++
- mm/hugetlb.c                                  |  76 +--
- mm/page_alloc.c                               |  98 ++++
- 12 files changed, 623 insertions(+), 75 deletions(-)
- create mode 100644 Documentation/features/debug/debug-vm-pgtable/arch-support.txt
- create mode 100644 mm/debug_vm_pgtable.c
-
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index fb07b503dc45..379ad23437d1 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -589,6 +589,9 @@ static inline bool pm_suspended_storage(void)
+ /* The below functions must be run on a range from a single zone. */
+ extern int alloc_contig_range(unsigned long start, unsigned long end,
+ 			      unsigned migratetype, gfp_t gfp_mask);
++extern struct page *alloc_gigantic_page_order(unsigned int order,
++					      gfp_t gfp_mask, int nid,
++					      nodemask_t *nodemask);
+ #endif
+ void free_contig_range(unsigned long pfn, unsigned int nr_pages);
+ 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 977f9a323a7a..d199556a4a2c 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1023,86 +1023,12 @@ static void free_gigantic_page(struct page *page, unsigned int order)
+ }
+ 
+ #ifdef CONFIG_CONTIG_ALLOC
+-static int __alloc_gigantic_page(unsigned long start_pfn,
+-				unsigned long nr_pages, gfp_t gfp_mask)
+-{
+-	unsigned long end_pfn = start_pfn + nr_pages;
+-	return alloc_contig_range(start_pfn, end_pfn, MIGRATE_MOVABLE,
+-				  gfp_mask);
+-}
+-
+-static bool pfn_range_valid_gigantic(struct zone *z,
+-			unsigned long start_pfn, unsigned long nr_pages)
+-{
+-	unsigned long i, end_pfn = start_pfn + nr_pages;
+-	struct page *page;
+-
+-	for (i = start_pfn; i < end_pfn; i++) {
+-		if (!pfn_valid(i))
+-			return false;
+-
+-		page = pfn_to_page(i);
+-
+-		if (page_zone(page) != z)
+-			return false;
+-
+-		if (PageReserved(page))
+-			return false;
+-
+-		if (page_count(page) > 0)
+-			return false;
+-
+-		if (PageHuge(page))
+-			return false;
+-	}
+-
+-	return true;
+-}
+-
+-static bool zone_spans_last_pfn(const struct zone *zone,
+-			unsigned long start_pfn, unsigned long nr_pages)
+-{
+-	unsigned long last_pfn = start_pfn + nr_pages - 1;
+-	return zone_spans_pfn(zone, last_pfn);
+-}
+-
+ static struct page *alloc_gigantic_page(struct hstate *h, gfp_t gfp_mask,
+ 		int nid, nodemask_t *nodemask)
+ {
+ 	unsigned int order = huge_page_order(h);
+-	unsigned long nr_pages = 1 << order;
+-	unsigned long ret, pfn, flags;
+-	struct zonelist *zonelist;
+-	struct zone *zone;
+-	struct zoneref *z;
+-
+-	zonelist = node_zonelist(nid, gfp_mask);
+-	for_each_zone_zonelist_nodemask(zone, z, zonelist, gfp_zone(gfp_mask), nodemask) {
+-		spin_lock_irqsave(&zone->lock, flags);
+ 
+-		pfn = ALIGN(zone->zone_start_pfn, nr_pages);
+-		while (zone_spans_last_pfn(zone, pfn, nr_pages)) {
+-			if (pfn_range_valid_gigantic(zone, pfn, nr_pages)) {
+-				/*
+-				 * We release the zone lock here because
+-				 * alloc_contig_range() will also lock the zone
+-				 * at some point. If there's an allocation
+-				 * spinning on this lock, it may win the race
+-				 * and cause alloc_contig_range() to fail...
+-				 */
+-				spin_unlock_irqrestore(&zone->lock, flags);
+-				ret = __alloc_gigantic_page(pfn, nr_pages, gfp_mask);
+-				if (!ret)
+-					return pfn_to_page(pfn);
+-				spin_lock_irqsave(&zone->lock, flags);
+-			}
+-			pfn += nr_pages;
+-		}
+-
+-		spin_unlock_irqrestore(&zone->lock, flags);
+-	}
+-
+-	return NULL;
++	return alloc_gigantic_page_order(order, gfp_mask, nid, nodemask);
+ }
+ 
+ static void prep_new_huge_page(struct hstate *h, struct page *page, int nid);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 6ab8eb670fd3..0f67367213c6 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -8497,6 +8497,104 @@ int alloc_contig_range(unsigned long start, unsigned long end,
+ 				pfn_max_align_up(end), migratetype);
+ 	return ret;
+ }
++
++static int __alloc_gigantic_page(unsigned long start_pfn,
++				 unsigned long nr_pages, gfp_t gfp_mask)
++{
++	unsigned long end_pfn = start_pfn + nr_pages;
++
++	return alloc_contig_range(start_pfn, end_pfn, MIGRATE_MOVABLE,
++				  gfp_mask);
++}
++
++static bool pfn_range_valid_gigantic(struct zone *z, unsigned long start_pfn,
++				     unsigned long nr_pages)
++{
++	unsigned long i, end_pfn = start_pfn + nr_pages;
++	struct page *page;
++
++	for (i = start_pfn; i < end_pfn; i++) {
++		if (!pfn_valid(i))
++			return false;
++
++		page = pfn_to_page(i);
++
++		if (page_zone(page) != z)
++			return false;
++
++		if (PageReserved(page))
++			return false;
++
++		if (page_count(page) > 0)
++			return false;
++
++		if (PageHuge(page))
++			return false;
++	}
++	return true;
++}
++
++static bool zone_spans_last_pfn(const struct zone *zone,
++				unsigned long start_pfn, unsigned long nr_pages)
++{
++	unsigned long last_pfn = start_pfn + nr_pages - 1;
++
++	return zone_spans_pfn(zone, last_pfn);
++}
++
++/**
++ * alloc_gigantic_page_order() -- tries to allocate given order of pages
++ * @order:	allocation order (greater than MAX_ORDER)
++ * @gfp_mask:	GFP mask to use during compaction
++ * @nid:	allocation node
++ * @nodemask:	allocation nodemask
++ *
++ * This routine is an wrapper around alloc_contig_range() which scans over
++ * all zones on an applicable zonelist to find a contiguous pfn range which
++ * can the be allocated with alloc_contig_range(). This routine is intended
++ * to be used for allocations greater than MAX_ORDER.
++ *
++ * Return: page on success or NULL on failure. On success a memory block
++ * of 'order' starting with 'page' has been allocated successfully. Memory
++ * allocated here needs to be freed with free_contig_range().
++ */
++struct page *alloc_gigantic_page_order(unsigned int order, gfp_t gfp_mask,
++				       int nid, nodemask_t *nodemask)
++{
++	unsigned long nr_pages = 1 << order;
++	unsigned long ret, pfn, flags;
++	struct zonelist *zonelist;
++	struct zone *zone;
++	struct zoneref *z;
++
++	zonelist = node_zonelist(nid, gfp_mask);
++	for_each_zone_zonelist_nodemask(zone, z, zonelist,
++					gfp_zone(gfp_mask), nodemask) {
++		spin_lock_irqsave(&zone->lock, flags);
++
++		pfn = ALIGN(zone->zone_start_pfn, nr_pages);
++		while (zone_spans_last_pfn(zone, pfn, nr_pages)) {
++			if (pfn_range_valid_gigantic(zone, pfn, nr_pages)) {
++				/*
++				 * We release the zone lock here because
++				 * alloc_contig_range() will also lock the zone
++				 * at some point. If there's an allocation
++				 * spinning on this lock, it may win the race
++				 * and cause alloc_contig_range() to fail...
++				 */
++				spin_unlock_irqrestore(&zone->lock, flags);
++				ret = __alloc_gigantic_page(pfn, nr_pages,
++							gfp_mask);
++				if (!ret)
++					return pfn_to_page(pfn);
++				spin_lock_irqsave(&zone->lock, flags);
++			}
++			pfn += nr_pages;
++		}
++		spin_unlock_irqrestore(&zone->lock, flags);
++	}
++	return NULL;
++}
+ #endif /* CONFIG_CONTIG_ALLOC */
+ 
+ void free_contig_range(unsigned long pfn, unsigned int nr_pages)
 -- 
 2.20.1
 
