@@ -2,75 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C383D6D2A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 04:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73240D6D32
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 04:22:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sfBW1bwczDqx1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 13:14:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46sfMd3pMkzDqss
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 13:22:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="OZVQhXv/"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dltxS1i1"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46sf8h6TpdzDqhn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 13:12:52 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id u20so8820603plq.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 19:12:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sfKj3B2wzDqsD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 13:20:41 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id p30so11153558pgl.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2019 19:20:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=QkrBW78afE0mQwWYjfkjXOFMLoHqmY36U1/V151SyV4=;
- b=OZVQhXv/nbs175o9O2gug9qXbAkURJTb5dRnma8sorrZi4V2NYZNFz6aJ0ZJUXDxEM
- ukXnyaB5/9c+Bm8kpCXHusb60AFqZ7R/zOtJtXysndSXoQ/O2R/ppi0znVmvlPWLTPCh
- aZbhtfC/vdtYe1md2ezzkAuz35pGxMd4RpbDiUX6h8m9x3/X8T+rrvgbOy7AQOfuz+6j
- AKNvNU8/HPlNt4yxnNr5wwwxMwFiJZvO8pLj8dd1sMFcA7p958Cst+tPxbj59638G1Ju
- F39PTHoDVM6ACPeEBGeQdWTfxVj2Jxq87+h4gz2ncTEbMqnvwHF4xkDfPZFsDd8yBMts
- i+gA==
+ bh=8H4x/0PzSc+cFgDx1YZ5+BsoHRjAf/XAcn/2vvNKiII=;
+ b=dltxS1i19yhHH709eXXysC7QrJFjh2Ra7frwS53c0XKyRv95OMf9qIQd+7bqlNHGoJ
+ x+DF9gvatAOdsY6Vz414vk54AyAU2eQ0TD5eNQ4hWJYvBwo9Mal8FUWnXkoie8e2JxVb
+ MIkOVxxE9jhdAGZsbUXCIqnloynfoEuSOeWr43Rr2qE4TeaxWVrkYYCcySX5x058AC/C
+ BIdgJnOJ/plwzzw4OBia4mLfcA6oZt+B5FtinPCw5tkXEBb3P8xBVQwmkrEfuvioc5P4
+ paqo9h8erqF+ZMX5z2IUJpVCEVkmlQFC2VXoZHAP71gIvejmGAE1+SGFpX0i9Hlfd24d
+ RvJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=QkrBW78afE0mQwWYjfkjXOFMLoHqmY36U1/V151SyV4=;
- b=ryl0LjshT6AOtc3AQF6+tm6OpIBODjpEGT6x1QlgtXIeX4Lq1VwqewBFo/+cj8tkoh
- fwKCHm/Cl9wD3MI6jVkTNHYc/UhxOU2GUK3atlkIhKTaP8l0gVMp9VTdovT+I1uZ9sGG
- 5b/DLg/Wny39nMJGUod9RO62UmbO1JZ4xEQSqctDgEpYdKrpiqOIh42ZF6XSpS3iejNQ
- Ooz8kD+tQHrG0GkvCzxbEmAv/b7DfhqMN4y6s09LpLqVIPlizvY2oNEXjgVtIZZJxFKk
- 9qkKCnYTeciEeXGsVbIKY8in+tJokzd+Eq+jLGlaAWU2v/tcKB/yEcjigBt4rohkPntU
- 8K5g==
-X-Gm-Message-State: APjAAAVP96sYgnZSZOZBkQOmPR9Xk/Rsxg818JVlrTzeN3mn+FS5QOCf
- AD8Jexw4DpQIZQPRpl4/gGUdRnE=
-X-Google-Smtp-Source: APXvYqxU06DbwSsvNnwFQ7+825WJKzoBMS5002wiGqa3CdsIYCBQ+5QUDJjG8RSeC96No3dtrNx9DQ==
-X-Received: by 2002:a17:902:8545:: with SMTP id
- d5mr33837178plo.145.1571105569194; 
- Mon, 14 Oct 2019 19:12:49 -0700 (PDT)
+ bh=8H4x/0PzSc+cFgDx1YZ5+BsoHRjAf/XAcn/2vvNKiII=;
+ b=kygj1GITON1EI/ly5sBXBXItFt1LyKUenBBW1rEg8S8IdaDYpABNkGjsc4ysufxyiw
+ xqqmvyieNUISjTTecQxIFynI1+KPxBSs3DXIpIPtMWdwgjCZcu0BBONY8MCF7Rzg7sDX
+ QW0CymnayR6xZMDkptnLtWZzAM9HO6PwXs/qxLewS/4MiR1xzOJryKP+w1te/KL+p+Ko
+ wIkkMZJWrkLt92vUoP9NsWgR+suDd2veWjj/6rRAKGK4ho57XBgvFpRpgOQzMk9x7k9Q
+ izj3ZwhXu1NJcoDHtRnQ7BlaDZgEhVoBT1pK84h2sB3e2/cudY9TI5BSdhWthusaujOq
+ 0eew==
+X-Gm-Message-State: APjAAAW7azmvDQikcjCEPqPZDm0kdINWiN6wwyNjy3oQso5RBbTBtjW0
+ qGpJ6DT9CRQG2isnxxGBbQ==
+X-Google-Smtp-Source: APXvYqzOXpShh56uDCVPgANcyM3B+A2AAhIkbDujovTmxMJALaZxxy0iXsrKcX4LEPjKigJevZPUYw==
+X-Received: by 2002:a17:90a:c094:: with SMTP id
+ o20mr39731453pjs.37.1571106037499; 
+ Mon, 14 Oct 2019 19:20:37 -0700 (PDT)
 Received: from mypc ([209.132.188.80])
- by smtp.gmail.com with ESMTPSA id f6sm20266446pfq.169.2019.10.14.19.12.45
+ by smtp.gmail.com with ESMTPSA id m5sm18914736pgt.15.2019.10.14.19.20.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Oct 2019 19:12:48 -0700 (PDT)
-Date: Tue, 15 Oct 2019 10:12:42 +0800
+ Mon, 14 Oct 2019 19:20:36 -0700 (PDT)
+Date: Tue, 15 Oct 2019 10:20:26 +0800
 From: Pingfan Liu <kernelfans@gmail.com>
-To: Eric Sandeen <sandeen@sandeen.net>
+To: Jan Kara <jack@suse.cz>
 Subject: Re: [PATCH] xfs: introduce "metasync" api to sync metadata to fsblock
-Message-ID: <20191015021242.GB14327@mypc>
+Message-ID: <20191015022026.GC14327@mypc>
 References: <1570977420-3944-1-git-send-email-kernelfans@gmail.com>
  <20191013163417.GQ13108@magnolia> <20191014083315.GA10091@mypc>
  <20191014094311.GD5939@quack2.suse.cz>
  <d3ffa114-8b73-90dc-8ba6-3f44f47135d7@sandeen.net>
+ <20191014200303.GF5939@quack2.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d3ffa114-8b73-90dc-8ba6-3f44f47135d7@sandeen.net>
+In-Reply-To: <20191014200303.GF5939@quack2.suse.cz>
 User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,96 +84,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>,
+Cc: Eric Sandeen <esandeen@redhat.com>,
  "Darrick J. Wong" <darrick.wong@oracle.com>, Jan Kara <jack@suse.com>,
- linux-xfs@vger.kernel.org, Dave Chinner <dchinner@redhat.com>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Hari Bathini <hbathini@linux.ibm.com>
+ Eric Sandeen <sandeen@sandeen.net>, linux-xfs@vger.kernel.org,
+ Dave Chinner <dchinner@redhat.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 14, 2019 at 08:23:39AM -0500, Eric Sandeen wrote:
-> On 10/14/19 4:43 AM, Jan Kara wrote:
-> > On Mon 14-10-19 16:33:15, Pingfan Liu wrote:
-> > > On Sun, Oct 13, 2019 at 09:34:17AM -0700, Darrick J. Wong wrote:
-> > > > On Sun, Oct 13, 2019 at 10:37:00PM +0800, Pingfan Liu wrote:
-> > > > > When using fadump (fireware assist dump) mode on powerpc, a mismatch
-> > > > > between grub xfs driver and kernel xfs driver has been obsevered.  Note:
-> > > > > fadump boots up in the following sequence: fireware -> grub reads kernel
-> > > > > and initramfs -> kernel boots.
+On Mon, Oct 14, 2019 at 10:03:03PM +0200, Jan Kara wrote:
+> On Mon 14-10-19 08:23:39, Eric Sandeen wrote:
+> > On 10/14/19 4:43 AM, Jan Kara wrote:
+> > > On Mon 14-10-19 16:33:15, Pingfan Liu wrote:
+> > > > On Sun, Oct 13, 2019 at 09:34:17AM -0700, Darrick J. Wong wrote:
+> > > > > On Sun, Oct 13, 2019 at 10:37:00PM +0800, Pingfan Liu wrote:
+> > > > > > When using fadump (fireware assist dump) mode on powerpc, a mismatch
+> > > > > > between grub xfs driver and kernel xfs driver has been obsevered.  Note:
+> > > > > > fadump boots up in the following sequence: fireware -> grub reads kernel
+> > > > > > and initramfs -> kernel boots.
+> > > > > > 
+> > > > > > The process to reproduce this mismatch:
+> > > > > >    - On powerpc, boot kernel with fadump=on and edit /etc/kdump.conf.
+> > > > > >    - Replacing "path /var/crash" with "path /var/crashnew", then, "kdumpctl
+> > > > > >      restart" to rebuild the initramfs. Detail about the rebuilding looks
+> > > > > >      like: mkdumprd /boot/initramfs-`uname -r`.img.tmp;
+> > > > > >            mv /boot/initramfs-`uname -r`.img.tmp /boot/initramfs-`uname -r`.img
+> > > > > >            sync
+> > > > > >    - "echo c >/proc/sysrq-trigger".
+> > > > > > 
+> > > > > > The result:
+> > > > > > The dump image will not be saved under /var/crashnew/* as expected, but
+> > > > > > still saved under /var/crash.
+> > > > > > 
+> > > > > > The root cause:
+> > > > > > As Eric pointed out that on xfs, 'sync' ensures the consistency by writing
+> > > > > > back metadata to xlog, but not necessary to fsblock. This raises issue if
+> > > > > > grub can not replay the xlog before accessing the xfs files. Since the
+> > > > > > above dir entry of initramfs should be saved as inline data with xfs_inode,
+> > > > > > so xfs_fs_sync_fs() does not guarantee it written to fsblock.
+> > > > > > 
+> > > > > > umount can be used to write metadata fsblock, but the filesystem can not be
+> > > > > > umounted if still in use.
+> > > > > > 
+> > > > > > There are two ways to fix this mismatch, either grub or xfs. It may be
+> > > > > > easier to do this in xfs side by introducing an interface to flush metadata
+> > > > > > to fsblock explicitly.
+> > > > > > 
+> > > > > > With this patch, metadata can be written to fsblock by:
+> > > > > >    # update AIL
+> > > > > >    sync
+> > > > > >    # new introduced interface to flush metadata to fsblock
+> > > > > >    mount -o remount,metasync mountpoint
 > > > > > 
-> > > > > The process to reproduce this mismatch:
-> > > > >    - On powerpc, boot kernel with fadump=on and edit /etc/kdump.conf.
-> > > > >    - Replacing "path /var/crash" with "path /var/crashnew", then, "kdumpctl
-> > > > >      restart" to rebuild the initramfs. Detail about the rebuilding looks
-> > > > >      like: mkdumprd /boot/initramfs-`uname -r`.img.tmp;
-> > > > >            mv /boot/initramfs-`uname -r`.img.tmp /boot/initramfs-`uname -r`.img
-> > > > >            sync
-> > > > >    - "echo c >/proc/sysrq-trigger".
+> > > > > I think this ought to be an ioctl or some sort of generic call since the
+> > > > > jbd2 filesystems (ext3, ext4, ocfs2) suffer from the same "$BOOTLOADER
+> > > > > is too dumb to recover logs but still wants to write to the fs"
+> > > > > checkpointing problem.
+> > > > Yes, a syscall sounds more reasonable.
 > > > > > 
-> > > > > The result:
-> > > > > The dump image will not be saved under /var/crashnew/* as expected, but
-> > > > > still saved under /var/crash.
-> > > > > 
-> > > > > The root cause:
-> > > > > As Eric pointed out that on xfs, 'sync' ensures the consistency by writing
-> > > > > back metadata to xlog, but not necessary to fsblock. This raises issue if
-> > > > > grub can not replay the xlog before accessing the xfs files. Since the
-> > > > > above dir entry of initramfs should be saved as inline data with xfs_inode,
-> > > > > so xfs_fs_sync_fs() does not guarantee it written to fsblock.
-> > > > > 
-> > > > > umount can be used to write metadata fsblock, but the filesystem can not be
-> > > > > umounted if still in use.
-> > > > > 
-> > > > > There are two ways to fix this mismatch, either grub or xfs. It may be
-> > > > > easier to do this in xfs side by introducing an interface to flush metadata
-> > > > > to fsblock explicitly.
-> > > > > 
-> > > > > With this patch, metadata can be written to fsblock by:
-> > > > >    # update AIL
-> > > > >    sync
-> > > > >    # new introduced interface to flush metadata to fsblock
-> > > > >    mount -o remount,metasync mountpoint
-> > > > 
-> > > > I think this ought to be an ioctl or some sort of generic call since the
-> > > > jbd2 filesystems (ext3, ext4, ocfs2) suffer from the same "$BOOTLOADER
-> > > > is too dumb to recover logs but still wants to write to the fs"
-> > > > checkpointing problem.
-> > > Yes, a syscall sounds more reasonable.
-> > > > 
-> > > > (Or maybe we should just put all that stuff in a vfat filesystem, I
-> > > > don't know...)
-> > > I think it is unavoidable to involve in each fs' implementation. What
-> > > about introducing an interface sync_to_fsblock(struct super_block *sb) in
-> > > the struct super_operations, then let each fs manage its own case?
+> > > > > (Or maybe we should just put all that stuff in a vfat filesystem, I
+> > > > > don't know...)
+> > > > I think it is unavoidable to involve in each fs' implementation. What
+> > > > about introducing an interface sync_to_fsblock(struct super_block *sb) in
+> > > > the struct super_operations, then let each fs manage its own case?
+> > > 
+> > > Well, we already have a way to achieve what you need: fsfreeze.
+> > > Traditionally, that is guaranteed to put fs into a "clean" state very much
+> > > equivalent to the fs being unmounted and that seems to be what the
+> > > bootloader wants so that it can access the filesystem without worrying
+> > > about some recovery details. So do you see any problem with replacing
+> > > 'sync' in your example above with 'fsfreeze /boot && fsfreeze -u /boot'?
+> > > 
+> > > 								Honza
 > > 
-> > Well, we already have a way to achieve what you need: fsfreeze.
-> > Traditionally, that is guaranteed to put fs into a "clean" state very much
-> > equivalent to the fs being unmounted and that seems to be what the
-> > bootloader wants so that it can access the filesystem without worrying
-> > about some recovery details. So do you see any problem with replacing
-> > 'sync' in your example above with 'fsfreeze /boot && fsfreeze -u /boot'?
+> > The problem with fsfreeze is that if the device you want to quiesce is, say,
+> > the root fs, freeze isn't really a good option.
+> 
+> I agree you need to be really careful not to deadlock against yourself in
+> that case. But this particular use actually has a chance to work.
+> 
+Yeah, normally there is a /boot partition in system, and if so, fsfreeze
+can work.
+> > But the other thing I want to highlight about this approach is that it does not
+> > solve the root problem: something is trying to read the block device without
+> > first replaying the log.
 > > 
-> > 								Honza
+> > A call such as the proposal here is only going to leave consistent metadata at
+> > the time the call returns; at any time after that, all guarantees are off again,
+> > so the problem hasn't been solved.
 > 
-> The problem with fsfreeze is that if the device you want to quiesce is, say,
-> the root fs, freeze isn't really a good option.
-Yes, that is the difference between my patch and fsfreeze.  But
-honestly, it is a rare case where a system has not a /boot partition. Due
-to the activity on /boot is very low, fsfreeze may meet the need, or
-repeatly retry fsfress until success.
-> 
-> But the other thing I want to highlight about this approach is that it does not
-> solve the root problem: something is trying to read the block device without
-> first replaying the log.
-> 
-> A call such as the proposal here is only going to leave consistent metadata at
-> the time the call returns; at any time after that, all guarantees are off again,
-My patch places assumption that grub only accesses limited files and ensures the
-consistency only on those files (kernel,initramfs).
-> so the problem hasn't been solved.
-Agree. The perfect solution should be a log aware bootloader.
+> Oh, absolutely agreed. I was also thinking about this before sending my
+> reply. Once you unfreeze, the log can start filling with changes and
+> there's no guarantee that e.g. inode does not move as part of these
+But just as fsync, we only guarantee the consistency before a sync. If
+the involved files change again, we need another sync.
+> changes. But to be fair, replaying the log isn't easy either, even more so
+> from a bootloader. You cannot write the changes from the log back into the
+> filesystem as e.g. in case of suspend-to-disk the resumed kernel gets
+> surprised and corrupts the fs under its hands (been there, tried that). So
+> you must keep changes only in memory and that's not really easy in the
+> constrained bootloader environment.
+Sigh, this is more complicated than I had thought. I guess it will be a
+long time to go with this bug, and use fsfreeze as a work around.
 
 Thanks and regards,
 	Pingfan
+> 
+> So I guess we are left with hacks that kind of mostly work and fsfreeze is
+> one of those. If you don't mess with the files after fsfreeze, you're
+> likely to find what you need even without replaying the log.
+> 
+> 								Honza
+> -- 
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
