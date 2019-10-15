@@ -2,40 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1124D707C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 09:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8FFD70AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 10:03:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46sndx06zLzDqxl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 18:50:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46snx56kqxzDqyZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2019 19:03:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+55b1b98096d206da203c+5896+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de;
- envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="L6p5C1wC"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46snby6h06zDqwB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 18:48:29 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id D6A5EB650;
- Tue, 15 Oct 2019 07:48:24 +0000 (UTC)
-Message-ID: <384b42df01c0af973002fba0d5f02068e7f2e7b3.camel@suse.de>
-Subject: Re: [PATCH RFC 0/5] ARM: Raspberry Pi 4 DMA support
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Date: Tue, 15 Oct 2019 09:48:22 +0200
-In-Reply-To: <20191014205859.GA7634@iMac-3.local>
-References: <20191014183108.24804-1-nsaenzjulienne@suse.de>
- <20191014205859.GA7634@iMac-3.local>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-4pilC0luxewnjymcvLYk"
-User-Agent: Evolution 3.32.4 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46sntf3VtFzDqwF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 19:01:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=QQ9QN/iK5ai9ajNOdo+9OkqRPuRUL2eL7TDow4sjeu4=; b=L6p5C1wC28xb4xV/ytStImi/n
+ SV2iv4Hjrb+zQYIjHC5OIRoQt2FCR3rotBnYGdihUInJs5Y+lXexNKAZKw1XhTXXTzxcqSL5L86hZ
+ kKgdo28rNBbi+hPf8BlLlY9trWgIHMU7EaYEgNuVg6jq/rwQBiZ3mmyUVqJHmJd7/TJG3voH/jXr+
+ zoR3ladcSEOvo1Z1l2E1eXyZ7+edNMBda6a9KuH0FIWk2RjvsWzNKuNbegHEMx+3j6EHdx7SwAMUH
+ NmdlCkggWdeE6ObgGfQ8L6DYKa0sYuW7P5cGl/Snou5v4lh8+gKAe1LIaN5lLQ6IffEfoucjqR71U
+ /kODYccaA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1iKHlO-0002Ht-4T; Tue, 15 Oct 2019 08:01:02 +0000
+Date: Tue, 15 Oct 2019 01:01:02 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Eric Sandeen <sandeen@sandeen.net>
+Subject: Re: [PATCH] xfs: introduce "metasync" api to sync metadata to fsblock
+Message-ID: <20191015080102.GB3055@infradead.org>
+References: <1570977420-3944-1-git-send-email-kernelfans@gmail.com>
+ <20191013163417.GQ13108@magnolia> <20191014083315.GA10091@mypc>
+ <20191014094311.GD5939@quack2.suse.cz>
+ <d3ffa114-8b73-90dc-8ba6-3f44f47135d7@sandeen.net>
+ <20191014200303.GF5939@quack2.suse.cz>
+ <5796090e-6206-1bd7-174e-58798c9af052@sandeen.net>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5796090e-6206-1bd7-174e-58798c9af052@sandeen.net>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,74 +69,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, f.fainelli@gmail.com,
- Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
- hch@infradead.org, iommu@lists.linux-foundation.org, mbrugger@suse.com,
- bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- wahrenst@gmx.net
+Cc: Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>,
+ "Darrick J. Wong" <darrick.wong@oracle.com>, Jan Kara <jack@suse.com>,
+ Pingfan Liu <kernelfans@gmail.com>, linux-xfs@vger.kernel.org,
+ Dave Chinner <dchinner@redhat.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Oct 14, 2019 at 03:09:48PM -0500, Eric Sandeen wrote:
+> We're in agreement here.  ;)  I only worry about implementing things like this
+> which sound like guarantees, but aren't, and end up encouraging bad behavior
+> or promoting misconceptions.
+> 
+> More and more, I think we should reconsider Darrick's "bootfs" (ext2 by another
+> name, but with extra-sync-iness) proposal...
 
---=-4pilC0luxewnjymcvLYk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2019-10-14 at 21:59 +0100, Catalin Marinas wrote:
-> On Mon, Oct 14, 2019 at 08:31:02PM +0200, Nicolas Saenz Julienne wrote:
-> > the Raspberry Pi 4 offers up to 4GB of memory, of which only the first
-> > is DMA capable device wide. This forces us to use of bounce buffers,
-> > which are currently not very well supported by ARM's custom DMA ops.
-> > Among other things the current mechanism (see dmabounce.c) isn't
-> > suitable for high memory. Instead of fixing it, this series introduces =
-a
-> > way of selecting dma-direct as the default DMA ops provider which allow=
-s
-> > for the Raspberry Pi to make use of swiotlb.
->=20
-> I presume these patches go on top of this series:
->=20
-> http://lkml.kernel.org/r/20190911182546.17094-1-nsaenzjulienne@suse.de
-
-Yes, forgot to mention it. It's relevant for the first patch.
-
->=20
-> which I queued here:
->=20
->=20
-https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?h=3Dfo=
-r-next/zone-dma
-
-Thanks!
-
-A little off topic but I was wondering if you have a preferred way to refer=
- to
-the arm architecture in a way that it unambiguously excludes arm64 (for exa=
-mple
-arm32 would work).
-
-Regards,
-Nicolas
-
-
---=-4pilC0luxewnjymcvLYk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl2lecYACgkQlfZmHno8
-x/7lZQf7BpuyTA7KitVkqMXl3L4hWPGTsvKYE4a6JPGwACQaRTlyPLU+YRDvD5uG
-3ulte/b7C+OKAXzI17fdpJvO8SBHGO+E0Y2G/j46W9pVezPmyccfF+M0uGKsP9d7
-/tcaYEm0X5vNtneMFYydutqLSqQT1uFUcPdJ6M0AJVUcLOtANEfXEJjYEnj6s7wd
-OyV2QaOXth+V85DGT+wgaPPOLRmxBmlMbVfZYJUVJ7+9o2FiuWBYDvQ4OA3dHAXf
-mVw+II6YIOo4WghksiGES3JYt/0yd0cjqf6Qq7MbB9RIUdvhbJC28ZzRdKSgOA9Q
-8PLdonhaeyOJ5k3hZqN+MFiGPt6QGw==
-=0lDM
------END PGP SIGNATURE-----
-
---=-4pilC0luxewnjymcvLYk--
-
+Having a separate simple file system for the boot loader makes a lot of
+sense.  Note that vfat of EFI is the best choice, but at least it is
+something.  SysV Unix from the 90s actually had a special file system just
+for that, and fs/bfs/ in Linux supports that.  So this isn't really a new
+thing either.
