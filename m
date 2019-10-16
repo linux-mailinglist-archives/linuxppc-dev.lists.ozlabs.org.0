@@ -2,74 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E130D9983
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 20:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AA5D9DA5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 23:46:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46thCB6NzJzDr7V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 05:48:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tm826mnPzDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 08:46:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=46.105.73.241; helo=10.mo69.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from 10.mo69.mail-out.ovh.net (10.mo69.mail-out.ovh.net
+ [46.105.73.241])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46th8w1sgXzDqRM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 05:46:39 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9GIawbp058771
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 14:46:36 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vp8h1ggwg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 14:46:36 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9GIjbMU019471
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:46:35 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma04dal.us.ibm.com with ESMTP id 2vk6f7rkxs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:46:35 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9GIkYbZ13959850
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:46:34 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A7D7728059
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:46:34 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A1F42805A
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:46:34 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.251])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:46:34 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/pseries: safely roll back failed DLPAR cpu add
-In-Reply-To: <20190919223400.31294-1-nathanl@linux.ibm.com>
-References: <20190919223400.31294-1-nathanl@linux.ibm.com>
-Date: Wed, 16 Oct 2019 13:46:34 -0500
-Message-ID: <87tv88il4l.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tm660ZRVzDr4Y
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 08:44:26 +1100 (AEDT)
+Received: from player759.ha.ovh.net (unknown [10.109.146.168])
+ by mo69.mail-out.ovh.net (Postfix) with ESMTP id 2D0556ACD8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 23:44:20 +0200 (CEST)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player759.ha.ovh.net (Postfix) with ESMTPSA id 56850B179636;
+ Wed, 16 Oct 2019 21:44:06 +0000 (UTC)
+Date: Wed, 16 Oct 2019 23:44:03 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH v2 0/6] KVM: PPC: Book3S: HV: XIVE: Allocate less VPs in
+ OPAL
+Message-ID: <20191016234403.77cdf150@bahia.lan>
+In-Reply-To: <156958521220.1503771.2119482814236775333.stgit@bahia.lan>
+References: <156958521220.1503771.2119482814236775333.stgit@bahia.lan>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-16_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=792 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910160152
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 10318872647401970107
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrjeehgdduieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,18 +54,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kvm@vger.kernel.org, Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ kvm-ppc@vger.kernel.org, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
-> Move dlpar_offline_cpu() before dlpar_online_cpu() so the latter can
-> use the former to re-offline any threads it has onlined when it
-> encounters an error.
+On Fri, 27 Sep 2019 13:53:32 +0200
+Greg Kurz <groug@kaod.org> wrote:
 
-Since moving this code yields a few valid checkpatch warnings, I've
-submitted a v2 which cleans these up first.
+> This brings some fixes and allows to start more VMs with an in-kernel
+> XIVE or XICS-on-XIVE device.
+> 
+> Changes since v1 (https://patchwork.ozlabs.org/cover/1166099/):
+> - drop a useless patch
+> - add a patch to show VP ids in debugfs
+> - update some changelogs
+> - fix buggy check in patch 5
+> - Cc: stable 
+> 
+> --
+> Greg
+> 
+> ---
+> 
+> Greg Kurz (6):
+>       KVM: PPC: Book3S HV: XIVE: Set kvm->arch.xive when VPs are allocated
+>       KVM: PPC: Book3S HV: XIVE: Ensure VP isn't already in use
+>       KVM: PPC: Book3S HV: XIVE: Show VP id in debugfs
+>       KVM: PPC: Book3S HV: XIVE: Compute the VP id in a common helper
+>       KVM: PPC: Book3S HV: XIVE: Make VP block size configurable
+>       KVM: PPC: Book3S HV: XIVE: Allow userspace to set the # of VPs
+> 
+> 
+>  Documentation/virt/kvm/devices/xics.txt |   14 +++
+>  Documentation/virt/kvm/devices/xive.txt |    8 ++
+>  arch/powerpc/include/uapi/asm/kvm.h     |    3 +
+>  arch/powerpc/kvm/book3s_xive.c          |  142 ++++++++++++++++++++++++-------
+>  arch/powerpc/kvm/book3s_xive.h          |   17 ++++
+>  arch/powerpc/kvm/book3s_xive_native.c   |   40 +++------
+>  6 files changed, 167 insertions(+), 57 deletions(-)
+> 
 
-https://openpower.xyz/job/snowpatch/job/snowpatch-linux-checkpatch/9150//artifact/linux/checkpatch.log
+Ping ?
 
-v2: https://patchwork.ozlabs.org/cover/1178067/
+Cheers,
+
+--
+Greg
