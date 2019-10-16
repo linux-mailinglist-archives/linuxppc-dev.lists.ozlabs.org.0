@@ -1,70 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A18AD95FF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 17:52:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEE1D964D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 18:02:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tcHz2XgzzDr43
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 02:52:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tcW52F9szDqCZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 03:02:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=yadro.com (client-ip=89.207.88.252; helo=mta-01.yadro.com;
- envelope-from=s.miroshnichenko@yadro.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=yadro.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="sBlEc1m1"; 
- dkim-atps=neutral
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46tcFq0WqNzDqsb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 02:50:38 +1100 (AEDT)
-Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id 3F1D042F15;
- Wed, 16 Oct 2019 15:50:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
- content-transfer-encoding:content-language:content-type
- :content-type:in-reply-to:mime-version:user-agent:date:date
- :message-id:from:from:references:subject:subject:received
- :received:received; s=mta-01; t=1571241032; x=1573055433; bh=vlw
- ynJutyyWJCfkxMQEapDvJD8fWDPeUDayzqTdFerc=; b=sBlEc1m1L2ugmu8RdJ0
- ST1e+hdikSs56X48a3WhRpFYIUSMvo27X5s6DbkrIw5tLuDvUggx5v+hXkw6Japp
- oR9CKYsWvcsBeVWMsJUIU2OZS2SeG9SyshVMeA77nVvHgKzrMHyZnTV/ERC3fGi+
- R1xWr1gpV+pl4g+MbkMV5j1k=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
- by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id wN192pO61-xl; Wed, 16 Oct 2019 18:50:32 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
- [172.17.10.102])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
- (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id 8386542F12;
- Wed, 16 Oct 2019 18:50:31 +0300 (MSK)
-Received: from [172.17.15.136] (172.17.15.136) by T-EXCH-02.corp.yadro.com
- (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Wed, 16
- Oct 2019 18:50:31 +0300
-Subject: Re: [PATCH v5 03/23] PCI: hotplug: Add a flag for the movable BARs
- feature
-To: Bjorn Helgaas <helgaas@kernel.org>
-References: <20191015221449.GA181069@google.com>
-From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-Message-ID: <63c6c630-fbfb-175c-2a1a-c9a1f732498a@yadro.com>
-Date: Wed, 16 Oct 2019 18:50:30 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tcRt26l6zDqx1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 02:59:21 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9GFsh44120666
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 11:59:18 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vp67rg6yp-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 11:59:18 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <clombard@linux.vnet.ibm.com>;
+ Wed, 16 Oct 2019 16:59:15 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 16 Oct 2019 16:59:14 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9GFxECF53018648
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Oct 2019 15:59:14 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E75DAA4055;
+ Wed, 16 Oct 2019 15:59:13 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ACD65A4053;
+ Wed, 16 Oct 2019 15:59:13 +0000 (GMT)
+Received: from lombard-w541.ibmuc.com (unknown [9.145.11.244])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 16 Oct 2019 15:59:13 +0000 (GMT)
+From: christophe lombard <clombard@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
+ ajd@linux.ibm.com, groug@kaod.org
+Subject: [PATCH V2 0/2] ocxl: Move SPA and TL definitions
+Date: Wed, 16 Oct 2019 17:59:11 +0200
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20191015221449.GA181069@google.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [172.17.15.136]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-02.corp.yadro.com (172.17.10.102)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19101615-0020-0000-0000-00000379A1F4
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101615-0021-0000-0000-000021CFC715
+Message-Id: <20191016155913.13693-1-clombard@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-16_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=975 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910160132
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,211 +86,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Laight <David.Laight@ACULAB.COM>,
- Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
- linux@yadro.com, Lukas Wunner <lukas@wunner.de>,
- Oliver O'Halloran <oohall@gmail.com>, Rajat Jain <rajatja@google.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/16/19 1:14 AM, Bjorn Helgaas wrote:
-> On Mon, Sep 30, 2019 at 03:59:25PM +0300, Sergey Miroshnichenko wrote:
->> Hello Bjorn,
->>
->> On 9/28/19 1:02 AM, Bjorn Helgaas wrote:
->>> On Fri, Aug 16, 2019 at 07:50:41PM +0300, Sergey Miroshnichenko wrote:
->>>> When hot-adding a device, the bridge may have windows not big enough (or
->>>> fragmented too much) for newly requested BARs to fit in. And expanding
->>>> these bridge windows may be impossible because blocked by "neighboring"
->>>> BARs and bridge windows.
->>>>
->>>> Still, it may be possible to allocate a memory region for new BARs with the
->>>> following procedure:
->>>>
->>>> 1) notify all the drivers which support movable BARs to pause and release
->>>>      the BARs; the rest of the drivers are guaranteed that their devices will
->>>>      not get BARs moved;
->>>>
->>>> 2) release all the bridge windows except of root bridges;
->>>>
->>>> 3) try to recalculate new bridge windows that will fit all the BAR types:
->>>>      - fixed;
->>>>      - immovable;
->>>>      - movable;
->>>>      - newly requested by hot-added devices;
->>>>
->>>> 4) if the previous step fails, disable BARs for one of the hot-added
->>>>      devices and retry from step 3;
->>>>
->>>> 5) notify the drivers, so they remap BARs and resume.
->>>
->>> You don't do the actual recalculation in *this* patch, but since you
->>> mention the procedure here, are we confident that we never make things
->>> worse?
->>>
->>> It's possible that a hot-add will trigger this attempt to move things
->>> around, and it's possible that we won't find space for the new device
->>> even if we move things around.  But are we certain that every device
->>> that worked *before* the hot-add will still work *afterwards*?
->>>
->>> Much of the assignment was probably done by the BIOS using different
->>> algorithms than Linux has, so I think there's some chance that the
->>> BIOS did a better job and if we lose that BIOS assignment, we might
->>> not be able to recreate it.
->>
->> If a hardware has some special constraints on BAR assignment that the
->> kernel is not aware of yet, the movable BARs may break things after a
->> hotplug event. So the feature must be disabled there (manually) until
->> the kernel get support for that special needs.
-> 
-> I'm not talking about special constraints on BAR assignment.  (I'm not
-> sure what those constraints would be -- AFAIK the constraints for a
-> spec-compliant device are all discoverable via the BAR size and type
-> (or the Enhanced Allocation capability)).
-> 
-> What I'm concerned about is the case where we boot with a working
-> assignment, we hot-add a device, we move things around to try to
-> accommodate the new device, and not only do we fail to find resources
-> for the new device, we also fail to find a working assignment for the
-> devices that were present at boot.  We've moved things around from
-> what BIOS did, and since we use a different algorithm than the BIOS,
-> there's no guarantee that we'll be able to find the assignment BIOS
-> did.
-> 
+This series moves the definition and the management of scheduled process
+area (SPA) and of the templates (Transaction Layer) for an ocxl card,
+using the OCAPI interface. The code is now located in the specific arch
+powerpc platform.
+These patches will help for a futur implementation of the ocxl driver in
+QEMU.
 
-If BAR assignment fails with a hot-added device, these patches will
-disable BARs for this device and retry, falling back to the situation
-where number of BARs and their size are the same as they were before
-the hotplug event.
+The Open Coherently Attached Processor Interface (OCAPI) is used to
+allow an Attached Functional Unit (AFU) to connect to the Processor
+Chip's system bus in a high speed and cache coherent manner.
 
-If all the BARs are immovable - they will just remain on their
-positions. Nothing to break here I guess.
+The Scheduled Processes Area and the configuration of the Transaction
+Layer are specific to the AFU and more generally to the Opencapi device.
+Running the ocxl module in a guest environment, and later in several guests
+in parallel, using the same Opencapi device and the same AFus, involves to
+have a common code handling the SPA. This explains why these parts of the ocxl
+driver will move to arch powerpc platform running on the host.
 
-If almost all the BARs are immovable and there is one movable BAR,
-after releasing the bridge windows there will be a free gap - right
-where this movable BAR was. These patches are keeping the size of
-released BARs, not requesting the size from the devices again - so the
-device can't ask for a larger BAR. The space reserving is disabled by
-this patchset, so the kernel will request the same size for the bridge
-window containing this movable BAR. So there always will be a gap for
-this BAR - in the same location it was before.
+It builds on top of the existing ocxl driver.
 
-Based on these considerations I assume that the kernel is always able
-to arrange BARs from scratch if a BIOS was able to make it before.
+It has been tested in a bare-metal environment using the memcpy and
+the AFP AFUs.
 
-But! There is an implicit speculation that there will be the same
-amount of BARs after the fallback (which is equivalent to a PCI rescan
-triggered on unchanged topology). And two week ago I've found that
-this is not always true!
+Changelog:
+v2:
+ - patch 1: delete debug message as it no longer makes sense.  (Fred)
+            Rename pnv_ocxl_read_xsl_regs to pnv_ocxl_get_fault_state. (Fred)
+            Rename pnv_ocxl_write_xsl_tfc to pnv_ocxl_handle_fault. (Fred)
+            Call opal_npu_spa_clear_cache() internally without using external
+            function. (Fred)
+            Remove pe_handle parameter from pnv_ocxl_update_pe() (Fred)
+            Not possible to split this patch in 2 (one part for the SPA
+            handling, the other for the translation fault interrupt). There are
+            far too many dependencies with the SPA structure. (Fred)
+            Switch the order of the pe_data allocation and the call to add the
+            entry in the SPA. (Fred)
 
-I was testing on a "new" x86_64 PC, where BIOS doesn't reserve a space
-for SR-IOV BARs (of a network adapter). On the boot, the kernel wasn't
-arranging BARs itself - it took values written by the BIOS. And the
-bridge window was "jammed" between immovable BARs, so it can't expand.
-BARs of this device are also immovable, so the bridge window can't be
-moved away. During the PCI rescan, the kernel tried to allocate both
-"regular" and SR-IOV BARs - and failed. Even without changes in the
-PCI topology.
+christophe lombard (2):
+  powerpc/powernv: ocxl move SPA definition
+  powerpc/powernv: ocxl move TL definition
 
-So in the next version of this series there will be one more patch,
-that allows the kernel to ignore BIOS's setting for the "safe" (non-IO
-and non-VGA) BARs, so these BARs will be arranged kernel-way - and
-also those forgotten by the BIOS.
+ arch/powerpc/include/asm/pnv-ocxl.h   |  46 +--
+ arch/powerpc/platforms/powernv/ocxl.c | 400 +++++++++++++++++++++++---
+ drivers/misc/ocxl/afu_irq.c           |   1 -
+ drivers/misc/ocxl/config.c            |  89 +-----
+ drivers/misc/ocxl/link.c              | 383 ++++++------------------
+ drivers/misc/ocxl/ocxl_internal.h     |  12 -
+ drivers/misc/ocxl/trace.h             |  64 ++---
+ 7 files changed, 508 insertions(+), 487 deletions(-)
 
->>> I'm not sure why the PCI_CLASS_DISPLAY_VGA special case is there; can
->>> you add a comment about why that's needed?  Obviously we can't move
->>> the 0xa0000 legacy frame buffer because I think devices are allowed to
->>> claim that region even if no BAR describes it.  But I would think
->>> *other* BARs of VGA devices could be movable.
->>
->> Sure, I'll add a comment to the code.
->>
->> The issue that we are avoiding by that is the "nomodeset" command line
->> argument, which prevents a video driver from being bound, so the BARs
->> are seems to be used, but can't be moved, otherwise machines just hang
->> after hotplug events. That was the only special ugly case we've
->> spotted during testing. I'll check if it will be enough just to work
->> around the 0xa0000.
-> 
-> "nomodeset" is not really documented and is a funny way to say "don't
-> bind video drivers that know about it", but OK.  Thanks for checking
-> on the other BARs.
-> 
+-- 
+2.21.0
 
-After modifying the code as you advised, it became possible to mark
-only some BARs of the device as immovable. So the code is less ugly
-now, and it also works for drivers/video/fbdev/efifb.c , which uses
-the BAR in a weird way (dev->driver is NULL, but not the res->child):
-
-   static bool pci_dev_movable(struct pci_dev *dev,
-                               bool res_has_children)
-   {
-     if (!pci_can_move_bars)
-       return false;
-
-     if (dev->driver && dev->driver->rescan_prepare)
-       return true;
-
-     if (!dev->driver && !res_has_children)
-       return true;
-
-     return false;
-   }
-
-   bool pci_dev_bar_movable(struct pci_dev *dev, struct resource *res)
-   {
-     if (res->flags & IORESOURCE_PCI_FIXED)
-       return false;
-
-     #ifdef CONFIG_X86
-     /* Workaround for the legacy VGA memory 0xa0000-0xbffff */
-     if (res->start == 0xa0000)
-       return false;
-     #endif
-
-     return pci_dev_movable(dev, res->child);
-   }
-
->>>> +bool pci_movable_bars_enabled(void);
->>>
->>> I would really like it if this were simply
->>>
->>>     extern bool pci_no_movable_bars;
->>>
->>> in drivers/pci/pci.h.  It would default to false since it's
->>> uninitialized, and "pci=no_movable_bars" would set it to true.
->>
->> I have a premonition of platforms that will not support the feature.
->> Wouldn't be better to put this variable-flag to include/linux/pci.h ,
->> so code in arch/* can set it, so they could work by default, without
->> the command line argument?
-> 
-> In general I don't see why a platform wouldn't support this since
-> there really isn't anything platform-specific here.  But if a platform
-> does need to disable it, having arch code set this flag sounds
-> reasonable.  We shouldn't make it globally visible until we actually
-> need that, though.
-> 
-
-On powerpc the Extended Error Handling hardware facility doesn't allow
-to shuffle the BARs (without notifying the platform code), otherwise
-it reports errors.
-
-I'm working on adding support for powerpc/powernv, but powerpc/pseries
-also has EEH, and I don't have a hardware to test there.
-
-So the arch/powerpc/platforms/pseries/setup.c will be modified as
-follows in the next version of this patchset:
-
-@@ -920,6 +920,8 @@ static void __init pseries_init(void)
-  {
-  	pr_debug(" -> pseries_init()\n");
-
-+	pci_can_move_bars = false;
-+
-
-
-Best regards,
-Serge
