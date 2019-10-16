@@ -1,42 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156F9D8A3F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 09:51:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8039FD8A5B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 09:57:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tPcN0FH4zDqkV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 18:51:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tPlb2SBRzDqLV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 18:57:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=bigeasy@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46tPZ5150lzDqdd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:49:00 +1100 (AEDT)
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
- (envelope-from <bigeasy@linutronix.de>)
- id 1iKe31-0007jH-2v; Wed, 16 Oct 2019 09:48:43 +0200
-Date: Wed, 16 Oct 2019 09:48:43 +0200
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH 03/34] powerpc: Use CONFIG_PREEMPTION
-Message-ID: <20191016074842.6acrlzbmgb5bx4pm@linutronix.de>
-References: <20191015191821.11479-1-bigeasy@linutronix.de>
- <20191015191821.11479-4-bigeasy@linutronix.de>
- <156db456-af80-1f5e-6234-2e78283569b6@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tPjn6QzXzDqR2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:55:41 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9G7gNqg018139
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 03:55:37 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vnugpf4mg-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 03:55:37 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Wed, 16 Oct 2019 08:55:35 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 16 Oct 2019 08:55:29 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9G7tSFt45154546
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Oct 2019 07:55:29 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C1818AE063;
+ Wed, 16 Oct 2019 07:55:28 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C0871AE051;
+ Wed, 16 Oct 2019 07:55:24 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.85.142.84])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 16 Oct 2019 07:55:24 +0000 (GMT)
+Date: Wed, 16 Oct 2019 00:55:21 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+References: <1570843519-8696-1-git-send-email-linuxram@us.ibm.com>
+ <1570843519-8696-2-git-send-email-linuxram@us.ibm.com>
+ <1570843519-8696-3-git-send-email-linuxram@us.ibm.com>
+ <20191015073501.GA32345@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <156db456-af80-1f5e-6234-2e78283569b6@c-s.fr>
+In-Reply-To: <20191015073501.GA32345@lst.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19101607-0012-0000-0000-000003587DE7
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101607-0013-0000-0000-000021939633
+Message-Id: <20191016075521.GA5201@oc0525413822.ibm.com>
+Subject: RE: [PATCH 2/2] virtio_ring: Use DMA API if memory is encrypted
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-16_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910160072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,84 +91,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: andmike@us.ibm.com, sukadev@linux.vnet.ibm.com, mdroth@linux.vnet.ibm.com,
+ b.zolnierkie@samsung.com, jasowang@redhat.com, aik@linux.ibm.com,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ iommu@lists.linux-foundation.org, paul.burton@mips.com, robin.murphy@arm.com,
+ m.szyprowski@samsung.com, linuxppc-dev@lists.ozlabs.org,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019-10-16 06:57:48 [+0200], Christophe Leroy wrote:
->=20
->=20
-> Le 15/10/2019 =C3=A0 21:17, Sebastian Andrzej Siewior a =C3=A9crit=C2=A0:
-> > From: Thomas Gleixner <tglx@linutronix.de>
-> >=20
-> > CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_R=
-T.
-> > Both PREEMPT and PREEMPT_RT require the same functionality which today
-> > depends on CONFIG_PREEMPT.
-> >=20
-> > Switch the entry code over to use CONFIG_PREEMPTION. Add PREEMPT_RT
-> > output in __die().
->=20
-> powerpc doesn't select ARCH_SUPPORTS_RT, so this change is useless as
-> CONFIG_PREEMPT_RT cannot be selected.
+On Tue, Oct 15, 2019 at 09:35:01AM +0200, Christoph Hellwig wrote:
+> On Fri, Oct 11, 2019 at 06:25:19PM -0700, Ram Pai wrote:
+> > From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> > 
+> > Normally, virtio enables DMA API with VIRTIO_F_IOMMU_PLATFORM, which must
+> > be set by both device and guest driver. However, as a hack, when DMA API
+> > returns physical addresses, guest driver can use the DMA API; even though
+> > device does not set VIRTIO_F_IOMMU_PLATFORM and just uses physical
+> > addresses.
+> 
+> Sorry, but this is a complete bullshit hack.  Driver must always use
+> the DMA API if they do DMA, and if virtio devices use physical addresses
+> that needs to be returned through the platform firmware interfaces for
+> the dma setup.  If you don't do that yet (which based on previous
+> informations you don't), you need to fix it, and we can then quirk
+> old implementations that already are out in the field.
+> 
+> In other words: we finally need to fix that virtio mess and not pile
+> hacks on top of hacks.
 
-No it is not. It makes it possible for PowerPC to select it one day and
-I have patches for it today. Also, if other ARCH copies code from
-PowerPC it will copy the correct thing (as in distinguish between the
-flavour PREEMPT and the functionality PREEMPTION).
+So force all virtio devices to use DMA API, except when
+VIRTIO_F_IOMMU_PLATFORM is not enabled?
 
-> > diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> > index 82f43535e6867..23d2f20be4f2e 100644
-> > --- a/arch/powerpc/kernel/traps.c
-> > +++ b/arch/powerpc/kernel/traps.c
-> > @@ -252,14 +252,19 @@ NOKPROBE_SYMBOL(oops_end);
-> >   static int __die(const char *str, struct pt_regs *regs, long err)
-> >   {
-> > +	const char *pr =3D "";
-> > +
->=20
-> Please follow the same approach as already existing. Don't add a local var
-> for that.
+Any help detailing the idea, will enable us fix this issue once for all.
 
-I would leave it to the maintainer to comment on that and decide which
-one they want. My eyes find it more readable and the compiles does not
-create more code.
+Will something like below work? It removes the prior hacks, and
+always uses DMA API; except when VIRTIO_F_IOMMU_PLATFORM is not enabled.
 
-> >   	printk("Oops: %s, sig: %ld [#%d]\n", str, err, ++die_counter);
-> > +	if (IS_ENABLED(CONFIG_PREEMPTION))
-> > +		pr =3D IS_ENABLED(CONFIG_PREEMPT_RT) ? " PREEMPT_RT" : " PREEMPT";
-> > +
->=20
-> drop
->=20
-> >   	printk("%s PAGE_SIZE=3D%luK%s%s%s%s%s%s%s %s\n",
->=20
-> Add one %s
->=20
-> >   	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
-> >   	       PAGE_SIZE / 1024,
-> >   	       early_radix_enabled() ? " MMU=3DRadix" : "",
-> >   	       early_mmu_has_feature(MMU_FTR_HPTE_TABLE) ? " MMU=3DHash" : "=
-",
-> > -	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
->=20
-> Replace by: 	IS_ENABLED(CONFIG_PREEMPTION) ? " PREEMPT" : ""
->=20
-> > +	       pr,
->=20
-> add something like: IS_ENABLED(CONFIG_PREEMPT_RT) ? "_RT" : ""
+diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+index c8be1c4..b593d3d 100644
+--- a/drivers/virtio/virtio_ring.c
++++ b/drivers/virtio/virtio_ring.c
+@@ -240,22 +240,10 @@ static inline bool virtqueue_use_indirect(struct virtqueue *_vq,
+ 
+ static bool vring_use_dma_api(struct virtio_device *vdev)
+ {
+-	if (!virtio_has_iommu_quirk(vdev))
+-		return true;
+-
+-	/* Otherwise, we are left to guess. */
+-	/*
+-	 * In theory, it's possible to have a buggy QEMU-supposed
+-	 * emulated Q35 IOMMU and Xen enabled at the same time.  On
+-	 * such a configuration, virtio has never worked and will
+-	 * not work without an even larger kludge.  Instead, enable
+-	 * the DMA API if we're a Xen guest, which at least allows
+-	 * all of the sensible Xen configurations to work correctly.
+-	 */
+-	if (xen_domain())
+-		return true;
++	if (virtio_has_iommu_quirk(vdev))
++		return false;
+ 
+-	return false;
++	return true;
+ }
+ 
+ size_t virtio_max_dma_size(struct virtio_device *vdev)
 
-this on the other hand will create more code which is not strictly
-required.
 
-> >   	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
-> >   	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=3D" __stringify(NR_CPUS))=
- : "",
-> >   	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
-> >=20
->=20
-> Christophe
+-- 
+Ram Pai
 
-Sebastian
