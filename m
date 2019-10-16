@@ -1,48 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60AA5D9DA5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 23:46:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9122D9DB5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 23:50:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tm826mnPzDqLf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 08:46:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tmDY3tbnzDr7P
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 08:50:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.73.241; helo=10.mo69.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 10.mo69.mail-out.ovh.net (10.mo69.mail-out.ovh.net
- [46.105.73.241])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=j6sq=yj=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46tm660ZRVzDr4Y
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 08:44:26 +1100 (AEDT)
-Received: from player759.ha.ovh.net (unknown [10.109.146.168])
- by mo69.mail-out.ovh.net (Postfix) with ESMTP id 2D0556ACD8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 23:44:20 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player759.ha.ovh.net (Postfix) with ESMTPSA id 56850B179636;
- Wed, 16 Oct 2019 21:44:06 +0000 (UTC)
-Date: Wed, 16 Oct 2019 23:44:03 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Paul Mackerras <paulus@ozlabs.org>
-Subject: Re: [PATCH v2 0/6] KVM: PPC: Book3S: HV: XIVE: Allocate less VPs in
- OPAL
-Message-ID: <20191016234403.77cdf150@bahia.lan>
-In-Reply-To: <156958521220.1503771.2119482814236775333.stgit@bahia.lan>
-References: <156958521220.1503771.2119482814236775333.stgit@bahia.lan>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tmBX4tl6zDr5N
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 08:48:20 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205201] Booting halts if Dawicontrol DC-2976 UW SCSI board
+ installed, unless RAM size limited to 3500M
+Date: Wed, 16 Oct 2019 21:48:17 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: chzigotzky@xenosoft.de
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-205201-206035-b6rq9C3Wsz@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205201-206035@https.bugzilla.kernel.org/>
+References: <bug-205201-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 10318872647401970107
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrjeehgdduieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,53 +61,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- kvm-ppc@vger.kernel.org, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
- Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 27 Sep 2019 13:53:32 +0200
-Greg Kurz <groug@kaod.org> wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205201
 
-> This brings some fixes and allows to start more VMs with an in-kernel
-> XIVE or XICS-on-XIVE device.
-> 
-> Changes since v1 (https://patchwork.ozlabs.org/cover/1166099/):
-> - drop a useless patch
-> - add a patch to show VP ids in debugfs
-> - update some changelogs
-> - fix buggy check in patch 5
-> - Cc: stable 
-> 
-> --
-> Greg
-> 
-> ---
-> 
-> Greg Kurz (6):
->       KVM: PPC: Book3S HV: XIVE: Set kvm->arch.xive when VPs are allocated
->       KVM: PPC: Book3S HV: XIVE: Ensure VP isn't already in use
->       KVM: PPC: Book3S HV: XIVE: Show VP id in debugfs
->       KVM: PPC: Book3S HV: XIVE: Compute the VP id in a common helper
->       KVM: PPC: Book3S HV: XIVE: Make VP block size configurable
->       KVM: PPC: Book3S HV: XIVE: Allow userspace to set the # of VPs
-> 
-> 
->  Documentation/virt/kvm/devices/xics.txt |   14 +++
->  Documentation/virt/kvm/devices/xive.txt |    8 ++
->  arch/powerpc/include/uapi/asm/kvm.h     |    3 +
->  arch/powerpc/kvm/book3s_xive.c          |  142 ++++++++++++++++++++++++-------
->  arch/powerpc/kvm/book3s_xive.h          |   17 ++++
->  arch/powerpc/kvm/book3s_xive_native.c   |   40 +++------
->  6 files changed, 167 insertions(+), 57 deletions(-)
-> 
+--- Comment #1 from Christian Zigotzky (chzigotzky@xenosoft.de) ---
+I have the same problem with my analog PCI TV card Typhoon TView RDS + FM
+Stereo (BT878 chip) in my AmigaOne X5000. It only works with reducing the m=
+em
+size to 3500MB (mem=3D3500M).
+I figured out that the issue is somewhere in the PowerPC updates 4.21-1 [1].
+Maybe the code change in the file "arch/powerpc/kernel/dma-swiotlb.c" [2] or
+maybe the change in the file "arch/powerpc/kernel/dma.c" [3].
 
-Ping ?
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3D8d6973327ee84c2f40dd9efd8928d4a1186c96e2
 
-Cheers,
+[2]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/arc=
+h/powerpc/kernel/dma-swiotlb.c?id=3D8d6973327ee84c2f40dd9efd8928d4a1186c96e2
 
---
-Greg
+[3]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/arc=
+h/powerpc/kernel/dma.c?id=3D8d6973327ee84c2f40dd9efd8928d4a1186c96e2
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
