@@ -2,88 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17860D86EE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 05:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB172D87B2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 06:59:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tJBJ1KYXzDqgj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 14:46:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tKpZ4XZBzDqkX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 15:59:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="fNSVq1FB"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46tJ8947rxzDqVj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 14:44:40 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9G3fcoV122870
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 23:44:36 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vnu55rkm7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2019 23:44:35 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
- Wed, 16 Oct 2019 04:44:34 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 16 Oct 2019 04:44:32 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9G3iVkS36634808
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Oct 2019 03:44:31 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 408CEA4051;
- Wed, 16 Oct 2019 03:44:31 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E489FA4057;
- Wed, 16 Oct 2019 03:44:30 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 16 Oct 2019 03:44:30 +0000 (GMT)
-Received: from osmium (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5D9C3A01B6;
- Wed, 16 Oct 2019 14:44:27 +1100 (AEDT)
-Date: Wed, 16 Oct 2019 14:44:26 +1100
-From: Sam Bobroff <sbobroff@linux.ibm.com>
-To: "Oliver O'Halloran" <oohall@gmail.com>
-Subject: Re: [PATCH] powerpc/eeh: Only dump stack once if an MMIO loop is
- detected
-References: <20191016012536.22588-1-oohall@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tKmj67khzDqfX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 15:57:55 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46tKmX5gXcz9v04Q;
+ Wed, 16 Oct 2019 06:57:48 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=fNSVq1FB; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id EyIffbDFq4DK; Wed, 16 Oct 2019 06:57:48 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46tKmX4c9Gz9v04P;
+ Wed, 16 Oct 2019 06:57:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1571201868; bh=WcrWX5qIsyzBaUSqOCznfmSp4X0kJ50l49JIS7ShEs0=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=fNSVq1FBCpaoU2z6LyJxHgHAHyhr3tYNNlck/NyX9Ska5Upma4QucQAJWCLMVliQD
+ qnh5loE8VUquD92wiSEvXHzF6A65fuNiLR/2DahJjI3hImI4SS+ViieQ3Z5AeLLfB+
+ PeX7oDmo1KiowuO2ac2L9xfNG2yGCt1c05Uh5LSg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6DBC68B8B0;
+ Wed, 16 Oct 2019 06:57:49 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 52SVVMmInz53; Wed, 16 Oct 2019 06:57:49 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DEEA18B7C9;
+ Wed, 16 Oct 2019 06:57:48 +0200 (CEST)
+Subject: Re: [PATCH 03/34] powerpc: Use CONFIG_PREEMPTION
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org
+References: <20191015191821.11479-1-bigeasy@linutronix.de>
+ <20191015191821.11479-4-bigeasy@linutronix.de>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <156db456-af80-1f5e-6234-2e78283569b6@c-s.fr>
+Date: Wed, 16 Oct 2019 06:57:48 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="PEIAKu/WMn1b1Hv9"
-Content-Disposition: inline
-In-Reply-To: <20191016012536.22588-1-oohall@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19101603-0028-0000-0000-000003AA6B0A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101603-0029-0000-0000-0000246C8294
-Message-Id: <20191016034426.GA19147@osmium>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-16_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910160032
+In-Reply-To: <20191015191821.11479-4-bigeasy@linutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,78 +79,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, tglx@linutronix.de,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---PEIAKu/WMn1b1Hv9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 16, 2019 at 12:25:36PM +1100, Oliver O'Halloran wrote:
-> Many drivers don't check for errors when they get a 0xFFs response from an
-> MMIO load. As a result after an EEH event occurs a driver can get stuck in
-> a polling loop unless it some kind of internal timeout logic.
->=20
-> Currently EEH tries to detect and report stuck drivers by dumping a stack
-> trace after eeh_dev_check_failure() is called EEH_MAX_FAILS times on an
-> already frozen PE. The value of EEH_MAX_FAILS was chosen so that a dump
-> would occur every few seconds if the driver was spinning in a loop. This
-> results in a lot of spurious stack traces in the kernel log.
->=20
-> Fix this by limiting it to printing one stack trace for each PE freeze. If
-> the driver is truely stuck the kernel's hung task detector is better suit=
-ed
-> to reporting the probelm anyway.
-problem
->=20
-> Cc: Sam Bobroff <sbobroff@linux.ibm.com>
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Le 15/10/2019 à 21:17, Sebastian Andrzej Siewior a écrit :
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
+> Both PREEMPT and PREEMPT_RT require the same functionality which today
+> depends on CONFIG_PREEMPT.
+> 
+> Switch the entry code over to use CONFIG_PREEMPTION. Add PREEMPT_RT
+> output in __die().
 
-Looks good to me (especially because if it's stuck in a loop the stack
-trace is going to be pretty much the same every time). I tested it by
-recovering a device that uses the mlx5_core driver.
+powerpc doesn't select ARCH_SUPPORTS_RT, so this change is useless as 
+CONFIG_PREEMPT_RT cannot be selected.
 
-Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
-Tested-by: Sam Bobroff <sbobroff@linux.ibm.com>
+> 
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> [bigeasy: +traps.c, Kconfig]
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > ---
->  arch/powerpc/kernel/eeh.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index bc8a551013be..c35069294ecf 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -503,7 +503,7 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
->  	rc =3D 1;
->  	if (pe->state & EEH_PE_ISOLATED) {
->  		pe->check_count++;
-> -		if (pe->check_count % EEH_MAX_FAILS =3D=3D 0) {
-> +		if (pe->check_count =3D=3D EEH_MAX_FAILS) {
->  			dn =3D pci_device_to_OF_node(dev);
->  			if (dn)
->  				location =3D of_get_property(dn, "ibm,loc-code",
-> --=20
-> 2.21.0
->=20
+>   arch/powerpc/Kconfig           | 2 +-
+>   arch/powerpc/kernel/entry_32.S | 4 ++--
+>   arch/powerpc/kernel/entry_64.S | 4 ++--
+>   arch/powerpc/kernel/traps.c    | 7 ++++++-
+>   4 files changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 3e56c9c2f16ee..8ead8d6e1cbc8 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -106,7 +106,7 @@ config LOCKDEP_SUPPORT
+>   config GENERIC_LOCKBREAK
+>   	bool
+>   	default y
+> -	depends on SMP && PREEMPT
+> +	depends on SMP && PREEMPTION
+>   
+>   config GENERIC_HWEIGHT
+>   	bool
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+> index d60908ea37fb9..e1a4c39b83b86 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -897,7 +897,7 @@ user_exc_return:		/* r10 contains MSR_KERNEL here */
+>   	bne-	0b
+>   1:
+>   
+> -#ifdef CONFIG_PREEMPT
+> +#ifdef CONFIG_PREEMPTION
+>   	/* check current_thread_info->preempt_count */
+>   	lwz	r0,TI_PREEMPT(r2)
+>   	cmpwi	0,r0,0		/* if non-zero, just restore regs and return */
+> @@ -921,7 +921,7 @@ user_exc_return:		/* r10 contains MSR_KERNEL here */
+>   	 */
+>   	bl	trace_hardirqs_on
+>   #endif
+> -#endif /* CONFIG_PREEMPT */
+> +#endif /* CONFIG_PREEMPTION */
+>   restore_kuap:
+>   	kuap_restore r1, r2, r9, r10, r0
+>   
+> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+> index 6467bdab8d405..83733376533e8 100644
+> --- a/arch/powerpc/kernel/entry_64.S
+> +++ b/arch/powerpc/kernel/entry_64.S
+> @@ -840,7 +840,7 @@ _GLOBAL(ret_from_except_lite)
+>   	bne-	0b
+>   1:
+>   
+> -#ifdef CONFIG_PREEMPT
+> +#ifdef CONFIG_PREEMPTION
+>   	/* Check if we need to preempt */
+>   	andi.	r0,r4,_TIF_NEED_RESCHED
+>   	beq+	restore
+> @@ -871,7 +871,7 @@ _GLOBAL(ret_from_except_lite)
+>   	li	r10,MSR_RI
+>   	mtmsrd	r10,1		  /* Update machine state */
+>   #endif /* CONFIG_PPC_BOOK3E */
+> -#endif /* CONFIG_PREEMPT */
+> +#endif /* CONFIG_PREEMPTION */
+>   
+>   	.globl	fast_exc_return_irq
+>   fast_exc_return_irq:
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index 82f43535e6867..23d2f20be4f2e 100644
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -252,14 +252,19 @@ NOKPROBE_SYMBOL(oops_end);
+>   
+>   static int __die(const char *str, struct pt_regs *regs, long err)
+>   {
+> +	const char *pr = "";
+> +
 
---PEIAKu/WMn1b1Hv9
-Content-Type: application/pgp-signature; name="signature.asc"
+Please follow the same approach as already existing. Don't add a local 
+var for that.
 
------BEGIN PGP SIGNATURE-----
+>   	printk("Oops: %s, sig: %ld [#%d]\n", str, err, ++die_counter);
+>   
+> +	if (IS_ENABLED(CONFIG_PREEMPTION))
+> +		pr = IS_ENABLED(CONFIG_PREEMPT_RT) ? " PREEMPT_RT" : " PREEMPT";
+> +
 
-iQEzBAABCgAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAl2mkhQACgkQMX8w6AQl
-/iJduwf/SIpcUFp990hlMZ+h2pir29aWsP5yGLDD92J/S4Q5lE9fZqnGH4G+LwLR
-ArbT0eCSiI/A74Ebkr4pmhX7sGOHhsEUj2zL4SE7V1lfaCHYFgXA3GmQ9OHfpVZO
-O77oD2FJ9f9XPQ12Hg2Gc8CIj5c+/NLwxspmi8vHWIOg33PTJQTt8JGf4aOIVyb4
-yU1YCxjIs2bGR5Hom+X3LvrON52053m9BEC0SLzClZt7Dj8YDp9lg7NFeHxGV1H8
-jlUVk6AW2JRmKq7V780l+HCMIw7/kolQeFdcXX9wPUOpyLkICRyoW1XW4ECOT4Lv
-XnWdB+kYTXco1jeG0U3eLBEC5XLEBA==
-=hneS
------END PGP SIGNATURE-----
+drop
 
---PEIAKu/WMn1b1Hv9--
+>   	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s%s %s\n",
 
+Add one %s
+
+>   	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
+>   	       PAGE_SIZE / 1024,
+>   	       early_radix_enabled() ? " MMU=Radix" : "",
+>   	       early_mmu_has_feature(MMU_FTR_HPTE_TABLE) ? " MMU=Hash" : "",
+> -	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
+
+Replace by: 	IS_ENABLED(CONFIG_PREEMPTION) ? " PREEMPT" : ""
+
+> +	       pr,
+
+add something like: IS_ENABLED(CONFIG_PREEMPT_RT) ? "_RT" : ""
+
+>   	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
+>   	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
+>   	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
+> 
+
+Christophe
