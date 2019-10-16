@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EDED97B6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 18:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B3AD97D0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 18:46:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tdQf2qNczDqcW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 03:43:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tdVJ5VB5zDqLn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 03:46:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::543;
- helo=mail-ed1-x543.google.com; envelope-from=f.fainelli@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::531;
+ helo=mail-ed1-x531.google.com; envelope-from=f.fainelli@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="bZZ7F/7w"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="sFLTSa9h"; 
  dkim-atps=neutral
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com
+ [IPv6:2a00:1450:4864:20::531])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46tdND5fQBzDqbB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 03:41:16 +1100 (AEDT)
-Received: by mail-ed1-x543.google.com with SMTP id r4so21839403edy.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 09:41:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tdS41YcnzDqbG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 03:44:35 +1100 (AEDT)
+Received: by mail-ed1-x531.google.com with SMTP id v8so21866743eds.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 09:44:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=v9nMjaMVU16eOG/GsmAlJCGLKImaqDAh6yeiRFaFUuM=;
- b=bZZ7F/7whOXnXcFnUNNVLp7Dk/5cqCLzRiqsIWDfhFEfBXz0o2BOLeJKagMZtyexm2
- 79eYeUvw7CM9R/3P7I9zt7LPTXFznMViXDKveHYBSTG5t2b+72xhG4NZvLadz/Qw+nYv
- GXPSDPrOF2gQOOQq6G2Y0i14hwHCxwhhYv//OYSMYymg1VSHepfVAAKrNnhG6HJypNsa
- CX15LyTRFssaTmQeXRqyuiCYimgXdo8dChXffTP/ZPKX7MiaZ987Mof7gqiG5rd2mYbQ
- AiCJet4jlyB6a0S5FhNGA60CjAViXuiHracD/A8ZPjjA6ozaz4hv90Lu/zmy1J4xUiaG
- //dQ==
+ bh=ZjLuelx3S+vgGEqA0Wa177sYJKNlYV9yc/c2zDhGqzk=;
+ b=sFLTSa9hhwygpd1bl/N+6RbfhNg5GlETinvAuHy8UaAmNw/uEtQKh17fwDDVt/7XjU
+ YASM8CdrdHu5jck713OgMYVtoaiyODLeYM92R3a8VLjJ2DVFbz9h5tR9yP3fqx4UM2Sz
+ qGBXypuwhBKm/jetCiIgFMYdu1+erRSbZzMd6f9RshqmAx843SHbj/wle9H7rh7aNlBO
+ Pjm/5XNttCpD8Mv7aHWjZIXUQHPb0I+gDK8l8U3uKoOSbHOXueeJTxmhD3asqUmN6Pft
+ P8RQGb7En6PW9rtUyUQBR+lmpSEaBthsDZrwQEFQKJB4qk+eqX/73OlD/biO2UeORM41
+ wIJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=v9nMjaMVU16eOG/GsmAlJCGLKImaqDAh6yeiRFaFUuM=;
- b=sewaUBpf7U0xrYzdGFhJs9aAaOUxR2zrNRp5K2Ku7SAh+SzD0vtVR9k8Rf98jBdmN+
- Litqjw9g5DtpTRmdh4pOgxGx4jtkNBeNTLCTHguKxo5lvID+7kIZYwXXf4d+61xx6E1H
- ib2pDkZuc6lYF9U/8cA0+mN4rj3HtmTaNAHK02kNgrdZH1ug2RtI7Ssgdy3DPH6lQT38
- zZt+gmNOljLgTxm+RE0OhqqPR1taHQmFoLzGop6BicA6vor/CcIL17vEVOWuS2bCfdVH
- clzPWW2axTecKNn/S9vjyCP39iC/msJdWjxIsAmPG5jqhd3Y7T3wJy/yAd3n4Sgm6qJT
- GtzQ==
-X-Gm-Message-State: APjAAAWz/+1PWcUTprt5xzoctP3gCOyeEviBYDPWH2Mr+r3x4uaRZ2UI
- E1ggAxxVvYDhBDYhqDmV83WTv9QK
-X-Google-Smtp-Source: APXvYqx3eLl5To4wenHDE9gsj3RkpGIJgKJh+8Y2Jzsnenh+i8KAX3dPjFLZbvxUZND7gvNmldPkLw==
-X-Received: by 2002:a17:906:5051:: with SMTP id
- e17mr6124293ejk.139.1571244068858; 
- Wed, 16 Oct 2019 09:41:08 -0700 (PDT)
+ bh=ZjLuelx3S+vgGEqA0Wa177sYJKNlYV9yc/c2zDhGqzk=;
+ b=dJQkuVIm9htfbjdY2+ZqIAGfCp9ckSkKx66xQhkORrnAFSEwT1fmCrHJOamZHMyzt7
+ uI+UCNsEgC3sxRvM/k2e4jI2wk7OfrNFTfR3IcWXMJNNT/5VQhNyiJzT44l2b4GNnNgW
+ ti1ud3InB630fx1r3old2TkbEMN92wNXIsTONbc+tNnT10DMWQqvPtmSvQZAeOE3xu69
+ 2kLceOAtV7WuCR9gd3iwx401zR6cew9jgNEOLqcvvHqcA5zc0Mq5gZcA9popve81U9Ca
+ gCj+bqdyfCH7tZzNCNFuD0digepNh978gJjiTYU5vrj4eMfC/ZZ04q/DiXZJ+MnqXK6c
+ R0og==
+X-Gm-Message-State: APjAAAVzPsajQ+i5S7t+U8Macy9EkkzKHpUxiyM9OSt+UyfAofi94kpR
+ F//oD24uQzqoDVmIIiXlpszYBRtq
+X-Google-Smtp-Source: APXvYqxIERiZ5w64+xqs7jAq4hXeyVbjFAQKX837pLY6HTLxJZOWrfK9CNoOE8J3X4tpR4eT5bVQ2g==
+X-Received: by 2002:a17:907:20c8:: with SMTP id
+ qq8mr40330276ejb.311.1571244271178; 
+ Wed, 16 Oct 2019 09:44:31 -0700 (PDT)
 Received: from [10.67.50.53] ([192.19.223.252])
- by smtp.googlemail.com with ESMTPSA id h38sm4079231edh.13.2019.10.16.09.41.03
+ by smtp.googlemail.com with ESMTPSA id h38sm4079614edh.13.2019.10.16.09.44.22
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 16 Oct 2019 09:41:07 -0700 (PDT)
-Subject: Re: [PATCH -next 02/13] hwrng: bcm2835 - use
- devm_platform_ioremap_resource() to simplify code
+ Wed, 16 Oct 2019 09:44:30 -0700 (PDT)
+Subject: Re: [PATCH -next 00/13] hwrng: use devm_platform_ioremap_resource()
+ to simplify code
 To: YueHaibing <yuehaibing@huawei.com>, herbert@gondor.apana.org.au,
  mpm@selenic.com, arnd@arndb.de, gregkh@linuxfoundation.org,
  nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
- ludovic.desroches@microchip.com, rjui@broadcom.com, sbranden@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, eric@anholt.net, wahrenst@gmx.net,
- l.stelmach@samsung.com, kgene@kernel.org, krzk@kernel.org,
- khilman@baylibre.com, dsaxena@plexity.net, patrice.chotard@st.com
+ ludovic.desroches@microchip.com, f.fainelli@gmail.com, rjui@broadcom.com,
+ sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ eric@anholt.net, wahrenst@gmx.net, l.stelmach@samsung.com, kgene@kernel.org,
+ krzk@kernel.org, khilman@baylibre.com, dsaxena@plexity.net,
+ patrice.chotard@st.com
 References: <20191016104621.26056-1-yuehaibing@huawei.com>
- <20191016104621.26056-3-yuehaibing@huawei.com>
 From: Florian Fainelli <f.fainelli@gmail.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
@@ -127,12 +127,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  caxTGgc5zzQHeX67eMzrGomG3ZnIxmd1sAbgvJUDaD2GrYlulfwGWwWyTNbWRvMighVdPkSF
  6XFgQaosWxkV0OELLy2N485YrTr2Uq64VKyxpncLh50e2RnyAJ9Za0Dx0yyp44iD1OvHtkEI
  M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
-Message-ID: <e3c80376-396a-3444-9be5-e8e801f91112@gmail.com>
-Date: Wed, 16 Oct 2019 09:41:01 -0700
+Message-ID: <2c60b926-1e98-cca0-ec17-6b45f9da404a@gmail.com>
+Date: Wed, 16 Oct 2019 09:44:20 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191016104621.26056-3-yuehaibing@huawei.com>
+In-Reply-To: <20191016104621.26056-1-yuehaibing@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -156,11 +156,48 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 10/16/19 3:46 AM, YueHaibing wrote:
-> Use devm_platform_ioremap_resource() to simplify the code a bit.
-> This is detected by coccinelle.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> devm_platform_ioremap_resource() internally have platform_get_resource()
+> and devm_ioremap_resource() in it. So instead of calling them separately
+> use devm_platform_ioremap_resource() directly.
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Did your coccinelle script not cover
+drivers/char/hw_random/iproc-rng200.c somehow? Do you mind including it
+as a separate patch?
+
+Thanks
+
+> 
+> YueHaibing (13):
+>   hwrng: atmel - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: bcm2835 - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: exynos - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: hisi - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: ks-sa - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: meson - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: npcm - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: omap - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: pasemi - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: pic32 - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: st - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: tx4939 - use devm_platform_ioremap_resource() to simplify code
+>   hwrng: xgene - use devm_platform_ioremap_resource() to simplify code
+> 
+>  drivers/char/hw_random/atmel-rng.c   | 4 +---
+>  drivers/char/hw_random/bcm2835-rng.c | 5 +----
+>  drivers/char/hw_random/exynos-trng.c | 4 +---
+>  drivers/char/hw_random/hisi-rng.c    | 4 +---
+>  drivers/char/hw_random/ks-sa-rng.c   | 4 +---
+>  drivers/char/hw_random/meson-rng.c   | 4 +---
+>  drivers/char/hw_random/npcm-rng.c    | 4 +---
+>  drivers/char/hw_random/omap-rng.c    | 4 +---
+>  drivers/char/hw_random/pasemi-rng.c  | 4 +---
+>  drivers/char/hw_random/pic32-rng.c   | 4 +---
+>  drivers/char/hw_random/st-rng.c      | 4 +---
+>  drivers/char/hw_random/tx4939-rng.c  | 4 +---
+>  drivers/char/hw_random/xgene-rng.c   | 4 +---
+>  13 files changed, 13 insertions(+), 40 deletions(-)
+> 
+
+
 -- 
 Florian
