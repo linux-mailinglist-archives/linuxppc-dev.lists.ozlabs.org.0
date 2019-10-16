@@ -1,54 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AEDD9073
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 14:10:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89BED90E2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 14:29:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tWMN6jMXzDqhn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 23:10:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tWnv4yK2zDr08
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 23:29:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=virtuozzo.com (client-ip=185.231.240.75; helo=relay.sw.ru;
+ envelope-from=aryabinin@virtuozzo.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=pass (p=none dis=none) header.from=virtuozzo.com
+Received: from relay.sw.ru (relay.sw.ru [185.231.240.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46tWJ44fkzzDqv4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 23:07:14 +1100 (AEDT)
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id 9347664D55B01082BBF5;
- Wed, 16 Oct 2019 20:07:06 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Wed, 16 Oct 2019
- 20:07:01 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
- <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
- <20191012074014.GA2037204@kroah.com>
- <1e1ec851-b5e7-8f35-a627-4c12ca9c2d3c@huawei.com>
- <20191012104001.GA2052933@kroah.com> <20191012104742.GA2053473@kroah.com>
- <82000bc8-6912-205b-0251-25b9cc430973@huawei.com>
- <20191014092509.GA3050088@kroah.com>
- <34450edf-2249-ee7a-fc83-f4a923f75989@huawei.com>
- <20191015165833.GB1067208@kroah.com>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <c75e3b34-f4c0-ea1f-6447-6da623d9c951@huawei.com>
-Date: Wed, 16 Oct 2019 20:07:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tWb449hkzDr0m
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 23:20:14 +1100 (AEDT)
+Received: from [172.16.25.5] by relay.sw.ru with esmtp (Exim 4.92.2)
+ (envelope-from <aryabinin@virtuozzo.com>)
+ id 1iKiHd-0008JI-Fd; Wed, 16 Oct 2019 15:20:05 +0300
+Subject: Re: [PATCH v8 1/5] kasan: support backing vmalloc space with real
+ shadow memory
+To: Daniel Axtens <dja@axtens.net>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, x86@kernel.org, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr
+References: <20191001065834.8880-1-dja@axtens.net>
+ <20191001065834.8880-2-dja@axtens.net>
+ <352cb4fa-2e57-7e3b-23af-898e113bbe22@virtuozzo.com>
+ <87ftjvtoo7.fsf@dja-thinkpad.axtens.net>
+From: Andrey Ryabinin <aryabinin@virtuozzo.com>
+Message-ID: <8f573b40-3a5a-ed36-dffb-4a54faf3c4e1@virtuozzo.com>
+Date: Wed, 16 Oct 2019 15:19:50 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191015165833.GB1067208@kroah.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <87ftjvtoo7.fsf@dja-thinkpad.axtens.net>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,255 +53,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, Michal Hocko <mhocko@kernel.org>,
- mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
- sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
- linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
- linux-acpi@vger.kernel.org, x86@kernel.org, rppt@linux.ibm.com,
- borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
- jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
- linux-mips@vger.kernel.org, lenb@kernel.org, len.brown@intel.com,
- gor@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, luto@kernel.org,
- bhelgaas@google.com, tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
- linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
- linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
- linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
- akpm@linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- davem@davemloft.net
+Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/10/16 0:58, Greg KH wrote:
-> On Tue, Oct 15, 2019 at 06:40:29PM +0800, Yunsheng Lin wrote:
->> On 2019/10/14 17:25, Greg KH wrote:
->>> On Mon, Oct 14, 2019 at 04:00:46PM +0800, Yunsheng Lin wrote:
->>>> On 2019/10/12 18:47, Greg KH wrote:
->>>>> On Sat, Oct 12, 2019 at 12:40:01PM +0200, Greg KH wrote:
->>>>>> On Sat, Oct 12, 2019 at 05:47:56PM +0800, Yunsheng Lin wrote:
->>>>>>> On 2019/10/12 15:40, Greg KH wrote:
->>>>>>>> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
->>>>>>>>> add pci and acpi maintainer
->>>>>>>>> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
->>>>>>>>>
->>>>>>>>> On 2019/10/11 19:15, Peter Zijlstra wrote:
->>>>>>>>>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
->>>>>>>>>>> But I failed to see why the above is related to making node_to_cpumask_map()
->>>>>>>>>>> NUMA_NO_NODE aware?
->>>>>>>>>>
->>>>>>>>>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
->>>>>>>>>> have a node assigned.
->>>>>>>>>>
->>>>>>>>>> It not having one, is a straight up bug. We must not silently accept
->>>>>>>>>> NO_NODE there, ever.
->>>>>>>>>>
->>>>>>>>>
->>>>>>>>> I suppose you mean reporting a lack of affinity when the node of a pcie
->>>>>>>>> device is not set by "not silently accept NO_NODE".
->>>>>>>>
->>>>>>>> If the firmware of a pci device does not provide the node information,
->>>>>>>> then yes, warn about that.
->>>>>>>>
->>>>>>>>> As Greg has asked about in [1]:
->>>>>>>>> what is a user to do when the user sees the kernel reporting that?
->>>>>>>>>
->>>>>>>>> We may tell user to contact their vendor for info or updates about
->>>>>>>>> that when they do not know about their system well enough, but their
->>>>>>>>> vendor may get away with this by quoting ACPI spec as the spec
->>>>>>>>> considering this optional. Should the user believe this is indeed a
->>>>>>>>> fw bug or a misreport from the kernel?
->>>>>>>>
->>>>>>>> Say it is a firmware bug, if it is a firmware bug, that's simple.
->>>>>>>>
->>>>>>>>> If this kind of reporting is common pratice and will not cause any
->>>>>>>>> misunderstanding, then maybe we can report that.
->>>>>>>>
->>>>>>>> Yes, please do so, that's the only way those boxes are ever going to get
->>>>>>>> fixed.  And go add the test to the "firmware testing" tool that is based
->>>>>>>> on Linux that Intel has somewhere, to give vendors a chance to fix this
->>>>>>>> before they ship hardware.
->>>>>>>>
->>>>>>>> This shouldn't be a big deal, we warn of other hardware bugs all the
->>>>>>>> time.
->>>>>>>
->>>>>>> Ok, thanks for clarifying.
->>>>>>>
->>>>>>> Will send a patch to catch the case when a pcie device without numa node
->>>>>>> being set and warn about it.
->>>>>>>
->>>>>>> Maybe use dev->bus to verify if it is a pci device?
->>>>>>
->>>>>> No, do that in the pci bus core code itself, when creating the devices
->>>>>> as that is when you know, or do not know, the numa node, right?
->>>>>>
->>>>>> This can't be in the driver core only, as each bus type will have a
->>>>>> different way of determining what the node the device is on.  For some
->>>>>> reason, I thought the PCI core code already does this, right?
->>>>>
->>>>> Yes, pci_irq_get_node(), which NO ONE CALLS!  I should go delete that
->>>>> thing...
->>>>>
->>>>> Anyway, it looks like the pci core code does call set_dev_node() based
->>>>> on the PCI bridge, so if that is set up properly, all should be fine.
->>>>>
->>>>> If not, well, you have buggy firmware and you need to warn about that at
->>>>> the time you are creating the bridge.  Look at the call to
->>>>> pcibus_to_node() in pci_register_host_bridge().
->>>>
->>>> Thanks for pointing out the specific function.
->>>> Maybe we do not need to warn about the case when the device has a parent,
->>>> because we must have warned about the parent if the device has a parent
->>>> and the parent also has a node of NO_NODE, so do not need to warn the child
->>>> device anymore? like blew:
->>>>
->>>> @@ -932,6 +932,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
->>>>         list_add_tail(&bus->node, &pci_root_buses);
->>>>         up_write(&pci_bus_sem);
->>>>
->>>> +       if (nr_node_ids > 1 && !parent &&
->>>
->>> Why do you need to check this?  If you have a parent, it's your node
->>> should be set, if not, that's an error, right?
->>
->> If the device has parent and the parent device also has a node of
->> NUMA_NO_NODE, then maybe we have warned about the parent device, so
->> we do not have to warn about the child device?
+
+On 10/14/19 4:57 PM, Daniel Axtens wrote:
+> Hi Andrey,
 > 
-> But it's a PCI bridge, if it is not set properly, that needs to be fixed
-> otherwise the PCI devices attached to it have no hope of working
-> properly.
-
-You may be right, thanks.
-
-If it's a root PCI bridge and it does have a parent device, but
-the parent device is not a pcie device and it's node is NUMA_NO_NODE,
-then we will miss warning about this case.
-
 > 
->> In pci_register_host_bridge():
+>>> +	/*
+>>> +	 * Ensure poisoning is visible before the shadow is made visible
+>>> +	 * to other CPUs.
+>>> +	 */
+>>> +	smp_wmb();
 >>
->> 	if (!parent)
->> 		set_dev_node(bus->bridge, pcibus_to_node(bus));
->>
->> The above only set the node of the bridge device to the node of bus if
->> the bridge device does not have a parent.
+>> I'm not quite understand what this barrier do and why it needed.
+>> And if it's really needed there should be a pairing barrier
+>> on the other side which I don't see.
 > 
-> Odd, what happens to devices behind another bridge today?  Are their
-> nodes set properly today?  Is the node supposed to be the same as the
-> parent bridge?
-
-It seems only the root bridge is added in pci_register_host_bridge(),
-and other bridges under the root bridge is added in pci_alloc_child_bus().
-
-And in pci_alloc_child_bus(), the child bus device is setup with proper
-parent, so the pcie device under the child bus should have the same node
-as the parent bridge when device_add() is called, which will set the node
-to its parent's node when the child device' node is NUMA_NO_NODE.
-
-Do not have a system with multi bridges at hand to debug it, so I may
-be wrong about above.
-
+> Mark might be better able to answer this, but my understanding is that
+> we want to make sure that we never have a situation where the writes are
+> reordered so that PTE is installed before all the poisioning is written
+> out. I think it follows the logic in __pte_alloc() in mm/memory.c:
 > 
->>>> +           dev_to_node(bus->bridge) == NUMA_NO_NODE)
->>>> +               dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW. Please contact your vendor for updates.\n");
->>>> +
->>>>         return 0;
->>>
->>> Who set that bus->bridge node to NUMA_NO_NODE?
->>
->> It seems x86 and arm64 may have different implemention of
->> pcibus_to_node():
->>
->> For arm64:
->> int pcibus_to_node(struct pci_bus *bus)
->> {
->> 	return dev_to_node(&bus->dev);
->> }
->>
->> And the node of bus is set in:
->> int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
->> {
->> 	if (!acpi_disabled) {
->> 		struct pci_config_window *cfg = bridge->bus->sysdata;
->> 		struct acpi_device *adev = to_acpi_device(cfg->parent);
->> 		struct device *bus_dev = &bridge->bus->dev;
->>
->> 		ACPI_COMPANION_SET(&bridge->dev, adev);
->> 		set_dev_node(bus_dev, acpi_get_node(acpi_device_handle(adev)));
->> 	}
->>
->> 	return 0;
->> }
->>
->> acpi_get_node() may return NUMA_NO_NODE in pcibios_root_bridge_prepare(),
->> which will set the node of bus_dev to NUMA_NO_NODE
->>
->>
->> x86:
->> static inline int __pcibus_to_node(const struct pci_bus *bus)
->> {
->> 	const struct pci_sysdata *sd = bus->sysdata;
->>
->> 	return sd->node;
->> }
->>
->> And the node of bus is set in pci_acpi_scan_root(), which uses
->> pci_acpi_root_get_node() get the node of a bus. And it also may return
->> NUMA_NO_NODE.
+> 	/*
+> 	 * Ensure all pte setup (eg. pte page lock and page clearing) are
+> 	 * visible before the pte is made visible to other CPUs by being
+> 	 * put into page tables.
+> 	 *
+> 	 * The other side of the story is the pointer chasing in the page
+> 	 * table walking code (when walking the page table without locking;
+> 	 * ie. most of the time). Fortunately, these data accesses consist
+> 	 * of a chain of data-dependent loads, meaning most CPUs (alpha
+> 	 * being the notable exception) will already guarantee loads are
+> 	 * seen in-order. See the alpha page table accessors for the
+> 	 * smp_read_barrier_depends() barriers in page table walking code.
+> 	 */
+> 	smp_wmb(); /* Could be smp_wmb__xxx(before|after)_spin_lock */
 > 
-> Fixing that will be good :)>
->>> If that is set, the firmware is broken, as you say, but you need to tell
->>> the user what firmware is broken.
->>
->> Maybe mentioning the BIOS in log?
->> dev_err(bus->bridge, FW_BUG "No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.\n");
+> I can clarify the comment.
 > 
-> That's a good start.  Try running it on your machines (big and small)
-> and see what happens.
 
-There is no fw bug log output as above when using newer bios(
-which has provided the device node through ACPI) in my machine.
+I don't see how is this relevant here.
 
-> 
->>> Try something like this out and see what happens on your machine that
->>> had things "broken".  What does it say?
->>
->> Does not have a older bios right now.
->> But always returning NUMA_NO_NODE by below patch:
->>
->> --- a/drivers/acpi/numa.c
->> +++ b/drivers/acpi/numa.c
->> @@ -484,6 +484,7 @@ int acpi_get_node(acpi_handle handle)
->>
->>         pxm = acpi_get_pxm(handle);
->>
->> -       return acpi_map_pxm_to_node(pxm);
->> +       return -1;
->> +       //return acpi_map_pxm_to_node(pxm);
->>
->> it gives the blow warning in my machine:
->>
->> [   16.126136]  pci0000:00: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   17.733831]  pci0000:7b: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   18.020924]  pci0000:7a: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   18.552832]  pci0000:78: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   19.514948]  pci0000:7c: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   20.652990]  pci0000:74: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   22.573200]  pci0000:80: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   23.225355]  pci0000:bb: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   23.514040]  pci0000:ba: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   24.050107]  pci0000:b8: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   25.017491]  pci0000:bc: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
->> [   25.557974]  pci0000:b4: [Firmware Bug]: No node assigned on NUMA capable HW by BIOS. Please contact your vendor for updates.
-> 
-> And can you fix your bios?  If you can't then why are we going to warn
-> about this?
+barrier in __pte_alloc() for very the following case:
 
-Yes, our new bios has fixed that.
+CPU 0							CPU 1
+__pte_alloc():                                          pte_offset_kernel(pmd_t * dir, unsigned long address):
+     pgtable_t new = pte_alloc_one(mm);                        pte_t *new = (pte_t *) pmd_page_vaddr(*dir) + ((address >> PAGE_SHIFT) & (PTRS_PER_PAGE - 1));  
+     smp_wmb();                                                smp_read_barrier_depends();
+     pmd_populate(mm, pmd, new);
+							/* do something with pte, e.g. check if (pte_none(*new)) */
 
 
+It's needed to ensure that if CPU1 sees pmd_populate() it also sees initialized contents of the 'new'.
+
+In our case the barrier would have been needed if we had the other side like this:
+
+if (!pte_none(*vmalloc_shadow_pte)) {
+	shadow_addr = (unsigned long)__va(pte_pfn(*vmalloc_shadow_pte) << PAGE_SHIFT);
+	smp_read_barrier_depends();
+	*shadow_addr; /* read the shadow, barrier ensures that if we see installed pte, we will see initialized shadow memory. */
+}
+
+
+Without such other side the barrier is pointless.
