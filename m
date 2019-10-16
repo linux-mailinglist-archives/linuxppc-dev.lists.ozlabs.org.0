@@ -1,82 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F46FD9655
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 18:04:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6407D972F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2019 18:24:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tcZ832CpzDr3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 03:04:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46td0w38XDzDqyY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 03:24:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=neo-zeon.de (client-ip=96.90.244.226; helo=neo-zeon.de;
+ envelope-from=cam@neo-zeon.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=neo-zeon.de
+Received: from neo-zeon.de (neo-zeon.de [96.90.244.226])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46tcRt5jCCzDqx9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 02:59:22 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9GFshVm120620
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 11:59:21 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vp67rg71n-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 11:59:20 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <clombard@linux.vnet.ibm.com>;
- Wed, 16 Oct 2019 16:59:18 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 16 Oct 2019 16:59:15 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9GFxEOT34996298
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Oct 2019 15:59:14 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E585A405D;
- Wed, 16 Oct 2019 15:59:14 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5EC10A4057;
- Wed, 16 Oct 2019 15:59:14 +0000 (GMT)
-Received: from lombard-w541.ibmuc.com (unknown [9.145.11.244])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 16 Oct 2019 15:59:14 +0000 (GMT)
-From: christophe lombard <clombard@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
- ajd@linux.ibm.com, groug@kaod.org
-Subject: [PATCH V2 2/2] powerpc/powernv: ocxl move TL definition
-Date: Wed, 16 Oct 2019 17:59:13 +0200
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20191016155913.13693-1-clombard@linux.vnet.ibm.com>
-References: <20191016155913.13693-1-clombard@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46tcy73dPDzDqX7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 03:22:07 +1100 (AEDT)
+Received: from [192.168.0.55] (ukyo.nerv.lan [192.168.0.55])
+ (authenticated bits=0)
+ by neo-zeon.de (8.15.2/8.15.2) with ESMTPSA id x9GGLt5e042976
+ (version=TLSv1.2 cipher=AES128-SHA bits=128 verify=NO);
+ Wed, 16 Oct 2019 09:21:55 -0700 (PDT) (envelope-from cam@neo-zeon.de)
+Subject: Re: [PATCH] powerpc/mm/book3s64/hash: Update 4k PAGE_SIZE kernel
+ mapping
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au
+References: <20191016055130.10533-1-aneesh.kumar@linux.ibm.com>
+From: Cameron Berkenpas <cam@neo-zeon.de>
+Message-ID: <1703e33e-3529-7037-7b41-674448bf85da@neo-zeon.de>
+Date: Wed, 16 Oct 2019 09:21:55 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19101615-0008-0000-0000-000003229FB7
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101615-0009-0000-0000-00004A41BA49
-Message-Id: <20191016155913.13693-3-clombard@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-16_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910160132
+In-Reply-To: <20191016055130.10533-1-aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,277 +49,331 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Specifies the templates in the Transaction Layer that the OpenCAPI
-device/host support when transmitting/receiving DL/DLX frames to or
-from the OpenCAPI device/host.
-Update, rename and create new few platform-specific calls which can
-be used by drivers.
+Seems to work for me so far! I've tried successfully against 5.2.21 and 
+5.3.6.
 
-No functional change.
+Thanks!
 
-Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
----
- arch/powerpc/include/asm/pnv-ocxl.h   |   6 +-
- arch/powerpc/platforms/powernv/ocxl.c | 103 ++++++++++++++++++++++++--
- drivers/misc/ocxl/config.c            |  89 +---------------------
- 3 files changed, 99 insertions(+), 99 deletions(-)
+-Cameron
 
-diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
-index e53d2981ba2f..e8d2b3aac558 100644
---- a/arch/powerpc/include/asm/pnv-ocxl.h
-+++ b/arch/powerpc/include/asm/pnv-ocxl.h
-@@ -13,11 +13,7 @@ int pnv_ocxl_get_actag(struct pci_dev *dev, u16 *base,
- 		       u16 *enabled, u16 *supported);
- int pnv_ocxl_get_pasid_count(struct pci_dev *dev, int *count);
- 
--int pnv_ocxl_get_tl_cap(struct pci_dev *dev, long *cap,
--			char *rate_buf, int rate_buf_size);
--int pnv_ocxl_set_tl_conf(struct pci_dev *dev, long cap,
--			 u64 rate_buf_phys,
--			 int rate_buf_size);
-+int pnv_ocxl_set_TL(struct pci_dev *dev, int tl_dvsec);
- 
- int pnv_ocxl_platform_setup(struct pci_dev *dev,
- 			    int PE_mask, int *hwirq,
-diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-index a54558bfe944..12b146c2f855 100644
---- a/arch/powerpc/platforms/powernv/ocxl.c
-+++ b/arch/powerpc/platforms/powernv/ocxl.c
-@@ -369,8 +369,8 @@ static void set_templ_rate(unsigned int templ, unsigned int rate, char *buf)
- 	buf[idx] |= rate << shift;
- }
- 
--int pnv_ocxl_get_tl_cap(struct pci_dev *dev, long *cap,
--			char *rate_buf, int rate_buf_size)
-+static int get_tl_cap(struct pci_dev *dev, long *cap,
-+		      char *rate_buf, int rate_buf_size)
- {
- 	if (rate_buf_size != PNV_OCXL_TL_RATE_BUF_SIZE)
- 		return -EINVAL;
-@@ -390,10 +390,9 @@ int pnv_ocxl_get_tl_cap(struct pci_dev *dev, long *cap,
- 	*cap = PNV_OCXL_TL_P9_RECV_CAP;
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(pnv_ocxl_get_tl_cap);
- 
--int pnv_ocxl_set_tl_conf(struct pci_dev *dev, long cap,
--			uint64_t rate_buf_phys, int rate_buf_size)
-+static int set_tl_conf(struct pci_dev *dev, long cap,
-+		       u64 rate_buf_phys, int rate_buf_size)
- {
- 	struct pci_controller *hose = pci_bus_to_host(dev->bus);
- 	struct pnv_phb *phb = hose->private_data;
-@@ -410,7 +409,99 @@ int pnv_ocxl_set_tl_conf(struct pci_dev *dev, long cap,
- 	}
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(pnv_ocxl_set_tl_conf);
-+
-+int pnv_ocxl_set_TL(struct pci_dev *dev, int tl_dvsec)
-+{
-+	u32 val;
-+	__be32 *be32ptr;
-+	u8 timers;
-+	int i, rc;
-+	long recv_cap;
-+	char *recv_rate;
-+
-+	recv_rate = kzalloc(PNV_OCXL_TL_RATE_BUF_SIZE, GFP_KERNEL);
-+	if (!recv_rate)
-+		return -ENOMEM;
-+	/*
-+	 * The spec defines 64 templates for messages in the
-+	 * Transaction Layer (TL).
-+	 *
-+	 * The host and device each support a subset, so we need to
-+	 * configure the transmitters on each side to send only
-+	 * templates the receiver understands, at a rate the receiver
-+	 * can process.  Per the spec, template 0 must be supported by
-+	 * everybody. That's the template which has been used by the
-+	 * host and device so far.
-+	 *
-+	 * The sending rate limit must be set before the template is
-+	 * enabled.
-+	 */
-+
-+	/*
-+	 * Device -> host
-+	 */
-+	rc = get_tl_cap(dev, &recv_cap, recv_rate,
-+			PNV_OCXL_TL_RATE_BUF_SIZE);
-+	if (rc)
-+		goto out;
-+
-+	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
-+		be32ptr = (__be32 *)&recv_rate[i];
-+		pci_write_config_dword(dev,
-+				tl_dvsec + OCXL_DVSEC_TL_SEND_RATE + i,
-+				be32_to_cpu(*be32ptr));
-+	}
-+	val = recv_cap >> 32;
-+	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP, val);
-+	val = recv_cap & GENMASK(31, 0);
-+	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP + 4, val);
-+
-+	/*
-+	 * Host -> device
-+	 */
-+	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
-+		pci_read_config_dword(dev,
-+				tl_dvsec + OCXL_DVSEC_TL_RECV_RATE + i,
-+				&val);
-+		be32ptr = (__be32 *)&recv_rate[i];
-+		*be32ptr = cpu_to_be32(val);
-+	}
-+	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP, &val);
-+	recv_cap = (long)val << 32;
-+	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP + 4, &val);
-+	recv_cap |= val;
-+
-+	rc = set_tl_conf(dev, recv_cap, __pa(recv_rate),
-+			 PNV_OCXL_TL_RATE_BUF_SIZE);
-+	if (rc)
-+		goto out;
-+
-+	/*
-+	 * Opencapi commands needing to be retried are classified per
-+	 * the TL in 2 groups: short and long commands.
-+	 *
-+	 * The short back off timer it not used for now. It will be
-+	 * for opencapi 4.0.
-+	 *
-+	 * The long back off timer is typically used when an AFU hits
-+	 * a page fault but the NPU is already processing one. So the
-+	 * AFU needs to wait before it can resubmit. Having a value
-+	 * too low doesn't break anything, but can generate extra
-+	 * traffic on the link.
-+	 * We set it to 1.6 us for now. It's shorter than, but in the
-+	 * same order of magnitude as the time spent to process a page
-+	 * fault.
-+	 */
-+	timers = 0x2 << 4; /* long timer = 1.6 us */
-+	pci_write_config_byte(dev, tl_dvsec + OCXL_DVSEC_TL_BACKOFF_TIMERS,
-+			      timers);
-+
-+	rc = 0;
-+out:
-+	kfree(recv_rate);
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(pnv_ocxl_set_TL);
- 
- static int get_xsl_irq(struct pci_dev *dev, int *hwirq)
- {
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index c8e19bfb5ef9..7ca0f6744125 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -709,100 +709,13 @@ EXPORT_SYMBOL_GPL(ocxl_config_set_afu_state);
- 
- int ocxl_config_set_TL(struct pci_dev *dev, int tl_dvsec)
- {
--	u32 val;
--	__be32 *be32ptr;
--	u8 timers;
--	int i, rc;
--	long recv_cap;
--	char *recv_rate;
--
- 	/*
- 	 * Skip on function != 0, as the TL can only be defined on 0
- 	 */
- 	if (PCI_FUNC(dev->devfn) != 0)
- 		return 0;
- 
--	recv_rate = kzalloc(PNV_OCXL_TL_RATE_BUF_SIZE, GFP_KERNEL);
--	if (!recv_rate)
--		return -ENOMEM;
--	/*
--	 * The spec defines 64 templates for messages in the
--	 * Transaction Layer (TL).
--	 *
--	 * The host and device each support a subset, so we need to
--	 * configure the transmitters on each side to send only
--	 * templates the receiver understands, at a rate the receiver
--	 * can process.  Per the spec, template 0 must be supported by
--	 * everybody. That's the template which has been used by the
--	 * host and device so far.
--	 *
--	 * The sending rate limit must be set before the template is
--	 * enabled.
--	 */
--
--	/*
--	 * Device -> host
--	 */
--	rc = pnv_ocxl_get_tl_cap(dev, &recv_cap, recv_rate,
--				PNV_OCXL_TL_RATE_BUF_SIZE);
--	if (rc)
--		goto out;
--
--	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
--		be32ptr = (__be32 *) &recv_rate[i];
--		pci_write_config_dword(dev,
--				tl_dvsec + OCXL_DVSEC_TL_SEND_RATE + i,
--				be32_to_cpu(*be32ptr));
--	}
--	val = recv_cap >> 32;
--	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP, val);
--	val = recv_cap & GENMASK(31, 0);
--	pci_write_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_SEND_CAP + 4, val);
--
--	/*
--	 * Host -> device
--	 */
--	for (i = 0; i < PNV_OCXL_TL_RATE_BUF_SIZE; i += 4) {
--		pci_read_config_dword(dev,
--				tl_dvsec + OCXL_DVSEC_TL_RECV_RATE + i,
--				&val);
--		be32ptr = (__be32 *) &recv_rate[i];
--		*be32ptr = cpu_to_be32(val);
--	}
--	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP, &val);
--	recv_cap = (long) val << 32;
--	pci_read_config_dword(dev, tl_dvsec + OCXL_DVSEC_TL_RECV_CAP + 4, &val);
--	recv_cap |= val;
--
--	rc = pnv_ocxl_set_tl_conf(dev, recv_cap, __pa(recv_rate),
--				PNV_OCXL_TL_RATE_BUF_SIZE);
--	if (rc)
--		goto out;
--
--	/*
--	 * Opencapi commands needing to be retried are classified per
--	 * the TL in 2 groups: short and long commands.
--	 *
--	 * The short back off timer it not used for now. It will be
--	 * for opencapi 4.0.
--	 *
--	 * The long back off timer is typically used when an AFU hits
--	 * a page fault but the NPU is already processing one. So the
--	 * AFU needs to wait before it can resubmit. Having a value
--	 * too low doesn't break anything, but can generate extra
--	 * traffic on the link.
--	 * We set it to 1.6 us for now. It's shorter than, but in the
--	 * same order of magnitude as the time spent to process a page
--	 * fault.
--	 */
--	timers = 0x2 << 4; /* long timer = 1.6 us */
--	pci_write_config_byte(dev, tl_dvsec + OCXL_DVSEC_TL_BACKOFF_TIMERS,
--			timers);
--
--	rc = 0;
--out:
--	kfree(recv_rate);
--	return rc;
-+	return pnv_ocxl_set_TL(dev, tl_dvsec);
- }
- EXPORT_SYMBOL_GPL(ocxl_config_set_TL);
- 
--- 
-2.21.0
+On 10/15/19 10:51 PM, Aneesh Kumar K.V wrote:
+> With commit: 0034d395f89d ("powerpc/mm/hash64: Map all the kernel
+> regions in the same 0xc range"), kernel now split the 64TB address range
+> into 4 contexts each of 16TB. That implies we can do only 16TB linear
+> mapping. This results in boot failure on some P9 systems.
+>
+> Fix this by redoing the hash 4k mapping as below.
+>
+>   vmalloc start     = 0xd000000000000000
+>   IO start          = 0xd000380000000000
+>   vmemmap start     = 0xf000000000000000
+>
+> Vmalloc area is now 56TB in size and IO remap 8TB. We need to keep them in the
+> same top nibble address because we map both of them in the Linux page table and they
+> share the init_mm page table. We need a large vmalloc space because we use
+> percpu embedded first chunk allocator.
+>
+> Both linear and vmemmap range is of 64TB size each and is mapped respectively
+> using 0xc and 0xf top nibble.
+>
+> Fixes: 0034d395f89d ("powerpc/mm/hash64: Map all the kernel regions in the same 0xc range")
+> Reported-by: Cameron Berkenpas <cam@neo-zeon.de>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/book3s/64/hash-4k.h  | 54 ++++++++++--
+>   arch/powerpc/include/asm/book3s/64/hash-64k.h | 73 ++++++++++++++++-
+>   arch/powerpc/include/asm/book3s/64/hash.h     | 82 ++-----------------
+>   3 files changed, 123 insertions(+), 86 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> index 8fd8599c9395..4cbb9fe22d76 100644
+> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> @@ -12,23 +12,59 @@
+>    * Hence also limit max EA bits to 64TB.
+>    */
+>   #define MAX_EA_BITS_PER_CONTEXT		46
+> -
+> -#define REGION_SHIFT		(MAX_EA_BITS_PER_CONTEXT - 2)
+> +/*
+> + * For 4k hash, considering we restricted by a page table sizing that
+> + * limit our address range to 64TB, keep the kernel virtual
+> + * mapping in 0xd region.
+> + */
+> +#define H_KERN_VIRT_START	ASM_CONST(0xd000000000000000)
+>   
+>   /*
+> - * Our page table limit us to 64TB. Hence for the kernel mapping,
+> - * each MAP area is limited to 16 TB.
+> - * The four map areas are:  linear mapping, vmap, IO and vmemmap
+> + * Top 4 bits are ignored in page table walk.
+>    */
+> -#define H_KERN_MAP_SIZE		(ASM_CONST(1) << REGION_SHIFT)
+> +#define EA_MASK			(~(0xfUL << 60))
+>   
+>   /*
+> - * Define the address range of the kernel non-linear virtual area
+> - * 16TB
+> + * Place vmalloc and IO in the 64TB range because we map them via linux page
+> + * table and table size is limited to 64TB.
+> + */
+> +#define H_VMALLOC_START		H_KERN_VIRT_START
+> +/*
+> + * 56TB vmalloc size. We require large vmalloc space for percpu mapping.
+>    */
+> -#define H_KERN_VIRT_START	ASM_CONST(0xc000100000000000)
+> +#define H_VMALLOC_SIZE		(56UL << 40)
+> +#define H_VMALLOC_END		(H_VMALLOC_START + H_VMALLOC_SIZE)
+> +
+> +#define H_KERN_IO_START		H_VMALLOC_END
+> +#define H_KERN_IO_SIZE		(8UL << 40)
+> +#define H_KERN_IO_END		(H_KERN_IO_START + H_KERN_IO_SIZE)
+> +
+> +#define H_VMEMMAP_START		ASM_CONST(0xf000000000000000)
+> +#define H_VMEMMAP_SIZE		(1UL << MAX_EA_BITS_PER_CONTEXT)
+> +#define H_VMEMMAP_END		(H_VMEMMAP_START + H_VMEMMAP_SIZE)
+>   
+>   #ifndef __ASSEMBLY__
+> +static inline int get_region_id(unsigned long ea)
+> +{
+> +	int id = (ea >> 60UL);
+> +
+> +	switch (id) {
+> +	case 0x0:
+> +		return USER_REGION_ID;
+> +	case 0xc:
+> +		return LINEAR_MAP_REGION_ID;
+> +	case 0xd:
+> +		if (ea < H_KERN_IO_START)
+> +			return VMALLOC_REGION_ID;
+> +		else
+> +			return IO_REGION_ID;
+> +	case 0xf:
+> +		return VMEMMAP_REGION_ID;
+> +	default:
+> +		return INVALID_REGION_ID;
+> +	}
+> +}
+> +
+>   #define H_PTE_TABLE_SIZE	(sizeof(pte_t) << H_PTE_INDEX_SIZE)
+>   #define H_PMD_TABLE_SIZE	(sizeof(pmd_t) << H_PMD_INDEX_SIZE)
+>   #define H_PUD_TABLE_SIZE	(sizeof(pud_t) << H_PUD_INDEX_SIZE)
+> diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/powerpc/include/asm/book3s/64/hash-64k.h
+> index d1d9177d9ebd..fc44bc590ac8 100644
+> --- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
+> +++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
+> @@ -13,18 +13,61 @@
+>    * is handled in the hotpath.
+>    */
+>   #define MAX_EA_BITS_PER_CONTEXT		49
+> -#define REGION_SHIFT		MAX_EA_BITS_PER_CONTEXT
+> +
+> +/*
+> + * Define the address range of the kernel non-linear virtual area
+> + * 2PB
+> + */
+> +#define H_KERN_VIRT_START	ASM_CONST(0xc008000000000000)
+>   
+>   /*
+>    * We use one context for each MAP area.
+>    */
+> +#define REGION_SHIFT		MAX_EA_BITS_PER_CONTEXT
+>   #define H_KERN_MAP_SIZE		(1UL << MAX_EA_BITS_PER_CONTEXT)
+>   
+>   /*
+> - * Define the address range of the kernel non-linear virtual area
+> - * 2PB
+> + * Top 2 bits are ignored in page table walk.
+>    */
+> -#define H_KERN_VIRT_START	ASM_CONST(0xc008000000000000)
+> +#define EA_MASK			(~(0xcUL << 60))
+> +
+> +/*
+> + * +------------------------------+
+> + * |                              |
+> + * |                              |
+> + * |                              |
+> + * +------------------------------+  Kernel virtual map end (0xc00e000000000000)
+> + * |                              |
+> + * |                              |
+> + * |      512TB/16TB of vmemmap   |
+> + * |                              |
+> + * |                              |
+> + * +------------------------------+  Kernel vmemmap  start
+> + * |                              |
+> + * |      512TB/16TB of IO map    |
+> + * |                              |
+> + * +------------------------------+  Kernel IO map start
+> + * |                              |
+> + * |      512TB/16TB of vmap      |
+> + * |                              |
+> + * +------------------------------+  Kernel virt start (0xc008000000000000)
+> + * |                              |
+> + * |                              |
+> + * |                              |
+> + * +------------------------------+  Kernel linear (0xc.....)
+> + */
+> +
+> +#define H_VMALLOC_START		H_KERN_VIRT_START
+> +#define H_VMALLOC_SIZE		H_KERN_MAP_SIZE
+> +#define H_VMALLOC_END		(H_VMALLOC_START + H_VMALLOC_SIZE)
+> +
+> +#define H_KERN_IO_START		H_VMALLOC_END
+> +#define H_KERN_IO_SIZE		H_KERN_MAP_SIZE
+> +#define H_KERN_IO_END		(H_KERN_IO_START + H_KERN_IO_SIZE)
+> +
+> +#define H_VMEMMAP_START		H_KERN_IO_END
+> +#define H_VMEMMAP_SIZE		H_KERN_MAP_SIZE
+> +#define H_VMEMMAP_END		(H_VMEMMAP_START + H_VMEMMAP_SIZE)
+>   
+>   /*
+>    * 64k aligned address free up few of the lower bits of RPN for us
+> @@ -69,6 +112,28 @@
+>   #ifndef __ASSEMBLY__
+>   #include <asm/errno.h>
+>   
+> +#define NON_LINEAR_REGION_ID(ea)	((((unsigned long)(ea) - H_KERN_VIRT_START) >> REGION_SHIFT) + 2)
+> +
+> +static inline int get_region_id(unsigned long ea)
+> +{
+> +	int region_id;
+> +	int id = (ea >> 60UL);
+> +
+> +	if (id == 0)
+> +		return USER_REGION_ID;
+> +
+> +	if (id != (PAGE_OFFSET >> 60))
+> +		return INVALID_REGION_ID;
+> +
+> +	if (ea < H_KERN_VIRT_START)
+> +		return LINEAR_MAP_REGION_ID;
+> +
+> +	BUILD_BUG_ON(NON_LINEAR_REGION_ID(H_VMALLOC_START) != 2);
+> +
+> +	region_id = NON_LINEAR_REGION_ID(ea);
+> +	return region_id;
+> +}
+> +
+>   /*
+>    * With 64K pages on hash table, we have a special PTE format that
+>    * uses a second "half" of the page table to encode sub-page information
+> diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
+> index 2781ebf6add4..e279224629a2 100644
+> --- a/arch/powerpc/include/asm/book3s/64/hash.h
+> +++ b/arch/powerpc/include/asm/book3s/64/hash.h
+> @@ -11,6 +11,15 @@
+>    *
+>    */
+>   #define H_PTE_NONE_MASK		_PAGE_HPTEFLAGS
+> +/*
+> + * Region IDs
+> + */
+> +#define USER_REGION_ID		0
+> +#define LINEAR_MAP_REGION_ID	1
+> +#define VMALLOC_REGION_ID	2
+> +#define IO_REGION_ID		3
+> +#define VMEMMAP_REGION_ID	4
+> +#define INVALID_REGION_ID	5
+>   
+>   #ifdef CONFIG_PPC_64K_PAGES
+>   #include <asm/book3s/64/hash-64k.h>
+> @@ -29,10 +38,6 @@
+>   #define H_PGTABLE_EADDR_SIZE	(H_PTE_INDEX_SIZE + H_PMD_INDEX_SIZE + \
+>   				 H_PUD_INDEX_SIZE + H_PGD_INDEX_SIZE + PAGE_SHIFT)
+>   #define H_PGTABLE_RANGE		(ASM_CONST(1) << H_PGTABLE_EADDR_SIZE)
+> -/*
+> - * Top 2 bits are ignored in page table walk.
+> - */
+> -#define EA_MASK			(~(0xcUL << 60))
+>   
+>   /*
+>    * We store the slot details in the second half of page table.
+> @@ -45,56 +50,6 @@
+>   #define H_PUD_CACHE_INDEX	(H_PUD_INDEX_SIZE)
+>   #endif
+>   
+> -/*
+> - * +------------------------------+
+> - * |                              |
+> - * |                              |
+> - * |                              |
+> - * +------------------------------+  Kernel virtual map end (0xc00e000000000000)
+> - * |                              |
+> - * |                              |
+> - * |      512TB/16TB of vmemmap   |
+> - * |                              |
+> - * |                              |
+> - * +------------------------------+  Kernel vmemmap  start
+> - * |                              |
+> - * |      512TB/16TB of IO map    |
+> - * |                              |
+> - * +------------------------------+  Kernel IO map start
+> - * |                              |
+> - * |      512TB/16TB of vmap      |
+> - * |                              |
+> - * +------------------------------+  Kernel virt start (0xc008000000000000)
+> - * |                              |
+> - * |                              |
+> - * |                              |
+> - * +------------------------------+  Kernel linear (0xc.....)
+> - */
+> -
+> -#define H_VMALLOC_START		H_KERN_VIRT_START
+> -#define H_VMALLOC_SIZE		H_KERN_MAP_SIZE
+> -#define H_VMALLOC_END		(H_VMALLOC_START + H_VMALLOC_SIZE)
+> -
+> -#define H_KERN_IO_START		H_VMALLOC_END
+> -#define H_KERN_IO_SIZE		H_KERN_MAP_SIZE
+> -#define H_KERN_IO_END		(H_KERN_IO_START + H_KERN_IO_SIZE)
+> -
+> -#define H_VMEMMAP_START		H_KERN_IO_END
+> -#define H_VMEMMAP_SIZE		H_KERN_MAP_SIZE
+> -#define H_VMEMMAP_END		(H_VMEMMAP_START + H_VMEMMAP_SIZE)
+> -
+> -#define NON_LINEAR_REGION_ID(ea)	((((unsigned long)ea - H_KERN_VIRT_START) >> REGION_SHIFT) + 2)
+> -
+> -/*
+> - * Region IDs
+> - */
+> -#define USER_REGION_ID		0
+> -#define LINEAR_MAP_REGION_ID	1
+> -#define VMALLOC_REGION_ID	NON_LINEAR_REGION_ID(H_VMALLOC_START)
+> -#define IO_REGION_ID		NON_LINEAR_REGION_ID(H_KERN_IO_START)
+> -#define VMEMMAP_REGION_ID	NON_LINEAR_REGION_ID(H_VMEMMAP_START)
+> -#define INVALID_REGION_ID	(VMEMMAP_REGION_ID + 1)
+> -
+>   /*
+>    * Defines the address of the vmemap area, in its own region on
+>    * hash table CPUs.
+> @@ -112,25 +67,6 @@
+>   #define H_PUD_BAD_BITS		(PMD_TABLE_SIZE-1)
+>   
+>   #ifndef __ASSEMBLY__
+> -static inline int get_region_id(unsigned long ea)
+> -{
+> -	int region_id;
+> -	int id = (ea >> 60UL);
+> -
+> -	if (id == 0)
+> -		return USER_REGION_ID;
+> -
+> -	if (id != (PAGE_OFFSET >> 60))
+> -		return INVALID_REGION_ID;
+> -
+> -	if (ea < H_KERN_VIRT_START)
+> -		return LINEAR_MAP_REGION_ID;
+> -
+> -	BUILD_BUG_ON(NON_LINEAR_REGION_ID(H_VMALLOC_START) != 2);
+> -
+> -	region_id = NON_LINEAR_REGION_ID(ea);
+> -	return region_id;
+> -}
+>   
+>   #define	hash__pmd_bad(pmd)		(pmd_val(pmd) & H_PMD_BAD_BITS)
+>   #define	hash__pud_bad(pud)		(pud_val(pud) & H_PUD_BAD_BITS)
 
