@@ -2,73 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDF6DA33E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 03:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C15FDA341
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 03:39:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46tsHN2lHpzDqsX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 12:37:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46tsKc3z1MzDqHg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 12:39:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="kPLzGqgg"; 
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ts1J6H01zDr7J
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 12:25:40 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id e5so279582pls.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2019 18:25:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=OYfGHq7Ua8XlIFWVnYrWlfnb+Qaiu3AuIcv4KZ3ENBU=;
- b=kPLzGqggNUsPFDxV/H8ftNKVOlHtZarUZ2uO5M1Cl+hwXsMbW/vTrWwIjhfQ+3DWYJ
- BAJOSuNbGvc+wZSDF5mXHgUtEzM/UBmDJTY+ncpQRCjrnopVjD47CaQs12J79yMzbmaJ
- 2HoVzjwx6/PntMBB3luM9yU1+3Xh96sr83vp0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=OYfGHq7Ua8XlIFWVnYrWlfnb+Qaiu3AuIcv4KZ3ENBU=;
- b=SrMr04U3D11xsaDxXftndyHW1Gk78Vm9k+dZJHL8dOwNTsDPKvk+OIKsc04th6PO0W
- QJy6+VhkT72EjSrTEImGoNKvfzUCsyTf5b3SC1yKk/wezVVHy9Jfm/+L3u91oST2+Qpj
- gOthSAsMzzRM7zmPgbNTrLx5ocquOI6+FSV5vDzLNbaxnw7I+L4Ok1OcpalQRdSQiLx+
- sGBrqspgf1PgvvJeOKRSmRFXghqkN+Cq+bXMx1NNQ9UIVQEedt7kbKmAOs6LSe5Df5Kr
- oU3oPZEv9y38seuOruQKssf5UNbwY7l5CNA9unc/5p8Cs97WoiVv7qLQ5fFj9ZjRxX4f
- xKZg==
-X-Gm-Message-State: APjAAAWvXLASogXMCARjjh7Jc/1okcYcaTQLn8vYIDJ/oqn7H9MTqnwa
- zFxESJwUbcMHy7m0rEAKyhCuog==
-X-Google-Smtp-Source: APXvYqwQlBhRRBicY30cw6VPEISaJYd+4/odDPgj5HED+MoQwNbayPMmtq4wGs1t8T3sUU1Hp+309g==
-X-Received: by 2002:a17:902:8ec1:: with SMTP id
- x1mr1189452plo.314.1571275537371; 
- Wed, 16 Oct 2019 18:25:37 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id d4sm381964pjs.9.2019.10.16.18.25.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Oct 2019 18:25:36 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
- aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
- linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
- christophe.leroy@c-s.fr
-Subject: [PATCH v9 5/5] kasan debug: track pages allocated for vmalloc shadow
-Date: Thu, 17 Oct 2019 12:25:06 +1100
-Message-Id: <20191017012506.28503-6-dja@axtens.net>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191017012506.28503-1-dja@axtens.net>
-References: <20191017012506.28503-1-dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ts3M36szzDqgH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 12:27:26 +1100 (AEDT)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 735A76153B773426C5B9;
+ Thu, 17 Oct 2019 09:27:20 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0;
+ Thu, 17 Oct 2019 09:27:17 +0800
+Subject: Re: [PATCH -next 00/13] hwrng: use devm_platform_ioremap_resource()
+ to simplify code
+To: Florian Fainelli <f.fainelli@gmail.com>, <herbert@gondor.apana.org.au>,
+ <mpm@selenic.com>, <arnd@arndb.de>, <gregkh@linuxfoundation.org>,
+ <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+ <ludovic.desroches@microchip.com>, <rjui@broadcom.com>,
+ <sbranden@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>,
+ <eric@anholt.net>, <wahrenst@gmx.net>, <l.stelmach@samsung.com>,
+ <kgene@kernel.org>, <krzk@kernel.org>, <khilman@baylibre.com>,
+ <dsaxena@plexity.net>, <patrice.chotard@st.com>
+References: <20191016104621.26056-1-yuehaibing@huawei.com>
+ <2c60b926-1e98-cca0-ec17-6b45f9da404a@gmail.com>
+From: Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <7c0269b6-cab3-bded-7f9d-76430be89f9c@huawei.com>
+Date: Thu, 17 Oct 2019 09:27:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <2c60b926-1e98-cca0-ec17-6b45f9da404a@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,104 +59,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com,
- Daniel Axtens <dja@axtens.net>
+Cc: linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide the current number of vmalloc shadow pages in
-/sys/kernel/debug/kasan/vmalloc_shadow_pages.
 
-Signed-off-by: Daniel Axtens <dja@axtens.net>
 
----
+On 2019/10/17 0:44, Florian Fainelli wrote:
+> On 10/16/19 3:46 AM, YueHaibing wrote:
+>> devm_platform_ioremap_resource() internally have platform_get_resource()
+>> and devm_ioremap_resource() in it. So instead of calling them separately
+>> use devm_platform_ioremap_resource() directly.
+> 
+> Did your coccinelle script not cover
+> drivers/char/hw_random/iproc-rng200.c somehow? Do you mind including it
+> as a separate patch?
 
-v8: rename kasan_vmalloc/shadow_pages -> kasan/vmalloc_shadow_pages
+A patch from Markus Elfring has be queued:
 
-On v4 (no dynamic freeing), I saw the following approximate figures
-on my test VM:
+commit a68b931932c5574aa5bd459529c766ba577c72b3
+Author: Markus Elfring <elfring@users.sourceforge.net>
+Date:   Wed Sep 18 09:09:22 2019 +0200
 
- - fresh boot: 720
- - after test_vmalloc: ~14000
+    hwrng: iproc-rng200 - Use devm_platform_ioremap_resource() in iproc_rng200_probe()
 
-With v5 (lazy dynamic freeing):
+    Simplify this function implementation by using a known wrapper function.
 
- - boot: ~490-500
- - running modprobe test_vmalloc pushes the figures up to sometimes
-    as high as ~14000, but they drop down to ~560 after the test ends.
-    I'm not sure where the extra sixty pages are from, but running the
-    test repeately doesn't cause the number to keep growing, so I don't
-    think we're leaking.
- - with vmap_stack, spawning tasks pushes the figure up to ~4200, then
-    some clearing kicks in and drops it down to previous levels again.
----
- mm/kasan/common.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+    This issue was detected by using the Coccinelle software.
 
-diff --git mm/kasan/common.c mm/kasan/common.c
-index 81521d180bec..ac05038afa5a 100644
---- mm/kasan/common.c
-+++ mm/kasan/common.c
-@@ -35,6 +35,7 @@
- #include <linux/vmalloc.h>
- #include <linux/bug.h>
- #include <linux/uaccess.h>
-+#include <linux/debugfs.h>
- 
- #include <asm/tlbflush.h>
- 
-@@ -750,6 +751,8 @@ core_initcall(kasan_memhotplug_init);
- #endif
- 
- #ifdef CONFIG_KASAN_VMALLOC
-+static u64 vmalloc_shadow_pages;
-+
- static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 				      void *unused)
- {
-@@ -782,6 +785,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 	if (likely(pte_none(*ptep))) {
- 		set_pte_at(&init_mm, addr, ptep, pte);
- 		page = 0;
-+		vmalloc_shadow_pages++;
- 	}
- 	spin_unlock(&init_mm.page_table_lock);
- 	if (page)
-@@ -836,6 +840,7 @@ static int kasan_depopulate_vmalloc_pte(pte_t *ptep, unsigned long addr,
- 		pte_clear(&init_mm, addr, ptep);
- 		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
- 		free_page(page);
-+		vmalloc_shadow_pages--;
- 	}
- 	spin_unlock(&init_mm.page_table_lock);
- 
-@@ -954,4 +959,25 @@ void kasan_release_vmalloc(unsigned long start, unsigned long end,
- 				       (unsigned long)shadow_end);
- 	}
- }
-+
-+static __init int kasan_init_debugfs(void)
-+{
-+	struct dentry *root, *count;
-+
-+	root = debugfs_create_dir("kasan", NULL);
-+	if (IS_ERR(root)) {
-+		if (PTR_ERR(root) == -ENODEV)
-+			return 0;
-+		return PTR_ERR(root);
-+	}
-+
-+	count = debugfs_create_u64("vmalloc_shadow_pages", 0444, root,
-+				   &vmalloc_shadow_pages);
-+
-+	if (IS_ERR(count))
-+		return PTR_ERR(root);
-+
-+	return 0;
-+}
-+late_initcall(kasan_init_debugfs);
- #endif
--- 
-2.20.1
+    Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+    Reviewed-by: Ray Jui <ray.jui@broadcom.com>
+    Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+    Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+
+
+
+> Thanks
+> 
+>>
+>> YueHaibing (13):
+>>   hwrng: atmel - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: bcm2835 - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: exynos - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: hisi - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: ks-sa - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: meson - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: npcm - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: omap - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: pasemi - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: pic32 - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: st - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: tx4939 - use devm_platform_ioremap_resource() to simplify code
+>>   hwrng: xgene - use devm_platform_ioremap_resource() to simplify code
+>>
+>>  drivers/char/hw_random/atmel-rng.c   | 4 +---
+>>  drivers/char/hw_random/bcm2835-rng.c | 5 +----
+>>  drivers/char/hw_random/exynos-trng.c | 4 +---
+>>  drivers/char/hw_random/hisi-rng.c    | 4 +---
+>>  drivers/char/hw_random/ks-sa-rng.c   | 4 +---
+>>  drivers/char/hw_random/meson-rng.c   | 4 +---
+>>  drivers/char/hw_random/npcm-rng.c    | 4 +---
+>>  drivers/char/hw_random/omap-rng.c    | 4 +---
+>>  drivers/char/hw_random/pasemi-rng.c  | 4 +---
+>>  drivers/char/hw_random/pic32-rng.c   | 4 +---
+>>  drivers/char/hw_random/st-rng.c      | 4 +---
+>>  drivers/char/hw_random/tx4939-rng.c  | 4 +---
+>>  drivers/char/hw_random/xgene-rng.c   | 4 +---
+>>  13 files changed, 13 insertions(+), 40 deletions(-)
+>>
+> 
+> 
 
