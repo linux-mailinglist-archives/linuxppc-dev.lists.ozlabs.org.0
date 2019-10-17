@@ -2,81 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1843CDA93B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 11:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAAA1DA94F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 11:53:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46v4DQ4jsQzDqsb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 20:51:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46v4H474MlzDrHb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 20:53:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=microchip.com (client-ip=216.71.150.166;
+ helo=esa5.microchip.iphmx.com; envelope-from=ludovic.desroches@microchip.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=microchip.com
+X-Greylist: delayed 71 seconds by postgrey-1.36 at bilbo;
+ Thu, 17 Oct 2019 20:33:42 AEDT
+Received: from esa5.microchip.iphmx.com (esa5.microchip.iphmx.com
+ [216.71.150.166])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46v3qG29nmzDrCG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 20:32:42 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9H9Ew2x105766
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 05:32:40 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vpnfu0rqn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 05:32:39 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Thu, 17 Oct 2019 10:32:37 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 17 Oct 2019 10:32:32 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9H9WVlB9961582
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2019 09:32:31 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A07E04C052;
- Thu, 17 Oct 2019 09:32:31 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2D8404C04E;
- Thu, 17 Oct 2019 09:32:29 +0000 (GMT)
-Received: from bangoria.ibmuc.com (unknown [9.199.56.216])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 17 Oct 2019 09:32:28 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-To: christophe.leroy@c-s.fr, mpe@ellerman.id.au, mikey@neuling.org
-Subject: [PATCH v6 7/7] Powerpc/Watchpoint: Support for 8xx in
- ptrace-hwbreak.c selftest
-Date: Thu, 17 Oct 2019 15:02:04 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20191017093204.7511-1-ravi.bangoria@linux.ibm.com>
-References: <20191017093204.7511-1-ravi.bangoria@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46v3rQ3K5TzDrCP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 20:33:42 +1100 (AEDT)
+Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
+ Ludovic.Desroches@microchip.com designates 198.175.253.82 as
+ permitted sender) identity=mailfrom;
+ client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+ envelope-from="Ludovic.Desroches@microchip.com";
+ x-sender="Ludovic.Desroches@microchip.com";
+ x-conformance=spf_only; x-record-type="v=spf1";
+ x-record-text="v=spf1 mx a:ushub1.microchip.com
+ a:smtpout.microchip.com a:mx1.microchip.iphmx.com
+ a:mx2.microchip.iphmx.com include:servers.mcsv.net
+ include:mktomail.com include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa5.microchip.iphmx.com: no sender
+ authenticity information available from domain of
+ postmaster@email.microchip.com) identity=helo;
+ client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
+ envelope-from="Ludovic.Desroches@microchip.com";
+ x-sender="postmaster@email.microchip.com"; x-conformance=spf_only
+Authentication-Results: esa5.microchip.iphmx.com;
+ dkim=none (message not signed) header.i=none;
+ spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com;
+ spf=None smtp.helo=postmaster@email.microchip.com;
+ dmarc=pass (p=none dis=none) d=microchip.com
+IronPort-SDR: RiPCekASyK4XX90kgCguTCZ6Fewhru0nFfg686muQ+X+vlhkeieyRjrnEUVS3yVAzWUE6DVNG+
+ GbSV9HVpkfwpF5mY5RfpApF4VBMWZ6Nxn4Q20rPm7PF5NNjQ5Cpi7M9xdDogU32xpnXuMWJm0n
+ 3t1QxTxeSK2r8AE+Fb7kj5deB6wBEHEx99oxp3Qz0lElf95HmZxlZUQrQNXL1fWFtxS0DWquEo
+ AGwgYe+DhTVb79+g3k+w7BNGS4y2GVg7aRO4olJlG4V4OVjeRqhLz2OBHRZLPchMQ6XbubaumY
+ geg=
+X-IronPort-AV: E=Sophos;i="5.67,307,1566889200"; d="scan'208";a="51838929"
+Received: from smtpout.microchip.com (HELO email.microchip.com)
+ ([198.175.253.82])
+ by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256;
+ 17 Oct 2019 02:32:12 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 17 Oct 2019 02:32:10 -0700
+Received: from localhost (10.10.85.251) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
+ Transport; Thu, 17 Oct 2019 02:32:10 -0700
+Date: Thu, 17 Oct 2019 11:32:37 +0200
+From: Ludovic Desroches <ludovic.desroches@microchip.com>
+To: YueHaibing <yuehaibing@huawei.com>
+Subject: Re: [PATCH -next 01/13] hwrng: atmel - use
+ devm_platform_ioremap_resource() to simplify code
+Message-ID: <20191017093237.3poaq7unlm62mhwt@M43218.corp.atmel.com>
+Mail-Followup-To: YueHaibing <yuehaibing@huawei.com>,
+ herbert@gondor.apana.org.au, mpm@selenic.com, arnd@arndb.de,
+ gregkh@linuxfoundation.org, nicolas.ferre@microchip.com,
+ alexandre.belloni@bootlin.com, f.fainelli@gmail.com,
+ rjui@broadcom.com, sbranden@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, eric@anholt.net,
+ wahrenst@gmx.net, l.stelmach@samsung.com, kgene@kernel.org,
+ krzk@kernel.org, khilman@baylibre.com, dsaxena@plexity.net,
+ patrice.chotard@st.com, linux-crypto@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org,
+ linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+References: <20191016104621.26056-1-yuehaibing@huawei.com>
+ <20191016104621.26056-2-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19101709-4275-0000-0000-00000372E523
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101709-4276-0000-0000-00003885FD0A
-Message-Id: <20191017093204.7511-8-ravi.bangoria@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-17_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910170083
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20191016104621.26056-2-yuehaibing@huawei.com>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,87 +99,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
+Cc: alexandre.belloni@bootlin.com, nicolas.ferre@microchip.com, eric@anholt.net,
+ f.fainelli@gmail.com, herbert@gondor.apana.org.au, khilman@baylibre.com,
+ krzk@kernel.org, kgene@kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ linux-crypto@vger.kernel.org, dsaxena@plexity.net, arnd@arndb.de,
+ rjui@broadcom.com, l.stelmach@samsung.com, linux-samsung-soc@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, mpm@selenic.com,
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ sbranden@broadcom.com, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, patrice.chotard@st.com, wahrenst@gmx.net,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On the 8xx, signals are generated after executing the instruction.
-So no need to manually single-step on 8xx. Also, 8xx __set_dabr()
-currently ignores length and hardcodes the length to 8 bytes. So
-all unaligned and 512 byte testcase will fail on 8xx. Ignore those
-testcases on 8xx.
+On Wed, Oct 16, 2019 at 06:46:09PM +0800, YueHaibing wrote:
+> External E-Mail
+> 
+> 
+> Use devm_platform_ioremap_resource() to simplify the code a bit.
+> This is detected by coccinelle.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
----
- .../selftests/powerpc/ptrace/ptrace-hwbreak.c | 32 +++++++++++++------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com>
 
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
-index 916e97f5f8b1..7deedbc16b0b 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
-@@ -22,6 +22,11 @@
- #include <sys/wait.h>
- #include "ptrace.h"
- 
-+#define SPRN_PVR	0x11F
-+#define PVR_8xx		0x00500000
-+
-+bool is_8xx;
-+
- /*
-  * Use volatile on all global var so that compiler doesn't
-  * optimise their load/stores. Otherwise selftest can fail.
-@@ -205,13 +210,15 @@ static void check_success(pid_t child_pid, const char *name, const char *type,
- 
- 	printf("%s, %s, len: %d: Ok\n", name, type, len);
- 
--	/*
--	 * For ptrace registered watchpoint, signal is generated
--	 * before executing load/store. Singlestep the instruction
--	 * and then continue the test.
--	 */
--	ptrace(PTRACE_SINGLESTEP, child_pid, NULL, 0);
--	wait(NULL);
-+	if (!is_8xx) {
-+		/*
-+		 * For ptrace registered watchpoint, signal is generated
-+		 * before executing load/store. Singlestep the instruction
-+		 * and then continue the test.
-+		 */
-+		ptrace(PTRACE_SINGLESTEP, child_pid, NULL, 0);
-+		wait(NULL);
-+	}
- }
- 
- static void ptrace_set_debugreg(pid_t child_pid, unsigned long wp_addr)
-@@ -447,8 +454,10 @@ run_tests(pid_t child_pid, struct ppc_debug_info *dbginfo, bool dawr)
- 	test_set_debugreg(child_pid);
- 	if (dbginfo->features & PPC_DEBUG_FEATURE_DATA_BP_RANGE) {
- 		test_sethwdebug_exact(child_pid);
--		test_sethwdebug_range_aligned(child_pid);
--		if (dawr) {
-+
-+		if (!is_8xx)
-+			test_sethwdebug_range_aligned(child_pid);
-+		if (dawr && !is_8xx) {
- 			test_sethwdebug_range_unaligned(child_pid);
- 			test_sethwdebug_range_unaligned_dar(child_pid);
- 			test_sethwdebug_dawr_max_range(child_pid);
-@@ -489,5 +498,10 @@ static int ptrace_hwbreak(void)
- 
- int main(int argc, char **argv, char **envp)
- {
-+	int pvr = 0;
-+	asm __volatile__ ("mfspr %0,%1" : "=r"(pvr) : "i"(SPRN_PVR));
-+	if (pvr == PVR_8xx)
-+		is_8xx = true;
-+
- 	return test_harness(ptrace_hwbreak, "ptrace-hwbreak");
- }
--- 
-2.21.0
+Thanks
 
+> ---
+>  drivers/char/hw_random/atmel-rng.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/char/hw_random/atmel-rng.c b/drivers/char/hw_random/atmel-rng.c
+> index e557057..b3138ec2 100644
+> --- a/drivers/char/hw_random/atmel-rng.c
+> +++ b/drivers/char/hw_random/atmel-rng.c
+> @@ -62,15 +62,13 @@ static void atmel_trng_disable(struct atmel_trng *trng)
+>  static int atmel_trng_probe(struct platform_device *pdev)
+>  {
+>  	struct atmel_trng *trng;
+> -	struct resource *res;
+>  	int ret;
+>  
+>  	trng = devm_kzalloc(&pdev->dev, sizeof(*trng), GFP_KERNEL);
+>  	if (!trng)
+>  		return -ENOMEM;
+>  
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	trng->base = devm_ioremap_resource(&pdev->dev, res);
+> +	trng->base = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(trng->base))
+>  		return PTR_ERR(trng->base);
+>  
+> -- 
+> 2.7.4
+> 
+> 
+> 
