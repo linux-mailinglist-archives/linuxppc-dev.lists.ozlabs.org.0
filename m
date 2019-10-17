@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18611DA881
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 11:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D350DA8BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 11:43:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46v40C3XPDzDqcJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 20:40:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46v43m4cDFzDrCF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2019 20:43:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,56 +19,56 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46v3q50Q5vzDrCD
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46v3q51Q1YzDrCH
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 20:32:32 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9H9Exwd102071
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 05:32:27 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vpnaxh3yv-1
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9H9FH8t138920
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 05:32:29 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vpkp1ckda-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 05:32:25 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 05:32:28 -0400
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Thu, 17 Oct 2019 10:32:24 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Thu, 17 Oct 2019 10:32:27 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 17 Oct 2019 10:32:20 +0100
+ Thu, 17 Oct 2019 10:32:23 +0100
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x9H9VlF338404410
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9H9WMNn35520648
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Oct 2019 09:31:47 GMT
+ Thu, 17 Oct 2019 09:32:22 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 312884C04A;
+ by IMSVA (Postfix) with ESMTP id 738954C044;
+ Thu, 17 Oct 2019 09:32:22 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 93FCC4C050;
  Thu, 17 Oct 2019 09:32:19 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C4A44C052;
- Thu, 17 Oct 2019 09:32:16 +0000 (GMT)
 Received: from bangoria.ibmuc.com (unknown [9.199.56.216])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 17 Oct 2019 09:32:16 +0000 (GMT)
+ Thu, 17 Oct 2019 09:32:19 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: christophe.leroy@c-s.fr, mpe@ellerman.id.au, mikey@neuling.org
-Subject: [PATCH v6 3/7] Powerpc/Watchpoint: Fix ptrace code that muck around
- with address/len
-Date: Thu, 17 Oct 2019 15:02:00 +0530
+Subject: [PATCH v6 4/7] Powerpc/Watchpoint: Don't ignore extraneous exceptions
+ blindly
+Date: Thu, 17 Oct 2019 15:02:01 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191017093204.7511-1-ravi.bangoria@linux.ibm.com>
 References: <20191017093204.7511-1-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19101709-0016-0000-0000-000002B8DE00
+x-cbid: 19101709-0028-0000-0000-000003AADD5F
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101709-0017-0000-0000-0000331A0550
-Message-Id: <20191017093204.7511-4-ravi.bangoria@linux.ibm.com>
+x-cbparentid: 19101709-0029-0000-0000-0000246CF9AA
+Message-Id: <20191017093204.7511-5-ravi.bangoria@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-10-17_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -95,81 +95,124 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ptrace_set_debugreg() does not consider new length while overwriting
-the watchpoint. Fix that. ppc_set_hwdebug() aligns watchpoint address
-to doubleword boundary but does not change the length. If address range
-is crossing doubleword boundary and length is less then 8, we will loose
-samples from second doubleword. So fix that as well.
+On Powerpc, watchpoint match range is double-word granular. On a
+watchpoint hit, DAR is set to the first byte of overlap between
+actual access and watched range. And thus it's quite possible that
+DAR does not point inside user specified range. Ex, say user creates
+a watchpoint with address range 0x1004 to 0x1007. So hw would be
+configured to watch from 0x1000 to 0x1007. If there is a 4 byte
+access from 0x1002 to 0x1005, DAR will point to 0x1002 and thus
+interrupt handler considers it as extraneous, but it's actually not,
+because part of the access belongs to what user has asked.
+
+Instead of blindly ignoring the exception, get actual address range
+by analysing an instruction, and ignore only if actual range does
+not overlap with user specified range.
+
+Note: The behavior is unchanged for 8xx.
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- arch/powerpc/include/asm/hw_breakpoint.h | 4 ++--
- arch/powerpc/kernel/ptrace.c             | 9 +++------
- 2 files changed, 5 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/hw_breakpoint.c | 52 +++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 21 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-index ea91ac7f5a27..27ac6f5d2891 100644
---- a/arch/powerpc/include/asm/hw_breakpoint.h
-+++ b/arch/powerpc/include/asm/hw_breakpoint.h
-@@ -34,6 +34,8 @@ struct arch_hw_breakpoint {
- #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL | \
- 				 HW_BRK_TYPE_HYP)
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index f36274d426ed..58ce3d37c2a3 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -222,33 +222,49 @@ void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
+ 	tsk->thread.last_hit_ubp = NULL;
+ }
  
-+#define HW_BREAKPOINT_ALIGN 0x7
+-static bool is_larx_stcx_instr(struct pt_regs *regs, unsigned int instr)
++static bool dar_within_range(unsigned long dar, struct arch_hw_breakpoint *info)
+ {
+-	int ret, type;
+-	struct instruction_op op;
++	return ((info->address <= dar) && (dar - info->address < info->len));
++}
+ 
+-	ret = analyse_instr(&op, regs, instr);
+-	type = GETTYPE(op.type);
+-	return (!ret && (type == LARX || type == STCX));
++static bool
++dar_range_overlaps(unsigned long dar, int size, struct arch_hw_breakpoint *info)
++{
++	return ((dar <= info->address + info->len - 1) &&
++		(dar + size - 1 >= info->address));
+ }
+ 
+ /*
+  * Handle debug exception notifications.
+  */
+ static bool stepping_handler(struct pt_regs *regs, struct perf_event *bp,
+-			     unsigned long addr)
++			     struct arch_hw_breakpoint *info)
+ {
+ 	unsigned int instr = 0;
++	int ret, type, size;
++	struct instruction_op op;
++	unsigned long addr = info->address;
+ 
+ 	if (__get_user_inatomic(instr, (unsigned int *)regs->nip))
+ 		goto fail;
+ 
+-	if (is_larx_stcx_instr(regs, instr)) {
++	ret = analyse_instr(&op, regs, instr);
++	type = GETTYPE(op.type);
++	size = GETSIZE(op.type);
 +
- #define DABR_MAX_LEN	8
- #define DAWR_MAX_LEN	512
++	if (!ret && (type == LARX || type == STCX)) {
+ 		printk_ratelimited("Breakpoint hit on instruction that can't be emulated."
+ 				   " Breakpoint at 0x%lx will be disabled.\n", addr);
+ 		goto disable;
+ 	}
  
-@@ -48,8 +50,6 @@ struct pmu;
- struct perf_sample_data;
- struct task_struct;
++	/*
++	 * If it's extraneous event, we still need to emulate/single-
++	 * step the instruction, but we don't generate an event.
++	 */
++	if (size && !dar_range_overlaps(regs->dar, size, info))
++		info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
++
+ 	/* Do not emulate user-space instructions, instead single-step them */
+ 	if (user_mode(regs)) {
+ 		current->thread.last_hit_ubp = bp;
+@@ -280,7 +296,6 @@ int hw_breakpoint_handler(struct die_args *args)
+ 	struct perf_event *bp;
+ 	struct pt_regs *regs = args->regs;
+ 	struct arch_hw_breakpoint *info;
+-	unsigned long dar = regs->dar;
  
--#define HW_BREAKPOINT_ALIGN 0x7
--
- extern int hw_breakpoint_slots(int type);
- extern int arch_bp_generic_fields(int type, int *gen_bp_type);
- extern int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw);
-diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
-index c861b12337bd..8ea6f01531f1 100644
---- a/arch/powerpc/kernel/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace.c
-@@ -2440,6 +2440,7 @@ static int ptrace_set_debugreg(struct task_struct *task, unsigned long addr,
- 	if (bp) {
- 		attr = bp->attr;
- 		attr.bp_addr = hw_brk.address;
-+		attr.bp_len = DABR_MAX_LEN;
- 		arch_bp_generic_fields(hw_brk.type, &attr.bp_type);
+ 	/* Disable breakpoints during exception handling */
+ 	hw_breakpoint_disable();
+@@ -312,19 +327,14 @@ int hw_breakpoint_handler(struct die_args *args)
+ 		goto out;
+ 	}
  
- 		/* Enable breakpoint */
-@@ -2881,7 +2882,7 @@ static long ppc_set_hwdebug(struct task_struct *child,
- 	if ((unsigned long)bp_info->addr >= TASK_SIZE)
- 		return -EIO;
- 
--	brk.address = bp_info->addr & ~7UL;
-+	brk.address = bp_info->addr & ~HW_BREAKPOINT_ALIGN;
- 	brk.type = HW_BRK_TYPE_TRANSLATE;
- 	brk.len = DABR_MAX_LEN;
- 	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_READ)
-@@ -2889,10 +2890,6 @@ static long ppc_set_hwdebug(struct task_struct *child,
- 	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_WRITE)
- 		brk.type |= HW_BRK_TYPE_WRITE;
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
 -	/*
--	 * Check if the request is for 'range' breakpoints. We can
--	 * support it if range < 8 bytes.
+-	 * Verify if dar lies within the address range occupied by the symbol
+-	 * being watched to filter extraneous exceptions.  If it doesn't,
+-	 * we still need to single-step the instruction, but we don't
+-	 * generate an event.
 -	 */
- 	if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE)
- 		len = bp_info->addr2 - bp_info->addr;
- 	else if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_EXACT)
-@@ -2905,7 +2902,7 @@ static long ppc_set_hwdebug(struct task_struct *child,
+ 	info->type &= ~HW_BRK_TYPE_EXTRANEOUS_IRQ;
+-	if (!((bp->attr.bp_addr <= dar) &&
+-	      (dar - bp->attr.bp_addr < bp->attr.bp_len)))
+-		info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
+-
+-	if (!IS_ENABLED(CONFIG_PPC_8xx) && !stepping_handler(regs, bp, info->address))
+-		goto out;
++	if (IS_ENABLED(CONFIG_PPC_8xx)) {
++		if (!dar_within_range(regs->dar, info))
++			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
++	} else {
++		if (!stepping_handler(regs, bp, info))
++			goto out;
++	}
  
- 	/* Create a new breakpoint request if one doesn't exist already */
- 	hw_breakpoint_init(&attr);
--	attr.bp_addr = (unsigned long)bp_info->addr & ~HW_BREAKPOINT_ALIGN;
-+	attr.bp_addr = (unsigned long)bp_info->addr;
- 	attr.bp_len = len;
- 	arch_bp_generic_fields(brk.type, &attr.bp_type);
- 
+ 	/*
+ 	 * As a policy, the callback is invoked in a 'trigger-after-execute'
 -- 
 2.21.0
 
