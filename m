@@ -2,76 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1169DBC00
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 06:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9447CDBC24
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 06:57:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vYYR2YwLzDrLb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:52:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vYgm1s8nzDrNY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:57:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="Lziqmfp5"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="WlTqEoi5"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vYWV0Q7qzDq5f
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 15:50:45 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id h195so3065142pfe.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 21:50:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=4JOjG0QUc189P6/WaRSOoK29dlyby423TPDBlUfjjUI=;
- b=Lziqmfp58ruDPDlAnaXX9i3ImvrJ8f7RhL0uRY6ovTLudo2mORUTvpbSWzM8/XTFPO
- dFk8WHRs3OF1tEwWHvb5wuKYHlZxMfAclM17/kR0QbxAuHs7cADgAJjT9R1tHPgjrTnM
- xjiO0KIFnQ7x6SlBm+hzBJRqmoyBnMOnImt+wR3FFhuS3wSEn1dLHiMzmktM4NPZVdRN
- WbHdFR3JDDRHZdjoaQCCVz0Dk1C3wyUMSqNmcQKVoe8DL4xYTP5PfAInbys6MErXbD63
- XO4rlKOJ4DA9Rc1pmJIHasULYT7aZfsuszsQdsQl1QMr6HTEFVABmCyYEKW7g+GaCzgO
- pYOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=4JOjG0QUc189P6/WaRSOoK29dlyby423TPDBlUfjjUI=;
- b=E2+Dc4vp3TA4MPK99SUSlme1ymmV+hsAtC65qJ97qOL6N5NZXlyMSOVs0TYW21Nl6v
- 5fudL39PzXtY1XMG6udAttvs7s5HLJNhBQAiR1WLcF7r3KXI0JhtKOnUWi7iDbL3om+m
- WMvK/VsS1IfE0HdWCD8lS/17sqluQmrGRS0XDX7c6Tw6Qju0xB/QfKvPnwmJ5/y6h6I5
- WqE0b9owgIHCJQFtxcaeIDBbL+o/SRfmE0mnFdte2DbE9i8t5K4ePRucIHUk9FBBvjDb
- nrEYH7V8MsIGjDfI64114B6HPCKKVkbeQ3LbE7Im6SnRySJzKWtXa1sqAKwl41jooVb/
- xw1A==
-X-Gm-Message-State: APjAAAWBdlXOpC4shpoWrOVAFkMyI2Lux9NZO5wyGSKy+WS7vdgDGBBA
- /JzqFT61g/eY+hUcs/09mx+sug==
-X-Google-Smtp-Source: APXvYqyuPtcqnmg+CxjS4b/CVJ38AAAsq1UNlBTr0YiXF/SJVY0vvLvaK1ceDkGa1t8Y8jOOs66R6w==
-X-Received: by 2002:a63:3d41:: with SMTP id k62mr7844596pga.129.1571374241418; 
- Thu, 17 Oct 2019 21:50:41 -0700 (PDT)
-Received: from localhost ([122.172.151.112])
- by smtp.gmail.com with ESMTPSA id q2sm8125639pfg.144.2019.10.17.21.50.40
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 17 Oct 2019 21:50:40 -0700 (PDT)
-Date: Fri, 18 Oct 2019 10:20:38 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH] cpufreq: powernv: fix stack bloat and NR_CPUS limitation
-Message-ID: <20191018045038.cytb46msqzmu4age@vireshk-i7>
-References: <20191018000431.1675281-1-jhubbard@nvidia.com>
- <20191018042715.f76bawmoyk66isap@vireshk-i7>
- <c3f16019-5724-a181-8068-8dda60fb67fa@nvidia.com>
- <20191018043856.srvgft6jhqw62bx3@vireshk-i7>
- <a4a1467f-2c92-34f2-a8bf-718feaa17da7@nvidia.com>
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vYdL6cg7zDqfP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 15:55:50 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5da945d60000>; Thu, 17 Oct 2019 21:55:50 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Thu, 17 Oct 2019 21:55:45 -0700
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Thu, 17 Oct 2019 21:55:45 -0700
+Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 18 Oct
+ 2019 04:55:45 +0000
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Fri, 18 Oct 2019 04:55:45 +0000
+Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
+ hqnvemgw03.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5da945d10003>; Thu, 17 Oct 2019 21:55:45 -0700
+From: John Hubbard <jhubbard@nvidia.com>
+To: Viresh Kumar <viresh.kumar@linaro.org>, Shilpasri G Bhat
+ <shilpa.bhat@linux.vnet.ibm.com>
+Subject: [PATCH v2] cpufreq: powernv: fix stack bloat and NR_CPUS limitation
+Date: Thu, 17 Oct 2019 21:55:39 -0700
+Message-ID: <20191018045539.3765565-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a4a1467f-2c92-34f2-a8bf-718feaa17da7@nvidia.com>
-User-Agent: NeoMutt/20180716-391-311a52
+X-NVConfidentiality: public
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1571374550; bh=df18Gs5j3cwrHl5PwObGl2FSzw7tZwBe+5B9upV/qmU=;
+ h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+ MIME-Version:X-NVConfidentiality:Content-Transfer-Encoding:
+ Content-Type;
+ b=WlTqEoi5Gs0evA3sLhhGZhfcxwx3m/vSQElv4bqkxcVwKpJJr19qDRntWBEMKxukr
+ pvDQ8O0f8J0Y0ueNopFf/SiMkUxcKJWUMbyucxzHNsumK+iBvAMwN6k1LFlyMgKhuK
+ QMB93N+E2Rz3FittCdYokclkYTAA7YRoW0o6AkQhwCI8n6HZADPwqGZSl55kv/oQN7
+ /7avi+Xqhrt8s/39ZIs70NEca9ePo3eccO4OhblbWS3XWTaSNG6KO1GAZa0A52UTRO
+ hU0PkUcGepqdlRb1NlIKtyGwVnfJiWQWKNqFRQBisPvefqIsZNaxio6Y6pAl9kPvTf
+ /92RK4C9M0l3Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,42 +73,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
- LKML <linux-kernel@vger.kernel.org>,
- Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>, linux-pm@vger.kernel.org
+Cc: linux-pm@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
+ "Rafael J . Wysocki" <rjw@rjwysocki.net>, LKML <linux-kernel@vger.kernel.org>,
+ Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17-10-19, 21:41, John Hubbard wrote:
-> On 10/17/19 9:38 PM, Viresh Kumar wrote:
-> > On 17-10-19, 21:34, John Hubbard wrote:
-> >> On 10/17/19 9:27 PM, Viresh Kumar wrote:
-> >>> On 17-10-19, 17:04, John Hubbard wrote:
-> >>>> The following build warning occurred on powerpc 64-bit builds:
-> >>>>
-> >>>> drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
-> >>>> drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-> >>>
-> >>> How come we are catching this warning after 4 years ?
-> >>>
-> >>
-> >> Newer compilers. And btw, I don't spend a lot of time in powerpc
-> >> code, so I just recently ran this, and I guess everyone has been on less
-> >> new compilers so far, it seems.
-> >>
-> >> I used a gcc 8.1 cross compiler in this case:
-> > 
-> > Hmm, okay.
-> > 
-> > I hope you haven't missed my actual review comments on your patch,
-> > just wanted to make sure we don't end up waiting for each other
-> > indefinitely here :)
-> > 
-> 
-> Ha, I did overlook those. It's late around here, I guess. :)
+The following build warning occurred on powerpc 64-bit builds:
 
-Good that I reminded you then :)
+drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
+drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of 1040 b=
+ytes is larger than 1024 bytes [-Wframe-larger-than=3D]
 
--- 
-viresh
+This is due to putting 1024 bytes on the stack:
+
+    unsigned int chip[256];
+
+...and while looking at this, it also has a bug: it fails with a stack
+overrun, if CONFIG_NR_CPUS > 256.
+
+Fix both problems by dynamically allocating based on CONFIG_NR_CPUS.
+
+Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capp=
+ing at chip level")
+Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
+Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: linux-pm@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+---
+
+Changes since v1: includes Viresh's review commit fixes.
+
+ drivers/cpufreq/powernv-cpufreq.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cp=
+ufreq.c
+index 6061850e59c9..5b2e968cb5ea 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -1041,9 +1041,14 @@ static struct cpufreq_driver powernv_cpufreq_driver =
+=3D {
+=20
+ static int init_chip_info(void)
+ {
+-	unsigned int chip[256];
++	unsigned int *chip;
+ 	unsigned int cpu, i;
+ 	unsigned int prev_chip_id =3D UINT_MAX;
++	int ret =3D 0;
++
++	chip =3D kcalloc(CONFIG_NR_CPUS, sizeof(*chip), GFP_KERNEL);
++	if (!chip)
++		return -ENOMEM;
+=20
+ 	for_each_possible_cpu(cpu) {
+ 		unsigned int id =3D cpu_to_chip_id(cpu);
+@@ -1055,8 +1060,10 @@ static int init_chip_info(void)
+ 	}
+=20
+ 	chips =3D kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
+-	if (!chips)
+-		return -ENOMEM;
++	if (!chips) {
++		ret =3D -ENOMEM;
++		goto free_and_return;
++	}
+=20
+ 	for (i =3D 0; i < nr_chips; i++) {
+ 		chips[i].id =3D chip[i];
+@@ -1066,7 +1073,9 @@ static int init_chip_info(void)
+ 			per_cpu(chip_info, cpu) =3D  &chips[i];
+ 	}
+=20
+-	return 0;
++free_and_return:
++	kfree(chip);
++	return ret;
+ }
+=20
+ static inline void clean_chip_info(void)
+--=20
+2.23.0
+
