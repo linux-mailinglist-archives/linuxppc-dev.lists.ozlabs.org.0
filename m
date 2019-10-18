@@ -2,48 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430B3DBB91
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 05:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A288CDBBA0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 05:21:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vW6l65gnzDqjQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 14:02:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vWXV5VqrzDr7x
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 14:21:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vW4j6jbpzDqdZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 14:00:53 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="nRThZA6S"; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 46vW4j556zz9sPF; Fri, 18 Oct 2019 14:00:53 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1571367653; bh=Un3FmhVENxAIGmN4EhILnWeEZRlRNIZ61ifl2W3Z37o=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=nRThZA6Sy8jco4Qp9JuyQtlnYpcc16jjWKqf8VyyrXQ8mNTwQQl/MzYCIf0J9sEpN
- 1RnrSw3SHE4DSrtpK1XnFpm8fe3ASteM1MqUx+MPHsa/J5nSMbwRx48opw9tNXpVFg
- SThjXFgxjxrm9/BS43rUPAlBTjdrQkzmAuGhPd/je3K2OodOwGPk3i6M2wbeg6U2ew
- 7mI4NjgZW+Iv0AArtugNeipEkVjT+IPLPjufB7KphuzRhS+DKdOZuAhR7Rn859EN1w
- u6ppMxJ5p2Z78+XJEK7/4QnoUWwV4HHUILtu12a2745FI+oM5gW7sECHUinKEmw7Cd
- 3qt7vPyIdnRkg==
-Date: Fri, 18 Oct 2019 14:00:49 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v9 2/8] KVM: PPC: Move pages between normal and secure
- memory
-Message-ID: <20191018030049.GA907@oak.ozlabs.ibm.com>
-References: <20190925050649.14926-1-bharata@linux.ibm.com>
- <20190925050649.14926-3-bharata@linux.ibm.com>
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vWVN2V5PzDr40
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 14:19:40 +1100 (AEDT)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id E679C262FEA366362BE1;
+ Fri, 18 Oct 2019 11:19:35 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 18 Oct 2019 11:19:27 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Petr Mladek <pmladek@suse.com>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 15/33] macintosh: Use pr_warn instead of pr_warning
+Date: Fri, 18 Oct 2019 11:18:32 +0800
+Message-ID: <20191018031850.48498-15-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191018031850.48498-1-wangkefeng.wang@huawei.com>
+References: <20191018031710.41052-1-wangkefeng.wang@huawei.com>
+ <20191018031850.48498-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190925050649.14926-3-bharata@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,45 +50,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 25, 2019 at 10:36:43AM +0530, Bharata B Rao wrote:
-> Manage migration of pages betwen normal and secure memory of secure
-> guest by implementing H_SVM_PAGE_IN and H_SVM_PAGE_OUT hcalls.
-> 
-> H_SVM_PAGE_IN: Move the content of a normal page to secure page
-> H_SVM_PAGE_OUT: Move the content of a secure page to normal page
-> 
-> Private ZONE_DEVICE memory equal to the amount of secure memory
-> available in the platform for running secure guests is created.
-> Whenever a page belonging to the guest becomes secure, a page from
-> this private device memory is used to represent and track that secure
-> page on the HV side. The movement of pages between normal and secure
-> memory is done via migrate_vma_pages() using UV_PAGE_IN and
-> UV_PAGE_OUT ucalls.
+As said in commit f2c2cbcc35d4 ("powerpc: Use pr_warn instead of
+pr_warning"), removing pr_warning so all logging messages use a
+consistent <prefix>_warn style. Let's do it.
 
-As we discussed privately, but mentioning it here so there is a
-record:  I am concerned about this structure
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ drivers/macintosh/windfarm_fcu_controls.c |  4 +---
+ drivers/macintosh/windfarm_lm87_sensor.c  |  4 ++--
+ drivers/macintosh/windfarm_pm72.c         | 22 +++++++++++-----------
+ drivers/macintosh/windfarm_rm31.c         |  6 +++---
+ 4 files changed, 17 insertions(+), 19 deletions(-)
 
-> +struct kvmppc_uvmem_page_pvt {
-> +	unsigned long *rmap;
-> +	struct kvm *kvm;
-> +	unsigned long gpa;
-> +};
+diff --git a/drivers/macintosh/windfarm_fcu_controls.c b/drivers/macintosh/windfarm_fcu_controls.c
+index 3c971297b6dc..67daeec94b44 100644
+--- a/drivers/macintosh/windfarm_fcu_controls.c
++++ b/drivers/macintosh/windfarm_fcu_controls.c
+@@ -468,9 +468,7 @@ static void wf_fcu_lookup_fans(struct wf_fcu_priv *pv)
+ 			else
+ 				id = ((*reg) - 0x30) / 2;
+ 			if (id > 7) {
+-				pr_warning("wf_fcu: Can't parse "
+-				       "fan ID in device-tree for %pOF\n",
+-					   np);
++				pr_warn("wf_fcu: Can't parse fan ID in device-tree for %pOF\n", np);
+ 				break;
+ 			}
+ 			wf_fcu_add_fan(pv, name, type, id);
+diff --git a/drivers/macintosh/windfarm_lm87_sensor.c b/drivers/macintosh/windfarm_lm87_sensor.c
+index e44525b19071..b03a33b803b7 100644
+--- a/drivers/macintosh/windfarm_lm87_sensor.c
++++ b/drivers/macintosh/windfarm_lm87_sensor.c
+@@ -124,8 +124,8 @@ static int wf_lm87_probe(struct i2c_client *client,
+ 		}
+ 	}
+ 	if (!name) {
+-		pr_warning("wf_lm87: Unsupported sensor %pOF\n",
+-			   client->dev.of_node);
++		pr_warn("wf_lm87: Unsupported sensor %pOF\n",
++			client->dev.of_node);
+ 		return -ENODEV;
+ 	}
+ 
+diff --git a/drivers/macintosh/windfarm_pm72.c b/drivers/macintosh/windfarm_pm72.c
+index c5da0fc24884..e81746b87cff 100644
+--- a/drivers/macintosh/windfarm_pm72.c
++++ b/drivers/macintosh/windfarm_pm72.c
+@@ -285,8 +285,8 @@ static void cpu_fans_tick_split(void)
+ 		/* Apply result directly to exhaust fan */
+ 		err = wf_control_set(cpu_rear_fans[cpu], sp->target);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-			       cpu_rear_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_rear_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 			break;
+ 		}
+@@ -296,8 +296,8 @@ static void cpu_fans_tick_split(void)
+ 		DBG_LOTS("  CPU%d: intake = %d RPM\n", cpu, intake);
+ 		err = wf_control_set(cpu_front_fans[cpu], intake);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-			       cpu_front_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_front_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 			break;
+ 		}
+@@ -367,22 +367,22 @@ static void cpu_fans_tick_combined(void)
+ 	for (cpu = 0; cpu < nr_chips; cpu++) {
+ 		err = wf_control_set(cpu_rear_fans[cpu], sp->target);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-				   cpu_rear_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_rear_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 		}
+ 		err = wf_control_set(cpu_front_fans[cpu], intake);
+ 		if (err) {
+-			pr_warning("wf_pm72: Fan %s reports error %d\n",
+-				   cpu_front_fans[cpu]->name, err);
++			pr_warn("wf_pm72: Fan %s reports error %d\n",
++				cpu_front_fans[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 		}
+ 		err = 0;
+ 		if (cpu_pumps[cpu])
+ 			err = wf_control_set(cpu_pumps[cpu], pump);
+ 		if (err) {
+-			pr_warning("wf_pm72: Pump %s reports error %d\n",
+-				   cpu_pumps[cpu]->name, err);
++			pr_warn("wf_pm72: Pump %s reports error %d\n",
++				cpu_pumps[cpu]->name, err);
+ 			failure_state |= FAILURE_FAN;
+ 		}
+ 	}
+@@ -561,7 +561,7 @@ static void drives_fan_tick(void)
+ 
+ 	err = wf_sensor_get(drives_temp, &temp);
+ 	if (err) {
+-		pr_warning("wf_pm72: drive bay temp sensor error %d\n", err);
++		pr_warn("wf_pm72: drive bay temp sensor error %d\n", err);
+ 		failure_state |= FAILURE_SENSOR;
+ 		wf_control_set_max(drives_fan);
+ 		return;
+diff --git a/drivers/macintosh/windfarm_rm31.c b/drivers/macintosh/windfarm_rm31.c
+index 8456eb67184b..7acd1684c451 100644
+--- a/drivers/macintosh/windfarm_rm31.c
++++ b/drivers/macintosh/windfarm_rm31.c
+@@ -281,8 +281,8 @@ static void cpu_fans_tick(void)
+ 		for (i = 0; i < 3; i++) {
+ 			err = wf_control_set(cpu_fans[cpu][i], speed);
+ 			if (err) {
+-				pr_warning("wf_rm31: Fan %s reports error %d\n",
+-					   cpu_fans[cpu][i]->name, err);
++				pr_warn("wf_rm31: Fan %s reports error %d\n",
++					cpu_fans[cpu][i]->name, err);
+ 				failure_state |= FAILURE_FAN;
+ 			}
+ 		}
+@@ -465,7 +465,7 @@ static void slots_fan_tick(void)
+ 
+ 	err = wf_sensor_get(slots_temp, &temp);
+ 	if (err) {
+-		pr_warning("wf_rm31: slots temp sensor error %d\n", err);
++		pr_warn("wf_rm31: slots temp sensor error %d\n", err);
+ 		failure_state |= FAILURE_SENSOR;
+ 		wf_control_set_max(slots_fan);
+ 		return;
+-- 
+2.20.1
 
-which keeps a reference to the rmap.  The reference could become stale
-if the memslot is deleted or moved, and nothing in the patch series
-ensures that the stale references are cleaned up.
-
-If it is possible to do without the long-term rmap reference, and
-instead find the rmap via the memslots (with the srcu lock held) each
-time we need the rmap, that would be safer, I think, provided that we
-can sort out the lock ordering issues.
-
-Paul.
