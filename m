@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16AEDD1F1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F29DD261
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:12:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46w0Xp1lgpzDqnv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 09:08:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46w0dD0W9xzDqCt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 09:12:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,36 +15,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="UE87X9Dw"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="y0UVVFYX"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46w0TX4XpwzDqkS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 09:05:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46w0XN4JyjzDqpR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 09:08:04 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C3E85222D2;
- Fri, 18 Oct 2019 22:05:30 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 092D22245A;
+ Fri, 18 Oct 2019 22:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1571436334;
- bh=ciDTbb48whY0btX4Jeq3lVC0e8CX6K6hmGMsNlR6hrw=;
+ s=default; t=1571436481;
+ bh=fnbbc7uR40pu9gEMufBDqXBhxqlq0xybhEADZGmXZlk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UE87X9DwzKTm4uCCLkjacgaa/Y26a63fiqeElJKkk3LRJbreqVYTw7LVAF5KL1d8J
- tCpfCD13XOl7IYioiiAaYnGIr7OifjKOnIBWYzCaIX0Y93HBSTUsQsiHi0d/OIG0Wn
- yjD1RxEQDbbTrpjt6TIexsjGSP1jleYMGGPNVy8w=
+ b=y0UVVFYXaCYLwrEowZrFLzcgEsTHSUZSXpv2eltbzUJ/RxLn2hyrIiO+T9Mrn+hC4
+ yTGeza5C9iTdhcp4PB3UAgpxkfW9ckxmdHrYImc4mbyf8vrlMCPEkqPU8bJAqCbfAT
+ IC4yDflXpKBjZL4f5LrRE48hRXbT/wMCrvYLOClw=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 005/100] powerpc/powernv: hold
- device_hotplug_lock when calling memtrace_offline_pages()
-Date: Fri, 18 Oct 2019 18:03:50 -0400
-Message-Id: <20191018220525.9042-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 04/56] powerpc/powernv: hold device_hotplug_lock
+ when calling memtrace_offline_pages()
+Date: Fri, 18 Oct 2019 18:07:01 -0400
+Message-Id: <20191018220753.10002-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191018220525.9042-1-sashal@kernel.org>
-References: <20191018220525.9042-1-sashal@kernel.org>
+In-Reply-To: <20191018220753.10002-1-sashal@kernel.org>
+References: <20191018220753.10002-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -139,10 +139,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
-index a29fdf8a2e56e..232bf5987f91d 100644
+index c9a6d4f3403ce..cfbd242c3e011 100644
 --- a/arch/powerpc/platforms/powernv/memtrace.c
 +++ b/arch/powerpc/platforms/powernv/memtrace.c
-@@ -70,6 +70,7 @@ static int change_memblock_state(struct memory_block *mem, void *arg)
+@@ -99,6 +99,7 @@ static int change_memblock_state(struct memory_block *mem, void *arg)
  	return 0;
  }
  
@@ -150,7 +150,7 @@ index a29fdf8a2e56e..232bf5987f91d 100644
  static bool memtrace_offline_pages(u32 nid, u64 start_pfn, u64 nr_pages)
  {
  	u64 end_pfn = start_pfn + nr_pages - 1;
-@@ -110,6 +111,7 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
+@@ -139,6 +140,7 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
  	/* Trace memory needs to be aligned to the size */
  	end_pfn = round_down(end_pfn - nr_pages, nr_pages);
  
@@ -158,7 +158,7 @@ index a29fdf8a2e56e..232bf5987f91d 100644
  	for (base_pfn = end_pfn; base_pfn > start_pfn; base_pfn -= nr_pages) {
  		if (memtrace_offline_pages(nid, base_pfn, nr_pages) == true) {
  			/*
-@@ -118,7 +120,6 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
+@@ -147,7 +149,6 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
  			 * we never try to remove memory that spans two iomem
  			 * resources.
  			 */
@@ -166,7 +166,7 @@ index a29fdf8a2e56e..232bf5987f91d 100644
  			end_pfn = base_pfn + nr_pages;
  			for (pfn = base_pfn; pfn < end_pfn; pfn += bytes>> PAGE_SHIFT) {
  				remove_memory(nid, pfn << PAGE_SHIFT, bytes);
-@@ -127,6 +128,7 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
+@@ -156,6 +157,7 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
  			return base_pfn << PAGE_SHIFT;
  		}
  	}
