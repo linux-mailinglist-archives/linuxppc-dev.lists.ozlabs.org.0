@@ -1,103 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E690ADCFE3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 22:18:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 963B0DD0A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 22:53:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vy5w1362zDqjR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 07:18:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vytW6kpgzDqrs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 07:53:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.0.89; helo=eur02-am5-obe.outbound.protection.outlook.com;
- envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::443;
+ helo=mail-wr1-x443.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="evkfOJaN"; 
- dkim-atps=neutral
-Received: from EUR02-AM5-obe.outbound.protection.outlook.com
- (mail-eopbgr00089.outbound.protection.outlook.com [40.107.0.89])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="IBXlhzy0"; dkim-atps=neutral
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
+ [IPv6:2a00:1450:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vy453BtxzDqNv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 07:16:49 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GCspO0M3RrGmA87kuNkxogTwkieGkHQNugNq0SOd0RKJnNczTkDiFmtUn0mTs9mfQ3Oa5kEZ/3uLXNdvkdD8FpIi6DtuoI06nGAqJb16M3+SP6sQPKOvt0hDOdgnKdDUPH6Su/UucNdalDfGmvh6cEuisVvePL3SsdsdAYjkpFeSde8WopA+uLzDFuJqpDyt8AkStNyRNRFG/jQoKaMAauJcqPRkqacRCJbZjZGKFsOPt4Zz1gpFSAj8qSy3VZ8+ZQVWLsQFM2JULZJuhbZcfC5yVXvWDFkGp6IRlvme88MSALQiYHIn1aJNqEh9CdntK1hxJY8O9uEtjYr4LqDAEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LypLTGCen3B/aXHTsoz3SA3fJ+BBotxHMPxkIKk1bZs=;
- b=Knlvmh9nPIW+uIFk8CEQpH8CYytphUuSljYuI0HFQAsXDKNz9DPtYZ9DiwjiQSRQU/T3Seja1jL8K6ekMkRQ6NYz3pBQaVyuQR8yRhRmMn2cEvMN0ysPORs7i4hIEcuONRyGOVTB+juVaepu5vaZnfxtn0xeKtoW5sQCR5/QKZCTc71iayqG6vnO7fv2YV01ylRc6yx4wGBXKvzG/sp3vImIT9nyaTg08oVO1zXgORudyQ267gPlPQ7ZD7Q0H2/berPrQmZcsAlYbOX8sIfkZZYgsN8AuZCYl5sDVoTC0Ul03v9ylze6uJP+lvIdi8QsnKvOokwAIHX1LOIBY7VxFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LypLTGCen3B/aXHTsoz3SA3fJ+BBotxHMPxkIKk1bZs=;
- b=evkfOJaN6WgtUP/qgdrE8pGXSIntN+CU3HF7NIOLUqUKkEncG/BDCBISya3+w+vybyzLzgN/wKaJG37pTidDV9xm2gsp4svdM36QdcEYGlpYMBA2sf/c+xkqoMl4PMKYd370Zxf7rG7zaoghY43nSFZxrnSTftBj6J4W4r560to=
-Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) by
- VE1PR04MB6446.eurprd04.prod.outlook.com (20.179.233.157) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2347.18; Fri, 18 Oct 2019 20:16:42 +0000
-Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
- ([fe80::c93:c279:545b:b6b6]) by VE1PR04MB6687.eurprd04.prod.outlook.com
- ([fe80::c93:c279:545b:b6b6%3]) with mapi id 15.20.2347.024; Fri, 18 Oct 2019
- 20:16:42 +0000
-From: Leo Li <leoyang.li@nxp.com>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Qiang Zhao
- <qiang.zhao@nxp.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri
- Slaby <jslaby@suse.com>, Timur Tabi <timur@kernel.org>,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vyrt37JYzDqfv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 07:52:12 +1100 (AEDT)
+Received: by mail-wr1-x443.google.com with SMTP id b9so7605631wrs.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 13:52:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:references:from:message-id:date:user-agent:mime-version
+ :in-reply-to:content-language:content-transfer-encoding;
+ bh=uGEXsE8/NXoRF+D14w+boPYF50JZvz72YuC6YAN3OA0=;
+ b=IBXlhzy0RGoAwB2ojEYPz7abKSVVtIzYBJwWK4c2HgNYuYnc1H23Y0feBGiRroGP5j
+ JubIc4JzQMtDXZ7uQ2jlmTdmFKQ4Bt4Hz0G5tO902wI3BGWJDjMXjHQyCP4UQrcIkQmy
+ OLOi1qgwk8pQzNaoyvNk5TUdcbynJpX0xd/4U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=uGEXsE8/NXoRF+D14w+boPYF50JZvz72YuC6YAN3OA0=;
+ b=nnOZ9ic5OChIQ0E+k6KY+7QqYEpUUv96FLnq0mYwp5QK53AFd55RTfwr5SdhZ6962S
+ d5G1+8hNKjfp5+CkwPKy7XeMgXFpSZwNjr2ho2xsvn+MuZgRUDHp/hTuu8T2Mvz82MCT
+ Zbs0tmYDePhL7zamo4RwsdJC8RouxHXGv1USBsH6MwmHMh+2gG4gxy5RT3fVSgvNTbbD
+ SLryG+khlOZJ0mx0zJ4Ef88TnGKku3o5NqsKhtBtF+ZetjRkPHOeQT2UO5SYydiW1S35
+ o1DWyIUMBJBZ4/Logr+X7LTnx0/MctLhBb29vVOBxLKiH6aNJ1bMEZr78yc+05fQ7fI4
+ BalA==
+X-Gm-Message-State: APjAAAWwr18dour1nhNc/wtacdrLWu5IR67mebMzn4lAfzmBKyokr6br
+ quoPcGWSdGvxBIseNvs+Xjg2OA==
+X-Google-Smtp-Source: APXvYqz0kY5/OxYYxhR/1u58qGdFKWyMZCctPVLRK43Po/wT6eyex+6FLmeTJjDYNDpKlXaZ7a7AbA==
+X-Received: by 2002:adf:9101:: with SMTP id j1mr8966445wrj.71.1571431925821;
+ Fri, 18 Oct 2019 13:52:05 -0700 (PDT)
+Received: from [192.168.1.149] (ip-5-186-115-54.cgn.fibianet.dk.
+ [5.186.115.54])
+ by smtp.gmail.com with ESMTPSA id n15sm8053302wrw.47.2019.10.18.13.52.04
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 18 Oct 2019 13:52:05 -0700 (PDT)
+Subject: Re: [PATCH 0/7] towards QE support on ARM
+To: Leo Li <leoyang.li@nxp.com>, Qiang Zhao <qiang.zhao@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jslaby@suse.com>, Timur Tabi <timur@kernel.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
  "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-serial@vger.kernel.org"
- <linux-serial@vger.kernel.org>
-Subject: RE: [PATCH 0/7] towards QE support on ARM
-Thread-Topic: [PATCH 0/7] towards QE support on ARM
-Thread-Index: AQHVhbLu+r0C+NWO3EyME7mfzv8ktqdg1Qrw
-Date: Fri, 18 Oct 2019 20:16:42 +0000
-Message-ID: <VE1PR04MB6687DA0268FAF03D3E77A23B8F6C0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
-In-Reply-To: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=leoyang.li@nxp.com; 
-x-originating-ip: [64.157.242.222]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8e096d09-24d3-4fd3-0950-08d754081747
-x-ms-office365-filtering-ht: Tenant
-x-ms-traffictypediagnostic: VE1PR04MB6446:|VE1PR04MB6446:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VE1PR04MB644681593788C7190C0625498F6C0@VE1PR04MB6446.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 01949FE337
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(136003)(366004)(346002)(39860400002)(396003)(376002)(13464003)(199004)(189003)(66946007)(66476007)(64756008)(66446008)(66556008)(486006)(76116006)(66066001)(99286004)(8936002)(256004)(2201001)(74316002)(305945005)(9686003)(229853002)(55016002)(5660300002)(7736002)(14454004)(52536014)(71200400001)(71190400001)(11346002)(25786009)(2501003)(33656002)(3846002)(6116002)(6246003)(6436002)(102836004)(8676002)(6506007)(53546011)(186003)(81156014)(81166006)(86362001)(76176011)(446003)(478600001)(476003)(316002)(26005)(2906002)(110136005)(7696005);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6446;
- H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: W1wMUnAHWVaVIDqef64/YQ+JDXfd5ZUk7x2rdG9fe8GoiebHsiqqkn0viqJuOO+jtmiexw9wVax3i39xLwRDq+QPmUqsuLehL8KGlbS3NEEuNQo9nfnDQg7v1yUOIs2x3Htjt7Ur9M2Fg52VY/FFWfLKItjb/fbV1LfQvuw3nrmGDq8CJWe2fyXRKJDjRIMK0G17JQ/pw+eHK9BoFUGzdDpVx/K/woPeve1B2LjHqftl8DGxFLZyhjDWtSX3Maz78BVgnoXFSuUwJ0EDmJxlaicSXtZtMWAcnrM/sOjCpt0rCguQpmpf2hjWLBsG7OPMwCjTzSJE5t8ZxdVYSJ7WvO98bo91yb1y7uCIdbhioXwJnSPHPMcllsWhpnhZBacETYRLLEd/xaHlTeVU6hkmg6l3sU/RA/aW32dxzHPQSm4=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <VE1PR04MB6687DA0268FAF03D3E77A23B8F6C0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <e02fa027-9c78-3272-d2d7-7ad2b0ed3ab0@rasmusvillemoes.dk>
+Date: Fri, 18 Oct 2019 22:52:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e096d09-24d3-4fd3-0950-08d754081747
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2019 20:16:42.2098 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: W1QtZMERHmzxnb2ZwIxQG5kxur90oeuV0kkyEnXz0Hkx3G/CwuncZUXO9y9pLgxqPXcDai1kSQuqpMsjZAiUAA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6446
+In-Reply-To: <VE1PR04MB6687DA0268FAF03D3E77A23B8F6C0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,65 +93,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 18/10/2019 22.16, Leo Li wrote:
+> 
+>>
+>> There have been several attempts in the past few years to allow building the
+>> QUICC engine drivers for platforms other than PPC. This is (the beginning of)
+>> yet another attempt. I hope I can get someone to pick up these relatively
+>> trivial patches (I _think_ they shouldn't change functionality at all), and then
+>> I'll continue slowly working towards removing the PPC32 dependency for
+>> CONFIG_QUICC_ENGINE.
+> 
+> Hi Rasmus,
+> 
+> I don't fully understand the motivation of this work.  As far as I know the QUICC ENGINE is only used on PowerPC based SoCs. 
+
+Hm, you're not the Leo Li that participated in this thread
+<https://lore.kernel.org/lkml/AM3PR04MB11857AE8D2B0BE56121B97D391C90@AM3PR04MB1185.eurprd04.prod.outlook.com/T/#u>?
 
 
-> -----Original Message-----
-> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Sent: Friday, October 18, 2019 7:52 AM
-> To: Qiang Zhao <qiang.zhao@nxp.com>; Leo Li <leoyang.li@nxp.com>; Greg
-> Kroah-Hartman <gregkh@linuxfoundation.org>; Jiri Slaby
-> <jslaby@suse.com>; Timur Tabi <timur@kernel.org>; linuxppc-
-> dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org; linux-
-> kernel@vger.kernel.org; linux-serial@vger.kernel.org
-> Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Subject: [PATCH 0/7] towards QE support on ARM
->=20
-> There have been several attempts in the past few years to allow building =
-the
-> QUICC engine drivers for platforms other than PPC. This is (the beginning=
- of)
-> yet another attempt. I hope I can get someone to pick up these relatively
-> trivial patches (I _think_ they shouldn't change functionality at all), a=
-nd then
-> I'll continue slowly working towards removing the PPC32 dependency for
-> CONFIG_QUICC_ENGINE.
+ Can you give an example on how is it used on ARM system?
 
-Hi Rasmus,
+LS1021A, for example, which is the one I'm aiming for getting fully
+supported in mainline.
+<https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/layerscape-communication-process/qoriq-layerscape-1021a-dual-core-communications-processor-with-lcd-controller:LS1021A>
 
-I don't fully understand the motivation of this work.  As far as I know the=
- QUICC ENGINE is only used on PowerPC based SoCs.  Can you give an example =
-on how is it used on ARM system?
+The forks at https://github.com/qoriq-open-source/linux.git have various
+degrees of support (grep for commits saying stuff like "remove PPCisms"
+- some versions can be found on
+<https://lore.kernel.org/lkml/?q=remove+ppcisms>). Our current kernel is
+based on commits from the now-vanished 4.1 branch, and unfortunately at
+least the 4.14 branch (LSDK-18.06-V4.14) trivially doesn't build on ARM,
+despite the PPC32 dependency having been removed from CONFIG_QUICC_ENGINE.
 
->=20
-> Tested on an MPC8309-derived board.
+>>
+>> Tested on an MPC8309-derived board.
+> 
+> MPC8309 is also PPC based.
 
-MPC8309 is also PPC based.
+True, of course. This is just some first few steps, and I'm not claiming
+that this is sufficient to make the QE drivers build on ARM yet. But I
+have a customer with both mpc8309-based and ls1021a-based platforms, and
+they want to run the same, as-close-to-mainline-as-possible, kernel on
+both. So I will take a piecemeal approach, and try to make sure I don't
+break the ppc boards in the process (just building and booting one board
+is of course not sufficient, but better than nothing). Once I get to
+actually build some of the QE drivers for ARM, I'll of course also test
+them.
 
->=20
-> Rasmus Villemoes (7):
->   soc: fsl: qe: remove space-before-tab
->   soc: fsl: qe: drop volatile qualifier of struct qe_ic::regs
->   soc: fsl: qe: avoid ppc-specific io accessors
->   soc: fsl: qe: replace spin_event_timeout by readx_poll_timeout_atomic
->   serial: make SERIAL_QE depend on PPC32
->   serial: ucc_uart.c: explicitly include asm/cpm.h
->   soc/fsl/qe/qe.h: remove include of asm/cpm.h
->=20
->  drivers/soc/fsl/qe/gpio.c     | 30 ++++++++--------
->  drivers/soc/fsl/qe/qe.c       | 44 +++++++++++------------
->  drivers/soc/fsl/qe/qe_ic.c    |  8 ++---
->  drivers/soc/fsl/qe/qe_ic.h    |  2 +-
->  drivers/soc/fsl/qe/qe_io.c    | 40 ++++++++++-----------
->  drivers/soc/fsl/qe/qe_tdm.c   |  8 ++---
->  drivers/soc/fsl/qe/ucc.c      | 12 +++----
->  drivers/soc/fsl/qe/ucc_fast.c | 66 ++++++++++++++++++-----------------
->  drivers/soc/fsl/qe/ucc_slow.c | 38 ++++++++++----------
->  drivers/soc/fsl/qe/usb.c      |  2 +-
->  drivers/tty/serial/Kconfig    |  1 +
->  drivers/tty/serial/ucc_uart.c |  1 +
->  include/soc/fsl/qe/qe.h       |  1 -
->  13 files changed, 126 insertions(+), 127 deletions(-)
->=20
-> --
-> 2.20.1
-
+Rasmus
