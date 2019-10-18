@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCE9DC5B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A80DC599
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:00:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vmTB62nVzDrgH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:04:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vmNR4B4QzDrbn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:00:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::244;
- helo=mail-lj1-x244.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::142;
+ helo=mail-lf1-x142.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="ZqtTvUId"; dkim-atps=neutral
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
+ header.b="KFyP8ivf"; dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vmCj52vLzDrVW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 23:52:43 +1100 (AEDT)
-Received: by mail-lj1-x244.google.com with SMTP id a22so6132305ljd.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 05:52:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vmCk4mk0zDrVb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 23:52:47 +1100 (AEDT)
+Received: by mail-lf1-x142.google.com with SMTP id q12so4613800lfc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 05:52:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=X8tXbinQHwrpjZVR5SZDxD1u91iSiuAMbDTcJXFPWb8=;
- b=ZqtTvUIddQBWXaS8eT4AyKxHQxxb4LutuCYu8Et1I6qRRkCdNpIZDsBMkkiqP5LJJ3
- T++Y9k8fNV6dq4whnCc4qJYUxpkzOBGqaKv9D+WlmA2Nnrs7pPTF+ryD2Ysn6PV0lyhL
- my8Exob7bYpSp/7oQ9MbAyg6EO3GvkCC8XS9U=
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=b/kYsXKDEeEBcA1fCE+mpoBIaUoXu8b4ge6C0aEmGGA=;
+ b=KFyP8ivfbpHtepeGzrcdL51yIH0E0bUb8X+4a2KH0HGN4QWsIwbhQQBDFzpw8B4QAS
+ RbUd93jPl4MuGJetIgGZbsZyOKrmZfbazbh3U8W4NiWpzrx9at5H+K/9lL3NoBdPWnbx
+ iTRZaQAOW1xXsH1h45p9Y3RpNKZaeJif7ZIvY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=X8tXbinQHwrpjZVR5SZDxD1u91iSiuAMbDTcJXFPWb8=;
- b=oVFdIoTQtMAfToPWSv+7TgZJndFP9rLHqi1G9WGHc4AJkM+gem6/pN8YJSC/1/iU8q
- PAyijeJkDfWjWMvNQfmQhz9O/KM98iHtESV5U31peyDPsUYJJhz6n2bj11Sa5yBL6vvQ
- 8B/aBGfSSoWBiYOhOwDM4qYTlMqBggDYUzUlcRyrXgzbW+z6Tlqdw3sDk5Bn+ZceFJcV
- YxSVYcUVEMPFPVcrwYu8/9PLcCtf5udLinSyPzhLftaGeZFba0dVymuet7MaZo48zwUV
- hS+/bv92aO5j8qTkFGyY9Btj76ZRT+or/DQt1+32eYdUszgsqjwCxpGIOg0ruQWAef93
- Eh9Q==
-X-Gm-Message-State: APjAAAVuIPTcjvov9jZDab5RTUaNHqX4DBMXiWw5C7D8+QGUnPaF9xPl
- MHOroxJitowXNUF2aQcjCgtL4w==
-X-Google-Smtp-Source: APXvYqyF9yPf+tbU7h7RQICAL7Ec07Pxt3Ja7hV0UEFHDzE2BYMYhcr3tkeM8h/HHzKMwhMhBwF9EQ==
-X-Received: by 2002:a2e:3919:: with SMTP id g25mr6031311lja.162.1571403159942; 
- Fri, 18 Oct 2019 05:52:39 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=b/kYsXKDEeEBcA1fCE+mpoBIaUoXu8b4ge6C0aEmGGA=;
+ b=g0eHg3cQBV4ujF4qlMWAyjCdtjxG3eOsmknCML5OngcNrR19FztdTZT2cee+ycVLu3
+ KuCBTrPOBe3eF3FCyzxXxBOsEpTrGSaObg0F8nNMI3ytTqNgAW4KGXRjF2jwOxDk+fxK
+ opjp3U34UZCTE1NFOFMj57kxupOicLmj7EfHP6vbgfBohwnyuCps1yHm5Jvjokq6h48R
+ BzUMbGQ5SZ6wUH02qyXtDzt0EqSwFim40tsqIIHvhVbKdEJI/kxwZ1N9ZkqfMW9Wbqal
+ u1o+P0N6xMqQ8/dLZVfa0/LQ8D5t/6iy3fZn1JZUxsLYs5irfxikO+jIv5U9NVvoN8X9
+ 0WFg==
+X-Gm-Message-State: APjAAAV0oYbl6wU8gTqq61kVdlFzqauFRVgNeiLV4pAhoe53V97LXiq4
+ rXa1BWTHZvIMoQOP4kfqKOHgXQ==
+X-Google-Smtp-Source: APXvYqwfp2OR81F0L53trJi7RZb+gW5SZ6EFdq5/LmCgN8KPrYOURZTPP/LvsMtj32ugvHQiRs800Q==
+X-Received: by 2002:a05:6512:71:: with SMTP id
+ i17mr5903293lfo.68.1571403163737; 
+ Fri, 18 Oct 2019 05:52:43 -0700 (PDT)
 Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id m17sm7454792lje.0.2019.10.18.05.52.38
+ by smtp.gmail.com with ESMTPSA id m17sm7454792lje.0.2019.10.18.05.52.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Oct 2019 05:52:38 -0700 (PDT)
+ Fri, 18 Oct 2019 05:52:42 -0700 (PDT)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jslaby@suse.com>, Timur Tabi <timur@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: [PATCH 0/7] towards QE support on ARM
-Date: Fri, 18 Oct 2019 14:52:27 +0200
-Message-Id: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+To: Qiang Zhao <qiang.zhao@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>
+Subject: [PATCH 2/7] soc: fsl: qe: drop volatile qualifier of struct
+ qe_ic::regs
+Date: Fri, 18 Oct 2019 14:52:29 +0200
+Message-Id: <20191018125234.21825-3-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,44 +79,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: linuxppc-dev@lists.ozlabs.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There have been several attempts in the past few years to allow
-building the QUICC engine drivers for platforms other than PPC. This
-is (the beginning of) yet another attempt. I hope I can get someone to
-pick up these relatively trivial patches (I _think_ they shouldn't
-change functionality at all), and then I'll continue slowly working
-towards removing the PPC32 dependency for CONFIG_QUICC_ENGINE.
+The actual io accessors (e.g. in_be32) implicitly add a volatile
+qualifier to their address argument. Remove volatile from the struct
+definition and the qe_ic_(read/write) helpers, in preparation for
+switching from the ppc-specific io accessors to generic ones.
 
-Tested on an MPC8309-derived board.
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+---
+ drivers/soc/fsl/qe/qe_ic.c | 4 ++--
+ drivers/soc/fsl/qe/qe_ic.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Rasmus Villemoes (7):
-  soc: fsl: qe: remove space-before-tab
-  soc: fsl: qe: drop volatile qualifier of struct qe_ic::regs
-  soc: fsl: qe: avoid ppc-specific io accessors
-  soc: fsl: qe: replace spin_event_timeout by readx_poll_timeout_atomic
-  serial: make SERIAL_QE depend on PPC32
-  serial: ucc_uart.c: explicitly include asm/cpm.h
-  soc/fsl/qe/qe.h: remove include of asm/cpm.h
-
- drivers/soc/fsl/qe/gpio.c     | 30 ++++++++--------
- drivers/soc/fsl/qe/qe.c       | 44 +++++++++++------------
- drivers/soc/fsl/qe/qe_ic.c    |  8 ++---
- drivers/soc/fsl/qe/qe_ic.h    |  2 +-
- drivers/soc/fsl/qe/qe_io.c    | 40 ++++++++++-----------
- drivers/soc/fsl/qe/qe_tdm.c   |  8 ++---
- drivers/soc/fsl/qe/ucc.c      | 12 +++----
- drivers/soc/fsl/qe/ucc_fast.c | 66 ++++++++++++++++++-----------------
- drivers/soc/fsl/qe/ucc_slow.c | 38 ++++++++++----------
- drivers/soc/fsl/qe/usb.c      |  2 +-
- drivers/tty/serial/Kconfig    |  1 +
- drivers/tty/serial/ucc_uart.c |  1 +
- include/soc/fsl/qe/qe.h       |  1 -
- 13 files changed, 126 insertions(+), 127 deletions(-)
-
+diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+index 9bac546998d3..9694569dcc76 100644
+--- a/drivers/soc/fsl/qe/qe_ic.c
++++ b/drivers/soc/fsl/qe/qe_ic.c
+@@ -171,12 +171,12 @@ static struct qe_ic_info qe_ic_info[] = {
+ 		},
+ };
+ 
+-static inline u32 qe_ic_read(volatile __be32  __iomem * base, unsigned int reg)
++static inline u32 qe_ic_read(__be32  __iomem * base, unsigned int reg)
+ {
+ 	return in_be32(base + (reg >> 2));
+ }
+ 
+-static inline void qe_ic_write(volatile __be32  __iomem * base, unsigned int reg,
++static inline void qe_ic_write(__be32  __iomem * base, unsigned int reg,
+ 			       u32 value)
+ {
+ 	out_be32(base + (reg >> 2), value);
+diff --git a/drivers/soc/fsl/qe/qe_ic.h b/drivers/soc/fsl/qe/qe_ic.h
+index 08c695672a03..9420378d9b6b 100644
+--- a/drivers/soc/fsl/qe/qe_ic.h
++++ b/drivers/soc/fsl/qe/qe_ic.h
+@@ -72,7 +72,7 @@
+ 
+ struct qe_ic {
+ 	/* Control registers offset */
+-	volatile u32 __iomem *regs;
++	u32 __iomem *regs;
+ 
+ 	/* The remapper for this QEIC */
+ 	struct irq_domain *irqhost;
 -- 
 2.20.1
 
