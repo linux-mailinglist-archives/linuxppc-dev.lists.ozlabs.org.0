@@ -2,49 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CC7DBA5C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 01:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8065EDBA6B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 02:06:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vR2Q3X5GzDqw9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 10:58:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vRCT5zYDzDqfL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 11:06:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vR0W1xyvzDqQP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 10:56:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.b="WqZCRkRh"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46vR0V3b79z9sPV;
- Fri, 18 Oct 2019 10:56:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1571356618;
- bh=K13U+AUFHnw6L6dQYDvLcinbUAJeMsLlIuOy4kBBer4=;
- h=Date:From:To:Cc:Subject:From;
- b=WqZCRkRhp4/4inRmp5XtNf0tPg2jyec1xXylhSZRn9Wsne5SxbSgl/Nb4LXBx0JaH
- Z+Zh6TF+8FF8t9VRCqeCFWobHD3WbNq+zyfZkGJfJKlBI577JsOJKoY9Mp3UPQ6Od/
- B3p60GrUGlgINtu3mkun9L5CvytijQQ4/QZ/vUgJ5UBwZ/GfyJMk8A8ywouB2Pk3uo
- wxMggGCi+CPQe6NXYbdTU1SioRl+LzD5oGuQ35IC0lXU8UOgIy/4pXe6B9kHtNse73
- rYs2vyNuLcm0w5mufm3n6PY4d8gkka1KBl/SU2H9jpohSGcIurx2jXIt46ioY2urc8
- rcfH+UT2sX38Q==
-Date: Fri, 18 Oct 2019 10:56:57 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov
- <ast@kernel.org>, Networking <netdev@vger.kernel.org>
-Subject: linux-next: build warning after merge of the bpf-next tree
-Message-ID: <20191018105657.4584ec67@canb.auug.org.au>
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="jG+wp7iH"; 
+ dkim-atps=neutral
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vR9W5cKLzDqnB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 11:04:47 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5da901a60000>; Thu, 17 Oct 2019 17:04:54 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Thu, 17 Oct 2019 17:04:42 -0700
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Thu, 17 Oct 2019 17:04:42 -0700
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 18 Oct
+ 2019 00:04:42 +0000
+Received: from hqnvemgw01.nvidia.com (172.20.150.20) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Fri, 18 Oct 2019 00:04:42 +0000
+Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
+ hqnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5da9019a0000>; Thu, 17 Oct 2019 17:04:42 -0700
+From: John Hubbard <jhubbard@nvidia.com>
+To: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
+Subject: [PATCH] cpufreq: powernv: fix stack bloat and NR_CPUS limitation
+Date: Thu, 17 Oct 2019 17:04:31 -0700
+Message-ID: <20191018000431.1675281-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/RzygGg_XqUDEQwGIY_nGvDE";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+X-NVConfidentiality: public
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1571357094; bh=jMIVMS2k3nt+KBSFjXMj5e0P3S6l8dH7Zx0lZXXcpko=;
+ h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+ MIME-Version:X-NVConfidentiality:Content-Transfer-Encoding:
+ Content-Type;
+ b=jG+wp7iHF0RN5Tn/nZDD4xJriVKb5DiI5acvhritKAZypir3iuZnXHppODrfo1kdX
+ hABXN5bOYSgzMQ6qiuADHLmVo/eJsdldhda46dDKKqWNBXa6BSSWBeggxjkJ+hoJmQ
+ XKlYnzLP+dXh7+EiIVlO17gtQZM6dpCs53U0WwySjpngtZzhB8k85+sq45N7HQKc3k
+ kk0yIkUz9j4PWXLn9+66jbovHjoQIy3aJjW7UmkfZ63aHn7dGwfnFfI4fGqiTMvoUI
+ wV+sd9odwKKDD1xlDIA8JrL3mAWof1mnmZsHHyChaQQyBCrIgi54fg61Vxywik3Scc
+ UTCqawVY+jwCw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,48 +71,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- ppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linux-pm@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
+ "Rafael J . Wysocki" <rjw@rjwysocki.net>, LKML <linux-kernel@vger.kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/RzygGg_XqUDEQwGIY_nGvDE
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+The following build warning occurred on powerpc 64-bit builds:
 
-Hi all,
+drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
+drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of 1040 b=
+ytes is larger than 1024 bytes [-Wframe-larger-than=3D]
 
-After merging the bpf-next tree, today's linux-next build (powerpc
-ppc64_defconfig) produced this warning:
+This is due to putting 1024 bytes on the stack:
 
-WARNING: 2 bad relocations
-c000000001998a48 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_start
-c000000001998a50 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_end
+    unsigned int chip[256];
 
-Introduced by commit
+...and while looking at this, it also has a bug: it fails with a stack
+overrun, if CONFIG_NR_CPUS > 256.
 
-  8580ac9404f6 ("bpf: Process in-kernel BTF")
+Fix both problems by dynamically allocating based on CONFIG_NR_CPUS.
 
+Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capp=
+ing at chip level")
+Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
+Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: linux-pm@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+---
+
+Hi,
+
+I have only compile-tested this, so I would appreciate if anyone
+could do a basic runtime test on it. But (famous last words) it
+seems simple enough that I'm confident it's correct. oh boy. :)
+
+thanks,
+John Hubbard
+NVIDIA
+
+ drivers/cpufreq/powernv-cpufreq.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cp=
+ufreq.c
+index 6061850e59c9..78e04402125f 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -1041,9 +1041,14 @@ static struct cpufreq_driver powernv_cpufreq_driver =
+=3D {
+=20
+ static int init_chip_info(void)
+ {
+-	unsigned int chip[256];
++	unsigned int *chip;
+ 	unsigned int cpu, i;
+ 	unsigned int prev_chip_id =3D UINT_MAX;
++	int ret =3D 0;
++
++	chip =3D kcalloc(CONFIG_NR_CPUS, sizeof(int), GFP_KERNEL);
++	if (!chips)
++		return -ENOMEM;
+=20
+ 	for_each_possible_cpu(cpu) {
+ 		unsigned int id =3D cpu_to_chip_id(cpu);
+@@ -1055,8 +1060,10 @@ static int init_chip_info(void)
+ 	}
+=20
+ 	chips =3D kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
+-	if (!chips)
+-		return -ENOMEM;
++	if (!chips) {
++		ret =3D -ENOMEM;
++		goto free_and_return;
++	}
+=20
+ 	for (i =3D 0; i < nr_chips; i++) {
+ 		chips[i].id =3D chip[i];
+@@ -1066,7 +1073,9 @@ static int init_chip_info(void)
+ 			per_cpu(chip_info, cpu) =3D  &chips[i];
+ 	}
+=20
+-	return 0;
++free_and_return:
++	kfree(chip);
++	return ret;
+ }
+=20
+ static inline void clean_chip_info(void)
 --=20
-Cheers,
-Stephen Rothwell
+2.23.0
 
---Sig_/RzygGg_XqUDEQwGIY_nGvDE
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl2o/8kACgkQAVBC80lX
-0Gwzvwf/eU6rk1Dlj9jbIO6m14+31QNvZjmfiYayLy62FobBqj7lD6s86RJ5XdrM
-kOTNRDsf/bC5mVwZKVS3daTojZX3xXl0RHe1JCV5fzagL1Mxfmlw613dyRqGBSXp
-Vz7ToIV63qXfPmqPxf19LbQhwtDOFprKi1fPV+TyKJRyp/DFiNI2b+Lm+KkBt9R6
-VTFai3eBNCWjJCnZmYfQ6w/B0yX1Hkn/DQ1I+OBm4lYOjEjLhf7NCliEAYSEOiM0
-9JiHhQ2iOcHhRm++ykqMvPSGTHuC7+mxglYfrFI0SsjrWrowIo9Wy8bc44V2LKnL
-vKxuVTQNsm8SW1FS9fRFbt9xs4dYJg==
-=Ajn9
------END PGP SIGNATURE-----
-
---Sig_/RzygGg_XqUDEQwGIY_nGvDE--
