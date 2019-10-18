@@ -1,42 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AED3DBBB4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 06:05:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EEBFDBBEF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 06:29:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vXW76mW0zDr94
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:05:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vY2S35vvzDqVd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:29:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=viresh.kumar@linaro.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.b="XEk+TXgF"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vWSj4qthzDr45
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 14:18:11 +1100 (AEDT)
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 102F3C7E15F427A45DB1;
- Fri, 18 Oct 2019 11:18:06 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 18 Oct 2019 11:17:56 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Petr Mladek <pmladek@suse.com>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 00/33] Kill pr_warning in the whole linux code
-Date: Fri, 18 Oct 2019 11:17:10 +0800
-Message-ID: <20191018031710.41052-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vY0c0CThzDqSV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 15:27:23 +1100 (AEDT)
+Received: by mail-pf1-x441.google.com with SMTP id q5so3012699pfg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2019 21:27:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=FUYBDax7NE3CDwWsYLZOhPAtyneP9Q/Jy0zNmRGZwqk=;
+ b=XEk+TXgFbeAE3e37n2OZJ2gc7DQz2UgSVuKwMUCPB2WRmo4ZEUyFBRhanr7tQGVC9X
+ qcOGvaw04wTYnk45J4bCBIcwnn6fx7r/2v6wIVQQrsNQ1iIw+v8h94s9XUgVWug4aA6O
+ qD8xN/3mgtupJyvN1mFLQzjJ8+J9zeamLEoam6KnRYkgKSMDMvt18aS7XAvqvZuy2o4E
+ 9EVmvS3JmM21cgRhd4/8ObOSiFvEpeBIJqLHBMJb6kBIilkuoxPvkA7UpE4Kpld/aPl2
+ HV1zUNsO6vCMZ2rE8TS0bEtnoi9IMLjHZ/hW61XLGt5k6q22OPcDcp9ewwTgTLi3sz/z
+ HUNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=FUYBDax7NE3CDwWsYLZOhPAtyneP9Q/Jy0zNmRGZwqk=;
+ b=es5SmXhQNX7TXkj1NCIx6N3dGbrvuJZp98waJibsZyxq2f7oZvveg1hv5dLsp6261I
+ RClA1IeHAcBqIB3Q52bjlLHbS6fkdo891tYaVtr/3FVlAkc+fIx7YBzSzSxKGN0CmLmE
+ 9KAwIR8qm1/uzbUNBIdDI2YBtY35FADqyVphRrVNWb4hehwfegn2ebEB7MvWXBQE0HPr
+ FaFAXY8qm1N54Vgcr+tkuH23NaVHZSVZiWlTz4kcG3TMM0synMKjIbIm7h2JCqiyo0wZ
+ /8IOCXvOptTK7eU3iojC1o7kyYELm0PSCp0KsH/9CkMft39MMZqAVNxJd/v7ma/PVZCw
+ nY6g==
+X-Gm-Message-State: APjAAAVYErCyriflD7TYRtsYJN5mmlZBC3C5s+ADthIcpYqsqc8nlfIs
+ aTe/sr8ySku+iO1t/TQ5vprsEQ==
+X-Google-Smtp-Source: APXvYqwu8XgdnF2JM+MIZ5+YJ18wqOQAMwBOQsDC97X7zyp+1ufZ3YNe9XktzUrdJo31658oXdc7GA==
+X-Received: by 2002:a17:90a:17c4:: with SMTP id
+ q62mr8306937pja.83.1571372840048; 
+ Thu, 17 Oct 2019 21:27:20 -0700 (PDT)
+Received: from localhost ([122.172.151.112])
+ by smtp.gmail.com with ESMTPSA id q6sm6160453pgn.44.2019.10.17.21.27.17
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 17 Oct 2019 21:27:18 -0700 (PDT)
+Date: Fri, 18 Oct 2019 09:57:15 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH] cpufreq: powernv: fix stack bloat and NR_CPUS limitation
+Message-ID: <20191018042715.f76bawmoyk66isap@vireshk-i7>
+References: <20191018000431.1675281-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Fri, 18 Oct 2019 15:03:54 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191018000431.1675281-1-jhubbard@nvidia.com>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,244 +80,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-fbdev@vger.kernel.org,
- Rich Felker <dalias@libc.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Palmer Dabbelt <palmer@sifive.com>, Alexei Starovoitov <ast@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, David Howells <dhowells@redhat.com>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Frank Rowand <frowand.list@gmail.com>, Christoph
- Hellwig <hch@lst.de>, drbd-dev@lists.linbit.com,
- Song Liu <songliubraving@fb.com>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Herbert Xu <herbert@gondor.apana.org.au>, Daniel
- Borkmann <daniel@iogearbox.net>, Jiri Olsa <jolsa@redhat.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, linux-afs@lists.infradead.org,
- Peter Zijlstra <peterz@infradead.org>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Darren Hart <dvhart@infradead.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Len Brown <lenb@kernel.org>,
- Fenghua Yu <fenghua.yu@intel.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Robert Richter <rric@kernel.org>, Will Deacon <will@kernel.org>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Arnaldo Carvalho de Melo <acme@redhat.com>, Rob Herring <robh+dt@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Lars Ellenberg <lars.ellenberg@linbit.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Andy
- Whitcroft <apw@canonical.com>, Takashi Iwai <tiwai@suse.com>,
- bpf@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
- Karsten Keil <isdn@linux-pingi.de>, Tony Luck <tony.luck@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Sangbeom Kim <sbkim73@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Philipp Reisner <philipp.reisner@linbit.com>, Martin KaFai Lau <kafai@fb.com>,
- Yonghong Song <yhs@fb.com>, Sergey
- Senozhatsky <sergey.senozhatsky@gmail.com>, James Morse <james.morse@arm.com>,
- Corentin Chary <corentin.chary@gmail.com>, Joe Perches <joe@perches.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, Andy Shevchenko <andy@infradead.org>
+Cc: linux-pm@vger.kernel.org, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>,
+ Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are pr_warning and pr_warng to show WARNING level message,
-most of the code using pr_warn, number based on next-20191017,
+On 17-10-19, 17:04, John Hubbard wrote:
+> The following build warning occurred on powerpc 64-bit builds:
+> 
+> drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
+> drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
 
-pr_warn: 5206   pr_warning: 546 (tools: 399, others: 147)
+How come we are catching this warning after 4 years ?
 
-Joe Perches posted a patch, commit f2c2cbcc35d4 ("powerpc: Use
-pr_warn instead of pr_warning"), which is beginning to remove
-pr_warning, so all logging messages use a consistent pr_warn
-style once pr_warning removed, and checkpatch also sugguests
-that better to use pr_warn instead of pr_warning.
+> 
+> This is due to putting 1024 bytes on the stack:
+> 
+>     unsigned int chip[256];
+> 
+> ...and while looking at this, it also has a bug: it fails with a stack
+> overrun, if CONFIG_NR_CPUS > 256.
+> 
+> Fix both problems by dynamically allocating based on CONFIG_NR_CPUS.
+> 
+> Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
+> Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
+> Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+> 
+> Hi,
+> 
+> I have only compile-tested this, so I would appreciate if anyone
+> could do a basic runtime test on it. But (famous last words) it
+> seems simple enough that I'm confident it's correct. oh boy. :)
+> 
+> thanks,
+> John Hubbard
+> NVIDIA
+> 
+>  drivers/cpufreq/powernv-cpufreq.c | 17 +++++++++++++----
+>  1 file changed, 13 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 6061850e59c9..78e04402125f 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -1041,9 +1041,14 @@ static struct cpufreq_driver powernv_cpufreq_driver = {
+>  
+>  static int init_chip_info(void)
+>  {
+> -	unsigned int chip[256];
+> +	unsigned int *chip;
+>  	unsigned int cpu, i;
+>  	unsigned int prev_chip_id = UINT_MAX;
+> +	int ret = 0;
+> +
+> +	chip = kcalloc(CONFIG_NR_CPUS, sizeof(int), GFP_KERNEL);
 
-Let's carry on with the work to standardize the logging macro,
-kill pr_warning in the whole linux code.
+                                       sizeof(*chip)
 
-Note, for tools api/bpf/perf part, rename pr_warning to pr_warn
-to keep the consistence, with this patchset,
+> +	if (!chips)
 
-pr_warn: 5747   pr_warning: 0
+           (!chip)
 
-Patch[01-28]: simply sed and ajust formats
-patch[29]:    drop pr_warning definition in printk
-patch[30-32]: tools api/bpf/perf, rename and make manually changes
-patch[33]:    cleanup the checkpatch.pl
-
-Miscellanea:
-o Coalesce formats
-o Realign arguments
-o Remove unnecessary line continuations
-
-The patchset is based on next-20191017 and will be taked via printk.git
-by Petr Mladek, see
-https://lore.kernel.org/lkml/20191017135229.a4mvcyap6l34m5bk@pathway.suse.cz/
-
-v2:
-- Collect ack-by/review-by
-- Fix some indentation and alignment 
-- Split patches in drivers/platform/x86/ suggested by Andy Shevchenko
-- Drop staging changes which already merged
-
-Kefeng Wang (33):
-  alpha: Use pr_warn instead of pr_warning
-  arm64: Use pr_warn instead of pr_warning
-  ia64: Use pr_warn instead of pr_warning
-  riscv: Use pr_warn instead of pr_warning
-  sh: Use pr_warn instead of pr_warning
-  sparc: Use pr_warn instead of pr_warning
-  x86: Use pr_warn instead of pr_warning
-  acpi: Use pr_warn instead of pr_warning
-  drbd: Use pr_warn instead of pr_warning
-  gdrom: Use pr_warn instead of pr_warning
-  clocksource: samsung_pwm_timer: Use pr_warn instead of pr_warning
-  crypto: n2: Use pr_warn instead of pr_warning
-  ide: Use pr_warn instead of pr_warning
-  idsn: Use pr_warn instead of pr_warning
-  macintosh: Use pr_warn instead of pr_warning
-  of: Use pr_warn instead of pr_warning
-  oprofile: Use pr_warn instead of pr_warning
-  platform/x86: eeepc-laptop: Use pr_warn instead of pr_warning
-  platform/x86: asus-laptop: Use pr_warn instead of pr_warning
-  platform/x86: intel_oaktrail: Use pr_warn instead of pr_warning
-  scsi: Use pr_warn instead of pr_warning
-  sh/intc: Use pr_warn instead of pr_warning
-  fs: afs: Use pr_warn instead of pr_warning
-  vgacon: Use pr_warn instead of pr_warning
-  dma-debug: Use pr_warn instead of pr_warning
-  trace: Use pr_warn instead of pr_warning
-  lib: cpu_rmap: Use pr_warn instead of pr_warning
-  ASoC: samsung: Use pr_warn instead of pr_warning
-  printk: Drop pr_warning
-  tools lib api: Renaming pr_warning to pr_warn
-  tools lib bpf: Renaming pr_warning to pr_warn
-  tools perf: Renaming pr_warning to pr_warn
-  checkpatch: Drop pr_warning check
-
- arch/alpha/kernel/perf_event.c            |   4 +-
- arch/arm64/kernel/hw_breakpoint.c         |   8 +-
- arch/arm64/kernel/smp.c                   |  11 +-
- arch/ia64/kernel/setup.c                  |   2 +-
- arch/riscv/kernel/module.c                |   4 +-
- arch/sh/boards/mach-sdk7786/nmi.c         |   2 +-
- arch/sh/drivers/pci/fixups-sdk7786.c      |   2 +-
- arch/sh/kernel/io_trapped.c               |   2 +-
- arch/sh/kernel/setup.c                    |   2 +-
- arch/sh/mm/consistent.c                   |   5 +-
- arch/sparc/kernel/smp_64.c                |   6 +-
- arch/x86/kernel/amd_gart_64.c             |  12 +-
- arch/x86/kernel/apic/apic.c               |  41 +-
- arch/x86/kernel/setup_percpu.c            |   4 +-
- arch/x86/kernel/tboot.c                   |  15 +-
- arch/x86/kernel/tsc_sync.c                |   8 +-
- arch/x86/kernel/umip.c                    |   6 +-
- arch/x86/mm/kmmio.c                       |   7 +-
- arch/x86/mm/mmio-mod.c                    |   6 +-
- arch/x86/mm/numa_emulation.c              |   4 +-
- arch/x86/mm/testmmiotrace.c               |   6 +-
- arch/x86/oprofile/op_x86_model.h          |   6 +-
- arch/x86/platform/olpc/olpc-xo15-sci.c    |   2 +-
- arch/x86/platform/sfi/sfi.c               |   3 +-
- arch/x86/xen/setup.c                      |   2 +-
- drivers/acpi/apei/apei-base.c             |  36 +-
- drivers/acpi/apei/einj.c                  |   4 +-
- drivers/acpi/apei/erst-dbg.c              |   5 +-
- drivers/acpi/apei/ghes.c                  |  25 +-
- drivers/acpi/apei/hest.c                  |  14 +-
- drivers/acpi/battery.c                    |   2 +-
- drivers/acpi/resource.c                   |   4 +-
- drivers/block/drbd/drbd_nl.c              |  13 +-
- drivers/cdrom/gdrom.c                     |   4 +-
- drivers/clocksource/samsung_pwm_timer.c   |   2 +-
- drivers/crypto/n2_core.c                  |  12 +-
- drivers/ide/tx4938ide.c                   |   2 +-
- drivers/ide/tx4939ide.c                   |   6 +-
- drivers/isdn/hardware/mISDN/avmfritz.c    |  16 +-
- drivers/isdn/hardware/mISDN/hfcmulti.c    |   8 +-
- drivers/isdn/hardware/mISDN/hfcpci.c      |   3 +-
- drivers/isdn/hardware/mISDN/hfcsusb.c     |   4 +-
- drivers/isdn/hardware/mISDN/mISDNipac.c   |   4 +-
- drivers/isdn/hardware/mISDN/mISDNisar.c   |  10 +-
- drivers/isdn/hardware/mISDN/netjet.c      |   8 +-
- drivers/isdn/hardware/mISDN/w6692.c       |  12 +-
- drivers/isdn/mISDN/hwchannel.c            |   7 +-
- drivers/macintosh/windfarm_fcu_controls.c |   4 +-
- drivers/macintosh/windfarm_lm87_sensor.c  |   4 +-
- drivers/macintosh/windfarm_pm72.c         |  22 +-
- drivers/macintosh/windfarm_rm31.c         |   6 +-
- drivers/of/fdt.c                          |  20 +-
- drivers/oprofile/oprofile_perf.c          |   8 +-
- drivers/platform/x86/asus-laptop.c        |   2 +-
- drivers/platform/x86/eeepc-laptop.c       |   2 +-
- drivers/platform/x86/intel_oaktrail.c     |  10 +-
- drivers/scsi/a3000.c                      |   2 +-
- drivers/sh/intc/core.c                    |   4 +-
- drivers/video/console/vgacon.c            |   6 +-
- fs/afs/flock.c                            |   4 +-
- fs/afs/inode.c                            |  13 +-
- fs/afs/yfsclient.c                        |   4 +-
- include/linux/printk.h                    |   3 +-
- kernel/dma/debug.c                        |   2 +-
- kernel/trace/trace_benchmark.c            |   4 +-
- lib/cpu_rmap.c                            |   2 +-
- scripts/checkpatch.pl                     |   9 -
- sound/soc/samsung/s3c-i2s-v2.c            |   6 +-
- tools/lib/api/debug-internal.h            |   4 +-
- tools/lib/api/debug.c                     |   4 +-
- tools/lib/api/fs/fs.c                     |   4 +-
- tools/lib/bpf/btf.c                       |  56 +-
- tools/lib/bpf/btf_dump.c                  |  18 +-
- tools/lib/bpf/libbpf.c                    | 679 +++++++++++-----------
- tools/lib/bpf/libbpf_internal.h           |   8 +-
- tools/lib/bpf/xsk.c                       |   4 +-
- tools/perf/arch/x86/util/intel-pt.c       |   2 +-
- tools/perf/builtin-annotate.c             |   7 +-
- tools/perf/builtin-buildid-cache.c        |  28 +-
- tools/perf/builtin-diff.c                 |  12 +-
- tools/perf/builtin-help.c                 |  10 +-
- tools/perf/builtin-inject.c               |   8 +-
- tools/perf/builtin-probe.c                |  14 +-
- tools/perf/builtin-record.c               |  10 +-
- tools/perf/builtin-report.c               |   2 +-
- tools/perf/builtin-script.c               |  14 +-
- tools/perf/builtin-stat.c                 |  18 +-
- tools/perf/builtin-timechart.c            |  12 +-
- tools/perf/builtin-top.c                  |   2 +-
- tools/perf/builtin-trace.c                |   8 +-
- tools/perf/lib/internal.h                 |   2 +-
- tools/perf/ui/browsers/scripts.c          |   2 +-
- tools/perf/util/bpf-loader.c              |   6 +-
- tools/perf/util/bpf-prologue.c            |   4 +-
- tools/perf/util/callchain.c               |   2 +-
- tools/perf/util/config.c                  |   8 +-
- tools/perf/util/data-convert-bt.c         |   4 +-
- tools/perf/util/data.c                    |   2 +-
- tools/perf/util/debug.c                   |   4 +-
- tools/perf/util/debug.h                   |   2 +-
- tools/perf/util/event.c                   |   4 +-
- tools/perf/util/evlist.c                  |   4 +-
- tools/perf/util/evsel.c                   |  19 +-
- tools/perf/util/header.c                  |  20 +-
- tools/perf/util/jitdump.c                 |   4 +-
- tools/perf/util/llvm-utils.c              |  18 +-
- tools/perf/util/machine.c                 |   2 +-
- tools/perf/util/parse-branch-options.c    |   3 +-
- tools/perf/util/perf-hooks.c              |   6 +-
- tools/perf/util/probe-event.c             |  90 +--
- tools/perf/util/probe-file.c              |  36 +-
- tools/perf/util/probe-finder.c            | 115 ++--
- tools/perf/util/record.c                  |  18 +-
- tools/perf/util/session.c                 |   2 +-
- tools/perf/util/srcline.c                 |   6 +-
- tools/perf/util/synthetic-events.c        |  10 +-
- tools/perf/util/thread-stack.c            |   4 +-
- tools/perf/util/thread_map.c              |   2 +-
- tools/perf/util/trace-event-parse.c       |   2 +-
- tools/perf/util/unwind-libunwind-local.c  |   9 +-
- 120 files changed, 898 insertions(+), 944 deletions(-)
+> +		return -ENOMEM;
+>  
+>  	for_each_possible_cpu(cpu) {
+>  		unsigned int id = cpu_to_chip_id(cpu);
+> @@ -1055,8 +1060,10 @@ static int init_chip_info(void)
+>  	}
+>  
+>  	chips = kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
+> -	if (!chips)
+> -		return -ENOMEM;
+> +	if (!chips) {
+> +		ret = -ENOMEM;
+> +		goto free_and_return;
+> +	}
+>  
+>  	for (i = 0; i < nr_chips; i++) {
+>  		chips[i].id = chip[i];
+> @@ -1066,7 +1073,9 @@ static int init_chip_info(void)
+>  			per_cpu(chip_info, cpu) =  &chips[i];
+>  	}
+>  
+> -	return 0;
+> +free_and_return:
+> +	kfree(chip);
+> +	return ret;
+>  }
+>  
+>  static inline void clean_chip_info(void)
+> -- 
+> 2.23.0
 
 -- 
-2.20.1
-
+viresh
