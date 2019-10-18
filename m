@@ -2,82 +2,118 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BBCDC813
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 17:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A921DC840
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 17:17:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vqCC1dfJzDrNq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 02:07:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vqQw0wRjzDrg2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 02:17:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ smtp.mailfrom=samsung.com (client-ip=210.118.77.11;
+ helo=mailout1.w1.samsung.com; envelope-from=l.stelmach@samsung.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=samsung.com header.i=@samsung.com header.b="CJiEmw1n"; 
+ dkim-atps=neutral
+X-Greylist: delayed 598 seconds by postgrey-1.36 at bilbo;
+ Sat, 19 Oct 2019 02:15:56 AEDT
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com
+ [210.118.77.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vq8l3rP2zF0Y9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 02:05:27 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9IEw2E2005631
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 11:05:25 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vqfhvghu1-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 11:05:24 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Fri, 18 Oct 2019 16:05:22 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 18 Oct 2019 16:05:20 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9IF5Iev52625434
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Oct 2019 15:05:18 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5BF9111C04A;
- Fri, 18 Oct 2019 15:05:18 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCEF311C04C;
- Fri, 18 Oct 2019 15:05:16 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.85.142.84])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 18 Oct 2019 15:05:16 +0000 (GMT)
-Date: Fri, 18 Oct 2019 08:05:14 -0700
-From: Ram Pai <linuxram@us.ibm.com>
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-References: <20190911163433.12822-1-bauerman@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vqNr0QzrzDqXb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 02:15:51 +1100 (AEDT)
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+ by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
+ 20191018150545euoutp019aac1cf62cd8277d15a94592d8452fbe~OxhxwfSBO0357803578euoutp01e
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 15:05:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
+ 20191018150545euoutp019aac1cf62cd8277d15a94592d8452fbe~OxhxwfSBO0357803578euoutp01e
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1571411145;
+ bh=YSf90oubbg4unQOpAuECCf40F0OM9F8QucJcCB/f+dg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=CJiEmw1nNkjcAPXStcym14pCxyhtdgwqnesvEGJUBEs+I0YO7obNnDxWPBLJVgYE7
+ Ofa7hIbwLXaBuw00pBHbuGVt2tQaBFW9Hit0xogx3CzfLjw09NPUVZfwPxYpF8YGrl
+ 4x48bcrOVCchqGBT3OW58tbyDIt/eGlCvXgCcznM=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20191018150544eucas1p1c918ba86091f4c9117d11a9b1ae0391b~Oxhw4nJfk1657216572eucas1p1D;
+ Fri, 18 Oct 2019 15:05:44 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+ eusmges1new.samsung.com (EUCPMTA) with SMTP id 9D.27.04469.8C4D9AD5; Fri, 18
+ Oct 2019 16:05:44 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+ 20191018150543eucas1p1cf4312467597ad7c76f258e924d8184a~OxhwWFemf1657216572eucas1p1C;
+ Fri, 18 Oct 2019 15:05:43 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+ eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20191018150543eusmtrp12c4596ecf9923ad48a9b0d6ecae06277~OxhwVHo-E3006030060eusmtrp1d;
+ Fri, 18 Oct 2019 15:05:43 +0000 (GMT)
+X-AuditID: cbfec7f2-54fff70000001175-92-5da9d4c81cca
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+ eusmgms1.samsung.com (EUCPMTA) with SMTP id B6.31.04166.7C4D9AD5; Fri, 18
+ Oct 2019 16:05:43 +0100 (BST)
+Received: from localhost (unknown [106.120.51.46]) by eusmtip2.samsung.com
+ (KnoxPortal) with ESMTPA id
+ 20191018150543eusmtip256c26151370cc6b0f534f783d16fa5fa~OxhwKE-eZ1582815828eusmtip2f;
+ Fri, 18 Oct 2019 15:05:43 +0000 (GMT)
+From: =?utf-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>
+To: YueHaibing <yuehaibing@huawei.com>
+Subject: Re: [PATCH -next 03/13] hwrng: exynos - use
+ devm_platform_ioremap_resource() to simplify code
+Date: Fri, 18 Oct 2019 17:05:41 +0200
+In-Reply-To: <20191016104621.26056-4-yuehaibing@huawei.com>
+ (yuehaibing@huawei.com's message of "Wed, 16 Oct 2019 18:46:11 +0800")
+Message-ID: <87v9smdrga.fsf%l.stelmach@samsung.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190911163433.12822-1-bauerman@linux.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19101815-4275-0000-0000-000003735A66
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101815-4276-0000-0000-000038867714
-Message-Id: <20191018150514.GB5238@oc0525413822.ibm.com>
-Subject: Re: [PATCH] powerpc/prom_init: Undo relocation before entering secure
- mode
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-18_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910180139
+Content-Transfer-Encoding: quoted-printable
+X-Brightmail-Tracker: H4sIAAAAAAAAA01SbUxTVxj29N7ee0FLjgXiu9rF2AwTMcrIyHIUo2zReRJ+aNw/jR9XuSlE
+ iqQV/MDETosoKmgxUQpurUARFKoUi19BrUAZZOuYU8lEq6LicKIiIlglo72Y+e85z/s8z/uR
+ IzDqek4jZGRtkYxZYqaOi2Q9baO/z23/q2bN1/mdQAoGnDz5aG3jSd2hVpYUlAwryLWfbiLy
+ fqCFJ3sqXBw50K8lxb3PGTJa0Kggfv9ZntjLJpOG3ttKErg/qiA3L5Vz5Mjdcf64v1lBgu/G
+ lORZ3R0lsXuKEGlyOxhS3n4LkSelbo4MnH6MiK99P0N63vaxKRq6+2UbR4PvrYi+7M7n6c9n
+ 8qgt8BtHL9ru8bSi4SpHPdfiqKXlhZI21O7n6NUTZ3jqrtxF/ccdiPaMVCHaa8lnaNE/Z9EK
+ 9arIhWlSZkauZExYtD4y3XUuOjsYte0X+xHGjNqiClGEADgJ+ipH+EIUKajxKQQP9l1g5ccQ
+ goDzCRNSqfEbBGUW9SfH+Y6aCVE1gibXMSSL+hC4Ts4IYQ4vhuKWZjaEY/AssHQ0MiEDgweV
+ sLuzhwsVonE63HYeVRYiQWBxHFw+Gh/SRGDLeE59eThUhb+BD47+cFAsng/3i+5xMj8Vfi19
+ HOYZPAecjufhBoCHBHD/Ua2UR10C515VKGQcDf2+Rl7GWugsOciGGgPeBSXWb2XvQQSe8hFW
+ 1iTDDV9XeDgGzwbXpQSZ/g4Ct4o42RoF3S+myiNEgdVzjJFpFezbO3Grr6C++MpEoAYO9Z9C
+ MqZQ1mTmD6OZts+WsX22jO3/vnbE1KJpUo7JoJdMiVnS1nkm0WDKydLP27jZ0IDGf3HnmG/w
+ Anr75wYvwgLSTVE9c9asUSvFXNN2gxeBwOhiVD8mj1OqNHH7Dsm4eZ0xJ1MyedF0gdVNU+VN
+ erBajfXiFmmTJGVLxk9VhRChMaPYnV1VmsXuKT76dPjLqhWzxUmZgQivfm1GPA3U6eLmGpa1
+ Liepr1PtrwfnvAvG1Cr8d9N8Y+lJcQsegdaabHuYnKD9e/ngntgfWpuTSs19S13DuRsPp17v
+ WFDjKP238Y5+a3DTjrxuSbMyZafPjD5qi78Y8n7PdB2AaGdK9VNRx5rSxcR4xmgS/wOh4dg/
+ wQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUhTYRiGeXfOzjmzVm9T6WX4I04YZHjWnOa7vgx/vRFRUP2oFBt50sg5
+ 29miDyK1mWlkZUW6LJ2WNK2mm85SSFs2LSkzy4JMC42+yD6gD82sTYn6d3M/13M/PHBzlKpB
+ rua2Z1pEc6Yhg2dC6K6JjoHojkfO5IV2dxzOH6lm8a9iP4uvHL1N4/yT32S4LacX4LGRdhYf
+ rHIx+Mi7CHxs6D2FR/MbZLi7u47FFWenYfdQnxwPDozKcG9zGYNPPAv4Jd03ZPjn9wk5fnPl
+ iRxXeIsAbvI4KFzW+RjgV6UeBo/UDgPc0VlA4f6vr+kVapL70c+Qn2PFgHx8mseS85f3Efvg
+ PYZctz9nSZW7lSHetkhia/8gJ+6aAoa0nrvMEs+FA6S7xAFI/4+LgAzZ8ihS9LYOrFVtEpaa
+ TVaLOCfdJFmW8Zu1OEbQ6rEQE6sXtLr45MUxcbxm+dJUMWP7LtGsWb5FSM+95GKzRkN25/R8
+ YrJBuaIQKDgEY1HjXSddCEI4FbwI0ETPb7YQcIGBGjnPpU0xoWi8r5CZYl4BdKHyDBUcMDAB
+ HWu/QQd1GJyHbHcbJn0KDsrR67HVQR0Kt6Hrg3lMUKvgYnQ6+zMdzKdhJGo5FRXMVEAbQK6r
+ ZSDIKKEOjTveTWaGQz0aKHrOTPmz0J3S4cldCs5HrmbN1KkFqNrxnjoOZtn/o+z/KPt/VAWg
+ akCYaJWMaUZJK0gGo2TNTBO2moxuEGiM1z/quQYe1q/zAcgBfrryTbUzWSU37JL2GH0AcRQf
+ ply3JGApUw179opmU4rZmiFKPhAXeOcEpQ7fagr0L9OSoo3TxmO9Nl4Xr1uE+dnKw/Bmkgqm
+ GSziDlHMEs1/92ScQp0NSsqZhHK9TXgSnnC/gHU21Pu2sD6jJqZnVdjwetvnvk2kqJWvrYw2
+ +hPL9s+4lQrTHxgT5yYeXEN4YcOttSRl5SrvzHaN64tVsSK6t6omqbzY09W1YyeHvH3+lo35
+ UuyPhYfMbXtfRLxs2kxXPmrzr36adXVOv5QCzzTudmCeltIN2ijKLBn+AN7zgpJHAwAA
+X-CMS-MailID: 20191018150543eucas1p1cf4312467597ad7c76f258e924d8184a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20191018150543eucas1p1cf4312467597ad7c76f258e924d8184a
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20191018150543eucas1p1cf4312467597ad7c76f258e924d8184a
+References: <20191016104621.26056-4-yuehaibing@huawei.com>
+ <CGME20191018150543eucas1p1cf4312467597ad7c76f258e924d8184a@eucas1p1.samsung.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,83 +125,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: Paul Mackerras <paulus@samba.org>, Mike Anderson <andmike@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alexandre.belloni@bootlin.com, nicolas.ferre@microchip.com, eric@anholt.net,
+ f.fainelli@gmail.com, herbert@gondor.apana.org.au, khilman@baylibre.com,
+ krzk@kernel.org, ludovic.desroches@microchip.com, kgene@kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, linux-crypto@vger.kernel.org,
+ dsaxena@plexity.net, arnd@arndb.de, rjui@broadcom.com,
+ linux-samsung-soc@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ mpm@selenic.com, linux-amlogic@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, sbranden@broadcom.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ patrice.chotard@st.com, wahrenst@gmx.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 11, 2019 at 01:34:33PM -0300, Thiago Jung Bauermann wrote:
-> The ultravisor will do an integrity check of the kernel image but we
-> relocated it so the check will fail. Restore the original image by
-> relocating it back to the kernel virtual base address.
-> 
-> This works because during build vmlinux is linked with an expected virtual
-> runtime address of KERNELBASE.
-> 
-> Fixes: 6a9c930bd775 ("powerpc/prom_init: Add the ESM call to prom_init")
-> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-
-Tested-by: Ram Pai <linuxram@us.ibm.com>
-
-
-> ---
->  arch/powerpc/include/asm/elf.h         |  3 +++
->  arch/powerpc/kernel/prom_init.c        | 11 +++++++++++
->  arch/powerpc/kernel/prom_init_check.sh |  3 ++-
->  3 files changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/elf.h b/arch/powerpc/include/asm/elf.h
-> index 409c9bfb43d9..57c229a86f08 100644
-> --- a/arch/powerpc/include/asm/elf.h
-> +++ b/arch/powerpc/include/asm/elf.h
-> @@ -175,4 +175,7 @@ do {									\
->  	ARCH_DLINFO_CACHE_GEOMETRY;					\
->  } while (0)
-> 
-> +/* Relocate the kernel image to @final_address */
-> +void relocate(unsigned long final_address);
-> +
->  #endif /* _ASM_POWERPC_ELF_H */
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> index 74f70f90eff0..44b1d404250e 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -3249,7 +3249,18 @@ static void setup_secure_guest(unsigned long kbase, unsigned long fdt)
->  	/* Switch to secure mode. */
->  	prom_printf("Switching to secure mode.\n");
-> 
-> +	/*
-> +	 * The ultravisor will do an integrity check of the kernel image but we
-> +	 * relocated it so the check will fail. Restore the original image by
-> +	 * relocating it back to the kernel virtual base address.
-> +	 */
-> +	relocate(KERNELBASE);
-> +
->  	ret = enter_secure_mode(kbase, fdt);
-> +
-> +	/* Relocate the kernel again. */
-> +	relocate(kbase);
-> +
->  	if (ret != U_SUCCESS) {
->  		prom_printf("Returned %d from switching to secure mode.\n", ret);
->  		prom_rtas_os_term("Switch to secure mode failed.\n");
-> diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
-> index 160bef0d553d..16535ccc0fa0 100644
-> --- a/arch/powerpc/kernel/prom_init_check.sh
-> +++ b/arch/powerpc/kernel/prom_init_check.sh
-> @@ -26,7 +26,8 @@ _end enter_prom $MEM_FUNCS reloc_offset __secondary_hold
->  __secondary_hold_acknowledge __secondary_hold_spinloop __start
->  logo_linux_clut224 btext_prepare_BAT
->  reloc_got2 kernstart_addr memstart_addr linux_banner _stext
-> -__prom_init_toc_start __prom_init_toc_end btext_setup_display TOC."
-> +__prom_init_toc_start __prom_init_toc_end btext_setup_display TOC.
-> +relocate"
-> 
->  NM="$1"
->  OBJ="$2"
-
--- 
-Ram Pai
-
+It was <2019-10-16 =C5=9Bro=2012:46>,=20when=20YueHaibing=20wrote:=0D=0A>=
+=20Use=20devm_platform_ioremap_resource()=20to=20simplify=20the=20code=20a=
+=20bit.=0D=0A>=20This=20is=20detected=20by=20coccinelle.=0D=0A>=0D=0A>=20Si=
+gned-off-by:=20YueHaibing=20<yuehaibing=40huawei.com>=0D=0A>=20---=0D=0A>=
+=20=20drivers/char/hw_random/exynos-trng.c=20=7C=204=20+---=0D=0A>=20=201=
+=20file=20changed,=201=20insertion(+),=203=20deletions(-)=0D=0A>=0D=0A=0D=
+=0AAcked-by:=20=C5=81ukasz=20Stelmach=20<l.stelmach=40samsung.com>=0D=0A=0D=
+=0A>=20diff=20--git=20a/drivers/char/hw_random/exynos-trng.c=20b/drivers/ch=
+ar/hw_random/exynos-trng.c=0D=0A>=20index=20b4b52ab..8e1fe3f=20100644=0D=0A=
+>=20---=20a/drivers/char/hw_random/exynos-trng.c=0D=0A>=20+++=20b/drivers/c=
+har/hw_random/exynos-trng.c=0D=0A>=20=40=40=20-109,7=20+109,6=20=40=40=20st=
+atic=20int=20exynos_trng_init(struct=20hwrng=20*rng)=0D=0A>=20=20static=20i=
+nt=20exynos_trng_probe(struct=20platform_device=20*pdev)=0D=0A>=20=20=7B=0D=
+=0A>=20=20=09struct=20exynos_trng_dev=20*trng;=0D=0A>=20-=09struct=20resour=
+ce=20*res;=0D=0A>=20=20=09int=20ret=20=3D=20-ENOMEM;=0D=0A>=20=20=0D=0A>=20=
+=20=09trng=20=3D=20devm_kzalloc(&pdev->dev,=20sizeof(*trng),=20GFP_KERNEL);=
+=0D=0A>=20=40=40=20-128,8=20+127,7=20=40=40=20static=20int=20exynos_trng_pr=
+obe(struct=20platform_device=20*pdev)=0D=0A>=20=20=09platform_set_drvdata(p=
+dev,=20trng);=0D=0A>=20=20=09trng->dev=20=3D=20&pdev->dev;=0D=0A>=20=20=0D=
+=0A>=20-=09res=20=3D=20platform_get_resource(pdev,=20IORESOURCE_MEM,=200);=
+=0D=0A>=20-=09trng->mem=20=3D=20devm_ioremap_resource(&pdev->dev,=20res);=
+=0D=0A>=20+=09trng->mem=20=3D=20devm_platform_ioremap_resource(pdev,=200);=
+=0D=0A>=20=20=09if=20(IS_ERR(trng->mem))=0D=0A>=20=20=09=09return=20PTR_ERR=
+(trng->mem);=0D=0A=0D=0A--=20=0D=0A=C5=81ukasz=20Stelmach=0D=0ASamsung=20R&=
+D=20Institute=20Poland=0D=0ASamsung=20Electronics=0D=0A
