@@ -2,73 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3625DC5EE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D19DC603
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:28:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vmvd2xCjzDsNk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:23:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vn0b1g2gzDsbF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:28:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vmWG030CzDrfS
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 00:06:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="V36NPl2g"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46vmWF3dzXz8t1Z
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 00:06:17 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 46vmWF18L0z9sPZ; Sat, 19 Oct 2019 00:06:17 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vmPp1nZdzDqRZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 00:01:34 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46vmPk1lMZzB09b0;
- Fri, 18 Oct 2019 15:01:30 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=V36NPl2g; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7kP6dKzeFt4q; Fri, 18 Oct 2019 15:01:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46vmPk0gjjzB09Zw;
- Fri, 18 Oct 2019 15:01:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1571403690; bh=I1VMzgDpQacCcFVqFBepaAY9ZdCU2g4skomvficbUgo=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=V36NPl2ghgYXPsiMJKmq37EE8nFCg3F0wUdkilhhKCYptgtZHVg0yYaXsgcfJB/dw
- XgTxpVCnTzH5bl2NXEdBstoRltcAzsC9WQn81wfpkNh6WEyaK1buqVUWoWaEIxuqYx
- 8J8Ie7KRb54AKQutihiVrpv9VXDnAOpxxVgAZARw=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0038F8B802;
- Fri, 18 Oct 2019 15:01:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SGZtcWX72nh9; Fri, 18 Oct 2019 15:01:29 +0200 (CEST)
-Received: from [192.168.204.43] (unknown [192.168.204.43])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 20E738B800;
- Fri, 18 Oct 2019 15:01:29 +0200 (CEST)
-Subject: Re: [PATCH 2/7] soc: fsl: qe: drop volatile qualifier of struct
- qe_ic::regs
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
-References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191018125234.21825-3-linux@rasmusvillemoes.dk>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <841cd430-4e8b-13fd-1f80-27aef9e1bd11@c-s.fr>
-Date: Fri, 18 Oct 2019 15:01:28 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191018125234.21825-3-linux@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by ozlabs.org (Postfix) with ESMTPS id 46vmWD2BpLz9sPW
+ for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 00:06:15 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9ID3AF7070180
+ for <linuxppc-dev@ozlabs.org>; Fri, 18 Oct 2019 09:06:11 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vqbgxnyaa-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 18 Oct 2019 09:06:10 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
+ Fri, 18 Oct 2019 14:06:08 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 18 Oct 2019 14:06:06 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9ID64kX32243746
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 18 Oct 2019 13:06:04 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C5420A404D;
+ Fri, 18 Oct 2019 13:06:04 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6900A4051;
+ Fri, 18 Oct 2019 13:06:02 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.85.73.145])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 18 Oct 2019 13:06:02 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2 0/4] reorganize and add FADump sysfs files
+Date: Fri, 18 Oct 2019 18:35:53 +0530
+X-Mailer: git-send-email 2.17.2
+X-TM-AS-GCONF: 00
+x-cbid: 19101813-0008-0000-0000-000003234936
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19101813-0009-0000-0000-00004A426AFB
+Message-Id: <20191018130557.2217-1-sourabhjain@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-18_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=881 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910180123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,64 +97,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Currently, FADump sysfs files are present inside /sys/kernel directory.
+But as the number of FADump sysfs file increases it is not a good idea to
+push all of them in /sys/kernel directory. It is better to have separate
+directory to keep all the FADump sysfs files.
 
+The patch series reorganizes the FADump sysfs files and avail all the
+existing FADump sysfs files present inside /sys/kernel into a new
+directory /sys/kernel/fadump. Currently, all the FADump sysfs files
+are replicated into a new directory to maintain the backward compatibility
+and will eventually get removed in future. In addition to this a new FADump
+sys interface is added to get the amount of memory reserved by FADump for
+saving the crash dump.
 
-Le 18/10/2019 à 14:52, Rasmus Villemoes a écrit :
-> The actual io accessors (e.g. in_be32) implicitly add a volatile
-> qualifier to their address argument. Remove volatile from the struct
-> definition and the qe_ic_(read/write) helpers, in preparation for
-> switching from the ppc-specific io accessors to generic ones.
-> 
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
->   drivers/soc/fsl/qe/qe_ic.c | 4 ++--
->   drivers/soc/fsl/qe/qe_ic.h | 2 +-
->   2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
-> index 9bac546998d3..9694569dcc76 100644
-> --- a/drivers/soc/fsl/qe/qe_ic.c
-> +++ b/drivers/soc/fsl/qe/qe_ic.c
-> @@ -171,12 +171,12 @@ static struct qe_ic_info qe_ic_info[] = {
->   		},
->   };
->   
-> -static inline u32 qe_ic_read(volatile __be32  __iomem * base, unsigned int reg)
-> +static inline u32 qe_ic_read(__be32  __iomem * base, unsigned int reg)
+Changelog v1->v2:
+ - Move fadump_release_opalcore sysfs to FADump Kobject instead of
+   replicating.
+ - Changed the patch order 1,2,3,4 -> 2,1,3,4 (First add the ABI doc for
+   exisiting sysfs file then replicate them under FADump kobject).
 
-No space between '*' and 'base' please
+Sourabh Jain (4):
+  Documentation/ABI: add ABI documentation for /sys/kernel/fadump_*
+  powerpc/fadump: reorganize /sys/kernel/fadump_* sysfs files
+  Documentation/ABI: mark /sys/kernel/fadump_* sysfs files deprecated
+  powerpc/fadump: sysfs for fadump memory reservation
 
->   {
->   	return in_be32(base + (reg >> 2));
->   }
->   
-> -static inline void qe_ic_write(volatile __be32  __iomem * base, unsigned int reg,
-> +static inline void qe_ic_write(__be32  __iomem * base, unsigned int reg,
+ .../ABI/obsolete/sysfs-kernel-fadump_enabled  | 10 ++++
+ .../obsolete/sysfs-kernel-fadump_registered   | 11 +++++
+ .../obsolete/sysfs-kernel-fadump_release_mem  | 11 +++++
+ .../sysfs-kernel-fadump_release_opalcore      |  9 ++++
+ Documentation/ABI/testing/sysfs-kernel-fadump | 48 +++++++++++++++++++
+ .../powerpc/firmware-assisted-dump.rst        | 20 +++++++-
+ arch/powerpc/kernel/fadump.c                  | 42 ++++++++++++++++
+ arch/powerpc/platforms/powernv/opal-core.c    |  6 ++-
+ 8 files changed, 154 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_enabled
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_registered
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_release_mem
+ create mode 100644 Documentation/ABI/removed/sysfs-kernel-fadump_release_opalcore
+ create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump
 
-same
+-- 
+2.17.2
 
->   			       u32 value)
->   {
->   	out_be32(base + (reg >> 2), value);
-> diff --git a/drivers/soc/fsl/qe/qe_ic.h b/drivers/soc/fsl/qe/qe_ic.h
-> index 08c695672a03..9420378d9b6b 100644
-> --- a/drivers/soc/fsl/qe/qe_ic.h
-> +++ b/drivers/soc/fsl/qe/qe_ic.h
-> @@ -72,7 +72,7 @@
->   
->   struct qe_ic {
->   	/* Control registers offset */
-> -	volatile u32 __iomem *regs;
-> +	u32 __iomem *regs;
->   
->   	/* The remapper for this QEIC */
->   	struct irq_domain *irqhost;
-> 
-
-Christophe
