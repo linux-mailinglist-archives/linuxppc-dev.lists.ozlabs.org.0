@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869EDDC5E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:19:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3625DC5EE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:24:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vmpP4vHYzDsM9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:19:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vmvd2xCjzDsNk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:23:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,56 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="M64u0/vx"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="V36NPl2g"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vmKC1TgFzDrbK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 23:57:33 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vmPp1nZdzDqRZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 00:01:34 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46vmJz4VtKzB09b0;
- Fri, 18 Oct 2019 14:57:23 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46vmPk1lMZzB09b0;
+ Fri, 18 Oct 2019 15:01:30 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=M64u0/vx; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=V36NPl2g; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id MA8gt4jfKrnu; Fri, 18 Oct 2019 14:57:23 +0200 (CEST)
+ with ESMTP id 7kP6dKzeFt4q; Fri, 18 Oct 2019 15:01:30 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46vmJz3NhFzB09Zw;
- Fri, 18 Oct 2019 14:57:23 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46vmPk0gjjzB09Zw;
+ Fri, 18 Oct 2019 15:01:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1571403443; bh=P+VjSeFKR0YVZlm5oe6xprbP52ac0pv0a6AOQUrclV0=;
+ t=1571403690; bh=I1VMzgDpQacCcFVqFBepaAY9ZdCU2g4skomvficbUgo=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=M64u0/vx1KJeUMfPLBz2jFxYbbMSbfmpl2+OuzWSbkbGwFaNqegzEC67qIu3LFiPX
- 6P4YxoIVPsXKPTqIgr1qlPuSVJny52O2xFRTtfoZW90pa8kk0AyHXaZfrhqunqGvWK
- hwU92378jbMtIN5poP5BwtAJX5Att83hc9NSfPj0=
+ b=V36NPl2ghgYXPsiMJKmq37EE8nFCg3F0wUdkilhhKCYptgtZHVg0yYaXsgcfJB/dw
+ XgTxpVCnTzH5bl2NXEdBstoRltcAzsC9WQn81wfpkNh6WEyaK1buqVUWoWaEIxuqYx
+ 8J8Ie7KRb54AKQutihiVrpv9VXDnAOpxxVgAZARw=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F8038B802;
- Fri, 18 Oct 2019 14:57:23 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0038F8B802;
+ Fri, 18 Oct 2019 15:01:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id JnffNplE4Ump; Fri, 18 Oct 2019 14:57:23 +0200 (CEST)
+ with ESMTP id SGZtcWX72nh9; Fri, 18 Oct 2019 15:01:29 +0200 (CEST)
 Received: from [192.168.204.43] (unknown [192.168.204.43])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 661508B800;
- Fri, 18 Oct 2019 14:57:22 +0200 (CEST)
-Subject: Re: [PATCH 1/7] soc: fsl: qe: remove space-before-tab
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 20E738B800;
+ Fri, 18 Oct 2019 15:01:29 +0200 (CEST)
+Subject: Re: [PATCH 2/7] soc: fsl: qe: drop volatile qualifier of struct
+ qe_ic::regs
 To: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
  Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191018125234.21825-2-linux@rasmusvillemoes.dk>
+ <20191018125234.21825-3-linux@rasmusvillemoes.dk>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <89dc8d74-b1fc-19f5-d8a5-cd43eda27b4d@c-s.fr>
-Date: Fri, 18 Oct 2019 14:57:21 +0200
+Message-ID: <841cd430-4e8b-13fd-1f80-27aef9e1bd11@c-s.fr>
+Date: Fri, 18 Oct 2019 15:01:28 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191018125234.21825-2-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191018125234.21825-3-linux@rasmusvillemoes.dk>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -88,29 +89,55 @@ Sender: "Linuxppc-dev"
 
 
 Le 18/10/2019 à 14:52, Rasmus Villemoes a écrit :
+> The actual io accessors (e.g. in_be32) implicitly add a volatile
+> qualifier to their address argument. Remove volatile from the struct
+> definition and the qe_ic_(read/write) helpers, in preparation for
+> switching from the ppc-specific io accessors to generic ones.
+> 
 > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 > ---
->   drivers/soc/fsl/qe/qe.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   drivers/soc/fsl/qe/qe_ic.c | 4 ++--
+>   drivers/soc/fsl/qe/qe_ic.h | 2 +-
+>   2 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-> index 417df7e19281..6fcbfad408de 100644
-> --- a/drivers/soc/fsl/qe/qe.c
-> +++ b/drivers/soc/fsl/qe/qe.c
-> @@ -378,8 +378,8 @@ static int qe_sdma_init(void)
->   	}
+> diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+> index 9bac546998d3..9694569dcc76 100644
+> --- a/drivers/soc/fsl/qe/qe_ic.c
+> +++ b/drivers/soc/fsl/qe/qe_ic.c
+> @@ -171,12 +171,12 @@ static struct qe_ic_info qe_ic_info[] = {
+>   		},
+>   };
 >   
->   	out_be32(&sdma->sdebcr, (u32) sdma_buf_offset & QE_SDEBCR_BA_MASK);
-> - 	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
-> - 					(0x1 << QE_SDMR_CEN_SHIFT)));
-> +	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
-> +					(0x1 << QE_SDMR_CEN_SHIFT)));
+> -static inline u32 qe_ic_read(volatile __be32  __iomem * base, unsigned int reg)
+> +static inline u32 qe_ic_read(__be32  __iomem * base, unsigned int reg)
 
-Could you also align the second line properly ?
+No space between '*' and 'base' please
+
+>   {
+>   	return in_be32(base + (reg >> 2));
+>   }
+>   
+> -static inline void qe_ic_write(volatile __be32  __iomem * base, unsigned int reg,
+> +static inline void qe_ic_write(__be32  __iomem * base, unsigned int reg,
+
+same
+
+>   			       u32 value)
+>   {
+>   	out_be32(base + (reg >> 2), value);
+> diff --git a/drivers/soc/fsl/qe/qe_ic.h b/drivers/soc/fsl/qe/qe_ic.h
+> index 08c695672a03..9420378d9b6b 100644
+> --- a/drivers/soc/fsl/qe/qe_ic.h
+> +++ b/drivers/soc/fsl/qe/qe_ic.h
+> @@ -72,7 +72,7 @@
+>   
+>   struct qe_ic {
+>   	/* Control registers offset */
+> -	volatile u32 __iomem *regs;
+> +	u32 __iomem *regs;
+>   
+>   	/* The remapper for this QEIC */
+>   	struct irq_domain *irqhost;
+> 
 
 Christophe
-
->   
->   	return 0;
->   }
-> 
