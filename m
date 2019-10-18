@@ -2,45 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4EBDC305
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 12:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8A7DC585
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 14:56:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vjP65xRbzDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 21:45:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vmJ40b3BzDrQy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 23:56:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=virtuozzo.com (client-ip=185.231.240.75; helo=relay.sw.ru;
- envelope-from=aryabinin@virtuozzo.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=virtuozzo.com
-Received: from relay.sw.ru (relay.sw.ru [185.231.240.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::241;
+ helo=mail-lj1-x241.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="FSHcuBzP"; dkim-atps=neutral
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vjMC2JFszDrRM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 21:44:04 +1100 (AEDT)
-Received: from [172.16.25.5] by relay.sw.ru with esmtp (Exim 4.92.2)
- (envelope-from <aryabinin@virtuozzo.com>)
- id 1iLPjg-0004Zn-5t; Fri, 18 Oct 2019 13:43:56 +0300
-Subject: Re: [PATCH v8 1/5] kasan: support backing vmalloc space with real
- shadow memory
-To: Mark Rutland <mark.rutland@arm.com>
-References: <20191001065834.8880-1-dja@axtens.net>
- <20191001065834.8880-2-dja@axtens.net>
- <352cb4fa-2e57-7e3b-23af-898e113bbe22@virtuozzo.com>
- <87ftjvtoo7.fsf@dja-thinkpad.axtens.net>
- <8f573b40-3a5a-ed36-dffb-4a54faf3c4e1@virtuozzo.com>
- <20191016132233.GA46264@lakrids.cambridge.arm.com>
-From: Andrey Ryabinin <aryabinin@virtuozzo.com>
-Message-ID: <95c87ba1-9c15-43fb-dba7-f3ecd01be8e0@virtuozzo.com>
-Date: Fri, 18 Oct 2019 13:43:40 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vmCj515rzDrVT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 23:52:45 +1100 (AEDT)
+Received: by mail-lj1-x241.google.com with SMTP id n14so6089355ljj.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 05:52:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=76C3KCBVTIWXOJRoGbkicD5UasUbJ5XDGEEs+OOGNvk=;
+ b=FSHcuBzPR1mmeL4PACLKsTbqTj+24LBzK/6l+O/Lm/1IrQLP3nhdrLnFf6MSg0yH0g
+ HoftTcmnUioa5SuvRouA12dlbveQ/icRsojJyg7o+TA6FzCF4LpHeb/WCkcTlKMjOMFj
+ W12H1zsXT9+1u+Ng90qJFYXAQtc1ter6pD6Nk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=76C3KCBVTIWXOJRoGbkicD5UasUbJ5XDGEEs+OOGNvk=;
+ b=E1FRFYQGWw3fwXk5HkD5e1c76FK/oNs0XNay+EXAwSkjIL/TucS2LOvnrl5sTTgO/B
+ FJlgqPrbIU/vIaHmaFFKE9m4Itls7xpLYtfYeH+kEfTzwtuRYpIUEw7JzviSB/L0Uee8
+ 70AOIwH96HmRAT1J9S2Bg+uGGeunwtsuoJWxlpkm0TpR6wiJIOTu74W0nc1t67zFB6+s
+ UyM6gEWfp6I+CObx6EO65Uy2Lw2Gt75eub/UPr8OTEkGWHqHXoFSs4/kShRRWDDmdyjj
+ Y0nmvvlS6xol7cl64QeEXEVPLd5gJJLxeBVKnl38DdVQ2kMWDGUhVei5tZ7wEBJuWlaF
+ Xv8g==
+X-Gm-Message-State: APjAAAXm4F/VKSq9H37/Gu+BwWNF6yglB6P/94Z+4jU60CugfJeorvKz
+ lDCtNfBBZjf3Asnh+MV90cWKtXABBT185red
+X-Google-Smtp-Source: APXvYqwYe6ilX8TDGuGskrpio0qKSxCNGwmNMC2CS8ROsNPpnWHiv5TjxIYmTv9OVkt1GHfcoMvdMg==
+X-Received: by 2002:a2e:9112:: with SMTP id m18mr6305431ljg.75.1571403161898; 
+ Fri, 18 Oct 2019 05:52:41 -0700 (PDT)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id m17sm7454792lje.0.2019.10.18.05.52.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Oct 2019 05:52:40 -0700 (PDT)
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To: Qiang Zhao <qiang.zhao@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>
+Subject: [PATCH 1/7] soc: fsl: qe: remove space-before-tab
+Date: Fri, 18 Oct 2019 14:52:28 +0200
+Message-Id: <20191018125234.21825-2-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
 MIME-Version: 1.0
-In-Reply-To: <20191016132233.GA46264@lakrids.cambridge.arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,125 +77,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gor@linux.ibm.com, x86@kernel.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com,
- luto@kernel.org, linuxppc-dev@lists.ozlabs.org, dvyukov@google.com,
- Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+---
+ drivers/soc/fsl/qe/qe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
-On 10/16/19 4:22 PM, Mark Rutland wrote:
-> Hi Andrey,
-> 
-> On Wed, Oct 16, 2019 at 03:19:50PM +0300, Andrey Ryabinin wrote:
->> On 10/14/19 4:57 PM, Daniel Axtens wrote:
->>>>> +	/*
->>>>> +	 * Ensure poisoning is visible before the shadow is made visible
->>>>> +	 * to other CPUs.
->>>>> +	 */
->>>>> +	smp_wmb();
->>>>
->>>> I'm not quite understand what this barrier do and why it needed.
->>>> And if it's really needed there should be a pairing barrier
->>>> on the other side which I don't see.
->>>
->>> Mark might be better able to answer this, but my understanding is that
->>> we want to make sure that we never have a situation where the writes are
->>> reordered so that PTE is installed before all the poisioning is written
->>> out. I think it follows the logic in __pte_alloc() in mm/memory.c:
->>>
->>> 	/*
->>> 	 * Ensure all pte setup (eg. pte page lock and page clearing) are
->>> 	 * visible before the pte is made visible to other CPUs by being
->>> 	 * put into page tables.
->>> 	 *
->>> 	 * The other side of the story is the pointer chasing in the page
->>> 	 * table walking code (when walking the page table without locking;
->>> 	 * ie. most of the time). Fortunately, these data accesses consist
->>> 	 * of a chain of data-dependent loads, meaning most CPUs (alpha
->>> 	 * being the notable exception) will already guarantee loads are
->>> 	 * seen in-order. See the alpha page table accessors for the
->>> 	 * smp_read_barrier_depends() barriers in page table walking code.
->>> 	 */
->>> 	smp_wmb(); /* Could be smp_wmb__xxx(before|after)_spin_lock */
->>>
->>> I can clarify the comment.
->>
->> I don't see how is this relevant here.
-> 
-> The problem isn't quite the same, but it's a similar shape. See below
-> for more details.
-> 
->> barrier in __pte_alloc() for very the following case:
->>
->> CPU 0							CPU 1
->> __pte_alloc():                                          pte_offset_kernel(pmd_t * dir, unsigned long address):
->>      pgtable_t new = pte_alloc_one(mm);                        pte_t *new = (pte_t *) pmd_page_vaddr(*dir) + ((address >> PAGE_SHIFT) & (PTRS_PER_PAGE - 1));  
->>      smp_wmb();                                                smp_read_barrier_depends();
->>      pmd_populate(mm, pmd, new);
->> 							/* do something with pte, e.g. check if (pte_none(*new)) */
->>
->>
->> It's needed to ensure that if CPU1 sees pmd_populate() it also sees initialized contents of the 'new'.
->>
->> In our case the barrier would have been needed if we had the other side like this:
->>
->> if (!pte_none(*vmalloc_shadow_pte)) {
->> 	shadow_addr = (unsigned long)__va(pte_pfn(*vmalloc_shadow_pte) << PAGE_SHIFT);
->> 	smp_read_barrier_depends();
->> 	*shadow_addr; /* read the shadow, barrier ensures that if we see installed pte, we will see initialized shadow memory. */
->> }
->>
->>
->> Without such other side the barrier is pointless.
-> 
-> The barrier isn't pointless, but we are relying on a subtlety that is
-> not captured in LKMM, as one of the observers involved is the TLB (and
-> associated page table walkers) of the CPU.
-> 
-> Until the PTE written by CPU 0 has been observed by the TLB of CPU 1, it
-> is not possible for CPU 1 to satisfy loads from the memory that PTE
-> maps, as it doesn't yet know which memory that is.
-> 
-> Once the PTE written by CPU has been observed by the TLB of CPU 1, it is
-> possible for CPU 1 to satisfy those loads. At this instant, CPU 1 must
-> respect the smp_wmb() before the PTE was written, and hence sees zeroes
-                                                                 s/zeroes/poison values
-
-> written before this. Note that if this were not true, we could not
-> safely swap userspace memory.
-> 
-> There is the risk (as laid out in [1]) that CPU 1 attempts to hoist the
-> loads of the shadow memory above the load of the PTE, samples a stale
-> (faulting) status from the TLB, then performs the load of the PTE and
-> sees a valid value. In this case (on arm64) a spurious fault could be
-> taken when the access is architecturally performed.
-> 
-> It is possible on arm64 to use a barrier here to prevent the spurious
-> fault, but this is not smp_read_barrier_depends(), as that does nothing
-> for everyone but alpha. On arm64 We have a spurious fault handler to fix
-> this up.
->  
-
-None of that really explains how the race looks like.
-Please, describe concrete race race condition diagram starting with something like
-
-CPU0                   CPU1
-p0 = vmalloc()         p1 = vmalloc()
-...
-
-
-
-
-Or let me put it this way. Let's assume that CPU0 accesses shadow and CPU1 did the memset() and installed pte.
-CPU0 may not observe memset() only if it dereferences completely random vmalloc addresses
-or it performs out-of-bounds access which crosses KASAN_SHADOW_SCALE*PAGE_SIZE boundary, i.e. access to shadow crosses page boundary.
-In both cases it will be hard to avoid crashes. OOB crossing the page boundary in vmalloc pretty much guarantees crash because of guard page,
-and derefencing random address isn't going to last for long.
-
-If CPU0 obtained pointer via vmalloc() call and it's doing out-of-bounds (within boundaries of the page) or use-after-free,
-than the spin_[un]lock(&init_mm.page_table_lock) should allow CPU0 to see the memset done by CPU1 without any additional barrier.
+diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+index 417df7e19281..6fcbfad408de 100644
+--- a/drivers/soc/fsl/qe/qe.c
++++ b/drivers/soc/fsl/qe/qe.c
+@@ -378,8 +378,8 @@ static int qe_sdma_init(void)
+ 	}
+ 
+ 	out_be32(&sdma->sdebcr, (u32) sdma_buf_offset & QE_SDEBCR_BA_MASK);
+- 	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
+- 					(0x1 << QE_SDMR_CEN_SHIFT)));
++	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
++					(0x1 << QE_SDMR_CEN_SHIFT)));
+ 
+ 	return 0;
+ }
+-- 
+2.20.1
 
