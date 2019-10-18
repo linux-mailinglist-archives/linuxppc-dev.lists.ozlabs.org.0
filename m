@@ -2,92 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7884DC667
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 15:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BBCDC813
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2019 17:07:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46vnLW68GBzDvHQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 00:43:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46vqCC1dfJzDrNq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 02:07:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46vmWV3v2rzDrdJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 00:06:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46vmWT1FW0z8t1Z
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 00:06:29 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 46vmWS73Cyz9sPZ; Sat, 19 Oct 2019 00:06:28 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46vmWS2KHwz9sQw
- for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 00:06:28 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46vq8l3rP2zF0Y9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2019 02:05:27 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9ID38sH078565
- for <linuxppc-dev@ozlabs.org>; Fri, 18 Oct 2019 09:06:26 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vqdb99p8m-1
+ x9IEw2E2005631
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 11:05:25 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vqfhvghu1-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Fri, 18 Oct 2019 09:06:25 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2019 11:05:24 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
- Fri, 18 Oct 2019 14:06:24 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Fri, 18 Oct 2019 16:05:22 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 18 Oct 2019 14:06:21 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x9ID6J8C46858516
+ Fri, 18 Oct 2019 16:05:20 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9IF5Iev52625434
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Oct 2019 13:06:19 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 71E92A405D;
- Fri, 18 Oct 2019 13:06:19 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F54BA405B;
- Fri, 18 Oct 2019 13:06:17 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.85.73.145])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 18 Oct 2019 13:06:17 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2 4/4] powerpc/fadump: sysfs for fadump memory reservation
-Date: Fri, 18 Oct 2019 18:35:57 +0530
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20191018130557.2217-1-sourabhjain@linux.ibm.com>
-References: <20191018130557.2217-1-sourabhjain@linux.ibm.com>
+ Fri, 18 Oct 2019 15:05:18 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5BF9111C04A;
+ Fri, 18 Oct 2019 15:05:18 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DCEF311C04C;
+ Fri, 18 Oct 2019 15:05:16 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.85.142.84])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 18 Oct 2019 15:05:16 +0000 (GMT)
+Date: Fri, 18 Oct 2019 08:05:14 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+References: <20190911163433.12822-1-bauerman@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190911163433.12822-1-bauerman@linux.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-TM-AS-GCONF: 00
-x-cbid: 19101813-0008-0000-0000-00000323493B
+x-cbid: 19101815-4275-0000-0000-000003735A66
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101813-0009-0000-0000-00004A426B01
-Message-Id: <20191018130557.2217-5-sourabhjain@linux.ibm.com>
+x-cbparentid: 19101815-4276-0000-0000-000038867714
+Message-Id: <20191018150514.GB5238@oc0525413822.ibm.com>
+Subject: Re: [PATCH] powerpc/prom_init: Undo relocation before entering secure
+ mode
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-18_03:, , signatures=0
+ definitions=2019-10-18_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910180123
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910180139
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,95 +89,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, hbathini@linux.ibm.com
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: Paul Mackerras <paulus@samba.org>, Mike Anderson <andmike@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a sys interface to allow querying the memory reserved by FADump for
-saving the crash dump.
+On Wed, Sep 11, 2019 at 01:34:33PM -0300, Thiago Jung Bauermann wrote:
+> The ultravisor will do an integrity check of the kernel image but we
+> relocated it so the check will fail. Restore the original image by
+> relocating it back to the kernel virtual base address.
+> 
+> This works because during build vmlinux is linked with an expected virtual
+> runtime address of KERNELBASE.
+> 
+> Fixes: 6a9c930bd775 ("powerpc/prom_init: Add the ESM call to prom_init")
+> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
-Also added Documentation/ABI for the new sysfs file.
+Tested-by: Ram Pai <linuxram@us.ibm.com>
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- Documentation/ABI/testing/sysfs-kernel-fadump    |  7 +++++++
- Documentation/powerpc/firmware-assisted-dump.rst |  5 +++++
- arch/powerpc/kernel/fadump.c                     | 14 ++++++++++++++
- 3 files changed, 26 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
-index dbf0606ba917..2b23af7e1c2f 100644
---- a/Documentation/ABI/testing/sysfs-kernel-fadump
-+++ b/Documentation/ABI/testing/sysfs-kernel-fadump
-@@ -39,3 +39,10 @@ Description:	write only
- 		The sysfs file is available when the system is booted to
- 		collect the dump on OPAL based machine. It used to release
- 		the memory used to collect the opalcore.
-+
-+What:		/sys/kernel/fadump/fadump_mem_reserved
-+Date:		Oct 2019
-+Contact:	linuxppc-dev@lists.ozlabs.org
-+Description:	read only
-+		Provide information about the amount of memory reserved by
-+		FADump to save the crash dump in bytes.
-diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-index 6e2d329efda9..80c750847324 100644
---- a/Documentation/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/powerpc/firmware-assisted-dump.rst
-@@ -268,6 +268,11 @@ Here is the list of files under kernel sysfs:
-     be handled and vmcore will not be captured. This interface can be
-     easily integrated with kdump service start/stop.
- 
-+ /sys/kernel/fadump/fadump_mem_reserved
-+
-+   This is used to display the memory reserved by FADump for saving the
-+   crash dump.
-+
-  /sys/kernel/fadump_release_mem
-     This file is available only when FADump is active during
-     second kernel. This is used to release the reserved memory
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 866eddc279d8..82cc92f135b2 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1357,6 +1357,13 @@ static ssize_t fadump_enabled_show(struct kobject *kobj,
- 	return sprintf(buf, "%d\n", fw_dump.fadump_enabled);
- }
- 
-+static ssize_t fadump_mem_reserved_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
-+					char *buf)
-+{
-+	return sprintf(buf, "%ld\n", fw_dump.reserve_dump_area_size);
-+}
-+
- static ssize_t fadump_register_show(struct kobject *kobj,
- 					struct kobj_attribute *attr,
- 					char *buf)
-@@ -1430,6 +1437,9 @@ static struct kobj_attribute fadump_attr = __ATTR(fadump_enabled,
- static struct kobj_attribute fadump_register_attr = __ATTR(fadump_registered,
- 						0644, fadump_register_show,
- 						fadump_register_store);
-+static struct kobj_attribute fadump_mem_reserved_attr =
-+			__ATTR(fadump_mem_reserved, 0444,
-+			       fadump_mem_reserved_show, NULL);
- 
- DEFINE_SHOW_ATTRIBUTE(fadump_region);
- 
-@@ -1486,6 +1496,10 @@ static void fadump_init_files(void)
- 			pr_err("unable to create fadump/fadump_release_mem sysfs file (%d)\n",
- 			       rc);
- 	}
-+	rc = sysfs_create_file(fadump_kobj, &fadump_mem_reserved_attr.attr);
-+	if (rc)
-+		pr_err("unable to create fadump_mem_reserved sysfs file (%d)\n",
-+		       rc);
- 	return;
- }
- 
+> ---
+>  arch/powerpc/include/asm/elf.h         |  3 +++
+>  arch/powerpc/kernel/prom_init.c        | 11 +++++++++++
+>  arch/powerpc/kernel/prom_init_check.sh |  3 ++-
+>  3 files changed, 16 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/elf.h b/arch/powerpc/include/asm/elf.h
+> index 409c9bfb43d9..57c229a86f08 100644
+> --- a/arch/powerpc/include/asm/elf.h
+> +++ b/arch/powerpc/include/asm/elf.h
+> @@ -175,4 +175,7 @@ do {									\
+>  	ARCH_DLINFO_CACHE_GEOMETRY;					\
+>  } while (0)
+> 
+> +/* Relocate the kernel image to @final_address */
+> +void relocate(unsigned long final_address);
+> +
+>  #endif /* _ASM_POWERPC_ELF_H */
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index 74f70f90eff0..44b1d404250e 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -3249,7 +3249,18 @@ static void setup_secure_guest(unsigned long kbase, unsigned long fdt)
+>  	/* Switch to secure mode. */
+>  	prom_printf("Switching to secure mode.\n");
+> 
+> +	/*
+> +	 * The ultravisor will do an integrity check of the kernel image but we
+> +	 * relocated it so the check will fail. Restore the original image by
+> +	 * relocating it back to the kernel virtual base address.
+> +	 */
+> +	relocate(KERNELBASE);
+> +
+>  	ret = enter_secure_mode(kbase, fdt);
+> +
+> +	/* Relocate the kernel again. */
+> +	relocate(kbase);
+> +
+>  	if (ret != U_SUCCESS) {
+>  		prom_printf("Returned %d from switching to secure mode.\n", ret);
+>  		prom_rtas_os_term("Switch to secure mode failed.\n");
+> diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
+> index 160bef0d553d..16535ccc0fa0 100644
+> --- a/arch/powerpc/kernel/prom_init_check.sh
+> +++ b/arch/powerpc/kernel/prom_init_check.sh
+> @@ -26,7 +26,8 @@ _end enter_prom $MEM_FUNCS reloc_offset __secondary_hold
+>  __secondary_hold_acknowledge __secondary_hold_spinloop __start
+>  logo_linux_clut224 btext_prepare_BAT
+>  reloc_got2 kernstart_addr memstart_addr linux_banner _stext
+> -__prom_init_toc_start __prom_init_toc_end btext_setup_display TOC."
+> +__prom_init_toc_start __prom_init_toc_end btext_setup_display TOC.
+> +relocate"
+> 
+>  NM="$1"
+>  OBJ="$2"
+
 -- 
-2.17.2
+Ram Pai
 
