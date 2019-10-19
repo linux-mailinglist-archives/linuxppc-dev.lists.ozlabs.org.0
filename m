@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4974DDA03
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 20:14:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E438BDDA08
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 20:18:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46wWJ54TmlzDqRJ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Oct 2019 05:14:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46wWNW1W4gzDqS9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Oct 2019 05:18:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46wW7T72xnzDqM9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:06:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46wW7X3FlWzDqM9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:06:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46wW7T59Z3z8tQJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:06:45 +1100 (AEDT)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46wW7W32vVz8tQJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:06:47 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 46wW7T3QDBz9sPT; Sun, 20 Oct 2019 05:06:45 +1100 (AEDT)
+ id 46wW7V6QFKz9sPZ; Sun, 20 Oct 2019 05:06:46 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
@@ -33,50 +33,51 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46wW7S1XStz9sP4
- for <linuxppc-dev@ozlabs.org>; Sun, 20 Oct 2019 05:06:43 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9JI6f4I107768
- for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:41 -0400
+ by ozlabs.org (Postfix) with ESMTPS id 46wW7V06Wlz9sPT
+ for <linuxppc-dev@ozlabs.org>; Sun, 20 Oct 2019 05:06:45 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9JI6g41079080
+ for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:43 -0400
 Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vqxbyv6wg-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vquduqdv2-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:41 -0400
+ for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:43 -0400
 Received: from localhost
  by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
- Sat, 19 Oct 2019 19:06:32 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ Sat, 19 Oct 2019 19:06:37 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
  by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 19 Oct 2019 19:06:28 +0100
+ Sat, 19 Oct 2019 19:06:31 +0100
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9JI6Q4O44761160
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9JI6U6F60489764
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 19 Oct 2019 18:06:26 GMT
+ Sat, 19 Oct 2019 18:06:30 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 883625204F;
- Sat, 19 Oct 2019 18:06:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1086F5204E;
+ Sat, 19 Oct 2019 18:06:30 +0000 (GMT)
 Received: from swastik.ibm.com (unknown [9.85.146.216])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id C8F555204E;
- Sat, 19 Oct 2019 18:06:23 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 581495204F;
+ Sat, 19 Oct 2019 18:06:27 +0000 (GMT)
 From: Nayna Jain <nayna@linux.ibm.com>
 To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
  linux-integrity@vger.kernel.org
-Subject: [PATCH v8 0/8] powerpc: Enabling IMA arch specific secure boot
- policies
-Date: Sat, 19 Oct 2019 14:06:09 -0400
+Subject: [PATCH v8 1/8] powerpc: detect the secure boot mode of the system
+Date: Sat, 19 Oct 2019 14:06:10 -0400
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1571508377-23603-1-git-send-email-nayna@linux.ibm.com>
+References: <1571508377-23603-1-git-send-email-nayna@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19101918-0020-0000-0000-0000037B06E9
+x-cbid: 19101918-0020-0000-0000-0000037B06EA
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101918-0021-0000-0000-000021D1391D
-Message-Id: <1571508377-23603-1-git-send-email-nayna@linux.ibm.com>
+x-cbparentid: 19101918-0021-0000-0000-000021D1391E
+Message-Id: <1571508377-23603-2-git-send-email-nayna@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-10-19_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -111,134 +112,121 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patchset extends the previous version[1] by adding support for
-checking against a blacklist of binary hashes.
+This patch defines a function to detect the secure boot state of a
+PowerNV system.
 
-The IMA subsystem supports custom, built-in, arch-specific policies to
-define the files to be measured and appraised. These policies are honored
-based on priority, where arch-specific policy is the highest and custom
-is the lowest.
+The PPC_SECURE_BOOT config represents the base enablement of secure boot
+for powerpc.
 
-PowerNV system uses a Linux-based bootloader to kexec the OS. The
-bootloader kernel relies on IMA for signature verification of the OS
-kernel before doing the kexec. This patchset adds support for powerpc
-arch-specific IMA policies that are conditionally defined based on a
-system's secure boot and trusted boot states. The OS secure boot and
-trusted boot states are determined via device-tree properties.
-
-The verification needs to be performed only for binaries that are not
-blacklisted. The kernel currently only checks against the blacklist of
-keys. However, doing so results in blacklisting all the binaries that
-are signed by the same key. In order to prevent just one particular
-binary from being loaded, it must be checked against a blacklist of
-binary hashes. This patchset also adds support to IMA for checking
-against a hash blacklist for files. signed by appended signature.
-
-[1] http://patchwork.ozlabs.org/cover/1149262/ 
-
-Changelog:
-v8:
-* Updates the Patch Description as per Michael's and Mimi's feedback
-* Includes feedbacks from Michael for the device tree and policies
-  * removes the arch-policy hack by defining three arrays.
-  * fixes related to device-tree calls 
-  * other code specific feedbacks
-* Includes feedbacks from Mimi on the blacklist
-  * generic blacklist function is modified than previous version
-  * other coding fixes
-
-v7:
-* Removes patch related to dt-bindings as per input from Rob Herring. 
-* fixes Patch 1/8 to use new device-tree updates as per Oliver
-  feedback to device-tree documentation in skiboot mailing list.
-(https://lists.ozlabs.org/pipermail/skiboot/2019-September/015329.html)
-* Includes feedbacks from Mimi, Thiago
-  * moves function get_powerpc_fw_sb_node() from Patch 1 to Patch 3 
-  * fixes Patch 2/8 to use CONFIG_MODULE_SIG_FORCE.
-  * updates Patch description in Patch 5/8
-  * adds a new patch to add wrapper is_binary_blacklisted()
-  * removes the patch that deprecated permit_directio
-
-v6:
-* includes feedbacks from Michael Ellerman on the patchset v5
-  * removed email ids from comments
-  * add the doc for the device-tree
-  * renames the secboot.c to secure_boot.c and secboot.h to secure_boot.h
-  * other code specific fixes
-* split the patches to differentiate between secureboot and trustedboot
-state of the system
-* adds the patches to support the blacklisting of the binary hash.
-
-v5:
-* secureboot state is now read via device tree entry rather than OPAL
-secure variables
-* ima arch policies are updated to use policy based template for
-measurement rules
-
-v4:
-* Fixed the build issue as reported by Satheesh Rajendran.
-
-v3:
-* OPAL APIs in Patch 1 are updated to provide generic interface based on
-key/keylen. This patchset updates kernel OPAL APIs to be compatible with
-generic interface.
-* Patch 2 is cleaned up to use new OPAL APIs.
-* Since OPAL can support different types of backend which can vary in the
-variable interpretation, the Patch 2 is updated to add a check for the
-backend version
-* OPAL API now expects consumer to first check the supported backend version
-before calling other secvar OPAL APIs. This check is now added in patch 2.
-* IMA policies in Patch 3 is updated to specify appended signature and
-per policy template.
-* The patches now are free of any EFIisms.
-
-v2:
-
-* Removed Patch 1: powerpc/include: Override unneeded early ioremap
-functions
-* Updated Subject line and patch description of the Patch 1 of this series
-* Removed dependency of OPAL_SECVAR on EFI, CPU_BIG_ENDIAN and UCS2_STRING
-* Changed OPAL APIs from static to non-static. Added opal-secvar.h for the
-same
-* Removed EFI hooks from opal_secvar.c
-* Removed opal_secvar_get_next(), opal_secvar_enqueue() and
-opal_query_variable_info() function
-* get_powerpc_sb_mode() in secboot.c now directly calls OPAL Runtime API
-rather than via EFI hooks.
-* Fixed log messages in get_powerpc_sb_mode() function.
-* Added dependency for PPC_SECURE_BOOT on configs PPC64 and OPAL_SECVAR
-* Replaced obj-$(CONFIG_IMA) with obj-$(CONFIG_PPC_SECURE_BOOT) in
-arch/powerpc/kernel/Makefile
-
-Nayna Jain (8):
-  powerpc: detect the secure boot mode of the system
-  powerpc/ima: add support to initialize ima policy rules
-  powerpc: detect the trusted boot state of the system
-  powerpc/ima: add measurement rules to ima arch specific policy
-  ima: make process_buffer_measurement() generic
-  certs: add wrapper function to check blacklisted binary hash
-  ima: check against blacklisted hashes for files with modsig
-  powerpc/ima: update ima arch policy to check for blacklist
-
- Documentation/ABI/testing/ima_policy   |  1 +
- arch/powerpc/Kconfig                   | 11 ++++
- arch/powerpc/include/asm/secure_boot.h | 29 +++++++++++
- arch/powerpc/kernel/Makefile           |  2 +
- arch/powerpc/kernel/ima_arch.c         | 71 ++++++++++++++++++++++++++
- arch/powerpc/kernel/secure_boot.c      | 54 ++++++++++++++++++++
- certs/blacklist.c                      |  9 ++++
- include/keys/system_keyring.h          |  6 +++
- include/linux/ima.h                    |  3 +-
- security/integrity/ima/ima.h           | 11 ++++
- security/integrity/ima/ima_appraise.c  | 31 +++++++++++
- security/integrity/ima/ima_main.c      | 63 +++++++++++++++--------
- security/integrity/ima/ima_policy.c    | 10 +++-
- security/integrity/integrity.h         |  1 +
- 14 files changed, 277 insertions(+), 25 deletions(-)
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+---
+ arch/powerpc/Kconfig                   | 10 +++++++++
+ arch/powerpc/include/asm/secure_boot.h | 23 ++++++++++++++++++++
+ arch/powerpc/kernel/Makefile           |  2 ++
+ arch/powerpc/kernel/secure_boot.c      | 30 ++++++++++++++++++++++++++
+ 4 files changed, 65 insertions(+)
  create mode 100644 arch/powerpc/include/asm/secure_boot.h
- create mode 100644 arch/powerpc/kernel/ima_arch.c
  create mode 100644 arch/powerpc/kernel/secure_boot.c
 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 3e56c9c2f16e..56ea0019b616 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -934,6 +934,16 @@ config PPC_MEM_KEYS
+ 
+ 	  If unsure, say y.
+ 
++config PPC_SECURE_BOOT
++	prompt "Enable secure boot support"
++	bool
++	depends on PPC_POWERNV
++	help
++	  Systems with firmware secure boot enabled need to define security
++	  policies to extend secure boot to the OS. This config allows a user
++	  to enable OS secure boot on systems that have firmware support for
++	  it. If in doubt say N.
++
+ endmenu
+ 
+ config ISA_DMA_API
+diff --git a/arch/powerpc/include/asm/secure_boot.h b/arch/powerpc/include/asm/secure_boot.h
+new file mode 100644
+index 000000000000..07d0fe0ca81f
+--- /dev/null
++++ b/arch/powerpc/include/asm/secure_boot.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Secure boot definitions
++ *
++ * Copyright (C) 2019 IBM Corporation
++ * Author: Nayna Jain
++ */
++#ifndef _ASM_POWER_SECURE_BOOT_H
++#define _ASM_POWER_SECURE_BOOT_H
++
++#ifdef CONFIG_PPC_SECURE_BOOT
++
++bool is_ppc_secureboot_enabled(void);
++
++#else
++
++static inline bool is_ppc_secureboot_enabled(void)
++{
++	return false;
++}
++
++#endif
++#endif
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index a7ca8fe62368..e2a54fa240ac 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -161,6 +161,8 @@ ifneq ($(CONFIG_PPC_POWERNV)$(CONFIG_PPC_SVM),)
+ obj-y				+= ucall.o
+ endif
+ 
++obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o
++
+ # Disable GCOV, KCOV & sanitizers in odd or sensitive code
+ GCOV_PROFILE_prom_init.o := n
+ KCOV_INSTRUMENT_prom_init.o := n
+diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+new file mode 100644
+index 000000000000..99bba7915629
+--- /dev/null
++++ b/arch/powerpc/kernel/secure_boot.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 IBM Corporation
++ * Author: Nayna Jain
++ */
++#include <linux/types.h>
++#include <linux/of.h>
++#include <asm/secure_boot.h>
++
++bool is_ppc_secureboot_enabled(void)
++{
++	struct device_node *node;
++	bool enabled = false;
++
++	node = of_find_compatible_node(NULL, NULL, "ibm,secvar-v1");
++	if (!of_device_is_available(node)) {
++		pr_err("Cannot find secure variable node in device tree; failing to secure state\n");
++		goto out;
++	}
++
++	/*
++	 * secureboot is enabled if os-secure-enforcing property exists,
++	 * else disabled.
++	 */
++	enabled = of_property_read_bool(node, "os-secure-enforcing");
++
++out:
++	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
++	return enabled;
++}
 -- 
 2.20.1
 
