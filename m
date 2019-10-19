@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B03DDA0B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 20:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD69DDA0D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2019 20:24:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46wWVD6RBJzDqVL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Oct 2019 05:23:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46wWXG4RrHzDqWc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Oct 2019 05:24:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46wW7h1VFWzDqM9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:06:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46wW7n0pzdzDqMT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:07:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46wW7g2MLlz8tQJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:06:55 +1100 (AEDT)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46wW7m3w9qz8tQJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2019 05:07:00 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 46wW7f5BPNz9sPL; Sun, 20 Oct 2019 05:06:54 +1100 (AEDT)
+ id 46wW7l2vL2z9sQy; Sun, 20 Oct 2019 05:06:59 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
@@ -33,59 +33,58 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46wW7d1H1xz9sPx
- for <linuxppc-dev@ozlabs.org>; Sun, 20 Oct 2019 05:06:52 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 46wW7j6tCHz9sQv
+ for <linuxppc-dev@ozlabs.org>; Sun, 20 Oct 2019 05:06:57 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9JI6fGh146488
- for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:50 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vqy0mb91j-1
+ x9JI6jVU115300
+ for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:55 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vqxjjkt2u-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:50 -0400
+ for <linuxppc-dev@ozlabs.org>; Sat, 19 Oct 2019 14:06:55 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
- Sat, 19 Oct 2019 19:06:48 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Sat, 19 Oct 2019 19:06:52 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 19 Oct 2019 19:06:44 +0100
+ Sat, 19 Oct 2019 19:06:48 +0100
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x9JI6g5w32571810
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9JI6l5A49283084
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 19 Oct 2019 18:06:42 GMT
+ Sat, 19 Oct 2019 18:06:47 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE3635204F;
- Sat, 19 Oct 2019 18:06:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E7EA25204F;
+ Sat, 19 Oct 2019 18:06:46 +0000 (GMT)
 Received: from swastik.ibm.com (unknown [9.85.146.216])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id EB7F752050;
- Sat, 19 Oct 2019 18:06:39 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 3A8E352051;
+ Sat, 19 Oct 2019 18:06:44 +0000 (GMT)
 From: Nayna Jain <nayna@linux.ibm.com>
 To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
  linux-integrity@vger.kernel.org
-Subject: [PATCH v8 4/8] powerpc/ima: add measurement rules to ima arch
- specific policy
-Date: Sat, 19 Oct 2019 14:06:13 -0400
+Subject: [PATCH v8 5/8] ima: make process_buffer_measurement() generic
+Date: Sat, 19 Oct 2019 14:06:14 -0400
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1571508377-23603-1-git-send-email-nayna@linux.ibm.com>
 References: <1571508377-23603-1-git-send-email-nayna@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19101918-0008-0000-0000-0000032401CB
+x-cbid: 19101918-0020-0000-0000-0000037B06ED
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19101918-0009-0000-0000-00004A4325F1
-Message-Id: <1571508377-23603-5-git-send-email-nayna@linux.ibm.com>
+x-cbparentid: 19101918-0021-0000-0000-000021D13921
+Message-Id: <1571508377-23603-6-git-send-email-nayna@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-10-19_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=954 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1908290000 definitions=main-1910190171
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -113,66 +112,128 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch adds the measurement rules to the arch specific policies on
-trusted boot enabled systems.
+process_buffer_measurement() is limited to measuring the kexec boot
+command line. This patch makes process_buffer_measurement() more
+generic, allowing it to measure other types of buffer data (e.g.
+blacklisted binary hashes or key hashes).
+
+This patch modifies the function to conditionally retrieve the policy
+defined pcr and template based on the func.
 
 Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 ---
- arch/powerpc/kernel/ima_arch.c | 34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ security/integrity/ima/ima.h      |  3 ++
+ security/integrity/ima/ima_main.c | 51 ++++++++++++++++++++-----------
+ 2 files changed, 36 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
-index 65d82ee74ea4..710872ea8f35 100644
---- a/arch/powerpc/kernel/ima_arch.c
-+++ b/arch/powerpc/kernel/ima_arch.c
-@@ -26,6 +26,32 @@ static const char *const secure_rules[] = {
- 	NULL
- };
- 
-+/*
-+ * The "measure_rules" are enabled only on "trustedboot" enabled systems.
-+ * These rules add the kexec kernel image and kernel modules file hashes to
-+ * the IMA measurement list.
-+ */
-+static const char *const trusted_rules[] = {
-+	"measure func=KEXEC_KERNEL_CHECK",
-+	"measure func=MODULE_CHECK",
-+	NULL
-+};
-+
-+/*
-+ * The "secure_and_trusted_rules" contains rules for both the secure boot and
-+ * trusted boot. The "template=ima-modsig" option includes the appended
-+ * signature, when available, in the IMA measurement list.
-+ */
-+static const char *const secure_and_trusted_rules[] = {
-+	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
-+	"measure func=MODULE_CHECK template=ima-modsig",
-+	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
-+#ifndef CONFIG_MODULE_SIG_FORCE
-+	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-+#endif
-+	NULL
-+};
-+
- /*
-  * Returns the relevant IMA arch-specific policies based on the system secure
-  * boot state.
-@@ -33,7 +59,13 @@ static const char *const secure_rules[] = {
- const char *const *arch_get_ima_policy(void)
+diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
+index 3689081aaf38..a65772ffa427 100644
+--- a/security/integrity/ima/ima.h
++++ b/security/integrity/ima/ima.h
+@@ -217,6 +217,9 @@ void ima_store_measurement(struct integrity_iint_cache *iint, struct file *file,
+ 			   struct evm_ima_xattr_data *xattr_value,
+ 			   int xattr_len, const struct modsig *modsig, int pcr,
+ 			   struct ima_template_desc *template_desc);
++void process_buffer_measurement(const void *buf, int size,
++				const char *eventname, enum ima_hooks func,
++				int pcr);
+ void ima_audit_measurement(struct integrity_iint_cache *iint,
+ 			   const unsigned char *filename);
+ int ima_alloc_init_template(struct ima_event_data *event_data,
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index 60027c643ecd..fe0b704ffdeb 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -626,14 +626,14 @@ int ima_load_data(enum kernel_load_data_id id)
+  * @buf: pointer to the buffer that needs to be added to the log.
+  * @size: size of buffer(in bytes).
+  * @eventname: event name to be used for the buffer entry.
+- * @cred: a pointer to a credentials structure for user validation.
+- * @secid: the secid of the task to be validated.
++ * @func: IMA hook
++ * @pcr: pcr to extend the measurement
+  *
+  * Based on policy, the buffer is measured into the ima log.
+  */
+-static void process_buffer_measurement(const void *buf, int size,
+-				       const char *eventname,
+-				       const struct cred *cred, u32 secid)
++void process_buffer_measurement(const void *buf, int size,
++				const char *eventname, enum ima_hooks func,
++				int pcr)
  {
- 	if (is_ppc_secureboot_enabled())
--		return secure_rules;
-+		if (is_ppc_trustedboot_enabled())
-+			return secure_and_trusted_rules;
-+		else
-+			return secure_rules;
-+	else
-+		if (is_ppc_trustedboot_enabled())
-+			return trusted_rules;
+ 	int ret = 0;
+ 	struct ima_template_entry *entry = NULL;
+@@ -642,19 +642,38 @@ static void process_buffer_measurement(const void *buf, int size,
+ 					    .filename = eventname,
+ 					    .buf = buf,
+ 					    .buf_len = size};
+-	struct ima_template_desc *template_desc = NULL;
++	struct ima_template_desc *template = NULL;
+ 	struct {
+ 		struct ima_digest_data hdr;
+ 		char digest[IMA_MAX_DIGEST_SIZE];
+ 	} hash = {};
+ 	int violation = 0;
+-	int pcr = CONFIG_IMA_MEASURE_PCR_IDX;
+ 	int action = 0;
++	u32 secid;
  
- 	return NULL;
+-	action = ima_get_action(NULL, cred, secid, 0, KEXEC_CMDLINE, &pcr,
+-				&template_desc);
+-	if (!(action & IMA_MEASURE))
+-		return;
++	if (func) {
++		security_task_getsecid(current, &secid);
++		action = ima_get_action(NULL, current_cred(), secid, 0, func,
++					&pcr, &template);
++		if (!(action & IMA_MEASURE))
++			return;
++	}
++
++	if (!pcr)
++		pcr = CONFIG_IMA_MEASURE_PCR_IDX;
++
++	if (!template) {
++		template = lookup_template_desc("ima-buf");
++		ret = template_desc_init_fields(template->fmt,
++						&(template->fields),
++						&(template->num_fields));
++		if (ret < 0) {
++			pr_err("template %s init failed, result: %d\n",
++			       (strlen(template->name) ?
++				template->name : template->fmt), ret);
++			return;
++		}
++	}
+ 
+ 	iint.ima_hash = &hash.hdr;
+ 	iint.ima_hash->algo = ima_hash_algo;
+@@ -664,7 +683,7 @@ static void process_buffer_measurement(const void *buf, int size,
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = ima_alloc_init_template(&event_data, &entry, template_desc);
++	ret = ima_alloc_init_template(&event_data, &entry, template);
+ 	if (ret < 0)
+ 		goto out;
+ 
+@@ -686,13 +705,9 @@ static void process_buffer_measurement(const void *buf, int size,
+  */
+ void ima_kexec_cmdline(const void *buf, int size)
+ {
+-	u32 secid;
+-
+-	if (buf && size != 0) {
+-		security_task_getsecid(current, &secid);
++	if (buf && size != 0)
+ 		process_buffer_measurement(buf, size, "kexec-cmdline",
+-					   current_cred(), secid);
+-	}
++					   KEXEC_CMDLINE, 0);
  }
+ 
+ static int __init init_ima(void)
 -- 
 2.20.1
 
