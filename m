@@ -2,61 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE03DE906
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 12:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F5FDE969
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 12:25:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46xXRZ4mYszDqm6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 21:09:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46xXpS5X29zDqpv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 21:25:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46xXPW0kVDzDqg7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 21:07:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46xXPV66NVz8xTL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 21:07:26 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 46xXPV5cF9z9sCJ; Mon, 21 Oct 2019 21:07:26 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=yinbo.zhu@nxp.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46xXPV2Phrz9sP3
- for <linuxppc-dev@ozlabs.org>; Mon, 21 Oct 2019 21:07:25 +1100 (AEDT)
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1iMUaq-0006Yb-JY; Mon, 21 Oct 2019 12:07:16 +0200
-Date: Mon, 21 Oct 2019 12:07:15 +0200 (CEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Andreas Schwab <schwab@linux-m68k.org>
-Subject: [PATCH] lib/vdso: Make clock_getres() POSIX compliant again
-In-Reply-To: <87eez7glre.fsf@igel.home>
-Message-ID: <alpine.DEB.2.21.1910211202260.1904@nanos.tec.linutronix.de>
-References: <0fc22a08-31d9-e4d1-557e-bf5b482a9a20__6444.28012180782$1571503753$gmane$org@c-s.fr>
- <87v9skcznp.fsf@igel.home> <ed65e4c6-2fe0-2f5c-f667-5a81b19eb073@c-s.fr>
- <87tv83zqt1.fsf@hase.home> <b64c367b-d1e5-bf26-d452-145c0be6e30a@c-s.fr>
- <alpine.DEB.2.21.1910201243580.2090@nanos.tec.linutronix.de>
- <875zkjipra.fsf@igel.home>
- <alpine.DEB.2.21.1910201731070.2090@nanos.tec.linutronix.de>
- <87r237h01a.fsf@igel.home>
- <alpine.DEB.2.21.1910202145160.2090@nanos.tec.linutronix.de>
- <87eez7glre.fsf@igel.home>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46xXjj72gNzDqMd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 21:21:24 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2ACF5200527;
+ Mon, 21 Oct 2019 12:21:20 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2E79B200509;
+ Mon, 21 Oct 2019 12:21:15 +0200 (CEST)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id BA8F8402E3;
+ Mon, 21 Oct 2019 18:21:08 +0800 (SGT)
+From: Yinbo Zhu <yinbo.zhu@nxp.com>
+To: Li Yang <leoyang.li@nxp.com>,
+	Felipe Balbi <balbi@kernel.org>
+Subject: [PATCH v1] usb: fsl: Check memory resource before releasing it
+Date: Mon, 21 Oct 2019 18:21:51 +0800
+Message-Id: <20191021102153.16435-1-yinbo.zhu@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,56 +49,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>,
- Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nikhil Badola <nikhil.badola@freescale.com>, linux-usb@vger.kernel.org,
+ xiaobo.xie@nxp.com, linux-kernel@vger.kernel.org, jiafei.pan@nxp.com,
+ Ran Wang <ran.wang_1@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+ yinbo.zhu@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A recent commit removed the NULL pointer check from the clock_getres()
-implementation causing a test case to fault.
+From: Nikhil Badola <nikhil.badola@freescale.com>
 
-POSIX requires an explicit NULL pointer check for clock_getres() aside of
-the validity check of the clock_id argument for obscure reasons.
+Check memory resource existence before releasing it to avoid NULL
+pointer dereference
 
-Add it back for both 32bit and 64bit.
-
-Note, this is only a partial revert of the offending commit which does not
-bring back the broken fallback invocation in the the 32bit compat
-implementations of clock_getres() and clock_gettime().
-
-Fixes: a9446a906f52 ("lib/vdso/32: Remove inconsistent NULL pointer checks")
-Reported-by: Andreas Schwab <schwab@linux-m68k.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
+Signed-off-by: Nikhil Badola <nikhil.badola@freescale.com>
+Reviewed-by: Ran Wang <ran.wang_1@nxp.com>
+Reviewed-by: Peter Chen <peter.chen@nxp.com>
 ---
- lib/vdso/gettimeofday.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/udc/fsl_udc_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -214,9 +214,10 @@ int __cvdso_clock_getres_common(clockid_
- 		return -1;
- 	}
+diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
+index 20141c3096f6..9a05863b2876 100644
+--- a/drivers/usb/gadget/udc/fsl_udc_core.c
++++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+@@ -2576,7 +2576,7 @@ static int fsl_udc_remove(struct platform_device *pdev)
+ 	dma_pool_destroy(udc_controller->td_pool);
+ 	free_irq(udc_controller->irq, udc_controller);
+ 	iounmap(dr_regs);
+-	if (pdata->operating_mode == FSL_USB2_DR_DEVICE)
++	if (res && (pdata->operating_mode == FSL_USB2_DR_DEVICE))
+ 		release_mem_region(res->start, resource_size(res));
  
--	res->tv_sec = 0;
--	res->tv_nsec = ns;
--
-+	if (likely(res)) {
-+		res->tv_sec = 0;
-+		res->tv_nsec = ns;
-+	}
- 	return 0;
- }
- 
-@@ -245,7 +246,7 @@ static __maybe_unused int
- 		ret = clock_getres_fallback(clock, &ts);
- #endif
- 
--	if (likely(!ret)) {
-+	if (likely(!ret && res)) {
- 		res->tv_sec = ts.tv_sec;
- 		res->tv_nsec = ts.tv_nsec;
- 	}
+ 	/* free udc --wait for the release() finished */
+-- 
+2.17.1
+
