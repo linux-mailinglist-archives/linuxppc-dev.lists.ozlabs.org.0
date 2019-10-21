@@ -1,49 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302E3DE2E7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 06:08:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1ECDE576
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 09:43:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46xNR32WNyzDqb5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 15:08:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46xTCT1FFHzDqb5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 18:43:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46xNNr2LZdzDqNW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 15:06:20 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46xT9S6mNTzDqPT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 18:41:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="uFrQ7d0o"; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 46xNNq5r9cz9sPL; Mon, 21 Oct 2019 15:06:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1571630779; bh=0gIwOYRl+uLZLFdtC8UjqQo4XwJkG5ky/1miRAY9OXI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=uFrQ7d0o8UWnjar+mh+ZFxZ1mDSn3m5dIt9yNR6EqQjYSz1EYO+gIccKPoGpunI5w
- 0AIDCeEV2WBtpDEynARdN3dmOcdhJM/fktF67Gj2ra7tJr4gvR28m8CQBssIPjSIwN
- U+u4hcS38D9+iwBu7BjxWGoo8+oFHHwNY4vNnciPhJ64J28qsWZqvIBSFwlYJtLfEH
- bZybTxodoBoGatjBQtJDljCS71wqI6zuDjmg3XA9343R20BAZQS+pbXCIDJDjHm8qN
- OdhRKdFynZLg5RyG/Xh6q1+iJlbfbEDRxoNwj79dGZ+VOCq7TUTKpG/Vvn//wnWYYs
- 40PcjWjjhHX3g==
-Date: Mon, 21 Oct 2019 15:06:15 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH v2 0/6] KVM: PPC: Book3S: HV: XIVE: Allocate less VPs in
- OPAL
-Message-ID: <20191021040615.GA20714@oak.ozlabs.ibm.com>
-References: <156958521220.1503771.2119482814236775333.stgit@bahia.lan>
- <20191016234403.77cdf150@bahia.lan>
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 46xT9S3L1Mz8t1H
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 18:41:48 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 46xT9S2dlVz9sPc; Mon, 21 Oct 2019 18:41:48 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 46xT9R21zhz9sPL
+ for <linuxppc-dev@ozlabs.org>; Mon, 21 Oct 2019 18:41:46 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9L7bjXK056441
+ for <linuxppc-dev@ozlabs.org>; Mon, 21 Oct 2019 03:41:44 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vs79njj50-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 21 Oct 2019 03:41:44 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Mon, 21 Oct 2019 08:41:42 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 21 Oct 2019 08:41:38 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9L7fbum9502946
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 21 Oct 2019 07:41:37 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8502E4C040;
+ Mon, 21 Oct 2019 07:41:37 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D6E9C4C059;
+ Mon, 21 Oct 2019 07:41:35 +0000 (GMT)
+Received: from [9.85.68.191] (unknown [9.85.68.191])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 21 Oct 2019 07:41:35 +0000 (GMT)
+Subject: Re: [PATCH v2 3/4] Documentation/ABI: mark /sys/kernel/fadump_* sysfs
+ files deprecated
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
+References: <20191018130557.2217-1-sourabhjain@linux.ibm.com>
+ <20191018130557.2217-4-sourabhjain@linux.ibm.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Date: Mon, 21 Oct 2019 13:11:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191016234403.77cdf150@bahia.lan>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191018130557.2217-4-sourabhjain@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19102107-0020-0000-0000-0000037BCA91
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19102107-0021-0000-0000-000021D1FF80
+Message-Id: <f69daa7b-ddb3-8190-c409-28a22c504fed@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-21_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=975 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910210071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,57 +106,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- kvm-ppc@vger.kernel.org, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Paolo Bonzini <pbonzini@redhat.com>, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@ozlabs.org, mahesh@linux.vnet.ibm.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 16, 2019 at 11:44:03PM +0200, Greg Kurz wrote:
-> On Fri, 27 Sep 2019 13:53:32 +0200
-> Greg Kurz <groug@kaod.org> wrote:
-> 
-> > This brings some fixes and allows to start more VMs with an in-kernel
-> > XIVE or XICS-on-XIVE device.
-> > 
-> > Changes since v1 (https://patchwork.ozlabs.org/cover/1166099/):
-> > - drop a useless patch
-> > - add a patch to show VP ids in debugfs
-> > - update some changelogs
-> > - fix buggy check in patch 5
-> > - Cc: stable 
-> > 
-> > --
-> > Greg
-> > 
-> > ---
-> > 
-> > Greg Kurz (6):
-> >       KVM: PPC: Book3S HV: XIVE: Set kvm->arch.xive when VPs are allocated
-> >       KVM: PPC: Book3S HV: XIVE: Ensure VP isn't already in use
-> >       KVM: PPC: Book3S HV: XIVE: Show VP id in debugfs
-> >       KVM: PPC: Book3S HV: XIVE: Compute the VP id in a common helper
-> >       KVM: PPC: Book3S HV: XIVE: Make VP block size configurable
-> >       KVM: PPC: Book3S HV: XIVE: Allow userspace to set the # of VPs
-> > 
-> > 
-> >  Documentation/virt/kvm/devices/xics.txt |   14 +++
-> >  Documentation/virt/kvm/devices/xive.txt |    8 ++
-> >  arch/powerpc/include/uapi/asm/kvm.h     |    3 +
-> >  arch/powerpc/kvm/book3s_xive.c          |  142 ++++++++++++++++++++++++-------
-> >  arch/powerpc/kvm/book3s_xive.h          |   17 ++++
-> >  arch/powerpc/kvm/book3s_xive_native.c   |   40 +++------
-> >  6 files changed, 167 insertions(+), 57 deletions(-)
-> > 
-> 
-> Ping ?
 
-I'm about to send a pull request to Paolo for 2/6 (to go into 5.4) and
-I'm preparing a tree of stuff for 5.5 that will include the rest of
-the patches.  However, I have been delayed by the fact that multipath
-SCSI is currently broken upstream on the P8 test box that I use, so I
-haven't been able to test things.
 
-Paul.
+On 18/10/19 6:35 PM, Sourabh Jain wrote:
+> The /sys/kernel/fadump_* sysfs files are replicated under
+
+[...]
+
+> +Note: The following FADump sysfs files are deprecated.
+> +
+> +    Deprecated                       Alternative
+> +    -------------------------------------------------------------------------------
+> +    /sys/kernel/fadump_enabled           /sys/kernel/fadump/fadump_enabled
+> +    /sys/kernel/fadump_registered        /sys/kernel/fadump/fadump_registered
+> +    /sys/kernel/fadump_release_mem       /sys/kernel/fadump/fadump_release_mem
+
+/sys/kernel/fadump/* looks tidy instead of /sys/kernel/fadump/fadump_* 
+I mean, /sys/kernel/fadump/fadump_enabled => /sys/kernel/fadump/enabled and such..
+
+- Hari
+
