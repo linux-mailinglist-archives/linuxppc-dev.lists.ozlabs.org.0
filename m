@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968C0DF0BA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 17:03:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37C5DF0FD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2019 17:13:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46xfyj11z3zDqsW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 02:03:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46xgBs2ghmzDqyn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 02:13:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -15,25 +15,23 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=glider.be
-X-Greylist: delayed 539 seconds by postgrey-1.36 at bilbo;
- Tue, 22 Oct 2019 02:01:13 AEDT
 Received: from leibniz.telenet-ops.be (leibniz.telenet-ops.be [195.130.137.77])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46xfwT3mxFzDqkS
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46xfwV0ZRHzDqkd
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 02:01:12 +1100 (AEDT)
-Received: from andre.telenet-ops.be (andre.telenet-ops.be
- [IPv6:2a02:1800:120:4::f00:15])
- by leibniz.telenet-ops.be (Postfix) with ESMTPS id 46xfk22PHpzMrTHK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 16:52:10 +0200 (CEST)
-Received: from ramsan ([84.194.98.4]) by andre.telenet-ops.be with bizsmtp
- id GErr2100905gfCL01Erri1; Mon, 21 Oct 2019 16:52:09 +0200
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be
+ [IPv6:2a02:1800:120:4::f00:14])
+ by leibniz.telenet-ops.be (Postfix) with ESMTPS id 46xfk10rrJzMr0ly
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 16:52:09 +0200 (CEST)
+Received: from ramsan ([84.194.98.4]) by xavier.telenet-ops.be with bizsmtp
+ id GErr2100B05gfCL01ErrRZ; Mon, 21 Oct 2019 16:52:08 +0200
 Received: from rox.of.borg ([192.168.97.57]) by ramsan with esmtp (Exim 4.90_1)
  (envelope-from <geert@linux-m68k.org>)
- id 1iMZ2E-00075d-VZ; Mon, 21 Oct 2019 16:51:50 +0200
+ id 1iMZ2E-00075h-Vs; Mon, 21 Oct 2019 16:51:50 +0200
 Received: from geert by rox.of.borg with local (Exim 4.90_1)
  (envelope-from <geert@linux-m68k.org>)
- id 1iMZ2E-0008FP-Rq; Mon, 21 Oct 2019 16:51:50 +0200
+ id 1iMZ2E-0008FR-UG; Mon, 21 Oct 2019 16:51:50 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
  Nayna Jain <nayna@linux.ibm.com>,
@@ -49,10 +47,13 @@ To: =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
  Shannon Nelson <snelson@pensando.io>,
  Pensando Drivers <drivers@pensando.io>, Kevin Hilman <khilman@kernel.org>,
  Nishanth Menon <nm@ti.com>
-Subject: [PATCH 0/5] debugfs: Remove casts in debugfs_create_*() callers
-Date: Mon, 21 Oct 2019 16:51:44 +0200
-Message-Id: <20191021145149.31657-1-geert+renesas@glider.be>
+Subject: [PATCH 1/5] crypto: nx - Improve debugfs_create_u{32,
+ 64}() handling for atomics
+Date: Mon, 21 Oct 2019 16:51:45 +0200
+Message-Id: <20191021145149.31657-2-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191021145149.31657-1-geert+renesas@glider.be>
+References: <20191021145149.31657-1-geert+renesas@glider.be>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,44 +74,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-	Hi all,
+Variables of type atomic{,64}_t can be used fine with
+debugfs_create_u{32,64}, when passing a pointer to the embedded counter.
+This allows to get rid of the casts, which prevented compiler checks.
 
-Casting parameters in debugfs_create_*() calls prevents the compiler
-from performing some checks.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/crypto/nx/nx_debugfs.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-Hence this patch series removes superfluous casts, or reworks code to no
-longer need the casts.
-
-All patches can be applied independently, there are no dependencies.
-Thanks for your comments!
-
-Geert Uytterhoeven (5):
-  crypto: nx - Improve debugfs_create_u{32,64}() handling for atomics
-  cxgb4/cxgb4vf: Remove superfluous void * cast in debugfs_create_file()
-    call
-  drm/amdgpu: Remove superfluous void * cast in debugfs_create_file()
-    call
-  power: avs: smartreflex: Remove superfluous cast in
-    debugfs_create_file() call
-  ionic: Use debugfs_create_bool() to export bool
-
- drivers/crypto/nx/nx_debugfs.c                 | 18 +++++++++---------
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c    |  4 ++--
- .../ethernet/chelsio/cxgb4vf/cxgb4vf_main.c    |  2 +-
- .../ethernet/pensando/ionic/ionic_debugfs.c    |  3 +--
- drivers/power/avs/smartreflex.c                |  2 +-
- 5 files changed, 14 insertions(+), 15 deletions(-)
-
+diff --git a/drivers/crypto/nx/nx_debugfs.c b/drivers/crypto/nx/nx_debugfs.c
+index e0d44a5512ab455b..1975bcbee997481e 100644
+--- a/drivers/crypto/nx/nx_debugfs.c
++++ b/drivers/crypto/nx/nx_debugfs.c
+@@ -38,23 +38,23 @@ void nx_debugfs_init(struct nx_crypto_driver *drv)
+ 	drv->dfs_root = root;
+ 
+ 	debugfs_create_u32("aes_ops", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u32 *)&drv->stats.aes_ops);
++			   root, &drv->stats.aes_ops.counter);
+ 	debugfs_create_u32("sha256_ops", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u32 *)&drv->stats.sha256_ops);
++			   root, &drv->stats.sha256_ops.counter);
+ 	debugfs_create_u32("sha512_ops", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u32 *)&drv->stats.sha512_ops);
++			   root, &drv->stats.sha512_ops.counter);
+ 	debugfs_create_u64("aes_bytes", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u64 *)&drv->stats.aes_bytes);
++			   root, &drv->stats.aes_bytes.counter);
+ 	debugfs_create_u64("sha256_bytes", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u64 *)&drv->stats.sha256_bytes);
++			   root, &drv->stats.sha256_bytes.counter);
+ 	debugfs_create_u64("sha512_bytes", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u64 *)&drv->stats.sha512_bytes);
++			   root, &drv->stats.sha512_bytes.counter);
+ 	debugfs_create_u32("errors", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u32 *)&drv->stats.errors);
++			   root, &drv->stats.errors.counter);
+ 	debugfs_create_u32("last_error", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u32 *)&drv->stats.last_error);
++			   root, &drv->stats.last_error.counter);
+ 	debugfs_create_u32("last_error_pid", S_IRUSR | S_IRGRP | S_IROTH,
+-			   root, (u32 *)&drv->stats.last_error_pid);
++			   root, &drv->stats.last_error_pid.counter);
+ }
+ 
+ void
 -- 
 2.17.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
