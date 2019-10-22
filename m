@@ -1,92 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A5FDFC44
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 05:45:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B38DFD0C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 07:17:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46xzt40q72zDqL5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 14:45:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46y1wJ74lTzDqLS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 16:17:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pensando.io (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=snelson@pensando.io;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::241;
+ helo=mail-oi1-x241.google.com; envelope-from=natechancellor@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=pensando.io
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=pensando.io header.i=@pensando.io header.b="ZvioHrwP"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="ab/j3x+f"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46xj0y01FmzDqxW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 03:35:09 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id 23so8132516pgk.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 09:35:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pensando.io; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-transfer-encoding:content-language;
- bh=YQ2SYzDjclp6+UMcXfMKe/dCfkknHxuiGOrHRSVn0cA=;
- b=ZvioHrwPqgA32sqk/ZfXl+AIKFsddUO2tNAqbJtu4tCcRANhGvReU9J0qCrPtBX4dr
- XyEFxDF3rI4Skd8uu+tW37bMnIbIfeVll6YP9QPsiv1m3u9UI7Hz50C/EOmQGDDvJxjt
- MNnpf3ALOQX+wn100d4q49rWpqL/dLYkEvAbPydL+TGXqu4wUlet2YAblmsMtkne7qnv
- mFnrVk537e3SRZLOSIfp5DZTMcRh1T3I7huUyEOh7iplVBe4IuwO1byLK+LTz8AIzALW
- g8HnTvBYEWL7IAty6Tx+yooX0qDMEelsrde2cgdpkGApf9pCWxxWG6Loqrv6o3ZIrYoi
- o0cQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46y1tH6bGkzDqJs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 16:15:35 +1100 (AEDT)
+Received: by mail-oi1-x241.google.com with SMTP id s71so239720oih.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2019 22:15:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=6rY2Wjoe2GHPPcQrTvZ8onLLc/wPWzZXs6sWpQV54Tw=;
+ b=ab/j3x+fg+cZiHLu3xqUGr4m5ASYRpmL96jgg7Cxv17KIdEo23ZnGKI5FtlQqPRQpZ
+ OzRSyHfgpgCJjKr6yv/lGLqF5i0LyAgJCLvb9jCXPQAfYjSVM4iu7chEOKWAPUlS+oa1
+ SI0W467DTaXUKR40SCcbPTUrSW4GsVpShEF9XHpChvQ03IpaHhOJa5xatrikIN0+doI1
+ tX0p6uKLXKC15E8nD7CDyXuAFbupnjUyOLSmIdSp1QBOzrSTtEywmaZassw5HbgupmO1
+ 1XpvcQVWVhBGlsmtc3CGAF/TsmB51iR3XvgG1K6xcmp5KoceyMuAIqSfNaRPTBosJ5hF
+ zXKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-transfer-encoding
- :content-language;
- bh=YQ2SYzDjclp6+UMcXfMKe/dCfkknHxuiGOrHRSVn0cA=;
- b=telZR7xOf2+SCk2GlQhOTe1OsyVvAfpwgjbf1Lyr+gp5xqfYFMrFR39XmQPYgicLVA
- gdHczBAnkSxU/XoV1w/3EEpK5v56/PH8/NTcpXtRlABVmWYxm6c04+kbZnM67yxksxrK
- rkTuaXnaKZZIWGCzu81n5aeLBV1UOwmc5NoUDpyRu4KZLQ+40cINknxAf6NdaYKEBlT9
- w/7BUmaj0vz+zTGIOXmGh2Dfjk4AmAh59+lF6OVC73iOhLwlRzU6zO63Wso7RxsXINvo
- n13b/aqjw+jVscoYbtVKKdEhcd9tjgpVf8Aud3ezHLptluZFjP60E4bwMoFWodvHgszB
- miKg==
-X-Gm-Message-State: APjAAAWcfgX4vApJ1r4YmF5zDw+7BZgkPZVWXL+QOcoZQrBaGYyV289k
- bchCe4jSLHE+QuQ78ur7Tq70Qg==
-X-Google-Smtp-Source: APXvYqwmyNu50+FxrTO6V6IulFup1S67xnT8cj+dbepaT4niD1qSPIKhFvBy+c/p26nJk53uezcFig==
-X-Received: by 2002:a63:ad0d:: with SMTP id g13mr26250877pgf.407.1571675706632; 
- Mon, 21 Oct 2019 09:35:06 -0700 (PDT)
-Received: from Shannons-MacBook-Pro.local
- (static-50-53-47-17.bvtn.or.frontiernet.net. [50.53.47.17])
- by smtp.gmail.com with ESMTPSA id e4sm16610297pff.22.2019.10.21.09.35.04
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 21 Oct 2019 09:35:05 -0700 (PDT)
-Subject: Re: [PATCH 5/5] ionic: Use debugfs_create_bool() to export bool
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
- =?UTF-8?Q?Breno_Leit=c3=a3o?= <leitao@debian.org>,
- Nayna Jain <nayna@linux.ibm.com>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
- David@rox.of.borg, David Airlie <airlied@linux.ie>,
- Daniel Vetter <daniel@ffwll.ch>, Casey Leedom <leedom@chelsio.com>,
- Pensando Drivers <drivers@pensando.io>, Kevin Hilman <khilman@kernel.org>,
- Nishanth Menon <nm@ti.com>
-References: <20191021145149.31657-1-geert+renesas@glider.be>
- <20191021145149.31657-6-geert+renesas@glider.be>
-From: Shannon Nelson <snelson@pensando.io>
-Message-ID: <aeebbd5f-6100-2780-ef1c-6b1c261c9d23@pensando.io>
-Date: Mon, 21 Oct 2019 09:35:03 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=6rY2Wjoe2GHPPcQrTvZ8onLLc/wPWzZXs6sWpQV54Tw=;
+ b=qQNVunZL/w8cuHGFiPdUP+7hTdNIx5eY8rCqpDfQW2hB02PhMEqsksYKILOkuVYZ+r
+ q0Baiv905674mE8n57fWQMHjEgsCD4F3EycEkm7iAfWpJw5N5eJjmKTRp/2ZZ6WKZg5M
+ Wbzz3vn1VbnZaOTJGp9cSwreKSMP4N8DgBI5bguRq7Wbgyll+F2FfXIQcQq7QKf033BK
+ lhncMmwPEU6miBj1DE2BQhQR4PKLn8ziqWxTN5fCGqKcSK4jd6WTKwdlHwo183EhbfnQ
+ FEKecU6ZG/+FIsA/zF79wh3k3C/QQPf3UCo4v3rHczdqJ5+zV9CPLtI4PMaTlBeHYBfF
+ F67Q==
+X-Gm-Message-State: APjAAAWsVM52zqIy+v0pJb9W+fY1Xn/KAjMNO8BVMs7I0Ste8oYdj4+v
+ uzQNF/VLxqydLzLZyXoGU5g=
+X-Google-Smtp-Source: APXvYqyysJTAcB6ZzJCttmbfooVDtrC7YfJzT5YfjPwTR2JyhMcoWVGSp/baLb+hkx/xq7ZFdm7Msg==
+X-Received: by 2002:a05:6808:b07:: with SMTP id
+ s7mr1288447oij.162.1571721331706; 
+ Mon, 21 Oct 2019 22:15:31 -0700 (PDT)
+Received: from ubuntu-m2-xlarge-x86 ([2604:1380:4111:8b00::1])
+ by smtp.gmail.com with ESMTPSA id k93sm4869194otc.30.2019.10.21.22.15.30
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 21 Oct 2019 22:15:31 -0700 (PDT)
+Date: Mon, 21 Oct 2019 22:15:29 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH v4 3/3] powerpc/prom_init: Use -ffreestanding to avoid a
+ reference to bcmp
+Message-ID: <20191022051529.GA44041@ubuntu-m2-xlarge-x86>
+References: <20190911182049.77853-1-natechancellor@gmail.com>
+ <20191014025101.18567-1-natechancellor@gmail.com>
+ <20191014025101.18567-4-natechancellor@gmail.com>
+ <20191014093501.GE28442@gate.crashing.org>
+ <CAKwvOdmcUT2A9FG0JD9jd0s=gAavRc_h+RLG6O3mBz4P1FfF8w@mail.gmail.com>
+ <20191014191141.GK28442@gate.crashing.org>
+ <20191018190022.GA1292@ubuntu-m2-xlarge-x86>
+ <20191018200210.GR28442@gate.crashing.org>
 MIME-Version: 1.0
-In-Reply-To: <20191021145149.31657-6-geert+renesas@glider.be>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Mailman-Approved-At: Tue, 22 Oct 2019 14:43:41 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191018200210.GR28442@gate.crashing.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,41 +88,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: amd-gfx@lists.freedesktop.org, linux-pm@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-crypto@vger.kernel.org,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/21/19 7:51 AM, Geert Uytterhoeven wrote:
-> Currently bool ionic_cq.done_color is exported using
-> debugfs_create_u8(), which requires a cast, preventing further compiler
-> checks.
->
-> Fix this by switching to debugfs_create_bool(), and dropping the cast.
->
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+On Fri, Oct 18, 2019 at 03:02:10PM -0500, Segher Boessenkool wrote:
+> On Fri, Oct 18, 2019 at 12:00:22PM -0700, Nathan Chancellor wrote:
+> > Just as an FYI, there was some more discussion around the availablity
+> > and use of bcmp in this LLVM bug which spawned
+> > commit 5f074f3e192f ("lib/string.c: implement a basic bcmp").
+> > 
+> > https://bugs.llvm.org/show_bug.cgi?id=41035#c13
+> > 
+> > I believe this is the proper solution but I am fine with whatever works,
+> > I just want our CI to be green without any out of tree patches again...
+> 
+> I think the proper solution is for the kernel to *do* use -ffreestanding,
+> and then somehow tell the kernel that memcpy etc. are the standard
+> functions.  A freestanding GCC already requires memcpy, memmove, memset,
+> memcmp, and sometimes abort to exist and do the standard thing; why cannot
+> programs then also rely on it to be the standard functions.
+> 
+> What exact functions are the reason the kernel does not use -ffreestanding?
+> Is it just memcpy?  Is more wanted?
+> 
+> 
+> Segher
 
-Acked-by: Shannon Nelson <snelson@pensando.io>
+I think Linus summarized it pretty well here:
 
-> ---
->   drivers/net/ethernet/pensando/ionic/ionic_debugfs.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c b/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c
-> index bc03cecf80cc9eb4..5beba915f69d12dd 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c
-> @@ -170,8 +170,7 @@ void ionic_debugfs_add_qcq(struct ionic_lif *lif, struct ionic_qcq *qcq)
->   	debugfs_create_x64("base_pa", 0400, cq_dentry, &cq->base_pa);
->   	debugfs_create_u32("num_descs", 0400, cq_dentry, &cq->num_descs);
->   	debugfs_create_u32("desc_size", 0400, cq_dentry, &cq->desc_size);
-> -	debugfs_create_u8("done_color", 0400, cq_dentry,
-> -			  (u8 *)&cq->done_color);
-> +	debugfs_create_bool("done_color", 0400, cq_dentry, &cq->done_color);
->   
->   	debugfs_create_file("tail", 0400, cq_dentry, cq, &cq_tail_fops);
->   
+https://lore.kernel.org/lkml/CAHk-=wi-epJZfBHDbKKDZ64us7WkF=LpUfhvYBmZSteO8Q0RAg@mail.gmail.com/
 
+Cheers,
+Nathan
