@@ -1,66 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48742E0B86
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:37:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46290E0B8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:39:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yMgG2479zDqN9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:37:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yMjM61TYzDqNp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:39:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
  helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="XtnhNL4h"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="GnCRogCT"; 
  dkim-atps=neutral
-X-Greylist: delayed 84 seconds by postgrey-1.36 at bilbo;
- Wed, 23 Oct 2019 04:15:52 AEDT
 Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yKsN3dGCzDqJB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:15:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yKsk70h5zDqBj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:16:10 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1571764549;
+ s=mimecast20190719; t=1571764567;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XS/04FUnui5sNwBDedSDS4UewrsrxLUrEqpw2KoK/cQ=;
- b=XtnhNL4hSNtUidqbt/WHcQhOjOviSnnIzHIhKxwRVmsEB1XgeaB/eZbQRsNQqdQY9f0jHx
- CfPZmOibRO4h+sjZVHBsVaf89SCVB3r9gcvqUgX/DQu/j1KyRpX7SuvZdJT+E7GOYt0YTv
- 8bI+xdrDj/LX1/MrV/PrKLFfe1lZ0pk=
+ bh=FajnFySKW/A5xDPqu9rw0Ua4hR3TkmQD80jFnqfnPxM=;
+ b=GnCRogCTDpnhmDEdOZRo7GWzYBIxwYdvwpBajKNxNEIjNwLVvcV6sAKKobCVHktBkUhfDN
+ JP6xVs7sxv41sfTksQJK/IgnLBPKIsOqe1lvfdE1PM8fq0Pbwp/jNZLeRGGlhYqqpQDPk6
+ ax/bEFoXGGAcPuH+AuVpqWkmWXnrbgo=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-226-hQ4mXGwAP7eWs8CpMKPvnw-1; Tue, 22 Oct 2019 13:15:47 -0400
+ us-mta-327-nIyOmixtOyKHdiiLzBpxAg-1; Tue, 22 Oct 2019 13:16:06 -0400
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
  [10.5.11.14])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D9666107AD31;
- Tue, 22 Oct 2019 17:15:41 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E1C24800D53;
+ Tue, 22 Oct 2019 17:16:00 +0000 (UTC)
 Received: from t460s.redhat.com (ovpn-116-248.ams2.redhat.com [10.36.116.248])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 903AE5DA8D;
- Tue, 22 Oct 2019 17:15:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2FF84612AB;
+ Tue, 22 Oct 2019 17:15:42 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1 07/12] staging: kpc2000: Prepare transfer_complete_cb()
- for PG_reserved changes
-Date: Tue, 22 Oct 2019 19:12:34 +0200
-Message-Id: <20191022171239.21487-8-david@redhat.com>
+Subject: [PATCH RFC v1 08/12] powerpc/book3s: Prepare
+ kvmppc_book3s_instantiate_page() for PG_reserved changes
+Date: Tue, 22 Oct 2019 19:12:35 +0200
+Message-Id: <20191022171239.21487-9-david@redhat.com>
 In-Reply-To: <20191022171239.21487-1-david@redhat.com>
 References: <20191022171239.21487-1-david@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: hQ4mXGwAP7eWs8CpMKPvnw-1
+X-MC-Unique: nIyOmixtOyKHdiiLzBpxAg-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Wed, 23 Oct 2019 05:28:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -125,39 +123,50 @@ Sender: "Linuxppc-dev"
 Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
 change that.
 
-The pages are obtained via get_user_pages_fast(). I assume, these
-could be ZONE_DEVICE pages. Let's just exclude them as well explicitly.
+KVM has this weird use case that you can map anything from /dev/mem
+into the guest. pfn_valid() is not a reliable check whether the memmap
+was initialized and can be touched. pfn_to_online_page() makes sure
+that we have an initialized memmap. Note that ZONE_DEVICE memory is
+never online (IOW, managed by the buddy).
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Vandana BN <bnvandana@gmail.com>
-Cc: "Simon Sandstr=C3=B6m" <simon@nikanor.nu>
-Cc: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Nishka Dasgupta <nishkadg.linux@gmail.com>
-Cc: Madhumitha Prabakaran <madhumithabiw@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Matt Sickler <Matt.Sickler@daktronics.com>
-Cc: Jeremy Sowden <jeremy@azazel.net>
+Switching to pfn_to_online_page() keeps the existing behavior for
+PFNs without a memmap and for ZONE_DEVICE memory.
+
+Cc: Paul Mackerras <paulus@ozlabs.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/staging/kpc2000/kpc_dma/fileops.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_64_mmu_radix.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/staging/kpc2000/kpc_dma/fileops.c b/drivers/staging/kp=
-c2000/kpc_dma/fileops.c
-index cb52bd9a6d2f..457adcc81fe6 100644
---- a/drivers/staging/kpc2000/kpc_dma/fileops.c
-+++ b/drivers/staging/kpc2000/kpc_dma/fileops.c
-@@ -212,7 +212,8 @@ void  transfer_complete_cb(struct aio_cb_data *acd, siz=
-e_t xfr_count, u32 flags)
- =09BUG_ON(acd->ldev->pldev =3D=3D NULL);
-=20
- =09for (i =3D 0 ; i < acd->page_count ; i++) {
--=09=09if (!PageReserved(acd->user_pages[i])) {
-+=09=09if (!PageReserved(acd->user_pages[i]) &&
-+=09=09    !is_zone_device_page(acd->user_pages[i])) {
- =09=09=09set_page_dirty(acd->user_pages[i]);
- =09=09}
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book=
+3s_64_mmu_radix.c
+index 2d415c36a61d..05397c0561fc 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -801,12 +801,14 @@ int kvmppc_book3s_instantiate_page(struct kvm_vcpu *v=
+cpu,
+ =09=09=09=09=09   writing, upgrade_p);
+ =09=09if (is_error_noslot_pfn(pfn))
+ =09=09=09return -EFAULT;
+-=09=09page =3D NULL;
+-=09=09if (pfn_valid(pfn)) {
+-=09=09=09page =3D pfn_to_page(pfn);
+-=09=09=09if (PageReserved(page))
+-=09=09=09=09page =3D NULL;
+-=09=09}
++=09=09/*
++=09=09 * We treat any pages that are not online (not managed by the
++=09=09 * buddy) as reserved - this includes ZONE_DEVICE pages and
++=09=09 * pages without a memmap (e.g., mapped via /dev/mem).
++=09=09 */
++=09=09page =3D pfn_to_online_page(pfn);
++=09=09if (page && PageReserved(page))
++=09=09=09page =3D NULL;
  =09}
+=20
+ =09/*
 --=20
 2.21.0
 
