@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030F5E0BB7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:47:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F36E0BCD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:49:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yMts3jlgzDqJB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:47:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yMx60ZlFzDqHH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:49:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="ixp9g2GH"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="HGRjq8Is"; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yKtX1ZHxzDqBj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:16:51 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yKtz3V5gzDqBj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:17:15 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1571764608;
+ s=mimecast20190719; t=1571764632;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=90Byu3ETLZBHqIXXrLqjffjh+7RU+7dCwtXpXn0ipgQ=;
- b=ixp9g2GH6xS5lBXPFQZ+B6PYx0iaQq89r+Pa1VsxFzD1ds6ozOx7xah1JF8XWRIz8aYb7+
- nW8MaW/THQlm352Lmj3Sz5khMv+9fsBQLV6KvsTGe1pdUsNJXaYjGv/wQC6qKZMVAHpg1u
- 1CoEKz+qurNGPe2Ie1iJPuOnATlw+SI=
+ bh=9ebLBevf330CluAPhSIYPFu99JZqQugza0x0NobdnZM=;
+ b=HGRjq8IsSetp88yQ8T0UtO6Lj3sFT/29qZ8Ig4+kx//sOZREbTUr0TleeU3R6P9PQfMtxK
+ l7QZrTdddg0h5GtZC6BYQNexHOnaOMHm7Rdt2gUj31GU/DRSpkRP4hXD+JDPXxLqK2ODLv
+ xx6iVxPGfOIA1ieabNF2xOuVgpPO7Ns=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-82-zN07TtZJN9uCqMmQ3T4-mg-1; Tue, 22 Oct 2019 13:16:47 -0400
+ us-mta-323-lsyVhhPJN4WnEPnfH0Ri8A-1; Tue, 22 Oct 2019 13:17:10 -0400
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
  [10.5.11.14])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F1D4E1005509;
- Tue, 22 Oct 2019 17:16:41 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 603B61800D6A;
+ Tue, 22 Oct 2019 17:17:05 +0000 (UTC)
 Received: from t460s.redhat.com (ovpn-116-248.ams2.redhat.com [10.36.116.248])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DBBFC5DA8D;
- Tue, 22 Oct 2019 17:16:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4A8AA5DC18;
+ Tue, 22 Oct 2019 17:16:42 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1 10/12] powerpc/mm: Prepare maybe_pte_to_page() for
+Subject: [PATCH RFC v1 11/12] x86/mm: Prepare __ioremap_check_ram() for
  PG_reserved changes
-Date: Tue, 22 Oct 2019 19:12:37 +0200
-Message-Id: <20191022171239.21487-11-david@redhat.com>
+Date: Tue, 22 Oct 2019 19:12:38 +0200
+Message-Id: <20191022171239.21487-12-david@redhat.com>
 In-Reply-To: <20191022171239.21487-1-david@redhat.com>
 References: <20191022171239.21487-1-david@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: zN07TtZJN9uCqMmQ3T4-mg-1
+X-MC-Unique: lsyVhhPJN4WnEPnfH0Ri8A-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -127,40 +127,44 @@ We could explicitly check for is_zone_device_page(page). But looking at
 the pfn_valid() check, it seems safer to just use pfn_to_online_page()
 here, that will skip all ZONE_DEVICE pages right away.
 
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Allison Randal <allison@lohutok.net>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/powerpc/mm/pgtable.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/mm/ioremap.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index e3759b69f81b..613c98fa7dc0 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -55,10 +55,12 @@ static struct page *maybe_pte_to_page(pte_t pte)
- =09unsigned long pfn =3D pte_pfn(pte);
- =09struct page *page;
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index a39dcdb5ae34..db6913b48edf 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -77,10 +77,17 @@ static unsigned int __ioremap_check_ram(struct resource=
+ *res)
+ =09start_pfn =3D (res->start + PAGE_SIZE - 1) >> PAGE_SHIFT;
+ =09stop_pfn =3D (res->end + 1) >> PAGE_SHIFT;
+ =09if (stop_pfn > start_pfn) {
+-=09=09for (i =3D 0; i < (stop_pfn - start_pfn); ++i)
+-=09=09=09if (pfn_valid(start_pfn + i) &&
+-=09=09=09    !PageReserved(pfn_to_page(start_pfn + i)))
++=09=09for (i =3D 0; i < (stop_pfn - start_pfn); ++i) {
++=09=09=09struct page *page;
++=09=09=09 /*
++=09=09=09  * We treat any pages that are not online (not managed
++=09=09=09  * by the buddy) as not being RAM. This includes
++=09=09=09  * ZONE_DEVICE pages.
++=09=09=09  */
++=09=09=09page =3D pfn_to_online_page(start_pfn + i);
++=09=09=09if (page && !PageReserved(page))
+ =09=09=09=09return IORES_MAP_SYSTEM_RAM;
++=09=09}
+ =09}
 =20
--=09if (unlikely(!pfn_valid(pfn)))
--=09=09return NULL;
--=09page =3D pfn_to_page(pfn);
--=09if (PageReserved(page))
-+=09/*
-+=09 * We reject any pages that are not online (not managed by the buddy).
-+=09 * This includes ZONE_DEVICE pages.
-+=09 */
-+=09page =3D pfn_to_online_page(pfn);
-+=09if (unlikely(!page || PageReserved(page)))
- =09=09return NULL;
- =09return page;
- }
+ =09return 0;
 --=20
 2.21.0
 
