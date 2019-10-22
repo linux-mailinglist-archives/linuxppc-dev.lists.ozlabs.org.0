@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D2BE0B79
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA7EE0B95
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:41:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yMZL2J83zDq9L
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:32:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yMlt2f2LzDqGG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:41:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="bW1pzTSJ"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="S2SiImL5"; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yKr714rSzDqLx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:14:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yKsp1dStzDqHh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:16:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1571764484;
+ s=mimecast20190719; t=1571764571;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=chgWTCW++wbVEBqtrkoZWwqs/HmhChTIKNep7qKM+do=;
- b=bW1pzTSJc7268CIaEzV4IicPFai7NKk9dR5KPjIjnr6xTI26CGXrRIsk4rXshtkSmprYcG
- Yzo/6wK0mvt/DX7xHy87ND0+QEkLUxPIIDU59kBWEuRuYko1q/wEc6qlEXYssiV2Mlc/Dm
- s3gUP8jhzJxWNlEfzgmslukMmFoNROw=
+ bh=zE4LVhifWdhxYyHhzJkYl/3tgDX3L2GHdaIdArSMoio=;
+ b=S2SiImL5EI99TdL+BZ51FcPXhfVITXICv5if+Ip+fUMAcXsvoioU/VaScR33UxFa1kNJCn
+ O/08A8P+LzkcRUs3L5zzx8MSQ0Nl+0SdaZMPU2eRLj22JwoKBAnnucMqG4cECbHBHNKUQ3
+ +GJCQLOYsshifXkQs+XKsGpR51bmhz0=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-253-Yw0ZwIooOVS1tCl_tEVIdg-1; Tue, 22 Oct 2019 13:14:40 -0400
+ us-mta-70-YJOMV_QcOSaZIfSzPrmgMA-1; Tue, 22 Oct 2019 13:15:02 -0400
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
  [10.5.11.14])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4E4731800D6A;
- Tue, 22 Oct 2019 17:14:35 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B09B7107AD33;
+ Tue, 22 Oct 2019 17:14:56 +0000 (UTC)
 Received: from t460s.redhat.com (ovpn-116-248.ams2.redhat.com [10.36.116.248])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 20E7A5ED21;
- Tue, 22 Oct 2019 17:14:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9F8885ED21;
+ Tue, 22 Oct 2019 17:14:35 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1 04/12] KVM: Prepare kvm_is_reserved_pfn() for
- PG_reserved changes
-Date: Tue, 22 Oct 2019 19:12:31 +0200
-Message-Id: <20191022171239.21487-5-david@redhat.com>
+Subject: [PATCH RFC v1 05/12] vfio/type1: Prepare is_invalid_reserved_pfn()
+ for PG_reserved changes
+Date: Tue, 22 Oct 2019 19:12:32 +0200
+Message-Id: <20191022171239.21487-6-david@redhat.com>
 In-Reply-To: <20191022171239.21487-1-david@redhat.com>
 References: <20191022171239.21487-1-david@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: Yw0ZwIooOVS1tCl_tEVIdg-1
+X-MC-Unique: YJOMV_QcOSaZIfSzPrmgMA-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Wed, 23 Oct 2019 05:28:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -133,24 +133,22 @@ Switching to pfn_to_online_page() keeps the existing behavior for
 PFNs without a memmap and for ZONE_DEVICE memory. They are treated as
 reserved and the page is not touched (e.g., to set it dirty or accessed).
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Kr=C4=8Dm=C3=A1=C5=99" <rkrcmar@redhat.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: KarimAllah Ahmed <karahmed@amazon.de>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- virt/kvm/kvm_main.c | 10 ++++++++--
+ drivers/vfio/vfio_iommu_type1.c | 10 ++++++++--
  1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 66a977472a1c..b233d4129014 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -151,9 +151,15 @@ __weak int kvm_arch_mmu_notifier_invalidate_range(stru=
-ct kvm *kvm,
-=20
- bool kvm_is_reserved_pfn(kvm_pfn_t pfn)
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type=
+1.c
+index 2ada8e6cdb88..f8ce8c408ba8 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -299,9 +299,15 @@ static int vfio_lock_acct(struct vfio_dma *dma, long n=
+page, bool async)
+  */
+ static bool is_invalid_reserved_pfn(unsigned long pfn)
  {
 -=09if (pfn_valid(pfn))
 -=09=09return PageReserved(pfn_to_page(pfn));
