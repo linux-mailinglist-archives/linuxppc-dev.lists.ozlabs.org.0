@@ -1,69 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C888EE038C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 14:00:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AE4E05A7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 15:59:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yBsL0g3czDqMl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 23:00:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yFVY5mfgzDqMm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 00:59:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Q9TzElre"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ZQj4J17F"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yBpc73twzDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 22:57:58 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id p1so9820140pgi.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 04:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=D0rJNiMucmje9ySL+8GwfdJbCi0znN4tp5AEOTct5ek=;
- b=Q9TzElreCGBjFtmMIvyX+l8Zg7cwI5RQ42FXfyjarsoL/0K911fj8x9LG+hJ8QVKnp
- CQ6ri+INGBJLUcCPKnuR+rLgmoKB1GyzB2L2in1h89Y1D1JO7g6pyFsr0TZgBAGyGB8l
- pl3mnvXGXeDM7sAgCG2Hh9o1pv9GHSRDc9M/QQQXhMuu8f0Goosq9YJOqvvohqCx2HVh
- QX3uxSVZsTseMh3D5j6SIZzRKJCnnc+JTJqcdFom1l3FDJd485TEE5lOASufNXoE5T4F
- XSae8h+5CnV2AeeOsi9L6cVsVzPYGmfsW1D5noQLbz1SbylgNXBRnzKyv48CEkwrF9Dx
- Njng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=D0rJNiMucmje9ySL+8GwfdJbCi0znN4tp5AEOTct5ek=;
- b=MVAQhtQh1ViRprBjO7p+AjNdVUi6ZhPXJgNo/A/8ja7dX4tbIJVazkOt4J8S7d6sPr
- bm7TlKbr6IVlQV9enTzvV8ifq+yRDFWG/aOeqVqWexmWSVD4QOmLT7XTwxhyxqA6moQO
- MZt/Nr60z65nIpJLaPcw3P2AT1suGLb7wx3wV+YJIAxz1ZMVP8b9tA5qIv8LE1QVVjBI
- N1sjYjb1C8HM/YdMklIX1q5DIyBAiSWTQrSLAqaAOj700WfjeUa+yJXQSpFZCwSL6phv
- mi+WaLNPv0VXMM8Ike5w8rbaflVkkvRYMZxqQbww582fe9aMSrO9ZA/yg8ieIWGVpeVx
- A/uQ==
-X-Gm-Message-State: APjAAAVuDrejK0qSnzYv5ZNaixfYAO6yr+6+5yHP9YSKwaCXXBPs1OZE
- sKviLezUeWvusZsbk5vSzKAdnjY+
-X-Google-Smtp-Source: APXvYqwsoYmv8CZfbd18TcOc3GN5grH1lOG4gKl/wG9+3t7tGEOSWYAIv8/fyq/t9Pxa/vPlIo5yNw==
-X-Received: by 2002:a63:cd18:: with SMTP id i24mr3500513pgg.333.1571745474511; 
- Tue, 22 Oct 2019 04:57:54 -0700 (PDT)
-Received: from bobo.local0.net (193-116-72-81.tpgi.com.au. [193.116.72.81])
- by smtp.gmail.com with ESMTPSA id o42sm19394556pjo.32.2019.10.22.04.57.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Oct 2019 04:57:53 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/powernv: Fix CPU idle to be called with IRQs disabled
-Date: Tue, 22 Oct 2019 21:58:14 +1000
-Message-Id: <20191022115814.22456-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yFRd2GNTzDqLP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 00:56:40 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46yFRN5RGFz9txqk;
+ Tue, 22 Oct 2019 15:56:32 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ZQj4J17F; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id p22PUQ3vFiOy; Tue, 22 Oct 2019 15:56:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46yFRN4LsBz9txgt;
+ Tue, 22 Oct 2019 15:56:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1571752592; bh=1LjPwd6XLIbjQx3hrlOjgSvYV+eG9f654o5JAAm2e04=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ZQj4J17FwpqEF33p3sY9E70aUPI+ssq1cMYBVlcjVfqBW87lEUlJNOU8yEB+4rep4
+ SanGh4KElYP0L0Ef3/c+UszBfJaOVxGzoXzTNh/mrxsdB9A+6Jy9H0oNnbw0TDDWJH
+ Je89nCT3V19gZ8M2P1z6Hp/liQkykFn5ZRfFfcBw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B5A78B932;
+ Tue, 22 Oct 2019 15:56:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id yibDlA1bYT8m; Tue, 22 Oct 2019 15:56:33 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 78A3C8B934;
+ Tue, 22 Oct 2019 15:56:33 +0200 (CEST)
+Subject: Re: [RFC PATCH] powerpc/32: Switch VDSO to C implementation.
+To: Thomas Gleixner <tglx@linutronix.de>
+References: <8ce3582f7f7da9ff0286ced857e5aa2e5ae6746e.1571662378.git.christophe.leroy@c-s.fr>
+ <alpine.DEB.2.21.1910212312520.2078@nanos.tec.linutronix.de>
+ <f4486e86-3c0c-0eec-1639-0e5956cdb8f1@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <95bd2367-8edc-29db-faa3-7729661e05f2@c-s.fr>
+Date: Tue, 22 Oct 2019 15:56:33 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
+In-Reply-To: <f4486e86-3c0c-0eec-1639-0e5956cdb8f1@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,123 +79,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ luto@kernel.org, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit e78a7614f3876 ("idle: Prevent late-arriving interrupts from
-disrupting offline") changes arch_cpu_idle_dead to be called with
-interrupts disabled, which triggers the WARN in pnv_smp_cpu_kill_self.
 
-Fix this by fixing up irq_happened after hard disabling, rather than
-requiring there are no pending interrupts, similarly to what was done
-done until commit 2525db04d1cc5 ("powerpc/powernv: Simplify lazy IRQ
-handling in CPU offline").
 
-Fixes: e78a7614f3876 ("idle: Prevent late-arriving interrupts from disrupting offline")
-Reported-by: Paul Mackerras <paulus@samba.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/platforms/powernv/smp.c | 50 +++++++++++++++++++---------
- 1 file changed, 35 insertions(+), 15 deletions(-)
+Le 22/10/2019 à 11:01, Christophe Leroy a écrit :
+> 
+> 
+> Le 21/10/2019 à 23:29, Thomas Gleixner a écrit :
+>> On Mon, 21 Oct 2019, Christophe Leroy wrote:
+>>
+>>> This is a tentative to switch powerpc/32 vdso to generic C 
+>>> implementation.
+>>> It will likely not work on 64 bits or even build properly at the moment.
+>>>
+>>> powerpc is a bit special for VDSO as well as system calls in the
+>>> way that it requires setting CR SO bit which cannot be done in C.
+>>> Therefore, entry/exit and fallback needs to be performed in ASM.
+>>>
+>>> To allow that, C fallbacks just return -1 and the ASM entry point
+>>> performs the system call when the C function returns -1.
+>>>
+>>> The performance is rather disappoiting. That's most likely all
+>>> calculation in the C implementation are based on 64 bits math and
+>>> converted to 32 bits at the very end. I guess C implementation should
+>>> use 32 bits math like the assembly VDSO does as of today.
+>>
+>>> gettimeofday:    vdso: 750 nsec/call
+>>>
+>>> gettimeofday:    vdso: 1533 nsec/call
+> 
+> Small improvement (3%) with the proposed change:
+> 
+> gettimeofday:    vdso: 1485 nsec/call
 
-diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
-index fbd6e6b7bbf2..241cfee744d9 100644
---- a/arch/powerpc/platforms/powernv/smp.c
-+++ b/arch/powerpc/platforms/powernv/smp.c
-@@ -146,6 +146,18 @@ static int pnv_smp_cpu_disable(void)
- 	return 0;
- }
- 
-+static void pnv_flush_interrupts(void)
-+{
-+	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+		if (xive_enabled())
-+			xive_flush_interrupt();
-+		else
-+			icp_opal_flush_interrupt();
-+	} else {
-+		icp_native_flush_interrupt();
-+	}
-+}
-+
- static void pnv_smp_cpu_kill_self(void)
- {
- 	unsigned int cpu;
-@@ -153,13 +165,6 @@ static void pnv_smp_cpu_kill_self(void)
- 	u64 lpcr_val;
- 
- 	/* Standard hot unplug procedure */
--	/*
--	 * This hard disables local interurpts, ensuring we have no lazy
--	 * irqs pending.
--	 */
--	WARN_ON(irqs_disabled());
--	hard_irq_disable();
--	WARN_ON(lazy_irq_pending());
- 
- 	idle_task_exit();
- 	current->active_mm = NULL; /* for sanity */
-@@ -172,6 +177,26 @@ static void pnv_smp_cpu_kill_self(void)
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
- 		wmask = SRR1_WAKEMASK_P8;
- 
-+	/*
-+	 * This turns the irq soft-disabled state we're called with, into a
-+	 * hard-disabled state with pending irq_happened interrupts cleared.
-+	 *
-+	 * PACA_IRQ_DEC   - Decrementer should be ignored.
-+	 * PACA_IRQ_HMI   - Can be ignored, processing is done in real mode.
-+	 * PACA_IRQ_DBELL, EE, PMI - Unexpected.
-+	 */
-+	hard_irq_disable();
-+	if (generic_check_cpu_restart(cpu))
-+		goto out;
-+	if (local_paca->irq_happened &
-+			(PACA_IRQ_DBELL | PACA_IRQ_EE | PACA_IRQ_PMI)) {
-+		if (local_paca->irq_happened & PACA_IRQ_EE)
-+			pnv_flush_interrupts();
-+		DBG("CPU%d Unexpected exit while offline irq_happened=%lx!\n",
-+				cpu, local_paca->irq_happened);
-+	}
-+	local_paca->irq_happened = PACA_IRQ_HARD_DIS;
-+
- 	/*
- 	 * We don't want to take decrementer interrupts while we are
- 	 * offline, so clear LPCR:PECE1. We keep PECE2 (and
-@@ -197,6 +222,7 @@ static void pnv_smp_cpu_kill_self(void)
- 
- 		srr1 = pnv_cpu_offline(cpu);
- 
-+		WARN_ON(!irqs_disabled());
- 		WARN_ON(lazy_irq_pending());
- 
- 		/*
-@@ -212,13 +238,7 @@ static void pnv_smp_cpu_kill_self(void)
- 		 */
- 		if (((srr1 & wmask) == SRR1_WAKEEE) ||
- 		    ((srr1 & wmask) == SRR1_WAKEHVI)) {
--			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
--				if (xive_enabled())
--					xive_flush_interrupt();
--				else
--					icp_opal_flush_interrupt();
--			} else
--				icp_native_flush_interrupt();
-+			pnv_flush_interrupts();
- 		} else if ((srr1 & wmask) == SRR1_WAKEHDBELL) {
- 			unsigned long msg = PPC_DBELL_TYPE(PPC_DBELL_SERVER);
- 			asm volatile(PPC_MSGCLR(%0) : : "r" (msg));
-@@ -266,7 +286,7 @@ static void pnv_smp_cpu_kill_self(void)
- 	 */
- 	lpcr_val = mfspr(SPRN_LPCR) | (u64)LPCR_PECE1;
- 	pnv_program_cpu_hotplug_lpcr(cpu, lpcr_val);
--
-+out:
- 	DBG("CPU%d coming online...\n", cpu);
- }
- 
--- 
-2.23.0
+By inlining do_hres() I get the following:
 
+gettimeofday:    vdso: 1072 nsec/call
+
+Christophe
+
+> 
+> Though still some way to go.
+> 
+> Christophe
+> 
+>>
+>> The only real 64bit math which can matter is the 64bit * 32bit multiply,
+>> i.e.
+>>
+>> static __always_inline
+>> u64 vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
+>> {
+>>          return ((cycles - last) & mask) * mult;
+>> }
+>>
+>> Everything else is trivial add/sub/shift, which should be roughly the 
+>> same
+>> in ASM.
+>>
+>> Can you try to replace that with:
+>>
+>> static __always_inline
+>> u64 vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
+>> {
+>>          u64 ret, delta = ((cycles - last) & mask);
+>>          u32 dh, dl;
+>>
+>>          dl = delta;
+>>          dh = delta >> 32;
+>>
+>>          res = mul_u32_u32(al, mul);
+>>          if (ah)
+>>                  res += mul_u32_u32(ah, mul) << 32;
+>>
+>>          return res;
+>> }
+>>
+>> That's pretty much what __do_get_tspec does in ASM.
+>>
+>> Thanks,
+>>
+>>     tglx
+>>
