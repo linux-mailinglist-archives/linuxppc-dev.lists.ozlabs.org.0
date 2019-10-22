@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBF1E0E83
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 01:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E577FE0E84
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 01:28:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yV4q7230zDqJW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 10:26:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yV7B4mDXzDqKT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 10:28:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,41 @@ Authentication-Results: lists.ozlabs.org;
 Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yV2R0RFNzDqNp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 10:24:13 +1100 (AEDT)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0] (helo=home.buserror.net)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yV3R70YPzDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 10:25:07 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
  by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1iN3TR-0003jP-93; Tue, 22 Oct 2019 18:21:57 -0500
-Date: Tue, 22 Oct 2019 18:21:55 -0500
+ id 1iN3UG-0003jo-Ga; Tue, 22 Oct 2019 18:22:51 -0500
+Message-ID: <51ee13bc7ced50c3aa1a7ac9335bea16651db684.camel@buserror.net>
 From: Scott Wood <oss@buserror.net>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Message-ID: <20191022232155.GA26174@home.buserror.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au, 
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
+ christophe.leroy@c-s.fr,  benh@kernel.crashing.org, paulus@samba.org,
+ npiggin@gmail.com,  keescook@chromium.org,
+ kernel-hardening@lists.openwall.com
+Date: Tue, 22 Oct 2019 18:22:47 -0500
+In-Reply-To: <0543af6f-df4a-81ff-41fe-c81959568859@huawei.com>
+References: <20190920094546.44948-1-yanaijie@huawei.com>
+ <9c2dd2a8-83f2-983c-383e-956e19a7803a@huawei.com>
+ <c4769b34-95f6-81b9-4856-50459630aa0d@huawei.com>
+ <38141b946f3376ce471e46eaf065e357ac540354.camel@buserror.net>
+ <90bb659a-bde4-3b8e-8f01-bf22d7534f44@huawei.com>
+ <34ef1980887c8a6d635c20bdaf748bb0548e51b5.camel@buserror.net>
+ <0543af6f-df4a-81ff-41fe-c81959568859@huawei.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- galak@kernel.crashing.org
+X-SA-Exim-Rcpt-To: yanaijie@huawei.com, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com, christophe.leroy@c-s.fr,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ keescook@chromium.org, kernel-hardening@lists.openwall.com,
+ wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
+ yebin10@huawei.com
 X-SA-Exim-Mail-From: oss@buserror.net
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
 X-Spam-Level: 
@@ -45,7 +63,7 @@ X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
  *      [score: 0.0000]
  * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
  *      this recipient and sender
-Subject: Pull request: scottwood/linux.git next
+Subject: Re: [PATCH v7 00/12] implement KASLR for powerpc/fsl_booke/32
 X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
 X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,58 +77,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
+ yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This contains KASLR support for book3e 32-bit.
+On Mon, 2019-10-21 at 11:34 +0800, Jason Yan wrote:
+> 
+> On 2019/10/10 2:46, Scott Wood wrote:
+> > On Wed, 2019-10-09 at 16:41 +0800, Jason Yan wrote:
+> > > Hi Scott,
+> > > 
+> > > On 2019/10/9 15:13, Scott Wood wrote:
+> > > > On Wed, 2019-10-09 at 14:10 +0800, Jason Yan wrote:
+> > > > > Hi Scott,
+> > > > > 
+> > > > > Would you please take sometime to test this?
+> > > > > 
+> > > > > Thank you so much.
+> > > > > 
+> > > > > On 2019/9/24 13:52, Jason Yan wrote:
+> > > > > > Hi Scott,
+> > > > > > 
+> > > > > > Can you test v7 to see if it works to load a kernel at a non-zero
+> > > > > > address?
+> > > > > > 
+> > > > > > Thanks,
+> > > > 
+> > > > Sorry for the delay.  Here's the output:
+> > > > 
+> > > 
+> > > Thanks for the test.
+> > > 
+> > > > ## Booting kernel from Legacy Image at 10000000 ...
+> > > >      Image Name:   Linux-5.4.0-rc2-00050-g8ac2cf5b4
+> > > >      Image Type:   PowerPC Linux Kernel Image (gzip compressed)
+> > > >      Data Size:    7521134 Bytes = 7.2 MiB
+> > > >      Load Address: 04000000
+> > > >      Entry Point:  04000000
+> > > >      Verifying Checksum ... OK
+> > > > ## Flattened Device Tree blob at 1fc00000
+> > > >      Booting using the fdt blob at 0x1fc00000
+> > > >      Uncompressing Kernel Image ... OK
+> > > >      Loading Device Tree to 07fe0000, end 07fff65c ... OK
+> > > > KASLR: No safe seed for randomizing the kernel base.
+> > > > OF: reserved mem: initialized node qman-fqd, compatible id fsl,qman-
+> > > > fqd
+> > > > OF: reserved mem: initialized node qman-pfdr, compatible id fsl,qman-
+> > > > pfdr
+> > > > OF: reserved mem: initialized node bman-fbpr, compatible id fsl,bman-
+> > > > fbpr
+> > > > Memory CAM mapping: 64/64/64 Mb, residual: 12032Mb
+> > > 
+> > > When boot from 04000000, the max CAM value is 64M. And
+> > > you have a board with 12G memory, CONFIG_LOWMEM_CAM_NUM=3 means only
+> > > 192M memory is mapped and when kernel is randomized at the middle of
+> > > this 192M memory, we will not have enough continuous memory for node
+> > > map.
+> > > 
+> > > Can you set CONFIG_LOWMEM_CAM_NUM=8 and see if it works?
+> > 
+> > OK, that worked.
+> > 
+> 
+> Hi Scott, any more cases should be tested or any more comments?
+> What else need to be done before this feature can be merged?
 
-The following changes since commit 612ee81b9461475b5a5612c2e8d71559dd3c7920:
+I've just applied it and sent a pull request.
 
-  powerpc/papr_scm: Fix an off-by-one check in papr_scm_meta_{get, set} (2019-10-10 20:15:53 +1100)
+-Scott
 
-are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/scottwood/linux.git next
-
-for you to fetch changes up to 9df1ef3f1376ec5d3a1b51a4546c94279bcd88ca:
-
-  powerpc/fsl_booke/32: Document KASLR implementation (2019-10-21 16:09:16 -0500)
-
-----------------------------------------------------------------
-Jason Yan (12):
-      powerpc: unify definition of M_IF_NEEDED
-      powerpc: move memstart_addr and kernstart_addr to init-common.c
-      powerpc: introduce kernstart_virt_addr to store the kernel base
-      powerpc/fsl_booke/32: introduce create_kaslr_tlb_entry() helper
-      powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
-      powerpc/fsl_booke/32: implement KASLR infrastructure
-      powerpc/fsl_booke/32: randomize the kernel image offset
-      powerpc/fsl_booke/kaslr: clear the original kernel if randomized
-      powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
-      powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
-      powerpc/fsl_booke/kaslr: export offset in VMCOREINFO ELF notes
-      powerpc/fsl_booke/32: Document KASLR implementation
-
- Documentation/powerpc/kaslr-booke32.rst       |  42 +++
- arch/powerpc/Kconfig                          |  11 +
- arch/powerpc/include/asm/nohash/mmu-book3e.h  |  11 +-
- arch/powerpc/include/asm/page.h               |   7 +
- arch/powerpc/kernel/early_32.c                |   5 +-
- arch/powerpc/kernel/exceptions-64e.S          |  12 +-
- arch/powerpc/kernel/fsl_booke_entry_mapping.S |  25 +-
- arch/powerpc/kernel/head_fsl_booke.S          |  61 +++-
- arch/powerpc/kernel/machine_kexec.c           |   1 +
- arch/powerpc/kernel/misc_64.S                 |   7 +-
- arch/powerpc/kernel/setup-common.c            |  20 ++
- arch/powerpc/mm/init-common.c                 |   7 +
- arch/powerpc/mm/init_32.c                     |   5 -
- arch/powerpc/mm/init_64.c                     |   5 -
- arch/powerpc/mm/mmu_decl.h                    |  11 +
- arch/powerpc/mm/nohash/Makefile               |   1 +
- arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-
- arch/powerpc/mm/nohash/kaslr_booke.c          | 401 ++++++++++++++++++++++++++
- 18 files changed, 587 insertions(+), 53 deletions(-)
- create mode 100644 Documentation/powerpc/kaslr-booke32.rst
- create mode 100644 arch/powerpc/mm/nohash/kaslr_booke.c
