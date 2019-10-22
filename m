@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DB9E0BA2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 030F5E0BB7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:47:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yMpQ2BC6zDqNp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:43:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yMts3jlgzDqJB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:47:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="LeeYjhX3"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="ixp9g2GH"; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yKt65vNbzDqBj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:16:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yKtX1ZHxzDqBj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:16:51 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1571764588;
+ s=mimecast20190719; t=1571764608;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U1S4FppofmjyZijjNbIY0XCtcc4HnEIEIXbCi0lPb5Y=;
- b=LeeYjhX3hBVL/oRC2qHu1DVRYcrCfkF+vRZNKX3DygB0PAxAwwAtyx8hGHz/4zR+10k7aK
- jCl77U0PKwONnXN7YCUJXVG3O3WN9ijJ1wRZJDCaYcYqFJwIbGXfqkybM2Pmtvo6B5GJxF
- Kbs8S2wphjxwTCwVZcOA6y1oWq44CGE=
+ bh=90Byu3ETLZBHqIXXrLqjffjh+7RU+7dCwtXpXn0ipgQ=;
+ b=ixp9g2GH6xS5lBXPFQZ+B6PYx0iaQq89r+Pa1VsxFzD1ds6ozOx7xah1JF8XWRIz8aYb7+
+ nW8MaW/THQlm352Lmj3Sz5khMv+9fsBQLV6KvsTGe1pdUsNJXaYjGv/wQC6qKZMVAHpg1u
+ 1CoEKz+qurNGPe2Ie1iJPuOnATlw+SI=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-152-fU-qS8_YMIyHrwTYnW1SnA-1; Tue, 22 Oct 2019 13:16:26 -0400
+ us-mta-82-zN07TtZJN9uCqMmQ3T4-mg-1; Tue, 22 Oct 2019 13:16:47 -0400
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
  [10.5.11.14])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8F4E9107AD31;
- Tue, 22 Oct 2019 17:16:21 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F1D4E1005509;
+ Tue, 22 Oct 2019 17:16:41 +0000 (UTC)
 Received: from t460s.redhat.com (ovpn-116-248.ams2.redhat.com [10.36.116.248])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 36C045DA8D;
- Tue, 22 Oct 2019 17:16:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DBBFC5DA8D;
+ Tue, 22 Oct 2019 17:16:21 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1 09/12] powerpc/64s: Prepare hash_page_do_lazy_icache()
- for PG_reserved changes
-Date: Tue, 22 Oct 2019 19:12:36 +0200
-Message-Id: <20191022171239.21487-10-david@redhat.com>
+Subject: [PATCH RFC v1 10/12] powerpc/mm: Prepare maybe_pte_to_page() for
+ PG_reserved changes
+Date: Tue, 22 Oct 2019 19:12:37 +0200
+Message-Id: <20191022171239.21487-11-david@redhat.com>
 In-Reply-To: <20191022171239.21487-1-david@redhat.com>
 References: <20191022171239.21487-1-david@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: fU-qS8_YMIyHrwTYnW1SnA-1
+X-MC-Unique: zN07TtZJN9uCqMmQ3T4-mg-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -130,43 +130,37 @@ here, that will skip all ZONE_DEVICE pages right away.
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Allison Randal <allison@lohutok.net>
 Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@linux.ibm.com>
-Cc: YueHaibing <yuehaibing@huawei.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
+ arch/powerpc/mm/pgtable.c | 10 ++++++----
  1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s=
-64/hash_utils.c
-index 6c123760164e..a1566039e747 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1084,13 +1084,15 @@ void hash__early_init_mmu_secondary(void)
-  */
- unsigned int hash_page_do_lazy_icache(unsigned int pp, pte_t pte, int trap=
-)
- {
--=09struct page *page;
-+=09struct page *page =3D pfn_to_online_page(pte_pfn(pte));
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index e3759b69f81b..613c98fa7dc0 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -55,10 +55,12 @@ static struct page *maybe_pte_to_page(pte_t pte)
+ =09unsigned long pfn =3D pte_pfn(pte);
+ =09struct page *page;
 =20
--=09if (!pfn_valid(pte_pfn(pte)))
+-=09if (unlikely(!pfn_valid(pfn)))
+-=09=09return NULL;
+-=09page =3D pfn_to_page(pfn);
+-=09if (PageReserved(page))
 +=09/*
-+=09 * We ignore any pages that are not online (not managed by the buddy).
++=09 * We reject any pages that are not online (not managed by the buddy).
 +=09 * This includes ZONE_DEVICE pages.
 +=09 */
-+=09if (!page)
- =09=09return pp;
-=20
--=09page =3D pte_page(pte);
--
- =09/* page is dirty */
- =09if (!test_bit(PG_arch_1, &page->flags) && !PageReserved(page)) {
- =09=09if (trap =3D=3D 0x400) {
++=09page =3D pfn_to_online_page(pfn);
++=09if (unlikely(!page || PageReserved(page)))
+ =09=09return NULL;
+ =09return page;
+ }
 --=20
 2.21.0
 
