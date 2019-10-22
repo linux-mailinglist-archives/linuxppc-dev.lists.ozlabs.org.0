@@ -2,82 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB204DFEE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 10:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CFCE0027
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 10:59:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46y5bn2Bh4zDqGS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 19:03:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46y6rc71J2zDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 19:59:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46y5Mz65dFzDqMr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 18:53:03 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9M7qwrr011397
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 03:53:00 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vsuymk8ab-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 03:53:00 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <clombard@linux.vnet.ibm.com>;
- Tue, 22 Oct 2019 08:52:52 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 22 Oct 2019 08:52:49 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9M7qngg65142914
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Oct 2019 07:52:49 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 133F511C04A;
- Tue, 22 Oct 2019 07:52:49 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C5F6C11C052;
- Tue, 22 Oct 2019 07:52:48 +0000 (GMT)
-Received: from lombard-w541.nice-meridia.fr.ibm.com (unknown [9.134.167.65])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 22 Oct 2019 07:52:48 +0000 (GMT)
-From: christophe lombard <clombard@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
- ajd@linux.ibm.com, groug@kaod.org
-Subject: [PATCH 3/3] powerpc/pseries: Fixup config space size of OpenCAPI
- devices
-Date: Tue, 22 Oct 2019 09:52:47 +0200
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20191022075247.16266-1-clombard@linux.vnet.ibm.com>
-References: <20191022075247.16266-1-clombard@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19102207-4275-0000-0000-000003755CA0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102207-4276-0000-0000-000038887F4E
-Message-Id: <20191022075247.16266-4-clombard@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-22_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910220075
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46y6pG5cx1zDqJ1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 19:57:26 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9M8vAi3013910;
+ Tue, 22 Oct 2019 03:57:10 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x9M8v9Dv013909;
+ Tue, 22 Oct 2019 03:57:09 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 22 Oct 2019 03:57:09 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nathan Chancellor <natechancellor@gmail.com>
+Subject: Re: [PATCH v4 3/3] powerpc/prom_init: Use -ffreestanding to avoid a
+ reference to bcmp
+Message-ID: <20191022085709.GI28442@gate.crashing.org>
+References: <20190911182049.77853-1-natechancellor@gmail.com>
+ <20191014025101.18567-1-natechancellor@gmail.com>
+ <20191014025101.18567-4-natechancellor@gmail.com>
+ <20191014093501.GE28442@gate.crashing.org>
+ <CAKwvOdmcUT2A9FG0JD9jd0s=gAavRc_h+RLG6O3mBz4P1FfF8w@mail.gmail.com>
+ <20191014191141.GK28442@gate.crashing.org>
+ <20191018190022.GA1292@ubuntu-m2-xlarge-x86>
+ <20191018200210.GR28442@gate.crashing.org>
+ <20191022051529.GA44041@ubuntu-m2-xlarge-x86>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191022051529.GA44041@ubuntu-m2-xlarge-x86>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,39 +60,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix up the pci config size of the OpenCAPI PCIe devices in the pseries
-environment.
-Most of OpenCAPI PCIe devices have 4096 bytes of configuration space.
+On Mon, Oct 21, 2019 at 10:15:29PM -0700, Nathan Chancellor wrote:
+> On Fri, Oct 18, 2019 at 03:02:10PM -0500, Segher Boessenkool wrote:
+> > I think the proper solution is for the kernel to *do* use -ffreestanding,
+> > and then somehow tell the kernel that memcpy etc. are the standard
+> > functions.  A freestanding GCC already requires memcpy, memmove, memset,
+> > memcmp, and sometimes abort to exist and do the standard thing; why cannot
+> > programs then also rely on it to be the standard functions.
+> > 
+> > What exact functions are the reason the kernel does not use -ffreestanding?
+> > Is it just memcpy?  Is more wanted?
+> 
+> I think Linus summarized it pretty well here:
+> 
+> https://lore.kernel.org/lkml/CAHk-=wi-epJZfBHDbKKDZ64us7WkF=LpUfhvYBmZSteO8Q0RAg@mail.gmail.com/
 
-Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
----
- arch/powerpc/platforms/pseries/pci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+GCC recognises __builtin_memcpy (or any other __builtin) just fine even
+with -ffreestanding.
 
-diff --git a/arch/powerpc/platforms/pseries/pci.c b/arch/powerpc/platforms/pseries/pci.c
-index 1eae1d09980c..3397784767b0 100644
---- a/arch/powerpc/platforms/pseries/pci.c
-+++ b/arch/powerpc/platforms/pseries/pci.c
-@@ -291,6 +291,15 @@ static void fixup_winbond_82c105(struct pci_dev* dev)
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_WINBOND, PCI_DEVICE_ID_WINBOND_82C105,
- 			 fixup_winbond_82c105);
- 
-+static void fixup_opencapi_cfg_size(struct pci_dev *pdev)
-+{
-+	if (!machine_is(pseries))
-+		return;
-+
-+	pdev->cfg_size = PCI_CFG_SPACE_EXP_SIZE;
-+}
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IBM, 0x062b, fixup_opencapi_cfg_size);
-+
- int pseries_root_bridge_prepare(struct pci_host_bridge *bridge)
- {
- 	struct device_node *dn, *pdn;
--- 
-2.21.0
+So the kernel wants a warning (or error) whenever a call to one of these
+library functions is generated by the compiler without the user asking
+for it directly (via a __builtin)?  And that is all that is needed for
+the kernel to use -ffreestanding?
 
+That shouldn't be hard.  Anything missing here?
+
+
+Segher
