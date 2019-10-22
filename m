@@ -2,100 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFA9E0C11
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D3CE0E06
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 00:06:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yN6Z5cshzDqPb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:57:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ySJg3lmPzDqHx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 09:06:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=daktronics.com (client-ip=40.107.81.70;
- helo=nam01-by2-obe.outbound.protection.outlook.com;
- envelope-from=matt.sickler@daktronics.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=daktronics.com
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=daktronics.com header.i=@daktronics.com
- header.b="cIfdbfWW"; dkim-atps=neutral
-Received: from NAM01-BY2-obe.outbound.protection.outlook.com
- (mail-eopbgr810070.outbound.protection.outlook.com [40.107.81.70])
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="YHbp1u4y"; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yLlj1QtXzDqDS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:55:59 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jxBBDI5Hbch/qzVP3JJKncVckwcs/NxxkO0AaeAkSypuhNCkz6ZTM93mPKCS83mQu6P5kB20JF5Ioqdh1C1aXhw/ksJ08NKCoiorsUTjiU65FcLvgixGtIXVehWBk7Hyan4OJVwM0n6qvPACSki+eVxdPKZ2kRRc1SSIpzvh8kFJPISSfee+glqwzchYTN/s5s5wsZza4QuVcZ6Urf+rJRGtxFgHPMTge2/7w5deOffAd2w+bbb3pWNOwccGFzBayXjM22G4c1xHRpuuVQ99aU1NhZFHY5avjSwJRYekf2ueXi4P5R/MqlNsSN49bkz6mq0j4f4WFnrKEmVBOmNbLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1thR0bk6as6nO9GCMTPrp4CeRx1jloAgo/zT6b5nWdI=;
- b=XMoCjBPwki0zEQJBOV9t5dLQUybleiVwPp66a1woPm/aDYJUKmjchfT1TIRwajodD7hwsJcssFBfQuAfqXJ5q6XnhWWXNJLG2l0X4sr+KZhPgihlRdkVfefaQIRanSf7TS0evRrzSiuiFWkvM3ARVGt5NB9DG/gaEdtgVc29Pmy7hGdW6ZNur4hdC7Pvk2luSS2fWjW2wKQhJyisTWeW49tQ9r3Q3RYWudwZVbL+Ek9MynnZMB90APuQiyD+cp3fJMLdngMHtk9Xw5ZcCtj8jdTsJfVOuJVqiwOqjoeXsi8k57AVom+9OPbyXDu8xnEOYSuxb0fU3EQdVQZdf1ti1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=daktronics.com; dmarc=pass action=none
- header.from=daktronics.com; dkim=pass header.d=daktronics.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=daktronics.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1thR0bk6as6nO9GCMTPrp4CeRx1jloAgo/zT6b5nWdI=;
- b=cIfdbfWW/bd6l8KsEcHxV9GA8J9PbwTiteh5MZK4Q5VZa3OmQSSn/+6v/4uxPKC6yH/CZEGntUgBQkVVtu7UVf7WHNWY8vvEipBKQUa82AYHvPht52o3Ge5nWe+76WbW56BGwiDzSu9ziyVy6feH+WvSX1WuaBCCdFJRcpO8BJw=
-Received: from SN6PR02MB4016.namprd02.prod.outlook.com (52.135.69.145) by
- SN6PR02MB5422.namprd02.prod.outlook.com (20.177.249.159) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2387.20; Tue, 22 Oct 2019 17:55:55 +0000
-Received: from SN6PR02MB4016.namprd02.prod.outlook.com
- ([fe80::ec31:ae9d:c354:319a]) by SN6PR02MB4016.namprd02.prod.outlook.com
- ([fe80::ec31:ae9d:c354:319a%5]) with mapi id 15.20.2347.029; Tue, 22 Oct 2019
- 17:55:55 +0000
-From: Matt Sickler <Matt.Sickler@daktronics.com>
-To: David Hildenbrand <david@redhat.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH RFC v1 07/12] staging: kpc2000: Prepare
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yQtK3jG7zDqG9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 08:02:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1571778119;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lDluS1kFGuVOpDajeFMqVqWUjgUNxTiQB+IGh/4U/Fc=;
+ b=YHbp1u4ysqfD0tjck2+6YiEtSZ2R5k9wyS+/FWZf3hG6HFgb66fFDdhxfeye5SkumvxejE
+ HQzcwyhCtyxr9Qm91UMgpA81LT2fxMMLIUHpQ/zgmvWClCt8WYqP5GaEMBGnLa/z6v/MDD
+ 1OdoypBGVIqbFRPIdlLDx9pWieHkhLU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-72-nU6b3-OQN5ap8UXZu4oVWg-1; Tue, 22 Oct 2019 17:01:55 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3AB3E1005500;
+ Tue, 22 Oct 2019 21:01:50 +0000 (UTC)
+Received: from [10.36.116.48] (ovpn-116-48.ams2.redhat.com [10.36.116.48])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DB2D860872;
+ Tue, 22 Oct 2019 21:01:24 +0000 (UTC)
+Subject: Re: [PATCH RFC v1 07/12] staging: kpc2000: Prepare
  transfer_complete_cb() for PG_reserved changes
-Thread-Topic: [PATCH RFC v1 07/12] staging: kpc2000: Prepare
- transfer_complete_cb() for PG_reserved changes
-Thread-Index: AQHViPxcbvM0mySGyk+6f2twxm2iBqdm8Y8g
-Date: Tue, 22 Oct 2019 17:55:54 +0000
-Message-ID: <SN6PR02MB4016D75C028B7A1BEA005697EE680@SN6PR02MB4016.namprd02.prod.outlook.com>
+To: Matt Sickler <Matt.Sickler@daktronics.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <20191022171239.21487-1-david@redhat.com>
  <20191022171239.21487-8-david@redhat.com>
-In-Reply-To: <20191022171239.21487-8-david@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Matt.Sickler@daktronics.com; 
-x-originating-ip: [63.85.214.4]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 14d5229b-224f-4510-04eb-08d757191616
-x-ms-traffictypediagnostic: SN6PR02MB5422:
-x-microsoft-antispam-prvs: <SN6PR02MB54226B9C5616DE2F7361BA9EEE680@SN6PR02MB5422.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2582;
-x-forefront-prvs: 01986AE76B
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(136003)(346002)(396003)(376002)(39860400002)(366004)(189003)(199004)(6506007)(7696005)(2906002)(99286004)(7366002)(76176011)(7406005)(33656002)(446003)(71190400001)(71200400001)(11346002)(76116006)(486006)(2501003)(229853002)(64756008)(66946007)(52536014)(66476007)(476003)(66556008)(66446008)(4326008)(186003)(26005)(102836004)(14454004)(7416002)(5660300002)(25786009)(8676002)(81156014)(81166006)(316002)(6436002)(14444005)(305945005)(256004)(7736002)(55016002)(74316002)(66066001)(86362001)(8936002)(9686003)(66574012)(478600001)(6116002)(6246003)(3846002)(54906003)(110136005);
- DIR:OUT; SFP:1101; SCL:1; SRVR:SN6PR02MB5422;
- H:SN6PR02MB4016.namprd02.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: daktronics.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GV0bdRparBfPQYQiFd5mobcttfMeUhasgAomG69+R6ITIQuSKj+emPcWIYxlfOeRZy7MfLPZvE0mrCWT5GUzDgSo8zpDESD97P2ir2D7xoK9e61oMQ+Bx4Kg2caoViGj2WeFmmTziW2k7agIX4XGyNhSGCJOvEVktQjXoRZEtbpqetl6kkPcdW9P9zX7eK3ZDb72F7GWH1wJcjovFD4l8fhPNq4z08ljVEPZiSdW+lQ0C8ZiapkjXU1dulIsfOssr4NGHB8w8LopgfEB1NLvmf4HjZTHyYYRwCoqXKshIQXBaIdMd9cH+TC9QvWZJ/3Zm4kX4CRF1TmOSULUXtBoIFydeaIk3/QeIwhe7YIE+YoznNeUMCtzFDHpiMXHT5MUfSJhS8lIvE6GUCCkxPEAiEjThv9TxOVIUBT4hrASPTrDtpY3d+q81Uds88Po4IyJ
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <SN6PR02MB4016D75C028B7A1BEA005697EE680@SN6PR02MB4016.namprd02.prod.outlook.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <20b91026-a685-8c49-4abe-a9d0339113cb@redhat.com>
+Date: Tue, 22 Oct 2019 23:01:23 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-X-OriginatorOrg: daktronics.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14d5229b-224f-4510-04eb-08d757191616
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Oct 2019 17:55:54.8547 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: be88af81-0945-42aa-a3d2-b122777351a2
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: K2clwrltXeRtnk4WAd1cR0av6VmYgyUI7pYiHi+h0yWZNiiBmnQ5vA2nFJzB1mWYYjXQrWLx8smHBcAJsa5mmTpCJBljsFUUXPbDCrP/Hhg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR02MB5422
-X-Mailman-Approved-At: Wed, 23 Oct 2019 05:28:43 +1100
+In-Reply-To: <SN6PR02MB4016D75C028B7A1BEA005697EE680@SN6PR02MB4016.namprd02.prod.outlook.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-MC-Unique: nU6b3-OQN5ap8UXZu4oVWg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Wed, 23 Oct 2019 09:04:37 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,7 +83,7 @@ Cc: Kate Stewart <kstewart@linuxfoundation.org>,
  Sasha Levin <sashal@kernel.org>,
  "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
  Michal Hocko <mhocko@suse.com>,
- =?utf-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  Pavel Tatashin <pavel.tatashin@microsoft.com>,
  KarimAllah Ahmed <karahmed@amazon.de>,
@@ -119,8 +91,8 @@ Cc: Kate Stewart <kstewart@linuxfoundation.org>,
  Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
  "linux-mm@kvack.org" <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
  "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>, "K. Y.
- Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
  Ben Chan <benchan@chromium.org>, Kees Cook <keescook@chromium.org>,
  "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
  Stefano Stabellini <sstabellini@kernel.org>,
@@ -136,7 +108,7 @@ Cc: Kate Stewart <kstewart@linuxfoundation.org>,
  "Isaac J. Manjarres" <isaacm@codeaurora.org>, Juergen Gross <jgross@suse.com>,
  Anshuman Khandual <anshuman.khandual@arm.com>,
  Haiyang Zhang <haiyangz@microsoft.com>,
- =?utf-8?B?U2ltb24gU2FuZHN0csO2bQ==?= <simon@nikanor.nu>,
+ =?UTF-8?Q?Simon_Sandstr=c3=b6m?= <simon@nikanor.nu>,
  Dan Williams <dan.j.williams@intel.com>,
  "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>, Qian Cai <cai@lca.pw>,
  Alex Williamson <alex.williamson@redhat.com>,
@@ -159,33 +131,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PlJpZ2h0IG5vdywgWk9ORV9ERVZJQ0UgbWVtb3J5IGlzIGFsd2F5cyBzZXQgUEdfcmVzZXJ2ZWQu
-IFdlIHdhbnQgdG8gY2hhbmdlIHRoYXQuDQo+DQo+VGhlIHBhZ2VzIGFyZSBvYnRhaW5lZCB2aWEg
-Z2V0X3VzZXJfcGFnZXNfZmFzdCgpLiBJIGFzc3VtZSwgdGhlc2UgY291bGQgYmUgWk9ORV9ERVZJ
-Q0UgcGFnZXMuIExldCdzIGp1c3QgZXhjbHVkZSB0aGVtIGFzIHdlbGwgZXhwbGljaXRseS4NCg0K
-SSdtIG5vdCBzdXJlIHdoYXQgWk9ORV9ERVZJQ0UgcGFnZXMgYXJlLCBidXQgdGhlc2UgcGFnZXMg
-YXJlIG5vcm1hbCBzeXN0ZW0gUkFNLCB0eXBpY2FsbHkgSHVnZVBhZ2VzIChidXQgbm90IGFsd2F5
-cykuDQoNCj4NCj5DYzogR3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9u
-Lm9yZz4NCj5DYzogVmFuZGFuYSBCTiA8Ym52YW5kYW5hQGdtYWlsLmNvbT4NCj5DYzogIlNpbW9u
-IFNhbmRzdHLDtm0iIDxzaW1vbkBuaWthbm9yLm51Pg0KPkNjOiBEYW4gQ2FycGVudGVyIDxkYW4u
-Y2FycGVudGVyQG9yYWNsZS5jb20+DQo+Q2M6IE5pc2hrYSBEYXNndXB0YSA8bmlzaGthZGcubGlu
-dXhAZ21haWwuY29tPg0KPkNjOiBNYWRodW1pdGhhIFByYWJha2FyYW4gPG1hZGh1bWl0aGFiaXdA
-Z21haWwuY29tPg0KPkNjOiBGYWJpbyBFc3RldmFtIDxmZXN0ZXZhbUBnbWFpbC5jb20+DQo+Q2M6
-IE1hdHQgU2lja2xlciA8TWF0dC5TaWNrbGVyQGRha3Ryb25pY3MuY29tPg0KPkNjOiBKZXJlbXkg
-U293ZGVuIDxqZXJlbXlAYXphemVsLm5ldD4NCj5TaWduZWQtb2ZmLWJ5OiBEYXZpZCBIaWxkZW5i
-cmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCj4tLS0NCj4gZHJpdmVycy9zdGFnaW5nL2twYzIwMDAv
-a3BjX2RtYS9maWxlb3BzLmMgfCAzICsrLQ0KPiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25z
-KCspLCAxIGRlbGV0aW9uKC0pDQo+DQo+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3RhZ2luZy9rcGMy
-MDAwL2twY19kbWEvZmlsZW9wcy5jIGIvZHJpdmVycy9zdGFnaW5nL2twYzIwMDAva3BjX2RtYS9m
-aWxlb3BzLmMNCj5pbmRleCBjYjUyYmQ5YTZkMmYuLjQ1N2FkY2M4MWZlNiAxMDA2NDQNCj4tLS0g
-YS9kcml2ZXJzL3N0YWdpbmcva3BjMjAwMC9rcGNfZG1hL2ZpbGVvcHMuYw0KPisrKyBiL2RyaXZl
-cnMvc3RhZ2luZy9rcGMyMDAwL2twY19kbWEvZmlsZW9wcy5jDQo+QEAgLTIxMiw3ICsyMTIsOCBA
-QCB2b2lkICB0cmFuc2Zlcl9jb21wbGV0ZV9jYihzdHJ1Y3QgYWlvX2NiX2RhdGEgKmFjZCwgc2l6
-ZV90IHhmcl9jb3VudCwgdTMyIGZsYWdzKQ0KPiAgICAgICAgQlVHX09OKGFjZC0+bGRldi0+cGxk
-ZXYgPT0gTlVMTCk7DQo+DQo+ICAgICAgICBmb3IgKGkgPSAwIDsgaSA8IGFjZC0+cGFnZV9jb3Vu
-dCA7IGkrKykgew0KPi0gICAgICAgICAgICAgICBpZiAoIVBhZ2VSZXNlcnZlZChhY2QtPnVzZXJf
-cGFnZXNbaV0pKSB7DQo+KyAgICAgICAgICAgICAgIGlmICghUGFnZVJlc2VydmVkKGFjZC0+dXNl
-cl9wYWdlc1tpXSkgJiYNCj4rICAgICAgICAgICAgICAgICAgICFpc196b25lX2RldmljZV9wYWdl
-KGFjZC0+dXNlcl9wYWdlc1tpXSkpIHsNCj4gICAgICAgICAgICAgICAgICAgICAgICBzZXRfcGFn
-ZV9kaXJ0eShhY2QtPnVzZXJfcGFnZXNbaV0pOw0KPiAgICAgICAgICAgICAgICB9DQo+ICAgICAg
-ICB9DQo+LS0NCj4yLjIxLjANCg0K
+On 22.10.19 19:55, Matt Sickler wrote:
+>> Right now, ZONE_DEVICE memory is always set PG_reserved. We want to chan=
+ge that.
+>>
+>> The pages are obtained via get_user_pages_fast(). I assume, these could =
+be ZONE_DEVICE pages. Let's just exclude them as well explicitly.
+>=20
+> I'm not sure what ZONE_DEVICE pages are, but these pages are normal syste=
+m RAM, typically HugePages (but not always).
+
+ZONE_DEVICE, a.k.a. devmem, are pages that bypass the pagecache (e.g.,=20
+DAX) completely and will therefore never get swapped. These pages are=20
+not managed by any page allocator (especially not the buddy), they are=20
+rather "directly mapped device memory".
+
+E.g., a NVDIMM. It is mapped into the physical address space similar to=20
+ordinary RAM (a DIMM). Any write to such a PFN will directly end up on=20
+the target device. In contrast to a DIMM, the memory is persistent=20
+accross reboots.
+
+Now, if you mmap such an NVDIMM into a user space process, you will end=20
+up with ZONE_DEVICE pages as part of the user space mapping (VMA).=20
+get_user_pages_fast() on this memory will result in "struct pages" that=20
+belong to ZONE_DEVICE. This is where this patch comes into play.
+
+This patch makes sure that there is absolutely no change once we stop=20
+setting these ZONE_DEVICE pages PG_reserved. E.g., AFAIK, setting a=20
+ZONE_DEVICE page dirty does not make too much sense (never swapped).
+
+Yes, it might not be a likely setup, however, it is possible. In this=20
+series I collect all places that *could* be affected. If that change is=20
+really needed has to be decided. I can see that the two staging drivers=20
+I have patches for might be able to just live with the change - but then=20
+we talked about it and are aware of the change.
+
+Thanks!
+
+--=20
+
+Thanks,
+
+David / dhildenb
+
