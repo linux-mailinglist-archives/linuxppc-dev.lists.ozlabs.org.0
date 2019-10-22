@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46290E0B8A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DB9E0BA2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:43:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yMjM61TYzDqNp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:39:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yMpQ2BC6zDqNp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 05:43:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="GnCRogCT"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="LeeYjhX3"; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yKsk70h5zDqBj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:16:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yKt65vNbzDqBj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 04:16:30 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1571764567;
+ s=mimecast20190719; t=1571764588;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FajnFySKW/A5xDPqu9rw0Ua4hR3TkmQD80jFnqfnPxM=;
- b=GnCRogCTDpnhmDEdOZRo7GWzYBIxwYdvwpBajKNxNEIjNwLVvcV6sAKKobCVHktBkUhfDN
- JP6xVs7sxv41sfTksQJK/IgnLBPKIsOqe1lvfdE1PM8fq0Pbwp/jNZLeRGGlhYqqpQDPk6
- ax/bEFoXGGAcPuH+AuVpqWkmWXnrbgo=
+ bh=U1S4FppofmjyZijjNbIY0XCtcc4HnEIEIXbCi0lPb5Y=;
+ b=LeeYjhX3hBVL/oRC2qHu1DVRYcrCfkF+vRZNKX3DygB0PAxAwwAtyx8hGHz/4zR+10k7aK
+ jCl77U0PKwONnXN7YCUJXVG3O3WN9ijJ1wRZJDCaYcYqFJwIbGXfqkybM2Pmtvo6B5GJxF
+ Kbs8S2wphjxwTCwVZcOA6y1oWq44CGE=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-327-nIyOmixtOyKHdiiLzBpxAg-1; Tue, 22 Oct 2019 13:16:06 -0400
+ us-mta-152-fU-qS8_YMIyHrwTYnW1SnA-1; Tue, 22 Oct 2019 13:16:26 -0400
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
  [10.5.11.14])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E1C24800D53;
- Tue, 22 Oct 2019 17:16:00 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8F4E9107AD31;
+ Tue, 22 Oct 2019 17:16:21 +0000 (UTC)
 Received: from t460s.redhat.com (ovpn-116-248.ams2.redhat.com [10.36.116.248])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2FF84612AB;
- Tue, 22 Oct 2019 17:15:42 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 36C045DA8D;
+ Tue, 22 Oct 2019 17:16:01 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1 08/12] powerpc/book3s: Prepare
- kvmppc_book3s_instantiate_page() for PG_reserved changes
-Date: Tue, 22 Oct 2019 19:12:35 +0200
-Message-Id: <20191022171239.21487-9-david@redhat.com>
+Subject: [PATCH RFC v1 09/12] powerpc/64s: Prepare hash_page_do_lazy_icache()
+ for PG_reserved changes
+Date: Tue, 22 Oct 2019 19:12:36 +0200
+Message-Id: <20191022171239.21487-10-david@redhat.com>
 In-Reply-To: <20191022171239.21487-1-david@redhat.com>
 References: <20191022171239.21487-1-david@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: nIyOmixtOyKHdiiLzBpxAg-1
+X-MC-Unique: fU-qS8_YMIyHrwTYnW1SnA-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -123,50 +123,50 @@ Sender: "Linuxppc-dev"
 Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
 change that.
 
-KVM has this weird use case that you can map anything from /dev/mem
-into the guest. pfn_valid() is not a reliable check whether the memmap
-was initialized and can be touched. pfn_to_online_page() makes sure
-that we have an initialized memmap. Note that ZONE_DEVICE memory is
-never online (IOW, managed by the buddy).
+We could explicitly check for is_zone_device_page(page). But looking at
+the pfn_valid() check, it seems safer to just use pfn_to_online_page()
+here, that will skip all ZONE_DEVICE pages right away.
 
-Switching to pfn_to_online_page() keeps the existing behavior for
-PFNs without a memmap and for ZONE_DEVICE memory.
-
-Cc: Paul Mackerras <paulus@ozlabs.org>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@linux.ibm.com>
+Cc: YueHaibing <yuehaibing@huawei.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book=
-3s_64_mmu_radix.c
-index 2d415c36a61d..05397c0561fc 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -801,12 +801,14 @@ int kvmppc_book3s_instantiate_page(struct kvm_vcpu *v=
-cpu,
- =09=09=09=09=09   writing, upgrade_p);
- =09=09if (is_error_noslot_pfn(pfn))
- =09=09=09return -EFAULT;
--=09=09page =3D NULL;
--=09=09if (pfn_valid(pfn)) {
--=09=09=09page =3D pfn_to_page(pfn);
--=09=09=09if (PageReserved(page))
--=09=09=09=09page =3D NULL;
--=09=09}
-+=09=09/*
-+=09=09 * We treat any pages that are not online (not managed by the
-+=09=09 * buddy) as reserved - this includes ZONE_DEVICE pages and
-+=09=09 * pages without a memmap (e.g., mapped via /dev/mem).
-+=09=09 */
-+=09=09page =3D pfn_to_online_page(pfn);
-+=09=09if (page && PageReserved(page))
-+=09=09=09page =3D NULL;
- =09}
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s=
+64/hash_utils.c
+index 6c123760164e..a1566039e747 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1084,13 +1084,15 @@ void hash__early_init_mmu_secondary(void)
+  */
+ unsigned int hash_page_do_lazy_icache(unsigned int pp, pte_t pte, int trap=
+)
+ {
+-=09struct page *page;
++=09struct page *page =3D pfn_to_online_page(pte_pfn(pte));
 =20
- =09/*
+-=09if (!pfn_valid(pte_pfn(pte)))
++=09/*
++=09 * We ignore any pages that are not online (not managed by the buddy).
++=09 * This includes ZONE_DEVICE pages.
++=09 */
++=09if (!page)
+ =09=09return pp;
+=20
+-=09page =3D pte_page(pte);
+-
+ =09/* page is dirty */
+ =09if (!test_bit(PG_arch_1, &page->flags) && !PageReserved(page)) {
+ =09=09if (trap =3D=3D 0x400) {
 --=20
 2.21.0
 
