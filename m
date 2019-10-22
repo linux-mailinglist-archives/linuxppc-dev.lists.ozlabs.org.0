@@ -2,78 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED59E02FC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 13:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C888EE038C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 14:00:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yBJF2jQ6zDqJl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 22:35:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yBsL0g3czDqMl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 23:00:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hegdevasant@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Q9TzElre"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yBFQ1JTvzDqGP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 22:32:41 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9MBRi8K019299
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 07:32:38 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vsy8m44n3-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 07:32:38 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <hegdevasant@linux.vnet.ibm.com>;
- Tue, 22 Oct 2019 12:32:36 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 22 Oct 2019 12:32:33 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9MBWW5R48496732
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Oct 2019 11:32:32 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 753BAAE04D;
- Tue, 22 Oct 2019 11:32:32 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C537AE051;
- Tue, 22 Oct 2019 11:32:31 +0000 (GMT)
-Received: from hegdevasant.in.ibm.com (unknown [9.193.108.153])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 22 Oct 2019 11:32:31 +0000 (GMT)
-From: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yBpc73twzDqKT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 22:57:58 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id p1so9820140pgi.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 04:57:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=D0rJNiMucmje9ySL+8GwfdJbCi0znN4tp5AEOTct5ek=;
+ b=Q9TzElreCGBjFtmMIvyX+l8Zg7cwI5RQ42FXfyjarsoL/0K911fj8x9LG+hJ8QVKnp
+ CQ6ri+INGBJLUcCPKnuR+rLgmoKB1GyzB2L2in1h89Y1D1JO7g6pyFsr0TZgBAGyGB8l
+ pl3mnvXGXeDM7sAgCG2Hh9o1pv9GHSRDc9M/QQQXhMuu8f0Goosq9YJOqvvohqCx2HVh
+ QX3uxSVZsTseMh3D5j6SIZzRKJCnnc+JTJqcdFom1l3FDJd485TEE5lOASufNXoE5T4F
+ XSae8h+5CnV2AeeOsi9L6cVsVzPYGmfsW1D5noQLbz1SbylgNXBRnzKyv48CEkwrF9Dx
+ Njng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=D0rJNiMucmje9ySL+8GwfdJbCi0znN4tp5AEOTct5ek=;
+ b=MVAQhtQh1ViRprBjO7p+AjNdVUi6ZhPXJgNo/A/8ja7dX4tbIJVazkOt4J8S7d6sPr
+ bm7TlKbr6IVlQV9enTzvV8ifq+yRDFWG/aOeqVqWexmWSVD4QOmLT7XTwxhyxqA6moQO
+ MZt/Nr60z65nIpJLaPcw3P2AT1suGLb7wx3wV+YJIAxz1ZMVP8b9tA5qIv8LE1QVVjBI
+ N1sjYjb1C8HM/YdMklIX1q5DIyBAiSWTQrSLAqaAOj700WfjeUa+yJXQSpFZCwSL6phv
+ mi+WaLNPv0VXMM8Ike5w8rbaflVkkvRYMZxqQbww582fe9aMSrO9ZA/yg8ieIWGVpeVx
+ A/uQ==
+X-Gm-Message-State: APjAAAVuDrejK0qSnzYv5ZNaixfYAO6yr+6+5yHP9YSKwaCXXBPs1OZE
+ sKviLezUeWvusZsbk5vSzKAdnjY+
+X-Google-Smtp-Source: APXvYqwsoYmv8CZfbd18TcOc3GN5grH1lOG4gKl/wG9+3t7tGEOSWYAIv8/fyq/t9Pxa/vPlIo5yNw==
+X-Received: by 2002:a63:cd18:: with SMTP id i24mr3500513pgg.333.1571745474511; 
+ Tue, 22 Oct 2019 04:57:54 -0700 (PDT)
+Received: from bobo.local0.net (193-116-72-81.tpgi.com.au. [193.116.72.81])
+ by smtp.gmail.com with ESMTPSA id o42sm19394556pjo.32.2019.10.22.04.57.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 22 Oct 2019 04:57:53 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/powernv/prd: Allow copying partial data to user space
-Date: Tue, 22 Oct 2019 17:02:13 +0530
-X-Mailer: git-send-email 2.21.0
+Subject: [PATCH] powerpc/powernv: Fix CPU idle to be called with IRQs disabled
+Date: Tue, 22 Oct 2019 21:58:14 +1000
+Message-Id: <20191022115814.22456-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19102211-0012-0000-0000-0000035B7473
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102211-0013-0000-0000-000021969F1E
-Message-Id: <20191022113213.18295-1-hegdevasant@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-22_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=867 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910220105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,86 +76,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- Jeremy Kerr <jk@ozlabs.org>
+Cc: Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Allow copying partial data to user space. So that opal-prd daemon
-can read message size, reallocate memory and make read call to
-get rest of the data.
+Commit e78a7614f3876 ("idle: Prevent late-arriving interrupts from
+disrupting offline") changes arch_cpu_idle_dead to be called with
+interrupts disabled, which triggers the WARN in pnv_smp_cpu_kill_self.
 
-Cc: Jeremy Kerr <jk@ozlabs.org>
-Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
-Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+Fix this by fixing up irq_happened after hard disabling, rather than
+requiring there are no pending interrupts, similarly to what was done
+done until commit 2525db04d1cc5 ("powerpc/powernv: Simplify lazy IRQ
+handling in CPU offline").
+
+Fixes: e78a7614f3876 ("idle: Prevent late-arriving interrupts from disrupting offline")
+Reported-by: Paul Mackerras <paulus@samba.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/powernv/opal-prd.c | 27 ++++++++---------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ arch/powerpc/platforms/powernv/smp.c | 50 +++++++++++++++++++---------
+ 1 file changed, 35 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-prd.c b/arch/powerpc/platforms/powernv/opal-prd.c
-index 45f4223a790f..dac9d18293d8 100644
---- a/arch/powerpc/platforms/powernv/opal-prd.c
-+++ b/arch/powerpc/platforms/powernv/opal-prd.c
-@@ -153,20 +153,15 @@ static __poll_t opal_prd_poll(struct file *file,
- static ssize_t opal_prd_read(struct file *file, char __user *buf,
- 		size_t count, loff_t *ppos)
- {
--	struct opal_prd_msg_queue_item *item;
-+	struct opal_prd_msg_queue_item *item = NULL;
- 	unsigned long flags;
--	ssize_t size, err;
-+	ssize_t size;
- 	int rc;
- 
- 	/* we need at least a header's worth of data */
- 	if (count < sizeof(item->msg))
- 		return -EINVAL;
- 
--	if (*ppos)
--		return -ESPIPE;
--
--	item = NULL;
--
- 	for (;;) {
- 
- 		spin_lock_irqsave(&opal_prd_msg_queue_lock, flags);
-@@ -190,27 +185,23 @@ static ssize_t opal_prd_read(struct file *file, char __user *buf,
- 	}
- 
- 	size = be16_to_cpu(item->msg.size);
--	if (size > count) {
--		err = -EINVAL;
-+	rc = simple_read_from_buffer(buf, count, ppos, &item->msg, size);
-+	if (rc < 0)
- 		goto err_requeue;
--	}
--
--	rc = copy_to_user(buf, &item->msg, size);
--	if (rc) {
--		err = -EFAULT;
-+	if (*ppos < size)
- 		goto err_requeue;
--	}
- 
-+	/* Reset position */
-+	*ppos = 0;
- 	kfree(item);
--
--	return size;
-+	return rc;
- 
- err_requeue:
- 	/* eep! re-queue at the head of the list */
- 	spin_lock_irqsave(&opal_prd_msg_queue_lock, flags);
- 	list_add(&item->list, &opal_prd_msg_queue);
- 	spin_unlock_irqrestore(&opal_prd_msg_queue_lock, flags);
--	return err;
-+	return rc;
+diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
+index fbd6e6b7bbf2..241cfee744d9 100644
+--- a/arch/powerpc/platforms/powernv/smp.c
++++ b/arch/powerpc/platforms/powernv/smp.c
+@@ -146,6 +146,18 @@ static int pnv_smp_cpu_disable(void)
+ 	return 0;
  }
  
- static ssize_t opal_prd_write(struct file *file, const char __user *buf,
++static void pnv_flush_interrupts(void)
++{
++	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
++		if (xive_enabled())
++			xive_flush_interrupt();
++		else
++			icp_opal_flush_interrupt();
++	} else {
++		icp_native_flush_interrupt();
++	}
++}
++
+ static void pnv_smp_cpu_kill_self(void)
+ {
+ 	unsigned int cpu;
+@@ -153,13 +165,6 @@ static void pnv_smp_cpu_kill_self(void)
+ 	u64 lpcr_val;
+ 
+ 	/* Standard hot unplug procedure */
+-	/*
+-	 * This hard disables local interurpts, ensuring we have no lazy
+-	 * irqs pending.
+-	 */
+-	WARN_ON(irqs_disabled());
+-	hard_irq_disable();
+-	WARN_ON(lazy_irq_pending());
+ 
+ 	idle_task_exit();
+ 	current->active_mm = NULL; /* for sanity */
+@@ -172,6 +177,26 @@ static void pnv_smp_cpu_kill_self(void)
+ 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
+ 		wmask = SRR1_WAKEMASK_P8;
+ 
++	/*
++	 * This turns the irq soft-disabled state we're called with, into a
++	 * hard-disabled state with pending irq_happened interrupts cleared.
++	 *
++	 * PACA_IRQ_DEC   - Decrementer should be ignored.
++	 * PACA_IRQ_HMI   - Can be ignored, processing is done in real mode.
++	 * PACA_IRQ_DBELL, EE, PMI - Unexpected.
++	 */
++	hard_irq_disable();
++	if (generic_check_cpu_restart(cpu))
++		goto out;
++	if (local_paca->irq_happened &
++			(PACA_IRQ_DBELL | PACA_IRQ_EE | PACA_IRQ_PMI)) {
++		if (local_paca->irq_happened & PACA_IRQ_EE)
++			pnv_flush_interrupts();
++		DBG("CPU%d Unexpected exit while offline irq_happened=%lx!\n",
++				cpu, local_paca->irq_happened);
++	}
++	local_paca->irq_happened = PACA_IRQ_HARD_DIS;
++
+ 	/*
+ 	 * We don't want to take decrementer interrupts while we are
+ 	 * offline, so clear LPCR:PECE1. We keep PECE2 (and
+@@ -197,6 +222,7 @@ static void pnv_smp_cpu_kill_self(void)
+ 
+ 		srr1 = pnv_cpu_offline(cpu);
+ 
++		WARN_ON(!irqs_disabled());
+ 		WARN_ON(lazy_irq_pending());
+ 
+ 		/*
+@@ -212,13 +238,7 @@ static void pnv_smp_cpu_kill_self(void)
+ 		 */
+ 		if (((srr1 & wmask) == SRR1_WAKEEE) ||
+ 		    ((srr1 & wmask) == SRR1_WAKEHVI)) {
+-			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+-				if (xive_enabled())
+-					xive_flush_interrupt();
+-				else
+-					icp_opal_flush_interrupt();
+-			} else
+-				icp_native_flush_interrupt();
++			pnv_flush_interrupts();
+ 		} else if ((srr1 & wmask) == SRR1_WAKEHDBELL) {
+ 			unsigned long msg = PPC_DBELL_TYPE(PPC_DBELL_SERVER);
+ 			asm volatile(PPC_MSGCLR(%0) : : "r" (msg));
+@@ -266,7 +286,7 @@ static void pnv_smp_cpu_kill_self(void)
+ 	 */
+ 	lpcr_val = mfspr(SPRN_LPCR) | (u64)LPCR_PECE1;
+ 	pnv_program_cpu_hotplug_lpcr(cpu, lpcr_val);
+-
++out:
+ 	DBG("CPU%d coming online...\n", cpu);
+ }
+ 
 -- 
-2.21.0
+2.23.0
 
