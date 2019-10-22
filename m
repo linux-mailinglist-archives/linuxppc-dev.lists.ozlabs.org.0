@@ -2,53 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35841E00BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 11:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE11E01C2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 12:14:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46y7VT0zGDzDqMm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 20:28:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46y8Vz0fKPzDqHV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2019 21:14:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
- envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::243;
+ helo=mail-lj1-x243.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="Ic0hqL5A"; dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46y7S413PjzDqL9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 20:26:40 +1100 (AEDT)
-Received: by mail-ot1-f65.google.com with SMTP id o44so13563536ota.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 02:26:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46y8T01Nr1zDq74
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 21:12:35 +1100 (AEDT)
+Received: by mail-lj1-x243.google.com with SMTP id c4so1417745lja.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 03:12:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=hjSv+wwiORAZwQroV0MjPyGZjVfHuvomytZjWA/sFNI=;
+ b=Ic0hqL5AEydTjmoYQ4tUn1uoaJcRLZ+2GEpJ1kQHS1/OR4c9etzeWrdKjwV8o1tcLD
+ LPpA2VaMo3XUzapC0wtQpSC2SFXhaBgPzMavdDagC7dYu7RNq+FMhBB+Ew5Kwqtg4jPM
+ juN3r0sW/bDp/bnW5U/eHm7+dlCaX6fr83uZE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=7e3ngfUWD69prUYE+IQGbpsBsUEu9n83CImOve8PLh0=;
- b=o0SxSe55mEm2Ma6aZKLW4SxAnfZ4qB5dIdzqz2NMGM8gOECNufcd1uGaL7OrRiD2t7
- x2ePesf4em32f0K2XLELBVubMdxdAR9FMTgmux5/OuhwOd4dz7dcrjsZ+IYOTzKURMl5
- vMdOvMLl9JHbBLVabylU13mMmlbqXjLPryDUq/teTGg/StIRF18thG0sAEx5VTZ90eWQ
- I01/kwSEk06NzSA/FjgCO4NAMsLCNjofzefll5Wn16lt1+3LBnhtWwrGt6tvZ34/pUEX
- m0+5p/Jd+XIRl+7mOoU6Chkyv2yMpref9byrOWYczw+lSxwVDdAjLIcSBzu2wPhhRGES
- bqvA==
-X-Gm-Message-State: APjAAAVXN/XZCrY1YV+rYIHwHqZz9bl9JIzMb6bTDUVxc9qIMYKWH/ua
- sgfJ8n0nr4SrC7WWV0IWw3XsbJc+JwE3wLgaVF4=
-X-Google-Smtp-Source: APXvYqys/ZtV6eqp8MKmYWagePQMB32nL6cvMnFYVvIgMgRDLMLJ/tc6rc8qd/YY1BlNX+dRzq896nFEBtR3GkL5HX8=
-X-Received: by 2002:a9d:459b:: with SMTP id x27mr1770619ote.167.1571736397010; 
- Tue, 22 Oct 2019 02:26:37 -0700 (PDT)
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=hjSv+wwiORAZwQroV0MjPyGZjVfHuvomytZjWA/sFNI=;
+ b=dDzQsqNKNuGxLq9/2ffU5ydnQoLXqnQkO/+Zkbzwf08iHJZVX0pB6opQxSKxpb6tPw
+ 3htlp8+BjyalYXauuOjce94Q9I3KgJxbqHHM3RvPl8NyWcKXTfcekc2T+hI8iayUxCgk
+ 9+IDrrGzYI2uoMT+CgnaUaf5Y0B3NKLksFMXWmkwssDsyQnEKvLxiLZk8Uw2RP4veEe4
+ 38YavcvGXLG7Vh4vEzuqG1wV/wlurUe5zbpqBI5dPY2/5BruVUT2lDmUXtJHC2m9SYm0
+ RF3mqsKJqSaHs2KNBxtkLIS/ZLaam2RFveDV2Bdl9r+/jS3QdUKqt5sjTNInFLudSvr7
+ 3Ylg==
+X-Gm-Message-State: APjAAAWfP4M4UW87447foo11SObBex4v30ZCLxLRFieQpxCek9Qy5ek8
+ gDqlRWGcIrnhKO0H2kEZAs42cQ==
+X-Google-Smtp-Source: APXvYqytv4x9SX0QXXZ5y785ZosmmkK9pTamMTH5LXkfjr+9GoKrqEXh83aR0//s2xRSFOK5cvBzdQ==
+X-Received: by 2002:a05:651c:1042:: with SMTP id
+ x2mr18711751ljm.127.1571739150552; 
+ Tue, 22 Oct 2019 03:12:30 -0700 (PDT)
+Received: from [172.16.11.28] ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id a7sm3846380ljn.4.2019.10.22.03.12.28
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 22 Oct 2019 03:12:29 -0700 (PDT)
+Subject: Re: [PATCH 0/7] towards QE support on ARM
+To: Li Yang <leoyang.li@nxp.com>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+ <VE1PR04MB6687DA0268FAF03D3E77A23B8F6C0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+ <e02fa027-9c78-3272-d2d7-7ad2b0ed3ab0@rasmusvillemoes.dk>
+ <CADRPPNREUK1SVxO4P5qb2COn+T04dtYgpVEzrveKUt16hBqAtQ@mail.gmail.com>
+ <679bf33b-8c05-b77a-0cb2-d79dc5bfbe75@rasmusvillemoes.dk>
+ <CADRPPNSiMUy77Dhxjg03sHDxyZzWf_BP8a5+fCncbynyO_cNGg@mail.gmail.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <a2bfec28-1e5c-f3f1-56e7-b11b4c23aabe@rasmusvillemoes.dk>
+Date: Tue, 22 Oct 2019 12:12:23 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191022075123.17057-1-ran.wang_1@nxp.com>
-In-Reply-To: <20191022075123.17057-1-ran.wang_1@nxp.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 22 Oct 2019 11:26:26 +0200
-Message-ID: <CAJZ5v0g4uyh7Xv2PuVuF1KrpBCXzSPa+vCJh6C7LTEeyvBDNjg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] PM: wakeup: Add routine to help fetch wakeup source
- object.
-To: Ran Wang <ran.wang_1@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CADRPPNSiMUy77Dhxjg03sHDxyZzWf_BP8a5+fCncbynyO_cNGg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,163 +86,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Li Biwen <biwen.li@nxp.com>,
- Huang Anson <anson.huang@nxp.com>, Len Brown <len.brown@intel.com>,
+Cc: Timur Tabi <timur@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux PM <linux-pm@vger.kernel.org>, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Li Yang <leoyang.li@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ Jiri Slaby <jslaby@suse.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 22, 2019 at 9:51 AM Ran Wang <ran.wang_1@nxp.com> wrote:
->
-> Some user might want to go through all registered wakeup sources
-> and doing things accordingly. For example, SoC PM driver might need to
-> do HW programming to prevent powering down specific IP which wakeup
-> source depending on. So add this API to help walk through all registered
-> wakeup source objects on that list and return them one by one.
->
-> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-> Tested-by: Leonard Crestez <leonard.crestez@nxp.com>
-> ---
-> Change in v8
->         - Rename wakeup_source_get_next() to wakeup_sources_walk_next().
->         - Add wakeup_sources_read_lock() to take over locking job of
->           wakeup_source_get_star().
->         - Rename wakeup_source_get_start() to wakeup_sources_walk_start().
->         - Replace wakeup_source_get_stop() with wakeup_sources_read_unlock().
->         - Define macro for_each_wakeup_source(ws).
->
-> Change in v7:
->         - Remove define of member *dev in wake_irq to fix conflict with commit
->         c8377adfa781 ("PM / wakeup: Show wakeup sources stats in sysfs"), user
->         will use ws->dev->parent instead.
->         - Remove '#include <linux/of_device.h>' because it is not used.
->
-> Change in v6:
->         - Add wakeup_source_get_star() and wakeup_source_get_stop() to aligned
->         with wakeup_sources_stats_seq_start/nex/stop.
->
-> Change in v5:
->         - Update commit message, add decription of walk through all wakeup
->         source objects.
->         - Add SCU protection in function wakeup_source_get_next().
->         - Rename wakeup_source member 'attached_dev' to 'dev' and move it up
->         (before wakeirq).
->
-> Change in v4:
->         - None.
->
-> Change in v3:
->         - Adjust indentation of *attached_dev;.
->
-> Change in v2:
->         - None.
->
->  drivers/base/power/wakeup.c | 42 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/pm_wakeup.h   |  9 +++++++++
->  2 files changed, 51 insertions(+)
->
-> diff --git a/drivers/base/power/wakeup.c b/drivers/base/power/wakeup.c
-> index 5817b51..8c7a5f9 100644
-> --- a/drivers/base/power/wakeup.c
-> +++ b/drivers/base/power/wakeup.c
-> @@ -248,6 +248,48 @@ void wakeup_source_unregister(struct wakeup_source *ws)
->  EXPORT_SYMBOL_GPL(wakeup_source_unregister);
->
->  /**
-> + * wakeup_sources_read_lock - Lock wakeup source list for read.
+On 22/10/2019 00.11, Li Yang wrote:
+> On Mon, Oct 21, 2019 at 3:46 AM Rasmus Villemoes
+> <linux@rasmusvillemoes.dk> wrote:
+>>
 
-Please document the return value.
+>>> Can you try the 4.14 branch from a newer LSDK release?  LS1021a should
+>>> be supported platform on LSDK.  If it is broken, something is wrong.
+>>
+>> What newer release? LSDK-18.06-V4.14 is the latest -V4.14 tag at
+>> https://github.com/qoriq-open-source/linux.git, and identical to the
+> 
+> That tree has been abandoned for a while, we probably should state
+> that in the github.  The latest tree can be found at
+> https://source.codeaurora.org/external/qoriq/qoriq-components/linux/
 
-> + */
-> +int wakeup_sources_read_lock(void)
-> +{
-> +       return srcu_read_lock(&wakeup_srcu);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_read_lock);
-> +
-> +/**
-> + * wakeup_sources_read_unlock - Unlock wakeup source list.
+Ah. FYI, googling "LSDK" gives https://lsdk.github.io as one of the
+first hits, and (apart from itself being a github url) that says on the
+front page "Disaggregated components of LSDK are available in github.".
+But yes, navigating to the Components tab and from there to lsdk linux
+one does get directed at codeaurora.
 
-Please document the argument.
+>> In any case, we have zero interest in running an NXP kernel. Maybe I
+>> should clarify what I meant by "based on commits from" above: We're
+>> currently running a mainline 4.14 kernel on LS1021A, with a few patches
+>> inspired from the NXP 4.1 branch applied on top - but also with some
+>> manual fixes for e.g. the pvr_version_is() issue. Now we want to move
+>> that to a 4.19-based kernel (so that it aligns with our MPC8309 platform).
+> 
+> We also provide 4.19 based kernel in the codeaurora repo.  I think it
+> will be helpful to reuse patches there if you want to make your own
+> tree.
 
-> + */
-> +void wakeup_sources_read_unlock(int idx)
-> +{
-> +       srcu_read_unlock(&wakeup_srcu, idx);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_read_unlock);
-> +
-> +/**
-> + * wakeup_sources_walk_start - Begin a walk on wakeup source list
+Again, we don't want to run off an NXP kernel, we want to get the
+necessary pieces upstream. For now, we have to live with a patched 4.19
+kernel, but hopefully by the time we switch to 5.x (for some x >= 5) we
+don't need to supply anything other than our own .dts and defconfig.
 
-Please document the return value and add a note that the wakeup
-sources list needs to be locked for reading for this to be safe.
+>> Yes, as I said, I wanted to try a fresh approach since Zhao
+>> Qiang's patches seemed to be getting nowhere. Splitting the patches into
+>> smaller pieces is definitely part of that - for example, the completely
+>> trivial whitespace fix in patch 1 is to make sure the later coccinelle
+>> generated patch is precisely that (i.e., a later respin can just rerun
+>> the coccinelle script, with zero manual fixups). I also want to avoid
+>> mixing the ppcism cleanups with other things (e.g. replacing some
+>> of_get_property() by of_property_read_u32()). And the "testing on ARM"
+>> part comes once I get to actually building on ARM. But there's not much
+>> point doing all that unless there's some indication that this can be
+>> applied to some tree that actually feeds into Linus', which is why I
+>> started with a few trivial patches and precisely to start this discussion.
+> 
+> Right.  I'm really interested in getting this applied to my tree and
+> make it upstream.  Zhao Qiang, can you help to review Rasmus's patches
+> and comment?
 
-> + */
-> +struct wakeup_source *wakeup_sources_walk_start(void)
-> +{
-> +       struct list_head *ws_head = &wakeup_sources;
-> +
-> +       return list_entry_rcu(ws_head->next, struct wakeup_source, entry);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_walk_start);
-> +
-> +/**
-> + * wakeup_sources_walk_next - Get next wakeup source from the list
-> + * @ws: Previous wakeup source object
+Thanks, this is exactly what I was hoping for. Even just getting these
+first rather trivial patches (in that they don't attempt to build for
+ARM, or change functionality at all for PPC) merged for 5.5 would reduce
+the amount of out-of-tree patches that we (and NXP for that matter)
+would have to carry. I'll take the above as a go-ahead for me to try to
+post more patches working towards enabling some of the QE drivers for ARM.
 
-Please add a note that the wakeup sources list needs to be locked for
-reading for this to be safe.
-
-> + */
-> +struct wakeup_source *wakeup_sources_walk_next(struct wakeup_source *ws)
-> +{
-> +       struct list_head *ws_head = &wakeup_sources;
-> +
-> +       return list_next_or_null_rcu(ws_head, &ws->entry,
-> +                               struct wakeup_source, entry);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_walk_next);
-> +
-> +/**
->   * device_wakeup_attach - Attach a wakeup source object to a device object.
->   * @dev: Device to handle.
->   * @ws: Wakeup source object to attach to @dev.
-> diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
-> index 661efa0..aa3da66 100644
-> --- a/include/linux/pm_wakeup.h
-> +++ b/include/linux/pm_wakeup.h
-> @@ -63,6 +63,11 @@ struct wakeup_source {
->         bool                    autosleep_enabled:1;
->  };
->
-> +#define for_each_wakeup_source(ws) \
-> +       for ((ws) = wakeup_sources_walk_start();        \
-> +            (ws);                                      \
-> +            (ws) = wakeup_sources_walk_next((ws)))
-> +
->  #ifdef CONFIG_PM_SLEEP
->
->  /*
-> @@ -92,6 +97,10 @@ extern void wakeup_source_remove(struct wakeup_source *ws);
->  extern struct wakeup_source *wakeup_source_register(struct device *dev,
->                                                     const char *name);
->  extern void wakeup_source_unregister(struct wakeup_source *ws);
-> +extern int wakeup_sources_read_lock(void);
-> +extern void wakeup_sources_read_unlock(int idx);
-> +extern struct wakeup_source *wakeup_sources_walk_start(void);
-> +extern struct wakeup_source *wakeup_sources_walk_next(struct wakeup_source *ws);
->  extern int device_wakeup_enable(struct device *dev);
->  extern int device_wakeup_disable(struct device *dev);
->  extern void device_set_wakeup_capable(struct device *dev, bool capable);
-> --
-> 2.7.4
->
+Rasmus
