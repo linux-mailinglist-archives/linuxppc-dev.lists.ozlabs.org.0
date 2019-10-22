@@ -2,70 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C25E0E07
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 00:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBF1E0E83
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 01:26:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ySLr4K61zDqJM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 09:08:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yV4q7230zDqJW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 10:26:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::342;
- helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="e6GVBLMv"; 
- dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yS3f0MzvzDqLS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 08:55:04 +1100 (AEDT)
-Received: by mail-ot1-x342.google.com with SMTP id c7so4821216otm.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2019 14:55:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=X+xhy3C7ct4Wd70Xt4OQNAyYmD6XISU1mkD27wwsH4c=;
- b=e6GVBLMv/V4iAdkfWlAXzADW0DLH0ywch5G0LGr+6++slwJhs2ysGTULdUcotQKYgd
- WvTyOi8z9vET1krZn1EMRocnjmPrLDAWWBl0e+DDdfTIVpda3KbYcobsSukz/xXtnWSC
- ZQtGJrQtK05zIxxgAns0ZaO0HHZ9zxQd3iOnrg9SRoBF3dwEbgxB6kbHp1i3JTqB9Fj9
- opopASozuNvGmtfcE2psfc/mttjRcEa+QRgxLSQdWXH9K3QGe+2rJ5AJpXwm355yEKqj
- kWc+H/zOB1wp7gTllbz46Sbxau/Gyb16yQFt7zE0emKw99oiq7QMqumCqJj5kMsWralz
- baBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=X+xhy3C7ct4Wd70Xt4OQNAyYmD6XISU1mkD27wwsH4c=;
- b=LO6eHxYchwFLUm9BMamtFiKgv68JFMJv7u8hGQ/OL1j3YTJl5Lh+DXk+nrYaJQBXAK
- xQAg/ZELbiSGBERdUKYmyrzuiBryqP5rachSxsWrzR/zUhZ8L1lAcZOis+WpGHPWhGSR
- TFkNlvbzIqvdhzPeGygCu/bcu/Cr8BLJJeI5/IDQf4KbUyIB146hC+GCj2uhMk7Sa1f4
- +c9xh3QsK8BDkQ8xjNZXEiSOLFMXKr+51oNcUqVPa6vq8LBVfwXFJIMcQwXioPBdQ5li
- 7oQM+xop/UZwwW3aS7O6NZdrZ96y7WCijfI6c8OS3wVahGh9NVawmVLsmf1SddhDBGEb
- ce6A==
-X-Gm-Message-State: APjAAAU232y1aWurMPm0RymvrqkkUAsRUauSgNZ3SVNTjPmL7abrTmJK
- TZXIkg6mr52gncSkEd8Rq6nTHfQ3UExXNAvvbzwOLA==
-X-Google-Smtp-Source: APXvYqwiQBeyg9j33QDXGkD1y7feKBrNdPRGKNKM/b+c8diEhCMBl1zIP9b9Mw2m1ljAM+dxjsHOktasSwWYIWy9hhA=
-X-Received: by 2002:a05:6830:1b78:: with SMTP id
- d24mr4571406ote.363.1571781301217; 
- Tue, 22 Oct 2019 14:55:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yV2R0RFNzDqNp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 10:24:13 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0] (helo=home.buserror.net)
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1iN3TR-0003jP-93; Tue, 22 Oct 2019 18:21:57 -0500
+Date: Tue, 22 Oct 2019 18:21:55 -0500
+From: Scott Wood <oss@buserror.net>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <20191022232155.GA26174@home.buserror.net>
 MIME-Version: 1.0
-References: <20191022171239.21487-1-david@redhat.com>
-In-Reply-To: <20191022171239.21487-1-david@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 22 Oct 2019 14:54:47 -0700
-Message-ID: <CAPcyv4gJ+2he2E-6D0QZvkFWvRM9Fsvn9cAoPZbcU4zvsDHcEQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v1 00/12] mm: Don't mark hotplugged pages PG_reserved
- (including ZONE_DEVICE)
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Wed, 23 Oct 2019 09:04:37 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+ galak@kernel.crashing.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+ * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+ *      this recipient and sender
+Subject: Pull request: scottwood/linux.git next
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,144 +59,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>,
- =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
- KarimAllah Ahmed <karahmed@amazon.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
- Ben Chan <benchan@chromium.org>, Kees Cook <keescook@chromium.org>,
- devel@driverdev.osuosl.org, Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
- YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Madhumitha Prabakaran <madhumithabiw@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>, Nishka Dasgupta <nishkadg.linux@gmail.com>,
- Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
- Dan Carpenter <dan.carpenter@oracle.com>,
- "Isaac J. Manjarres" <isaacm@codeaurora.org>,
- Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- =?UTF-8?Q?Simon_Sandstr=C3=B6m?= <simon@nikanor.nu>,
- Sasha Levin <sashal@kernel.org>, kvm-ppc@vger.kernel.org,
- Qian Cai <cai@lca.pw>, Alex Williamson <alex.williamson@redhat.com>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
- xen-devel <xen-devel@lists.xenproject.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Todd Poynor <toddpoynor@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Allison Randal <allison@lohutok.net>, Jim Mattson <jmattson@google.com>,
- Vandana BN <bnvandana@gmail.com>, Jeremy Sowden <jeremy@azazel.net>,
- Mel Gorman <mgorman@techsingularity.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Cornelia Huck <cohuck@redhat.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- Rob Springer <rspringer@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi David,
+This contains KASLR support for book3e 32-bit.
 
-Thanks for tackling this!
+The following changes since commit 612ee81b9461475b5a5612c2e8d71559dd3c7920:
 
-On Tue, Oct 22, 2019 at 10:13 AM David Hildenbrand <david@redhat.com> wrote:
->
-> This series is based on [2], which should pop up in linux/next soon:
->         https://lkml.org/lkml/2019/10/21/1034
->
-> This is the result of a recent discussion with Michal ([1], [2]). Right
-> now we set all pages PG_reserved when initializing hotplugged memmaps. This
-> includes ZONE_DEVICE memory. In case of system memory, PG_reserved is
-> cleared again when onlining the memory, in case of ZONE_DEVICE memory
-> never. In ancient times, we needed PG_reserved, because there was no way
-> to tell whether the memmap was already properly initialized. We now have
-> SECTION_IS_ONLINE for that in the case of !ZONE_DEVICE memory. ZONE_DEVICE
-> memory is already initialized deferred, and there shouldn't be a visible
-> change in that regard.
->
-> I remember that some time ago, we already talked about stopping to set
-> ZONE_DEVICE pages PG_reserved on the list, but I never saw any patches.
-> Also, I forgot who was part of the discussion :)
+  powerpc/papr_scm: Fix an off-by-one check in papr_scm_meta_{get, set} (2019-10-10 20:15:53 +1100)
 
-You got me, Alex, and KVM folks on the Cc, so I'd say that was it.
+are available in the Git repository at:
 
-> One of the biggest fear were side effects. I went ahead and audited all
-> users of PageReserved(). The ones that don't need any care (patches)
-> can be found below. I will double check and hope I am not missing something
-> important.
->
-> I am probably a little bit too careful (but I don't want to break things).
-> In most places (besides KVM and vfio that are nuts), the
-> pfn_to_online_page() check could most probably be avoided by a
-> is_zone_device_page() check. However, I usually get suspicious when I see
-> a pfn_valid() check (especially after I learned that people mmap parts of
-> /dev/mem into user space, including memory without memmaps. Also, people
-> could memmap offline memory blocks this way :/). As long as this does not
-> hurt performance, I think we should rather do it the clean way.
+  git://git.kernel.org/pub/scm/linux/kernel/git/scottwood/linux.git next
 
-I'm concerned about using is_zone_device_page() in places that are not
-known to already have a reference to the page. Here's an audit of
-current usages, and the ones I think need to cleaned up. The "unsafe"
-ones do not appear to have any protections against the device page
-being removed (get_dev_pagemap()). Yes, some of these were added by
-me. The "unsafe? HMM" ones need HMM eyes because HMM leaks device
-pages into anonymous memory paths and I'm not up to speed on how it
-guarantees 'struct page' validity vs device shutdown without using
-get_dev_pagemap().
+for you to fetch changes up to 9df1ef3f1376ec5d3a1b51a4546c94279bcd88ca:
 
-smaps_pmd_entry(): unsafe
+  powerpc/fsl_booke/32: Document KASLR implementation (2019-10-21 16:09:16 -0500)
 
-put_devmap_managed_page(): safe, page reference is held
+----------------------------------------------------------------
+Jason Yan (12):
+      powerpc: unify definition of M_IF_NEEDED
+      powerpc: move memstart_addr and kernstart_addr to init-common.c
+      powerpc: introduce kernstart_virt_addr to store the kernel base
+      powerpc/fsl_booke/32: introduce create_kaslr_tlb_entry() helper
+      powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
+      powerpc/fsl_booke/32: implement KASLR infrastructure
+      powerpc/fsl_booke/32: randomize the kernel image offset
+      powerpc/fsl_booke/kaslr: clear the original kernel if randomized
+      powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
+      powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
+      powerpc/fsl_booke/kaslr: export offset in VMCOREINFO ELF notes
+      powerpc/fsl_booke/32: Document KASLR implementation
 
-is_device_private_page(): safe? gpu driver manages private page lifetime
-
-is_pci_p2pdma_page(): safe, page reference is held
-
-uncharge_page(): unsafe? HMM
-
-add_to_kill(): safe, protected by get_dev_pagemap() and dax_lock_page()
-
-soft_offline_page(): unsafe
-
-remove_migration_pte(): unsafe? HMM
-
-move_to_new_page(): unsafe? HMM
-
-migrate_vma_pages() and helpers: unsafe? HMM
-
-try_to_unmap_one(): unsafe? HMM
-
-__put_page(): safe
-
-release_pages(): safe
-
-I'm hoping all the HMM ones can be converted to
-is_device_private_page() directlly and have that routine grow a nice
-comment about how it knows it can always safely de-reference its @page
-argument.
-
-For the rest I'd like to propose that we add a facility to determine
-ZONE_DEVICE by pfn rather than page. The most straightforward why I
-can think of would be to just add another bitmap to mem_section_usage
-to indicate if a subsection is ZONE_DEVICE or not.
-
->
-> I only gave it a quick test with DIMMs on x86-64, but didn't test the
-> ZONE_DEVICE part at all (any tips for a nice QEMU setup?). Compile-tested
-> on x86-64 and PPC.
-
-I'll give it a spin, but I don't think the kernel wants to grow more
-is_zone_device_page() users.
+ Documentation/powerpc/kaslr-booke32.rst       |  42 +++
+ arch/powerpc/Kconfig                          |  11 +
+ arch/powerpc/include/asm/nohash/mmu-book3e.h  |  11 +-
+ arch/powerpc/include/asm/page.h               |   7 +
+ arch/powerpc/kernel/early_32.c                |   5 +-
+ arch/powerpc/kernel/exceptions-64e.S          |  12 +-
+ arch/powerpc/kernel/fsl_booke_entry_mapping.S |  25 +-
+ arch/powerpc/kernel/head_fsl_booke.S          |  61 +++-
+ arch/powerpc/kernel/machine_kexec.c           |   1 +
+ arch/powerpc/kernel/misc_64.S                 |   7 +-
+ arch/powerpc/kernel/setup-common.c            |  20 ++
+ arch/powerpc/mm/init-common.c                 |   7 +
+ arch/powerpc/mm/init_32.c                     |   5 -
+ arch/powerpc/mm/init_64.c                     |   5 -
+ arch/powerpc/mm/mmu_decl.h                    |  11 +
+ arch/powerpc/mm/nohash/Makefile               |   1 +
+ arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-
+ arch/powerpc/mm/nohash/kaslr_booke.c          | 401 ++++++++++++++++++++++++++
+ 18 files changed, 587 insertions(+), 53 deletions(-)
+ create mode 100644 Documentation/powerpc/kaslr-booke32.rst
+ create mode 100644 arch/powerpc/mm/nohash/kaslr_booke.c
