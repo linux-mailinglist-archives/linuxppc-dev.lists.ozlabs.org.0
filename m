@@ -2,43 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436DAE1D59
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 15:51:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA6DE1D6E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 15:56:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ysHG5hPxzDqBL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 00:51:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ysNZ1pPQzDqKq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 00:56:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Tqi4iNym"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ysDD6FmpzDqRF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 00:49:00 +1100 (AEDT)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 6112AE0667A3215C47FE;
- Wed, 23 Oct 2019 21:48:48 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Wed, 23 Oct 2019
- 21:48:40 +0800
-From: YueHaibing <yuehaibing@huawei.com>
-To: <benh@kernel.crashing.org>, <paulus@samba.org>, <mpe@ellerman.id.au>,
- <mahesh@linux.vnet.ibm.com>, <ganeshgr@linux.ibm.com>,
- <yuehaibing@huawei.com>, <gregkh@linuxfoundation.org>, <npiggin@gmail.com>,
- <tglx@linutronix.de>
-Subject: [RESEND][PATCH] powerpc/pseries: Use correct event modifier in
- rtas_parse_epow_errlog()
-Date: Wed, 23 Oct 2019 21:48:38 +0800
-Message-ID: <20191023134838.21280-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ysJc1PY3zDqRH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 00:52:47 +1100 (AEDT)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com
+ [209.85.222.178])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 68E2E20663
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 13:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1571838765;
+ bh=L2YvqC4bmvGKE85dTFRNQdVbKDb1o3LV4h060+5yHLA=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=Tqi4iNym3c4aGq5lPmy/v5BRwv5D/mTCqGD1rpjHIfR21u0ajdU7UvlMKihQmwcQ3
+ W+zrGy23JfPYVrFQLTAXd2mmVXIl5E9f1VT9IKcAcBsB1hKNZHb3SJEn0Pg1mPNO0f
+ tDcT0mqvjtfEnfJ1v531vSPaclS4fgd1EjmBw/Dc=
+Received: by mail-qk1-f178.google.com with SMTP id u184so19819347qkd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 06:52:45 -0700 (PDT)
+X-Gm-Message-State: APjAAAVqgYkIiHf2ZKJ7I2Yr3MHocHMbHxfEwVNqNW4q+YhIL+NwOajL
+ 6H3VMPtvSt+k3ki2GNy78AOSvHkDYqwq9NDAfg==
+X-Google-Smtp-Source: APXvYqzGWo2+pYN2T0o4NXgTDtjFyejmifDo8RHY+pr1SSlX+84WLu8rymxxmRgumcm+7thQm16eVcW2Z1bEiLdMOgo=
+X-Received: by 2002:a37:98c1:: with SMTP id a184mr7812012qke.119.1571838764568; 
+ Wed, 23 Oct 2019 06:52:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+ <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+ <20191015131750.GV25745@shell.armlinux.org.uk>
+ <87muds586t.fsf@mpe.ellerman.id.au>
+ <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+In-Reply-To: <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Wed, 23 Oct 2019 08:52:33 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+Message-ID: <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,35 +70,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, mad skateman <madskateman@gmail.com>,
+ linux-mmc <linux-mmc@vger.kernel.org>,
+ Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+ Paul Mackerras <paulus@samba.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ "contact@a-eon.com" <contact@a-eon.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-rtas_parse_epow_errlog() should pass 'modifier' to
-handle_system_shutdown, because event modifier only use
-bottom 4 bits.
+On Wed, Oct 23, 2019 at 1:41 AM Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
+>
+> On Wed, 2019-10-23 at 16:42 +1100, Michael Ellerman wrote:
+> >
+> > Right, it seems of_dma_is_coherent() has baked in the assumption that
+> > devices are non-coherent unless explicitly marked as coherent.
+> >
+> > Which is wrong on all or at least most existing powerpc systems
+> > according to Ben.
+>
+> This is probably broken on sparc(64) as well and whatever else uses
+> DT and is an intrinsicly coherent architecture (did we ever have
+> DT enabled x86s ? Wasn't OLPC such a beast ?).
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- arch/powerpc/platforms/pseries/ras.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Only if those platforms use one of the 5 drivers that call this function:
 
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index 3acdcc3..1d7f973 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -255,7 +255,7 @@ static void rtas_parse_epow_errlog(struct rtas_error_log *log)
- 		break;
- 
- 	case EPOW_SYSTEM_SHUTDOWN:
--		handle_system_shutdown(epow_log->event_modifier);
-+		handle_system_shutdown(modifier);
- 		break;
- 
- 	case EPOW_SYSTEM_HALT:
--- 
-2.7.4
+drivers/ata/ahci_qoriq.c:       qoriq_priv->is_dmacoherent =
+of_dma_is_coherent(np);
+drivers/crypto/ccree/cc_driver.c:       new_drvdata->coherent =
+of_dma_is_coherent(np);
+drivers/iommu/arm-smmu-v3.c:    if (of_dma_is_coherent(dev->of_node))
+drivers/iommu/arm-smmu.c:       if (of_dma_is_coherent(dev->of_node))
+drivers/mmc/host/sdhci-of-esdhc.c:      if (of_dma_is_coherent(dev->of_node))
 
+Curious that a PPC specific driver (ahci_qoriq) calls it...
 
+Note that the value is also passed to arch_setup_dma_ops(), but only
+arc, arm, arm64, and mips implement arch_setup_dma_ops.
+
+> I think this should have been done the other way around and default to
+> coherent since most traditional OF platforms are coherent, and you
+> can't just require those DTs to change.
+
+You can blame me. This was really only intended for cases where
+coherency is configurable on a per peripheral basis and can't be
+determined in other ways.
+
+The simple solution here is simply to use the compatible string for
+the device to determine coherent or not.
+
+Rob
