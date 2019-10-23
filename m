@@ -1,87 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E078E11C9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 07:43:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EA7E11CE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 07:45:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yfS806C8zDqPw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 16:43:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yfVG0qTkzDqDZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 16:45:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yfPx5bfjzDqDT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 16:41:38 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9N5aRYt112562
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 01:41:34 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vtgtfr5au-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 01:41:34 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Wed, 23 Oct 2019 06:41:31 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 23 Oct 2019 06:41:28 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9N5fQRs18546696
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Oct 2019 05:41:26 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D012A405F;
- Wed, 23 Oct 2019 05:41:26 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E2C6A405B;
- Wed, 23 Oct 2019 05:41:24 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.124.35.40])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed, 23 Oct 2019 05:41:24 +0000 (GMT)
-Date: Wed, 23 Oct 2019 11:11:22 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Paul Mackerras <paulus@ozlabs.org>
-Subject: Re: [PATCH v9 2/8] KVM: PPC: Move pages between normal and secure
- memory
-References: <20190925050649.14926-1-bharata@linux.ibm.com>
- <20190925050649.14926-3-bharata@linux.ibm.com>
- <20191018030049.GA907@oak.ozlabs.ibm.com>
- <CAGZKiBqoxAvix3wrF2wuxTrikVCjY6PzD22pHsasew-F=P3KSg@mail.gmail.com>
- <20191023041754.GA5809@oak.ozlabs.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yfR41f0BzDqMf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 16:42:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="oq/KwXik"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 46yfR16cXzz9sPf;
+ Wed, 23 Oct 2019 16:42:37 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1571809359;
+ bh=oMjPusDwzIapfzvZsuF4G8wT87g7UxFK7FpRIUhOEFs=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=oq/KwXikEaGSQn/BBKoITvCUpV1xw+tInmTh3QZIvEIzGdEtAK0WDJu0aJMoSlCdQ
+ oE7NnYD5llOCf7w48WgI/abHeMbU5cFh1owHai3PXy/aClQF/J/iL/A/VnpAkXLe9J
+ LVDYUVJKn8OcU57mnra+JtH9nv0gzOGliJOAxsiQ0SlJnXqeQAqLxZxn8iWq7C5bC4
+ UOwVEnDmt/Kxk0QCiX1+gj33Ix0Sb9ogtaZP48YxwiDcwE9PIMcvbOFbBgumHfwrEs
+ Duu6U8fO8Uq3cv22WkuQTDWD7PaN0d5BahDF/EH/K07h9wgzkWJDx0edE/O8nSPru4
+ W1EByUwKBg5tA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+In-Reply-To: <20191015131750.GV25745@shell.armlinux.org.uk>
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+ <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+ <20191015131750.GV25745@shell.armlinux.org.uk>
+Date: Wed, 23 Oct 2019 16:42:34 +1100
+Message-ID: <87muds586t.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191023041754.GA5809@oak.ozlabs.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19102305-0008-0000-0000-00000325D9B5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102305-0009-0000-0000-00004A4507B7
-Message-Id: <20191023054122.GA1295@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-23_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910230055
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,65 +65,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com,
- Aneesh Kumar <aneesh.kumar@linux.vnet.ibm.com>,
- Bharata B Rao <bharata.rao@gmail.com>, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: ulf.hansson@linaro.org, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ linux-mmc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ "contact@a-eon.com" <contact@a-eon.com>, mad skateman <madskateman@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 23, 2019 at 03:17:54PM +1100, Paul Mackerras wrote:
-> On Tue, Oct 22, 2019 at 11:59:35AM +0530, Bharata B Rao wrote:
-> The mapping of pages in userspace memory, and the mapping of userspace
-> memory to guest physical space, are two distinct things.  The memslots
-> describe the mapping of userspace addresses to guest physical
-> addresses, but don't say anything about what is mapped at those
-> userspace addresses.  So you can indeed get a page fault on a
-> userspace address at the same time that a memslot is being deleted
-> (even a memslot that maps that particular userspace address), because
-> removing the memslot does not unmap anything from userspace memory,
-> it just breaks the association between that userspace memory and guest
-> physical memory.  Deleting the memslot does unmap the pages from the
-> guest but doesn't unmap them from the userspace process (e.g. QEMU).
-> 
-> It is an interesting question what the semantics should be when a
-> memslot is deleted and there are pages of userspace currently paged
-> out to the device (i.e. the ultravisor).  One approach might be to say
-> that all those pages have to come back to the host before we finish
-> the memslot deletion, but that is probably not necessary; I think we
-> could just say that those pages are gone and can be replaced by zero
-> pages if they get accessed on the host side.  If userspace then unmaps
-> the corresponding region of the userspace memory map, we can then just
-> forget all those pages with very little work.
-
-There are 5 scenarios currently where we are replacing the device mappings:
-
-1. Guest reset
-2. Memslot free (Memory unplug) (Not present in this version though)
-3. Converting secure page to shared page
-4. HV touching the secure page
-5. H_SVM_INIT_ABORT hcall to abort SVM due to errors when transitioning
-   to secure mode (Not present in this version)
-
-In the first 3 cases, we don't need to get the page to HV from
-the secure side and hence skip the page out. However currently we do
-allocate fresh page and replace the mapping with the new one.
- 
-> > However if that sounds fragile, may be I can go back to my initial
-> > design where we weren't using rmap[] to store device PFNs. That will
-> > increase the memory usage but we give us an easy option to have
-> > per-guest mutex to protect concurrent page-ins/outs/faults.
-> 
-> That sounds like it would be the best option, even if only in the
-> short term.  At least it would give us a working solution, even if
-> it's not the best performing solution.
-
-Sure, will avoid using rmap[] in the next version.
-
-Regards,
-Bharata.
-
+UnVzc2VsbCBLaW5nIC0gQVJNIExpbnV4IGFkbWluIDxsaW51eEBhcm1saW51eC5vcmcudWs+IHdy
+aXRlczoNCj4gT24gVHVlLCBPY3QgMTUsIDIwMTkgYXQgMDM6MTI6NDlQTSArMDIwMCwgQ2hyaXN0
+aWFuIFppZ290emt5IHdyb3RlOg0KPj4gSGVsbG8gUnVzc2VsbCwNCj4+IA0KPj4gWW91IGFza2Vk
+IG1lIGFib3V0ICJkbWEtY29oZXJlbnQiIGluIHRoZSBDeXJ1cyBkZXZpY2UgdHJlZS4gVW5mb3J0
+dW5hdGVseSBJDQo+PiBkb24ndCBmaW5kIHRoZSBwcm9wZXJ0eSAiZG1hLWNvaGVyZW50IiBpbiB0
+aGUgZHRiIHNvdXJjZSBmaWxlcy4NCj4+IA0KPj4gT3V0cHV0IG9mICJmZHRkdW1wIGN5cnVzX3A1
+MDIwX2V0aF9wb3dlcm9mZi5kdGIgfCBncmVwIGRtYSI6DQo+PiANCj4+IGRtYTAgPSAiL3NvY0Bm
+ZmUwMDAwMDAvZG1hQDEwMDMwMCI7DQo+PiDCoMKgwqDCoMKgwqDCoCBkbWExID0gIi9zb2NAZmZl
+MDAwMDAwL2RtYUAxMDEzMDAiOw0KPj4gwqDCoMKgwqDCoMKgwqAgZG1hQDEwMDMwMCB7DQo+PiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbXBhdGlibGUgPSAiZnNsLGVsb3BsdXMtZG1hIjsNCj4+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG1hLWNoYW5uZWxAMCB7DQo+PiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1cy1kbWEtY2hhbm5lbCI7
+DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDgwIHsNCj4+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9wbHVzLWRtYS1jaGFu
+bmVsIjsNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG1hLWNoYW5uZWxAMTAwIHsNCj4+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9wbHVzLWRt
+YS1jaGFubmVsIjsNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG1hLWNoYW5uZWxAMTgwIHsN
+Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9w
+bHVzLWRtYS1jaGFubmVsIjsNCj4+IMKgwqDCoMKgwqDCoMKgIGRtYUAxMDEzMDAgew0KPj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImZzbCxlbG9wbHVzLWRtYSI7DQo+PiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDAgew0KPj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIGNvbXBhdGlibGUgPSAiZnNsLGVsb3BsdXMtZG1hLWNoYW5uZWwiOw0K
+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkbWEtY2hhbm5lbEA4MCB7DQo+PiDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1cy1kbWEtY2hhbm5l
+bCI7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDEwMCB7DQo+PiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1cy1kbWEt
+Y2hhbm5lbCI7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRtYS1jaGFubmVsQDE4MCB7DQo+
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJmc2wsZWxvcGx1
+cy1kbWEtY2hhbm5lbCI7DQo+DQo+IEhtbSwgc28gaXQgbG9va3MgbGlrZSBQb3dlclBDIGRvZXNu
+J3QgbWFyayBkZXZpY2VzIHRoYXQgYXJlIGRtYQ0KPiBjb2hlcmVudCB3aXRoIGEgcHJvcGVydHkg
+dGhhdCBkZXNjcmliZXMgdGhlbSBhcyBzdWNoLg0KPg0KPiBJIHRoaW5rIHRoaXMgb3BlbnMgYSB3
+aWRlciBxdWVzdGlvbiAtIHdoYXQgc2hvdWxkIG9mX2RtYV9pc19jb2hlcmVudCgpDQo+IHJldHVy
+biBmb3IgUG93ZXJQQz8gIEl0IHNlZW1zIHJpZ2h0IG5vdyB0aGF0IGl0IHJldHVybnMgZmFsc2Ug
+Zm9yDQo+IGRldmljZXMgdGhhdCBhcmUgRE1BIGNvaGVyZW50LCB3aGljaCBzZWVtcyB0byBtZSB0
+byBiZSBhIHJlY2lwZSBmb3INCj4gZnV0dXJlIG1pc3Rha2VzLg0KDQpSaWdodCwgaXQgc2VlbXMg
+b2ZfZG1hX2lzX2NvaGVyZW50KCkgaGFzIGJha2VkIGluIHRoZSBhc3N1bXB0aW9uIHRoYXQNCmRl
+dmljZXMgYXJlIG5vbi1jb2hlcmVudCB1bmxlc3MgZXhwbGljaXRseSBtYXJrZWQgYXMgY29oZXJl
+bnQuDQoNCldoaWNoIGlzIHdyb25nIG9uIGFsbCBvciBhdCBsZWFzdCBtb3N0IGV4aXN0aW5nIHBv
+d2VycGMgc3lzdGVtcw0KYWNjb3JkaW5nIHRvIEJlbi4NCg0KPiBBbnkgaWRlYXMgZnJvbSB0aGUg
+UFBDIG1haW50YWluZXJzPw0KDQpGaXhpbmcgaXQgYXQgdGhlIHNvdXJjZSBzZWVtcyBsaWtlIHRo
+ZSBiZXN0IG9wdGlvbiB0byBwcmV2ZW50IGZ1dHVyZQ0KYnJlYWthZ2UuDQoNClNvIEkgZ3Vlc3Mg
+dGhhdCB3b3VsZCBtZWFuIG1ha2luZyBvZl9kbWFfaXNfY29oZXJlbnQoKSByZXR1cm4gdHJ1ZS9m
+YWxzZQ0KYmFzZWQgb24gQ09ORklHX05PVF9DT0hFUkVOVF9DQUNIRSBvbiBwb3dlcnBjLg0KDQpX
+ZSBjb3VsZCBkbyBpdCBsaWtlIGJlbG93LCB3aGljaCB3b3VsZCBzdGlsbCBhbGxvdyB0aGUgZG1h
+LWNvaGVyZW50DQpwcm9wZXJ0eSB0byB3b3JrIGlmIGl0IGV2ZXIgbWFrZXMgc2Vuc2Ugb24gYSBm
+dXR1cmUgcG93ZXJwYyBwbGF0Zm9ybS4NCg0KSSBkb24ndCByZWFsbHkga25vdyBhbnkgb2YgdGhp
+cyBlbWJlZGRlZCBzdHVmZiB3ZWxsLCBzbyBoYXBweSB0byB0YWtlDQpvdGhlciBzdWdnZXN0aW9u
+cyBvbiBob3cgdG8gaGFuZGxlIHRoaXMgbWVzcy4NCg0KY2hlZXJzDQoNCg0KZGlmZiAtLWdpdCBh
+L2FyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMgYi9hcmNoL3Bvd2VycGMva2VybmVs
+L3NldHVwLWNvbW1vbi5jDQppbmRleCAyNWFhYTM5MDMwMDAuLmI5NmM5MDEwYWNiNiAxMDA2NDQN
+Ci0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMNCisrKyBiL2FyY2gvcG93
+ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMNCkBAIC03NjAsNiArNzYwLDIyIEBAIHN0YXRpYyBp
+bnQgX19pbml0IGNoZWNrX2NhY2hlX2NvaGVyZW5jeSh2b2lkKQ0KIGxhdGVfaW5pdGNhbGwoY2hl
+Y2tfY2FjaGVfY29oZXJlbmN5KTsNCiAjZW5kaWYgLyogQ09ORklHX0NIRUNLX0NBQ0hFX0NPSEVS
+RU5DWSAqLw0KIA0KKyNpZm5kZWYgQ09ORklHX05PVF9DT0hFUkVOVF9DQUNIRQ0KKy8qDQorICog
+Rm9yIGhpc3RvcmljYWwgcmVhc29ucyBwb3dlcnBjIGtlcm5lbHMgYXJlIGJ1aWx0IHdpdGggaGFy
+ZCB3aXJlZCBrbm93bGVkZ2Ugb2YNCisgKiB3aGV0aGVyIG9yIG5vdCBETUEgYWNjZXNzZXMgYXJl
+IGNhY2hlIGNvaGVyZW50LiBBZGRpdGlvbmFsbHkgZGV2aWNlIHRyZWVzIG9uDQorICogcG93ZXJw
+YyBkbyBub3QgdHlwaWNhbGx5IHN1cHBvcnQgdGhlIGRtYS1jb2hlcmVudCBwcm9wZXJ0eS4NCisg
+Kg0KKyAqIFNvIHdoZW4gd2Uga25vdyB0aGF0IERNQSBpcyBjb2hlcmVudCwgb3ZlcnJpZGUgYXJj
+aF9vZl9kbWFfaXNfY29oZXJlbnQoKSB0bw0KKyAqIHRlbGwgdGhlIGRyaXZlcnMvb2YgY29kZSB0
+aGF0IGFsbCBkZXZpY2VzIGFyZSBjb2hlcmVudCByZWdhcmRsZXNzIG9mIHdoZXRoZXINCisgKiB0
+aGV5IGhhdmUgYSBkbWEtY29oZXJlbnQgcHJvcGVydHkuDQorICovDQorYm9vbCBhcmNoX29mX2Rt
+YV9pc19jb2hlcmVudChzdHJ1Y3QgZGV2aWNlX25vZGUgKm5wKQ0KK3sNCisJcmV0dXJuIHRydWU7
+DQorfQ0KKyNlbmRpZg0KKw0KICNpZmRlZiBDT05GSUdfREVCVUdfRlMNCiBzdHJ1Y3QgZGVudHJ5
+ICpwb3dlcnBjX2RlYnVnZnNfcm9vdDsNCiBFWFBPUlRfU1lNQk9MKHBvd2VycGNfZGVidWdmc19y
+b290KTsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL29mL2FkZHJlc3MuYyBiL2RyaXZlcnMvb2YvYWRk
+cmVzcy5jDQppbmRleCA5Nzg0MjdhOWQ1ZTYuLjNhNGIyOTQ5YTMyMiAxMDA2NDQNCi0tLSBhL2Ry
+aXZlcnMvb2YvYWRkcmVzcy5jDQorKysgYi9kcml2ZXJzL29mL2FkZHJlc3MuYw0KQEAgLTk5Myw2
+ICs5OTMsMTQgQEAgaW50IG9mX2RtYV9nZXRfcmFuZ2Uoc3RydWN0IGRldmljZV9ub2RlICpucCwg
+dTY0ICpkbWFfYWRkciwgdTY0ICpwYWRkciwgdTY0ICpzaXoNCiB9DQogRVhQT1JUX1NZTUJPTF9H
+UEwob2ZfZG1hX2dldF9yYW5nZSk7DQogDQorLyoNCisgKiBhcmNoX29mX2RtYV9pc19jb2hlcmVu
+dCAtIEFyY2ggaG9vayB0byBkZXRlcm1pbmUgaWYgZGV2aWNlIGlzIGNvaGVyZW50IGZvciBETUEN
+CisgKi8NCitib29sIF9fd2VhayBhcmNoX29mX2RtYV9pc19jb2hlcmVudChzdHJ1Y3QgZGV2aWNl
+X25vZGUgKm5wKQ0KK3sNCisJcmV0dXJuIGZhbHNlOw0KK30NCisNCiAvKioNCiAgKiBvZl9kbWFf
+aXNfY29oZXJlbnQgLSBDaGVjayBpZiBkZXZpY2UgaXMgY29oZXJlbnQNCiAgKiBAbnA6CWRldmlj
+ZSBub2RlDQpAQCAtMTAwMiw4ICsxMDEwLDEyIEBAIEVYUE9SVF9TWU1CT0xfR1BMKG9mX2RtYV9n
+ZXRfcmFuZ2UpOw0KICAqLw0KIGJvb2wgb2ZfZG1hX2lzX2NvaGVyZW50KHN0cnVjdCBkZXZpY2Vf
+bm9kZSAqbnApDQogew0KLQlzdHJ1Y3QgZGV2aWNlX25vZGUgKm5vZGUgPSBvZl9ub2RlX2dldChu
+cCk7DQorCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbm9kZTsNCisNCisJaWYgKGFyY2hfb2ZfZG1hX2lz
+X2NvaGVyZW50KG5wKSkNCisJCXJldHVybiB0cnVlOw0KIA0KKwlucCA9IG9mX25vZGVfZ2V0KG5w
+KTsNCiAJd2hpbGUgKG5vZGUpIHsNCiAJCWlmIChvZl9wcm9wZXJ0eV9yZWFkX2Jvb2wobm9kZSwg
+ImRtYS1jb2hlcmVudCIpKSB7DQogCQkJb2Zfbm9kZV9wdXQobm9kZSk7DQo=
