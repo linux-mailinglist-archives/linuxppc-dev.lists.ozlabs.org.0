@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62842E2331
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 21:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7304E24D6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 22:56:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46z0Pn6rCRzDqRk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 06:12:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46z2jY2xYQzDqSC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 07:56:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="APOUMKFt"; 
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="bcYrgPfU"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46z0MB20XszDqQN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 06:10:30 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id p1so12698000pgi.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 12:10:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=Wedy5pGJORyqF9ETWtu/bm70wj9Mpmh0YPkLpaSld18=;
- b=APOUMKFtctD5mY/VLWicGv14AHP8YF2RxE9lCloG3iKAFDrN2TtgQYlXhplVkq163N
- LahF9pSBs/3XYq7f8DGrOA1pelXIB7/QHExaqDdYo0/XRURQ2dR6PNv+6orquAaoe27d
- Nv7Lr9mA4iCCfG5Gc0spya7J6B+m86iFUAXTJdlAL3PYLRAdGGvJ7S19DM6eF5WSGOFI
- 09fL00QiV6pGErDbntOxAwVofo2iag6NLtRnv4XyjEj1mZJAnN2D99AKHUe4gPfAH3zT
- Q81sQY7T/i9g0npiSm+X2rZ825QvJnwpQVbFHA19Oa0XaojLBCe9PekB0jgj9W5HMNLt
- HFrA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46z1116rtkzDqN8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 06:39:45 +1100 (AEDT)
+Received: by mail-ot1-x342.google.com with SMTP id d8so7290873otc.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 12:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=8ApkkYruavPD6VaVfU4QHr5pRzVSLLe/BmCajbyD76I=;
+ b=bcYrgPfUve+/e7PA/COpa9cpiotkNE8e14cXEXZpBzSMlJpSompwdbTdWjjkQJddx0
+ Uw+3WqPKAUioj4/4XPm7cJ24FTR0IET9Naz1ZwjQyErO2IZvSkGMpp/gew8XlZpggjwU
+ urspNOSnz3kU9GTyqmzURLWDOMJHHwAlk9WGjmcgjm+VaVmSdvOU+um4KKw70KPHFsUp
+ FTUvgk6gpDTS/o2wCQdq+8Gi3txZF11FZsotj80J3+OxzF3vILzEFTeGcvRDQy1jMFEi
+ SRx85TI+B5z5ijy9jfA6ym8yiuLiEhXgUKJRjaghu/8ovT45aTiORONSiCHuKkbYvhPp
+ fMSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=Wedy5pGJORyqF9ETWtu/bm70wj9Mpmh0YPkLpaSld18=;
- b=MqCUIFGXRxqdBr72/V9eKbyWYzIahV7WEEpNh9c593c5ls7nY0Wf8mJN/UNE+F7j7r
- 6Y0ITz6dX6rEBKLXzZkHwB2UQP3zxS3UAs8bBhM7HgPb6PbmeorEt2lG4OFFTa4+AV68
- 2fcRP3uIJkaUoLWMQoSne8QJiX0pu+f9oi6qP/2uqNeSX6yYwnd4NwmklMDM5tjdOLml
- 5n3dhw7bzMrfSNBXHwDa21DFiI+TCMQ3Z0r93CFBCRePYdbZRN/Q9iaBdfIuitsTCq4v
- RAtMyzqRMwZHpLuiVqZxlFAhOp1uyad7FW8NFnWK0YQ9t0gcPQpTdAnnEEot5bjlSmrc
- GGJQ==
-X-Gm-Message-State: APjAAAVqDK06ZNMAkcnaKZEhZOA6V1PLVlmrAQg13V/Vu93oeQK5xith
- cJ0FsRixA+Ry59Mb+b6Wk88=
-X-Google-Smtp-Source: APXvYqwSZez+2yq+w1FWUCzo61I7MRI0T+B0lXJzyoigx6N9h9tZfgWThfcHw5zU+lftX9TnLkY/3g==
-X-Received: by 2002:a62:a50b:: with SMTP id v11mr12690945pfm.164.1571857827268; 
- Wed, 23 Oct 2019 12:10:27 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id m102sm52695pje.5.2019.10.23.12.10.26
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 23 Oct 2019 12:10:26 -0700 (PDT)
-Date: Wed, 23 Oct 2019 12:10:06 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: "S.j. Wang" <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_asrc: refine the setting of internal clock
- divider
-Message-ID: <20191023191002.GB16043@Asurada-Nvidia.nvidia.com>
-References: <VE1PR04MB647949BE7BDB9CD2B1B2C521E36B0@VE1PR04MB6479.eurprd04.prod.outlook.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=8ApkkYruavPD6VaVfU4QHr5pRzVSLLe/BmCajbyD76I=;
+ b=blFK+EN7vbjfpadOpxwtyyE6xNBUERB71MPOqlrAQazGUU1uJ2ve7AfsO23v5DzM02
+ rly9jQojczIW9UOvNWZabd5ef16gGdfLk/et3pGU0OMzLAjwf8NB3NQPq3ThyrJBAj1a
+ E2KaE8I2f0dg8EWmekS9mFqjpZt3uETtVuarC0P89uNIzbOUjoSzytQp4qusFYOhXcUu
+ 8cDvj99Q2fbugbMktiNx9HIt9+yCisGBaZl/Af3y41kx0Wm/jjkPuwL0gf4R9NuCMNaT
+ +9llrpUa2HI1SWreoJUoIzS1JYsh0ZYc5vCEKRjbW9UpdBC3qRW8YhUqUyt/qDKYGnyb
+ 0o8Q==
+X-Gm-Message-State: APjAAAWdu76HNGtv76CiPHVR5GHE/77UpNWsW5ncpI/qppYz49KQenl6
+ pr+fTAAnOUXGPUhpm6mPXxK2RLUkcHW1q6xB/v9lRw==
+X-Google-Smtp-Source: APXvYqwijxA4UnPG5Tbj7UXgroNEpqpPtlp/BzJIeWUQUfe3F9HUg3GXu8gWZWfrY7GBmsZ1h9DSM1JTtNPajl0t3Ss=
+X-Received: by 2002:a05:6830:617:: with SMTP id
+ w23mr8183922oti.247.1571859582403; 
+ Wed, 23 Oct 2019 12:39:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VE1PR04MB647949BE7BDB9CD2B1B2C521E36B0@VE1PR04MB6479.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20191022171239.21487-1-david@redhat.com>
+ <CAPcyv4gJ+2he2E-6D0QZvkFWvRM9Fsvn9cAoPZbcU4zvsDHcEQ@mail.gmail.com>
+ <acf86afd-a45c-5d83-daff-3bfb840d48a7@redhat.com>
+ <CAPcyv4hHTqWWWREX2AtpEpfLHdDHvT-Kp_2YBW1As0y2Mx+6Dg@mail.gmail.com>
+ <55640861-bbcb-95f0-766a-95bc961f1b0e@redhat.com>
+In-Reply-To: <55640861-bbcb-95f0-766a-95bc961f1b0e@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 23 Oct 2019 12:39:31 -0700
+Message-ID: <CAPcyv4g1zBpD2i936wWB9Pn0OStUoksXXLCCdXeYjbHuri-j4Q@mail.gmail.com>
+Subject: Re: [PATCH RFC v1 00/12] mm: Don't mark hotplugged pages PG_reserved
+ (including ZONE_DEVICE)
+To: David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Thu, 24 Oct 2019 07:47:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,201 +81,231 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "perex@perex.cz" <perex@perex.cz>, "broonie@kernel.org" <broonie@kernel.org>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Kate Stewart <kstewart@linuxfoundation.org>, linux-hyperv@vger.kernel.org,
+ Michal Hocko <mhocko@suse.com>,
+ =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ KarimAllah Ahmed <karahmed@amazon.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
+ Ben Chan <benchan@chromium.org>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ devel@driverdev.osuosl.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
+ YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Madhumitha Prabakaran <madhumithabiw@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Nishka Dasgupta <nishkadg.linux@gmail.com>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ "Isaac J. Manjarres" <isaacm@codeaurora.org>,
+ Matt Sickler <Matt.Sickler@daktronics.com>, Kees Cook <keescook@chromium.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ =?UTF-8?Q?Simon_Sandstr=C3=B6m?= <simon@nikanor.nu>,
+ Sasha Levin <sashal@kernel.org>, Juergen Gross <jgross@suse.com>,
+ kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
+ xen-devel <xen-devel@lists.xenproject.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Todd Poynor <toddpoynor@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Allison Randal <allison@lohutok.net>, Jim Mattson <jmattson@google.com>,
+ Vandana BN <bnvandana@gmail.com>, Jeremy Sowden <jeremy@azazel.net>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Cornelia Huck <cohuck@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ Rob Springer <rspringer@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 23, 2019 at 06:25:20AM +0000, S.j. Wang wrote:
-> > On Thu, Oct 17, 2019 at 02:21:08PM +0800, Shengjiu Wang wrote:
-> > > For P2P output, the output divider should align with the output sample
-> > 
-> > I think we should avoid "P2P" (or "M2M") keyword in the mainline code as
-> > we know M2M will never get merged while somebody working with the
-> > mainline and caring about new feature might be confused.
-> 
-> Ok. But we still curious that is there a way to upstream m2m?
+On Wed, Oct 23, 2019 at 10:28 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> >> I dislike this for three reasons
+> >>
+> >> a) It does not protect against any races, really, it does not improve things.
+> >> b) We do have the exact same problem with pfn_to_online_page(). As long as we
+> >>    don't hold the memory hotplug lock, memory can get offlined and remove any time. Racy.
+> >
+> > True, we need to solve that problem too. That seems to want something
+> > lighter weight than the hotplug lock that can be held over pfn lookups
+> > +  use rather than requiring a page lookup in paths where it's not
+> > clear that a page reference would prevent unplug.
+> >
+> >> c) We mix in ZONE specific stuff into the core. It should be "just another zone"
+> >
+> > Not sure I grok this when the RFC is sprinkling zone-specific
+> > is_zone_device_page() throughout the core?
+>
+> Most users should not care about the zone. pfn_active() would be enough
+> in most situations, especially most PFN walkers - "this memmap is valid
+> and e.g., contains a valid zone ...".
 
-Hmm..I would love to see that happening. Here is an old discussion
-that you may want to take a look:
-https://mailman.alsa-project.org/pipermail/alsa-devel/2014-May/076797.html
+Oh, I see, you're saying convert most users to pfn_active() (and some
+TBD rcu locking), but only pfn_to_online_page() users would need the
+zone lookup? I can get on board with that.
 
-> > It makes sense to me, yet I feel that the delay at the beginning of the audio
-> > playback might be longer as a compromise. I am okay with this decision
-> > though...
-> > 
-> > > The maximum divider of asrc clock is 1024, but there is no judgement
-> > > for this limitaion in driver, which may cause the divider setting not
-> > > correct.
-> > >
-> > > For non-ideal ratio mode, the clock rate should divide the sample rate
-> > > with no remainder, and the quotient should be less than 1024.
-> > >
-> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>
+> >
+> >>
+> >> What I propose instead (already discussed in https://lkml.org/lkml/2019/10/10/87)
+> >
+> > Sorry I missed this earlier...
+> >
+> >>
+> >> 1. Convert SECTION_IS_ONLINE to SECTION_IS_ACTIVE
+> >> 2. Convert SECTION_IS_ACTIVE to a subsection bitmap
+> >> 3. Introduce pfn_active() that checks against the subsection bitmap
+> >> 4. Once the memmap was initialized / prepared, set the subsection active
+> >>    (similar to SECTION_IS_ONLINE in the buddy right now)
+> >> 5. Before the memmap gets invalidated, set the subsection inactive
+> >>    (similar to SECTION_IS_ONLINE in the buddy right now)
+> >> 5. pfn_to_online_page() = pfn_active() && zone != ZONE_DEVICE
+> >> 6. pfn_to_device_page() = pfn_active() && zone == ZONE_DEVICE
+> >
+> > This does not seem to reduce any complexity because it still requires
+> > a pfn to zone lookup at the end of the process.
+> >
+> > I.e. converting pfn_to_online_page() to use a new pfn_active()
+> > subsection map plus looking up the zone from pfn_to_page() is more
+> > steps than just doing a direct pfn to zone lookup. What am I missing?
+>
+> That a real "pfn to zone" lookup without going via the struct page will
+> require to have more than just a single bitmap. IMHO, keeping the
+> information at a single place (memmap) is the clean thing to do (not
+> replicating it somewhere else). Going via the memmap might not be as
+> fast as a direct lookup, but do we actually care? We are already looking
+> at "random PFNs we are not sure if there is a valid memmap".
 
-> > > @@ -351,7 +352,9 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair
-> > *pair)
-> > >       /* We only have output clock for ideal ratio mode */
-> > >       clk = asrc_priv->asrck_clk[clk_index[ideal ? OUT : IN]];
-> > >
-> > > -     div[IN] = clk_get_rate(clk) / inrate;
-> > > +     clk_rate = clk_get_rate(clk);
-> > 
-> > The fsl_asrc.c file has config.inclk being set to INCLK_NONE and this sets the
-> > "ideal" in this function to true. So, although we tend to not use ideal ratio
-> > setting for p2p cases, yet the input clock is still not physically connected, so
-> > we still use output clock for div[IN] calculation?
-> 
-> For p2p case, it can be ideal or non-ideal.  For non-ideal, we still use
-> Output clock for div calculation.
-> 
-> > 
-> > I am thinking something simplier: if we decided not to use ideal ratio for
-> > "P2P", instead of adding "bool p2p" with the confusing "ideal" in this
-> > function, could we just set config.inclk to the same clock as the output one
-> > for "P2P"? By doing so, "P2P" won't go through ideal ratio mode while still
-> > having a clock rate from the output clock for div[IN] calculation here.
-> 
-> Bool p2p is to force output rate to be sample rate, no impact to ideal
-> Ratio mode.
+True, we only care about the validity of the check, and as you pointed
+out moving the check to the pfn level does not solve the validity
+race. It needs a lock.
 
-I just realized that the function has a bottom part for ideal mode
-exclusively -- if we treat p2p as !ideal, those configurations will
-be missing. So you're right, should have an extra boolean variable.
+>
+> >>
+> >> Especially, driver-reserved device memory will not get set active in
+> >> the subsection bitmap.
+> >>
+> >> Now to the race. Taking the memory hotplug lock at random places is ugly. I do
+> >> wonder if we can use RCU:
+> >
+> > Ah, yes, exactly what I was thinking above.
+> >
+> >>
+> >> The user of pfn_active()/pfn_to_online_page()/pfn_to_device_page():
+> >>
+> >>         /* the memmap is guaranteed to remain active under RCU */
+> >>         rcu_read_lock();
+> >>         if (pfn_active(random_pfn)) {
+> >>                 page = pfn_to_page(random_pfn);
+> >>                 ... use the page, stays valid
+> >>         }
+> >>         rcu_unread_lock();
+> >>
+> >> Memory offlining/memremap code:
+> >>
+> >>         set_subsections_inactive(pfn, nr_pages); /* clears the bit atomically */
+> >>         synchronize_rcu();
+> >>         /* all users saw the bitmap update, we can invalide the memmap */
+> >>         remove_pfn_range_from_zone(zone, pfn, nr_pages);
+> >
+> > Looks good to me.
+> >
+> >>
+> >>>
+> >>>>
+> >>>> I only gave it a quick test with DIMMs on x86-64, but didn't test the
+> >>>> ZONE_DEVICE part at all (any tips for a nice QEMU setup?). Compile-tested
+> >>>> on x86-64 and PPC.
+> >>>
+> >>> I'll give it a spin, but I don't think the kernel wants to grow more
+> >>> is_zone_device_page() users.
+> >>
+> >> Let's recap. In this RFC, I introduce a total of 4 (!) users only.
+> >> The other parts can rely on pfn_to_online_page() only.
+> >>
+> >> 1. "staging: kpc2000: Prepare transfer_complete_cb() for PG_reserved changes"
+> >> - Basically never used with ZONE_DEVICE.
+> >> - We hold a reference!
+> >> - All it protects is a SetPageDirty(page);
+> >>
+> >> 2. "staging/gasket: Prepare gasket_release_page() for PG_reserved changes"
+> >> - Same as 1.
+> >>
+> >> 3. "mm/usercopy.c: Prepare check_page_span() for PG_reserved changes"
+> >> - We come via virt_to_head_page() / virt_to_head_page(), not sure about
+> >>   references (I assume this should be fine as we don't come via random
+> >>   PFNs)
+> >> - We check that we don't mix Reserved (including device memory) and CMA
+> >>   pages when crossing compound pages.
+> >>
+> >> I think we can drop 1. and 2., resulting in a total of 2 new users in
+> >> the same context. I think that is totally tolerable to finally clean
+> >> this up.
+> >
+> > ...but more is_zone_device_page() doesn't "finally clean this up".
+> > Like we discussed above it's the missing locking that's the real
+> > cleanup, the pfn_to_online_page() internals are secondary.
+>
+> It's a different cleanup IMHO. We can't do everything in one shot. But
+> maybe I can drop the is_zone_device_page() parts from this patch and
+> completely rely on pfn_to_online_page(). Yes, that needs fixing to, but
+> it's a different story.
+>
+> The important part of this patch:
+>
+> While pfn_to_online_page() will always exclude ZONE_DEVICE pages,
+> checking PG_reserved on ZONE_DEVICE pages (what we do right now!) is
+> racy as hell (especially when concurrently initializing the memmap).
+>
+> This does improve the situation.
 
-> > 
-> > > +     rem[IN] = do_div(clk_rate, inrate);
-> > > +     div[IN] = (u32)clk_rate;
-> > >       if (div[IN] == 0) {
-> > 
-> > Could we check div[IN] and rem[IN] here? Like:
-> >         if (div[IN] == 0 || div[IN] > 1024) {
-> >                 pair_err();
-> >                 goto out;
-> >         }
-> > 
-> >         if (!ideal && rem[IN]) {
-> >                 pair_err();
-> >                 goto out;
-> >         }
-> > 
-> > According to your commit log, I think the max-1024 limitation should be
-> > applied to all cases, not confined to "!ideal" cases right? And we should
-> > add some comments also, indicating it is limited by hardware.
-> 
-> For ideal mode,  my test result is  the divider not impact the output result.
-> Which means it is ok for ideal mode even divider is not correct... 
+True that's a race a vector I was not considering.
 
-OK.
+>
+> >>
+> >> However, I think we also have to clarify if we need the change in 3 at all.
+> >> It comes from
+> >>
+> >> commit f5509cc18daa7f82bcc553be70df2117c8eedc16
+> >> Author: Kees Cook <keescook@chromium.org>
+> >> Date:   Tue Jun 7 11:05:33 2016 -0700
+> >>
+> >>     mm: Hardened usercopy
+> >>
+> >>     This is the start of porting PAX_USERCOPY into the mainline kernel. This
+> >>     is the first set of features, controlled by CONFIG_HARDENED_USERCOPY. The
+> >>     work is based on code by PaX Team and Brad Spengler, and an earlier port
+> >>     from Casey Schaufler. Additional non-slab page tests are from Rik van Riel.
+> >> [...]
+> >>     - otherwise, object must not span page allocations (excepting Reserved
+> >>       and CMA ranges)
+> >>
+> >> Not sure if we really have to care about ZONE_DEVICE at this point.
+> >
+> > That check needs to be careful to ignore ZONE_DEVICE pages. There's
+> > nothing wrong with a copy spanning ZONE_DEVICE and typical pages.
+>
+> Please note that the current check would *forbid* this (AFAIKs for a
+> single heap object). As discussed in the relevant patch, we might be
+> able to just stop doing that and limit it to real PG_reserved pages
+> (without ZONE_DEVICE). I'd be happy to not introduce new
+> is_zone_device_page() users.
 
-> > 
-> > >               pair_err("failed to support input sample rate %dHz by
-> > asrck_%x\n",
-> > >                               inrate, clk_index[ideal ? OUT : IN]); @@
-> > > -360,11 +363,20 @@ static int fsl_asrc_config_pair(struct
-> > > fsl_asrc_pair *pair)
-> > >
-> > >       clk = asrc_priv->asrck_clk[clk_index[OUT]];
-> > >
-> > > -     /* Use fixed output rate for Ideal Ratio mode (INCLK_NONE) */
-> > > -     if (ideal)
-> > > -             div[OUT] = clk_get_rate(clk) / IDEAL_RATIO_RATE;
-> > > -     else
-> > > -             div[OUT] = clk_get_rate(clk) / outrate;
-> > > +     /*
-> > > +      * When P2P mode, output rate should align with the out samplerate.
-> > > +      * if set too high output rate, there will be lots of Overload.
-> > > +      * When M2M mode, output rate should also need to align with the
-> > > + out
-> > 
-> > For this "should", do you actually mean "M2M could also"? Sorry, I'm just
-> > trying to understand everyting here, not intentionally being picky at words.
-> > My understanding is that we still keep the ideal ratio setting because
-> > "M2M" still uses it.
-> 
-> We use IDEAL_RATIO_RATE as output rate for m2m mode, it likes a
-> Tricky operation, in order to improve the performance. I think
-> The correct operation is to use the real output rate, but the performance
-> Is bad.  So it is a compromise.
+At least for non-HMM ZONE_DEVICE usage, i.e. the dax + pmem stuff, is
+excluded from this path by:
 
-I see.
+52f476a323f9 libnvdimm/pmem: Bypass CONFIG_HARDENED_USERCOPY overhead
 
-> > 
-> > > +      * samplerate, but M2M must use less time to achieve good
-> > performance.
-> > > +      */
-> > > +     clk_rate = clk_get_rate(clk);
-> > > +     if (p2p || !ideal) {
-> > > +             rem[OUT] = do_div(clk_rate, outrate);
-> > > +             div[OUT] = clk_rate;
-> > > +     } else {
-> > > +             rem[OUT] = do_div(clk_rate, IDEAL_RATIO_RATE);
-> > > +             div[OUT] = clk_rate;
-> > > +     }
-> > >
-> > >       if (div[OUT] == 0) {
-> > >               pair_err("failed to support output sample rate %dHz by
-> > > asrck_%x\n", @@ -372,6 +384,16 @@ static int fsl_asrc_config_pair(struct
-> > fsl_asrc_pair *pair)
-> > >               return -EINVAL;
-> > >       }
-> > >
-> > > +     if (!ideal && (div[IN] > 1024 || div[OUT] > 1024 ||
-> > > +                    rem[IN] != 0 || rem[OUT] != 0)) {
-> > > +     if (!ideal && (div[IN] > 1024 || div[OUT] > 1024 || rem[IN] ||
-> > > + rem[OUT] != 0)) {
-> > 
-> > So for ideal == true, these limitaions are not applied any more?
-> > Remember that the "ideal" is true for "p2p == true" cases here.
-> 
-> No, not applied.  for ideal, the div don't impact the output result
-> Even it is not accurate.
-
-I see.
-
-> > 
-> > > +             pair_err("The divider can't be used for non ideal mode\n");
-> > > +             return -EINVAL;
-> > > +     }
-> > > +
-> > > +     /* Divider range is [1, 1024] */
-> > > +     div[IN] = min_t(u32, 1024, div[IN]);
-> > > +     div[OUT] = min_t(u32, 1024, div[OUT]);
-> > 
-> > Hmm, this looks like we want to allow ideal ratio cases and p2p cases to
-> > operate any way, even if the divider wasn't within the range to get the
-> > in/out rates from the output clock?
-> 
-> Yes. We still allow the p2p = true,  ideal = false.  Note that p2p is not
-> Equal to ideal.
-
-Got it.
-
-Overall, I feel it's better to have a naming to state the purpose
-of using ideal configurations without the IDEAL_RATIO_RATE setup.
-	bool use_ideal_rate;
-And we can put into the asrc_config structure if there's no major
-problem.
-
-So the condition check for the calculation would be:
-+	if (ideal && config->use_ideal_rate)
-+		rem[OUT] = do_div(clk_rate, IDEAL_RATIO_RATE);
-+	else
-+		rem[OUT] = do_div(clk_rate, outrate);
-+	div[OUT] = clk_rate;
-
-And for that if (!ideal && div[IN]....rem[OUT]), I feel it would
-be clear to have them separately, as the existing "div[IN] == 0"
-and "div[OUT] == 0" checks, so that we can tell users which side
-of the divider is out of range and what the sample rate and clock
-rate are.
-
-Thanks
-Nicolin
+So this case is one more to add to the pile of HMM auditing.
