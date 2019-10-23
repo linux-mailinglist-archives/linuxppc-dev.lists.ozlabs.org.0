@@ -1,101 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D98CE16B6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 11:54:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CD5E17C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 12:23:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ym1Z3mP6zDqPF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 20:54:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ymg1208NzDqRr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 21:23:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Void lookup limit
- of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe0d::62c;
- helo=eur04-he1-obe.outbound.protection.outlook.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+ dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="FX+z9mTu"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="ckoX6bYq"; 
  dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-he1eur04on062c.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe0d::62c])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ylzh4qJqzDqDF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 20:52:45 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IVCz2GQOSskeQvdbXQMwhwuJb0Hu7C4GvkT9Y7GIZut6ADMH8f6YG9bxxPrg7vixTOBke/aMRUlL1L/k6n4teEbSpIckHkuNXsTGoQQUaYCnAYzU/t8/Wi0TpCGKykfAk8MBx3Fi81Gj4YgpIqZm8zOlPOty1TuZv6bbkFVkkZ9GjIBM8xHfXiTp96Hzm7nC81A/3KzhT0vLUIgJOqLgia4JS3jscg9GD4g42LnrdQCFn1bSu/dHdxH7h4kLh/2OrxajuPng8rGoHSNFAp6Xk/lfSnEteGZxojLd587CkifopDmfDj0Hg+lR1rUNPk0Pgb6CymXXTTO31L+nR7S3Sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y+zkCo3fe9gLsE7BLQxy++PAwztFcHXKQ66Z2Q/zYIA=;
- b=ULpLFdS+PITwuoJXijhiNcgY7maV78LiEouU1wPluPytDutNlcHpNrPEOoexwGz3P6kLkVEDAoBizoiIHy+oLbFwYdFN/zP9OFvD4ESvam/g3sY53CNFXCFdMw2i+YqXFDNwS+vgw+S+tmr3XzuK7YYVRZvbX7GSh1NaxFhZDQ3Dkb4LAQ9adUVmrSgLPnrrp9hvaQ1O1sWLAv+DTOb9N9hSKAzU2UwwX0bsj9XsbJyqiQK0+Lm0Mwa7jg2ZXK1W3ZKpLkNGEhZzZ/NO6U63tb3il8OUCFOJt43YGtpze76DWbTeSBDHJlR4+bWR/6k4bACeUJMUq3wPPeuTedy+yg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y+zkCo3fe9gLsE7BLQxy++PAwztFcHXKQ66Z2Q/zYIA=;
- b=FX+z9mTuCoh/q1jVtTsODks52xjJr/tSewFQCae4Ou10WjQU5026oD5/ToaZd8cs0JSENnf9i0KDvmkCcNT44ORFPpd8wt01cJtyJNvf86vA99HGpEjWWI47CkkktnDxBXc+dQ1QQ+O0+XsFvzWUv1kw3yY1hILu9FivZ0THQHc=
-Received: from DB8PR04MB6826.eurprd04.prod.outlook.com (52.133.243.14) by
- DB8PR04MB7002.eurprd04.prod.outlook.com (52.133.242.13) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2367.24; Wed, 23 Oct 2019 09:52:36 +0000
-Received: from DB8PR04MB6826.eurprd04.prod.outlook.com
- ([fe80::bcee:92dc:277f:6a78]) by DB8PR04MB6826.eurprd04.prod.outlook.com
- ([fe80::bcee:92dc:277f:6a78%7]) with mapi id 15.20.2387.021; Wed, 23 Oct 2019
- 09:52:36 +0000
-From: Ran Wang <ran.wang_1@nxp.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: RE: [PATCH v9 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
-Thread-Topic: [PATCH v9 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
-Thread-Index: AQHViXs7UdarjtV7pUSRto5BtluIHadn72mAgAAD6VA=
-Date: Wed, 23 Oct 2019 09:52:35 +0000
-Message-ID: <DB8PR04MB68261D8B18D39DF170ECC7C8F16B0@DB8PR04MB6826.eurprd04.prod.outlook.com>
-References: <20191023082423.12569-1-ran.wang_1@nxp.com>
- <CAJZ5v0jvQaREhg94f-COdYTt58gMP7YvqdEH0oYiS9Z56tg-XQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jvQaREhg94f-COdYTt58gMP7YvqdEH0oYiS9Z56tg-XQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ran.wang_1@nxp.com; 
-x-originating-ip: [92.121.36.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: f046a4d1-3e53-4029-56e8-08d7579ebb9b
-x-ms-traffictypediagnostic: DB8PR04MB7002:|DB8PR04MB7002:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB8PR04MB7002FE0A224980C1063BE2CFF16B0@DB8PR04MB7002.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 019919A9E4
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(376002)(136003)(396003)(346002)(39860400002)(366004)(199004)(189003)(14454004)(486006)(4326008)(476003)(54906003)(66446008)(66066001)(11346002)(446003)(7696005)(8676002)(2906002)(76176011)(7416002)(81156014)(81166006)(5660300002)(6916009)(6116002)(52536014)(8936002)(3846002)(74316002)(99286004)(64756008)(66476007)(71190400001)(71200400001)(102836004)(26005)(6506007)(53546011)(33656002)(7736002)(186003)(66556008)(305945005)(25786009)(316002)(76116006)(66946007)(229853002)(86362001)(6436002)(14444005)(478600001)(9686003)(55016002)(6246003)(256004);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DB8PR04MB7002;
- H:DB8PR04MB6826.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 4dqyDE5/H37BxgjQxq2YG1+8REOLL3UDHOz3MCLBEWBSwZCqa9rgl/tNzajgG/kXeupZzSgTa2itTQ7No4IIzbSq8tEfd9ezaP9GpIlB0+O7H5fbyBnEcrBG567V2M4zTVpKixkDxT1fGxjqPiRpBqjgkUB5nAbWub2bs4Q9mS7jG03El2O1e/1GzUj26I4bsCwUfMvvWNGTKmh1CkHwuYaN+MizPqu8mwOx/+dryUMIkCs6PHBFH15Sz5ZcFDthRBWAfKggZ54F+6hOC4ps2GzYNFSvC8tw5vd5mjxcoC+KWG07RQdgMmLYTjoph94Re40CA9jyjAKrx+WQ3VWQbZPAbHlDoear6gQLXGi23AiKztImjEdAxXIwlrRsrYPZX+jOkMRG7I6gLe5W3xVkVaumaDgozlNq+81RFQu6La6hnmhPU5RvufgPK/aVb+zf
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yhlH1LRmzDqMK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 18:26:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1571815607;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kqj7mWapMXwFuuq2/mW1H9c11PZgA0AV8N9N9x1ibmk=;
+ b=ckoX6bYqXETU7YMu96OyHRl5LFunGPlocmkxCnu+/rZ5j6/0kUk1ai8bTU0SDVJoYyXH/0
+ lMcPa1zdUQgAY0Rvbc0iomY2osK73+O42MtVA06sIjjPvd0Dg3jDfuZ8pEWyTNUtp9DhHs
+ oAiXnpaRD/Mcx9VYg/2ZqOJvsBOGWQQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-155-6siTvHv7N3OCx9U1X4BmBg-1; Wed, 23 Oct 2019 03:26:45 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8CA4580183D;
+ Wed, 23 Oct 2019 07:26:39 +0000 (UTC)
+Received: from [10.36.117.79] (ovpn-117-79.ams2.redhat.com [10.36.117.79])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2089C5C219;
+ Wed, 23 Oct 2019 07:26:17 +0000 (UTC)
+Subject: Re: [PATCH RFC v1 00/12] mm: Don't mark hotplugged pages PG_reserved
+ (including ZONE_DEVICE)
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20191022171239.21487-1-david@redhat.com>
+ <CAPcyv4gJ+2he2E-6D0QZvkFWvRM9Fsvn9cAoPZbcU4zvsDHcEQ@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <acf86afd-a45c-5d83-daff-3bfb840d48a7@redhat.com>
+Date: Wed, 23 Oct 2019 09:26:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f046a4d1-3e53-4029-56e8-08d7579ebb9b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2019 09:52:35.8948 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uQplgfQzr0ExExL1A8eUXQMtCPSfucu1oImQZ2W6myyJmd/j8aBHcG+quo3eL08r296lVA4EdBIYSbmk2ZTMCA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7002
+In-Reply-To: <CAPcyv4gJ+2he2E-6D0QZvkFWvRM9Fsvn9cAoPZbcU4zvsDHcEQ@mail.gmail.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-MC-Unique: 6siTvHv7N3OCx9U1X4BmBg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Wed, 23 Oct 2019 21:21:33 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,41 +77,236 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Biwen Li <biwen.li@nxp.com>,
- Anson Huang <anson.huang@nxp.com>, Len Brown <len.brown@intel.com>,
+Cc: Kate Stewart <kstewart@linuxfoundation.org>, linux-hyperv@vger.kernel.org,
+ Michal Hocko <mhocko@suse.com>,
+ =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ KarimAllah Ahmed <karahmed@amazon.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
+ Ben Chan <benchan@chromium.org>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ devel@driverdev.osuosl.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
+ YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Madhumitha Prabakaran <madhumithabiw@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Nishka Dasgupta <nishkadg.linux@gmail.com>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ "Isaac J. Manjarres" <isaacm@codeaurora.org>,
+ Matt Sickler <Matt.Sickler@daktronics.com>, Kees Cook <keescook@chromium.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ =?UTF-8?Q?Simon_Sandstr=c3=b6m?= <simon@nikanor.nu>,
+ Sasha Levin <sashal@kernel.org>, Juergen Gross <jgross@suse.com>,
+ kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
+ xen-devel <xen-devel@lists.xenproject.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Todd Poynor <toddpoynor@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Allison Randal <allison@lohutok.net>, Jim Mattson <jmattson@google.com>,
+ Vandana BN <bnvandana@gmail.com>, Jeremy Sowden <jeremy@azazel.net>,
+ Mel Gorman <mgorman@techsingularity.net>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux PM <linux-pm@vger.kernel.org>, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+ Cornelia Huck <cohuck@redhat.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ Rob Springer <rspringer@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGkgUmFmYWVsLA0KDQpPbiBXZWRuZXNkYXksIE9jdG9iZXIgMjMsIDIwMTkgMTc6MDcsIFJhZmFl
-bCBKLiBXeXNvY2tpIHdyb3RlOg0KPiANCj4gT24gV2VkLCBPY3QgMjMsIDIwMTkgYXQgMTA6MjQg
-QU0gUmFuIFdhbmcgPHJhbi53YW5nXzFAbnhwLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBTb21lIHVz
-ZXIgbWlnaHQgd2FudCB0byBnbyB0aHJvdWdoIGFsbCByZWdpc3RlcmVkIHdha2V1cCBzb3VyY2Vz
-IGFuZA0KPiA+IGRvaW5nIHRoaW5ncyBhY2NvcmRpbmdseS4gRm9yIGV4YW1wbGUsIFNvQyBQTSBk
-cml2ZXIgbWlnaHQgbmVlZCB0byBkbw0KPiA+IEhXIHByb2dyYW1taW5nIHRvIHByZXZlbnQgcG93
-ZXJpbmcgZG93biBzcGVjaWZpYyBJUCB3aGljaCB3YWtldXANCj4gPiBzb3VyY2UgZGVwZW5kaW5n
-IG9uLiBTbyBhZGQgdGhpcyBBUEkgdG8gaGVscCB3YWxrIHRocm91Z2ggYWxsDQo+ID4gcmVnaXN0
-ZXJlZCB3YWtldXAgc291cmNlIG9iamVjdHMgb24gdGhhdCBsaXN0IGFuZCByZXR1cm4gdGhlbSBv
-bmUgYnkgb25lLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogUmFuIFdhbmcgPHJhbi53YW5nXzFA
-bnhwLmNvbT4NCj4gPiBUZXN0ZWQtYnk6IExlb25hcmQgQ3Jlc3RleiA8bGVvbmFyZC5jcmVzdGV6
-QG54cC5jb20+DQo+IA0KPiBPSywgdGhhbmtzIGZvciBtYWtpbmcgYWxsIG9mIHRoZSByZXF1ZXN0
-ZWQgY2hhbmdlczoNCg0KVGhhbmtzIGZvciB5b3VyIHBhdGllbnQgZGlyZWN0aW9uIDopDQpBY3R1
-YWxseSBMZW8gYW5kIG1lIHBsYW5lZCB0byBoYXZlIGEgZjJmIGRpc2N1c3Npb24gd2l0aCB5b3Ug
-YWJvdXQgdGhpcyBwYXRjaCBvbg0KTFBDIDIwMTkgYnV0IHVuZm9ydHVuYXRlbHkgbWlzc2VkIHRo
-ZSBvcHBvcnR1bml0eSBmaW5hbGx5ICh2NiByZXZpZXcgd2FzDQpwZW5kaW5nIGF0IHRpbWUpLg0K
-IA0KPiBSZXZpZXdlZC1ieTogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbC5qLnd5c29ja2lAaW50
-ZWwuY29tPg0KPiANCj4gYW5kIHBsZWFzZSBmZWVsIGZyZWUgdG8gcHVzaCB0aGlzIHRocm91Z2gg
-dGhlIGFwcHJvcHJpYXRlIGFyY2gvcGxhdGZvcm0gdHJlZS4NCg0KWWVzLCB3ZSB3aWxsIGRvIHRo
-aXMgbGF0ZXIuDQoNCj4gQWx0ZXJuYXRpdmVseSwgcGxlYXNlIGxldCBtZSBrbm93IGlmIHlvdSB3
-YW50IG1lIHRvIHRha2UgdGhpcyBzZXJpZXMsIGJ1dCB0aGVuIEkNCj4gbmVlZCBhbiBBQ0sgZnJv
-bSB0aGUgYXBwcm9wcmlhdGUNCj4gbWFpbnRhaW5lcihzKSBvbiBwYXRjaCAzLg0KDQpUaGFua3Mg
-YWdhaW4sIEkgd2lsbCB3YWl0IExlbydzIGNvbW1lbnQgb24gcGF0Y2ggMy4NCg0KUmVnYXJkcywN
-ClJhbg0KDQo=
+On 22.10.19 23:54, Dan Williams wrote:
+> Hi David,
+>=20
+> Thanks for tackling this!
+
+Thanks for having a look :)
+
+[...]
+
+
+>> I am probably a little bit too careful (but I don't want to break things=
+).
+>> In most places (besides KVM and vfio that are nuts), the
+>> pfn_to_online_page() check could most probably be avoided by a
+>> is_zone_device_page() check. However, I usually get suspicious when I se=
+e
+>> a pfn_valid() check (especially after I learned that people mmap parts o=
+f
+>> /dev/mem into user space, including memory without memmaps. Also, people
+>> could memmap offline memory blocks this way :/). As long as this does no=
+t
+>> hurt performance, I think we should rather do it the clean way.
+>=20
+> I'm concerned about using is_zone_device_page() in places that are not
+> known to already have a reference to the page. Here's an audit of
+> current usages, and the ones I think need to cleaned up. The "unsafe"
+> ones do not appear to have any protections against the device page
+> being removed (get_dev_pagemap()). Yes, some of these were added by
+> me. The "unsafe? HMM" ones need HMM eyes because HMM leaks device
+> pages into anonymous memory paths and I'm not up to speed on how it
+> guarantees 'struct page' validity vs device shutdown without using
+> get_dev_pagemap().
+>=20
+> smaps_pmd_entry(): unsafe
+>=20
+> put_devmap_managed_page(): safe, page reference is held
+>=20
+> is_device_private_page(): safe? gpu driver manages private page lifetime
+>=20
+> is_pci_p2pdma_page(): safe, page reference is held
+>=20
+> uncharge_page(): unsafe? HMM
+>=20
+> add_to_kill(): safe, protected by get_dev_pagemap() and dax_lock_page()
+>=20
+> soft_offline_page(): unsafe
+>=20
+> remove_migration_pte(): unsafe? HMM
+>=20
+> move_to_new_page(): unsafe? HMM
+>=20
+> migrate_vma_pages() and helpers: unsafe? HMM
+>=20
+> try_to_unmap_one(): unsafe? HMM
+>=20
+> __put_page(): safe
+>=20
+> release_pages(): safe
+>=20
+> I'm hoping all the HMM ones can be converted to
+> is_device_private_page() directlly and have that routine grow a nice
+> comment about how it knows it can always safely de-reference its @page
+> argument.
+>=20
+> For the rest I'd like to propose that we add a facility to determine
+> ZONE_DEVICE by pfn rather than page. The most straightforward why I
+> can think of would be to just add another bitmap to mem_section_usage
+> to indicate if a subsection is ZONE_DEVICE or not.
+
+(it's a somewhat unrelated bigger discussion, but we can start discussing i=
+t in this thread)
+
+I dislike this for three reasons
+
+a) It does not protect against any races, really, it does not improve thing=
+s.
+b) We do have the exact same problem with pfn_to_online_page(). As long as =
+we
+   don't hold the memory hotplug lock, memory can get offlined and remove a=
+ny time. Racy.
+c) We mix in ZONE specific stuff into the core. It should be "just another =
+zone"
+
+What I propose instead (already discussed in https://lkml.org/lkml/2019/10/=
+10/87)
+
+1. Convert SECTION_IS_ONLINE to SECTION_IS_ACTIVE
+2. Convert SECTION_IS_ACTIVE to a subsection bitmap
+3. Introduce pfn_active() that checks against the subsection bitmap
+4. Once the memmap was initialized / prepared, set the subsection active
+   (similar to SECTION_IS_ONLINE in the buddy right now)
+5. Before the memmap gets invalidated, set the subsection inactive
+   (similar to SECTION_IS_ONLINE in the buddy right now)
+5. pfn_to_online_page() =3D pfn_active() && zone !=3D ZONE_DEVICE
+6. pfn_to_device_page() =3D pfn_active() && zone =3D=3D ZONE_DEVICE
+
+Especially, driver-reserved device memory will not get set active in
+the subsection bitmap.
+
+Now to the race. Taking the memory hotplug lock at random places is ugly. I=
+ do
+wonder if we can use RCU:
+
+The user of pfn_active()/pfn_to_online_page()/pfn_to_device_page():
+
+=09/* the memmap is guaranteed to remain active under RCU */
+=09rcu_read_lock();
+=09if (pfn_active(random_pfn)) {
+=09=09page =3D pfn_to_page(random_pfn);
+=09=09... use the page, stays valid
+=09}
+=09rcu_unread_lock();
+
+Memory offlining/memremap code:
+
+=09set_subsections_inactive(pfn, nr_pages); /* clears the bit atomically */
+=09synchronize_rcu();
+=09/* all users saw the bitmap update, we can invalide the memmap */
+=09remove_pfn_range_from_zone(zone, pfn, nr_pages);
+
+>=20
+>>
+>> I only gave it a quick test with DIMMs on x86-64, but didn't test the
+>> ZONE_DEVICE part at all (any tips for a nice QEMU setup?). Compile-teste=
+d
+>> on x86-64 and PPC.
+>=20
+> I'll give it a spin, but I don't think the kernel wants to grow more
+> is_zone_device_page() users.
+
+Let's recap. In this RFC, I introduce a total of 4 (!) users only.
+The other parts can rely on pfn_to_online_page() only.
+
+1. "staging: kpc2000: Prepare transfer_complete_cb() for PG_reserved change=
+s"
+- Basically never used with ZONE_DEVICE.
+- We hold a reference!
+- All it protects is a SetPageDirty(page);
+
+2. "staging/gasket: Prepare gasket_release_page() for PG_reserved changes"
+- Same as 1.
+
+3. "mm/usercopy.c: Prepare check_page_span() for PG_reserved changes"
+- We come via virt_to_head_page() / virt_to_head_page(), not sure about=20
+  references (I assume this should be fine as we don't come via random=20
+  PFNs)
+- We check that we don't mix Reserved (including device memory) and CMA=20
+  pages when crossing compound pages.
+
+I think we can drop 1. and 2., resulting in a total of 2 new users in
+the same context. I think that is totally tolerable to finally clean
+this up.
+
+
+However, I think we also have to clarify if we need the change in 3 at all.
+It comes from
+
+commit f5509cc18daa7f82bcc553be70df2117c8eedc16
+Author: Kees Cook <keescook@chromium.org>
+Date:   Tue Jun 7 11:05:33 2016 -0700
+
+    mm: Hardened usercopy
+   =20
+    This is the start of porting PAX_USERCOPY into the mainline kernel. Thi=
+s
+    is the first set of features, controlled by CONFIG_HARDENED_USERCOPY. T=
+he
+    work is based on code by PaX Team and Brad Spengler, and an earlier por=
+t
+    from Casey Schaufler. Additional non-slab page tests are from Rik van R=
+iel.
+[...]
+    - otherwise, object must not span page allocations (excepting Reserved
+      and CMA ranges)
+
+Not sure if we really have to care about ZONE_DEVICE at this point.
+
+
+--=20
+
+Thanks,
+
+David / dhildenb
+
