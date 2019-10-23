@@ -2,70 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08337E1E3D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 16:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BAFE24C2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 22:49:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46ytDS68XkzDqMg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 01:34:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46z2Y250pmzDqSQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 07:49:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
- (client-ip=2001:4d48:ad52:3201:214:fdff:fe10:1be6;
- helo=pandora.armlinux.org.uk;
- envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=armlinux.org.uk
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=armlinux.org.uk header.i=@armlinux.org.uk
- header.b="iJ2v+CSs"; dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
- [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="bCC1XEBz";
+ dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ytBM3S3tzDqF5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 01:32:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=cjPuS08fLHV8el8EaxndD6I/d/IQPJlUbi111PAD/l4=; b=iJ2v+CSstuLBKM08pLTx576aM
- VxntxxCQSSo10E8/SL6JaCu7DGHBQbYKoGE9AWr2TOiZmWMAk1KfV1lMlOkN3GsHB0ajoUGKqdzj8
- u202GiupQQbUAZAkvODo9ATZleYIkhkrpJRPRnu8LY4MSuAHQSWl3ggq8+45cAm2o2shQTiCGE7oc
- QAJHHRgOHofIUFTKn/4GK+tcL3Hv9lV0IQf2zQLc3zHoiaLLO8l4DaQpQFUp1fN3yI7bBQAM2O2eN
- Ph+2cwxlod+dsiP0rzFs98e6Yows2hrmXXJjtI8ixe3nYg/6TeHUpejwD6D/kMIr5FIou+yUS0Rpj
- F7KtKig6Q==;
-Received: from shell.armlinux.org.uk
- ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58106)
- by pandora.armlinux.org.uk with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.90_1)
- (envelope-from <linux@armlinux.org.uk>)
- id 1iNHg8-0005SK-LT; Wed, 23 Oct 2019 15:32:00 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
- (envelope-from <linux@shell.armlinux.org.uk>)
- id 1iNHg7-0005cA-5R; Wed, 23 Oct 2019 15:31:59 +0100
-Date: Wed, 23 Oct 2019 15:31:59 +0100
-From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To: Rob Herring <robh+dt@kernel.org>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-Message-ID: <20191023143159.GB25745@shell.armlinux.org.uk>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
- <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
- <20191015125105.GU25745@shell.armlinux.org.uk>
- <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
- <20191015131750.GV25745@shell.armlinux.org.uk>
- <87muds586t.fsf@mpe.ellerman.id.au>
- <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
- <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ywjJ64CPzDqL5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 03:25:56 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id p12so12442708pgn.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 09:25:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=2ozmEBacDU37qdWHmaIXZS/t2e/cIQTfwOrpKCFE/tE=;
+ b=bCC1XEBzNQHigL0d7R6bPEzxm8alb+W4dTu8itjDoIuQnpvCdh21/KVzmfE+Tgs+ET
+ ceWRH1QFAtQCwVmj0wWuvh6QCkQaRgwgCLBTlsOklkfp9LViU9s8B80hK7K0MoC/AGMW
+ ZF1fsM40mC3fIPu5YTFXe03NoKjMsALdc4tX0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=2ozmEBacDU37qdWHmaIXZS/t2e/cIQTfwOrpKCFE/tE=;
+ b=ZgGAlPgCoXooqf4Bn9TKQd1k6kXj7PR8PND2no9vBjyXf0SeHY+SfHd8SvaBnfmEuR
+ EO41aUGfmoIoGRI2SO9UaGqDLvrnUTVvQVQYKf4Fi3fOD6QvQ2AXVcFYfk5j6/f3nrsH
+ VDleQw/dVZlFWnTNgiRPuI198bH/MIXXI7GJ/QmFmkgUbfja4RpMdZwqsFtLhLthWPRd
+ h3FNNhxEJv4lNwASl7ByPoJoxk6QbhZB1MRMS8FK+Tu9qk/IVfPajKdFbpjZmsbRlU8i
+ Ubx/sIXxAQ5Fxx5Vq2ujYSnuLeEshezUpV+8nysLjCgJDQynafJaclMevAt7KUs4F5rh
+ f5DQ==
+X-Gm-Message-State: APjAAAUAzZ0z9dCMLui6ZkHfUvlpHK8hDW9FT/V9EAG27nlil+mNadNy
+ UAxK4fJ2zTFXQaBkcxdcGXCsMg==
+X-Google-Smtp-Source: APXvYqw1/SgWscVWVYwNzvC56vf/67s2dhZn0DnFv2vyro2EnV66Rhc87hJA64tPAho0TcM73pujSw==
+X-Received: by 2002:a63:1042:: with SMTP id 2mr11383658pgq.59.1571847952291;
+ Wed, 23 Oct 2019 09:25:52 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id y8sm27285047pgs.34.2019.10.23.09.25.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Oct 2019 09:25:51 -0700 (PDT)
+Date: Wed, 23 Oct 2019 09:25:49 -0700
+From: Kees Cook <keescook@chromium.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH RFC v1 02/12] mm/usercopy.c: Prepare check_page_span()
+ for PG_reserved changes
+Message-ID: <201910230924.DE879ED80F@keescook>
+References: <20191022171239.21487-1-david@redhat.com>
+ <20191022171239.21487-3-david@redhat.com>
+ <a8313fb1-50f3-9083-fd07-297ddf86658e@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <a8313fb1-50f3-9083-fd07-297ddf86658e@redhat.com>
+X-Mailman-Approved-At: Thu, 24 Oct 2019 07:47:40 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,73 +79,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, mad skateman <madskateman@gmail.com>,
- linux-mmc <linux-mmc@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <chzigotzky@xenosoft.de>,
- "contact@a-eon.com" <contact@a-eon.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, linux-hyperv@vger.kernel.org,
+ Michal Hocko <mhocko@suse.com>,
+ Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>, kvm@vger.kernel.org,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ KarimAllah Ahmed <karahmed@amazon.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
+ Ben Chan <benchan@chromium.org>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ devel@driverdev.osuosl.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ YueHaibing <yuehaibing@huawei.com>, Matthew Wilcox <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Madhumitha Prabakaran <madhumithabiw@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Nishka Dasgupta <nishkadg.linux@gmail.com>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ "Isaac J. Manjarres" <isaacm@codeaurora.org>,
+ Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ Simon =?iso-8859-1?Q?Sandstr=F6m?= <simon@nikanor.nu>,
+ Dan Williams <dan.j.williams@intel.com>, kvm-ppc@vger.kernel.org,
+ Qian Cai <cai@lca.pw>, Alex Williamson <alex.williamson@redhat.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
+ xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Todd Poynor <toddpoynor@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Allison Randal <allison@lohutok.net>, Jim Mattson <jmattson@google.com>,
+ Vandana BN <bnvandana@gmail.com>, Jeremy Sowden <jeremy@azazel.net>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Cornelia Huck <cohuck@redhat.com>, linux-kernel@vger.kernel.org,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ Rob Springer <rspringer@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 23, 2019 at 08:52:33AM -0500, Rob Herring wrote:
-> > I think this should have been done the other way around and default to
-> > coherent since most traditional OF platforms are coherent, and you
-> > can't just require those DTs to change.
+On Wed, Oct 23, 2019 at 10:20:14AM +0200, David Hildenbrand wrote:
+> On 22.10.19 19:12, David Hildenbrand wrote:
+> > Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
+> > change that.
+> > 
+> > Let's make sure that the logic in the function won't change. Once we no
+> > longer set these pages to reserved, we can rework this function to
+> > perform separate checks for ZONE_DEVICE (split from PG_reserved checks).
+> > 
+> > Cc: Kees Cook <keescook@chromium.org>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Kate Stewart <kstewart@linuxfoundation.org>
+> > Cc: Allison Randal <allison@lohutok.net>
+> > Cc: "Isaac J. Manjarres" <isaacm@codeaurora.org>
+> > Cc: Qian Cai <cai@lca.pw>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Signed-off-by: David Hildenbrand <david@redhat.com>
+> > ---
+> >   mm/usercopy.c | 5 +++--
+> >   1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/mm/usercopy.c b/mm/usercopy.c
+> > index 660717a1ea5c..a3ac4be35cde 100644
+> > --- a/mm/usercopy.c
+> > +++ b/mm/usercopy.c
+> > @@ -203,14 +203,15 @@ static inline void check_page_span(const void *ptr, unsigned long n,
+> >   	 * device memory), or CMA. Otherwise, reject since the object spans
+> >   	 * several independently allocated pages.
+> >   	 */
+> > -	is_reserved = PageReserved(page);
+> > +	is_reserved = PageReserved(page) || is_zone_device_page(page);
+> >   	is_cma = is_migrate_cma_page(page);
+> >   	if (!is_reserved && !is_cma)
+> >   		usercopy_abort("spans multiple pages", NULL, to_user, 0, n);
+> >   	for (ptr += PAGE_SIZE; ptr <= end; ptr += PAGE_SIZE) {
+> >   		page = virt_to_head_page(ptr);
+> > -		if (is_reserved && !PageReserved(page))
+> > +		if (is_reserved && !(PageReserved(page) ||
+> > +				     is_zone_device_page(page)))
+> >   			usercopy_abort("spans Reserved and non-Reserved pages",
+> >   				       NULL, to_user, 0, n);
+> >   		if (is_cma && !is_migrate_cma_page(page))
+> > 
 > 
-> You can blame me. This was really only intended for cases where
-> coherency is configurable on a per peripheral basis and can't be
-> determined in other ways.
+> @Kees, would it be okay to stop checking against ZONE_DEVICE pages here or
+> is there a good rationale behind this?
 > 
-> The simple solution here is simply to use the compatible string for
-> the device to determine coherent or not.
+> (I would turn this patch into a simple update of the comment if we agree
+> that we don't care)
 
-It really isn't that simple.
-
-There are two aspects to coherency, both of which must match:
-
-1) The configuration of the device
-2) The configuration of the kernel's DMA API
-
-(1) is controlled by the driver, which can make the decision any way
-it pleases.
-
-(2) on ARM64 is controlled depending on whether or not "dma-coherent"
-is specified in the device tree, since ARM64 can have a mixture of
-DMA coherent and non-coherent devices.
-
-A mismatch between (1) and (2) results in data corruption, potentially
-eating your filesystem.  So, it's very important that the two match.
-
-These didn't match for the LX2160A, but, due to the way CMA was working,
-we sort of got away with it, but it was very dangerous as far as data
-safety went.
-
-Then, a change to CMA happened which moved where it was located, which
-caused a regression.  Reverting the CMA changes didn't seem to be an
-option, so another solution had to be found.
-
-I started a discussion on how best to solve this:
-
-https://archive.armlinux.org.uk/lurker/thread/20190919.041320.1e53541f.en.html
-
-and the solution that the discussion came out with was the one that has
-been merged - which we now know caused a regression on PPC.
-
-Using compatible strings doesn't solve the issue: there is no way to
-tell the DMA API from the driver that the device is coherent.  The
-only way to do that is via the "dma-coherent" property in DT on ARM64.
-
-To say that this is a mess is an under-statement, but we seem to have
-ended up here because of a series of piece-meal changes that don't seem
-to have been thought through enough.
-
-So, what's the right way to solve this, and ensure that the DMA API and
-device match as far as their coherency expectations go?  Revert all the
-changes for sdhci-of-esdhc and CMA back to 5.0 or 5.1 state?
+There has been work to actually remove the page span checks entirely,
+but there wasn't consensus on what the right way forward was. I continue
+to leaning toward just dropping it entirely, but Matthew Wilcox has some
+alternative ideas that could use some further thought/testing.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+Kees Cook
