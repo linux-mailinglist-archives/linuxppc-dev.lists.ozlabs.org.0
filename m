@@ -1,70 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9ECE1B85
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 14:58:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D84E1D41
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 15:49:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yr5y3Nb2zDqRL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 23:58:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46ysDJ0pWBzDqJc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 00:49:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::141;
- helo=mail-lf1-x141.google.com; envelope-from=linux@rasmusvillemoes.dk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="Km6cCa5D"; dkim-atps=neutral
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com
- [IPv6:2a00:1450:4864:20::141])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46yr216kwHzDqQG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 23:55:03 +1100 (AEDT)
-Received: by mail-lf1-x141.google.com with SMTP id v8so15407972lfa.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 05:55:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=pr5jyZMsP+3kod9VvT5jLLC58+kfpVegavN735X7V0c=;
- b=Km6cCa5DXSvlLJBbXZDQa2bQulIRzp+UWkLxrd1m2RqeRyw746rzQbdFLelv4UHwbI
- gR6YNEWJZoIOx46arMROI3WjGp2QxFBi5Ff2YobXl5QRNETwkvhPGM5Iuon7yjKQL/HI
- 3uqIAvQLbLhA0TVRt7iuB/FgNfRhUrpPeVjAo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=pr5jyZMsP+3kod9VvT5jLLC58+kfpVegavN735X7V0c=;
- b=GSrHO9k2cH/F72JYiKYqdFCfXmVzNJe2UhTljdZG6vIqPbAxWYW9oLCPDUeCNiiC2W
- oJlu7jAC9aN/q00wcrq8vdOsQqP/M9ufo9nOpU2521J3eUz0hYfADQwUnADLIto4pPoa
- G6Pb/7BQqsCj3oDvqjsSNhLM+W3wPWidvRiXR06FfO2vQaHhFkpNE36ckHr4/XOGSHkp
- 5/tfw81lVseRPLbNu7q6OrosKvZy7dU9xsu8f539hgZIIPMkaYg8kl0P5QWNFlPUPyXt
- x7c4JU4iI7esiCSREHBw15IGeiYFP9CpffvFUC2lfTz7yF7qdw4wJ0WnNEDReX79ACYw
- T2cg==
-X-Gm-Message-State: APjAAAW32WXYovKk0kmp4NhjkPV2pJcG3LeKdx5CKNUcmAf2UTif5G5N
- eRwx7l5B1k5ZXFpQ6grTajpntQ==
-X-Google-Smtp-Source: APXvYqxOE1Ycn6M7T18O3XerWNHcmUvLPbQzFSVn50aactdzR8X43nE3FfGKkdKxXX9ODULzKKE+4g==
-X-Received: by 2002:a19:5201:: with SMTP id m1mr15152059lfb.56.1571835298454; 
- Wed, 23 Oct 2019 05:54:58 -0700 (PDT)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id x17sm8672267lji.62.2019.10.23.05.54.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Oct 2019 05:54:57 -0700 (PDT)
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To: Scott Wood <oss@buserror.net>, Kumar Gala <galak@kernel.crashing.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/85xx: remove mostly pointless mpc85xx_qe_init()
-Date: Wed, 23 Oct 2019 14:54:48 +0200
-Message-Id: <20191023125448.383-1-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ys9J72x5zDqL5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 00:46:26 +1100 (AEDT)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id E84C9E136EF73CF8A241;
+ Wed, 23 Oct 2019 21:46:16 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Wed, 23 Oct 2019
+ 21:46:07 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <jk@ozlabs.org>, <arnd@arndb.de>, <benh@kernel.crashing.org>,
+ <paulus@samba.org>, <mpe@ellerman.id.au>
+Subject: [PATCH -next] powerpc/spufs: remove set but not used variable 'ctx'
+Date: Wed, 23 Oct 2019 21:44:23 +0800
+Message-ID: <20191023134423.15052-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,127 +47,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
- Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- Qiang Zhao <qiang.zhao@nxp.com>
+Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 302c059f2e7b (QE: use subsys_initcall to init qe),
-mpc85xx_qe_init() has done nothing apart from possibly emitting a
-pr_err(). As part of reducing the amount of QE-related code in
-arch/powerpc/ (and eventually support QE on other architectures),
-remove this low-hanging fruit.
+arch/powerpc/platforms/cell/spufs/inode.c:201:22:
+ warning: variable ctx set but not used [-Wunused-but-set-variable]
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+It is not used since commit 67cba9fd6456 ("move
+spu_forget() into spufs_rmdir()")
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- arch/powerpc/platforms/85xx/common.c          | 23 -------------------
- arch/powerpc/platforms/85xx/corenet_generic.c |  2 --
- arch/powerpc/platforms/85xx/mpc85xx.h         |  2 --
- arch/powerpc/platforms/85xx/mpc85xx_mds.c     |  1 -
- arch/powerpc/platforms/85xx/mpc85xx_rdb.c     |  1 -
- arch/powerpc/platforms/85xx/twr_p102x.c       |  1 -
- 6 files changed, 30 deletions(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/85xx/common.c b/arch/powerpc/platforms/85xx/common.c
-index fe0606439b5a..a554b6d87cf7 100644
---- a/arch/powerpc/platforms/85xx/common.c
-+++ b/arch/powerpc/platforms/85xx/common.c
-@@ -86,29 +86,6 @@ void __init mpc85xx_cpm2_pic_init(void)
- #endif
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 2dd452a..9b1586b 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -198,14 +198,12 @@ static int spufs_fill_dir(struct dentry *dir,
  
- #ifdef CONFIG_QUICC_ENGINE
--void __init mpc85xx_qe_init(void)
--{
--	struct device_node *np;
--
--	np = of_find_compatible_node(NULL, NULL, "fsl,qe");
--	if (!np) {
--		np = of_find_node_by_name(NULL, "qe");
--		if (!np) {
--			pr_err("%s: Could not find Quicc Engine node\n",
--					__func__);
--			return;
--		}
--	}
--
--	if (!of_device_is_available(np)) {
--		of_node_put(np);
--		return;
--	}
--
--	of_node_put(np);
--
--}
--
- void __init mpc85xx_qe_par_io_init(void)
+ static int spufs_dir_close(struct inode *inode, struct file *file)
  {
- 	struct device_node *np;
-diff --git a/arch/powerpc/platforms/85xx/corenet_generic.c b/arch/powerpc/platforms/85xx/corenet_generic.c
-index 7ee2c6628f64..a328a741b457 100644
---- a/arch/powerpc/platforms/85xx/corenet_generic.c
-+++ b/arch/powerpc/platforms/85xx/corenet_generic.c
-@@ -66,8 +66,6 @@ void __init corenet_gen_setup_arch(void)
- 	swiotlb_detect_4g();
+-	struct spu_context *ctx;
+ 	struct inode *parent;
+ 	struct dentry *dir;
+ 	int ret;
  
- 	pr_info("%s board\n", ppc_md.name);
--
--	mpc85xx_qe_init();
- }
+ 	dir = file->f_path.dentry;
+ 	parent = d_inode(dir->d_parent);
+-	ctx = SPUFS_I(d_inode(dir))->i_ctx;
  
- static const struct of_device_id of_device_ids[] = {
-diff --git a/arch/powerpc/platforms/85xx/mpc85xx.h b/arch/powerpc/platforms/85xx/mpc85xx.h
-index fa23f9b0592c..cb84c5c56c36 100644
---- a/arch/powerpc/platforms/85xx/mpc85xx.h
-+++ b/arch/powerpc/platforms/85xx/mpc85xx.h
-@@ -10,10 +10,8 @@ static inline void __init mpc85xx_cpm2_pic_init(void) {}
- #endif /* CONFIG_CPM2 */
- 
- #ifdef CONFIG_QUICC_ENGINE
--extern void mpc85xx_qe_init(void);
- extern void mpc85xx_qe_par_io_init(void);
- #else
--static inline void __init mpc85xx_qe_init(void) {}
- static inline void __init mpc85xx_qe_par_io_init(void) {}
- #endif
- 
-diff --git a/arch/powerpc/platforms/85xx/mpc85xx_mds.c b/arch/powerpc/platforms/85xx/mpc85xx_mds.c
-index 5ca254256c47..120633f99ea6 100644
---- a/arch/powerpc/platforms/85xx/mpc85xx_mds.c
-+++ b/arch/powerpc/platforms/85xx/mpc85xx_mds.c
-@@ -238,7 +238,6 @@ static void __init mpc85xx_mds_qe_init(void)
- {
- 	struct device_node *np;
- 
--	mpc85xx_qe_init();
- 	mpc85xx_qe_par_io_init();
- 	mpc85xx_mds_reset_ucc_phys();
- 
-diff --git a/arch/powerpc/platforms/85xx/mpc85xx_rdb.c b/arch/powerpc/platforms/85xx/mpc85xx_rdb.c
-index d3c540ee558f..7f9a84f85766 100644
---- a/arch/powerpc/platforms/85xx/mpc85xx_rdb.c
-+++ b/arch/powerpc/platforms/85xx/mpc85xx_rdb.c
-@@ -89,7 +89,6 @@ static void __init mpc85xx_rdb_setup_arch(void)
- 	fsl_pci_assign_primary();
- 
- #ifdef CONFIG_QUICC_ENGINE
--	mpc85xx_qe_init();
- 	mpc85xx_qe_par_io_init();
- #if defined(CONFIG_UCC_GETH) || defined(CONFIG_SERIAL_QE)
- 	if (machine_is(p1025_rdb)) {
-diff --git a/arch/powerpc/platforms/85xx/twr_p102x.c b/arch/powerpc/platforms/85xx/twr_p102x.c
-index 720b0c0f03ba..6c3c0cdaee9a 100644
---- a/arch/powerpc/platforms/85xx/twr_p102x.c
-+++ b/arch/powerpc/platforms/85xx/twr_p102x.c
-@@ -72,7 +72,6 @@ static void __init twr_p1025_setup_arch(void)
- 	fsl_pci_assign_primary();
- 
- #ifdef CONFIG_QUICC_ENGINE
--	mpc85xx_qe_init();
- 	mpc85xx_qe_par_io_init();
- 
- #if IS_ENABLED(CONFIG_UCC_GETH) || IS_ENABLED(CONFIG_SERIAL_QE)
+ 	inode_lock_nested(parent, I_MUTEX_PARENT);
+ 	ret = spufs_rmdir(parent, dir);
 -- 
-2.23.0
+2.7.4
+
 
