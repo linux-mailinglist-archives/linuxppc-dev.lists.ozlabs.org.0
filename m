@@ -2,74 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7304E24D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 22:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C4AE2401
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 22:08:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46z2jY2xYQzDqSC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 07:56:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46z1fY3NyRzDqRp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 07:08:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::342;
- helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="bcYrgPfU"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.2.69; helo=eur02-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="SlGscV6u"; 
  dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR02-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr20069.outbound.protection.outlook.com [40.107.2.69])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46z1116rtkzDqN8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 06:39:45 +1100 (AEDT)
-Received: by mail-ot1-x342.google.com with SMTP id d8so7290873otc.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 12:39:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=8ApkkYruavPD6VaVfU4QHr5pRzVSLLe/BmCajbyD76I=;
- b=bcYrgPfUve+/e7PA/COpa9cpiotkNE8e14cXEXZpBzSMlJpSompwdbTdWjjkQJddx0
- Uw+3WqPKAUioj4/4XPm7cJ24FTR0IET9Naz1ZwjQyErO2IZvSkGMpp/gew8XlZpggjwU
- urspNOSnz3kU9GTyqmzURLWDOMJHHwAlk9WGjmcgjm+VaVmSdvOU+um4KKw70KPHFsUp
- FTUvgk6gpDTS/o2wCQdq+8Gi3txZF11FZsotj80J3+OxzF3vILzEFTeGcvRDQy1jMFEi
- SRx85TI+B5z5ijy9jfA6ym8yiuLiEhXgUKJRjaghu/8ovT45aTiORONSiCHuKkbYvhPp
- fMSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=8ApkkYruavPD6VaVfU4QHr5pRzVSLLe/BmCajbyD76I=;
- b=blFK+EN7vbjfpadOpxwtyyE6xNBUERB71MPOqlrAQazGUU1uJ2ve7AfsO23v5DzM02
- rly9jQojczIW9UOvNWZabd5ef16gGdfLk/et3pGU0OMzLAjwf8NB3NQPq3ThyrJBAj1a
- E2KaE8I2f0dg8EWmekS9mFqjpZt3uETtVuarC0P89uNIzbOUjoSzytQp4qusFYOhXcUu
- 8cDvj99Q2fbugbMktiNx9HIt9+yCisGBaZl/Af3y41kx0Wm/jjkPuwL0gf4R9NuCMNaT
- +9llrpUa2HI1SWreoJUoIzS1JYsh0ZYc5vCEKRjbW9UpdBC3qRW8YhUqUyt/qDKYGnyb
- 0o8Q==
-X-Gm-Message-State: APjAAAWdu76HNGtv76CiPHVR5GHE/77UpNWsW5ncpI/qppYz49KQenl6
- pr+fTAAnOUXGPUhpm6mPXxK2RLUkcHW1q6xB/v9lRw==
-X-Google-Smtp-Source: APXvYqwijxA4UnPG5Tbj7UXgroNEpqpPtlp/BzJIeWUQUfe3F9HUg3GXu8gWZWfrY7GBmsZ1h9DSM1JTtNPajl0t3Ss=
-X-Received: by 2002:a05:6830:617:: with SMTP id
- w23mr8183922oti.247.1571859582403; 
- Wed, 23 Oct 2019 12:39:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46z1ch2mTKzDqQS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 07:07:11 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HavgujDjrOJaUDO/kjV29ZFyxa48586+e+olwiBRD0KGfzR52XIMixIaBAx+YrmyLaHjkjM0bbp6tWEK1PXWmRtVCYbQfrlLcXlqleUj9q0vk10+8LOMUiZtsx8I2jX7QgZgBuNYtuN/iVfxU8CaT4HuRUOOXHLChfFiKb6bSXpQZM8EBjwAL5BOLfbUgSa3tAXiwOoNKP3JpeznSpaZXBBzu5Wbdzzc/1OOtalb8ZDoibvWM/Lu0wYxnruqeVtzCyCP9xkmsbudtAesrBgQjVuacVUmGTPWj2mut6EDST8Nk2N9Y6GSwFY9FnWQ+CgrbxvDMjq4m6wkkeBOUX7asg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=btlRay3yp9k/vMTHvGvVM5ycBW7OvOsN5xwkzn1H+v8=;
+ b=G4Him6BKajnKsZ9kKZC6grfF7AT+jV8G6J1L708Fuu2NHzmeLVULJp49mah3n9rfNgF3TMc02CUXAlNuI+Wsf728Z2/tp1ZhMPfmZkVC/uZXaKbbDgA1uUmr91M61uZefRPXwQXLkxZAI13tb/9asiIHHbyfG5134qmvu0v4Kn37Wu+dC3ytLP/QP1eLsIfwZsQkEToYGznSyynFA6tSwqcTOd933YICG6QXipjtV5DClbh1FsFKPRFgPEYSN31Z5itLj8++2d33owM4jeFIq+nYmExD7rsrEsRnb1kZ5t03KG5yNS7/1o6a727hvulA5r3agCDzKrFPL+vWUm2LXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=btlRay3yp9k/vMTHvGvVM5ycBW7OvOsN5xwkzn1H+v8=;
+ b=SlGscV6umKHhArMOVP73SRAVDdMC9z+oS0OeerUe4vfOXyPgdR+FVQBKbbISxsSFjjRXBTFCmEfsX4OJQSYMbEi4kqtg3WVAAPFx2Mewa8ySfxuCYJ8EiDFZ8jsT+yARKFTGl2vSvJ5ATlBJiEpPkucNJpz4jyR4wHgk61YduOg=
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) by
+ VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2387.20; Wed, 23 Oct 2019 20:07:05 +0000
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::c93:c279:545b:b6b6]) by VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::c93:c279:545b:b6b6%3]) with mapi id 15.20.2387.019; Wed, 23 Oct 2019
+ 20:07:05 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: Ran Wang <ran.wang_1@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: RE: [PATCH v9 1/3] PM: wakeup: Add routine to help fetch wakeup
+ source object.
+Thread-Topic: [PATCH v9 1/3] PM: wakeup: Add routine to help fetch wakeup
+ source object.
+Thread-Index: AQHViXs7pjvy0YmnJESZ+DezIHv14qdn72mAgAAM0YCAAKtBgA==
+Date: Wed, 23 Oct 2019 20:07:05 +0000
+Message-ID: <VE1PR04MB6687A70243B9764F1356442C8F6B0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+References: <20191023082423.12569-1-ran.wang_1@nxp.com>
+ <CAJZ5v0jvQaREhg94f-COdYTt58gMP7YvqdEH0oYiS9Z56tg-XQ@mail.gmail.com>
+ <DB8PR04MB68261D8B18D39DF170ECC7C8F16B0@DB8PR04MB6826.eurprd04.prod.outlook.com>
+In-Reply-To: <DB8PR04MB68261D8B18D39DF170ECC7C8F16B0@DB8PR04MB6826.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=leoyang.li@nxp.com; 
+x-originating-ip: [64.157.242.222]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 9e96d190-6828-418a-7fbe-08d757f493cf
+x-ms-traffictypediagnostic: VE1PR04MB6687:|VE1PR04MB6687:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VE1PR04MB6687EA5F673D647B8B2839D98F6B0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 019919A9E4
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(396003)(39860400002)(376002)(346002)(136003)(366004)(51914003)(199004)(13464003)(189003)(55016002)(476003)(186003)(71190400001)(71200400001)(256004)(14454004)(6436002)(446003)(26005)(7696005)(5660300002)(52536014)(478600001)(66946007)(14444005)(53546011)(11346002)(54906003)(76116006)(102836004)(25786009)(99286004)(66476007)(64756008)(8676002)(8936002)(81156014)(66556008)(66446008)(110136005)(81166006)(9686003)(305945005)(6246003)(86362001)(7736002)(229853002)(4326008)(316002)(33656002)(3846002)(6116002)(6506007)(76176011)(486006)(2906002)(7416002)(74316002)(66066001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6687;
+ H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: OO6dGbREqJKG2+d0hxBuOb4FGQa2VqQOCXMD1cYaEZxkpcDhYQlNdHsK0RvR7EGt7WAlXbOY3iqHOBY47Zohy2wTwA018vu3g0jhgwMse1zUsQ+26QhV04mp9x1EHrTSUyFK/fadosrqo90PbDAWcZRmM7wBzAvsMUqFRn9jHOL5X9cSDzSlMcROteYXwyOlWbpKMA47ggBog4axZgTfIxP2uwuCexRr6fRsrEbf0OiIRyczp8dCY35/BzBc5C7Fs70IP8HzKfkrcVKLBnm2PaQFgf5Ya7Lz2yMIde1uiPBQr2iz56eh8mCAZymri8y/6FIwZZOP+UJbn9uZ7bB1vYXSldfaTzT0Unj2HwMSg2LQ4qK0xD2aZJcjZ7P1TKchRig01jOTfL7gdhxYPuCbeu15YWOmj4rbaQBCsOz43oFMU0S4g8KbU0EmKSifHePa
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20191022171239.21487-1-david@redhat.com>
- <CAPcyv4gJ+2he2E-6D0QZvkFWvRM9Fsvn9cAoPZbcU4zvsDHcEQ@mail.gmail.com>
- <acf86afd-a45c-5d83-daff-3bfb840d48a7@redhat.com>
- <CAPcyv4hHTqWWWREX2AtpEpfLHdDHvT-Kp_2YBW1As0y2Mx+6Dg@mail.gmail.com>
- <55640861-bbcb-95f0-766a-95bc961f1b0e@redhat.com>
-In-Reply-To: <55640861-bbcb-95f0-766a-95bc961f1b0e@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 23 Oct 2019 12:39:31 -0700
-Message-ID: <CAPcyv4g1zBpD2i936wWB9Pn0OStUoksXXLCCdXeYjbHuri-j4Q@mail.gmail.com>
-Subject: Re: [PATCH RFC v1 00/12] mm: Don't mark hotplugged pages PG_reserved
- (including ZONE_DEVICE)
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Thu, 24 Oct 2019 07:47:41 +1100
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e96d190-6828-418a-7fbe-08d757f493cf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2019 20:07:05.8581 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uTzE0P3KOt4dSHYh0h8rQSpS+5NMzbTXut0jK51yIPTM1gZAEvvgellZmsYOW/QSdVfREHtTQ799fqkHqB6YXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6687
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,231 +106,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>,
- =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
- KarimAllah Ahmed <karahmed@amazon.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
- Ben Chan <benchan@chromium.org>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- devel@driverdev.osuosl.org, Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
- YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Madhumitha Prabakaran <madhumithabiw@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>, Nishka Dasgupta <nishkadg.linux@gmail.com>,
- Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
- Dan Carpenter <dan.carpenter@oracle.com>,
- "Isaac J. Manjarres" <isaacm@codeaurora.org>,
- Matt Sickler <Matt.Sickler@daktronics.com>, Kees Cook <keescook@chromium.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- =?UTF-8?Q?Simon_Sandstr=C3=B6m?= <simon@nikanor.nu>,
- Sasha Levin <sashal@kernel.org>, Juergen Gross <jgross@suse.com>,
- kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
- Alex Williamson <alex.williamson@redhat.com>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
- xen-devel <xen-devel@lists.xenproject.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Todd Poynor <toddpoynor@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Allison Randal <allison@lohutok.net>, Jim Mattson <jmattson@google.com>,
- Vandana BN <bnvandana@gmail.com>, Jeremy Sowden <jeremy@azazel.net>,
- Mel Gorman <mgorman@techsingularity.net>,
+Cc: Mark Rutland <mark.rutland@arm.com>, Biwen Li <biwen.li@nxp.com>,
+ Anson Huang <anson.huang@nxp.com>, Len Brown <len.brown@intel.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Cornelia Huck <cohuck@redhat.com>,
+ Linux PM <linux-pm@vger.kernel.org>, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- Rob Springer <rspringer@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 23, 2019 at 10:28 AM David Hildenbrand <david@redhat.com> wrote:
->
-> >> I dislike this for three reasons
-> >>
-> >> a) It does not protect against any races, really, it does not improve things.
-> >> b) We do have the exact same problem with pfn_to_online_page(). As long as we
-> >>    don't hold the memory hotplug lock, memory can get offlined and remove any time. Racy.
-> >
-> > True, we need to solve that problem too. That seems to want something
-> > lighter weight than the hotplug lock that can be held over pfn lookups
-> > +  use rather than requiring a page lookup in paths where it's not
-> > clear that a page reference would prevent unplug.
-> >
-> >> c) We mix in ZONE specific stuff into the core. It should be "just another zone"
-> >
-> > Not sure I grok this when the RFC is sprinkling zone-specific
-> > is_zone_device_page() throughout the core?
->
-> Most users should not care about the zone. pfn_active() would be enough
-> in most situations, especially most PFN walkers - "this memmap is valid
-> and e.g., contains a valid zone ...".
-
-Oh, I see, you're saying convert most users to pfn_active() (and some
-TBD rcu locking), but only pfn_to_online_page() users would need the
-zone lookup? I can get on board with that.
-
->
-> >
-> >>
-> >> What I propose instead (already discussed in https://lkml.org/lkml/2019/10/10/87)
-> >
-> > Sorry I missed this earlier...
-> >
-> >>
-> >> 1. Convert SECTION_IS_ONLINE to SECTION_IS_ACTIVE
-> >> 2. Convert SECTION_IS_ACTIVE to a subsection bitmap
-> >> 3. Introduce pfn_active() that checks against the subsection bitmap
-> >> 4. Once the memmap was initialized / prepared, set the subsection active
-> >>    (similar to SECTION_IS_ONLINE in the buddy right now)
-> >> 5. Before the memmap gets invalidated, set the subsection inactive
-> >>    (similar to SECTION_IS_ONLINE in the buddy right now)
-> >> 5. pfn_to_online_page() = pfn_active() && zone != ZONE_DEVICE
-> >> 6. pfn_to_device_page() = pfn_active() && zone == ZONE_DEVICE
-> >
-> > This does not seem to reduce any complexity because it still requires
-> > a pfn to zone lookup at the end of the process.
-> >
-> > I.e. converting pfn_to_online_page() to use a new pfn_active()
-> > subsection map plus looking up the zone from pfn_to_page() is more
-> > steps than just doing a direct pfn to zone lookup. What am I missing?
->
-> That a real "pfn to zone" lookup without going via the struct page will
-> require to have more than just a single bitmap. IMHO, keeping the
-> information at a single place (memmap) is the clean thing to do (not
-> replicating it somewhere else). Going via the memmap might not be as
-> fast as a direct lookup, but do we actually care? We are already looking
-> at "random PFNs we are not sure if there is a valid memmap".
-
-True, we only care about the validity of the check, and as you pointed
-out moving the check to the pfn level does not solve the validity
-race. It needs a lock.
-
->
-> >>
-> >> Especially, driver-reserved device memory will not get set active in
-> >> the subsection bitmap.
-> >>
-> >> Now to the race. Taking the memory hotplug lock at random places is ugly. I do
-> >> wonder if we can use RCU:
-> >
-> > Ah, yes, exactly what I was thinking above.
-> >
-> >>
-> >> The user of pfn_active()/pfn_to_online_page()/pfn_to_device_page():
-> >>
-> >>         /* the memmap is guaranteed to remain active under RCU */
-> >>         rcu_read_lock();
-> >>         if (pfn_active(random_pfn)) {
-> >>                 page = pfn_to_page(random_pfn);
-> >>                 ... use the page, stays valid
-> >>         }
-> >>         rcu_unread_lock();
-> >>
-> >> Memory offlining/memremap code:
-> >>
-> >>         set_subsections_inactive(pfn, nr_pages); /* clears the bit atomically */
-> >>         synchronize_rcu();
-> >>         /* all users saw the bitmap update, we can invalide the memmap */
-> >>         remove_pfn_range_from_zone(zone, pfn, nr_pages);
-> >
-> > Looks good to me.
-> >
-> >>
-> >>>
-> >>>>
-> >>>> I only gave it a quick test with DIMMs on x86-64, but didn't test the
-> >>>> ZONE_DEVICE part at all (any tips for a nice QEMU setup?). Compile-tested
-> >>>> on x86-64 and PPC.
-> >>>
-> >>> I'll give it a spin, but I don't think the kernel wants to grow more
-> >>> is_zone_device_page() users.
-> >>
-> >> Let's recap. In this RFC, I introduce a total of 4 (!) users only.
-> >> The other parts can rely on pfn_to_online_page() only.
-> >>
-> >> 1. "staging: kpc2000: Prepare transfer_complete_cb() for PG_reserved changes"
-> >> - Basically never used with ZONE_DEVICE.
-> >> - We hold a reference!
-> >> - All it protects is a SetPageDirty(page);
-> >>
-> >> 2. "staging/gasket: Prepare gasket_release_page() for PG_reserved changes"
-> >> - Same as 1.
-> >>
-> >> 3. "mm/usercopy.c: Prepare check_page_span() for PG_reserved changes"
-> >> - We come via virt_to_head_page() / virt_to_head_page(), not sure about
-> >>   references (I assume this should be fine as we don't come via random
-> >>   PFNs)
-> >> - We check that we don't mix Reserved (including device memory) and CMA
-> >>   pages when crossing compound pages.
-> >>
-> >> I think we can drop 1. and 2., resulting in a total of 2 new users in
-> >> the same context. I think that is totally tolerable to finally clean
-> >> this up.
-> >
-> > ...but more is_zone_device_page() doesn't "finally clean this up".
-> > Like we discussed above it's the missing locking that's the real
-> > cleanup, the pfn_to_online_page() internals are secondary.
->
-> It's a different cleanup IMHO. We can't do everything in one shot. But
-> maybe I can drop the is_zone_device_page() parts from this patch and
-> completely rely on pfn_to_online_page(). Yes, that needs fixing to, but
-> it's a different story.
->
-> The important part of this patch:
->
-> While pfn_to_online_page() will always exclude ZONE_DEVICE pages,
-> checking PG_reserved on ZONE_DEVICE pages (what we do right now!) is
-> racy as hell (especially when concurrently initializing the memmap).
->
-> This does improve the situation.
-
-True that's a race a vector I was not considering.
-
->
-> >>
-> >> However, I think we also have to clarify if we need the change in 3 at all.
-> >> It comes from
-> >>
-> >> commit f5509cc18daa7f82bcc553be70df2117c8eedc16
-> >> Author: Kees Cook <keescook@chromium.org>
-> >> Date:   Tue Jun 7 11:05:33 2016 -0700
-> >>
-> >>     mm: Hardened usercopy
-> >>
-> >>     This is the start of porting PAX_USERCOPY into the mainline kernel. This
-> >>     is the first set of features, controlled by CONFIG_HARDENED_USERCOPY. The
-> >>     work is based on code by PaX Team and Brad Spengler, and an earlier port
-> >>     from Casey Schaufler. Additional non-slab page tests are from Rik van Riel.
-> >> [...]
-> >>     - otherwise, object must not span page allocations (excepting Reserved
-> >>       and CMA ranges)
-> >>
-> >> Not sure if we really have to care about ZONE_DEVICE at this point.
-> >
-> > That check needs to be careful to ignore ZONE_DEVICE pages. There's
-> > nothing wrong with a copy spanning ZONE_DEVICE and typical pages.
->
-> Please note that the current check would *forbid* this (AFAIKs for a
-> single heap object). As discussed in the relevant patch, we might be
-> able to just stop doing that and limit it to real PG_reserved pages
-> (without ZONE_DEVICE). I'd be happy to not introduce new
-> is_zone_device_page() users.
-
-At least for non-HMM ZONE_DEVICE usage, i.e. the dax + pmem stuff, is
-excluded from this path by:
-
-52f476a323f9 libnvdimm/pmem: Bypass CONFIG_HARDENED_USERCOPY overhead
-
-So this case is one more to add to the pile of HMM auditing.
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmFuIFdhbmcgPHJhbi53
+YW5nXzFAbnhwLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBPY3RvYmVyIDIzLCAyMDE5IDQ6NTMg
+QU0NCj4gVG86IFJhZmFlbCBKLiBXeXNvY2tpIDxyYWZhZWxAa2VybmVsLm9yZz4NCj4gQ2M6IFJh
+ZmFlbCBKIC4gV3lzb2NraSA8cmp3QHJqd3lzb2NraS5uZXQ+OyBSb2IgSGVycmluZw0KPiA8cm9i
+aCtkdEBrZXJuZWwub3JnPjsgTGVvIExpIDxsZW95YW5nLmxpQG54cC5jb20+OyBNYXJrIFJ1dGxh
+bmQNCj4gPG1hcmsucnV0bGFuZEBhcm0uY29tPjsgUGF2ZWwgTWFjaGVrIDxwYXZlbEB1Y3cuY3o+
+OyBBbnNvbiBIdWFuZw0KPiA8YW5zb24uaHVhbmdAbnhwLmNvbT47IEJpd2VuIExpIDxiaXdlbi5s
+aUBueHAuY29tPjsgTGVuIEJyb3duDQo+IDxsZW4uYnJvd25AaW50ZWwuY29tPjsgR3JlZyBLcm9h
+aC1IYXJ0bWFuDQo+IDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz47IGxpbnV4cHBjLWRldiA8
+bGludXhwcGMtDQo+IGRldkBsaXN0cy5vemxhYnMub3JnPjsgTGludXggQVJNIDxsaW51eC1hcm0t
+a2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc+Ow0KPiBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9y
+ZzsgTGludXggS2VybmVsIE1haWxpbmcgTGlzdCA8bGludXgtDQo+IGtlcm5lbEB2Z2VyLmtlcm5l
+bC5vcmc+OyBMaW51eCBQTSA8bGludXgtcG1Admdlci5rZXJuZWwub3JnPg0KPiBTdWJqZWN0OiBS
+RTogW1BBVENIIHY5IDEvM10gUE06IHdha2V1cDogQWRkIHJvdXRpbmUgdG8gaGVscCBmZXRjaCB3
+YWtldXANCj4gc291cmNlIG9iamVjdC4NCj4gDQo+IEhpIFJhZmFlbCwNCj4gDQo+IE9uIFdlZG5l
+c2RheSwgT2N0b2JlciAyMywgMjAxOSAxNzowNywgUmFmYWVsIEouIFd5c29ja2kgd3JvdGU6DQo+
+ID4NCj4gPiBPbiBXZWQsIE9jdCAyMywgMjAxOSBhdCAxMDoyNCBBTSBSYW4gV2FuZyA8cmFuLndh
+bmdfMUBueHAuY29tPg0KPiB3cm90ZToNCj4gPiA+DQo+ID4gPiBTb21lIHVzZXIgbWlnaHQgd2Fu
+dCB0byBnbyB0aHJvdWdoIGFsbCByZWdpc3RlcmVkIHdha2V1cCBzb3VyY2VzIGFuZA0KPiA+ID4g
+ZG9pbmcgdGhpbmdzIGFjY29yZGluZ2x5LiBGb3IgZXhhbXBsZSwgU29DIFBNIGRyaXZlciBtaWdo
+dCBuZWVkIHRvDQo+ID4gPiBkbyBIVyBwcm9ncmFtbWluZyB0byBwcmV2ZW50IHBvd2VyaW5nIGRv
+d24gc3BlY2lmaWMgSVAgd2hpY2ggd2FrZXVwDQo+ID4gPiBzb3VyY2UgZGVwZW5kaW5nIG9uLiBT
+byBhZGQgdGhpcyBBUEkgdG8gaGVscCB3YWxrIHRocm91Z2ggYWxsDQo+ID4gPiByZWdpc3RlcmVk
+IHdha2V1cCBzb3VyY2Ugb2JqZWN0cyBvbiB0aGF0IGxpc3QgYW5kIHJldHVybiB0aGVtIG9uZSBi
+eQ0KPiBvbmUuDQo+ID4gPg0KPiA+ID4gU2lnbmVkLW9mZi1ieTogUmFuIFdhbmcgPHJhbi53YW5n
+XzFAbnhwLmNvbT4NCj4gPiA+IFRlc3RlZC1ieTogTGVvbmFyZCBDcmVzdGV6IDxsZW9uYXJkLmNy
+ZXN0ZXpAbnhwLmNvbT4NCj4gPg0KPiA+IE9LLCB0aGFua3MgZm9yIG1ha2luZyBhbGwgb2YgdGhl
+IHJlcXVlc3RlZCBjaGFuZ2VzOg0KPiANCj4gVGhhbmtzIGZvciB5b3VyIHBhdGllbnQgZGlyZWN0
+aW9uIDopDQo+IEFjdHVhbGx5IExlbyBhbmQgbWUgcGxhbmVkIHRvIGhhdmUgYSBmMmYgZGlzY3Vz
+c2lvbiB3aXRoIHlvdSBhYm91dCB0aGlzIHBhdGNoDQo+IG9uIExQQyAyMDE5IGJ1dCB1bmZvcnR1
+bmF0ZWx5IG1pc3NlZCB0aGUgb3Bwb3J0dW5pdHkgZmluYWxseSAodjYgcmV2aWV3IHdhcw0KPiBw
+ZW5kaW5nIGF0IHRpbWUpLg0KPiANCj4gPiBSZXZpZXdlZC1ieTogUmFmYWVsIEouIFd5c29ja2kg
+PHJhZmFlbC5qLnd5c29ja2lAaW50ZWwuY29tPg0KDQpUaGFua3MgZm9yIHRoZSByZXZpZXcuDQoN
+Cj4gPg0KPiA+IGFuZCBwbGVhc2UgZmVlbCBmcmVlIHRvIHB1c2ggdGhpcyB0aHJvdWdoIHRoZSBh
+cHByb3ByaWF0ZSBhcmNoL3BsYXRmb3JtDQo+IHRyZWUuDQo+IA0KPiBZZXMsIHdlIHdpbGwgZG8g
+dGhpcyBsYXRlci4NCj4gDQo+ID4gQWx0ZXJuYXRpdmVseSwgcGxlYXNlIGxldCBtZSBrbm93IGlm
+IHlvdSB3YW50IG1lIHRvIHRha2UgdGhpcyBzZXJpZXMsDQo+ID4gYnV0IHRoZW4gSSBuZWVkIGFu
+IEFDSyBmcm9tIHRoZSBhcHByb3ByaWF0ZQ0KPiA+IG1haW50YWluZXIocykgb24gcGF0Y2ggMy4N
+Cj4gDQo+IFRoYW5rcyBhZ2FpbiwgSSB3aWxsIHdhaXQgTGVvJ3MgY29tbWVudCBvbiBwYXRjaCAz
+Lg0KDQpJIHdpbGwgZG8gYW5vdGhlciByZXZpZXcgb24gcGF0Y2ggMyBhbmQgYXBwbHkgdGhlIHNl
+cmllcyB0aHJvdWdoIG15IHNvYy9mc2wgdHJlZS4NCg0KUmVnYXJkcywNCkxlbw0K
