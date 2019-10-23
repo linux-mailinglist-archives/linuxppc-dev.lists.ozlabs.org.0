@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3356AE1556
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 11:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B0CE157D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 11:14:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46yl0y5B17zDqQv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 20:08:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46yl7L3jlMzDqQf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2019 20:14:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
- helo=mail-oi1-f194.google.com; envelope-from=rjwysocki@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.196;
+ helo=mail-oi1-f196.google.com; envelope-from=rjwysocki@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
- [209.85.167.194])
+Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com
+ [209.85.167.196])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46ykyn0BBCzDqLf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 20:06:56 +1100 (AEDT)
-Received: by mail-oi1-f194.google.com with SMTP id g81so16724846oib.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 02:06:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46yl580PwNzDqLr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 20:12:27 +1100 (AEDT)
+Received: by mail-oi1-f196.google.com with SMTP id o205so16718453oib.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2019 02:12:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=FBj8GLla1LYyB2CdUTD0DNJdp/9JV1zJyBmNqUMEb5E=;
- b=s8VNqWJl9hGY5Q3sr7Gq8dVXasnQIMlWoVdjxUhmD3/+4T1k0DZw+nbckaiHdjSuSM
- U1hMhueLsvtmoPF07EY6j8f2Gf1/N1q5NUMl2pSJIOTX6eRKWY3RjwXtBaPOJBPPfdWB
- 6znq+x7IjH8bvyewT6qHZ2WhcoMOJsVwwj7UqO8fNwb1zjpUrGTtY8ReLP7cxszwWezR
- pUA+O4rbtnXRszoAn1LySaj7Cmus8Gc+90IEjW8T078vrrwrOgV++yzgbtLHahEw1A/F
- DKn8BIJ5Obj+TjdnaWAu9vc4ehf/9+tKjUxMcdybBGubjiHl93s2GWTnouD4hiEzNWZP
- qE+w==
-X-Gm-Message-State: APjAAAVzIzZeHCIPq/Hg/iyjUn7RTLQuAgbDCy4QpKwN/D17jEClAsjq
- zLh9F5a0n8ReWYpWeIg7sPOqUemnRd22rflE0kE=
-X-Google-Smtp-Source: APXvYqyTirHnxPx9RjJnt0t5BfWKP5pSpiJnq+2XRPKiTpfW8z3VJ5oCRR5WKfiwapiGyf/vUU3yqd6A2ed8cyxSsVw=
-X-Received: by 2002:aca:5885:: with SMTP id m127mr6878786oib.110.1571821614375; 
- Wed, 23 Oct 2019 02:06:54 -0700 (PDT)
+ bh=I9e2tdyJ+jhbraDazF6LVEdNxXM3+pxi8NuZ/Hugb5E=;
+ b=KoQYip2/wFfAV5HH3t8mdlFssYEjPnrU+pMVcUdjBhdS11rgWujoVyXkAZvuT9BF1k
+ FobJV+4UMpQvXuVNfC3sOeGQpYSvmZyjpLtxYAKXtX6S0o4wKkvRGAt2IDut7+pFZ2YC
+ KyKbB/zzb+Z/At05vo9pO4SkYULM5HmJs6kOBbm+JbGpW6qL2a+fOnFDkM9IDScnt5aa
+ kj8fUVVGMNGOn2qhaGQGbiX5XxkGl+fDfTQJm+rnwly7anUTFsHEhpo8SlytmEz0z2d0
+ 3fKEWXEA0evUd55dRfRU0PONK8eQYw8X6VfNIynABU25qHLz2V3sz5VPHHRYYcY6STlV
+ fUmg==
+X-Gm-Message-State: APjAAAWfJ/127Oa7M+nG7ex2St8Tn7Fy1QyHb0NAIJNdUP+PaEsevcqe
+ IreP/VbdHbCFvQzxsyyRrpo/kAYWvWdGstrw+Bk=
+X-Google-Smtp-Source: APXvYqzrTSVIDKeg/LSwHPg4nLGUyfseJPmnQLFNA0oSLGOXU5LmtkriLGk3+XW6wYlrIk86X4PP9mA+eeDYjX+jZKw=
+X-Received: by 2002:aca:b6c5:: with SMTP id g188mr6925323oif.103.1571821944448; 
+ Wed, 23 Oct 2019 02:12:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <20191023082423.12569-1-ran.wang_1@nxp.com>
-In-Reply-To: <20191023082423.12569-1-ran.wang_1@nxp.com>
+ <20191023082423.12569-3-ran.wang_1@nxp.com>
+In-Reply-To: <20191023082423.12569-3-ran.wang_1@nxp.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 23 Oct 2019 11:06:43 +0200
-Message-ID: <CAJZ5v0jvQaREhg94f-COdYTt58gMP7YvqdEH0oYiS9Z56tg-XQ@mail.gmail.com>
-Subject: Re: [PATCH v9 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
+Date: Wed, 23 Oct 2019 11:12:13 +0200
+Message-ID: <CAJZ5v0i-gfRTzbDL5SBp_XfOYCkJPENpOjU+Pd3wi5aOjZd1HQ@mail.gmail.com>
+Subject: Re: [PATCH v9 3/3] soc: fsl: add RCPM driver
 To: Ran Wang <ran.wang_1@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -77,160 +77,201 @@ Sender: "Linuxppc-dev"
 
 On Wed, Oct 23, 2019 at 10:24 AM Ran Wang <ran.wang_1@nxp.com> wrote:
 >
-> Some user might want to go through all registered wakeup sources
-> and doing things accordingly. For example, SoC PM driver might need to
-> do HW programming to prevent powering down specific IP which wakeup
-> source depending on. So add this API to help walk through all registered
-> wakeup source objects on that list and return them one by one.
+> The NXP's QorIQ Processors based on ARM Core have RCPM module
+> (Run Control and Power Management), which performs system level
+> tasks associated with power management such as wakeup source control.
+>
+> This driver depends on PM wakeup source framework which help to
+> collect wake information.
 >
 > Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-> Tested-by: Leonard Crestez <leonard.crestez@nxp.com>
-
-OK, thanks for making all of the requested changes:
-
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-and please feel free to push this through the appropriate
-arch/platform tree.  Alternatively, please let me know if you want me
-to take this series, but then I need an ACK from the appropriate
-maintainer(s) on patch 3.
-
 > ---
 > Change in v9:
->         - Supplement comments for wakeup_sources_read_lock(),
->           wakeup_sources_read_unlock, wakeup_sources_walk_start and
->           wakeup_sources_walk_next().
+>         - Add kerneldoc for rcpm_pm_prepare().
+>         - Use pr_debug() to replace dev_info(), to print message when decide
+>           skip current wakeup object, this is mainly for debugging (in order
+>           to detect potential improper implementation on device tree which
+>           might cause this skip).
+>         - Refactor looping implementation in rcpm_pm_prepare(), add more
+>           comments to help clarify.
 >
 > Change in v8:
->         - Rename wakeup_source_get_next() to wakeup_sources_walk_next().
->         - Add wakeup_sources_read_lock() to take over locking job of
->           wakeup_source_get_star().
->         - Rename wakeup_source_get_start() to wakeup_sources_walk_start().
->         - Replace wakeup_source_get_stop() with wakeup_sources_read_unlock().
->         - Define macro for_each_wakeup_source(ws).
+>         - Adjust related API usage to meet wakeup.c's update in patch 1/3.
+>         - Add sanity checking for the case of ws->dev or ws->dev->parent
+>           is null.
 >
 > Change in v7:
->         - Remove define of member *dev in wake_irq to fix conflict with commit
->         c8377adfa781 ("PM / wakeup: Show wakeup sources stats in sysfs"), user
->         will use ws->dev->parent instead.
->         - Remove '#include <linux/of_device.h>' because it is not used.
+>         - Replace 'ws->dev' with 'ws->dev->parent' to get aligned with
+>         c8377adfa781 ("PM / wakeup: Show wakeup sources stats in sysfs")
+>         - Remove '+obj-y += ftm_alarm.o' since it is wrong.
+>         - Cosmetic work.
 >
 > Change in v6:
->         - Add wakeup_source_get_star() and wakeup_source_get_stop() to aligned
->         with wakeup_sources_stats_seq_start/nex/stop.
+>         - Adjust related API usage to meet wakeup.c's update in patch 1/3.
 >
 > Change in v5:
->         - Update commit message, add decription of walk through all wakeup
->         source objects.
->         - Add SCU protection in function wakeup_source_get_next().
->         - Rename wakeup_source member 'attached_dev' to 'dev' and move it up
->         (before wakeirq).
+>         - Fix v4 regression of the return value of wakeup_source_get_next()
+>         didn't pass to ws in while loop.
+>         - Rename wakeup_source member 'attached_dev' to 'dev'.
+>         - Rename property 'fsl,#rcpm-wakeup-cells' to '#fsl,rcpm-wakeup-cells'.
+>         please see https://lore.kernel.org/patchwork/patch/1101022/
 >
 > Change in v4:
->         - None.
+>         - Remove extra ',' in author line of rcpm.c
+>         - Update usage of wakeup_source_get_next() to be less confusing to the
+> reader, code logic remain the same.
 >
 > Change in v3:
->         - Adjust indentation of *attached_dev;.
+>         - Some whitespace ajdustment.
 >
 > Change in v2:
->         - None.
+>         - Rebase Kconfig and Makefile update to latest mainline.
 >
->  drivers/base/power/wakeup.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/pm_wakeup.h   |  9 ++++++++
->  2 files changed, 63 insertions(+)
+>  drivers/soc/fsl/Kconfig  |   8 +++
+>  drivers/soc/fsl/Makefile |   1 +
+>  drivers/soc/fsl/rcpm.c   | 148 +++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 157 insertions(+)
+>  create mode 100644 drivers/soc/fsl/rcpm.c
 >
-> diff --git a/drivers/base/power/wakeup.c b/drivers/base/power/wakeup.c
-> index 5817b51..70a9edb 100644
-> --- a/drivers/base/power/wakeup.c
-> +++ b/drivers/base/power/wakeup.c
-> @@ -248,6 +248,60 @@ void wakeup_source_unregister(struct wakeup_source *ws)
->  EXPORT_SYMBOL_GPL(wakeup_source_unregister);
->
->  /**
-> + * wakeup_sources_read_lock - Lock wakeup source list for read.
-> + *
-> + * Returns an index of srcu lock for struct wakeup_srcu.
-> + * This index must be passed to the matching wakeup_sources_read_unlock().
-> + */
-> +int wakeup_sources_read_lock(void)
-> +{
-> +       return srcu_read_lock(&wakeup_srcu);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_read_lock);
+> diff --git a/drivers/soc/fsl/Kconfig b/drivers/soc/fsl/Kconfig
+> index f9ad8ad..4918856 100644
+> --- a/drivers/soc/fsl/Kconfig
+> +++ b/drivers/soc/fsl/Kconfig
+> @@ -40,4 +40,12 @@ config DPAA2_CONSOLE
+>           /dev/dpaa2_mc_console and /dev/dpaa2_aiop_console,
+>           which can be used to dump the Management Complex and AIOP
+>           firmware logs.
+> +
+> +config FSL_RCPM
+> +       bool "Freescale RCPM support"
+> +       depends on PM_SLEEP
+> +       help
+> +         The NXP QorIQ Processors based on ARM Core have RCPM module
+> +         (Run Control and Power Management), which performs all device-level
+> +         tasks associated with power management, such as wakeup source control.
+>  endmenu
+> diff --git a/drivers/soc/fsl/Makefile b/drivers/soc/fsl/Makefile
+> index 71dee8d..906f1cd 100644
+> --- a/drivers/soc/fsl/Makefile
+> +++ b/drivers/soc/fsl/Makefile
+> @@ -6,6 +6,7 @@
+>  obj-$(CONFIG_FSL_DPAA)                 += qbman/
+>  obj-$(CONFIG_QUICC_ENGINE)             += qe/
+>  obj-$(CONFIG_CPM)                      += qe/
+> +obj-$(CONFIG_FSL_RCPM)                 += rcpm.o
+>  obj-$(CONFIG_FSL_GUTS)                 += guts.o
+>  obj-$(CONFIG_FSL_MC_DPIO)              += dpio/
+>  obj-$(CONFIG_DPAA2_CONSOLE)            += dpaa2-console.o
+> diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+> new file mode 100644
+> index 0000000..9378073
+> --- /dev/null
+> +++ b/drivers/soc/fsl/rcpm.c
+> @@ -0,0 +1,148 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
+> +// rcpm.c - Freescale QorIQ RCPM driver
+> +//
+> +// Copyright 2019 NXP
+> +//
+> +// Author: Ran Wang <ran.wang_1@nxp.com>
+> +
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/of_address.h>
+> +#include <linux/slab.h>
+> +#include <linux/suspend.h>
+> +#include <linux/kernel.h>
+> +
+> +#define RCPM_WAKEUP_CELL_MAX_SIZE      7
+> +
+> +struct rcpm {
+> +       unsigned int    wakeup_cells;
+> +       void __iomem    *ippdexpcr_base;
+> +       bool            little_endian;
+> +};
 > +
 > +/**
-> + * wakeup_sources_read_unlock - Unlock wakeup source list.
-> + * @idx: return value from corresponding wakeup_sources_read_lock()
-> + */
-> +void wakeup_sources_read_unlock(int idx)
-> +{
-> +       srcu_read_unlock(&wakeup_srcu, idx);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_read_unlock);
-> +
-> +/**
-> + * wakeup_sources_walk_start - Begin a walk on wakeup source list
+> + * rcpm_pm_prepare - performs device-level tasks associated with power
+> + * management, such as programming related to the wakeup source control.
+> + * @dev: Device to handle.
 > + *
-> + * Returns first object of the list of wakeup sources.
-> + *
-> + * Note that to be safe, wakeup sources list needs to be locked by calling
-> + * wakeup_source_read_lock() for this.
 > + */
-> +struct wakeup_source *wakeup_sources_walk_start(void)
+> +static int rcpm_pm_prepare(struct device *dev)
 > +{
-> +       struct list_head *ws_head = &wakeup_sources;
+> +       int i, ret, idx;
+> +       void __iomem *base;
+> +       struct wakeup_source    *ws;
+> +       struct rcpm             *rcpm;
+> +       struct device_node      *np = dev->of_node;
+> +       u32 value[RCPM_WAKEUP_CELL_MAX_SIZE + 1];
 > +
-> +       return list_entry_rcu(ws_head->next, struct wakeup_source, entry);
+> +       rcpm = dev_get_drvdata(dev);
+> +       if (!rcpm)
+> +               return -EINVAL;
+> +
+> +       base = rcpm->ippdexpcr_base;
+> +       idx = wakeup_sources_read_lock();
+> +
+> +       /* Begin with first registered wakeup source */
+> +       for_each_wakeup_source(ws) {
+> +
+> +               /* skip object which is not attached to device */
+> +               if (!ws->dev || !ws->dev->parent)
+> +                       continue;
+> +
+> +               ret = device_property_read_u32_array(ws->dev->parent,
+> +                               "fsl,rcpm-wakeup", value,
+> +                               rcpm->wakeup_cells + 1);
+> +
+> +               /*  Wakeup source should refer to current rcpm device */
+> +               if (ret || (np->phandle != value[0])) {
+> +                       pr_debug("%s doesn't refer to this rcpm\n", ws->name);
+
+I'm still quite unsure why it is useful to print this message instead
+of printing one when the wakeup source does match (there may be many
+wakeup source objects you don't care about in principle), but
+whatever.
+
+> +                       continue;
+> +               }
+> +
+> +               /* Property "#fsl,rcpm-wakeup-cells" of rcpm node defines the
+> +                * number of IPPDEXPCR register cells, and "fsl,rcpm-wakeup"
+> +                * of wakeup source IP contains an integer array: <phandle to
+> +                * RCPM node, IPPDEXPCR0 setting, IPPDEXPCR1 setting,
+> +                * IPPDEXPCR2 setting, etc>.
+> +                *
+> +                * So we will go thought them and do programming accordngly.
+> +                */
+> +               for (i = 0; i < rcpm->wakeup_cells; i++) {
+> +                       u32 tmp = value[i + 1];
+> +                       void __iomem *address = base + i * 4;
+> +
+> +                       if (!tmp)
+> +                               continue;
+> +
+> +                       /* We can only OR related bits */
+> +                       if (rcpm->little_endian) {
+> +                               tmp |= ioread32(address);
+> +                               iowrite32(tmp, address);
+> +                       } else {
+> +                               tmp |= ioread32be(address);
+> +                               iowrite32be(tmp, address);
+> +                       }
+> +               }
+> +       }
+> +
+> +       wakeup_sources_read_unlock(idx);
+> +
+> +       return 0;
 > +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_walk_start);
 > +
-> +/**
-> + * wakeup_sources_walk_next - Get next wakeup source from the list
-> + * @ws: Previous wakeup source object
-> + *
-> + * Note that to be safe, wakeup sources list needs to be locked by calling
-> + * wakeup_source_read_lock() for this.
-> + */
-> +struct wakeup_source *wakeup_sources_walk_next(struct wakeup_source *ws)
-> +{
-> +       struct list_head *ws_head = &wakeup_sources;
-> +
-> +       return list_next_or_null_rcu(ws_head, &ws->entry,
-> +                               struct wakeup_source, entry);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_walk_next);
-> +
-> +/**
->   * device_wakeup_attach - Attach a wakeup source object to a device object.
->   * @dev: Device to handle.
->   * @ws: Wakeup source object to attach to @dev.
-> diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
-> index 661efa0..aa3da66 100644
-> --- a/include/linux/pm_wakeup.h
-> +++ b/include/linux/pm_wakeup.h
-> @@ -63,6 +63,11 @@ struct wakeup_source {
->         bool                    autosleep_enabled:1;
->  };
->
-> +#define for_each_wakeup_source(ws) \
-> +       for ((ws) = wakeup_sources_walk_start();        \
-> +            (ws);                                      \
-> +            (ws) = wakeup_sources_walk_next((ws)))
-> +
->  #ifdef CONFIG_PM_SLEEP
->
->  /*
-> @@ -92,6 +97,10 @@ extern void wakeup_source_remove(struct wakeup_source *ws);
->  extern struct wakeup_source *wakeup_source_register(struct device *dev,
->                                                     const char *name);
->  extern void wakeup_source_unregister(struct wakeup_source *ws);
-> +extern int wakeup_sources_read_lock(void);
-> +extern void wakeup_sources_read_unlock(int idx);
-> +extern struct wakeup_source *wakeup_sources_walk_start(void);
-> +extern struct wakeup_source *wakeup_sources_walk_next(struct wakeup_source *ws);
->  extern int device_wakeup_enable(struct device *dev);
->  extern int device_wakeup_disable(struct device *dev);
->  extern void device_set_wakeup_capable(struct device *dev, bool capable);
-> --
-> 2.7.4
->
+> +static const struct dev_pm_ops rcpm_pm_ops = {
+> +       .prepare =  rcpm_pm_prepare,
+> +};
+
+For the above:
+
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
