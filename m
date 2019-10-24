@@ -1,75 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F07FE38E7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 18:53:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F654E3948
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:05:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zYH35LG0zDqSt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 03:53:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zYXj5WDBzDqSv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 04:05:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="sB2Jn2rl"; 
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="MCqDGEx5"; 
  dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zYDz1JJQzDqQv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 03:52:02 +1100 (AEDT)
-Received: by mail-qt1-x842.google.com with SMTP id z22so18328806qtq.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 09:52:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=content-transfer-encoding:from:mime-version:subject:date:message-id
- :references:cc:in-reply-to:to;
- bh=MD1pbzPN74Cooi+p6oJbLof2wiDKOMhFaRekjLXUrZs=;
- b=sB2Jn2rl37IzEiSgyk42DahVjDex25NdgPPfI1R0zFA09tT7ZrEMPasarAoAIcvKxN
- +n+x+G/+I18JPbiGrp5t2JZcqhYPVeiElEGSvhaL9nzJ8Ww77rBhXEczirB9UWDjC+HR
- FGu6S9JSyxY5ETieOFNYQcEvWt2BfiJWwkUuEuoDsJvJztOWzJQGE+BFr2DaG5QlopyQ
- ABJd/lChwAngBkE3q9AXNi+BbvxqNkFBoPMDPmKsYKQMDx8sAaTnfM/AZCbzTa94uXWS
- F+ZruUfTIm9SwZJdBHY7xPH/3MaUjJC8g0ITbr2z/pLULsaIH5B4UY62/g4sqHyx5zRc
- ID7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:content-transfer-encoding:from:mime-version
- :subject:date:message-id:references:cc:in-reply-to:to;
- bh=MD1pbzPN74Cooi+p6oJbLof2wiDKOMhFaRekjLXUrZs=;
- b=FALqesZUnSlN+uPKuD/gXYYgmaZkk7bIptE5wmhs9RliGPpyI9vHGPNatyAJATun3m
- BhJh2mcHkw1EBYVS/YlMh1EwRXuVxfWnFMNg1aO4OsD5Eyih9G99N0Ia7h1CvxifHTe1
- 0pIW6ZOu/1gyeIpawktgXzWJxUFx//RMi8b2z0RCqG9r6EJ07bk0FjEofKlP0WsfcvZu
- G0wPokvDxCsr00lWxE9tIOVkfb0X/4HUSrBMrzMvaP4QnXlRv1G9p5psKVtWwjO5+F3J
- enm8MWOqFyshZWT82SJKqRPtobjBH2d+uWo0U+J3eFwurkzW6e3vKELqIEgYS6r6mOlg
- UtdA==
-X-Gm-Message-State: APjAAAWUYQP8MshZp03lqfipEleSVfEwJQ+ERM/oghXO6Kh4wZJ3YD+j
- J1lK8Qtk8z3RI/TP8wNn4NHERw==
-X-Google-Smtp-Source: APXvYqxQOBVx3ITKJVFCZM4JTBqxBQ++B+FV+OPeFAZHzhypJMMzaZu2sZwLWN1gjap9nOuKNtEYxQ==
-X-Received: by 2002:ac8:1b45:: with SMTP id p5mr1975446qtk.330.1571935918881; 
- Thu, 24 Oct 2019 09:51:58 -0700 (PDT)
-Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id u9sm1610352qkk.34.2019.10.24.09.51.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Oct 2019 09:51:58 -0700 (PDT)
-Content-Type: text/plain; charset=us-ascii
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zYVV5THszDqSk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:03:43 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1571936620;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KPuVZSjsJby28GYRrSW7KOOUQEyPDIp7ehYqx2CiMW8=;
+ b=MCqDGEx5d1nmpaGulY9oWAEWrOOdd6AH1FeAb8dSjLPEPOtIJ5T4gFJv4uf+ge5ex/xAd7
+ 5KbJgA4REyWouZKqZK/+KnUb8TcBJIDiyd8V5SyW3JvUWbt47uTMSwE8q+6aFZdZOMXRSg
+ keJL4NMVRDp6DA47ZQWtkAZEs3Pdsp4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-305-4DGjzRdVOO-j_UhaexIoDw-1; Thu, 24 Oct 2019 13:03:34 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1CED11800DFB;
+ Thu, 24 Oct 2019 17:03:22 +0000 (UTC)
+Received: from llong.remote.csb (dhcp-17-59.bos.redhat.com [10.18.17.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EA8096012E;
+ Thu, 24 Oct 2019 17:03:16 +0000 (UTC)
+Subject: Re: [PATCH 0/2] Enabling MSI for Microblaze
+To: Michal Simek <michal.simek@xilinx.com>, linux-kernel@vger.kernel.org,
+ monstr@monstr.eu, git@xilinx.com, palmer@sifive.com, hch@infradead.org,
+ helgaas@kernel.org
+References: <cover.1571911976.git.michal.simek@xilinx.com>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <e9feafd1-8497-025b-e81d-f0e974038f3c@redhat.com>
+Date: Thu, 24 Oct 2019 13:03:16 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <cover.1571911976.git.michal.simek@xilinx.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-MC-Unique: 4DGjzRdVOO-j_UhaexIoDw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-From: Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
- helpers
-Date: Thu, 24 Oct 2019 12:51:57 -0400
-Message-Id: <FCAFFD72-3781-4474-8393-A4E40264473A@lca.pw>
-References: <1571625739-29943-1-git-send-email-anshuman.khandual@arm.com>
-In-Reply-To: <1571625739-29943-1-git-send-email-anshuman.khandual@arm.com>
-To: Anshuman Khandual <Anshuman.Khandual@arm.com>
-X-Mailer: iPhone Mail (17A878)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,50 +76,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Eric Biggers <ebiggers@google.com>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, linux-pci@vger.kernel.org,
  Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, linux-arch@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>, Jackie Liu <liuyun01@kylinos.cn>,
+ Russell King <linux@armlinux.org.uk>, Firoz Khan <firoz.khan@linaro.org>,
+ Wesley Terpstra <wesley@sifive.com>, James Hogan <jhogan@kernel.org>,
+ linux-snps-arc@lists.infradead.org, Albert Ou <aou@eecs.berkeley.edu>,
+ Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linux-arm-kernel@lists.infradead.org,
  Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Cornelia Huck <cohuck@redhat.com>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+ Vineet Gupta <vgupta@synopsys.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10/24/19 6:13 AM, Michal Simek wrote:
+> Hi,
+>
+> these two patches come from discussion with Christoph, Bjorn, Palmer and
+> Waiman. The first patch was suggestion by Christoph here
+> https://lore.kernel.org/linux-riscv/20191008154604.GA7903@infradead.org/
+> The second part was discussed
+> https://lore.kernel.org/linux-pci/mhng-5d9bcb53-225e-441f-86cc-b335624b3e=
+7c@palmer-si-x1e/
+> and
+> https://lore.kernel.org/linux-pci/20191017181937.7004-1-palmer@sifive.com=
+/
+>
+> Thanks,
+> Michal
+>
+>
+> Michal Simek (1):
+>   asm-generic: Make msi.h a mandatory include/asm header
+>
+> Palmer Dabbelt (1):
+>   pci: Default to PCI_MSI_IRQ_DOMAIN
+>
+>  arch/arc/include/asm/Kbuild     | 1 -
+>  arch/arm/include/asm/Kbuild     | 1 -
+>  arch/arm64/include/asm/Kbuild   | 1 -
+>  arch/mips/include/asm/Kbuild    | 1 -
+>  arch/powerpc/include/asm/Kbuild | 1 -
+>  arch/riscv/include/asm/Kbuild   | 1 -
+>  arch/sparc/include/asm/Kbuild   | 1 -
+>  drivers/pci/Kconfig             | 2 +-
+>  include/asm-generic/Kbuild      | 1 +
+>  9 files changed, 2 insertions(+), 8 deletions(-)
+>
+That looks OK.
 
+Acked-by: Waiman Long <longman@redhat.com>
 
-> On Oct 24, 2019, at 10:50 AM, Anshuman Khandual <Anshuman.Khandual@arm.com=
-> wrote:
->=20
-> Changes in V7:
->=20
-> - Memory allocation and free routines for mapped pages have been droped
-> - Mapped pfns are derived from standard kernel text symbol per Matthew
-> - Moved debug_vm_pgtaable() after page_alloc_init_late() per Michal and Qi=
-an=20
-> - Updated the commit message per Michal
-> - Updated W=3D1 GCC warning problem on x86 per Qian Cai
-
-It would be interesting to know if you actually tested  out to see if the wa=
-rning went away. As far I can tell, the GCC is quite stubborn there, so I am=
- not going to insist.=
