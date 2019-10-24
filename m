@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9C5E3AD5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 20:20:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FB6E3AC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 20:18:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zbBk6F6RzDqdp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 05:20:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zb8P2YLPzDqdf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 05:18:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,44 +15,44 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="sSU16cwM"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="hmU0M1g4"; 
  dkim-atps=neutral
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zYjD6x6QzDqWS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:13:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zYj917QFzDqW5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:13:01 +1100 (AEDT)
 Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id 2337043611;
- Thu, 24 Oct 2019 17:13:02 +0000 (UTC)
+ by mta-01.yadro.com (Postfix) with ESMTP id 5541043597;
+ Thu, 24 Oct 2019 17:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
  content-type:content-type:content-transfer-encoding:mime-version
  :references:in-reply-to:x-mailer:message-id:date:date:subject
  :subject:from:from:received:received:received; s=mta-01; t=
- 1571937177; x=1573751578; bh=Ly1PnEFeD8eqUYeDGQz6RzFYm/+hza4Wmd7
- 9/emghxo=; b=sSU16cwMIvKkPcKFHziNyzbW4yXBUTk0MhmVLo4MN+CF6CHc1zs
- NxMJNhKC6BQt1ypZ5RIexaxkLKgsFYwLH1issHPKIToBcCEi2oTkCFzxXlE/+QGP
- 9/FdDUn9qFrLjHiWPYKlO459o1qhf3Iu4KYM38A4JDmvTg4qurLb1VFQ=
+ 1571937177; x=1573751578; bh=WoAGswMD0jcTKXY/it96M1aTyTP0ATGaJ8r
+ 2Yos5H2Q=; b=hmU0M1g41x6vEfQPw5xHcLxC9h3WP7gvi3IHdFTDnisYPAjz2DD
+ ohjsb/HzrLr/cDv6yQR/L8ZD4J1NP+/ygQCJPR9eajrPWAo6qbx6xQzX6GcHhwxs
+ malwQtTiHiySjs4VMjl/hqOFJJP7xEhRAM+3CgSu4XWYiK5oznNeNcz8=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
  by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id adOlb3e024Bv; Thu, 24 Oct 2019 20:12:57 +0300 (MSK)
+ with ESMTP id 2GSjhsYQarjV; Thu, 24 Oct 2019 20:12:57 +0300 (MSK)
 Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
  [172.17.10.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id 44CD1437F8;
+ by mta-01.yadro.com (Postfix) with ESMTPS id 74F5843E18;
  Thu, 24 Oct 2019 20:12:45 +0300 (MSK)
 Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Thu, 24
- Oct 2019 20:12:44 +0300
+ Oct 2019 20:12:45 +0300
 From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 To: <linux-pci@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v6 29/30] PCI: pciehp: movable BARs: Trigger a domain rescan
- on hp events
-Date: Thu, 24 Oct 2019 20:12:27 +0300
-Message-ID: <20191024171228.877974-30-s.miroshnichenko@yadro.com>
+Subject: [PATCH v6 30/30] Revert "powerpc/powernv/pci: Work around races in
+ PCI bridge enabling"
+Date: Thu, 24 Oct 2019 20:12:28 +0300
+Message-ID: <20191024171228.877974-31-s.miroshnichenko@yadro.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
 References: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
@@ -74,45 +74,81 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>,
- Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>,
- linux@yadro.com
+ Bjorn Helgaas <helgaas@kernel.org>, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With movable BARs, adding a hotplugged device is not local to its bridge
-anymore, but it affects the whole domain: BARs, bridge windows and bus
-numbers can be substantially rearranged. So instead of trying to fit the
-new devices into preallocated reserved gaps, initiate a full domain rescan.
+This reverts commit db2173198b9513f7add8009f225afa1f1c79bcc6.
 
-The pci_rescan_bus() covers all the operations of the replaced functions:
- - assigning new bus numbers, as the pci_hp_add_bridge() does it;
- - allocating BARs (pci_assign_unassigned_bridge_resources());
- - cofiguring MPS settings (pcie_bus_configure_settings());
- - binding devices to their drivers (pci_bus_add_devices()).
+The root cause of this bug is fixed by the following two commits:
 
-CC: Lukas Wunner <lukas@wunner.de>
+  1. "PCI: Fix race condition in pci_enable/disable_device()"
+  2. "PCI: Enable bridge's I/O and MEM access for hotplugged devices"
+
+The x86 is also affected by this bug if a PCIe bridge has been hotplugged
+without pre-enabling by the BIOS.
+
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 ---
- drivers/pci/hotplug/pciehp_pci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 37 -----------------------
+ 1 file changed, 37 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pciehp_pci.c b/drivers/pci/hotplug/pciehp_pci.c
-index d17f3bf36f70..6d4c1ef38210 100644
---- a/drivers/pci/hotplug/pciehp_pci.c
-+++ b/drivers/pci/hotplug/pciehp_pci.c
-@@ -58,6 +58,11 @@ int pciehp_configure_device(struct controller *ctrl)
- 		goto out;
- 	}
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 33d5ed8c258f..f12f3a49d3bb 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -3119,49 +3119,12 @@ static void pnv_pci_ioda_create_dbgfs(void)
+ #endif /* CONFIG_DEBUG_FS */
+ }
  
-+	if (pci_can_move_bars) {
-+		pci_rescan_bus(parent);
-+		goto out;
-+	}
-+
- 	for_each_pci_bridge(dev, parent)
- 		pci_hp_add_bridge(dev);
+-static void pnv_pci_enable_bridge(struct pci_bus *bus)
+-{
+-	struct pci_dev *dev = bus->self;
+-	struct pci_bus *child;
+-
+-	/* Empty bus ? bail */
+-	if (list_empty(&bus->devices))
+-		return;
+-
+-	/*
+-	 * If there's a bridge associated with that bus enable it. This works
+-	 * around races in the generic code if the enabling is done during
+-	 * parallel probing. This can be removed once those races have been
+-	 * fixed.
+-	 */
+-	if (dev) {
+-		int rc = pci_enable_device(dev);
+-		if (rc)
+-			pci_err(dev, "Error enabling bridge (%d)\n", rc);
+-		pci_set_master(dev);
+-	}
+-
+-	/* Perform the same to child busses */
+-	list_for_each_entry(child, &bus->children, node)
+-		pnv_pci_enable_bridge(child);
+-}
+-
+-static void pnv_pci_enable_bridges(void)
+-{
+-	struct pci_controller *hose;
+-
+-	list_for_each_entry(hose, &hose_list, list_node)
+-		pnv_pci_enable_bridge(hose->bus);
+-}
+-
+ static void pnv_pci_ioda_fixup(void)
+ {
+ 	pnv_pci_ioda_setup_PEs();
+ 	pnv_pci_ioda_setup_iommu_api();
+ 	pnv_pci_ioda_create_dbgfs();
  
+-	pnv_pci_enable_bridges();
+-
+ #ifdef CONFIG_EEH
+ 	pnv_eeh_post_init();
+ #endif
 -- 
 2.23.0
 
