@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D43E3A5D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E31BE3A61
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:50:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zZVS4LvTzDqYC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 04:48:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zZXn4hPnzDqBj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 04:50:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="TZavucHX"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="vYq/kGxz"; 
  dkim-atps=neutral
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zYj246nDzDqW6
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zYj23tSzzDqW4
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:12:54 +1100 (AEDT)
 Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id A116743A25;
- Thu, 24 Oct 2019 17:12:50 +0000 (UTC)
+ by mta-01.yadro.com (Postfix) with ESMTP id AF3DB43B45;
+ Thu, 24 Oct 2019 17:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
  content-type:content-type:content-transfer-encoding:mime-version
  :references:in-reply-to:x-mailer:message-id:date:date:subject
  :subject:from:from:received:received:received; s=mta-01; t=
- 1571937169; x=1573751570; bh=W92cqvp1KNDy4z38kjLHnZ9tQ96YMOeOsD5
- kxxU2nkc=; b=TZavucHXLFabBJ740YyKwlkVKq/xL7ufdjUAwx5bl9kTrvz2qDd
- fmJ4mQ89nhLOGn82fOpqB5q/GLM5iSZdWAb8w4F6l1tneWEgHA8Qt2YlpAoDg/4c
- mxxidwytcDvjsH+ClWNFxlNsBxqPhoGfXYdvK0iPlfuUxIYTmqLtzrLE=
+ 1571937170; x=1573751571; bh=nwRlUMAhBu6065MIPo0iWQpzSMgerOXg0Y1
+ REgkLLP0=; b=vYq/kGxzNUW7colvoS3WIq6dvHWZ6VJ5yVOfTa6Pdx0fNVKhb26
+ gJdCgSLxY/+HC0j93JjkaRbtHp6+YrQFoaFe7mzPOHeoOdKuI3GbITOZAJLGkh1e
+ tLLqgvje0NORcbYSqxnqMDUOQK3BzP5GgCKfyslhea3j/KU52l1YGyoI=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
  by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id nG12gWa35O-g; Thu, 24 Oct 2019 20:12:49 +0300 (MSK)
+ with ESMTP id PF6N3UKHVgpS; Thu, 24 Oct 2019 20:12:50 +0300 (MSK)
 Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
  [172.17.10.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id 8235643C73;
+ by mta-01.yadro.com (Postfix) with ESMTPS id AFBDB43D12;
  Thu, 24 Oct 2019 20:12:42 +0300 (MSK)
 Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
@@ -49,10 +49,10 @@ Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  Oct 2019 20:12:42 +0300
 From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 To: <linux-pci@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v6 17/30] PCI: hotplug: movable BARs: Don't reserve IO/mem bus
- space
-Date: Thu, 24 Oct 2019 20:12:15 +0300
-Message-ID: <20191024171228.877974-18-s.miroshnichenko@yadro.com>
+Subject: [PATCH v6 18/30] PCI: hotplug: Configure MPS for hot-added bridges
+ during bus rescan
+Date: Thu, 24 Oct 2019 20:12:16 +0300
+Message-ID: <20191024171228.877974-19-s.miroshnichenko@yadro.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
 References: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
@@ -79,33 +79,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A hotplugged bridge with many hotplug-capable ports may request
-reserving more IO space than the machine has. This could be overridden
-with the "hpiosize=" kernel argument though.
-
-But when BARs are movable, there are no need to reserve space anymore:
-new BARs are allocated not from reserved gaps, but via rearranging the
-existing BARs. Requesting a precise amount of space for bridge windows
-increases the chances of adding the new bridge successfully.
+Assure that MPS settings are set up for bridges which are discovered during
+manually triggered rescan via sysfs. This sequence of bridge init (using
+pci_rescan_bus()) will be used for pciehp hot-add events when BARs are
+movable.
 
 Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 ---
- drivers/pci/setup-bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/probe.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 675a612236d7..a68ec726010e 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1285,7 +1285,7 @@ void __pci_bus_size_bridges(struct pci_bus *bus, struct list_head *realloc_head)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index d0d00cb3e965..94bbdf9b9dc1 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -3414,7 +3414,7 @@ static void pci_reassign_root_bus_resources(struct pci_bus *root)
+ unsigned int pci_rescan_bus(struct pci_bus *bus)
+ {
+ 	unsigned int max;
+-	struct pci_bus *root = bus;
++	struct pci_bus *root = bus, *child;
  
- 	case PCI_HEADER_TYPE_BRIDGE:
- 		pci_bridge_check_ranges(bus);
--		if (bus->self->is_hotplug_bridge) {
-+		if (bus->self->is_hotplug_bridge && !pci_can_move_bars) {
- 			additional_io_size  = pci_hotplug_io_size;
- 			additional_mem_size = pci_hotplug_mem_size;
- 		}
+ 	while (!pci_is_root_bus(root))
+ 		root = root->parent;
+@@ -3435,6 +3435,9 @@ unsigned int pci_rescan_bus(struct pci_bus *bus)
+ 		pci_assign_unassigned_bus_resources(bus);
+ 	}
+ 
++	list_for_each_entry(child, &root->children, node)
++		pcie_bus_configure_settings(child);
++
+ 	pci_bus_add_devices(bus);
+ 
+ 	return max;
 -- 
 2.23.0
 
