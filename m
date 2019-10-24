@@ -1,97 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA26E2941
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 06:04:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA7BE29F6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 07:34:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zDCc2KSvzDqNB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 15:04:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zGCB6s4fzDqTT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 16:34:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zCrk5P9ZzDqQv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 14:48:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46zCrk1p1kz8svV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 14:48:22 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 46zCrj57bzz9sQr; Thu, 24 Oct 2019 14:48:21 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46zCrj0V4yz9sPx
- for <linuxppc-dev@ozlabs.org>; Thu, 24 Oct 2019 14:48:20 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9O3lJ66096531
- for <linuxppc-dev@ozlabs.org>; Wed, 23 Oct 2019 23:48:19 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vu0uddu8k-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 23 Oct 2019 23:48:18 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
- Thu, 24 Oct 2019 04:48:17 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 24 Oct 2019 04:48:11 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x9O3m9L840042988
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Oct 2019 03:48:09 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7A420AE04D;
- Thu, 24 Oct 2019 03:48:09 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B17B9AE053;
- Thu, 24 Oct 2019 03:48:06 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.40.192.65])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 24 Oct 2019 03:48:06 +0000 (GMT)
-From: Nayna Jain <nayna@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
- linux-integrity@vger.kernel.org
-Subject: [PATCH v9 8/8] powerpc/ima: update ima arch policy to check for
- blacklist
-Date: Wed, 23 Oct 2019 22:47:17 -0500
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191024034717.70552-1-nayna@linux.ibm.com>
-References: <20191024034717.70552-1-nayna@linux.ibm.com>
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46zCyD5zRVzDqSv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 14:53:06 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F4221FB;
+ Wed, 23 Oct 2019 20:53:04 -0700 (PDT)
+Received: from [10.162.43.133] (p8cg001049571a15.blr.arm.com [10.162.43.133])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ 33C723F71A; Wed, 23 Oct 2019 20:52:45 -0700 (PDT)
+Subject: Re: [PATCH RFC v1 01/12] mm/memory_hotplug: Don't allow to
+ online/offline memory blocks with holes
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+References: <20191022171239.21487-1-david@redhat.com>
+ <20191022171239.21487-2-david@redhat.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <4aa3c72b-8991-9e43-80d7-a906ae79160b@arm.com>
+Date: Thu, 24 Oct 2019 09:23:16 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19102403-0008-0000-0000-000003267A2E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102403-0009-0000-0000-00004A45AB93
-Message-Id: <20191024034717.70552-9-nayna@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-24_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910240033
+In-Reply-To: <20191022171239.21487-2-david@redhat.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Thu, 24 Oct 2019 16:32:46 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,58 +51,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Prakhar Srivastava <prsriva02@gmail.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, linux-hyperv@vger.kernel.org,
+ Michal Hocko <mhocko@suse.com>,
+ =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>, kvm@vger.kernel.org,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ KarimAllah Ahmed <karahmed@amazon.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Fabio Estevam <festevam@gmail.com>,
+ Ben Chan <benchan@chromium.org>, Kees Cook <keescook@chromium.org>,
+ devel@driverdev.osuosl.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Madhumitha Prabakaran <madhumithabiw@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Nishka Dasgupta <nishkadg.linux@gmail.com>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ "Isaac J. Manjarres" <isaacm@codeaurora.org>,
+ Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ =?UTF-8?Q?Simon_Sandstr=c3=b6m?= <simon@nikanor.nu>,
+ Dan Williams <dan.j.williams@intel.com>, kvm-ppc@vger.kernel.org,
+ Qian Cai <cai@lca.pw>, Alex Williamson <alex.williamson@redhat.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
+ xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Todd Poynor <toddpoynor@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Allison Randal <allison@lohutok.net>, Jim Mattson <jmattson@google.com>,
+ Vandana BN <bnvandana@gmail.com>, Jeremy Sowden <jeremy@azazel.net>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- George Wilson <gcwilson@linux.ibm.com>
+ Cornelia Huck <cohuck@redhat.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ Rob Springer <rspringer@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch updates the arch-specific policies for PowerNV system to make
-sure that the binary hash is not blacklisted.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
----
- arch/powerpc/kernel/ima_arch.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On 10/22/2019 10:42 PM, David Hildenbrand wrote:
+> Our onlining/offlining code is unnecessarily complicated. Only memory
+> blocks added during boot can have holes. Hotplugged memory never has
+> holes. That memory is already online.
 
-diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
-index 0ef5956c9753..b9de0fb45bb9 100644
---- a/arch/powerpc/kernel/ima_arch.c
-+++ b/arch/powerpc/kernel/ima_arch.c
-@@ -23,9 +23,9 @@ bool arch_ima_get_secureboot(void)
-  * is not enabled.
-  */
- static const char *const secure_rules[] = {
--	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
-+	"appraise func=KEXEC_KERNEL_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #ifndef CONFIG_MODULE_SIG_FORCE
--	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-+	"appraise func=MODULE_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #endif
- 	NULL
- };
-@@ -49,9 +49,9 @@ static const char *const trusted_rules[] = {
- static const char *const secure_and_trusted_rules[] = {
- 	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
- 	"measure func=MODULE_CHECK template=ima-modsig",
--	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
-+	"appraise func=KEXEC_KERNEL_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #ifndef CONFIG_MODULE_SIG_FORCE
--	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
-+	"appraise func=MODULE_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
- #endif
- 	NULL
- };
--- 
-2.20.1
+Why hot plugged memory at runtime cannot have holes (e.g a semi bad DIMM).
+Currently, do we just abort adding that memory block if there are holes ?
 
+> 
+> When we stop allowing to offline memory blocks with holes, we implicitly
+> stop to online memory blocks with holes.
+
+Reducing hotplug support for memory blocks with holes just to simplify
+the code. Is it worth ?
+
+> 
+> This allows to simplify the code. For example, we no longer have to
+> worry about marking pages that fall into memory holes PG_reserved when
+> onlining memory. We can stop setting pages PG_reserved.
+
+Could not there be any other way of tracking these holes if not the page
+reserved bit. In the memory section itself and corresponding struct pages
+just remained poisoned ? Just wondering, might be all wrong here.
+
+> 
+> Offlining memory blocks added during boot is usually not guranteed to work
+> either way. So stopping to do that (if anybody really used and tested
+
+That guarantee does not exist right now because how boot memory could have
+been used after boot not from a limitation of the memory hot remove itself.
+
+> this over the years) should not really hurt. For the use case of
+> offlining memory to unplug DIMMs, we should see no change. (holes on
+> DIMMs would be weird)
+
+Holes on DIMM could be due to HW errors affecting only parts of it. By not
+allowing such DIMM's hot add and remove, we are definitely reducing the
+scope of overall hotplug functionality. Is code simplification in itself
+is worth this reduction in functionality ?
+
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  mm/memory_hotplug.c | 26 ++++++++++++++++++++++++--
+>  1 file changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 561371ead39a..7210f4375279 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1447,10 +1447,19 @@ static void node_states_clear_node(int node, struct memory_notify *arg)
+>  		node_clear_state(node, N_MEMORY);
+>  }
+>  
+> +static int count_system_ram_pages_cb(unsigned long start_pfn,
+> +				     unsigned long nr_pages, void *data)
+> +{
+> +	unsigned long *nr_system_ram_pages = data;
+> +
+> +	*nr_system_ram_pages += nr_pages;
+> +	return 0;
+> +}
+> +
+>  static int __ref __offline_pages(unsigned long start_pfn,
+>  		  unsigned long end_pfn)
+>  {
+> -	unsigned long pfn, nr_pages;
+> +	unsigned long pfn, nr_pages = 0;
+>  	unsigned long offlined_pages = 0;
+>  	int ret, node, nr_isolate_pageblock;
+>  	unsigned long flags;
+> @@ -1461,6 +1470,20 @@ static int __ref __offline_pages(unsigned long start_pfn,
+>  
+>  	mem_hotplug_begin();
+>  
+> +	/*
+> +	 * We don't allow to offline memory blocks that contain holes
+> +	 * and consecuently don't allow to online memory blocks that contain
+> +	 * holes. This allows to simplify the code quite a lot and we don't
+> +	 * have to mess with PG_reserved pages for memory holes.
+> +	 */
+> +	walk_system_ram_range(start_pfn, end_pfn - start_pfn, &nr_pages,
+> +			      count_system_ram_pages_cb);
+> +	if (nr_pages != end_pfn - start_pfn) {
+> +		ret = -EINVAL;
+> +		reason = "memory holes";
+> +		goto failed_removal;
+> +	}
+> +
+>  	/* This makes hotplug much easier...and readable.
+>  	   we assume this for now. .*/
+>  	if (!test_pages_in_a_zone(start_pfn, end_pfn, &valid_start,
+> @@ -1472,7 +1495,6 @@ static int __ref __offline_pages(unsigned long start_pfn,
+>  
+>  	zone = page_zone(pfn_to_page(valid_start));
+>  	node = zone_to_nid(zone);
+> -	nr_pages = end_pfn - start_pfn;
+>  
+>  	/* set above range as isolated */
+>  	ret = start_isolate_page_range(start_pfn, end_pfn,
+> 
