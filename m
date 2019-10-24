@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A136DE3A77
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3938FE3A53
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:46:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zZgS1hb6zDqSK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 04:56:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zZRb0TW0zDqLg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 04:46:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,44 +15,43 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="anXICluz"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="eMZ8xTmG"; 
  dkim-atps=neutral
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zYj246DFzDqW5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:12:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zYj03f5mzDqNt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:12:52 +1100 (AEDT)
 Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id 8E6A343130;
+ by mta-01.yadro.com (Postfix) with ESMTP id 7EABA42F14;
  Thu, 24 Oct 2019 17:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
  content-type:content-type:content-transfer-encoding:mime-version
  :references:in-reply-to:x-mailer:message-id:date:date:subject
  :subject:from:from:received:received:received; s=mta-01; t=
- 1571937168; x=1573751569; bh=rr5LWboqmrfFjD3Z1bCM5jQX+PcvKf7YXEC
- 2Wij1RtY=; b=anXICluzLh5hXkWu3ZQ0KGWpvN72H1Pyc0+EucCRENi+MRpjEJc
- 25CBu0WL86RY5uyvYpV7anaye6arT6EJfPO2i1NdtKajh+AttvDsT6WPQCFNOv9m
- j0KD/uD9NKJYuTvqfazWULIgq/Mk4VElKI5wKlazkSGRQMHoZRMEAUtE=
+ 1571937168; x=1573751569; bh=DbrmeTcNhYv3PGM/IbnlLPxMlO1jbQU8BpP
+ Nc0UZMas=; b=eMZ8xTmGQYPYhkqlqcQJLz+BLrCEu8qFNTEj1tA4ukc6tFVVH0a
+ niKDYehTl3Bez70j4Sxz1WOCmDh6sKzd9Az+Arta0VJZtUBQoC8fvpKPXxlEQ2yJ
+ TbkniqMEo+c/TpyLPVki1HgO1DE7LytJCg0e1b3gEHTl3lrX3lMKLSTM=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
  by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 82XDHFVx3aSW; Thu, 24 Oct 2019 20:12:48 +0300 (MSK)
+ with ESMTP id NE8yWUUPu1cu; Thu, 24 Oct 2019 20:12:48 +0300 (MSK)
 Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
  [172.17.10.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id E8E2743B45;
- Thu, 24 Oct 2019 20:12:41 +0300 (MSK)
+ by mta-01.yadro.com (Postfix) with ESMTPS id 1C7B443B4E;
+ Thu, 24 Oct 2019 20:12:42 +0300 (MSK)
 Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Thu, 24
  Oct 2019 20:12:41 +0300
 From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 To: <linux-pci@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v6 14/30] PCI: Make sure bridge windows include their fixed
- BARs
-Date: Thu, 24 Oct 2019 20:12:12 +0300
-Message-ID: <20191024171228.877974-15-s.miroshnichenko@yadro.com>
+Subject: [PATCH v6 15/30] PCI: Fix assigning the fixed prefetchable resources
+Date: Thu, 24 Oct 2019 20:12:13 +0300
+Message-ID: <20191024171228.877974-16-s.miroshnichenko@yadro.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
 References: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
@@ -79,97 +78,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the time comes to select a start address for the bridge window during
-the root bus rescan, it should be not just a lowest possible address: this
-window must cover all the underlying fixed and immovable BARs. The lowest
-address that satisfies this requirement is the .realloc_range field of
-struct pci_bus, which is calculated during the preparation to the rescan.
+Allow matching IORESOURCE_PCI_FIXED prefetchable BARs to non-prefetchable
+windows, so they follow the same rules as immovable BARs.
 
 Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 ---
- drivers/pci/bus.c       |  2 +-
- drivers/pci/setup-res.c | 31 +++++++++++++++++++++++++++++--
- 2 files changed, 30 insertions(+), 3 deletions(-)
+ drivers/pci/setup-bus.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-index 8e40b3e6da77..a1efa87e31b9 100644
---- a/drivers/pci/bus.c
-+++ b/drivers/pci/bus.c
-@@ -192,7 +192,7 @@ static int pci_bus_alloc_from_region(struct pci_bus *bus, struct resource *res,
- 		 * this is an already-configured bridge window, its start
- 		 * overrides "min".
- 		 */
--		if (avail.start)
-+		if (min_used < avail.start)
- 			min_used = avail.start;
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 653ba4d5f191..c7365998fbd6 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -1339,15 +1339,20 @@ static void assign_fixed_resource_on_bus(struct pci_bus *b, struct resource *r)
+ {
+ 	int i;
+ 	struct resource *parent_r;
+-	unsigned long mask = IORESOURCE_IO | IORESOURCE_MEM |
+-			     IORESOURCE_PREFETCH;
++	unsigned long mask = IORESOURCE_TYPE_BITS;
  
- 		max = avail.end;
-diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
-index a1657a8bf93d..1570bbd620cd 100644
---- a/drivers/pci/setup-res.c
-+++ b/drivers/pci/setup-res.c
-@@ -248,9 +248,23 @@ static int __pci_assign_resource(struct pci_bus *bus, struct pci_dev *dev,
- 	struct resource *res = dev->resource + resno;
- 	resource_size_t min;
- 	int ret;
-+	resource_size_t start = (resource_size_t)-1;
-+	resource_size_t end = 0;
+ 	pci_bus_for_each_resource(b, parent_r, i) {
+ 		if (!parent_r)
+ 			continue;
  
- 	min = (res->flags & IORESOURCE_IO) ? PCIBIOS_MIN_IO : PCIBIOS_MIN_MEM;
- 
-+	if (dev->subordinate && resno >= PCI_BRIDGE_RESOURCES) {
-+		struct pci_bus *child_bus = dev->subordinate;
-+		int b_resno = resno - PCI_BRIDGE_RESOURCES;
-+		struct resource *immovable_range = &child_bus->immovable_range[b_resno];
+-		if ((r->flags & mask) == (parent_r->flags & mask) &&
+-		    resource_contains(parent_r, r))
++		if ((r->flags & mask) != (parent_r->flags & mask))
++			continue;
 +
-+		if (immovable_range->start < immovable_range->end) {
-+			start = immovable_range->start;
-+			end = immovable_range->end;
-+			min = child_bus->realloc_range[b_resno].start;
-+		}
-+	}
++		if (parent_r->flags & IORESOURCE_PREFETCH &&
++		    !(r->flags & IORESOURCE_PREFETCH))
++			continue;
 +
- 	/*
- 	 * First, try exact prefetching match.  Even if a 64-bit
- 	 * prefetchable bridge window is below 4GB, we can't put a 32-bit
-@@ -262,7 +276,7 @@ static int __pci_assign_resource(struct pci_bus *bus, struct pci_dev *dev,
- 				     IORESOURCE_PREFETCH | IORESOURCE_MEM_64,
- 				     pcibios_align_resource, dev);
- 	if (ret == 0)
--		return 0;
-+		goto check_fixed;
- 
- 	/*
- 	 * If the prefetchable window is only 32 bits wide, we can put
-@@ -274,7 +288,7 @@ static int __pci_assign_resource(struct pci_bus *bus, struct pci_dev *dev,
- 					     IORESOURCE_PREFETCH,
- 					     pcibios_align_resource, dev);
- 		if (ret == 0)
--			return 0;
-+			goto check_fixed;
++		if (resource_contains(parent_r, r))
+ 			request_resource(parent_r, r);
  	}
- 
- 	/*
-@@ -287,6 +301,19 @@ static int __pci_assign_resource(struct pci_bus *bus, struct pci_dev *dev,
- 		ret = pci_bus_alloc_resource(bus, res, size, align, min, 0,
- 					     pcibios_align_resource, dev);
- 
-+check_fixed:
-+	if (ret == 0 && start < end) {
-+		if (res->start > start || res->end < end) {
-+			dev_err(&bus->dev, "fixed area 0x%llx-0x%llx for %s doesn't fit in the allocated %pR (0x%llx-0x%llx)",
-+				(unsigned long long)start, (unsigned long long)end,
-+				dev_name(&dev->dev),
-+				res, (unsigned long long)res->start,
-+				(unsigned long long)res->end);
-+			release_resource(res);
-+			return -1;
-+		}
-+	}
-+
- 	return ret;
  }
- 
 -- 
 2.23.0
 
