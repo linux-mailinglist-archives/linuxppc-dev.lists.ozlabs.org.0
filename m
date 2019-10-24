@@ -1,54 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA56E2AF2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 09:17:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2B7E2BA0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 10:00:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zJV638NwzDqQv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 18:17:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zKRC3KWZzDqSV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:00:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cyphar.com (client-ip=2001:67c:2050::465:102;
- helo=mout-p-102.mailbox.org; envelope-from=cyphar@cyphar.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-X-Greylist: delayed 527 seconds by postgrey-1.36 at bilbo;
- Thu, 24 Oct 2019 18:15:39 AEDT
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org
- [IPv6:2001:67c:2050::465:102])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zJRv1XhrzDqM3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 18:15:37 +1100 (AEDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:2:0])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mout-p-102.mailbox.org (Postfix) with ESMTPS id 46zJFS55d2zKmhs;
- Thu, 24 Oct 2019 09:06:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173])
- (amavisd-new, port 10030)
- with ESMTP id DAIjq9oYK49d; Thu, 24 Oct 2019 09:06:30 +0200 (CEST)
-Date: Thu, 24 Oct 2019 18:06:04 +1100
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path resolution
-Message-ID: <20191024070604.howuh6x6qrzd5jsm@yavin.dot.cyphar.com>
-References: <20191010054140.8483-1-cyphar@cyphar.com>
- <20191010054140.8483-3-cyphar@cyphar.com>
- <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
- <20191012040815.gnc43cfmo5mnv67u@yavin.dot.cyphar.com>
- <20191012041541.milbmfbjpj5bcl5a@yavin.dot.cyphar.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zKP52G4jzDqQv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 18:58:16 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9O7vll6109075; Thu, 24 Oct 2019 03:58:10 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vu71qa39x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Oct 2019 03:58:09 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9O7w9ZU110866;
+ Thu, 24 Oct 2019 03:58:09 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vu71qa397-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Oct 2019 03:58:08 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9O7sUvS007705;
+ Thu, 24 Oct 2019 07:58:08 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma05wdc.us.ibm.com with ESMTP id 2vqt47y1y6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Oct 2019 07:58:08 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9O7w7fY49349076
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 24 Oct 2019 07:58:08 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D1576124054;
+ Thu, 24 Oct 2019 07:58:07 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5F805124052;
+ Thu, 24 Oct 2019 07:58:06 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.124.35.127])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 24 Oct 2019 07:58:06 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
+Subject: [PATCH v1 1/3] mm/powerpc/book3s64/radix: Remove unused code.
+Date: Thu, 24 Oct 2019 13:27:59 +0530
+Message-Id: <20191024075801.22434-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="i56sxfhksaspu3tw"
-Content-Disposition: inline
-In-Reply-To: <20191012041541.milbmfbjpj5bcl5a@yavin.dot.cyphar.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-24_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910240076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,163 +86,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>,
- GNU C Library <libc-alpha@sourceware.org>, linux-parisc@vger.kernel.org,
- Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, alpha <linux-alpha@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Linux Containers <containers@lists.linux-foundation.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+mm_tlb_flush_nested change was added in the mmu gather tlb flush to handle
+the case of parallel pte invalidate happening with mmap_sem held in read
+mode. This fix was done by commit: 02390f66bd23 ("powerpc/64s/radix: Fix
+MADV_[FREE|DONTNEED] TLB flush miss problem with THP") and the problem is
+explained in detail in commit: 99baac21e458 ("mm: fix MADV_[FREE|DONTNEED] TLB
+flush miss problem")
 
---i56sxfhksaspu3tw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This was later updated by commit: 7a30df49f63a ("mm: mmu_gather: remove
+__tlb_reset_range() for force flush") to do a full mm flush rather than
+a range flush. By commit: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem
+in munmap") we are also now allowing a page table free in mmap_sem read mode
+which means we should do a PWC flush too. Our current full mm flush imply
+a PWC flush.
 
-On 2019-10-12, Aleksa Sarai <cyphar@cyphar.com> wrote:
-> On 2019-10-12, Aleksa Sarai <cyphar@cyphar.com> wrote:
-> > On 2019-10-10, Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> > > On Wed, Oct 9, 2019 at 10:42 PM Aleksa Sarai <cyphar@cyphar.com> wrot=
-e:
-> > > >
-> > > > --- a/fs/namei.c
-> > > > +++ b/fs/namei.c
-> > > > @@ -2277,6 +2277,11 @@ static const char *path_init(struct nameidat=
-a *nd, unsigned flags)
-> > > >
-> > > >         nd->m_seq =3D read_seqbegin(&mount_lock);
-> > > >
-> > > > +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-t=
-o-dirfd. */
-> > > > +       if (flags & LOOKUP_IN_ROOT)
-> > > > +               while (*s =3D=3D '/')
-> > > > +                       s++;
-> > > > +
-> > > >         /* Figure out the starting path and root (if needed). */
-> > > >         if (*s =3D=3D '/') {
-> > > >                 error =3D nd_jump_root(nd);
-> > >=20
-> > > Hmm. Wouldn't this make more sense all inside the if (*s =3D- '/') te=
-st?
-> > > That way if would be where we check for "should we start at the root",
-> > > which seems to make more sense conceptually.
-> >=20
-> > I don't really agree (though I do think that both options are pretty
-> > ugly). Doing it before the block makes it clear that absolute paths are
-> > just treated relative-to-dirfd -- doing it inside the block makes it
-> > look more like "/" is a special-case for nd_jump_root(). And while that
->=20
-> Sorry, I meant "special-case for LOOKUP_IN_ROOT".
->=20
-> > is somewhat true, this is just a side-effect of making the code more
-> > clean -- my earlier versions reworked the dirfd handling to always grab
-> > nd->root first if LOOKUP_IS_SCOPED. I switched to this method based on
-> > Al's review.
-> >=20
-> > In fairness, I do agree that the lonely while loop looks ugly.
->=20
-> And with the old way I did it (where we grabbed nd->root first) the
-> semantics were slightly more clear -- stripping leading "/"s doesn't
-> really look as "clearly obvious" as grabbing nd->root beforehand and
-> treating "/"s normally. But the code was also needlessly more complex.
->=20
-> > > That test for '/' currently has a "} else if (..)", but that's
-> > > pointless since it ends with a "return" anyway. So the "else" logic is
-> > > just noise.
-> >=20
-> > This depends on the fact that LOOKUP_BENEATH always triggers -EXDEV for
-> > nd_jump_root() -- if we ever add another "scoped lookup" flag then the
-> > logic will have to be further reworked.
-> >=20
-> > (It should be noted that the new version doesn't always end with a
-> > "return", but you could change it to act that way given the above
-> > assumption.)
-> >=20
-> > > And if you get rid of the unnecessary else, moving the LOOKUP_IN_ROOT
-> > > inside the if-statement works fine.
-> > >=20
-> > > So this could be something like
-> > >=20
-> > >     --- a/fs/namei.c
-> > >     +++ b/fs/namei.c
-> > >     @@ -2194,11 +2196,19 @@ static const char *path_init(struct
-> > > nameidata *nd, unsigned flags)
-> > >=20
-> > >         nd->m_seq =3D read_seqbegin(&mount_lock);
-> > >         if (*s =3D=3D '/') {
-> > >     -           set_root(nd);
-> > >     -           if (likely(!nd_jump_root(nd)))
-> > >     -                   return s;
-> > >     -           return ERR_PTR(-ECHILD);
-> > >     -   } else if (nd->dfd =3D=3D AT_FDCWD) {
-> > >     +           /* LOOKUP_IN_ROOT treats absolute paths as being
-> > > relative-to-dirfd. */
-> > >     +           if (!(flags & LOOKUP_IN_ROOT)) {
-> > >     +                   set_root(nd);
-> > >     +                   if (likely(!nd_jump_root(nd)))
-> > >     +                           return s;
-> > >     +                   return ERR_PTR(-ECHILD);
-> > >     +           }
-> > >     +
-> > >     +           /* Skip initial '/' for LOOKUP_IN_ROOT */
-> > >     +           do { s++; } while (*s =3D=3D '/');
-> > >     +   }
-> > >     +
-> > >     +   if (nd->dfd =3D=3D AT_FDCWD) {
-> > >                 if (flags & LOOKUP_RCU) {
-> > >                         struct fs_struct *fs =3D current->fs;
-> > >                         unsigned seq;
-> > >=20
-> > > instead. The patch ends up slightly bigger (due to the re-indentation)
-> > > but now it handles all the "start at root" in the same place. Doesn't
-> > > that make sense?
-> >=20
-> > It is correct (though I'd need to clean it up a bit to handle
-> > nd_jump_root() correctly), and if you really would like me to change it
-> > I will -- but I just don't agree that it's cleaner.
+With all the above change the mm_tlb_flush_nested(mm) branch in radix__tlb_flush
+will never be taken because for the nested case we would have taken the
+if (tlb->fullmm) branch. This patch removes the unused code. Also, remove the
+gflush change in __radix__flush_tlb_range that was added to handle the range tlb
+flush code. We only check for THP there because hugetlb is flushed via a
+different code path where page size is explicitly specified
 
-Linus, did you still want me to make your proposed change?
+This is a partial revert of commit: 02390f66bd23 ("powerpc/64s/radix: Fix
+MADV_[FREE|DONTNEED] TLB flush miss problem with THP")
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/mm/book3s64/radix_tlb.c | 66 +++-------------------------
+ 1 file changed, 6 insertions(+), 60 deletions(-)
 
---i56sxfhksaspu3tw
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 67af871190c6..24d1f30556e0 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -832,8 +832,7 @@ static unsigned long tlb_single_page_flush_ceiling __read_mostly = 33;
+ static unsigned long tlb_local_single_page_flush_ceiling __read_mostly = POWER9_TLB_SETS_RADIX * 2;
+ 
+ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+-					unsigned long start, unsigned long end,
+-					bool flush_all_sizes)
++					    unsigned long start, unsigned long end)
+ 
+ {
+ 	unsigned long pid;
+@@ -879,26 +878,16 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+ 			}
+ 		}
+ 	} else {
+-		bool hflush = flush_all_sizes;
+-		bool gflush = flush_all_sizes;
++		bool hflush = false;
+ 		unsigned long hstart, hend;
+-		unsigned long gstart, gend;
+ 
+-		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+-			hflush = true;
+-
+-		if (hflush) {
++		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+ 			hstart = (start + PMD_SIZE - 1) & PMD_MASK;
+ 			hend = end & PMD_MASK;
+ 			if (hstart == hend)
+ 				hflush = false;
+-		}
+-
+-		if (gflush) {
+-			gstart = (start + PUD_SIZE - 1) & PUD_MASK;
+-			gend = end & PUD_MASK;
+-			if (gstart == gend)
+-				gflush = false;
++			else
++				hflush = true;
+ 		}
+ 
+ 		if (local) {
+@@ -907,9 +896,6 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+ 			if (hflush)
+ 				__tlbiel_va_range(hstart, hend, pid,
+ 						PMD_SIZE, MMU_PAGE_2M);
+-			if (gflush)
+-				__tlbiel_va_range(gstart, gend, pid,
+-						PUD_SIZE, MMU_PAGE_1G);
+ 			asm volatile("ptesync": : :"memory");
+ 		} else if (cputlb_use_tlbie()) {
+ 			asm volatile("ptesync": : :"memory");
+@@ -917,10 +903,6 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+ 			if (hflush)
+ 				__tlbie_va_range(hstart, hend, pid,
+ 						PMD_SIZE, MMU_PAGE_2M);
+-			if (gflush)
+-				__tlbie_va_range(gstart, gend, pid,
+-						PUD_SIZE, MMU_PAGE_1G);
+-
+ 			asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ 		} else {
+ 			_tlbiel_va_range_multicast(mm,
+@@ -928,9 +910,6 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+ 			if (hflush)
+ 				_tlbiel_va_range_multicast(mm,
+ 					hstart, hend, pid, PMD_SIZE, MMU_PAGE_2M, false);
+-			if (gflush)
+-				_tlbiel_va_range_multicast(mm,
+-					gstart, gend, pid, PUD_SIZE, MMU_PAGE_1G, false);
+ 		}
+ 	}
+ 	preempt_enable();
+@@ -945,7 +924,7 @@ void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 		return radix__flush_hugetlb_tlb_range(vma, start, end);
+ #endif
+ 
+-	__radix__flush_tlb_range(vma->vm_mm, start, end, false);
++	__radix__flush_tlb_range(vma->vm_mm, start, end);
+ }
+ EXPORT_SYMBOL(radix__flush_tlb_range);
+ 
+@@ -1023,39 +1002,6 @@ void radix__tlb_flush(struct mmu_gather *tlb)
+ 	 */
+ 	if (tlb->fullmm) {
+ 		__flush_all_mm(mm, true);
+-#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLB_PAGE)
+-	} else if (mm_tlb_flush_nested(mm)) {
+-		/*
+-		 * If there is a concurrent invalidation that is clearing ptes,
+-		 * then it's possible this invalidation will miss one of those
+-		 * cleared ptes and miss flushing the TLB. If this invalidate
+-		 * returns before the other one flushes TLBs, that can result
+-		 * in it returning while there are still valid TLBs inside the
+-		 * range to be invalidated.
+-		 *
+-		 * See mm/memory.c:tlb_finish_mmu() for more details.
+-		 *
+-		 * The solution to this is ensure the entire range is always
+-		 * flushed here. The problem for powerpc is that the flushes
+-		 * are page size specific, so this "forced flush" would not
+-		 * do the right thing if there are a mix of page sizes in
+-		 * the range to be invalidated. So use __flush_tlb_range
+-		 * which invalidates all possible page sizes in the range.
+-		 *
+-		 * PWC flush probably is not be required because the core code
+-		 * shouldn't free page tables in this path, but accounting
+-		 * for the possibility makes us a bit more robust.
+-		 *
+-		 * need_flush_all is an uncommon case because page table
+-		 * teardown should be done with exclusive locks held (but
+-		 * after locks are dropped another invalidate could come
+-		 * in), it could be optimized further if necessary.
+-		 */
+-		if (!tlb->need_flush_all)
+-			__radix__flush_tlb_range(mm, start, end, true);
+-		else
+-			radix__flush_all_mm(mm);
+-#endif
+ 	} else if ( (psize = radix_get_mmu_psize(page_size)) == -1) {
+ 		if (!tlb->need_flush_all)
+ 			radix__flush_tlb_mm(mm);
+-- 
+2.21.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXbFNWQAKCRCdlLljIbnQ
-Ert5AP0aC5CrGCVvHOpelKBjUDOS5duq76VaVyiiUWcy3eeeFwD/aQEQPqkGREqr
-5Lo0df+nvE9H+89b7vJGbcaEZNxkTQc=
-=rtfF
------END PGP SIGNATURE-----
-
---i56sxfhksaspu3tw--
