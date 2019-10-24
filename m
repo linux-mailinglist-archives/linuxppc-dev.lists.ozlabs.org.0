@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F212E3A90
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 20:03:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7F9E3A9F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 20:07:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zZqV3JpmzDqTq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 05:03:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zZwP657dzDqbh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 05:07:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="HALqwdtR"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="meqQK560"; 
  dkim-atps=neutral
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zYj469xXzDqTk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:12:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zYj53LnjzDqNf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:12:57 +1100 (AEDT)
 Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id 1136042F14;
+ by mta-01.yadro.com (Postfix) with ESMTP id A7F04437FA;
  Thu, 24 Oct 2019 17:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
  content-type:content-type:content-transfer-encoding:mime-version
  :references:in-reply-to:x-mailer:message-id:date:date:subject
  :subject:from:from:received:received:received; s=mta-01; t=
- 1571937172; x=1573751573; bh=PFi03fW0QCVLRAW8MdoWj14nqW075UZz9KI
- WOD1BWNw=; b=HALqwdtRkjbh5YFVIEa+FfhW6QNxivGBi3lXXJEK2y8tt0NtziL
- Juf4rLVdzvhJBueX67wO1NUuSyKjhQzXMYF6TDhga96ma5EzyLh2JKij17gdYMk9
- RGuB4AlHxTr0elXVj1KObiJAOAjJXcfTHiHpMxLlXiiNLIGGVGahQbdk=
+ 1571937173; x=1573751574; bh=ya0D1NvqP3VkEc07oDTPqDYb0LTTnM15hzZ
+ ylBEZsAk=; b=meqQK560YlC9XXFWv+fYtrLniqqpbvTB6pKOW7WM3qiKUchzQsV
+ UOaBWGG5OgO93gzOb+/z49ZFBQX8mz/+p4FFA4Hj2Cl5wVw5iMW5w54EA19FcP8K
+ ypoupb2/6NnbHV6I3VCaIu7wqBK2hE41LhvquPGmb/CUaUpHJbaBNJO4=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
  by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 9dviRV3je1ph; Thu, 24 Oct 2019 20:12:52 +0300 (MSK)
+ with ESMTP id OMihRmz64bwt; Thu, 24 Oct 2019 20:12:53 +0300 (MSK)
 Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
  [172.17.10.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id BFE8943E06;
+ by mta-01.yadro.com (Postfix) with ESMTPS id EFC6443E08;
  Thu, 24 Oct 2019 20:12:43 +0300 (MSK)
 Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
@@ -49,9 +49,9 @@ Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  Oct 2019 20:12:43 +0300
 From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 To: <linux-pci@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v6 22/30] powerpc/pci: Create pci_dn on demand
-Date: Thu, 24 Oct 2019 20:12:20 +0300
-Message-ID: <20191024171228.877974-23-s.miroshnichenko@yadro.com>
+Subject: [PATCH v6 23/30] powerpc/pci: hotplug: Add support for movable BARs
+Date: Thu, 24 Oct 2019 20:12:21 +0300
+Message-ID: <20191024171228.877974-24-s.miroshnichenko@yadro.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
 References: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
@@ -80,187 +80,129 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a struct pci_dn hasn't yet been created for the PCIe device (there was
-no DT node for it), allocate this structure and fill with info read from
-the device directly.
+Add pcibios_root_bus_rescan_prepare()/_done() hooks for the powerpc, so it
+can reassign the PE numbers (which depend on BAR sizes and locations) and
+update the EEH address cache during a PCI rescan.
+
+New PE numbers are assigned during pci_setup_bridges(root) after the rescan
+is done.
 
 CC: Oliver O'Halloran <oohall@gmail.com>
 CC: Sam Bobroff <sbobroff@linux.ibm.com>
 Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 ---
- arch/powerpc/kernel/pci_dn.c | 88 ++++++++++++++++++++++++++++++------
- 1 file changed, 74 insertions(+), 14 deletions(-)
+ arch/powerpc/kernel/pci-hotplug.c | 43 +++++++++++++++++++++++++++++++
+ drivers/pci/probe.c               | 10 +++++++
+ include/linux/pci.h               |  3 +++
+ 3 files changed, 56 insertions(+)
 
-diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
-index 9524009ca1ae..ad0ecf48e943 100644
---- a/arch/powerpc/kernel/pci_dn.c
-+++ b/arch/powerpc/kernel/pci_dn.c
-@@ -20,6 +20,9 @@
+diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
+index fc62c4bc47b1..42847f5b0f08 100644
+--- a/arch/powerpc/kernel/pci-hotplug.c
++++ b/arch/powerpc/kernel/pci-hotplug.c
+@@ -16,6 +16,7 @@
+ #include <asm/ppc-pci.h>
  #include <asm/firmware.h>
  #include <asm/eeh.h>
++#include <asm/iommu.h>
  
-+static struct pci_dn *pci_create_pdn_from_dev(struct pci_dev *pdev,
-+					      struct pci_dn *parent);
-+
- /*
-  * The function is used to find the firmware data of one
-  * specific PCI device, which is attached to the indicated
-@@ -52,6 +55,9 @@ static struct pci_dn *pci_bus_to_pdn(struct pci_bus *bus)
- 	dn = pci_bus_to_OF_node(pbus);
- 	pdn = dn ? PCI_DN(dn) : NULL;
- 
-+	if (!pdn && pbus->self)
-+		pdn = pbus->self->dev.archdata.pci_data;
-+
- 	return pdn;
+ static struct pci_bus *find_bus_among_children(struct pci_bus *bus,
+ 					       struct device_node *dn)
+@@ -151,3 +152,45 @@ void pci_hp_add_devices(struct pci_bus *bus)
+ 	pcibios_finish_adding_to_bus(bus);
  }
- 
-@@ -61,10 +67,13 @@ struct pci_dn *pci_get_pdn_by_devfn(struct pci_bus *bus,
- 	struct device_node *dn = NULL;
- 	struct pci_dn *parent, *pdn;
- 	struct pci_dev *pdev = NULL;
-+	bool pdev_found = false;
- 
- 	/* Fast path: fetch from PCI device */
- 	list_for_each_entry(pdev, &bus->devices, bus_list) {
- 		if (pdev->devfn == devfn) {
-+			pdev_found = true;
+ EXPORT_SYMBOL_GPL(pci_hp_add_devices);
 +
- 			if (pdev->dev.archdata.pci_data)
- 				return pdev->dev.archdata.pci_data;
- 
-@@ -73,6 +82,9 @@ struct pci_dn *pci_get_pdn_by_devfn(struct pci_bus *bus,
- 		}
- 	}
- 
-+	if (!pdev_found)
-+		pdev = NULL;
-+
- 	/* Fast path: fetch from device node */
- 	pdn = dn ? PCI_DN(dn) : NULL;
- 	if (pdn)
-@@ -85,9 +97,12 @@ struct pci_dn *pci_get_pdn_by_devfn(struct pci_bus *bus,
- 
- 	list_for_each_entry(pdn, &parent->child_list, list) {
- 		if (pdn->busno == bus->number &&
--                    pdn->devfn == devfn)
--                        return pdn;
--        }
-+		    pdn->devfn == devfn) {
-+			if (pdev)
-+				pdev->dev.archdata.pci_data = pdn;
-+			return pdn;
-+		}
-+	}
- 
- 	return NULL;
- }
-@@ -117,17 +132,17 @@ struct pci_dn *pci_get_pdn(struct pci_dev *pdev)
- 
- 	list_for_each_entry(pdn, &parent->child_list, list) {
- 		if (pdn->busno == pdev->bus->number &&
--		    pdn->devfn == pdev->devfn)
-+		    pdn->devfn == pdev->devfn) {
-+			pdev->dev.archdata.pci_data = pdn;
- 			return pdn;
-+		}
- 	}
- 
--	return NULL;
-+	return pci_create_pdn_from_dev(pdev, parent);
- }
- 
--#ifdef CONFIG_PCI_IOV
--static struct pci_dn *add_one_dev_pci_data(struct pci_dn *parent,
--					   int vf_index,
--					   int busno, int devfn)
-+static struct pci_dn *pci_alloc_pdn(struct pci_dn *parent,
-+				    int busno, int devfn)
- {
- 	struct pci_dn *pdn;
- 
-@@ -143,7 +158,6 @@ static struct pci_dn *add_one_dev_pci_data(struct pci_dn *parent,
- 	pdn->parent = parent;
- 	pdn->busno = busno;
- 	pdn->devfn = devfn;
--	pdn->vf_index = vf_index;
- 	pdn->pe_number = IODA_INVALID_PE;
- 	INIT_LIST_HEAD(&pdn->child_list);
- 	INIT_LIST_HEAD(&pdn->list);
-@@ -151,7 +165,51 @@ static struct pci_dn *add_one_dev_pci_data(struct pci_dn *parent,
- 
- 	return pdn;
- }
--#endif
-+
-+static struct pci_dn *pci_create_pdn_from_dev(struct pci_dev *pdev,
-+					      struct pci_dn *parent)
++static void pci_hp_bus_rescan_prepare(struct pci_bus *bus)
 +{
-+	struct pci_dn *pdn = NULL;
-+	u32 class_code;
-+	u16 device_id;
-+	u16 vendor_id;
++	struct pci_dev *dev;
 +
-+	if (!parent)
-+		return NULL;
++	list_for_each_entry(dev, &bus->devices, bus_list) {
++		struct pci_bus *child = dev->subordinate;
 +
-+	pdn = pci_alloc_pdn(parent, pdev->bus->busn_res.start, pdev->devfn);
-+	pci_info(pdev, "Create a new pdn for devfn %2x\n", pdev->devfn / 8);
++		if (child)
++			pci_hp_bus_rescan_prepare(child);
 +
-+	if (!pdn) {
-+		pci_err(pdev, "%s: Failed to allocate pdn\n", __func__);
-+		return NULL;
++		iommu_del_device(&dev->dev);
 +	}
 +
-+	#ifdef CONFIG_EEH
-+	if (!eeh_dev_init(pdn)) {
-+		kfree(pdn);
-+		pci_err(pdev, "%s: Failed to allocate edev\n", __func__);
-+		return NULL;
++	list_for_each_entry(dev, &bus->devices, bus_list) {
++		pcibios_release_device(dev);
 +	}
-+	#endif /* CONFIG_EEH */
-+
-+	pci_bus_read_config_word(pdev->bus, pdev->devfn,
-+				 PCI_VENDOR_ID, &vendor_id);
-+	pdn->vendor_id = vendor_id;
-+
-+	pci_bus_read_config_word(pdev->bus, pdev->devfn,
-+				 PCI_DEVICE_ID, &device_id);
-+	pdn->device_id = device_id;
-+
-+	pci_bus_read_config_dword(pdev->bus, pdev->devfn,
-+				  PCI_CLASS_REVISION, &class_code);
-+	class_code >>= 8;
-+	pdn->class_code = class_code;
-+
-+	pdev->dev.archdata.pci_data = pdn;
-+
-+	return pdn;
 +}
- 
- struct pci_dn *add_dev_pci_data(struct pci_dev *pdev)
- {
-@@ -176,15 +234,17 @@ struct pci_dn *add_dev_pci_data(struct pci_dev *pdev)
- 	for (i = 0; i < pci_sriov_get_totalvfs(pdev); i++) {
- 		struct eeh_dev *edev __maybe_unused;
- 
--		pdn = add_one_dev_pci_data(parent, i,
--					   pci_iov_virtfn_bus(pdev, i),
--					   pci_iov_virtfn_devfn(pdev, i));
-+		pdn = pci_alloc_pdn(parent,
-+				    pci_iov_virtfn_bus(pdev, i),
-+				    pci_iov_virtfn_devfn(pdev, i));
- 		if (!pdn) {
- 			dev_warn(&pdev->dev, "%s: Cannot create firmware data for VF#%d\n",
- 				 __func__, i);
- 			return NULL;
- 		}
- 
-+		pdn->vf_index = i;
 +
- #ifdef CONFIG_EEH
- 		/* Create the EEH device for the VF */
- 		edev = eeh_dev_init(pdn);
++static void pci_hp_bus_rescan_done(struct pci_bus *bus)
++{
++	struct pci_dev *dev;
++
++	list_for_each_entry(dev, &bus->devices, bus_list) {
++		struct pci_bus *child = dev->subordinate;
++
++		pcibios_bus_add_device(dev);
++
++		if (child)
++			pci_hp_bus_rescan_done(child);
++	}
++}
++
++void pcibios_root_bus_rescan_prepare(struct pci_bus *root)
++{
++	pci_hp_bus_rescan_prepare(root);
++}
++
++void pcibios_root_bus_rescan_done(struct pci_bus *root)
++{
++	pci_hp_bus_rescan_done(root);
++}
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 73452aa81417..539f5d39bb6d 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -3235,6 +3235,14 @@ static void pci_bus_rescan_done(struct pci_bus *bus)
+ 		pci_config_pm_runtime_put(bus->self);
+ }
+ 
++void __weak pcibios_root_bus_rescan_prepare(struct pci_bus *root)
++{
++}
++
++void __weak pcibios_root_bus_rescan_done(struct pci_bus *root)
++{
++}
++
+ static void pci_setup_bridges(struct pci_bus *bus)
+ {
+ 	struct pci_dev *dev;
+@@ -3430,6 +3438,7 @@ unsigned int pci_rescan_bus(struct pci_bus *bus)
+ 		root = root->parent;
+ 
+ 	if (pci_can_move_bars) {
++		pcibios_root_bus_rescan_prepare(root);
+ 		pci_bus_rescan_prepare(root);
+ 		pci_bus_update_immovable_range(root);
+ 		pci_bus_release_root_bridge_resources(root);
+@@ -3440,6 +3449,7 @@ unsigned int pci_rescan_bus(struct pci_bus *bus)
+ 
+ 		pci_setup_bridges(root);
+ 		pci_bus_rescan_done(root);
++		pcibios_root_bus_rescan_done(root);
+ 	} else {
+ 		max = pci_scan_child_bus(bus);
+ 		pci_assign_unassigned_bus_resources(bus);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index e1edcb3fad31..b5821134bdae 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1275,6 +1275,9 @@ unsigned int pci_rescan_bus(struct pci_bus *bus);
+ void pci_lock_rescan_remove(void);
+ void pci_unlock_rescan_remove(void);
+ 
++void pcibios_root_bus_rescan_prepare(struct pci_bus *root);
++void pcibios_root_bus_rescan_done(struct pci_bus *root);
++
+ /* Vital Product Data routines */
+ ssize_t pci_read_vpd(struct pci_dev *dev, loff_t pos, size_t count, void *buf);
+ ssize_t pci_write_vpd(struct pci_dev *dev, loff_t pos, size_t count, const void *buf);
 -- 
 2.23.0
 
