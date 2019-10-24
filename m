@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18534E3B3F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 20:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A98E3B4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 20:48:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zbnF47zgzDqPm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 05:46:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zbqN5xCjzDqV4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 05:48:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="HOlyiJZl"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="t0h6bpSC"; 
  dkim-atps=neutral
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zYvn5vf2zDqTm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:22:13 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zYvp0C3QzDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 04:22:14 +1100 (AEDT)
 Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id BB6C3437F8;
- Thu, 24 Oct 2019 17:22:10 +0000 (UTC)
+ by mta-01.yadro.com (Postfix) with ESMTP id 34FB9437FA;
+ Thu, 24 Oct 2019 17:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
  content-type:content-type:content-transfer-encoding:mime-version
  :references:in-reply-to:x-mailer:message-id:date:date:subject
  :subject:from:from:received:received:received; s=mta-01; t=
- 1571937729; x=1573752130; bh=+567eQd9BAxyVv0ZptWpcxxV5MHCVDgjHwB
- rbG2xjoM=; b=HOlyiJZlnVQYrkxf2NxbndwsTxVpG8v6VKuBO6h4JvGeXVEgWzh
- +A29JYZb8687uSdx0cbZdpLJkyewl0OlnDqlg7otEbRYz48bN9qoKuTaHfCN4gSP
- rYMvlH6+mKRaPj1p/4SAAj5YzqSk+V6HLVvmqOqxOFMyfSd9qBTLjm4Y=
+ 1571937730; x=1573752131; bh=wLWcatK3Zquun9QrjH55cMJhLIQuWciJ0cq
+ tFux4U8c=; b=t0h6bpSCgAfWXWvMbWWGS7UDVN70Ciq4XQPLPI8UC1PvS9nINSG
+ 765WSU8R2in9u7r7g78phnPFRIvjrm3VJzKvBTtyChxAZyjDYXk/g255KezR6Iqh
+ T3jjDCoBK+DFLLjkTo910ynzMpiouia7MzLeTbC3N5nVpR0MGiTggswo=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
  by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bLzeJ6S6QrYD; Thu, 24 Oct 2019 20:22:09 +0300 (MSK)
+ with ESMTP id naVwxlIoW55m; Thu, 24 Oct 2019 20:22:10 +0300 (MSK)
 Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
  [172.17.10.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id 61630438D1;
+ by mta-01.yadro.com (Postfix) with ESMTPS id 8953243130;
  Thu, 24 Oct 2019 20:22:06 +0300 (MSK)
 Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
@@ -49,10 +49,10 @@ Received: from NB-148.yadro.com (172.17.15.136) by T-EXCH-02.corp.yadro.com
  Oct 2019 20:22:06 +0300
 From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 To: <linux-pci@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH RFC 10/11] PCI: hotplug: movable bus numbers: rename proc and
- sysfs entries
-Date: Thu, 24 Oct 2019 20:21:56 +0300
-Message-ID: <20191024172157.878735-11-s.miroshnichenko@yadro.com>
+Subject: [PATCH RFC 11/11] PCI: hotplug: movable bus numbers: compact the gaps
+ in numbering
+Date: Thu, 24 Oct 2019 20:21:57 +0300
+Message-ID: <20191024172157.878735-12-s.miroshnichenko@yadro.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191024172157.878735-1-s.miroshnichenko@yadro.com>
 References: <20191024172157.878735-1-s.miroshnichenko@yadro.com>
@@ -79,168 +79,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Changing the number of a bus (therefore changing addresses of this bus, of
-its children and all the buses next in the tree) invalidates entries in
-/sys/devices/pci*, /proc/bus/pci/* and symlinks in /sys/bus/pci/devices/*
-for all the renamed devices and buses.
+If bus numbers are distributed sparsely and there are lot of devices in the
+tree, hotplugging a bridge into the end of the tree may fail even if it has
+less slots then the total number of unused bus numbers.
 
-Remove the affected proc and sysfs entries and symlinks before renaming the
-bus, then created them back.
+Thus, the feature of bus renaming relies on the continuity of bus numbers,
+so if a bridge was unplugged, the gap in bus numbers must be compacted.
+
+Let's densify the bus numbering at the beginning of a next PCI rescan.
 
 Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 ---
- drivers/pci/probe.c | 105 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 104 insertions(+), 1 deletion(-)
+ drivers/pci/probe.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index be9e5754cac7..fe9bf012ef33 100644
+index fe9bf012ef33..0c91b9d453dd 100644
 --- a/drivers/pci/probe.c
 +++ b/drivers/pci/probe.c
-@@ -1096,12 +1096,99 @@ static void pci_enable_crs(struct pci_dev *pdev)
- 					 PCI_EXP_RTCTL_CRSSVE);
+@@ -1319,6 +1319,30 @@ static bool pci_new_bus_needed(struct pci_bus *bus, const struct pci_dev *self)
+ 	return true;
  }
  
-+static void pci_buses_remove_sysfs(int domain, int busnr, int max_bus_number)
++static void pci_compact_bus_numbers(const int domain, const struct resource *valid_range)
 +{
-+	struct pci_bus *bus;
-+	struct pci_dev *dev = NULL;
++	int busnr_p1 = valid_range->start;
 +
-+	bus = pci_find_bus(domain, busnr);
-+	if (!bus)
-+		return;
++	while (busnr_p1 < valid_range->end) {
++		int busnr_p2 = busnr_p1 + 1;
++		struct pci_bus *bus_p2;
++		int delta;
 +
-+	if (busnr < max_bus_number)
-+		pci_buses_remove_sysfs(domain, busnr + 1, max_bus_number);
++		while (busnr_p2 <= valid_range->end &&
++		       !(bus_p2 = pci_find_bus(domain, busnr_p2)))
++			++busnr_p2;
 +
-+	list_for_each_entry(dev, &bus->devices, bus_list) {
-+		device_remove_class_symlinks(&dev->dev);
-+		pci_remove_sysfs_dev_files(dev);
-+		pci_proc_detach_device(dev);
-+		bus_disconnect_device(&dev->dev);
-+	}
++		if (!bus_p2 || busnr_p2 > valid_range->end)
++			break;
 +
-+	device_remove_class_symlinks(&bus->dev);
-+	pci_proc_detach_bus(bus);
-+}
++		delta = busnr_p1 - busnr_p2 + 1;
++		if (delta)
++			pci_move_buses(domain, busnr_p2, delta, valid_range);
 +
-+static void pci_buses_create_sysfs(int domain, int busnr, int max_bus_number)
-+{
-+	struct pci_bus *bus;
-+	struct pci_dev *dev = NULL;
-+
-+	bus = pci_find_bus(domain, busnr);
-+	if (!bus)
-+		return;
-+
-+	device_add_class_symlinks(&bus->dev);
-+
-+	list_for_each_entry(dev, &bus->devices, bus_list) {
-+		bus_add_device(&dev->dev);
-+		if (pci_dev_is_added(dev)) {
-+			pci_proc_attach_device(dev);
-+			pci_create_sysfs_dev_files(dev);
-+			device_add_class_symlinks(&dev->dev);
-+		}
-+	}
-+
-+	if (busnr < max_bus_number)
-+		pci_buses_create_sysfs(domain, busnr + 1, max_bus_number);
-+}
-+
-+static void pci_rename_bus(struct pci_bus *bus, const char *new_bus_name)
-+{
-+	struct class *class;
-+	int err;
-+
-+	class = bus->dev.class;
-+	bus->dev.class = NULL;
-+	err = device_rename(&bus->dev, new_bus_name);
-+	bus->dev.class = class;
-+}
-+
-+static void pci_rename_bus_devices(struct pci_bus *bus, const int domain,
-+				   const int new_busnr)
-+{
-+	struct pci_dev *dev = NULL;
-+
-+	list_for_each_entry(dev, &bus->devices, bus_list) {
-+		char old_name[64];
-+		char new_name[64];
-+		struct class *class;
-+		int err;
-+		int i;
-+
-+		strncpy(old_name, dev_name(&dev->dev), sizeof(old_name));
-+		sprintf(new_name, "%04x:%02x:%02x.%d", domain, new_busnr,
-+			PCI_SLOT(dev->devfn), PCI_FUNC(dev->devfn));
-+		class = dev->dev.class;
-+		dev->dev.class = NULL;
-+		err = device_rename(&dev->dev, new_name);
-+		dev->dev.class = class;
-+
-+		for (i = 0; i < PCI_BRIDGE_RESOURCES; i++)
-+			dev->resource[i].name = pci_name(dev);
++		++busnr_p1;
 +	}
 +}
 +
- static void pci_do_move_buses(const int domain, int busnr, int first_moved_busnr,
- 			      int delta, const struct resource *valid_range)
- {
- 	struct pci_bus *bus;
--	int subordinate;
-+	int subordinate, old_primary;
- 	u32 old_buses, buses;
-+	char old_bus_name[64];
-+	char new_bus_name[64];
-+	struct resource old_res;
-+	int new_busnr = busnr + delta;
+ static unsigned int pci_scan_child_bus_extend(struct pci_bus *bus,
+ 					      unsigned int available_buses);
+ /**
+@@ -3691,6 +3715,9 @@ unsigned int pci_rescan_bus(struct pci_bus *bus)
+ 		pci_bus_update_immovable_range(root);
+ 		pci_bus_release_root_bridge_resources(root);
  
- 	if (busnr < valid_range->start || busnr > valid_range->end)
- 		return;
-@@ -1110,11 +1197,21 @@ static void pci_do_move_buses(const int domain, int busnr, int first_moved_busnr
- 	if (!bus)
- 		return;
- 
-+	old_primary = bus->primary;
-+	strncpy(old_bus_name, dev_name(&bus->dev), sizeof(old_bus_name));
-+	sprintf(new_bus_name, "%04x:%02x", domain, new_busnr);
++		pci_compact_bus_numbers(pci_domain_nr(bus),
++					&root->busn_res);
 +
- 	if (delta > 0) {
- 		pci_do_move_buses(domain, busnr + 1, first_moved_busnr,
- 				  delta, valid_range);
-+		pci_rename_bus_devices(bus, domain, new_busnr);
-+		pci_rename_bus(bus, new_bus_name);
-+	} else {
-+		pci_rename_bus(bus, new_bus_name);
-+		pci_rename_bus_devices(bus, domain, new_busnr);
- 	}
+ 		max = pci_scan_child_bus(root);
  
-+	memcpy(&old_res, &bus->busn_res, sizeof(old_res));
- 	bus->number += delta;
- 	bus->busn_res.start += delta;
- 
-@@ -1132,6 +1229,10 @@ static void pci_do_move_buses(const int domain, int busnr, int first_moved_busnr
- 	buses |= (unsigned int)(subordinate << 16);
- 	pci_write_config_dword(bus->self, PCI_PRIMARY_BUS, buses);
- 
-+	dev_warn(&bus->dev, "Renamed bus %s (%02x-%pR) to %s (%02x-%pR)\n",
-+		 old_bus_name, old_primary, &old_res,
-+		 new_bus_name, bus->primary, &bus->busn_res);
-+
- 	if (delta < 0)
- 		pci_do_move_buses(domain, busnr + 1, first_moved_busnr,
- 				  delta, valid_range);
-@@ -1192,8 +1293,10 @@ static int pci_move_buses(int domain, int busnr, int delta,
- 		}
- 	}
- 
-+	pci_buses_remove_sysfs(domain, busnr, valid_range->end);
- 	pci_do_move_buses(domain, busnr, busnr,
- 			  delta, valid_range);
-+	pci_buses_create_sysfs(domain, busnr + delta, valid_range->end);
- 
- 	return 0;
- }
+ 		pci_reassign_root_bus_resources(root);
 -- 
 2.23.0
 
