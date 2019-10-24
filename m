@@ -2,68 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2B7E2BA0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 10:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9FBE2BAA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 10:02:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zKRC3KWZzDqSV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:00:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zKTp6zj6zDqSJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 19:02:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zKP52G4jzDqQv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 18:58:16 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9O7vll6109075; Thu, 24 Oct 2019 03:58:10 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zKP621rbzDqQv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 18:58:17 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9O7vleV137859; Thu, 24 Oct 2019 03:58:12 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vu71qa39x-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vu7nv8nrs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2019 03:58:09 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9O7w9ZU110866;
- Thu, 24 Oct 2019 03:58:09 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vu71qa397-1
+ Thu, 24 Oct 2019 03:58:12 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9O7wBlu139792;
+ Thu, 24 Oct 2019 03:58:11 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vu7nv8nqq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2019 03:58:08 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9O7sUvS007705;
- Thu, 24 Oct 2019 07:58:08 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma05wdc.us.ibm.com with ESMTP id 2vqt47y1y6-1
+ Thu, 24 Oct 2019 03:58:11 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9O7sVat029841;
+ Thu, 24 Oct 2019 07:58:10 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 2vqt47trc6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Oct 2019 07:58:08 +0000
+ Thu, 24 Oct 2019 07:58:10 +0000
 Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
  [9.57.199.107])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9O7w7fY49349076
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9O7w9Gg39780802
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Oct 2019 07:58:08 GMT
+ Thu, 24 Oct 2019 07:58:09 GMT
 Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D1576124054;
- Thu, 24 Oct 2019 07:58:07 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B0A82124053;
+ Thu, 24 Oct 2019 07:58:09 +0000 (GMT)
 Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5F805124052;
- Thu, 24 Oct 2019 07:58:06 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 406A5124052;
+ Thu, 24 Oct 2019 07:58:08 +0000 (GMT)
 Received: from skywalker.in.ibm.com (unknown [9.124.35.127])
  by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 24 Oct 2019 07:58:06 +0000 (GMT)
+ Thu, 24 Oct 2019 07:58:08 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
-Subject: [PATCH v1 1/3] mm/powerpc/book3s64/radix: Remove unused code.
-Date: Thu, 24 Oct 2019 13:27:59 +0530
-Message-Id: <20191024075801.22434-1-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v1 2/3] powerpc/mm/book3s64/radix: Use freed_tables instead of
+ need_flush_all
+Date: Thu, 24 Oct 2019 13:28:00 +0530
+Message-Id: <20191024075801.22434-2-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20191024075801.22434-1-aneesh.kumar@linux.ibm.com>
+References: <20191024075801.22434-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -92,160 +95,123 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mm_tlb_flush_nested change was added in the mmu gather tlb flush to handle
-the case of parallel pte invalidate happening with mmap_sem held in read
-mode. This fix was done by commit: 02390f66bd23 ("powerpc/64s/radix: Fix
-MADV_[FREE|DONTNEED] TLB flush miss problem with THP") and the problem is
-explained in detail in commit: 99baac21e458 ("mm: fix MADV_[FREE|DONTNEED] TLB
-flush miss problem")
-
-This was later updated by commit: 7a30df49f63a ("mm: mmu_gather: remove
-__tlb_reset_range() for force flush") to do a full mm flush rather than
-a range flush. By commit: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem
-in munmap") we are also now allowing a page table free in mmap_sem read mode
-which means we should do a PWC flush too. Our current full mm flush imply
-a PWC flush.
-
-With all the above change the mm_tlb_flush_nested(mm) branch in radix__tlb_flush
-will never be taken because for the nested case we would have taken the
-if (tlb->fullmm) branch. This patch removes the unused code. Also, remove the
-gflush change in __radix__flush_tlb_range that was added to handle the range tlb
-flush code. We only check for THP there because hugetlb is flushed via a
-different code path where page size is explicitly specified
-
-This is a partial revert of commit: 02390f66bd23 ("powerpc/64s/radix: Fix
-MADV_[FREE|DONTNEED] TLB flush miss problem with THP")
+With commit: 22a61c3c4f13 ("asm-generic/tlb: Track freeing of page-table
+directories in struct mmu_gather") we now track whether we freed page
+table in mmu_gather. Use that to decide whether to flush Page Walk Cache.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/mm/book3s64/radix_tlb.c | 66 +++-------------------------
- 1 file changed, 6 insertions(+), 60 deletions(-)
+ arch/powerpc/include/asm/book3s/64/pgalloc.h  | 15 ---------------
+ arch/powerpc/include/asm/book3s/64/tlbflush.h | 16 ----------------
+ arch/powerpc/mm/book3s64/radix_tlb.c          | 11 +++--------
+ 3 files changed, 3 insertions(+), 39 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/book3s/64/pgalloc.h b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+index d5a44912902f..f6968c811026 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgalloc.h
++++ b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+@@ -122,11 +122,6 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
+ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
+ 				  unsigned long address)
+ {
+-	/*
+-	 * By now all the pud entries should be none entries. So go
+-	 * ahead and flush the page walk cache
+-	 */
+-	flush_tlb_pgtable(tlb, address);
+ 	pgtable_free_tlb(tlb, pud, PUD_INDEX);
+ }
+ 
+@@ -143,11 +138,6 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+ static inline void __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd,
+ 				  unsigned long address)
+ {
+-	/*
+-	 * By now all the pud entries should be none entries. So go
+-	 * ahead and flush the page walk cache
+-	 */
+-	flush_tlb_pgtable(tlb, address);
+ 	return pgtable_free_tlb(tlb, pmd, PMD_INDEX);
+ }
+ 
+@@ -166,11 +156,6 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd,
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
+ 				  unsigned long address)
+ {
+-	/*
+-	 * By now all the pud entries should be none entries. So go
+-	 * ahead and flush the page walk cache
+-	 */
+-	flush_tlb_pgtable(tlb, address);
+ 	pgtable_free_tlb(tlb, table, PTE_INDEX);
+ }
+ 
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+index 7aa8195b6cff..dcb5c3839d2f 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+@@ -147,22 +147,6 @@ static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
+ 		flush_tlb_page(vma, address);
+ }
+ 
+-/*
+- * flush the page walk cache for the address
+- */
+-static inline void flush_tlb_pgtable(struct mmu_gather *tlb, unsigned long address)
+-{
+-	/*
+-	 * Flush the page table walk cache on freeing a page table. We already
+-	 * have marked the upper/higher level page table entry none by now.
+-	 * So it is safe to flush PWC here.
+-	 */
+-	if (!radix_enabled())
+-		return;
+-
+-	radix__flush_tlb_pwc(tlb, address);
+-}
+-
+ extern bool tlbie_capable;
+ extern bool tlbie_enabled;
+ 
 diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 67af871190c6..24d1f30556e0 100644
+index 24d1f30556e0..f9a4d5793f03 100644
 --- a/arch/powerpc/mm/book3s64/radix_tlb.c
 +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -832,8 +832,7 @@ static unsigned long tlb_single_page_flush_ceiling __read_mostly = 33;
- static unsigned long tlb_local_single_page_flush_ceiling __read_mostly = POWER9_TLB_SETS_RADIX * 2;
- 
- static inline void __radix__flush_tlb_range(struct mm_struct *mm,
--					unsigned long start, unsigned long end,
--					bool flush_all_sizes)
-+					    unsigned long start, unsigned long end)
- 
- {
- 	unsigned long pid;
-@@ -879,26 +878,16 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 			}
- 		}
- 	} else {
--		bool hflush = flush_all_sizes;
--		bool gflush = flush_all_sizes;
-+		bool hflush = false;
- 		unsigned long hstart, hend;
--		unsigned long gstart, gend;
- 
--		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
--			hflush = true;
--
--		if (hflush) {
-+		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 			hstart = (start + PMD_SIZE - 1) & PMD_MASK;
- 			hend = end & PMD_MASK;
- 			if (hstart == hend)
- 				hflush = false;
--		}
--
--		if (gflush) {
--			gstart = (start + PUD_SIZE - 1) & PUD_MASK;
--			gend = end & PUD_MASK;
--			if (gstart == gend)
--				gflush = false;
-+			else
-+				hflush = true;
- 		}
- 
- 		if (local) {
-@@ -907,9 +896,6 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 			if (hflush)
- 				__tlbiel_va_range(hstart, hend, pid,
- 						PMD_SIZE, MMU_PAGE_2M);
--			if (gflush)
--				__tlbiel_va_range(gstart, gend, pid,
--						PUD_SIZE, MMU_PAGE_1G);
- 			asm volatile("ptesync": : :"memory");
- 		} else if (cputlb_use_tlbie()) {
- 			asm volatile("ptesync": : :"memory");
-@@ -917,10 +903,6 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 			if (hflush)
- 				__tlbie_va_range(hstart, hend, pid,
- 						PMD_SIZE, MMU_PAGE_2M);
--			if (gflush)
--				__tlbie_va_range(gstart, gend, pid,
--						PUD_SIZE, MMU_PAGE_1G);
--
- 			asm volatile("eieio; tlbsync; ptesync": : :"memory");
- 		} else {
- 			_tlbiel_va_range_multicast(mm,
-@@ -928,9 +910,6 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 			if (hflush)
- 				_tlbiel_va_range_multicast(mm,
- 					hstart, hend, pid, PMD_SIZE, MMU_PAGE_2M, false);
--			if (gflush)
--				_tlbiel_va_range_multicast(mm,
--					gstart, gend, pid, PUD_SIZE, MMU_PAGE_1G, false);
- 		}
+@@ -732,18 +732,13 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
  	}
  	preempt_enable();
-@@ -945,7 +924,7 @@ void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 		return radix__flush_hugetlb_tlb_range(vma, start, end);
- #endif
- 
--	__radix__flush_tlb_range(vma->vm_mm, start, end, false);
-+	__radix__flush_tlb_range(vma->vm_mm, start, end);
  }
- EXPORT_SYMBOL(radix__flush_tlb_range);
++
+ void radix__flush_all_mm(struct mm_struct *mm)
+ {
+ 	__flush_all_mm(mm, false);
+ }
+ EXPORT_SYMBOL(radix__flush_all_mm);
  
-@@ -1023,39 +1002,6 @@ void radix__tlb_flush(struct mmu_gather *tlb)
- 	 */
+-void radix__flush_tlb_pwc(struct mmu_gather *tlb, unsigned long addr)
+-{
+-	tlb->need_flush_all = 1;
+-}
+-EXPORT_SYMBOL(radix__flush_tlb_pwc);
+-
+ void radix__flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
+ 				 int psize)
+ {
+@@ -1003,12 +998,12 @@ void radix__tlb_flush(struct mmu_gather *tlb)
  	if (tlb->fullmm) {
  		__flush_all_mm(mm, true);
--#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLB_PAGE)
--	} else if (mm_tlb_flush_nested(mm)) {
--		/*
--		 * If there is a concurrent invalidation that is clearing ptes,
--		 * then it's possible this invalidation will miss one of those
--		 * cleared ptes and miss flushing the TLB. If this invalidate
--		 * returns before the other one flushes TLBs, that can result
--		 * in it returning while there are still valid TLBs inside the
--		 * range to be invalidated.
--		 *
--		 * See mm/memory.c:tlb_finish_mmu() for more details.
--		 *
--		 * The solution to this is ensure the entire range is always
--		 * flushed here. The problem for powerpc is that the flushes
--		 * are page size specific, so this "forced flush" would not
--		 * do the right thing if there are a mix of page sizes in
--		 * the range to be invalidated. So use __flush_tlb_range
--		 * which invalidates all possible page sizes in the range.
--		 *
--		 * PWC flush probably is not be required because the core code
--		 * shouldn't free page tables in this path, but accounting
--		 * for the possibility makes us a bit more robust.
--		 *
--		 * need_flush_all is an uncommon case because page table
--		 * teardown should be done with exclusive locks held (but
--		 * after locks are dropped another invalidate could come
--		 * in), it could be optimized further if necessary.
--		 */
--		if (!tlb->need_flush_all)
--			__radix__flush_tlb_range(mm, start, end, true);
--		else
--			radix__flush_all_mm(mm);
--#endif
  	} else if ( (psize = radix_get_mmu_psize(page_size)) == -1) {
- 		if (!tlb->need_flush_all)
+-		if (!tlb->need_flush_all)
++		if (!tlb->freed_tables)
  			radix__flush_tlb_mm(mm);
+ 		else
+ 			radix__flush_all_mm(mm);
+ 	} else {
+-		if (!tlb->need_flush_all)
++		if (!tlb->freed_tables)
+ 			radix__flush_tlb_range_psize(mm, start, end, psize);
+ 		else
+ 			radix__flush_tlb_pwc_range_psize(mm, start, end, psize);
 -- 
 2.21.0
 
