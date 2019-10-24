@@ -2,48 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2BBE35FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 16:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C48BAE35EF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2019 16:47:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zVb21PFPzDqV7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 01:52:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zVTc6mC3zDqVS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 01:47:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.56.76; helo=6.mo179.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 1032 seconds by postgrey-1.36 at bilbo;
- Fri, 25 Oct 2019 01:50:13 AEDT
-Received: from 6.mo179.mail-out.ovh.net (6.mo179.mail-out.ovh.net
- [46.105.56.76])
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=socionext.com (client-ip=210.131.2.82;
+ helo=conssluserg-03.nifty.com; envelope-from=yamada.masahiro@socionext.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=socionext.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="JAkr+PUq"; 
+ dkim-atps=neutral
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
+ [210.131.2.82])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zVXP6lbRzDqDW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 01:50:09 +1100 (AEDT)
-Received: from player789.ha.ovh.net (unknown [10.109.159.90])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id 4E2C5146667
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 16:32:53 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player789.ha.ovh.net (Postfix) with ESMTPSA id EF842B51F268;
- Thu, 24 Oct 2019 14:32:45 +0000 (UTC)
-Date: Thu, 24 Oct 2019 16:32:44 +0200
-From: Greg Kurz <groug@kaod.org>
-To: christophe lombard <clombard@linux.vnet.ibm.com>
-Subject: Re: [PATCH 0/2] vfio pci: Add support for OpenCAPI devices
-Message-ID: <20191024163244.2e1b3e30@bahia.lan>
-In-Reply-To: <20191024132805.30701-1-clombard@linux.vnet.ibm.com>
-References: <20191024132805.30701-1-clombard@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zVR647jJzDqPm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 01:45:34 +1100 (AEDT)
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com
+ [209.85.217.51]) (authenticated)
+ by conssluserg-03.nifty.com with ESMTP id x9OEj2R9006307
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 23:45:03 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com x9OEj2R9006307
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1571928303;
+ bh=Iz5ljsY1vmLvI0mOS7EWijhyK4tTqgM6F86vrENgiVs=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=JAkr+PUq9kKsmMgXUKDiELSxzwAfz2pvfK51rwBKqqM5XsvJuRk6OdRpAv/+LD6sj
+ +nzaFW/HjWRo0no34WbKO8Gj1F3vjMqY+M8qnVu8HcwExdaVAFP9wZOTqwm2QC/cCm
+ fm9JoQ9DxRtzwNpnCfz1qucPdCNBYoOCQCWIFPjQPezJbDssOZgS8eKRLaiy80zpqe
+ yg4guSpi66+Hz6q2Dt4bOB/Skm0PxTQ0nNNaVaYS4iUAeVw6jMp2PtL86ISWn33Jz/
+ oDbjUQbRkknNMoFp/R/nvbRxmm0G3YeB6Ndoc5bHc+gqAuHigjFKbbfc2WuIx4QuUH
+ lv4c3bXElJCyA==
+X-Nifty-SrcIP: [209.85.217.51]
+Received: by mail-vs1-f51.google.com with SMTP id j85so7299879vsd.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 07:45:02 -0700 (PDT)
+X-Gm-Message-State: APjAAAXApUWZuuGPG5nONzH5l8UZa1P0BdfCt+lIXIaN4J/Qcw1ir/W1
+ CPH4eerNtYnCCOxxrlSjN9hD1U9fsDM5AdYSZaA=
+X-Google-Smtp-Source: APXvYqwMmECxCcxI186HHSlk+trzDvWmCSjS3nuXCEEC9fv9GKq3Y9CX2QuL9vFeUeY4EpiP8jJ31MuCUnUXccmWpjo=
+X-Received: by 2002:a67:e290:: with SMTP id g16mr6221500vsf.54.1571928299628; 
+ Thu, 24 Oct 2019 07:44:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 13120393092609513778
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrledugdejjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+References: <cover.1571911976.git.michal.simek@xilinx.com>
+ <a021f232968cfffe3f2d838da47214c6bbdeeedb.1571911976.git.michal.simek@xilinx.com>
+In-Reply-To: <a021f232968cfffe3f2d838da47214c6bbdeeedb.1571911976.git.michal.simek@xilinx.com>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 24 Oct 2019 23:44:23 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQvZr48zXkyhii6E-wckYfakhh9gVD=DoBOt++TtPFEaw@mail.gmail.com>
+Message-ID: <CAK7LNAQvZr48zXkyhii6E-wckYfakhh9gVD=DoBOt++TtPFEaw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] asm-generic: Make msi.h a mandatory include/asm header
+To: Michal Simek <michal.simek@xilinx.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,85 +70,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com,
- fbarrat@linux.vnet.ibm.com, clg@kaod.org
+Cc: Eric Biggers <ebiggers@google.com>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Palmer Dabbelt <palmer@sifive.com>,
+ linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux <sparclinux@vger.kernel.org>, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Jackie Liu <liuyun01@kylinos.cn>,
+ Russell King <linux@armlinux.org.uk>, Christoph Hellwig <hch@infradead.org>,
+ Firoz Khan <firoz.khan@linaro.org>, Wesley Terpstra <wesley@sifive.com>,
+ James Hogan <jhogan@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+ arcml <linux-snps-arc@lists.infradead.org>, Albert Ou <aou@eecs.berkeley.edu>,
+ Arnd Bergmann <arnd@arndb.de>, git@xilinx.com,
+ Paul Walmsley <paul.walmsley@sifive.com>, longman@redhat.com,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Michal Simek <monstr@monstr.eu>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Vineet Gupta <vgupta@synopsys.com>, Cornelia Huck <cohuck@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On Thu, Oct 24, 2019 at 7:13 PM Michal Simek <michal.simek@xilinx.com> wrote:
+>
+> msi.h is generic for all architectures expect of x86 which has own version.
 
-Sorry, I didn't have time to look at your other series yet and
-likely the same for this one with the upcoming KVM Forum... :-\
-Anyway, for any VFIO related patch, don't forget to Cc the
-maintainer, Alex Williamson <alex.williamson@redhat.com> .
+Maybe a typo?  "except"
 
-Cheers,
 
---
-Greg
+Anyway, the code looks good to me.
 
-On Thu, 24 Oct 2019 15:28:03 +0200
-christophe lombard <clombard@linux.vnet.ibm.com> wrote:
+Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-> This series adds support for the OpenCAPI devices for vfio pci.
-> 
-> It builds on top of the existing ocxl driver +
-> http://patchwork.ozlabs.org/patch/1177999/
-> 
-> VFIO is a Linux kernel driver framework used by QEMU to make devices
-> directly assignable to virtual machines.
-> 
-> All OpenCAPI devices on the same PCI slot will all be grouped and
-> assigned to the same guest.
-> 
-> - Assume these are the devices you want to assign
->  0007:00:00.0 Processing accelerators: IBM Device 062b
->  0007:00:00.1 Processing accelerators: IBM Device 062b
-> 
-> - Two Devices in the group
-> $ ls /sys/bus/pci/devices/0007\:00\:00.0/iommu_group/devices/
->  0007:00:00.0  0007:00:00.1
-> 
-> - Find vendor & device ID
-> $ lspci -n -s 0007:00:00
->  0007:00:00.0 1200: 1014:062b
->  0007:00:00.1 1200: 1014:062b
-> 
-> - Unbind from the current ocxl device driver if already loaded
-> $ rmmod ocxl
-> 
-> - Load vfio-pci if it's not already done.
-> $ modprobe vfio-pci
-> 
-> - Bind to vfio-pci
-> $ echo 1014 062b > /sys/bus/pci/drivers/vfio-pci/new_id
-> 
->   This will result in a new device node "/dev/vfio/7", which will be
->   use by QEMU to setup the devices for passthrough.
-> 
-> - Pass to qemu using -device vfio-pci
->   -device vfio-pci,multifunction=on,host=0007:00:00.0,addr=2.0 -device
->   vfio-pci,multifunction=on,host=0007:00:00.1,addr=2.1
-> 
-> It has been tested in a bare-metal and QEMU environment using the memcpy
-> and the AFP AFUs.
-> 
-> christophe lombard (2):
->   powerpc/powernv: Register IOMMU group for OpenCAPI devices
->   vfio/pci: Introduce OpenCAPI devices support.
-> 
->  arch/powerpc/platforms/powernv/ocxl.c     | 164 ++++++++++---
->  arch/powerpc/platforms/powernv/pci-ioda.c |  19 +-
->  arch/powerpc/platforms/powernv/pci.h      |  13 +
->  drivers/vfio/pci/Kconfig                  |   7 +
->  drivers/vfio/pci/Makefile                 |   1 +
->  drivers/vfio/pci/vfio_pci.c               |  19 ++
->  drivers/vfio/pci/vfio_pci_ocxl.c          | 287 ++++++++++++++++++++++
->  drivers/vfio/vfio.c                       |  25 ++
->  include/linux/vfio.h                      |  13 +
->  include/uapi/linux/vfio.h                 |  22 ++
->  10 files changed, 530 insertions(+), 40 deletions(-)
->  create mode 100644 drivers/vfio/pci/vfio_pci_ocxl.c
-> 
 
+> Enabling MSI by including msi.h to architecture Kbuild is just additional
+> step which doesn't need to be done.
+> The patch was created based on request to enable MSI for Microblaze.
+>
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+> ---
+>
+> https://lore.kernel.org/linux-riscv/20191008154604.GA7903@infradead.org/
+> ---
+>  arch/arc/include/asm/Kbuild     | 1 -
+>  arch/arm/include/asm/Kbuild     | 1 -
+>  arch/arm64/include/asm/Kbuild   | 1 -
+>  arch/mips/include/asm/Kbuild    | 1 -
+>  arch/powerpc/include/asm/Kbuild | 1 -
+>  arch/riscv/include/asm/Kbuild   | 1 -
+>  arch/sparc/include/asm/Kbuild   | 1 -
+>  include/asm-generic/Kbuild      | 1 +
+>  8 files changed, 1 insertion(+), 7 deletions(-)
+>
+> diff --git a/arch/arc/include/asm/Kbuild b/arch/arc/include/asm/Kbuild
+> index 393d4f5e1450..1b505694691e 100644
+> --- a/arch/arc/include/asm/Kbuild
+> +++ b/arch/arc/include/asm/Kbuild
+> @@ -17,7 +17,6 @@ generic-y += local64.h
+>  generic-y += mcs_spinlock.h
+>  generic-y += mm-arch-hooks.h
+>  generic-y += mmiowb.h
+> -generic-y += msi.h
+>  generic-y += parport.h
+>  generic-y += percpu.h
+>  generic-y += preempt.h
+> diff --git a/arch/arm/include/asm/Kbuild b/arch/arm/include/asm/Kbuild
+> index 68ca86f85eb7..fa579b23b4df 100644
+> --- a/arch/arm/include/asm/Kbuild
+> +++ b/arch/arm/include/asm/Kbuild
+> @@ -12,7 +12,6 @@ generic-y += local.h
+>  generic-y += local64.h
+>  generic-y += mm-arch-hooks.h
+>  generic-y += mmiowb.h
+> -generic-y += msi.h
+>  generic-y += parport.h
+>  generic-y += preempt.h
+>  generic-y += seccomp.h
+> diff --git a/arch/arm64/include/asm/Kbuild b/arch/arm64/include/asm/Kbuild
+> index 98a5405c8558..bd23f87d6c55 100644
+> --- a/arch/arm64/include/asm/Kbuild
+> +++ b/arch/arm64/include/asm/Kbuild
+> @@ -16,7 +16,6 @@ generic-y += local64.h
+>  generic-y += mcs_spinlock.h
+>  generic-y += mm-arch-hooks.h
+>  generic-y += mmiowb.h
+> -generic-y += msi.h
+>  generic-y += qrwlock.h
+>  generic-y += qspinlock.h
+>  generic-y += serial.h
+> diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
+> index c8b595c60910..61b0fc2026e6 100644
+> --- a/arch/mips/include/asm/Kbuild
+> +++ b/arch/mips/include/asm/Kbuild
+> @@ -13,7 +13,6 @@ generic-y += irq_work.h
+>  generic-y += local64.h
+>  generic-y += mcs_spinlock.h
+>  generic-y += mm-arch-hooks.h
+> -generic-y += msi.h
+>  generic-y += parport.h
+>  generic-y += percpu.h
+>  generic-y += preempt.h
+> diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
+> index 64870c7be4a3..17726f2e46de 100644
+> --- a/arch/powerpc/include/asm/Kbuild
+> +++ b/arch/powerpc/include/asm/Kbuild
+> @@ -10,4 +10,3 @@ generic-y += local64.h
+>  generic-y += mcs_spinlock.h
+>  generic-y += preempt.h
+>  generic-y += vtime.h
+> -generic-y += msi.h
+> diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuild
+> index 16970f246860..1efaeddf1e4b 100644
+> --- a/arch/riscv/include/asm/Kbuild
+> +++ b/arch/riscv/include/asm/Kbuild
+> @@ -22,7 +22,6 @@ generic-y += kvm_para.h
+>  generic-y += local.h
+>  generic-y += local64.h
+>  generic-y += mm-arch-hooks.h
+> -generic-y += msi.h
+>  generic-y += percpu.h
+>  generic-y += preempt.h
+>  generic-y += sections.h
+> diff --git a/arch/sparc/include/asm/Kbuild b/arch/sparc/include/asm/Kbuild
+> index b6212164847b..62de2eb2773d 100644
+> --- a/arch/sparc/include/asm/Kbuild
+> +++ b/arch/sparc/include/asm/Kbuild
+> @@ -18,7 +18,6 @@ generic-y += mcs_spinlock.h
+>  generic-y += mm-arch-hooks.h
+>  generic-y += mmiowb.h
+>  generic-y += module.h
+> -generic-y += msi.h
+>  generic-y += preempt.h
+>  generic-y += serial.h
+>  generic-y += trace_clock.h
+> diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+> index adff14fcb8e4..ddfee1bd9dc1 100644
+> --- a/include/asm-generic/Kbuild
+> +++ b/include/asm-generic/Kbuild
+> @@ -4,4 +4,5 @@
+>  # (This file is not included when SRCARCH=um since UML borrows several
+>  # asm headers from the host architecutre.)
+>
+> +mandatory-y += msi.h
+>  mandatory-y += simd.h
+> --
+> 2.17.1
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
