@@ -1,76 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB78E43D6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 08:56:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D50CBE442E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 09:13:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zvzg46YNzDqkK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 17:56:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zwLR6lR1zDqgq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 18:13:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
- helo=mail-pf1-x430.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="MD7VplAM"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="JS6Rw9Wo"; 
  dkim-atps=neutral
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
- [IPv6:2607:f8b0:4864:20::430])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zvxR4MgwzDqf9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 17:54:51 +1100 (AEDT)
-Received: by mail-pf1-x430.google.com with SMTP id 205so939039pfw.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 23:54:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=m+VkYOgB7cCdSZGNDZmPasUQ1M1DmEk9SPAL9l8GP1A=;
- b=MD7VplAMSnE6eBcOxhBncJ1w7gZgL2vajru9wAqudsdqaQdHSjaosigKCexVhSgoKE
- Nq9j/jeyMN+LeTVVmmAoP0z/DFE4hUYz9NCVTZMKqbSqX+i3ZAtgwb7gGHg+p4X7+TEo
- 3kiESUbManeemJ3xCExgKIBZWb6+cHq4shtvyoPft8qTN7pMtV8ZWbnQUD2XM4XdY7Rv
- loSwM9UinPzIrmZwAFqKpGadpFiLSvlbq7vDyppqk/Uv5sf04RsliKidoTQAgdRVtUfz
- RAZdpGYb6zsW5Uu31WIZHN9C6A5UeFjipvLod8tVE4H1EvCHExEQKbX315/EAQDHfeGM
- 9Nyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=m+VkYOgB7cCdSZGNDZmPasUQ1M1DmEk9SPAL9l8GP1A=;
- b=uKKjYyUyIyu7droh7O7M89ln99Gg9UAGbC0eETBAjWJEXJaz8CvATx9gkXxuwllQTy
- r1I6Z/68eEiAaEPavyYzwe86/g7zDE7Y8oBVaf6sEd+7AgBE+OSyLJtC9F76w7kMoTiL
- COZ0ccbjxb2AFSk1zNzXm+jW3sv48BG2Elbrs0xCcMQnxUMK2NBDXqYcWIcdokwf6Tz4
- VCruK0kRyN806mIxDUVu5conL8vKYWDPEXeZdy2myUtsB9BAa4bbLDgXD1Ob9JBD6xV1
- 8lbwqZ1JNhcP4JPCOEVFMUpx4BYol+rsJCXwnJoo37KOvo6AhCn0ocR8mMUgmJfSdgrv
- zJ8g==
-X-Gm-Message-State: APjAAAUEbMQOhyoVdt4fZ98Qtms2yL10UidVLoAxALi2vBDyupb/icOA
- KTf6CaVmJH0WOHirfb02m+4=
-X-Google-Smtp-Source: APXvYqwQ2i3psJ0yIsvpXC4E8x2YWCDuJQPZ1N62DtBq1Tv3B55wCjarX0d9MG67laCjyfLsu1WfCA==
-X-Received: by 2002:a17:90a:fe04:: with SMTP id
- ck4mr2048608pjb.90.1571986487460; 
- Thu, 24 Oct 2019 23:54:47 -0700 (PDT)
-Received: from Asurada (c-73-162-191-63.hsd1.ca.comcast.net. [73.162.191.63])
- by smtp.gmail.com with ESMTPSA id
- d14sm1800708pfh.36.2019.10.24.23.54.46
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 24 Oct 2019 23:54:47 -0700 (PDT)
-Date: Thu, 24 Oct 2019 23:54:34 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: "S.j. Wang" <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_asrc: refine the setting of internal clock
- divider
-Message-ID: <20191025065433.GA4632@Asurada>
-References: <VE1PR04MB6479AC63FFE5D57B4E2C33D2E3650@VE1PR04MB6479.eurprd04.prod.outlook.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zwJV5hfhzDqWG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 18:11:19 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46zwJL1km6z9txyl;
+ Fri, 25 Oct 2019 09:11:14 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=JS6Rw9Wo; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id IEyuu55Vu2Vj; Fri, 25 Oct 2019 09:11:14 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46zwJL044Jz9txyd;
+ Fri, 25 Oct 2019 09:11:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1571987474; bh=sSY9vZFiyvVRvxrTbg3cBY9vh4bHCPcOU8OggoNJn50=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=JS6Rw9Woz5UGQqHdTS6uzWgmc4CU/P/yOx+M2iQQgUsIUyeQU6CEy1rN1WbGM/gMX
+ jg5kH3n063w2jEkgx41+z8O5phWdZyM3jwWcRyaHHpi22TkWJphSF18ZBHt9X26ALg
+ 0sa7mSxQ44NMG02wKJaVu3L7vo7n7mt0UVXaQK8I=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DF5238B7C7;
+ Fri, 25 Oct 2019 09:11:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id NUWV8rK7Wu_n; Fri, 25 Oct 2019 09:11:14 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D5FF28B7BE;
+ Fri, 25 Oct 2019 09:11:12 +0200 (CEST)
+Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
+ helpers
+To: Qian Cai <cai@lca.pw>, Anshuman Khandual <Anshuman.Khandual@arm.com>
+References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
+ <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <3cfec421-4006-4159-ca32-313ff5196ff9@c-s.fr>
+Date: Fri, 25 Oct 2019 09:11:12 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VE1PR04MB6479AC63FFE5D57B4E2C33D2E3650@VE1PR04MB6479.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
+In-Reply-To: <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,67 +79,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "perex@perex.cz" <perex@perex.cz>, "broonie@kernel.org" <broonie@kernel.org>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 25, 2019 at 05:33:17AM +0000, S.j. Wang wrote:
-> > > > > +             pair_err("The divider can't be used for non ideal mode\n");
-> > > > > +             return -EINVAL;
-> > > > > +     }
-> > > > > +
-> > > > > +     /* Divider range is [1, 1024] */
-> > > > > +     div[IN] = min_t(u32, 1024, div[IN]);
-> > > > > +     div[OUT] = min_t(u32, 1024, div[OUT]);
-> > > >
-> > > > Hmm, this looks like we want to allow ideal ratio cases and p2p
-> > > > cases to operate any way, even if the divider wasn't within the
-> > > > range to get the in/out rates from the output clock?
-> > >
-> > > Yes. We still allow the p2p = true,  ideal = false.  Note that p2p is
-> > > not Equal to ideal.
-> > 
-> > Got it.
-> > 
-> > Overall, I feel it's better to have a naming to state the purpose of using
-> > ideal configurations without the IDEAL_RATIO_RATE setup.
-> >         bool use_ideal_rate;
-> > And we can put into the asrc_config structure if there's no major problem.
-> > 
+
+
+Le 25/10/2019 à 07:52, Qian Cai a écrit :
 > 
-> Asrc_config may exposed to user, I don't think user need to care about
-> The using of ideal rate or not. 
-
-Given that M2M could use output rate instead of ideal ratio rate
-as well, it could be a configuration from my point of view. Yet,
-we may just add it as a function parameter like you did, for now
-to ease the situation, until we have such a need someday.
-
 > 
-> > So the condition check for the calculation would be:
-> > +       if (ideal && config->use_ideal_rate)
-> > +               rem[OUT] = do_div(clk_rate, IDEAL_RATIO_RATE);
-> > +       else
-> > +               rem[OUT] = do_div(clk_rate, outrate);
-> > +       div[OUT] = clk_rate;
-> > 
-> > And for that if (!ideal && div[IN]....rem[OUT]), I feel it would be clear to
-> > have them separately, as the existing "div[IN] == 0"
-> > and "div[OUT] == 0" checks, so that we can tell users which side of the
-> > divider is out of range and what the sample rate and clock rate are.
-> > 
-> Do you mean need to combine this judgement with "div[IN] == 0"
-> Or "div[OUT] == 0"?
+>> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>>
+>> Nothing specific. But just tested this with x86 defconfig with relevant configs
+>> which are required for this test. Not sure if it involved W=1.
+> 
+> No, it will not. It needs to run like,
+> 
+> make W=1 -j 64 2>/tmp/warns
+> 
 
-Not necessarily. Could put in the else path so its error message
-would be more ideal ratio configuration specific.
+Are we talking about this peace of code ?
 
-Thanks
++static unsigned long __init get_random_vaddr(void)
++{
++	unsigned long random_vaddr, random_pages, total_user_pages;
++
++	total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
++
++	random_pages = get_random_long() % total_user_pages;
++	random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
++
++	WARN_ON((random_vaddr > TASK_SIZE) ||
++		(random_vaddr < FIRST_USER_ADDRESS));
++	return random_vaddr;
++}
++
+
+ramdom_vaddr is unsigned,
+random_pages is unsigned and lower than total_user_pages
+
+So the max value random_vaddr can get is FIRST_USER_ADDRESS + 
+((TASK_SIZE - FIRST_USER_ADDRESS - 1) / PAGE_SIZE) * PAGE_SIZE = 
+TASK_SIZE - 1
+And the min value random_vaddr can get is FIRST_USER_ADDRESS (that's 
+when random_pages = 0)
+
+So the WARN_ON() is just unneeded, isn't it ?
+
+Christophe
