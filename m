@@ -1,44 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D8FE43A6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 08:37:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB78E43D6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 08:56:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zvXy3x2czDqfs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 17:37:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zvzg46YNzDqkK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 17:56:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
+ helo=mail-pf1-x430.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46zvVb5ZYszDqfj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 17:35:00 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB71328;
- Thu, 24 Oct 2019 23:34:58 -0700 (PDT)
-Received: from [10.162.41.137] (p8cg001049571a15.blr.arm.com [10.162.41.137])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- 2DD333F718; Thu, 24 Oct 2019 23:37:36 -0700 (PDT)
-Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
- helpers
-To: Qian Cai <cai@lca.pw>
-References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
- <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <5ce5a76c-ea89-c2a1-6665-7d75bce5fb87@arm.com>
-Date: Fri, 25 Oct 2019 12:05:18 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="MD7VplAM"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
+ [IPv6:2607:f8b0:4864:20::430])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zvxR4MgwzDqf9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 17:54:51 +1100 (AEDT)
+Received: by mail-pf1-x430.google.com with SMTP id 205so939039pfw.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2019 23:54:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=m+VkYOgB7cCdSZGNDZmPasUQ1M1DmEk9SPAL9l8GP1A=;
+ b=MD7VplAMSnE6eBcOxhBncJ1w7gZgL2vajru9wAqudsdqaQdHSjaosigKCexVhSgoKE
+ Nq9j/jeyMN+LeTVVmmAoP0z/DFE4hUYz9NCVTZMKqbSqX+i3ZAtgwb7gGHg+p4X7+TEo
+ 3kiESUbManeemJ3xCExgKIBZWb6+cHq4shtvyoPft8qTN7pMtV8ZWbnQUD2XM4XdY7Rv
+ loSwM9UinPzIrmZwAFqKpGadpFiLSvlbq7vDyppqk/Uv5sf04RsliKidoTQAgdRVtUfz
+ RAZdpGYb6zsW5Uu31WIZHN9C6A5UeFjipvLod8tVE4H1EvCHExEQKbX315/EAQDHfeGM
+ 9Nyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=m+VkYOgB7cCdSZGNDZmPasUQ1M1DmEk9SPAL9l8GP1A=;
+ b=uKKjYyUyIyu7droh7O7M89ln99Gg9UAGbC0eETBAjWJEXJaz8CvATx9gkXxuwllQTy
+ r1I6Z/68eEiAaEPavyYzwe86/g7zDE7Y8oBVaf6sEd+7AgBE+OSyLJtC9F76w7kMoTiL
+ COZ0ccbjxb2AFSk1zNzXm+jW3sv48BG2Elbrs0xCcMQnxUMK2NBDXqYcWIcdokwf6Tz4
+ VCruK0kRyN806mIxDUVu5conL8vKYWDPEXeZdy2myUtsB9BAa4bbLDgXD1Ob9JBD6xV1
+ 8lbwqZ1JNhcP4JPCOEVFMUpx4BYol+rsJCXwnJoo37KOvo6AhCn0ocR8mMUgmJfSdgrv
+ zJ8g==
+X-Gm-Message-State: APjAAAUEbMQOhyoVdt4fZ98Qtms2yL10UidVLoAxALi2vBDyupb/icOA
+ KTf6CaVmJH0WOHirfb02m+4=
+X-Google-Smtp-Source: APXvYqwQ2i3psJ0yIsvpXC4E8x2YWCDuJQPZ1N62DtBq1Tv3B55wCjarX0d9MG67laCjyfLsu1WfCA==
+X-Received: by 2002:a17:90a:fe04:: with SMTP id
+ ck4mr2048608pjb.90.1571986487460; 
+ Thu, 24 Oct 2019 23:54:47 -0700 (PDT)
+Received: from Asurada (c-73-162-191-63.hsd1.ca.comcast.net. [73.162.191.63])
+ by smtp.gmail.com with ESMTPSA id
+ d14sm1800708pfh.36.2019.10.24.23.54.46
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 24 Oct 2019 23:54:47 -0700 (PDT)
+Date: Thu, 24 Oct 2019 23:54:34 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: "S.j. Wang" <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_asrc: refine the setting of internal clock
+ divider
+Message-ID: <20191025065433.GA4632@Asurada>
+References: <VE1PR04MB6479AC63FFE5D57B4E2C33D2E3650@VE1PR04MB6479.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-In-Reply-To: <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VE1PR04MB6479AC63FFE5D57B4E2C33D2E3650@VE1PR04MB6479.eurprd04.prod.outlook.com>
+User-Agent: Mutt/1.5.22 (2013-10-16)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,73 +82,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "perex@perex.cz" <perex@perex.cz>, "broonie@kernel.org" <broonie@kernel.org>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 10/25/2019 11:22 AM, Qian Cai wrote:
+On Fri, Oct 25, 2019 at 05:33:17AM +0000, S.j. Wang wrote:
+> > > > > +             pair_err("The divider can't be used for non ideal mode\n");
+> > > > > +             return -EINVAL;
+> > > > > +     }
+> > > > > +
+> > > > > +     /* Divider range is [1, 1024] */
+> > > > > +     div[IN] = min_t(u32, 1024, div[IN]);
+> > > > > +     div[OUT] = min_t(u32, 1024, div[OUT]);
+> > > >
+> > > > Hmm, this looks like we want to allow ideal ratio cases and p2p
+> > > > cases to operate any way, even if the divider wasn't within the
+> > > > range to get the in/out rates from the output clock?
+> > >
+> > > Yes. We still allow the p2p = true,  ideal = false.  Note that p2p is
+> > > not Equal to ideal.
+> > 
+> > Got it.
+> > 
+> > Overall, I feel it's better to have a naming to state the purpose of using
+> > ideal configurations without the IDEAL_RATIO_RATE setup.
+> >         bool use_ideal_rate;
+> > And we can put into the asrc_config structure if there's no major problem.
+> > 
 > 
+> Asrc_config may exposed to user, I don't think user need to care about
+> The using of ideal rate or not. 
+
+Given that M2M could use output rate instead of ideal ratio rate
+as well, it could be a configuration from my point of view. Yet,
+we may just add it as a function parameter like you did, for now
+to ease the situation, until we have such a need someday.
+
 > 
->> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
->>
->> Nothing specific. But just tested this with x86 defconfig with relevant configs
->> which are required for this test. Not sure if it involved W=1.
-> 
-> No, it will not. It needs to run like,
-> 
-> make W=1 -j 64 2>/tmp/warns
+> > So the condition check for the calculation would be:
+> > +       if (ideal && config->use_ideal_rate)
+> > +               rem[OUT] = do_div(clk_rate, IDEAL_RATIO_RATE);
+> > +       else
+> > +               rem[OUT] = do_div(clk_rate, outrate);
+> > +       div[OUT] = clk_rate;
+> > 
+> > And for that if (!ideal && div[IN]....rem[OUT]), I feel it would be clear to
+> > have them separately, as the existing "div[IN] == 0"
+> > and "div[OUT] == 0" checks, so that we can tell users which side of the
+> > divider is out of range and what the sample rate and clock rate are.
+> > 
+> Do you mean need to combine this judgement with "div[IN] == 0"
+> Or "div[OUT] == 0"?
 
-Ahh, so we explicitly ask for it.
+Not necessarily. Could put in the else path so its error message
+would be more ideal ratio configuration specific.
 
-Unfortunately compiler still flags it as an warning. Just wondering why this
-is still a problem if the second condition for an OR expression is always false.
-Because evaluation still needs to be performed for the first condition anyways,
-before arriving at the result.
-
-  DESCEND  objtool
-  CALL    scripts/atomic/check-atomics.sh
-  CALL    scripts/checksyscalls.sh
-  CHK     include/generated/compile.h
-  CC      mm/debug_vm_pgtable.o
-In file included from ./arch/x86/include/asm/bug.h:83:0,
-                 from ./include/linux/bug.h:5,
-                 from ./include/linux/mmdebug.h:5,
-                 from ./include/linux/gfp.h:5,
-                 from mm/debug_vm_pgtable.c:13:
-mm/debug_vm_pgtable.c: In function ‘get_random_vaddr’:
-mm/debug_vm_pgtable.c:314:17: warning: comparison of unsigned expression < 0 is always false [-Wtype-limits]
-   (random_vaddr < FIRST_USER_ADDRESS));
-                 ^
-./include/asm-generic/bug.h:113:25: note: in definition of macro ‘WARN_ON’
-  int __ret_warn_on = !!(condition);    \
-                         ^~~~~~~~~
-
-As you mentioned GCC is quite stubborn here. Anyways, lets keep it unchanged.
+Thanks
