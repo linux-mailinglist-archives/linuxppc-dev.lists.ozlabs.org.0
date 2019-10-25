@@ -2,70 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7A3E4669
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 10:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D814AE483F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 12:12:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zyfz5NVxzDqh2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 19:57:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4700KJ62dvzDqbw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 21:12:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46zyZl1hVlzDqgn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 19:53:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ACULAB.COM
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 46zyZk5p2cz8syF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 19:53:50 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 46zyZk3KXYz9sPk; Fri, 25 Oct 2019 19:53:50 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=146.101.78.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [146.101.78.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 46zyZj127Qz9sP4
- for <linuxppc-dev@ozlabs.org>; Fri, 25 Oct 2019 19:53:46 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-95-hYgq86BhMk6iXIyMzCRhrA-1; Fri, 25 Oct 2019 09:53:38 +0100
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Fri, 25 Oct 2019 09:53:38 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Fri, 25 Oct 2019 09:53:38 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Segher Boessenkool' <segher@kernel.crashing.org>, Michael Ellerman
- <mpe@ellerman.id.au>
-Subject: RE: [PATCH] powerpc/tools: Don't quote $objdump in scripts
-Thread-Topic: [PATCH] powerpc/tools: Don't quote $objdump in scripts
-Thread-Index: AQHVipx7TtzJo0qWL0+BNkH0FwwAH6drDA5A
-Date: Fri, 25 Oct 2019 08:53:37 +0000
-Message-ID: <f4e5bea10c914c9386da946f46606492@AcuMS.aculab.com>
-References: <20191024004730.32135-1-mpe@ellerman.id.au>
- <20191024172857.GS28442@gate.crashing.org>
-In-Reply-To: <20191024172857.GS28442@gate.crashing.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4700H32N3SzDqjn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 21:10:20 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4365B28;
+ Fri, 25 Oct 2019 03:10:17 -0700 (PDT)
+Received: from [10.162.41.137] (p8cg001049571a15.blr.arm.com [10.162.41.137])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ 7FC723F6C4; Fri, 25 Oct 2019 03:10:05 -0700 (PDT)
+Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
+ helpers
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Qian Cai <cai@lca.pw>
+References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
+ <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
+ <3cfec421-4006-4159-ca32-313ff5196ff9@c-s.fr>
+ <763d58b4-f532-0bba-bf2b-71433ac514fb@arm.com>
+ <d811622e-0d35-3bc6-9568-36abc1bee355@c-s.fr>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <78d13292-0cfe-31b6-7a9c-daf7fb7f3d23@arm.com>
+Date: Fri, 25 Oct 2019 15:40:36 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-X-MC-Unique: hYgq86BhMk6iXIyMzCRhrA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <d811622e-0d35-3bc6-9568-36abc1bee355@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,47 +53,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
+Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Segher Boessenkool
-> Sent: 24 October 2019 18:29
-> On Thu, Oct 24, 2019 at 11:47:30AM +1100, Michael Ellerman wrote:
-> > Some of our scripts are passed $objdump and then call it as
-> > "$objdump". This doesn't work if it contains spaces because we're
-> > using ccache, for example you get errors such as:
-> >
-> >   ./arch/powerpc/tools/relocs_check.sh: line 48: ccache ppc64le-objdump=
-: No such file or directory
-> >   ./arch/powerpc/tools/unrel_branch_check.sh: line 26: ccache ppc64le-o=
-bjdump: No such file or directory
-> >
-> > Fix it by not quoting the string when we expand it, allowing the shell
-> > to do the right thing for us.
->=20
-> This breaks things for people with spaces in their paths.  Why doesn't yo=
-ur
-> user use something like  alias objdump=3D"ccache ppc64le-objdump"  , inst=
-ead?
 
-Given that make doesn't handle spaces in filenames it is likely that a buil=
-d
-will have terrible issues is there are spaces in any directory names.
-(It is a right PITA running make on a certain OS.)
-For command paths, spaces can be replaced by ? relying on shell globbing
-to restore the space.
 
-OTOH rather than alias, put the name of a script containing:
-    #! /bin/sh
-    exec ccache ppc64le-objdump "$@"
-into $objdump.
+On 10/25/2019 02:22 PM, Christophe Leroy wrote:
+> 
+> 
+> Le 25/10/2019 à 10:24, Anshuman Khandual a écrit :
+>>
+>>
+>> On 10/25/2019 12:41 PM, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 25/10/2019 à 07:52, Qian Cai a écrit :
+>>>>
+>>>>
+>>>>> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>>>>>
+>>>>> Nothing specific. But just tested this with x86 defconfig with relevant configs
+>>>>> which are required for this test. Not sure if it involved W=1.
+>>>>
+>>>> No, it will not. It needs to run like,
+>>>>
+>>>> make W=1 -j 64 2>/tmp/warns
+>>>>
+>>>
+>>> Are we talking about this peace of code ?
+>>>
+>>> +static unsigned long __init get_random_vaddr(void)
+>>> +{
+>>> +    unsigned long random_vaddr, random_pages, total_user_pages;
+>>> +
+>>> +    total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
+>>> +
+>>> +    random_pages = get_random_long() % total_user_pages;
+>>> +    random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
+>>> +
+>>> +    WARN_ON((random_vaddr > TASK_SIZE) ||
+>>> +        (random_vaddr < FIRST_USER_ADDRESS));
+>>> +    return random_vaddr;
+>>> +}
+>>> +
+>>>
+>>> ramdom_vaddr is unsigned,
+>>> random_pages is unsigned and lower than total_user_pages
+>>>
+>>> So the max value random_vaddr can get is FIRST_USER_ADDRESS + ((TASK_SIZE - FIRST_USER_ADDRESS - 1) / PAGE_SIZE) * PAGE_SIZE = TASK_SIZE - 1
+>>> And the min value random_vaddr can get is FIRST_USER_ADDRESS (that's when random_pages = 0)
+>>
+>> That's right.
+>>
+>>>
+>>> So the WARN_ON() is just unneeded, isn't it ?
+>>
+>> It is just a sanity check on possible vaddr values before it's corresponding
+>> page table mappings could be created. If it's worth to drop this in favor of
+>> avoiding these unwanted warning messages on x86, will go ahead with it as it
+>> is not super important.
+>>
+> 
+> But you are checking what ? That the compiler does calculation correctly or what ?
 
-=09David
+IIRC, probably this was for later if and when the vaddr calculation becomes
+dependent on other factors rather than this simple arithmetic involving start
+and end of process address space on a platform.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+> As mentionned just above, based on the calculation done, what you are testing cannot happen, so I'm having a hard time understanding what kind of sanity check it can be.
 
+You are right.
+
+> 
+> Can you give an exemple of a situation which could trigger the warning ?
+
+I was mistaken. We dont need those checks for now, hence will drop them next time.
+
+> 
+> Christophe
+> 
