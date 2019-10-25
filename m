@@ -2,48 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7010CE516F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 18:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9125E519E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 18:52:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4708w3319hzDqsQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 03:39:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4709BY0ccNzDqpr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 03:52:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="i7via2c0"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4709833mkfzDqdg
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 03:49:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47098319Bqz8tG8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 03:49:55 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4709830XMgz9sPZ; Sat, 26 Oct 2019 03:49:55 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4708sj2CTjzDqnv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 03:37:28 +1100 (AEDT)
-Received: from localhost (odyssey.drury.edu [64.22.249.253])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8BB4C21872;
- Fri, 25 Oct 2019 16:37:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1572021445;
- bh=WhIoGgltuLJwktQnUdu37d8EQjzrGwE98l51YGKpHoM=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=i7via2c09Y8LHo35j1mwPm7qBRnwGFKjoxH2jIbLp1Zn07l1ytjd7Ud/Wx5gsSz7C
- M3fw7kimAnqMiaLvUhx3xyr/dhACu+7Sje3GMtC/1eGYsEkCyIEjDWJRSjj74GKh2F
- aiUwqQ4tU+H36Gwrug5pmEOy3CeFuQjkIs9TPkY0=
-Date: Fri, 25 Oct 2019 11:37:24 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Carlo Pisani <carlojpisani@gmail.com>
-Subject: Re: Oxford Semiconductor Ltd OX16PCI954 - weird dmesg
-Message-ID: <20191025163724.GA144828@google.com>
+ by ozlabs.org (Postfix) with ESMTPS id 47098240Spz9sPK;
+ Sat, 26 Oct 2019 03:49:54 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9PGgK16075467; Fri, 25 Oct 2019 12:49:41 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vv3ck3jxx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Oct 2019 12:49:40 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9PGghME076302;
+ Fri, 25 Oct 2019 12:49:40 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vv3ck3jxj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Oct 2019 12:49:40 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9PGj6nB008403;
+ Fri, 25 Oct 2019 16:49:39 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 2vqt489u53-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Oct 2019 16:49:39 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9PGncQR51839294
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Oct 2019 16:49:38 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7369DB205F;
+ Fri, 25 Oct 2019 16:49:38 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7C168B2065;
+ Fri, 25 Oct 2019 16:49:37 +0000 (GMT)
+Received: from [9.85.155.79] (unknown [9.85.155.79])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 25 Oct 2019 16:49:37 +0000 (GMT)
+Subject: Re: [PATCH v9 1/8] powerpc: detect the secure boot mode of the system
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+References: <20191024034717.70552-1-nayna@linux.ibm.com>
+ <20191024034717.70552-2-nayna@linux.ibm.com>
+ <b0282ef2-f75c-a139-9991-01eba15adb22@linux.microsoft.com>
+From: Nayna Jain <nayna@linux.vnet.ibm.com>
+Message-ID: <569f401a-4327-4295-677f-48037f2582a0@linux.vnet.ibm.com>
+Date: Fri, 25 Oct 2019 11:49:37 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+QBN9AR+drU0zC2-C2zVetTv0GxNs0KRF1BG51mwcRyu=TxpA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <b0282ef2-f75c-a139-9991-01eba15adb22@linux.microsoft.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-25_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910250154
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,134 +109,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux@yadro.com
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Prakhar Srivastava <prsriva02@gmail.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 25, 2019 at 04:33:13PM +0200, Carlo Pisani wrote:
-> pci_bus 0000:00: root bus resource [mem 0x50000000-0x5fffffff]
-> pci_bus 0000:00: root bus resource [io  0x18800000-0x188fffff]
-> pci_bus 0000:00: root bus resource [??? 0x00000000 flags 0x0]
-> pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
-> pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
-> pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
-> pci 0000:00:04.0: BAR 0: assigned [mem 0x50000000-0x5000ffff]
-> pci 0000:00:05.0: BAR 1: assigned [mem 0x50010000-0x50010fff]
-> pci 0000:00:05.0: BAR 3: assigned [mem 0x50011000-0x50011fff]
-> pci 0000:00:0a.0: BAR 1: assigned [mem 0x50012000-0x50012fff]
-> pci 0000:00:0a.0: BAR 3: assigned [mem 0x50013000-0x50013fff]
-> pci 0000:00:02.0: BAR 0: assigned [io  0x18800000-0x188000ff]
-> pci 0000:00:02.0: BAR 1: assigned [mem 0x50014000-0x500140ff]
-> pci 0000:00:03.0: BAR 0: assigned [io  0x18800400-0x188004ff]
-> pci 0000:00:03.0: BAR 1: assigned [mem 0x50014100-0x500141ff]
-> pci 0000:00:05.0: BAR 0: assigned [io  0x18800800-0x1880081f]
-> pci 0000:00:05.0: BAR 2: assigned [io  0x18800820-0x1880083f]
-> pci 0000:00:0a.0: BAR 0: assigned [io  0x18800840-0x1880085f]
-> pci 0000:00:0a.0: BAR 2: assigned [io  0x18800860-0x1880087f]
-> 
-> 
-> 00:00.0 Non-VGA unclassified device: Integrated Device Technology,
-> Inc. Device 0000
->         Subsystem: Device 0214:011d
->         Flags: bus master, 66MHz, medium devsel, latency 60, IRQ 140
->         Memory at <unassigned> (32-bit, prefetchable)
->         I/O ports at <ignored>
->         I/O ports at <ignored>
-> 
-> 00:02.0 Ethernet controller: VIA Technologies, Inc. VT6105/VT6106S
-> [Rhine-III] (rev 86)
->         Subsystem: AST Research Inc Device 086c
->         Flags: bus master, stepping, medium devsel, latency 64, IRQ 142
->         I/O ports at 18800000 [size=256]
->         Memory at 50014000 (32-bit, non-prefetchable) [size=256]
->         Capabilities: [40] Power Management version 2
->         Kernel driver in use: via-rhine
-> 
-> 00:03.0 Ethernet controller: VIA Technologies, Inc. VT6105/VT6106S
-> [Rhine-III] (rev 86)
->         Subsystem: AST Research Inc Device 086c
->         Flags: bus master, stepping, medium devsel, latency 64, IRQ 143
->         I/O ports at 18800400 [size=256]
->         Memory at 50014100 (32-bit, non-prefetchable) [size=256]
->         Capabilities: [40] Power Management version 2
->         Kernel driver in use: via-rhine
-> 
-> 00:04.0 Network controller: Atheros Communications Inc. Device 0029 (rev 01)
->         Subsystem: Atheros Communications Inc. Device 2091
->         Flags: bus master, 66MHz, medium devsel, latency 168, IRQ 142
->         Memory at 50000000 (32-bit, non-prefetchable) [size=64K]
->         Capabilities: [44] Power Management version 2
->         Kernel driver in use: ath9k
-> 
-> 00:05.0 Serial controller: Oxford Semiconductor Ltd OX16PCI954 (Quad
-> 16950 UART) function 0 (Uart) (rev 01) (prog-if 06 [)
->         Subsystem: Oxford Semiconductor Ltd Device 0000
->         Flags: medium devsel, IRQ 143
->         I/O ports at 18800800 [size=32]
->         Memory at 50010000 (32-bit, non-prefetchable) [size=4K]
->         I/O ports at 18800820 [size=32]
->         Memory at 50011000 (32-bit, non-prefetchable) [size=4K]
->         Capabilities: [40] Power Management version 2
->         Kernel driver in use: serial
-> 
-> 00:05.1 Non-VGA unclassified device: Oxford Semiconductor Ltd
-> OX16PCI954 (Quad 16950 UART) function 0 (Disabled) (rev 01)
->         Subsystem: Oxford Semiconductor Ltd Device 0000
->         Flags: medium devsel, IRQ 143
->         I/O ports at <unassigned> [disabled]
->         I/O ports at <unassigned> [disabled]
->         I/O ports at <unassigned> [disabled]
->         Capabilities: [40] Power Management version 2
-> 
-> 00:0a.0 Serial controller: Oxford Semiconductor Ltd OX16PCI954 (Quad
-> 16950 UART) function 0 (Uart) (rev 01) (prog-if 06 [)
->         Subsystem: Oxford Semiconductor Ltd Device 0000
->         Flags: medium devsel, IRQ 140
->         I/O ports at 18800840 [size=32]
->         Memory at 50012000 (32-bit, non-prefetchable) [size=4K]
->         I/O ports at 18800860 [size=32]
->         Memory at 50013000 (32-bit, non-prefetchable) [size=4K]
->         Capabilities: [40] Power Management version 2
->         Kernel driver in use: serial
-> 
-> 00:0a.1 Non-VGA unclassified device: Oxford Semiconductor Ltd
-> OX16PCI954 (Quad 16950 UART) function 0 (Disabled) (rev 01)
->         Subsystem: Oxford Semiconductor Ltd Device 0000
->         Flags: medium devsel, IRQ 140
->         I/O ports at <unassigned> [disabled]
->         I/O ports at <unassigned> [disabled]
->         I/O ports at <unassigned> [disabled]
->         Capabilities: [40] Power Management version 2
-> 
-> 
-> hi guys
-> I have a couple of miniPCI Oxford Semiconductor Ltd OX16PCI954 cards
-> installed, and the dmesg looks weird
-> 
-> espeially these lines
-> pci_bus 0000:00: root bus resource [mem 0x50000000-0x5fffffff]
-> pci_bus 0000:00: root bus resource [io  0x18800000-0x188fffff]
-> pci_bus 0000:00: root bus resource [??? 0x00000000 flags 0x0]
-> pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
 
-These resources are supplied to the PCI core, probably from DT.  A
-complete dmesg log would show more.
+On 10/24/19 12:26 PM, Lakshmi Ramasubramanian wrote:
+> On 10/23/2019 8:47 PM, Nayna Jain wrote:
+>> This patch defines a function to detect the secure boot state of a
+>> PowerNV system.
+>
+>> +bool is_ppc_secureboot_enabled(void)
+>> +{
+>> +    struct device_node *node;
+>> +    bool enabled = false;
+>> +
+>> +    node = of_find_compatible_node(NULL, NULL, "ibm,secvar-v1");
+>> +    if (!of_device_is_available(node)) {
+>> +        pr_err("Cannot find secure variable node in device tree; 
+>> failing to secure state\n");
+>> +        goto out;
+>
+> Related to "goto out;" above:
+>
+> Would of_find_compatible_node return NULL if the given node is not found?
+>
+> If of_device_is_available returns false (say, because node is NULL or 
+> it does not find the specified node) would it be correct to call 
+> of_node_put?
 
-> pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
-> pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
+of_node_put() handles NULL.
 
-> besides, I am experimenting crashes happening in burn-in tests, and I
-> do suspect it's something related to the newly added cards
+Thanks & Regards,
 
-If you take the cards out do the lines you mention above change?
+      - Nayna
 
-What sort of crashes do you see?  I assume it doesn't crash without
-the cards?
-
-It *looks* like the miniPCI cards should be these devices:
-
-  00:05.0 Serial controller: Oxford Semiconductor Ltd OX16PCI954 (Quad 16950 UART) function 0 (Uart) (rev 01) (prog-if 06 [)
-  00:0a.0 Serial controller: Oxford Semiconductor Ltd OX16PCI954 (Quad 16950 UART) function 0 (Uart) (rev 01) (prog-if 06 [)
-
-which are unrelated to the 00:00.0 device with the broken BAR.
