@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A507DE51A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 18:54:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70593E51E5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 19:04:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4709Dp6ff1zDqfS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 03:54:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4709Sj6qd4zDqkR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 04:04:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47098w4HZVzDqf9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 03:50:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4709QV3R0NzDqjR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 04:02:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47098v5D8Cz8tbr
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 03:50:39 +1100 (AEDT)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4709QV2Vksz8t0w
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 04:02:26 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 47098v4BT2z9sPh; Sat, 26 Oct 2019 03:50:39 +1100 (AEDT)
+ id 4709QV1n6wz9sPh; Sat, 26 Oct 2019 04:02:26 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
@@ -33,60 +33,60 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47098v0HS5z9sPK;
- Sat, 26 Oct 2019 03:50:38 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 4709QT4M9yz9sPZ;
+ Sat, 26 Oct 2019 04:02:25 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9PGgRKx105512; Fri, 25 Oct 2019 12:50:27 -0400
+ x9PGuiXf029285; Fri, 25 Oct 2019 13:02:17 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vv1reqhs5-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vv42u28q1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Oct 2019 12:50:27 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9PGi1Lh119460;
- Fri, 25 Oct 2019 12:50:27 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vv1reqhrc-1
+ Fri, 25 Oct 2019 13:02:16 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9PGxFGo035516;
+ Fri, 25 Oct 2019 13:02:16 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vv42u28pe-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Oct 2019 12:50:27 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9PGkI2D026797;
- Fri, 25 Oct 2019 16:50:25 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma05wdc.us.ibm.com with ESMTP id 2vqt48b4mn-1
+ Fri, 25 Oct 2019 13:02:16 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9PH1SHd031917;
+ Fri, 25 Oct 2019 17:02:14 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 2vqt47sxx0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Oct 2019 16:50:25 +0000
+ Fri, 25 Oct 2019 17:02:14 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9PGoPdQ51315120
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9PH2Dma33554838
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 25 Oct 2019 16:50:25 GMT
+ Fri, 25 Oct 2019 17:02:13 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1B31AB2065;
- Fri, 25 Oct 2019 16:50:25 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9C959B2065;
+ Fri, 25 Oct 2019 17:02:13 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 09420B2066;
- Fri, 25 Oct 2019 16:50:24 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9F5B0B2066;
+ Fri, 25 Oct 2019 17:02:12 +0000 (GMT)
 Received: from [9.85.155.79] (unknown [9.85.155.79])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 25 Oct 2019 16:50:23 +0000 (GMT)
-Subject: Re: [PATCH v9 3/8] powerpc: detect the trusted boot state of the
- system
+ Fri, 25 Oct 2019 17:02:12 +0000 (GMT)
+Subject: Re: [PATCH v9 2/8] powerpc/ima: add support to initialize ima policy
+ rules
 To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
  Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
  linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
 References: <20191024034717.70552-1-nayna@linux.ibm.com>
- <20191024034717.70552-4-nayna@linux.ibm.com>
- <d713ae8c-7223-b3f3-999b-0c9076733c17@linux.microsoft.com>
+ <20191024034717.70552-3-nayna@linux.ibm.com>
+ <dd7e04fc-25e8-280f-b565-bdb031939655@linux.microsoft.com>
 From: Nayna Jain <nayna@linux.vnet.ibm.com>
-Message-ID: <8a929e75-52c2-105b-365b-7521404a8ead@linux.vnet.ibm.com>
-Date: Fri, 25 Oct 2019 11:50:23 -0500
+Message-ID: <27dbe08e-5473-4dd0-d2ad-2df591e23f5e@linux.vnet.ibm.com>
+Date: Fri, 25 Oct 2019 12:02:12 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <d713ae8c-7223-b3f3-999b-0c9076733c17@linux.microsoft.com>
+In-Reply-To: <dd7e04fc-25e8-280f-b565-bdb031939655@linux.microsoft.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
@@ -97,8 +97,8 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=997 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910250154
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910250156
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,23 +124,37 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 10/24/19 12:38 PM, Lakshmi Ramasubramanian wrote:
+On 10/24/19 12:35 PM, Lakshmi Ramasubramanian wrote:
 > On 10/23/2019 8:47 PM, Nayna Jain wrote:
 >
->> +bool is_ppc_trustedboot_enabled(void)
->> +{
->> +    struct device_node *node;
->> +    bool enabled = false;
->> +
->> +    node = get_ppc_fw_sb_node();
->> +    enabled = of_property_read_bool(node, "trusted-enabled");
+>> +/*
+>> + * The "secure_rules" are enabled only on "secureboot" enabled systems.
+>> + * These rules verify the file signatures against known good values.
+>> + * The "appraise_type=imasig|modsig" option allows the known good 
+>> signature
+>> + * to be stored as an xattr or as an appended signature.
+>> + *
+>> + * To avoid duplicate signature verification as much as possible, 
+>> the IMA
+>> + * policy rule for module appraisal is added only if 
+>> CONFIG_MODULE_SIG_FORCE
+>> + * is not enabled.
+>> + */
+>> +static const char *const secure_rules[] = {
+>> +    "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+>> +#ifndef CONFIG_MODULE_SIG_FORCE
+>> +    "appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+>> +#endif
+>> +    NULL
+>> +};
 >
-> Can get_ppc_fw_sb_node return NULL?
-> Would of_property_read_bool handle the case when node is NULL?
+> Is there any way to not use conditional compilation in the above array 
+> definition? Maybe define different functions to get "secure_rules" for 
+> when CONFIG_MODULE_SIG_FORCE is defined and when it is not defined.
 
-Yes.
+How will you decide which function to be called ?
 
 Thanks & Regards,
 
-      - Nayna
+     - Nayna
 
