@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CF3E4F87
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 16:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DAFE4F9C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 16:54:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4706TX6nTKzDqft
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 01:49:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4706Zp07TmzDqYj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 01:54:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,36 +15,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="GVFj28uk"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Q2LB97n3"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4705Ky4fvpzDqgH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 00:58:14 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4705Lh36w9zDqpK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 00:58:52 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BCE79222BE;
- Fri, 25 Oct 2019 13:58:11 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id AD38D222C9;
+ Fri, 25 Oct 2019 13:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1572011892;
- bh=KWU7BHtW1MjfF5bDFuWkOZ9ClbP7k9UzxG8j4pcmr1I=;
+ s=default; t=1572011930;
+ bh=RPu44RCFgWUoB0ffJytntIbu2rU10TJxyU2PzThNAQA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=GVFj28ukSLkya+ZoN4WpxTlOcKHrgBkYK+uhDx6kl3rNsNNwSF7spuw49BZSS+A2Y
- /Uuyf0rHhcWa2WA6eOlKYlvV92vLSdvRYAgBQq/fulKt/Jsn4pUpMfLqPIt8zD82ph
- d4t1jWOSLXE5KJl7DP+YqgCzZdyOHkli8ha+KL70=
+ b=Q2LB97n30c5KxDuFjEQoBki1KsgsrFXwd/ayNi9hZHGpwAp9J1tW7DZGvScOjx+32
+ DxkVzEcaUW/xIod9AStp+M87PaBvjADsff4fhAqa+odaF2iBlVZ9lkhlKD+pFa68Le
+ h8jMnhh79Bl3wBhO2R4RXYDpF3lI4nT4wWOTwyAE=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 05/20] powerpc/pseries/hvconsole: Fix stack
+Subject: [PATCH AUTOSEL 4.4 04/16] powerpc/pseries/hvconsole: Fix stack
  overread via udbg
-Date: Fri, 25 Oct 2019 09:57:45 -0400
-Message-Id: <20191025135801.25739-5-sashal@kernel.org>
+Date: Fri, 25 Oct 2019 09:58:28 -0400
+Message-Id: <20191025135842.25977-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191025135801.25739-1-sashal@kernel.org>
-References: <20191025135801.25739-1-sashal@kernel.org>
+In-Reply-To: <20191025135842.25977-1-sashal@kernel.org>
+References: <20191025135842.25977-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -121,7 +121,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/hvconsole.c b/arch/powerpc/platforms/pseries/hvconsole.c
-index 74da18de853af..73ec15cd27080 100644
+index 849b29b3e9ae0..954ef27128f22 100644
 --- a/arch/powerpc/platforms/pseries/hvconsole.c
 +++ b/arch/powerpc/platforms/pseries/hvconsole.c
 @@ -62,7 +62,7 @@ EXPORT_SYMBOL(hvc_get_chars);
@@ -134,10 +134,10 @@ index 74da18de853af..73ec15cd27080 100644
   */
  int hvc_put_chars(uint32_t vtermno, const char *buf, int count)
 diff --git a/drivers/tty/hvc/hvc_vio.c b/drivers/tty/hvc/hvc_vio.c
-index b05dc50866279..8bab8b00d47d6 100644
+index f575a9b5ede7b..1d671d058dcb0 100644
 --- a/drivers/tty/hvc/hvc_vio.c
 +++ b/drivers/tty/hvc/hvc_vio.c
-@@ -120,6 +120,14 @@ static int hvterm_raw_get_chars(uint32_t vtermno, char *buf, int count)
+@@ -122,6 +122,14 @@ static int hvterm_raw_get_chars(uint32_t vtermno, char *buf, int count)
  	return got;
  }
  
@@ -152,7 +152,7 @@ index b05dc50866279..8bab8b00d47d6 100644
  static int hvterm_raw_put_chars(uint32_t vtermno, const char *buf, int count)
  {
  	struct hvterm_priv *pv = hvterm_privs[vtermno];
-@@ -232,6 +240,7 @@ static const struct hv_ops hvterm_hvsi_ops = {
+@@ -234,6 +242,7 @@ static const struct hv_ops hvterm_hvsi_ops = {
  static void udbg_hvc_putc(char c)
  {
  	int count = -1;
@@ -160,7 +160,7 @@ index b05dc50866279..8bab8b00d47d6 100644
  
  	if (!hvterm_privs[0])
  		return;
-@@ -242,7 +251,12 @@ static void udbg_hvc_putc(char c)
+@@ -244,7 +253,12 @@ static void udbg_hvc_putc(char c)
  	do {
  		switch(hvterm_privs[0]->proto) {
  		case HV_PROTOCOL_RAW:
