@@ -2,53 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DAFE4F9C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 16:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBD1E4FAF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 16:57:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4706Zp07TmzDqYj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 01:54:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4706fq3Tb2zDqDW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 01:57:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b43;
+ helo=mail-yb1-xb43.google.com; envelope-from=carlojpisani@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Q2LB97n3"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="aXVD993E"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com
+ [IPv6:2607:f8b0:4864:20::b43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4705Lh36w9zDqpK
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 00:58:52 +1100 (AEDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AD38D222C9;
- Fri, 25 Oct 2019 13:58:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1572011930;
- bh=RPu44RCFgWUoB0ffJytntIbu2rU10TJxyU2PzThNAQA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Q2LB97n30c5KxDuFjEQoBki1KsgsrFXwd/ayNi9hZHGpwAp9J1tW7DZGvScOjx+32
- DxkVzEcaUW/xIod9AStp+M87PaBvjADsff4fhAqa+odaF2iBlVZ9lkhlKD+pFa68Le
- h8jMnhh79Bl3wBhO2R4RXYDpF3lI4nT4wWOTwyAE=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 04/16] powerpc/pseries/hvconsole: Fix stack
- overread via udbg
-Date: Fri, 25 Oct 2019 09:58:28 -0400
-Message-Id: <20191025135842.25977-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191025135842.25977-1-sashal@kernel.org>
-References: <20191025135842.25977-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47066c3TbMzDqhK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 01:33:27 +1100 (AEDT)
+Received: by mail-yb1-xb43.google.com with SMTP id h202so911088ybg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 07:33:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=VpLlVrXP050XVnJUIXmpDOE06SBLEojfDEDD5nCjdx8=;
+ b=aXVD993EyjjlRE/4BDk931Uo2YpeNAtohcIStuXUMcmzwU+3gUHAQ4nJNTBSUOl3Wx
+ MtFmyLreQ2tZgFvlv3aHSJwLX/pGtK1hyPvgo8dHWq0N1bryYpE+0ETxi2FOx2Zw4drr
+ EHSBUhlfZRLBBemzPkSNwDJvLoSTvNlmdgI9YKkfADWJ8Xoe17ybwfHB5MiVAVKHBtDj
+ pxGksbzwxkZtcSBNMa9SW5gnP2EGR+R2I/naLTVQ9AtEU/8h/mXV+EYxNQgVWqiFJVk9
+ V0wxUIEoSuh8nrZWqW3GZ6Sc7E+HpibYvJw/Sxsho+NWasKJW5RUNR96elbrbSuVlWqo
+ y2Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=VpLlVrXP050XVnJUIXmpDOE06SBLEojfDEDD5nCjdx8=;
+ b=EW189oQy5VfgosOsE/cRB9Sl17W7Gl4ufh7gg3kHuKhmZVl2v4aelnb2fqXePKwyCU
+ NtTTdNNnkd4GZldSuQScAmBY3mAU3JX4Ikbcj/KmRbsM0J8RflA4LGQnOBH11eOyLISQ
+ E/74X10NJj82nHYVd0HBRiaUxlGR30vmhZOQWpukcLHnmvzHTafobrxewMysR3mHfzDP
+ A9yZjmxUn7gFkJrOhPE7CKNIc49rgjasYR/WQdm+0qcGdvmrEg3zQILRgDEem2p0GGau
+ 7bSTQ6q8LVmFShAe/D/O04Rqj7023rWhheiUHsz7iTzvSzR7jtq9ynq3XA7maOrnEFnx
+ GL3g==
+X-Gm-Message-State: APjAAAVBnyZ2huZDj+VDyj1gMt+4S3ObXmCX9ouO5nuBa16XVKMAFElL
+ GPHzBEHq8ZEmuuSOofPE8pmqgaFsDbKgdorKYjA=
+X-Google-Smtp-Source: APXvYqzUyqixnUEX3eyIPitt4o6OCLL0sX0/q8zK369OM2OxCQgq4yNTFjgQQMYY155qq7w/cN7UgykWwp6YvnltHHc=
+X-Received: by 2002:a25:30d5:: with SMTP id w204mr3459375ybw.382.1572014002286; 
+ Fri, 25 Oct 2019 07:33:22 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20191024171228.877974-1-s.miroshnichenko@yadro.com>
+ <20191024171228.877974-2-s.miroshnichenko@yadro.com>
+In-Reply-To: <20191024171228.877974-2-s.miroshnichenko@yadro.com>
+From: Carlo Pisani <carlojpisani@gmail.com>
+Date: Fri, 25 Oct 2019 16:33:13 +0200
+Message-ID: <CA+QBN9AR+drU0zC2-C2zVetTv0GxNs0KRF1BG51mwcRyu=TxpA@mail.gmail.com>
+Subject: Oxford Semiconductor Ltd OX16PCI954 - weird dmesg
+To: linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,120 +73,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Daniel Axtens <dja@axtens.net>
+pci_bus 0000:00: root bus resource [mem 0x50000000-0x5fffffff]
+pci_bus 0000:00: root bus resource [io  0x18800000-0x188fffff]
+pci_bus 0000:00: root bus resource [??? 0x00000000 flags 0x0]
+pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
+pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
+pci 0000:00:04.0: BAR 0: assigned [mem 0x50000000-0x5000ffff]
+pci 0000:00:05.0: BAR 1: assigned [mem 0x50010000-0x50010fff]
+pci 0000:00:05.0: BAR 3: assigned [mem 0x50011000-0x50011fff]
+pci 0000:00:0a.0: BAR 1: assigned [mem 0x50012000-0x50012fff]
+pci 0000:00:0a.0: BAR 3: assigned [mem 0x50013000-0x50013fff]
+pci 0000:00:02.0: BAR 0: assigned [io  0x18800000-0x188000ff]
+pci 0000:00:02.0: BAR 1: assigned [mem 0x50014000-0x500140ff]
+pci 0000:00:03.0: BAR 0: assigned [io  0x18800400-0x188004ff]
+pci 0000:00:03.0: BAR 1: assigned [mem 0x50014100-0x500141ff]
+pci 0000:00:05.0: BAR 0: assigned [io  0x18800800-0x1880081f]
+pci 0000:00:05.0: BAR 2: assigned [io  0x18800820-0x1880083f]
+pci 0000:00:0a.0: BAR 0: assigned [io  0x18800840-0x1880085f]
+pci 0000:00:0a.0: BAR 2: assigned [io  0x18800860-0x1880087f]
 
-[ Upstream commit 934bda59f286d0221f1a3ebab7f5156a996cc37d ]
 
-While developing KASAN for 64-bit book3s, I hit the following stack
-over-read.
+00:00.0 Non-VGA unclassified device: Integrated Device Technology,
+Inc. Device 0000
+        Subsystem: Device 0214:011d
+        Flags: bus master, 66MHz, medium devsel, latency 60, IRQ 140
+        Memory at <unassigned> (32-bit, prefetchable)
+        I/O ports at <ignored>
+        I/O ports at <ignored>
 
-It occurs because the hypercall to put characters onto the terminal
-takes 2 longs (128 bits/16 bytes) of characters at a time, and so
-hvc_put_chars() would unconditionally copy 16 bytes from the argument
-buffer, regardless of supplied length. However, udbg_hvc_putc() can
-call hvc_put_chars() with a single-byte buffer, leading to the error.
+00:02.0 Ethernet controller: VIA Technologies, Inc. VT6105/VT6106S
+[Rhine-III] (rev 86)
+        Subsystem: AST Research Inc Device 086c
+        Flags: bus master, stepping, medium devsel, latency 64, IRQ 142
+        I/O ports at 18800000 [size=256]
+        Memory at 50014000 (32-bit, non-prefetchable) [size=256]
+        Capabilities: [40] Power Management version 2
+        Kernel driver in use: via-rhine
 
-  ==================================================================
-  BUG: KASAN: stack-out-of-bounds in hvc_put_chars+0xdc/0x110
-  Read of size 8 at addr c0000000023e7a90 by task swapper/0
+00:03.0 Ethernet controller: VIA Technologies, Inc. VT6105/VT6106S
+[Rhine-III] (rev 86)
+        Subsystem: AST Research Inc Device 086c
+        Flags: bus master, stepping, medium devsel, latency 64, IRQ 143
+        I/O ports at 18800400 [size=256]
+        Memory at 50014100 (32-bit, non-prefetchable) [size=256]
+        Capabilities: [40] Power Management version 2
+        Kernel driver in use: via-rhine
 
-  CPU: 0 PID: 0 Comm: swapper Not tainted 5.2.0-rc2-next-20190528-02824-g048a6ab4835b #113
-  Call Trace:
-    dump_stack+0x104/0x154 (unreliable)
-    print_address_description+0xa0/0x30c
-    __kasan_report+0x20c/0x224
-    kasan_report+0x18/0x30
-    __asan_report_load8_noabort+0x24/0x40
-    hvc_put_chars+0xdc/0x110
-    hvterm_raw_put_chars+0x9c/0x110
-    udbg_hvc_putc+0x154/0x200
-    udbg_write+0xf0/0x240
-    console_unlock+0x868/0xd30
-    register_console+0x970/0xe90
-    register_early_udbg_console+0xf8/0x114
-    setup_arch+0x108/0x790
-    start_kernel+0x104/0x784
-    start_here_common+0x1c/0x534
+00:04.0 Network controller: Atheros Communications Inc. Device 0029 (rev 01)
+        Subsystem: Atheros Communications Inc. Device 2091
+        Flags: bus master, 66MHz, medium devsel, latency 168, IRQ 142
+        Memory at 50000000 (32-bit, non-prefetchable) [size=64K]
+        Capabilities: [44] Power Management version 2
+        Kernel driver in use: ath9k
 
-  Memory state around the buggy address:
-   c0000000023e7980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   c0000000023e7a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
-  >c0000000023e7a80: f1 f1 01 f2 f2 f2 00 00 00 00 00 00 00 00 00 00
-                           ^
-   c0000000023e7b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   c0000000023e7b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ==================================================================
+00:05.0 Serial controller: Oxford Semiconductor Ltd OX16PCI954 (Quad
+16950 UART) function 0 (Uart) (rev 01) (prog-if 06 [)
+        Subsystem: Oxford Semiconductor Ltd Device 0000
+        Flags: medium devsel, IRQ 143
+        I/O ports at 18800800 [size=32]
+        Memory at 50010000 (32-bit, non-prefetchable) [size=4K]
+        I/O ports at 18800820 [size=32]
+        Memory at 50011000 (32-bit, non-prefetchable) [size=4K]
+        Capabilities: [40] Power Management version 2
+        Kernel driver in use: serial
 
-Document that a 16-byte buffer is requred, and provide it in udbg.
+00:05.1 Non-VGA unclassified device: Oxford Semiconductor Ltd
+OX16PCI954 (Quad 16950 UART) function 0 (Disabled) (rev 01)
+        Subsystem: Oxford Semiconductor Ltd Device 0000
+        Flags: medium devsel, IRQ 143
+        I/O ports at <unassigned> [disabled]
+        I/O ports at <unassigned> [disabled]
+        I/O ports at <unassigned> [disabled]
+        Capabilities: [40] Power Management version 2
 
-Signed-off-by: Daniel Axtens <dja@axtens.net>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/pseries/hvconsole.c |  2 +-
- drivers/tty/hvc/hvc_vio.c                  | 16 +++++++++++++++-
- 2 files changed, 16 insertions(+), 2 deletions(-)
+00:0a.0 Serial controller: Oxford Semiconductor Ltd OX16PCI954 (Quad
+16950 UART) function 0 (Uart) (rev 01) (prog-if 06 [)
+        Subsystem: Oxford Semiconductor Ltd Device 0000
+        Flags: medium devsel, IRQ 140
+        I/O ports at 18800840 [size=32]
+        Memory at 50012000 (32-bit, non-prefetchable) [size=4K]
+        I/O ports at 18800860 [size=32]
+        Memory at 50013000 (32-bit, non-prefetchable) [size=4K]
+        Capabilities: [40] Power Management version 2
+        Kernel driver in use: serial
 
-diff --git a/arch/powerpc/platforms/pseries/hvconsole.c b/arch/powerpc/platforms/pseries/hvconsole.c
-index 849b29b3e9ae0..954ef27128f22 100644
---- a/arch/powerpc/platforms/pseries/hvconsole.c
-+++ b/arch/powerpc/platforms/pseries/hvconsole.c
-@@ -62,7 +62,7 @@ EXPORT_SYMBOL(hvc_get_chars);
-  * @vtermno: The vtermno or unit_address of the adapter from which the data
-  *	originated.
-  * @buf: The character buffer that contains the character data to send to
-- *	firmware.
-+ *	firmware. Must be at least 16 bytes, even if count is less than 16.
-  * @count: Send this number of characters.
-  */
- int hvc_put_chars(uint32_t vtermno, const char *buf, int count)
-diff --git a/drivers/tty/hvc/hvc_vio.c b/drivers/tty/hvc/hvc_vio.c
-index f575a9b5ede7b..1d671d058dcb0 100644
---- a/drivers/tty/hvc/hvc_vio.c
-+++ b/drivers/tty/hvc/hvc_vio.c
-@@ -122,6 +122,14 @@ static int hvterm_raw_get_chars(uint32_t vtermno, char *buf, int count)
- 	return got;
- }
- 
-+/**
-+ * hvterm_raw_put_chars: send characters to firmware for given vterm adapter
-+ * @vtermno: The virtual terminal number.
-+ * @buf: The characters to send. Because of the underlying hypercall in
-+ *       hvc_put_chars(), this buffer must be at least 16 bytes long, even if
-+ *       you are sending fewer chars.
-+ * @count: number of chars to send.
-+ */
- static int hvterm_raw_put_chars(uint32_t vtermno, const char *buf, int count)
- {
- 	struct hvterm_priv *pv = hvterm_privs[vtermno];
-@@ -234,6 +242,7 @@ static const struct hv_ops hvterm_hvsi_ops = {
- static void udbg_hvc_putc(char c)
- {
- 	int count = -1;
-+	unsigned char bounce_buffer[16];
- 
- 	if (!hvterm_privs[0])
- 		return;
-@@ -244,7 +253,12 @@ static void udbg_hvc_putc(char c)
- 	do {
- 		switch(hvterm_privs[0]->proto) {
- 		case HV_PROTOCOL_RAW:
--			count = hvterm_raw_put_chars(0, &c, 1);
-+			/*
-+			 * hvterm_raw_put_chars requires at least a 16-byte
-+			 * buffer, so go via the bounce buffer
-+			 */
-+			bounce_buffer[0] = c;
-+			count = hvterm_raw_put_chars(0, bounce_buffer, 1);
- 			break;
- 		case HV_PROTOCOL_HVSI:
- 			count = hvterm_hvsi_put_chars(0, &c, 1);
--- 
-2.20.1
+00:0a.1 Non-VGA unclassified device: Oxford Semiconductor Ltd
+OX16PCI954 (Quad 16950 UART) function 0 (Disabled) (rev 01)
+        Subsystem: Oxford Semiconductor Ltd Device 0000
+        Flags: medium devsel, IRQ 140
+        I/O ports at <unassigned> [disabled]
+        I/O ports at <unassigned> [disabled]
+        I/O ports at <unassigned> [disabled]
+        Capabilities: [40] Power Management version 2
 
+
+hi guys
+I have a couple of miniPCI Oxford Semiconductor Ltd OX16PCI954 cards
+installed, and the dmesg looks weird
+
+espeially these lines
+pci_bus 0000:00: root bus resource [mem 0x50000000-0x5fffffff]
+pci_bus 0000:00: root bus resource [io  0x18800000-0x188fffff]
+pci_bus 0000:00: root bus resource [??? 0x00000000 flags 0x0]
+pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
+pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
+
+besides, I am experimenting crashes happening in burn-in tests, and I
+do suspect it's something related to the newly added cards
+
+any enlightenment?
