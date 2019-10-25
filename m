@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67014E4F6D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 16:44:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CF3E4F87
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 16:49:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4706MD3vJczDqrT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 01:44:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4706TX6nTKzDqft
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 01:49:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,36 +15,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="cEMRHVPV"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="GVFj28uk"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4705K65WVMzDqnx
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 00:57:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4705Ky4fvpzDqgH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 00:58:14 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0E45421D82;
- Fri, 25 Oct 2019 13:57:27 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id BCE79222BE;
+ Fri, 25 Oct 2019 13:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1572011848;
- bh=4QRjsrhYPA0imSh39a9J2RbDYp6757oYZBo2/ug4D1g=;
+ s=default; t=1572011892;
+ bh=KWU7BHtW1MjfF5bDFuWkOZ9ClbP7k9UzxG8j4pcmr1I=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=cEMRHVPVxfc+ZvJ6XS2+JhCKlchGScokp7mwNXbDjSLT3r4M2O7M37pA3TukqJYR1
- wfiv7PYW+7MynuZrK/vCF7uxfQ/QXLvfRaon2rbl59352U7mRblPMXk6p3a3Ber3HA
- fzJzcxwC8O/LBjoJMf2q+qMlo2My/EnmcpwtUL54=
+ b=GVFj28ukSLkya+ZoN4WpxTlOcKHrgBkYK+uhDx6kl3rNsNNwSF7spuw49BZSS+A2Y
+ /Uuyf0rHhcWa2WA6eOlKYlvV92vLSdvRYAgBQq/fulKt/Jsn4pUpMfLqPIt8zD82ph
+ d4t1jWOSLXE5KJl7DP+YqgCzZdyOHkli8ha+KL70=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 08/25] powerpc/pseries/hvconsole: Fix stack
+Subject: [PATCH AUTOSEL 4.9 05/20] powerpc/pseries/hvconsole: Fix stack
  overread via udbg
-Date: Fri, 25 Oct 2019 09:56:56 -0400
-Message-Id: <20191025135715.25468-8-sashal@kernel.org>
+Date: Fri, 25 Oct 2019 09:57:45 -0400
+Message-Id: <20191025135801.25739-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191025135715.25468-1-sashal@kernel.org>
-References: <20191025135715.25468-1-sashal@kernel.org>
+In-Reply-To: <20191025135801.25739-1-sashal@kernel.org>
+References: <20191025135801.25739-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -134,7 +134,7 @@ index 74da18de853af..73ec15cd27080 100644
   */
  int hvc_put_chars(uint32_t vtermno, const char *buf, int count)
 diff --git a/drivers/tty/hvc/hvc_vio.c b/drivers/tty/hvc/hvc_vio.c
-index a1d272ac82bb4..c33150fcd9642 100644
+index b05dc50866279..8bab8b00d47d6 100644
 --- a/drivers/tty/hvc/hvc_vio.c
 +++ b/drivers/tty/hvc/hvc_vio.c
 @@ -120,6 +120,14 @@ static int hvterm_raw_get_chars(uint32_t vtermno, char *buf, int count)
