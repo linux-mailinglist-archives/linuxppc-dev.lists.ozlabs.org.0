@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32916E55A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 23:12:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388DDE565A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 00:01:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 470Gyr3Ny2zDqfp
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 08:12:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 470J3r3v7XzDqss
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 09:01:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,59 +16,60 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="M9n9pfj8"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="qwmWtewK"; 
  dkim-atps=neutral
 Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
  [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 470Gww6k3QzDqnV
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 08:10:40 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id 3so2389014pfb.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 14:10:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 470J1X3v1LzDqsl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 08:59:42 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id q7so2478672pfh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 14:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=4SQYqLXX0XdL1+ct2NCqP0blLyo4HQV7tsLhnLw7hQs=;
- b=M9n9pfj8q7l6P50lkgGdxZehMpVLDK8ZmI6h116XJC4/64SSNK/YYVX+xv3DRF2ivG
- Zzgg3mBivr6x3cWPjemy+EWNbPRXm/iIW8aNbCrb94Ls9MlU5jU/jb0mn3yNCTdBo9Wa
- GmH4WJ6y/7gjeq5BRvdgW8izUhckGGyiGd6AsuGFEcjVRuFiy4McVtTy2Z+/FH/qAd80
- pmDXrACAkqPxzboLhwXjbCgOhhFJ9jplmG2pc5ZjNF2ksSd46aYvZ0QbZ6CgvzGvsiCH
- EPNUqMYwahXzG8Vj/dr8l6pm6uxAspTidvfzU2fWuZvxPsaWFfUfz3wbEzJum84O0QfG
- vMSQ==
+ bh=eW3QcADxWiA9bB+f1V3Z1+dcU/1XE8CGZphcypGekbY=;
+ b=qwmWtewKTdVLT5daUxPBZ5FzRpQl/egXLrBQ+UeZlpbEcHCiFqCaJklDEfi4dFeioG
+ /XiO73dbDOzSSEE0e8De1pxiRwZ82JdWzsFQbae0oD79Pxhqy6EVKuu4BKTBEkvC1nMa
+ m3nTmAaZ5lJOwxsHqbeokO4CRoYMoCgFlTZrR2iNULK3dzXeUmsnDqhk1sIspgID48YJ
+ jKHqlgxD3nXUuqVQk2uwhEI9NgoalG4q+9bExzO5fTaykJS13q4yv6FQ6bKvkosayM2c
+ ySkyd6GIpHirJ0zV2dZlTAiKIXtdOi7lS9lY13KClqTq1nv1w3qqvyeAPyYB1sKvas75
+ WFMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=4SQYqLXX0XdL1+ct2NCqP0blLyo4HQV7tsLhnLw7hQs=;
- b=HHzPHvR/53alV8kmKZhC0wSIvCHk2sMtEBdxjeAB8xccpbo/pqgIfjtmXJwHWLnshI
- SxKCGpHdjQtlhOtxoVnTOXyqSJTEhg7P3h2B/y3VTkVkTE0KWKOO5iomzanftb1xRCkm
- lWL4x37zioGCDZSIjnyU1bLiOI0Zp/ZK1qd2huQ4/tw++CpDUvKGeBIbEqP9YaLcF8cm
- kUb12hDKeJENzWwy9fC9bd+o3fVsO4CXd/SxEDp4Dc+vo/ZJWOUMklvQJ9ARfKps7GSG
- Cweng8fNPlAQIbJaxjdfuSFr0L7YTWc0LjEi7RHybvIH55N3XKzWhn+PpQqrizf7hK6d
- dfcQ==
-X-Gm-Message-State: APjAAAUj88fzegSALN6iryqAwoUlkot21tK5tpIGF5k5ncfBoZwT8Z00
- ZwvjdHRtEPxIdCW/wGnwy8o=
-X-Google-Smtp-Source: APXvYqzzjTnv2D4OYrUqWzMN8fCAnpjvEbjHAwrTNhaiVf/2Enfk58DhQ/EGZoxwOZADuV5bHAi7cw==
-X-Received: by 2002:a63:e056:: with SMTP id n22mr6675498pgj.73.1572037836935; 
- Fri, 25 Oct 2019 14:10:36 -0700 (PDT)
+ bh=eW3QcADxWiA9bB+f1V3Z1+dcU/1XE8CGZphcypGekbY=;
+ b=pwxkQ6Nik28MUH8jHQOa7PSPule5NS/Qa7T8Q9cVvlk9L+M4rx+fLVslr+k2w4Fe1/
+ KmA1JWc2GchxS5RPbqpjSqZxcF2LIIk81XpRBtZUh0UZ0wcfClwg5USoOox5MAQso48c
+ NCCfXMOi4FaDrv3kMO89iSguYodPsWixKynOjWvcTr6OGbeZ0+vhUlDU/518k4gyWx0S
+ 6jhoTWHmWK4IHg9PHQIwfEeisVBVR+S6hP2fqlyk9FiGOJUv8b/4113X85x0qazPsXCS
+ lbokHNJYZUc1SzdXdwE20f3FTRFH5gt/GtLlYxvY0YrZUh2EWu7qR20QEGSDhwWGUQ1O
+ Braw==
+X-Gm-Message-State: APjAAAUo2V4MGcacSeRGoeySQcBsIDxkd8nOTbU99CcSeNQAezbrAgNK
+ mKmhz+zIUhJPIlinV+sWS0M=
+X-Google-Smtp-Source: APXvYqzAlyQ6QgA1OIplwWAdTMmiF8dDyvSSD0lN3oGKWYGdoPCg4gqnizy04m7h1H3tGg509ldamQ==
+X-Received: by 2002:a17:90a:d351:: with SMTP id
+ i17mr6807596pjx.36.1572040779795; 
+ Fri, 25 Oct 2019 14:59:39 -0700 (PDT)
 Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
  [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id z13sm3550450pfg.172.2019.10.25.14.10.36
+ by smtp.gmail.com with ESMTPSA id d5sm2815101pjw.31.2019.10.25.14.59.38
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 25 Oct 2019 14:10:36 -0700 (PDT)
-Date: Fri, 25 Oct 2019 14:10:14 -0700
+ Fri, 25 Oct 2019 14:59:39 -0700 (PDT)
+Date: Fri, 25 Oct 2019 14:59:20 -0700
 From: Nicolin Chen <nicoleotsuka@gmail.com>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH V2] ASoC: fsl_esai: Add spin lock to protect reset, stop
- and start
-Message-ID: <20191025211013.GA15101@Asurada-Nvidia.nvidia.com>
-References: <36e1d0157d2b71985b88e841d416d04c584c04fe.1571986436.git.shengjiu.wang@nxp.com>
+Subject: Re: [PATCH V2] ASoC: fsl_asrc: refine the setting of internal clock
+ divider
+Message-ID: <20191025215919.GB15101@Asurada-Nvidia.nvidia.com>
+References: <a0cd2ecf5e833fbdc064ba73391481d6073e7254.1571986398.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <36e1d0157d2b71985b88e841d416d04c584c04fe.1571986436.git.shengjiu.wang@nxp.com>
+In-Reply-To: <a0cd2ecf5e833fbdc064ba73391481d6073e7254.1571986398.git.shengjiu.wang@nxp.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -89,51 +90,117 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 25, 2019 at 03:13:53PM +0800, Shengjiu Wang wrote:
-> xrun may happen at the end of stream, the
-> trigger->fsl_esai_trigger_stop maybe called in the middle of
-> fsl_esai_hw_reset, this may cause esai in wrong state
-> after stop, and there may be endless xrun interrupt.
+On Fri, Oct 25, 2019 at 03:13:22PM +0800, Shengjiu Wang wrote:
+> The output divider should align with the output sample
+> rate, if use ideal sample rate, there will be a lot of overload,
+> which would cause underrun.
 > 
-> This issue may also happen with trigger->fsl_esai_trigger_start.
+> The maximum divider of asrc clock is 1024, but there is no
+> judgement for this limitaion in driver, which may cause the divider
+
+typo: "limitaion" => "limitation"
+
+> setting not correct.
 > 
-> So Add spin lock to lock those functions.
+> For non-ideal ratio mode, the clock rate should divide the sample
+> rate with no remainder, and the quotient should be less than 1024.
 > 
-> Fixes: 7ccafa2b3879 ("ASoC: fsl_esai: recover the channel swap after xrun")
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Some small comments inline. Once they are addressed, please add:
+And some comments inline. Please add my ack once they are fixed:
 
 Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
 Thanks
 
-> ---
-> Change in v2
-> -add lock for fsl_esai_trigger_start.
-> 
->  sound/soc/fsl/fsl_esai.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-> index 37b14c48b537..9b28e2af26e4 100644
-> --- a/sound/soc/fsl/fsl_esai.c
-> +++ b/sound/soc/fsl/fsl_esai.c
-> @@ -33,6 +33,7 @@
->   * @fsysclk: system clock source to derive HCK, SCK and FS
->   * @spbaclk: SPBA clock (optional, depending on SoC design)
->   * @task: tasklet to handle the reset operation
-> + * @lock: spin lock to handle reset and stop behavior
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index 0bf91a6f54b9..89cf333154c7 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
+> @@ -259,8 +259,11 @@ static int fsl_asrc_set_ideal_ratio(struct fsl_asrc_pair *pair,
+>   * It configures those ASRC registers according to a configuration instance
+>   * of struct asrc_config which includes in/output sample rate, width, channel
+>   * and clock settings.
+> + *
+> + * Note:
+> + * use_ideal_rate = true is need by some case which need higher performance.
 
-Should be "between hw_reset() and trigger()" now.
+I feel we can have a detailed one here and drop those inline comments, e.g.:
 
->   * @fifo_depth: depth of tx/rx FIFO
->   * @slot_width: width of each DAI slot
->   * @slots: number of slots
-> @@ -56,6 +57,7 @@ struct fsl_esai {
->  	struct clk *fsysclk;
->  	struct clk *spbaclk;
->  	struct tasklet_struct task;
-> +	spinlock_t lock; /* Protect reset and stop */
++ * Note:
++ * The ideal ratio configuration can work with a flexible clock rate setting.
++ * Using IDEAL_RATIO_RATE gives a faster converting speed but overloads ASRC.
++ * For a regular audio playback, the clock rate should not be slower than an
++ * clock rate aligning with the output sample rate; For a use case requiring
++ * faster conversion, set use_ideal_rate to have the faster speed.
 
-We can drop the comments here since you add it to the top.
+> @@ -351,8 +355,10 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  	/* We only have output clock for ideal ratio mode */
+>  	clk = asrc_priv->asrck_clk[clk_index[ideal ? OUT : IN]];
+>  
+> -	div[IN] = clk_get_rate(clk) / inrate;
+> -	if (div[IN] == 0) {
+> +	clk_rate = clk_get_rate(clk);
+> +	rem[IN] = do_div(clk_rate, inrate);
+> +	div[IN] = (u32)clk_rate;
+
+> +	if (div[IN] == 0 || (!ideal && (div[IN] > 1024 || rem[IN] != 0))) {
+
+Should have some comments to explain this like:
+	/*
+	 * The divider range is [1, 1024], defined by the hardware. For non-
+	 * ideal ratio configuration, clock rate has to be strictly aligned
+	 * with the sample rate. For ideal ratio configuration, clock rates
+	 * only result in different converting speeds. So remainder does not
+	 * matter, as long as we keep the divider within its valid range.
+	 */
+>  		pair_err("failed to support input sample rate %dHz by asrck_%x\n",
+>  				inrate, clk_index[ideal ? OUT : IN]);
+>  		return -EINVAL;
+
+And move the min() behind this if-condition with no more comments:
++	div[IN] = min_t(u32, 1024, div[IN]);
+
+> @@ -360,18 +366,29 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+>  
+>  	clk = asrc_priv->asrck_clk[clk_index[OUT]];
+>  
+> -	/* Use fixed output rate for Ideal Ratio mode (INCLK_NONE) */
+> -	if (ideal)
+> -		div[OUT] = clk_get_rate(clk) / IDEAL_RATIO_RATE;
+> +	/*
+> +	 * Output rate should be align with the out samplerate. If set too
+> +	 * high output rate, there will be lots of Overload.
+> +	 * But some case need higher performance, then we can use
+> +	 * IDEAL_RATIO_RATE specifically for such case.
+> +	 */
+
+Can drop this since we have the detailed comments at the top.
+
+> +	clk_rate = clk_get_rate(clk);
+> +	if (ideal && use_ideal_rate)
+> +		rem[OUT] = do_div(clk_rate, IDEAL_RATIO_RATE);
+>  	else
+> -		div[OUT] = clk_get_rate(clk) / outrate;
+> +		rem[OUT] = do_div(clk_rate, outrate);
+> +	div[OUT] = clk_rate;
+>  
+> -	if (div[OUT] == 0) {
+
+And add before this if-condition:
+
+	/* Output divider has the same limitation as the input one */
+
+> +	if (div[OUT] == 0 || (!ideal && (div[OUT] > 1024 || rem[OUT] != 0))) {
+>  		pair_err("failed to support output sample rate %dHz by asrck_%x\n",
+>  				outrate, clk_index[OUT]);
+>  		return -EINVAL;
+>  	}
+>  
+> +	/* Divider range is [1, 1024] */
+
+Can drop this too.
+
+> +	div[IN] = min_t(u32, 1024, div[IN]);
+> +	div[OUT] = min_t(u32, 1024, div[OUT]);
+
