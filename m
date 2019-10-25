@@ -1,76 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388DDE565A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 00:01:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2E8E5680
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 00:30:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 470J3r3v7XzDqss
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 09:01:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 470Jj651yWzDqvR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 09:30:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="qwmWtewK"; 
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Y0xPYNWI"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 470J1X3v1LzDqsl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 08:59:42 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id q7so2478672pfh.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 14:59:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=eW3QcADxWiA9bB+f1V3Z1+dcU/1XE8CGZphcypGekbY=;
- b=qwmWtewKTdVLT5daUxPBZ5FzRpQl/egXLrBQ+UeZlpbEcHCiFqCaJklDEfi4dFeioG
- /XiO73dbDOzSSEE0e8De1pxiRwZ82JdWzsFQbae0oD79Pxhqy6EVKuu4BKTBEkvC1nMa
- m3nTmAaZ5lJOwxsHqbeokO4CRoYMoCgFlTZrR2iNULK3dzXeUmsnDqhk1sIspgID48YJ
- jKHqlgxD3nXUuqVQk2uwhEI9NgoalG4q+9bExzO5fTaykJS13q4yv6FQ6bKvkosayM2c
- ySkyd6GIpHirJ0zV2dZlTAiKIXtdOi7lS9lY13KClqTq1nv1w3qqvyeAPyYB1sKvas75
- WFMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=eW3QcADxWiA9bB+f1V3Z1+dcU/1XE8CGZphcypGekbY=;
- b=pwxkQ6Nik28MUH8jHQOa7PSPule5NS/Qa7T8Q9cVvlk9L+M4rx+fLVslr+k2w4Fe1/
- KmA1JWc2GchxS5RPbqpjSqZxcF2LIIk81XpRBtZUh0UZ0wcfClwg5USoOox5MAQso48c
- NCCfXMOi4FaDrv3kMO89iSguYodPsWixKynOjWvcTr6OGbeZ0+vhUlDU/518k4gyWx0S
- 6jhoTWHmWK4IHg9PHQIwfEeisVBVR+S6hP2fqlyk9FiGOJUv8b/4113X85x0qazPsXCS
- lbokHNJYZUc1SzdXdwE20f3FTRFH5gt/GtLlYxvY0YrZUh2EWu7qR20QEGSDhwWGUQ1O
- Braw==
-X-Gm-Message-State: APjAAAUo2V4MGcacSeRGoeySQcBsIDxkd8nOTbU99CcSeNQAezbrAgNK
- mKmhz+zIUhJPIlinV+sWS0M=
-X-Google-Smtp-Source: APXvYqzAlyQ6QgA1OIplwWAdTMmiF8dDyvSSD0lN3oGKWYGdoPCg4gqnizy04m7h1H3tGg509ldamQ==
-X-Received: by 2002:a17:90a:d351:: with SMTP id
- i17mr6807596pjx.36.1572040779795; 
- Fri, 25 Oct 2019 14:59:39 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id d5sm2815101pjw.31.2019.10.25.14.59.38
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 25 Oct 2019 14:59:39 -0700 (PDT)
-Date: Fri, 25 Oct 2019 14:59:20 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH V2] ASoC: fsl_asrc: refine the setting of internal clock
- divider
-Message-ID: <20191025215919.GB15101@Asurada-Nvidia.nvidia.com>
-References: <a0cd2ecf5e833fbdc064ba73391481d6073e7254.1571986398.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 470JgJ57sFzDqss
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 09:29:00 +1100 (AEDT)
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com
+ [209.85.160.175])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 866A0222CB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 22:28:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1572042537;
+ bh=3evtaW0DllhNjB+6uE12Xtr767SicH4mL/3jr13JPnw=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=Y0xPYNWIhy+X9xuv5u4Wa/zCefNIPCanVXobNlhDKDX+Owz52aqUAH58jQ+mNPs63
+ O3mMjAqP71Ir0UCSIrBSJIhnTx3HMFGLlfJAKFrZq2/utHjIKqYV0lRegpvqlNse6+
+ htEoGVaqJTN39uF3gK96EmNCmnRhLEiw9Z3VeLDA=
+Received: by mail-qt1-f175.google.com with SMTP id g50so5634809qtb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 15:28:57 -0700 (PDT)
+X-Gm-Message-State: APjAAAXR2vnDguZy8MyEDrv0W4rs34gObkNVFlo+oaES2aqcFpfRjOhI
+ I8I2OI3/ZY9SjN/2ZRep1DL6y6pgWmyBoO4O7Q==
+X-Google-Smtp-Source: APXvYqwUeo+87jGdwN8O2BI8pdyipeup5umEsuiEp7ShvmiozlvhXNWOXf+HdZp099/MAKe+FyPRmNOe/EwJehO/q28=
+X-Received: by 2002:a0c:eed0:: with SMTP id h16mr5912628qvs.85.1572042536551; 
+ Fri, 25 Oct 2019 15:28:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a0cd2ecf5e833fbdc064ba73391481d6073e7254.1571986398.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+ <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+ <20191015131750.GV25745@shell.armlinux.org.uk>
+ <87muds586t.fsf@mpe.ellerman.id.au>
+ <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+ <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+ <20191023143159.GB25745@shell.armlinux.org.uk>
+In-Reply-To: <20191023143159.GB25745@shell.armlinux.org.uk>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Fri, 25 Oct 2019 17:28:45 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+Message-ID: <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+To: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,125 +72,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, mad skateman <madskateman@gmail.com>,
+ linux-mmc <linux-mmc@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <chzigotzky@xenosoft.de>,
+ "contact@a-eon.com" <contact@a-eon.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 25, 2019 at 03:13:22PM +0800, Shengjiu Wang wrote:
-> The output divider should align with the output sample
-> rate, if use ideal sample rate, there will be a lot of overload,
-> which would cause underrun.
-> 
-> The maximum divider of asrc clock is 1024, but there is no
-> judgement for this limitaion in driver, which may cause the divider
+On Wed, Oct 23, 2019 at 9:32 AM Russell King - ARM Linux admin
+<linux@armlinux.org.uk> wrote:
+>
+> On Wed, Oct 23, 2019 at 08:52:33AM -0500, Rob Herring wrote:
+> > > I think this should have been done the other way around and default to
+> > > coherent since most traditional OF platforms are coherent, and you
+> > > can't just require those DTs to change.
+> >
+> > You can blame me. This was really only intended for cases where
+> > coherency is configurable on a per peripheral basis and can't be
+> > determined in other ways.
+> >
+> > The simple solution here is simply to use the compatible string for
+> > the device to determine coherent or not.
+>
+> It really isn't that simple.
 
-typo: "limitaion" => "limitation"
+This doesn't work?:
 
-> setting not correct.
-> 
-> For non-ideal ratio mode, the clock rate should divide the sample
-> rate with no remainder, and the quotient should be less than 1024.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+        if (IS_ENABLED(CONFIG_PPC) || of_dma_is_coherent(dev->of_node))
+                value |= ESDHC_DMA_SNOOP;
+        else
+                value &= ~ESDHC_DMA_SNOOP;
 
-And some comments inline. Please add my ack once they are fixed:
+While I said use the compatibles, using the kconfig symbol is easier
+than sorting out which compatibles are PPC SoCs. Though if that's
+already done elsewhere in the driver, you could set a flag and use
+that here. I'd be surprised if this was the only difference between
+ARM and PPC SoCs for this block.
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+> There are two aspects to coherency, both of which must match:
+>
+> 1) The configuration of the device
+> 2) The configuration of the kernel's DMA API
+>
+> (1) is controlled by the driver, which can make the decision any way
+> it pleases.
+>
+> (2) on ARM64 is controlled depending on whether or not "dma-coherent"
+> is specified in the device tree, since ARM64 can have a mixture of
+> DMA coherent and non-coherent devices.
+>
+> A mismatch between (1) and (2) results in data corruption, potentially
+> eating your filesystem.  So, it's very important that the two match.
+>
+> These didn't match for the LX2160A, but, due to the way CMA was working,
+> we sort of got away with it, but it was very dangerous as far as data
+> safety went.
+>
+> Then, a change to CMA happened which moved where it was located, which
+> caused a regression.  Reverting the CMA changes didn't seem to be an
+> option, so another solution had to be found.
+>
+> I started a discussion on how best to solve this:
+>
+> https://archive.armlinux.org.uk/lurker/thread/20190919.041320.1e53541f.en.html
+>
+> and the solution that the discussion came out with was the one that has
+> been merged - which we now know caused a regression on PPC.
+>
+> Using compatible strings doesn't solve the issue: there is no way to
+> tell the DMA API from the driver that the device is coherent.  The
+> only way to do that is via the "dma-coherent" property in DT on ARM64.
+>
+> To say that this is a mess is an under-statement, but we seem to have
+> ended up here because of a series of piece-meal changes that don't seem
+> to have been thought through enough.
+>
+> So, what's the right way to solve this, and ensure that the DMA API and
+> device match as far as their coherency expectations go?  Revert all the
+> changes for sdhci-of-esdhc and CMA back to 5.0 or 5.1 state?
 
-Thanks
+The other option is similar to earlier in the thread and just add to
+of_dma_is_coherent():
 
-> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> index 0bf91a6f54b9..89cf333154c7 100644
-> --- a/sound/soc/fsl/fsl_asrc.c
-> +++ b/sound/soc/fsl/fsl_asrc.c
-> @@ -259,8 +259,11 @@ static int fsl_asrc_set_ideal_ratio(struct fsl_asrc_pair *pair,
->   * It configures those ASRC registers according to a configuration instance
->   * of struct asrc_config which includes in/output sample rate, width, channel
->   * and clock settings.
-> + *
-> + * Note:
-> + * use_ideal_rate = true is need by some case which need higher performance.
+/* Powerpc is normally cache coherent DMA */
+if (IS_ENABLED(CONFIG_PPC) && !IS_ENABLED(CONFIG_NOT_COHERENT_CACHE))
+    return true;
 
-I feel we can have a detailed one here and drop those inline comments, e.g.:
+We could do the all the weak arch hooks, but that seems like overkill
+to me at this point.
 
-+ * Note:
-+ * The ideal ratio configuration can work with a flexible clock rate setting.
-+ * Using IDEAL_RATIO_RATE gives a faster converting speed but overloads ASRC.
-+ * For a regular audio playback, the clock rate should not be slower than an
-+ * clock rate aligning with the output sample rate; For a use case requiring
-+ * faster conversion, set use_ideal_rate to have the faster speed.
-
-> @@ -351,8 +355,10 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
->  	/* We only have output clock for ideal ratio mode */
->  	clk = asrc_priv->asrck_clk[clk_index[ideal ? OUT : IN]];
->  
-> -	div[IN] = clk_get_rate(clk) / inrate;
-> -	if (div[IN] == 0) {
-> +	clk_rate = clk_get_rate(clk);
-> +	rem[IN] = do_div(clk_rate, inrate);
-> +	div[IN] = (u32)clk_rate;
-
-> +	if (div[IN] == 0 || (!ideal && (div[IN] > 1024 || rem[IN] != 0))) {
-
-Should have some comments to explain this like:
-	/*
-	 * The divider range is [1, 1024], defined by the hardware. For non-
-	 * ideal ratio configuration, clock rate has to be strictly aligned
-	 * with the sample rate. For ideal ratio configuration, clock rates
-	 * only result in different converting speeds. So remainder does not
-	 * matter, as long as we keep the divider within its valid range.
-	 */
->  		pair_err("failed to support input sample rate %dHz by asrck_%x\n",
->  				inrate, clk_index[ideal ? OUT : IN]);
->  		return -EINVAL;
-
-And move the min() behind this if-condition with no more comments:
-+	div[IN] = min_t(u32, 1024, div[IN]);
-
-> @@ -360,18 +366,29 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
->  
->  	clk = asrc_priv->asrck_clk[clk_index[OUT]];
->  
-> -	/* Use fixed output rate for Ideal Ratio mode (INCLK_NONE) */
-> -	if (ideal)
-> -		div[OUT] = clk_get_rate(clk) / IDEAL_RATIO_RATE;
-> +	/*
-> +	 * Output rate should be align with the out samplerate. If set too
-> +	 * high output rate, there will be lots of Overload.
-> +	 * But some case need higher performance, then we can use
-> +	 * IDEAL_RATIO_RATE specifically for such case.
-> +	 */
-
-Can drop this since we have the detailed comments at the top.
-
-> +	clk_rate = clk_get_rate(clk);
-> +	if (ideal && use_ideal_rate)
-> +		rem[OUT] = do_div(clk_rate, IDEAL_RATIO_RATE);
->  	else
-> -		div[OUT] = clk_get_rate(clk) / outrate;
-> +		rem[OUT] = do_div(clk_rate, outrate);
-> +	div[OUT] = clk_rate;
->  
-> -	if (div[OUT] == 0) {
-
-And add before this if-condition:
-
-	/* Output divider has the same limitation as the input one */
-
-> +	if (div[OUT] == 0 || (!ideal && (div[OUT] > 1024 || rem[OUT] != 0))) {
->  		pair_err("failed to support output sample rate %dHz by asrck_%x\n",
->  				outrate, clk_index[OUT]);
->  		return -EINVAL;
->  	}
->  
-> +	/* Divider range is [1, 1024] */
-
-Can drop this too.
-
-> +	div[IN] = min_t(u32, 1024, div[IN]);
-> +	div[OUT] = min_t(u32, 1024, div[OUT]);
-
+Rob
