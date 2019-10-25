@@ -1,44 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6CBE45AE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 10:26:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA86E4651
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 10:54:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zxyv2Gf8zDqdc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 19:26:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zybz2hhtzDqlV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 19:54:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46zxwM2H6QzDqjd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 19:24:00 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF61228;
- Fri, 25 Oct 2019 01:23:57 -0700 (PDT)
-Received: from [10.162.41.137] (p8cg001049571a15.blr.arm.com [10.162.41.137])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- 8D6FC3F718; Fri, 25 Oct 2019 01:23:44 -0700 (PDT)
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="JXqe5sri"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zyYs5MjxzDqgP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 19:53:03 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46zyYg6BYkz9vC0w;
+ Fri, 25 Oct 2019 10:52:55 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=JXqe5sri; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6HbhFbyFhM8v; Fri, 25 Oct 2019 10:52:55 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46zyYg4vJdz9vC0r;
+ Fri, 25 Oct 2019 10:52:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1571993575; bh=4oDjhDK0FsO59rFVGt7Y5o7o8C55+19qgM1BU+899t4=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=JXqe5sriXNQaQXKes3qqbdy43NSrBpwRBpfMpDtkffnR5YWutoOVXs9BVvi7rzrMY
+ QG68soKwprXrLgOAJa7ilqd/FXQFpMspM1kp2DJjaecMsPUGWDU22R2zojRhkImahW
+ aYJ8xO9qWW+5AHxKxjlrTglXwCmCdHn/aPTlV1cw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B9A698B868;
+ Fri, 25 Oct 2019 10:52:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Z1aZY1cuISIS; Fri, 25 Oct 2019 10:52:56 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7BC128B895;
+ Fri, 25 Oct 2019 10:52:54 +0200 (CEST)
 Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
  helpers
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Qian Cai <cai@lca.pw>
+To: Anshuman Khandual <anshuman.khandual@arm.com>, Qian Cai <cai@lca.pw>
 References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
  <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
  <3cfec421-4006-4159-ca32-313ff5196ff9@c-s.fr>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <763d58b4-f532-0bba-bf2b-71433ac514fb@arm.com>
-Date: Fri, 25 Oct 2019 13:54:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ <763d58b4-f532-0bba-bf2b-71433ac514fb@arm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <d811622e-0d35-3bc6-9568-36abc1bee355@c-s.fr>
+Date: Fri, 25 Oct 2019 10:52:54 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <3cfec421-4006-4159-ca32-313ff5196ff9@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <763d58b4-f532-0bba-bf2b-71433ac514fb@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,55 +114,65 @@ Sender: "Linuxppc-dev"
 
 
 
-On 10/25/2019 12:41 PM, Christophe Leroy wrote:
+Le 25/10/2019 à 10:24, Anshuman Khandual a écrit :
 > 
 > 
-> Le 25/10/2019 à 07:52, Qian Cai a écrit :
+> On 10/25/2019 12:41 PM, Christophe Leroy wrote:
 >>
 >>
->>> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>> Le 25/10/2019 à 07:52, Qian Cai a écrit :
 >>>
->>> Nothing specific. But just tested this with x86 defconfig with relevant configs
->>> which are required for this test. Not sure if it involved W=1.
+>>>
+>>>> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
+>>>>
+>>>> Nothing specific. But just tested this with x86 defconfig with relevant configs
+>>>> which are required for this test. Not sure if it involved W=1.
+>>>
+>>> No, it will not. It needs to run like,
+>>>
+>>> make W=1 -j 64 2>/tmp/warns
+>>>
 >>
->> No, it will not. It needs to run like,
+>> Are we talking about this peace of code ?
 >>
->> make W=1 -j 64 2>/tmp/warns
+>> +static unsigned long __init get_random_vaddr(void)
+>> +{
+>> +    unsigned long random_vaddr, random_pages, total_user_pages;
+>> +
+>> +    total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
+>> +
+>> +    random_pages = get_random_long() % total_user_pages;
+>> +    random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
+>> +
+>> +    WARN_ON((random_vaddr > TASK_SIZE) ||
+>> +        (random_vaddr < FIRST_USER_ADDRESS));
+>> +    return random_vaddr;
+>> +}
+>> +
 >>
+>> ramdom_vaddr is unsigned,
+>> random_pages is unsigned and lower than total_user_pages
+>>
+>> So the max value random_vaddr can get is FIRST_USER_ADDRESS + ((TASK_SIZE - FIRST_USER_ADDRESS - 1) / PAGE_SIZE) * PAGE_SIZE = TASK_SIZE - 1
+>> And the min value random_vaddr can get is FIRST_USER_ADDRESS (that's when random_pages = 0)
 > 
-> Are we talking about this peace of code ?
+> That's right.
 > 
-> +static unsigned long __init get_random_vaddr(void)
-> +{
-> +    unsigned long random_vaddr, random_pages, total_user_pages;
-> +
-> +    total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
-> +
-> +    random_pages = get_random_long() % total_user_pages;
-> +    random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
-> +
-> +    WARN_ON((random_vaddr > TASK_SIZE) ||
-> +        (random_vaddr < FIRST_USER_ADDRESS));
-> +    return random_vaddr;
-> +}
-> +
+>>
+>> So the WARN_ON() is just unneeded, isn't it ?
 > 
-> ramdom_vaddr is unsigned,
-> random_pages is unsigned and lower than total_user_pages
+> It is just a sanity check on possible vaddr values before it's corresponding
+> page table mappings could be created. If it's worth to drop this in favor of
+> avoiding these unwanted warning messages on x86, will go ahead with it as it
+> is not super important.
 > 
-> So the max value random_vaddr can get is FIRST_USER_ADDRESS + ((TASK_SIZE - FIRST_USER_ADDRESS - 1) / PAGE_SIZE) * PAGE_SIZE = TASK_SIZE - 1
-> And the min value random_vaddr can get is FIRST_USER_ADDRESS (that's when random_pages = 0)
 
-That's right.
+But you are checking what ? That the compiler does calculation correctly 
+or what ?
+As mentionned just above, based on the calculation done, what you are 
+testing cannot happen, so I'm having a hard time understanding what kind 
+of sanity check it can be.
 
-> 
-> So the WARN_ON() is just unneeded, isn't it ?
+Can you give an exemple of a situation which could trigger the warning ?
 
-It is just a sanity check on possible vaddr values before it's corresponding
-page table mappings could be created. If it's worth to drop this in favor of
-avoiding these unwanted warning messages on x86, will go ahead with it as it
-is not super important.
-
-> 
-> Christophe
-> 
+Christophe
