@@ -1,41 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854B0E4B3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 14:38:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF84E4B6E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 14:45:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4703ZM13HKzDqjY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 23:38:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4703jS5DjmzDqk7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 23:45:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ubuntu.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ubuntu.com
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::143;
+ helo=mail-lf1-x143.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="gr43qyfK"; dkim-atps=neutral
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
+ [IPv6:2a00:1450:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4703SH6yR3zDqgG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 23:33:35 +1100 (AEDT)
-Received: from [185.240.52.243] (helo=localhost.localdomain)
- by youngberry.canonical.com with esmtpsa
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
- (envelope-from <christian.brauner@ubuntu.com>)
- id 1iNym9-0007oa-U4; Fri, 25 Oct 2019 12:33:05 +0000
-From: Christian Brauner <christian.brauner@ubuntu.com>
-To: viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
- fweimer@redhat.com
-Subject: [REVIEW PATCH v5 2/3] arch: wire-up close_range()
-Date: Fri, 25 Oct 2019 14:28:50 +0200
-Message-Id: <20191025122851.30182-3-christian.brauner@ubuntu.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4703d13sCFzDqSk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 23:41:08 +1100 (AEDT)
+Received: by mail-lf1-x143.google.com with SMTP id g3so1607751lfb.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 05:41:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=nNhTW3U2Xf+f8X6ztyGJ0vdPsrVEzgnkoLb09kGESGY=;
+ b=gr43qyfKeoGH65CYsJHoPG+YL9Tx4hVUZVoQzYzb9XsMqHySY57WJtUCKdPh98abFb
+ 978lBekDEIJw3ctIHrCrHNrnVte3xIHmGJW9xZwa+BVM8YrwNCtva1EUvT8mgMQ0+NIk
+ RMH0xuXFjObqrkldH+wRmh6xxURbjD8yMaUAw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=nNhTW3U2Xf+f8X6ztyGJ0vdPsrVEzgnkoLb09kGESGY=;
+ b=kTp8VByZP7bnM4ZSDbj8wsRB45/nKFLhO2e4Y2zusMCXEcrQZ4UAYLkTWh+As0V5KE
+ miv+iaxao41yCsG2u6cxT6IM6j6ecxCD8VG4MpEXeZDT++2uP85ub7Yb0dLxL1QezlEx
+ hLmPpvsyLUphydQRP8CsNNFlKVfzkrNeio26czX2jkKN2LQo5LQrfceMsNGEO3U5M/F0
+ FRl8aEcnP+pQS7/xq71ArCPj+Brl1Uk5g4XhRrDtKzfzyrTUiyxsGcbqVYCf0Mrr42t4
+ JlnTvnnfT7xVIOoR4TH6ZrbDO+2mzKG1E9qjSPnzPVBroGAyI0YroVQ74/rcR09/6U9R
+ +g2g==
+X-Gm-Message-State: APjAAAXhvVYR22MEzj3HgzU2vGyGQpfxgyCEyFJT1bSg9gPPywLeDNbj
+ OaTSB9qhTXnlbLQl78mviFuYhg==
+X-Google-Smtp-Source: APXvYqzI54y0qXty0REj/t8bh97dPNgFy2YQ0TG2aFgxJMZvmcPNDi0C+wUJpvWYRj3db7mvv6qlJw==
+X-Received: by 2002:ac2:4d04:: with SMTP id r4mr2706461lfi.136.1572007262270; 
+ Fri, 25 Oct 2019 05:41:02 -0700 (PDT)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id 10sm821028lfy.57.2019.10.25.05.41.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Oct 2019 05:41:01 -0700 (PDT)
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 00/23] QUICC Engine support on ARM
+Date: Fri, 25 Oct 2019 14:40:35 +0200
+Message-Id: <20191025124058.22580-1-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191025122851.30182-1-christian.brauner@ubuntu.com>
-References: <20191025122851.30182-1-christian.brauner@ubuntu.com>
+In-Reply-To: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -49,276 +77,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, ldv@altlinux.org,
- dhowells@redhat.com, sparclinux@vger.kernel.org,
- Christian Brauner <christian.brauner@ubuntu.com>, shuah@kernel.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, miklos@szeredi.hu,
- x86@kernel.org, linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- tkjos@android.com, arnd@arndb.de, jannh@google.com,
- linux-m68k@lists.linux-m68k.org, tglx@linutronix.de,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, oleg@redhat.com, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Valentin Longchamp <valentin.longchamp@keymile.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
+ Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This wires up the close_range() syscall into all arches at once.
+There have been several attempts in the past few years to allow
+building the QUICC engine drivers for platforms other than PPC. This
+is yet another attempt.
 
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Cc: Jann Horn <jannh@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Dmitry V. Levin <ldv@altlinux.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Florian Weimer <fweimer@redhat.com>
-Cc: linux-api@vger.kernel.org
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-xtensa@linux-xtensa.org
-Cc: linux-arch@vger.kernel.org
-Cc: x86@kernel.org
----
-/* v2 */
-not present
+In v2, I've fixed a few style issues. But more importantly, it now
+contains enough to actually remove the PPC32 dependency from
+CONFIG_QUICC_ENGINE, so that's what the last patch does.
 
-/* v3 */
-not present
+I haven't found a way to address Christophe's concern over the
+performance impact of using the (on powerpc) out-of-line iowrite32be
+instead of out_be32. I could of course introduce some qe_ prefixed
+helpers (similar to the already added qe_clrsetbits ones) and make
+their definition dependent on PPC32 or not, but that seems to be a bit
+ugly.
 
-/* v4 */
-introduced
-- Arnd Bergmann <arnd@arndb.de>:
-  - split into two patches:
-    1. add close_range()
-    2. add syscall to all arches at once
-  - bump __NR_compat_syscalls in arch/arm64/include/asm/unistd.h
+Rasmus Villemoes (23):
+  soc: fsl: qe: remove space-before-tab
+  soc: fsl: qe: drop volatile qualifier of struct qe_ic::regs
+  soc: fsl: qe: avoid ppc-specific io accessors
+  soc: fsl: qe: replace spin_event_timeout by readx_poll_timeout_atomic
+  soc: fsl: qe: qe.c: guard use of pvr_version_is() with CONFIG_PPC32
+  soc: fsl: qe: avoid tail comments in qe_ic.h
+  soc: fsl: qe: merge qe_ic.h into qe_ic.c
+  soc: fsl: qe: drop unneeded #includes
+  soc: fsl: qe: move qe_ic_cascade_* functions to qe_ic.c
+  soc: fsl: qe: use qe_ic_cascade_{low,high}_mpic also on 83xx
+  soc: fsl: qe: rename qe_ic_cascade_low_mpic -> qe_ic_cascade_low
+  soc: fsl: qe: drop assign-only high_active in qe_ic_init
+  soc: fsl: qe: remove pointless sysfs registration in qe_ic.c
+  soc: fsl: qe: move calls of qe_ic_init out of arch/powerpc/
+  powerpc/83xx: remove mpc83xx_ipic_and_qe_init_IRQ
+  powerpc/85xx: remove mostly pointless mpc85xx_qe_init()
+  soc: fsl: qe: make qe_ic_cascade_* static
+  soc: fsl: qe: remove unused qe_ic_set_* functions
+  net: ethernet: freescale: make UCC_GETH explicitly depend on PPC32
+  serial: make SERIAL_QE depend on PPC32
+  serial: ucc_uart.c: explicitly include asm/cpm.h
+  soc/fsl/qe/qe.h: remove include of asm/cpm.h
+  soc: fsl: qe: remove PPC32 dependency from CONFIG_QUICC_ENGINE
 
-/* v5 */
-- Christian Brauner <christian.brauner@ubuntu.com>:
----
- arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
- arch/arm/tools/syscall.tbl                  | 1 +
- arch/arm64/include/asm/unistd.h             | 2 +-
- arch/arm64/include/asm/unistd32.h           | 2 ++
- arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
- arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
- arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
- arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
- arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
- arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
- arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
- arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
- arch/s390/kernel/syscalls/syscall.tbl       | 1 +
- arch/sh/kernel/syscalls/syscall.tbl         | 1 +
- arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
- arch/x86/entry/syscalls/syscall_32.tbl      | 1 +
- arch/x86/entry/syscalls/syscall_64.tbl      | 1 +
- arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
- include/uapi/asm-generic/unistd.h           | 4 +++-
- 19 files changed, 22 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/83xx/km83xx.c          |   3 +-
+ arch/powerpc/platforms/83xx/misc.c            |  23 --
+ arch/powerpc/platforms/83xx/mpc832x_mds.c     |   3 +-
+ arch/powerpc/platforms/83xx/mpc832x_rdb.c     |   3 +-
+ arch/powerpc/platforms/83xx/mpc836x_mds.c     |   3 +-
+ arch/powerpc/platforms/83xx/mpc836x_rdk.c     |   3 +-
+ arch/powerpc/platforms/83xx/mpc83xx.h         |   7 -
+ arch/powerpc/platforms/85xx/common.c          |  23 --
+ arch/powerpc/platforms/85xx/corenet_generic.c |  12 -
+ arch/powerpc/platforms/85xx/mpc85xx.h         |   2 -
+ arch/powerpc/platforms/85xx/mpc85xx_mds.c     |  28 --
+ arch/powerpc/platforms/85xx/mpc85xx_rdb.c     |  18 --
+ arch/powerpc/platforms/85xx/twr_p102x.c       |  16 -
+ drivers/net/ethernet/freescale/Kconfig        |   1 +
+ drivers/soc/fsl/qe/Kconfig                    |   2 +-
+ drivers/soc/fsl/qe/gpio.c                     |  30 +-
+ drivers/soc/fsl/qe/qe.c                       |  59 ++--
+ drivers/soc/fsl/qe/qe_ic.c                    | 289 ++++++++++--------
+ drivers/soc/fsl/qe/qe_ic.h                    |  99 ------
+ drivers/soc/fsl/qe/qe_io.c                    |  42 ++-
+ drivers/soc/fsl/qe/qe_tdm.c                   |   8 +-
+ drivers/soc/fsl/qe/ucc.c                      |  16 +-
+ drivers/soc/fsl/qe/ucc_fast.c                 |  70 ++---
+ drivers/soc/fsl/qe/ucc_slow.c                 |  38 +--
+ drivers/soc/fsl/qe/usb.c                      |   2 +-
+ drivers/tty/serial/Kconfig                    |   1 +
+ drivers/tty/serial/ucc_uart.c                 |   1 +
+ include/soc/fsl/qe/qe.h                       |   1 -
+ include/soc/fsl/qe/qe_ic.h                    |  69 -----
+ 29 files changed, 299 insertions(+), 573 deletions(-)
+ delete mode 100644 drivers/soc/fsl/qe/qe_ic.h
 
-diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-index 728fe028c02c..f08906efa5ff 100644
---- a/arch/alpha/kernel/syscalls/syscall.tbl
-+++ b/arch/alpha/kernel/syscalls/syscall.tbl
-@@ -475,3 +475,4 @@
- 543	common	fspick				sys_fspick
- 544	common	pidfd_open			sys_pidfd_open
- # 545 reserved for clone3
-+546	common	close_range			sys_close_range
-diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
-index 6da7dc4d79cc..f25716576d13 100644
---- a/arch/arm/tools/syscall.tbl
-+++ b/arch/arm/tools/syscall.tbl
-@@ -449,3 +449,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- 435	common	clone3				sys_clone3
-+436	common	close_range			sys_close_range
-diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
-index 2629a68b8724..368761302768 100644
---- a/arch/arm64/include/asm/unistd.h
-+++ b/arch/arm64/include/asm/unistd.h
-@@ -38,7 +38,7 @@
- #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
- #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
- 
--#define __NR_compat_syscalls		436
-+#define __NR_compat_syscalls		437
- #endif
- 
- #define __ARCH_WANT_SYS_CLONE
-diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
-index 94ab29cf4f00..c1309f52c8ac 100644
---- a/arch/arm64/include/asm/unistd32.h
-+++ b/arch/arm64/include/asm/unistd32.h
-@@ -879,6 +879,8 @@ __SYSCALL(__NR_fspick, sys_fspick)
- __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
- #define __NR_clone3 435
- __SYSCALL(__NR_clone3, sys_clone3)
-+#define __NR_close_range 436
-+__SYSCALL(__NR_close_range, sys_close_range)
- 
- /*
-  * Please add new compat syscalls above this comment and update
-diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
-index 36d5faf4c86c..151f4fd234be 100644
---- a/arch/ia64/kernel/syscalls/syscall.tbl
-+++ b/arch/ia64/kernel/syscalls/syscall.tbl
-@@ -356,3 +356,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- # 435 reserved for clone3
-+436	common	close_range			sys_close_range
-diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-index a88a285a0e5f..adff06c08d2f 100644
---- a/arch/m68k/kernel/syscalls/syscall.tbl
-+++ b/arch/m68k/kernel/syscalls/syscall.tbl
-@@ -435,3 +435,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- # 435 reserved for clone3
-+436	common	close_range			sys_close_range
-diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
-index 09b0cd7dab0a..84aa70453704 100644
---- a/arch/microblaze/kernel/syscalls/syscall.tbl
-+++ b/arch/microblaze/kernel/syscalls/syscall.tbl
-@@ -441,3 +441,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- 435	common	clone3				sys_clone3
-+436	common	close_range			sys_close_range
-diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-index e7c5ab38e403..0c1fdfc01ebb 100644
---- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-@@ -374,3 +374,4 @@
- 433	n32	fspick				sys_fspick
- 434	n32	pidfd_open			sys_pidfd_open
- 435	n32	clone3				__sys_clone3
-+436	n32	close_range			sys_close_range
-diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-index 13cd66581f3b..d1284f1ce329 100644
---- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-@@ -350,3 +350,4 @@
- 433	n64	fspick				sys_fspick
- 434	n64	pidfd_open			sys_pidfd_open
- 435	n64	clone3				__sys_clone3
-+436	n64	close_range			sys_close_range
-diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-index 353539ea4140..7e4118d8d2ca 100644
---- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-@@ -423,3 +423,4 @@
- 433	o32	fspick				sys_fspick
- 434	o32	pidfd_open			sys_pidfd_open
- 435	o32	clone3				__sys_clone3
-+436	o32	close_range			sys_close_range
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index 285ff516150c..d07f75996382 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -433,3 +433,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- 435	common	clone3				sys_clone3_wrapper
-+436	common	close_range			sys_close_range
-diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-index 43f736ed47f2..093d91114ea8 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -517,3 +517,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- 435	nospu	clone3				ppc_clone3
-+436	common	close_range			sys_close_range
-diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-index 3054e9c035a3..74565cf327ce 100644
---- a/arch/s390/kernel/syscalls/syscall.tbl
-+++ b/arch/s390/kernel/syscalls/syscall.tbl
-@@ -438,3 +438,4 @@
- 433  common	fspick			sys_fspick			sys_fspick
- 434  common	pidfd_open		sys_pidfd_open			sys_pidfd_open
- 435  common	clone3			sys_clone3			sys_clone3
-+436  common	close_range		sys_close_range			sys_close_range
-diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-index b5ed26c4c005..11c9e5626fdd 100644
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -438,3 +438,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- # 435 reserved for clone3
-+436	common	close_range			sys_close_range
-diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-index 8c8cc7537fb2..7928240b3966 100644
---- a/arch/sparc/kernel/syscalls/syscall.tbl
-+++ b/arch/sparc/kernel/syscalls/syscall.tbl
-@@ -481,3 +481,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- # 435 reserved for clone3
-+436	common	close_range			sys_close_range
-diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-index 3fe02546aed3..cb56003ccf2d 100644
---- a/arch/x86/entry/syscalls/syscall_32.tbl
-+++ b/arch/x86/entry/syscalls/syscall_32.tbl
-@@ -440,3 +440,4 @@
- 433	i386	fspick			sys_fspick			__ia32_sys_fspick
- 434	i386	pidfd_open		sys_pidfd_open			__ia32_sys_pidfd_open
- 435	i386	clone3			sys_clone3			__ia32_sys_clone3
-+436	i386	close_range		sys_close_range			__ia32_sys_close_range
-diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-index c29976eca4a8..0c8be7197ca2 100644
---- a/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/arch/x86/entry/syscalls/syscall_64.tbl
-@@ -357,6 +357,7 @@
- 433	common	fspick			__x64_sys_fspick
- 434	common	pidfd_open		__x64_sys_pidfd_open
- 435	common	clone3			__x64_sys_clone3/ptregs
-+436	common	close_range		__x64_sys_close_range
- 
- #
- # x32-specific system call numbers start at 512 to avoid cache impact
-diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
-index 25f4de729a6d..2526f37a6cac 100644
---- a/arch/xtensa/kernel/syscalls/syscall.tbl
-+++ b/arch/xtensa/kernel/syscalls/syscall.tbl
-@@ -406,3 +406,4 @@
- 433	common	fspick				sys_fspick
- 434	common	pidfd_open			sys_pidfd_open
- 435	common	clone3				sys_clone3
-+436	common	close_range			sys_close_range
-diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-index 1fc8faa6e973..53c57ffb3bd6 100644
---- a/include/uapi/asm-generic/unistd.h
-+++ b/include/uapi/asm-generic/unistd.h
-@@ -850,9 +850,11 @@ __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
- #define __NR_clone3 435
- __SYSCALL(__NR_clone3, sys_clone3)
- #endif
-+#define __NR_close_range 436
-+__SYSCALL(__NR_close_range, sys_close_range)
- 
- #undef __NR_syscalls
--#define __NR_syscalls 436
-+#define __NR_syscalls 437
- 
- /*
-  * 32 bit systems traditionally used different
 -- 
 2.23.0
 
