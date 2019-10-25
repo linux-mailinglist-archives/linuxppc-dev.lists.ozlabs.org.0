@@ -2,43 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B728E422E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 05:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C36E42B1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 06:51:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46zqnR1qhszDqm6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 14:47:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46zsBh1WwRzDqbt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2019 15:51:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46zqlN5rnFzDqfH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 14:45:50 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B5D211FB;
- Thu, 24 Oct 2019 20:45:47 -0700 (PDT)
-Received: from [10.162.41.137] (p8cg001049571a15.blr.arm.com [10.162.41.137])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- A4C213F718; Thu, 24 Oct 2019 20:45:36 -0700 (PDT)
-Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
- helpers
-To: Qian Cai <cai@lca.pw>
-References: <1571625739-29943-1-git-send-email-anshuman.khandual@arm.com>
- <FCAFFD72-3781-4474-8393-A4E40264473A@lca.pw>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
-Date: Fri, 25 Oct 2019 09:16:07 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46zs7v3wGnzDqZq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 15:48:42 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9P4lcl8090210
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 00:48:36 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vuqygbvcc-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2019 00:48:36 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Fri, 25 Oct 2019 05:48:33 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 25 Oct 2019 05:48:25 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9P4mOAN42991730
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Oct 2019 04:48:24 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 489635204F;
+ Fri, 25 Oct 2019 04:48:24 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9AAC952051;
+ Fri, 25 Oct 2019 04:48:23 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C0730A0147;
+ Fri, 25 Oct 2019 15:48:21 +1100 (AEDT)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: alastair@d-silva.org
+Subject: [PATCH 00/10] Add support for OpenCAPI SCM devices
+Date: Fri, 25 Oct 2019 15:46:55 +1100
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <FCAFFD72-3781-4474-8393-A4E40264473A@lca.pw>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19102504-0020-0000-0000-0000037E3ECB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19102504-0021-0000-0000-000021D488E6
+Message-Id: <20191025044721.16617-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-25_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=700 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910250045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,56 +87,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Wei Yang <richard.weiyang@gmail.com>, Keith Busch <keith.busch@intel.com>,
  Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+ Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Qian Cai <cai@lca.pw>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>,
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Alastair D'Silva <alastair@d-silva.org>
 
+This series adds support for OpenCAPI SCM devices, exposing
+them as nvdimms so that we can make use of the existing
+infrastructure.
 
-On 10/24/2019 10:21 PM, Qian Cai wrote:
-> 
-> 
->> On Oct 24, 2019, at 10:50 AM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
->>
->> Changes in V7:
->>
->> - Memory allocation and free routines for mapped pages have been droped
->> - Mapped pfns are derived from standard kernel text symbol per Matthew
->> - Moved debug_vm_pgtaable() after page_alloc_init_late() per Michal and Qian 
->> - Updated the commit message per Michal
->> - Updated W=1 GCC warning problem on x86 per Qian Cai
-> 
-> It would be interesting to know if you actually tested  out to see if the warning went away. As far I can tell, the GCC is quite stubborn there, so I am not going to insist.
-> 
+The first patch (in memory_hotplug) has reviews/acks, but has
+not yet made it upstream.
 
-Nothing specific. But just tested this with x86 defconfig with relevant configs
-which are required for this test. Not sure if it involved W=1. The problem is,
-there is no other or better way to have both the conditional checks in place
-while also reducing the chances this warning. IMHO both the conditional checks
-are required.
+Alastair D'Silva (10):
+  memory_hotplug: Add a bounds check to __add_pages
+  nvdimm: remove prototypes for nonexistent functions
+  powerpc: Add OPAL calls for LPC memory alloc/release
+  powerpc: Map & release OpenCAPI LPC memory
+  ocxl: Tally up the LPC memory on a link & allow it to be mapped
+  ocxl: Add functions to map/unmap LPC memory
+  ocxl: Save the device serial number in ocxl_fn
+  nvdimm: Add driver for OpenCAPI Storage Class Memory
+  powerpc: Enable OpenCAPI Storage Class Memory driver on bare metal
+  ocxl: Conditionally bind SCM devices to the generic OCXL driver
+
+ arch/powerpc/configs/powernv_defconfig     |    4 +
+ arch/powerpc/include/asm/opal-api.h        |    2 +
+ arch/powerpc/include/asm/opal.h            |    3 +
+ arch/powerpc/include/asm/pnv-ocxl.h        |    2 +
+ arch/powerpc/platforms/powernv/ocxl.c      |   41 +
+ arch/powerpc/platforms/powernv/opal-call.c |    2 +
+ drivers/misc/ocxl/Kconfig                  |    7 +
+ drivers/misc/ocxl/config.c                 |   50 +
+ drivers/misc/ocxl/core.c                   |   60 +
+ drivers/misc/ocxl/link.c                   |   60 +
+ drivers/misc/ocxl/ocxl_internal.h          |   36 +
+ drivers/misc/ocxl/pci.c                    |    3 +
+ drivers/nvdimm/Kconfig                     |   17 +
+ drivers/nvdimm/Makefile                    |    3 +
+ drivers/nvdimm/nd-core.h                   |    4 -
+ drivers/nvdimm/ocxl-scm.c                  | 2210 ++++++++++++++++++++
+ drivers/nvdimm/ocxl-scm_internal.c         |  232 ++
+ drivers/nvdimm/ocxl-scm_internal.h         |  331 +++
+ drivers/nvdimm/ocxl-scm_sysfs.c            |  219 ++
+ include/linux/memory_hotplug.h             |    5 +
+ include/misc/ocxl.h                        |   19 +
+ include/uapi/linux/ocxl-scm.h              |  128 ++
+ mm/memory_hotplug.c                        |   22 +
+ 23 files changed, 3456 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/nvdimm/ocxl-scm.c
+ create mode 100644 drivers/nvdimm/ocxl-scm_internal.c
+ create mode 100644 drivers/nvdimm/ocxl-scm_internal.h
+ create mode 100644 drivers/nvdimm/ocxl-scm_sysfs.c
+ create mode 100644 include/uapi/linux/ocxl-scm.h
+
+-- 
+2.21.0
+
