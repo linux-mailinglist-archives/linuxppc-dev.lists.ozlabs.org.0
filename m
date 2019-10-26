@@ -1,83 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E46CE56E3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 01:05:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315E6E58DB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 08:42:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 470KTN5xCnzDqvD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 10:05:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 470WcT2LD0zDqsQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 17:42:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+332c21a18e206945ff7a+5907+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="hwuUqh5O"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 470KRH6bNTzDqsy
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 10:03:39 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9PN28VT013598; Fri, 25 Oct 2019 19:03:29 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vucdt3vrj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Oct 2019 19:03:29 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9PN2ITk013871;
- Fri, 25 Oct 2019 19:03:29 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vucdt3vr4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Oct 2019 19:03:29 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9PMxaGr012657;
- Fri, 25 Oct 2019 23:03:28 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04dal.us.ibm.com with ESMTP id 2vqt48ckmc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Oct 2019 23:03:28 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9PN3QLE50856266
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 25 Oct 2019 23:03:26 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 96FA3BE056;
- Fri, 25 Oct 2019 23:03:26 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F82ABE053;
- Fri, 25 Oct 2019 23:03:26 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.251])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 25 Oct 2019 23:03:26 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 0/1] pseries/hotplug: Change the default behaviour of
- cede_offline
-In-Reply-To: <1571740391-3251-1-git-send-email-ego@linux.vnet.ibm.com>
-References: <1571740391-3251-1-git-send-email-ego@linux.vnet.ibm.com>
-Date: Fri, 25 Oct 2019 18:03:26 -0500
-Message-ID: <87o8y45sxt.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 470WZL0dQCzDqrX
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 17:40:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=6s17gBBg/6zRKAY7SPudjFKm/VgEPnz4H38+RtC8BxM=; b=hwuUqh5Oi86w7OEh0JFjKFc8b
+ CaaHHIRIZh8BFLDE00o2RIuqYJN8J44I+BA2Uaiv6+03YhJ9NPS/dnmjKIGkQ8AGMCTNGyWc08uIj
+ Dfv8hAHuN2M1xVu7n8X89L+VtGxT6TYPqnHZbGDqyST66bOya7xp7pBpirj2CYrGpLamJWn+ILDkt
+ n1DXFkqsfRIfl7rfcYSoia1dZKHIiiQXOjXzTnmZNzQMNz2gUT4HyUAdG+hxGk06/DIur7wWmVFu3
+ sSfh58f3kS+L28JMI+Y14hGdNdOR92GR0vB1uW8ctz/ZY53tlv5FTJI6BQ0anwyMF8AxPBiGc5utx
+ 91/NCE3QQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1iOFjK-0006J7-QH; Sat, 26 Oct 2019 06:39:18 +0000
+Date: Fri, 25 Oct 2019 23:39:18 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Rob Herring <robh+dt@kernel.org>
+Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
+ updates
+Message-ID: <20191026063918.GA24015@infradead.org>
+References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
+ <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
+ <20191015125105.GU25745@shell.armlinux.org.uk>
+ <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
+ <20191015131750.GV25745@shell.armlinux.org.uk>
+ <87muds586t.fsf@mpe.ellerman.id.au>
+ <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
+ <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
+ <20191023143159.GB25745@shell.armlinux.org.uk>
+ <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-25_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=731 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910250211
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,21 +74,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
- Kamalesh Babulal <kamaleshb@in.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, mad skateman <madskateman@gmail.com>,
+ linux-mmc <linux-mmc@vger.kernel.org>,
+ Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+ Paul Mackerras <paulus@samba.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ "contact@a-eon.com" <contact@a-eon.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
-> This is the v2 of the fix to change the default behaviour of
-> cede_offline.
+On Fri, Oct 25, 2019 at 05:28:45PM -0500, Rob Herring wrote:
+> This doesn't work?:
+> 
+>         if (IS_ENABLED(CONFIG_PPC) || of_dma_is_coherent(dev->of_node))
+>                 value |= ESDHC_DMA_SNOOP;
+>         else
+>                 value &= ~ESDHC_DMA_SNOOP;
+> 
+> While I said use the compatibles, using the kconfig symbol is easier
+> than sorting out which compatibles are PPC SoCs. Though if that's
+> already done elsewhere in the driver, you could set a flag and use
+> that here. I'd be surprised if this was the only difference between
+> ARM and PPC SoCs for this block.
 
-OK, but why keep the cede offline behavior at all? Can we remove it? I
-think doing so would allow us to remove all the code that temporarily
-onlines threads for partition migration.
+I think the right thing is a Kconfig variable that the architectures
+selects which says if OF is by default coherent or incoherent, and then
+use that in of_dma_is_coherent.
