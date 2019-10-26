@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F068DE5B64
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 15:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2F8E5C1A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 15:28:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 470hVX5VMVzDq9V
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Oct 2019 00:22:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 470hd46jNszDqr6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Oct 2019 00:28:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,36 +15,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="s6YAPDEO"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="yr3beEE3"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 470hNw2JchzDqmq
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 00:17:51 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 470hS23B5nzDqq7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 00:20:34 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C2BB221D81;
- Sat, 26 Oct 2019 13:17:47 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 496DD206DD;
+ Sat, 26 Oct 2019 13:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1572095868;
- bh=2IDKfjUQ8KiFiVXJR6D3b6GiSh0OQrxFdYB8PP8LW4I=;
+ s=default; t=1572096030;
+ bh=NLVxnA/jHpWXgDZIgCV3DQoDe2i1QLshxr5PWmUYvwY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=s6YAPDEO0ZW4N2k5me8ENYQnVlJoBNno1ULYzEpPFoPNkS4S5pTJaeas8eu/RuTRX
- qQYqo5vzcBiBgHR6bJnLuPT9Bg/q66YtAoM+IiZ5H+LeXZb2uVLO8b+y3kIeFqWxXz
- iXAjYfCkPwGRiuMrW5gari29RbyEeY0/D0y5+5YQ=
+ b=yr3beEE3oP5QW/WdGPJeIIB5vq33sTsvbb4WMLFuVLHFRBQtGdAAyzHJYIkjAKGsH
+ iEz1/HT7IFe0Cj0LTjmjSI5v3KLnkPPQV7PmU2Q5kvt9egOvnfEDG7GpfQQwog8OrK
+ 9sX1ILUx+4BGnc2yyY0C1Z5PXKZ6S1nGdkVkuXys=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 58/99] net/ibmvnic: Fix EOI when running in XIVE
+Subject: [PATCH AUTOSEL 4.19 40/59] net/ibmvnic: Fix EOI when running in XIVE
  mode.
-Date: Sat, 26 Oct 2019 09:15:19 -0400
-Message-Id: <20191026131600.2507-58-sashal@kernel.org>
+Date: Sat, 26 Oct 2019 09:18:51 -0400
+Message-Id: <20191026131910.3435-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191026131600.2507-1-sashal@kernel.org>
-References: <20191026131600.2507-1-sashal@kernel.org>
+In-Reply-To: <20191026131910.3435-1-sashal@kernel.org>
+References: <20191026131910.3435-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 5cb55ea671e35..964e7d62f4b13 100644
+index aa067a7a72d40..8fa14736449bc 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2772,12 +2772,10 @@ static int enable_scrq_irq(struct ibmvnic_adapter *adapter,
+@@ -2731,12 +2731,10 @@ static int enable_scrq_irq(struct ibmvnic_adapter *adapter,
  
  	if (adapter->resetting &&
  	    adapter->reset_reason == VNIC_RESET_MOBILITY) {
