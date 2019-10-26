@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315E6E58DB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 08:42:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B0DE58DE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 08:46:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 470WcT2LD0zDqsQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 17:42:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 470Whp2W7GzDqsd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2019 17:46:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,48 +18,40 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="hwuUqh5O"; dkim-atps=neutral
+ header.b="F/jZojJu"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 470WZL0dQCzDqrX
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 17:40:25 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 470Wfs1ydBzDqrZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2019 17:44:21 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6s17gBBg/6zRKAY7SPudjFKm/VgEPnz4H38+RtC8BxM=; b=hwuUqh5Oi86w7OEh0JFjKFc8b
- CaaHHIRIZh8BFLDE00o2RIuqYJN8J44I+BA2Uaiv6+03YhJ9NPS/dnmjKIGkQ8AGMCTNGyWc08uIj
- Dfv8hAHuN2M1xVu7n8X89L+VtGxT6TYPqnHZbGDqyST66bOya7xp7pBpirj2CYrGpLamJWn+ILDkt
- n1DXFkqsfRIfl7rfcYSoia1dZKHIiiQXOjXzTnmZNzQMNz2gUT4HyUAdG+hxGk06/DIur7wWmVFu3
- sSfh58f3kS+L28JMI+Y14hGdNdOR92GR0vB1uW8ctz/ZY53tlv5FTJI6BQ0anwyMF8AxPBiGc5utx
- 91/NCE3QQ==;
+ bh=aiPSd/BZaq8mZvPjuhE4XI65j8OE7xLRgVlrgYKV6X8=; b=F/jZojJuWlmtYwiabWSCN61UA
+ DJTL0DKDCRX7BN+qAIbWIW+jalp4XIg7RqqpMFKWAIL/mWu2jghSkj2qPCYYZZVTynp1AhxZlzMEC
+ 5CEaqn3UkS8suk+1IHtm1KeugWS7ohi18uMi3TB0S0K3ZNPNhjoJ1Gm4ryl+MZGrz8gt2FoEI0OSM
+ nCEY4LXt4xg21LC0vJk1U/1WBysEfj1A2GnytuxvgI++Gagou1GrLIdA1ILFw5rHWoVVLkycXCmiN
+ V8HiJ0HsLPFP6ZVtquvpFwy1vmdAy8v/83zH4KWCrK7ER1LJoSDlG2R/9bTULsTpS2qWJ6BCIFVtn
+ CDN4nubow==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1iOFjK-0006J7-QH; Sat, 26 Oct 2019 06:39:18 +0000
-Date: Fri, 25 Oct 2019 23:39:18 -0700
+ Hat Linux)) id 1iOFnR-0007qU-Gs; Sat, 26 Oct 2019 06:43:33 +0000
+Date: Fri, 25 Oct 2019 23:43:33 -0700
 From: Christoph Hellwig <hch@infradead.org>
-To: Rob Herring <robh+dt@kernel.org>
-Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
- updates
-Message-ID: <20191026063918.GA24015@infradead.org>
-References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
- <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
- <20191015125105.GU25745@shell.armlinux.org.uk>
- <5611f3bc-68aa-78ec-182a-1cb414202314@xenosoft.de>
- <20191015131750.GV25745@shell.armlinux.org.uk>
- <87muds586t.fsf@mpe.ellerman.id.au>
- <31d58f086f964937b27209bc18b334d9c9791767.camel@kernel.crashing.org>
- <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
- <20191023143159.GB25745@shell.armlinux.org.uk>
- <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+To: Alastair D'Silva <alastair@au1.ibm.com>
+Subject: Re: [PATCH 10/10] ocxl: Conditionally bind SCM devices to the
+ generic OCXL driver
+Message-ID: <20191026064333.GA24422@infradead.org>
+References: <20191025044721.16617-1-alastair@au1.ibm.com>
+ <20191025044721.16617-11-alastair@au1.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+In-Reply-To: <20191025044721.16617-11-alastair@au1.ibm.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -74,32 +66,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, mad skateman <madskateman@gmail.com>,
- linux-mmc <linux-mmc@vger.kernel.org>,
- Russell King - ARM Linux admin <linux@armlinux.org.uk>,
- Paul Mackerras <paulus@samba.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <chzigotzky@xenosoft.de>,
- "contact@a-eon.com" <contact@a-eon.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Wei Yang <richard.weiyang@gmail.com>, Keith Busch <keith.busch@intel.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
+ Dave Jiang <dave.jiang@intel.com>, linux-nvdimm@lists.01.org,
+ Vishal Verma <vishal.l.verma@intel.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Allison Randal <allison@lohutok.net>, alastair@d-silva.org,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Qian Cai <cai@lca.pw>, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>, linux-mm@kvack.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 25, 2019 at 05:28:45PM -0500, Rob Herring wrote:
-> This doesn't work?:
+On Fri, Oct 25, 2019 at 03:47:05PM +1100, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
 > 
->         if (IS_ENABLED(CONFIG_PPC) || of_dma_is_coherent(dev->of_node))
->                 value |= ESDHC_DMA_SNOOP;
->         else
->                 value &= ~ESDHC_DMA_SNOOP;
-> 
-> While I said use the compatibles, using the kconfig symbol is easier
-> than sorting out which compatibles are PPC SoCs. Though if that's
-> already done elsewhere in the driver, you could set a flag and use
-> that here. I'd be surprised if this was the only difference between
-> ARM and PPC SoCs for this block.
+> This patch allows the user to bind OpenCAPI SCM devices to the generic OCXL
+> driver.
 
-I think the right thing is a Kconfig variable that the architectures
-selects which says if OF is by default coherent or incoherent, and then
-use that in of_dma_is_coherent.
+This completely misses any explanation of why you'd want that.  The
+what is rather obvious from the patch.
+
+> +config OCXL_SCM_GENERIC
+> +	bool "Treat OpenCAPI Storage Class Memory as a generic OpenCAPI device"
+> +	default n
+
+n is the default default.
