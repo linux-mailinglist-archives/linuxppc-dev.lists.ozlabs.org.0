@@ -1,79 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9338DE61CE
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Oct 2019 10:23:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1BDE6261
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Oct 2019 13:08:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471C7n1jhCzDqng
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Oct 2019 20:23:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471GpK09KwzDq5t
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Oct 2019 23:08:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::141;
+ helo=mail-lf1-x141.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="YTLpRmAB"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="d3QTzyBq"; dkim-atps=neutral
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com
+ [IPv6:2a00:1450:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471C5s1nv8zDqCb
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 20:21:34 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 471C5c0KBSz9vC0b;
- Sun, 27 Oct 2019 10:21:24 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=YTLpRmAB; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id NhDefIqlusly; Sun, 27 Oct 2019 10:21:23 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 471C5b6BLqz9vC0Z;
- Sun, 27 Oct 2019 10:21:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1572168083; bh=5hjHvfXSMkcgXBmkACPGCMxpghIDPNJ8CFc7b3vEb8c=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=YTLpRmAByL4MjS715uXHks+1TNjjNQI4ISm64uPIsrvheYndqpxyNo3StEgFCSovP
- Pk0iFqQrOCEyhZyayeeN3LoJzRrLwSZIDHxrzaKcnxfDEtXWNPytsanojbyrvLOgGv
- abYiyFb9QH1nrR8N0IQeh5t88CTrMQrO62GgGRV8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C567F8B923;
- Sun, 27 Oct 2019 10:21:26 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id bdT3vZYeqZTv; Sun, 27 Oct 2019 10:21:26 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1C7798B922;
- Sun, 27 Oct 2019 10:21:26 +0100 (CET)
-Subject: Re: [RFC PATCH] powerpc/32: Switch VDSO to C implementation.
-To: Segher Boessenkool <segher@kernel.crashing.org>,
- Thomas Gleixner <tglx@linutronix.de>
-References: <8ce3582f7f7da9ff0286ced857e5aa2e5ae6746e.1571662378.git.christophe.leroy@c-s.fr>
- <alpine.DEB.2.21.1910212312520.2078@nanos.tec.linutronix.de>
- <f4486e86-3c0c-0eec-1639-0e5956cdb8f1@c-s.fr>
- <95bd2367-8edc-29db-faa3-7729661e05f2@c-s.fr>
- <alpine.DEB.2.21.1910261751140.10190@nanos.tec.linutronix.de>
- <439bce37-9c2c-2afe-9c9e-2f500472f9f8@c-s.fr>
- <alpine.DEB.2.21.1910262026340.10190@nanos.tec.linutronix.de>
- <20191026230609.GY28442@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <8e4d0b82-a7a1-b7f1-308e-df871b32d317@c-s.fr>
-Date: Sun, 27 Oct 2019 10:21:25 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471Gl65ldMzDqjN
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 23:05:37 +1100 (AEDT)
+Received: by mail-lf1-x141.google.com with SMTP id j14so722293lfb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 05:05:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=3Zr1M0nCXlilSobwLkNmgKE2widPtGkZk30ZqC0Jsp4=;
+ b=d3QTzyBq1ltmtg4yGSZr5XtauvY/fALYcdqhiDEtFOl1dE9JCqjexjO52exODJRIVQ
+ Eh2Een6o4qvZdUFz/jDS+JnTxGr7PmGqPX7rFmA4YZFRZjrNKL/JZDN1nI+V4NXXs/c+
+ Hp/xfBUyMptBO5mKJ7+YknkxBRlijCGcU26uA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=3Zr1M0nCXlilSobwLkNmgKE2widPtGkZk30ZqC0Jsp4=;
+ b=FbBJK1y0EmmJt15xIowczhJcyHSErcLZ6KuhyYwE0UxY4lrrsmQV8+rrPPSik49SQd
+ WpbuRaeO9/J5HNAYaFeCnTIrHd/f1fp71nKORgCmDVL0eeiQrTJ5bOFenYZm+mDqTTtr
+ KgEa1tI6OtSbmkATWUKkuAxzraDeq9afWotqW/mmwpVgO/uhgxmpw5XzGXbSn1o0M80G
+ iqJnor81vjvmJ/Fp/s0+uAwUOysvR+7CZeokj/2jHpew+s/XSBtj4AjnOoFWptHKAJR1
+ /cZWIVibijoNNvpihf4QOg/EChbJDLDAvYkLkNpaNYofNHZtlSsfPcY+3IDuG8v2FLWY
+ QHrA==
+X-Gm-Message-State: APjAAAUNgPnXLVZvPwQeuF1V+0u/xPYfmcBQ8zTZLjpxFi0uzNtHl5di
+ zhA9AdTIdpKiR0WLG0ATUeGPut06ILww0A==
+X-Google-Smtp-Source: APXvYqwKSXiVD2LkQUhxsmYwtzOTjfV1MpRH1r6PmeYU8pV7SfC0ICO7oOD0EoU6ePF1AnwE511Z2w==
+X-Received: by 2002:ac2:520e:: with SMTP id a14mr1145873lfl.43.1572177931795; 
+ Sun, 27 Oct 2019 05:05:31 -0700 (PDT)
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com.
+ [209.85.167.48])
+ by smtp.gmail.com with ESMTPSA id b28sm432798ljp.9.2019.10.27.05.05.29
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 27 Oct 2019 05:05:30 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id y127so5690843lfc.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 05:05:29 -0700 (PDT)
+X-Received: by 2002:a19:5504:: with SMTP id n4mr8268196lfe.106.1572177927159; 
+ Sun, 27 Oct 2019 05:05:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20191026230609.GY28442@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20191026185700.10708-1-cyphar@cyphar.com>
+ <20191026185700.10708-3-cyphar@cyphar.com>
+In-Reply-To: <20191026185700.10708-3-cyphar@cyphar.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 27 Oct 2019 08:05:11 -0400
+X-Gmail-Original-Message-ID: <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
+Message-ID: <CAHk-=wjPPWvm5_eR4uaHJaU1isTUk-4iXQV3Z2Px9A+w6j2nHg@mail.gmail.com>
+Subject: Re: [PATCH RESEND v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path
+ resolution
+To: Aleksa Sarai <cyphar@cyphar.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,87 +83,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, vincenzo.frascino@arm.com,
- Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org,
- luto@kernel.org
+Cc: linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, Shuah Khan <shuah@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>,
+ GNU C Library <libc-alpha@sourceware.org>, linux-parisc@vger.kernel.org,
+ Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, alpha <linux-alpha@vger.kernel.org>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Linux Containers <containers@lists.linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Oct 26, 2019 at 2:58 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+>
+> +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-to-dirfd. */
+> +       if (flags & LOOKUP_IN_ROOT)
+> +               while (*s == '/')
+> +                       s++;
+> +
+>         /* Figure out the starting path and root (if needed). */
+>         if (*s == '/') {
+>                 error = nd_jump_root(nd);
 
+So I'm still hung up on this.
 
-Le 27/10/2019 à 01:06, Segher Boessenkool a écrit :
-> On Sat, Oct 26, 2019 at 08:48:27PM +0200, Thomas Gleixner wrote:
->> On Sat, 26 Oct 2019, Christophe Leroy wrote:
->> Let's look at the code:
->>
->> __cvdso_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz)
->> {
->>          const struct vdso_data *vd = __arch_get_vdso_data();
->>
->>          if (likely(tv != NULL)) {
->> 		struct __kernel_timespec ts;
->>
->>                  if (do_hres(&vd[CS_HRES_COARSE], CLOCK_REALTIME, &ts))
->>                          return gettimeofday_fallback(tv, tz);
->>
->>                  tv->tv_sec = ts.tv_sec;
->>                  tv->tv_usec = (u32)ts.tv_nsec / NSEC_PER_USEC;
->>
->> IIRC PPC did some magic math tricks to avoid that. Could you just for the
->> fun of it replace this division with
->>
->>         (u32)ts.tv_nsec >> 10;
-> 
-> On this particular CPU (the 885, right?) a division by 1000 is just 9
-> cycles.  On other CPUs it can be more, say 19 cycles like on the 750; not
-> cheap at all, but not hugely expensive either, comparatively.
-> 
-> (A 64/32->32 division is expensive on all 32-bit PowerPC: there is no
-> hardware help for it at all, so it's all done in software.)
-> 
-> Of course the compiler won't do a division by a constant with a division
-> instruction at all, so it's somewhat cheaper even, 5 or 6 cycles or so.
-> 
->> One thing which might be worth to try as well is to mark all functions in
->> that file as inline. The speedup by the do_hres() inlining was impressive
->> on PPC.
-> 
-> The hand-optimised asm code will pretty likely win handsomely, whatever
-> you do.  Especially on cores like the 885 (no branch prediction, single
-> issue, small caches, etc.: every instruction counts).
-> 
-> Is there any reason to replace this hand-optimised code?  It was written
-> for exacty this reason?  These functions are critical and should be as
-> fast as possible.
+I guess I can't help it, but I look at the above, and it makes me go
+"whoever wrote those tests wasn't thinking".
 
-Well, all this started with COARSE clocks not being supported by PPC32 
-VDSO. I first submitted a series with a set of optimisations including 
-the implementation of COARSE clocks 
-(https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=126779)
+It just annoys me how it tests for '/' completely unnecessarily.
 
-Then after a comment received on patch 4 of the series from Santosh 
-Sivaraj asking for a common implementation of it for PPC32 and PPC64, I 
-started looking into making the whole VDSO source code common to PPC32 
-and PPC64. Most functions are similar. Time functions are also rather 
-similar but unfortunately don't use the same registers. They also don't 
-cover all possible clocks. And getres() is also buggy, see series 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=110321
+If LOOKUP_IN_ROOT is true, we know the subsequent test for '/' is not
+going to match, because we just removed it. So I look at that code and
+go "that code is doing stupid things".
 
-So instead of reworking the existing time functions, I started 
-investigating whether we could plug powerpc to the generic 
-implementation. One drawback of PPC is that we need to setup an ASM 
-trampoline to handle the SO bit as it can't be handled from C directly, 
-can it ?
+That's why I suggested moving the LOOKUP_IN_ROOT check inside the '/' test.
 
-How critical are these functions ? Although we have a slight degration 
-with the C implementation, they are still way faster than the 
-corresponding syscall.
+Alternatively, just make the logic be
 
-Another thing I was wondering, is it worth using the 64 bit timebase on 
-PPC32 ? As far as I understand, the timebase is there to calculate a 
-linear date update since last VDSO datapage update. How often is the 
-VDSO datapage updated ? On the 885 clocked at 132Mhz, the timebase is at 
-8.25 Mhz, which means it needs more than 8 minutes to loop over 32 bits.
+        if (flags & LOOKUP_IN_ROOT) {
+               .. remove '/'s ...
+        } else if (*s == '/') {
+                .. handl;e root ..
 
-Christophe
+and remove the next "else" clause
+
+    Linus
