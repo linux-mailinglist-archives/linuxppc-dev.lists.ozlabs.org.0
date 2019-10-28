@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E440E6F6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 10:54:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F007E6F6E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 10:56:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471qn94FkMzDr4q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 20:54:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471qqY51tVzDqc7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 20:56:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,45 +19,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471qfm5k7kzDqxQ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471qfm6TxkzDqxg
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 20:48:48 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9S9lSpp046224; Mon, 28 Oct 2019 05:48:39 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vwvrctcp9-1
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9S9lZjP055210; Mon, 28 Oct 2019 05:48:41 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vwv3uujtp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Oct 2019 05:48:39 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9S9jBI9006132;
- Mon, 28 Oct 2019 09:48:38 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04dal.us.ibm.com with ESMTP id 2vvds7d18u-1
+ Mon, 28 Oct 2019 05:48:41 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9S9jBpe026795;
+ Mon, 28 Oct 2019 09:48:40 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02wdc.us.ibm.com with ESMTP id 2vvds80t8j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Oct 2019 09:48:38 +0000
+ Mon, 28 Oct 2019 09:48:40 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9S9mbkF52232594
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9S9mdrH45220108
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Oct 2019 09:48:37 GMT
+ Mon, 28 Oct 2019 09:48:39 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 35126C6055;
+ by IMSVA (Postfix) with ESMTP id A02FBC605D;
+ Mon, 28 Oct 2019 09:48:39 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B487FC6059;
  Mon, 28 Oct 2019 09:48:37 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52F9FC6057;
- Mon, 28 Oct 2019 09:48:35 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.43.125])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 28 Oct 2019 09:48:35 +0000 (GMT)
+ Mon, 28 Oct 2019 09:48:37 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: dan.j.williams@intel.com, mpe@ellerman.id.au
-Subject: [RFC PATCH 3/4] libnvdimm/namespace: Use direct-mapping page size to
- validate namespace size
-Date: Mon, 28 Oct 2019 15:18:24 +0530
-Message-Id: <20191028094825.21448-3-aneesh.kumar@linux.ibm.com>
+Subject: [RFC PATCH 4/4] libnvdimm/namespace: Add debug check while
+ initializing namespace resource size.
+Date: Mon, 28 Oct 2019 15:18:25 +0530
+Message-Id: <20191028094825.21448-4-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
 References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
@@ -70,7 +70,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=893 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1908290000 definitions=main-1910280098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -89,43 +89,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Architectures like ppc64 use different page size than PAGE_SIZE to map
-direct-map address range. The kernel needs to make sure the namespace size is aligned
-correctly for the direct-map page size.
+This should enable us to catch if we are initializing the namespace with a wrong
+size.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- drivers/nvdimm/namespace_devs.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/nvdimm/namespace_devs.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index fcde9f2bf2ea..83c70631a86f 100644
+index 83c70631a86f..9f2dc20bcc73 100644
 --- a/drivers/nvdimm/namespace_devs.c
 +++ b/drivers/nvdimm/namespace_devs.c
-@@ -975,7 +975,8 @@ static ssize_t __size_store(struct device *dev, unsigned long long val)
- 	struct nd_mapping *nd_mapping;
- 	struct nvdimm_drvdata *ndd;
- 	struct nd_label_id label_id;
--	u32 flags = 0, remainder;
-+	unsigned long map_size;
-+	u32 flags = 0;
- 	int rc, i, id = -1;
- 	u8 *uuid = NULL;
+@@ -956,6 +956,18 @@ static void nd_namespace_pmem_set_resource(struct nd_region *nd_region,
+  out:
+ 	res->start = nd_region->ndr_start + offset;
+ 	res->end = res->start + size - 1;
++#ifdef CONFIG_DEBUG_VM
++	if (size) {
++		unsigned long map_size;
++
++		map_size = arch_validate_namespace_size(nd_region->ndr_mappings, size);
++		WARN_ON(map_size);
++
++		map_size = arch_validate_namespace_size(1, res->start);
++		WARN_ON(map_size);
++
++	}
++#endif
+ }
  
-@@ -1006,10 +1007,9 @@ static ssize_t __size_store(struct device *dev, unsigned long long val)
- 		return -ENXIO;
- 	}
- 
--	div_u64_rem(val, PAGE_SIZE * nd_region->ndr_mappings, &remainder);
--	if (remainder) {
--		dev_dbg(dev, "%llu is not %ldK aligned\n", val,
--				(PAGE_SIZE * nd_region->ndr_mappings) / SZ_1K);
-+	map_size = arch_validate_namespace_size(nd_region->ndr_mappings, val);
-+	if (map_size) {
-+		dev_err(dev, "%llu is not %ldK aligned\n", val, map_size / SZ_1K);
- 		return -EINVAL;
- 	}
- 
+ static bool uuid_not_set(const u8 *uuid, struct device *dev, const char *where)
 -- 
 2.21.0
 
