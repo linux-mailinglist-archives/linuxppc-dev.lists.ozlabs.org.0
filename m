@@ -2,68 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4EDE7CBC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 00:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8B2E7D28
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 00:44:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4729S05Rp8zF0QC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 10:10:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472BCQ6xcDzDrb6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 10:44:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::243;
- helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="h5sKvzwG"; 
- dkim-atps=neutral
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
- [IPv6:2607:f8b0:4864:20::243])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4729Pz5vBqzDqQn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 10:08:51 +1100 (AEDT)
-Received: by mail-oi1-x243.google.com with SMTP id n16so5138771oig.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 16:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ya/hl3kSxLpkLPv5c7BeEGlhWkdu/wLTkTM0UC21b64=;
- b=h5sKvzwG18seVCu38EtLBa8XX3UEDh3zXJALKsSIPpKx30ctYy0LEmiydo2CnuPahe
- ELqGsk5TH8vpYL8/aVfVzYD3Zka2Qh9e9Wy1gkJOeRmzczxduc0z6kxJamVHrs/OQ8tw
- M3RzxVLGTwRdwd8jV9GYKb8zgU5btAT5XsEl6ODU2DqG0c3ipk+RsiDUTJdJLLQSfUjB
- eE3ieaJs7iLafKik9Mf8V54bP7Y/R/nW1OqhncnY5fHof16j1hFNmsAy3RAFj9gDFqd1
- N3MAuwhzsRdVqzZ6rrOh6cS759koUsN6YeIZRLMxGA/UNwI2oRtrmsLAudvydvULrHes
- /48Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ya/hl3kSxLpkLPv5c7BeEGlhWkdu/wLTkTM0UC21b64=;
- b=njN7SeYW8WN/e7bn+Q3GG+o4T3MdFMkE++7zdOm1VZG1I946bQOqgfklh1Af+Gt1YU
- TXqkNzrvCmSJSo3Vdf9pXdk3RJEJVQIqGrZZ4LS8lnStwBAElYD3S6DLCQ9OvHL4r2Mp
- OwbRNH9AsIOkrRfIzorJxlwkECPEdop6VL0EPouybq7gd4tqvzou3qZHCTCT9ldSnvuW
- lq8A5oMkEWN1zx/AgPVnjuDkhuZC40g65BGvWk79vF4XzfhSpPZWusCUtRleyjB7Rjhi
- xXhM8DRnLLojKEHFF2RVemLvuxSzbwwWuc//EJWnHiFVhfWNQIpJLdy4MRfVHtPeeJOm
- Sijg==
-X-Gm-Message-State: APjAAAXOkzKGwBomO2+76JJzTw9TWfJ63N4GQH8xC8GcWSlq1YNnQFA3
- QPvalJbAWPEi0O00N0rRNWKudn9XyXhCHxlcah/BHg==
-X-Google-Smtp-Source: APXvYqzFqH80OPpGVmqK4MrGIOR9FzP/5Z5IS+6ciRSQLycC7zjZETQcpJ2/hgttcT47FsAAzUpRt6/OlgUss4UXiOU=
-X-Received: by 2002:aca:620a:: with SMTP id w10mr1526488oib.0.1572304128418;
- Mon, 28 Oct 2019 16:08:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472B8q6sJnzDrRL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 10:42:35 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="Zacx0/8b"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 472B8n6h00z9sPZ; Tue, 29 Oct 2019 10:42:33 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 472B8n2r5Nz9sPT;
+ Tue, 29 Oct 2019 10:42:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1572306153;
+ bh=zM9aG91VYCIzqsK3fq3CpiFSFcyS/yCl9U34kBR9aKw=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Zacx0/8bXcg8sPp6+Ng1v5UyQ8KpygDaig8MLEjvgywnCoQ+G+aHX9jxWyuIodIz8
+ HJCWxp4jnFFNzuZqsojXmhLN1F1BKsLa9Fh1Nf8valLJZ6f7ZhCAg+qI4/EkCtgdRQ
+ 1k81BercgHnWGujjMgTJr6w2+64y5b9INeZ6q43Z8Gz6pPK+0KX1uSxBg+dflEIZBo
+ agl5374DzJXd4RfLr7zyBeYvzSaGurPG76Kncd52kXOIKRl4DHSVWJVoxbYEh7Iz7R
+ CiFmds3M8JWQJq7Z6gOSyHrt7kIfmZRMUwrdbM+jNE8nr7A/4/9Uff/iqT1dpUSNhq
+ zG/OKMl+0qOwA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Nayna Jain <nayna@linux.vnet.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v9 2/8] powerpc/ima: add support to initialize ima policy
+ rules
+In-Reply-To: <482b2f08-f810-6ed0-4b32-0d5e64246ece@linux.microsoft.com>
+References: <20191024034717.70552-1-nayna@linux.ibm.com>
+ <20191024034717.70552-3-nayna@linux.ibm.com>
+ <dd7e04fc-25e8-280f-b565-bdb031939655@linux.microsoft.com>
+ <27dbe08e-5473-4dd0-d2ad-2df591e23f5e@linux.vnet.ibm.com>
+ <482b2f08-f810-6ed0-4b32-0d5e64246ece@linux.microsoft.com>
+Date: Tue, 29 Oct 2019 10:42:32 +1100
+Message-ID: <87lft4h1xz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 28 Oct 2019 16:08:37 -0700
-Message-ID: <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
- validation arch dependent
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,117 +67,209 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Prakhar Srivastava <prsriva02@gmail.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, Paul Mackerras <paulus@samba.org>,
+ Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Oliver O'Halloran <oohall@gmail.com>, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 28, 2019 at 2:48 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> The page size used to map the namespace is arch dependent. For example
-> architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
-> size is not aligned to the mapping page size, we can observe kernel crash
-> during namespace init and destroy.
->
-> This is due to kernel doing partial map/unmap of the resource range
->
-> BUG: Unable to handle kernel data access at 0xc001000406000000
-> Faulting instruction address: 0xc000000000090790
-> NIP [c000000000090790] arch_add_memory+0xc0/0x130
-> LR [c000000000090744] arch_add_memory+0x74/0x130
-> Call Trace:
->  arch_add_memory+0x74/0x130 (unreliable)
->  memremap_pages+0x74c/0xa30
->  devm_memremap_pages+0x3c/0xa0
->  pmem_attach_disk+0x188/0x770
->  nvdimm_bus_probe+0xd8/0x470
->  really_probe+0x148/0x570
->  driver_probe_device+0x19c/0x1d0
->  device_driver_attach+0xcc/0x100
->  bind_store+0x134/0x1c0
->  drv_attr_store+0x44/0x60
->  sysfs_kf_write+0x74/0xc0
->  kernfs_fop_write+0x1b4/0x290
->  __vfs_write+0x3c/0x70
->  vfs_write+0xd0/0x260
->  ksys_write+0xdc/0x130
->  system_call+0x5c/0x68
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/arm64/mm/flush.c     | 11 +++++++++++
->  arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
->  arch/x86/mm/pageattr.c    | 12 ++++++++++++
->  include/linux/libnvdimm.h |  1 +
->  4 files changed, 43 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
-> index ac485163a4a7..90c54c600023 100644
-> --- a/arch/arm64/mm/flush.c
-> +++ b/arch/arm64/mm/flush.c
-> @@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
->         __inval_dcache_area(addr, size);
->  }
->  EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
-> +
-> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
-> +{
-> +       u32 remainder;
-> +
-> +       div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
-> +       if (remainder)
-> +               return PAGE_SIZE * ndr_mappings;
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
->  #endif
-> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
-> index 377712e85605..2e661a08dae5 100644
-> --- a/arch/powerpc/lib/pmem.c
-> +++ b/arch/powerpc/lib/pmem.c
-> @@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
->         unsigned long start = (unsigned long) addr;
->         flush_dcache_range(start, start + size);
->  }
-> -EXPORT_SYMBOL(arch_wb_cache_pmem);
-> +EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
->
->  void arch_invalidate_pmem(void *addr, size_t size)
->  {
->         unsigned long start = (unsigned long) addr;
->         flush_dcache_range(start, start + size);
->  }
-> -EXPORT_SYMBOL(arch_invalidate_pmem);
-> +EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
-> +
-> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
-> +{
-> +       u32 remainder;
-> +       unsigned long linear_map_size;
-> +
-> +       if (radix_enabled())
-> +               linear_map_size = PAGE_SIZE;
-> +       else
-> +               linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
+Hi Lakshmi,
 
-This seems more a "supported_alignments" problem, and less a namespace
-size or PAGE_SIZE problem, because if the starting address is
-misaligned this size validation can still succeed when it shouldn't.
+Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
+> On 10/25/2019 10:02 AM, Nayna Jain wrote:
+>
+>  >> Is there any way to not use conditional compilation in
+>  >> the above array definition? Maybe define different functions to get
+>  >> "secure_rules" for when CONFIG_MODULE_SIG_FORCE is defined and when
+>  >> it is not defined.
+>  >
+>  > How will you decide which function to be called ?
+>
+> Define the array in the C file:
+>
+> const char *const secure_rules_kernel_check[] = {
+>     "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+>     NULL
+> };
+>
+> const char *const secure_rules_kernel_module_check[] = {
+>     "appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
+>     "appraise func=MODULE_CHECK appraise_type=imasig|modsig",
+>     NULL
+> };
+>
+> And, in the header file :
 
-One problem is that __size_store() does not validate the size against
-the namespace alignment.
+But there's no reason for any of this to be in a header, it's all
+contained in one file.
 
-However, the next problem is that alignment is a property of the pfn
-device, but not the raw namespace. I think this alignment constraint
-should be captured by exposing "align" and "supported_alignments" at
-the namespace level as the minimum alignment. The pfn level alignment
-could then be an additional alignment constraint, but ndctl would
-likely set them to the same value.
+Moving things into a header purely to avoid a single #ifdef in a C file
+is a backward step.
 
-The "* ndr_mappings" constraint should be left out of the interface,
-because that's a side effect of supporting namespace-type-blk aliasing
-which no platform seems to do in practice. If for some strange reason
-it's need in the future I'd rather expose the "aliasing" property
-rather than fold it into the align / supported_aligns interface.
+> extern const char *const secure_rules_kernel_check;
+> extern const char *const secure_rules_kernel_module_check;
+>
+> #ifdef CONFIG_MODULE_SIG_FORCE
+> const char *secure_rules() { return secure_rules_kernel_check; }
+> #else
+> const char *secure_rules() { return secure_rules_kernel_module_check;}
+> #endif // #ifdef CONFIG_MODULE_SIG_FORCE
+>
+> If you want to avoid duplication, secure_rules_kernel_check and 
+> secure_rules_kernel_module_check could be defined in separate C files 
+> and conditionally compiled (in Makefile).
+
+Again that's just lots of added complication for no real benefit.
+
+> I was just trying to suggest the guidelines given in
+> "Section 21) Conditional Compilation" in coding-style.rst.
+>
+> It says:
+> Whenever possible don't use preprocessor conditionals (#ifdef, #if) in 
+> .c files;...
+
+The key phrase being "guideline" :)
+
+That suggestion is aimed at avoiding code with lots of ifdefs sprinkled
+through the body of functions. Code written in that way can be very hard
+to read because you have to mentally pre-process it first, and then read
+the C-level logic. See below for an example.
+
+Moving the pre-processing out of line into helpers means when you're
+reading the function you can just reason about the C control flow.
+
+The reference to ".c files" is really talking about moving logic that is
+#ifdef'ed into static inline helpers. Those typically go in headers, but
+they don't have to if there's no other reason for them to be in a
+header.
+
+So where the code is all in one C file it would be completely fine to
+have an #ifdef in the C file around a static inline helper.
+
+But in this case where the #ifdef is just in an array I think it's
+entirely fine to just keep the #ifdef. Its presence there doesn't
+complicate the logic in anyway.
+
+cheers
+
+
+
+This is a "good" (bad) example of what we're trying to avoid:
+
+static long ppc_set_hwdebug(struct task_struct *child,
+		     struct ppc_hw_breakpoint *bp_info)
+{
+#ifdef CONFIG_HAVE_HW_BREAKPOINT
+	int len = 0;
+	struct thread_struct *thread = &(child->thread);
+	struct perf_event *bp;
+	struct perf_event_attr attr;
+#endif /* CONFIG_HAVE_HW_BREAKPOINT */
+#ifndef CONFIG_PPC_ADV_DEBUG_REGS
+	struct arch_hw_breakpoint brk;
+#endif
+
+	if (bp_info->version != 1)
+		return -ENOTSUPP;
+#ifdef CONFIG_PPC_ADV_DEBUG_REGS
+	/*
+	 * Check for invalid flags and combinations
+	 */
+	if ((bp_info->trigger_type == 0) ||
+	    (bp_info->trigger_type & ~(PPC_BREAKPOINT_TRIGGER_EXECUTE |
+				       PPC_BREAKPOINT_TRIGGER_RW)) ||
+	    (bp_info->addr_mode & ~PPC_BREAKPOINT_MODE_MASK) ||
+	    (bp_info->condition_mode &
+	     ~(PPC_BREAKPOINT_CONDITION_MODE |
+	       PPC_BREAKPOINT_CONDITION_BE_ALL)))
+		return -EINVAL;
+#if CONFIG_PPC_ADV_DEBUG_DVCS == 0
+	if (bp_info->condition_mode != PPC_BREAKPOINT_CONDITION_NONE)
+		return -EINVAL;
+#endif
+
+	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_EXECUTE) {
+		if ((bp_info->trigger_type != PPC_BREAKPOINT_TRIGGER_EXECUTE) ||
+		    (bp_info->condition_mode != PPC_BREAKPOINT_CONDITION_NONE))
+			return -EINVAL;
+		return set_instruction_bp(child, bp_info);
+	}
+	if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_EXACT)
+		return set_dac(child, bp_info);
+
+#ifdef CONFIG_PPC_ADV_DEBUG_DAC_RANGE
+	return set_dac_range(child, bp_info);
+#else
+	return -EINVAL;
+#endif
+#else /* !CONFIG_PPC_ADV_DEBUG_DVCS */
+	/*
+	 * We only support one data breakpoint
+	 */
+	if ((bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_RW) == 0 ||
+	    (bp_info->trigger_type & ~PPC_BREAKPOINT_TRIGGER_RW) != 0 ||
+	    bp_info->condition_mode != PPC_BREAKPOINT_CONDITION_NONE)
+		return -EINVAL;
+
+	if ((unsigned long)bp_info->addr >= TASK_SIZE)
+		return -EIO;
+
+	brk.address = bp_info->addr & ~7UL;
+	brk.type = HW_BRK_TYPE_TRANSLATE;
+	brk.len = 8;
+	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_READ)
+		brk.type |= HW_BRK_TYPE_READ;
+	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_WRITE)
+		brk.type |= HW_BRK_TYPE_WRITE;
+#ifdef CONFIG_HAVE_HW_BREAKPOINT
+	/*
+	 * Check if the request is for 'range' breakpoints. We can
+	 * support it if range < 8 bytes.
+	 */
+	if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE)
+		len = bp_info->addr2 - bp_info->addr;
+	else if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_EXACT)
+		len = 1;
+	else
+		return -EINVAL;
+	bp = thread->ptrace_bps[0];
+	if (bp)
+		return -ENOSPC;
+
+	/* Create a new breakpoint request if one doesn't exist already */
+	hw_breakpoint_init(&attr);
+	attr.bp_addr = (unsigned long)bp_info->addr & ~HW_BREAKPOINT_ALIGN;
+	attr.bp_len = len;
+	arch_bp_generic_fields(brk.type, &attr.bp_type);
+
+	thread->ptrace_bps[0] = bp = register_user_hw_breakpoint(&attr,
+					       ptrace_triggered, NULL, child);
+	if (IS_ERR(bp)) {
+		thread->ptrace_bps[0] = NULL;
+		return PTR_ERR(bp);
+	}
+
+	return 1;
+#endif /* CONFIG_HAVE_HW_BREAKPOINT */
+
+	if (bp_info->addr_mode != PPC_BREAKPOINT_MODE_EXACT)
+		return -EINVAL;
+
+	if (child->thread.hw_brk.address)
+		return -ENOSPC;
+
+	if (!ppc_breakpoint_available())
+		return -ENODEV;
+
+	child->thread.hw_brk = brk;
+
+	return 1;
+#endif /* !CONFIG_PPC_ADV_DEBUG_DVCS */
+}
+
