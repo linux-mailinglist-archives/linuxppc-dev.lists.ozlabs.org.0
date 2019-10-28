@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64198E7BA9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 22:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5FBE7B6A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 22:35:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4727Y14xYszDsQ6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 08:44:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4727Kv6wBXzDrh8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 08:35:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::343;
- helo=mail-wm1-x343.google.com; envelope-from=richard.henderson@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=richard.henderson@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="YGEP7iPJ"; 
+ unprotected) header.d=linaro.org header.i=@linaro.org header.b="odEkHLjS"; 
  dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4726hN2kzbzDqYP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4726hL25p3zDqJW
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 08:06:09 +1100 (AEDT)
-Received: by mail-wm1-x343.google.com with SMTP id p21so424031wmg.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 14:06:08 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id p4so11380403wrm.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 14:06:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=Wt6X/0E8OEKNHUN7g3xU4aGMZDZ5EHD7/+dGHnvwGeQ=;
- b=YGEP7iPJRvBw4yNdXLHPDdf8+ai816ix7N7Bnmn+DtIkNntfuBxATktwcBQdTTghzc
- S139y8vtzCo1l3lkEZrn9e7Qr7TBeIzmnC/WIwyB/bnmVcS9v83cv/FhRIC/Yn8ghqNo
- c0RfSeGteHKp1y5HFIN2GCSf41EfH3JyBMQLdT45+h0nv7FeJ9ldioAIdVdbTRNeUu7X
- lCCe2D7wL/jdh7iRz5lkmcKKX43h5srQf5ayTjDEeb5Vaert877x5FQFZjbZS8V9MMGH
- CaT1RCOM7OWVqzXjfX4aRvXG7uuuirukdEeukUf2dmStasS8yLh7pdn0+mH4ufdgua+T
- zG9w==
+ bh=OA1lEVPUVah/nj9y4NPe9mpA4YmtUJ45alybXkd0IGY=;
+ b=odEkHLjSN3JWnD5C17Txi1cL9gpWHsxbz/541i6HonY1afq+jCmqm6gjraAZ5IF+E5
+ 3g5eNOzZKQSnRPN35Ido+e/kuRQqORGuoNGHzAuQQLx6oWni+DDSeDvsOW+yofnFtlQC
+ 0KTVYObE7IiOiNlxdatiKqYf37B1LSAWNDDPYMxFahwK4p9pedn8j6CNfwVcs42oflWp
+ TBmfFgdkCjRAYh0LIo2msRLbcL3jnQA1v2rQNPiG8DZnE2NWXfwmz4QQHDhLGC2CkMdP
+ kiWYPILROM1iiiG5p0Wz8b4RcFHnytBC85i2qQ/q7Tt0PafGD08vMQ2L1YqvEoDTrMkQ
+ gE6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=Wt6X/0E8OEKNHUN7g3xU4aGMZDZ5EHD7/+dGHnvwGeQ=;
- b=fZNbhLZ5m653SkroOdBr+vm9fSNAFcqPGTGPGv8lifpu7i1n6i9d10BgM7jPUY0h6o
- RpLBM5WcNVNvEZkKiiSDB+RQUDJqyrtr+LxsFOLI33V7ZNyifdesQZJnwAST7BFXdclu
- WqOufFpA0EtrYLsNhkB86dWKV8g0DqGYelgW8RNKdrtJ7YeRcxXMW+zwjnUz5AChIlJq
- eHFFVpC3DILuyQ5Gz7HfIMdAr3/gow6ADuZFcW+D7V0nkl+UHmSI86uvfzkoX6s8FnAd
- 2RdjWMXtRbvKBtqvN8kgBNxEBQYijXJeU6SjSKKe17PpluwxSCiUiaF3PtCNf+L25Dpo
- 8jjA==
-X-Gm-Message-State: APjAAAXeEsSynf5enFxrPdesUfqhfox3D9Ki+O8FdiTvsGSdas2Qb+vI
- cn/SBLwZH9+0AoRMYTV6TGub5ImRoK99+Q==
-X-Google-Smtp-Source: APXvYqzqAvwwu8fufnMscandR8x4T4e5vo0ImUH4MNWMeVXTw6UAGYm/xpeYwYMKAveMairVDQRveQ==
-X-Received: by 2002:a1c:544e:: with SMTP id p14mr1023951wmi.17.1572296765994; 
- Mon, 28 Oct 2019 14:06:05 -0700 (PDT)
+ bh=OA1lEVPUVah/nj9y4NPe9mpA4YmtUJ45alybXkd0IGY=;
+ b=Nu+PLsgIwmQtqDtZuVXt1/OmL+nE5HvsL6JFyfT/bojxc5XFmMj76/ZXIHyhODvmSk
+ Wh+Z0BdPMAaoEDg3sqTZ9fLtF15lnWJmpijdBaIQFfbshavRnmBy7+05UlQarmmGd2Pv
+ +hp7u1EqhbVfUNTaOacJvAV5xQy0nPFsUPHTF+xvaGfARlma4LAQouoHCuCP28XaeO0y
+ DeodeQVbegOMO8Fb6nBaZ5ezc1pBV6K861LOsnSKEnqHNuZ3tLSkSqXVofv8+oZezy40
+ MrIzBR2ip0VI5tlvIQjOViKdNT8tjho4KltQ84M6DVDABPXoLwQKeKqbNqsWUhu62rqh
+ fizQ==
+X-Gm-Message-State: APjAAAXJsvFjZe69bIzoPIZuCkchCu3hNj3nux0ilzgf4pkkGf+IbTZ6
+ +6ZkoeXrkussJkRHXTGs1YMUhw==
+X-Google-Smtp-Source: APXvYqxc7HPshldpApCL1t58Sst+B72c5dhOqq43UkylGW9qCLLj3H1LeTQb93H8/kIqXI/hDnfPUg==
+X-Received: by 2002:adf:82d2:: with SMTP id 76mr15985163wrc.52.1572296766984; 
+ Mon, 28 Oct 2019 14:06:06 -0700 (PDT)
 Received: from localhost.localdomain (230.106.138.88.rev.sfr.net.
  [88.138.106.230])
- by smtp.gmail.com with ESMTPSA id b196sm927822wmd.24.2019.10.28.14.06.05
+ by smtp.gmail.com with ESMTPSA id b196sm927822wmd.24.2019.10.28.14.06.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2019 14:06:05 -0700 (PDT)
+ Mon, 28 Oct 2019 14:06:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 X-Google-Original-From: Richard Henderson <rth@twiddle.net>
 To: linux-arch@vger.kernel.org
-Subject: [PATCH 3/6] x86: Mark archrandom.h functions __must_check
-Date: Mon, 28 Oct 2019 22:05:56 +0100
-Message-Id: <20191028210559.8289-4-rth@twiddle.net>
+Subject: [PATCH 4/6] powerpc: Use bool in archrandom.h
+Date: Mon, 28 Oct 2019 22:05:57 +0100
+Message-Id: <20191028210559.8289-5-rth@twiddle.net>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191028210559.8289-1-rth@twiddle.net>
 References: <20191028210559.8289-1-rth@twiddle.net>
@@ -78,94 +78,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+Cc: linux-s390@vger.kernel.org, x86@kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
  linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We cannot use the pointer output without validating the
-success of the random read.
+The generic interface uses bool not int; match that.
 
 Signed-off-by: Richard Henderson <rth@twiddle.net>
 ---
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/x86/include/asm/archrandom.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/archrandom.h | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/include/asm/archrandom.h b/arch/x86/include/asm/archrandom.h
-index 5904d7d9e703..9e4ea9e53dd0 100644
---- a/arch/x86/include/asm/archrandom.h
-+++ b/arch/x86/include/asm/archrandom.h
-@@ -27,7 +27,7 @@
+diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
+index 9c63b596e6ce..f8a887c8b7f8 100644
+--- a/arch/powerpc/include/asm/archrandom.h
++++ b/arch/powerpc/include/asm/archrandom.h
+@@ -6,27 +6,28 @@
  
- /* Unconditional execution of RDRAND and RDSEED */
+ #include <asm/machdep.h>
  
--static inline bool rdrand_long(unsigned long *v)
-+static inline bool __must_check rdrand_long(unsigned long *v)
+-static inline int arch_get_random_long(unsigned long *v)
++static inline bool arch_get_random_long(unsigned long *v)
  {
- 	bool ok;
- 	unsigned int retry = RDRAND_RETRY_LOOPS;
-@@ -41,7 +41,7 @@ static inline bool rdrand_long(unsigned long *v)
- 	return false;
+-	return 0;
++	return false;
  }
  
--static inline bool rdrand_int(unsigned int *v)
-+static inline bool __must_check rdrand_int(unsigned int *v)
+-static inline int arch_get_random_int(unsigned int *v)
++static inline bool arch_get_random_int(unsigned int *v)
  {
- 	bool ok;
- 	unsigned int retry = RDRAND_RETRY_LOOPS;
-@@ -55,7 +55,7 @@ static inline bool rdrand_int(unsigned int *v)
- 	return false;
+-	return 0;
++	return false;
  }
  
--static inline bool rdseed_long(unsigned long *v)
-+static inline bool __must_check rdseed_long(unsigned long *v)
+-static inline int arch_get_random_seed_long(unsigned long *v)
++static inline bool arch_get_random_seed_long(unsigned long *v)
  {
- 	bool ok;
- 	asm volatile(RDSEED_LONG
-@@ -64,7 +64,7 @@ static inline bool rdseed_long(unsigned long *v)
- 	return ok;
+ 	if (ppc_md.get_random_seed)
+ 		return ppc_md.get_random_seed(v);
+ 
+-	return 0;
++	return false;
+ }
+-static inline int arch_get_random_seed_int(unsigned int *v)
++
++static inline bool arch_get_random_seed_int(unsigned int *v)
+ {
+ 	unsigned long val;
+-	int rc;
++	bool rc;
+ 
+ 	rc = arch_get_random_long(&val);
+ 	if (rc)
+@@ -35,15 +36,16 @@ static inline int arch_get_random_seed_int(unsigned int *v)
+ 	return rc;
  }
  
--static inline bool rdseed_int(unsigned int *v)
-+static inline bool __must_check rdseed_int(unsigned int *v)
+-static inline int arch_has_random(void)
++static inline bool arch_has_random(void)
  {
- 	bool ok;
- 	asm volatile(RDSEED_INT
-@@ -84,22 +84,22 @@ static inline bool rdseed_int(unsigned int *v)
- #define arch_has_random()	static_cpu_has(X86_FEATURE_RDRAND)
- #define arch_has_random_seed()	static_cpu_has(X86_FEATURE_RDSEED)
- 
--static inline bool arch_get_random_long(unsigned long *v)
-+static inline bool __must_check arch_get_random_long(unsigned long *v)
- {
- 	return arch_has_random() ? rdrand_long(v) : false;
+-	return 0;
++	return false;
  }
  
--static inline bool arch_get_random_int(unsigned int *v)
-+static inline bool __must_check arch_get_random_int(unsigned int *v)
+-static inline int arch_has_random_seed(void)
++static inline bool arch_has_random_seed(void)
  {
- 	return arch_has_random() ? rdrand_int(v) : false;
+ 	return !!ppc_md.get_random_seed;
  }
++
+ #endif /* CONFIG_ARCH_RANDOM */
  
--static inline bool arch_get_random_seed_long(unsigned long *v)
-+static inline bool __must_check arch_get_random_seed_long(unsigned long *v)
- {
- 	return arch_has_random_seed() ? rdseed_long(v) : false;
- }
- 
--static inline bool arch_get_random_seed_int(unsigned int *v)
-+static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
- {
- 	return arch_has_random_seed() ? rdseed_int(v) : false;
- }
+ #ifdef CONFIG_PPC_POWERNV
 -- 
 2.17.1
 
