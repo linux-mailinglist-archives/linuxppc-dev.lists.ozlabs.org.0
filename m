@@ -2,89 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178ADE6A3B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 00:43:48 +0100 (CET)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471ZDc0D3qzDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 10:43:44 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B52E6A48
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 01:04:39 +0100 (CET)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 471Zhg6mv0zDqNQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 11:04:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471ZBY5MSyzDqVF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 10:41:57 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9RNavHs075716
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 19:41:46 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vw3hs7uyt-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 19:41:45 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Sun, 27 Oct 2019 23:41:43 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sun, 27 Oct 2019 23:41:36 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9RNfZ5t42532890
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 27 Oct 2019 23:41:35 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D2B4A4059;
- Sun, 27 Oct 2019 23:41:35 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 331E5A4040;
- Sun, 27 Oct 2019 23:41:35 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sun, 27 Oct 2019 23:41:35 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9E6CDA026A;
- Mon, 28 Oct 2019 10:41:30 +1100 (AEDT)
-Subject: Re: [PATCH 02/10] nvdimm: remove prototypes for nonexistent functions
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20191025044721.16617-1-alastair@au1.ibm.com>
- <20191025044721.16617-3-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Mon, 28 Oct 2019 10:41:31 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471Zfq41hqzDqLH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 11:02:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.b="H/UDoxo7"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 471Zfp4Wykz9sP4;
+ Mon, 28 Oct 2019 11:02:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1572220979;
+ bh=az2zydEzQ1rf9pqzia427KFZ7Y/igSD/dWXuoPvZSEk=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=H/UDoxo73yXK4v7F0hcgaERxxh1rF/3iKa9cKb3y5shsLqJpAcxn9S6Pc1l05Imwa
+ nkQJe/1f4MkoWj8VKnQ8RbiTTsxp9QvQp7dBb8dnMZhRWYevnXbJNVP0zHF2Swne2n
+ oG9RdH4WTDXwq6fPHDNR8aAhxI19lLhKi9bVjBg0PPIxpN9UwRSUV0uvts0jGbshsb
+ WV6eqYGCZleliuHEWCwSX18ImZyHSpFe/z3Mmn4n1AnQLDrxp97XpkdYA8oXosq5km
+ +CSHCJJkoG2EwjQ2U5KKpiGKlNMKZ8DiQ4AX9hGURM54rKc+rmdYpa0rONN9OcY6gC
+ XHiMIWA6MUerw==
+Date: Mon, 28 Oct 2019 11:02:57 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov
+ <ast@kernel.org>, Networking <netdev@vger.kernel.org>
+Subject: Re: linux-next: build warning after merge of the bpf-next tree
+Message-ID: <20191028110257.6d6dba6e@canb.auug.org.au>
+In-Reply-To: <20191018105657.4584ec67@canb.auug.org.au>
+References: <20191018105657.4584ec67@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <20191025044721.16617-3-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19102723-4275-0000-0000-0000037838DF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102723-4276-0000-0000-0000388B6993
-Message-Id: <0eb471be-9a88-3dbf-0d75-b109fc257974@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-27_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910270246
+Content-Type: multipart/signed; boundary="Sig_/ZXSJx2c+WO+1Z=QY9pD2xO_";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,63 +58,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>,
- Keith Busch <keith.busch@intel.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Qian Cai <cai@lca.pw>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>, linux-mm@kvack.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/10/19 3:46 pm, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> These functions don't exist, so remove the prototypes for them.
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+--Sig_/ZXSJx2c+WO+1Z=QY9pD2xO_
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Indeed, they do not.
+Hi all,
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+On Fri, 18 Oct 2019 10:56:57 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> Hi all,
+>=20
+> After merging the bpf-next tree, today's linux-next build (powerpc
+> ppc64_defconfig) produced this warning:
+>=20
+> WARNING: 2 bad relocations
+> c000000001998a48 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_start
+> c000000001998a50 R_PPC64_ADDR64    _binary__btf_vmlinux_bin_end
+>=20
+> Introduced by commit
+>=20
+>   8580ac9404f6 ("bpf: Process in-kernel BTF")
 
-> ---
->   drivers/nvdimm/nd-core.h | 4 ----
->   1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-> index 25fa121104d0..9f121a6aeb02 100644
-> --- a/drivers/nvdimm/nd-core.h
-> +++ b/drivers/nvdimm/nd-core.h
-> @@ -124,11 +124,7 @@ void nd_region_create_dax_seed(struct nd_region *nd_region);
->   int nvdimm_bus_create_ndctl(struct nvdimm_bus *nvdimm_bus);
->   void nvdimm_bus_destroy_ndctl(struct nvdimm_bus *nvdimm_bus);
->   void nd_synchronize(void);
-> -int nvdimm_bus_register_dimms(struct nvdimm_bus *nvdimm_bus);
-> -int nvdimm_bus_register_regions(struct nvdimm_bus *nvdimm_bus);
-> -int nvdimm_bus_init_interleave_sets(struct nvdimm_bus *nvdimm_bus);
->   void __nd_device_register(struct device *dev);
-> -int nd_match_dimm(struct device *dev, void *data);
->   struct nd_label_id;
->   char *nd_label_gen_id(struct nd_label_id *label_id, u8 *uuid, u32 flags);
->   bool nd_is_uuid_unique(struct device *dev, u8 *uuid);
-> 
+This warning now appears in the net-next tree build.
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/ZXSJx2c+WO+1Z=QY9pD2xO_
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl22MDEACgkQAVBC80lX
+0GzzfQf/Q0QnAHV72bYNUdkgcSH9LOJ9t/6p+aRr+4vw5frSUMgwlpL/dqzwXlPi
+ubGCbcVoaDWDXBCcAXj6IZx8Ki0jwZmkGHhvMCktOg3IpMDRZJqdtrqJzSGnYYlx
+k4R3yiW2Eag+I2/3sBkTfStBFU8sd04Ae5YqnTb3RtFMwEVR3BQg8wvQ2uRKF4DY
+JPR6f55s0av6kVF8pQ/ySnAMguJim+J/tyAcC4kxRlBOaxXiwVmaHH1pRs8gWQ/e
+enkPaJcIdJW36+UKNVqbLNSWuTV0InP4B3OBknRt+1ea/TrfM3ejYuGcjRRcwAvu
+D23+98uAKiuQpg7EyUd34X+rRy9ZkA==
+=CUKK
+-----END PGP SIGNATURE-----
+
+--Sig_/ZXSJx2c+WO+1Z=QY9pD2xO_--
