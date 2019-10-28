@@ -2,75 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478BEE6D67
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 08:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7745FE6D89
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 08:49:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471mqP0Fv4zDqc1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 18:41:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471n1M2WQ9zDqfP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 18:49:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.13.70; helo=eur01-he1-obe.outbound.protection.outlook.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="A72Ecndl"; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="UiyCZN+G"; 
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr130070.outbound.protection.outlook.com [40.107.13.70])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471mnH72RPzDqX9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 18:39:13 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id u9so1601491pfn.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 00:39:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=W6KtXbeNB73L7K8HlIwOcgcuJ+P24gHi6K3WdunG+G4=;
- b=A72Ecndl1uDlUulcxZtsu13muErR/lU5GxMGHazyGJDJCYl+cgN1yTFGpnQzGc3R0F
- B/FLvXZQWadeofbZ8s52iQfdFNSfE6qYpH0D+mLFs2pTSZDRhHIlqrbiU8ILpQI83jCI
- KeS+8zZ1ooWV3mRoXdkA1MYHF9YYpcj6CaWCE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=W6KtXbeNB73L7K8HlIwOcgcuJ+P24gHi6K3WdunG+G4=;
- b=loVnlp2npbS8alcH5O81jiV7RDHEfvhnrtg3lHfShmPiHchut/jwzqALZ6+E92WVI0
- vWE0I1oaVqQJt8U5f21GGOCiEiRw1xNF/RCv/QSaUCsylBE8s6FMgPRKU9dTlw0obNT5
- b8balrO2CPoyo7ipEAkLQVe6OFoCvzCDiguy3BNVY9M1oObNISJVr3M18NX68+Ikz9Ky
- etAYWgt60OLLwY1EGFJaDDMvFZGF6LXA1idRE9/mQ+pQ/SVoaIgOkBJEOiGCCGXFug7M
- XM2N+DM422/d1PlezLiNi0+cYNOZS57xrabi2T/cfxvF0twOaTCxBXOH0Gc85Npez384
- ACEg==
-X-Gm-Message-State: APjAAAXrtE+b13cA1cNGA5SRemv72607g5lyynURSyNXDDY27KLEFvCR
- fqCjkoqIyZOzW10yEdEc9ykaAA==
-X-Google-Smtp-Source: APXvYqyJgdsMELh5YzfO9lfXAMmWDjSS5OoSyz3S8TTPvQ3C5awf1OmXS2S6lTk7CB3OzUGg7Lpvjw==
-X-Received: by 2002:a62:e312:: with SMTP id g18mr535124pfh.250.1572248349944; 
- Mon, 28 Oct 2019 00:39:09 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id 184sm10426925pfu.58.2019.10.28.00.39.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2019 00:39:09 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v8 1/5] kasan: support backing vmalloc space with real
- shadow memory
-In-Reply-To: <95c87ba1-9c15-43fb-dba7-f3ecd01be8e0@virtuozzo.com>
-References: <20191001065834.8880-1-dja@axtens.net>
- <20191001065834.8880-2-dja@axtens.net>
- <352cb4fa-2e57-7e3b-23af-898e113bbe22@virtuozzo.com>
- <87ftjvtoo7.fsf@dja-thinkpad.axtens.net>
- <8f573b40-3a5a-ed36-dffb-4a54faf3c4e1@virtuozzo.com>
- <20191016132233.GA46264@lakrids.cambridge.arm.com>
- <95c87ba1-9c15-43fb-dba7-f3ecd01be8e0@virtuozzo.com>
-Date: Mon, 28 Oct 2019 18:39:04 +1100
-Message-ID: <87blu18gkn.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471mzP6gxHzDqcV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 18:47:58 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A5s6FYE6vH5liyocQfY+b8dKkKH7lG/7jjCNRcgvDUSYQNLveMrk/0KBQWQRGmC/bFVkmsnchcp3VU00Wzl4Lsi9KYRt4ERLmLoaF/tgtmbHdHXjh1W52D6ME/9UD/W0jCeORQ8TECEa9MTKnEeryf9Br0SA2rQ5BXuvTzoj0vfN7JwXJkuXXgxLaGffC4IehCRoEjudp5WqmOrBstgEcFV7qHxetpuUBnKPx9Lz8rZklo/XIEA/POMiKoWZD7H0RI/mDbEBCUrIAgT0IiD87HH82P7EIKTPx3AEQKI5ZBVDUo1pnCFIC1qQX86SqrrUCiEt6CM2UdxzT5Zy20eO+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hh+MnHDOR6FKVUKWefs3YTRv+AL+3LYegFZgSqg3dmI=;
+ b=FKIlYdBcDVbnlqPCDLaBFS6seYCDGkZGGWHbWI7sVENtDMD1gJ1iksA0Jb2+MLPr/91Om5j0eG7UVWsedn+SKkO+eVPkZZ5ODRWNliIPaPKQPc/uyAxpgVcIOlQ2JI6sCr7iB5fFJsoqaVg9wdSy06zAiDalolU14Ev6JnkPuZwNt73O2rTuQLSXPZDhvh00Fyi/R8h4/pqBbIymrDNuem3NIYBf5TpC+h2w7QwD3iyfzm1S4H6iEclOABqdZ4DXNYeQwW8dbPPKl2N2hBw+ty4+71T1dNgynnvwRhvHt1OMzd1w44D7lek8HIknnyovjLWlcowc4GjHOPYIwjBiSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hh+MnHDOR6FKVUKWefs3YTRv+AL+3LYegFZgSqg3dmI=;
+ b=UiyCZN+G11opAVJJ/W3Ss2rvoGBUomgXr2qplSmZuFrhoAWMKRpTdxQr7QgPEmSQXpcMneOOKfnmB++Lf9YgtllescFzi6J2fUG8dYCcPxvh1x8m3RAQMdxXSGnu9BVbwrwdL3/QMEjG+sD5QYf6eay3VKljuAmgM4vp3D7Xivs=
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.232.225) by
+ VE1PR04MB6430.eurprd04.prod.outlook.com (20.179.232.155) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2387.25; Mon, 28 Oct 2019 07:47:51 +0000
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::e052:9278:76a3:27c]) by VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::e052:9278:76a3:27c%6]) with mapi id 15.20.2387.025; Mon, 28 Oct 2019
+ 07:47:51 +0000
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: Re: [PATCH V2] ASoC: fsl_esai: Add spin lock to protect reset, stop
+ and start
+Thread-Topic: [PATCH V2] ASoC: fsl_esai: Add spin lock to protect reset, stop
+ and start
+Thread-Index: AdWNY/owwLufHxxAQSqOpSi0OV5oBg==
+Date: Mon, 28 Oct 2019 07:47:51 +0000
+Message-ID: <VE1PR04MB64794BEB41E8A3DB9C7AFB10E3660@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=shengjiu.wang@nxp.com; 
+x-originating-ip: [92.121.36.197]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: f447758a-d31a-49a2-47bc-08d75b7b22b4
+x-ms-traffictypediagnostic: VE1PR04MB6430:
+x-microsoft-antispam-prvs: <VE1PR04MB6430C62ABBBE33A1A767EAD3E3660@VE1PR04MB6430.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 0204F0BDE2
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(366004)(39860400002)(346002)(136003)(396003)(376002)(189003)(199004)(2906002)(305945005)(25786009)(7736002)(74316002)(7416002)(66066001)(229853002)(52536014)(6436002)(4326008)(76116006)(64756008)(66556008)(5660300002)(66476007)(66446008)(66946007)(8936002)(55016002)(6916009)(9686003)(54906003)(316002)(6246003)(99286004)(81166006)(81156014)(8676002)(1411001)(71190400001)(71200400001)(33656002)(14444005)(256004)(102836004)(7696005)(486006)(6506007)(186003)(26005)(478600001)(86362001)(14454004)(6116002)(3846002)(476003);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6430;
+ H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: d96KwWFhzAkrV7UqcWZisV0YSdWxS1LCA38z4vHivyAm7dZazowLYJ3mI4QQ+vDRbojkr0zCDq4GV7EWsG119Cnr/BxmnX5Gb26HHUwsZx1C/3To0ajQjmiSenkNvGDiMU5ihwe66PyyKtuUN3sDdtGydR5/VB+ZuhVA4SXWJp/PpH4YBb0+MQWcUdUSCAmH5sGklj1CLx8mbYAsRPqNnDFBqVCucGt3KDD8S9gpcLruM3QPriC21tYLeCuq5X9YqUNR6mcLxnLTCLmiXyw7uizQqP7n++FMoXaMQ1xnm8dSMNT7+0nBMx8HhjCxvBQwNTUS73UpuTna1Hp8eVuImSYgx8EWkAZn/02Xx/mVI0FtoC8gCjzLlpse60z3bXj40CSAoOEcg3dKcIrMTcYNZa/nHGyTrmjv9sdgva1mE0fQXbu47No1cnL1Lb1MH1BT
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f447758a-d31a-49a2-47bc-08d75b7b22b4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Oct 2019 07:47:51.6530 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: F3lf0gtxnJQQ/k7s415xoPKpweRgrhcqH/dNZW6jDajznrKoLOJgx2ll04mHJMmKmvtFOhZ+a1VDFL4SH+iQ7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6430
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,187 +102,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gor@linux.ibm.com, x86@kernel.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com,
- luto@kernel.org, linuxppc-dev@lists.ozlabs.org, dvyukov@google.com
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "perex@perex.cz" <perex@perex.cz>, "broonie@kernel.org" <broonie@kernel.org>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Or let me put it this way. Let's assume that CPU0 accesses shadow and CPU1 did the memset() and installed pte.
-> CPU0 may not observe memset() only if it dereferences completely random vmalloc addresses
-> or it performs out-of-bounds access which crosses KASAN_SHADOW_SCALE*PAGE_SIZE boundary, i.e. access to shadow crosses page boundary.
-> In both cases it will be hard to avoid crashes. OOB crossing the page boundary in vmalloc pretty much guarantees crash because of guard page,
-> and derefencing random address isn't going to last for long.
->
-> If CPU0 obtained pointer via vmalloc() call and it's doing out-of-bounds (within boundaries of the page) or use-after-free,
-> than the spin_[un]lock(&init_mm.page_table_lock) should allow CPU0 to see the memset done by CPU1 without any additional barrier.
+Hi
+>=20
+> On Fri, Oct 25, 2019 at 03:13:53PM +0800, Shengjiu Wang wrote:
+> > xrun may happen at the end of stream, the
+> > trigger->fsl_esai_trigger_stop maybe called in the middle of
+> > fsl_esai_hw_reset, this may cause esai in wrong state after stop, and
+> > there may be endless xrun interrupt.
+> >
+> > This issue may also happen with trigger->fsl_esai_trigger_start.
+> >
+> > So Add spin lock to lock those functions.
+> >
+> > Fixes: 7ccafa2b3879 ("ASoC: fsl_esai: recover the channel swap after
+> > xrun")
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>=20
+> Some small comments inline. Once they are addressed, please add:
+>=20
+> Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+>=20
+> Thanks
+>=20
+> > ---
+> > Change in v2
+> > -add lock for fsl_esai_trigger_start.
+> >
+> >  sound/soc/fsl/fsl_esai.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c index
+> > 37b14c48b537..9b28e2af26e4 100644
+> > --- a/sound/soc/fsl/fsl_esai.c
+> > +++ b/sound/soc/fsl/fsl_esai.c
+> > @@ -33,6 +33,7 @@
+> >   * @fsysclk: system clock source to derive HCK, SCK and FS
+> >   * @spbaclk: SPBA clock (optional, depending on SoC design)
+> >   * @task: tasklet to handle the reset operation
+> > + * @lock: spin lock to handle reset and stop behavior
+>=20
+> Should be "between hw_reset() and trigger()" now.
+>=20
+> >   * @fifo_depth: depth of tx/rx FIFO
+> >   * @slot_width: width of each DAI slot
+> >   * @slots: number of slots
+> > @@ -56,6 +57,7 @@ struct fsl_esai {
+> >       struct clk *fsysclk;
+> >       struct clk *spbaclk;
+> >       struct tasklet_struct task;
+> > +     spinlock_t lock; /* Protect reset and stop */
+>=20
+> We can drop the comments here since you add it to the top.
 
+Here is required by the checkpatch.pl, so still is needed.
 
-I have puzzled through the barrier stuff. Here's what I
-have. Apologies for the length, and for any mistakes - I'm pretty new
-to deep kernel memory model stuff!
-
-One thing that I don't think we've considered so far is _un_poisioning:
-
-
-|	ret = apply_to_page_range(&init_mm, shadow_start,
-|				  shadow_end - shadow_start,
-|				  kasan_populate_vmalloc_pte, NULL);
-|	if (ret)
-|		return ret;
-|
-|	kasan_unpoison_shadow(area->addr, requested_size);
-
-That unpoisioning is going to write to the shadow via its virtual
-address, loading translations into the TLB. So we cannot assume that
-another CPU is doing the page table walk and loading the TLB entry for
-the first time. We need to make sure that correctness does not depend
-on that.
-
-We have 2x2 cases to consider:
-
-{Access via fixed address, access via unknown address}
-x
-{Access within object - unpoisioned, access just beyond object but
-within shadow - poisoned}
-
-I think we can first drop all consideration of access via fixed
-addresses. Such accesses will have to be synchronised via some
-external mechanism, such as a flag, with appropriate
-locking/barriers. Those barriers will order the rest of the memory
-accesses within vmalloc(), and I considered speculative faults in my
-other email.
-
-That leaves just memory accesses via an unknown address. I'm imagining
-the following two cases:
-
-[Access of Unpoisoned Shadow - valid access]
-
-CPU#0                                   CPU#1
------                                   -----
-WRITE_ONCE(p, vmalloc(100))             while (!(x = READ_ONCE(p))) ;
-                                        x[99] = 1;
-
-[Access of Poisoned Shadow - invalid read past the end]
-
-CPU#0                                   CPU#1
------                                   -----
-WRITE_ONCE(p, vmalloc(100))             while (!(x = READ_ONCE(p))) ;
-                                        x[100] = 1;
-
-
----------- Access to the unpoisioned region of shadow ----------
-
-Expanding the CPU#0 side, let `a` be area->addr:
-
-// kasan_populate_vmalloc_pte
-...
-STORE page+PAGE_SIZE-1, poison
-// Mark's proposed smp_wmb() goes here
-ACQUIRE page_table_lock
-STORE ptep, pte
-RELEASE page_table_lock
-// return to kasan_populate_vmalloc
-// call kasan_unpoison_shadow(a, 100)
-STORE shadow(a), unpoison
-...
-STORE shadow(a+99), unpoison
-// rest of vmalloc()
-STORE p, a
-
-
-CPU#1 looks like (removing the loop bit):
-
-x = LOAD p
-<data dependency>
-shadow_x = LOAD *shadow(x+99)
-// if shadow_x poisoned, report
-STORE (x+99), 1
-
-Putting the last few operations side-by-side:
-
-CPU#0                                    CPU#1
- STORE shadow(a+99), unpoision           x = LOAD p
-                                         <data dependency>
- STORE p, a                              shadow_x = LOAD shadow(x+99)
-
-
-While there is a data dependency between x and shadow_x, there's no
-barrier in kasan_populate_vmalloc() that forces the _un_poisoning to
-be correctly ordered.
-
-My worry would be that CPU#0 might commit the store to p before it
-commits the store to the shadow. Then, even with the data dependency,
-CPU#1 could observe store to shadow(a+99) after it executed the load
-of shadow(x+99). This would lead CPU#1 to observe a false-positive
-poison.
-
-We need a write barrier, and Mark's proposed smp_wmb() is too early to
-help here.
-
-Now, there is an smp_wmb() in clear_vm_uninitialized_flag(), which is
-called by __vmalloc_node_range between kasan_populate_vmalloc and the
-end of the function. That makes things look like this:
-
-  CPU#0                                   CPU#1
-STORE shadow(a+99), unpoision           x = LOAD p
-smp_wmb()                               <data dependency>
-STORE p, a                              shadow_x = LOAD shadow(x+99)
-
-memory-barriers.txt says that a data dependency and a write barrier
-are sufficient to order this correctly.
-
-Outside of __vmalloc_node_range(), the other times we call
-kasan_populate_vmalloc() are:
-
- - get_vm_area() and friends. get_vm_area does not mapping any pages
-   into the area returned. So the caller will have to do that, which
-   will require taking the page table lock. A release should pair with
-   a data dependency, making the unpoisoning visible.
-
- - The per_cpu allocator: again the caller has to map pages into the
-   area returned - pcpu_map_pages calls map_kernel_range_noflush.
-
-So, where the address is not known in advance, the unpoisioning does
-need a barrier. However, we do hit one anyway before we return. We
-should document that we're relying on the barrier in
-clear_vm_uninitialized_flag() or barriers from other callers.
-
----------- Access to the poisioned region of shadow ----------
-
-Now, what about the case that we do an overread that's still in the
-shadow page?
-
-CPU#0                                    CPU#1
- STORE page+100, poison
- ...
- # Mark's proposed smp_wmb()
- ACQUIRE page_table_lock
- STORE ptep, pte
- RELEASE page_table_lock
- ...
- STORE shadow(a+99), unpoision           x = LOAD p
- smp_wmb()                               <data dependency>
- STORE p, a                              shadow_x = LOAD shadow(x+100)
-
-
-Here, because of both the release and the smp_wmb(), the store of the
-poison will be safe. Because we're not expecting anything funky with
-fixed addresses or other CPUs doing page-table walks, I still think we
-don't need an extra barrier where Mark has proposed.
-
--------------------- Conclusion --------------------
-
-I will send a v10 that:
-
- - drops the smp_wmb() for poisoning
- 
- - adds a comment that explains that we're dependent on later barriers
-   for _un_poisioning
-
-I'd really like to get this into the coming merge window, if at all
-possible.
-
-Regards,
-Daniel
+Best regards
+Wang shengjiu
