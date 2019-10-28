@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5F2E6F5B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 10:50:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2058E6F60
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 10:52:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471qhg3jKBzDr0P
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 20:50:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471qkw2S6tzDr3X
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 20:52:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,46 +19,48 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471qfj4C6xzDqxQ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471qfj5CqFzDqxg
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 20:48:45 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9S9lVHZ013375; Mon, 28 Oct 2019 05:48:35 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vwtk1dqqy-1
+ x9S9lWOK146660; Mon, 28 Oct 2019 05:48:37 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vwt4x6dh3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Oct 2019 05:48:34 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9S9jCVk023698;
- Mon, 28 Oct 2019 09:48:33 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma02dal.us.ibm.com with ESMTP id 2vvds850kp-1
+ Mon, 28 Oct 2019 05:48:37 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9S9jBAT013274;
+ Mon, 28 Oct 2019 09:48:36 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma01dal.us.ibm.com with ESMTP id 2vvds8n21g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Oct 2019 09:48:33 +0000
+ Mon, 28 Oct 2019 09:48:36 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9S9mWKj55443944
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9S9mYvo51249518
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Oct 2019 09:48:32 GMT
+ Mon, 28 Oct 2019 09:48:34 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 642FEC6059;
+ by IMSVA (Postfix) with ESMTP id C6EF1C605D;
+ Mon, 28 Oct 2019 09:48:34 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E450AC6055;
  Mon, 28 Oct 2019 09:48:32 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 821D3C6055;
- Mon, 28 Oct 2019 09:48:30 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.43.125])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 28 Oct 2019 09:48:30 +0000 (GMT)
+ Mon, 28 Oct 2019 09:48:32 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: dan.j.williams@intel.com, mpe@ellerman.id.au
-Subject: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size validation
- arch dependent
-Date: Mon, 28 Oct 2019 15:18:22 +0530
-Message-Id: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+Subject: [RFC PATCH 2/4] libnvdimm/namespace: Disable the region if the
+ namespace size is not aligned correctly
+Date: Mon, 28 Oct 2019 15:18:23 +0530
+Message-Id: <20191028094825.21448-2-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -68,7 +70,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=961 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=978 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1908290000 definitions=main-1910280098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,134 +89,59 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The page size used to map the namespace is arch dependent. For example
-architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
-size is not aligned to the mapping page size, we can observe kernel crash
-during namespace init and destroy.
+During namespace initialization, if kernel finds the namespace size not
+aligned as per arch-specific restriction, disable the region completely.
 
-This is due to kernel doing partial map/unmap of the resource range
+Even though kernel validates the namespace size while creating the namespace
+nvdimm core still needs to make sure namespaces with wrong size are not initialized.
+This can happen when users move SCM across different architectures and with
+architectures like ppc64 when we use different MMU translation modes.
 
-BUG: Unable to handle kernel data access at 0xc001000406000000
-Faulting instruction address: 0xc000000000090790
-NIP [c000000000090790] arch_add_memory+0xc0/0x130
-LR [c000000000090744] arch_add_memory+0x74/0x130
-Call Trace:
- arch_add_memory+0x74/0x130 (unreliable)
- memremap_pages+0x74c/0xa30
- devm_memremap_pages+0x3c/0xa0
- pmem_attach_disk+0x188/0x770
- nvdimm_bus_probe+0xd8/0x470
- really_probe+0x148/0x570
- driver_probe_device+0x19c/0x1d0
- device_driver_attach+0xcc/0x100
- bind_store+0x134/0x1c0
- drv_attr_store+0x44/0x60
- sysfs_kf_write+0x74/0xc0
- kernfs_fop_write+0x1b4/0x290
- __vfs_write+0x3c/0x70
- vfs_write+0xd0/0x260
- ksys_write+0xdc/0x130
- system_call+0x5c/0x68
+ppc64 allow booting systems with different translation mode based on kernel
+parameter and the two translation mode (hash and radix) have different
+direct-map page size restrictions.
+
+Marking the region disabled enables the user to either re-init the namespace
+using the dimm interface or boot back to the right kernel supporting the alignment.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/arm64/mm/flush.c     | 11 +++++++++++
- arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
- arch/x86/mm/pageattr.c    | 12 ++++++++++++
- include/linux/libnvdimm.h |  1 +
- 4 files changed, 43 insertions(+), 2 deletions(-)
+ drivers/nvdimm/namespace_devs.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
-index ac485163a4a7..90c54c600023 100644
---- a/arch/arm64/mm/flush.c
-+++ b/arch/arm64/mm/flush.c
-@@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
- 	__inval_dcache_area(addr, size);
- }
- EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
-+
-+unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
-+{
-+	u32 remainder;
-+
-+	div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
-+	if (remainder)
-+		return PAGE_SIZE * ndr_mappings;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
- #endif
-diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
-index 377712e85605..2e661a08dae5 100644
---- a/arch/powerpc/lib/pmem.c
-+++ b/arch/powerpc/lib/pmem.c
-@@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
- 	unsigned long start = (unsigned long) addr;
- 	flush_dcache_range(start, start + size);
- }
--EXPORT_SYMBOL(arch_wb_cache_pmem);
-+EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index cca0a3ba1d2c..fcde9f2bf2ea 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -1912,6 +1912,7 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
+ 	struct nd_label_ent *label_ent;
+ 	struct nd_namespace_pmem *nspm;
+ 	struct nd_mapping *nd_mapping;
++	unsigned long map_align_size;
+ 	resource_size_t size = 0;
+ 	struct resource *res;
+ 	struct device *dev;
+@@ -2010,6 +2011,20 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
  
- void arch_invalidate_pmem(void *addr, size_t size)
- {
- 	unsigned long start = (unsigned long) addr;
- 	flush_dcache_range(start, start + size);
- }
--EXPORT_SYMBOL(arch_invalidate_pmem);
-+EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
-+
-+unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
-+{
-+	u32 remainder;
-+	unsigned long linear_map_size;
-+
-+	if (radix_enabled())
-+		linear_map_size = PAGE_SIZE;
-+	else
-+		linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
-+
-+	div_u64_rem(size, linear_map_size * ndr_mappings, &remainder);
-+	if (remainder)
-+		return linear_map_size * ndr_mappings;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
+ 	}
  
- /*
-  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
-diff --git a/arch/x86/mm/pageattr.c b/arch/x86/mm/pageattr.c
-index 0d09cc5aad61..023329d7dfac 100644
---- a/arch/x86/mm/pageattr.c
-+++ b/arch/x86/mm/pageattr.c
-@@ -310,6 +310,18 @@ void arch_invalidate_pmem(void *addr, size_t size)
- }
- EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
- 
-+unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
-+{
-+	u32 remainder;
++	map_align_size = arch_validate_namespace_size(nd_region->ndr_mappings, size);
++	if (map_align_size) {
++		dev_err(&nd_region->dev, "%llu is not %ldK aligned\n", size,
++				map_align_size/ SZ_1K);
++		/*
++		 * Disable this region completely. A wrongly sized namespace
++		 * size implies the start address of other namespace would also
++		 * be wrong and we would find confusing crashes w.r.t
++		 * direct-map address.
++		 */
++		rc = -EINVAL;
++		goto err;
++	}
 +
-+	div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
-+	if (remainder)
-+		return PAGE_SIZE * ndr_mappings;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
-+
-+
- static void __cpa_flush_all(void *arg)
- {
- 	unsigned long cache = (unsigned long)arg;
-diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-index b6eddf912568..e2f8387d9ef4 100644
---- a/include/linux/libnvdimm.h
-+++ b/include/linux/libnvdimm.h
-@@ -291,4 +291,5 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
- }
- #endif
- 
-+unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size);
- #endif /* __LIBNVDIMM_H__ */
+ 	if (!nspm->alt_name || !nspm->uuid) {
+ 		rc = -ENOMEM;
+ 		goto err;
 -- 
 2.21.0
 
