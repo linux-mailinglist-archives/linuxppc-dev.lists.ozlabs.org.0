@@ -2,48 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730ACE6A70
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 02:14:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A51E6A7B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 02:28:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471cFm5ctrzDqfH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 12:14:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471cYF5Vc2zDqfF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 12:28:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="G8EDPx8d"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471cCr0mT2zDqd2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 12:13:10 +1100 (AEDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2019 18:13:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,238,1569308400"; d="scan'208";a="224486495"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga004.fm.intel.com with ESMTP; 27 Oct 2019 18:13:02 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1iOtag-0004hM-6I; Mon, 28 Oct 2019 09:13:02 +0800
-Date: Mon, 28 Oct 2019 09:12:52 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Alastair D'Silva <alastair@au1.ibm.com>
-Subject: [RFC PATCH] nvdimm: scm_get() can be static
-Message-ID: <20191028011252.ebr7djanid6k25ok@4978f4969bb8>
-References: <20191025044721.16617-9-alastair@au1.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471cWF0HPrzDqSm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 12:26:31 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id u9so967232pfn.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2019 18:26:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=ritRVlb0ULtaryMtuft6JkNqY9ganMcK1V8vqfjCnBA=;
+ b=G8EDPx8dsDrmnM3jUe0NEPQhQlFo1Zu5PVSrWw3vDWeZB7zgjMiSXLsXRduxWItj5t
+ Tj7ZEbeR4LfUjVwwjR/8IDrZ+oZPkO/FvwuT8ioTyBzVEaVfT2IgSeoIsQqsliEbVyj8
+ Oyn7mg/4nLD3lM2cJk9+0uJlEmJhq86s7uWN8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=ritRVlb0ULtaryMtuft6JkNqY9ganMcK1V8vqfjCnBA=;
+ b=gbca7hDr5NSf3KaWOSx4yFTfTeGgZdDmgMbGlAUcdkSbEsR3cGI0Pu/yBJW9NxN00C
+ iocdOAnUORubEmxezewoC8QixR2xm2O+M85xMHK2FFSm3ihDepkTib+KsyjrUib4FtS5
+ 1+OoQwAQ8oT/iTdPkv5IgR2HOsyFPJVf514XSy98T+e+4SrtPl89svZscAhqDzAjZsIz
+ joE1ieIeYWQfxEWticyA2m4mjj5k4J3gc562mvI7f/czimQ0gcZwWf/lG2VCC0OKyfyM
+ COxoAUdbAAT6K2YFxZz42aC3YJsS6wYLrs9AxlKIB9r6yZdKdoKid21+wLr0BC4xe1IF
+ XuvA==
+X-Gm-Message-State: APjAAAXvugOSy+8glbk/bpGmHGiSu2++Dx98+uAIqAfHfQEnSGWCVyFH
+ 6jotqQljA1iogALdTKPZ5RkxTg==
+X-Google-Smtp-Source: APXvYqzE36DCbOMTBwqOc4bMyPFO24D6Ue5PZH6JUNeN2k2TLWMzjVwHP+LDtRN/TiwSVcHcRVTDaQ==
+X-Received: by 2002:aa7:9f86:: with SMTP id z6mr17999776pfr.102.1572225988198; 
+ Sun, 27 Oct 2019 18:26:28 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id w27sm6775067pgc.20.2019.10.27.18.26.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 27 Oct 2019 18:26:27 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Mark Rutland <mark.rutland@arm.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>
+Subject: Re: [PATCH v8 1/5] kasan: support backing vmalloc space with real
+ shadow memory
+In-Reply-To: <20191016132233.GA46264@lakrids.cambridge.arm.com>
+References: <20191001065834.8880-1-dja@axtens.net>
+ <20191001065834.8880-2-dja@axtens.net>
+ <352cb4fa-2e57-7e3b-23af-898e113bbe22@virtuozzo.com>
+ <87ftjvtoo7.fsf@dja-thinkpad.axtens.net>
+ <8f573b40-3a5a-ed36-dffb-4a54faf3c4e1@virtuozzo.com>
+ <20191016132233.GA46264@lakrids.cambridge.arm.com>
+Date: Mon, 28 Oct 2019 12:26:23 +1100
+Message-ID: <87eeyx8xts.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191025044721.16617-9-alastair@au1.ibm.com>
-X-Patchwork-Hint: ignore
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,71 +81,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
- David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Wei Yang <richard.weiyang@gmail.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, alastair@d-silva.org,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- Qian Cai <cai@lca.pw>, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Keith Busch <keith.busch@intel.com>, kbuild-all@lists.01.org,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: gor@linux.ibm.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com,
+ luto@kernel.org, linuxppc-dev@lists.ozlabs.org, dvyukov@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Mark and Andrey,
 
-Fixes: 0d40f55b9035 ("nvdimm: Add driver for OpenCAPI Storage Class Memory")
-Signed-off-by: kbuild test robot <lkp@intel.com>
----
- ocxl-scm.c          |    4 ++--
- ocxl-scm_internal.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+I've spent some quality time with the barrier documentation and
+all of your emails.
 
-diff --git a/drivers/nvdimm/ocxl-scm.c b/drivers/nvdimm/ocxl-scm.c
-index f4e6cc022de8a..c169cb0bc71d4 100644
---- a/drivers/nvdimm/ocxl-scm.c
-+++ b/drivers/nvdimm/ocxl-scm.c
-@@ -733,7 +733,7 @@ static void scm_put(struct scm_data *scm_data)
- 	put_device(&scm_data->dev);
- }
- 
--struct scm_data *scm_get(struct scm_data *scm_data)
-+static struct scm_data *scm_get(struct scm_data *scm_data)
- {
- 	return (get_device(&scm_data->dev) == NULL) ? NULL : scm_data;
- }
-@@ -2142,7 +2142,7 @@ static int scm_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	return -ENXIO;
- }
- 
--struct pci_driver scm_pci_driver = {
-+static struct pci_driver scm_pci_driver = {
- 	.name = "ocxl-scm",
- 	.id_table = scm_pci_tbl,
- 	.probe = scm_probe,
-diff --git a/drivers/nvdimm/ocxl-scm_internal.c b/drivers/nvdimm/ocxl-scm_internal.c
-index e7c247835817b..ee11fb72e1ecd 100644
---- a/drivers/nvdimm/ocxl-scm_internal.c
-+++ b/drivers/nvdimm/ocxl-scm_internal.c
-@@ -64,8 +64,8 @@ int scm_admin_command_request(struct scm_data *scm_data, u8 op_code)
- 	return scm_command_request(scm_data, &scm_data->admin_command, op_code);
- }
- 
--int scm_command_response(const struct scm_data *scm_data,
--			 const struct command_metadata *cmd)
-+static int scm_command_response(const struct scm_data *scm_data,
-+				const struct command_metadata *cmd)
- {
- 	u64 val;
- 	u16 id;
+I'm still trying to puzzle out the barrier. The memory model
+documentation doesn't talk about how synchronisation works when a
+page-table walk is involved, so that's making things hard. However, I
+think I have something for the spurious fault case. Apologies for the
+length, and for any mistakes!
+
+I am assuming here that the poison and zeros and PTEs are correctly
+being stored and we're just concerned about whether an architecturally
+correct load can cause a spurious fault on x86.
+
+> There is the risk (as laid out in [1]) that CPU 1 attempts to hoist the
+> loads of the shadow memory above the load of the PTE, samples a stale
+> (faulting) status from the TLB, then performs the load of the PTE and
+> sees a valid value. In this case (on arm64) a spurious fault could be
+> taken when the access is architecturally performed.
+>
+> It is possible on arm64 to use a barrier here to prevent the spurious
+> fault, but this is not smp_read_barrier_depends(), as that does nothing
+> for everyone but alpha. On arm64 We have a spurious fault handler to fix
+> this up.
+
+Will's email has the following example:
+
+	CPU 0				CPU 1
+	-----				-----
+	spin_lock(&lock);		spin_lock(&lock);
+	set_fixmap(0, paddr, prot);	if (mapped)
+	mapped = true;				foo = *fix_to_virt(0);
+	spin_unlock(&lock);		spin_unlock(&lock);
+
+
+If I understand the following properly, it's because of a quirk in
+ARM, the translation of fix_to_virt(0) can escape outside the lock:
+
+>   DDI0487E_a, B2-125:
+> 
+>   | DMB and DSB instructions affect reads and writes to the memory system
+>   | generated by Load/Store instructions and data or unified cache maintenance
+>   | instructions being executed by the PE. Instruction fetches or accesses
+>   | caused by a hardware translation table access are not explicit accesses.
+> 
+> which appears to claim that the DSB alone is insufficient. Unfortunately,
+> some CPU designers have followed the second clause above, whereas in Linux
+> we've been relying on the first. This means that our mapping sequence:
+> 
+> 	MOV	X0, <valid pte> 
+> 	STR	X0, [Xptep]	// Store new PTE to page table
+> 	DSB	ISHST
+> 	LDR	X1, [X2]	// Translates using the new PTE
+> 
+> can actually raise a translation fault on the load instruction because the
+> translation can be performed speculatively before the page table update and
+> then marked as "faulting" by the CPU. For user PTEs, this is ok because we
+> can handle the spurious fault, but for kernel PTEs and intermediate table
+> entries this results in a panic().
+
+So the DSB isn't sufficient to stop the CPU speculating the
+_translation_ above the page table store - to do that you need an
+ISB. [I'm not an ARM person so apologies if I've butchered this!] Then
+the load then uses the speculated translation and faults.
+
+So, do we need to do something to protect ourselves against the case of
+these sorts of spurious faults on x86? I'm also not an x86 person, so
+again apologies in advance if I've butchered anything.
+
+Firstly, it's not trivial to get a fixed address from the vmalloc
+infrastructure - you have to do something like
+__vmalloc_node_range(size, align, fixed_start_address, fixed_start_address + size, ...)
+I don't see any callers doing that. But we press on just in case.
+
+Section 4.10.2.3 of Book 3 of the Intel Developers Manual says:
+
+ | The processor may cache translations required for prefetches and for
+ | accesses that are a result of speculative execution that would never
+ | actually occur in the executed code path.
+
+That's all it says, it doesn't say if it will cache a negative or
+faulting lookup in the speculative case. However, if you _could_ cache
+a negative result, you'd hope the documentation on when to invalidate
+would tell you. That's in 4.10.4.
+
+4.10.4.3 Optional Invalidations includes:
+
+ | The read of a paging-structure entry in translating an address being
+ | used to fetch an instruction may appear to execute before an earlier
+ | write to that paging-structure entry if there is no serializing
+ | instruction between the write and the instruction fetch. Note that
+ | the invalidating instructions identified in Section 4.10.4.1 are all
+ | serializing instructions.
+
+That only applies to _instruction fetch_, not data fetch. There's no
+corresponding dot point for data fetch, suggesting that data fetches
+aren't subject to this.
+
+Lastly, arch/x86's native_set_pte_at() performs none of the extra
+barriers that ARM does - this also suggests to me that this isn't a
+concern on x86. Perhaps page-table walking for data fetches is able to
+snoop the store queues, and that's how they get around it.
+
+Given that analysis, that x86 has generally strong memory ordering, and
+the lack of response to Will's email from x86ers, I think we probably do
+not need a spurious fault handler on x86. (Although I'd love to hear
+from any actual x86 experts on this!) Other architecture enablement will
+have to do their own analysis.
+
+As I said up top, I'm still puzzling through the smp_wmb() discussion
+and I hope to have something for that soon.
+
+Regards,
+Daniel
+
+>
+> Thanks,
+> Mark.
+>
+> [1] https://lore.kernel.org/linux-arm-kernel/20190827131818.14724-1-will@kernel.org/
+> [2] https://lore.kernel.org/linux-mm/20191014152717.GA20438@lakrids.cambridge.arm.com/
