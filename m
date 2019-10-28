@@ -2,67 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C544E7B72
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 22:37:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84720E7B7D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 22:40:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4727N73FPgzDrhP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 08:37:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4727SD6C77zDrg5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 08:40:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::342;
- helo=mail-wm1-x342.google.com; envelope-from=richard.henderson@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=richard.henderson@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="SIpiQHIo"; 
+ unprotected) header.d=linaro.org header.i=@linaro.org header.b="d90aNC76"; 
  dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4726hL59YmzDqVj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 08:06:07 +1100 (AEDT)
-Received: by mail-wm1-x342.google.com with SMTP id w9so357431wmm.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 14:06:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4726hM463jzDqYP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 08:06:08 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id 11so436380wmk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 14:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id;
- bh=uRLJnnkoKtrt3q1ob0/siBgAznuJHarDQvJURi9aQb4=;
- b=SIpiQHIotDzzIYqm9aXXXSdbbNyIiBGfjR5nwKGqhflsnh3A5ENnvL5ku7plympJ56
- nU36hscWDg92/FfoUgg6mGZV1MQZ06P3qheMpNe3W+BoMzXYLyDOcBz9DFqkhDIEdh5B
- gqbt6pLe8aajvT9/ApxWiQy6qHncmnK9uEhkZ9EqPdAXzu6B6PFTNwcVhG3P2ju+X3f/
- sfPBA2pEnzU6TygZk9bck8dKivYNrYpRDwfFHpK5yH8NWhYl07OW9N75iEfLQn0AVE4T
- Xhi5EjkHr/H2F2I9Ee4ffmNMGotxS1WZGlXL+yrOupHrVgXxi75kCPijWu4pb+5VrVqk
- yHmA==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=5fdqGpsTwRZzstj7gG8G4eynLpsoyPuwBiWzvUXzIcI=;
+ b=d90aNC76Z65wi1qyl4LR/h4h7b/L01Zgboc3RhCWk336Xyh2t5COYQWc8Spj8aNKpV
+ 3IyU7rkdlbyrL3VcFzY+XJ0RDwDeU3uSGnBYVF/YtkpR+1e7LGzNrEKbXy3HKezmhyX6
+ H/npgaJyq1LNevmp89zjnlO59XFdrIs9YoC6m6KyDfA03KrQqN3cTGb8VGgTN1rtIVab
+ 89vt+61pZYpoN26FQgwmaYsJ3Mn8VipHO5aQbJrzadfNwXSFdjqeoBiOLQ7vhnusaXk5
+ 5KaaUq9OKtTFWQnMNKFg+qAhaTnMZndhT+qW5eG6A9AZl8DolLQ4sFKvJnv/K0i3Mkt4
+ rQUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=uRLJnnkoKtrt3q1ob0/siBgAznuJHarDQvJURi9aQb4=;
- b=oBn2YksEf3xpjyqYj1Q12ydQmjMrTJPrW2zV4daVkUaITrPn98E/gWkays4qb77Pgs
- as0kn5WwbBsCKjNNfF7ItGkC3K+QBHRm2JURNXbCzVrhiVNyg3/60N+0uY+uvZNd2Zx7
- p2hRGKxjwXSXMXMgE+pmjYKYDC9WF7xHUSIOPZSqd4WMPmuTxo4d3lMq71aKqlxTwB9G
- Vbi4OGbLNQmZdojDkJCgFQGNPbrTv2ZkVTBG29tM5HTEEIp/YOrk4bVtwN83UAq2mY0b
- OdgpW5asyBTezHYVdA15x4KcCI8ARQ9cZF9Rsk6HUTMjaCN21vndxHdu5PGSFXmWfFzx
- wFcQ==
-X-Gm-Message-State: APjAAAWklnK3TAtfruqzSZqTtdBJkSs8U+FdHZZkXajmRIeA34BmmRrX
- SyTyKDS2sOLkimmw2KFVql5P2A==
-X-Google-Smtp-Source: APXvYqxLhsR1PGtmh9drHOLTiE38etYU0uqVFMpWhqoC1tXLMotQdsLS61o8y7c30loRYYNwzvsK1Q==
-X-Received: by 2002:a7b:ce99:: with SMTP id q25mr1133067wmj.115.1572296762897; 
- Mon, 28 Oct 2019 14:06:02 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references;
+ bh=5fdqGpsTwRZzstj7gG8G4eynLpsoyPuwBiWzvUXzIcI=;
+ b=d5YZ5lTfSC5ploHG+L0abg/EV9vBxgYaVGBF+5+KkirrLpI6+87MyX3kNMoU0UJJDc
+ 4rPzyr5wq0yWsnTq9nuO3GRMaHuZWAIwP+8g2/ZnFvBoYSoqqIG2hID9vz1aaGfUWH2V
+ L9EYK4soGQo/GCUidRfjFsjJpu+14UOwHcF8pHtrZjgdadt31BcjFly5pk73uMxfMglQ
+ uHrUvlNCMxfuJCtKNg3VrS4+duYheLRk5TDjK9UPpgvkmA09MFpmMWpIq/jplxG0CpFM
+ mZA48SA6t0Z7jUMvHMRyDYKd7akDTBJ43qYm3r2MJCj9LoRKKMOkoG499/iM/5exXOUy
+ ZIHA==
+X-Gm-Message-State: APjAAAUhYYHGwlMfa6zcHPOBZSgbOiTBTMaVjIXqaoYw2NbLgbDVYeXg
+ g1r3xxbfSNZQWvk1EA3gfJVOgQ==
+X-Google-Smtp-Source: APXvYqzrmbIZmiYJeRI8foiZBFn/3gbaj86T1/tVP1Bb5VrPLCuZQ0g/WmL7p4dJ4/LUsgNkETKzXA==
+X-Received: by 2002:a05:600c:2908:: with SMTP id
+ i8mr1147516wmd.142.1572296763797; 
+ Mon, 28 Oct 2019 14:06:03 -0700 (PDT)
 Received: from localhost.localdomain (230.106.138.88.rev.sfr.net.
  [88.138.106.230])
- by smtp.gmail.com with ESMTPSA id b196sm927822wmd.24.2019.10.28.14.05.59
+ by smtp.gmail.com with ESMTPSA id b196sm927822wmd.24.2019.10.28.14.06.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2019 14:06:00 -0700 (PDT)
+ Mon, 28 Oct 2019 14:06:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 X-Google-Original-From: Richard Henderson <rth@twiddle.net>
 To: linux-arch@vger.kernel.org
-Subject: [PATCH 0/6] Improvements for random.h/archrandom.h
-Date: Mon, 28 Oct 2019 22:05:53 +0100
-Message-Id: <20191028210559.8289-1-rth@twiddle.net>
+Subject: [PATCH 1/6] random: Mark CONFIG_ARCH_RANDOM functions __must_check
+Date: Mon, 28 Oct 2019 22:05:54 +0100
+Message-Id: <20191028210559.8289-2-rth@twiddle.net>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191028210559.8289-1-rth@twiddle.net>
+References: <20191028210559.8289-1-rth@twiddle.net>
 X-Mailman-Approved-At: Tue, 29 Oct 2019 08:33:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,40 +79,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-s390@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-During patch review for an addition of archrandom.h for arm64,
-it was suggeted that the arch_random_get_* functions should be
-marked __must_check.  Which does sound like a good idea, since
-the by-reference integer output may be uninitialized when the
-boolean result is false.
+We cannot use the pointer output without validating the
+success of the random read.
 
-In addition, I noticed a few other minor inconsistencies between
-the different architectures: x86 defines some functional macros
-outside CONFIG_ARCH_RANDOM, and powerpc isn't using bool.
+Signed-off-by: Richard Henderson <rth@twiddle.net>
+---
+Cc: Kees Cook <keescook@chromium.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-arch@vger.kernel.org
+---
+ include/linux/random.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-
-r~
-
-
-Richard Henderson (6):
-  random: Mark CONFIG_ARCH_RANDOM functions __must_check
-  x86: Move arch_has_random* inside CONFIG_ARCH_RANDOM
-  x86: Mark archrandom.h functions __must_check
-  powerpc: Use bool in archrandom.h
-  powerpc: Mark archrandom.h functions __must_check
-  s390x: Mark archrandom.h functions __must_check
-
- arch/powerpc/include/asm/archrandom.h | 24 +++++++++++++-----------
- arch/s390/include/asm/archrandom.h    |  8 ++++----
- arch/x86/include/asm/archrandom.h     | 24 ++++++++++++------------
- include/linux/random.h                |  8 ++++----
- 4 files changed, 33 insertions(+), 31 deletions(-)
-
+diff --git a/include/linux/random.h b/include/linux/random.h
+index f189c927fdea..84947b489649 100644
+--- a/include/linux/random.h
++++ b/include/linux/random.h
+@@ -167,11 +167,11 @@ static inline void prandom_seed_state(struct rnd_state *state, u64 seed)
+ #ifdef CONFIG_ARCH_RANDOM
+ # include <asm/archrandom.h>
+ #else
+-static inline bool arch_get_random_long(unsigned long *v)
++static inline bool __must_check arch_get_random_long(unsigned long *v)
+ {
+ 	return 0;
+ }
+-static inline bool arch_get_random_int(unsigned int *v)
++static inline bool __must_check arch_get_random_int(unsigned int *v)
+ {
+ 	return 0;
+ }
+@@ -179,11 +179,11 @@ static inline bool arch_has_random(void)
+ {
+ 	return 0;
+ }
+-static inline bool arch_get_random_seed_long(unsigned long *v)
++static inline bool __must_check arch_get_random_seed_long(unsigned long *v)
+ {
+ 	return 0;
+ }
+-static inline bool arch_get_random_seed_int(unsigned int *v)
++static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
+ {
+ 	return 0;
+ }
 -- 
 2.17.1
 
