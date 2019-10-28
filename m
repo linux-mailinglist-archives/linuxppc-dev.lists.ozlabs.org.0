@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19067E6E74
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 09:47:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905E9E6E7D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 09:49:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471pJS1Wl2zDqhs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 19:47:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471pLg4qGLzDqQK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 19:49:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,19 +19,18 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
  (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471pGc234BzDqPw
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 19:46:16 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471pJ90bjDzDqjX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 19:47:36 +1100 (AEDT)
 Received: from localhost (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9S8jY59019523;
- Mon, 28 Oct 2019 03:45:35 -0500
-Message-ID: <47e67f44f5e955108759fe32400d2622c4a5ba3f.camel@kernel.crashing.org>
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x9S8l1T2019620;
+ Mon, 28 Oct 2019 03:47:02 -0500
+Message-ID: <e68c5f8d73fbf1841531bf07eef0132d409e91b3.camel@kernel.crashing.org>
 Subject: Re: Onboard SD card doesn't work anymore after the 'mmc-v5.4-2'
  updates
 From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Rob Herring <robh+dt@kernel.org>, Russell King - ARM Linux admin
- <linux@armlinux.org.uk>
-Date: Mon, 28 Oct 2019 19:45:34 +1100
-In-Reply-To: <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+To: Christoph Hellwig <hch@infradead.org>, Rob Herring <robh+dt@kernel.org>
+Date: Mon, 28 Oct 2019 19:47:01 +1100
+In-Reply-To: <20191026063918.GA24015@infradead.org>
 References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
  <3aeae0d8-e9be-2585-cbbd-70263cb495f1@xenosoft.de>
  <20191015125105.GU25745@shell.armlinux.org.uk>
@@ -42,6 +41,7 @@ References: <7b549219-a2e1-08c7-331b-9c3e4fdb8a8f@xenosoft.de>
  <CAL_JsqJpFy-g3earNjZs7jANx4pyRd=CDvZN3emMdXL5YNkYHQ@mail.gmail.com>
  <20191023143159.GB25745@shell.armlinux.org.uk>
  <CAL_JsqLZV1sXc053QMLcV-dV1BbGcRtX3eu1zbtNA_N3hzQE4g@mail.gmail.com>
+ <20191026063918.GA24015@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
 Mime-Version: 1.0
@@ -58,8 +58,10 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>, mad skateman <madskateman@gmail.com>,
- linux-mmc <linux-mmc@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <chzigotzky@xenosoft.de>,
+ linux-mmc <linux-mmc@vger.kernel.org>,
+ Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+ Paul Mackerras <paulus@samba.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
  "contact@a-eon.com" <contact@a-eon.com>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  Christian Zigotzky <info@xenosoft.de>
@@ -67,22 +69,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-10-25 at 17:28 -0500, Rob Herring wrote:
-> This doesn't work?:
+On Fri, 2019-10-25 at 23:39 -0700, Christoph Hellwig wrote:
+> On Fri, Oct 25, 2019 at 05:28:45PM -0500, Rob Herring wrote:
+> > This doesn't work?:
+> > 
+> >         if (IS_ENABLED(CONFIG_PPC) || of_dma_is_coherent(dev-
+> > >of_node))
+> >                 value |= ESDHC_DMA_SNOOP;
+> >         else
+> >                 value &= ~ESDHC_DMA_SNOOP;
+> > 
+> > While I said use the compatibles, using the kconfig symbol is
+> > easier
+> > than sorting out which compatibles are PPC SoCs. Though if that's
+> > already done elsewhere in the driver, you could set a flag and use
+> > that here. I'd be surprised if this was the only difference between
+> > ARM and PPC SoCs for this block.
 > 
->         if (IS_ENABLED(CONFIG_PPC) || of_dma_is_coherent(dev-
-> >of_node))
->                 value |= ESDHC_DMA_SNOOP;
->         else
->                 value &= ~ESDHC_DMA_SNOOP;
+> I think the right thing is a Kconfig variable that the architectures
+> selects which says if OF is by default coherent or incoherent, and
+> then use that in of_dma_is_coherent.
 
-CONFIG_PPC is restrictive. What about sparc64 ? There could be others
-.. .we can't suddenly requests people to add new properties for what
-was implied behaviours before hand, esp since it's not in the base 1275
-spec, no ?
-
-I would suggest of_dma_is_coherent is *true* by default unless
-overriden to do something else.
+That too. We could also define properties for both ways so we can
+override the default either way.
 
 Cheers,
 Ben.
