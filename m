@@ -1,44 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF49DE7545
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 16:35:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D83E756B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 16:48:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471zLV1pxRzDrQQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 02:35:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471zdb6ZV0zDrRy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 02:48:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rjwysocki.net (client-ip=79.96.170.134;
- helo=cloudserver094114.home.pl; envelope-from=rjw@rjwysocki.net;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471zbh6QJZzDrHs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 02:46:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=rjwysocki.net
-X-Greylist: delayed 386 seconds by postgrey-1.36 at bilbo;
- Tue, 29 Oct 2019 02:33:01 AEDT
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl
- [79.96.170.134])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 471zbh3qxPz8t7s
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 02:46:40 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 471zbh3Frmz9sPK; Tue, 29 Oct 2019 02:46:40 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471zHx0MXszDr61
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 02:33:00 +1100 (AEDT)
-Received: from cust-east-parth2-46-193-72-114.wb.wifirst.net (46.193.72.114)
- (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id b9bc03ccfbeada10; Mon, 28 Oct 2019 16:26:16 +0100
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [PATCH v2] cpufreq: powernv: fix stack bloat and NR_CPUS
- limitation
-Date: Mon, 28 Oct 2019 16:26:16 +0100
-Message-ID: <3664438.dB2cPXlXpS@kreacher>
-In-Reply-To: <20191018050712.qr2axffmbms5h4xb@vireshk-i7>
-References: <20191018045539.3765565-1-jhubbard@nvidia.com>
- <20191018050712.qr2axffmbms5h4xb@vireshk-i7>
+ by ozlabs.org (Postfix) with ESMTPS id 471zbh0FbDz9sP4
+ for <linuxppc-dev@ozlabs.org>; Tue, 29 Oct 2019 02:46:38 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9SFhiTg011466; Mon, 28 Oct 2019 11:46:25 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vwyu7gh7x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Oct 2019 11:46:25 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9SFjYC0014968;
+ Mon, 28 Oct 2019 15:46:24 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03dal.us.ibm.com with ESMTP id 2vvds7qu79-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Oct 2019 15:46:24 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9SFkMot60621126
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 28 Oct 2019 15:46:22 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8F9876A051;
+ Mon, 28 Oct 2019 15:46:22 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 764D16A047;
+ Mon, 28 Oct 2019 15:46:22 +0000 (GMT)
+Received: from localhost (unknown [9.41.179.251])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 28 Oct 2019 15:46:22 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: passing NULL to clock_getres (VDSO): terminated by unexpected
+ signal 11
+In-Reply-To: <0fc22a08-31d9-e4d1-557e-bf5b482a9a20@c-s.fr>
+References: <0fc22a08-31d9-e4d1-557e-bf5b482a9a20@c-s.fr>
+Date: Mon, 28 Oct 2019 10:46:22 -0500
+Message-ID: <87wocolvox.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-28_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=947 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910280158
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,51 +96,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>,
- Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Friday, October 18, 2019 7:07:12 AM CET Viresh Kumar wrote:
-> On 17-10-19, 21:55, John Hubbard wrote:
-> > The following build warning occurred on powerpc 64-bit builds:
-> > 
-> > drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
-> > drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-> > 
-> > This is due to putting 1024 bytes on the stack:
-> > 
-> >     unsigned int chip[256];
-> > 
-> > ...and while looking at this, it also has a bug: it fails with a stack
-> > overrun, if CONFIG_NR_CPUS > 256.
-> > 
-> > Fix both problems by dynamically allocating based on CONFIG_NR_CPUS.
-> > 
-> > Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
-> > Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
-> > Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
-> > Cc: Viresh Kumar <viresh.kumar@linaro.org>
-> > Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-> > Cc: linux-pm@vger.kernel.org
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> > ---
-> > 
-> > Changes since v1: includes Viresh's review commit fixes.
-> > 
-> >  drivers/cpufreq/powernv-cpufreq.c | 17 +++++++++++++----
-> >  1 file changed, 13 insertions(+), 4 deletions(-)
-> 
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> 
-> 
+Hi Christophe,
 
-Applying as 5.5 material, thanks!
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> Hi Nathan,
+>
+> While trying to switch powerpc VDSO to C version of gettimeofday(), I'm 
+> getting the following kind of error with vdsotest:
+>
+> passing NULL to clock_getres (VDSO): terminated by unexpected signal 11
+>
+> Looking at commit a9446a906f52 ("lib/vdso/32: Remove inconsistent NULL 
+> pointer checks"), it seems that signal 11 is expected when passing NULL 
+> pointer.
+>
+> Any plan to fix vdsotest ?
 
+I'm afraid other work has kept me from following up on this promptly,
+sorry. I've read the thread here:
 
+https://lore.kernel.org/linuxppc-dev/87v9skcznp.fsf@igel.home/
 
-
+And it looks like vdsotest does not need a fix (and in fact found a bug)
+-- correct?
