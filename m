@@ -2,55 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86651E6EFE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 10:22:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5F2E6F5B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 10:50:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 471q4r5Tm9zDr0Q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 20:22:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 471qhg3jKBzDr0P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2019 20:50:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 471q2X4dbczDqYJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 20:20:52 +1100 (AEDT)
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id BDE91E4F3058705C3E4E;
- Mon, 28 Oct 2019 17:20:38 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Mon, 28 Oct 2019
- 17:20:35 +0800
-Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Greg KH <gregkh@linuxfoundation.org>, Peter Zijlstra
- <peterz@infradead.org>, Michal Hocko <mhocko@kernel.org>
-References: <20190924131939.GS23050@dhcp22.suse.cz>
- <1adcbe68-6753-3497-48a0-cc84ac503372@huawei.com>
- <20190925104108.GE4553@hirez.programming.kicks-ass.net>
- <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
- <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
- <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
- <20191010073212.GB18412@dhcp22.suse.cz>
- <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
- <20191011111539.GX2311@hirez.programming.kicks-ass.net>
- <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
- <20191012074014.GA2037204@kroah.com>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <1ec704df-97a5-04b7-1f20-8e3db19440a3@huawei.com>
-Date: Mon, 28 Oct 2019 17:20:33 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 471qfj4C6xzDqxQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 20:48:45 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9S9lVHZ013375; Mon, 28 Oct 2019 05:48:35 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vwtk1dqqy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Oct 2019 05:48:34 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9S9jCVk023698;
+ Mon, 28 Oct 2019 09:48:33 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02dal.us.ibm.com with ESMTP id 2vvds850kp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Oct 2019 09:48:33 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9S9mWKj55443944
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 28 Oct 2019 09:48:32 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 642FEC6059;
+ Mon, 28 Oct 2019 09:48:32 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 821D3C6055;
+ Mon, 28 Oct 2019 09:48:30 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.43.125])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 28 Oct 2019 09:48:30 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com, mpe@ellerman.id.au
+Subject: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size validation
+ arch dependent
+Date: Mon, 28 Oct 2019 15:18:22 +0530
+Message-Id: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20191012074014.GA2037204@kroah.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-28_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=961 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910280098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,90 +81,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
- will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
- ysato@users.sourceforge.jp, linux-acpi@vger.kernel.org, x86@kernel.org,
- rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
- mingo@redhat.com, jeffrey.t.kirsher@intel.com, jhogan@kernel.org,
- mattst88@gmail.com, lenb@kernel.org, len.brown@intel.com, gor@linux.ibm.com,
- anshuman.khandual@arm.com, bp@alien8.de, luto@kernel.org, bhelgaas@google.com,
- tglx@linutronix.de, naveen.n.rao@linux.vnet.ibm.com,
- linux-arm-kernel@lists.infradead.org, rth@twiddle.net, axboe@kernel.dk,
- linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
- linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
- akpm@linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- davem@davemloft.net
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/10/12 15:40, Greg KH wrote:
-> On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
->> add pci and acpi maintainer
->> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
->>
->> On 2019/10/11 19:15, Peter Zijlstra wrote:
->>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
->>>> But I failed to see why the above is related to making node_to_cpumask_map()
->>>> NUMA_NO_NODE aware?
->>>
->>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
->>> have a node assigned.
->>>
->>> It not having one, is a straight up bug. We must not silently accept
->>> NO_NODE there, ever.
->>>
->>
->> I suppose you mean reporting a lack of affinity when the node of a pcie
->> device is not set by "not silently accept NO_NODE".
-> 
-> If the firmware of a pci device does not provide the node information,
-> then yes, warn about that.
-> 
->> As Greg has asked about in [1]:
->> what is a user to do when the user sees the kernel reporting that?
->>
->> We may tell user to contact their vendor for info or updates about
->> that when they do not know about their system well enough, but their
->> vendor may get away with this by quoting ACPI spec as the spec
->> considering this optional. Should the user believe this is indeed a
->> fw bug or a misreport from the kernel?
-> 
-> Say it is a firmware bug, if it is a firmware bug, that's simple.
-> 
->> If this kind of reporting is common pratice and will not cause any
->> misunderstanding, then maybe we can report that.
-> 
-> Yes, please do so, that's the only way those boxes are ever going to get
-> fixed.  And go add the test to the "firmware testing" tool that is based
-> on Linux that Intel has somewhere, to give vendors a chance to fix this
-> before they ship hardware.
-> 
-> This shouldn't be a big deal, we warn of other hardware bugs all the
-> time.
+The page size used to map the namespace is arch dependent. For example
+architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
+size is not aligned to the mapping page size, we can observe kernel crash
+during namespace init and destroy.
 
-Hi, all.
+This is due to kernel doing partial map/unmap of the resource range
 
-The warning for the above case has been added in [1].
+BUG: Unable to handle kernel data access at 0xc001000406000000
+Faulting instruction address: 0xc000000000090790
+NIP [c000000000090790] arch_add_memory+0xc0/0x130
+LR [c000000000090744] arch_add_memory+0x74/0x130
+Call Trace:
+ arch_add_memory+0x74/0x130 (unreliable)
+ memremap_pages+0x74c/0xa30
+ devm_memremap_pages+0x3c/0xa0
+ pmem_attach_disk+0x188/0x770
+ nvdimm_bus_probe+0xd8/0x470
+ really_probe+0x148/0x570
+ driver_probe_device+0x19c/0x1d0
+ device_driver_attach+0xcc/0x100
+ bind_store+0x134/0x1c0
+ drv_attr_store+0x44/0x60
+ sysfs_kf_write+0x74/0xc0
+ kernfs_fop_write+0x1b4/0x290
+ __vfs_write+0x3c/0x70
+ vfs_write+0xd0/0x260
+ ksys_write+0xdc/0x130
+ system_call+0x5c/0x68
 
-So maybe it makes sense to make node_to_cpumask_map() NUMA_NO_NODE aware
-now?
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/arm64/mm/flush.c     | 11 +++++++++++
+ arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
+ arch/x86/mm/pageattr.c    | 12 ++++++++++++
+ include/linux/libnvdimm.h |  1 +
+ 4 files changed, 43 insertions(+), 2 deletions(-)
 
-If Yes, this patch still can be applied to the latest linus' tree cleanly,
-Do I need to resend it?
-
-
-[1] https://lore.kernel.org/linux-pci/1571467543-26125-1-git-send-email-linyunsheng@huawei.com/
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> .
-> 
+diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
+index ac485163a4a7..90c54c600023 100644
+--- a/arch/arm64/mm/flush.c
++++ b/arch/arm64/mm/flush.c
+@@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
+ 	__inval_dcache_area(addr, size);
+ }
+ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
++
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
++{
++	u32 remainder;
++
++	div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
++	if (remainder)
++		return PAGE_SIZE * ndr_mappings;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
+ #endif
+diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
+index 377712e85605..2e661a08dae5 100644
+--- a/arch/powerpc/lib/pmem.c
++++ b/arch/powerpc/lib/pmem.c
+@@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
+ 	unsigned long start = (unsigned long) addr;
+ 	flush_dcache_range(start, start + size);
+ }
+-EXPORT_SYMBOL(arch_wb_cache_pmem);
++EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
+ 
+ void arch_invalidate_pmem(void *addr, size_t size)
+ {
+ 	unsigned long start = (unsigned long) addr;
+ 	flush_dcache_range(start, start + size);
+ }
+-EXPORT_SYMBOL(arch_invalidate_pmem);
++EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
++
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
++{
++	u32 remainder;
++	unsigned long linear_map_size;
++
++	if (radix_enabled())
++		linear_map_size = PAGE_SIZE;
++	else
++		linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
++
++	div_u64_rem(size, linear_map_size * ndr_mappings, &remainder);
++	if (remainder)
++		return linear_map_size * ndr_mappings;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
+ 
+ /*
+  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
+diff --git a/arch/x86/mm/pageattr.c b/arch/x86/mm/pageattr.c
+index 0d09cc5aad61..023329d7dfac 100644
+--- a/arch/x86/mm/pageattr.c
++++ b/arch/x86/mm/pageattr.c
+@@ -310,6 +310,18 @@ void arch_invalidate_pmem(void *addr, size_t size)
+ }
+ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+ 
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
++{
++	u32 remainder;
++
++	div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
++	if (remainder)
++		return PAGE_SIZE * ndr_mappings;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
++
++
+ static void __cpa_flush_all(void *arg)
+ {
+ 	unsigned long cache = (unsigned long)arg;
+diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+index b6eddf912568..e2f8387d9ef4 100644
+--- a/include/linux/libnvdimm.h
++++ b/include/linux/libnvdimm.h
+@@ -291,4 +291,5 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
+ }
+ #endif
+ 
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size);
+ #endif /* __LIBNVDIMM_H__ */
+-- 
+2.21.0
 
