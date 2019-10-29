@@ -1,79 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA792E8378
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 09:46:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55884E839E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 09:56:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472QD44nprzDqV7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 19:46:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472QRn0VBwzDqWQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 19:56:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::244;
- helo=mail-lj1-x244.google.com; envelope-from=linux@rasmusvillemoes.dk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="RB8kpGeg"; dkim-atps=neutral
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=mhocko@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472Q945PJMzF1MD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 19:43:35 +1100 (AEDT)
-Received: by mail-lj1-x244.google.com with SMTP id v2so44955lji.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 01:43:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=HGXd6rlxFLbtpjrAQ8G1Qtj9aAnpBTx6NO8SjG7PtjI=;
- b=RB8kpGegZFDbX4ehO3+DnkUXso3PSM4ypigva4bxla2UhzbfYW3VFanbaz6VAqTIp9
- vC4VW/N/DNc5sYKbDVzBAZWHMwSNqKbSozM7z9NZGI9mkDa0OXo0Om0mCpyDwNoaV8lk
- b3mRrhW7uAmiDR3MvGYepqftbS6Qixnz1xrt0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=HGXd6rlxFLbtpjrAQ8G1Qtj9aAnpBTx6NO8SjG7PtjI=;
- b=OXF86vzbvk2FLqbyHm6II8Syr2fpg19zxbk6qMqOQXGyf2SYGNJ2/be6XhIkOEI42Q
- 2XpQvVVZQnOkt6izoGcZf1O7GlQ5W9wpijNyH9zREQJ/bjAGMsYxN/CKA79obUD5rjph
- CC/8gy2BbKqBoSXC70Sn+YP2xXjGPwRV9EVoq5WMwexMF5roZWrMYlbKtha+UWDz2kUh
- rMoP4a39oOVx+ROo1B+hvBbNdgmyFmQPumLWFOJ/GzMDPZvbR4Yk1/CPw3L5CRoU3qTY
- bI9wCpSQIypYQb4qwTDf4AGQpq5pFOjaKpe22s5gZAO0Ob8oXp5w18Z3u0hhzehGewJn
- hmPQ==
-X-Gm-Message-State: APjAAAXjM8QaAnFZ+JrXMqncWganbQbZvUKGXsEMOKJAaQKXEeGMTSuN
- cotJtsppsMzRDn7XhtlePfM3cg==
-X-Google-Smtp-Source: APXvYqzEDMxdj01ErGn8mE4rCnBBCxTZ6HkGNRiI9Uh8UyBsOyPj0DTCwoKDupc4z5w1cSudjzX3Qg==
-X-Received: by 2002:a2e:4751:: with SMTP id u78mr1617787lja.210.1572338611332; 
- Tue, 29 Oct 2019 01:43:31 -0700 (PDT)
-Received: from [172.16.11.28] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id 77sm13198495lfj.41.2019.10.29.01.43.29
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 29 Oct 2019 01:43:30 -0700 (PDT)
-Subject: ppc: inlining iowrite32be and friends (was: Re: [PATCH v2 03/23] soc:
- fsl: qe: avoid ppc-specific io accessors)
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
-References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191025124058.22580-1-linux@rasmusvillemoes.dk>
- <20191025124058.22580-4-linux@rasmusvillemoes.dk>
- <886d5218-6d6b-824c-3ab9-63aafe41ff40@c-s.fr>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <02a8a449-e421-f70f-4bf9-50a94324834b@rasmusvillemoes.dk>
-Date: Tue, 29 Oct 2019 09:43:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472QNx4yKmzF1fj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 19:53:53 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id A3A1DB43E;
+ Tue, 29 Oct 2019 08:53:44 +0000 (UTC)
+Date: Tue, 29 Oct 2019 09:53:36 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Subject: Re: [PATCH v6] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20191029085336.GF31513@dhcp22.suse.cz>
+References: <20190925104108.GE4553@hirez.programming.kicks-ass.net>
+ <47fa4cee-8528-7c23-c7de-7be1b65aa2ae@huawei.com>
+ <bec80499-86d9-bf1f-df23-9044a8099992@arm.com>
+ <a5f0fc80-8e88-b781-77ce-1213e5d62125@huawei.com>
+ <20191010073212.GB18412@dhcp22.suse.cz>
+ <6cc94f9b-0d79-93a8-5ec2-4f6c21639268@huawei.com>
+ <20191011111539.GX2311@hirez.programming.kicks-ass.net>
+ <7fad58d6-5126-e8b8-a7d8-a91814da53ba@huawei.com>
+ <20191012074014.GA2037204@kroah.com>
+ <1ec704df-97a5-04b7-1f20-8e3db19440a3@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <886d5218-6d6b-824c-3ab9-63aafe41ff40@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1ec704df-97a5-04b7-1f20-8e3db19440a3@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,52 +55,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: dalias@libc.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, dave.hansen@linux.intel.com,
+ heiko.carstens@de.ibm.com, jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org,
+ mwb@linux.vnet.ibm.com, paulus@samba.org, hpa@zytor.com,
+ sparclinux@vger.kernel.org, chenhc@lemote.com, will@kernel.org, cai@lca.pw,
+ linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+ linux-acpi@vger.kernel.org, x86@kernel.org, rppt@linux.ibm.com,
+ borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
+ jeffrey.t.kirsher@intel.com, catalin.marinas@arm.com, jhogan@kernel.org,
+ mattst88@gmail.com, lenb@kernel.org, len.brown@intel.com, gor@linux.ibm.com,
+ anshuman.khandual@arm.com, linuxppc-dev@lists.ozlabs.org, bp@alien8.de,
+ luto@kernel.org, bhelgaas@google.com, tglx@linutronix.de,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, linux-pci@vger.kernel.org,
+ Greg KH <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, ralf@linux-mips.org, tbogendoerfer@suse.de,
+ paul.burton@mips.com, linux-alpha@vger.kernel.org, rafael@kernel.org,
+ ink@jurassic.park.msu.ru, akpm@linux-foundation.org,
+ Robin Murphy <robin.murphy@arm.com>, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29/10/2019 08.43, Christophe Leroy wrote:
+On Mon 28-10-19 17:20:33, Yunsheng Lin wrote:
+> On 2019/10/12 15:40, Greg KH wrote:
+> > On Sat, Oct 12, 2019 at 02:17:26PM +0800, Yunsheng Lin wrote:
+> >> add pci and acpi maintainer
+> >> cc linux-pci@vger.kernel.org and linux-acpi@vger.kernel.org
+> >>
+> >> On 2019/10/11 19:15, Peter Zijlstra wrote:
+> >>> On Fri, Oct 11, 2019 at 11:27:54AM +0800, Yunsheng Lin wrote:
+> >>>> But I failed to see why the above is related to making node_to_cpumask_map()
+> >>>> NUMA_NO_NODE aware?
+> >>>
+> >>> Your initial bug is for hns3, which is a PCI device, which really _MUST_
+> >>> have a node assigned.
+> >>>
+> >>> It not having one, is a straight up bug. We must not silently accept
+> >>> NO_NODE there, ever.
+> >>>
+> >>
+> >> I suppose you mean reporting a lack of affinity when the node of a pcie
+> >> device is not set by "not silently accept NO_NODE".
+> > 
+> > If the firmware of a pci device does not provide the node information,
+> > then yes, warn about that.
+> > 
+> >> As Greg has asked about in [1]:
+> >> what is a user to do when the user sees the kernel reporting that?
+> >>
+> >> We may tell user to contact their vendor for info or updates about
+> >> that when they do not know about their system well enough, but their
+> >> vendor may get away with this by quoting ACPI spec as the spec
+> >> considering this optional. Should the user believe this is indeed a
+> >> fw bug or a misreport from the kernel?
+> > 
+> > Say it is a firmware bug, if it is a firmware bug, that's simple.
+> > 
+> >> If this kind of reporting is common pratice and will not cause any
+> >> misunderstanding, then maybe we can report that.
+> > 
+> > Yes, please do so, that's the only way those boxes are ever going to get
+> > fixed.  And go add the test to the "firmware testing" tool that is based
+> > on Linux that Intel has somewhere, to give vendors a chance to fix this
+> > before they ship hardware.
+> > 
+> > This shouldn't be a big deal, we warn of other hardware bugs all the
+> > time.
 > 
+> Hi, all.
 > 
-> Le 25/10/2019 à 14:40, Rasmus Villemoes a écrit :
->> In preparation for allowing to build QE support for architectures
->> other than PPC, replace the ppc-specific io accessors. Done via
->>
->> $ spatch --sp-file io.cocci --in-place drivers/soc/fsl/qe/
->>
-
-> As discussed already, this patch changes io accesors from inline to
-> outline, this has a performance impact on powerpc32 like 83xx.
+> The warning for the above case has been added in [1].
 > 
-> Could you please include in your series before this patch a patch to
-> change generic io accessors to inline on powerpc ?
+> So maybe it makes sense to make node_to_cpumask_map() NUMA_NO_NODE aware
+> now?
+> 
+> If Yes, this patch still can be applied to the latest linus' tree cleanly,
+> Do I need to resend it?
+> 
 
-Well, it's complicated. I was hoping someone could explain why those are
-OOL in the first place. The history of arch/powerpc/kernel/iomap.c and
-the makefile fragment including it is a bit messy - first of all, the
-file itself talks about "ppc64 implementation" but is obviously used for
-all ppc32 (while the ppc64 platforms that set PPC_INDIRECT_PIO also get
-GENERIC_IOMAP, i.e. lib/iomap.c).
+By this patch you mean http://lkml.kernel.org/r/1568724534-146242-1-git-send-email-linyunsheng@huawei.com
+right?
 
-So, what I wanted to do was to make the accessors inline when
-!PPC_INDIRECT_PIO && !PPC_INDIRECT_MMIO. But then I need to avoid
-including asm-generic/iomap.h, because that declares these as extern.
-OTOH, I think I do need some of the declarations from that file, e.g. at
-least pci_iounmap, and perhaps also the *_rep versions, unless they
-should also be inlined.
+I would just resend it unless there is still a clear disagreement over
+it.
 
-I'm happy to give it a try, but I think that belongs in a separate
-series. The first few attempts are almost certain to generate some 0day
-reports.
+> [1] https://lore.kernel.org/linux-pci/1571467543-26125-1-git-send-email-linyunsheng@huawei.com/
 
-Question for powerpc maintainers: Is there a fundamental reason
-iowrite32be and friends are out-of-line on PPC32 (more generally, the
-PPC platforms that set neither PPC_INDIRECT_PIO or PPC_INDIRECT_MMIO)?
-If so, there's no point trying to make them inline, and I'd have to
-address Christophe's concern by introducing private qe_iowrite32be()
-etc. wrappers.
-
-Thanks,
-Rasmus
+-- 
+Michal Hocko
+SUSE Labs
