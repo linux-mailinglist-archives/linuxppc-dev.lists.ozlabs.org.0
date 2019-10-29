@@ -2,63 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C71AE92FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 23:22:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 762FCE92F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 23:20:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472mL50F8tzF3V3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:22:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472mHX1TbNzF3Y8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:20:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="eUd4sJyu";
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="FVaO6aO8";
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472kyh03ZXzF37D
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 08:20:44 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id r4so4875940pfl.7
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472kyg432rzF35w
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 08:20:43 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id r1so10497730pgj.12
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 14:20:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=bvYKnL/TaFkIaenIAvKRMlAb1gjfrMgYQ33pk+cyLNw=;
- b=eUd4sJyuTxgb840F9yzQhnhrVaW7UlInFUEaGLHC1o+XiNP1nT/Ur++05DeF2BOEy1
- B62m8k8aGhQzoIv1kV+qUa/1jSYvGM+XuBBi2YZI/Sqw728eeJNak1/uE8PFXjImt3OF
- 0AKvdtizmmUcAZkSIZCgqYnSyMgJK/Tq10Dl8=
+ bh=k/Yn81zcF5guunRscdaPnRGMjDCCToSR8PmADiJbxp0=;
+ b=FVaO6aO8ILysBPp4TcG6DRYTfhP64yNYK1NJln6frp9324XMFNpgsYZUbnEC1/BcNI
+ d3y6HNjxwiZHSQPSgHJiVtceb3/6J9fduGv+Jcn399jZBSVy0f+CKF1R0ijDo77jPqTY
+ 64QP9FbsaOR6pmLh7yAYTYiylPerHQmxnysFQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=bvYKnL/TaFkIaenIAvKRMlAb1gjfrMgYQ33pk+cyLNw=;
- b=ZZalFqpabTOIrkPIrTLt4Q4CXwQRSvF8Bjw++a5DpAzT5wRjoFTa+qTXmdN0vGVd7P
- xL2+dweH0NuZuPwJhDhsKDOYnKGoQLGeDtgpXQBHhCfrkDA4+gHOtYI6hEgjScFcOMf7
- lSdBFpbz3lRpVP8zV47r4D1XWy5YXejFhWwQWurDls0tQX3CvHxT+c0uEnbUxY+g0H5z
- 2e4F9xDy5AIx74fkhfGDhbf4/K+De24AujtvuRLXAmrgGCIaorQY+9Cc2vaDR/2kmsx7
- FPyWD79zkdBsgOxoY00hlLUIdT2B849fXCBwYtVZFMVArbCHreuJ7Rm5o1kVwgqA83t6
- HrLw==
-X-Gm-Message-State: APjAAAUC2+4Mbm9HQGF0Kr+0z149tH0YAXJ5QIm1GFg0IqqNRHmJd/gj
- Inc23sULF140Oi03O9XNVCYQaA==
-X-Google-Smtp-Source: APXvYqwwc1LDGwYBzq0oCKE2jPQZSBhTqIM79blAEpYmjFxE7wS/lF6/Gpxpu2EeXpX55BTOzgQThA==
-X-Received: by 2002:a63:29c1:: with SMTP id
- p184mr25932369pgp.174.1572384041825; 
+ bh=k/Yn81zcF5guunRscdaPnRGMjDCCToSR8PmADiJbxp0=;
+ b=FlLZ85dofY4BFV/2Kr11qNVrmDPsudZ3XNwRlIXWeJliuTJwk+LaqEPz0e7lTWiVdj
+ mnzllPXUTXpmLMJwwn4WYhPN7soZLvCuIhJ7xBCSZLxaLN9BqX7tBNJQ9wuPYYhqlRC6
+ gptnOem0JPp3HRaARw/HRfGgPj4M//E4kUAgQsXmeP99xoVlNNnzi3GH4BVMEbwOgsSd
+ LU+p+wT8MLqIZ16Vpkb05l3Lkay3CpNuReJ7QBm9NY0PoqJt77TA+DMnhq/sIYR+4GpH
+ vnR0Dc325gfGPpKJ4DoYgFdw0ae83qeI5ZYueu9krjTq1LxGjiLB336PQbwhYAmwBTgC
+ 0u9w==
+X-Gm-Message-State: APjAAAVmFcUllZeVgce7PulKcP+m0dED/lz2Q2JMVkthc2XAT1TyECy+
+ Zjm4BEL+f6No5z/ekM3lUxR0Yg==
+X-Google-Smtp-Source: APXvYqzYc8Z7WdSN2lpbbY2148bXAcfqC0AwUdd9uxHNVkdGRvM/YKRGPHtsurX4YfIZG5rxXrNrPA==
+X-Received: by 2002:a65:4247:: with SMTP id d7mr29666739pgq.107.1572384041015; 
  Tue, 29 Oct 2019 14:20:41 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id c66sm55210pfb.25.2019.10.29.14.20.34
+ by smtp.gmail.com with ESMTPSA id u10sm29783pjy.28.2019.10.29.14.20.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 29 Oct 2019 14:20:38 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: Borislav Petkov <bp@alien8.de>
-Subject: [PATCH v3 22/29] microblaze: Move EXCEPTION_TABLE to RO_DATA segment
-Date: Tue, 29 Oct 2019 14:13:44 -0700
-Message-Id: <20191029211351.13243-23-keescook@chromium.org>
+Subject: [PATCH v3 23/29] parisc: Move EXCEPTION_TABLE to RO_DATA segment
+Date: Tue, 29 Oct 2019 14:13:45 -0700
+Message-Id: <20191029211351.13243-24-keescook@chromium.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191029211351.13243-1-keescook@chromium.org>
 References: <20191029211351.13243-1-keescook@chromium.org>
@@ -89,31 +88,33 @@ Sender: "Linuxppc-dev"
 Since the EXCEPTION_TABLE is read-only, collapse it into RO_DATA.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Helge Deller <deller@gmx.de>
 ---
- arch/microblaze/kernel/vmlinux.lds.S | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/vmlinux.lds.S | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/microblaze/kernel/vmlinux.lds.S b/arch/microblaze/kernel/vmlinux.lds.S
-index b8efb08204a1..760cac41cbfe 100644
---- a/arch/microblaze/kernel/vmlinux.lds.S
-+++ b/arch/microblaze/kernel/vmlinux.lds.S
-@@ -11,6 +11,8 @@
- OUTPUT_ARCH(microblaze)
- ENTRY(microblaze_start)
+diff --git a/arch/parisc/kernel/vmlinux.lds.S b/arch/parisc/kernel/vmlinux.lds.S
+index 12b3d7d5e9e4..53e29d88f99c 100644
+--- a/arch/parisc/kernel/vmlinux.lds.S
++++ b/arch/parisc/kernel/vmlinux.lds.S
+@@ -19,6 +19,7 @@
+ 				*(.data..vm0.pte)
  
-+#define RO_EXCEPTION_TABLE_ALIGN	16
-+
- #include <asm/page.h>
+ #define CC_USING_PATCHABLE_FUNCTION_ENTRY
++#define RO_EXCEPTION_TABLE_ALIGN	8
+ 
  #include <asm-generic/vmlinux.lds.h>
- #include <asm/thread_info.h>
-@@ -52,7 +54,6 @@ SECTIONS {
  
- 	. = ALIGN(16);
- 	RO_DATA(4096)
--	EXCEPTION_TABLE(16)
+@@ -129,9 +130,6 @@ SECTIONS
  
- 	/*
- 	 * sdata2 section can go anywhere, but must be word aligned
+ 	RO_DATA(8)
+ 
+-	/* RO because of BUILDTIME_EXTABLE_SORT */
+-	EXCEPTION_TABLE(8)
+-
+ 	/* unwind info */
+ 	.PARISC.unwind : {
+ 		__start___unwind = .;
 -- 
 2.17.1
 
