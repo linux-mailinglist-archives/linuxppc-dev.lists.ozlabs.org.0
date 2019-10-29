@@ -2,62 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DC3E9203
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 22:25:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47527E91BA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 22:20:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472l416j4PzF38x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 08:25:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472kxx0k6WzF36Z
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 08:20:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="Vu+Cz3Bd";
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="LQy1Olzq";
  dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472kq15Ty7zF34S
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 08:14:05 +1100 (AEDT)
-Received: by mail-pl1-x641.google.com with SMTP id t12so3678408plo.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 14:14:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472kq15Nx1zF34M
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 08:14:04 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id l24so10490447pgh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 14:14:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=JlR9HB+AtjkcOVkmTX2Eg2H+ZftC0HH+zvchdZkpMjY=;
- b=Vu+Cz3Bdr08FSpvurZE6wBEe8DPddNVCED4EbuBPLwaTYSq1C3hmodOBylEmeZ5fDF
- y1zF6hUioUHj4Jt94NznScqaHTONpB2VPrjf+1SWvp2je3tJCr6C8uetE+3Pf1UJpm+s
- lVZUPSKcsBhxaTrvaBH+v13ap8LI2UehQEeHs=
+ bh=7MxClQbH59XRrbTRajW1Gh8uACzcU2+htsVcXyM7D1g=;
+ b=LQy1OlzqoHregmX7oWg1J+GCiPB+DnhcNeAFzNXO6O9s9wLhpCBsF0jSKzXlK9lP/k
+ SDnj0o9+xZ39dyE9cCQWqZxyjuoHNyl3rdCu/xiTRCFpDNUVVX7tFk5VZETqdUPMammV
+ NH8kU7Tb11dukK+QDn0fvxLsZMYk5M8Ahi8aU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=JlR9HB+AtjkcOVkmTX2Eg2H+ZftC0HH+zvchdZkpMjY=;
- b=PY87TEP9z+Na1cfVed3aeFvbkdsz34kdSkQ/Mb9gocO3zUs57+fL73BYV6hYTTXUI7
- EJg54apMqk7AQUA9PY+m0hYvd7Z3LjUU9Y5+9HuaJkH6ZMrPR9evLhQ6zpRFXO/v7ouF
- /tVcbvenLG3BYwb4AGdN6PZa5/bCCXzhlSKKExh+E8mrNjgNDelJvdiUcV41VgMcPTne
- yrn5r3tMrFD7nDoC9EqdUBNpIGoG8/+tCWQNisk+56rp4BDDFA2DyZUlOdkkfMUYhPY8
- x71ZHJMMgvzFCZbR20nzssW1IWSlS9h7NOxct/o8gQKyQWYFIgrEQz/hpVmt3DxvlpFx
- 3olg==
-X-Gm-Message-State: APjAAAUM9SjDLIXlh4Wm7ZHlbt7Gv2zi4oIN8SHjv8pTtH6tgXR1sRJQ
- 8lqYZOMGQCrjfQt2htJWlcVP1A==
-X-Google-Smtp-Source: APXvYqw+HrHYWhGYydF8kNZSKv8NuZ4R4TmpMJCE64dPlGrdUiNxIUpv7BIOTO3KxcC7XYK68jIPIA==
-X-Received: by 2002:a17:902:9f81:: with SMTP id g1mr801835plq.82.1572383643666; 
- Tue, 29 Oct 2019 14:14:03 -0700 (PDT)
+ bh=7MxClQbH59XRrbTRajW1Gh8uACzcU2+htsVcXyM7D1g=;
+ b=uGm7hBVnY4GiYQ3U1xkqjt0MYYPHPEWnC1DdSQtyGuWEi091vMZmvQgBeRe+FMbeNm
+ PnWC199/oa6vAj5FcWQ7dQ6I/JYRZyN1GJKazwWTRHqR16iJWDYLNMKirgZkNc6onsAT
+ 0+l2prjLGzRcwfZgnp+bcTHIy+ldCreBvgsS+TZrhgV5ktZicVMeOamMmeh+FOBiQYr/
+ zkjupPyf6/b895gCyxQ7pzrHxP2Lg2ekbI9B/rb4Moz+EsAOiw0vMS6Sq2fEEapOQVKj
+ MXumwLW7jLFrqXkQWNLyDvOeBDzDOlZ8cI+OLPqsse4AobLoR9gpPfGbcxAUCa4eBbH/
+ cshQ==
+X-Gm-Message-State: APjAAAUB8/j+WbgxexCgQm0UqtBZGH3sGb9kG5D/mkt8rodnpO18YVZy
+ NT/iYLZzzHJ/4ojgYO4hczd7rA==
+X-Google-Smtp-Source: APXvYqzb5TnssM+4Kax/lIY7+ocxpNqcjOJlOJ6nd7kpeZ9S4qL0Qt7FLOUhwi50TM1MUY+x1dQPhQ==
+X-Received: by 2002:a63:3f8e:: with SMTP id
+ m136mr30665411pga.213.1572383641052; 
+ Tue, 29 Oct 2019 14:14:01 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id a8sm51854pff.5.2019.10.29.14.13.59
+ by smtp.gmail.com with ESMTPSA id i126sm47757pfc.29.2019.10.29.14.13.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 29 Oct 2019 14:14:00 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: Borislav Petkov <bp@alien8.de>
-Subject: [PATCH v3 03/29] powerpc: Rename PT_LOAD identifier "kernel" to "text"
-Date: Tue, 29 Oct 2019 14:13:25 -0700
-Message-Id: <20191029211351.13243-4-keescook@chromium.org>
+Subject: [PATCH v3 04/29] alpha: Rename PT_LOAD identifier "kernel" to "text"
+Date: Tue, 29 Oct 2019 14:13:26 -0700
+Message-Id: <20191029211351.13243-5-keescook@chromium.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191029211351.13243-1-keescook@chromium.org>
 References: <20191029211351.13243-1-keescook@chromium.org>
@@ -90,63 +91,41 @@ internal identifier for the PT_LOAD Program Header from "kernel" to
 "text" to match other architectures.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/alpha/kernel/vmlinux.lds.S | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index a3c8492b2b19..e184a63aa5b0 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -18,7 +18,7 @@
- ENTRY(_stext)
- 
- PHDRS {
--	kernel PT_LOAD FLAGS(7); /* RWX */
-+	text PT_LOAD FLAGS(7); /* RWX */
- 	note PT_NOTE FLAGS(0);
- }
- 
-@@ -63,7 +63,7 @@ SECTIONS
- #else /* !CONFIG_PPC64 */
- 		HEAD_TEXT
- #endif
+diff --git a/arch/alpha/kernel/vmlinux.lds.S b/arch/alpha/kernel/vmlinux.lds.S
+index c4b5ceceab52..781090cacc96 100644
+--- a/arch/alpha/kernel/vmlinux.lds.S
++++ b/arch/alpha/kernel/vmlinux.lds.S
+@@ -8,7 +8,7 @@
+ OUTPUT_FORMAT("elf64-alpha")
+ OUTPUT_ARCH(alpha)
+ ENTRY(__start)
+-PHDRS { kernel PT_LOAD; note PT_NOTE; }
++PHDRS { text PT_LOAD; note PT_NOTE; }
+ jiffies = jiffies_64;
+ SECTIONS
+ {
+@@ -27,14 +27,14 @@ SECTIONS
+ 		LOCK_TEXT
+ 		*(.fixup)
+ 		*(.gnu.warning)
 -	} :kernel
 +	} :text
- 
- 	__head_end = .;
- 
-@@ -112,7 +112,7 @@ SECTIONS
- 		__got2_end = .;
- #endif /* CONFIG_PPC32 */
- 
--	} :kernel
-+	} :text
- 
- 	. = ALIGN(ETEXT_ALIGN_SIZE);
- 	_etext = .;
-@@ -163,9 +163,9 @@ SECTIONS
- #endif
- 	EXCEPTION_TABLE(0)
+ 	swapper_pg_dir = SWAPPER_PGD;
+ 	_etext = .;	/* End of text section */
  
 -	NOTES :kernel :note
 +	NOTES :text :note
- 	/* Restore program header away from PT_NOTE. */
--	.dummy : { *(.dummy) } :kernel
-+	.dummy : { *(.dummy) } :text
- 
- /*
-  * Init sections discarded at runtime
-@@ -180,7 +180,7 @@ SECTIONS
- #ifdef CONFIG_PPC64
- 		*(.tramp.ftrace.init);
- #endif
+ 	.dummy : {
+ 		*(.dummy)
 -	} :kernel
 +	} :text
  
- 	/* .exit.text is discarded at runtime, not link time,
- 	 * to deal with references from __bug_table
+ 	RODATA
+ 	EXCEPTION_TABLE(16)
 -- 
 2.17.1
 
