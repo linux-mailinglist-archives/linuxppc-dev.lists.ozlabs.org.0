@@ -2,85 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75BA4E862B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F83E85C4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:33:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472T6n74PpzF32N
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:56:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472ScH4PqQzF31G
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:33:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=freude@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::841; helo=mail-qt1-x841.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="G/LkZ5EF"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
+ [IPv6:2607:f8b0:4864:20::841])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472NSr1B8PzF1Sf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 18:27:00 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9T7FUr1141644
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 03:26:55 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vxcdqqny1-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 03:26:55 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <freude@linux.ibm.com>;
- Tue, 29 Oct 2019 07:26:51 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 29 Oct 2019 07:26:49 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9T7QlAw64487570
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 29 Oct 2019 07:26:47 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C62C42047;
- Tue, 29 Oct 2019 07:26:47 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D5D584203F;
- Tue, 29 Oct 2019 07:26:46 +0000 (GMT)
-Received: from funtu.home (unknown [9.145.48.204])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 29 Oct 2019 07:26:46 +0000 (GMT)
-Subject: Re: [PATCH 6/6] s390x: Mark archrandom.h functions __must_check
-To: Richard Henderson <richard.henderson@linaro.org>,
- linux-arch@vger.kernel.org
-References: <20191028210559.8289-1-rth@twiddle.net>
- <20191028210559.8289-7-rth@twiddle.net>
-From: Harald Freudenberger <freude@linux.ibm.com>
-Date: Tue, 29 Oct 2019 08:26:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191028210559.8289-7-rth@twiddle.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19102907-0028-0000-0000-000003B0A540
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19102907-0029-0000-0000-00002472E4AE
-Message-Id: <935cf73a-d06c-365d-131a-23dcb350ba17@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-29_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910290075
-X-Mailman-Approved-At: Tue, 29 Oct 2019 21:54:37 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472SYJ74W9zDqTT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 21:31:16 +1100 (AEDT)
+Received: by mail-qt1-x841.google.com with SMTP id t8so19402854qtc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 03:31:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=9SS4b78ehrP4a9/DZbJX4AGCB0l2oYRtncqtM2VcVgs=;
+ b=G/LkZ5EFLI13fNYweg2QLrX9wPwyX1HFJIpSnMQHTrMXQvOr8WcBlj7L6PpPDNjdgP
+ i5InJ9pIYo4M2+ahXyCmJkm0/aSmAFV1b0ddTRW1LgRG7OVGwCri8wGtJhq7q7n0OHXS
+ /62wwsP9sjkBXi1sfsKUBwKdoX3XI/7IX8CepjzvKNmSryJQnKF34LTh2GQ9WhtDP2dt
+ IXSVXKbxiNcS5b+rYkiVMk/YKYGmnfMv31SeMxHd7e0Hp2u4HSyq7youtj+T3jqrMDT3
+ TABjTwTyDtWr5DElB4lPasN8uyXQjZI6Au4SUlUuoJnmXJBOg31XRn9SRwxaflUvjklQ
+ 6j8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=9SS4b78ehrP4a9/DZbJX4AGCB0l2oYRtncqtM2VcVgs=;
+ b=CNRrp8TkV+WEzf5BLt8fO9EVC4REbUPSNFNsOjWdrlmvRIQSaAXj6Qrzy+MPl86aKu
+ a0akaJG1X/l+lHgV3/QEoxh9Pblzu1QCFF+E11pamByBPgHe3kPKD38R7AFTIFGkc4CB
+ za+AXXsCEBF3w5rwXu/0ekAqo9SQ76Kkd64llSufwWOyridSa6t+2i9yYdMWwCwoEFX9
+ 34nng0S3TFB0l4kL5AKYXIiP3E6Fk1iGaOBpN/5io1MzHQFfM/EbUJeolNDGq2gjCmm7
+ DqjqmYVSaFMunJWYLBPG7fjgERq3kxzCkuFl7ZCn1WCPMqXBlwxZ5dcoi69lz9XL1qc0
+ xm1g==
+X-Gm-Message-State: APjAAAXvmLVPiPny8gBzRILgvoBfuo3GjXdGaRWOaAEiAp3dC24fhUGY
+ ZpadeKM8F2FcMZ9nWv+3SLqFJw==
+X-Google-Smtp-Source: APXvYqxu87KxuRTj39OXWAVjw/WFzSDMbE3Up95oGqmF/PZSf0Vx1vPkAAaomtV6kZQFzmiTSl4zEw==
+X-Received: by 2002:a0c:f6d2:: with SMTP id d18mr6856697qvo.155.1572345072935; 
+ Tue, 29 Oct 2019 03:31:12 -0700 (PDT)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id t1sm7346140qkm.121.2019.10.29.03.31.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Oct 2019 03:31:12 -0700 (PDT)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From: Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+Date: Tue, 29 Oct 2019 06:31:11 -0400
+Message-Id: <B6AAFA3F-745D-48E2-98CC-CFB30934CE39@lca.pw>
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+To: Anshuman Khandual <Anshuman.Khandual@arm.com>
+X-Mailer: iPhone Mail (17A878)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,62 +81,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
- x86@kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <Mark.Rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 28.10.19 22:05, Richard Henderson wrote:
-> We cannot use the pointer output without validating the
-> success of the random read.
->
-> Signed-off-by: Richard Henderson <rth@twiddle.net>
-> ---
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> ---
->  arch/s390/include/asm/archrandom.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/s390/include/asm/archrandom.h b/arch/s390/include/asm/archrandom.h
-> index c67b82dfa558..f3f1ee0a8c38 100644
-> --- a/arch/s390/include/asm/archrandom.h
-> +++ b/arch/s390/include/asm/archrandom.h
-> @@ -33,17 +33,17 @@ static inline bool arch_has_random_seed(void)
->  	return false;
->  }
->
-> -static inline bool arch_get_random_long(unsigned long *v)
-> +static inline bool __must_check arch_get_random_long(unsigned long *v)
->  {
->  	return false;
->  }
->
-> -static inline bool arch_get_random_int(unsigned int *v)
-> +static inline bool __must_check arch_get_random_int(unsigned int *v)
->  {
->  	return false;
->  }
->
-> -static inline bool arch_get_random_seed_long(unsigned long *v)
-> +static inline bool __must_check arch_get_random_seed_long(unsigned long *v)
->  {
->  	if (static_branch_likely(&s390_arch_random_available)) {
->  		return s390_arch_random_generate((u8 *)v, sizeof(*v));
-> @@ -51,7 +51,7 @@ static inline bool arch_get_random_seed_long(unsigned long *v)
->  	return false;
->  }
->
-> -static inline bool arch_get_random_seed_int(unsigned int *v)
-> +static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
->  {
->  	if (static_branch_likely(&s390_arch_random_available)) {
->  		return s390_arch_random_generate((u8 *)v, sizeof(*v));
-Fine with me, Thanks, reviewed, build and tested.
-You may add my reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-However, will this go into the kernel tree via crypto or s390 subsystem ?
 
+
+> On Oct 28, 2019, at 1:29 AM, Anshuman Khandual <Anshuman.Khandual@arm.com>=
+ wrote:
+>=20
+> This adds tests which will validate architecture page table helpers and
+> other accessors in their compliance with expected generic MM semantics.
+> This will help various architectures in validating changes to existing
+> page table helpers or addition of new ones.
+>=20
+> This test covers basic page table entry transformations including but not
+> limited to old, young, dirty, clean, write, write protect etc at various
+> level along with populating intermediate entries with next page table page=
+
+> and validating them.
+>=20
+> Test page table pages are allocated from system memory with required size
+> and alignments. The mapped pfns at page table levels are derived from a
+> real pfn representing a valid kernel text symbol. This test gets called
+> right after page_alloc_init_late().
+>=20
+> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along wit=
+h
+> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to=
+
+> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 an=
+d
+> arm64. Going forward, other architectures too can enable this after fixing=
+
+> build or runtime problems (if any) with their page table helpers.
+>=20
+> Folks interested in making sure that a given platform's page table helpers=
+
+> conform to expected generic MM semantics should enable the above config
+> which will just trigger this test during boot. Any non conformity here wil=
+l
+> be reported as an warning which would need to be fixed. This test will hel=
+p
+> catch any changes to the agreed upon semantics expected from generic MM an=
+d
+> enable platforms to accommodate it thereafter.
+
+This looks like a perfect candidate to streamline with the new kunit framewo=
+rk, no?=
