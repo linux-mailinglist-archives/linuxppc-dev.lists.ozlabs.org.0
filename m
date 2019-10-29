@@ -1,48 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D721BE855B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:18:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8407E8566
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:21:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472SGH2FNdzF2WR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:18:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472SL80V1DzF0Yb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:21:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472Rjl0rZ4zF1pW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 20:53:31 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472S8N62syzF2P4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 21:13:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="kRkoHRku"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 472Rjg3hQ3z9sPh; Tue, 29 Oct 2019 20:53:27 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 472Rjf6fryz9sRN; Tue, 29 Oct 2019 20:53:26 +1100 (AEDT)
+ header.b="cs2hdJYz"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 472S8M3QkSz9sP3;
+ Tue, 29 Oct 2019 21:13:07 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1572342806;
- bh=YjeXyLgXDmBDNwj1SVhw4DCcFbYwBPyJvq94xI4KnSU=;
- h=From:To:Subject:Date:From;
- b=kRkoHRkunH1NQ7yzolmkvPazauOBW2+dPuL+YcB+q4a47lsXaPp7Q1kkKujLu4SUf
- velvAVaVunLfPWWuALuwfexQhb5KeWGhjIQT0Q0OUr8n2S/hoDs4953mLqw4G1eT3F
- B8p5q/LYSclsiZSxZbQh2XvwBOqMV0G2ipySvStZ2g3fHpgKNJam1Fe86ARBAvCx8b
- x0+7C2icY62v+/gjySxxp97vzU/J22Uy98NtFSh8nEojONFVPOtMo/NxZpauRyBnVs
- YWEnP23h26qY3CuqtCvwldJArQzjr7KyTv+d/tyMRjRckOn5SGn8EIdhJZ27K7xdUQ
- Zttyd6dKWRGqw==
+ s=201909; t=1572343987;
+ bh=uI8deBIoQAH9dUj+VilXBuXzEDBg9aiumzk3Bni0Y5s=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=cs2hdJYzsR8uXUBkRv/tii8mwkG/u3ntLr9XeIv/GVCulY5K0myfhD63CT1ARYAm3
+ leqp1px0zmE8Z1tGttSZCGrJyVj7LG5pa14zT16FkVfXVKQL7SQdgNC+AS32l2M8C3
+ W+e5YDcEY72Dss36tAHgvk5I9WnH8gSrUBbD4aC/KUmuTC52fWaXogDrOKaW2moXUj
+ MYpc90/cBzm/B48Y79HGAhDoch3Ws3Z4CQebyUJAsgFOX2AhpOLmVQahjn/bbKTZUN
+ 2oZYGaqyA1ZhciSOcD91Fxp+gw5pD1EG4WprDTBTEz/0KfCDRwdH1ZzMF+efT7gZli
+ BVWizJI5ZFyrQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v3] selftests/powerpc: Fixup clobbers for TM tests
-Date: Tue, 29 Oct 2019 20:53:24 +1100
-Message-Id: <20191029095324.14669-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
+To: Qian Cai <cai@lca.pw>
+Subject: Re: [PATCH] powerpc/powernv/smp: fix a warning at CPU hotplug
+In-Reply-To: <1572295467-14686-1-git-send-email-cai@lca.pw>
+References: <1572295467-14686-1-git-send-email-cai@lca.pw>
+Date: Tue, 29 Oct 2019 21:13:02 +1100
+Message-ID: <875zk7hnbl.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,102 +56,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ paulus@samba.org, Qian Cai <cai@lca.pw>, paulmck@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some of our TM (Transactional Memory) tests, list "r1" (the stack
-pointer) as a clobbered register.
+Qian Cai <cai@lca.pw> writes:
+> The commit e78a7614f387 ("idle: Prevent late-arriving interrupts from
+> disrupting offline") introduced a warning on powerpc with CPU hotplug,
+>
+> WARNING: CPU: 1 PID: 0 at arch/powerpc/platforms/powernv/smp.c:160
+> pnv_smp_cpu_kill_self+0x5c/0x330
+> Call Trace:
+>  cpu_die+0x48/0x64
+>  arch_cpu_idle_dead+0x30/0x50
+>  do_idle+0x2e4/0x460
+>  cpu_startup_entry+0x3c/0x40
+>  start_secondary+0x7a8/0xa80
+>  start_secondary_resume+0x10/0x14
+>
+> because it calls local_irq_disable() before arch_cpu_idle_dead().
+>
+> Fixes: e78a7614f387 ("idle: Prevent late-arriving interrupts from disrupting offline")
+> Signed-off-by: Qian Cai <cai@lca.pw>
+> ---
+>  arch/powerpc/platforms/powernv/smp.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-GCC >= 9 doesn't accept this, and the build breaks:
+Thanks.
 
-  ptrace-tm-spd-tar.c: In function 'tm_spd_tar':
-  ptrace-tm-spd-tar.c:31:2: error: listing the stack pointer register 'r1' in a clobber list is deprecated [-Werror=deprecated]
-     31 |  asm __volatile__(
-        |  ^~~
-  ptrace-tm-spd-tar.c:31:2: note: the value of the stack pointer after an 'asm' statement must be the same as it was before the statement
+But Nick already sent a fix for this, I just need to review/test it and
+get it merged, see:
+  https://patchwork.ozlabs.org/patch/1181275/
 
-We do have some fairly large inline asm blocks in these tests, and
-some of them do change the value of r1. However they should all return
-to C with the value in r1 restored, so I think it's legitimate to say
-r1 is not clobbered.
 
-As Segher points out, the r1 clobbers may have been added because of
-the use of `or 1,1,1`, however that doesn't actually clobber r1.
+cheers
 
-Segher also points out that some of these tests do clobber LR, because
-they call functions, and that is not listed in the clobbers, so add
-that where appropriate.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191014023043.2969-1-mpe@ellerman.id.au
----
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c | 2 +-
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c | 4 ++--
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c     | 2 +-
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c     | 4 ++--
- 4 files changed, 6 insertions(+), 6 deletions(-)
-
-v3: Realise I'd already sent this patch twice.
-    Add LR clobber as noticed by Segher:
-    https://patchwork.ozlabs.org/patch/1140456/
-
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-index 25e23e73c72e..2ecfa1158e2b 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-@@ -73,7 +73,7 @@ void tm_spd_tar(void)
- 		[sprn_texasr]"i"(SPRN_TEXASR), [tar_1]"i"(TAR_1),
- 		[dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2), [dscr_2]"i"(DSCR_2),
- 		[tar_3]"i"(TAR_3), [dscr_3]"i"(DSCR_3)
--		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
-+		: "memory", "r0", "r3", "r4", "r5", "r6", "lr"
- 		);
- 
- 	/* TM failed, analyse */
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-index f603fe5a445b..6f7fb51f0809 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-@@ -74,8 +74,8 @@ void tm_spd_vsx(void)
- 		"3: ;"
- 		: [res] "=r" (result), [texasr] "=r" (texasr)
- 		: [sprn_texasr] "i"  (SPRN_TEXASR)
--		: "memory", "r0", "r1", "r3", "r4",
--		"r7", "r8", "r9", "r10", "r11"
-+		: "memory", "r0", "r3", "r4",
-+		  "r7", "r8", "r9", "r10", "r11", "lr"
- 		);
- 
- 	if (result) {
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-index e0d37f07bdeb..46ef378a15ec 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-@@ -62,7 +62,7 @@ void tm_tar(void)
- 		[sprn_ppr]"i"(SPRN_PPR), [sprn_texasr]"i"(SPRN_TEXASR),
- 		[tar_1]"i"(TAR_1), [dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2),
- 		[dscr_2]"i"(DSCR_2), [cptr1] "b" (&cptr[1])
--		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
-+		: "memory", "r0", "r3", "r4", "r5", "r6"
- 		);
- 
- 	/* TM failed, analyse */
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-index 8027457b97b7..70ca01234f79 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-@@ -62,8 +62,8 @@ void tm_vsx(void)
- 		"3: ;"
- 		: [res] "=r" (result), [texasr] "=r" (texasr)
- 		: [sprn_texasr] "i"  (SPRN_TEXASR), [cptr1] "b" (&cptr[1])
--		: "memory", "r0", "r1", "r3", "r4",
--		"r7", "r8", "r9", "r10", "r11"
-+		: "memory", "r0", "r3", "r4",
-+		  "r7", "r8", "r9", "r10", "r11", "lr"
- 		);
- 
- 	if (result) {
--- 
-2.21.0
-
+> diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
+> index fbd6e6b7bbf2..51f4e07b9168 100644
+> --- a/arch/powerpc/platforms/powernv/smp.c
+> +++ b/arch/powerpc/platforms/powernv/smp.c
+> @@ -157,7 +157,6 @@ static void pnv_smp_cpu_kill_self(void)
+>  	 * This hard disables local interurpts, ensuring we have no lazy
+>  	 * irqs pending.
+>  	 */
+> -	WARN_ON(irqs_disabled());
+>  	hard_irq_disable();
+>  	WARN_ON(lazy_irq_pending());
+>  
+> -- 
+> 1.8.3.1
