@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CFBE852B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B39AE8532
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:14:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472S7p36rXzF2Dc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:12:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472SBB6lqNzF2PY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:14:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,53 +16,53 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="XNGB0ddy"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="j7y9a+K9"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472RjS2QkdzF1cP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 20:53:16 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472RjV1br1zF1RV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 20:53:18 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 472RjN13hxz9tysm;
- Tue, 29 Oct 2019 10:53:12 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 472RjP0YmVz9tysn;
+ Tue, 29 Oct 2019 10:53:13 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=XNGB0ddy; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=j7y9a+K9; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 81R-kucN2VBK; Tue, 29 Oct 2019 10:53:12 +0100 (CET)
+ with ESMTP id JZ3dxNw6HqIR; Tue, 29 Oct 2019 10:53:13 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 472RjM71Rcz9tysj;
- Tue, 29 Oct 2019 10:53:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1572342792; bh=gp9eHVQXcmLGsiCH27WLeZfCu7vE82qJv2qSCrrxkhE=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=XNGB0ddylbSaBhNVaOKEKt/o6x+5IRYgtOeM3wbz4HNhQxAm8/dRdRilbLY6c9RZu
- //1on9g6idWgAwhVgSqv4zC6vR0bkaCMF8HMQbl5X8Sz3c7Qj3TKwsDQkV7I0zULb3
- ZauDjjsWgcOS3p5bbXYxKHVJjMHrypkL0ZbBwjOI=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E58B48B84C;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 472RjN6bbxz9tysj;
  Tue, 29 Oct 2019 10:53:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1572342792; bh=TCrhP+fHjEwhqhayxChxYVaqoEzg6qg5Ds3vR7E6918=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=j7y9a+K9udCNcXQEy5sKva9CDGUBEV8QZcWF5jpwFjT3vofCJ8ZuGviEiybi6XA+O
+ MZ1lgfGglVYjGijuEUpxAb0ycQAVeqJgPmSvLMfVJrClkxC0uKxjWmvWY6MQo7W1LA
+ 8698yJxbb9fOLPIR+Qadcd25waCg1AQ0+dGuTHPU=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F3C208B84C;
+ Tue, 29 Oct 2019 10:53:13 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wZQmnHkwCTtx; Tue, 29 Oct 2019 10:53:12 +0100 (CET)
+ with ESMTP id zIiGWarGdYZl; Tue, 29 Oct 2019 10:53:13 +0100 (CET)
 Received: from localhost.localdomain (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B602C8B755;
- Tue, 29 Oct 2019 10:53:12 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BC7FD8B755;
+ Tue, 29 Oct 2019 10:53:13 +0100 (CET)
 Received: by localhost.localdomain (Postfix, from userid 0)
- id 823176B6FD; Tue, 29 Oct 2019 09:53:12 +0000 (UTC)
-Message-Id: <9e82b282e67e4355cbe3d1732684b3e85605d5b2.1572342582.git.christophe.leroy@c-s.fr>
+ id 88A226B6FD; Tue, 29 Oct 2019 09:53:13 +0000 (UTC)
+Message-Id: <7f80e4489a44b53962cf2c813e63038332fcf457.1572342582.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1572342582.git.christophe.leroy@c-s.fr>
 References: <cover.1572342582.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 7/8] powerpc/vdso32: implement clock_getres entirely
+Subject: [PATCH v3 8/8] powerpc/vdso32: miscellaneous optimisations
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 29 Oct 2019 09:53:12 +0000 (UTC)
+Date: Tue, 29 Oct 2019 09:53:13 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,77 +79,102 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-clock_getres returns hrtimer_res for all clocks but coarse ones
-for which it returns KTIME_LOW_RES.
-
-return EINVAL for unknown clocks.
+Various optimisations by inverting branches and removing
+redundant instructions.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/asm-offsets.c         |  3 +++
- arch/powerpc/kernel/vdso32/gettimeofday.S | 19 +++++++++++--------
- 2 files changed, 14 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/vdso32/datapage.S     |  3 +--
+ arch/powerpc/kernel/vdso32/getcpu.S       |  6 +++---
+ arch/powerpc/kernel/vdso32/gettimeofday.S | 18 +++++++++---------
+ 3 files changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 07d5596ff646..4879c41ed5d0 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -417,7 +417,10 @@ int main(void)
- 	DEFINE(CLOCK_MONOTONIC, CLOCK_MONOTONIC);
- 	DEFINE(CLOCK_REALTIME_COARSE, CLOCK_REALTIME_COARSE);
- 	DEFINE(CLOCK_MONOTONIC_COARSE, CLOCK_MONOTONIC_COARSE);
-+	DEFINE(CLOCK_MAX, CLOCK_TAI);
- 	DEFINE(NSEC_PER_SEC, NSEC_PER_SEC);
-+	DEFINE(EINVAL, EINVAL);
-+	DEFINE(KTIME_LOW_RES, KTIME_LOW_RES);
- 
- #ifdef CONFIG_BUG
- 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
-diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-index ff431482739c..181e66a15fe2 100644
---- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-@@ -198,17 +198,20 @@ V_FUNCTION_END(__kernel_clock_gettime)
- V_FUNCTION_BEGIN(__kernel_clock_getres)
+diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
+index 1095d818f94a..217bb630f8f9 100644
+--- a/arch/powerpc/kernel/vdso32/datapage.S
++++ b/arch/powerpc/kernel/vdso32/datapage.S
+@@ -30,11 +30,10 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
    .cfi_startproc
- 	/* Check for supported clock IDs */
--	cmpwi	cr0,r3,CLOCK_REALTIME
--	cmpwi	cr1,r3,CLOCK_MONOTONIC
--	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
--	bne	cr0,99f
-+	cmplwi	cr0, r3, CLOCK_MAX
-+	cmpwi	cr1, r3, CLOCK_REALTIME_COARSE
-+	cmpwi	cr7, r3, CLOCK_MONOTONIC_COARSE
-+	bgt	cr0, 99f
-+	LOAD_REG_IMMEDIATE(r5, KTIME_LOW_RES)
-+	beq	cr1, 1f
-+	beq	cr7, 1f
- 
  	mflr	r12
    .cfi_register lr,r12
+-	mr	r4,r3
++	mr.	r4,r3
  	get_datapage	r3, r0
- 	lwz	r5, CLOCK_HRTIMER_RES(r3)
  	mtlr	r12
--	li	r3,0
-+1:	li	r3,0
- 	cmpli	cr0,r4,0
- 	crclr	cr0*4+so
+ 	addi	r3,r3,CFG_SYSCALL_MAP32
+-	cmpli	cr0,r4,0
  	beqlr
-@@ -217,11 +220,11 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
- 	blr
- 
- 	/*
--	 * syscall fallback
-+	 * invalid clock
- 	 */
- 99:
--	li	r0,__NR_clock_getres
--	sc
-+	li	r3, EINVAL
-+	crset	so
+ 	li	r0,NR_syscalls
+ 	stw	r0,0(r4)
+diff --git a/arch/powerpc/kernel/vdso32/getcpu.S b/arch/powerpc/kernel/vdso32/getcpu.S
+index 90b39af14383..ff5e214fec41 100644
+--- a/arch/powerpc/kernel/vdso32/getcpu.S
++++ b/arch/powerpc/kernel/vdso32/getcpu.S
+@@ -25,10 +25,10 @@ V_FUNCTION_BEGIN(__kernel_getcpu)
+ 	rlwinm  r7,r5,16,31-15,31-0
+ 	beq	cr0,1f
+ 	stw	r6,0(r3)
+-1:	beq	cr1,2f
+-	stw	r7,0(r4)
+-2:	crclr	cr0*4+so
++1:	crclr	cr0*4+so
+ 	li	r3,0			/* always success */
++	beqlr	cr1
++	stw	r7,0(r4)
  	blr
    .cfi_endproc
- V_FUNCTION_END(__kernel_clock_getres)
+ V_FUNCTION_END(__kernel_getcpu)
+diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
+index 181e66a15fe2..bad0b39fa2a2 100644
+--- a/arch/powerpc/kernel/vdso32/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
+@@ -34,10 +34,9 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
+ 	mflr	r12
+   .cfi_register lr,r12
+ 
+-	mr	r10,r3			/* r10 saves tv */
++	mr.	r10,r3			/* r10 saves tv */
+ 	mr	r11,r4			/* r11 saves tz */
+ 	get_datapage	r9, r0
+-	cmplwi	r10,0			/* check if tv is NULL */
+ 	beq	3f
+ 	LOAD_REG_IMMEDIATE(r7, 1000000)	/* load up USEC_PER_SEC */
+ 	bl	__do_get_tspec@local	/* get sec/usec from tb & kernel */
+@@ -45,15 +44,16 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
+ 	stw	r4,TVAL32_TV_USEC(r10)
+ 
+ 3:	cmplwi	r11,0			/* check if tz is NULL */
+-	beq	1f
++	mtlr	r12
++	crclr	cr0*4+so
++	li	r3,0
++	beqlr
++
+ 	lwz	r4,CFG_TZ_MINUTEWEST(r9)/* fill tz */
+ 	lwz	r5,CFG_TZ_DSTTIME(r9)
+ 	stw	r4,TZONE_TZ_MINWEST(r11)
+ 	stw	r5,TZONE_TZ_DSTTIME(r11)
+ 
+-1:	mtlr	r12
+-	crclr	cr0*4+so
+-	li	r3,0
+ 	blr
+   .cfi_endproc
+ V_FUNCTION_END(__kernel_gettimeofday)
+@@ -247,10 +247,10 @@ V_FUNCTION_BEGIN(__kernel_time)
+ 	lwz	r3,STAMP_XTIME+TSPEC_TV_SEC(r9)
+ 
+ 	cmplwi	r11,0			/* check if t is NULL */
+-	beq	2f
+-	stw	r3,0(r11)		/* store result at *t */
+-2:	mtlr	r12
++	mtlr	r12
+ 	crclr	cr0*4+so
++	beqlr
++	stw	r3,0(r11)		/* store result at *t */
+ 	blr
+   .cfi_endproc
+ V_FUNCTION_END(__kernel_time)
 -- 
 2.13.3
 
