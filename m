@@ -1,68 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B39AE8532
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:14:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D721BE855B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 11:18:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472SBB6lqNzF2PY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:14:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472SGH2FNdzF2WR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 21:18:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="j7y9a+K9"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472RjV1br1zF1RV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 20:53:18 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 472RjP0YmVz9tysn;
- Tue, 29 Oct 2019 10:53:13 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=j7y9a+K9; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id JZ3dxNw6HqIR; Tue, 29 Oct 2019 10:53:13 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 472RjN6bbxz9tysj;
- Tue, 29 Oct 2019 10:53:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1572342792; bh=TCrhP+fHjEwhqhayxChxYVaqoEzg6qg5Ds3vR7E6918=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=j7y9a+K9udCNcXQEy5sKva9CDGUBEV8QZcWF5jpwFjT3vofCJ8ZuGviEiybi6XA+O
- MZ1lgfGglVYjGijuEUpxAb0ycQAVeqJgPmSvLMfVJrClkxC0uKxjWmvWY6MQo7W1LA
- 8698yJxbb9fOLPIR+Qadcd25waCg1AQ0+dGuTHPU=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F3C208B84C;
- Tue, 29 Oct 2019 10:53:13 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id zIiGWarGdYZl; Tue, 29 Oct 2019 10:53:13 +0100 (CET)
-Received: from localhost.localdomain (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BC7FD8B755;
- Tue, 29 Oct 2019 10:53:13 +0100 (CET)
-Received: by localhost.localdomain (Postfix, from userid 0)
- id 88A226B6FD; Tue, 29 Oct 2019 09:53:13 +0000 (UTC)
-Message-Id: <7f80e4489a44b53962cf2c813e63038332fcf457.1572342582.git.christophe.leroy@c-s.fr>
-In-Reply-To: <cover.1572342582.git.christophe.leroy@c-s.fr>
-References: <cover.1572342582.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 8/8] powerpc/vdso32: miscellaneous optimisations
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 29 Oct 2019 09:53:13 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472Rjl0rZ4zF1pW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 20:53:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="kRkoHRku"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 472Rjg3hQ3z9sPh; Tue, 29 Oct 2019 20:53:27 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 472Rjf6fryz9sRN; Tue, 29 Oct 2019 20:53:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1572342806;
+ bh=YjeXyLgXDmBDNwj1SVhw4DCcFbYwBPyJvq94xI4KnSU=;
+ h=From:To:Subject:Date:From;
+ b=kRkoHRkunH1NQ7yzolmkvPazauOBW2+dPuL+YcB+q4a47lsXaPp7Q1kkKujLu4SUf
+ velvAVaVunLfPWWuALuwfexQhb5KeWGhjIQT0Q0OUr8n2S/hoDs4953mLqw4G1eT3F
+ B8p5q/LYSclsiZSxZbQh2XvwBOqMV0G2ipySvStZ2g3fHpgKNJam1Fe86ARBAvCx8b
+ x0+7C2icY62v+/gjySxxp97vzU/J22Uy98NtFSh8nEojONFVPOtMo/NxZpauRyBnVs
+ YWEnP23h26qY3CuqtCvwldJArQzjr7KyTv+d/tyMRjRckOn5SGn8EIdhJZ27K7xdUQ
+ Zttyd6dKWRGqw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v3] selftests/powerpc: Fixup clobbers for TM tests
+Date: Tue, 29 Oct 2019 20:53:24 +1100
+Message-Id: <20191029095324.14669-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.21.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,107 +54,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Various optimisations by inverting branches and removing
-redundant instructions.
+Some of our TM (Transactional Memory) tests, list "r1" (the stack
+pointer) as a clobbered register.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+GCC >= 9 doesn't accept this, and the build breaks:
+
+  ptrace-tm-spd-tar.c: In function 'tm_spd_tar':
+  ptrace-tm-spd-tar.c:31:2: error: listing the stack pointer register 'r1' in a clobber list is deprecated [-Werror=deprecated]
+     31 |  asm __volatile__(
+        |  ^~~
+  ptrace-tm-spd-tar.c:31:2: note: the value of the stack pointer after an 'asm' statement must be the same as it was before the statement
+
+We do have some fairly large inline asm blocks in these tests, and
+some of them do change the value of r1. However they should all return
+to C with the value in r1 restored, so I think it's legitimate to say
+r1 is not clobbered.
+
+As Segher points out, the r1 clobbers may have been added because of
+the use of `or 1,1,1`, however that doesn't actually clobber r1.
+
+Segher also points out that some of these tests do clobber LR, because
+they call functions, and that is not listed in the clobbers, so add
+that where appropriate.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191014023043.2969-1-mpe@ellerman.id.au
 ---
- arch/powerpc/kernel/vdso32/datapage.S     |  3 +--
- arch/powerpc/kernel/vdso32/getcpu.S       |  6 +++---
- arch/powerpc/kernel/vdso32/gettimeofday.S | 18 +++++++++---------
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c | 2 +-
+ tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c | 4 ++--
+ tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c     | 2 +-
+ tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c     | 4 ++--
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
-index 1095d818f94a..217bb630f8f9 100644
---- a/arch/powerpc/kernel/vdso32/datapage.S
-+++ b/arch/powerpc/kernel/vdso32/datapage.S
-@@ -30,11 +30,10 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
-   .cfi_startproc
- 	mflr	r12
-   .cfi_register lr,r12
--	mr	r4,r3
-+	mr.	r4,r3
- 	get_datapage	r3, r0
- 	mtlr	r12
- 	addi	r3,r3,CFG_SYSCALL_MAP32
--	cmpli	cr0,r4,0
- 	beqlr
- 	li	r0,NR_syscalls
- 	stw	r0,0(r4)
-diff --git a/arch/powerpc/kernel/vdso32/getcpu.S b/arch/powerpc/kernel/vdso32/getcpu.S
-index 90b39af14383..ff5e214fec41 100644
---- a/arch/powerpc/kernel/vdso32/getcpu.S
-+++ b/arch/powerpc/kernel/vdso32/getcpu.S
-@@ -25,10 +25,10 @@ V_FUNCTION_BEGIN(__kernel_getcpu)
- 	rlwinm  r7,r5,16,31-15,31-0
- 	beq	cr0,1f
- 	stw	r6,0(r3)
--1:	beq	cr1,2f
--	stw	r7,0(r4)
--2:	crclr	cr0*4+so
-+1:	crclr	cr0*4+so
- 	li	r3,0			/* always success */
-+	beqlr	cr1
-+	stw	r7,0(r4)
- 	blr
-   .cfi_endproc
- V_FUNCTION_END(__kernel_getcpu)
-diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-index 181e66a15fe2..bad0b39fa2a2 100644
---- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-@@ -34,10 +34,9 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
- 	mflr	r12
-   .cfi_register lr,r12
+v3: Realise I'd already sent this patch twice.
+    Add LR clobber as noticed by Segher:
+    https://patchwork.ozlabs.org/patch/1140456/
+
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
+index 25e23e73c72e..2ecfa1158e2b 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
+@@ -73,7 +73,7 @@ void tm_spd_tar(void)
+ 		[sprn_texasr]"i"(SPRN_TEXASR), [tar_1]"i"(TAR_1),
+ 		[dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2), [dscr_2]"i"(DSCR_2),
+ 		[tar_3]"i"(TAR_3), [dscr_3]"i"(DSCR_3)
+-		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
++		: "memory", "r0", "r3", "r4", "r5", "r6", "lr"
+ 		);
  
--	mr	r10,r3			/* r10 saves tv */
-+	mr.	r10,r3			/* r10 saves tv */
- 	mr	r11,r4			/* r11 saves tz */
- 	get_datapage	r9, r0
--	cmplwi	r10,0			/* check if tv is NULL */
- 	beq	3f
- 	LOAD_REG_IMMEDIATE(r7, 1000000)	/* load up USEC_PER_SEC */
- 	bl	__do_get_tspec@local	/* get sec/usec from tb & kernel */
-@@ -45,15 +44,16 @@ V_FUNCTION_BEGIN(__kernel_gettimeofday)
- 	stw	r4,TVAL32_TV_USEC(r10)
+ 	/* TM failed, analyse */
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
+index f603fe5a445b..6f7fb51f0809 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
+@@ -74,8 +74,8 @@ void tm_spd_vsx(void)
+ 		"3: ;"
+ 		: [res] "=r" (result), [texasr] "=r" (texasr)
+ 		: [sprn_texasr] "i"  (SPRN_TEXASR)
+-		: "memory", "r0", "r1", "r3", "r4",
+-		"r7", "r8", "r9", "r10", "r11"
++		: "memory", "r0", "r3", "r4",
++		  "r7", "r8", "r9", "r10", "r11", "lr"
+ 		);
  
- 3:	cmplwi	r11,0			/* check if tz is NULL */
--	beq	1f
-+	mtlr	r12
-+	crclr	cr0*4+so
-+	li	r3,0
-+	beqlr
-+
- 	lwz	r4,CFG_TZ_MINUTEWEST(r9)/* fill tz */
- 	lwz	r5,CFG_TZ_DSTTIME(r9)
- 	stw	r4,TZONE_TZ_MINWEST(r11)
- 	stw	r5,TZONE_TZ_DSTTIME(r11)
+ 	if (result) {
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
+index e0d37f07bdeb..46ef378a15ec 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
+@@ -62,7 +62,7 @@ void tm_tar(void)
+ 		[sprn_ppr]"i"(SPRN_PPR), [sprn_texasr]"i"(SPRN_TEXASR),
+ 		[tar_1]"i"(TAR_1), [dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2),
+ 		[dscr_2]"i"(DSCR_2), [cptr1] "b" (&cptr[1])
+-		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
++		: "memory", "r0", "r3", "r4", "r5", "r6"
+ 		);
  
--1:	mtlr	r12
--	crclr	cr0*4+so
--	li	r3,0
- 	blr
-   .cfi_endproc
- V_FUNCTION_END(__kernel_gettimeofday)
-@@ -247,10 +247,10 @@ V_FUNCTION_BEGIN(__kernel_time)
- 	lwz	r3,STAMP_XTIME+TSPEC_TV_SEC(r9)
+ 	/* TM failed, analyse */
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
+index 8027457b97b7..70ca01234f79 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
+@@ -62,8 +62,8 @@ void tm_vsx(void)
+ 		"3: ;"
+ 		: [res] "=r" (result), [texasr] "=r" (texasr)
+ 		: [sprn_texasr] "i"  (SPRN_TEXASR), [cptr1] "b" (&cptr[1])
+-		: "memory", "r0", "r1", "r3", "r4",
+-		"r7", "r8", "r9", "r10", "r11"
++		: "memory", "r0", "r3", "r4",
++		  "r7", "r8", "r9", "r10", "r11", "lr"
+ 		);
  
- 	cmplwi	r11,0			/* check if t is NULL */
--	beq	2f
--	stw	r3,0(r11)		/* store result at *t */
--2:	mtlr	r12
-+	mtlr	r12
- 	crclr	cr0*4+so
-+	beqlr
-+	stw	r3,0(r11)		/* store result at *t */
- 	blr
-   .cfi_endproc
- V_FUNCTION_END(__kernel_time)
+ 	if (result) {
 -- 
-2.13.3
+2.21.0
 
