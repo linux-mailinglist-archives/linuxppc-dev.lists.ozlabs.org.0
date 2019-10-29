@@ -2,98 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2006E931A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 23:46:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B29E9335
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 23:52:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472msh5sw5zDrR1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:46:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472n0r0L6NzF3dJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:52:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.5.53; helo=eur03-ve1-obe.outbound.protection.outlook.com;
- envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::344;
+ helo=mail-wm1-x344.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="ammmhVMd"; 
- dkim-atps=neutral
-Received: from EUR03-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr50053.outbound.protection.outlook.com [40.107.5.53])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="IpOq05N4"; dkim-atps=neutral
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472mqb2J57zF3bh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 09:44:39 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BkFpA6Q+GhzLGDenxbmSIDGxZVop0PIszwCyNdBvkDiXCSOB9NPmD8QFJiqmtw3dnVCbGuz4AQUBjI8QjMbYbzwa8yflcicdGwfGlYMGH9vCBtz5rwhqfj3l9DwgmdbwhF586w6H1cZTiaTVMvGgmu3d1CZbjY8+GnLedSFYeoAx1Y/hjmvf2p0HVM1RpE/d9AwPVIQ4oyBPIzd5hWO51Kce/5zN6I6OGi0BVRpj5FmKJ2UiMx9sO3C18ZCAM4DVbj9mh3cKn1chsqs/UQ8G03uslUwgeZ65UwaKFtlZ156eRu3o9bpi2Q9hbnqSSL6KHXP/wsWvnpggF0fOxcXG6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GRBpJvjoxoG+b5Dpj6WaVjn3b9s8OVOD0L9cM3sVYf0=;
- b=Xp6QeNgc3kF8lrjlDxxm7h9SIOiNdC/4gmlQVGNgG4yyzP8Ek6hkLy+FBTCT4itCZgj9pU9rUd51KFoQYpkMsWTPyukcdzV51KIUf+UoGhcAnubFCHJwQnk1mXl5Qfft+gKJQmQetkwutG08I3NLzA8kL838iTuW7eyTM/pE0svtRYmlAm3SS3m6cSE8UMp9UDe1cpGrH/0f0px3gHyDxKBT71e9lY7Ku9m5ZnIxJy/WJt3jLu3vx1w+T6tisKWZT6l8g+snsYu9wKVmaW4ZosK+J/xIYBsFHLDTbC2tGInFXundHGgUanYmrZXaRtjBnex/9OExpvisrpn+8q15yQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GRBpJvjoxoG+b5Dpj6WaVjn3b9s8OVOD0L9cM3sVYf0=;
- b=ammmhVMdEYiOh6hOtUAP72gs3FQ2RCPWlwwpsnMDvd1uf8pmv4DaeyjctPvAUSy2RyaSJ5T2txpQ+KLtAsqkXS1mtp+bJVpjtr3CTCSH1T87dp+WSVlS77hQsRrmJSlDdTTz1ABAoG5rkMMErIo/FEleZE9xC1hWjCoyY4LG8YA=
-Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) by
- VE1PR04MB6543.eurprd04.prod.outlook.com (20.179.235.139) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2387.24; Tue, 29 Oct 2019 22:44:32 +0000
-Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
- ([fe80::c93:c279:545b:b6b6]) by VE1PR04MB6687.eurprd04.prod.outlook.com
- ([fe80::c93:c279:545b:b6b6%3]) with mapi id 15.20.2387.027; Tue, 29 Oct 2019
- 22:44:32 +0000
-From: Leo Li <leoyang.li@nxp.com>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Qiang Zhao
- <qiang.zhao@nxp.com>, Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: RE: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
-Thread-Topic: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
-Thread-Index: AQHVizGGK1AbHr0Ag0SyT1h3bdNPg6dyPcDA
-Date: Tue, 29 Oct 2019 22:44:32 +0000
-Message-ID: <VE1PR04MB6687CA599C89D46076C9B3518F610@VE1PR04MB6687.eurprd04.prod.outlook.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472myh2X3SzF346
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 09:50:50 +1100 (AEDT)
+Received: by mail-wm1-x344.google.com with SMTP id g24so73529wmh.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 15:50:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=btcO2kbQzjWCRPlDPp2ih4Wwes8/F4qc3tgqqhv/xx8=;
+ b=IpOq05N4KjE4zg1oC5O7H20w97yojnP1buo5WYqtlFfYFF3MNAXbfZtKUaRR23Hev5
+ MfdWZAUKaGTCTo5ws7T0XlnPU1wZZYu25+voj37P/E9iHJQjeESf9QY7McgoJIrMwVSn
+ +V5iqH6DXsiTXkyN/6pPQ5/cnKEegZm2BKZzI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=btcO2kbQzjWCRPlDPp2ih4Wwes8/F4qc3tgqqhv/xx8=;
+ b=XP1dDAtauc9usZImYIAJw1QVwam1OnbOPneAbYjbMSl7kD712Y0spQnzPpjr/qnEJx
+ z+FMhBWHn6ynhKlgLr7i7X6XC5CJ0HlqMlMsWi8Mw6Pqy/Ox4Y1122lb92EZRCK/5zmC
+ 4HBYZhtesu+TBgdRkmG17cRrQBg0/n9vvksY1JFTThzjpM3FsvbnRqCwrUD85nvCjaX6
+ QI69bz+sJEhfY9Zn0Gx4HUKV8C23JTuG+bU4A/qpEQPzcmhcs4vgwfOBdblEYDSoUFQd
+ H0z3ZxrY4+TVQ+VpgzCAwluwA6LMraO6GxmDtOMMuhsDIylRi8djp+6TF1+9OcIjiMwC
+ PaYA==
+X-Gm-Message-State: APjAAAXwtVYa/exBVg/93xQ5GQjgbnK5PbcoQRXzC5H0CcfG/s8Sd8oE
+ d8lm3lvw7NxTVmKdP81NHhV0pw==
+X-Google-Smtp-Source: APXvYqwvFUOZBquoDvuOipQqVhVeJTxzpP1yQP9WQ69QCPwyrvLFWnlerZKyvn/QDEJrMiW4edqnQA==
+X-Received: by 2002:a05:600c:350:: with SMTP id
+ u16mr5802601wmd.160.1572389444332; 
+ Tue, 29 Oct 2019 15:50:44 -0700 (PDT)
+Received: from [192.168.1.149] (ip-5-186-115-54.cgn.fibianet.dk.
+ [5.186.115.54])
+ by smtp.gmail.com with ESMTPSA id x7sm903106wrg.63.2019.10.29.15.50.43
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 29 Oct 2019 15:50:43 -0700 (PDT)
+Subject: Re: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
+To: Leo Li <leoyang.li@nxp.com>, Qiang Zhao <qiang.zhao@nxp.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
  <20191025124058.22580-1-linux@rasmusvillemoes.dk>
  <20191025124058.22580-21-linux@rasmusvillemoes.dk>
-In-Reply-To: <20191025124058.22580-21-linux@rasmusvillemoes.dk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=leoyang.li@nxp.com; 
-x-originating-ip: [64.157.242.222]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: a3e55dcc-d939-4d99-6d34-08d75cc19112
-x-ms-traffictypediagnostic: VE1PR04MB6543:|VE1PR04MB6543:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VE1PR04MB6543B7A877FD5E98318097AD8F610@VE1PR04MB6543.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-forefront-prvs: 0205EDCD76
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(376002)(39860400002)(396003)(366004)(136003)(346002)(13464003)(189003)(199004)(476003)(7736002)(81166006)(8936002)(486006)(8676002)(11346002)(9686003)(81156014)(6246003)(446003)(55016002)(74316002)(6436002)(33656002)(2906002)(5660300002)(186003)(26005)(305945005)(229853002)(7696005)(14454004)(102836004)(76176011)(6506007)(316002)(25786009)(66066001)(52536014)(54906003)(110136005)(256004)(4326008)(478600001)(66476007)(66446008)(64756008)(66556008)(66946007)(76116006)(86362001)(71200400001)(71190400001)(99286004)(6116002)(3846002)(53546011);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6543;
- H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: YQgycBYrXi9jcB4wzGPw0x8N9jH4WK21MqUtjzhkBpmZIghiEAOOKu95oQ+s1h4NNlNBIKFLw+kXzXQmaJSOSLHeZZL2sUjTFGFadFX87W02zHlR7e+o19Bn8cktNA+xXo35fJQjSzYHkodh1oLlNCwk1wu0QlwNRbghIg+e60zM6ZV+2Q34J48zZ8gib1Ak2LfHmP4cV5pj2nNQCUuclzzUMDb0LTZ5kCURPRX/4pqv/d1QPrqiZA7cFlqS4R/GpKZx9oGJk4AijRp3YuGILMMBpeQJ/jUkgiimVcIp9wUo3OqVEEyHbE9bvH+bytZlRS0PYNtM5ivRcYFONzDwWnPTzl4ieBWzBIOZYxAI2JyPmXGod+P0B3Du7vwwmniurHv8iX+r/CcZtg9vAK03peKraFexNBnasoSd6uBJQUuSMn0zbdwXmMRPdazQHTcX
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <VE1PR04MB6687CA599C89D46076C9B3518F610@VE1PR04MB6687.eurprd04.prod.outlook.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <42d151c0-bbf9-62a5-5930-70d62418bb84@rasmusvillemoes.dk>
+Date: Tue, 29 Oct 2019 23:50:42 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3e55dcc-d939-4d99-6d34-08d75cc19112
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2019 22:44:32.6792 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0ExFPY5twVtJy4ZezuXPXbnyoeFBTa9UfIfdDgB9+Xcj8txvBAnc+XTeR3HI0E9gZNrc2dMjoI7reZh7W6qfmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6543
+In-Reply-To: <VE1PR04MB6687CA599C89D46076C9B3518F610@VE1PR04MB6687.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,48 +96,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 29/10/2019 23.44, Leo Li wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+>> Sent: Friday, October 25, 2019 7:41 AM
+>> To: Qiang Zhao <qiang.zhao@nxp.com>; Leo Li <leoyang.li@nxp.com>;
+>> Christophe Leroy <christophe.leroy@c-s.fr>
+>> Cc: linuxppc-dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org;
+>> linux-kernel@vger.kernel.org; Scott Wood <oss@buserror.net>; Valentin
+>> Longchamp <valentin.longchamp@keymile.com>; Rasmus Villemoes
+>> <linux@rasmusvillemoes.dk>; linux-serial@vger.kernel.org
+>> Subject: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
+>>
+>> Currently SERIAL_QE depends on QUICC_ENGINE, which in turn depends on
+>> PPC32, so this doesn't add any extra dependency. However, the QUICC
+>> Engine IP block also exists on some arm boards, so this serves as preparation
+>> for removing the PPC32 dependency from QUICC_ENGINE and build the QE
+>> support in drivers/soc/fsl/qe, while preventing allmodconfig/randconfig
+>> failures due to SERIAL_QE not being supported yet.
+>>
+>> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> 
+> I think your purpose of this series is to make the QE UART not depending on PPC32.  If it does accomplish that then we don't need this change.
 
+Yeah, as I've said in private, I now have the patches to make this work,
+so this patch (and the later one removing it again) are both gone from
+my current dev branch. I'll still wait a day or two to allow the ppc
+people to respond to the inline/OOL iowrite32be issue, but after that
+I'll resend the whole series.
 
-> -----Original Message-----
-> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Sent: Friday, October 25, 2019 7:41 AM
-> To: Qiang Zhao <qiang.zhao@nxp.com>; Leo Li <leoyang.li@nxp.com>;
-> Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: linuxppc-dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org;
-> linux-kernel@vger.kernel.org; Scott Wood <oss@buserror.net>; Valentin
-> Longchamp <valentin.longchamp@keymile.com>; Rasmus Villemoes
-> <linux@rasmusvillemoes.dk>; linux-serial@vger.kernel.org
-> Subject: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
->=20
-> Currently SERIAL_QE depends on QUICC_ENGINE, which in turn depends on
-> PPC32, so this doesn't add any extra dependency. However, the QUICC
-> Engine IP block also exists on some arm boards, so this serves as prepara=
-tion
-> for removing the PPC32 dependency from QUICC_ENGINE and build the QE
-> support in drivers/soc/fsl/qe, while preventing allmodconfig/randconfig
-> failures due to SERIAL_QE not being supported yet.
->=20
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-
-I think your purpose of this series is to make the QE UART not depending on=
- PPC32.  If it does accomplish that then we don't need this change.
-
-> ---
->  drivers/tty/serial/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig inde=
-x
-> 67a9eb3f94ce..78246f535809 100644
-> --- a/drivers/tty/serial/Kconfig
-> +++ b/drivers/tty/serial/Kconfig
-> @@ -1056,6 +1056,7 @@ config SERIAL_LANTIQ  config SERIAL_QE
->  	tristate "Freescale QUICC Engine serial port support"
->  	depends on QUICC_ENGINE
-> +	depends on PPC32
->  	select SERIAL_CORE
->  	select FW_LOADER
->  	help
-> --
-> 2.23.0
-
+Rasmus
