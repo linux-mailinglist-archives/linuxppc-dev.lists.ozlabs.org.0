@@ -2,71 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7B0E7FC2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 06:32:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 245E6E82A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 08:45:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472KwG3CHHzF1SD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 16:32:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472NsP3hKWzF1Sn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 18:44:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="EiH/Xcim"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="FZE3Tufj"; 
  dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472Kt22rhRzF1Rx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 16:30:15 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id c7so8754199otm.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 22:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=GG2mcENYWoyxz0HNqi7Mitc9AmGpMgCrZSMeTfYnJmI=;
- b=EiH/Xcim9gHQq6PZe6LwWSymVTM+KWidfBecd0ug/41NEvs9izWgB9AVlvFKAudq4d
- 106KVG/DHM0LafAJ/kHgnSUcU++L8VRa+Pl1WQNGt+jigS2UD5VpN5dJ89hE6EjpCr4h
- ex3UA6vtYDxCPlXMS5DREDB9tb/2BVpSWOP5rIQU0KUmz59/5jqbmpJ/9HonbXmcXBep
- 450QC0rhm3GQ7K+59t1iIrWtTAnt2svjrD5qobiLr+PXqmEyFRerwVOjGiEWA1SNd36Q
- 5yrmsYpyy7UtjrkCrHKxu6kS/rmjKp6DJU3iu2eb0tN/q+PqMo4FSiz+JxAI7JEVkHV4
- LATw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=GG2mcENYWoyxz0HNqi7Mitc9AmGpMgCrZSMeTfYnJmI=;
- b=t4ULDCEAyD9aKfdG65ypPrhwGM0ML6r2cxQtCCqxkzcHSJiDNR9TgQOLXu1f/TFMJM
- JbI+dSYtajoqaoRLpG3QP6eVkkZta0JjeUVNFcEJbSaKYSQqCJpyvgqsqlvRWlythHaa
- 1zJXSCj4a5oJE9yW41mO9mt/wADNQ8+9/R5xi5y56HmnYvUgKu0ze9y1H+v2ACu7kGGn
- 1wWPuuWF3c0yjWW5u+L0tfKtdVTyCnryuxOu9EmhozJv6Od4Ke64aOchjr5Qdx81ENCo
- oAZgMN8ImTPKYrBZ9CDym2hD3oNpTZCeMnv/OHy2AvIq0cXgC+CXyaz+zksFXHSlp246
- 641g==
-X-Gm-Message-State: APjAAAVciT1RE2NzuCj8iXl4dAM0QOy+qxTRYd2wUNYN2x+QTFMF4A7H
- b6Xa5LjpPKbw8SptqAkAnp4B3hKii/S80GuW11xULA==
-X-Google-Smtp-Source: APXvYqw195Mv9lFqxjCruWKF+YPhN/OmmyHjafORJua6VrEG9aYz4zJdSJPSKMTJF20Ez7P/nC2GadPG/MOFax3QCic=
-X-Received: by 2002:a05:6830:18d1:: with SMTP id
- v17mr2544942ote.71.1572327012510; 
- Mon, 28 Oct 2019 22:30:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472NqP01dgzDrQ9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 18:43:09 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 472NqC6fN2z9vC0L;
+ Tue, 29 Oct 2019 08:43:03 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=FZE3Tufj; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id TwpGoMqKdmZX; Tue, 29 Oct 2019 08:43:03 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 472NqC5WbDz9vC0J;
+ Tue, 29 Oct 2019 08:43:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1572334983; bh=N3E9bXKR3LFKprdOZrosU2chWsc9MUM/OPUfJmnIMAk=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=FZE3TufjLe8hgIYt7q5cAOFWcoORJyF+BrONbolp3BmKxFn8mWBMiLgLFcFi62pyH
+ jLz8AlUMbL5g4hCMVwTbVS1IyX33ruoa0LP+w/EH64oqib6zQJC14iLfUPGp1cAMRt
+ SVVHWMO3L1X85J48hqdB2WGgOfbOCr97jtR9ywpY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 952608B845;
+ Tue, 29 Oct 2019 08:43:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id TBpfuwvLP69U; Tue, 29 Oct 2019 08:43:04 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B120B8B755;
+ Tue, 29 Oct 2019 08:43:03 +0100 (CET)
+Subject: Re: [PATCH v2 03/23] soc: fsl: qe: avoid ppc-specific io accessors
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+ <20191025124058.22580-1-linux@rasmusvillemoes.dk>
+ <20191025124058.22580-4-linux@rasmusvillemoes.dk>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <886d5218-6d6b-824c-3ab9-63aafe41ff40@c-s.fr>
+Date: Tue, 29 Oct 2019 08:43:03 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
- <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
-In-Reply-To: <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 28 Oct 2019 22:30:01 -0700
-Message-ID: <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
- validation arch dependent
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191025124058.22580-4-linux@rasmusvillemoes.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,126 +80,791 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Scott Wood <oss@buserror.net>,
+ Valentin Longchamp <valentin.longchamp@keymile.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 28, 2019 at 9:35 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 10/29/19 4:38 AM, Dan Williams wrote:
-> > On Mon, Oct 28, 2019 at 2:48 AM Aneesh Kumar K.V
-> > <aneesh.kumar@linux.ibm.com> wrote:
-> >>
-> >> The page size used to map the namespace is arch dependent. For example
-> >> architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
-> >> size is not aligned to the mapping page size, we can observe kernel crash
-> >> during namespace init and destroy.
-> >>
-> >> This is due to kernel doing partial map/unmap of the resource range
-> >>
-> >> BUG: Unable to handle kernel data access at 0xc001000406000000
-> >> Faulting instruction address: 0xc000000000090790
-> >> NIP [c000000000090790] arch_add_memory+0xc0/0x130
-> >> LR [c000000000090744] arch_add_memory+0x74/0x130
-> >> Call Trace:
-> >>   arch_add_memory+0x74/0x130 (unreliable)
-> >>   memremap_pages+0x74c/0xa30
-> >>   devm_memremap_pages+0x3c/0xa0
-> >>   pmem_attach_disk+0x188/0x770
-> >>   nvdimm_bus_probe+0xd8/0x470
-> >>   really_probe+0x148/0x570
-> >>   driver_probe_device+0x19c/0x1d0
-> >>   device_driver_attach+0xcc/0x100
-> >>   bind_store+0x134/0x1c0
-> >>   drv_attr_store+0x44/0x60
-> >>   sysfs_kf_write+0x74/0xc0
-> >>   kernfs_fop_write+0x1b4/0x290
-> >>   __vfs_write+0x3c/0x70
-> >>   vfs_write+0xd0/0x260
-> >>   ksys_write+0xdc/0x130
-> >>   system_call+0x5c/0x68
-> >>
-> >> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> >> ---
-> >>   arch/arm64/mm/flush.c     | 11 +++++++++++
-> >>   arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
-> >>   arch/x86/mm/pageattr.c    | 12 ++++++++++++
-> >>   include/linux/libnvdimm.h |  1 +
-> >>   4 files changed, 43 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
-> >> index ac485163a4a7..90c54c600023 100644
-> >> --- a/arch/arm64/mm/flush.c
-> >> +++ b/arch/arm64/mm/flush.c
-> >> @@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
-> >>          __inval_dcache_area(addr, size);
-> >>   }
-> >>   EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
-> >> +
-> >> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
-> >> +{
-> >> +       u32 remainder;
-> >> +
-> >> +       div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
-> >> +       if (remainder)
-> >> +               return PAGE_SIZE * ndr_mappings;
-> >> +       return 0;
-> >> +}
-> >> +EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
-> >>   #endif
-> >> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
-> >> index 377712e85605..2e661a08dae5 100644
-> >> --- a/arch/powerpc/lib/pmem.c
-> >> +++ b/arch/powerpc/lib/pmem.c
-> >> @@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
-> >>          unsigned long start = (unsigned long) addr;
-> >>          flush_dcache_range(start, start + size);
-> >>   }
-> >> -EXPORT_SYMBOL(arch_wb_cache_pmem);
-> >> +EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
-> >>
-> >>   void arch_invalidate_pmem(void *addr, size_t size)
-> >>   {
-> >>          unsigned long start = (unsigned long) addr;
-> >>          flush_dcache_range(start, start + size);
-> >>   }
-> >> -EXPORT_SYMBOL(arch_invalidate_pmem);
-> >> +EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
-> >> +
-> >> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
-> >> +{
-> >> +       u32 remainder;
-> >> +       unsigned long linear_map_size;
-> >> +
-> >> +       if (radix_enabled())
-> >> +               linear_map_size = PAGE_SIZE;
-> >> +       else
-> >> +               linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
-> >
-> > This seems more a "supported_alignments" problem, and less a namespace
-> > size or PAGE_SIZE problem, because if the starting address is
-> > misaligned this size validation can still succeed when it shouldn't.
-> >
->
->
-> Isn't supported_alignments an indication of how user want the namespace
-> to be mapped to applications?  Ie, with the above restrictions we can
-> still do both 64K and 16M mapping of the namespace to userspace.
 
-True, for the pfn device and the device-dax mapping size, but I'm
-suggesting adding another instance of alignment control at the raw
-namespace level. That would need to be disconnected from the
-device-dax page mapping granularity.
 
->
-> Also for supported alignment the huge page mapping is further  dependent
-> on the THP feature.
->
-> The restrictions here are mostly w.r.t the direct-mapping page size used
-> by some architecture.
+Le 25/10/2019 à 14:40, Rasmus Villemoes a écrit :
+> In preparation for allowing to build QE support for architectures
+> other than PPC, replace the ppc-specific io accessors. Done via
+> 
+> $ spatch --sp-file io.cocci --in-place drivers/soc/fsl/qe/
+> 
+> where io.cocci is
+> 
+> @@
+> expression addr, val;
+> @@
+> - out_be32(addr, val)
+> + iowrite32be(val, addr)
+> 
+> @@
+> expression addr;
+> @@
+> - in_be32(addr)
+> + ioread32be(addr)
+> 
+> @@
+> expression addr, val;
+> @@
+> - out_be16(addr, val)
+> + iowrite16be(val, addr)
+> 
+> @@
+> expression addr;
+> @@
+> - in_be16(addr)
+> + ioread16be(addr)
+> 
+> @@
+> expression addr, val;
+> @@
+> - out_8(addr, val)
+> + iowrite8(val, addr)
+> 
+> @@
+> expression addr;
+> @@
+> - in_8(addr)
+> + ioread8(addr)
+> 
+> @@
+> expression addr, clr, set;
+> @@
+> - clrsetbits_be32(addr, clr, set)
+> + qe_clrsetbits32(addr, clr, set)
+> 
+> @@
+> expression addr, clr, set;
+> @@
+> - clrsetbits_be16(addr, clr, set)
+> + qe_clrsetbits16(addr, clr, set)
+> 
+> @@
+> expression addr, clr, set;
+> @@
+> - clrsetbits_8(addr, clr, set)
+> + qe_clrsetbits8(addr, clr, set)
+> 
+> @@
+> expression addr, set;
+> @@
+> - setbits32(addr, set)
+> + qe_setbits32(addr, set)
+> 
+> @@
+> expression addr, set;
+> @@
+> - setbits16(addr, set)
+> + qe_setbits16(addr, set)
+> 
+> @@
+> expression addr, set;
+> @@
+> - setbits8(addr, set)
+> + qe_setbits8(addr, set)
+> 
+> @@
+> expression addr, clr;
+> @@
+> - clrbits32(addr, clr)
+> + qe_clrbits32(addr, clr)
+> 
+> @@
+> expression addr, clr;
+> @@
+> - clrbits16(addr, clr)
+> + qe_clrbits16(addr, clr)
+> 
+> @@
+> expression addr, clr;
+> @@
+> - clrbits8(addr, clr)
+> + qe_clrbits8(addr, clr)
 
-Right, that's a base requirement for the namespace that can be
-independent of the user page mapping size for device-dax.
+As discussed already, this patch changes io accesors from inline to 
+outline, this has a performance impact on powerpc32 like 83xx.
+
+Could you please include in your series before this patch a patch to 
+change generic io accessors to inline on powerpc ?
+
+Christophe
+
+
+> 
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> ---
+>   drivers/soc/fsl/qe/gpio.c     | 30 +++++++--------
+>   drivers/soc/fsl/qe/qe.c       | 35 +++++++++---------
+>   drivers/soc/fsl/qe/qe_ic.c    |  4 +-
+>   drivers/soc/fsl/qe/qe_io.c    | 40 +++++++++-----------
+>   drivers/soc/fsl/qe/qe_tdm.c   |  8 ++--
+>   drivers/soc/fsl/qe/ucc.c      | 16 ++++----
+>   drivers/soc/fsl/qe/ucc_fast.c | 70 ++++++++++++++++++-----------------
+>   drivers/soc/fsl/qe/ucc_slow.c | 38 +++++++++----------
+>   drivers/soc/fsl/qe/usb.c      |  2 +-
+>   9 files changed, 120 insertions(+), 123 deletions(-)
+> 
+> diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
+> index f0c29ed8f0ff..949a35ac253c 100644
+> --- a/drivers/soc/fsl/qe/gpio.c
+> +++ b/drivers/soc/fsl/qe/gpio.c
+> @@ -41,13 +41,13 @@ static void qe_gpio_save_regs(struct of_mm_gpio_chip *mm_gc)
+>   		container_of(mm_gc, struct qe_gpio_chip, mm_gc);
+>   	struct qe_pio_regs __iomem *regs = mm_gc->regs;
+>   
+> -	qe_gc->cpdata = in_be32(&regs->cpdata);
+> +	qe_gc->cpdata = ioread32be(&regs->cpdata);
+>   	qe_gc->saved_regs.cpdata = qe_gc->cpdata;
+> -	qe_gc->saved_regs.cpdir1 = in_be32(&regs->cpdir1);
+> -	qe_gc->saved_regs.cpdir2 = in_be32(&regs->cpdir2);
+> -	qe_gc->saved_regs.cppar1 = in_be32(&regs->cppar1);
+> -	qe_gc->saved_regs.cppar2 = in_be32(&regs->cppar2);
+> -	qe_gc->saved_regs.cpodr = in_be32(&regs->cpodr);
+> +	qe_gc->saved_regs.cpdir1 = ioread32be(&regs->cpdir1);
+> +	qe_gc->saved_regs.cpdir2 = ioread32be(&regs->cpdir2);
+> +	qe_gc->saved_regs.cppar1 = ioread32be(&regs->cppar1);
+> +	qe_gc->saved_regs.cppar2 = ioread32be(&regs->cppar2);
+> +	qe_gc->saved_regs.cpodr = ioread32be(&regs->cpodr);
+>   }
+>   
+>   static int qe_gpio_get(struct gpio_chip *gc, unsigned int gpio)
+> @@ -56,7 +56,7 @@ static int qe_gpio_get(struct gpio_chip *gc, unsigned int gpio)
+>   	struct qe_pio_regs __iomem *regs = mm_gc->regs;
+>   	u32 pin_mask = 1 << (QE_PIO_PINS - 1 - gpio);
+>   
+> -	return !!(in_be32(&regs->cpdata) & pin_mask);
+> +	return !!(ioread32be(&regs->cpdata) & pin_mask);
+>   }
+>   
+>   static void qe_gpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
+> @@ -74,7 +74,7 @@ static void qe_gpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
+>   	else
+>   		qe_gc->cpdata &= ~pin_mask;
+>   
+> -	out_be32(&regs->cpdata, qe_gc->cpdata);
+> +	iowrite32be(qe_gc->cpdata, &regs->cpdata);
+>   
+>   	spin_unlock_irqrestore(&qe_gc->lock, flags);
+>   }
+> @@ -101,7 +101,7 @@ static void qe_gpio_set_multiple(struct gpio_chip *gc,
+>   		}
+>   	}
+>   
+> -	out_be32(&regs->cpdata, qe_gc->cpdata);
+> +	iowrite32be(qe_gc->cpdata, &regs->cpdata);
+>   
+>   	spin_unlock_irqrestore(&qe_gc->lock, flags);
+>   }
+> @@ -255,11 +255,11 @@ void qe_pin_set_dedicated(struct qe_pin *qe_pin)
+>   	spin_lock_irqsave(&qe_gc->lock, flags);
+>   
+>   	if (second_reg) {
+> -		clrsetbits_be32(&regs->cpdir2, mask2, sregs->cpdir2 & mask2);
+> -		clrsetbits_be32(&regs->cppar2, mask2, sregs->cppar2 & mask2);
+> +		qe_clrsetbits32(&regs->cpdir2, mask2, sregs->cpdir2 & mask2);
+> +		qe_clrsetbits32(&regs->cppar2, mask2, sregs->cppar2 & mask2);
+>   	} else {
+> -		clrsetbits_be32(&regs->cpdir1, mask2, sregs->cpdir1 & mask2);
+> -		clrsetbits_be32(&regs->cppar1, mask2, sregs->cppar1 & mask2);
+> +		qe_clrsetbits32(&regs->cpdir1, mask2, sregs->cpdir1 & mask2);
+> +		qe_clrsetbits32(&regs->cppar1, mask2, sregs->cppar1 & mask2);
+>   	}
+>   
+>   	if (sregs->cpdata & mask1)
+> @@ -267,8 +267,8 @@ void qe_pin_set_dedicated(struct qe_pin *qe_pin)
+>   	else
+>   		qe_gc->cpdata &= ~mask1;
+>   
+> -	out_be32(&regs->cpdata, qe_gc->cpdata);
+> -	clrsetbits_be32(&regs->cpodr, mask1, sregs->cpodr & mask1);
+> +	iowrite32be(qe_gc->cpdata, &regs->cpdata);
+> +	qe_clrsetbits32(&regs->cpodr, mask1, sregs->cpodr & mask1);
+>   
+>   	spin_unlock_irqrestore(&qe_gc->lock, flags);
+>   }
+> diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+> index 2a0e6e642776..60bf047001be 100644
+> --- a/drivers/soc/fsl/qe/qe.c
+> +++ b/drivers/soc/fsl/qe/qe.c
+> @@ -112,7 +112,7 @@ int qe_issue_cmd(u32 cmd, u32 device, u8 mcn_protocol, u32 cmd_input)
+>   
+>   	spin_lock_irqsave(&qe_lock, flags);
+>   	if (cmd == QE_RESET) {
+> -		out_be32(&qe_immr->cp.cecr, (u32) (cmd | QE_CR_FLG));
+> +		iowrite32be((u32)(cmd | QE_CR_FLG), &qe_immr->cp.cecr);
+>   	} else {
+>   		if (cmd == QE_ASSIGN_PAGE) {
+>   			/* Here device is the SNUM, not sub-block */
+> @@ -129,15 +129,14 @@ int qe_issue_cmd(u32 cmd, u32 device, u8 mcn_protocol, u32 cmd_input)
+>   				mcn_shift = QE_CR_MCN_NORMAL_SHIFT;
+>   		}
+>   
+> -		out_be32(&qe_immr->cp.cecdr, cmd_input);
+> -		out_be32(&qe_immr->cp.cecr,
+> -			 (cmd | QE_CR_FLG | ((u32) device << dev_shift) | (u32)
+> -			  mcn_protocol << mcn_shift));
+> +		iowrite32be(cmd_input, &qe_immr->cp.cecdr);
+> +		iowrite32be((cmd | QE_CR_FLG | ((u32)device << dev_shift) | (u32)mcn_protocol << mcn_shift),
+> +			    &qe_immr->cp.cecr);
+>   	}
+>   
+>   	/* wait for the QE_CR_FLG to clear */
+> -	ret = spin_event_timeout((in_be32(&qe_immr->cp.cecr) & QE_CR_FLG) == 0,
+> -			   100, 0);
+> +	ret = spin_event_timeout((ioread32be(&qe_immr->cp.cecr) & QE_CR_FLG) == 0,
+> +				 100, 0);
+>   	/* On timeout (e.g. failure), the expression will be false (ret == 0),
+>   	   otherwise it will be true (ret == 1). */
+>   	spin_unlock_irqrestore(&qe_lock, flags);
+> @@ -230,7 +229,7 @@ int qe_setbrg(enum qe_clock brg, unsigned int rate, unsigned int multiplier)
+>   	tempval = ((divisor - 1) << QE_BRGC_DIVISOR_SHIFT) |
+>   		QE_BRGC_ENABLE | div16;
+>   
+> -	out_be32(&qe_immr->brg.brgc[brg - QE_BRG1], tempval);
+> +	iowrite32be(tempval, &qe_immr->brg.brgc[brg - QE_BRG1]);
+>   
+>   	return 0;
+>   }
+> @@ -377,9 +376,9 @@ static int qe_sdma_init(void)
+>   			return -ENOMEM;
+>   	}
+>   
+> -	out_be32(&sdma->sdebcr, (u32) sdma_buf_offset & QE_SDEBCR_BA_MASK);
+> -	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
+> -		 (0x1 << QE_SDMR_CEN_SHIFT)));
+> +	iowrite32be((u32)sdma_buf_offset & QE_SDEBCR_BA_MASK, &sdma->sdebcr);
+> +	iowrite32be((QE_SDMR_GLB_1_MSK | (0x1 << QE_SDMR_CEN_SHIFT)),
+> +		    &sdma->sdmr);
+>   
+>   	return 0;
+>   }
+> @@ -417,14 +416,14 @@ static void qe_upload_microcode(const void *base,
+>   			"uploading microcode '%s'\n", ucode->id);
+>   
+>   	/* Use auto-increment */
+> -	out_be32(&qe_immr->iram.iadd, be32_to_cpu(ucode->iram_offset) |
+> -		QE_IRAM_IADD_AIE | QE_IRAM_IADD_BADDR);
+> +	iowrite32be(be32_to_cpu(ucode->iram_offset) | QE_IRAM_IADD_AIE | QE_IRAM_IADD_BADDR,
+> +		    &qe_immr->iram.iadd);
+>   
+>   	for (i = 0; i < be32_to_cpu(ucode->count); i++)
+> -		out_be32(&qe_immr->iram.idata, be32_to_cpu(code[i]));
+> +		iowrite32be(be32_to_cpu(code[i]), &qe_immr->iram.idata);
+>   	
+>   	/* Set I-RAM Ready Register */
+> -	out_be32(&qe_immr->iram.iready, be32_to_cpu(QE_IRAM_READY));
+> +	iowrite32be(be32_to_cpu(QE_IRAM_READY), &qe_immr->iram.iready);
+>   }
+>   
+>   /*
+> @@ -509,7 +508,7 @@ int qe_upload_firmware(const struct qe_firmware *firmware)
+>   	 * If the microcode calls for it, split the I-RAM.
+>   	 */
+>   	if (!firmware->split)
+> -		setbits16(&qe_immr->cp.cercr, QE_CP_CERCR_CIR);
+> +		qe_setbits16(&qe_immr->cp.cercr, QE_CP_CERCR_CIR);
+>   
+>   	if (firmware->soc.model)
+>   		printk(KERN_INFO
+> @@ -543,11 +542,11 @@ int qe_upload_firmware(const struct qe_firmware *firmware)
+>   			u32 trap = be32_to_cpu(ucode->traps[j]);
+>   
+>   			if (trap)
+> -				out_be32(&qe_immr->rsp[i].tibcr[j], trap);
+> +				iowrite32be(trap, &qe_immr->rsp[i].tibcr[j]);
+>   		}
+>   
+>   		/* Enable traps */
+> -		out_be32(&qe_immr->rsp[i].eccr, be32_to_cpu(ucode->eccr));
+> +		iowrite32be(be32_to_cpu(ucode->eccr), &qe_immr->rsp[i].eccr);
+>   	}
+>   
+>   	qe_firmware_uploaded = 1;
+> diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+> index 791adcd121d1..d420492b4c23 100644
+> --- a/drivers/soc/fsl/qe/qe_ic.c
+> +++ b/drivers/soc/fsl/qe/qe_ic.c
+> @@ -173,13 +173,13 @@ static struct qe_ic_info qe_ic_info[] = {
+>   
+>   static inline u32 qe_ic_read(__be32  __iomem *base, unsigned int reg)
+>   {
+> -	return in_be32(base + (reg >> 2));
+> +	return ioread32be(base + (reg >> 2));
+>   }
+>   
+>   static inline void qe_ic_write(__be32  __iomem *base, unsigned int reg,
+>   			       u32 value)
+>   {
+> -	out_be32(base + (reg >> 2), value);
+> +	iowrite32be(value, base + (reg >> 2));
+>   }
+>   
+>   static inline struct qe_ic *qe_ic_from_irq(unsigned int virq)
+> diff --git a/drivers/soc/fsl/qe/qe_io.c b/drivers/soc/fsl/qe/qe_io.c
+> index 3657e296a8a2..776a2c9361e1 100644
+> --- a/drivers/soc/fsl/qe/qe_io.c
+> +++ b/drivers/soc/fsl/qe/qe_io.c
+> @@ -57,16 +57,16 @@ void __par_io_config_pin(struct qe_pio_regs __iomem *par_io, u8 pin, int dir,
+>   	pin_mask1bit = (u32) (1 << (QE_PIO_PINS - (pin + 1)));
+>   
+>   	/* Set open drain, if required */
+> -	tmp_val = in_be32(&par_io->cpodr);
+> +	tmp_val = ioread32be(&par_io->cpodr);
+>   	if (open_drain)
+> -		out_be32(&par_io->cpodr, pin_mask1bit | tmp_val);
+> +		iowrite32be(pin_mask1bit | tmp_val, &par_io->cpodr);
+>   	else
+> -		out_be32(&par_io->cpodr, ~pin_mask1bit & tmp_val);
+> +		iowrite32be(~pin_mask1bit & tmp_val, &par_io->cpodr);
+>   
+>   	/* define direction */
+>   	tmp_val = (pin > (QE_PIO_PINS / 2) - 1) ?
+> -		in_be32(&par_io->cpdir2) :
+> -		in_be32(&par_io->cpdir1);
+> +		ioread32be(&par_io->cpdir2) :
+> +		ioread32be(&par_io->cpdir1);
+>   
+>   	/* get all bits mask for 2 bit per port */
+>   	pin_mask2bits = (u32) (0x3 << (QE_PIO_PINS -
+> @@ -78,34 +78,30 @@ void __par_io_config_pin(struct qe_pio_regs __iomem *par_io, u8 pin, int dir,
+>   
+>   	/* clear and set 2 bits mask */
+>   	if (pin > (QE_PIO_PINS / 2) - 1) {
+> -		out_be32(&par_io->cpdir2,
+> -			 ~pin_mask2bits & tmp_val);
+> +		iowrite32be(~pin_mask2bits & tmp_val, &par_io->cpdir2);
+>   		tmp_val &= ~pin_mask2bits;
+> -		out_be32(&par_io->cpdir2, new_mask2bits | tmp_val);
+> +		iowrite32be(new_mask2bits | tmp_val, &par_io->cpdir2);
+>   	} else {
+> -		out_be32(&par_io->cpdir1,
+> -			 ~pin_mask2bits & tmp_val);
+> +		iowrite32be(~pin_mask2bits & tmp_val, &par_io->cpdir1);
+>   		tmp_val &= ~pin_mask2bits;
+> -		out_be32(&par_io->cpdir1, new_mask2bits | tmp_val);
+> +		iowrite32be(new_mask2bits | tmp_val, &par_io->cpdir1);
+>   	}
+>   	/* define pin assignment */
+>   	tmp_val = (pin > (QE_PIO_PINS / 2) - 1) ?
+> -		in_be32(&par_io->cppar2) :
+> -		in_be32(&par_io->cppar1);
+> +		ioread32be(&par_io->cppar2) :
+> +		ioread32be(&par_io->cppar1);
+>   
+>   	new_mask2bits = (u32) (assignment << (QE_PIO_PINS -
+>   			(pin % (QE_PIO_PINS / 2) + 1) * 2));
+>   	/* clear and set 2 bits mask */
+>   	if (pin > (QE_PIO_PINS / 2) - 1) {
+> -		out_be32(&par_io->cppar2,
+> -			 ~pin_mask2bits & tmp_val);
+> +		iowrite32be(~pin_mask2bits & tmp_val, &par_io->cppar2);
+>   		tmp_val &= ~pin_mask2bits;
+> -		out_be32(&par_io->cppar2, new_mask2bits | tmp_val);
+> +		iowrite32be(new_mask2bits | tmp_val, &par_io->cppar2);
+>   	} else {
+> -		out_be32(&par_io->cppar1,
+> -			 ~pin_mask2bits & tmp_val);
+> +		iowrite32be(~pin_mask2bits & tmp_val, &par_io->cppar1);
+>   		tmp_val &= ~pin_mask2bits;
+> -		out_be32(&par_io->cppar1, new_mask2bits | tmp_val);
+> +		iowrite32be(new_mask2bits | tmp_val, &par_io->cppar1);
+>   	}
+>   }
+>   EXPORT_SYMBOL(__par_io_config_pin);
+> @@ -133,12 +129,12 @@ int par_io_data_set(u8 port, u8 pin, u8 val)
+>   	/* calculate pin location */
+>   	pin_mask = (u32) (1 << (QE_PIO_PINS - 1 - pin));
+>   
+> -	tmp_val = in_be32(&par_io[port].cpdata);
+> +	tmp_val = ioread32be(&par_io[port].cpdata);
+>   
+>   	if (val == 0)		/* clear */
+> -		out_be32(&par_io[port].cpdata, ~pin_mask & tmp_val);
+> +		iowrite32be(~pin_mask & tmp_val, &par_io[port].cpdata);
+>   	else			/* set */
+> -		out_be32(&par_io[port].cpdata, pin_mask | tmp_val);
+> +		iowrite32be(pin_mask | tmp_val, &par_io[port].cpdata);
+>   
+>   	return 0;
+>   }
+> diff --git a/drivers/soc/fsl/qe/qe_tdm.c b/drivers/soc/fsl/qe/qe_tdm.c
+> index e37ebc3be661..e7b1c8e3d229 100644
+> --- a/drivers/soc/fsl/qe/qe_tdm.c
+> +++ b/drivers/soc/fsl/qe/qe_tdm.c
+> @@ -169,10 +169,10 @@ void ucc_tdm_init(struct ucc_tdm *utdm, struct ucc_tdm_info *ut_info)
+>   				    &siram[siram_entry_id * 32 + 0x200 +  i]);
+>   	}
+>   
+> -	setbits16(&siram[(siram_entry_id * 32) + (utdm->num_of_ts - 1)],
+> -		  SIR_LAST);
+> -	setbits16(&siram[(siram_entry_id * 32) + 0x200 + (utdm->num_of_ts - 1)],
+> -		  SIR_LAST);
+> +	qe_setbits16(&siram[(siram_entry_id * 32) + (utdm->num_of_ts - 1)],
+> +		     SIR_LAST);
+> +	qe_setbits16(&siram[(siram_entry_id * 32) + 0x200 + (utdm->num_of_ts - 1)],
+> +		     SIR_LAST);
+>   
+>   	/* Set SIxMR register */
+>   	sixmr = SIMR_SAD(siram_entry_id);
+> diff --git a/drivers/soc/fsl/qe/ucc.c b/drivers/soc/fsl/qe/ucc.c
+> index 024d239ac1e1..583d6b5aaf5c 100644
+> --- a/drivers/soc/fsl/qe/ucc.c
+> +++ b/drivers/soc/fsl/qe/ucc.c
+> @@ -35,8 +35,8 @@ int ucc_set_qe_mux_mii_mng(unsigned int ucc_num)
+>   		return -EINVAL;
+>   
+>   	spin_lock_irqsave(&cmxgcr_lock, flags);
+> -	clrsetbits_be32(&qe_immr->qmx.cmxgcr, QE_CMXGCR_MII_ENET_MNG,
+> -		ucc_num << QE_CMXGCR_MII_ENET_MNG_SHIFT);
+> +	qe_clrsetbits32(&qe_immr->qmx.cmxgcr, QE_CMXGCR_MII_ENET_MNG,
+> +			ucc_num << QE_CMXGCR_MII_ENET_MNG_SHIFT);
+>   	spin_unlock_irqrestore(&cmxgcr_lock, flags);
+>   
+>   	return 0;
+> @@ -80,8 +80,8 @@ int ucc_set_type(unsigned int ucc_num, enum ucc_speed_type speed)
+>   		return -EINVAL;
+>   	}
+>   
+> -	clrsetbits_8(guemr, UCC_GUEMR_MODE_MASK,
+> -		UCC_GUEMR_SET_RESERVED3 | speed);
+> +	qe_clrsetbits8(guemr, UCC_GUEMR_MODE_MASK,
+> +		       UCC_GUEMR_SET_RESERVED3 | speed);
+>   
+>   	return 0;
+>   }
+> @@ -109,9 +109,9 @@ int ucc_mux_set_grant_tsa_bkpt(unsigned int ucc_num, int set, u32 mask)
+>   	get_cmxucr_reg(ucc_num, &cmxucr, &reg_num, &shift);
+>   
+>   	if (set)
+> -		setbits32(cmxucr, mask << shift);
+> +		qe_setbits32(cmxucr, mask << shift);
+>   	else
+> -		clrbits32(cmxucr, mask << shift);
+> +		qe_clrbits32(cmxucr, mask << shift);
+>   
+>   	return 0;
+>   }
+> @@ -207,8 +207,8 @@ int ucc_set_qe_mux_rxtx(unsigned int ucc_num, enum qe_clock clock,
+>   	if (mode == COMM_DIR_RX)
+>   		shift += 4;
+>   
+> -	clrsetbits_be32(cmxucr, QE_CMXUCR_TX_CLK_SRC_MASK << shift,
+> -		clock_bits << shift);
+> +	qe_clrsetbits32(cmxucr, QE_CMXUCR_TX_CLK_SRC_MASK << shift,
+> +			clock_bits << shift);
+>   
+>   	return 0;
+>   }
+> diff --git a/drivers/soc/fsl/qe/ucc_fast.c b/drivers/soc/fsl/qe/ucc_fast.c
+> index af4d80e38521..bda5222aadf3 100644
+> --- a/drivers/soc/fsl/qe/ucc_fast.c
+> +++ b/drivers/soc/fsl/qe/ucc_fast.c
+> @@ -29,41 +29,41 @@ void ucc_fast_dump_regs(struct ucc_fast_private * uccf)
+>   	printk(KERN_INFO "Base address: 0x%p\n", uccf->uf_regs);
+>   
+>   	printk(KERN_INFO "gumr  : addr=0x%p, val=0x%08x\n",
+> -		  &uccf->uf_regs->gumr, in_be32(&uccf->uf_regs->gumr));
+> +		  &uccf->uf_regs->gumr, ioread32be(&uccf->uf_regs->gumr));
+>   	printk(KERN_INFO "upsmr : addr=0x%p, val=0x%08x\n",
+> -		  &uccf->uf_regs->upsmr, in_be32(&uccf->uf_regs->upsmr));
+> +		  &uccf->uf_regs->upsmr, ioread32be(&uccf->uf_regs->upsmr));
+>   	printk(KERN_INFO "utodr : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->utodr, in_be16(&uccf->uf_regs->utodr));
+> +		  &uccf->uf_regs->utodr, ioread16be(&uccf->uf_regs->utodr));
+>   	printk(KERN_INFO "udsr  : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->udsr, in_be16(&uccf->uf_regs->udsr));
+> +		  &uccf->uf_regs->udsr, ioread16be(&uccf->uf_regs->udsr));
+>   	printk(KERN_INFO "ucce  : addr=0x%p, val=0x%08x\n",
+> -		  &uccf->uf_regs->ucce, in_be32(&uccf->uf_regs->ucce));
+> +		  &uccf->uf_regs->ucce, ioread32be(&uccf->uf_regs->ucce));
+>   	printk(KERN_INFO "uccm  : addr=0x%p, val=0x%08x\n",
+> -		  &uccf->uf_regs->uccm, in_be32(&uccf->uf_regs->uccm));
+> +		  &uccf->uf_regs->uccm, ioread32be(&uccf->uf_regs->uccm));
+>   	printk(KERN_INFO "uccs  : addr=0x%p, val=0x%02x\n",
+> -		  &uccf->uf_regs->uccs, in_8(&uccf->uf_regs->uccs));
+> +		  &uccf->uf_regs->uccs, ioread8(&uccf->uf_regs->uccs));
+>   	printk(KERN_INFO "urfb  : addr=0x%p, val=0x%08x\n",
+> -		  &uccf->uf_regs->urfb, in_be32(&uccf->uf_regs->urfb));
+> +		  &uccf->uf_regs->urfb, ioread32be(&uccf->uf_regs->urfb));
+>   	printk(KERN_INFO "urfs  : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->urfs, in_be16(&uccf->uf_regs->urfs));
+> +		  &uccf->uf_regs->urfs, ioread16be(&uccf->uf_regs->urfs));
+>   	printk(KERN_INFO "urfet : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->urfet, in_be16(&uccf->uf_regs->urfet));
+> +		  &uccf->uf_regs->urfet, ioread16be(&uccf->uf_regs->urfet));
+>   	printk(KERN_INFO "urfset: addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->urfset, in_be16(&uccf->uf_regs->urfset));
+> +		  &uccf->uf_regs->urfset, ioread16be(&uccf->uf_regs->urfset));
+>   	printk(KERN_INFO "utfb  : addr=0x%p, val=0x%08x\n",
+> -		  &uccf->uf_regs->utfb, in_be32(&uccf->uf_regs->utfb));
+> +		  &uccf->uf_regs->utfb, ioread32be(&uccf->uf_regs->utfb));
+>   	printk(KERN_INFO "utfs  : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->utfs, in_be16(&uccf->uf_regs->utfs));
+> +		  &uccf->uf_regs->utfs, ioread16be(&uccf->uf_regs->utfs));
+>   	printk(KERN_INFO "utfet : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->utfet, in_be16(&uccf->uf_regs->utfet));
+> +		  &uccf->uf_regs->utfet, ioread16be(&uccf->uf_regs->utfet));
+>   	printk(KERN_INFO "utftt : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->utftt, in_be16(&uccf->uf_regs->utftt));
+> +		  &uccf->uf_regs->utftt, ioread16be(&uccf->uf_regs->utftt));
+>   	printk(KERN_INFO "utpt  : addr=0x%p, val=0x%04x\n",
+> -		  &uccf->uf_regs->utpt, in_be16(&uccf->uf_regs->utpt));
+> +		  &uccf->uf_regs->utpt, ioread16be(&uccf->uf_regs->utpt));
+>   	printk(KERN_INFO "urtry : addr=0x%p, val=0x%08x\n",
+> -		  &uccf->uf_regs->urtry, in_be32(&uccf->uf_regs->urtry));
+> +		  &uccf->uf_regs->urtry, ioread32be(&uccf->uf_regs->urtry));
+>   	printk(KERN_INFO "guemr : addr=0x%p, val=0x%02x\n",
+> -		  &uccf->uf_regs->guemr, in_8(&uccf->uf_regs->guemr));
+> +		  &uccf->uf_regs->guemr, ioread8(&uccf->uf_regs->guemr));
+>   }
+>   EXPORT_SYMBOL(ucc_fast_dump_regs);
+>   
+> @@ -85,7 +85,7 @@ EXPORT_SYMBOL(ucc_fast_get_qe_cr_subblock);
+>   
+>   void ucc_fast_transmit_on_demand(struct ucc_fast_private * uccf)
+>   {
+> -	out_be16(&uccf->uf_regs->utodr, UCC_FAST_TOD);
+> +	iowrite16be(UCC_FAST_TOD, &uccf->uf_regs->utodr);
+>   }
+>   EXPORT_SYMBOL(ucc_fast_transmit_on_demand);
+>   
+> @@ -97,7 +97,7 @@ void ucc_fast_enable(struct ucc_fast_private * uccf, enum comm_dir mode)
+>   	uf_regs = uccf->uf_regs;
+>   
+>   	/* Enable reception and/or transmission on this UCC. */
+> -	gumr = in_be32(&uf_regs->gumr);
+> +	gumr = ioread32be(&uf_regs->gumr);
+>   	if (mode & COMM_DIR_TX) {
+>   		gumr |= UCC_FAST_GUMR_ENT;
+>   		uccf->enabled_tx = 1;
+> @@ -106,7 +106,7 @@ void ucc_fast_enable(struct ucc_fast_private * uccf, enum comm_dir mode)
+>   		gumr |= UCC_FAST_GUMR_ENR;
+>   		uccf->enabled_rx = 1;
+>   	}
+> -	out_be32(&uf_regs->gumr, gumr);
+> +	iowrite32be(gumr, &uf_regs->gumr);
+>   }
+>   EXPORT_SYMBOL(ucc_fast_enable);
+>   
+> @@ -118,7 +118,7 @@ void ucc_fast_disable(struct ucc_fast_private * uccf, enum comm_dir mode)
+>   	uf_regs = uccf->uf_regs;
+>   
+>   	/* Disable reception and/or transmission on this UCC. */
+> -	gumr = in_be32(&uf_regs->gumr);
+> +	gumr = ioread32be(&uf_regs->gumr);
+>   	if (mode & COMM_DIR_TX) {
+>   		gumr &= ~UCC_FAST_GUMR_ENT;
+>   		uccf->enabled_tx = 0;
+> @@ -127,7 +127,7 @@ void ucc_fast_disable(struct ucc_fast_private * uccf, enum comm_dir mode)
+>   		gumr &= ~UCC_FAST_GUMR_ENR;
+>   		uccf->enabled_rx = 0;
+>   	}
+> -	out_be32(&uf_regs->gumr, gumr);
+> +	iowrite32be(gumr, &uf_regs->gumr);
+>   }
+>   EXPORT_SYMBOL(ucc_fast_disable);
+>   
+> @@ -259,7 +259,7 @@ int ucc_fast_init(struct ucc_fast_info * uf_info, struct ucc_fast_private ** ucc
+>   	gumr |= uf_info->tenc;
+>   	gumr |= uf_info->tcrc;
+>   	gumr |= uf_info->mode;
+> -	out_be32(&uf_regs->gumr, gumr);
+> +	iowrite32be(gumr, &uf_regs->gumr);
+>   
+>   	/* Allocate memory for Tx Virtual Fifo */
+>   	uccf->ucc_fast_tx_virtual_fifo_base_offset =
+> @@ -286,15 +286,17 @@ int ucc_fast_init(struct ucc_fast_info * uf_info, struct ucc_fast_private ** ucc
+>   	}
+>   
+>   	/* Set Virtual Fifo registers */
+> -	out_be16(&uf_regs->urfs, uf_info->urfs);
+> -	out_be16(&uf_regs->urfet, uf_info->urfet);
+> -	out_be16(&uf_regs->urfset, uf_info->urfset);
+> -	out_be16(&uf_regs->utfs, uf_info->utfs);
+> -	out_be16(&uf_regs->utfet, uf_info->utfet);
+> -	out_be16(&uf_regs->utftt, uf_info->utftt);
+> +	iowrite16be(uf_info->urfs, &uf_regs->urfs);
+> +	iowrite16be(uf_info->urfet, &uf_regs->urfet);
+> +	iowrite16be(uf_info->urfset, &uf_regs->urfset);
+> +	iowrite16be(uf_info->utfs, &uf_regs->utfs);
+> +	iowrite16be(uf_info->utfet, &uf_regs->utfet);
+> +	iowrite16be(uf_info->utftt, &uf_regs->utftt);
+>   	/* utfb, urfb are offsets from MURAM base */
+> -	out_be32(&uf_regs->utfb, uccf->ucc_fast_tx_virtual_fifo_base_offset);
+> -	out_be32(&uf_regs->urfb, uccf->ucc_fast_rx_virtual_fifo_base_offset);
+> +	iowrite32be(uccf->ucc_fast_tx_virtual_fifo_base_offset,
+> +		    &uf_regs->utfb);
+> +	iowrite32be(uccf->ucc_fast_rx_virtual_fifo_base_offset,
+> +		    &uf_regs->urfb);
+>   
+>   	/* Mux clocking */
+>   	/* Grant Support */
+> @@ -362,14 +364,14 @@ int ucc_fast_init(struct ucc_fast_info * uf_info, struct ucc_fast_private ** ucc
+>   	}
+>   
+>   	/* Set interrupt mask register at UCC level. */
+> -	out_be32(&uf_regs->uccm, uf_info->uccm_mask);
+> +	iowrite32be(uf_info->uccm_mask, &uf_regs->uccm);
+>   
+>   	/* First, clear anything pending at UCC level,
+>   	 * otherwise, old garbage may come through
+>   	 * as soon as the dam is opened. */
+>   
+>   	/* Writing '1' clears */
+> -	out_be32(&uf_regs->ucce, 0xffffffff);
+> +	iowrite32be(0xffffffff, &uf_regs->ucce);
+>   
+>   	*uccf_ret = uccf;
+>   	return 0;
+> diff --git a/drivers/soc/fsl/qe/ucc_slow.c b/drivers/soc/fsl/qe/ucc_slow.c
+> index 34f0ec3a63b5..74213f8b361c 100644
+> --- a/drivers/soc/fsl/qe/ucc_slow.c
+> +++ b/drivers/soc/fsl/qe/ucc_slow.c
+> @@ -78,7 +78,7 @@ void ucc_slow_enable(struct ucc_slow_private * uccs, enum comm_dir mode)
+>   	us_regs = uccs->us_regs;
+>   
+>   	/* Enable reception and/or transmission on this UCC. */
+> -	gumr_l = in_be32(&us_regs->gumr_l);
+> +	gumr_l = ioread32be(&us_regs->gumr_l);
+>   	if (mode & COMM_DIR_TX) {
+>   		gumr_l |= UCC_SLOW_GUMR_L_ENT;
+>   		uccs->enabled_tx = 1;
+> @@ -87,7 +87,7 @@ void ucc_slow_enable(struct ucc_slow_private * uccs, enum comm_dir mode)
+>   		gumr_l |= UCC_SLOW_GUMR_L_ENR;
+>   		uccs->enabled_rx = 1;
+>   	}
+> -	out_be32(&us_regs->gumr_l, gumr_l);
+> +	iowrite32be(gumr_l, &us_regs->gumr_l);
+>   }
+>   EXPORT_SYMBOL(ucc_slow_enable);
+>   
+> @@ -99,7 +99,7 @@ void ucc_slow_disable(struct ucc_slow_private * uccs, enum comm_dir mode)
+>   	us_regs = uccs->us_regs;
+>   
+>   	/* Disable reception and/or transmission on this UCC. */
+> -	gumr_l = in_be32(&us_regs->gumr_l);
+> +	gumr_l = ioread32be(&us_regs->gumr_l);
+>   	if (mode & COMM_DIR_TX) {
+>   		gumr_l &= ~UCC_SLOW_GUMR_L_ENT;
+>   		uccs->enabled_tx = 0;
+> @@ -108,7 +108,7 @@ void ucc_slow_disable(struct ucc_slow_private * uccs, enum comm_dir mode)
+>   		gumr_l &= ~UCC_SLOW_GUMR_L_ENR;
+>   		uccs->enabled_rx = 0;
+>   	}
+> -	out_be32(&us_regs->gumr_l, gumr_l);
+> +	iowrite32be(gumr_l, &us_regs->gumr_l);
+>   }
+>   EXPORT_SYMBOL(ucc_slow_disable);
+>   
+> @@ -198,7 +198,7 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>   		return ret;
+>   	}
+>   
+> -	out_be16(&uccs->us_pram->mrblr, us_info->max_rx_buf_length);
+> +	iowrite16be(us_info->max_rx_buf_length, &uccs->us_pram->mrblr);
+>   
+>   	INIT_LIST_HEAD(&uccs->confQ);
+>   
+> @@ -228,27 +228,27 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>   	bd = uccs->confBd = uccs->tx_bd = qe_muram_addr(uccs->tx_base_offset);
+>   	for (i = 0; i < us_info->tx_bd_ring_len - 1; i++) {
+>   		/* clear bd buffer */
+> -		out_be32(&bd->buf, 0);
+> +		iowrite32be(0, &bd->buf);
+>   		/* set bd status and length */
+> -		out_be32((u32 *) bd, 0);
+> +		iowrite32be(0, (u32 *)bd);
+>   		bd++;
+>   	}
+>   	/* for last BD set Wrap bit */
+> -	out_be32(&bd->buf, 0);
+> -	out_be32((u32 *) bd, cpu_to_be32(T_W));
+> +	iowrite32be(0, &bd->buf);
+> +	iowrite32be(cpu_to_be32(T_W), (u32 *)bd);
+>   
+>   	/* Init Rx bds */
+>   	bd = uccs->rx_bd = qe_muram_addr(uccs->rx_base_offset);
+>   	for (i = 0; i < us_info->rx_bd_ring_len - 1; i++) {
+>   		/* set bd status and length */
+> -		out_be32((u32*)bd, 0);
+> +		iowrite32be(0, (u32 *)bd);
+>   		/* clear bd buffer */
+> -		out_be32(&bd->buf, 0);
+> +		iowrite32be(0, &bd->buf);
+>   		bd++;
+>   	}
+>   	/* for last BD set Wrap bit */
+> -	out_be32((u32*)bd, cpu_to_be32(R_W));
+> -	out_be32(&bd->buf, 0);
+> +	iowrite32be(cpu_to_be32(R_W), (u32 *)bd);
+> +	iowrite32be(0, &bd->buf);
+>   
+>   	/* Set GUMR (For more details see the hardware spec.). */
+>   	/* gumr_h */
+> @@ -269,7 +269,7 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>   		gumr |= UCC_SLOW_GUMR_H_TXSY;
+>   	if (us_info->rtsm)
+>   		gumr |= UCC_SLOW_GUMR_H_RTSM;
+> -	out_be32(&us_regs->gumr_h, gumr);
+> +	iowrite32be(gumr, &us_regs->gumr_h);
+>   
+>   	/* gumr_l */
+>   	gumr = us_info->tdcr | us_info->rdcr | us_info->tenc | us_info->renc |
+> @@ -282,7 +282,7 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>   		gumr |= UCC_SLOW_GUMR_L_TINV;
+>   	if (us_info->tend)
+>   		gumr |= UCC_SLOW_GUMR_L_TEND;
+> -	out_be32(&us_regs->gumr_l, gumr);
+> +	iowrite32be(gumr, &us_regs->gumr_l);
+>   
+>   	/* Function code registers */
+>   
+> @@ -292,8 +292,8 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>   	uccs->us_pram->rbmr = UCC_BMR_BO_BE;
+>   
+>   	/* rbase, tbase are offsets from MURAM base */
+> -	out_be16(&uccs->us_pram->rbase, uccs->rx_base_offset);
+> -	out_be16(&uccs->us_pram->tbase, uccs->tx_base_offset);
+> +	iowrite16be(uccs->rx_base_offset, &uccs->us_pram->rbase);
+> +	iowrite16be(uccs->tx_base_offset, &uccs->us_pram->tbase);
+>   
+>   	/* Mux clocking */
+>   	/* Grant Support */
+> @@ -323,14 +323,14 @@ int ucc_slow_init(struct ucc_slow_info * us_info, struct ucc_slow_private ** ucc
+>   	}
+>   
+>   	/* Set interrupt mask register at UCC level. */
+> -	out_be16(&us_regs->uccm, us_info->uccm_mask);
+> +	iowrite16be(us_info->uccm_mask, &us_regs->uccm);
+>   
+>   	/* First, clear anything pending at UCC level,
+>   	 * otherwise, old garbage may come through
+>   	 * as soon as the dam is opened. */
+>   
+>   	/* Writing '1' clears */
+> -	out_be16(&us_regs->ucce, 0xffff);
+> +	iowrite16be(0xffff, &us_regs->ucce);
+>   
+>   	/* Issue QE Init command */
+>   	if (us_info->init_tx && us_info->init_rx)
+> diff --git a/drivers/soc/fsl/qe/usb.c b/drivers/soc/fsl/qe/usb.c
+> index 32d8269fa692..59b326e924dc 100644
+> --- a/drivers/soc/fsl/qe/usb.c
+> +++ b/drivers/soc/fsl/qe/usb.c
+> @@ -43,7 +43,7 @@ int qe_usb_clock_set(enum qe_clock clk, int rate)
+>   
+>   	spin_lock_irqsave(&cmxgcr_lock, flags);
+>   
+> -	clrsetbits_be32(&mux->cmxgcr, QE_CMXGCR_USBCS, val);
+> +	qe_clrsetbits32(&mux->cmxgcr, QE_CMXGCR_USBCS, val);
+>   
+>   	spin_unlock_irqrestore(&cmxgcr_lock, flags);
+>   
+> 
