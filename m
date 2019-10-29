@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D138E7F2F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 05:27:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D187E7F31
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 05:30:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472JV32pdkzF0gb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 15:27:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472JXk4zNYzF0x5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 15:30:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="lcDyHdzU"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="p12QlXY0"; 
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472JLP0BXgzDr4Y
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 15:21:16 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id g9so6299091plp.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 21:21:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472JLX17ZdzDsNT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 15:21:24 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id x6so2857570pln.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2019 21:21:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=HNDV9DT7O32N2h9l7CrACdWJSzNVfR3Dv9pnUT55kOg=;
- b=lcDyHdzUacgOhucQ6b8IWgwE46Vlk8g9GsG0YiqbvSuRh0midPQjkKTH8pqXZ6eSlf
- M1yH4o7rgNX40yBq5M4PAJVge7qa26A++93dTOcRGcNCrIQhxh5QfkU3EV2DF34ElmZk
- 63eYGshNT63iTFBqS5s6pvBKl+7JsqOxJf9F8=
+ bh=D9aL7CIPgVBLEowXwwKDN7h7+lLHlmYeACx0xfz4QPU=;
+ b=p12QlXY0PFm+XioTxaj3mxPpn879Km9XTAKXd1KZEJJs9pobJBz1Hm7UzcWyYJIVfp
+ p19iZl76ObQBmsydeOqk8cdnw0S/vKCZsOXJW1brmjlSGcIN+W47CfOia1/FJPW82W6z
+ jE6+JfudbahSDEuG53tccgkDvhpxU//9CJC4U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=HNDV9DT7O32N2h9l7CrACdWJSzNVfR3Dv9pnUT55kOg=;
- b=syg7OZEG5/SK+ubTqLWC0bE0KSgPTHAIBu1UrehsVS7j/Cfzfqxu8m1w12Pezt/ekv
- 30b4g5wgikzMlgL1r5aOhs9fRjhHQ5QsCBNN6VrQii/LRQvu8aQ4UXH8L2S8Mvjn/G+u
- 5BYTR0kURkhvldGOvOQQFhlDhgwyOtNBvfbBkW7rKtqcs9ppAySg4mUhNtOsebeRTyrZ
- pworLwt1jpwTihblNbhLi2rWGIm+1FbyeOGVrslKSlWPKNmbtP3/M3iMxTJDKq1AibXv
- X2qbpWV2PXbJBx6osywoiBRpGEcdxMkRplQ71KQ8qakuNV+jyme2V3DOO6Hm9nNDd4NC
- co3w==
-X-Gm-Message-State: APjAAAVUwZEzi4KAc8FeQ7zDfIuPHhCyrFNkFyFd2ZhD1tfqZbGEA+OB
- XCap/BtTlqVpGII5buZAbdtfWQ==
-X-Google-Smtp-Source: APXvYqxLsff9odhBvNICfK+D6Rfn6FtMiU4d244WqDyFRpWs6AJDTPdDv2j0OdBnEo98eZFpsfQ/6A==
-X-Received: by 2002:a17:902:68:: with SMTP id 95mr1661194pla.117.1572322874296; 
- Mon, 28 Oct 2019 21:21:14 -0700 (PDT)
+ bh=D9aL7CIPgVBLEowXwwKDN7h7+lLHlmYeACx0xfz4QPU=;
+ b=ZUUmasTqo8FB8BfKISEUt4k/HASFl2wLZfaRY7N8dRNnLc1K4Thc16PM91vbVlwHyJ
+ d7bv1bq/9s8vlfJ1BIjA90856MRNCcL9RjrUIEeU0l31flPGPAvu+AVT3Y0NUOdnQruE
+ UHCgw1Dc3mliFL+HYKqD8CX4FduC0HCYc909rKmNisCCUHgnbbLaY/zXfLdYdTlB+E3V
+ X301rp+V/+7eCyrfk4FFOEo5KgSmsscrXpOq/wlKVoiR3HxEFwAUlzqgUYku8j4Tr2e1
+ UkpdTgNcn6C0AG7KZCIxzEh8a+hAp0MQz2tj41lzmLe02mJoC4hUaz4TM+tUPnes9vis
+ lJDg==
+X-Gm-Message-State: APjAAAV3zCUq3/cHvYfpLCZxv1Z9oBlL/Yxmt2uUw0rsJkxMdm066YxD
+ 6i2gkD7SLnK700KveGjtI2FTcg==
+X-Google-Smtp-Source: APXvYqw4MKFeQK6pYRf79KGFRAAEh2wsHOiwEALC94r+gJllVaQ7+sHoUGr+gJCFpyDnOXwUXq1bAw==
+X-Received: by 2002:a17:902:bcc2:: with SMTP id
+ o2mr1697695pls.281.1572322880361; 
+ Mon, 28 Oct 2019 21:21:20 -0700 (PDT)
 Received: from localhost ([2001:44b8:802:1120:783a:2bb9:f7cb:7c3c])
- by smtp.gmail.com with ESMTPSA id y11sm15418521pfq.1.2019.10.28.21.21.12
+ by smtp.gmail.com with ESMTPSA id a5sm3908450pfk.172.2019.10.28.21.21.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Oct 2019 21:21:13 -0700 (PDT)
+ Mon, 28 Oct 2019 21:21:19 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
  aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
  linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
  christophe.leroy@c-s.fr
-Subject: [PATCH v10 2/5] kasan: add test for vmalloc
-Date: Tue, 29 Oct 2019 15:20:56 +1100
-Message-Id: <20191029042059.28541-3-dja@axtens.net>
+Subject: [PATCH v10 3/5] fork: support VMAP_STACK with KASAN_VMALLOC
+Date: Tue, 29 Oct 2019 15:20:57 +1100
+Message-Id: <20191029042059.28541-4-dja@axtens.net>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191029042059.28541-1-dja@axtens.net>
 References: <20191029042059.28541-1-dja@axtens.net>
@@ -84,67 +85,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Test kasan vmalloc support by adding a new test to the module.
+Supporting VMAP_STACK with KASAN_VMALLOC is straightforward:
 
+ - clear the shadow region of vmapped stacks when swapping them in
+ - tweak Kconfig to allow VMAP_STACK to be turned on with KASAN
+
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 Signed-off-by: Daniel Axtens <dja@axtens.net>
-
---
-
-v5: split out per Christophe Leroy
 ---
- lib/test_kasan.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/Kconfig  | 9 +++++----
+ kernel/fork.c | 4 ++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/lib/test_kasan.c b/lib/test_kasan.c
-index 49cc4d570a40..328d33beae36 100644
---- a/lib/test_kasan.c
-+++ b/lib/test_kasan.c
-@@ -19,6 +19,7 @@
- #include <linux/string.h>
- #include <linux/uaccess.h>
- #include <linux/io.h>
-+#include <linux/vmalloc.h>
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 5f8a5d84dbbe..2d914990402f 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -843,16 +843,17 @@ config HAVE_ARCH_VMAP_STACK
+ config VMAP_STACK
+ 	default y
+ 	bool "Use a virtually-mapped stack"
+-	depends on HAVE_ARCH_VMAP_STACK && !KASAN
++	depends on HAVE_ARCH_VMAP_STACK
++	depends on !KASAN || KASAN_VMALLOC
+ 	---help---
+ 	  Enable this if you want the use virtually-mapped kernel stacks
+ 	  with guard pages.  This causes kernel stack overflows to be
+ 	  caught immediately rather than causing difficult-to-diagnose
+ 	  corruption.
  
- #include <asm/page.h>
+-	  This is presently incompatible with KASAN because KASAN expects
+-	  the stack to map directly to the KASAN shadow map using a formula
+-	  that is incorrect if the stack is in vmalloc space.
++	  To use this with KASAN, the architecture must support backing
++	  virtual mappings with real shadow memory, and KASAN_VMALLOC must
++	  be enabled.
  
-@@ -748,6 +749,30 @@ static noinline void __init kmalloc_double_kzfree(void)
- 	kzfree(ptr);
- }
+ config ARCH_OPTIONAL_KERNEL_RWX
+ 	def_bool n
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 954e875e72b1..a6e5249ad74b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -94,6 +94,7 @@
+ #include <linux/livepatch.h>
+ #include <linux/thread_info.h>
+ #include <linux/stackleak.h>
++#include <linux/kasan.h>
  
-+#ifdef CONFIG_KASAN_VMALLOC
-+static noinline void __init vmalloc_oob(void)
-+{
-+	void *area;
-+
-+	pr_info("vmalloc out-of-bounds\n");
-+
-+	/*
-+	 * We have to be careful not to hit the guard page.
-+	 * The MMU will catch that and crash us.
-+	 */
-+	area = vmalloc(3000);
-+	if (!area) {
-+		pr_err("Allocation failed\n");
-+		return;
-+	}
-+
-+	((volatile char *)area)[3100];
-+	vfree(area);
-+}
-+#else
-+static void __init vmalloc_oob(void) {}
-+#endif
-+
- static int __init kmalloc_tests_init(void)
- {
- 	/*
-@@ -793,6 +818,7 @@ static int __init kmalloc_tests_init(void)
- 	kasan_strings();
- 	kasan_bitops();
- 	kmalloc_double_kzfree();
-+	vmalloc_oob();
+ #include <asm/pgtable.h>
+ #include <asm/pgalloc.h>
+@@ -224,6 +225,9 @@ static unsigned long *alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 		if (!s)
+ 			continue;
  
- 	kasan_restore_multi_shot(multishot);
++		/* Clear the KASAN shadow of the stack. */
++		kasan_unpoison_shadow(s->addr, THREAD_SIZE);
++
+ 		/* Clear stale pointers from reused stack. */
+ 		memset(s->addr, 0, THREAD_SIZE);
  
 -- 
 2.20.1
