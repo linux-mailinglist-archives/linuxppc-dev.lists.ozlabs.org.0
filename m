@@ -2,65 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DAAE927F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 23:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2006E931A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2019 23:46:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472ltR4QdnzF1Pp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:02:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 472msh5sw5zDrR1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:46:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
- [209.85.210.68])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.5.53; helo=eur03-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="ammmhVMd"; 
+ dkim-atps=neutral
+Received: from EUR03-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr50053.outbound.protection.outlook.com [40.107.5.53])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472kxW17zZzF36V
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 08:19:42 +1100 (AEDT)
-Received: by mail-ot1-f68.google.com with SMTP id t8so216073otl.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 14:19:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ecDqSfSuAIrQpm88YN5y/79NJNgXFx+waZx0U92w3DQ=;
- b=nx/rv+7kmAggmtEqPakaM6Rl7Z6sg5y3kZErpIEt7ohpeKUSwPG11GzZcEhAq4ZE7E
- MhUGn41T8EO3/LANCB3lqnWPsIf9rU0hsBTg7sob1S/LoyFToLs4lAs7+jDdCFZk6iXL
- KsQQ8HkBtq2iYBYooB9FfOeluytu8eEHc6ziOdXmvE7frEKJL7sjjvII+6cAmdPImH1S
- ut5PflObmf5Qs+uIw1xOm6LmY8Gzi8cu6v22zrPnNeiWk9qoOL8CaAx6vMPnM3Zy47AP
- SPTNdaD9AnLgMMwkRaCvmTFjphC6KGFk4gsqeALRz9sH6aqn3p/IL0ISjvvSogTBRn09
- nOVg==
-X-Gm-Message-State: APjAAAUcOzKTDeAtNXi4uGbsz26SYHFmzHr2P89YONXVOpz77y55VCw+
- 5dVUJuhf+KNAs1OSkxVStyUejW6lCPA=
-X-Google-Smtp-Source: APXvYqzSinBduDLH6cr+Se7tKSSz/dLd9IcMScm8Cg5NJb9ZxI9CRVdWr7fDTzzh4fTLY7UaMevdEg==
-X-Received: by 2002:a9d:6196:: with SMTP id g22mr917418otk.290.1572383978357; 
- Tue, 29 Oct 2019 14:19:38 -0700 (PDT)
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com.
- [209.85.210.41])
- by smtp.gmail.com with ESMTPSA id s66sm48029otb.65.2019.10.29.14.19.37
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Oct 2019 14:19:37 -0700 (PDT)
-Received: by mail-ot1-f41.google.com with SMTP id 89so174266oth.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2019 14:19:37 -0700 (PDT)
-X-Received: by 2002:a05:6830:2322:: with SMTP id
- q2mr14516847otg.74.1572383976764; 
- Tue, 29 Oct 2019 14:19:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 472mqb2J57zF3bh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 09:44:39 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BkFpA6Q+GhzLGDenxbmSIDGxZVop0PIszwCyNdBvkDiXCSOB9NPmD8QFJiqmtw3dnVCbGuz4AQUBjI8QjMbYbzwa8yflcicdGwfGlYMGH9vCBtz5rwhqfj3l9DwgmdbwhF586w6H1cZTiaTVMvGgmu3d1CZbjY8+GnLedSFYeoAx1Y/hjmvf2p0HVM1RpE/d9AwPVIQ4oyBPIzd5hWO51Kce/5zN6I6OGi0BVRpj5FmKJ2UiMx9sO3C18ZCAM4DVbj9mh3cKn1chsqs/UQ8G03uslUwgeZ65UwaKFtlZ156eRu3o9bpi2Q9hbnqSSL6KHXP/wsWvnpggF0fOxcXG6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GRBpJvjoxoG+b5Dpj6WaVjn3b9s8OVOD0L9cM3sVYf0=;
+ b=Xp6QeNgc3kF8lrjlDxxm7h9SIOiNdC/4gmlQVGNgG4yyzP8Ek6hkLy+FBTCT4itCZgj9pU9rUd51KFoQYpkMsWTPyukcdzV51KIUf+UoGhcAnubFCHJwQnk1mXl5Qfft+gKJQmQetkwutG08I3NLzA8kL838iTuW7eyTM/pE0svtRYmlAm3SS3m6cSE8UMp9UDe1cpGrH/0f0px3gHyDxKBT71e9lY7Ku9m5ZnIxJy/WJt3jLu3vx1w+T6tisKWZT6l8g+snsYu9wKVmaW4ZosK+J/xIYBsFHLDTbC2tGInFXundHGgUanYmrZXaRtjBnex/9OExpvisrpn+8q15yQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GRBpJvjoxoG+b5Dpj6WaVjn3b9s8OVOD0L9cM3sVYf0=;
+ b=ammmhVMdEYiOh6hOtUAP72gs3FQ2RCPWlwwpsnMDvd1uf8pmv4DaeyjctPvAUSy2RyaSJ5T2txpQ+KLtAsqkXS1mtp+bJVpjtr3CTCSH1T87dp+WSVlS77hQsRrmJSlDdTTz1ABAoG5rkMMErIo/FEleZE9xC1hWjCoyY4LG8YA=
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) by
+ VE1PR04MB6543.eurprd04.prod.outlook.com (20.179.235.139) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2387.24; Tue, 29 Oct 2019 22:44:32 +0000
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::c93:c279:545b:b6b6]) by VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::c93:c279:545b:b6b6%3]) with mapi id 15.20.2387.027; Tue, 29 Oct 2019
+ 22:44:32 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Qiang Zhao
+ <qiang.zhao@nxp.com>, Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: RE: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
+Thread-Topic: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
+Thread-Index: AQHVizGGK1AbHr0Ag0SyT1h3bdNPg6dyPcDA
+Date: Tue, 29 Oct 2019 22:44:32 +0000
+Message-ID: <VE1PR04MB6687CA599C89D46076C9B3518F610@VE1PR04MB6687.eurprd04.prod.outlook.com>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+ <20191025124058.22580-1-linux@rasmusvillemoes.dk>
+ <20191025124058.22580-21-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191025124058.22580-21-linux@rasmusvillemoes.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=leoyang.li@nxp.com; 
+x-originating-ip: [64.157.242.222]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: a3e55dcc-d939-4d99-6d34-08d75cc19112
+x-ms-traffictypediagnostic: VE1PR04MB6543:|VE1PR04MB6543:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VE1PR04MB6543B7A877FD5E98318097AD8F610@VE1PR04MB6543.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
+x-forefront-prvs: 0205EDCD76
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(376002)(39860400002)(396003)(366004)(136003)(346002)(13464003)(189003)(199004)(476003)(7736002)(81166006)(8936002)(486006)(8676002)(11346002)(9686003)(81156014)(6246003)(446003)(55016002)(74316002)(6436002)(33656002)(2906002)(5660300002)(186003)(26005)(305945005)(229853002)(7696005)(14454004)(102836004)(76176011)(6506007)(316002)(25786009)(66066001)(52536014)(54906003)(110136005)(256004)(4326008)(478600001)(66476007)(66446008)(64756008)(66556008)(66946007)(76116006)(86362001)(71200400001)(71190400001)(99286004)(6116002)(3846002)(53546011);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6543;
+ H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: YQgycBYrXi9jcB4wzGPw0x8N9jH4WK21MqUtjzhkBpmZIghiEAOOKu95oQ+s1h4NNlNBIKFLw+kXzXQmaJSOSLHeZZL2sUjTFGFadFX87W02zHlR7e+o19Bn8cktNA+xXo35fJQjSzYHkodh1oLlNCwk1wu0QlwNRbghIg+e60zM6ZV+2Q34J48zZ8gib1Ak2LfHmP4cV5pj2nNQCUuclzzUMDb0LTZ5kCURPRX/4pqv/d1QPrqiZA7cFlqS4R/GpKZx9oGJk4AijRp3YuGILMMBpeQJ/jUkgiimVcIp9wUo3OqVEEyHbE9bvH+bytZlRS0PYNtM5ivRcYFONzDwWnPTzl4ieBWzBIOZYxAI2JyPmXGod+P0B3Du7vwwmniurHv8iX+r/CcZtg9vAK03peKraFexNBnasoSd6uBJQUuSMn0zbdwXmMRPdazQHTcX
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20191024092644.26583-1-ran.wang_1@nxp.com>
-In-Reply-To: <20191024092644.26583-1-ran.wang_1@nxp.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Tue, 29 Oct 2019 16:19:25 -0500
-X-Gmail-Original-Message-ID: <CADRPPNSTq8=uH-HLP0qhzR1Ob+BQc5=h53km+z3vumMSBX1ccQ@mail.gmail.com>
-Message-ID: <CADRPPNSTq8=uH-HLP0qhzR1Ob+BQc5=h53km+z3vumMSBX1ccQ@mail.gmail.com>
-Subject: Re: [PATCH v10 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
-To: Ran Wang <ran.wang_1@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3e55dcc-d939-4d99-6d34-08d75cc19112
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2019 22:44:32.6792 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0ExFPY5twVtJy4ZezuXPXbnyoeFBTa9UfIfdDgB9+Xcj8txvBAnc+XTeR3HI0E9gZNrc2dMjoI7reZh7W6qfmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6543
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,175 +105,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Li Biwen <biwen.li@nxp.com>,
- Huang Anson <anson.huang@nxp.com>, Len Brown <len.brown@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
- "Rafael J . Wysocki" <rjw@rjwysocki.net>, lkml <linux-kernel@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+Cc: Valentin Longchamp <valentin.longchamp@keymile.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 24, 2019 at 4:29 AM Ran Wang <ran.wang_1@nxp.com> wrote:
->
-> Some user might want to go through all registered wakeup sources
-> and doing things accordingly. For example, SoC PM driver might need to
-> do HW programming to prevent powering down specific IP which wakeup
-> source depending on. So add this API to help walk through all registered
-> wakeup source objects on that list and return them one by one.
->
-> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-> Tested-by: Leonard Crestez <leonard.crestez@nxp.com>
-> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Series applied to soc/fsl for next.  Thanks.
 
-Regards,
-Leo
+> -----Original Message-----
+> From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Sent: Friday, October 25, 2019 7:41 AM
+> To: Qiang Zhao <qiang.zhao@nxp.com>; Leo Li <leoyang.li@nxp.com>;
+> Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: linuxppc-dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org;
+> linux-kernel@vger.kernel.org; Scott Wood <oss@buserror.net>; Valentin
+> Longchamp <valentin.longchamp@keymile.com>; Rasmus Villemoes
+> <linux@rasmusvillemoes.dk>; linux-serial@vger.kernel.org
+> Subject: [PATCH v2 20/23] serial: make SERIAL_QE depend on PPC32
+>=20
+> Currently SERIAL_QE depends on QUICC_ENGINE, which in turn depends on
+> PPC32, so this doesn't add any extra dependency. However, the QUICC
+> Engine IP block also exists on some arm boards, so this serves as prepara=
+tion
+> for removing the PPC32 dependency from QUICC_ENGINE and build the QE
+> support in drivers/soc/fsl/qe, while preventing allmodconfig/randconfig
+> failures due to SERIAL_QE not being supported yet.
+>=20
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+
+I think your purpose of this series is to make the QE UART not depending on=
+ PPC32.  If it does accomplish that then we don't need this change.
+
 > ---
-> Change in v10:
->         - Add 'Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>'
->           to commit message.
->
-> Change in v9:
->         - Supplement comments for wakeup_sources_read_lock(),
->           wakeup_sources_read_unlock, wakeup_sources_walk_start and
->           wakeup_sources_walk_next().
->
-> Change in v8:
->         - Rename wakeup_source_get_next() to wakeup_sources_walk_next().
->         - Add wakeup_sources_read_lock() to take over locking job of
->           wakeup_source_get_star().
->         - Rename wakeup_source_get_start() to wakeup_sources_walk_start().
->         - Replace wakeup_source_get_stop() with wakeup_sources_read_unlock().
->         - Define macro for_each_wakeup_source(ws).
->
-> Change in v7:
->         - Remove define of member *dev in wake_irq to fix conflict with commit
->         c8377adfa781 ("PM / wakeup: Show wakeup sources stats in sysfs"), user
->         will use ws->dev->parent instead.
->         - Remove '#include <linux/of_device.h>' because it is not used.
->
-> Change in v6:
->         - Add wakeup_source_get_star() and wakeup_source_get_stop() to aligned
->         with wakeup_sources_stats_seq_start/nex/stop.
->
-> Change in v5:
->         - Update commit message, add decription of walk through all wakeup
->         source objects.
->         - Add SCU protection in function wakeup_source_get_next().
->         - Rename wakeup_source member 'attached_dev' to 'dev' and move it up
->         (before wakeirq).
->
-> Change in v4:
->         - None.
->
-> Change in v3:
->         - Adjust indentation of *attached_dev;.
->
-> Change in v2:
->         - None.
->
->  drivers/base/power/wakeup.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/pm_wakeup.h   |  9 ++++++++
->  2 files changed, 63 insertions(+)
->
-> diff --git a/drivers/base/power/wakeup.c b/drivers/base/power/wakeup.c
-> index 5817b51..70a9edb 100644
-> --- a/drivers/base/power/wakeup.c
-> +++ b/drivers/base/power/wakeup.c
-> @@ -248,6 +248,60 @@ void wakeup_source_unregister(struct wakeup_source *ws)
->  EXPORT_SYMBOL_GPL(wakeup_source_unregister);
->
->  /**
-> + * wakeup_sources_read_lock - Lock wakeup source list for read.
-> + *
-> + * Returns an index of srcu lock for struct wakeup_srcu.
-> + * This index must be passed to the matching wakeup_sources_read_unlock().
-> + */
-> +int wakeup_sources_read_lock(void)
-> +{
-> +       return srcu_read_lock(&wakeup_srcu);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_read_lock);
-> +
-> +/**
-> + * wakeup_sources_read_unlock - Unlock wakeup source list.
-> + * @idx: return value from corresponding wakeup_sources_read_lock()
-> + */
-> +void wakeup_sources_read_unlock(int idx)
-> +{
-> +       srcu_read_unlock(&wakeup_srcu, idx);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_read_unlock);
-> +
-> +/**
-> + * wakeup_sources_walk_start - Begin a walk on wakeup source list
-> + *
-> + * Returns first object of the list of wakeup sources.
-> + *
-> + * Note that to be safe, wakeup sources list needs to be locked by calling
-> + * wakeup_source_read_lock() for this.
-> + */
-> +struct wakeup_source *wakeup_sources_walk_start(void)
-> +{
-> +       struct list_head *ws_head = &wakeup_sources;
-> +
-> +       return list_entry_rcu(ws_head->next, struct wakeup_source, entry);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_walk_start);
-> +
-> +/**
-> + * wakeup_sources_walk_next - Get next wakeup source from the list
-> + * @ws: Previous wakeup source object
-> + *
-> + * Note that to be safe, wakeup sources list needs to be locked by calling
-> + * wakeup_source_read_lock() for this.
-> + */
-> +struct wakeup_source *wakeup_sources_walk_next(struct wakeup_source *ws)
-> +{
-> +       struct list_head *ws_head = &wakeup_sources;
-> +
-> +       return list_next_or_null_rcu(ws_head, &ws->entry,
-> +                               struct wakeup_source, entry);
-> +}
-> +EXPORT_SYMBOL_GPL(wakeup_sources_walk_next);
-> +
-> +/**
->   * device_wakeup_attach - Attach a wakeup source object to a device object.
->   * @dev: Device to handle.
->   * @ws: Wakeup source object to attach to @dev.
-> diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
-> index 661efa0..aa3da66 100644
-> --- a/include/linux/pm_wakeup.h
-> +++ b/include/linux/pm_wakeup.h
-> @@ -63,6 +63,11 @@ struct wakeup_source {
->         bool                    autosleep_enabled:1;
->  };
->
-> +#define for_each_wakeup_source(ws) \
-> +       for ((ws) = wakeup_sources_walk_start();        \
-> +            (ws);                                      \
-> +            (ws) = wakeup_sources_walk_next((ws)))
-> +
->  #ifdef CONFIG_PM_SLEEP
->
->  /*
-> @@ -92,6 +97,10 @@ extern void wakeup_source_remove(struct wakeup_source *ws);
->  extern struct wakeup_source *wakeup_source_register(struct device *dev,
->                                                     const char *name);
->  extern void wakeup_source_unregister(struct wakeup_source *ws);
-> +extern int wakeup_sources_read_lock(void);
-> +extern void wakeup_sources_read_unlock(int idx);
-> +extern struct wakeup_source *wakeup_sources_walk_start(void);
-> +extern struct wakeup_source *wakeup_sources_walk_next(struct wakeup_source *ws);
->  extern int device_wakeup_enable(struct device *dev);
->  extern int device_wakeup_disable(struct device *dev);
->  extern void device_set_wakeup_capable(struct device *dev, bool capable);
+>  drivers/tty/serial/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig inde=
+x
+> 67a9eb3f94ce..78246f535809 100644
+> --- a/drivers/tty/serial/Kconfig
+> +++ b/drivers/tty/serial/Kconfig
+> @@ -1056,6 +1056,7 @@ config SERIAL_LANTIQ  config SERIAL_QE
+>  	tristate "Freescale QUICC Engine serial port support"
+>  	depends on QUICC_ENGINE
+> +	depends on PPC32
+>  	select SERIAL_CORE
+>  	select FW_LOADER
+>  	help
 > --
-> 2.7.4
->
+> 2.23.0
+
