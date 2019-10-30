@@ -1,88 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16CC1E9AA7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 12:20:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B83E9ADD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 12:35:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4735bT15bBzF46D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 22:20:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4735xQ0HRwzF47W
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 22:35:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4735XT4fGhzF43Y
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 22:17:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="RrWboUUZ"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4735XS6vJBz8t0w
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 22:17:44 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4735XS6NJkz9sPd; Wed, 30 Oct 2019 22:17:44 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="RrWboUUZ"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=mhocko@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4735XR6WZwz9sP3
- for <linuxppc-dev@ozlabs.org>; Wed, 30 Oct 2019 22:17:42 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4735XL061Nz9vC14;
- Wed, 30 Oct 2019 12:17:38 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=RrWboUUZ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8oLoA8iLo8_S; Wed, 30 Oct 2019 12:17:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4735XK697qz9vC12;
- Wed, 30 Oct 2019 12:17:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1572434257; bh=G8bQ4IoWdLpGydX+AaY9b3CtO9lASyHxISoKBUDy3LQ=;
- h=Subject:To:References:From:Date:In-Reply-To:From;
- b=RrWboUUZ8akgy1hwEAhhgqFKNTIlUMJDdtfY/Yr7yfxM9wsDdVvnV3cTOsdM1o1Qw
- pNzm5CyH2ORYQSdmhgjXsjqqIlcTCdasKpRPCDALQ58SnjyDfmtbyS1lNfJ8HSiE5U
- 1ryCgMQX/1DNsNxxOAOLqPU5LeX/wKZB6XVA75K0=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EE4678B7C8;
- Wed, 30 Oct 2019 12:17:38 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Wy_FjYxV8Mac; Wed, 30 Oct 2019 12:17:38 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8A70A8B7C7;
- Wed, 30 Oct 2019 12:17:38 +0100 (CET)
-Subject: Re: [PATCH] powerpc: Add build-time check of ptrace PT_xx defines
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20191030111231.22720-1-mpe@ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <5e5533f8-aef6-18bd-d810-8d00cfbbb175@c-s.fr>
-Date: Wed, 30 Oct 2019 12:17:38 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4735tm3Qd8zF3xh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 22:33:36 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 09DEAADDD;
+ Wed, 30 Oct 2019 11:33:32 +0000 (UTC)
+Date: Wed, 30 Oct 2019 12:33:28 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v7] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20191030113328.GA31513@dhcp22.suse.cz>
+References: <1572428068-180880-1-git-send-email-linyunsheng@huawei.com>
+ <20191030101449.GW4097@hirez.programming.kicks-ass.net>
+ <20191030102229.GY31513@dhcp22.suse.cz>
+ <20191030102800.GX4097@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-In-Reply-To: <20191030111231.22720-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191030102800.GX4097@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,114 +49,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
+ will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
+ ysato@users.sourceforge.jp, linux-acpi@vger.kernel.org, x86@kernel.org,
+ Yunsheng Lin <linyunsheng@huawei.com>, rppt@linux.ibm.com,
+ borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
+ jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
+ lenb@kernel.org, len.brown@intel.com, gor@linux.ibm.com,
+ anshuman.khandual@arm.com, gregkh@linuxfoundation.org, bp@alien8.de,
+ luto@kernel.org, bhelgaas@google.com, tglx@linutronix.de,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, linux-pci@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+ ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
+ linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
+ akpm@linux-foundation.org, robin.murphy@arm.com, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed 30-10-19 11:28:00, Peter Zijlstra wrote:
+> On Wed, Oct 30, 2019 at 11:22:29AM +0100, Michal Hocko wrote:
+> > On Wed 30-10-19 11:14:49, Peter Zijlstra wrote:
+> > > On Wed, Oct 30, 2019 at 05:34:28PM +0800, Yunsheng Lin wrote:
+> > > > When passing the return value of dev_to_node() to cpumask_of_node()
+> > > > without checking if the device's node id is NUMA_NO_NODE, there is
+> > > > global-out-of-bounds detected by KASAN.
+> > > > 
+> > > > From the discussion [1], NUMA_NO_NODE really means no node affinity,
+> > > > which also means all cpus should be usable. So the cpumask_of_node()
+> > > > should always return all cpus online when user passes the node id as
+> > > > NUMA_NO_NODE, just like similar semantic that page allocator handles
+> > > > NUMA_NO_NODE.
+> > > > 
+> > > > But we cannot really copy the page allocator logic. Simply because the
+> > > > page allocator doesn't enforce the near node affinity. It just picks it
+> > > > up as a preferred node but then it is free to fallback to any other numa
+> > > > node. This is not the case here and node_to_cpumask_map will only restrict
+> > > > to the particular node's cpus which would have really non deterministic
+> > > > behavior depending on where the code is executed. So in fact we really
+> > > > want to return cpu_online_mask for NUMA_NO_NODE.
+> > > > 
+> > > > Also there is a debugging version of node_to_cpumask_map() for x86 and
+> > > > arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+> > > > patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+> > > > 
+> > > > [1] https://lkml.org/lkml/2019/9/11/66
+> > > > Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+> > > > Suggested-by: Michal Hocko <mhocko@kernel.org>
+> > > > Acked-by: Michal Hocko <mhocko@suse.com>
+> > > > Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
+> > > 
+> > > Still:
+> > > 
+> > > Nacked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > 
+> > Do you have any other proposal that doesn't make any wild guesses about
+> > which node to use instead of the undefined one?
+> 
+> It only makes 'wild' guesses when the BIOS is shit and it complains
+> about that.
 
+I really do not see how this is any better than simply using the online
+cpu mask in the same "broken" situation. We are effectivelly talking
+about a suboptimal path for suboptimal setups. I haven't heard any
+actual technical argument why cpu_online_mask is any worse than adding
+some sort of failover guessing which node to use as a replacement.
 
-Le 30/10/2019 à 12:12, Michael Ellerman a écrit :
-> As part of the uapi we export a lot of PT_xx defines for each register
-> in struct pt_regs. These are expressed as an index from gpr[0], in
-> units of unsigned long.
-> 
-> Currently there's nothing tying the values of those defines to the
-> actual layout of the struct.
-> 
-> But we *don't* want to change the uapi defines to derive the PT_xx
-> values based on the layout of the struct, those values are ABI and
-> must never change.
-> 
-> Instead we want to do the reverse, make sure that the layout of the
-> struct never changes vs the PT_xx defines. So add build time checks of
-> that.
-> 
-> This probably seems paranoid, but at least once in the past someone
-> has sent a patch that would have broken the ABI if it hadn't been
-> spotted. Although it probably would have been detected via testing,
-> it's preferable to just quash any issues at the source.
+I completely do you point about complaining loud about broken BIOS/fw.
+It seems we just disagree where we should workaround those issues
+because as of now we simply do generate semi random behavior because of
+an uninitialized memory access.
 
-While you are playing with pt_regs_check(), could you also take the 
-patch from Mathieu https://patchwork.ozlabs.org/patch/1009816/ ?
+> Or do you like you BIOS broken?
 
-Christophe
+I do not see anything like that in my response nor in my previous
+communication. Moreover a patch to warn about this should be on the way
+to get merged AFAIK.
 
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->   arch/powerpc/kernel/ptrace.c | 63 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 63 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
-> index 8c92febf5f44..abd888bada03 100644
-> --- a/arch/powerpc/kernel/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace.c
-> @@ -3398,4 +3398,67 @@ void __init pt_regs_check(void)
->   		     offsetof(struct user_pt_regs, result));
->   
->   	BUILD_BUG_ON(sizeof(struct user_pt_regs) > sizeof(struct pt_regs));
-> +
-> +	// Now check that the pt_regs offsets match the uapi #defines
-> +	#define CHECK_REG(_pt, _reg) \
-> +		BUILD_BUG_ON(_pt != (offsetof(struct user_pt_regs, _reg) / \
-> +				     sizeof(unsigned long)));
-> +
-> +	CHECK_REG(PT_R0,  gpr[0]);
-> +	CHECK_REG(PT_R1,  gpr[1]);
-> +	CHECK_REG(PT_R2,  gpr[2]);
-> +	CHECK_REG(PT_R3,  gpr[3]);
-> +	CHECK_REG(PT_R4,  gpr[4]);
-> +	CHECK_REG(PT_R5,  gpr[5]);
-> +	CHECK_REG(PT_R6,  gpr[6]);
-> +	CHECK_REG(PT_R7,  gpr[7]);
-> +	CHECK_REG(PT_R8,  gpr[8]);
-> +	CHECK_REG(PT_R9,  gpr[9]);
-> +	CHECK_REG(PT_R10, gpr[10]);
-> +	CHECK_REG(PT_R11, gpr[11]);
-> +	CHECK_REG(PT_R12, gpr[12]);
-> +	CHECK_REG(PT_R13, gpr[13]);
-> +	CHECK_REG(PT_R14, gpr[14]);
-> +	CHECK_REG(PT_R15, gpr[15]);
-> +	CHECK_REG(PT_R16, gpr[16]);
-> +	CHECK_REG(PT_R17, gpr[17]);
-> +	CHECK_REG(PT_R18, gpr[18]);
-> +	CHECK_REG(PT_R19, gpr[19]);
-> +	CHECK_REG(PT_R20, gpr[20]);
-> +	CHECK_REG(PT_R21, gpr[21]);
-> +	CHECK_REG(PT_R22, gpr[22]);
-> +	CHECK_REG(PT_R23, gpr[23]);
-> +	CHECK_REG(PT_R24, gpr[24]);
-> +	CHECK_REG(PT_R25, gpr[25]);
-> +	CHECK_REG(PT_R26, gpr[26]);
-> +	CHECK_REG(PT_R27, gpr[27]);
-> +	CHECK_REG(PT_R28, gpr[28]);
-> +	CHECK_REG(PT_R29, gpr[29]);
-> +	CHECK_REG(PT_R30, gpr[30]);
-> +	CHECK_REG(PT_R31, gpr[31]);
-> +	CHECK_REG(PT_NIP, nip);
-> +	CHECK_REG(PT_MSR, msr);
-> +	CHECK_REG(PT_ORIG_R3, orig_gpr3);
-> +	CHECK_REG(PT_CTR, ctr);
-> +	CHECK_REG(PT_LNK, link);
-> +	CHECK_REG(PT_XER, xer);
-> +	CHECK_REG(PT_CCR, ccr);
-> +#ifdef CONFIG_PPC64
-> +	CHECK_REG(PT_SOFTE, softe);
-> +#else
-> +	CHECK_REG(PT_MQ, mq);
-> +#endif
-> +	CHECK_REG(PT_TRAP, trap);
-> +	CHECK_REG(PT_DAR, dar);
-> +	CHECK_REG(PT_DSISR, dsisr);
-> +	CHECK_REG(PT_RESULT, result);
-> +	#undef CHECK_REG
-> +
-> +	BUILD_BUG_ON(PT_REGS_COUNT != sizeof(struct user_pt_regs) / sizeof(unsigned long));
-> +
-> +	/*
-> +	 * PT_DSCR isn't a real reg, but it's important that it doesn't overlap the
-> +	 * real registers.
-> +	 */
-> +	BUILD_BUG_ON(PT_DSCR < sizeof(struct user_pt_regs) / sizeof(unsigned long));
->   }
-> 
+-- 
+Michal Hocko
+SUSE Labs
