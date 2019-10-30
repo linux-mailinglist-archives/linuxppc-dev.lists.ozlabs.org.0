@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4528EA267
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 18:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2667EA28A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 18:27:39 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473FbH6Kb5zF4ZH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:20:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473FlF22fHzF4Hy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:27:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=arbab@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473F7n1dX1zF4RR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 04:00:20 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9UGdkQO039951; Wed, 30 Oct 2019 13:00:08 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473F7p3Fm0zF4RR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 04:00:22 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9UGct7p018951; Wed, 30 Oct 2019 13:00:16 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vydvs9u2g-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vxwmqn6s9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Oct 2019 13:00:08 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9UGpHUE087057;
- Wed, 30 Oct 2019 13:00:02 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2vydvs9u1r-1
+ Wed, 30 Oct 2019 13:00:14 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9UGdbrQ020527;
+ Wed, 30 Oct 2019 13:00:04 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vxwmqn6qh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Oct 2019 13:00:02 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9UGqUt7005988;
- Wed, 30 Oct 2019 17:00:02 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma05wdc.us.ibm.com with ESMTP id 2vxwh5yg5q-1
+ Wed, 30 Oct 2019 13:00:04 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9UGru8g020953;
+ Wed, 30 Oct 2019 17:00:01 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02wdc.us.ibm.com with ESMTP id 2vxwh5qgfw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 30 Oct 2019 17:00:01 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9UH01vY41419010
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9UH01Pr28377398
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 30 Oct 2019 17:00:01 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4A7C6124060;
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4BF91112061;
  Wed, 30 Oct 2019 17:00:01 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36A2A12405C;
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3851A11206F;
  Wed, 30 Oct 2019 17:00:01 +0000 (GMT)
 Received: from arbab-laptop.localdomain (unknown [9.53.179.210])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
  Wed, 30 Oct 2019 17:00:01 +0000 (GMT)
 Received: by arbab-laptop.localdomain (Postfix, from userid 152845)
- id 484D14654A4; Wed, 30 Oct 2019 12:00:00 -0500 (CDT)
+ id 50AE94654A7; Wed, 30 Oct 2019 12:00:00 -0500 (CDT)
 From: Reza Arbab <arbab@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 02/11] powerpc/powernv: Add
- pnv_ioda_pe_iommu_bypass_supported()
-Date: Wed, 30 Oct 2019 11:59:51 -0500
-Message-Id: <1572454800-17976-3-git-send-email-arbab@linux.ibm.com>
+Subject: [PATCH 03/11] powerpc/powernv/npu: Change
+ pnv_npu_try_dma_set_bypass() argument
+Date: Wed, 30 Oct 2019 11:59:52 -0500
+Message-Id: <1572454800-17976-4-git-send-email-arbab@linux.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1572454800-17976-1-git-send-email-arbab@linux.ibm.com>
 References: <1572454800-17976-1-git-send-email-arbab@linux.ibm.com>
@@ -97,58 +97,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This little calculation will be needed in other places. Move it to a
-convenience function.
+To enable simpler calling code, change this function to find the value
+of bypass instead of taking it as an argument.
 
 Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 8 +++-----
- arch/powerpc/platforms/powernv/pci.h      | 8 ++++++++
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ arch/powerpc/platforms/powernv/npu-dma.c | 12 +++++++++---
+ arch/powerpc/platforms/powernv/pci.h     |  2 +-
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index c28d0d9b7ee0..8849218187d7 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1838,11 +1838,9 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
- 		return false;
+diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+index 5a8313654033..a6b8c7ad36e4 100644
+--- a/arch/powerpc/platforms/powernv/npu-dma.c
++++ b/arch/powerpc/platforms/powernv/npu-dma.c
+@@ -258,13 +258,21 @@ static int pnv_npu_dma_set_bypass(struct pnv_ioda_pe *npe)
+ 	return rc;
+ }
  
- 	pe = &phb->ioda.pe_array[pdn->pe_number];
--	if (pe->tce_bypass_enabled) {
--		u64 top = pe->tce_bypass_base + memblock_end_of_DRAM() - 1;
--		if (dma_mask >= top)
--			return true;
--	}
+-void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool bypass)
++void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, u64 mask)
+ {
++	struct pnv_ioda_pe *gpe = pnv_ioda_get_pe(gpdev);
+ 	int i;
+ 	struct pnv_phb *phb;
+ 	struct pci_dn *pdn;
+ 	struct pnv_ioda_pe *npe;
+ 	struct pci_dev *npdev;
++	bool bypass;
 +
-+	if (pnv_ioda_pe_iommu_bypass_supported(pe, dma_mask))
-+		return true;
++	if (!gpe)
++		return;
++
++	/* We only do bypass if it's enabled on the linked device */
++	bypass = pnv_ioda_pe_iommu_bypass_supported(gpe, mask);
  
- 	/*
- 	 * If the device can't set the TCE bypass bit but still wants
+ 	for (i = 0; ; ++i) {
+ 		npdev = pnv_pci_get_npu_dev(gpdev, i);
+@@ -277,8 +285,6 @@ void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool bypass)
+ 			return;
+ 
+ 		phb = pci_bus_to_host(npdev->bus)->private_data;
+-
+-		/* We only do bypass if it's enabled on the linked device */
+ 		npe = &phb->ioda.pe_array[pdn->pe_number];
+ 
+ 		if (bypass) {
 diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-index f914f0b14e4e..41f7dec3aee5 100644
+index 41f7dec3aee5..21db0f4cfb11 100644
 --- a/arch/powerpc/platforms/powernv/pci.h
 +++ b/arch/powerpc/platforms/powernv/pci.h
-@@ -4,6 +4,7 @@
+@@ -211,7 +211,7 @@ extern void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
+ 	pe_level_printk(pe, KERN_INFO, fmt, ##__VA_ARGS__)
  
- #include <linux/compiler.h>		/* for __printf */
- #include <linux/iommu.h>
-+#include <linux/memblock.h>
- #include <asm/iommu.h>
- #include <asm/msi_bitmap.h>
- 
-@@ -247,4 +248,11 @@ extern void pnv_pci_setup_iommu_table(struct iommu_table *tbl,
- 		void *tce_mem, u64 tce_size,
- 		u64 dma_offset, unsigned int page_shift);
- 
-+static inline bool pnv_ioda_pe_iommu_bypass_supported(struct pnv_ioda_pe *pe,
-+						      u64 mask)
-+{
-+	return pe->tce_bypass_enabled &&
-+	       mask >= pe->tce_bypass_base + memblock_end_of_DRAM() - 1;
-+}
-+
- #endif /* __POWERNV_PCI_H */
+ /* Nvlink functions */
+-extern void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool bypass);
++extern void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, u64 mask);
+ extern void pnv_pci_ioda2_tce_invalidate_entire(struct pnv_phb *phb, bool rm);
+ extern struct pnv_ioda_pe *pnv_pci_npu_setup_iommu(struct pnv_ioda_pe *npe);
+ extern struct iommu_table_group *pnv_try_setup_npu_table_group(
 -- 
 1.8.3.1
 
