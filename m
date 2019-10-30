@@ -2,73 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CEFE9849
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:40:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BDEE9894
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 10:00:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47323J4BCGzF3tx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 19:40:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4732Tk5zVyzF3v9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 20:00:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="O0eRAHdD"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="udhf1le6"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4732113VtdzF3gs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 19:38:42 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id 3so1070897pfb.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 01:38:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=v2hRD77Xa+8VszcX+WELl2gUUJHpsHwPoC3bm/BbZJM=;
- b=O0eRAHdD3DBS5qT2uOGdJxD2ejyrVV4ujntxZVDXHK2ooTcUnKP/k7bUbI0NaeUM1u
- YdR7lGqW/eh/55fHGUltUpJYU583TNyN5vHE2+2RMDKHOhEJLyHilGDL7KR8Bt4N0iJg
- YXUQQ6iF3vSXDedenuRHCs6BVYYKCd2PAPbJvDtwVLgafZ82mnpo5yazIPYEjo5+0ESQ
- QTvFjFmodYnnwwZzV/mkcPJDMrgCHFfn9yPlsg27NkywsIll1sk0i4eWYlZb+HazgjpP
- 1rPrIafhLPFMcndMvBiGq3ANbJxOMBZcimO8VkU0ZFyMePGUEZ1ygvBIM91Ik+Ezq07A
- arCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=v2hRD77Xa+8VszcX+WELl2gUUJHpsHwPoC3bm/BbZJM=;
- b=ZdzOI+womzZpZK7WyrTL3owZ3nIIhFvxirbXzl7BrUW/tHWHkCf5WGv9HVTEQdG63b
- fJpAVgDPXrQhEi/aNszq6GI3b4cpBCxwSNNHocalpnDlrsax6tHEmzjIK0WWZK4Mb/za
- qslUwIwyuvcwQ35xC1pOzr4JaIeaiIqVhsuLcFzNoqaKlV1bJrxUDE8cMDxz4u2fln9h
- cZLGhvwro79GakjNrAWpZpJeH6iYuGH243ACI53/lmbFdQT5LEV3Y7bRafrlm3VC3OUn
- t7k8GkAUCbGr33Te0sy7v65VaTXI2Dfah8fUNwvq1Phn+s9W0L5/KGX7JeeP/7Mg/WlM
- 2DPA==
-X-Gm-Message-State: APjAAAVqXtxOEDqSi5ykoL9r8qZPwWSJUdNvaE9bzftlKLp6C5umosQ8
- DZ2uK2J9oIJUUnt+FCNDZPk=
-X-Google-Smtp-Source: APXvYqwahN/PAT9+SXrRtJkw50qD6UZNdHbCE8Z8QKgQmJfmTZRDGvMaddupYSRIAemYyM1TezVClw==
-X-Received: by 2002:a65:6713:: with SMTP id u19mr5515149pgf.358.1572424716728; 
- Wed, 30 Oct 2019 01:38:36 -0700 (PDT)
-Received: from Asurada (c-73-162-191-63.hsd1.ca.comcast.net. [73.162.191.63])
- by smtp.gmail.com with ESMTPSA id
- b26sm1617680pfo.179.2019.10.30.01.38.35
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 30 Oct 2019 01:38:36 -0700 (PDT)
-Date: Wed, 30 Oct 2019 01:38:13 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: "S.j. Wang" <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 2/2] ASoC: fsl_asrc: Add support for imx8qm
-Message-ID: <20191030083813.GA9924@Asurada>
-References: <VE1PR04MB64795758EBC0C898FBFFB3A5E3600@VE1PR04MB6479.eurprd04.prod.outlook.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4732Rj0pXqzF3tm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 19:58:23 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4732Rb2RXCz9v0Ys;
+ Wed, 30 Oct 2019 09:58:19 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=udhf1le6; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id QW7rLy2nc01p; Wed, 30 Oct 2019 09:58:19 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4732Rb1D9fz9v0Yq;
+ Wed, 30 Oct 2019 09:58:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1572425899; bh=jg/wc8QIbH4zECIjrC9M/cSkNiZPA4jlUbBw8WzlMmY=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=udhf1le6OFrzcC9F8/Jd3vUzk02Y1Uc46itrYCfThyMt1ggmkeWF4ZgPrhj67fHdX
+ MWVctyCNIzvPbzoxqS7wlL2gj+fCvpq1ZwdtAtwn+aUhfwFTztYcZfa+ABfpBC5CZq
+ qifNjLSPHtAZOT49of06gWob19bTDkYEhx45FIAI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 19BCC8B7B5;
+ Wed, 30 Oct 2019 09:58:20 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 3yS0ka3Ql27X; Wed, 30 Oct 2019 09:58:20 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8CFD98B7AF;
+ Wed, 30 Oct 2019 09:58:19 +0100 (CET)
+Subject: Re: [PATCH v5 0/5] Implement STRICT_MODULE_RWX for powerpc
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+References: <20191030073111.140493-1-ruscur@russell.cc>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <53461d29-ec0c-4401-542e-6d575545da38@c-s.fr>
+Date: Wed, 30 Oct 2019 09:58:19 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VE1PR04MB64795758EBC0C898FBFFB3A5E3600@VE1PR04MB6479.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
+In-Reply-To: <20191030073111.140493-1-ruscur@russell.cc>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,94 +77,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>, "perex@perex.cz" <perex@perex.cz>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ joel@jms.id.au, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 30, 2019 at 03:20:35AM +0000, S.j. Wang wrote:
-> Hi
+
+
+Le 30/10/2019 à 08:31, Russell Currey a écrit :
+> v4 cover letter: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198268.html
+> v3 cover letter: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198023.html
 > 
-> > 
-> > On Tue, Oct 29, 2019 at 05:17:09PM +0800, Shengjiu Wang wrote:
-> > > There are two asrc module in imx8qm, each module has different clock
-> > > configuration, and the DMA type is EDMA.
-> > >
-> > > So in this patch, we define the new clocks, refine the clock map, and
-> > > include struct fsl_asrc_soc_data for different soc usage.
-> > >
-> > > The EDMA channel is fixed with each dma request, one dma request
-> > > corresponding to one dma channel. So we need to request dma channel
-> > > with dma request of asrc module.
-> > >
-> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > ---
-> > >  sound/soc/fsl/fsl_asrc.c     | 91 +++++++++++++++++++++++++++++-------
-> > >  sound/soc/fsl/fsl_asrc.h     | 65 +++++++++++++++++++++++++-
-> > >  sound/soc/fsl/fsl_asrc_dma.c | 39 ++++++++++++----
-> > >  3 files changed, 167 insertions(+), 28 deletions(-)
-> > 
-> > > diff --git a/sound/soc/fsl/fsl_asrc_dma.c
-> > > b/sound/soc/fsl/fsl_asrc_dma.c index d6146de9acd2..dbb07a486504
-> > 100644
-> > > --- a/sound/soc/fsl/fsl_asrc_dma.c
-> > > +++ b/sound/soc/fsl/fsl_asrc_dma.c
-> > > @@ -199,19 +199,40 @@ static int fsl_asrc_dma_hw_params(struct
-> > > snd_soc_component *component,
-> > >
-> > >       /* Get DMA request of Back-End */
-> > >       tmp_chan = dma_request_slave_channel(dev_be, tx ? "tx" : "rx");
-> > > -     tmp_data = tmp_chan->private;
-> > > -     pair->dma_data.dma_request = tmp_data->dma_request;
-> > > -     dma_release_channel(tmp_chan);
-> > > +     /* tmp_chan may be NULL for it is already allocated by Back-End */
-> > > +     if (tmp_chan) {
-> > > +             tmp_data = tmp_chan->private;
-> > > +             if (tmp_data)
-> > > +                     pair->dma_data.dma_request =
-> > > + tmp_data->dma_request;
-> > 
-> > If this patch is supposed to add a !tmp_chan case for EDMA, we probably
-> > shouldn't mute the !tmp_data case because dma_request will be NULL,
-> > although the code previously didn't have a check either. I mean we might
-> > need to error-out for !tmp_chan. Or...
-> > is this intentional?
-> > 
+> Changes since v4:
+> 	[1/5]: Addressed review comments from Michael Ellerman (thanks!)
+> 	[4/5]: make ARCH_HAS_STRICT_MODULE_RWX depend on
+> 	       ARCH_HAS_STRICT_KERNEL_RWX to simplify things and avoid
+> 	       STRICT_MODULE_RWX being *on by default* in cases where
+> 	       STRICT_KERNEL_RWX is *unavailable*
+> 	[5/5]: split skiroot_defconfig changes out into its own patch
 > 
-> Yes, intentional. May be we can change to 
+> The whole Kconfig situation is really weird and confusing, I believe the
+> correct resolution is to change arch/Kconfig but the consequences are so
+> minor that I don't think it's worth it, especially given that I expect
+> powerpc to have mandatory strict RWX Soon(tm).
+
+I'm not such strict RWX can be made mandatory due to the impact it has 
+on some subarches:
+- On the 8xx, unless all areas are 8Mbytes aligned, there is a 
+significant overhead on TLB misses. And Aligning everthing to 8M is a 
+waste of RAM which is not acceptable on systems having very few RAM.
+- On hash book3s32, we are able to map the kernel BATs. With a few 
+alignment constraints, we are able to provide STRICT_KERNEL_RWX. But we 
+are unable to provide exec protection on page granularity. Only on 
+256Mbytes segments. So for modules, we have to have the vmspace X. It is 
+also not possible to have a kernel area RO. Only user areas can be made RO.
+
+Christophe
+
 > 
->         if (!asrc_priv->soc->use_edma) {
->                 /* Get DMA request of Back-End */
->                 tmp_chan = dma_request_slave_channel(dev_be, tx ? "tx" : "rx");
->                 tmp_data = tmp_chan->private;
->                 pair->dma_data.dma_request = tmp_data->dma_request;
->                 dma_release_channel(tmp_chan);
+> Russell Currey (5):
+>    powerpc/mm: Implement set_memory() routines
+>    powerpc/kprobes: Mark newly allocated probes as RO
+>    powerpc/mm/ptdump: debugfs handler for W+X checks at runtime
+>    powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+>    powerpc/configs: Enable STRICT_MODULE_RWX in skiroot_defconfig
 > 
->                 /* Get DMA request of Front-End */
->                 tmp_chan = fsl_asrc_get_dma_channel(pair, dir);
->                 tmp_data = tmp_chan->private;
->                 pair->dma_data.dma_request2 = tmp_data->dma_request;
->                 pair->dma_data.peripheral_type = tmp_data->peripheral_type;
->                 pair->dma_data.priority = tmp_data->priority;
->                 dma_release_channel(tmp_chan);
->         }
-
-Oh...now I understand..yea, I think this would be better.
-
-Would you please change it in v2?
-
-I am fine with other places, so may add:
-
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-
-Thanks
+>   arch/powerpc/Kconfig                   |  2 +
+>   arch/powerpc/Kconfig.debug             |  6 +-
+>   arch/powerpc/configs/skiroot_defconfig |  1 +
+>   arch/powerpc/include/asm/set_memory.h  | 32 +++++++++++
+>   arch/powerpc/kernel/kprobes.c          |  3 +
+>   arch/powerpc/mm/Makefile               |  1 +
+>   arch/powerpc/mm/pageattr.c             | 77 ++++++++++++++++++++++++++
+>   arch/powerpc/mm/ptdump/ptdump.c        | 21 ++++++-
+>   8 files changed, 140 insertions(+), 3 deletions(-)
+>   create mode 100644 arch/powerpc/include/asm/set_memory.h
+>   create mode 100644 arch/powerpc/mm/pageattr.c
+> 
