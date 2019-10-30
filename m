@@ -2,31 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D881AE9BCE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 13:50:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1927DE9BE2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 13:55:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4737bV53TxzF4Kx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 23:50:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4737j420GwzF4M8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 23:55:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4736nx43JGzF4BZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 23:14:29 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4736qp3S6mzF4Bp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 23:16:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4736nw2fQ5z9sPw; Wed, 30 Oct 2019 23:14:27 +1100 (AEDT)
+ id 4736qn4LRgz9sPj; Wed, 30 Oct 2019 23:16:05 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: a9336ddf448b1cba3080195cec2287af3907236c
-In-Reply-To: <1526868278-4204-1-git-send-email-debmc@linux.vnet.ibm.com>
-To: Deb McLemore <debmc@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: 05d9a952832cb206a32e3705eff6edebdb2207e7
+In-Reply-To: <20190911163433.12822-1-bauerman@linux.ibm.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v3] powerpc/powernv: Add queue mechanism for early messages
-Message-Id: <4736nw2fQ5z9sPw@ozlabs.org>
-Date: Wed, 30 Oct 2019 23:14:27 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc/prom_init: Undo relocation before entering secure
+ mode
+Message-Id: <4736qn4LRgz9sPj@ozlabs.org>
+Date: Wed, 30 Oct 2019 23:16:05 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,37 +40,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Deb McLemore <debmc@linux.vnet.ibm.com>
+Cc: Paul Mackerras <paulus@samba.org>, Mike Anderson <andmike@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2018-05-21 at 02:04:38 UTC, Deb McLemore wrote:
-> Problem being solved is when issuing a BMC soft poweroff during IPL,
-> the poweroff was being lost so the machine would not poweroff.
+On Wed, 2019-09-11 at 16:34:33 UTC, Thiago Jung Bauermann wrote:
+> The ultravisor will do an integrity check of the kernel image but we
+> relocated it so the check will fail. Restore the original image by
+> relocating it back to the kernel virtual base address.
 > 
-> Opal messages were being received before the opal-power code
-> registered its notifiers.
+> This works because during build vmlinux is linked with an expected virtual
+> runtime address of KERNELBASE.
 > 
-> Alternatives discussed (option #3 was chosen):
-> 
-> 1 - Have opal_message_init() explicitly call opal_power_control_init()
-> before it dequeues any OPAL messages (i.e. before we register the
-> opal-msg IRQ handler).
-> 
-> 2 - Introduce concept of critical message types and when we register
-> handlers we track which message types have a registered handler,
-> then defer the opal-msg IRQ registration until we have a handler
-> registered for all the critical types.
-> 
-> 3 - Buffering messages, if we receive a message and do not yet
-> have a handler for that type, store the message and replay when
-> a handler for that type is registered.
-> 
-> Signed-off-by: Deb McLemore <debmc@linux.vnet.ibm.com>
+> Fixes: 6a9c930bd775 ("powerpc/prom_init: Add the ESM call to prom_init")
+> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
-Applied to powerpc next, thanks.
+Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/a9336ddf448b1cba3080195cec2287af3907236c
+https://git.kernel.org/powerpc/c/05d9a952832cb206a32e3705eff6edebdb2207e7
 
 cheers
