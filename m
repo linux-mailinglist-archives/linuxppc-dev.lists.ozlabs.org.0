@@ -2,72 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC24EA440
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 20:30:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CFEEA4B8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 21:27:53 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473JSh6yBzzF4ln
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 06:30:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473KlB4LfnzF4BX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 07:27:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::72e; helo=mail-qk1-x72e.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="TrJAltYS"; 
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="FvKZArqV"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
+ [IPv6:2607:f8b0:4864:20::72e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473JQf0pVMzF4gF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 06:28:23 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 473JQV58zdzB09ZV;
- Wed, 30 Oct 2019 20:28:18 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=TrJAltYS; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iXswy5aqM3Cz; Wed, 30 Oct 2019 20:28:18 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 473JQV3x7fzB09ZS;
- Wed, 30 Oct 2019 20:28:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1572463698; bh=ETokkupD46fOqlNm37kOMe+hG1J9xpIjHaEC+LfiVeY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=TrJAltYSIt4J02S1w/Mp4rD1r8mebAnu7YyWhYjgDw3eJ74nOa6jTB1PVKY7/BSfr
- kPMowTuZeTwMxpwoFdyQYhtzf5g9XwqAc2INQ2OSu8do83JzS/TjO4EUWDhndJdPUZ
- r3Yt3G+byPB+HhmB0cZuEPwv1Tx3HiAK7Szz6n3E=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A6338B8A2;
- Wed, 30 Oct 2019 20:28:18 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mVfLfeFFNn-0; Wed, 30 Oct 2019 20:28:18 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DE0178B8A1;
- Wed, 30 Oct 2019 20:28:17 +0100 (CET)
-Subject: Re: [PATCH v5 0/5] Implement STRICT_MODULE_RWX for powerpc
-To: Kees Cook <keescook@chromium.org>
-References: <20191030073111.140493-1-ruscur@russell.cc>
- <53461d29-ec0c-4401-542e-6d575545da38@c-s.fr>
- <201910301128.E7552CDD@keescook>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <776c0722-eb8c-622a-a70b-f19ae07c1dc3@c-s.fr>
-Date: Wed, 30 Oct 2019 20:28:17 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <201910301128.E7552CDD@keescook>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473Khn6fNjzF4lG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 07:25:42 +1100 (AEDT)
+Received: by mail-qk1-x72e.google.com with SMTP id m16so3881512qki.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 13:25:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=message-id:subject:from:to:cc:date:mime-version
+ :content-transfer-encoding;
+ bh=KiFm2XT1/ex9pyBydKszuWy1JMFujhglMV+BmZKuRx8=;
+ b=FvKZArqVg5c7lnvj3ny0bJF74EIWJqP3pvXLD4J3+mOSMFEBPxbo9BgJ+KEaSUBze4
+ WQJCgxFBT+NqD4gA7Jq74eaTQ5WEKQBfdp2OIYdeB5ad3mh6DB++FjqUOvPK1R1le3Sp
+ bkqMApjE3M/tR17+3EgezeNzv7rKXq9DgGfIIxLHN8cVAKKwBm14RymhMm699b0Xtdb5
+ ngG/3T7cfsLqIv0E3igR3HK7Lk89z74QBgbw5yPcIXLmLo3lW2Z9KRq/nBUxsdY+AMhM
+ EQsrgqvjpSs6pbIeek9OmD3IlDt/4+cU01ZLA5Mo54Rh9KqmlOt0ZJmBbV8KsqYTMu2V
+ Ja0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:mime-version
+ :content-transfer-encoding;
+ bh=KiFm2XT1/ex9pyBydKszuWy1JMFujhglMV+BmZKuRx8=;
+ b=JUWmVrBuqN4nsGrs3CGlFx3YbA6AWIJzFc3XxosH/mxnQjRiR0n1zaDpeBkaRUB4+M
+ 3NhSiNF88aq5EWamsWf971ddodLMAJdNvl/P5wMdosG8xKlRBQhc5YI72NyBsUrD64M2
+ 1/K/KIRfksV01KED+8zO6o+OxaMZg/sX0OafBDEu6hujgbTmFYbik7kmrxEP5Qg2Awgp
+ 72RfsgXHTTi3LajmzwAuAOOsuI3p07L5ZsodPikciOna9QeHSVJAr8Ged2Uf1asxbpar
+ 7g9uBK1UjCqWFTdbjMvGeU68izi49ilCCKikwLw+wGssjV9BwtdI+TSrCos30JsdncYW
+ RGgw==
+X-Gm-Message-State: APjAAAV6FX2pj3z38ARzTqA46emmR9ZjI1zCkWUO99J1WwXpGgwmA0Um
+ SpA+hL9zqHYF4M9GVcQVK0Zc4g==
+X-Google-Smtp-Source: APXvYqyx0H3XsyanEpK1jniy58tWKZ3wda42vCC2p7wzRRQRjGWr6vlqi0Sn1CUS/nb0HAADenFj2Q==
+X-Received: by 2002:ae9:f204:: with SMTP id m4mr1874942qkg.105.1572467139382; 
+ Wed, 30 Oct 2019 13:25:39 -0700 (PDT)
+Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
+ [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id q7sm600893qkb.46.2019.10.30.13.25.38
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 30 Oct 2019 13:25:38 -0700 (PDT)
+Message-ID: <1572467136.5937.107.camel@lca.pw>
+Subject: Section mismatch warnings on powerpc
+From: Qian Cai <cai@lca.pw>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 30 Oct 2019 16:25:36 -0400
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,58 +78,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
- joel@jms.id.au, linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: Mauricio Faria de Oliveira <mauricfo@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Still see those,
 
+WARNING: vmlinux.o(.text+0x2d04): Section mismatch in reference from the
+variable __boot_from_prom to the function .init.text:prom_init()
+The function __boot_from_prom() references
+the function __init prom_init().
+This is often because __boot_from_prom lacks a __init
+annotation or the annotation of prom_init is wrong.
 
-Le 30/10/2019 à 19:30, Kees Cook a écrit :
-> On Wed, Oct 30, 2019 at 09:58:19AM +0100, Christophe Leroy wrote:
->>
->>
->> Le 30/10/2019 à 08:31, Russell Currey a écrit :
->>> v4 cover letter: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198268.html
->>> v3 cover letter: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198023.html
->>>
->>> Changes since v4:
->>> 	[1/5]: Addressed review comments from Michael Ellerman (thanks!)
->>> 	[4/5]: make ARCH_HAS_STRICT_MODULE_RWX depend on
->>> 	       ARCH_HAS_STRICT_KERNEL_RWX to simplify things and avoid
->>> 	       STRICT_MODULE_RWX being *on by default* in cases where
->>> 	       STRICT_KERNEL_RWX is *unavailable*
->>> 	[5/5]: split skiroot_defconfig changes out into its own patch
->>>
->>> The whole Kconfig situation is really weird and confusing, I believe the
->>> correct resolution is to change arch/Kconfig but the consequences are so
->>> minor that I don't think it's worth it, especially given that I expect
->>> powerpc to have mandatory strict RWX Soon(tm).
->>
->> I'm not such strict RWX can be made mandatory due to the impact it has on
->> some subarches:
->> - On the 8xx, unless all areas are 8Mbytes aligned, there is a significant
->> overhead on TLB misses. And Aligning everthing to 8M is a waste of RAM which
->> is not acceptable on systems having very few RAM.
->> - On hash book3s32, we are able to map the kernel BATs. With a few alignment
->> constraints, we are able to provide STRICT_KERNEL_RWX. But we are unable to
->> provide exec protection on page granularity. Only on 256Mbytes segments. So
->> for modules, we have to have the vmspace X. It is also not possible to have
->> a kernel area RO. Only user areas can be made RO.
-> 
-> As I understand it, the idea was for it to be mandatory (or at least
-> default-on) only for the subarches where it wasn't totally insane to
-> accomplish. :) (I'm not familiar with all the details on the subarchs,
-> but it sounded like the more modern systems would be the targets for
-> this?)
-> 
+WARNING: vmlinux.o(.text+0x2ec8): Section mismatch in reference from the
+variable start_here_common to the function .init.text:start_kernel()
+The function start_here_common() references
+the function __init start_kernel().
+This is often because start_here_common lacks a __init
+annotation or the annotation of start_kernel is wrong.
 
-Yes I guess so.
+There is a patch around,
 
-I was just afraid by "I expect powerpc to have mandatory strict RWX"
+http://patchwork.ozlabs.org/patch/895442/
 
-By the way, we have an open issue #223 namely 'Make strict kernel RWX 
-the default on 64-bit', so no worry as 32-bit is aside for now.
-
-Christophe
+Does it still wait for Michael to come with some better names?
