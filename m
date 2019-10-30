@@ -1,74 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89367E99F8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 11:27:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1087CE9A07
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 11:30:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4734QN5hqszF3x1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 21:27:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4734Tq3czMzF40p
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 21:30:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="nljnVkQa"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="TTZFxiKp"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4734Lk4pB7zF3xr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 21:24:13 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4734Ld313bz9vC0Y;
- Wed, 30 Oct 2019 11:24:09 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=nljnVkQa; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id VO0eJu24sHJd; Wed, 30 Oct 2019 11:24:09 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4734Ld1r3Qz9vC0C;
- Wed, 30 Oct 2019 11:24:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1572431049; bh=ACqajUDrFNpwcC+AioRIkBdQ0r2pymgCUimnqSpGHQg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=nljnVkQa52uPHLLWTFzaQqomoLVUelys6slJi1kyplTKQ9WqNf/IluGEQ3z2q3kTm
- /Hl8b8knPwTuMVdKX1+NWBlAVUbHmhSFz0ym8cmY+Eg8wu5dM08fyjlyuzGyLt4bx/
- dVTxTEdrz1lKfrPzahBqILlmdH6Ac7V9AqkbXzoA=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5904B8B7C0;
- Wed, 30 Oct 2019 11:24:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id RF5ZI91XcOtS; Wed, 30 Oct 2019 11:24:10 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B18758B7AF;
- Wed, 30 Oct 2019 11:24:09 +0100 (CET)
-Subject: Re: [PATCH v2 07/23] soc: fsl: qe: merge qe_ic.h into qe_ic.c
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
-References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191025124058.22580-1-linux@rasmusvillemoes.dk>
- <20191025124058.22580-8-linux@rasmusvillemoes.dk>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <7837553d-4247-7166-8625-77483bfb641d@c-s.fr>
-Date: Wed, 30 Oct 2019 11:24:09 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4734Rn5xfXzF3x7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 21:28:37 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=+iN3V487rLzT6LAFR1lzAXcK6hHjNNfijwtxuSgahPs=; b=TTZFxiKpbgiZniSx8bKJLugvS
+ OC2zXy5c+p6FtvBkyb3BecvsK5LyHyquAbLYzb2lPhR53c8294ub4Gw8FB9HlpLKkYSrKD/QZrJ41
+ 8+0hg7SzG5mNB9ioHbCpVpPxxfuG/efYdDcDuuV8BPA8VNijtdrHBwFqxseWrFuZdqn9y2lItlShZ
+ Ow99esDEZpnLKXV/aD+uqeIO/vQTiY9XyVVKzJ9VV+yRQkKpRO/a6K+Tm3BHosnK9D+xC42zG51Ob
+ IG/Ao62HuZeuXpUoKF6v2tov3gFSeHA0oYTo/X1IpRjjjOeQmFS5hR8CtaxIa1bgup+FMSaKmWEkE
+ K2LC03wzA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iPlCw-0000Ux-HX; Wed, 30 Oct 2019 10:28:06 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CC14F300596;
+ Wed, 30 Oct 2019 11:26:59 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id E85FD2B437E86; Wed, 30 Oct 2019 11:28:00 +0100 (CET)
+Date: Wed, 30 Oct 2019 11:28:00 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v7] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+Message-ID: <20191030102800.GX4097@hirez.programming.kicks-ass.net>
+References: <1572428068-180880-1-git-send-email-linyunsheng@huawei.com>
+ <20191030101449.GW4097@hirez.programming.kicks-ass.net>
+ <20191030102229.GY31513@dhcp22.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20191025124058.22580-8-linux@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191030102229.GY31513@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,260 +73,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>,
- Valentin Longchamp <valentin.longchamp@keymile.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
+ will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
+ ysato@users.sourceforge.jp, linux-acpi@vger.kernel.org, x86@kernel.org,
+ Yunsheng Lin <linyunsheng@huawei.com>, rppt@linux.ibm.com,
+ borntraeger@de.ibm.com, dledford@redhat.com, mingo@redhat.com,
+ jeffrey.t.kirsher@intel.com, jhogan@kernel.org, mattst88@gmail.com,
+ lenb@kernel.org, len.brown@intel.com, gor@linux.ibm.com,
+ anshuman.khandual@arm.com, gregkh@linuxfoundation.org, bp@alien8.de,
+ luto@kernel.org, bhelgaas@google.com, tglx@linutronix.de,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, linux-pci@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+ ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
+ linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
+ akpm@linux-foundation.org, robin.murphy@arm.com, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 25/10/2019 à 14:40, Rasmus Villemoes a écrit :
-> The local qe_ic.h header is only used by qe_ic.c, so merge its
-> contents into the .c file. This is preparation for moving the driver
-> to drivers/irqchip/. It also avoids confusion between this header and
-> the one at include/soc/fsl/qe/qe_ic.h, which is included from a number
-> of places (qe_ic.c among others).
+On Wed, Oct 30, 2019 at 11:22:29AM +0100, Michal Hocko wrote:
+> On Wed 30-10-19 11:14:49, Peter Zijlstra wrote:
+> > On Wed, Oct 30, 2019 at 05:34:28PM +0800, Yunsheng Lin wrote:
+> > > When passing the return value of dev_to_node() to cpumask_of_node()
+> > > without checking if the device's node id is NUMA_NO_NODE, there is
+> > > global-out-of-bounds detected by KASAN.
+> > > 
+> > > From the discussion [1], NUMA_NO_NODE really means no node affinity,
+> > > which also means all cpus should be usable. So the cpumask_of_node()
+> > > should always return all cpus online when user passes the node id as
+> > > NUMA_NO_NODE, just like similar semantic that page allocator handles
+> > > NUMA_NO_NODE.
+> > > 
+> > > But we cannot really copy the page allocator logic. Simply because the
+> > > page allocator doesn't enforce the near node affinity. It just picks it
+> > > up as a preferred node but then it is free to fallback to any other numa
+> > > node. This is not the case here and node_to_cpumask_map will only restrict
+> > > to the particular node's cpus which would have really non deterministic
+> > > behavior depending on where the code is executed. So in fact we really
+> > > want to return cpu_online_mask for NUMA_NO_NODE.
+> > > 
+> > > Also there is a debugging version of node_to_cpumask_map() for x86 and
+> > > arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+> > > patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+> > > 
+> > > [1] https://lkml.org/lkml/2019/9/11/66
+> > > Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+> > > Suggested-by: Michal Hocko <mhocko@kernel.org>
+> > > Acked-by: Michal Hocko <mhocko@suse.com>
+> > > Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
+> > 
+> > Still:
+> > 
+> > Nacked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 > 
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
->   drivers/soc/fsl/qe/qe_ic.c |  91 ++++++++++++++++++++++++++++++-
->   drivers/soc/fsl/qe/qe_ic.h | 108 -------------------------------------
->   2 files changed, 90 insertions(+), 109 deletions(-)
->   delete mode 100644 drivers/soc/fsl/qe/qe_ic.h
-> 
-> diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
-> index d420492b4c23..7b1870d2866a 100644
-> --- a/drivers/soc/fsl/qe/qe_ic.c
-> +++ b/drivers/soc/fsl/qe/qe_ic.c
-> @@ -26,7 +26,96 @@
->   #include <asm/io.h>
->   #include <soc/fsl/qe/qe_ic.h>
->   
-> -#include "qe_ic.h"
-> +#define NR_QE_IC_INTS		64
-> +
-> +/* QE IC registers offset */
-> +#define QEIC_CICR		0x00
-> +#define QEIC_CIVEC		0x04
-> +#define QEIC_CRIPNR		0x08
-> +#define QEIC_CIPNR		0x0c
-> +#define QEIC_CIPXCC		0x10
-> +#define QEIC_CIPYCC		0x14
-> +#define QEIC_CIPWCC		0x18
-> +#define QEIC_CIPZCC		0x1c
-> +#define QEIC_CIMR		0x20
-> +#define QEIC_CRIMR		0x24
-> +#define QEIC_CICNR		0x28
-> +#define QEIC_CIPRTA		0x30
-> +#define QEIC_CIPRTB		0x34
-> +#define QEIC_CRICR		0x3c
-> +#define QEIC_CHIVEC		0x60
-> +
-> +/* Interrupt priority registers */
-> +#define CIPCC_SHIFT_PRI0	29
-> +#define CIPCC_SHIFT_PRI1	26
-> +#define CIPCC_SHIFT_PRI2	23
-> +#define CIPCC_SHIFT_PRI3	20
-> +#define CIPCC_SHIFT_PRI4	13
-> +#define CIPCC_SHIFT_PRI5	10
-> +#define CIPCC_SHIFT_PRI6	7
-> +#define CIPCC_SHIFT_PRI7	4
+> Do you have any other proposal that doesn't make any wild guesses about
+> which node to use instead of the undefined one?
 
-I think you should drop all unused consts and only keep the ones that 
-are used.
+It only makes 'wild' guesses when the BIOS is shit and it complains
+about that.
 
-> +
-> +/* CICR priority modes */
-> +#define CICR_GWCC		0x00040000
-> +#define CICR_GXCC		0x00020000
-> +#define CICR_GYCC		0x00010000
-> +#define CICR_GZCC		0x00080000
-> +#define CICR_GRTA		0x00200000
-> +#define CICR_GRTB		0x00400000
-> +#define CICR_HPIT_SHIFT		8
-> +#define CICR_HPIT_MASK		0x00000300
-> +#define CICR_HP_SHIFT		24
-> +#define CICR_HP_MASK		0x3f000000
-> +
-> +/* CICNR */
-> +#define CICNR_WCC1T_SHIFT	20
-> +#define CICNR_ZCC1T_SHIFT	28
-> +#define CICNR_YCC1T_SHIFT	12
-> +#define CICNR_XCC1T_SHIFT	4
-
-Same here
-
-> +
-> +/* CRICR */
-> +#define CRICR_RTA1T_SHIFT	20
-> +#define CRICR_RTB1T_SHIFT	28
-
-Same
-
-
-> +
-> +/* Signal indicator */
-> +#define SIGNAL_MASK		3
-> +#define SIGNAL_HIGH		2
-> +#define SIGNAL_LOW		0
-
-Only SIGNAL_HIGH seems to be used.
-
-Christophe
-
-> +
-> +struct qe_ic {
-> +	/* Control registers offset */
-> +	u32 __iomem *regs;
-> +
-> +	/* The remapper for this QEIC */
-> +	struct irq_domain *irqhost;
-> +
-> +	/* The "linux" controller struct */
-> +	struct irq_chip hc_irq;
-> +
-> +	/* VIRQ numbers of QE high/low irqs */
-> +	unsigned int virq_high;
-> +	unsigned int virq_low;
-> +};
-> +
-> +/*
-> + * QE interrupt controller internal structure
-> + */
-> +struct qe_ic_info {
-> +	/* Location of this source at the QIMR register */
-> +	u32	mask;
-> +
-> +	/* Mask register offset */
-> +	u32	mask_reg;
-> +
-> +	/*
-> +	 * For grouped interrupts sources - the interrupt code as
-> +	 * appears at the group priority register
-> +	 */
-> +	u8	pri_code;
-> +
-> +	/* Group priority register offset */
-> +	u32	pri_reg;
-> +};
->   
->   static DEFINE_RAW_SPINLOCK(qe_ic_lock);
->   
-> diff --git a/drivers/soc/fsl/qe/qe_ic.h b/drivers/soc/fsl/qe/qe_ic.h
-> deleted file mode 100644
-> index 29b4d768e4a8..000000000000
-> --- a/drivers/soc/fsl/qe/qe_ic.h
-> +++ /dev/null
-> @@ -1,108 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0-or-later */
-> -/*
-> - * drivers/soc/fsl/qe/qe_ic.h
-> - *
-> - * QUICC ENGINE Interrupt Controller Header
-> - *
-> - * Copyright (C) 2006 Freescale Semiconductor, Inc. All rights reserved.
-> - *
-> - * Author: Li Yang <leoli@freescale.com>
-> - * Based on code from Shlomi Gridish <gridish@freescale.com>
-> - */
-> -#ifndef _POWERPC_SYSDEV_QE_IC_H
-> -#define _POWERPC_SYSDEV_QE_IC_H
-> -
-> -#include <soc/fsl/qe/qe_ic.h>
-> -
-> -#define NR_QE_IC_INTS		64
-> -
-> -/* QE IC registers offset */
-> -#define QEIC_CICR		0x00
-> -#define QEIC_CIVEC		0x04
-> -#define QEIC_CRIPNR		0x08
-> -#define QEIC_CIPNR		0x0c
-> -#define QEIC_CIPXCC		0x10
-> -#define QEIC_CIPYCC		0x14
-> -#define QEIC_CIPWCC		0x18
-> -#define QEIC_CIPZCC		0x1c
-> -#define QEIC_CIMR		0x20
-> -#define QEIC_CRIMR		0x24
-> -#define QEIC_CICNR		0x28
-> -#define QEIC_CIPRTA		0x30
-> -#define QEIC_CIPRTB		0x34
-> -#define QEIC_CRICR		0x3c
-> -#define QEIC_CHIVEC		0x60
-> -
-> -/* Interrupt priority registers */
-> -#define CIPCC_SHIFT_PRI0	29
-> -#define CIPCC_SHIFT_PRI1	26
-> -#define CIPCC_SHIFT_PRI2	23
-> -#define CIPCC_SHIFT_PRI3	20
-> -#define CIPCC_SHIFT_PRI4	13
-> -#define CIPCC_SHIFT_PRI5	10
-> -#define CIPCC_SHIFT_PRI6	7
-> -#define CIPCC_SHIFT_PRI7	4
-> -
-> -/* CICR priority modes */
-> -#define CICR_GWCC		0x00040000
-> -#define CICR_GXCC		0x00020000
-> -#define CICR_GYCC		0x00010000
-> -#define CICR_GZCC		0x00080000
-> -#define CICR_GRTA		0x00200000
-> -#define CICR_GRTB		0x00400000
-> -#define CICR_HPIT_SHIFT		8
-> -#define CICR_HPIT_MASK		0x00000300
-> -#define CICR_HP_SHIFT		24
-> -#define CICR_HP_MASK		0x3f000000
-> -
-> -/* CICNR */
-> -#define CICNR_WCC1T_SHIFT	20
-> -#define CICNR_ZCC1T_SHIFT	28
-> -#define CICNR_YCC1T_SHIFT	12
-> -#define CICNR_XCC1T_SHIFT	4
-> -
-> -/* CRICR */
-> -#define CRICR_RTA1T_SHIFT	20
-> -#define CRICR_RTB1T_SHIFT	28
-> -
-> -/* Signal indicator */
-> -#define SIGNAL_MASK		3
-> -#define SIGNAL_HIGH		2
-> -#define SIGNAL_LOW		0
-> -
-> -struct qe_ic {
-> -	/* Control registers offset */
-> -	u32 __iomem *regs;
-> -
-> -	/* The remapper for this QEIC */
-> -	struct irq_domain *irqhost;
-> -
-> -	/* The "linux" controller struct */
-> -	struct irq_chip hc_irq;
-> -
-> -	/* VIRQ numbers of QE high/low irqs */
-> -	unsigned int virq_high;
-> -	unsigned int virq_low;
-> -};
-> -
-> -/*
-> - * QE interrupt controller internal structure
-> - */
-> -struct qe_ic_info {
-> -	/* Location of this source at the QIMR register */
-> -	u32	mask;
-> -
-> -	/* Mask register offset */
-> -	u32	mask_reg;
-> -
-> -	/*
-> -	 * For grouped interrupts sources - the interrupt code as
-> -	 * appears at the group priority register
-> -	 */
-> -	u8	pri_code;
-> -
-> -	/* Group priority register offset */
-> -	u32	pri_reg;
-> -};
-> -
-> -#endif /* _POWERPC_SYSDEV_QE_IC_H */
-> 
+Or do you like you BIOS broken?
