@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FEF3EA263
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 18:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0B9EA24B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 18:09:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473FXW3nhDzF4YV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:18:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473FKn1QGvzF4VQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:09:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=arbab@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473F7n0P7XzF4RB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 04:00:20 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473F7k186dzF4R0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 04:00:17 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9UGdPKH134903; Wed, 30 Oct 2019 13:00:06 -0400
+ x9UGff3L023929; Wed, 30 Oct 2019 13:00:06 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vye3d127y-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vydy89ntq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 30 Oct 2019 13:00:06 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9UGe1sH137716;
- Wed, 30 Oct 2019 13:00:06 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vye3d1265-1
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x9UGfvYE025195;
+ Wed, 30 Oct 2019 13:00:05 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vydy89nt1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Oct 2019 13:00:06 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9UGpW7D001848;
+ Wed, 30 Oct 2019 13:00:05 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9UGnhAw014574;
  Wed, 30 Oct 2019 17:00:04 GMT
 Received: from b03cxnp08025.gho.boulder.ibm.com
  (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma04dal.us.ibm.com with ESMTP id 2vxwh69bb3-1
+ by ppma02dal.us.ibm.com with ESMTP id 2vxwh69cdc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 30 Oct 2019 17:00:04 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
  by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9UH025N53019062
+ x9UH030H12517730
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 30 Oct 2019 17:00:03 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B3D92136055;
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C7A6778084;
  Wed, 30 Oct 2019 17:00:01 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5A85136066;
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4AB678077;
  Wed, 30 Oct 2019 17:00:01 +0000 (GMT)
 Received: from arbab-laptop.localdomain (unknown [9.53.179.210])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
  Wed, 30 Oct 2019 17:00:01 +0000 (GMT)
 Received: by arbab-laptop.localdomain (Postfix, from userid 152845)
- id 774B24654B0; Wed, 30 Oct 2019 12:00:00 -0500 (CDT)
+ id 7C2734654B1; Wed, 30 Oct 2019 12:00:00 -0500 (CDT)
 From: Reza Arbab <arbab@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 10/11] powerpc/powernv: Add pnv_phb3_iommu_bypass_supported()
-Date: Wed, 30 Oct 2019 11:59:59 -0500
-Message-Id: <1572454800-17976-11-git-send-email-arbab@linux.ibm.com>
+Subject: [PATCH 11/11] powerpc/powernv: Add pnv_pci_ioda_dma_set_mask()
+Date: Wed, 30 Oct 2019 12:00:00 -0500
+Message-Id: <1572454800-17976-12-git-send-email-arbab@linux.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1572454800-17976-1-git-send-email-arbab@linux.ibm.com>
 References: <1572454800-17976-1-git-send-email-arbab@linux.ibm.com>
@@ -97,69 +97,90 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move this code to its own function for reuse. As a side benefit,
-rearrange the comments and spread things out for readability.
+Change pnv_pci_ioda_iommu_bypass_supported() to have no side effects, by
+separating the part of the function that determines if bypass is
+supported from the part that actually attempts to configure it.
+
+Move the latter to a controller-specific dma_set_mask() callback.
 
 Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 37 +++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ arch/powerpc/platforms/powernv/Kconfig    |  1 +
+ arch/powerpc/platforms/powernv/pci-ioda.c | 30 ++++++++++++++++--------------
+ 2 files changed, 17 insertions(+), 14 deletions(-)
 
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+index 938803eab0ad..6e6e27841764 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -17,6 +17,7 @@ config PPC_POWERNV
+ 	select PPC_DOORBELL
+ 	select MMU_NOTIFIER
+ 	select FORCE_SMP
++	select ARCH_HAS_DMA_SET_MASK
+ 	default y
+ 
+ config OPAL_PRD
 diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 6b932cfc0deb..57e6a43d9a3a 100644
+index 57e6a43d9a3a..5291464930ed 100644
 --- a/arch/powerpc/platforms/powernv/pci-ioda.c
 +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1826,6 +1826,30 @@ static int pnv_pci_ioda_dma_64bit_bypass(struct pnv_ioda_pe *pe)
- 	return -EIO;
- }
- 
-+/*
-+ * If the device can't set the TCE bypass bit but still wants
-+ * to access 4GB or more, on PHB3 we can reconfigure TVE#0 to
-+ * bypass the 32-bit region and be usable for 64-bit DMAs.
-+ */
-+static bool pnv_phb3_iommu_bypass_supported(struct pnv_ioda_pe *pe, u64 mask)
-+{
-+	if (pe->phb->model != PNV_PHB_MODEL_PHB3)
-+		return false;
-+
-+	/* pe->pdev should be set if it's a single device, pe->pbus if not */
-+	if (pe->pbus && pe->device_count != 1)
-+		return false;
-+
-+	if (!(mask >> 32))
-+		return false;
-+
-+	/* The device needs to be able to address all of this space. */
-+	if (mask <= memory_hotplug_max() + (1ULL << 32))
-+		return false;
-+
-+	return true;
-+}
-+
- static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
+@@ -1854,32 +1854,33 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
  		u64 dma_mask)
  {
-@@ -1837,18 +1861,7 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
+ 	struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
+-	bool bypass;
  
- 	bypass = pnv_ioda_pe_iommu_bypass_supported(pe, dma_mask);
+ 	if (WARN_ON(!pe))
+ 		return false;
  
--	/*
--	 * If the device can't set the TCE bypass bit but still wants
--	 * to access 4GB or more, on PHB3 we can reconfigure TVE#0 to
--	 * bypass the 32-bit region and be usable for 64-bit DMAs.
--	 * The device needs to be able to address all of this space.
--	 */
--	if (!bypass &&
--	    dma_mask >> 32 &&
--	    dma_mask > (memory_hotplug_max() + (1ULL << 32)) &&
--	    /* pe->pdev should be set if it's a single device, pe->pbus if not */
--	    (pe->device_count == 1 || !pe->pbus) &&
--	    pe->phb->model == PNV_PHB_MODEL_PHB3) {
-+	if (!bypass && pnv_phb3_iommu_bypass_supported(pe, dma_mask)) {
+-	bypass = pnv_ioda_pe_iommu_bypass_supported(pe, dma_mask);
++	return pnv_ioda_pe_iommu_bypass_supported(pe, dma_mask) ||
++	       pnv_phb3_iommu_bypass_supported(pe, dma_mask);
++}
++
++static void pnv_pci_ioda_dma_set_mask(struct pci_dev *pdev, u64 mask)
++{
++	struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
++
++	if (!pe)
++		return;
+ 
+-	if (!bypass && pnv_phb3_iommu_bypass_supported(pe, dma_mask)) {
++	if (!pnv_ioda_pe_iommu_bypass_supported(pe, mask) &&
++	    pnv_phb3_iommu_bypass_supported(pe, mask)) {
  		/* Configure the bypass mode */
  		if (pnv_pci_ioda_dma_64bit_bypass(pe))
- 			return false;
+-			return false;
++			return;
+ 
+ 		/* 4GB offset bypasses 32-bit space */
+ 		pdev->dev.archdata.dma_offset = (1ULL << 32);
+-
+-		bypass = true;
+ 	}
+ 
+-	/*
+-	 * Update peer npu devices. We also do this for the special case where
+-	 * a 64-bit dma mask can't be fulfilled and falls back to default.
+-	 */
+-	if (bypass || !(dma_mask >> 32) || dma_mask == DMA_BIT_MASK(64))
+-		pnv_npu_try_dma_set_bypass(pdev, dma_mask);
+-
+-	return bypass;
++	/* Update peer npu devices */
++	pnv_npu_try_dma_set_bypass(pdev, mask);
+ }
+ 
+ static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
+@@ -3612,6 +3613,7 @@ static void pnv_pci_ioda_shutdown(struct pci_controller *hose)
+ static const struct pci_controller_ops pnv_pci_ioda_controller_ops = {
+ 	.dma_dev_setup		= pnv_pci_dma_dev_setup,
+ 	.dma_bus_setup		= pnv_pci_dma_bus_setup,
++	.dma_set_mask		= pnv_pci_ioda_dma_set_mask,
+ 	.iommu_bypass_supported	= pnv_pci_ioda_iommu_bypass_supported,
+ 	.setup_msi_irqs		= pnv_setup_msi_irqs,
+ 	.teardown_msi_irqs	= pnv_teardown_msi_irqs,
 -- 
 1.8.3.1
 
