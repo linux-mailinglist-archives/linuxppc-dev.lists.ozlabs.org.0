@@ -1,87 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FA5E9777
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 08:58:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7520E978D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 09:04:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47316C0GtpzF3sr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 18:58:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4731Dw5K8PzF3hR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 19:04:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=freude@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="V8hqm9Qb"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4731460JdfzDrdF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 18:56:20 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9U7nTtQ128383
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 03:56:16 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vy37cngr9-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 03:56:15 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <freude@linux.ibm.com>;
- Wed, 30 Oct 2019 07:56:13 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 30 Oct 2019 07:56:09 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9U7u7Ri45416546
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 30 Oct 2019 07:56:08 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D5DA942042;
- Wed, 30 Oct 2019 07:56:07 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3DCD44203F;
- Wed, 30 Oct 2019 07:56:07 +0000 (GMT)
-Received: from funtu.home (unknown [9.145.158.134])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 30 Oct 2019 07:56:07 +0000 (GMT)
-Subject: Re: [PATCH 6/6] s390x: Mark archrandom.h functions __must_check
-To: Richard Henderson <richard.henderson@linaro.org>,
- linux-arch@vger.kernel.org
-References: <20191028210559.8289-1-rth@twiddle.net>
- <20191028210559.8289-7-rth@twiddle.net>
- <935cf73a-d06c-365d-131a-23dcb350ba17@linux.ibm.com>
- <cd6b5b8c-77f0-ad7e-702a-27e5a929ca54@linaro.org>
-From: Harald Freudenberger <freude@linux.ibm.com>
-Date: Wed, 30 Oct 2019 08:56:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4731BD2ThyzF38n
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 19:01:39 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4731B52Rr0z9tyjq;
+ Wed, 30 Oct 2019 09:01:33 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=V8hqm9Qb; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Qw9zl6Q4G86Z; Wed, 30 Oct 2019 09:01:33 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4731B51HPwz9tyjn;
+ Wed, 30 Oct 2019 09:01:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1572422493; bh=dgUPwu14dlfDLkwnSUPxtAKJre3nQyA0++wcWBZvbX8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=V8hqm9Qb5quUNx5SfqiyhYBC8DUGvl/rHB57Fvah1n6VF+h5k5wNR5YaLNBFQAsDZ
+ AFmXjCHJmLvPzmorL01ywkeoBfIaXTumvXK9uVowarBGe90t2AkShv0fNI6DWUUEgn
+ Y1LeHhoFrbKXAsFfy5eJ6+qlmZMo5btt678iTm1A=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 208188B7AF;
+ Wed, 30 Oct 2019 09:01:34 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id tXQGRCCViEzJ; Wed, 30 Oct 2019 09:01:34 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C60D8B754;
+ Wed, 30 Oct 2019 09:01:33 +0100 (CET)
+Subject: Re: [PATCH v5 1/5] powerpc/mm: Implement set_memory() routines
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+References: <20191030073111.140493-1-ruscur@russell.cc>
+ <20191030073111.140493-2-ruscur@russell.cc>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <5cea9974-9bef-712c-6e7b-b3c5fa7e0702@c-s.fr>
+Date: Wed, 30 Oct 2019 09:01:33 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <cd6b5b8c-77f0-ad7e-702a-27e5a929ca54@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19103007-0028-0000-0000-000003B10491
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19103007-0029-0000-0000-00002473484E
-Message-Id: <95aa7fd3-5e80-f11b-3f74-42628f7dfba4@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-30_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910300077
+In-Reply-To: <20191030073111.140493-2-ruscur@russell.cc>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,32 +78,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
- x86@kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ joel@jms.id.au, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29.10.19 14:18, Richard Henderson wrote:
-> On 10/29/19 8:26 AM, Harald Freudenberger wrote:
->> Fine with me, Thanks, reviewed, build and tested.
->> You may add my reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
->> However, will this go into the kernel tree via crypto or s390 subsystem ?
-> That's an excellent question.
->
-> As an API decision, perhaps going via crypto makes more sense,
-> but none of the patches are dependent on one another, so they
-> could go through separate architecture trees.
->
-> It has been a long time since I have done much kernel work;
-> I'm open to suggestions on the subject.
->
->
-> r~
-Since the change needs to be done in include/linux/random.h
-and in parallel with all the arch files in arch/xxx/include/asm/archrandom.h
-it should go in one shot. I'd suggest to post the patch series to linux-crypto
-and let Herbert Xu handle this.
 
+
+Le 30/10/2019 à 08:31, Russell Currey a écrit :
+> The set_memory_{ro/rw/nx/x}() functions are required for STRICT_MODULE_RWX,
+> and are generally useful primitives to have.  This implementation is
+> designed to be completely generic across powerpc's many MMUs.
+> 
+> It's possible that this could be optimised to be faster for specific
+> MMUs, but the focus is on having a generic and safe implementation for
+> now.
+> 
+> This implementation does not handle cases where the caller is attempting
+> to change the mapping of the page it is executing from, or if another
+> CPU is concurrently using the page being altered.  These cases likely
+> shouldn't happen, but a more complex implementation with MMU-specific code
+> could safely handle them, so that is left as a TODO for now.
+> 
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> ---
+>   arch/powerpc/Kconfig                  |  1 +
+>   arch/powerpc/include/asm/set_memory.h | 32 +++++++++++
+>   arch/powerpc/mm/Makefile              |  1 +
+>   arch/powerpc/mm/pageattr.c            | 77 +++++++++++++++++++++++++++
+>   4 files changed, 111 insertions(+)
+>   create mode 100644 arch/powerpc/include/asm/set_memory.h
+>   create mode 100644 arch/powerpc/mm/pageattr.c
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 3e56c9c2f16e..8f7005f0d097 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -133,6 +133,7 @@ config PPC
+>   	select ARCH_HAS_PTE_SPECIAL
+>   	select ARCH_HAS_MEMBARRIER_CALLBACKS
+>   	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+> +	select ARCH_HAS_SET_MEMORY
+>   	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
+>   	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+>   	select ARCH_HAS_UACCESS_FLUSHCACHE
+> diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
+> new file mode 100644
+> index 000000000000..5230ddb2fefd
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/set_memory.h
+> @@ -0,0 +1,32 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_POWERPC_SET_MEMORY_H
+> +#define _ASM_POWERPC_SET_MEMORY_H
+> +
+> +#define SET_MEMORY_RO	1
+> +#define SET_MEMORY_RW	2
+> +#define SET_MEMORY_NX	3
+> +#define SET_MEMORY_X	4
+> +
+> +int change_memory_attr(unsigned long addr, int numpages, int action);
+> +
+> +static inline int set_memory_ro(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_RO);
+> +}
+> +
+> +static inline int set_memory_rw(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_RW);
+> +}
+> +
+> +static inline int set_memory_nx(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_NX);
+> +}
+> +
+> +static inline int set_memory_x(unsigned long addr, int numpages)
+> +{
+> +	return change_memory_attr(addr, numpages, SET_MEMORY_X);
+> +}
+> +
+> +#endif
+> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
+> index 5e147986400d..d0a0bcbc9289 100644
+> --- a/arch/powerpc/mm/Makefile
+> +++ b/arch/powerpc/mm/Makefile
+> @@ -20,3 +20,4 @@ obj-$(CONFIG_HIGHMEM)		+= highmem.o
+>   obj-$(CONFIG_PPC_COPRO_BASE)	+= copro_fault.o
+>   obj-$(CONFIG_PPC_PTDUMP)	+= ptdump/
+>   obj-$(CONFIG_KASAN)		+= kasan/
+> +obj-$(CONFIG_ARCH_HAS_SET_MEMORY) += pageattr.o
+> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+> new file mode 100644
+> index 000000000000..aedd79173a44
+> --- /dev/null
+> +++ b/arch/powerpc/mm/pageattr.c
+> @@ -0,0 +1,77 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * MMU-generic set_memory implementation for powerpc
+> + *
+> + * Copyright 2019, IBM Corporation.
+> + */
+> +
+> +#include <linux/mm.h>
+> +#include <linux/set_memory.h>
+> +
+> +#include <asm/mmu.h>
+> +#include <asm/page.h>
+> +#include <asm/pgtable.h>
+> +
+> +
+> +/*
+> + * Updates the attributes of a page in three steps:
+> + *
+> + * 1. invalidate the page table entry
+> + * 2. flush the TLB
+> + * 3. install the new entry with the updated attributes
+> + *
+> + * This is unsafe if the caller is attempting to change the mapping of the
+> + * page it is executing from, or if another CPU is concurrently using the
+> + * page being altered.
+> + *
+> + * TODO make the implementation resistant to this.
+> + */
+> +static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+
+I don't like too much the way you are making this function more complex 
+and less readable with local var, goto, etc ...
+
+You could just keep the v4 version of change_page_attr(), rename it 
+__change_page_attr(), then add:
+
+static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+{
+	int ret;
+
+	spin_lock(&init_mm.page_table_lock);
+	ret = __change_page_attr(ptep, addr, data);
+	spin_unlock(&init_mm.page_table_lock);
+	return ret;
+}
+
+Christophe
+
+> +{
+> +	int action = *((int *)data);
+> +	pte_t pte_val;
+> +	int ret = 0;
+> +
+> +	spin_lock(&init_mm.page_table_lock);
+> +
+> +	// invalidate the PTE so it's safe to modify
+> +	pte_val = ptep_get_and_clear(&init_mm, addr, ptep);
+> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +
+> +	// modify the PTE bits as desired, then apply
+> +	switch (action) {
+> +	case SET_MEMORY_RO:
+> +		pte_val = pte_wrprotect(pte_val);
+> +		break;
+> +	case SET_MEMORY_RW:
+> +		pte_val = pte_mkwrite(pte_val);
+> +		break;
+> +	case SET_MEMORY_NX:
+> +		pte_val = pte_exprotect(pte_val);
+> +		break;
+> +	case SET_MEMORY_X:
+> +		pte_val = pte_mkexec(pte_val);
+> +		break;
+> +	default:
+> +		WARN_ON(true);
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	set_pte_at(&init_mm, addr, ptep, pte_val);
+> +out:
+> +	spin_unlock(&init_mm.page_table_lock);
+> +	return ret;
+> +}
+> +
+> +int change_memory_attr(unsigned long addr, int numpages, int action)
+> +{
+> +	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
+> +	unsigned long size = numpages * PAGE_SIZE;
+> +
+> +	if (!numpages)
+> +		return 0;
+> +
+> +	return apply_to_page_range(&init_mm, start, size, change_page_attr, &action);
+> +}
+> 
