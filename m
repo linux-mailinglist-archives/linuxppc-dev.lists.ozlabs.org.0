@@ -1,50 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12E7E9A10
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 11:37:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920EBE9A54
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 11:47:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4734dp1skJzF40x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 21:37:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4734sn65rkzF41x
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 21:47:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="IF1kk/S9"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4734bN0G3hzF3yn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 21:35:12 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="QqJNQWV+"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4734bL4bqkz9sPJ;
- Wed, 30 Oct 2019 21:35:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1572431711;
- bh=WmtX+xAbYWaAbWorI0MYAttJQLuDF1ZuIP0rN4t19I0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=QqJNQWV+M+xtPfWh3QSjZ/IXALxkPJ6eN4NSrLxoYUPzowgXqqVyyJni/2RY7uCXA
- oaHsjkf2fE8GEgwFaxTExQBji18BbVLN9yChBAJXmudBZ0+dN586yNhcPR2/eFqm6/
- iT6C9vZyNC+3M1FqrcoGv/5NvTvlr4vlr1KpTKpKxc5Sa3JM7Z0zKzQVJc80XT2z5B
- Dm00Ujq7n4lvh3uXdPpCYMOsZ6scz9pGOPLxu1eD0Ekt9PlIGRagXnx1YsTyqDWkVI
- UwDA9mdEIrIRVrY5f9rfIu8a3mQfLZTZ5r0RL1rPw6E+72ENOknYR7SSC8YmETnD+s
- HYFzp1vND1mNg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: KyleMahlkuch <kmahlkuc@linux.vnet.ibm.com>, alexander.deucher@amd.com
-Subject: Re: [PATCH v3] drm/radeon: Fix EEH during kexec
-In-Reply-To: <1572036050-18945-1-git-send-email-kmahlkuc@linux.vnet.ibm.com>
-References: <1572036050-18945-1-git-send-email-kmahlkuc@linux.vnet.ibm.com>
-Date: Wed, 30 Oct 2019 21:35:10 +1100
-Message-ID: <87o8xyfrmp.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4734qR4mdrzF41Q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 21:45:39 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4734qL1h7cz9vC0r;
+ Wed, 30 Oct 2019 11:45:34 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=IF1kk/S9; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id RKPDgr6MaFYQ; Wed, 30 Oct 2019 11:45:34 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4734qL0cgqz9vC0q;
+ Wed, 30 Oct 2019 11:45:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1572432334; bh=ldw9WUgmvPJSr0yqobCGkdD8WgYCJ83JuIM2Zc0dqTc=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=IF1kk/S9aewyTgTqFIvoD/cCPMgynwOcooIsZlNEKD4i5AsCVo2kQzfnPEuMaYd58
+ skGXIRVEm0Diy5eW0JoSWYE1FYReNLhQWiSxAiiz/qKkW6ThLRH/EqczlF22hawOck
+ L3ea7nQRw5B+cWk5/dFW6Onwwn7dQRC4k+cJrBAU=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C5BDD8B7AF;
+ Wed, 30 Oct 2019 11:45:34 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6ZJvPf1P5Mu6; Wed, 30 Oct 2019 11:45:34 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 34E9E8B7C8;
+ Wed, 30 Oct 2019 11:45:32 +0100 (CET)
+Subject: Re: [PATCH v2 09/23] soc: fsl: qe: move qe_ic_cascade_* functions to
+ qe_ic.c
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+ <20191025124058.22580-1-linux@rasmusvillemoes.dk>
+ <20191025124058.22580-10-linux@rasmusvillemoes.dk>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <b01b12fc-88a5-8bc9-5a48-e35ad75b49d9@c-s.fr>
+Date: Wed, 30 Oct 2019 11:45:31 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191025124058.22580-10-linux@rasmusvillemoes.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,73 +81,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Kyle Mahlkuch <kmahlkuc@linux.vnet.ibm.com>,
- amd-gfx@lists.freedesktop.org
+Cc: Scott Wood <oss@buserror.net>,
+ Valentin Longchamp <valentin.longchamp@keymile.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kyle,
-
-KyleMahlkuch <kmahlkuc@linux.vnet.ibm.com> writes:
-> From: Kyle Mahlkuch <kmahlkuc@linux.vnet.ibm.com>
->
-> During kexec some adapters hit an EEH since they are not properly
-> shut down in the radeon_pci_shutdown() function. Adding
-> radeon_suspend_kms() fixes this issue.
-> Enabled only on PPC because this patch causes issues on some other
-> boards.
-
-Which adapters hit the issues?
-
-And do we know why they're not shut down correctly in
-radeon_pci_shutdown()? That seems like the root cause no?
 
 
-> diff --git a/drivers/gpu/drm/radeon/radeon_drv.c b/drivers/gpu/drm/radeon/radeon_drv.c
-> index 9e55076..4528f4d 100644
-> --- a/drivers/gpu/drm/radeon/radeon_drv.c
-> +++ b/drivers/gpu/drm/radeon/radeon_drv.c
-> @@ -379,11 +379,25 @@ static int radeon_pci_probe(struct pci_dev *pdev,
->  static void
->  radeon_pci_shutdown(struct pci_dev *pdev)
->  {
-> +#ifdef CONFIG_PPC64
-> +	struct drm_device *ddev = pci_get_drvdata(pdev);
-> +#endif
+Le 25/10/2019 à 14:40, Rasmus Villemoes a écrit :
+> These functions are only ever called through a function pointer, and
+> therefore it makes no sense for them to be "static inline" - gcc has
+> no choice but to emit a copy in each translation unit that takes the
+> address of one of these (currently various platform code under
+> arch/powerpc/). So move them into qe_ic.c and leave ordinary extern
+> declarations in the header file.
 
-This local serves no real purpose and could be avoided, which would also
-avoid this ifdef.
+What is the point in moving fonctions that you will drop in the next 
+patch (qe_ic_cascade_low_ipic() and qe_ic_cascade_high_ipic())
+Only move the ones that will remain.
 
->  	/* if we are running in a VM, make sure the device
->  	 * torn down properly on reboot/shutdown
->  	 */
->  	if (radeon_device_is_virtual())
->  		radeon_pci_remove(pdev);
+Christophe
+
+
+> 
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> ---
+>   drivers/soc/fsl/qe/qe_ic.c | 58 +++++++++++++++++++++++++++++++++++
+>   include/soc/fsl/qe/qe_ic.h | 62 +++-----------------------------------
+>   2 files changed, 63 insertions(+), 57 deletions(-)
+> 
+> diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+> index 7b1870d2866a..a847b2672e90 100644
+> --- a/drivers/soc/fsl/qe/qe_ic.c
+> +++ b/drivers/soc/fsl/qe/qe_ic.c
+> @@ -402,6 +402,64 @@ unsigned int qe_ic_get_high_irq(struct qe_ic *qe_ic)
+>   	return irq_linear_revmap(qe_ic->irqhost, irq);
+>   }
+>   
+> +void qe_ic_cascade_low_ipic(struct irq_desc *desc)
+> +{
+> +	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> +	unsigned int cascade_irq = qe_ic_get_low_irq(qe_ic);
 > +
-> +#ifdef CONFIG_PPC64
-> +	/* Some adapters need to be suspended before a
-
-AFAIK drm uses normal kernel comment style, so this should be:
-
-	/*
-	 * Some adapters need to be suspended before a
-> +	 * shutdown occurs in order to prevent an error
-> +	 * during kexec.
-> +	 * Make this power specific becauase it breaks
-> +	 * some non-power boards.
-> +	 */
-> +	radeon_suspend_kms(ddev, true, true, false);
-
-ie, instead do:
-
-	radeon_suspend_kms(pci_get_drvdata(pdev), true, true, false);
-
-> +#endif
->  }
->  
->  static int radeon_pmops_suspend(struct device *dev)
-> -- 
-> 1.8.3.1
-
-cheers
+> +	if (cascade_irq != NO_IRQ)
+> +		generic_handle_irq(cascade_irq);
+> +}
+> +
+> +void qe_ic_cascade_high_ipic(struct irq_desc *desc)
+> +{
+> +	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> +	unsigned int cascade_irq = qe_ic_get_high_irq(qe_ic);
+> +
+> +	if (cascade_irq != NO_IRQ)
+> +		generic_handle_irq(cascade_irq);
+> +}
+> +
+> +void qe_ic_cascade_low_mpic(struct irq_desc *desc)
+> +{
+> +	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> +	unsigned int cascade_irq = qe_ic_get_low_irq(qe_ic);
+> +	struct irq_chip *chip = irq_desc_get_chip(desc);
+> +
+> +	if (cascade_irq != NO_IRQ)
+> +		generic_handle_irq(cascade_irq);
+> +
+> +	chip->irq_eoi(&desc->irq_data);
+> +}
+> +
+> +void qe_ic_cascade_high_mpic(struct irq_desc *desc)
+> +{
+> +	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> +	unsigned int cascade_irq = qe_ic_get_high_irq(qe_ic);
+> +	struct irq_chip *chip = irq_desc_get_chip(desc);
+> +
+> +	if (cascade_irq != NO_IRQ)
+> +		generic_handle_irq(cascade_irq);
+> +
+> +	chip->irq_eoi(&desc->irq_data);
+> +}
+> +
+> +void qe_ic_cascade_muxed_mpic(struct irq_desc *desc)
+> +{
+> +	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> +	unsigned int cascade_irq;
+> +	struct irq_chip *chip = irq_desc_get_chip(desc);
+> +
+> +	cascade_irq = qe_ic_get_high_irq(qe_ic);
+> +	if (cascade_irq == NO_IRQ)
+> +		cascade_irq = qe_ic_get_low_irq(qe_ic);
+> +
+> +	if (cascade_irq != NO_IRQ)
+> +		generic_handle_irq(cascade_irq);
+> +
+> +	chip->irq_eoi(&desc->irq_data);
+> +}
+> +
+>   void __init qe_ic_init(struct device_node *node, unsigned int flags,
+>   		       void (*low_handler)(struct irq_desc *desc),
+>   		       void (*high_handler)(struct irq_desc *desc))
+> diff --git a/include/soc/fsl/qe/qe_ic.h b/include/soc/fsl/qe/qe_ic.h
+> index 714a9b890d8d..f3492eb13052 100644
+> --- a/include/soc/fsl/qe/qe_ic.h
+> +++ b/include/soc/fsl/qe/qe_ic.h
+> @@ -74,62 +74,10 @@ void qe_ic_set_highest_priority(unsigned int virq, int high);
+>   int qe_ic_set_priority(unsigned int virq, unsigned int priority);
+>   int qe_ic_set_high_priority(unsigned int virq, unsigned int priority, int high);
+>   
+> -static inline void qe_ic_cascade_low_ipic(struct irq_desc *desc)
+> -{
+> -	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> -	unsigned int cascade_irq = qe_ic_get_low_irq(qe_ic);
+> -
+> -	if (cascade_irq != NO_IRQ)
+> -		generic_handle_irq(cascade_irq);
+> -}
+> -
+> -static inline void qe_ic_cascade_high_ipic(struct irq_desc *desc)
+> -{
+> -	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> -	unsigned int cascade_irq = qe_ic_get_high_irq(qe_ic);
+> -
+> -	if (cascade_irq != NO_IRQ)
+> -		generic_handle_irq(cascade_irq);
+> -}
+> -
+> -static inline void qe_ic_cascade_low_mpic(struct irq_desc *desc)
+> -{
+> -	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> -	unsigned int cascade_irq = qe_ic_get_low_irq(qe_ic);
+> -	struct irq_chip *chip = irq_desc_get_chip(desc);
+> -
+> -	if (cascade_irq != NO_IRQ)
+> -		generic_handle_irq(cascade_irq);
+> -
+> -	chip->irq_eoi(&desc->irq_data);
+> -}
+> -
+> -static inline void qe_ic_cascade_high_mpic(struct irq_desc *desc)
+> -{
+> -	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> -	unsigned int cascade_irq = qe_ic_get_high_irq(qe_ic);
+> -	struct irq_chip *chip = irq_desc_get_chip(desc);
+> -
+> -	if (cascade_irq != NO_IRQ)
+> -		generic_handle_irq(cascade_irq);
+> -
+> -	chip->irq_eoi(&desc->irq_data);
+> -}
+> -
+> -static inline void qe_ic_cascade_muxed_mpic(struct irq_desc *desc)
+> -{
+> -	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+> -	unsigned int cascade_irq;
+> -	struct irq_chip *chip = irq_desc_get_chip(desc);
+> -
+> -	cascade_irq = qe_ic_get_high_irq(qe_ic);
+> -	if (cascade_irq == NO_IRQ)
+> -		cascade_irq = qe_ic_get_low_irq(qe_ic);
+> -
+> -	if (cascade_irq != NO_IRQ)
+> -		generic_handle_irq(cascade_irq);
+> -
+> -	chip->irq_eoi(&desc->irq_data);
+> -}
+> +void qe_ic_cascade_low_ipic(struct irq_desc *desc);
+> +void qe_ic_cascade_high_ipic(struct irq_desc *desc);
+> +void qe_ic_cascade_low_mpic(struct irq_desc *desc);
+> +void qe_ic_cascade_high_mpic(struct irq_desc *desc);
+> +void qe_ic_cascade_muxed_mpic(struct irq_desc *desc);
+>   
+>   #endif /* _ASM_POWERPC_QE_IC_H */
+> 
