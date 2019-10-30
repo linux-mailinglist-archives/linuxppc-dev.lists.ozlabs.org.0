@@ -2,42 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825DFE9C2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 14:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BD2E9CB2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 14:54:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4738Fj3byszF4R4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 00:20:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47390j2Y2QzF4KC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 00:53:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="NTwARt8G"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4737jk6PrhzF4MT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 23:55:53 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id BEA48B210;
- Wed, 30 Oct 2019 12:55:47 +0000 (UTC)
-Date: Wed, 30 Oct 2019 13:55:46 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 00/27] current interrupt series plus scv syscall
-Message-ID: <20191030125546.GC1384@kitsune.suse.cz>
-References: <20190915012813.29317-1-npiggin@gmail.com>
- <20190924093302.GF18205@kitsune.suse.cz>
- <1569985904.hg681u0c78.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4738wR4XYdzF4H1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 00:50:12 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id q21so1007680plr.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 06:50:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=pb0XrKghyFZgq2oeDgc1vRiv8K2ZCa6MKROaXA8DqHQ=;
+ b=NTwARt8GUFCdG5TLJcI8i9cPiC/uXK1HfVAmkF/Gi70bnHnieGDcLcKhO+TpHqC1fD
+ x4C83BpfmUyDj8Rjo5KmeHlhXkrHNK0d01ZempNxNYWBY4EvFCzdf8V7F/HDhoG9uk2i
+ sSv0amtdfi01NJeawZo9HWDVM2mJxLKzuZIuA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=pb0XrKghyFZgq2oeDgc1vRiv8K2ZCa6MKROaXA8DqHQ=;
+ b=EHK6cpNlFtg7oNlygztIPYEk6Hoe3hc0unIlIX4B3uV8GM9CNzTE6i4gNBPZAc5E3o
+ +HQTS0jq8zSqs5lOkqqwvUeOsH4ku5OiXOzxO9eYI9ug9ORaQ0Bc/kzqiWPcTj0K+bLj
+ JXbNZR/EAdSMRw/Jua9elxIEGT5Xu+MQh26tKVmzjoP1Mm5SciFrCj2GxuLY60t2TocE
+ D/OEjQ8zAdikGdDQAhvnwUj/mHRErvLs9DM+Y395sRbkdyaZOtt5avJ7l/pjMEKHWzkP
+ eDRJ2GRBTz0naDDeN/bLcxnrNL8vlYnc6Xw41lvODu2jiUoQL5KcB+ObuFTrDK+XyMmJ
+ Xb4w==
+X-Gm-Message-State: APjAAAWHaMdinukV+l+UWbQuqHU4wv/GHnEf57pvaQ4Zjv7Vf1hq9T5w
+ FNh1tAWOzHnnDWupoOqMPmfWYQ==
+X-Google-Smtp-Source: APXvYqxZKEVBxM1Ya92TQcJqH+4T3C4D/gFc7Fw6wdXNjsqrvLc0beAsZLlvhMi0VRPxusNFqNzDbA==
+X-Received: by 2002:a17:902:760c:: with SMTP id
+ k12mr102582pll.256.1572443409483; 
+ Wed, 30 Oct 2019 06:50:09 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-783a-2bb9-f7cb-7c3c.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:783a:2bb9:f7cb:7c3c])
+ by smtp.gmail.com with ESMTPSA id e198sm35049pfh.83.2019.10.30.06.50.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Oct 2019 06:50:08 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Andrey Ryabinin <aryabinin@virtuozzo.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, x86@kernel.org, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr
+Subject: Re: [PATCH v10 4/5] x86/kasan: support KASAN_VMALLOC
+In-Reply-To: <a144eaca-d7e1-1a18-5975-bd0bfdb9450e@virtuozzo.com>
+References: <20191029042059.28541-1-dja@axtens.net>
+ <20191029042059.28541-5-dja@axtens.net>
+ <a144eaca-d7e1-1a18-5975-bd0bfdb9450e@virtuozzo.com>
+Date: Thu, 31 Oct 2019 00:50:05 +1100
+Message-ID: <87sgnamjg2.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1569985904.hg681u0c78.astroid@bobo.none>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,27 +81,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ gor@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Andrey Ryabinin <aryabinin@virtuozzo.com> writes:
 
-On Wed, Oct 02, 2019 at 01:13:52PM +1000, Nicholas Piggin wrote:
-> Michal Suchánek's on September 24, 2019 7:33 pm:
-> > Hello,
-> > 
-> > can you mark the individual patches with RFC rather than the wole
-> > series?
-> 
-> Hey, thanks for the reviews. I'll resend all but the last two patches
-> soon for merge in the next window.
+> On 10/29/19 7:20 AM, Daniel Axtens wrote:
+>> In the case where KASAN directly allocates memory to back vmalloc
+>> space, don't map the early shadow page over it.
+>> 
+>> We prepopulate pgds/p4ds for the range that would otherwise be empty.
+>> This is required to get it synced to hardware on boot, allowing the
+>> lower levels of the page tables to be filled dynamically.
+>> 
+>> Acked-by: Dmitry Vyukov <dvyukov@google.com>
+>> Signed-off-by: Daniel Axtens <dja@axtens.net>
+>> 
+>> ---
+>
+>> +static void __init kasan_shallow_populate_pgds(void *start, void *end)
+>> +{
+>> +	unsigned long addr, next;
+>> +	pgd_t *pgd;
+>> +	void *p;
+>> +	int nid = early_pfn_to_nid((unsigned long)start);
+>
+> This doesn't make sense. start is not even a pfn. With linear mapping 
+> we try to identify nid to have the shadow on the same node as memory. But 
+> in this case we don't have memory or the corresponding shadow (yet),
+> we only install pgd/p4d.
+> I guess we could just use NUMA_NO_NODE.
 
-Will you resend these or should I cherry-pick the part I need for the
-!COMPAT?
+Ah wow, that's quite the clanger on my part.
 
-Thanks
+There are a couple of other invocations of early_pfn_to_nid in that file
+that use an address directly, but at least they reference actual memory.
+I'll send a separate patch to fix those up.
 
-Michal
+> The rest looks ok, so with that fixed:
+>
+> Reviewed-by: Andrey Ryabinin <aryabinin@virtuozzo.com>
+
+Thanks heaps! I've fixed up the nit you identifed in the first patch,
+and I agree that the last patch probably isn't needed. I'll respin the
+series shortly.
+
+Regards,
+Daniel
