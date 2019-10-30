@@ -1,56 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9DBE96AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 07:46:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEFDE9759
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 08:44:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 472zWX2NFNzF22R
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 17:46:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4730pr3HjTzF3sC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2019 18:44:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=socionext.com (client-ip=210.131.2.79;
- helo=conuserg-12.nifty.com; envelope-from=yamada.masahiro@socionext.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=russell.cc (client-ip=64.147.123.18;
+ helo=wnew4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
+ dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="SxQDYGDK"; 
- dkim-atps=neutral
-Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="sqo0sz7g"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="UlU/1t96"; dkim-atps=neutral
+X-Greylist: delayed 555 seconds by postgrey-1.36 at bilbo;
+ Wed, 30 Oct 2019 18:41:03 AEDT
+Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com
+ [64.147.123.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 472zMn6DJbzF3Z3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 17:39:47 +1100 (AEDT)
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp
- [153.142.97.92]) (authenticated)
- by conuserg-12.nifty.com with ESMTP id x9U6d6lw008465;
- Wed, 30 Oct 2019 15:39:09 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com x9U6d6lw008465
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1572417549;
- bh=iWfwrkLnJw9f051ci1qoVF6YYPkEv18Rb84fKuOp9+M=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SxQDYGDKj8kELAyO+Kg1OLi3ibM8mnnEFLu13XD5s1Rg8tvPK+vRKhjeki00taZwW
- PEJPfxq1TXEAKMTymfAlfi/SMw//cI5lA0HKUAENK0laBCT1LlMi5vA+cfKkW+sFq0
- A6Sq+MM5TP7LFseOHFBiALS8CMXXn/rTfWgxkrtgKoFaJgW+IQG+CZTAWTjU1VXs7k
- Htow4cGQb/N34CB9FjJzlr6CCajmKx8CJjDANnwMYsoRTkGByufw6D1e+K3tqcJjpR
- 7qvwzzeK38N6BTFRIwHbPk+uK2XZCp6QddApCCrUQzhB1TIBV5e89m7WpwnHa+1Pdf
- WtbWumY9/TpZw==
-X-Nifty-SrcIP: [153.142.97.92]
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
- linux-arch <linux-arch@vger.kernel.org>
-Subject: [PATCH 3/3] arch: sembuf.h: make uapi asm/sembuf.h self-contained
-Date: Wed, 30 Oct 2019 15:38:55 +0900
-Message-Id: <20191030063855.9989-3-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191030063855.9989-1-yamada.masahiro@socionext.com>
-References: <20191030063855.9989-1-yamada.masahiro@socionext.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4730kR3R4KzF3qk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 18:41:03 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailnew.west.internal (Postfix) with ESMTP id 7A7C144F;
+ Wed, 30 Oct 2019 03:31:34 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute6.internal (MEProxy); Wed, 30 Oct 2019 03:31:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm3; bh=mssX/JsM5ogaFI8hQrBomCiQNI
+ 6JK2VPU5sG5BOkvxU=; b=sqo0sz7g86Zgw122bLtbPZXSyq+qdB54dZkslVfD9g
+ oIiPN29EbfFRX837pTasKQ4ODTfrbbliCT00RMBZt4auyNeQVfF866uiPflgZjdn
+ I5ZilGYgkoXdxJ/dtn1zUwLeo4h03we7HS2681l1PPp4GS4ZhK0rxV2NUX/kP5ap
+ Wf+BTHdFTx84gDHFRJf1tmLFIITFMGrz9PSSMjX9M6tYonFNuL1gCa5sYMxRbB4Q
+ ORzOjQWT5z4apZ48HV9dflAa+IpfIUWwo5yYkPiwTKDFxB71xQcxZrooLeZT6W81
+ OsDnySJEBguMBbABub3vwxRXoLyb4Mh0X/KgwfNAu3ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=mssX/JsM5ogaFI8hQ
+ rBomCiQNI6JK2VPU5sG5BOkvxU=; b=UlU/1t96timajT615rqwG5vx1QR/ipwar
+ GTfCWVCfmMC3vqzxfgb+h4/+yxATsglYSul146vmEt2PNJP4rT8548Gi6r2UFjOE
+ +/E2xClckV/BJdNsLRpicDTjJFItktu1DahPipNvLcUUG2RLJ9oqjNhDtck/zhXW
+ ZAfROFeQvMHJA4S+YhWYfGAXObcJ1FsoGQYiTAFiYh3b2m3Wl32dBxcXJPRqRXkq
+ BJLwT/pyJDL+CKwSGuo6XwytfS+UY8P2RG2fGyoiJH/dGgEQHtXtYoJlCQZtCocc
+ fJ1QHPn7py9Vz0pq0bu4SQ2TiWCL1GFIap85wxzty8PqY+FjOICDw==
+X-ME-Sender: <xms:VDy5XW7ZHKuyUF5PiPYbrX0pTPXYtKhNHi0LXCBbVSbPhTQsDPJmng>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedruddtvddguddtlecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdduhedmnegovehorghsth
+ grlhdqhfeguddvqddtvdculdduhedtmdenucfjughrpefhvffufffkofgggfestdekredt
+ redttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruh
+ hsshgvlhhlrdgttgeqnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkphepuddv
+ vddrleelrdekvddruddtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrh
+ hushhsvghllhdrtggtnecuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:VDy5XRG7LNlcjNlLQVPdXUF0pdPwMu-WL54eoXPcISXCJUIYzWEB7A>
+ <xmx:VDy5XV7Wg77pnKBwN-vJVMjT15YB1gScIeRyXhRcsZ6k044sQs5ITQ>
+ <xmx:VDy5Xcg9ri8eJDLSrSK3VvSdYDHg8zOZrjkzNu2K4q5yHrENS2z-jw>
+ <xmx:Vjy5XY01lPbca6uwyt4o5O3TJRH5t2KUIeLjCw_4g-5LUf9icc5d_drLuxQ>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 8B2E880059;
+ Wed, 30 Oct 2019 03:31:29 -0400 (EDT)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v5 0/5] Implement STRICT_MODULE_RWX for powerpc
+Date: Wed, 30 Oct 2019 18:31:06 +1100
+Message-Id: <20191030073111.140493-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,162 +87,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ joel@jms.id.au, Russell Currey <ruscur@russell.cc>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The user-space cannot compile <asm/sembuf.h> due to some missing type
-definitions. For example, building it for x86 fails as follows:
+v4 cover letter: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198268.html
+v3 cover letter: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198023.html
 
-  CC      usr/include/asm/sembuf.h.s
-In file included from <command-line>:32:0:
-./usr/include/asm/sembuf.h:17:20: error: field ‘sem_perm’ has incomplete type
-  struct ipc64_perm sem_perm; /* permissions .. see ipc.h */
-                    ^~~~~~~~
-./usr/include/asm/sembuf.h:24:2: error: unknown type name ‘__kernel_time_t’
-  __kernel_time_t sem_otime; /* last semop time */
-  ^~~~~~~~~~~~~~~
-./usr/include/asm/sembuf.h:25:2: error: unknown type name ‘__kernel_ulong_t’
-  __kernel_ulong_t __unused1;
-  ^~~~~~~~~~~~~~~~
-./usr/include/asm/sembuf.h:26:2: error: unknown type name ‘__kernel_time_t’
-  __kernel_time_t sem_ctime; /* last change time */
-  ^~~~~~~~~~~~~~~
-./usr/include/asm/sembuf.h:27:2: error: unknown type name ‘__kernel_ulong_t’
-  __kernel_ulong_t __unused2;
-  ^~~~~~~~~~~~~~~~
-./usr/include/asm/sembuf.h:29:2: error: unknown type name ‘__kernel_ulong_t’
-  __kernel_ulong_t sem_nsems; /* no. of semaphores in array */
-  ^~~~~~~~~~~~~~~~
-./usr/include/asm/sembuf.h:30:2: error: unknown type name ‘__kernel_ulong_t’
-  __kernel_ulong_t __unused3;
-  ^~~~~~~~~~~~~~~~
-./usr/include/asm/sembuf.h:31:2: error: unknown type name ‘__kernel_ulong_t’
-  __kernel_ulong_t __unused4;
-  ^~~~~~~~~~~~~~~~
+Changes since v4:
+	[1/5]: Addressed review comments from Michael Ellerman (thanks!)
+	[4/5]: make ARCH_HAS_STRICT_MODULE_RWX depend on
+	       ARCH_HAS_STRICT_KERNEL_RWX to simplify things and avoid
+	       STRICT_MODULE_RWX being *on by default* in cases where
+	       STRICT_KERNEL_RWX is *unavailable*
+	[5/5]: split skiroot_defconfig changes out into its own patch
 
-It is just a matter of missing include directive.
+The whole Kconfig situation is really weird and confusing, I believe the
+correct resolution is to change arch/Kconfig but the consequences are so
+minor that I don't think it's worth it, especially given that I expect
+powerpc to have mandatory strict RWX Soon(tm).
 
-Include <asm/ipcbuf.h> to make it self-contained, and add it to
-the compile-test coverage.
+Russell Currey (5):
+  powerpc/mm: Implement set_memory() routines
+  powerpc/kprobes: Mark newly allocated probes as RO
+  powerpc/mm/ptdump: debugfs handler for W+X checks at runtime
+  powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+  powerpc/configs: Enable STRICT_MODULE_RWX in skiroot_defconfig
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
+ arch/powerpc/Kconfig                   |  2 +
+ arch/powerpc/Kconfig.debug             |  6 +-
+ arch/powerpc/configs/skiroot_defconfig |  1 +
+ arch/powerpc/include/asm/set_memory.h  | 32 +++++++++++
+ arch/powerpc/kernel/kprobes.c          |  3 +
+ arch/powerpc/mm/Makefile               |  1 +
+ arch/powerpc/mm/pageattr.c             | 77 ++++++++++++++++++++++++++
+ arch/powerpc/mm/ptdump/ptdump.c        | 21 ++++++-
+ 8 files changed, 140 insertions(+), 3 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/set_memory.h
+ create mode 100644 arch/powerpc/mm/pageattr.c
 
- arch/mips/include/uapi/asm/sembuf.h    | 2 ++
- arch/parisc/include/uapi/asm/sembuf.h  | 1 +
- arch/powerpc/include/uapi/asm/sembuf.h | 2 ++
- arch/sparc/include/uapi/asm/sembuf.h   | 2 ++
- arch/x86/include/uapi/asm/sembuf.h     | 2 ++
- arch/xtensa/include/uapi/asm/sembuf.h  | 1 +
- include/uapi/asm-generic/sembuf.h      | 1 +
- usr/include/Makefile                   | 1 -
- 8 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/uapi/asm/sembuf.h b/arch/mips/include/uapi/asm/sembuf.h
-index 60c89e6cb25b..7d135b93bebd 100644
---- a/arch/mips/include/uapi/asm/sembuf.h
-+++ b/arch/mips/include/uapi/asm/sembuf.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_SEMBUF_H
- #define _ASM_SEMBUF_H
- 
-+#include <asm/ipcbuf.h>
-+
- /*
-  * The semid64_ds structure for the MIPS architecture.
-  * Note extra padding because this structure is passed back and forth
-diff --git a/arch/parisc/include/uapi/asm/sembuf.h b/arch/parisc/include/uapi/asm/sembuf.h
-index 3c31163b1241..b17a2460b184 100644
---- a/arch/parisc/include/uapi/asm/sembuf.h
-+++ b/arch/parisc/include/uapi/asm/sembuf.h
-@@ -3,6 +3,7 @@
- #define _PARISC_SEMBUF_H
- 
- #include <asm/bitsperlong.h>
-+#include <asm/ipcbuf.h>
- 
- /* 
-  * The semid64_ds structure for parisc architecture.
-diff --git a/arch/powerpc/include/uapi/asm/sembuf.h b/arch/powerpc/include/uapi/asm/sembuf.h
-index 3f60946f77e3..f42c9c3502c7 100644
---- a/arch/powerpc/include/uapi/asm/sembuf.h
-+++ b/arch/powerpc/include/uapi/asm/sembuf.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_POWERPC_SEMBUF_H
- #define _ASM_POWERPC_SEMBUF_H
- 
-+#include <asm/ipcbuf.h>
-+
- /*
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-diff --git a/arch/sparc/include/uapi/asm/sembuf.h b/arch/sparc/include/uapi/asm/sembuf.h
-index f3d309c2e1cd..5d7764cdf80f 100644
---- a/arch/sparc/include/uapi/asm/sembuf.h
-+++ b/arch/sparc/include/uapi/asm/sembuf.h
-@@ -2,6 +2,8 @@
- #ifndef _SPARC_SEMBUF_H
- #define _SPARC_SEMBUF_H
- 
-+#include <asm/ipcbuf.h>
-+
- /*
-  * The semid64_ds structure for sparc architecture.
-  * Note extra padding because this structure is passed back and forth
-diff --git a/arch/x86/include/uapi/asm/sembuf.h b/arch/x86/include/uapi/asm/sembuf.h
-index 89de6cd9f0a7..da0464af7aa6 100644
---- a/arch/x86/include/uapi/asm/sembuf.h
-+++ b/arch/x86/include/uapi/asm/sembuf.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_X86_SEMBUF_H
- #define _ASM_X86_SEMBUF_H
- 
-+#include <asm/ipcbuf.h>
-+
- /*
-  * The semid64_ds structure for x86 architecture.
-  * Note extra padding because this structure is passed back and forth
-diff --git a/arch/xtensa/include/uapi/asm/sembuf.h b/arch/xtensa/include/uapi/asm/sembuf.h
-index 09f348d643f1..3b9cdd406dfe 100644
---- a/arch/xtensa/include/uapi/asm/sembuf.h
-+++ b/arch/xtensa/include/uapi/asm/sembuf.h
-@@ -22,6 +22,7 @@
- #define _XTENSA_SEMBUF_H
- 
- #include <asm/byteorder.h>
-+#include <asm/ipcbuf.h>
- 
- struct semid64_ds {
- 	struct ipc64_perm sem_perm;		/* permissions .. see ipc.h */
-diff --git a/include/uapi/asm-generic/sembuf.h b/include/uapi/asm-generic/sembuf.h
-index 0bae010f1b64..5807fcd643ba 100644
---- a/include/uapi/asm-generic/sembuf.h
-+++ b/include/uapi/asm-generic/sembuf.h
-@@ -3,6 +3,7 @@
- #define __ASM_GENERIC_SEMBUF_H
- 
- #include <asm/bitsperlong.h>
-+#include <asm/ipcbuf.h>
- 
- /*
-  * The semid64_ds structure for x86 architecture.
-diff --git a/usr/include/Makefile b/usr/include/Makefile
-index 099d7401aa23..107d04bd5ee3 100644
---- a/usr/include/Makefile
-+++ b/usr/include/Makefile
-@@ -16,7 +16,6 @@ override c_flags = $(UAPI_CFLAGS) -Wp,-MD,$(depfile) -I$(objtree)/usr/include
- # Please consider to fix the header first.
- #
- # Sorted alphabetically.
--header-test- += asm/sembuf.h
- header-test- += asm/shmbuf.h
- header-test- += asm/signal.h
- header-test- += asm/ucontext.h
 -- 
-2.17.1
+2.23.0
 
