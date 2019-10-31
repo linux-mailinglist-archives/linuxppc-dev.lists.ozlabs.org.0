@@ -1,45 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093EBEA912
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 03:04:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B078EA94D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 03:41:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473TC52SFWzF5M0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 13:04:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473V2n4149zF4HM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 13:41:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473T972FzmzF43s
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 13:02:18 +1100 (AEDT)
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 28D5ECBE2CFE2676E272;
- Thu, 31 Oct 2019 10:02:01 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.203) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Thu, 31 Oct 2019
- 10:01:59 +0800
-Subject: Re: Pull request: scottwood/linux.git next
-To: Scott Wood <oss@buserror.net>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20191022232155.GA26174@home.buserror.net>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <935d65ed-526b-2cdc-31e0-d7856e750a04@huawei.com>
-Date: Thu, 31 Oct 2019 10:01:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473V0Z3M7zzF5JW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 13:39:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="Ru6HuP4N"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 473V0X52pSz9sPl;
+ Thu, 31 Oct 2019 13:39:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1572489598;
+ bh=kh7Ij8wGLE85JmfMZDo7nA07OV4ozZTfqMQZHKEtQog=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Ru6HuP4NQURWTF/ppIf+4JjYsUi+3s1xPD/DtHVEhoqzV1uNWtu8tlfTJIGLLmi8P
+ Md3r6FH2F89VJddOWBfm7OYCJfR+uJdkEUQt2Wp0EGYCw4ErS3Da5J66exxhHwyLyt
+ 6oeyDj0vl1y8dO7HUCKdJbC3l3Sake7GZC8zuTxyF+c+A9hhe5YSgK//ic6oWDlhdW
+ txuj0rpXoIT/DKKyyOBCtfTC15zN7Q/mPf4Y6jV+a5kvoaFV+Fnr3qL6EkHPsnBLnH
+ d2BrByItD5GHFBsBbyuqnQi5IxLk8jJFddYBYtb1OCkzSalGGbctcNyctq54CNBKDn
+ ilDrQteDWD8dQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: John Hubbard <jhubbard@nvidia.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2] cpufreq: powernv: fix stack bloat and NR_CPUS
+ limitation
+In-Reply-To: <20191018045539.3765565-1-jhubbard@nvidia.com>
+References: <20191018045539.3765565-1-jhubbard@nvidia.com>
+Date: Thu, 31 Oct 2019 13:39:55 +1100
+Message-ID: <87pnidbptw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20191022232155.GA26174@home.buserror.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.203]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,69 +58,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-pm@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
+ "Rafael J . Wysocki" <rjw@rjwysocki.net>, LKML <linux-kernel@vger.kernel.org>,
+ Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael, Can you pull this to linux-next so that we can test it on 
-linux-next for some time?
+Hi John,
 
-Thanks,
-Jason
+Sorry I didn't reply to this sooner, too many patches :/
+
+John Hubbard <jhubbard@nvidia.com> writes:
+> The following build warning occurred on powerpc 64-bit builds:
+>
+> drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
+> drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+
+Oddly I don't see that warning in my builds, eg with GCC9:
+
+  https://travis-ci.org/linuxppc/linux/jobs/604870722
+
+> This is due to putting 1024 bytes on the stack:
+>
+>     unsigned int chip[256];
+>
+> ...and while looking at this, it also has a bug: it fails with a stack
+> overrun, if CONFIG_NR_CPUS > 256.
+
+It _probably_ doesn't, because it only increments the index when the
+chip_id of the CPU changes, ie. it doesn't create a chip for every CPU.
+But I agree it's flaky the way it's written.
+
+> Fix both problems by dynamically allocating based on CONFIG_NR_CPUS.
+
+Shouldn't it use num_possible_cpus() ?
+
+Given the for loop is over possible CPUs that seems like the upper
+bound. In practice it should be lower because some CPUs will share a
+chip.
+
+cheers
 
 
-On 2019/10/23 7:21, Scott Wood wrote:
-> This contains KASLR support for book3e 32-bit.
-> 
-> The following changes since commit 612ee81b9461475b5a5612c2e8d71559dd3c7920:
-> 
->    powerpc/papr_scm: Fix an off-by-one check in papr_scm_meta_{get, set} (2019-10-10 20:15:53 +1100)
-> 
-> are available in the Git repository at:
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/scottwood/linux.git next
-> 
-> for you to fetch changes up to 9df1ef3f1376ec5d3a1b51a4546c94279bcd88ca:
-> 
->    powerpc/fsl_booke/32: Document KASLR implementation (2019-10-21 16:09:16 -0500)
-> 
-> ----------------------------------------------------------------
-> Jason Yan (12):
->        powerpc: unify definition of M_IF_NEEDED
->        powerpc: move memstart_addr and kernstart_addr to init-common.c
->        powerpc: introduce kernstart_virt_addr to store the kernel base
->        powerpc/fsl_booke/32: introduce create_kaslr_tlb_entry() helper
->        powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
->        powerpc/fsl_booke/32: implement KASLR infrastructure
->        powerpc/fsl_booke/32: randomize the kernel image offset
->        powerpc/fsl_booke/kaslr: clear the original kernel if randomized
->        powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
->        powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
->        powerpc/fsl_booke/kaslr: export offset in VMCOREINFO ELF notes
->        powerpc/fsl_booke/32: Document KASLR implementation
-> 
->   Documentation/powerpc/kaslr-booke32.rst       |  42 +++
->   arch/powerpc/Kconfig                          |  11 +
->   arch/powerpc/include/asm/nohash/mmu-book3e.h  |  11 +-
->   arch/powerpc/include/asm/page.h               |   7 +
->   arch/powerpc/kernel/early_32.c                |   5 +-
->   arch/powerpc/kernel/exceptions-64e.S          |  12 +-
->   arch/powerpc/kernel/fsl_booke_entry_mapping.S |  25 +-
->   arch/powerpc/kernel/head_fsl_booke.S          |  61 +++-
->   arch/powerpc/kernel/machine_kexec.c           |   1 +
->   arch/powerpc/kernel/misc_64.S                 |   7 +-
->   arch/powerpc/kernel/setup-common.c            |  20 ++
->   arch/powerpc/mm/init-common.c                 |   7 +
->   arch/powerpc/mm/init_32.c                     |   5 -
->   arch/powerpc/mm/init_64.c                     |   5 -
->   arch/powerpc/mm/mmu_decl.h                    |  11 +
->   arch/powerpc/mm/nohash/Makefile               |   1 +
->   arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-
->   arch/powerpc/mm/nohash/kaslr_booke.c          | 401 ++++++++++++++++++++++++++
->   18 files changed, 587 insertions(+), 53 deletions(-)
->   create mode 100644 Documentation/powerpc/kaslr-booke32.rst
->   create mode 100644 arch/powerpc/mm/nohash/kaslr_booke.c
-> 
-> 
-
+> Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
+> Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
+> Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>
+> Changes since v1: includes Viresh's review commit fixes.
+>
+>  drivers/cpufreq/powernv-cpufreq.c | 17 +++++++++++++----
+>  1 file changed, 13 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 6061850e59c9..5b2e968cb5ea 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -1041,9 +1041,14 @@ static struct cpufreq_driver powernv_cpufreq_driver = {
+>  
+>  static int init_chip_info(void)
+>  {
+> -	unsigned int chip[256];
+> +	unsigned int *chip;
+>  	unsigned int cpu, i;
+>  	unsigned int prev_chip_id = UINT_MAX;
+> +	int ret = 0;
+> +
+> +	chip = kcalloc(CONFIG_NR_CPUS, sizeof(*chip), GFP_KERNEL);
+> +	if (!chip)
+> +		return -ENOMEM;
+>  
+>  	for_each_possible_cpu(cpu) {
+>  		unsigned int id = cpu_to_chip_id(cpu);
+> @@ -1055,8 +1060,10 @@ static int init_chip_info(void)
+>  	}
+>  
+>  	chips = kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
+> -	if (!chips)
+> -		return -ENOMEM;
+> +	if (!chips) {
+> +		ret = -ENOMEM;
+> +		goto free_and_return;
+> +	}
+>  
+>  	for (i = 0; i < nr_chips; i++) {
+>  		chips[i].id = chip[i];
+> @@ -1066,7 +1073,9 @@ static int init_chip_info(void)
+>  			per_cpu(chip_info, cpu) =  &chips[i];
+>  	}
+>  
+> -	return 0;
+> +free_and_return:
+> +	kfree(chip);
+> +	return ret;
+>  }
+>  
+>  static inline void clean_chip_info(void)
+> -- 
+> 2.23.0
