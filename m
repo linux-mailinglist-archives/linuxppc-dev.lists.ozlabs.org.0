@@ -2,85 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E907CEA9B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C54EA9B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:36:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473WKv5KCszF5Qm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 14:40:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473WFS2ltPzDqXr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 14:36:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473W8X0qGWzF3Kj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:31:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473W8V2xpSzF3Gw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:31:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 473W8W4tdnz8swG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:31:55 +1100 (AEDT)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 473W8V12tzz8swG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:31:54 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 473W8W4MqCz9sQr; Thu, 31 Oct 2019 14:31:55 +1100 (AEDT)
+ id 473W8T6fGkz9sQw; Thu, 31 Oct 2019 14:31:53 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 473W8W0JZ4z9sPp
- for <linuxppc-dev@ozlabs.org>; Thu, 31 Oct 2019 14:31:54 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9V3Rid1080406
- for <linuxppc-dev@ozlabs.org>; Wed, 30 Oct 2019 23:31:53 -0400
+ by ozlabs.org (Postfix) with ESMTPS id 473W8T2gVPz9sPp
+ for <linuxppc-dev@ozlabs.org>; Thu, 31 Oct 2019 14:31:53 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9V3Rwj0101674
+ for <linuxppc-dev@ozlabs.org>; Wed, 30 Oct 2019 23:31:51 -0400
 Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vxwmr5c2y-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2vypg8t4et-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 30 Oct 2019 23:31:52 -0400
+ for <linuxppc-dev@ozlabs.org>; Wed, 30 Oct 2019 23:31:50 -0400
 Received: from localhost
  by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <zohar@linux.ibm.com>;
- Thu, 31 Oct 2019 03:31:47 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ Thu, 31 Oct 2019 03:31:49 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
  by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 31 Oct 2019 03:31:43 -0000
+ Thu, 31 Oct 2019 03:31:45 -0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9V3VfXM36831356
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x9V3V9VF40829428
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 31 Oct 2019 03:31:42 GMT
+ Thu, 31 Oct 2019 03:31:09 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC659A405F;
- Thu, 31 Oct 2019 03:31:41 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8B453A4054;
+ Thu, 31 Oct 2019 03:31:43 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59198A4065;
- Thu, 31 Oct 2019 03:31:40 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 15CA8A4062;
+ Thu, 31 Oct 2019 03:31:42 +0000 (GMT)
 Received: from localhost.ibm.com (unknown [9.85.201.217])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 31 Oct 2019 03:31:40 +0000 (GMT)
+ Thu, 31 Oct 2019 03:31:41 +0000 (GMT)
 From: Mimi Zohar <zohar@linux.ibm.com>
 To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
  linux-integrity@vger.kernel.org
-Subject: [PATCH v10 1/9] powerpc: detect the secure boot mode of the system
-Date: Wed, 30 Oct 2019 23:31:26 -0400
+Subject: [PATCH v10 2/9] powerpc/ima: add support to initialize ima policy
+ rules
+Date: Wed, 30 Oct 2019 23:31:27 -0400
 X-Mailer: git-send-email 2.7.5
 In-Reply-To: <1572492694-6520-1-git-send-email-zohar@linux.ibm.com>
 References: <1572492694-6520-1-git-send-email-zohar@linux.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 19103103-0012-0000-0000-0000035F54ED
+x-cbid: 19103103-0012-0000-0000-0000035F54EE
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19103103-0013-0000-0000-0000219A9D42
-Message-Id: <1572492694-6520-2-git-send-email-zohar@linux.ibm.com>
+x-cbparentid: 19103103-0013-0000-0000-0000219A9D43
+Message-Id: <1572492694-6520-3-git-send-email-zohar@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-10-31_01:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -102,131 +103,124 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
  Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Jeremy Kerr <jk@ozlabs.org>, Oliver O'Halloran <oohall@gmail.com>
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Nayna Jain <nayna@linux.ibm.com>
 
-This patch defines a function to detect the secure boot state of a
-PowerNV system.
+PowerNV systems use a Linux-based bootloader, which rely on the IMA
+subsystem to enforce different secure boot modes.  Since the verification
+policy may differ based on the secure boot mode of the system, the
+policies must be defined at runtime.
 
-The PPC_SECURE_BOOT config represents the base enablement of secure boot
-for powerpc.
+This patch implements arch-specific support to define IMA policy
+rules based on the runtime secure boot mode of the system.
+
+This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
+config is enabled.
 
 Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 ---
- arch/powerpc/Kconfig                   | 10 ++++++++++
- arch/powerpc/include/asm/secure_boot.h | 23 +++++++++++++++++++++++
- arch/powerpc/kernel/Makefile           |  2 ++
- arch/powerpc/kernel/secure_boot.c      | 32 ++++++++++++++++++++++++++++++++
- 4 files changed, 67 insertions(+)
- create mode 100644 arch/powerpc/include/asm/secure_boot.h
- create mode 100644 arch/powerpc/kernel/secure_boot.c
+ arch/powerpc/Kconfig           |  1 +
+ arch/powerpc/kernel/Makefile   |  2 +-
+ arch/powerpc/kernel/ima_arch.c | 43 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/ima.h            |  3 ++-
+ 4 files changed, 47 insertions(+), 2 deletions(-)
+ create mode 100644 arch/powerpc/kernel/ima_arch.c
 
 diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 3e56c9c2f16e..56ea0019b616 100644
+index 56ea0019b616..c795039bdc73 100644
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
-@@ -934,6 +934,16 @@ config PPC_MEM_KEYS
- 
- 	  If unsure, say y.
- 
-+config PPC_SECURE_BOOT
-+	prompt "Enable secure boot support"
-+	bool
-+	depends on PPC_POWERNV
-+	help
-+	  Systems with firmware secure boot enabled need to define security
-+	  policies to extend secure boot to the OS. This config allows a user
-+	  to enable OS secure boot on systems that have firmware support for
-+	  it. If in doubt say N.
-+
- endmenu
- 
- config ISA_DMA_API
-diff --git a/arch/powerpc/include/asm/secure_boot.h b/arch/powerpc/include/asm/secure_boot.h
-new file mode 100644
-index 000000000000..07d0fe0ca81f
---- /dev/null
-+++ b/arch/powerpc/include/asm/secure_boot.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Secure boot definitions
-+ *
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Nayna Jain
-+ */
-+#ifndef _ASM_POWER_SECURE_BOOT_H
-+#define _ASM_POWER_SECURE_BOOT_H
-+
-+#ifdef CONFIG_PPC_SECURE_BOOT
-+
-+bool is_ppc_secureboot_enabled(void);
-+
-+#else
-+
-+static inline bool is_ppc_secureboot_enabled(void)
-+{
-+	return false;
-+}
-+
-+#endif
-+#endif
+@@ -938,6 +938,7 @@ config PPC_SECURE_BOOT
+ 	prompt "Enable secure boot support"
+ 	bool
+ 	depends on PPC_POWERNV
++	depends on IMA_ARCH_POLICY
+ 	help
+ 	  Systems with firmware secure boot enabled need to define security
+ 	  policies to extend secure boot to the OS. This config allows a user
 diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index a7ca8fe62368..e2a54fa240ac 100644
+index e2a54fa240ac..e8eb2955b7d5 100644
 --- a/arch/powerpc/kernel/Makefile
 +++ b/arch/powerpc/kernel/Makefile
-@@ -161,6 +161,8 @@ ifneq ($(CONFIG_PPC_POWERNV)$(CONFIG_PPC_SVM),)
+@@ -161,7 +161,7 @@ ifneq ($(CONFIG_PPC_POWERNV)$(CONFIG_PPC_SVM),)
  obj-y				+= ucall.o
  endif
  
-+obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o
-+
+-obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o
++obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o
+ 
  # Disable GCOV, KCOV & sanitizers in odd or sensitive code
  GCOV_PROFILE_prom_init.o := n
- KCOV_INSTRUMENT_prom_init.o := n
-diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
 new file mode 100644
-index 000000000000..63dc82c50862
+index 000000000000..d88913dc0da7
 --- /dev/null
-+++ b/arch/powerpc/kernel/secure_boot.c
-@@ -0,0 +1,32 @@
++++ b/arch/powerpc/kernel/ima_arch.c
+@@ -0,0 +1,43 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2019 IBM Corporation
 + * Author: Nayna Jain
 + */
-+#include <linux/types.h>
-+#include <linux/of.h>
++
++#include <linux/ima.h>
 +#include <asm/secure_boot.h>
 +
-+bool is_ppc_secureboot_enabled(void)
++bool arch_ima_get_secureboot(void)
 +{
-+	struct device_node *node;
-+	bool enabled = false;
-+
-+	node = of_find_compatible_node(NULL, NULL, "ibm,secvar-v1");
-+	if (!of_device_is_available(node)) {
-+		pr_err("Cannot find secure variable node in device tree; failing to secure state\n");
-+		goto out;
-+	}
-+
-+	/*
-+	 * secureboot is enabled if os-secure-enforcing property exists,
-+	 * else disabled.
-+	 */
-+	enabled = of_property_read_bool(node, "os-secure-enforcing");
-+
-+out:
-+	of_node_put(node);
-+
-+	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
-+	return enabled;
++	return is_ppc_secureboot_enabled();
 +}
++
++/*
++ * The "secure_rules" are enabled only on "secureboot" enabled systems.
++ * These rules verify the file signatures against known good values.
++ * The "appraise_type=imasig|modsig" option allows the known good signature
++ * to be stored as an xattr or as an appended signature.
++ *
++ * To avoid duplicate signature verification as much as possible, the IMA
++ * policy rule for module appraisal is added only if CONFIG_MODULE_SIG_FORCE
++ * is not enabled.
++ */
++static const char *const secure_rules[] = {
++	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig",
++#ifndef CONFIG_MODULE_SIG_FORCE
++	"appraise func=MODULE_CHECK appraise_type=imasig|modsig",
++#endif
++	NULL
++};
++
++/*
++ * Returns the relevant IMA arch-specific policies based on the system secure
++ * boot state.
++ */
++const char *const *arch_get_ima_policy(void)
++{
++	if (is_ppc_secureboot_enabled())
++		return secure_rules;
++
++	return NULL;
++}
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 1c37f17f7203..6d904754d858 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -29,7 +29,8 @@ extern void ima_kexec_cmdline(const void *buf, int size);
+ extern void ima_add_kexec_buffer(struct kimage *image);
+ #endif
+ 
+-#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390)
++#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
++	|| defined(CONFIG_PPC_SECURE_BOOT)
+ extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
 -- 
 2.7.5
 
