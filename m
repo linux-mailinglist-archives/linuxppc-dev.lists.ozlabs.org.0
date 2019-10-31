@@ -1,78 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91B3EA82B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 01:19:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CE4EA852
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 01:41:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473QtK4nWjzF5Cn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 11:19:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473RMP18WszF5GK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 11:41:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::443;
+ helo=mail-wr1-x443.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="KkZ+NNwM"; dkim-atps=neutral
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
+ [IPv6:2a00:1450:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473QpD3hHdzF59y
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 11:15:48 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x9V08ACf081901; Wed, 30 Oct 2019 20:15:40 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2vyj02d1q3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Oct 2019 20:15:40 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9V06vUS032465;
- Thu, 31 Oct 2019 00:15:39 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma04dal.us.ibm.com with ESMTP id 2vxwh6cw87-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 31 Oct 2019 00:15:39 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x9V0Fc0V33030524
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 31 Oct 2019 00:15:38 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E6D0B2065;
- Thu, 31 Oct 2019 00:15:38 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2604B2066;
- Thu, 31 Oct 2019 00:15:37 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.78.123])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 31 Oct 2019 00:15:37 +0000 (GMT)
-Subject: Re: [RFC PATCH 0/9] Fixes and Enablement of ibm,drc-info property
-To: Bjorn Helgaas <helgaas@kernel.org>
-References: <20191001200229.GA64312@google.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <414bd2c2-474d-29e0-30f4-2c7f96ac6f25@linux.ibm.com>
-Date: Wed, 30 Oct 2019 17:15:37 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473R925FY7zF3wN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 11:32:06 +1100 (AEDT)
+Received: by mail-wr1-x443.google.com with SMTP id n15so4305471wrw.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 17:32:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=LuWs8dcQ+Sr64TXmHkexn1zViahF1FUWncWFh41F/hk=;
+ b=KkZ+NNwMPyqf8TZ/0SNrTMfEEbtY6AkiKFiX1KC01wShyWiWJD4un4RhPqMCse8c3V
+ 8vK8gBksSfUJfxpaB4aCkY3CXRfcAjThUYGNBHRSplOKOXvu8P10aMmaFwAncndK+2n7
+ WBZui9XlT7Gxb2n8XS6MJwcIgLAsADNcZ+Lu4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=LuWs8dcQ+Sr64TXmHkexn1zViahF1FUWncWFh41F/hk=;
+ b=T9DWrJ52fa8tuKQfZWhni58kFxpeI2RLV3EnKmTRk9rC59iZgy7tTaHVhjCsCFHiYI
+ XU2muHgS6+QfSL3cWNuSI7GDgV7STOgKKL0MKUwatqj+R0bu50O7YTLTm5bh7fm7bvwA
+ ohsDzJl27F1+sich34r7/TlMxeaGte0PqfPisJJCt/M0MZeFj2xKYjLovywC1lgiqEkg
+ V8hvi2S0e169rDASzV/7QBb54kicEdQBKjbtCL3mXffFZuA/7tWvf5GO8e5DaKoAyU21
+ 4QfdIoklTCeZuvpQSnm7cgGojL05aiJJlmij4FvwyIGgnuWTlAAHGEAzcUF344DfF2SI
+ NMJw==
+X-Gm-Message-State: APjAAAXcnXZIkIw+rHF0k09i/lolnZGlW/W9aL5Dw5JfOnFpoov2vYQe
+ N3mRmxfI51Lgi8oVT5c63HS52Q==
+X-Google-Smtp-Source: APXvYqz3E0Ue8yL/CCvXcgs/63oYTW+qO+n65QfV1mF9yHdNK4XvvLNQHrS7g7vfk5Y07iStl+BOkw==
+X-Received: by 2002:adf:f2d1:: with SMTP id d17mr2407775wrp.353.1572481920804; 
+ Wed, 30 Oct 2019 17:32:00 -0700 (PDT)
+Received: from prevas-ravi.prevas.se (ip-5-186-115-54.cgn.fibianet.dk.
+ [5.186.115.54])
+ by smtp.gmail.com with ESMTPSA id r13sm2357111wra.74.2019.10.30.17.31.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Oct 2019 17:32:00 -0700 (PDT)
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To: linux-arch@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH 0/5] powerpc: make iowrite32be etc. inline
+Date: Thu, 31 Oct 2019 01:31:49 +0100
+Message-Id: <20191031003154.21969-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20191001200229.GA64312@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-10-30_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910300218
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,66 +76,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/1/19 1:02 PM, Bjorn Helgaas wrote:
-> On Tue, Oct 01, 2019 at 01:12:05AM -0500, Tyrel Datwyler wrote:
->> There was an initial previous effort yo add support for the PAPR
->> architected ibm,drc-info property. This property provides a more
->> memory compact representation of a paritions Dynamic Reconfig
->> Connectors (DRC). These can otherwise be thought of the currently
->> partitioned, or available, but yet to be partitioned, system resources
->> such as cpus, memory, and physical/logical IOA devices.
->>
->> The initial implementation proved buggy and was fully turned of by
->> disabling the bit in the appropriate CAS support vector. We now have
->> PowerVM firmware in the field that supports this new property, and 
->> further to suppport partitions with 24TB+ or possible memory this
->> property is required to perform platform migration.
->>
->> This serious fixup the short comings of the previous implementation
->> in the areas of general implementation, cpu hotplug, and IOA hotplug.
->>
->> Tyrel Datwyler (9):
->>   powerpc/pseries: add cpu DLPAR support for drc-info property
->>   powerpc/pseries: fix bad drc_index_start value parsing of drc-info
->>     entry
->>   powerpc/pseries: fix drc-info mappings of logical cpus to drc-index
->>   PCI: rpaphp: fix up pointer to first drc-info entry
->>   PCI: rpaphp: don't rely on firmware feature to imply drc-info support
->>   PCI: rpaphp: add drc-info support for hotplug slot registration
->>   PCI: rpaphp: annotate and correctly byte swap DRC properties
->>   PCI: rpaphp: correctly match ibm,my-drc-index to drc-name when using
->>     drc-info
->>   powerpc: Enable support for ibm,drc-info property
->>
->>  arch/powerpc/kernel/prom_init.c                 |   2 +-
->>  arch/powerpc/platforms/pseries/hotplug-cpu.c    | 117 ++++++++++++++++------
->>  arch/powerpc/platforms/pseries/of_helpers.c     |   8 +-
->>  arch/powerpc/platforms/pseries/pseries_energy.c |  23 ++---
->>  drivers/pci/hotplug/rpaphp_core.c               | 124 +++++++++++++++++-------
->>  5 files changed, 191 insertions(+), 83 deletions(-)
-> 
-> Michael, I assume you'll take care of this.  If I were applying, I
-> would capitalize the commit subjects and fix the typos in the commit
-> logs, e.g.,
-> 
->   s/the this/the/
->   s/the the/that the/
->   s/short coming/shortcoming/
->   s/seperate/separate/
->   s/bid endian/big endian/
->   s/were appropriate/where appropriate/
->   s/name form/name from/
-> 
-> etc.  git am also complains about space before tab whitespace errors.
-> And it adds a few lines >80 chars.
-> 
+When trying to make the QUICC Engine drivers compile on arm, I
+mechanically (with coccinelle) changed out_be32() to iowrite32be()
+etc. Christophe pointed out [1][2] that that would pessimize the
+powerpc SOCs since the IO accesses now incur a function call
+overhead. He asked that I try to make those io accessors inline on
+ppc, and this is the best I could come up with.
 
-I'll fix all those up in the next spin.
+At first I tried something that wouldn't need to touch anything
+outside arch/powerpc/, but I ended up with conditional inclusion of
+asm-generic headers and/or duplicating a lot of their contents.
 
--Tyrel
+The diffstat may become a little better if kernel/iomap.c can indeed
+be removed (due to !CONFIG_PPC_INDIRECT_PIO &&
+CONFIG_PPC_INDIRECT_MMIO never happening).
+
+[1] https://lore.kernel.org/lkml/6ee121cf-0e3d-4aa0-2593-fcb00995e429@c-s.fr/
+[2] https://lore.kernel.org/lkml/886d5218-6d6b-824c-3ab9-63aafe41ff40@c-s.fr/
+
+Rasmus Villemoes (5):
+  asm-generic: move pcu_iounmap from iomap.h to pci_iomap.h
+  asm-generic: employ "ifndef foo; define foo foo" idiom in iomap.h
+  powerpc: move pci_iounmap() from iomap.c to pci-common.c
+  powerpc: make pcibios_vaddr_is_ioport() static
+  powerpc: make iowrite32 and friends static inline when no indirection
+
+ arch/powerpc/include/asm/io.h         | 172 ++++++++++++++++++++++++++
+ arch/powerpc/include/asm/pci-bridge.h |   9 --
+ arch/powerpc/kernel/Makefile          |   2 +-
+ arch/powerpc/kernel/iomap.c           |  13 --
+ arch/powerpc/kernel/pci-common.c      |  15 ++-
+ include/asm-generic/iomap.h           | 104 +++++++++++++---
+ include/asm-generic/pci_iomap.h       |   7 ++
+ 7 files changed, 282 insertions(+), 40 deletions(-)
+
+-- 
+2.23.0
+
