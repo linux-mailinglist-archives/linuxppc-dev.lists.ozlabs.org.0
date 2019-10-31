@@ -1,66 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852A4EAA2B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 06:24:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF04BEAA5E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 06:37:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473Ydx2m3bzF5Xr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 16:24:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473YxL5d3DzF4Q8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 16:37:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="M2HndkRg"; 
- dkim-atps=neutral
-Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473Ybl4xBwzF44B
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 16:22:11 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dba6f800003>; Wed, 30 Oct 2019 22:22:08 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Wed, 30 Oct 2019 22:22:02 -0700
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Wed, 30 Oct 2019 22:22:02 -0700
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 31 Oct
- 2019 05:22:01 +0000
-Received: from hqnvemgw01.nvidia.com (172.20.150.20) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Thu, 31 Oct 2019 05:22:01 +0000
-Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
- hqnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5dba6f790002>; Wed, 30 Oct 2019 22:22:01 -0700
-From: John Hubbard <jhubbard@nvidia.com>
-To: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
-Subject: [PATCH v3] cpufreq: powernv: fix stack bloat and hard limit on num
- cpus
-Date: Wed, 30 Oct 2019 22:21:59 -0700
-Message-ID: <20191031052159.4125031-1-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.23.0
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473Yv86PjpzF5Xm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 16:35:32 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9V5Ya8Q083730; Thu, 31 Oct 2019 01:35:24 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vyrjthvey-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Oct 2019 01:35:24 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9V5ZNLF028354;
+ Thu, 31 Oct 2019 05:35:23 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma03dal.us.ibm.com with ESMTP id 2vxwh67jvp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Oct 2019 05:35:23 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9V5ZMDt41812396
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 31 Oct 2019 05:35:22 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 692DD124054;
+ Thu, 31 Oct 2019 05:35:22 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 20AD1124058;
+ Thu, 31 Oct 2019 05:35:21 +0000 (GMT)
+Received: from [9.199.35.193] (unknown [9.199.35.193])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 31 Oct 2019 05:35:20 +0000 (GMT)
+Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
+ validation arch dependent
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
+ <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
+ <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
+Date: Thu, 31 Oct 2019 11:05:19 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1572499329; bh=JruVw9xyqxYwGOkvLwuaUWoisUc3Oj72psSC7yvOj9E=;
- h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
- MIME-Version:X-NVConfidentiality:Content-Transfer-Encoding:
- Content-Type;
- b=M2HndkRgDEqSG30/5xzYXxZbX47HSMe5IHZqeYbu8232+KxDaFWwpP6+neQyf6SAe
- rHoltzYET4z8kYedl9AjK5p+9tMJ1xDrfXgLL+BbBC5QOa1oNLWVRQ1Xzk4sTMTE5s
- p2auRJ5SEK+izk6eHf681wKgxCyxu9NOAYka8Ag2UPAKFvQwnp9TURjIlrfUlmTHTy
- ykatPRRPK4Rn98Y8T7Ekxq73LxbPUkPRiO5JEy4VmZ4ogRfDRPYygITDdWhgTZxi8A
- UIF6BSO9ZXDgFm8S+jWDInAXmZGGcw1730EArNsprax/8NLDqmG0cPuxf1tdaLIcA/
- r54fV3Utf9WIQ==
+In-Reply-To: <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-31_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910310055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,110 +88,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>, "Rafael
- J . Wysocki" <rjw@rjwysocki.net>, LKML <linux-kernel@vger.kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The following build warning occurred on powerpc 64-bit builds:
+On 10/29/19 11:00 AM, Dan Williams wrote:
+> On Mon, Oct 28, 2019 at 9:35 PM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+>>
+>> On 10/29/19 4:38 AM, Dan Williams wrote:
+>>> On Mon, Oct 28, 2019 at 2:48 AM Aneesh Kumar K.V
+>>> <aneesh.kumar@linux.ibm.com> wrote:
+>>>>
+>>>> The page size used to map the namespace is arch dependent. For example
+>>>> architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
+>>>> size is not aligned to the mapping page size, we can observe kernel crash
+>>>> during namespace init and destroy.
+>>>>
+>>>> This is due to kernel doing partial map/unmap of the resource range
+>>>>
+>>>> BUG: Unable to handle kernel data access at 0xc001000406000000
+>>>> Faulting instruction address: 0xc000000000090790
+>>>> NIP [c000000000090790] arch_add_memory+0xc0/0x130
+>>>> LR [c000000000090744] arch_add_memory+0x74/0x130
+>>>> Call Trace:
+>>>>    arch_add_memory+0x74/0x130 (unreliable)
+>>>>    memremap_pages+0x74c/0xa30
+>>>>    devm_memremap_pages+0x3c/0xa0
+>>>>    pmem_attach_disk+0x188/0x770
+>>>>    nvdimm_bus_probe+0xd8/0x470
+>>>>    really_probe+0x148/0x570
+>>>>    driver_probe_device+0x19c/0x1d0
+>>>>    device_driver_attach+0xcc/0x100
+>>>>    bind_store+0x134/0x1c0
+>>>>    drv_attr_store+0x44/0x60
+>>>>    sysfs_kf_write+0x74/0xc0
+>>>>    kernfs_fop_write+0x1b4/0x290
+>>>>    __vfs_write+0x3c/0x70
+>>>>    vfs_write+0xd0/0x260
+>>>>    ksys_write+0xdc/0x130
+>>>>    system_call+0x5c/0x68
+>>>>
+>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>>> ---
+>>>>    arch/arm64/mm/flush.c     | 11 +++++++++++
+>>>>    arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
+>>>>    arch/x86/mm/pageattr.c    | 12 ++++++++++++
+>>>>    include/linux/libnvdimm.h |  1 +
+>>>>    4 files changed, 43 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
+>>>> index ac485163a4a7..90c54c600023 100644
+>>>> --- a/arch/arm64/mm/flush.c
+>>>> +++ b/arch/arm64/mm/flush.c
+>>>> @@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
+>>>>           __inval_dcache_area(addr, size);
+>>>>    }
+>>>>    EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+>>>> +
+>>>> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
+>>>> +{
+>>>> +       u32 remainder;
+>>>> +
+>>>> +       div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
+>>>> +       if (remainder)
+>>>> +               return PAGE_SIZE * ndr_mappings;
+>>>> +       return 0;
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
+>>>>    #endif
+>>>> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
+>>>> index 377712e85605..2e661a08dae5 100644
+>>>> --- a/arch/powerpc/lib/pmem.c
+>>>> +++ b/arch/powerpc/lib/pmem.c
+>>>> @@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
+>>>>           unsigned long start = (unsigned long) addr;
+>>>>           flush_dcache_range(start, start + size);
+>>>>    }
+>>>> -EXPORT_SYMBOL(arch_wb_cache_pmem);
+>>>> +EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
+>>>>
+>>>>    void arch_invalidate_pmem(void *addr, size_t size)
+>>>>    {
+>>>>           unsigned long start = (unsigned long) addr;
+>>>>           flush_dcache_range(start, start + size);
+>>>>    }
+>>>> -EXPORT_SYMBOL(arch_invalidate_pmem);
+>>>> +EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+>>>> +
+>>>> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
+>>>> +{
+>>>> +       u32 remainder;
+>>>> +       unsigned long linear_map_size;
+>>>> +
+>>>> +       if (radix_enabled())
+>>>> +               linear_map_size = PAGE_SIZE;
+>>>> +       else
+>>>> +               linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
+>>>
+>>> This seems more a "supported_alignments" problem, and less a namespace
+>>> size or PAGE_SIZE problem, because if the starting address is
+>>> misaligned this size validation can still succeed when it shouldn't.
+>>>
+>>
+>>
+>> Isn't supported_alignments an indication of how user want the namespace
+>> to be mapped to applications?  Ie, with the above restrictions we can
+>> still do both 64K and 16M mapping of the namespace to userspace.
+> 
+> True, for the pfn device and the device-dax mapping size, but I'm
+> suggesting adding another instance of alignment control at the raw
+> namespace level. That would need to be disconnected from the
+> device-dax page mapping granularity.
+> 
 
-drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
-drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of
-1040 bytes is larger than 1024 bytes [-Wframe-larger-than=3D]
+Can you explain what you mean by raw namespace level ? We don't have 
+multiple values against which we need to check the alignment of 
+namespace start and namespace size.
 
-This is with a cross-compiler based on gcc 8.1.0, which I got from:
-  https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.1.=
-0/
+If you can outline how and where you would like to enforce that check I 
+can start working on it.
 
-The warning is due to putting 1024 bytes on the stack:
-
-    unsigned int chip[256];
-
-...and it's also undesirable to have a hard limit on the number of
-CPUs here.
-
-Fix both problems by dynamically allocating based on num_possible_cpus,
-as recommended by Michael Ellerman.
-
-Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capp=
-ing at chip level")
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
-Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-Cc: linux-pm@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
-
-Changes since v2: applied fixes from Michael Ellerman's review:
-
-* Changed from CONFIG_NR_CPUS to num_possible_cpus()
-
-* Fixed up commit description: added a note about exactly which
-  compiler generates the warning. And softened up wording about
-  the limitation on number of CPUs.
-
-Changes since v1: includes Viresh's review commit fixes.
-
-thanks,
-John Hubbard
-NVIDIA
-
-
- drivers/cpufreq/powernv-cpufreq.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cp=
-ufreq.c
-index 6061850e59c9..56f4bc0d209e 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -1041,9 +1041,14 @@ static struct cpufreq_driver powernv_cpufreq_driver =
-=3D {
-=20
- static int init_chip_info(void)
- {
--	unsigned int chip[256];
-+	unsigned int *chip;
- 	unsigned int cpu, i;
- 	unsigned int prev_chip_id =3D UINT_MAX;
-+	int ret =3D 0;
-+
-+	chip =3D kcalloc(num_possible_cpus(), sizeof(*chip), GFP_KERNEL);
-+	if (!chip)
-+		return -ENOMEM;
-=20
- 	for_each_possible_cpu(cpu) {
- 		unsigned int id =3D cpu_to_chip_id(cpu);
-@@ -1055,8 +1060,10 @@ static int init_chip_info(void)
- 	}
-=20
- 	chips =3D kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
--	if (!chips)
--		return -ENOMEM;
-+	if (!chips) {
-+		ret =3D -ENOMEM;
-+		goto free_and_return;
-+	}
-=20
- 	for (i =3D 0; i < nr_chips; i++) {
- 		chips[i].id =3D chip[i];
-@@ -1066,7 +1073,9 @@ static int init_chip_info(void)
- 			per_cpu(chip_info, cpu) =3D  &chips[i];
- 	}
-=20
--	return 0;
-+free_and_return:
-+	kfree(chip);
-+	return ret;
- }
-=20
- static inline void clean_chip_info(void)
---=20
-2.23.0
+-aneesh
 
