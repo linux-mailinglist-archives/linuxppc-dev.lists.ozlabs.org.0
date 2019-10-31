@@ -1,70 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607B4EB393
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 16:12:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713E3EB40E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 16:37:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473phX5hBgzDr7p
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 02:12:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473qFp0L60zF4w2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 02:37:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="LMPP2Kwi"; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473nt846t4zF5ns
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 01:35:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1572532525;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ly7khlQOPRzxwzMex/xrth00jOw8cCok4ftXBhGNR4s=;
- b=LMPP2KwilwQLHGTJgniMEpayIwEcXGyVWF6sLmsFhD0sDlv82lmjo10gMx1PEwdevwqQ9g
- 1broc3hmVr82S07uVwNi6WEwuvP1OYk6SyIVjUTfTzBL+hYsjSyGvxfsdxGR/wLDGHnmyp
- M5pAFQIZP02w6Vk2YAWEKMfCt3VRx+g=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-378-sWD2HUOGPGmD_WFTWMZijA-1; Thu, 31 Oct 2019 10:35:21 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EB2722EDC;
- Thu, 31 Oct 2019 14:35:18 +0000 (UTC)
-Received: from [10.36.118.44] (unknown [10.36.118.44])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7407660876;
- Thu, 31 Oct 2019 14:35:14 +0000 (UTC)
-Subject: Re: [PATCH v1 08/12] powerpc/pseries: CMM: Implement balloon
- compaction
-To: linux-kernel@vger.kernel.org
-References: <20191031142933.10779-1-david@redhat.com>
- <20191031142933.10779-9-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <be7c1424-f240-b72c-8d6d-310ebbd816e1@redhat.com>
-Date: Thu, 31 Oct 2019 15:35:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473qBz4hjDzF5w0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 02:35:06 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id C6713B24D;
+ Thu, 31 Oct 2019 15:35:00 +0000 (UTC)
+From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To: Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>
+Subject: [PATCH] dma/direct: turn ARCH_ZONE_DMA_BITS into a variable
+Date: Thu, 31 Oct 2019 16:28:37 +0100
+Message-Id: <20191031152837.15253-1-nsaenzjulienne@suse.de>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20191031142933.10779-9-david@redhat.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-MC-Unique: sWD2HUOGPGmD_WFTWMZijA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,206 +45,208 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, David Howells <dhowells@redhat.com>,
- linux-mm@kvack.org, Oliver O'Halloran <oohall@gmail.com>,
- Paul Mackerras <paulus@samba.org>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>,
- Greg Hackmann <ghackmann@google.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Christian Brauner <christian@brauner.io>, Gao Xiang <xiang@kernel.org>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arun KS <arunks@codeaurora.org>, Andrew Morton <akpm@linux-foundation.org>,
- "Enrico Weigelt, metux IT consult" <info@metux.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Todd Kjos <tkjos@google.com>
+Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ iommu@lists.linux-foundation.org, Paul Mackerras <paulus@samba.org>,
+ linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31.10.19 15:29, David Hildenbrand wrote:
-> We can now get rid of the cmm_lock and completely rely on the balloon
-> compaction internals, which now also manage the page list and the lock.
->=20
-> Inflated/"loaned" pages are now movable. Memory blocks that contain
-> such apges can get offlined. Also, all such pages will be marked
-> PageOffline() and can therefore be excluded in memory dumps using recent
-> versions of makedumpfile.
->=20
-> Don't switch to balloon_page_alloc() yet (due to the GFP_NOIO). Will
-> do that separately to discuss this change in detail.
->=20
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Anshuman Khandual <khandual@linux.vnet.ibm.com>
-> Cc: "Oliver O'Halloran" <oohall@gmail.com>
-> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
-> Cc: "Enrico Weigelt, metux IT consult" <info@metux.net>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Allison Randal <allison@lohutok.net>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Arun KS <arunks@codeaurora.org>
-> Cc: Todd Kjos <tkjos@google.com>
-> Cc: Christian Brauner <christian@brauner.io>
-> Cc: Gao Xiang <xiang@kernel.org>
-> Cc: Greg Hackmann <ghackmann@google.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->   arch/powerpc/platforms/pseries/Kconfig |   1 +
->   arch/powerpc/platforms/pseries/cmm.c   | 132 ++++++++++++++++++++++---
->   include/uapi/linux/magic.h             |   1 +
->   3 files changed, 120 insertions(+), 14 deletions(-)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platfo=
-rms/pseries/Kconfig
-> index 9e35cddddf73..595e9f8a6539 100644
-> --- a/arch/powerpc/platforms/pseries/Kconfig
-> +++ b/arch/powerpc/platforms/pseries/Kconfig
-> @@ -108,6 +108,7 @@ config PPC_SMLPAR
->   config CMM
->   =09tristate "Collaborative memory management"
->   =09depends on PPC_SMLPAR
-> +=09select MEMORY_BALLOON
->   =09default y
->   =09help
->   =09  Select this option, if you want to enable the kernel interface
-> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platform=
-s/pseries/cmm.c
-> index 3a55dd1fdd39..235fd7fe9df1 100644
-> --- a/arch/powerpc/platforms/pseries/cmm.c
-> +++ b/arch/powerpc/platforms/pseries/cmm.c
-> @@ -19,6 +19,10 @@
->   #include <linux/stringify.h>
->   #include <linux/swap.h>
->   #include <linux/device.h>
-> +#include <linux/mount.h>
-> +#include <linux/pseudo_fs.h>
-> +#include <linux/magic.h>
-> +#include <linux/balloon_compaction.h>
->   #include <asm/firmware.h>
->   #include <asm/hvcall.h>
->   #include <asm/mmu.h>
-> @@ -77,13 +81,11 @@ static atomic_long_t loaned_pages;
->   static unsigned long loaned_pages_target;
->   static unsigned long oom_freed_pages;
->  =20
-> -static LIST_HEAD(cmm_page_list);
-> -static DEFINE_SPINLOCK(cmm_lock);
-> -
->   static DEFINE_MUTEX(hotplug_mutex);
->   static int hotplug_occurred; /* protected by the hotplug mutex */
->  =20
->   static struct task_struct *cmm_thread_ptr;
-> +static struct balloon_dev_info b_dev_info;
->  =20
->   static long plpar_page_set_loaned(struct page *page)
->   {
-> @@ -149,19 +151,16 @@ static long cmm_alloc_pages(long nr)
->   =09=09=09=09  __GFP_NOMEMALLOC);
->   =09=09if (!page)
->   =09=09=09break;
-> -=09=09spin_lock(&cmm_lock);
->   =09=09rc =3D plpar_page_set_loaned(page);
->   =09=09if (rc) {
->   =09=09=09pr_err("%s: Can not set page to loaned. rc=3D%ld\n", __func__,=
- rc);
-> -=09=09=09spin_unlock(&cmm_lock);
->   =09=09=09__free_page(page);
->   =09=09=09break;
->   =09=09}
->  =20
-> -=09=09list_add(&page->lru, &cmm_page_list);
-> +=09=09balloon_page_enqueue(&b_dev_info, page);
->   =09=09atomic_long_inc(&loaned_pages);
->   =09=09adjust_managed_page_count(page, -1);
-> -=09=09spin_unlock(&cmm_lock);
->   =09=09nr--;
->   =09}
->  =20
-> @@ -178,21 +177,19 @@ static long cmm_alloc_pages(long nr)
->    **/
->   static long cmm_free_pages(long nr)
->   {
-> -=09struct page *page, *tmp;
-> +=09struct page *page;
->  =20
->   =09cmm_dbg("Begin free of %ld pages.\n", nr);
-> -=09spin_lock(&cmm_lock);
-> -=09list_for_each_entry_safe(page, tmp, &cmm_page_list, lru) {
-> -=09=09if (!nr)
-> +=09while (nr) {
-> +=09=09page =3D balloon_page_dequeue(&b_dev_info);
-> +=09=09if (!page)
->   =09=09=09break;
->   =09=09plpar_page_set_active(page);
-> -=09=09list_del(&page->lru);
->   =09=09adjust_managed_page_count(page, 1);
->   =09=09__free_page(page);
->   =09=09atomic_long_dec(&loaned_pages);
->   =09=09nr--;
->   =09}
-> -=09spin_unlock(&cmm_lock);
->   =09cmm_dbg("End request with %ld pages unfulfilled\n", nr);
->   =09return nr;
->   }
-> @@ -484,6 +481,105 @@ static struct notifier_block cmm_mem_nb =3D {
->   =09.priority =3D CMM_MEM_HOTPLUG_PRI
->   };
->  =20
-> +#ifdef CONFIG_BALLOON_COMPACTION
-> +static struct vfsmount *balloon_mnt;
-> +
-> +static int cmm_init_fs_context(struct fs_context *fc)
-> +{
-> +=09return init_pseudo(fc, PPC_CMM_MAGIC) ? 0 : -ENOMEM;
-> +}
-> +
-> +static struct file_system_type balloon_fs =3D {
-> +=09.name =3D "ppc-cmm",
-> +=09.init_fs_context =3D cmm_init_fs_context,
-> +=09.kill_sb =3D kill_anon_super,
-> +};
-> +
-> +static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
-> +=09=09=09   struct page *newpage, struct page *page,
-> +=09=09=09   enum migrate_mode mode)
-> +{
-> +=09unsigned long flags;
-> +
-> +=09/*
-> +=09 * loan/"inflate" the newpage first.
-> +=09 *
-> +=09 * We might race against the cmm_thread who might discover after our
-> +=09 * loan request that another page is to be unloaned. However, once
-> +=09 * the cmm_thread runs again later, this error will automatically
-> +=09 * be corrected.
-> +=09 */
-> +=09if (plpar_page_set_loaned(newpage)) {
-> +=09=09/* Unlikely, but possible. Tell the caller not to retry now. */
-> +=09=09pr_err_ratelimited("%s: Cannot set page to loaned.", __func__);
-> +=09=09return -EBUSY;
-> +=09}
-> +
-> +=09/* balloon page list reference */
-> +=09get_page(newpage);
-> +
-> +=09spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-> +=09balloon_page_insert(b_dev_info, newpage);
-> +=09balloon_page_delete(page);
+Some architectures, notably ARM, are interested in tweaking this
+depending on their runtime DMA addressing limitations.
 
-I think I am missing a b_dev_info->isolated_pages-- here.
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+---
 
-> +=09spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+Changes since RFC:
+ - Rebased to v5.4-rc6, fixed arm64 code.
 
+NOTE: This will only apply to linux-next, where 
+ arch/arm64/mm/init.c            |  5 +++++
+ arch/powerpc/include/asm/page.h |  9 ---------
+ arch/powerpc/mm/mem.c           | 20 +++++++++++++++-----
+ arch/s390/include/asm/page.h    |  2 --
+ arch/s390/mm/init.c             |  1 +
+ include/linux/dma-direct.h      |  2 ++
+ kernel/dma/direct.c             | 13 ++++++-------
+ 7 files changed, 29 insertions(+), 23 deletions(-)
 
---=20
-
-Thanks,
-
-David / dhildenb
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 45c00a54909c..f716ea634804 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -20,6 +20,7 @@
+ #include <linux/sort.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
++#include <linux/dma-direct.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-contiguous.h>
+ #include <linux/efi.h>
+@@ -41,6 +42,8 @@
+ #include <asm/tlb.h>
+ #include <asm/alternative.h>
+ 
++#define ARM64_ZONE_DMA_BITS	30
++
+ /*
+  * We need to be able to catch inadvertent references to memstart_addr
+  * that occur (potentially in generic code) before arm64_memblock_init()
+@@ -424,6 +427,8 @@ void __init arm64_memblock_init(void)
+ 	else
+ 		arm64_dma_phys_limit = PHYS_MASK + 1;
+ 
++	zone_dma_bits = ARM64_ZONE_DMA_BITS;
++
+ 	reserve_crashkernel();
+ 
+ 	reserve_elfcorehdr();
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index c8bb14ff4713..f6c562acc3f8 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -329,13 +329,4 @@ struct vm_area_struct;
+ #endif /* __ASSEMBLY__ */
+ #include <asm/slice.h>
+ 
+-/*
+- * Allow 30-bit DMA for very limited Broadcom wifi chips on many powerbooks.
+- */
+-#ifdef CONFIG_PPC32
+-#define ARCH_ZONE_DMA_BITS 30
+-#else
+-#define ARCH_ZONE_DMA_BITS 31
+-#endif
+-
+ #endif /* _ASM_POWERPC_PAGE_H */
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index be941d382c8d..c95b7fe9f298 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -31,6 +31,7 @@
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
+ #include <linux/memremap.h>
++#include <linux/dma-direct.h>
+ 
+ #include <asm/pgalloc.h>
+ #include <asm/prom.h>
+@@ -201,10 +202,10 @@ static int __init mark_nonram_nosave(void)
+  * everything else. GFP_DMA32 page allocations automatically fall back to
+  * ZONE_DMA.
+  *
+- * By using 31-bit unconditionally, we can exploit ARCH_ZONE_DMA_BITS to
+- * inform the generic DMA mapping code.  32-bit only devices (if not handled
+- * by an IOMMU anyway) will take a first dip into ZONE_NORMAL and get
+- * otherwise served by ZONE_DMA.
++ * By using 31-bit unconditionally, we can exploit zone_dma_bits to inform the
++ * generic DMA mapping code.  32-bit only devices (if not handled by an IOMMU
++ * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
++ * ZONE_DMA.
+  */
+ static unsigned long max_zone_pfns[MAX_NR_ZONES];
+ 
+@@ -237,9 +238,18 @@ void __init paging_init(void)
+ 	printk(KERN_DEBUG "Memory hole size: %ldMB\n",
+ 	       (long int)((top_of_ram - total_ram) >> 20));
+ 
++	/*
++	 * Allow 30-bit DMA for very limited Broadcom wifi chips on many
++	 * powerbooks.
++	 */
++	if (IS_ENABLED(CONFIG_PPC32))
++		zone_dma_bits = 30;
++	else
++		zone_dma_bits = 31;
++
+ #ifdef CONFIG_ZONE_DMA
+ 	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+-				      1UL << (ARCH_ZONE_DMA_BITS - PAGE_SHIFT));
++				      1UL << (zone_dma_bits - PAGE_SHIFT));
+ #endif
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+ #ifdef CONFIG_HIGHMEM
+diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
+index 823578c6b9e2..a4d38092530a 100644
+--- a/arch/s390/include/asm/page.h
++++ b/arch/s390/include/asm/page.h
+@@ -177,8 +177,6 @@ static inline int devmem_is_allowed(unsigned long pfn)
+ #define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
+ 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+ 
+-#define ARCH_ZONE_DMA_BITS	31
+-
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/getorder.h>
+ 
+diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+index a124f19f7b3c..f0ce22220565 100644
+--- a/arch/s390/mm/init.c
++++ b/arch/s390/mm/init.c
+@@ -118,6 +118,7 @@ void __init paging_init(void)
+ 
+ 	sparse_memory_present_with_active_regions(MAX_NUMNODES);
+ 	sparse_init();
++	zone_dma_bits = 31;
+ 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+ 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(MAX_DMA_ADDRESS);
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+index adf993a3bd58..d03af3605460 100644
+--- a/include/linux/dma-direct.h
++++ b/include/linux/dma-direct.h
+@@ -5,6 +5,8 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/mem_encrypt.h>
+ 
++extern unsigned int zone_dma_bits;
++
+ #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
+ #include <asm/dma-direct.h>
+ #else
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 8402b29c280f..0b67c04e531b 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -16,12 +16,11 @@
+ #include <linux/swiotlb.h>
+ 
+ /*
+- * Most architectures use ZONE_DMA for the first 16 Megabytes, but
+- * some use it for entirely different regions:
++ * Most architectures use ZONE_DMA for the first 16 Megabytes, but some use it
++ * it for entirely different regions. In that case the arch code needs to
++ * override the variable below for dma-direct to work properly.
+  */
+-#ifndef ARCH_ZONE_DMA_BITS
+-#define ARCH_ZONE_DMA_BITS 24
+-#endif
++unsigned int zone_dma_bits __ro_after_init = 24;
+ 
+ static void report_addr(struct device *dev, dma_addr_t dma_addr, size_t size)
+ {
+@@ -69,7 +68,7 @@ static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
+ 	 * Note that GFP_DMA32 and GFP_DMA are no ops without the corresponding
+ 	 * zones.
+ 	 */
+-	if (*phys_mask <= DMA_BIT_MASK(ARCH_ZONE_DMA_BITS))
++	if (*phys_mask <= DMA_BIT_MASK(zone_dma_bits))
+ 		return GFP_DMA;
+ 	if (*phys_mask <= DMA_BIT_MASK(32))
+ 		return GFP_DMA32;
+@@ -395,7 +394,7 @@ int dma_direct_supported(struct device *dev, u64 mask)
+ 	u64 min_mask;
+ 
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA))
+-		min_mask = DMA_BIT_MASK(ARCH_ZONE_DMA_BITS);
++		min_mask = DMA_BIT_MASK(zone_dma_bits);
+ 	else
+ 		min_mask = DMA_BIT_MASK(32);
+ 
+-- 
+2.23.0
 
