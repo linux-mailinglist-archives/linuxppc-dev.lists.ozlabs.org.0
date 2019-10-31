@@ -1,72 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA1CEAC9F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 10:39:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEBCEACAF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 10:42:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473gJ64Nc9zF5fZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 20:39:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473gMl54W2zF4KK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 20:42:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="UQBU8pga"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="Z8ihK2yz"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473gFk749NzF4FT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 20:36:56 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id e10so3669448pgd.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 02:36:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473gJR64JpzF5dg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 20:39:19 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id q26so3965303pfn.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 02:39:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=W3IvectI3U8q0HFF/2f4e8iwJrLi+nuiRQbnbTxHTY4=;
- b=UQBU8pga/J7ePOwPMzsTWyVEdxrfo7cdGzhDjxv8yuKxBCWLeUX7wN0ysAomBzf0rv
- 6HkWJH85yBZWYjLtk16ZSrZR9tst8mYaRvC5ni/cd5jRuKZc3d+k4Qcs6U8qzK8b6Gwy
- hshflkHLKqRQnXnqJ5o9u8/e4HMs5ZY+fQkss=
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=tw/W6NbXnb4qm98VeXSbJQHRtU1hT68y9JEMgvYPvkw=;
+ b=Z8ihK2yzb4t0N40oPVBY2YeLprWCSZ+dp9BgkobXgdCSwQHyktcKzY5AC10wQT0wJs
+ CM5zdQpl7ryOLOmeUjQOc6eb4PDXsEeNG+eVFluhkE3xXVcWxNQgN+QADU1N5AJBSbqP
+ fjQM2U7OJA/+JCEZ6vFK9dfz29wPwKLs59WfA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=W3IvectI3U8q0HFF/2f4e8iwJrLi+nuiRQbnbTxHTY4=;
- b=UhYyGUdmKiA7XKArJCbWbGtp+0+CVMbD6KqlWQ0awpuvc1Cd+VmfpTwoa8aKvf5sRW
- ExN9ZVedDE8S8EuAKhgCNGRswifrHDTJKBkyfpIyeNAo5n59op4nWMIHoUlTXSXFiR41
- FFWp680HhSDnKzHuBuZAU43vVsGKdZFZw2ZdlnoX5UzWmc4pktJgOEXhK8Dp6MvLgxh0
- I5r96qioiG/bHRrv+nD+p8Rf+0Ax7LFIzX80inEPS5Nc/VWUaWru70kGN/l0yXFyRV9N
- 6PGTqieoRsSgCkDyaC2JqlhxQMOanzPvjB+MXWypdoFOxjBCiw1kFWBnUCYDENjPsmLl
- orkQ==
-X-Gm-Message-State: APjAAAVhXBjMPc4QU/HrBaCnrSRs/wQC/A5el42JnqSodfZ6pZz35r59
- dJJKBeHIAU56tSof8oqvItIE8g==
-X-Google-Smtp-Source: APXvYqzhpdRbvtvxfJX9ZT+cYCOInadyvR9a7dOApHJ2j74C/PDMrWRAe01F5X/e2EPBEt+jSYBJog==
-X-Received: by 2002:a17:90a:c505:: with SMTP id
- k5mr5768175pjt.84.1572514612591; 
- Thu, 31 Oct 2019 02:36:52 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=tw/W6NbXnb4qm98VeXSbJQHRtU1hT68y9JEMgvYPvkw=;
+ b=rx05t7UJt/ktcY+O+sdXv/ZbkV4sWmVGlOxQ4+2uxxnFqGAEUkvH2wqAYY1kYzsFMJ
+ U66DoUYt/SJ76M/N3ZKw3wlsVEWpGJ+Sgxrs8xRsDtc+vlVova1sG7ISjpoSd5mB/q9p
+ K6rqBhr29H4mSv0LqirRi2zZoh/zrIkcO8kydnwhSVhqDFTpszlKbgwxlro7TO3SoznJ
+ hf9qtwJF0tU5Mpe8TxWPw1uBrhOhIwwD8coojL0f3BopctEC1hfWeLhLHg4Wl+aQaDSo
+ fl1ozXm9lzm7peSfG4pGwt6rlvImw64ZWACe1d+m6B73VlHGtZe1Wpjsjvju0vFrJapH
+ vcwA==
+X-Gm-Message-State: APjAAAWE5CywTmSugYxSwDrYycLMvs7R6q2cGURAqYIODyya7Adz/tiM
+ 2HURh3YFYynIzNpfcusuA+L0xw==
+X-Google-Smtp-Source: APXvYqyDn4TdsCZV2aZgVm6KyZHNNNAePgy+2Pk7lNaxWkqtto+SU2QfMIWroH4GAfNVD0kAkwkLNQ==
+X-Received: by 2002:a63:4b06:: with SMTP id y6mr5232911pga.409.1572514756048; 
+ Thu, 31 Oct 2019 02:39:16 -0700 (PDT)
 Received: from localhost
  (2001-44b8-1113-6700-783a-2bb9-f7cb-7c3c.static.ipv6.internode.on.net.
  [2001:44b8:1113:6700:783a:2bb9:f7cb:7c3c])
- by smtp.gmail.com with ESMTPSA id i16sm2708223pfa.184.2019.10.31.02.36.51
+ by smtp.gmail.com with ESMTPSA id a18sm742715pff.95.2019.10.31.02.39.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2019 02:36:51 -0700 (PDT)
+ Thu, 31 Oct 2019 02:39:15 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
-To: Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH v10 1/5] kasan: support backing vmalloc space with real
- shadow memory
-In-Reply-To: <20191030142951.GA24958@pc636>
-References: <20191029042059.28541-1-dja@axtens.net>
- <20191029042059.28541-2-dja@axtens.net> <20191030142951.GA24958@pc636>
-Date: Thu, 31 Oct 2019 20:36:48 +1100
-Message-ID: <87k18lmf2n.fsf@dja-thinkpad.axtens.net>
+To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
+ aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr
+Subject: [PATCH v11 0/4] kasan: support backing vmalloc space with real shadow
+ memory
+Date: Thu, 31 Oct 2019 20:39:05 +1100
+Message-Id: <20191031093909.9228-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,75 +79,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, gor@linux.ibm.com, x86@kernel.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- glider@google.com, luto@kernel.org, aryabinin@virtuozzo.com,
- linuxppc-dev@lists.ozlabs.org, dvyukov@google.com
+Cc: linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Uladzislau Rezki <urezki@gmail.com> writes:
+Currently, vmalloc space is backed by the early shadow page. This
+means that kasan is incompatible with VMAP_STACK.
 
-> Hello, Daniel
->
->>  
->> @@ -1294,14 +1299,19 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end)
->>  	spin_lock(&free_vmap_area_lock);
->>  	llist_for_each_entry_safe(va, n_va, valist, purge_list) {
->>  		unsigned long nr = (va->va_end - va->va_start) >> PAGE_SHIFT;
->> +		unsigned long orig_start = va->va_start;
->> +		unsigned long orig_end = va->va_end;
->>  
->>  		/*
->>  		 * Finally insert or merge lazily-freed area. It is
->>  		 * detached and there is no need to "unlink" it from
->>  		 * anything.
->>  		 */
->> -		merge_or_add_vmap_area(va,
->> -			&free_vmap_area_root, &free_vmap_area_list);
->> +		va = merge_or_add_vmap_area(va, &free_vmap_area_root,
->> +					    &free_vmap_area_list);
->> +
->> +		kasan_release_vmalloc(orig_start, orig_end,
->> +				      va->va_start, va->va_end);
->>  
-> I have some questions here. I have not analyzed kasan_releace_vmalloc()
-> logic in detail, sorry for that if i miss something. __purge_vmap_area_lazy()
-> deals with big address space, so not only vmalloc addresses it frees here,
-> basically it can be any, starting from 1 until ULONG_MAX, whereas vmalloc
-> space spans from VMALLOC_START - VMALLOC_END:
->
-> 1) Should it be checked that vmalloc only address is freed or you handle
-> it somewhere else?
->
-> if (is_vmalloc_addr(va->va_start))
->     kasan_release_vmalloc(...)
+This series provides a mechanism to back vmalloc space with real,
+dynamically allocated memory. I have only wired up x86, because that's
+the only currently supported arch I can work with easily, but it's
+very easy to wire up other architectures, and it appears that there is
+some work-in-progress code to do this on arm64 and s390.
 
-So in kasan_release_vmalloc we only free the region covered by the
-shadow of orig_start to orig_end, and possibly 1 page to either side. So
-it will never attempt to free an enormous area. And it will also do
-nothing if called for a region where there is no shadow backin
-installed.
+This has been discussed before in the context of VMAP_STACK:
+ - https://bugzilla.kernel.org/show_bug.cgi?id=202009
+ - https://lkml.org/lkml/2018/7/22/198
+ - https://lkml.org/lkml/2019/7/19/822
 
-Having said that, there should be a test on orig_start, and I've added
-that in v11 - good catch.
+In terms of implementation details:
 
-> 2) Have you run any bencmarking just to see how much overhead it adds?
-> I am asking, because probably it make sense to add those figures to the
-> backlog(commit message). For example you can run:
->
-> <snip>
-> sudo ./test_vmalloc.sh performance
-> and
-> sudo ./test_vmalloc.sh sequential_test_order=1
-> <snip>
+Most mappings in vmalloc space are small, requiring less than a full
+page of shadow space. Allocating a full shadow page per mapping would
+therefore be wasteful. Furthermore, to ensure that different mappings
+use different shadow pages, mappings would have to be aligned to
+KASAN_SHADOW_SCALE_SIZE * PAGE_SIZE.
 
-I have now done that:
+Instead, share backing space across multiple mappings. Allocate a
+backing page when a mapping in vmalloc space uses a particular page of
+the shadow region. This page can be shared by other vmalloc mappings
+later on.
+
+We hook in to the vmap infrastructure to lazily clean up unused shadow
+memory.
 
 Testing with test_vmalloc.sh on an x86 VM with 2 vCPUs shows that:
 
- - Turning on KASAN, inline instrumentation, without this feature, introuduces
+ - Turning on KASAN, inline instrumentation, without vmalloc, introuduces
    a 4.1x-4.2x slowdown in vmalloc operations.
 
  - Turning this on introduces the following slowdowns over KASAN:
@@ -155,53 +126,75 @@ Testing with test_vmalloc.sh on an x86 VM with 2 vCPUs shows that:
        simultaneously (test_vmalloc.sh sequential_test_order=1)
 
 This is unfortunate but given that this is a debug feature only, not
-the end of the world.
-
-The full figures are:
-
-
-Performance
-
-                              No KASAN      KASAN original x baseline  KASAN vmalloc x baseline    x KASAN
-
-fix_size_alloc_test            1697913            14229459       8.38       22981983      13.54       1.62
-full_fit_alloc_test            1841601            15152633       8.23       17902922       9.72       1.18
-long_busy_list_alloc_test     17874082            58856758       3.29      103925371       5.81       1.77
-random_size_alloc_test         9356047            29544085       3.16       57871338       6.19       1.96
-fix_align_alloc_test           3188968            19821620       6.22       37979436      11.91       1.92
-random_size_align_alloc_te     3033507            17584339       5.80       32588942      10.74       1.85
-align_shift_alloc_test             325                1154       3.55           7263      22.35       6.29
-pcpu_alloc_test                 231952              278181       1.20         318977       1.38       1.15
-Total Cycles              235852824254        985040965542       4.18  1733258779416       7.35       1.76
-
-Sequential, 2 cpus
-
-                              No KASAN      KASAN original x baseline  KASAN vmalloc x baseline    x KASAN
-
-fix_size_alloc_test            2505806            17989253       7.18       39651038      15.82       2.20
-full_fit_alloc_test            3579676            18829862       5.26       21142645       5.91       1.12
-long_busy_list_alloc_test     21594983            74766736       3.46      140701363       6.52       1.88
-random_size_alloc_test        10884695            34282077       3.15       91945108       8.45       2.68
-fix_align_alloc_test           4133226            26304745       6.36       76163270      18.43       2.90
-random_size_align_alloc_te     4261175            22927883       5.38       55236058      12.96       2.41
-align_shift_alloc_test             948                4827       5.09           4144       4.37       0.86
-pcpu_alloc_test                 371789              307654       0.83         374412       1.01       1.22
-Total Cycles               99965417402        412710461642       4.13   897968646378       8.98       2.18
-fix_size_alloc_test            2502718            17921542       7.16       39893515      15.94       2.23
-full_fit_alloc_test            3547996            18675007       5.26       21330495       6.01       1.14
-long_busy_list_alloc_test     21522579            74610739       3.47      139822907       6.50       1.87
-random_size_alloc_test        10881507            34317349       3.15       91110531       8.37       2.65
-fix_align_alloc_test           4119755            26180887       6.35       75818927      18.40       2.90
-random_size_align_alloc_te     4297708            23058344       5.37       55969004      13.02       2.43
-align_shift_alloc_test             956                5574       5.83           4591       4.80       0.82
-pcpu_alloc_test                 306340              347014       1.13         571289       1.86       1.65
-Total Cycles               99642832084        412084074628       4.14   896497227762       9.00       2.18
+the end of the world. The benchmarks are also a stress-test for the
+vmalloc subsystem: they're not indicative of an overall 2x slowdown!
 
 
-Regards,
-Daniel
+v1: https://lore.kernel.org/linux-mm/20190725055503.19507-1-dja@axtens.net/
+v2: https://lore.kernel.org/linux-mm/20190729142108.23343-1-dja@axtens.net/
+ Address review comments:
+ - Patch 1: use kasan_unpoison_shadow's built-in handling of
+            ranges that do not align to a full shadow byte
+ - Patch 3: prepopulate pgds rather than faulting things in
+v3: https://lore.kernel.org/linux-mm/20190731071550.31814-1-dja@axtens.net/
+ Address comments from Mark Rutland:
+ - kasan_populate_vmalloc is a better name
+ - handle concurrency correctly
+ - various nits and cleanups
+ - relax module alignment in KASAN_VMALLOC case
+v4: https://lore.kernel.org/linux-mm/20190815001636.12235-1-dja@axtens.net/
+ Changes to patch 1 only:
+ - Integrate Mark's rework, thanks Mark!
+ - handle the case where kasan_populate_shadow might fail
+ - poision shadow on free, allowing the alloc path to just
+     unpoision memory that it uses
+v5: https://lore.kernel.org/linux-mm/20190830003821.10737-1-dja@axtens.net/
+ Address comments from Christophe Leroy:
+ - Fix some issues with my descriptions in commit messages and docs
+ - Dynamically free unused shadow pages by hooking into the vmap book-keeping
+ - Split out the test into a separate patch
+ - Optional patch to track the number of pages allocated
+ - minor checkpatch cleanups
+v6: https://lore.kernel.org/linux-mm/20190902112028.23773-1-dja@axtens.net/
+ Properly guard freeing pages in patch 1, drop debugging code.
+v7: https://lore.kernel.org/linux-mm/20190903145536.3390-1-dja@axtens.net/
+    Add a TLB flush on freeing, thanks Mark Rutland.
+    Explain more clearly how I think freeing is concurrency-safe.
+v8: https://lore.kernel.org/linux-mm/20191001065834.8880-1-dja@axtens.net/
+    rename kasan_vmalloc/shadow_pages to kasan/vmalloc_shadow_pages
+v9: https://lore.kernel.org/linux-mm/20191017012506.28503-1-dja@axtens.net/
+    (attempt to) address a number of review comments for patch 1.
+v10: https://lore.kernel.org/linux-mm/20191029042059.28541-1-dja@axtens.net/
+     - rebase on linux-next, pulling in Vlad's new work on splitting the
+       vmalloc locks.
+     - after much discussion of barriers, document where I think they
+       are needed and why. Thanks Mark and Andrey.
+     - clean up some TLB flushing and checkpatch bits
+v11: Address review comments from Andrey and Vlad, drop patch 5, add benchmarking
+     results.
 
-> Thanks!
->
-> --
-> Vlad Rezki
+Daniel Axtens (4):
+  kasan: support backing vmalloc space with real shadow memory
+  kasan: add test for vmalloc
+  fork: support VMAP_STACK with KASAN_VMALLOC
+  x86/kasan: support KASAN_VMALLOC
+
+ Documentation/dev-tools/kasan.rst |  63 ++++++++
+ arch/Kconfig                      |   9 +-
+ arch/x86/Kconfig                  |   1 +
+ arch/x86/mm/kasan_init_64.c       |  61 ++++++++
+ include/linux/kasan.h             |  31 ++++
+ include/linux/moduleloader.h      |   2 +-
+ include/linux/vmalloc.h           |  12 ++
+ kernel/fork.c                     |   4 +
+ lib/Kconfig.kasan                 |  16 +++
+ lib/test_kasan.c                  |  26 ++++
+ mm/kasan/common.c                 | 231 ++++++++++++++++++++++++++++++
+ mm/kasan/generic_report.c         |   3 +
+ mm/kasan/kasan.h                  |   1 +
+ mm/vmalloc.c                      |  53 +++++--
+ 14 files changed, 500 insertions(+), 13 deletions(-)
+
+-- 
+2.20.1
+
