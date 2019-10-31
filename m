@@ -2,41 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CCEEB5B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 18:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDFFEB5C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 18:04:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473s691DCKzF66B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 04:01:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473s9f1kBMzF673
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 04:04:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473s3m4rPtzF61B
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 03:58:58 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 68576227A81; Thu, 31 Oct 2019 17:58:53 +0100 (CET)
-Date: Thu, 31 Oct 2019 17:58:53 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Subject: Re: [PATCH] dma/direct: turn ARCH_ZONE_DMA_BITS into a variable
-Message-ID: <20191031165853.GA8532@lst.de>
-References: <20191031152837.15253-1-nsaenzjulienne@suse.de>
- <20191031154759.GA7162@lst.de>
- <40d06d463c05d36968e8b64924d78f7794f8de50.camel@suse.de>
- <20191031155750.GA7394@lst.de>
- <6726a651c12d91ca22b9d8984745d90db5d507ec.camel@suse.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473s7T4hH5zF3rq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 04:02:13 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.microsoft.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.b="F5KUaId1"; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 473s7S5Rktz8t81
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 04:02:12 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 473s7S2yxvz9sPj; Fri,  1 Nov 2019 04:02:12 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.microsoft.com
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.b="F5KUaId1"; dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by ozlabs.org (Postfix) with ESMTP id 473s7R2d2Kz9sNw;
+ Fri,  1 Nov 2019 04:02:11 +1100 (AEDT)
+Received: from [10.137.112.108] (unknown [131.107.174.108])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 7345C20B7192;
+ Thu, 31 Oct 2019 10:02:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7345C20B7192
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1572541329;
+ bh=+yw069kNCIFvQ9q593dZHSUXcrJqX0PS1XrQekoDjV8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=F5KUaId1DG62vIws92rMTnOXvOMq/EocYz9ZBbzt129yzTa7rB/zbvgDTru+DVlOS
+ B/Y9a8ePOFA4zKDrEDP0CYJtW1i3HFRuMEMpM7mUoLducIQj8AB9CgdMRs655eGHUK
+ cCitxXwEuH5J6zqs4agM2xQKrfUtY6asHfTFZwiA=
+Subject: Re: [PATCH v10 5/9] ima: make process_buffer_measurement() generic
+To: Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+References: <1572492694-6520-1-git-send-email-zohar@linux.ibm.com>
+ <1572492694-6520-6-git-send-email-zohar@linux.ibm.com>
+From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <de6077ad-6d45-ef99-3ba7-79b3c48ae944@linux.microsoft.com>
+Date: Thu, 31 Oct 2019 10:02:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6726a651c12d91ca22b9d8984745d90db5d507ec.camel@suse.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <1572492694-6520-6-git-send-email-zohar@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,27 +75,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
- Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- linuxppc-dev@lists.ozlabs.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- iommu@lists.linux-foundation.org, Paul Mackerras <paulus@samba.org>,
- Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
- linux-arm-kernel@lists.infradead.org,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jeremy Kerr <jk@ozlabs.org>, Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 31, 2019 at 05:22:59PM +0100, Nicolas Saenz Julienne wrote:
-> OK, I see what you mean now. It's wrong indeed.
-> 
-> The trouble is the ZONE_DMA series[1] in arm64, also due for v5.5, will be
-> affected by this patch. I don't know the right way to approach this problem
-> since depending on the merge order, this patch should be updated or the arm64
-> ZONE_DMA series fixed.
-> 
-> Maybe it's easier to just wait for v5.6.
+On 10/30/19 8:31 PM, Mimi Zohar wrote:
 
-Ok, I can wait.  Or the arm64 maintainers can pick up this patch if
-you want to add it to that series.
+>   void ima_kexec_cmdline(const void *buf, int size)
+>   {
+> -	u32 secid;
+> -
+> -	if (buf && size != 0) {
+> -		security_task_getsecid(current, &secid);
+> +	if (buf && size != 0)
+
+Open brace { is missing in the above if statement.
+
+>   		process_buffer_measurement(buf, size, "kexec-cmdline",
+> -					   current_cred(), secid);
+> -	}
+> +					   KEXEC_CMDLINE, 0);
+>   }
+
+  -lakshmi
