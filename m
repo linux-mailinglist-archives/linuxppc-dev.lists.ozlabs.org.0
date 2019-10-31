@@ -1,46 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8C8EA987
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:28:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB58EA9AC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:34:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473W4G2P6jzF4ST
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 14:28:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473WC94fTXzF5P0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 14:34:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473W8S40X1zF3DB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:31:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 473W8R75gQz8tD1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:31:51 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 473W8R6jggz9sPv; Thu, 31 Oct 2019 14:31:51 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473W232QsBzDqmX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:26:17 +1100 (AEDT)
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id A11698C8659FB5227AE0;
- Thu, 31 Oct 2019 11:26:07 +0800 (CST)
-Received: from [127.0.0.1] (10.74.191.121) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Thu, 31 Oct 2019
- 11:26:05 +0800
-Subject: Re: [PATCH v7] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
-To: Peter Zijlstra <peterz@infradead.org>
-References: <1572428068-180880-1-git-send-email-linyunsheng@huawei.com>
- <20191030101449.GW4097@hirez.programming.kicks-ass.net>
-From: Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <f7aa833e-3ed3-aba0-8c6e-8753a68182c2@huawei.com>
-Date: Thu, 31 Oct 2019 11:26:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
-MIME-Version: 1.0
-In-Reply-To: <20191030101449.GW4097@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.74.191.121]
-X-CFilter-Loop: Reflected
+ by ozlabs.org (Postfix) with ESMTPS id 473W8R2TvJz9sPK
+ for <linuxppc-dev@ozlabs.org>; Thu, 31 Oct 2019 14:31:50 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x9V3SOEE128174
+ for <linuxppc-dev@ozlabs.org>; Wed, 30 Oct 2019 23:31:48 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2vyjvvfyrv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 30 Oct 2019 23:31:48 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <zohar@linux.ibm.com>;
+ Thu, 31 Oct 2019 03:31:45 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 31 Oct 2019 03:31:41 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x9V3VeBN43516074
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 31 Oct 2019 03:31:40 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A80BA4060;
+ Thu, 31 Oct 2019 03:31:40 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8486CA405B;
+ Thu, 31 Oct 2019 03:31:38 +0000 (GMT)
+Received: from localhost.ibm.com (unknown [9.85.201.217])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 31 Oct 2019 03:31:38 +0000 (GMT)
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: [PATCH v10 0/9] powerpc: Enabling IMA arch specific secure boot
+ policies
+Date: Wed, 30 Oct 2019 23:31:25 -0400
+X-Mailer: git-send-email 2.7.5
+X-TM-AS-GCONF: 00
+x-cbid: 19103103-4275-0000-0000-00000379641C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19103103-4276-0000-0000-0000388CA068
+Message-Id: <1572492694-6520-1-git-send-email-zohar@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-10-31_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910310031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,86 +99,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
- dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
- jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
- will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
- ysato@users.sourceforge.jp, linux-acpi@vger.kernel.org, x86@kernel.org,
- rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
- mingo@redhat.com, jeffrey.t.kirsher@intel.com, jhogan@kernel.org,
- mattst88@gmail.com, lenb@kernel.org, len.brown@intel.com, gor@linux.ibm.com,
- anshuman.khandual@arm.com, gregkh@linuxfoundation.org, bp@alien8.de,
- luto@kernel.org, bhelgaas@google.com, tglx@linutronix.de, mhocko@kernel.org,
- naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
- rth@twiddle.net, axboe@kernel.dk, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
- linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
- akpm@linux-foundation.org, robin.murphy@arm.com, davem@davemloft.net
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019/10/30 18:14, Peter Zijlstra wrote:
-> On Wed, Oct 30, 2019 at 05:34:28PM +0800, Yunsheng Lin wrote:
->> When passing the return value of dev_to_node() to cpumask_of_node()
->> without checking if the device's node id is NUMA_NO_NODE, there is
->> global-out-of-bounds detected by KASAN.
->>
->> From the discussion [1], NUMA_NO_NODE really means no node affinity,
->> which also means all cpus should be usable. So the cpumask_of_node()
->> should always return all cpus online when user passes the node id as
->> NUMA_NO_NODE, just like similar semantic that page allocator handles
->> NUMA_NO_NODE.
->>
->> But we cannot really copy the page allocator logic. Simply because the
->> page allocator doesn't enforce the near node affinity. It just picks it
->> up as a preferred node but then it is free to fallback to any other numa
->> node. This is not the case here and node_to_cpumask_map will only restrict
->> to the particular node's cpus which would have really non deterministic
->> behavior depending on where the code is executed. So in fact we really
->> want to return cpu_online_mask for NUMA_NO_NODE.
->>
->> Also there is a debugging version of node_to_cpumask_map() for x86 and
->> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
->> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
->>
->> [1] https://lkml.org/lkml/2019/9/11/66
->> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
->> Suggested-by: Michal Hocko <mhocko@kernel.org>
->> Acked-by: Michal Hocko <mhocko@suse.com>
->> Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
-> 
-> Still:
-> 
-> Nacked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+This patchset extends the previous version[1] by adding support for
+checking against a blacklist of binary hashes.
 
-It seems I still misunderstood your meaning by "We must not silently accept
-NO_NODE there" in [1].
+The IMA subsystem supports custom, built-in, arch-specific policies to
+define the files to be measured and appraised. These policies are honored
+based on priority, where arch-specific policy is the highest and custom
+is the lowest.
 
-I am not sure if there is still disagreement that the NO_NODE state for
-dev->numa_node should exist at all.
+PowerNV system uses a Linux-based bootloader to kexec the OS. The
+bootloader kernel relies on IMA for signature verification of the OS
+kernel before doing the kexec. This patchset adds support for powerpc
+arch-specific IMA policies that are conditionally defined based on a
+system's secure boot and trusted boot states. The OS secure boot and
+trusted boot states are determined via device-tree properties.
 
-From the previous disscussion [2], you seem to propose to do "wild guess" or
-"fixup" for all devices(including virtual and physcial) with NO_NODE, which means
-the NO_NODE is needed anymore and should be removed when the "wild guess" or "fixup"
-is done. So maybe the reason for your nack here it is that there should be no other
-NO_NODE handling or fixing related to NO_NODE before the "wild guess" or "fixup"
-process is finished, so making node_to_cpumask_map() NUMA_NO_NODE aware is unnecessary.
+The verification needs to be performed only for binaries that are not
+blacklisted. The kernel currently only checks against the blacklist of
+keys. However, doing so results in blacklisting all the binaries that
+are signed by the same key. In order to prevent just one particular
+binary from being loaded, it must be checked against a blacklist of
+binary hashes. This patchset also adds support to IMA for checking
+against a hash blacklist for files. signed by appended signature.
 
-Or your reason for the nack is still specific to the pcie device without a numa node,
-the "wild guess" need to be done for this case before making node_to_cpumask_map()
-NUMA_NO_NODE?
+[1] http://patchwork.ozlabs.org/cover/1149262/ 
 
-Please help to clarify the reason for nack. Or is there still some other reason for the
-nack I missed from the previous disscussion?
+Changelog:
 
-Thanks.
+v10: (Mimi posting patch set on Nayna's behalf)
+- Minor patch description changes
+- Include comment in process_buffer_measurement()
+- Additional patch: Enforcing kernel module appended signatures should
+be reflected in "/sys/module/module/parameters/sig_enforce".
+- Trimmed Cc list.
 
-[1] https://lore.kernel.org/lkml/20191011111539.GX2311@hirez.programming.kicks-ass.net/
-[2] https://lore.kernel.org/lkml/20191014094912.GY2311@hirez.programming.kicks-ass.net/
-> 
-> .
-> 
+v9:
+* Includes feedbacks from Michael
+  * fix the missing of_node_put()
+* Includes Mimi's feedbacks
+  * fix the policy show() function to display check_blacklist
+  * fix the other comment related and patch description
+  * add the example of blacklist in the Patch 7/8
+Note: Patch 7/8 is giving errors when checkpatch.pl is run because
+of the format of showing measurement record as part of the example. I am
+not very sure if that can be fixed as we need to represent the
+measurements as is.
+
+v8:
+* Updates the Patch Description as per Michael's and Mimi's feedback
+* Includes feedbacks from Michael for the device tree and policies
+  * removes the arch-policy hack by defining three arrays.
+  * fixes related to device-tree calls 
+  * other code specific feedbacks
+* Includes feedbacks from Mimi on the blacklist
+  * generic blacklist function is modified than previous version
+  * other coding fixes
+
+v7:
+* Removes patch related to dt-bindings as per input from Rob Herring. 
+* fixes Patch 1/8 to use new device-tree updates as per Oliver
+  feedback to device-tree documentation in skiboot mailing list.
+(https://lists.ozlabs.org/pipermail/skiboot/2019-September/015329.html)
+* Includes feedbacks from Mimi, Thiago
+  * moves function get_powerpc_fw_sb_node() from Patch 1 to Patch 3 
+  * fixes Patch 2/8 to use CONFIG_MODULE_SIG_FORCE.
+  * updates Patch description in Patch 5/8
+  * adds a new patch to add wrapper is_binary_blacklisted()
+  * removes the patch that deprecated permit_directio
+
+v6:
+* includes feedbacks from Michael Ellerman on the patchset v5
+  * removed email ids from comments
+  * add the doc for the device-tree
+  * renames the secboot.c to secure_boot.c and secboot.h to secure_boot.h
+  * other code specific fixes
+* split the patches to differentiate between secureboot and trustedboot
+state of the system
+* adds the patches to support the blacklisting of the binary hash.
+
+v5:
+* secureboot state is now read via device tree entry rather than OPAL
+secure variables
+* ima arch policies are updated to use policy based template for
+measurement rules
+
+v4:
+* Fixed the build issue as reported by Satheesh Rajendran.
+
+v3:
+* OPAL APIs in Patch 1 are updated to provide generic interface based on
+key/keylen. This patchset updates kernel OPAL APIs to be compatible with
+generic interface.
+* Patch 2 is cleaned up to use new OPAL APIs.
+* Since OPAL can support different types of backend which can vary in the
+variable interpretation, the Patch 2 is updated to add a check for the
+backend version
+* OPAL API now expects consumer to first check the supported backend version
+before calling other secvar OPAL APIs. This check is now added in patch 2.
+* IMA policies in Patch 3 is updated to specify appended signature and
+per policy template.
+* The patches now are free of any EFIisms.
+
+v2:
+
+* Removed Patch 1: powerpc/include: Override unneeded early ioremap
+functions
+* Updated Subject line and patch description of the Patch 1 of this series
+* Removed dependency of OPAL_SECVAR on EFI, CPU_BIG_ENDIAN and UCS2_STRING
+* Changed OPAL APIs from static to non-static. Added opal-secvar.h for the
+same
+* Removed EFI hooks from opal_secvar.c
+* Removed opal_secvar_get_next(), opal_secvar_enqueue() and
+opal_query_variable_info() function
+* get_powerpc_sb_mode() in secboot.c now directly calls OPAL Runtime API
+rather than via EFI hooks.
+* Fixed log messages in get_powerpc_sb_mode() function.
+* Added dependency for PPC_SECURE_BOOT on configs PPC64 and OPAL_SECVAR
+* Replaced obj-$(CONFIG_IMA) with obj-$(CONFIG_PPC_SECURE_BOOT) in
+arch/powerpc/kernel/Makefile
+
+Mimi Zohar (1):
+  powerpc/ima: indicate kernel modules appended signatures are enforced
+
+Nayna Jain (8):
+  powerpc: detect the secure boot mode of the system
+  powerpc/ima: add support to initialize ima policy rules
+  powerpc: detect the trusted boot state of the system
+  powerpc/ima: define trusted boot policy
+  ima: make process_buffer_measurement() generic
+  certs: add wrapper function to check blacklisted binary hash
+  ima: check against blacklisted hashes for files with modsig
+  powerpc/ima: update ima arch policy to check for blacklist
+
+ Documentation/ABI/testing/ima_policy   |  4 ++
+ arch/powerpc/Kconfig                   | 11 +++++
+ arch/powerpc/include/asm/secure_boot.h | 29 +++++++++++++
+ arch/powerpc/kernel/Makefile           |  2 +
+ arch/powerpc/kernel/ima_arch.c         | 78 ++++++++++++++++++++++++++++++++++
+ arch/powerpc/kernel/secure_boot.c      | 58 +++++++++++++++++++++++++
+ certs/blacklist.c                      |  9 ++++
+ include/keys/system_keyring.h          |  6 +++
+ include/linux/ima.h                    |  3 +-
+ security/integrity/ima/ima.h           | 11 +++++
+ security/integrity/ima/ima_appraise.c  | 33 ++++++++++++++
+ security/integrity/ima/ima_main.c      | 70 ++++++++++++++++++++----------
+ security/integrity/ima/ima_policy.c    | 12 +++++-
+ security/integrity/integrity.h         |  1 +
+ 14 files changed, 302 insertions(+), 25 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/secure_boot.h
+ create mode 100644 arch/powerpc/kernel/ima_arch.c
+ create mode 100644 arch/powerpc/kernel/secure_boot.c
+
+-- 
+2.7.5
 
