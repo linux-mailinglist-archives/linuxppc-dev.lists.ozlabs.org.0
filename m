@@ -2,51 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B078EA94D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 03:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8C8EA987
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 04:28:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473V2n4149zF4HM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 13:41:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473W4G2P6jzF4ST
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 14:28:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=linyunsheng@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473V0Z3M7zzF5JW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 13:39:58 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="Ru6HuP4N"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 473V0X52pSz9sPl;
- Thu, 31 Oct 2019 13:39:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1572489598;
- bh=kh7Ij8wGLE85JmfMZDo7nA07OV4ozZTfqMQZHKEtQog=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Ru6HuP4NQURWTF/ppIf+4JjYsUi+3s1xPD/DtHVEhoqzV1uNWtu8tlfTJIGLLmi8P
- Md3r6FH2F89VJddOWBfm7OYCJfR+uJdkEUQt2Wp0EGYCw4ErS3Da5J66exxhHwyLyt
- 6oeyDj0vl1y8dO7HUCKdJbC3l3Sake7GZC8zuTxyF+c+A9hhe5YSgK//ic6oWDlhdW
- txuj0rpXoIT/DKKyyOBCtfTC15zN7Q/mPf4Y6jV+a5kvoaFV+Fnr3qL6EkHPsnBLnH
- d2BrByItD5GHFBsBbyuqnQi5IxLk8jJFddYBYtb1OCkzSalGGbctcNyctq54CNBKDn
- ilDrQteDWD8dQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: John Hubbard <jhubbard@nvidia.com>, Viresh Kumar <viresh.kumar@linaro.org>,
- Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] cpufreq: powernv: fix stack bloat and NR_CPUS
- limitation
-In-Reply-To: <20191018045539.3765565-1-jhubbard@nvidia.com>
-References: <20191018045539.3765565-1-jhubbard@nvidia.com>
-Date: Thu, 31 Oct 2019 13:39:55 +1100
-Message-ID: <87pnidbptw.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473W232QsBzDqmX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 14:26:17 +1100 (AEDT)
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id A11698C8659FB5227AE0;
+ Thu, 31 Oct 2019 11:26:07 +0800 (CST)
+Received: from [127.0.0.1] (10.74.191.121) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Thu, 31 Oct 2019
+ 11:26:05 +0800
+Subject: Re: [PATCH v7] numa: make node_to_cpumask_map() NUMA_NO_NODE aware
+To: Peter Zijlstra <peterz@infradead.org>
+References: <1572428068-180880-1-git-send-email-linyunsheng@huawei.com>
+ <20191030101449.GW4097@hirez.programming.kicks-ass.net>
+From: Yunsheng Lin <linyunsheng@huawei.com>
+Message-ID: <f7aa833e-3ed3-aba0-8c6e-8753a68182c2@huawei.com>
+Date: Thu, 31 Oct 2019 11:26:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191030101449.GW4097@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.191.121]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,107 +52,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
- "Rafael J . Wysocki" <rjw@rjwysocki.net>, LKML <linux-kernel@vger.kernel.org>,
- Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: dalias@libc.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, heiko.carstens@de.ibm.com,
+ jiaxun.yang@flygoat.com, linux-mips@vger.kernel.org, mwb@linux.vnet.ibm.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, chenhc@lemote.com,
+ will@kernel.org, cai@lca.pw, linux-s390@vger.kernel.org,
+ ysato@users.sourceforge.jp, linux-acpi@vger.kernel.org, x86@kernel.org,
+ rppt@linux.ibm.com, borntraeger@de.ibm.com, dledford@redhat.com,
+ mingo@redhat.com, jeffrey.t.kirsher@intel.com, jhogan@kernel.org,
+ mattst88@gmail.com, lenb@kernel.org, len.brown@intel.com, gor@linux.ibm.com,
+ anshuman.khandual@arm.com, gregkh@linuxfoundation.org, bp@alien8.de,
+ luto@kernel.org, bhelgaas@google.com, tglx@linutronix.de, mhocko@kernel.org,
+ naveen.n.rao@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+ rth@twiddle.net, axboe@kernel.dk, linux-pci@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+ ralf@linux-mips.org, tbogendoerfer@suse.de, paul.burton@mips.com,
+ linux-alpha@vger.kernel.org, rafael@kernel.org, ink@jurassic.park.msu.ru,
+ akpm@linux-foundation.org, robin.murphy@arm.com, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi John,
+On 2019/10/30 18:14, Peter Zijlstra wrote:
+> On Wed, Oct 30, 2019 at 05:34:28PM +0800, Yunsheng Lin wrote:
+>> When passing the return value of dev_to_node() to cpumask_of_node()
+>> without checking if the device's node id is NUMA_NO_NODE, there is
+>> global-out-of-bounds detected by KASAN.
+>>
+>> From the discussion [1], NUMA_NO_NODE really means no node affinity,
+>> which also means all cpus should be usable. So the cpumask_of_node()
+>> should always return all cpus online when user passes the node id as
+>> NUMA_NO_NODE, just like similar semantic that page allocator handles
+>> NUMA_NO_NODE.
+>>
+>> But we cannot really copy the page allocator logic. Simply because the
+>> page allocator doesn't enforce the near node affinity. It just picks it
+>> up as a preferred node but then it is free to fallback to any other numa
+>> node. This is not the case here and node_to_cpumask_map will only restrict
+>> to the particular node's cpus which would have really non deterministic
+>> behavior depending on where the code is executed. So in fact we really
+>> want to return cpu_online_mask for NUMA_NO_NODE.
+>>
+>> Also there is a debugging version of node_to_cpumask_map() for x86 and
+>> arm64, which is only used when CONFIG_DEBUG_PER_CPU_MAPS is defined, this
+>> patch changes it to handle NUMA_NO_NODE as normal node_to_cpumask_map().
+>>
+>> [1] https://lkml.org/lkml/2019/9/11/66
+>> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+>> Suggested-by: Michal Hocko <mhocko@kernel.org>
+>> Acked-by: Michal Hocko <mhocko@suse.com>
+>> Acked-by: Paul Burton <paul.burton@mips.com> # MIPS bits
+> 
+> Still:
+> 
+> Nacked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-Sorry I didn't reply to this sooner, too many patches :/
+It seems I still misunderstood your meaning by "We must not silently accept
+NO_NODE there" in [1].
 
-John Hubbard <jhubbard@nvidia.com> writes:
-> The following build warning occurred on powerpc 64-bit builds:
->
-> drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
-> drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+I am not sure if there is still disagreement that the NO_NODE state for
+dev->numa_node should exist at all.
 
-Oddly I don't see that warning in my builds, eg with GCC9:
+From the previous disscussion [2], you seem to propose to do "wild guess" or
+"fixup" for all devices(including virtual and physcial) with NO_NODE, which means
+the NO_NODE is needed anymore and should be removed when the "wild guess" or "fixup"
+is done. So maybe the reason for your nack here it is that there should be no other
+NO_NODE handling or fixing related to NO_NODE before the "wild guess" or "fixup"
+process is finished, so making node_to_cpumask_map() NUMA_NO_NODE aware is unnecessary.
 
-  https://travis-ci.org/linuxppc/linux/jobs/604870722
+Or your reason for the nack is still specific to the pcie device without a numa node,
+the "wild guess" need to be done for this case before making node_to_cpumask_map()
+NUMA_NO_NODE?
 
-> This is due to putting 1024 bytes on the stack:
->
->     unsigned int chip[256];
->
-> ...and while looking at this, it also has a bug: it fails with a stack
-> overrun, if CONFIG_NR_CPUS > 256.
+Please help to clarify the reason for nack. Or is there still some other reason for the
+nack I missed from the previous disscussion?
 
-It _probably_ doesn't, because it only increments the index when the
-chip_id of the CPU changes, ie. it doesn't create a chip for every CPU.
-But I agree it's flaky the way it's written.
+Thanks.
 
-> Fix both problems by dynamically allocating based on CONFIG_NR_CPUS.
+[1] https://lore.kernel.org/lkml/20191011111539.GX2311@hirez.programming.kicks-ass.net/
+[2] https://lore.kernel.org/lkml/20191014094912.GY2311@hirez.programming.kicks-ass.net/
+> 
+> .
+> 
 
-Shouldn't it use num_possible_cpus() ?
-
-Given the for loop is over possible CPUs that seems like the upper
-bound. In practice it should be lower because some CPUs will share a
-chip.
-
-cheers
-
-
-> Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
-> Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
-> Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
-> Cc: Viresh Kumar <viresh.kumar@linaro.org>
-> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-> Cc: linux-pm@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->
-> Changes since v1: includes Viresh's review commit fixes.
->
->  drivers/cpufreq/powernv-cpufreq.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-> index 6061850e59c9..5b2e968cb5ea 100644
-> --- a/drivers/cpufreq/powernv-cpufreq.c
-> +++ b/drivers/cpufreq/powernv-cpufreq.c
-> @@ -1041,9 +1041,14 @@ static struct cpufreq_driver powernv_cpufreq_driver = {
->  
->  static int init_chip_info(void)
->  {
-> -	unsigned int chip[256];
-> +	unsigned int *chip;
->  	unsigned int cpu, i;
->  	unsigned int prev_chip_id = UINT_MAX;
-> +	int ret = 0;
-> +
-> +	chip = kcalloc(CONFIG_NR_CPUS, sizeof(*chip), GFP_KERNEL);
-> +	if (!chip)
-> +		return -ENOMEM;
->  
->  	for_each_possible_cpu(cpu) {
->  		unsigned int id = cpu_to_chip_id(cpu);
-> @@ -1055,8 +1060,10 @@ static int init_chip_info(void)
->  	}
->  
->  	chips = kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
-> -	if (!chips)
-> -		return -ENOMEM;
-> +	if (!chips) {
-> +		ret = -ENOMEM;
-> +		goto free_and_return;
-> +	}
->  
->  	for (i = 0; i < nr_chips; i++) {
->  		chips[i].id = chip[i];
-> @@ -1066,7 +1073,9 @@ static int init_chip_info(void)
->  			per_cpu(chip_info, cpu) =  &chips[i];
->  	}
->  
-> -	return 0;
-> +free_and_return:
-> +	kfree(chip);
-> +	return ret;
->  }
->  
->  static inline void clean_chip_info(void)
-> -- 
-> 2.23.0
