@@ -1,70 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DBFEB60F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 18:24:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA82EB620
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 18:28:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473scx66v7zF67M
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 04:24:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473sjf1nRzzF5XM
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 04:28:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473sZZ4YY0zF4MT
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 04:22:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.microsoft.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.b="r9G79qhH"; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 473sZZ3k4Vz8t9t
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 04:22:14 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 473sZZ322Mz9sPd; Fri,  1 Nov 2019 04:22:14 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.microsoft.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.b="r9G79qhH"; dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by ozlabs.org (Postfix) with ESMTP id 473sZY72qRz9sP3;
- Fri,  1 Nov 2019 04:22:13 +1100 (AEDT)
-Received: from [10.137.112.108] (unknown [131.107.174.108])
- by linux.microsoft.com (Postfix) with ESMTPSA id 8794120B7192;
- Thu, 31 Oct 2019 10:22:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8794120B7192
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1572542532;
- bh=lGGAmFcY9SA4jmgoRVD92VXxiStVLCF3ODqAcpuQBN8=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=r9G79qhHEiU1XZa3cy6omxvf9PHpey4azvnm8fkhQ56IbemOVR4aMas5KpQ74vrGa
- gN/hYNlyYLqn7foHZF33hQ/GhuwMoTRHFUKFGTGSFa5ns1Sih4BTJEnPqkV8xR09Qg
- 2BW81Ycq2VA8LtG28wfkvkEdAJjDAEPHTQWi2Low=
-Subject: Re: [PATCH v10 5/9] ima: make process_buffer_measurement() generic
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To: Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-References: <1572492694-6520-1-git-send-email-zohar@linux.ibm.com>
- <1572492694-6520-6-git-send-email-zohar@linux.ibm.com>
- <de6077ad-6d45-ef99-3ba7-79b3c48ae944@linux.microsoft.com>
-Message-ID: <cadb8196-6bfb-2832-229f-24f67befdf78@linux.microsoft.com>
-Date: Thu, 31 Oct 2019 10:22:12 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473sgH5Dm0zF0jn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 04:26:19 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 3E70EB961;
+ Thu, 31 Oct 2019 17:26:14 +0000 (UTC)
+Message-ID: <9c051b0f2d89baa36fd3d3669a107f549c310d49.camel@suse.de>
+Subject: Re: [PATCH RFC 1/5] dma/direct: turn ARCH_ZONE_DMA_BITS into a
+ variable
+From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Date: Thu, 31 Oct 2019 18:26:10 +0100
+In-Reply-To: <20191031133831.GA21509@infradead.org>
+References: <20191014183108.24804-1-nsaenzjulienne@suse.de>
+ <20191014183108.24804-2-nsaenzjulienne@suse.de>
+ <20191030214914.GA15939@infradead.org>
+ <8c525f66c1c0d9f07e0cff4948d1ec3229756220.camel@suse.de>
+ <20191031133831.GA21509@infradead.org>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-HUsDE4pCuvQagD+CYqmq"
+User-Agent: Evolution 3.34.1 
 MIME-Version: 1.0
-In-Reply-To: <de6077ad-6d45-ef99-3ba7-79b3c48ae944@linux.microsoft.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,40 +51,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Jeremy Kerr <jk@ozlabs.org>, Oliver O'Halloran <oohall@gmail.com>
+Cc: linux-s390@vger.kernel.org, mbrugger@suse.com,
+ Vasily Gorbik <gor@linux.ibm.com>, wahrenst@gmx.net,
+ Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ ChristophHellwig <hch@infradead.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ iommu@lists.linux-foundation.org, f.fainelli@gmail.com,
+ bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
+ Paul Mackerras <paulus@samba.org>, Robin Murphy <robin.murphy@arm.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/31/19 10:02 AM, Lakshmi Ramasubramanian wrote:
 
-> On 10/30/19 8:31 PM, Mimi Zohar wrote:
-> 
->>   void ima_kexec_cmdline(const void *buf, int size)
->>   {
->> -    u32 secid;
->> -
->> -    if (buf && size != 0) {
->> -        security_task_getsecid(current, &secid);
->> +    if (buf && size != 0)
-> 
-> Open brace { is missing in the above if statement.
+--=-HUsDE4pCuvQagD+CYqmq
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-My mistake -
-I now see that the braces {} have been removed in the if statement since 
-there is only line body  the call to process_buffer_measurement()
+On Thu, 2019-10-31 at 06:38 -0700, Christoph Hellwig wrote:
+> On Thu, Oct 31, 2019 at 11:30:36AM +0100, Nicolas Saenz Julienne wrote:
+> > On Wed, 2019-10-30 at 14:49 -0700, Christoph Hellwig wrote:
+> > > On Mon, Oct 14, 2019 at 08:31:03PM +0200, Nicolas Saenz Julienne wrot=
+e:
+> > > > Some architectures, notably ARM, are interested in tweaking this
+> > > > depending on their runtime DMA addressing limitations.
+> > > >=20
+> > > > Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+> > >=20
+> > > Do you want me to pick this up for the 5.5 dma-mapping tree, or do yo=
+u
+> > > want me to wait for the rest to settle?
+> >=20
+> > I'd say take it, this will be ultimately needed once we push forward wi=
+th
+> > ARM.
+>=20
+> Can you resend a version that applies against 5.4-rc?  The current one
+> has conflicts in the arm64 code.
 
-  -lakshmi
+Hi Catalin,
+would you mind taking this patch on top of the arm64 ZONE_DMA series?
 
-> 
->>           process_buffer_measurement(buf, size, "kexec-cmdline",
->> -                       current_cred(), secid);
->> -    }
->> +                       KEXEC_CMDLINE, 0);
->>   }
-> 
->   -lakshmi
+I tried to go though Christoph's tree but it ultimately clashes with the
+ZONE_DMA series. It's simpler to apply it on top of your tree.
+
+Regrads,
+Nicolas
+
+
+--=-HUsDE4pCuvQagD+CYqmq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl27GTIACgkQlfZmHno8
+x/6rAgf/ZoMMGW7IRaV6x5ZwhpeWmnDuHERj4vzVJa0/eBKTyeFHQYuyNBygdzOW
+JGunOdpAkJNo6DdJKxyUt8u5d8vvnq3mIm+g0xkoz6PxzzUtPlEuFZ1fgP1oGYIT
+BdBcYj23cYMrYjtqcJJkBoBu+5JBkx28Mu5oGyWeRojupXkK+9NN53qUZMmYcFD+
+Lw9i3nBQmiozrdeHMiErrYTXOkz93sipx2zeo2jF4CsOtj67BfJMhmsRogeQTIe+
+Z5A6Ik+LQ8AejhKOAisJzXidZPdUwaENRKw2qicQFBoifWbqinhT6JxmrEk/AHR1
+eg9iA75sotbQfuNiAzn6qCofWaKfcg==
+=jqtB
+-----END PGP SIGNATURE-----
+
+--=-HUsDE4pCuvQagD+CYqmq--
 
