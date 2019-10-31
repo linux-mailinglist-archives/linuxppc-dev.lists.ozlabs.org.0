@@ -2,40 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7039CEB44A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 16:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7D0EB455
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 16:57:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473qdy50lqzF5qn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 02:55:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473qhg2YLkzF56y
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 02:57:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de;
- envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="bvfA7G23"; 
+ dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473qby0vwlzF5qV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 02:53:18 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id E32D1B7DF;
- Thu, 31 Oct 2019 15:53:14 +0000 (UTC)
-Message-ID: <40d06d463c05d36968e8b64924d78f7794f8de50.camel@suse.de>
-Subject: Re: [PATCH] dma/direct: turn ARCH_ZONE_DMA_BITS into a variable
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To: Christoph Hellwig <hch@lst.de>
-Date: Thu, 31 Oct 2019 16:53:13 +0100
-In-Reply-To: <20191031154759.GA7162@lst.de>
-References: <20191031152837.15253-1-nsaenzjulienne@suse.de>
- <20191031154759.GA7162@lst.de>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-IbItouLWOYON9B5ojQkb"
-User-Agent: Evolution 3.34.1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473qcK0JcJzF63Y
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 02:53:30 +1100 (AEDT)
+Received: by mail-ot1-x341.google.com with SMTP id 53so5814544otv.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 08:53:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=2RX5Wx5xiTLYEovRDDFwLuk9JtNaRdVkZVutueAa7Zk=;
+ b=bvfA7G23dHAFFSvf+zNar2jGgrlvY+QxT0t3ad89+EPZ0zHZehpyTafYW5/3TQP2qz
+ ylAbGI8DkwLWrXRPYe5pHVzrfSHNTd3D1WPId48yb9jlWZ4lXVEbkY5Ke0u0yH0HNK0i
+ Xm1+WtSzbGt0V0qiFcfMsU+6xOXyRqOusRamz+glDw5ugBfGMm+cfDmBlYV5LqeKUpMv
+ SZalR7VCHbbyvHGSVXmfNHt2VEXhUxSAFLQzklbbRXiSZ7iRmY142ZBn46J1SelSqugJ
+ aaQf3nenbXjvZ8STcimhNbaIhJhSxkOMvKCU52YLwcxdRqPgFnJMfPmIoxtU7owqZBOT
+ 9pGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=2RX5Wx5xiTLYEovRDDFwLuk9JtNaRdVkZVutueAa7Zk=;
+ b=Sio87xOOH/0Z6epyI5eTmGaJXiNt7c8+AM97vfbXdUV4m9Kcn8A3rOGi5OQohcCtfC
+ 1mzSsllhvc9W6anfw11Wbs2vU7zo5j8UjkfPGSebpZwj2kOKw4mey8eLoShbnbFfWaFe
+ AhLn6Z6v9XsqbjJ4LpsXaP/UU8vm9CCRBHUv7WZkQo0ADi0ufI6tB1drI+p16kxcPAJo
+ um35aFLzvX26yYPGAi0z0vkJfcWhGdWyYADTTP3J2JGRi7CBpxt7OEJZvWco+vGin4Hq
+ cTccwehk4/1ehBQ+F+eBP5LZ2g829ALbP12+ZiMkY/5UnNdrKemqPnzgjnMaGkrV8Xcp
+ zQfw==
+X-Gm-Message-State: APjAAAXsAZ13D7wf820SjMrhx3D/Ku7KkKwbPy6rIC106XgeXPd/UCkP
+ MFZK9MTQZPvq78H6HNKcP3oRStcMbKlXHpaSX4BGEQ==
+X-Google-Smtp-Source: APXvYqzGdjUw+psWya1RpMgMepPJxL73tV8uam0VjV5PduuJ7qULjorWMWe4/qApk2lgE5RCcNSLcX6AFBPSOOiTFI8=
+X-Received: by 2002:a9d:5f11:: with SMTP id f17mr4971128oti.207.1572537208078; 
+ Thu, 31 Oct 2019 08:53:28 -0700 (PDT)
 MIME-Version: 1.0
+References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
+ <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
+ <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
+ <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
+ <CAPcyv4h42_1deZDaaW1RqX0Ls+maiFO_1e=6xJuHTa3wdWvVvA@mail.gmail.com>
+ <8e29b94c-cb82-2632-965c-567d26791f76@linux.ibm.com>
+In-Reply-To: <8e29b94c-cb82-2632-965c-567d26791f76@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 31 Oct 2019 08:53:17 -0700
+Message-ID: <CAPcyv4hS8sCNvDh2H0_LCR1uOYf8XeDYq6CWkAjPMoDyrp4+FA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
+ validation arch dependent
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,95 +81,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
- Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- linuxppc-dev@lists.ozlabs.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- iommu@lists.linux-foundation.org, Paul Mackerras <paulus@samba.org>,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Oct 31, 2019 at 1:38 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 10/31/19 12:00 PM, Dan Williams wrote:
+> > On Wed, Oct 30, 2019 at 10:35 PM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> > [..]
+>
+> >
+> >
+> > All that said, the x86 vmemmap_populate() falls back to use small
+> > pages in some case to get around this constraint. Can't powerpc do the
+> > same? It would seem to be less work than the above proposal.
+> >
+>
+> ppc64 supports two translation mode (radix and hash). We can do the
+> above with radix translation. With hash we use just one page size( in
+> this specific case 16MB) for direct-map mapping.
 
---=-IbItouLWOYON9B5ojQkb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 2019-10-31 at 16:47 +0100, Christoph Hellwig wrote:
-> On Thu, Oct 31, 2019 at 04:28:37PM +0100, Nicolas Saenz Julienne wrote:
-> > Some architectures, notably ARM, are interested in tweaking this
-> > depending on their runtime DMA addressing limitations.
-> >=20
-> > Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-> > ---
-> >=20
-> > Changes since RFC:
-> >  - Rebased to v5.4-rc6, fixed arm64 code.
-> >=20
-> > NOTE: This will only apply to linux-next, where=20
->=20
-> missing end of the sentence.  But only applying to linux-next isn't
-> going to help anyone..
-
-Arrgh, excuse me, I meant to delete that line.
-
-> > diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> > index 45c00a54909c..f716ea634804 100644
-> > --- a/arch/arm64/mm/init.c
-> > +++ b/arch/arm64/mm/init.c
-> > @@ -20,6 +20,7 @@
-> >  #include <linux/sort.h>
-> >  #include <linux/of.h>
-> >  #include <linux/of_fdt.h>
-> > +#include <linux/dma-direct.h>
-> >  #include <linux/dma-mapping.h>
-> >  #include <linux/dma-contiguous.h>
-> >  #include <linux/efi.h>
-> > @@ -41,6 +42,8 @@
-> >  #include <asm/tlb.h>
-> >  #include <asm/alternative.h>
-> > =20
-> > +#define ARM64_ZONE_DMA_BITS	30
-> > +
-> >  /*
-> >   * We need to be able to catch inadvertent references to memstart_addr
-> >   * that occur (potentially in generic code) before arm64_memblock_init=
-()
-> > @@ -424,6 +427,8 @@ void __init arm64_memblock_init(void)
-> >  	else
-> >  		arm64_dma_phys_limit =3D PHYS_MASK + 1;
-> > =20
-> > +	zone_dma_bits =3D ARM64_ZONE_DMA_BITS;
-> > +
-> >  	reserve_crashkernel();
->=20
-> This actually adds a new limit, as there wasn't one before for arm64.
-
-Well, as zone_dma_bits is only relevant in dma/direct when ZONE_DMA is defi=
-ned
-I figured it doesn't matter if the variable is set conditionally to ZONE_DM=
-A or
-not.
-
-
---=-IbItouLWOYON9B5ojQkb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl27A2kACgkQlfZmHno8
-x/7XBAf+KJ5m8SMWsJJk7jjM0aD1BkIeWDHPYCN7ZJq7655nTwa46aZv3zb18e3J
-4muJ6LfXcTh/PbK64B+/uJ+wGYyg0y4ObyEshTyxygfgDnnyCQ4Mr3kD38jm40tR
-pJh9bItNrHBr+LzC2oZhwwnj4K4haI2q1HO8C6waGzeQLNW6KGmQquBqbROWiTG3
-EJVQ5SwIHesd1qwzVo+Lpba3IHAf6FrVDoZ1/TnUCDgkEvPOX2N20IUroOb0O2Eu
-5L80i++E4veGNr4AxY2Ne0kXVIZWCiZNoO5HpB7EPreFYta5w5JCbVqZDvGl9YGI
-T+txLLE6SqBuvD/E5j2iwzXXv2SqQA==
-=jZsg
------END PGP SIGNATURE-----
-
---=-IbItouLWOYON9B5ojQkb--
-
+Ok, if it's truly a hard constraint then yes, more infrastructure is
+needed to expose that constraint to the namespace provisioning flow.
