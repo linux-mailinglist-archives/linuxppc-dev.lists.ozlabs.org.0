@@ -2,65 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7821EA810
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 01:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CF5EA817
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 01:11:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 473QdM5VXZzF58V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 11:08:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 473Qj41s1mzDqLl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Oct 2019 11:11:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=joel.stan@gmail.com;
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.29;
+ helo=out5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.b="AnCAfDD6"; 
- dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="AvR00X+O"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="GPWL4c0s"; dkim-atps=neutral
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
+ [66.111.4.29])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 473Qb2115VzF54V
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 11:06:05 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id d13so4954724qko.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2019 17:06:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=0li8VzqpFsQ/b63Xcg1C+N/uk9Yevq8DwZDh1ZCAyPg=;
- b=AnCAfDD6kapseXRPfRWQDvND9gyAVElPT6h62DxuGk1VF6vrQbrA1sXw/bMHkt9ycY
- yp6kuNymmX/ATYi8WGP7tfxs+V64ZKBAO+hQs6KWYth2G9QLwIs2F2puS+R4kOFZi8+j
- g9J/M23rZ39yYeXas5iRE8U/lSWKuIqe/XmdY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=0li8VzqpFsQ/b63Xcg1C+N/uk9Yevq8DwZDh1ZCAyPg=;
- b=MBfhFNipLXYgZKeFmWbcNEcFAIbr5X2irWUSioDSpHbL14OcsyTcbhPotPH2GPn/zX
- hGMokZSTLALZHydCvLRJVOsHDjsghf7AoKBmP/s4C/4jVPWqaScgsgrIB/0ZRSdi8wgp
- kp+r0dNSsC5zJyWRl+Ww6rmb9dRQkTvwBTy7fjUTVoRRpsECDI4I+ME/ex49WWTOHUhw
- SbDHWytknbFxTasIMwu1pvPAO1+L61WaY/LOIk6oN6DuzZpJPhziQC7l1/7SwbnlN9tW
- pwouZhopa5fcbaTWF/yjq+14myZ+yuz0mZI+P06+izxKUwA8BodCzVYLd1cXHmvbCC+k
- gMwA==
-X-Gm-Message-State: APjAAAU9XMlNTJVFVNcY5uiP1nBD0D/q7JWMoUQ5emjqvHdHqSGZd34h
- Bjb1BQ8jTUz9sZeRM8VCshIVeoIM8vphEBxHcew=
-X-Google-Smtp-Source: APXvYqxp1tJqDjfdpxPoNT94F1nQa51ElslA+sMSYvW++gja95tY+RNagmDf2v3YySCW1F3BZflwcasyPdjX/DYa0WE=
-X-Received: by 2002:a05:620a:1244:: with SMTP id
- a4mr2740405qkl.208.1572480361858; 
- Wed, 30 Oct 2019 17:06:01 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 473Qg16hsczF554
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 11:09:33 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id A1A2A223B5;
+ Wed, 30 Oct 2019 20:09:29 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute6.internal (MEProxy); Wed, 30 Oct 2019 20:09:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
+ 6Xnh4Ox3tofJQDh6J6oa86yo0sLnPm3QhRaqE4rorc0=; b=AvR00X+OMMJ6XlbU
+ XKfE3k238wE/pmxoy/lGd0mVmMVftzAmAyLbiUk7ViUcqTY1r/DSclEziFOrEvNB
+ Gitwk3x0EcLWezp0YHpYeRb2qgCps9xSCBG21Ixy+htasdIL2h2NM4B62p2S0chG
+ 8dl05/BmRbW7eVrkkxa4ZwAcIcSY2TpGxb/271ln/s2L1JaW7E0f5if4M8NL8ejY
+ +xAYbmXQBJVV+Gf4nEJuCaOxRU0F3eWfFXK8+EnZt2trsZmROY3l6j/ESfWevSTj
+ AGhzkv5oIEFNbyVpafnHWhz2bbXI8lvd62Bhh5ej4fv5M11dJIuZaHz03IBGTXMb
+ AiHvtg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=6Xnh4Ox3tofJQDh6J6oa86yo0sLnPm3QhRaqE4ror
+ c0=; b=GPWL4c0scAKFN9yel06oYMKw3EQUCEbnb7YRQ0bhKZljhGyjyYfXbU0C4
+ wh+Uedm/ihnSJUpPJMDjld3JoRIrfD42YH1C2O8x24A3wKXPboUEg9fuXhCtJL+c
+ 4vMMtZMCgu/1dEffv/udNYmAs0qx3uv6WaCCvyHEJDiy/GGz0lABacXwv7uyBWjJ
+ BFUI1JLNbjFMrDj1O9fylEi18VJeihVPA3U8lxOUcvWjbThV7MBA8e3N8fFF8DDD
+ p6SUCUWsqawee38GjTN3fkj4bO3VggPzjlEZGjT00NGxGbKwYII0suFHk4GPUQKt
+ 7G1Cn796cHMyMILuilo1xKgZAjB8Q==
+X-ME-Sender: <xms:Nya6XcvHg4SsU_7g3_hkh088S7Oh1yKFrXK9QoOga1tXd2pPa7Zybw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedruddtgedgudelucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddt
+ reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
+ hsvghllhdrtggtqeenucffohhmrghinhepohiilhgrsghsrdhorhhgnecukfhppeduvddv
+ rdelledrkedvrddutdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruh
+ hsshgvlhhlrdgttgenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:Nya6XQJF_IwkFePPnkUR1yHNikj2djemuYVAtPJckUplscaW_WsC1w>
+ <xmx:Nya6XcOC7-jSwjwZdEMcIYBH4iMyyFR4WvO1TWgpfgFWz79sASlYZQ>
+ <xmx:Nya6XdYtejbbSuC-0JgbbhAE3NVWwbSUP4gBfgYo8pMWYPpWfXS1xQ>
+ <xmx:OSa6XbAui9qXytGS3G9Fuq0xxc7-a8LSG9c2p1eARSQu_us7x6k07g>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 2D81E80059;
+ Wed, 30 Oct 2019 20:09:24 -0400 (EDT)
+Message-ID: <a41b73640beafceb40ba748330958f833f4bf4e2.camel@russell.cc>
+Subject: Re: [PATCH v5 0/5] Implement STRICT_MODULE_RWX for powerpc
+From: Russell Currey <ruscur@russell.cc>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 31 Oct 2019 11:09:21 +1100
+In-Reply-To: <53461d29-ec0c-4401-542e-6d575545da38@c-s.fr>
 References: <20191030073111.140493-1-ruscur@russell.cc>
- <20191030073111.140493-6-ruscur@russell.cc>
-In-Reply-To: <20191030073111.140493-6-ruscur@russell.cc>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 31 Oct 2019 00:05:49 +0000
-Message-ID: <CACPK8XfOLfpq6Em7nPe7ef-5D2U-feN4A5u_+K=RrBGX2x=5ew@mail.gmail.com>
-Subject: Re: [PATCH v5 5/5] powerpc/configs: Enable STRICT_MODULE_RWX in
- skiroot_defconfig
-To: Russell Currey <ruscur@russell.cc>
+ <53461d29-ec0c-4401-542e-6d575545da38@c-s.fr>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,39 +91,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ joel@jms.id.au, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 30 Oct 2019 at 07:31, Russell Currey <ruscur@russell.cc> wrote:
->
-> skiroot_defconfig is the only powerpc defconfig with STRICT_KERNEL_RWX
-> enabled, and if you want memory protection for kernel text you'd want it
-> for modules too, so enable STRICT_MODULE_RWX there.
->
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
+On Wed, 2019-10-30 at 09:58 +0100, Christophe Leroy wrote:
+> 
+> Le 30/10/2019 à 08:31, Russell Currey a écrit :
+> > v4 cover letter: 
+> > https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198268.html
+> > v3 cover letter: 
+> > https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-October/198023.html
+> > 
+> > Changes since v4:
+> > 	[1/5]: Addressed review comments from Michael Ellerman
+> > (thanks!)
+> > 	[4/5]: make ARCH_HAS_STRICT_MODULE_RWX depend on
+> > 	       ARCH_HAS_STRICT_KERNEL_RWX to simplify things and avoid
+> > 	       STRICT_MODULE_RWX being *on by default* in cases where
+> > 	       STRICT_KERNEL_RWX is *unavailable*
+> > 	[5/5]: split skiroot_defconfig changes out into its own patch
+> > 
+> > The whole Kconfig situation is really weird and confusing, I
+> > believe the
+> > correct resolution is to change arch/Kconfig but the consequences
+> > are so
+> > minor that I don't think it's worth it, especially given that I
+> > expect
+> > powerpc to have mandatory strict RWX Soon(tm).
+> 
+> I'm not such strict RWX can be made mandatory due to the impact it
+> has 
+> on some subarches:
+> - On the 8xx, unless all areas are 8Mbytes aligned, there is a 
+> significant overhead on TLB misses. And Aligning everthing to 8M is
+> a 
+> waste of RAM which is not acceptable on systems having very few RAM.
+> - On hash book3s32, we are able to map the kernel BATs. With a few 
+> alignment constraints, we are able to provide STRICT_KERNEL_RWX. But
+> we 
+> are unable to provide exec protection on page granularity. Only on 
+> 256Mbytes segments. So for modules, we have to have the vmspace X. It
+> is 
+> also not possible to have a kernel area RO. Only user areas can be
+> made RO.
+> 
 
-Acked-by: Joel Stanley <joel@jms.id.au>
+Yes, sorry, this was thoughtless from me, since in my mind I was just
+thinking about the platforms I primarily work on (book3s64).
 
-> ---
->  arch/powerpc/configs/skiroot_defconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
-> index 1253482a67c0..719d899081b3 100644
-> --- a/arch/powerpc/configs/skiroot_defconfig
-> +++ b/arch/powerpc/configs/skiroot_defconfig
-> @@ -31,6 +31,7 @@ CONFIG_PERF_EVENTS=y
->  CONFIG_SLAB_FREELIST_HARDENED=y
->  CONFIG_JUMP_LABEL=y
->  CONFIG_STRICT_KERNEL_RWX=y
-> +CONFIG_STRICT_MODULE_RWX=y
->  CONFIG_MODULES=y
->  CONFIG_MODULE_UNLOAD=y
->  CONFIG_MODULE_SIG=y
-> --
-> 2.23.0
->
+> Christophe
+> 
+> > Russell Currey (5):
+> >    powerpc/mm: Implement set_memory() routines
+> >    powerpc/kprobes: Mark newly allocated probes as RO
+> >    powerpc/mm/ptdump: debugfs handler for W+X checks at runtime
+> >    powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+> >    powerpc/configs: Enable STRICT_MODULE_RWX in skiroot_defconfig
+> > 
+> >   arch/powerpc/Kconfig                   |  2 +
+> >   arch/powerpc/Kconfig.debug             |  6 +-
+> >   arch/powerpc/configs/skiroot_defconfig |  1 +
+> >   arch/powerpc/include/asm/set_memory.h  | 32 +++++++++++
+> >   arch/powerpc/kernel/kprobes.c          |  3 +
+> >   arch/powerpc/mm/Makefile               |  1 +
+> >   arch/powerpc/mm/pageattr.c             | 77
+> > ++++++++++++++++++++++++++
+> >   arch/powerpc/mm/ptdump/ptdump.c        | 21 ++++++-
+> >   8 files changed, 140 insertions(+), 3 deletions(-)
+> >   create mode 100644 arch/powerpc/include/asm/set_memory.h
+> >   create mode 100644 arch/powerpc/mm/pageattr.c
+> > 
+
