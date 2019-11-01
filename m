@@ -2,71 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757F2EC50D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 15:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9079BEC521
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 15:55:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474Q9F4gPYzF78y
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 01:50:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474QGY1K2kzF7B3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 01:55:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::143;
- helo=mail-lf1-x143.google.com; envelope-from=linux@rasmusvillemoes.dk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="H/DAgeFp"; dkim-atps=neutral
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474ML06sy2zF5CZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:43:04 +1100 (AEDT)
-Received: by mail-lf1-x143.google.com with SMTP id v4so7127407lfd.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=OvUZNskoObmKKJYsbx/wH8iXu8sDYM+jDByiAdju3Rg=;
- b=H/DAgeFpcXJo0tjQoKHDP9cxo5/LdWTfUYmStbr2surKVlSluXRlwhQhQqZBDV3k8Q
- V8XC7DhjRHkNy4MfzEF3RCs5zjs3EyE2i5o/5CqiOOUhAXU+FENj52DK5J/CDQ4y4ykB
- JZklD1t78EAgDyVROxcq9bHmO3TgMHqlhpfuc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=OvUZNskoObmKKJYsbx/wH8iXu8sDYM+jDByiAdju3Rg=;
- b=o7d5lD+7sRoBqATY1bWZkl8iJAZVmlqz2gemPg5u8zzFEpfBOV5PhXMZiNAJIYNliM
- 6AoJ7rKv9kNO0T+Ef+TWu40ywofCyRNqq0MKkfs1HQF8/lm9f6VTHNsgFq4uqFIB3cHJ
- Dk1BDteoAiSDQPbcP+cNTm3ist9WJSrqgTpnRHLCkDIoiknp7DEydPdJ60XJv5+rGTXJ
- EckfHUrl9GrrEaOTLeknBFNda7DBDxYTU316HvEZgdPTU6UaguHbMKBPz8sYXAQ6sK0K
- 5HEDLvZJW5bEjog65al6saH8j50P+37feTtjaKzycwIqWFurlFnlI80tQVuKbQoEBNuh
- QkYA==
-X-Gm-Message-State: APjAAAU2fODl8IB4v6S/W3lNKG3D4ceNm4zArlFov08KrneSBcNE/ZKn
- Aq9zMFgGhQM8FWPWB3U7phzGHA==
-X-Google-Smtp-Source: APXvYqwI3iIuteE6/4JNe1O8E/8fB4CE3gTkq92/iVMjvlls7ufSCpNe/zR7/3vjwyl2n4K9sKAH+A==
-X-Received: by 2002:a05:6512:146:: with SMTP id
- m6mr6989528lfo.98.1572612178764; 
- Fri, 01 Nov 2019 05:42:58 -0700 (PDT)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Nov 2019 05:42:58 -0700 (PDT)
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 36/36] soc: fsl: qe: remove PPC32 dependency from
- CONFIG_QUICC_ENGINE
-Date: Fri,  1 Nov 2019 13:42:10 +0100
-Message-Id: <20191101124210.14510-37-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191101124210.14510-1-linux@rasmusvillemoes.dk>
-References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-1-linux@rasmusvillemoes.dk>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 474PGc5CmqzF703
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Nov 2019 01:10:14 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1ACFE31F;
+ Fri,  1 Nov 2019 07:10:11 -0700 (PDT)
+Received: from e112269-lin.cambridge.arm.com (e112269-lin.cambridge.arm.com
+ [10.1.194.43])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED5D93F718;
+ Fri,  1 Nov 2019 07:10:07 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Subject: [PATCH v15 06/23] powerpc: mm: Add p?d_leaf() definitions
+Date: Fri,  1 Nov 2019 14:09:25 +0000
+Message-Id: <20191101140942.51554-7-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191101140942.51554-1-steven.price@arm.com>
+References: <20191101140942.51554-1-steven.price@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,34 +47,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <Mark.Rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, "Liang,
+ Kan" <kan.liang@linux.intel.com>, x86@kernel.org,
+ Steven Price <steven.price@arm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ kvm-ppc@vger.kernel.org,
+ =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-kernel@vger.kernel.org,
+ James Morse <james.morse@arm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The core QE code now also builds for ARM, so replace the FSL_SOC &&
-PPC32 dependencies by the more lax requirements OF && HAS_IOMEM.
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+For powerpc pmd_large() already exists and does what we want, so hoist
+it out of the CONFIG_TRANSPARENT_HUGEPAGE condition and implement the
+other levels. Macros are used to provide the generic p?d_leaf() names.
+
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC: Paul Mackerras <paulus@samba.org>
+CC: Michael Ellerman <mpe@ellerman.id.au>
+CC: linuxppc-dev@lists.ozlabs.org
+CC: kvm-ppc@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
 ---
- drivers/soc/fsl/qe/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 30 ++++++++++++++------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
-index cfa4b2939992..0c5b8b8e46b6 100644
---- a/drivers/soc/fsl/qe/Kconfig
-+++ b/drivers/soc/fsl/qe/Kconfig
-@@ -5,7 +5,7 @@
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index b01624e5c467..3dd7b6f5edd0 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -923,6 +923,12 @@ static inline int pud_present(pud_t pud)
+ 	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PRESENT));
+ }
  
- config QUICC_ENGINE
- 	bool "QUICC Engine (QE) framework support"
--	depends on FSL_SOC && PPC32
-+	depends on OF && HAS_IOMEM
- 	select GENERIC_ALLOCATOR
- 	select CRC32
- 	help
++#define pud_leaf	pud_large
++static inline int pud_large(pud_t pud)
++{
++	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
++}
++
+ extern struct page *pud_page(pud_t pud);
+ extern struct page *pmd_page(pmd_t pmd);
+ static inline pte_t pud_pte(pud_t pud)
+@@ -966,6 +972,12 @@ static inline int pgd_present(pgd_t pgd)
+ 	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PRESENT));
+ }
+ 
++#define pgd_leaf	pgd_large
++static inline int pgd_large(pgd_t pgd)
++{
++	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ static inline pte_t pgd_pte(pgd_t pgd)
+ {
+ 	return __pte_raw(pgd_raw(pgd));
+@@ -1133,6 +1145,15 @@ static inline bool pmd_access_permitted(pmd_t pmd, bool write)
+ 	return pte_access_permitted(pmd_pte(pmd), write);
+ }
+ 
++#define pmd_leaf	pmd_large
++/*
++ * returns true for pmd migration entries, THP, devmap, hugetlb
++ */
++static inline int pmd_large(pmd_t pmd)
++{
++	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ extern pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot);
+ extern pmd_t mk_pmd(struct page *page, pgprot_t pgprot);
+@@ -1159,15 +1180,6 @@ pmd_hugepage_update(struct mm_struct *mm, unsigned long addr, pmd_t *pmdp,
+ 	return hash__pmd_hugepage_update(mm, addr, pmdp, clr, set);
+ }
+ 
+-/*
+- * returns true for pmd migration entries, THP, devmap, hugetlb
+- * But compile time dependent on THP config
+- */
+-static inline int pmd_large(pmd_t pmd)
+-{
+-	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
+-}
+-
+ static inline pmd_t pmd_mknotpresent(pmd_t pmd)
+ {
+ 	return __pmd(pmd_val(pmd) & ~_PAGE_PRESENT);
 -- 
-2.23.0
+2.20.1
 
