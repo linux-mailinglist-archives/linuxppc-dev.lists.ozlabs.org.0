@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ECBEC49D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 15:24:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD31EC4E1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 15:41:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474PZt08YbzF71P
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 01:24:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474Pz828hhzF3Ky
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 01:41:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::143;
- helo=mail-lf1-x143.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::242;
+ helo=mail-lj1-x242.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="goNZ5OE4"; dkim-atps=neutral
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
+ header.b="K3DyeqCw"; dkim-atps=neutral
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474MKn5WW3zF5Cn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:53 +1100 (AEDT)
-Received: by mail-lf1-x143.google.com with SMTP id f5so7150637lfp.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474MKq1HFdzF5CZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:55 +1100 (AEDT)
+Received: by mail-lj1-x242.google.com with SMTP id g3so4005508ljl.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=skc4BB3FfJVhrMQufim0pPb5lTLStBal+/ZiI3PgHrk=;
- b=goNZ5OE4tByzOYzAc1bKhKcL9oM+UBCCFrvDNLRRvcNalh8UnNn6w3j3/Q21+wi139
- yiMCFOFtB95G2/yRPf1PDZQuswYXEi69SttUocHkc6sMbHZBdFvyxel4r9/0e7RIvZPM
- c/eVWDJF9fTGzUPSul9kKDwPdfk36qWT5Kll4=
+ bh=hS3pT5hJRUv2sQ4gkA9yffpuVvSl9rsKjuV5JcyqFr4=;
+ b=K3DyeqCwJxEjwsFETiLWGqlWUpGrPAuJ5iIm/VntaPwccg6n4+M9x2HbRXbxtm8EKm
+ BWcZnvGiPVtt32v/5D8kxRXktEsDVgItsuHkv5rnXm2Pifcas4EVoyXhKrCV5kNgykyq
+ 1myG0Ary07XeZDoRM36vyo4NtaDIdvJQ9jmtA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=skc4BB3FfJVhrMQufim0pPb5lTLStBal+/ZiI3PgHrk=;
- b=oCZU2VKIhcVHFA0zaOxXkLKZNrbL3xwXYsgTcioG0ZdnaOgViW3T9uZz8j1r3eZiA/
- WF8b/sZbD991ORG9TqbU5HUVfNCHa0WKqRuQ3TpkW7UI18F48Du/AeUIIzNA7yAui7uY
- GE6cgPW9HV3/bU3vFGsEtGQ/YPp9UcqAl6gp6SSaDci3Xevyz1+AOFNBzx2V65sRIeIZ
- HwugrcSxxdlD/BUXHhwutBX8XO1bZvgMuHIXpKyXrE3t1/ZoxYRW2J7e/cLy0Di4oJ5m
- 8quTZCS1TRr+BITjIQkgvGyfQ2hHqkQ23/GO4wXO/uxPWTkpsuvOD+ZMxvxQPdrgbBac
- Op+g==
-X-Gm-Message-State: APjAAAWTSpHPP/3V/GYAjJoXCSaXm6C4pbqK39ikiISC1n/esvXu++0/
- ERYHsID71SB/61ZQXxrQILMfaI1FckJBiiaC
-X-Google-Smtp-Source: APXvYqx+LkhhsdE4uicd68kleysrFNvL7csaxcY4M/SzGwCUFxmQjOfm//4bJ58IrETbPNpw6KnCjQ==
-X-Received: by 2002:a19:8c1c:: with SMTP id o28mr7221433lfd.105.1572612169565; 
- Fri, 01 Nov 2019 05:42:49 -0700 (PDT)
+ bh=hS3pT5hJRUv2sQ4gkA9yffpuVvSl9rsKjuV5JcyqFr4=;
+ b=Jfp31WFeKtCYZLqI1fA9BuWlrY9C+TURIkLPSeSxTlSndbEB/h24tOSGWFeyBGeW/g
+ Nb/bFk1DSHWWdzT/kR58ej0vFpBcMUidbDtYV1cjFeLfRTZxdyq3r0fo1j4KowIipHfy
+ eNbcjZEOf91SvT31iNW1I4GxB1UVkRtq/YKexHg6XsDDUzS52rDgkGxisNz3g+vOU6k7
+ O4tPpghIC6bE0HtCWemB/uKQ+v00x1mbBeiVjyeb4FlDCmpR9ise0p7JGc0AM7R/E0al
+ vP2CwYS34/+X3PmTMZnWIEhqlLxryDZhGnlXAcEV341lwftLS5D7vLO3cxwR5JAHah8x
+ FHbg==
+X-Gm-Message-State: APjAAAUtk5ABfSHoLl6DtIRsh1CviSK4H4yz1Xtat/4569AOQhvl6dfm
+ Nx/SnUpFnsJLuNvDHa4VFBYdyA==
+X-Google-Smtp-Source: APXvYqy4ndaDWkpYDW0pXVrWHZMbN22jLKE0Jq7z5YvL9uRgpYFFJFNxzDXlw9HhSKm1dPdpaL0HEg==
+X-Received: by 2002:a2e:a175:: with SMTP id u21mr2298819ljl.198.1572612170773; 
+ Fri, 01 Nov 2019 05:42:50 -0700 (PDT)
 Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.48
+ by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Nov 2019 05:42:49 -0700 (PDT)
+ Fri, 01 Nov 2019 05:42:50 -0700 (PDT)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 28/36] serial: ucc_uart: explicitly include soc/fsl/cpm.h
-Date: Fri,  1 Nov 2019 13:42:02 +0100
-Message-Id: <20191101124210.14510-29-linux@rasmusvillemoes.dk>
+Subject: [PATCH v3 29/36] serial: ucc_uart: replace ppc-specific IO accessors
+Date: Fri,  1 Nov 2019 13:42:03 +0100
+Message-Id: <20191101124210.14510-30-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191101124210.14510-1-linux@rasmusvillemoes.dk>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
@@ -85,27 +85,407 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This driver uses #defines from soc/fsl/cpm.h, so instead of relying on
-some other header pulling that in, do that explicitly. This is
-preparation for allowing this driver to build on ARM.
+Some ARM-based SOCs (e.g. LS1021A) also have a QUICC engine. As
+preparation for allowing this driver to build on ARM, replace the
+ppc-specific in_be16() etc. by the qe_io* helpers. Done via
+coccinelle.
 
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/tty/serial/ucc_uart.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/ucc_uart.c | 210 +++++++++++++++++-----------------
+ 1 file changed, 102 insertions(+), 108 deletions(-)
 
 diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
-index a0555ae2b1ef..7e802616cba8 100644
+index 7e802616cba8..8a378ee5d34f 100644
 --- a/drivers/tty/serial/ucc_uart.c
 +++ b/drivers/tty/serial/ucc_uart.c
-@@ -32,6 +32,7 @@
- #include <soc/fsl/qe/ucc_slow.h>
+@@ -258,11 +258,11 @@ static unsigned int qe_uart_tx_empty(struct uart_port *port)
+ 	struct qe_bd *bdp = qe_port->tx_bd_base;
  
- #include <linux/firmware.h>
-+#include <soc/fsl/cpm.h>
- #include <asm/reg.h>
+ 	while (1) {
+-		if (in_be16(&bdp->status) & BD_SC_READY)
++		if (qe_ioread16be(&bdp->status) & BD_SC_READY)
+ 			/* This BD is not done, so return "not done" */
+ 			return 0;
+ 
+-		if (in_be16(&bdp->status) & BD_SC_WRAP)
++		if (qe_ioread16be(&bdp->status) & BD_SC_WRAP)
+ 			/*
+ 			 * This BD is done and it's the last one, so return
+ 			 * "done"
+@@ -308,7 +308,7 @@ static void qe_uart_stop_tx(struct uart_port *port)
+ 	struct uart_qe_port *qe_port =
+ 		container_of(port, struct uart_qe_port, port);
+ 
+-	clrbits16(&qe_port->uccp->uccm, UCC_UART_UCCE_TX);
++	qe_clrbits_be16(&qe_port->uccp->uccm, UCC_UART_UCCE_TX);
+ }
  
  /*
+@@ -343,10 +343,10 @@ static int qe_uart_tx_pump(struct uart_qe_port *qe_port)
+ 		p = qe2cpu_addr(bdp->buf, qe_port);
+ 
+ 		*p++ = port->x_char;
+-		out_be16(&bdp->length, 1);
+-		setbits16(&bdp->status, BD_SC_READY);
++		qe_iowrite16be(1, &bdp->length);
++		qe_setbits_be16(&bdp->status, BD_SC_READY);
+ 		/* Get next BD. */
+-		if (in_be16(&bdp->status) & BD_SC_WRAP)
++		if (qe_ioread16be(&bdp->status) & BD_SC_WRAP)
+ 			bdp = qe_port->tx_bd_base;
+ 		else
+ 			bdp++;
+@@ -365,7 +365,7 @@ static int qe_uart_tx_pump(struct uart_qe_port *qe_port)
+ 	/* Pick next descriptor and fill from buffer */
+ 	bdp = qe_port->tx_cur;
+ 
+-	while (!(in_be16(&bdp->status) & BD_SC_READY) &&
++	while (!(qe_ioread16be(&bdp->status) & BD_SC_READY) &&
+ 	       (xmit->tail != xmit->head)) {
+ 		count = 0;
+ 		p = qe2cpu_addr(bdp->buf, qe_port);
+@@ -378,11 +378,11 @@ static int qe_uart_tx_pump(struct uart_qe_port *qe_port)
+ 				break;
+ 		}
+ 
+-		out_be16(&bdp->length, count);
+-		setbits16(&bdp->status, BD_SC_READY);
++		qe_iowrite16be(count, &bdp->length);
++		qe_setbits_be16(&bdp->status, BD_SC_READY);
+ 
+ 		/* Get next BD. */
+-		if (in_be16(&bdp->status) & BD_SC_WRAP)
++		if (qe_ioread16be(&bdp->status) & BD_SC_WRAP)
+ 			bdp = qe_port->tx_bd_base;
+ 		else
+ 			bdp++;
+@@ -415,12 +415,12 @@ static void qe_uart_start_tx(struct uart_port *port)
+ 		container_of(port, struct uart_qe_port, port);
+ 
+ 	/* If we currently are transmitting, then just return */
+-	if (in_be16(&qe_port->uccp->uccm) & UCC_UART_UCCE_TX)
++	if (qe_ioread16be(&qe_port->uccp->uccm) & UCC_UART_UCCE_TX)
+ 		return;
+ 
+ 	/* Otherwise, pump the port and start transmission */
+ 	if (qe_uart_tx_pump(qe_port))
+-		setbits16(&qe_port->uccp->uccm, UCC_UART_UCCE_TX);
++		qe_setbits_be16(&qe_port->uccp->uccm, UCC_UART_UCCE_TX);
+ }
+ 
+ /*
+@@ -431,7 +431,7 @@ static void qe_uart_stop_rx(struct uart_port *port)
+ 	struct uart_qe_port *qe_port =
+ 		container_of(port, struct uart_qe_port, port);
+ 
+-	clrbits16(&qe_port->uccp->uccm, UCC_UART_UCCE_RX);
++	qe_clrbits_be16(&qe_port->uccp->uccm, UCC_UART_UCCE_RX);
+ }
+ 
+ /* Start or stop sending  break signal
+@@ -470,14 +470,14 @@ static void qe_uart_int_rx(struct uart_qe_port *qe_port)
+ 	 */
+ 	bdp = qe_port->rx_cur;
+ 	while (1) {
+-		status = in_be16(&bdp->status);
++		status = qe_ioread16be(&bdp->status);
+ 
+ 		/* If this one is empty, then we assume we've read them all */
+ 		if (status & BD_SC_EMPTY)
+ 			break;
+ 
+ 		/* get number of characters, and check space in RX buffer */
+-		i = in_be16(&bdp->length);
++		i = qe_ioread16be(&bdp->length);
+ 
+ 		/* If we don't have enough room in RX buffer for the entire BD,
+ 		 * then we try later, which will be the next RX interrupt.
+@@ -508,9 +508,10 @@ static void qe_uart_int_rx(struct uart_qe_port *qe_port)
+ 		}
+ 
+ 		/* This BD is ready to be used again. Clear status. get next */
+-		clrsetbits_be16(&bdp->status, BD_SC_BR | BD_SC_FR | BD_SC_PR |
+-			BD_SC_OV | BD_SC_ID, BD_SC_EMPTY);
+-		if (in_be16(&bdp->status) & BD_SC_WRAP)
++		qe_clrsetbits_be16(&bdp->status,
++				   BD_SC_BR | BD_SC_FR | BD_SC_PR | BD_SC_OV | BD_SC_ID,
++				   BD_SC_EMPTY);
++		if (qe_ioread16be(&bdp->status) & BD_SC_WRAP)
+ 			bdp = qe_port->rx_bd_base;
+ 		else
+ 			bdp++;
+@@ -569,8 +570,8 @@ static irqreturn_t qe_uart_int(int irq, void *data)
+ 	u16 events;
+ 
+ 	/* Clear the interrupts */
+-	events = in_be16(&uccp->ucce);
+-	out_be16(&uccp->ucce, events);
++	events = qe_ioread16be(&uccp->ucce);
++	qe_iowrite16be(events, &uccp->ucce);
+ 
+ 	if (events & UCC_UART_UCCE_BRKE)
+ 		uart_handle_break(&qe_port->port);
+@@ -601,17 +602,17 @@ static void qe_uart_initbd(struct uart_qe_port *qe_port)
+ 	bdp = qe_port->rx_bd_base;
+ 	qe_port->rx_cur = qe_port->rx_bd_base;
+ 	for (i = 0; i < (qe_port->rx_nrfifos - 1); i++) {
+-		out_be16(&bdp->status, BD_SC_EMPTY | BD_SC_INTRPT);
+-		out_be32(&bdp->buf, cpu2qe_addr(bd_virt, qe_port));
+-		out_be16(&bdp->length, 0);
++		qe_iowrite16be(BD_SC_EMPTY | BD_SC_INTRPT, &bdp->status);
++		qe_iowrite32be(cpu2qe_addr(bd_virt, qe_port), &bdp->buf);
++		qe_iowrite16be(0, &bdp->length);
+ 		bd_virt += qe_port->rx_fifosize;
+ 		bdp++;
+ 	}
+ 
+ 	/* */
+-	out_be16(&bdp->status, BD_SC_WRAP | BD_SC_EMPTY | BD_SC_INTRPT);
+-	out_be32(&bdp->buf, cpu2qe_addr(bd_virt, qe_port));
+-	out_be16(&bdp->length, 0);
++	qe_iowrite16be(BD_SC_WRAP | BD_SC_EMPTY | BD_SC_INTRPT, &bdp->status);
++	qe_iowrite32be(cpu2qe_addr(bd_virt, qe_port), &bdp->buf);
++	qe_iowrite16be(0, &bdp->length);
+ 
+ 	/* Set the physical address of the host memory
+ 	 * buffers in the buffer descriptors, and the
+@@ -622,21 +623,21 @@ static void qe_uart_initbd(struct uart_qe_port *qe_port)
+ 	qe_port->tx_cur = qe_port->tx_bd_base;
+ 	bdp = qe_port->tx_bd_base;
+ 	for (i = 0; i < (qe_port->tx_nrfifos - 1); i++) {
+-		out_be16(&bdp->status, BD_SC_INTRPT);
+-		out_be32(&bdp->buf, cpu2qe_addr(bd_virt, qe_port));
+-		out_be16(&bdp->length, 0);
++		qe_iowrite16be(BD_SC_INTRPT, &bdp->status);
++		qe_iowrite32be(cpu2qe_addr(bd_virt, qe_port), &bdp->buf);
++		qe_iowrite16be(0, &bdp->length);
+ 		bd_virt += qe_port->tx_fifosize;
+ 		bdp++;
+ 	}
+ 
+ 	/* Loopback requires the preamble bit to be set on the first TX BD */
+ #ifdef LOOPBACK
+-	setbits16(&qe_port->tx_cur->status, BD_SC_P);
++	qe_setbits_be16(&qe_port->tx_cur->status, BD_SC_P);
+ #endif
+ 
+-	out_be16(&bdp->status, BD_SC_WRAP | BD_SC_INTRPT);
+-	out_be32(&bdp->buf, cpu2qe_addr(bd_virt, qe_port));
+-	out_be16(&bdp->length, 0);
++	qe_iowrite16be(BD_SC_WRAP | BD_SC_INTRPT, &bdp->status);
++	qe_iowrite32be(cpu2qe_addr(bd_virt, qe_port), &bdp->buf);
++	qe_iowrite16be(0, &bdp->length);
+ }
+ 
+ /*
+@@ -658,78 +659,74 @@ static void qe_uart_init_ucc(struct uart_qe_port *qe_port)
+ 	ucc_slow_disable(qe_port->us_private, COMM_DIR_RX_AND_TX);
+ 
+ 	/* Program the UCC UART parameter RAM */
+-	out_8(&uccup->common.rbmr, UCC_BMR_GBL | UCC_BMR_BO_BE);
+-	out_8(&uccup->common.tbmr, UCC_BMR_GBL | UCC_BMR_BO_BE);
+-	out_be16(&uccup->common.mrblr, qe_port->rx_fifosize);
+-	out_be16(&uccup->maxidl, 0x10);
+-	out_be16(&uccup->brkcr, 1);
+-	out_be16(&uccup->parec, 0);
+-	out_be16(&uccup->frmec, 0);
+-	out_be16(&uccup->nosec, 0);
+-	out_be16(&uccup->brkec, 0);
+-	out_be16(&uccup->uaddr[0], 0);
+-	out_be16(&uccup->uaddr[1], 0);
+-	out_be16(&uccup->toseq, 0);
++	qe_iowrite8(UCC_BMR_GBL | UCC_BMR_BO_BE, &uccup->common.rbmr);
++	qe_iowrite8(UCC_BMR_GBL | UCC_BMR_BO_BE, &uccup->common.tbmr);
++	qe_iowrite16be(qe_port->rx_fifosize, &uccup->common.mrblr);
++	qe_iowrite16be(0x10, &uccup->maxidl);
++	qe_iowrite16be(1, &uccup->brkcr);
++	qe_iowrite16be(0, &uccup->parec);
++	qe_iowrite16be(0, &uccup->frmec);
++	qe_iowrite16be(0, &uccup->nosec);
++	qe_iowrite16be(0, &uccup->brkec);
++	qe_iowrite16be(0, &uccup->uaddr[0]);
++	qe_iowrite16be(0, &uccup->uaddr[1]);
++	qe_iowrite16be(0, &uccup->toseq);
+ 	for (i = 0; i < 8; i++)
+-		out_be16(&uccup->cchars[i], 0xC000);
+-	out_be16(&uccup->rccm, 0xc0ff);
++		qe_iowrite16be(0xC000, &uccup->cchars[i]);
++	qe_iowrite16be(0xc0ff, &uccup->rccm);
+ 
+ 	/* Configure the GUMR registers for UART */
+ 	if (soft_uart) {
+ 		/* Soft-UART requires a 1X multiplier for TX */
+-		clrsetbits_be32(&uccp->gumr_l,
+-			UCC_SLOW_GUMR_L_MODE_MASK | UCC_SLOW_GUMR_L_TDCR_MASK |
+-			UCC_SLOW_GUMR_L_RDCR_MASK,
+-			UCC_SLOW_GUMR_L_MODE_UART | UCC_SLOW_GUMR_L_TDCR_1 |
+-			UCC_SLOW_GUMR_L_RDCR_16);
+-
+-		clrsetbits_be32(&uccp->gumr_h, UCC_SLOW_GUMR_H_RFW,
+-			UCC_SLOW_GUMR_H_TRX | UCC_SLOW_GUMR_H_TTX);
++		qe_clrsetbits_be32(&uccp->gumr_l,
++				   UCC_SLOW_GUMR_L_MODE_MASK | UCC_SLOW_GUMR_L_TDCR_MASK | UCC_SLOW_GUMR_L_RDCR_MASK,
++				   UCC_SLOW_GUMR_L_MODE_UART | UCC_SLOW_GUMR_L_TDCR_1 | UCC_SLOW_GUMR_L_RDCR_16);
++
++		qe_clrsetbits_be32(&uccp->gumr_h, UCC_SLOW_GUMR_H_RFW,
++				   UCC_SLOW_GUMR_H_TRX | UCC_SLOW_GUMR_H_TTX);
+ 	} else {
+-		clrsetbits_be32(&uccp->gumr_l,
+-			UCC_SLOW_GUMR_L_MODE_MASK | UCC_SLOW_GUMR_L_TDCR_MASK |
+-			UCC_SLOW_GUMR_L_RDCR_MASK,
+-			UCC_SLOW_GUMR_L_MODE_UART | UCC_SLOW_GUMR_L_TDCR_16 |
+-			UCC_SLOW_GUMR_L_RDCR_16);
+-
+-		clrsetbits_be32(&uccp->gumr_h,
+-			UCC_SLOW_GUMR_H_TRX | UCC_SLOW_GUMR_H_TTX,
+-			UCC_SLOW_GUMR_H_RFW);
++		qe_clrsetbits_be32(&uccp->gumr_l,
++				   UCC_SLOW_GUMR_L_MODE_MASK | UCC_SLOW_GUMR_L_TDCR_MASK | UCC_SLOW_GUMR_L_RDCR_MASK,
++				   UCC_SLOW_GUMR_L_MODE_UART | UCC_SLOW_GUMR_L_TDCR_16 | UCC_SLOW_GUMR_L_RDCR_16);
++
++		qe_clrsetbits_be32(&uccp->gumr_h,
++				   UCC_SLOW_GUMR_H_TRX | UCC_SLOW_GUMR_H_TTX,
++				   UCC_SLOW_GUMR_H_RFW);
+ 	}
+ 
+ #ifdef LOOPBACK
+-	clrsetbits_be32(&uccp->gumr_l, UCC_SLOW_GUMR_L_DIAG_MASK,
+-		UCC_SLOW_GUMR_L_DIAG_LOOP);
+-	clrsetbits_be32(&uccp->gumr_h,
+-		UCC_SLOW_GUMR_H_CTSP | UCC_SLOW_GUMR_H_RSYN,
+-		UCC_SLOW_GUMR_H_CDS);
++	qe_clrsetbits_be32(&uccp->gumr_l, UCC_SLOW_GUMR_L_DIAG_MASK,
++			   UCC_SLOW_GUMR_L_DIAG_LOOP);
++	qe_clrsetbits_be32(&uccp->gumr_h,
++			   UCC_SLOW_GUMR_H_CTSP | UCC_SLOW_GUMR_H_RSYN,
++			   UCC_SLOW_GUMR_H_CDS);
+ #endif
+ 
+ 	/* Disable rx interrupts  and clear all pending events.  */
+-	out_be16(&uccp->uccm, 0);
+-	out_be16(&uccp->ucce, 0xffff);
+-	out_be16(&uccp->udsr, 0x7e7e);
++	qe_iowrite16be(0, &uccp->uccm);
++	qe_iowrite16be(0xffff, &uccp->ucce);
++	qe_iowrite16be(0x7e7e, &uccp->udsr);
+ 
+ 	/* Initialize UPSMR */
+-	out_be16(&uccp->upsmr, 0);
++	qe_iowrite16be(0, &uccp->upsmr);
+ 
+ 	if (soft_uart) {
+-		out_be16(&uccup->supsmr, 0x30);
+-		out_be16(&uccup->res92, 0);
+-		out_be32(&uccup->rx_state, 0);
+-		out_be32(&uccup->rx_cnt, 0);
+-		out_8(&uccup->rx_bitmark, 0);
+-		out_8(&uccup->rx_length, 10);
+-		out_be32(&uccup->dump_ptr, 0x4000);
+-		out_8(&uccup->rx_temp_dlst_qe, 0);
+-		out_be32(&uccup->rx_frame_rem, 0);
+-		out_8(&uccup->rx_frame_rem_size, 0);
++		qe_iowrite16be(0x30, &uccup->supsmr);
++		qe_iowrite16be(0, &uccup->res92);
++		qe_iowrite32be(0, &uccup->rx_state);
++		qe_iowrite32be(0, &uccup->rx_cnt);
++		qe_iowrite8(0, &uccup->rx_bitmark);
++		qe_iowrite8(10, &uccup->rx_length);
++		qe_iowrite32be(0x4000, &uccup->dump_ptr);
++		qe_iowrite8(0, &uccup->rx_temp_dlst_qe);
++		qe_iowrite32be(0, &uccup->rx_frame_rem);
++		qe_iowrite8(0, &uccup->rx_frame_rem_size);
+ 		/* Soft-UART requires TX to be 1X */
+-		out_8(&uccup->tx_mode,
+-			UCC_UART_TX_STATE_UART | UCC_UART_TX_STATE_X1);
+-		out_be16(&uccup->tx_state, 0);
+-		out_8(&uccup->resD4, 0);
+-		out_be16(&uccup->resD5, 0);
++		qe_iowrite8(UCC_UART_TX_STATE_UART | UCC_UART_TX_STATE_X1,
++			    &uccup->tx_mode);
++		qe_iowrite16be(0, &uccup->tx_state);
++		qe_iowrite8(0, &uccup->resD4);
++		qe_iowrite16be(0, &uccup->resD5);
+ 
+ 		/* Set UART mode.
+ 		 * Enable receive and transmit.
+@@ -743,22 +740,19 @@ static void qe_uart_init_ucc(struct uart_qe_port *qe_port)
+ 		 * ...
+ 		 * 6.Receiver must use 16x over sampling
+ 		 */
+-		clrsetbits_be32(&uccp->gumr_l,
+-			UCC_SLOW_GUMR_L_MODE_MASK | UCC_SLOW_GUMR_L_TDCR_MASK |
+-			UCC_SLOW_GUMR_L_RDCR_MASK,
+-			UCC_SLOW_GUMR_L_MODE_QMC | UCC_SLOW_GUMR_L_TDCR_16 |
+-			UCC_SLOW_GUMR_L_RDCR_16);
++		qe_clrsetbits_be32(&uccp->gumr_l,
++				   UCC_SLOW_GUMR_L_MODE_MASK | UCC_SLOW_GUMR_L_TDCR_MASK | UCC_SLOW_GUMR_L_RDCR_MASK,
++				   UCC_SLOW_GUMR_L_MODE_QMC | UCC_SLOW_GUMR_L_TDCR_16 | UCC_SLOW_GUMR_L_RDCR_16);
+ 
+-		clrsetbits_be32(&uccp->gumr_h,
+-			UCC_SLOW_GUMR_H_RFW | UCC_SLOW_GUMR_H_RSYN,
+-			UCC_SLOW_GUMR_H_SUART | UCC_SLOW_GUMR_H_TRX |
+-			UCC_SLOW_GUMR_H_TTX | UCC_SLOW_GUMR_H_TFL);
++		qe_clrsetbits_be32(&uccp->gumr_h,
++				   UCC_SLOW_GUMR_H_RFW | UCC_SLOW_GUMR_H_RSYN,
++				   UCC_SLOW_GUMR_H_SUART | UCC_SLOW_GUMR_H_TRX | UCC_SLOW_GUMR_H_TTX | UCC_SLOW_GUMR_H_TFL);
+ 
+ #ifdef LOOPBACK
+-		clrsetbits_be32(&uccp->gumr_l, UCC_SLOW_GUMR_L_DIAG_MASK,
+-				UCC_SLOW_GUMR_L_DIAG_LOOP);
+-		clrbits32(&uccp->gumr_h, UCC_SLOW_GUMR_H_CTSP |
+-			  UCC_SLOW_GUMR_H_CDS);
++		qe_clrsetbits_be32(&uccp->gumr_l, UCC_SLOW_GUMR_L_DIAG_MASK,
++				   UCC_SLOW_GUMR_L_DIAG_LOOP);
++		qe_clrbits_be32(&uccp->gumr_h,
++				UCC_SLOW_GUMR_H_CTSP | UCC_SLOW_GUMR_H_CDS);
+ #endif
+ 
+ 		cecr_subblock = ucc_slow_get_qe_cr_subblock(qe_port->ucc_num);
+@@ -801,7 +795,7 @@ static int qe_uart_startup(struct uart_port *port)
+ 	}
+ 
+ 	/* Startup rx-int */
+-	setbits16(&qe_port->uccp->uccm, UCC_UART_UCCE_RX);
++	qe_setbits_be16(&qe_port->uccp->uccm, UCC_UART_UCCE_RX);
+ 	ucc_slow_enable(qe_port->us_private, COMM_DIR_RX_AND_TX);
+ 
+ 	return 0;
+@@ -837,7 +831,7 @@ static void qe_uart_shutdown(struct uart_port *port)
+ 
+ 	/* Stop uarts */
+ 	ucc_slow_disable(qe_port->us_private, COMM_DIR_RX_AND_TX);
+-	clrbits16(&uccp->uccm, UCC_UART_UCCE_TX | UCC_UART_UCCE_RX);
++	qe_clrbits_be16(&uccp->uccm, UCC_UART_UCCE_TX | UCC_UART_UCCE_RX);
+ 
+ 	/* Shut them really down and reinit buffer descriptors */
+ 	ucc_slow_graceful_stop_tx(qe_port->us_private);
+@@ -857,9 +851,9 @@ static void qe_uart_set_termios(struct uart_port *port,
+ 	struct ucc_slow __iomem *uccp = qe_port->uccp;
+ 	unsigned int baud;
+ 	unsigned long flags;
+-	u16 upsmr = in_be16(&uccp->upsmr);
++	u16 upsmr = qe_ioread16be(&uccp->upsmr);
+ 	struct ucc_uart_pram __iomem *uccup = qe_port->uccup;
+-	u16 supsmr = in_be16(&uccup->supsmr);
++	u16 supsmr = qe_ioread16be(&uccup->supsmr);
+ 	u8 char_length = 2; /* 1 + CL + PEN + 1 + SL */
+ 
+ 	/* Character length programmed into the mode register is the
+@@ -957,10 +951,10 @@ static void qe_uart_set_termios(struct uart_port *port,
+ 	/* Update the per-port timeout. */
+ 	uart_update_timeout(port, termios->c_cflag, baud);
+ 
+-	out_be16(&uccp->upsmr, upsmr);
++	qe_iowrite16be(upsmr, &uccp->upsmr);
+ 	if (soft_uart) {
+-		out_be16(&uccup->supsmr, supsmr);
+-		out_8(&uccup->rx_length, char_length);
++		qe_iowrite16be(supsmr, &uccup->supsmr);
++		qe_iowrite8(char_length, &uccup->rx_length);
+ 
+ 		/* Soft-UART requires a 1X multiplier for TX */
+ 		qe_setbrg(qe_port->us_info.rx_clock, baud, 16);
 -- 
 2.23.0
 
