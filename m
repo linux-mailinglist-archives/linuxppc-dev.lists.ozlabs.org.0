@@ -2,65 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602BDEC327
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 13:48:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8935EC346
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 13:54:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474MSL4clKzF5gR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 23:48:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474Mbd5PJyzF6fk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 23:54:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::141;
- helo=mail-lf1-x141.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::142;
+ helo=mail-lf1-x142.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="FJGEyUjD"; dkim-atps=neutral
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com
- [IPv6:2a00:1450:4864:20::141])
+ header.b="EBWLnh2g"; dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474MKD1KSQzF4ng
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474MKD1HjHzF4nT
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:21 +1100 (AEDT)
-Received: by mail-lf1-x141.google.com with SMTP id y6so7146839lfj.2
+Received: by mail-lf1-x142.google.com with SMTP id a6so3735008lfo.3
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=7uK8xEnPEigQ7dFIza6M7Wg35/gDKz/RHXvPNwcggqY=;
- b=FJGEyUjDMyY3qQwDxrXdaq6kbDtEuWaQ9DdM3JQbmkDv5/TqT279el/27e2uU9No1a
- f+iz8Vxf6Hy5Yia656Z3D2IFrlqCrNAHpa+4MZwbyXZwnzKLGOuyKeoeouKUynNENL+w
- 9N/0jeI/nf5AWsvbX8qp/uDqSP/sxEhYzWMsk=
+ bh=IwcdyWxRDO/TUjQjvqfZVlSTaDYPWlQZLs741mWfW6c=;
+ b=EBWLnh2gewMrrOR7Ur4LtjqcL3qopz+JE1MaR/3SxQxLBmY2+j/GbFh12o1lOdzalc
+ ZRBnxmxYZCyK/rBsgZu94RdJDHriGBjSx7Za5We9/D7NfeWht012JDaNZ7n9PZuuewps
+ BAJRmnhCZcl0RMHcCXhFwHJnb4m8Sqwg157Iw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=7uK8xEnPEigQ7dFIza6M7Wg35/gDKz/RHXvPNwcggqY=;
- b=DTx5JvQoXO4jGZ//5gLylq9cFJZKPatow2VnxUWrlz3wcMviLhk2EkQYwlmWyboc/y
- mtBAiaYNywlLspDiWVb5Xb1Qw5GhWujrdprkC+t8ClZv5o3fpmbrVenapcUeAP84uzLL
- 9DyqrwfIlFh6ZTvvPLUQLa/7JW/DI2oubg08g5z/V+kmZLLIFPbhW23mfCPC/ebpCjwL
- n6KRPaIjrYIpiTE5QZAr2MncRJT8ILTvLeep0YSjfTQIx5mw5c5cIY29zhmW2OJvhk6t
- OCTzaCK5FQmDs5vwOzwLac9MB3cNyJqD1xtUdpuU+eykg5BX0eCMn2P7CUsIMmtcDrWP
- 8uJg==
-X-Gm-Message-State: APjAAAXlcjqbSA3Y6EK9CamJD+EIiAuzndMdB+aQ2miS49VliD4fYSJv
- KfK8NDVZGIQ+LXuv01iTuAlzyg==
-X-Google-Smtp-Source: APXvYqx10tC45xnMYXxbHsIhOZZte50RDX5EOtgZaSoKO0iY2QuiQYHpnCYFw+LsHLxAu07eF6ZXqA==
-X-Received: by 2002:ac2:424c:: with SMTP id m12mr7265781lfl.140.1572612136042; 
- Fri, 01 Nov 2019 05:42:16 -0700 (PDT)
+ bh=IwcdyWxRDO/TUjQjvqfZVlSTaDYPWlQZLs741mWfW6c=;
+ b=X/yfvcsFKtXGIXjIYl68CbCNzga6k2AMmwNnA9f6q9CliWErnw3cB0vr7JgkN1AyqC
+ gI5R6yYoP2fxcD4Y56xSylGNLPlBPCkdZUs/23ebHQofSQK9DpQ76EWkIztBVz39cgzT
+ sp6rK7L4j0S9n/0JF5UqQlj5P3tTggFuATdlKLD8G5xu5PiqsIk7BheS6kqGysYLHzK0
+ fI5a67omM4CFKvAkePy87MB5dQT2ocm9zvUbrst9P+bN5eKutxyNsRDFN+accjJsB3A2
+ XRzadGZpYtALFE7n32gjQpIg+UB/gIXyQQ6l2w96dQJzMaQ7XVGVjs/ijO3XL2uATa8n
+ nyRA==
+X-Gm-Message-State: APjAAAVSLg4d0/A6iX+Fz7ZR6gP5Kjta0zBRINAPfsXI69diWdMRlTXK
+ syngBbsRpgIpVS9RNjRakgpsCg==
+X-Google-Smtp-Source: APXvYqxzoeTf3Ohah/Hpr41qNMeO2Vmhemx5HLuusE1IMFHrUr2Wo8tZj5QwdBFSwyhHAjtrni+Ssw==
+X-Received: by 2002:ac2:5295:: with SMTP id q21mr7028523lfm.93.1572612137175; 
+ Fri, 01 Nov 2019 05:42:17 -0700 (PDT)
 Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.14
+ by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Nov 2019 05:42:15 -0700 (PDT)
+ Fri, 01 Nov 2019 05:42:16 -0700 (PDT)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 01/36] soc: fsl: qe: remove space-before-tab
-Date: Fri,  1 Nov 2019 13:41:35 +0100
-Message-Id: <20191101124210.14510-2-linux@rasmusvillemoes.dk>
+Subject: [PATCH v3 02/36] soc: fsl: qe: drop volatile qualifier of struct
+ qe_ic::regs
+Date: Fri,  1 Nov 2019 13:41:36 +0100
+Message-Id: <20191101124210.14510-3-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191101124210.14510-1-linux@rasmusvillemoes.dk>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
@@ -85,26 +86,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The actual io accessors (e.g. in_be32) implicitly add a volatile
+qualifier to their address argument. Remove volatile from the struct
+definition and the qe_ic_(read/write) helpers, in preparation for
+switching from the ppc-specific io accessors to generic ones.
+
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/soc/fsl/qe/qe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/fsl/qe/qe_ic.c | 4 ++--
+ drivers/soc/fsl/qe/qe_ic.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-index 417df7e19281..2a0e6e642776 100644
---- a/drivers/soc/fsl/qe/qe.c
-+++ b/drivers/soc/fsl/qe/qe.c
-@@ -378,8 +378,8 @@ static int qe_sdma_init(void)
- 	}
+diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+index 9bac546998d3..791adcd121d1 100644
+--- a/drivers/soc/fsl/qe/qe_ic.c
++++ b/drivers/soc/fsl/qe/qe_ic.c
+@@ -171,12 +171,12 @@ static struct qe_ic_info qe_ic_info[] = {
+ 		},
+ };
  
- 	out_be32(&sdma->sdebcr, (u32) sdma_buf_offset & QE_SDEBCR_BA_MASK);
-- 	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
-- 					(0x1 << QE_SDMR_CEN_SHIFT)));
-+	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
-+		 (0x1 << QE_SDMR_CEN_SHIFT)));
- 
- 	return 0;
+-static inline u32 qe_ic_read(volatile __be32  __iomem * base, unsigned int reg)
++static inline u32 qe_ic_read(__be32  __iomem *base, unsigned int reg)
+ {
+ 	return in_be32(base + (reg >> 2));
  }
+ 
+-static inline void qe_ic_write(volatile __be32  __iomem * base, unsigned int reg,
++static inline void qe_ic_write(__be32  __iomem *base, unsigned int reg,
+ 			       u32 value)
+ {
+ 	out_be32(base + (reg >> 2), value);
+diff --git a/drivers/soc/fsl/qe/qe_ic.h b/drivers/soc/fsl/qe/qe_ic.h
+index 08c695672a03..9420378d9b6b 100644
+--- a/drivers/soc/fsl/qe/qe_ic.h
++++ b/drivers/soc/fsl/qe/qe_ic.h
+@@ -72,7 +72,7 @@
+ 
+ struct qe_ic {
+ 	/* Control registers offset */
+-	volatile u32 __iomem *regs;
++	u32 __iomem *regs;
+ 
+ 	/* The remapper for this QEIC */
+ 	struct irq_domain *irqhost;
 -- 
 2.23.0
 
