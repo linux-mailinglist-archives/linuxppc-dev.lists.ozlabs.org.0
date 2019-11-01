@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5833CEC396
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 14:19:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C128EC394
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 14:17:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474N8T12NXzF6j4
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 00:19:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474N5c6RQ0zF55W
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 00:17:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,51 +17,51 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="MXonAe17"; dkim-atps=neutral
+ header.b="U/f2h7Ju"; dkim-atps=neutral
 Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
  [IPv6:2a00:1450:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474MKG55f9zF4qr
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:26 +1100 (AEDT)
-Received: by mail-lj1-x243.google.com with SMTP id m9so10089214ljh.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:26 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474MKH4HJyzF4r2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:27 +1100 (AEDT)
+Received: by mail-lj1-x243.google.com with SMTP id s4so10090082ljj.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=KLof2Ot2O0jJsk//b5zfFITAj/UOtVeGro1UsWAolSk=;
- b=MXonAe17Nh/IHNlZn3/K4qN3Y33a5LRMb5n2AtdUT/tH1JEvQoroLGWco046i+FBys
- rV7YUUeM0D4I7ffZNLM/C0+JvV0RvuKcW4jDPcNWKBvwAfQGLsTSkAULwYJ9kcw7ecXP
- bzHca1F4QUF747YROIIEsYDGwAzgoGaP6KwQU=
+ bh=KU/n1Q/VNXJbWwIQys/qt9rGcT4PXz5RLqrj6x2UwvM=;
+ b=U/f2h7JuYhwgX+OxayXYbuI3nx0fL2I+VDpk0pE1JfCFpTOAsakC6TS3OYY61jFEGH
+ Es7TiE/xRGdQOT/qPHZ/2VmMSA9H1E30CayCMWjQG4u5WbohQrKEwC61GH+dWiK6VIVk
+ eLCUnrHW+TjhzZPa8JfiyQxWMYcrT3/fzJKb0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=KLof2Ot2O0jJsk//b5zfFITAj/UOtVeGro1UsWAolSk=;
- b=Y8B25ODQnpna5Mynz4V/z0xpaTf+cF9RRhlZ35xMTYfkf6WR2pbDf2gWZvICj3eCIb
- VCQKrEBXWA+fHT96CHjXVo7SagclFMp8GInUWWpxeXxU6NJ5zqmE+WUJsC3ujbcZVtPE
- NsLnlnvVHy0jziNtDH5z5aG45b5MQN9GR3TtCnr8Z7eP0uwUNwhe+cXJeHilgdrwI0+d
- jQiKhn7yPAKEKy/g8mbENephH9+CI27v/FnqRS6B0ZDQp+369bNii6UVIXj/CEHwg31e
- YVEn8BwLDKdsSBNgsEBgxYhoCLNdJ2iaE4nSHnPZMldThy4AJLm09VZboqVgVW2j+gBf
- pY6g==
-X-Gm-Message-State: APjAAAVy1dCx9OMZEWMnJRICjIsI4haHsc26xuXUtg16UMT47rjwsQ88
- kj6JdkmZG7SuCsWYk+o9lxE6Yg==
-X-Google-Smtp-Source: APXvYqwyK33D39pNacH1MF4DGYS1r2n9xjHgSCwKh88O8OkGqcihnBmZbB2nG4AKKkDKOoFCeW51vQ==
-X-Received: by 2002:a2e:a0c9:: with SMTP id f9mr8263640ljm.77.1572612142749;
- Fri, 01 Nov 2019 05:42:22 -0700 (PDT)
+ bh=KU/n1Q/VNXJbWwIQys/qt9rGcT4PXz5RLqrj6x2UwvM=;
+ b=aoDymvvyGX2GN3fhr+JwLGWL9CihJyyxFinlwg2f7XYxneROcU/nBzX8eCjq9QAiVB
+ YBAhQI6P0O331wjBDvFn2Jy24f4onsgG+Fl61EJSGQOMsTlGEG8ZKHsqrtMahJyTDa38
+ J8QwW5hJdtEdaaL4GI1Qtqz3l6yBFAw9AYguLSkDW3VoJsqR6ygoZglYPtVNFrtrIjp1
+ xgKMVCadZrfVMWKVQOzo/pIiVvfYyCJKlMiSk2maSaZFBgbskfSaiYvhDXqmKjG6i32p
+ t4wb3pOoxsT9f3QQYCU7Q+7oenEqJUfNTRnxRgRDaY8+1OiMk5TuiyA8pIS5jhMf0lVf
+ qO8g==
+X-Gm-Message-State: APjAAAUEV8GKf90PV0/Xmiy5zLpM9/tJ+X8uP1J76MYXag1MwZEJ/dch
+ Oe/ascy8f/L5t4UxWUhzLKkPBQ==
+X-Google-Smtp-Source: APXvYqwpYar3cadRMDA9V3X/W/gSCAb+1mtgi5R0km/i5QsofsD6KmUR//aDEr/XEPgCrUcqdgAl9w==
+X-Received: by 2002:a2e:89d3:: with SMTP id c19mr8219074ljk.201.1572612143860; 
+ Fri, 01 Nov 2019 05:42:23 -0700 (PDT)
 Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.21
+ by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Nov 2019 05:42:21 -0700 (PDT)
+ Fri, 01 Nov 2019 05:42:23 -0700 (PDT)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 06/36] soc: fsl: qe: replace spin_event_timeout by
- readx_poll_timeout_atomic
-Date: Fri,  1 Nov 2019 13:41:40 +0100
-Message-Id: <20191101124210.14510-7-linux@rasmusvillemoes.dk>
+Subject: [PATCH v3 07/36] soc: fsl: qe: qe.c: guard use of pvr_version_is()
+ with CONFIG_PPC32
+Date: Fri,  1 Nov 2019 13:41:41 +0100
+Message-Id: <20191101124210.14510-8-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191101124210.14510-1-linux@rasmusvillemoes.dk>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
@@ -86,54 +86,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for allowing QE to be built for architectures other
-than ppc, use the generic readx_poll_timeout_atomic() helper from
-iopoll.h rather than the ppc-only spin_event_timeout().
+Commit e5c5c8d23fef (soc/fsl/qe: only apply QE_General4 workaround on
+affected SoCs) introduced use of pvr_version_is(), saying
+
+    The QE_General4 workaround is only valid for the MPC832x and MPC836x
+    SoCs. The other SoCs that embed a QUICC engine are not affected by this
+    hardware bug and thus can use the computed divisors (this was
+    successfully tested on the T1040).
+
+I'm reading the above as saying that the errata does not apply to the
+ARM-based SOCs with QUICC engine. In any case, use of pvr_version_is()
+must be guarded by CONFIG_PPC32 before we can remove the PPC32
+dependency from CONFIG_QUICC_ENGINE, so introduce qe_general4_errata()
+to keep the necessary #ifdeffery localized to a trivial helper.
 
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/soc/fsl/qe/qe.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/soc/fsl/qe/qe.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-index 456bd7416876..85737e6f5b62 100644
+index 85737e6f5b62..1d8aa62c7ddf 100644
 --- a/drivers/soc/fsl/qe/qe.c
 +++ b/drivers/soc/fsl/qe/qe.c
-@@ -22,6 +22,7 @@
- #include <linux/module.h>
- #include <linux/delay.h>
- #include <linux/ioport.h>
-+#include <linux/iopoll.h>
- #include <linux/crc32.h>
- #include <linux/mod_devicetable.h>
- #include <linux/of_platform.h>
-@@ -108,7 +109,8 @@ int qe_issue_cmd(u32 cmd, u32 device, u8 mcn_protocol, u32 cmd_input)
- {
- 	unsigned long flags;
- 	u8 mcn_shift = 0, dev_shift = 0;
--	u32 ret;
-+	u32 val;
-+	int ret;
+@@ -197,6 +197,14 @@ EXPORT_SYMBOL(qe_get_brg_clk);
+ #define PVR_VER_836x	0x8083
+ #define PVR_VER_832x	0x8084
  
- 	spin_lock_irqsave(&qe_lock, flags);
- 	if (cmd == QE_RESET) {
-@@ -135,13 +137,12 @@ int qe_issue_cmd(u32 cmd, u32 device, u8 mcn_protocol, u32 cmd_input)
- 	}
- 
- 	/* wait for the QE_CR_FLG to clear */
--	ret = spin_event_timeout((qe_ioread32be(&qe_immr->cp.cecr) & QE_CR_FLG) == 0,
--				 100, 0);
--	/* On timeout (e.g. failure), the expression will be false (ret == 0),
--	   otherwise it will be true (ret == 1). */
-+	ret = readx_poll_timeout_atomic(qe_ioread32be, &qe_immr->cp.cecr, val,
-+					(val & QE_CR_FLG) == 0, 0, 100);
-+	/* On timeout, ret is -ETIMEDOUT, otherwise it will be 0. */
- 	spin_unlock_irqrestore(&qe_lock, flags);
- 
--	return ret == 1;
-+	return ret == 0;
- }
- EXPORT_SYMBOL(qe_issue_cmd);
++static bool qe_general4_errata(void)
++{
++#ifdef CONFIG_PPC32
++	return pvr_version_is(PVR_VER_836x) || pvr_version_is(PVR_VER_832x);
++#endif
++	return false;
++}
++
+ /* Program the BRG to the given sampling rate and multiplier
+  *
+  * @brg: the BRG, QE_BRG1 - QE_BRG16
+@@ -223,7 +231,7 @@ int qe_setbrg(enum qe_clock brg, unsigned int rate, unsigned int multiplier)
+ 	/* Errata QE_General4, which affects some MPC832x and MPC836x SOCs, says
+ 	   that the BRG divisor must be even if you're not using divide-by-16
+ 	   mode. */
+-	if (pvr_version_is(PVR_VER_836x) || pvr_version_is(PVR_VER_832x))
++	if (qe_general4_errata())
+ 		if (!div16 && (divisor & 1) && (divisor > 3))
+ 			divisor++;
  
 -- 
 2.23.0
