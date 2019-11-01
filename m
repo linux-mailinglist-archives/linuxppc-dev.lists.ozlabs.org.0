@@ -2,53 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E975AEBDBF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 07:17:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C0DEBDEC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 07:28:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474BnP2VMhzF5cS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 17:17:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474C1x6SzlzF6Tq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 17:28:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=socionext.com (client-ip=210.131.2.76;
- helo=conuserg-09.nifty.com; envelope-from=yamada.masahiro@socionext.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="vMfrOzEq"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="F4P6Kk6t"; 
  dkim-atps=neutral
-Received: from conuserg-09.nifty.com (conuserg-09.nifty.com [210.131.2.76])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474Bl00jSqzF6FF
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 17:15:39 +1100 (AEDT)
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp
- [153.142.97.92]) (authenticated)
- by conuserg-09.nifty.com with ESMTP id xA16ELBf016348;
- Fri, 1 Nov 2019 15:14:26 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com xA16ELBf016348
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1572588867;
- bh=EbWxLFiY8h504jFBt4i5+hTSLW7vcJ0MI7MXhe5UQ4A=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=vMfrOzEqcV2/ffzg63CsgD7KAK9Gc0e7hcDmgQ5MXqttKHTYPbVhJUrLSB9juAYul
- wLYUcgfYY9xp/QA/isOxstI60AFkA7nkGfwgpkyWCxb+RNjh4NtViZ3ZnVA+FsP2zZ
- L9jNI7XCSZD9bd/Ek/CRT1iwSb7U3g77mbixfMq0Ed+bMCGVnijS76NCTdCzg3YIG0
- vV+neEM0QKtdfOAOOUCuPZ7fXARQVLN4w5dVIGJHHNVB2nrfIlA5cmTURunQ/FfsPA
- MU8oOsILf/rtcXXFSPg7fpTmc+VqTztF8Ms7vjSiXjN5X0OxSchINuevpDufACdFd2
- e9kOSSAmqnYOw==
-X-Nifty-SrcIP: [153.142.97.92]
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-To: devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>
-Subject: [PATCH 3/3] libfdt: define INT32_MAX and UINT32_MAX in libfdt_env.h
-Date: Fri,  1 Nov 2019 15:14:11 +0900
-Message-Id: <20191101061411.16988-4-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191101061411.16988-1-yamada.masahiro@socionext.com>
-References: <20191101061411.16988-1-yamada.masahiro@socionext.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474BzS0ZP9zF440
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 17:26:27 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id q21so3899447plr.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Oct 2019 23:26:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=UNQgjlNrbhy2abB8GmydbZUElcbqCcNHp92SJQGa3WI=;
+ b=F4P6Kk6tNFcBQvcX/s1dZZlwdx95q2b6CbHB0v2fgiMw24fsDfaNWW4/NCQfPrEq5Q
+ mgpmpdK2lxAgX8PODWABvYZ+DNYZJD003B6N5EJHuoSDB6MtiamGpNZ6ekY9GjArk0rD
+ LYWDtzDFRIxfj0Xud/R3ktY0t+LrG3QsqJeLOhotJ/L6I3cxun1y7J0FjnsaxgBndDI3
+ /X8unlvS/v4XZIpY8JswsAoVfiDai8PSMgS9/b6U7XUlWQ1x2pQXK8feBGm3bhulAGHU
+ J2oRZKpbR+zAyHM0q37geAKBGBmeaVU/IdPKdTFbi2fEtHJ21yNH78lh+x+O/Ny5rt3n
+ qhjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=UNQgjlNrbhy2abB8GmydbZUElcbqCcNHp92SJQGa3WI=;
+ b=S/EwQM6AvjGuBnYo9AbQUxU+kfRYvV2NmtC/eSHpo8E+AEiQVz72FE96EPoIF01J+R
+ xp2NSQCSJkCPXYStMbciaeEMpbwIwwvZpb1kl+0EBpk/Y9eRYl53bxGkzfhc2vOQq8e9
+ Efnt56LKz2KyehFy0Zdl2qIw9cCtDZlmFFaPJHHIfITXNPRckZ5xM2RmqAQXrULrwo2J
+ yVIoYfvth4p+WV6S+2CcGTuB8kE0IRg8HF5Eq2PpufpuD9rJ/0ecVu40EqDu1Pl89oLG
+ bQUMemwaobb4NDbR7lFX3oCEx4TNNM1KHPkojsUO5bx8b+giNfUEl7lA0bE3Nc1uydBv
+ V/0w==
+X-Gm-Message-State: APjAAAXG5CjUbBMbk+cJN+D6gFSvFTkjcGQ2pTHRLDCNwO4wiBVn/gbB
+ W6lHvBIAFDyfouQoJAajNF+s4hSj+po=
+X-Google-Smtp-Source: APXvYqxPT4wi8S/Q7+KiC2XeuxwO+lOfK/ta4SFkikoc/PnSjYO7O1zC0WeMm/Ie36cMNcpZmiYNmw==
+X-Received: by 2002:a17:902:8a90:: with SMTP id
+ p16mr10938211plo.220.1572589584950; 
+ Thu, 31 Oct 2019 23:26:24 -0700 (PDT)
+Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id z14sm2495204pfq.66.2019.10.31.23.26.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Oct 2019 23:26:24 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 2/2] powerpc/powernv: Use common code for the symbol_map
+ export
+Date: Fri,  1 Nov 2019 17:26:11 +1100
+Message-Id: <20191101062611.32610-2-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20191101062611.32610-1-oohall@gmail.com>
+References: <20191101062611.32610-1-oohall@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,69 +80,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The libfdt in the upstream DTC project added references to (U)INT32_MAX
-by the following commits:
+Long before we had a generic way for firmware to export memory ranges of
+interest we added a special case for the skiboot symbol map. The code is
+pretty much identical to the generic export so re-use the code.
 
-  Commit 812b1956a076 ("libfdt: Tweak data handling to satisfy Coverity")
-  Commit 7fcf8208b8a9 ("libfdt: add fdt_append_addrrange()")
-
-The kernel needs to adjust libfdt_env.h before pulling in the changes.
-
-As for the user-space programs, <stdint.h> defines (U)INT32_MAX along
-with (u)int32_t.
-
-In the kernel, on the other hand, we usually use s32 / u32 instead of
-(u)int32_t for the fixed-width types.
-
-Accordingly, we already have S32_MAX / U32_MAX for their max values.
-So, we won't add (U)INT32_MAX to <linux/limits.h> any more.
-
-Instead, add them to the in-kernel libfdt_env.h to compile fdt.c and
-fdt_addresses.c
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
+v2: Actually compile.
+---
+ arch/powerpc/platforms/powernv/opal.c | 48 ++++++++---------------------------
+ 1 file changed, 10 insertions(+), 38 deletions(-)
 
- arch/powerpc/boot/libfdt_env.h | 2 ++
- include/linux/libfdt_env.h     | 3 +++
- 2 files changed, 5 insertions(+)
-
-diff --git a/arch/powerpc/boot/libfdt_env.h b/arch/powerpc/boot/libfdt_env.h
-index 2abc8e83b95e..a4a386114ef5 100644
---- a/arch/powerpc/boot/libfdt_env.h
-+++ b/arch/powerpc/boot/libfdt_env.h
-@@ -6,6 +6,8 @@
- #include <string.h>
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index 0373da5..e4ea27d 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -708,42 +708,6 @@ static int opal_sysfs_init(void)
+ 	return 0;
+ }
  
- #define INT_MAX			((int)(~0U>>1))
-+#define INT32_MAX		((u32)~0U)
-+#define UINT32_MAX		((s32)(INT_MAX >> 1))
+-static ssize_t symbol_map_read(struct file *fp, struct kobject *kobj,
+-			       struct bin_attribute *bin_attr,
+-			       char *buf, loff_t off, size_t count)
+-{
+-	return memory_read_from_buffer(buf, count, &off, bin_attr->private,
+-				       bin_attr->size);
+-}
+-
+-static struct bin_attribute symbol_map_attr = {
+-	.attr = {.name = "symbol_map", .mode = 0400},
+-	.read = symbol_map_read
+-};
+-
+-static void opal_export_symmap(void)
+-{
+-	const __be64 *syms;
+-	unsigned int size;
+-	struct device_node *fw;
+-	int rc;
+-
+-	fw = of_find_node_by_path("/ibm,opal/firmware");
+-	if (!fw)
+-		return;
+-	syms = of_get_property(fw, "symbol-map", &size);
+-	if (!syms || size != 2 * sizeof(__be64))
+-		return;
+-
+-	/* Setup attributes */
+-	symbol_map_attr.private = __va(be64_to_cpu(syms[0]));
+-	symbol_map_attr.size = be64_to_cpu(syms[1]);
+-
+-	rc = sysfs_create_bin_file(opal_kobj, &symbol_map_attr);
+-	if (rc)
+-		pr_warn("Error %d creating OPAL symbols file\n", rc);
+-}
+-
+ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
+ 				struct bin_attribute *bin_attr, char *buf,
+ 				loff_t off, size_t count)
+@@ -832,6 +796,7 @@ static void opal_export_attrs(void)
+ {
+ 	struct device_node *np;
+ 	struct kobject *kobj;
++	int rc;
  
- #include "of.h"
+ 	np = of_find_node_by_path("/ibm,opal/firmware/exports");
+ 	if (!np)
+@@ -846,6 +811,15 @@ static void opal_export_attrs(void)
  
-diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
-index edb0f0c30904..0bd83bdb2482 100644
---- a/include/linux/libfdt_env.h
-+++ b/include/linux/libfdt_env.h
-@@ -11,6 +11,9 @@ typedef __be16 fdt16_t;
- typedef __be32 fdt32_t;
- typedef __be64 fdt64_t;
+ 	opal_add_exported_attrs(np, kobj);
  
-+#define INT32_MAX	S32_MAX
-+#define UINT32_MAX	U32_MAX
++	/*
++	 * NB: symbol_map existed before the generic export interface so it
++	 * lives under the top level opal_kobj.
++	 */
++	rc = opal_add_one_export(opal_kobj, "symbol_map",
++				 np->parent, "symbol-map");
++	if (rc)
++		pr_warn("Error %d creating OPAL symbols file\n", rc);
 +
- #define fdt32_to_cpu(x) be32_to_cpu(x)
- #define cpu_to_fdt32(x) cpu_to_be32(x)
- #define fdt64_to_cpu(x) be64_to_cpu(x)
+ 	of_node_put(np);
+ }
+ 
+@@ -991,8 +965,6 @@ static int __init opal_init(void)
+ 	/* Create "opal" kobject under /sys/firmware */
+ 	rc = opal_sysfs_init();
+ 	if (rc == 0) {
+-		/* Export symbol map to userspace */
+-		opal_export_symmap();
+ 		/* Setup dump region interface */
+ 		opal_dump_region_init();
+ 		/* Setup error log interface */
 -- 
-2.17.1
+2.9.5
 
