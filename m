@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9294EC02B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 09:59:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602BDEC327
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 13:48:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474GNJ1HCkzF6ft
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 19:59:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474MSL4clKzF5gR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 23:48:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::141;
+ helo=mail-lf1-x141.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="NZrEKSkQ"; 
- dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="FJGEyUjD"; dkim-atps=neutral
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com
+ [IPv6:2a00:1450:4864:20::141])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474GHc4WMwzF6bW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 19:55:40 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id e3so1964824plt.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 01:55:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474MKD1KSQzF4ng
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:21 +1100 (AEDT)
+Received: by mail-lf1-x141.google.com with SMTP id y6so7146839lfj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=wTe2jzZ8R5C+A7bVGiXkR++ypRHCxkGsElzUH7oK6WI=;
- b=NZrEKSkQ7vqNdDUZAM6O3MdculHOtRdiOZ+SxhzugpGiKEoetCu9ZgOUbwFsvqn60F
- bjUh8Vy+kTANqO1WMGgPoi199C8CQ/AGBDkrSuMTPhpChzLGwqqEC6T1HrMoHnTkpKov
- l8RTjMDWQ31q6Nu/LMWANCD9L3KNcm0bb2Nr0Dv6hH25R7zQR6k1RHwsI2Fz6U9ldkLz
- hFlGWQF3wggHU0dMVZeB0JWUsHjkSIzPvnxtpo/Mivn1vLJYHhulQEF5ZpNvxAxTbWdI
- YKxWV3Iuwk7l2r7L+TQjfcPhfwIkD48ENgpHdQa3o0UxLpfcmv22ZVFaq51yt4Gj4nIi
- yrjQ==
+ bh=7uK8xEnPEigQ7dFIza6M7Wg35/gDKz/RHXvPNwcggqY=;
+ b=FJGEyUjDMyY3qQwDxrXdaq6kbDtEuWaQ9DdM3JQbmkDv5/TqT279el/27e2uU9No1a
+ f+iz8Vxf6Hy5Yia656Z3D2IFrlqCrNAHpa+4MZwbyXZwnzKLGOuyKeoeouKUynNENL+w
+ 9N/0jeI/nf5AWsvbX8qp/uDqSP/sxEhYzWMsk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=wTe2jzZ8R5C+A7bVGiXkR++ypRHCxkGsElzUH7oK6WI=;
- b=uAVq1rQHyeQFN2krZapB1l3pUl5WzGPRShK/QaCucXjI7+8D16xy1ZO70LR8JirfS9
- 1GU26hljjaP0rhwzUsw3sSTaDUEZhVGTi1AUZRTtZY7yvB+RZDlBgoY/bwEZYZUl6VbI
- YEP26Gd3J0kPFD8DXEwOjr0Du/vmIJ3frxWkwWdqVE63lW01yyfKSOk5ZNQVScnX+PdN
- OdsJtH4AJgLgqsqlfbXcCMtKHyxUpTp6kxWIMe/H9fAq9iURtqmi98G7oSJfUU/mBmGq
- y4M1J8YgdHvAItT+g5FNNn68sEYQIhZOFdNKIw191Itfqrg1qS7OY2+B0ZKUtkYWAVI3
- H67Q==
-X-Gm-Message-State: APjAAAUJHkcX3drTlcoVb1cn+zWhmy7nC0WjN0JUqdT+rgXi2RJjJGJe
- 7dcZ82GsqvXUZj7r2/L2r+mw/maZaPc=
-X-Google-Smtp-Source: APXvYqzs09kYyhRoSn9s6OTnLCkgVA9ZnlTy64wY8kCV85TBvC3wSTBEdkB/Q+biM0NP3DMmF10pMQ==
-X-Received: by 2002:a17:902:b404:: with SMTP id x4mr54473plr.1.1572598537254; 
- Fri, 01 Nov 2019 01:55:37 -0700 (PDT)
-Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id q15sm5596078pff.155.2019.11.01.01.55.35
+ bh=7uK8xEnPEigQ7dFIza6M7Wg35/gDKz/RHXvPNwcggqY=;
+ b=DTx5JvQoXO4jGZ//5gLylq9cFJZKPatow2VnxUWrlz3wcMviLhk2EkQYwlmWyboc/y
+ mtBAiaYNywlLspDiWVb5Xb1Qw5GhWujrdprkC+t8ClZv5o3fpmbrVenapcUeAP84uzLL
+ 9DyqrwfIlFh6ZTvvPLUQLa/7JW/DI2oubg08g5z/V+kmZLLIFPbhW23mfCPC/ebpCjwL
+ n6KRPaIjrYIpiTE5QZAr2MncRJT8ILTvLeep0YSjfTQIx5mw5c5cIY29zhmW2OJvhk6t
+ OCTzaCK5FQmDs5vwOzwLac9MB3cNyJqD1xtUdpuU+eykg5BX0eCMn2P7CUsIMmtcDrWP
+ 8uJg==
+X-Gm-Message-State: APjAAAXlcjqbSA3Y6EK9CamJD+EIiAuzndMdB+aQ2miS49VliD4fYSJv
+ KfK8NDVZGIQ+LXuv01iTuAlzyg==
+X-Google-Smtp-Source: APXvYqx10tC45xnMYXxbHsIhOZZte50RDX5EOtgZaSoKO0iY2QuiQYHpnCYFw+LsHLxAu07eF6ZXqA==
+X-Received: by 2002:ac2:424c:: with SMTP id m12mr7265781lfl.140.1572612136042; 
+ Fri, 01 Nov 2019 05:42:16 -0700 (PDT)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Nov 2019 01:55:36 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/powernv: Allow manually invoking special reboots
-Date: Fri,  1 Nov 2019 19:55:22 +1100
-Message-Id: <20191101085522.3055-2-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20191101085522.3055-1-oohall@gmail.com>
-References: <20191101085522.3055-1-oohall@gmail.com>
+ Fri, 01 Nov 2019 05:42:15 -0700 (PDT)
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v3 01/36] soc: fsl: qe: remove space-before-tab
+Date: Fri,  1 Nov 2019 13:41:35 +0100
+Message-Id: <20191101124210.14510-2-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191101124210.14510-1-linux@rasmusvillemoes.dk>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+ <20191101124210.14510-1-linux@rasmusvillemoes.dk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,38 +78,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: Scott Wood <oss@buserror.net>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-OPAL provides several different kinds of reboot for the kernel to use,
-namely forcing a full reboot, platform error reboot and MPIPL. Right now
-triggering the alternative resets requires some ad-hoc method such as
-triggering a kernel crash and hoping the stars align. It's sometimes handy
-to be able to trigger one of these resets directly, so add a way to do
-that.
-
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- arch/powerpc/platforms/powernv/setup.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/soc/fsl/qe/qe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 8349860..11fdae8 100644
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -233,6 +233,10 @@ static void  __noreturn pnv_restart(char *cmd)
- 			rc = opal_cec_reboot();
- 		else if (strcmp(cmd, "full") == 0)
- 			rc = opal_cec_reboot2(OPAL_REBOOT_FULL_IPL, NULL);
-+		else if (strcmp(cmd, "mpipl") == 0)
-+			rc = opal_cec_reboot2(OPAL_REBOOT_MPIPL, NULL);
-+		else if (strcmp(cmd, "error") == 0)
-+			rc = opal_cec_reboot2(OPAL_REBOOT_PLATFORM_ERROR, NULL);
- 		else
- 			rc = OPAL_UNSUPPORTED;
+diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+index 417df7e19281..2a0e6e642776 100644
+--- a/drivers/soc/fsl/qe/qe.c
++++ b/drivers/soc/fsl/qe/qe.c
+@@ -378,8 +378,8 @@ static int qe_sdma_init(void)
+ 	}
  
+ 	out_be32(&sdma->sdebcr, (u32) sdma_buf_offset & QE_SDEBCR_BA_MASK);
+- 	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
+- 					(0x1 << QE_SDMR_CEN_SHIFT)));
++	out_be32(&sdma->sdmr, (QE_SDMR_GLB_1_MSK |
++		 (0x1 << QE_SDMR_CEN_SHIFT)));
+ 
+ 	return 0;
+ }
 -- 
-2.9.5
+2.23.0
 
