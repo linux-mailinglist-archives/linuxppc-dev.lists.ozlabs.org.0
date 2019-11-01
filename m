@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0BCEC022
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 09:57:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9294EC02B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 09:59:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474GKs0QYjzF573
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 19:57:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474GNJ1HCkzF6ft
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 19:59:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="rCLqc/w0"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="NZrEKSkQ"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474GHc0H80zF6bN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 19:55:39 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id e10so6063506pgd.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 01:55:39 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474GHc4WMwzF6bW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 19:55:40 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id e3so1964824plt.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 01:55:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=3+a+qBWAZsjwzvXaMRj6M3/WGWi2/Gc6GIleBXJ1TTc=;
- b=rCLqc/w0sHbUDuBnNQ/RX8czNCP2OOJn9HIh21yNDI0HQXZvqsudafEhFgCdQFzWMS
- NSGqma/ugQm4RjQ2n6fd4JNT3pyJqQH0YWLxXT3SOLXp5aj8PKbUiEIu/9Vt+NAhBTFz
- y+5feFpCsQAEjobeM24rEGQgM3wZE9hOGvmfnMWuPLNYYtYw40LHnYIgRNUHTQpUR7mg
- ESk6w9wO95r6TCGQ8mZI8lS53RJA1POxBgQtV6ASgL7Anp0krmXbZl/VbFJ7EvIwNdzF
- z+IL4Zdr6bLcWbkdWFHgdnOjIA9V9YWBKU41eZTMQ5AzrcVDtAJ857ReoYoD7yz1Yw1u
- 4mAQ==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=wTe2jzZ8R5C+A7bVGiXkR++ypRHCxkGsElzUH7oK6WI=;
+ b=NZrEKSkQ7vqNdDUZAM6O3MdculHOtRdiOZ+SxhzugpGiKEoetCu9ZgOUbwFsvqn60F
+ bjUh8Vy+kTANqO1WMGgPoi199C8CQ/AGBDkrSuMTPhpChzLGwqqEC6T1HrMoHnTkpKov
+ l8RTjMDWQ31q6Nu/LMWANCD9L3KNcm0bb2Nr0Dv6hH25R7zQR6k1RHwsI2Fz6U9ldkLz
+ hFlGWQF3wggHU0dMVZeB0JWUsHjkSIzPvnxtpo/Mivn1vLJYHhulQEF5ZpNvxAxTbWdI
+ YKxWV3Iuwk7l2r7L+TQjfcPhfwIkD48ENgpHdQa3o0UxLpfcmv22ZVFaq51yt4Gj4nIi
+ yrjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=3+a+qBWAZsjwzvXaMRj6M3/WGWi2/Gc6GIleBXJ1TTc=;
- b=JDc9Ucl8ZYNu8q0HlMruR8HwaQ835MHaFTlv9+WiLPoIc+GeCGxeefjVj7sGIIWKXt
- 68tVo0OyYqsntjWol2HSPEJvWQF8lWOXXS9wX2GdcnYUFrT1J1G0VlrMF8gIXzwtEwMA
- mBjrYCjSbFxYaE7ffBEneOBICqtQU4NMwoezqlHptAPlMnq9DmPNht42TP8G8zGrv6HM
- bIcZb5FhwcD4kmj90AljodTsyJt1+QUX3CDv0MUf2u7nFUoBJ8ir3GX8AVMMLBatBpBm
- gHbetPELQB75HtgnoV4iVcU4+FxVx2ftys0MBLrSQFZtK83De7WMSY67GSYBUJ7jhcDn
- TNww==
-X-Gm-Message-State: APjAAAVzNSbcCoUNZOiw6h+ofTW5QWrip+DTYtjS3YI+vu2UfMDrQ2Z/
- pm35S2PeHUju0RqOrBpqWZyBbj9zeWs=
-X-Google-Smtp-Source: APXvYqzS6WmQHZDKeuG9WO6s1ktScQj+4xUJ/oKQghwisunajB6N8eEKiHgiBgenj77fHS+XzqrXwQ==
-X-Received: by 2002:a17:90a:ba89:: with SMTP id
- t9mr3945639pjr.29.1572598535470; 
- Fri, 01 Nov 2019 01:55:35 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=wTe2jzZ8R5C+A7bVGiXkR++ypRHCxkGsElzUH7oK6WI=;
+ b=uAVq1rQHyeQFN2krZapB1l3pUl5WzGPRShK/QaCucXjI7+8D16xy1ZO70LR8JirfS9
+ 1GU26hljjaP0rhwzUsw3sSTaDUEZhVGTi1AUZRTtZY7yvB+RZDlBgoY/bwEZYZUl6VbI
+ YEP26Gd3J0kPFD8DXEwOjr0Du/vmIJ3frxWkwWdqVE63lW01yyfKSOk5ZNQVScnX+PdN
+ OdsJtH4AJgLgqsqlfbXcCMtKHyxUpTp6kxWIMe/H9fAq9iURtqmi98G7oSJfUU/mBmGq
+ y4M1J8YgdHvAItT+g5FNNn68sEYQIhZOFdNKIw191Itfqrg1qS7OY2+B0ZKUtkYWAVI3
+ H67Q==
+X-Gm-Message-State: APjAAAUJHkcX3drTlcoVb1cn+zWhmy7nC0WjN0JUqdT+rgXi2RJjJGJe
+ 7dcZ82GsqvXUZj7r2/L2r+mw/maZaPc=
+X-Google-Smtp-Source: APXvYqzs09kYyhRoSn9s6OTnLCkgVA9ZnlTy64wY8kCV85TBvC3wSTBEdkB/Q+biM0NP3DMmF10pMQ==
+X-Received: by 2002:a17:902:b404:: with SMTP id x4mr54473plr.1.1572598537254; 
+ Fri, 01 Nov 2019 01:55:37 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id q15sm5596078pff.155.2019.11.01.01.55.33
+ by smtp.gmail.com with ESMTPSA id q15sm5596078pff.155.2019.11.01.01.55.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Nov 2019 01:55:34 -0700 (PDT)
+ Fri, 01 Nov 2019 01:55:36 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc/xmon: Allow passing an argument to
- ppc_md.restart()
-Date: Fri,  1 Nov 2019 19:55:21 +1100
-Message-Id: <20191101085522.3055-1-oohall@gmail.com>
+Subject: [PATCH 2/2] powerpc/powernv: Allow manually invoking special reboots
+Date: Fri,  1 Nov 2019 19:55:22 +1100
+Message-Id: <20191101085522.3055-2-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20191101085522.3055-1-oohall@gmail.com>
+References: <20191101085522.3055-1-oohall@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,43 +83,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On PowerNV a few different kinds of reboot are supported. We'd like to be
-able to exercise these from xmon so allow 'zr' to take an argument, and
-pass that to the ppc_md.restart() function.
+OPAL provides several different kinds of reboot for the kernel to use,
+namely forcing a full reboot, platform error reboot and MPIPL. Right now
+triggering the alternative resets requires some ad-hoc method such as
+triggering a kernel crash and hoping the stars align. It's sometimes handy
+to be able to trigger one of these resets directly, so add a way to do
+that.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/xmon/xmon.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/powernv/setup.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index d83364e..6a6f675 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1147,16 +1147,19 @@ static int do_step(struct pt_regs *regs)
+diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
+index 8349860..11fdae8 100644
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -233,6 +233,10 @@ static void  __noreturn pnv_restart(char *cmd)
+ 			rc = opal_cec_reboot();
+ 		else if (strcmp(cmd, "full") == 0)
+ 			rc = opal_cec_reboot2(OPAL_REBOOT_FULL_IPL, NULL);
++		else if (strcmp(cmd, "mpipl") == 0)
++			rc = opal_cec_reboot2(OPAL_REBOOT_MPIPL, NULL);
++		else if (strcmp(cmd, "error") == 0)
++			rc = opal_cec_reboot2(OPAL_REBOOT_PLATFORM_ERROR, NULL);
+ 		else
+ 			rc = OPAL_UNSUPPORTED;
  
- static void bootcmds(void)
- {
-+	char tmp[64];
- 	int cmd;
- 
- 	cmd = inchar();
--	if (cmd == 'r')
--		ppc_md.restart(NULL);
--	else if (cmd == 'h')
-+	if (cmd == 'r') {
-+		getstring(tmp, 64);
-+		ppc_md.restart(tmp);
-+	} else if (cmd == 'h') {
- 		ppc_md.halt();
--	else if (cmd == 'p')
-+	} else if (cmd == 'p') {
- 		if (pm_power_off)
- 			pm_power_off();
-+	}
- }
- 
- static int cpu_cmd(void)
 -- 
 2.9.5
 
