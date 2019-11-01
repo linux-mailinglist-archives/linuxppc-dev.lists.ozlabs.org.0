@@ -2,53 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0368AEBF1C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 09:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0BCEC022
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 09:57:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474FRj3VMWzF50H
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 19:17:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474GKs0QYjzF573
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 19:57:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=socionext.com (client-ip=210.131.2.79;
- helo=conuserg-12.nifty.com; envelope-from=yamada.masahiro@socionext.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="24wqhJT7"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="rCLqc/w0"; 
  dkim-atps=neutral
-Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474FLm5NtNzF6SG
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 19:13:19 +1100 (AEDT)
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp
- [153.142.97.92]) (authenticated)
- by conuserg-12.nifty.com with ESMTP id xA18BsBQ023869;
- Fri, 1 Nov 2019 17:11:59 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com xA18BsBQ023869
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1572595923;
- bh=dMOvEpUrv3gUpGiwcs/+Eb8AZVQbVFB1v4ogmdr2bko=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=24wqhJT7RJMf50vgPNVtuOw7sfdCTIBCGMN1/+85H2fjdBWjCBMgKq4Gi/Zo8KO2Y
- VlgD461HyHetk8JzsJ7Ekalb9WtIQBjoIaG78+XXVkIjX89OQ/6jth0bvnMY7mY/Zy
- kZ1FsZLs884Twsxjffd5wE/JArN05kQGyzXNHNkQnzTcfwsuqyMuM02JwDm5mdrvDY
- 5imCL2rnn/7JQ+QTDtFB+kbwLTgcoxcrAjnIIPElUvBT0solhQTWvr+EhskjVm4OS1
- vqipju34mMQPwLWkDveV8HSaTxr8C3ugI1gbtT2+b+racWCIlXeZnHt+T/q7S8T8kL
- VV3/6jEArBPKQ==
-X-Nifty-SrcIP: [153.142.97.92]
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-To: devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>
-Subject: [PATCH v2 3/3] libfdt: define INT32_MAX and UINT32_MAX in libfdt_env.h
-Date: Fri,  1 Nov 2019 17:11:48 +0900
-Message-Id: <20191101081148.23274-4-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191101081148.23274-1-yamada.masahiro@socionext.com>
-References: <20191101081148.23274-1-yamada.masahiro@socionext.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474GHc0H80zF6bN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 19:55:39 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id e10so6063506pgd.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 01:55:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=3+a+qBWAZsjwzvXaMRj6M3/WGWi2/Gc6GIleBXJ1TTc=;
+ b=rCLqc/w0sHbUDuBnNQ/RX8czNCP2OOJn9HIh21yNDI0HQXZvqsudafEhFgCdQFzWMS
+ NSGqma/ugQm4RjQ2n6fd4JNT3pyJqQH0YWLxXT3SOLXp5aj8PKbUiEIu/9Vt+NAhBTFz
+ y+5feFpCsQAEjobeM24rEGQgM3wZE9hOGvmfnMWuPLNYYtYw40LHnYIgRNUHTQpUR7mg
+ ESk6w9wO95r6TCGQ8mZI8lS53RJA1POxBgQtV6ASgL7Anp0krmXbZl/VbFJ7EvIwNdzF
+ z+IL4Zdr6bLcWbkdWFHgdnOjIA9V9YWBKU41eZTMQ5AzrcVDtAJ857ReoYoD7yz1Yw1u
+ 4mAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=3+a+qBWAZsjwzvXaMRj6M3/WGWi2/Gc6GIleBXJ1TTc=;
+ b=JDc9Ucl8ZYNu8q0HlMruR8HwaQ835MHaFTlv9+WiLPoIc+GeCGxeefjVj7sGIIWKXt
+ 68tVo0OyYqsntjWol2HSPEJvWQF8lWOXXS9wX2GdcnYUFrT1J1G0VlrMF8gIXzwtEwMA
+ mBjrYCjSbFxYaE7ffBEneOBICqtQU4NMwoezqlHptAPlMnq9DmPNht42TP8G8zGrv6HM
+ bIcZb5FhwcD4kmj90AljodTsyJt1+QUX3CDv0MUf2u7nFUoBJ8ir3GX8AVMMLBatBpBm
+ gHbetPELQB75HtgnoV4iVcU4+FxVx2ftys0MBLrSQFZtK83De7WMSY67GSYBUJ7jhcDn
+ TNww==
+X-Gm-Message-State: APjAAAVzNSbcCoUNZOiw6h+ofTW5QWrip+DTYtjS3YI+vu2UfMDrQ2Z/
+ pm35S2PeHUju0RqOrBpqWZyBbj9zeWs=
+X-Google-Smtp-Source: APXvYqzS6WmQHZDKeuG9WO6s1ktScQj+4xUJ/oKQghwisunajB6N8eEKiHgiBgenj77fHS+XzqrXwQ==
+X-Received: by 2002:a17:90a:ba89:: with SMTP id
+ t9mr3945639pjr.29.1572598535470; 
+ Fri, 01 Nov 2019 01:55:35 -0700 (PDT)
+Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id q15sm5596078pff.155.2019.11.01.01.55.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Nov 2019 01:55:34 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/xmon: Allow passing an argument to
+ ppc_md.restart()
+Date: Fri,  1 Nov 2019 19:55:21 +1100
+Message-Id: <20191101085522.3055-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,72 +78,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The libfdt in the upstream DTC project added references to (U)INT32_MAX
-by the following commits:
+On PowerNV a few different kinds of reboot are supported. We'd like to be
+able to exercise these from xmon so allow 'zr' to take an argument, and
+pass that to the ppc_md.restart() function.
 
-  Commit 812b1956a076 ("libfdt: Tweak data handling to satisfy Coverity")
-  Commit 7fcf8208b8a9 ("libfdt: add fdt_append_addrrange()")
-
-The kernel needs to adjust libfdt_env.h before pulling in the changes.
-
-As for the user-space programs, <stdint.h> defines (U)INT32_MAX along
-with (u)int32_t.
-
-In the kernel, on the other hand, we usually use s32 / u32 instead of
-(u)int32_t for the fixed-width types.
-
-Accordingly, we already have S32_MAX / U32_MAX for their max values.
-So, we won't add (U)INT32_MAX to <linux/limits.h> any more.
-
-Instead, add them to the in-kernel libfdt_env.h to compile fdt.c and
-fdt_addresses.c
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
+ arch/powerpc/xmon/xmon.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Changes in v2:
- - Fix ppc libfdt_env.h
-
- arch/powerpc/boot/libfdt_env.h | 2 ++
- include/linux/libfdt_env.h     | 3 +++
- 2 files changed, 5 insertions(+)
-
-diff --git a/arch/powerpc/boot/libfdt_env.h b/arch/powerpc/boot/libfdt_env.h
-index 2abc8e83b95e..9757d4f6331e 100644
---- a/arch/powerpc/boot/libfdt_env.h
-+++ b/arch/powerpc/boot/libfdt_env.h
-@@ -6,6 +6,8 @@
- #include <string.h>
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index d83364e..6a6f675 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -1147,16 +1147,19 @@ static int do_step(struct pt_regs *regs)
  
- #define INT_MAX			((int)(~0U>>1))
-+#define UINT32_MAX		((u32)~0U)
-+#define INT32_MAX		((s32)(UINT32_MAX >> 1))
+ static void bootcmds(void)
+ {
++	char tmp[64];
+ 	int cmd;
  
- #include "of.h"
+ 	cmd = inchar();
+-	if (cmd == 'r')
+-		ppc_md.restart(NULL);
+-	else if (cmd == 'h')
++	if (cmd == 'r') {
++		getstring(tmp, 64);
++		ppc_md.restart(tmp);
++	} else if (cmd == 'h') {
+ 		ppc_md.halt();
+-	else if (cmd == 'p')
++	} else if (cmd == 'p') {
+ 		if (pm_power_off)
+ 			pm_power_off();
++	}
+ }
  
-diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
-index edb0f0c30904..0bd83bdb2482 100644
---- a/include/linux/libfdt_env.h
-+++ b/include/linux/libfdt_env.h
-@@ -11,6 +11,9 @@ typedef __be16 fdt16_t;
- typedef __be32 fdt32_t;
- typedef __be64 fdt64_t;
- 
-+#define INT32_MAX	S32_MAX
-+#define UINT32_MAX	U32_MAX
-+
- #define fdt32_to_cpu(x) be32_to_cpu(x)
- #define cpu_to_fdt32(x) cpu_to_be32(x)
- #define fdt64_to_cpu(x) be64_to_cpu(x)
+ static int cpu_cmd(void)
 -- 
-2.17.1
+2.9.5
 
