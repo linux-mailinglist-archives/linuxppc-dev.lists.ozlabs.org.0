@@ -2,74 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB18EC6D6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 17:32:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A38EC732
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 18:03:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474SR44CYGzF5Lq
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 03:32:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474T6r4QNMzF6xQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 04:03:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="aVhErQnj"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474SMc3KC9zF7F1
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Nov 2019 03:29:48 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 474SMW5qjrz9v2yn;
- Fri,  1 Nov 2019 17:29:43 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=aVhErQnj; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id kQdkFGodO6U4; Fri,  1 Nov 2019 17:29:43 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 474SMW4n7qz9v2ym;
- Fri,  1 Nov 2019 17:29:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1572625783; bh=sO50Jxi/6qCHwc0AfimOF6Zwlkx4COhWtKxf+QPTqKM=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=aVhErQnjTF3qahziN3iZTdW4hERQNqbN6AMsA5ZDNSKR0RiIbk3UuTKoxbv+Og84m
- wPCPsR6Pb28lWx/OvbesOYQwySgR8i2qfmkZZwaTcSIjTehYfdS0o1sdzwTfIqAZgl
- AiJtQaCT8tDNVDx6tv+0jEN/ruZrQGchWBd6Rl5s=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3D1398B8F6;
- Fri,  1 Nov 2019 17:29:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mVNcyjLDRV0F; Fri,  1 Nov 2019 17:29:45 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CCD838B7C2;
- Fri,  1 Nov 2019 17:29:44 +0100 (CET)
-Subject: Re: [PATCH v3 35/36] net/wan: make FSL_UCC_HDLC explicitly depend on
- PPC32
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474T4P4kTtzF3pN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Nov 2019 04:01:39 +1100 (AEDT)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1iQaGe-0005Iv-Bg; Fri, 01 Nov 2019 11:59:20 -0500
+Message-ID: <cecd8cd067fe71f7de7db9e912f10244a44f530b.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Qiang Zhao <qiang.zhao@nxp.com>, Li Yang
+ <leoyang.li@nxp.com>
+Date: Fri, 01 Nov 2019 11:59:19 -0500
+In-Reply-To: <5071118d-2008-7725-a6cd-ce14b49dfa20@c-s.fr>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
  <20191101124210.14510-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-36-linux@rasmusvillemoes.dk>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <4e2ac670-2bf4-fb47-2130-c0120bcf0111@c-s.fr>
-Date: Fri, 1 Nov 2019 17:29:44 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191101124210.14510-36-linux@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+ <20191101124210.14510-27-linux@rasmusvillemoes.dk>
+ <5071118d-2008-7725-a6cd-ce14b49dfa20@c-s.fr>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: christophe.leroy@c-s.fr, linux@rasmusvillemoes.dk,
+ qiang.zhao@nxp.com, leoyang.li@nxp.com, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+ * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+ *      this recipient and sender
+Subject: Re: [PATCH v3 26/36] soc: fsl: move cpm.h from powerpc/include/asm
+ to include/soc/fsl
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,42 +69,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 01/11/2019 à 13:42, Rasmus Villemoes a écrit :
-> Currently, FSL_UCC_HDLC depends on QUICC_ENGINE, which in turn depends
-> on PPC32. As preparation for removing the latter and thus allowing the
-> core QE code to be built for other architectures, make FSL_UCC_HDLC
-> explicitly depend on PPC32.
-
-Is that really powerpc specific ? Can't the ARM QE perform HDLC on UCC ?
-
-Christophe
-
+On Fri, 2019-11-01 at 17:18 +0100, Christophe Leroy wrote:
 > 
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
->   drivers/net/wan/Kconfig | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Le 01/11/2019 à 13:42, Rasmus Villemoes a écrit :
+> > Some drivers, e.g. ucc_uart, need definitions from cpm.h. In order to
+> > allow building those drivers for non-ppc based SOCs, move the header
+> > to include/soc/fsl. For now, leave a trivial wrapper at the old
+> > location so drivers can be updated one by one.
 > 
-> diff --git a/drivers/net/wan/Kconfig b/drivers/net/wan/Kconfig
-> index dd1a147f2971..78785d790bcc 100644
-> --- a/drivers/net/wan/Kconfig
-> +++ b/drivers/net/wan/Kconfig
-> @@ -270,7 +270,7 @@ config FARSYNC
->   config FSL_UCC_HDLC
->   	tristate "Freescale QUICC Engine HDLC support"
->   	depends on HDLC
-> -	depends on QUICC_ENGINE
-> +	depends on QUICC_ENGINE && PPC32
->   	help
->   	  Driver for Freescale QUICC Engine HDLC controller. The driver
->   	  supports HDLC in NMSI and TDM mode.
+> I'm not sure that's the correct way to go.
 > 
+> As far as I know, CPM is specific to powerpc (or maybe common to some 
+> motorola 68000). So only powerpc specific drivers should need it.
+> 
+> If cpm.h includes items that are needed for QE, those items should go in 
+> another .h
+> 
+> Of course, it doesn't mean we can't move cpm.h in include/soc/fsl, but 
+> anyway only platforms having CPM1 or CPM2 should include it.
+
+QE is basically CPM3 so it's not surprising that cpm.h would be needed.  I
+wonder how much less unnecessary code duplication there would have been if
+marketing hadn't decided to change the name.
+
+-Scott
+
+
