@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6F1EC462
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 15:12:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87ACEEC435
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 15:08:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474PK31n7mzF4QH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 01:12:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474PDT5KQszF5Cc
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 01:08:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,51 +17,51 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="TKeI5WJ5"; dkim-atps=neutral
+ header.b="E6p6xxCr"; dkim-atps=neutral
 Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
  [IPv6:2a00:1450:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474MKk01J3zF50D
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:49 +1100 (AEDT)
-Received: by mail-lj1-x241.google.com with SMTP id 139so10156442ljf.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474MKk192qzF58x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Nov 2019 23:42:50 +1100 (AEDT)
+Received: by mail-lj1-x241.google.com with SMTP id q2so3561921ljg.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 05:42:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=1C8bi+Glp22eU2mPHcIIhRfHNSQMvhbk1zxbdzRB++Q=;
- b=TKeI5WJ5HApJ0bpDzJiCOE0G53vmWWtXk5nF9C/9USrhBPI9ZALZhnUbAm1tvtRMKW
- OFi9vIGQA9UR1/zZExnDHu6ZCx+LKx8j+FBnKATUCkOxnSdz0vv6wvCHXrsNus7CNMsy
- gBIDN/LX7KNsH7MZ+LmrHTnn4wCNf+69eCkN8=
+ bh=/C1Eg1dR+pzbI0uF0+AzerXAuAR/n78tvkDzoMBSgLI=;
+ b=E6p6xxCrNL24MJSKd9WV7hyzQub0rZ74qqVrC33D8S4zffFOXSmiI07OOrVK/EYRr7
+ RUa2hKLf0AbNe1U4vqbo424rJ6TtF5dZ7URlni+1mSdKFNbhfuyDZH2bmwUkEc1PN5+y
+ KsDZUcdFfYKJBovm1/jt9ezy8dXuKFe/haEvI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=1C8bi+Glp22eU2mPHcIIhRfHNSQMvhbk1zxbdzRB++Q=;
- b=YKeAnVPWxp/UiPB5Gw1coLyS1703dh2vmm9WSawxzKnTX9w57fSajPiN4uNvOWqjeB
- mreUNoO1Lj3mW/yT8VGPbpOvTIcAEX8aZNyQWd26ADFHUELZTeovRyXfGBkGUIeNqTDC
- D/QdC8kH5SWPmUfwN/S3b/xJ6OfbuWLNwi7nFdOk1osrnKyt0quU3a0hlsaUJyujkVMz
- W25Qjmjk2dqZ8LqAdxdT+3XJsRiZ3LA+XJcceOmoB7RP6wU4n97hCDyYF+mJ6OJ1oELi
- DM5Mi44Z6bH/b2VvaURg0bBtWpyzXLQlrEn3bdzpLmTJEXlKDqV98bIm5Hu1FDQeqt+B
- NlZA==
-X-Gm-Message-State: APjAAAUZGd/gyDi31K/I3XUH03AZvPgEeLNQsh42d6za3onqJYKNcYte
- bspGehp8NWSbpBgzvVPL4mh8SQ==
-X-Google-Smtp-Source: APXvYqwaR+A8MH7lH/sC0yoJ4mSYgmPfqD0xbkFeC/pa2axliSAcW4VUXOMG3J3WRdSDgDQTi8u32w==
-X-Received: by 2002:a2e:898d:: with SMTP id c13mr4497954lji.54.1572612163835; 
- Fri, 01 Nov 2019 05:42:43 -0700 (PDT)
+ bh=/C1Eg1dR+pzbI0uF0+AzerXAuAR/n78tvkDzoMBSgLI=;
+ b=rlzmmlnCIpWH47YYWEs48IDCVcHfLrj6LTd93G+uwFxjqQLBU/VULNXbshHUjqIFWD
+ jTV5yFaAHHlZJzPcbCT/E6ZUp5p9ALfooiyhFF7kgV0KpsEFuuTAjrhW1/xFOr/jv4P7
+ SORdfxI3MmMhZNwP0UClN5cg8uYi9/m5WG4c0mH3ywmHQy4EkZRoqqX9B04Xc7kpIta9
+ Ac0PX1/Uuv3uG+aVXdvZpQRfgsqGbC7Z8kMwDoWe/vlm7N4NGYsKFZJWD5xNTssm1PXJ
+ qWdcgcEtE3rLTDyn2oJD1PM58Q0dvvSxtzmv0Sn0/r7QMArvrwq1SjNWaVzg/fr5fztD
+ wRrQ==
+X-Gm-Message-State: APjAAAVyFQUeDwXll2fZGYgIqUd5/KQeokp6ccIpGbApv00oTz+ffUGW
+ nC5AfqhEjszSNRqEq0Z9MeSOCA==
+X-Google-Smtp-Source: APXvYqwFNc8j57WfHASb7dDdRvzJDRCUUK7Jd083Crpc8DfY36CzXhgw+rR0rcivqtg51F7xRMNXHQ==
+X-Received: by 2002:a2e:8007:: with SMTP id j7mr8239471ljg.19.1572612164992;
+ Fri, 01 Nov 2019 05:42:44 -0700 (PDT)
 Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.42
+ by smtp.gmail.com with ESMTPSA id o26sm2458540lfi.57.2019.11.01.05.42.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Nov 2019 05:42:43 -0700 (PDT)
+ Fri, 01 Nov 2019 05:42:44 -0700 (PDT)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 23/36] soc: fsl: qe: qe_io.c: don't open-code
- of_parse_phandle()
-Date: Fri,  1 Nov 2019 13:41:57 +0100
-Message-Id: <20191101124210.14510-24-linux@rasmusvillemoes.dk>
+Subject: [PATCH v3 24/36] soc: fsl: qe: qe_io.c: access device tree property
+ using be32_to_cpu
+Date: Fri,  1 Nov 2019 13:41:58 +0100
+Message-Id: <20191101124210.14510-25-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191101124210.14510-1-linux@rasmusvillemoes.dk>
 References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
@@ -86,40 +86,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+We need to apply be32_to_cpu to make this work correctly on
+little-endian hosts.
+
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/soc/fsl/qe/qe_io.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/soc/fsl/qe/qe_io.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qe_io.c b/drivers/soc/fsl/qe/qe_io.c
-index f6b10f38b2f4..99aeb01586bd 100644
+index 99aeb01586bd..61dd8eb8c0fe 100644
 --- a/drivers/soc/fsl/qe/qe_io.c
 +++ b/drivers/soc/fsl/qe/qe_io.c
-@@ -141,7 +141,6 @@ EXPORT_SYMBOL(par_io_data_set);
- int par_io_of_config(struct device_node *np)
+@@ -142,7 +142,7 @@ int par_io_of_config(struct device_node *np)
  {
  	struct device_node *pio;
--	const phandle *ph;
  	int pio_map_len;
- 	const unsigned int *pio_map;
+-	const unsigned int *pio_map;
++	const __be32 *pio_map;
  
-@@ -150,14 +149,12 @@ int par_io_of_config(struct device_node *np)
- 		return -1;
+ 	if (par_io == NULL) {
+ 		printk(KERN_ERR "par_io not initialized\n");
+@@ -167,9 +167,15 @@ int par_io_of_config(struct device_node *np)
  	}
  
--	ph = of_get_property(np, "pio-handle", NULL);
--	if (ph == NULL) {
-+	pio = of_parse_phandle(np, "pio-handle", 0);
-+	if (pio == NULL) {
- 		printk(KERN_ERR "pio-handle not available\n");
- 		return -1;
+ 	while (pio_map_len > 0) {
+-		par_io_config_pin((u8) pio_map[0], (u8) pio_map[1],
+-				(int) pio_map[2], (int) pio_map[3],
+-				(int) pio_map[4], (int) pio_map[5]);
++		u8 port        = be32_to_cpu(pio_map[0]);
++		u8 pin         = be32_to_cpu(pio_map[1]);
++		int dir        = be32_to_cpu(pio_map[2]);
++		int open_drain = be32_to_cpu(pio_map[3]);
++		int assignment = be32_to_cpu(pio_map[4]);
++		int has_irq    = be32_to_cpu(pio_map[5]);
++
++		par_io_config_pin(port, pin, dir, open_drain,
++				  assignment, has_irq);
+ 		pio_map += 6;
+ 		pio_map_len -= 6;
  	}
- 
--	pio = of_find_node_by_phandle(*ph);
--
- 	pio_map = of_get_property(pio, "pio-map", &pio_map_len);
- 	if (pio_map == NULL) {
- 		printk(KERN_ERR "pio-map is not set!\n");
 -- 
 2.23.0
 
