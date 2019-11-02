@@ -2,101 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6DCECB6E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Nov 2019 23:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5F7ECC78
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 01:42:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474cRW1mjkzF70x
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 09:33:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474gJR1RwjzF5SM
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 11:42:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12d;
+ helo=mail-il1-x12d.google.com; envelope-from=nathana@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.14.43; helo=eur01-ve1-obe.outbound.protection.outlook.com;
- envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="ekCVvxQ7"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="uBqGl/fE"; 
  dkim-atps=neutral
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr140043.outbound.protection.outlook.com [40.107.14.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com
+ [IPv6:2607:f8b0:4864:20::12d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474cPH3FSnzF4DN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Nov 2019 09:31:43 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SRkhuEc7RtEZhMC/yYuE9oyt2Bod56iiJ0/bUO/0RypUU332++dKYzazkwYdXzeFgUFELfX0UZ8e3OYqVm2aZgxAIv9pev1DB7atlHJ1BelBFXUfIcKm3C/urXSSJTC/ne+wi2O//aJxhAr7LoZgnYacgCT42Fr877SgRGof4YRXJDx0L+I0XZe7xQi2WhIs3gElN+2aV4PSD1blhZxAwhZACpxGARFsVHw4gvFOTVGUFb5t2XplWNY2DtgRkRg+XPQM++6bh+PkqIGhdu2gobZXM9MIgGZzPR5ertDkifhGC9WfZxYoS8tivKrDGvGDaziLCIEYz0ksxAL0akLFyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UoSdfEf0S2KG70IGeYqXN+qRwsu6JOnahPHZmSVBa9U=;
- b=M0Tw0Iuk0pfYFNGAeiH3CgYQ79o2rf89l17LTJ8A60/+skN4phEWi3s+8u7nmgeF5yVOEXtvdUFkV0TYV28Zqp6Vr5bXF0AeHSJhlqs7dfS0pfX0evbRi8sR4oO+5qwmLNau/mB7Y6eZwmBNcxdxfI2WDISQ/hZs14oHOnfKshyOyNdvZI+xkIYIk0yL2YX9gFMR0XI0/yGldpOdVa21vFmDb2tgauk4Aaw8oNOKXi9WV9RsdeI1uz241MwbO6RQfS/lItW+C1eskPi/hmhDJeEYTduLuSZ7EwzzkfKE0yNDOI7ehNllWSrTmKq9lqxhktUHN7Hymg+X09A/0T4ArQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UoSdfEf0S2KG70IGeYqXN+qRwsu6JOnahPHZmSVBa9U=;
- b=ekCVvxQ7GnsnculGpwXG0Nw6jL5bge6OvOaiacF09sLR1dckKXmQNzBWKpfGryRx0m71NVBiAuuXIKL6Cj5rHdM+wnmCQt5I4G8T2n8VZUdZqD13BdJNJTr/f5TteKJbj/xpBYGA/fbz4eeLqFxDAJj1J5TZfEsPH/Z3AxES0j8=
-Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.234.30) by
- VE1PR04MB6430.eurprd04.prod.outlook.com (20.179.232.155) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2387.25; Fri, 1 Nov 2019 22:31:35 +0000
-Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
- ([fe80::c93:c279:545b:b6b6]) by VE1PR04MB6687.eurprd04.prod.outlook.com
- ([fe80::c93:c279:545b:b6b6%3]) with mapi id 15.20.2387.031; Fri, 1 Nov 2019
- 22:31:35 +0000
-From: Leo Li <leoyang.li@nxp.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Qiang Zhao <qiang.zhao@nxp.com>
-Subject: RE: [PATCH v3 35/36] net/wan: make FSL_UCC_HDLC explicitly depend on
- PPC32
-Thread-Topic: [PATCH v3 35/36] net/wan: make FSL_UCC_HDLC explicitly depend on
- PPC32
-Thread-Index: AQHVkLHlr4/lsG9mMkGX3of9x6ljgad2gb8AgABkExA=
-Date: Fri, 1 Nov 2019 22:31:35 +0000
-Message-ID: <VE1PR04MB6687D4620E32176BDC120DBA8F620@VE1PR04MB6687.eurprd04.prod.outlook.com>
-References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-36-linux@rasmusvillemoes.dk>
- <4e2ac670-2bf4-fb47-2130-c0120bcf0111@c-s.fr>
-In-Reply-To: <4e2ac670-2bf4-fb47-2130-c0120bcf0111@c-s.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=leoyang.li@nxp.com; 
-x-originating-ip: [64.157.242.222]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 5e94ad1d-2ce6-43b0-0b1a-08d75f1b4111
-x-ms-traffictypediagnostic: VE1PR04MB6430:|VE1PR04MB6430:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VE1PR04MB64302A11636E3781DA5CFB2A8F620@VE1PR04MB6430.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4714;
-x-forefront-prvs: 020877E0CB
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(366004)(346002)(39860400002)(376002)(396003)(136003)(189003)(199004)(13464003)(6116002)(3846002)(7736002)(316002)(4326008)(9686003)(25786009)(81156014)(66066001)(74316002)(476003)(2906002)(6436002)(66556008)(66476007)(64756008)(81166006)(5660300002)(66946007)(66446008)(229853002)(52536014)(76116006)(110136005)(55016002)(66574012)(8676002)(305945005)(6246003)(14444005)(6636002)(53546011)(7696005)(186003)(446003)(8936002)(54906003)(99286004)(486006)(76176011)(11346002)(26005)(478600001)(86362001)(71200400001)(6506007)(71190400001)(14454004)(102836004)(256004)(33656002);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6430;
- H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 4mnH4VDWTjh1v5hvFq8CqyQfnxWrze5/frsVbHbLCrm+Clw2zUtH9SKp4LrIKsmHMciOu6MFdeWdr25beB3zId8oSw4/O56VG+xdyxrWzLqgkMKRXdgv38+xpgjsm5Or+ELNrYUXlhSkTZz9kZisvGdQZ8Hwq71TL3jIPbUfsUzCFbGlvdjbpNxHS8CCQH9QzbyFVVb9/RyKpiHPoa32+exI7ynXFLTLnj3gXrkvjSfuZfctFS6q6SD6dqnLbv09ht0v+SMf/4SIPoJl056Lz/f7QXY2+VEHTCUlzHw60KQzgoWrHlbAkkuZ+xGdkO1VKQcNKhnm9vg45kASaP+aR5ZULhFRHm+xSdUpgy0dzIkhFR3NmrBVOPegg8jH/COy+DPY44bjEGoKADrDlXPc4Len5jKtwE5xypi6uuHu7JAdcpoTV/vnauckUsQTy0iQ
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474gGF3snSzF7HZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Nov 2019 11:40:47 +1100 (AEDT)
+Received: by mail-il1-x12d.google.com with SMTP id a13so10148585ilp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Nov 2019 17:40:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:from:date:message-id:subject:to;
+ bh=j1w3geOUMLY6F0WvwQRSxld1TM+sks3RLGpQdNqp+vM=;
+ b=uBqGl/fEjEiSdo84nKW8bq2GlpH0iS54w9QEkqWpiZdTT3V7C3UouQAJ+XoLzEJS9z
+ JGe+jhWR1zYgYbudMglgSaxs1hm/1YALP89EEd4+h81RSrYKdHj+6z9iosL+IA2JqNHA
+ CsfLQ8aL4/lGTA7aCvoWcIrxd4z7ib9b7CvnGVUki0eN4GZfxZc5IAUYaPqcrJYKSbrf
+ gb4BPu1o+PqSVXKcjgFo2Td9aANvGKzF17yGvMUCoDTWeOAiraCtsfHP6RfT9lLBkFUH
+ h0B/vSg+rmALpdbHtSeTMMz84ERUCQ7gMBkKEL5YjNbN8pzzW2Tunb1yhp2xZGzg+TRp
+ uYig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+ bh=j1w3geOUMLY6F0WvwQRSxld1TM+sks3RLGpQdNqp+vM=;
+ b=dl1Vi7otJ09HWw+/Mc3WhWD1ng94ThALa6B59RZ1DuEIGN27USLgK8REKJ8qiy0d0K
+ IZprDI/KO03kmn+DQGhjjEMc7190f8gmxR74IcgvLNuoEvYWZxEKT787LA+5+I6k5+zQ
+ WR2nXPxoe5cESB/MbhJNrKtqDdpsl9ahM+RtaghIsMP2XG4pDK6cNhTCLRG9MU27b5Xv
+ Ed2pTEttxbAWfFYzDom7v24f0g2J+dM3LoZX9K8+cWZ0IHZNCId3vILLd7358fj21FXl
+ W+fV4HLEDGIkyXY41a56YXhQZ+GKiFkaArzu35N/f1LZqUroaWyqeTKaqhU9f6L/sUJ1
+ w46Q==
+X-Gm-Message-State: APjAAAX+/LrfpV5waC6ap+qsLNSmvPjiKAt62aJIwrI9+ICjfdZ3RwI7
+ QRBedHnv2vZuXWwptCC5heQGcWe6jMO16UQwqCZYhArN
+X-Google-Smtp-Source: APXvYqzJ3jYcghGpZhKU3CCtMqckrJHR+92W4bl07xWkxNJvXgkAPeVPs9ctb/pqYZQ0BiEsyFCrMDpZeGk8ABHy4P4=
+X-Received: by 2002:a92:bb95:: with SMTP id x21mr15401258ilk.128.1572655244205; 
+ Fri, 01 Nov 2019 17:40:44 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e94ad1d-2ce6-43b0-0b1a-08d75f1b4111
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Nov 2019 22:31:35.1149 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 24MFtzoLRHfmMLc19Dkue/4BuhpxlRJ2YJn1GAy3vL/JYrReFhOPUqCFAqiWqGWvlErdEUNpNCTFR1JW/ivv2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6430
+From: Nathan <nathana@gmail.com>
+Date: Fri, 1 Nov 2019 17:40:05 -0700
+Message-ID: <CABVqaQbcgQ2=1Se0RvVTmK7MUasRy5iB_dF2ah8Syfk_6woPUA@mail.gmail.com>
+Subject: Defunct Abatron / BDI2000?
+To: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,46 +69,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2hyaXN0b3BoZSBMZXJv
-eSA8Y2hyaXN0b3BoZS5sZXJveUBjLXMuZnI+DQo+IFNlbnQ6IEZyaWRheSwgTm92ZW1iZXIgMSwg
-MjAxOSAxMTozMCBBTQ0KPiBUbzogUmFzbXVzIFZpbGxlbW9lcyA8bGludXhAcmFzbXVzdmlsbGVt
-b2VzLmRrPjsgUWlhbmcgWmhhbw0KPiA8cWlhbmcuemhhb0BueHAuY29tPjsgTGVvIExpIDxsZW95
-YW5nLmxpQG54cC5jb20+DQo+IENjOiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZzsgbGlu
-dXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOw0KPiBsaW51eC1rZXJuZWxAdmdlci5r
-ZXJuZWwub3JnOyBTY290dCBXb29kIDxvc3NAYnVzZXJyb3IubmV0PjsNCj4gbmV0ZGV2QHZnZXIu
-a2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYzIDM1LzM2XSBuZXQvd2FuOiBtYWtl
-IEZTTF9VQ0NfSERMQyBleHBsaWNpdGx5DQo+IGRlcGVuZCBvbiBQUEMzMg0KPiANCj4gDQo+IA0K
-PiBMZSAwMS8xMS8yMDE5IMOgIDEzOjQyLCBSYXNtdXMgVmlsbGVtb2VzIGEgw6ljcml0wqA6DQo+
-ID4gQ3VycmVudGx5LCBGU0xfVUNDX0hETEMgZGVwZW5kcyBvbiBRVUlDQ19FTkdJTkUsIHdoaWNo
-IGluIHR1cm4NCj4gZGVwZW5kcw0KPiA+IG9uIFBQQzMyLiBBcyBwcmVwYXJhdGlvbiBmb3IgcmVt
-b3ZpbmcgdGhlIGxhdHRlciBhbmQgdGh1cyBhbGxvd2luZyB0aGUNCj4gPiBjb3JlIFFFIGNvZGUg
-dG8gYmUgYnVpbHQgZm9yIG90aGVyIGFyY2hpdGVjdHVyZXMsIG1ha2UgRlNMX1VDQ19IRExDDQo+
-ID4gZXhwbGljaXRseSBkZXBlbmQgb24gUFBDMzIuDQo+IA0KPiBJcyB0aGF0IHJlYWxseSBwb3dl
-cnBjIHNwZWNpZmljID8gQ2FuJ3QgdGhlIEFSTSBRRSBwZXJmb3JtIEhETEMgb24gVUNDID8NCg0K
-Tm8uICBBY3R1YWxseSB0aGUgSERMQyBhbmQgVERNIGFyZSB0aGUgbWFqb3IgcmVhc29uIHRvIGlu
-dGVncmF0ZSBhIFFFIG9uIHRoZSBBUk0gYmFzZWQgTGF5ZXJzY2FwZSBTb0NzLg0KDQpTaW5jZSBS
-YXNtdXMgZG9lc24ndCBoYXZlIHRoZSBoYXJkd2FyZSB0byB0ZXN0IHRoaXMgZmVhdHVyZSBRaWFu
-ZyBaaGFvIHByb2JhYmx5IGNhbiBoZWxwIHZlcmlmeSB0aGUgZnVuY3Rpb25hbGl0eSBvZiBURE0g
-YW5kIHdlIGNhbiBkcm9wIHRoaXMgcGF0Y2guDQoNClJlZ2FyZHMsDQpMZW8NCg0KPiANCj4gQ2hy
-aXN0b3BoZQ0KPiANCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFJhc211cyBWaWxsZW1vZXMgPGxp
-bnV4QHJhc211c3ZpbGxlbW9lcy5kaz4NCj4gPiAtLS0NCj4gPiAgIGRyaXZlcnMvbmV0L3dhbi9L
-Y29uZmlnIHwgMiArLQ0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRl
-bGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2FuL0tjb25maWcg
-Yi9kcml2ZXJzL25ldC93YW4vS2NvbmZpZyBpbmRleA0KPiA+IGRkMWExNDdmMjk3MS4uNzg3ODVk
-NzkwYmNjIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dhbi9LY29uZmlnDQo+ID4gKysr
-IGIvZHJpdmVycy9uZXQvd2FuL0tjb25maWcNCj4gPiBAQCAtMjcwLDcgKzI3MCw3IEBAIGNvbmZp
-ZyBGQVJTWU5DDQo+ID4gICBjb25maWcgRlNMX1VDQ19IRExDDQo+ID4gICAJdHJpc3RhdGUgIkZy
-ZWVzY2FsZSBRVUlDQyBFbmdpbmUgSERMQyBzdXBwb3J0Ig0KPiA+ICAgCWRlcGVuZHMgb24gSERM
-Qw0KPiA+IC0JZGVwZW5kcyBvbiBRVUlDQ19FTkdJTkUNCj4gPiArCWRlcGVuZHMgb24gUVVJQ0Nf
-RU5HSU5FICYmIFBQQzMyDQo+ID4gICAJaGVscA0KPiA+ICAgCSAgRHJpdmVyIGZvciBGcmVlc2Nh
-bGUgUVVJQ0MgRW5naW5lIEhETEMgY29udHJvbGxlci4gVGhlIGRyaXZlcg0KPiA+ICAgCSAgc3Vw
-cG9ydHMgSERMQyBpbiBOTVNJIGFuZCBURE0gbW9kZS4NCj4gPg0K
+I am profusely sorry for adding noise to this list with this semi-OT
+post, but I'm becoming increasingly desperate, and I suspect the odds
+of running into someone with one of these units here are pretty good.
+
+If there is anyone here who has a BDI2K with the QorIQ P-series
+(P3/4/5) target firmware, and wouldn't mind reaching out to me
+(off-list is fine, and probably the most polite to everyone else), I
+would really, really, really appreciate it.
+
+I'm no embedded systems engineer, but I've got one of these JTAG pods
+on loan as I managed to brick a commercial board based on P3041 SoC
+and I'm trying to find a way to reflash non-corrupted code to the
+on-board parallel NOR.  The board has a confirmed 16-pin COP header on
+it, but of course the BDI unit I have access to has MPC85xx target
+firmware installed on it.
+
+From what I can tell, not only is this a pretty old debugger model
+anyway (and not the most recent one that its manufacturer produced),
+but the company who manufactured it (Abatron) appears to have
+shuttered their doors over a year ago...the web site is gone and
+they've abandoned their domain name, so I have no way of reaching out
+to any of the people involved in this product.
+
+Short of making this unit talk to this board, from what I can tell my
+only remaining options are to pay hundreds or thousands of $ for some
+other JTAG interface that is still actively manufactured and supported
+(which I can't justify doing in order to fix this *one* board *one*
+time), or to find somebody who can desolder the flash chip so that I
+can reflash it with an offline programmer (which I'd really prefer to
+avoid).
+
+Thanks so much,
+
+-- Nathan
