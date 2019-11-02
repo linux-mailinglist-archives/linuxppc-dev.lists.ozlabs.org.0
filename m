@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B26ECE20
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 11:47:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84950ECE4C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 12:13:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 474wjz01WmzF5Lc
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 21:47:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 474xHn5bghzF6Jh
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Nov 2019 22:13:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 474wgh74JLzF71n
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Nov 2019 21:45:20 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 474xFb4SwXzDq9k
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Nov 2019 22:11:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="jU8HtMgP"; dkim-atps=neutral
+ header.b="T/MCO/BR"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 474wgf5b5jz9sP3;
- Sat,  2 Nov 2019 21:45:18 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 474xFY5d8Mz9sP4;
+ Sat,  2 Nov 2019 22:11:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1572691520;
- bh=Jtyqd/wuFAS1+Aoh4ImFCwFhrDrs+nQrk2XwCSuohFM=;
+ s=201909; t=1572693074;
+ bh=NS4Uwf3f2SlEFweKKuQjMnasaNcZD4cQVhKKg7qXM58=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jU8HtMgPJ5LVOjaQcPJMyylrWpWUU1hddriM0diG7HPFhaqMSKxA47FydNm0U3BE2
- 7BOLrxB9DPxAEzRxBiGhApn4cLGOF/Ml2YMDs3ua2+fUlqmnefxqyeYqeF1EcbgLxi
- XsnnFrXMxEUbIAzBD1enonawlvRDZ18ZvtL1TZ8Re1el5XkHNn1U9se5Ch4VpbBgYb
- 6GxBJmnV9ADH6BfdClBQsuQb31o/6yB2HYM1hiLRyoxOf5mB9rMv5GzWdHyA+vvWwP
- lzzN+hrl024/OdwXL1S/yRGgKO2IlYjC/ba/kMkd/qEstWj8PfWUg+bm58oc10thsw
- wrAXoNSVTSfGA==
+ b=T/MCO/BR3ehdvw2jMjuWoHynChhENWC/XRCsh1eI0cUZtgukg0W9xMxD1Pl5Oh8CI
+ i4A/kqsJ6rXxacU9cI6R4h83O5xeTWVCiF2qmYuQktap9JCOzzbzh9nvcLUe8Y8xuR
+ LMxrhJyNbKIWA9FIW1joIRaSgYllaSBP0DczOgt7CxIwhr1nGox+g3FPKZp0pbL/iC
+ 0PFSoXhv3mVlV56nl5rWfmZII93PmsoQ5EVmTMnCIp9kHzflFHCqNvgrhyiRcJvEwg
+ s25SOiBqs6DOCtRNXzWKswqmzTnDwZ5XQTDZrcbnKpZPjjPyj4ZWFFr3BU8AXAG/y2
+ DjrBPfqfc6Xww==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 2/5] powerpc/kprobes: Mark newly allocated probes as RO
-In-Reply-To: <20191030073111.140493-3-ruscur@russell.cc>
-References: <20191030073111.140493-1-ruscur@russell.cc>
- <20191030073111.140493-3-ruscur@russell.cc>
-Date: Sat, 02 Nov 2019 21:45:18 +1100
-Message-ID: <8736f636bl.fsf@mpe.ellerman.id.au>
+To: asteinhauser@google.com, benh@kernel.crashing.org, paulus@samba.org,
+ diana.craciun@nxp.com
+Subject: Re: [PATCH] L1TF support in PowerPC SYSFS.
+In-Reply-To: <20191029190759.84821-1-asteinhauser@google.com>
+References: <20191029190759.84821-1-asteinhauser@google.com>
+Date: Sat, 02 Nov 2019 22:11:13 +1100
+Message-ID: <87zhhe1qjy.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,62 +57,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
- joel@jms.id.au, dja@axtens.net
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Anthony Steinhauser <asteinhauser@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Russell Currey <ruscur@russell.cc> writes:
-> With CONFIG_STRICT_KERNEL_RWX=y and CONFIG_KPROBES=y, there will be one
-> W+X page at boot by default.  This can be tested with
-> CONFIG_PPC_PTDUMP=y and CONFIG_PPC_DEBUG_WX=y set, and checking the
-> kernel log during boot.
+Hi Anthony,
+
+Thanks for the patch.
+
+asteinhauser@google.com writes:
+> From: Anthony Steinhauser <asteinhauser@google.com>
 >
-> powerpc doesn't implement its own alloc() for kprobes like other
-> architectures do, but we couldn't immediately mark RO anyway since we do
-> a memcpy to the page we allocate later.  After that, nothing should be
-> allowed to modify the page, and write permissions are removed well
-> before the kprobe is armed.
->
-> Thus mark newly allocated probes as read-only once it's safe to do so.
->
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> PowerPC CPUs are vulnerable to L1TF to the same extent as to Meltdown.
+> It is also mitigated by flushing the L1D on privilege transition.
+> Currently the SYSFS gives a false negative on L1TF on CPUs that I verified
+> to be vulnerable.
+
+Can you include the details of which CPUs you tested?
+
+> https://www.ibm.com/blogs/psirt/potential-impact-processors-power-family/
+> https://github.com/google/safeside/pull/52
+> Signed-off-by: Anthony Steinhauser <asteinhauser@google.com>
 > ---
->  arch/powerpc/kernel/kprobes.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-> index 2d27ec4feee4..2610496de7c7 100644
-> --- a/arch/powerpc/kernel/kprobes.c
-> +++ b/arch/powerpc/kernel/kprobes.c
-> @@ -24,6 +24,7 @@
->  #include <asm/sstep.h>
->  #include <asm/sections.h>
->  #include <linux/uaccess.h>
-> +#include <linux/set_memory.h>
+
+I don't usually retain links in the change log, because they bit rot, so
+I'll drop those, but they will remain in the email archive.
+
+> diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+> index 7cfcb294b11c..a1a5017c5170 100644
+> --- a/arch/powerpc/kernel/security.c
+> +++ b/arch/powerpc/kernel/security.c
+> @@ -135,7 +135,8 @@ void setup_spectre_v2(void)
+>  #endif /* CONFIG_PPC_FSL_BOOK3E */
 >  
->  DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
->  DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
-> @@ -131,6 +132,8 @@ int arch_prepare_kprobe(struct kprobe *p)
->  			(unsigned long)p->ainsn.insn + sizeof(kprobe_opcode_t));
->  	}
->  
-> +	set_memory_ro((unsigned long)p->ainsn.insn, 1);
-> +
+>  #ifdef CONFIG_PPC_BOOK3S_64
+> -ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
+> +static ssize_t cpu_show_delayed_fault_common(
 
-That comes from:
-	p->ainsn.insn = get_insn_slot();
+I guess that's an accurate name.
 
-
-Which ends up in __get_insn_slot() I think. And that looks very much
-like it's going to hand out multiple slots per page, which isn't going
-to work because you've just marked the whole page RO.
-
-So I would expect this to crash on the 2nd kprobe that's installed. Have
-you tested it somehow?
-
-I think this code should just use patch_instruction() rather than
-memcpy().
+I probably would have just had cpu_show_l1tf() call cpu_show_meltdown(),
+but I guess either approach is fine.
 
 cheers
+
+
+> @@ -167,6 +168,16 @@ ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, cha
+>  
+>  	return sprintf(buf, "Vulnerable\n");
+>  }
+> +
+> +ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *buf)
+> +{
+> +	return cpu_show_delayed_fault_common(dev, attr, buf);
+> +}
+> +
+> +ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
+> +{
+> +	return cpu_show_delayed_fault_common(dev, attr, buf);
+> +}
+>  #endif
+>  
+>  ssize_t cpu_show_spectre_v1(struct device *dev, struct device_attribute *attr, char *buf)
+> -- 
+> 2.24.0.rc0.303.g954a862665-goog
