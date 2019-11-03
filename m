@@ -2,68 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D592BED65A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 00:08:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCE7ED673
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 00:36:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 475s753K3QzF4wv
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 10:08:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 475skz00xBzDr6X
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 10:36:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d43;
- helo=mail-io1-xd43.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ smtp.mailfrom=humanservices.gov.au (client-ip=161.146.192.132;
+ helo=mailout6.humanservices.gov.au;
+ envelope-from=chris.smart@humanservices.gov.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none)
+ header.from=humanservices.gov.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Ogr3bRTW"; 
- dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=humanservices.gov.au header.i=@humanservices.gov.au
+ header.b="hz6T8gY5"; dkim-atps=neutral
+Received: from mailout6.humanservices.gov.au (mailout6.humanservices.gov.au
+ [161.146.192.132])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 475s501GvgzF21Y
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2019 10:06:59 +1100 (AEDT)
-Received: by mail-io1-xd43.google.com with SMTP id c6so16391231ioo.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Nov 2019 15:06:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=eVqB/l9a1uODQEPIKn/PPG0dvGYx8Wnn62KRJDPal58=;
- b=Ogr3bRTWAqrOfrGyYdV5PvYV3ARdso9WSZmAAWAUVNFf5R6gZVAn2suhmsRBuBLR1/
- dW53XjheV7my12jMlO6rV5CfQUMf4cXo1wi+k8bzOlFGjEPVpjfrLLMh5vOO0A/6/oXM
- 3ShKC6jxP6wSfEj0/gsdkFz+ntUu3fEZKB28AwKhWaX+O1nDNypQ6igT58up/K4ghO2l
- uP/yIgDW/WzOw0tJLko/ylUM2k1qwMkqUx4NczjZppdGzsFkwXV2p8+YCEcQvqqtj99C
- Ydw086InNypLfzadWcrQP8ewHM8Ag8jkwhzYrF35X5pvfHyBin3yLSe+7iNYRJiOA/QK
- Znsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=eVqB/l9a1uODQEPIKn/PPG0dvGYx8Wnn62KRJDPal58=;
- b=b/Q98tFsW/TiFXdRS1zDVYhY2jMfZiIJYF7PjJhVuwHjwc+ExZZ+rXBi95daEo84HL
- /cboLCJEmZMWonZcUa6mmilAHFWZUwyCblPIYcub5UgdhZirXV6GJtS+tIJgWONBU9k/
- C8fnAU5Pu2fFQTSK85kUXZtV1cVln2GiIJ2Pvrsjqb/OpxRqBCowrJyl9EEOZ4UHC18w
- tpp6JS5pFfjmGur50z27yjzCPBGZ31fTUirXIbc6+x1SUPHu7Eo7P0igWC4wZiIdUpXz
- 9WCqXibx1eTucvat235+NI3ZjRukZHJ8RwCHHl4P/PKmnvqqm6M7oz3thMtFJvZUCQhh
- lZZQ==
-X-Gm-Message-State: APjAAAU2Z3zmINKzRHWHMRGdpqS60SxqWM7ghNdUcwsPF/BVi0ur59PA
- JYO5v1pQFdkpDaaF9XRDRzieOHHL0+zBW330rtU=
-X-Google-Smtp-Source: APXvYqz5q7rm3u4DawQENZGNDKe1T9/EKnPlhOlSgXGAtFdFo1uj3sgE+IIUYvtkp3lzE+eEoITqKlfYsqv5wVZb2sA=
-X-Received: by 2002:a02:3903:: with SMTP id l3mr12722619jaa.72.1572822416076; 
- Sun, 03 Nov 2019 15:06:56 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 475shb1tz2zF4DN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2019 10:34:23 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=humanservices.gov.au; i=@humanservices.gov.au;
+ q=dns/txt; s=dhs1-dkim; t=1572824063; x=1604360063;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MYPMHwkow6CP3OlXdesr/dfIYoiUjLy5oDvtkHwK+NY=;
+ b=hz6T8gY5dTQ7F4Thx0zBfozbjbJDiY3dhyzzlSEkUw2yxkJAqnkzuN0s
+ 2EwUnLWOxRyutSMfzMNIWw42v84B8IZIuRyisEXG/T6znqrXFG5sDD/0U
+ FfmGX7HyeunM/W9Ipb5mAfVes+nYG0kFrbbAeXwnTz5kiGYAx7PWhEdRZ
+ 6Mg4FhD6r7aGBKtNZErqDnYslYy075hdwc+ttOSPxgbHg+e0rG7bAfqmg
+ 4i6LUHR2GW8W5VvOr459G4AOI7KKKG1nwANPW/YpfozUXM9lyxKjGrQ86
+ 3dolE3J0SQpIHiuX/ezBvyN2PyWciJ6zBU1bHYnOPw80WrxsI7kECmIjP A==;
+IronPort-SDR: QOZ3d+EkPao9Qkx0g/49vdXtSG3O8t9QKmJNGsabFnqIUbda0LCJGtNFnxLcxxBHN97NpLrwY4
+ 5pUz1EX5iMHQ==
+X-IronPort-AV: E=Sophos;i="5.68,265,1569247200"; d="scan'208";a="167087358"
+Received: by mailout6.humanservices.gov.au; 04 Nov 2019 10:34:21 +1100
+X-OutboundLoopMarker: 1
+X-MTA-CheckPoint: {5DBF63FD-0-B60611AC-115407B6}
+From: Chris Smart <chris.smart@humanservices.gov.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH 1/1] powerpc/crypto: Add cond_resched() in crc-vpmsum self-test
+Date: Sun, 3 Nov 2019 23:33:56 +0000
+Message-ID: <20191103233356.5472-1-chris.smart@humanservices.gov.au>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
-In-Reply-To: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Mon, 4 Nov 2019 10:06:45 +1100
-Message-ID: <CAOSf1CGQ7VdhHQ0L3phRwaT9VcsJaN9E7LsEarvpwZUcL6e7bg@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_powerpc=2Fpapr=5Fscm=3A_Delete_unnecessary_ass?=
- =?UTF-8?Q?ignment_for_the_field_=E2=80=9Cowner=E2=80=9D?=
-To: Markus Elfring <Markus.Elfring@web.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,47 +63,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: distroguy@gmail.com, Chris Smart <chris.smart@humanservices.gov.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 3, 2019 at 11:31 PM Markus Elfring <Markus.Elfring@web.de> wrot=
-e:
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 3 Nov 2019 13:23:13 +0100
->
-> The field =E2=80=9Cowner=E2=80=9D is set by the core.
-> Thus delete an unneeded initialisation.
+The stress test for vpmsum implementations executes a long for loop in
+the kernel. This blocks the scheduler, which prevents other tasks from
+running, resulting in a warning.
 
-Acked-by: Oliver O'Halloran <oohall@gmail.com>
+This fix adds a call to cond_reshed() at the end of each loop, which
+allows the scheduler to run other tasks as required.
 
->
-> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/pla=
-tforms/pseries/papr_scm.c
-> index ee07d0718bf1..f87b474d25a7 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -513,7 +513,6 @@ static struct platform_driver papr_scm_driver =3D {
->         .remove =3D papr_scm_remove,
->         .driver =3D {
->                 .name =3D "papr_scm",
-> -               .owner =3D THIS_MODULE,
->                 .of_match_table =3D papr_scm_match,
->         },
->  };
-> --
-> 2.23.0
->
+Signed-off-by: Chris Smart <chris.smart@humanservices.gov.au>
+---
+ arch/powerpc/crypto/crc-vpmsum_test.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/crypto/crc-vpmsum_test.c b/arch/powerpc/crypto/crc-vpmsum_test.c
+index 47985219a68f..dce86e75f1a8 100644
+--- a/arch/powerpc/crypto/crc-vpmsum_test.c
++++ b/arch/powerpc/crypto/crc-vpmsum_test.c
+@@ -103,6 +103,7 @@ static int __init crc_test_init(void)
+ 				       crc32, verify32, len);
+ 				break;
+ 			}
++		cond_resched();
+ 		}
+ 		pr_info("crc-vpmsum_test done, completed %lu iterations\n", i);
+ 	} while (0);
+-- 
+2.21.0
+
+********************************************************************** IMPORTANT: This e-mail is for the use of the intended recipient only and may contain information that is confidential, commercially valuable and/or subject to legal or parliamentary privilege. If you are not the intended recipient you are notified that any review, re-transmission, disclosure, dissemination or other use of, or taking of any action in reliance upon, this information is prohibited and may result in severe penalties. If you have received this e-mail in error please notify the sender immediately and delete all electronic and hard copies of this transmission together with any attachments. Please consider the environment before printing this e-mail **********************************************************************
+
