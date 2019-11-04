@@ -1,41 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FF2EDD7D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 12:09:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0413EE1CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 15:03:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47696864HxzF3Pm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 22:09:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476DzS6K5nzF3l4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 01:03:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rjwysocki.net (client-ip=79.96.170.134;
- helo=cloudserver094114.home.pl; envelope-from=rjw@rjwysocki.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl
- [79.96.170.134])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="L3F9qVpu"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47693v0T8WzF214
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2019 22:07:05 +1100 (AEDT)
-Received: from 79.184.254.83.ipv4.supernova.orange.pl (79.184.254.83) (HELO
- kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id 2c11b88dbf4206f5; Mon, 4 Nov 2019 12:07:00 +0100
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v3] cpufreq: powernv: fix stack bloat and hard limit on
- num cpus
-Date: Mon, 04 Nov 2019 12:06:59 +0100
-Message-ID: <8351130.8dpKiuZLPc@kreacher>
-In-Reply-To: <20191031052159.4125031-1-jhubbard@nvidia.com>
-References: <20191031052159.4125031-1-jhubbard@nvidia.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476Dvx0BTqzF3bK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 01:00:28 +1100 (AEDT)
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com
+ [209.85.160.182])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5D989222C5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2019 14:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1572876026;
+ bh=OWbKtK0i0fpZ7HMq4IWDZ/zHR1wQIHsCjhclNVqI7cs=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=L3F9qVpuKwq2k4DJhdeBUeaZDrY5/2BO9ZEILgx1UqbvBX47zpfteH8Riw33D90lY
+ FK87rhNlLQL0Nv0Ze8GAJR2IUvzOLk8xM1+a22zySFweu+8rNFlQSXWknbwA5WDoLd
+ N8cMt0+CaX99DaLgV9Pq4rTimFFfmAXLCuvpqk+U=
+Received: by mail-qt1-f182.google.com with SMTP id o49so23992963qta.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 06:00:26 -0800 (PST)
+X-Gm-Message-State: APjAAAWMlT/Cr9rbOX2US4Bxquk/PbevO5sL24WjRpC3MVDnx6ADl0CR
+ vccKLQxwFG/UUcfdmZ4IEbF09v/d4/dZVeRP0g==
+X-Google-Smtp-Source: APXvYqwC/UsXG1zJ1xc8CR86GG8c20fgOKNAVt0QWyGvdkTztw6vTdeoGSWn0GfCtBbRQCyxI47fJxmWk+2G9rlJau8=
+X-Received: by 2002:a0c:d2b4:: with SMTP id q49mr21523114qvh.135.1572876025475; 
+ Mon, 04 Nov 2019 06:00:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <20191101061411.16988-1-yamada.masahiro@socionext.com>
+ <20191101061411.16988-2-yamada.masahiro@socionext.com>
+In-Reply-To: <20191101061411.16988-2-yamada.masahiro@socionext.com>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Mon, 4 Nov 2019 08:00:14 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJbmFd5wZ0RCP2baqv-bjWwzaJ+hLqtGeYjK5LPJ54dXA@mail.gmail.com>
+Message-ID: <CAL_JsqJbmFd5wZ0RCP2baqv-bjWwzaJ+hLqtGeYjK5LPJ54dXA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] libfdt: add SPDX-License-Identifier to libfdt wrappers
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,57 +64,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Preeti U Murthy <preeti@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thursday, October 31, 2019 6:21:59 AM CET John Hubbard wrote:
-> The following build warning occurred on powerpc 64-bit builds:
-> 
-> drivers/cpufreq/powernv-cpufreq.c: In function 'init_chip_info':
-> drivers/cpufreq/powernv-cpufreq.c:1070:1: warning: the frame size of
-> 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-> 
-> This is with a cross-compiler based on gcc 8.1.0, which I got from:
->   https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.1.0/
-> 
-> The warning is due to putting 1024 bytes on the stack:
-> 
->     unsigned int chip[256];
-> 
-> ...and it's also undesirable to have a hard limit on the number of
-> CPUs here.
-> 
-> Fix both problems by dynamically allocating based on num_possible_cpus,
-> as recommended by Michael Ellerman.
-> 
-> Fixes: 053819e0bf840 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Shilpasri G Bhat <shilpa.bhat@linux.vnet.ibm.com>
-> Cc: Preeti U Murthy <preeti@linux.vnet.ibm.com>
-> Cc: Viresh Kumar <viresh.kumar@linaro.org>
-> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-> Cc: linux-pm@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
-> 
-> Changes since v2: applied fixes from Michael Ellerman's review:
-> 
-> * Changed from CONFIG_NR_CPUS to num_possible_cpus()
-> 
-> * Fixed up commit description: added a note about exactly which
->   compiler generates the warning. And softened up wording about
->   the limitation on number of CPUs.
-> 
-> Changes since v1: includes Viresh's review commit fixes.
+On Fri, Nov 1, 2019 at 1:19 AM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+> These are kernel source code even though they are just two-line wrappers.
+>
+> Files without explicit license information fall back to GPL-2.0-only,
+> which is the project default.
 
-Applying as 5.5 material, thanks!
+That is true and these are kernel only files, but given they are just
+a wrapper around the .c files, maybe they should have the same
+license?
 
-
-
+Rob
