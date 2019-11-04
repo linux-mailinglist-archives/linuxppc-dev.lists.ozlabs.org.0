@@ -1,81 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E75BEEAAA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 22:00:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CE4EEAB1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 22:01:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476QCx4mDNzF4Fw
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 07:59:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476QG96WJvzDqw4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 08:01:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::841;
- helo=mail-qt1-x841.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.b="GqKdo8q3"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="lpq+hNDu"; 
  dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476Q9N4PnpzF3D8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 07:57:44 +1100 (AEDT)
-Received: by mail-qt1-x841.google.com with SMTP id g50so26097290qtb.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 12:57:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=DHyq0HiLvr2oRZ7fsWKuvfiy0KSCrmJQP2N7wxll3ck=;
- b=GqKdo8q3EQ1hr6qek+daVbq7asYL8vgosOUNPq/TbaKVNw+fSwsVZvMXYAXCf0AJyJ
- u82hnz0QILmabMP4l0QBspnNgDON3wCBCl2euZ2xUfz4wbz1CJOCkCDLlOnh4i58Oaj/
- S3gq/Jh9sfa4MobfNbFXPlzU8wQ8qlAiWQ9QDx9r++NF1VyZNacvaIxbfl+Dz9q/YaK7
- LJZ1bbR858MSdLa9WbMS13d/j0HGbePzEAUYRTf3vNGneWwIu7V1pWB8dhbOd6RohsWw
- Lzscw767cSCt9xjt6Uiuin4I08CfE7g1YZRaK11NZ5fT7S0HH+Tq61iyMWJYbr4RPL29
- XI3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=DHyq0HiLvr2oRZ7fsWKuvfiy0KSCrmJQP2N7wxll3ck=;
- b=ue1o4KnOkq23bBBDEYjcBYIXAJVGHEISYFSMaziOQXo6bnkepVDNBWT2Sdd0EZGlTt
- ChP8iBVZuiY4j6eN+crCOwQ9xgGDaIYO4tG7G3CCdpLflBnRGkmgZnB1XXRbNv1TOGNV
- PaMu1Lvjtte4fkCjymdnUctYLesXUGV1+EsalG89KET/1Ygr/PAe08PJCKuWxJtibpmh
- SYr5k1pxdCnV9lJPqyRrgnHY37bwGpIN8sDbUAnLUnAEnNWqlu6Q5nxMGh4/7DmAU5Qr
- 15NFvp9XbFKhY8SaJAF33l1/M1sUIRuLZUwouL/zn1oORDyo8PAEaZxwSvT+hkhr4Qr0
- Z0gA==
-X-Gm-Message-State: APjAAAXxA5H2vnHle81CnDylEp2ho1UTKA1tOoTtnde5BksdZlbXSxPJ
- MmD0xfNvU1A6I0Kzp5Cua760Qg==
-X-Google-Smtp-Source: APXvYqzcbzV98q5L3IoWgV1btJnfFj6kw4clhQUw4ORkigswFo+IphwlhQMZSa6Hl6m/W3Z9gLas4A==
-X-Received: by 2002:ad4:4092:: with SMTP id l18mr462915qvp.114.1572901059500; 
- Mon, 04 Nov 2019 12:57:39 -0800 (PST)
-Received: from ziepe.ca
- (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [142.162.113.180])
- by smtp.gmail.com with ESMTPSA id l20sm5226323qtq.78.2019.11.04.12.57.38
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 04 Nov 2019 12:57:38 -0800 (PST)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
- (envelope-from <jgg@ziepe.ca>)
- id 1iRjPu-0000Zj-4J; Mon, 04 Nov 2019 16:57:38 -0400
-Date: Mon, 4 Nov 2019 16:57:38 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v2 07/18] infiniband: set FOLL_PIN, FOLL_LONGTERM via
- pin_longterm_pages*()
-Message-ID: <20191104205738.GH30938@ziepe.ca>
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476Q9m5yh1zF3S3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 07:58:04 +1100 (AEDT)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dc090dd0000>; Mon, 04 Nov 2019 12:58:05 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Mon, 04 Nov 2019 12:58:00 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate102.nvidia.com on Mon, 04 Nov 2019 12:58:00 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 4 Nov
+ 2019 20:57:59 +0000
+Subject: Re: [PATCH v2 05/18] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+To: Jason Gunthorpe <jgg@ziepe.ca>, Jerome Glisse <jglisse@redhat.com>
 References: <20191103211813.213227-1-jhubbard@nvidia.com>
- <20191103211813.213227-8-jhubbard@nvidia.com>
- <20191104203346.GF30938@ziepe.ca>
- <578c1760-7221-4961-9f7d-c07c22e5c259@nvidia.com>
+ <20191103211813.213227-6-jhubbard@nvidia.com>
+ <20191104173325.GD5134@redhat.com>
+ <be9de35c-57e9-75c3-2e86-eae50904bbdf@nvidia.com>
+ <20191104191811.GI5134@redhat.com>
+ <e9656d47-b4a1-da8a-e8cc-ebcfb8cc06d6@nvidia.com>
+ <20191104195248.GA7731@redhat.com>
+ <25ec4bc0-caaa-2a01-2ae7-2d79663a40e1@nvidia.com>
+ <20191104203153.GB7731@redhat.com> <20191104203702.GG30938@ziepe.ca>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <d0890a8b-c349-0515-2570-10e83979836b@nvidia.com>
+Date: Mon, 4 Nov 2019 12:57:59 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <578c1760-7221-4961-9f7d-c07c22e5c259@nvidia.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20191104203702.GG30938@ziepe.ca>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1572901085; bh=EeK8bqsNfSA5i7MZV/85JI1lVmfCUv+TJ9yPJIg8GiI=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=lpq+hNDuPjPGBUnT+FF2AdBK4cieUl5iRoSXMbtLj+P8mC+Low0gZFUsCOCxgU9/5
+ DdN9/T6chOJfP5oOBc8usBmdwuRtBNEQH4F7VlCn14TGG0/SlwreoVfvdvj6xqa7/3
+ xeHneHSfMu5jFDq4HQuon77rSHBRD8GfWw0oGJaIFrobzmVoV/9zRJnxBAubrZjXN1
+ WRTqAeLXVE2rRthei7hHQyxBdSu2WAGq/7R/BGkZOAo7GutRRc+/9GEeCURW6eoDae
+ GFMlg2H2OK77XEEdt9PJrYvhIFYSBbOCAEQEdwBZOgkHGbaoMuenGmkX8oXc5haoCl
+ DibI+5WsHAIGw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,19 +84,18 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ linux-block@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
  Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
  Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
  Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S . Miller" <davem@davemloft.net>,
@@ -111,37 +104,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 04, 2019 at 12:48:13PM -0800, John Hubbard wrote:
-> On 11/4/19 12:33 PM, Jason Gunthorpe wrote:
-> ...
-> >> diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-> >> index 24244a2f68cc..c5a78d3e674b 100644
-> >> +++ b/drivers/infiniband/core/umem.c
-> >> @@ -272,11 +272,10 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, unsigned long addr,
-> >>  
-> >>  	while (npages) {
-> >>  		down_read(&mm->mmap_sem);
-> >> -		ret = get_user_pages(cur_base,
-> >> +		ret = pin_longterm_pages(cur_base,
-> >>  				     min_t(unsigned long, npages,
-> >>  					   PAGE_SIZE / sizeof (struct page *)),
-> >> -				     gup_flags | FOLL_LONGTERM,
-> >> -				     page_list, NULL);
-> >> +				     gup_flags, page_list, NULL);
-> > 
-> > FWIW, this one should be converted to fast as well, I think we finally
-> > got rid of all the blockers for that?
-> > 
+On 11/4/19 12:37 PM, Jason Gunthorpe wrote:
+> On Mon, Nov 04, 2019 at 03:31:53PM -0500, Jerome Glisse wrote:
+>>> Note for Jason: the (a) or (b) items are talking about the vfio case, which is
+>>> one of the two call sites that now use pin_longterm_pages_remote(), and the
+>>> other one is infiniband:
+>>>
+>>> drivers/infiniband/core/umem_odp.c:646:         npages = pin_longterm_pages_remote(owning_process, owning_mm,
+>>> drivers/vfio/vfio_iommu_type1.c:353:            ret = pin_longterm_pages_remote(NULL, mm, vaddr, 1,
+>>
+>> vfio should be reverted until it can be properly implemented.
+>> The issue is that when you fix the implementation you might
+>> break vfio existing user and thus regress the kernel from user
+>> point of view. So i rather have the change to vfio reverted,
+>> i believe it was not well understood when it got upstream,
+>> between in my 5.4 tree it is still gup_remote not longterm.
 > 
-> I'm not aware of any blockers on the gup.c end, anyway. The only broken thing we
-> have there is "gup remote + FOLL_LONGTERM". But we can do "gup fast + LONGTERM". 
+> It is clearly a bug, vfio must use LONGTERM, and does right above this
+> remote call:
+> 
+>         if (mm == current->mm) {
+>                 ret = get_user_pages(vaddr, 1, flags | FOLL_LONGTERM, page,
+>                                      vmas);
+>         } else {
+>                 ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags, page,
+>                                             vmas, NULL);
+> 
+> 
+> I'm not even sure that it really makes any sense to build a 'if' like
+> that, surely just always call remote??
+> 
 
-I mean the use of the mmap_sem here is finally in a way where we can
-just delete the mmap_sem and use _fast
- 
-ie, AFAIK there is no need for the mmap_sem to be held during
-ib_umem_add_sg_table()
 
-This should probably be a standalone patch however
+Right, and I thought about this when converting, and realized that the above 
+code is working around the current gup.c limitations, which are "cannot support
+gup remote with FOLL_LONGTERM".
 
-Jason
+Given that observation, the code is getting itself some FOLL_LONGTERM support
+for the non-remote case, and only hitting the limitation if the mm really is
+non-current.
+
+And if you look at my patch, it keeps the same behavior, while adding in the
+new wrapper calls.
+
+So...thoughts, preferences?
+
+
+thanks,
+
+John Hubbard
+NVIDIA
