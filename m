@@ -2,72 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594B8EEA93
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 21:58:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E75BEEAAA
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 22:00:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476QB133lNzF3Nh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 07:58:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476QCx4mDNzF4Fw
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 07:59:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.196;
- helo=mail-oi1-f196.google.com; envelope-from=pku.leo@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::841;
+ helo=mail-qt1-x841.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com
- [209.85.167.196])
+ dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ziepe.ca header.i=@ziepe.ca header.b="GqKdo8q3"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
+ [IPv6:2607:f8b0:4864:20::841])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476Q844z4dzF0dm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 07:56:34 +1100 (AEDT)
-Received: by mail-oi1-f196.google.com with SMTP id k2so15422440oij.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 12:56:34 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476Q9N4PnpzF3D8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 07:57:44 +1100 (AEDT)
+Received: by mail-qt1-x841.google.com with SMTP id g50so26097290qtb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 12:57:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=DHyq0HiLvr2oRZ7fsWKuvfiy0KSCrmJQP2N7wxll3ck=;
+ b=GqKdo8q3EQ1hr6qek+daVbq7asYL8vgosOUNPq/TbaKVNw+fSwsVZvMXYAXCf0AJyJ
+ u82hnz0QILmabMP4l0QBspnNgDON3wCBCl2euZ2xUfz4wbz1CJOCkCDLlOnh4i58Oaj/
+ S3gq/Jh9sfa4MobfNbFXPlzU8wQ8qlAiWQ9QDx9r++NF1VyZNacvaIxbfl+Dz9q/YaK7
+ LJZ1bbR858MSdLa9WbMS13d/j0HGbePzEAUYRTf3vNGneWwIu7V1pWB8dhbOd6RohsWw
+ Lzscw767cSCt9xjt6Uiuin4I08CfE7g1YZRaK11NZ5fT7S0HH+Tq61iyMWJYbr4RPL29
+ XI3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=/uPNoT5pyyczJJEGNLqWLD6OKr6e8V9JSPptdcpHVcU=;
- b=I6Pib02fbjxOEDvxtaPaID1yC9ltfdcK5tPMB5KI6fZELZ4eDGW3p/vxFToJBm3Gas
- OWiQ1DAhNyKFETkiIgj+eR0BZXRmxN8E2qgK1Gog/1ff/HjtIfrIe0i1kezIowow1z07
- IiCaIvvRRUhb5ZK8gyheC/oif7z9K5/S6tgDBHGVgR6WiBrNhS46VbHav6PzuoUGgpm5
- 40eax76gf6bdJphJAkCMxQ8XaTmcaVmkgrJQj0az69IJL3y/HkC1gS5QO1ACrqb2anxA
- d3bhdp2VheURw4N2pOr/7ENqbHTl4tPQKuozfwjlD2gTmECLv7sQqowdh18kJXpFSLmI
- MlpA==
-X-Gm-Message-State: APjAAAX2TnhpanVXv55nUxER7qbDZffsFOoO2LF/Awki3gqnBZlY/K72
- PZ5Q5Bm/5wVkC5r20r+sxs5MkCbA
-X-Google-Smtp-Source: APXvYqzvqWiMC9d7IPtN2Q5g0kNURjDiEFgLMvaxENLJuG9f5D1gdC1tzZlowCnZv9FGwyLluDerGw==
-X-Received: by 2002:a05:6808:287:: with SMTP id
- z7mr754246oic.139.1572900991627; 
- Mon, 04 Nov 2019 12:56:31 -0800 (PST)
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com.
- [209.85.167.174])
- by smtp.gmail.com with ESMTPSA id m9sm5105211oim.9.2019.11.04.12.56.30
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Nov 2019 12:56:31 -0800 (PST)
-Received: by mail-oi1-f174.google.com with SMTP id r27so15439610oij.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 12:56:30 -0800 (PST)
-X-Received: by 2002:aca:ec89:: with SMTP id k131mr840013oih.154.1572900990777; 
- Mon, 04 Nov 2019 12:56:30 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=DHyq0HiLvr2oRZ7fsWKuvfiy0KSCrmJQP2N7wxll3ck=;
+ b=ue1o4KnOkq23bBBDEYjcBYIXAJVGHEISYFSMaziOQXo6bnkepVDNBWT2Sdd0EZGlTt
+ ChP8iBVZuiY4j6eN+crCOwQ9xgGDaIYO4tG7G3CCdpLflBnRGkmgZnB1XXRbNv1TOGNV
+ PaMu1Lvjtte4fkCjymdnUctYLesXUGV1+EsalG89KET/1Ygr/PAe08PJCKuWxJtibpmh
+ SYr5k1pxdCnV9lJPqyRrgnHY37bwGpIN8sDbUAnLUnAEnNWqlu6Q5nxMGh4/7DmAU5Qr
+ 15NFvp9XbFKhY8SaJAF33l1/M1sUIRuLZUwouL/zn1oORDyo8PAEaZxwSvT+hkhr4Qr0
+ Z0gA==
+X-Gm-Message-State: APjAAAXxA5H2vnHle81CnDylEp2ho1UTKA1tOoTtnde5BksdZlbXSxPJ
+ MmD0xfNvU1A6I0Kzp5Cua760Qg==
+X-Google-Smtp-Source: APXvYqzcbzV98q5L3IoWgV1btJnfFj6kw4clhQUw4ORkigswFo+IphwlhQMZSa6Hl6m/W3Z9gLas4A==
+X-Received: by 2002:ad4:4092:: with SMTP id l18mr462915qvp.114.1572901059500; 
+ Mon, 04 Nov 2019 12:57:39 -0800 (PST)
+Received: from ziepe.ca
+ (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net.
+ [142.162.113.180])
+ by smtp.gmail.com with ESMTPSA id l20sm5226323qtq.78.2019.11.04.12.57.38
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 04 Nov 2019 12:57:38 -0800 (PST)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+ (envelope-from <jgg@ziepe.ca>)
+ id 1iRjPu-0000Zj-4J; Mon, 04 Nov 2019 16:57:38 -0400
+Date: Mon, 4 Nov 2019 16:57:38 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v2 07/18] infiniband: set FOLL_PIN, FOLL_LONGTERM via
+ pin_longterm_pages*()
+Message-ID: <20191104205738.GH30938@ziepe.ca>
+References: <20191103211813.213227-1-jhubbard@nvidia.com>
+ <20191103211813.213227-8-jhubbard@nvidia.com>
+ <20191104203346.GF30938@ziepe.ca>
+ <578c1760-7221-4961-9f7d-c07c22e5c259@nvidia.com>
 MIME-Version: 1.0
-References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-36-linux@rasmusvillemoes.dk>
- <4e2ac670-2bf4-fb47-2130-c0120bcf0111@c-s.fr>
- <VE1PR04MB6687D4620E32176BDC120DBA8F620@VE1PR04MB6687.eurprd04.prod.outlook.com>
- <24ea27b6-adea-cc74-f480-b68de163f531@rasmusvillemoes.dk>
-In-Reply-To: <24ea27b6-adea-cc74-f480-b68de163f531@rasmusvillemoes.dk>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Mon, 4 Nov 2019 14:56:19 -0600
-X-Gmail-Original-Message-ID: <CADRPPNQ4dq1pnvNU71vNEgk1V5ovrT9O2=UMJxG45=ZSRdJ4ig@mail.gmail.com>
-Message-ID: <CADRPPNQ4dq1pnvNU71vNEgk1V5ovrT9O2=UMJxG45=ZSRdJ4ig@mail.gmail.com>
-Subject: Re: [PATCH v3 35/36] net/wan: make FSL_UCC_HDLC explicitly depend on
- PPC32
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <578c1760-7221-4961-9f7d-c07c22e5c259@nvidia.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,89 +87,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Scott Wood <oss@buserror.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 4, 2019 at 2:39 AM Rasmus Villemoes
-<linux@rasmusvillemoes.dk> wrote:
->
-> On 01/11/2019 23.31, Leo Li wrote:
-> >
-> >
-> >> -----Original Message-----
-> >> From: Christophe Leroy <christophe.leroy@c-s.fr>
-> >> Sent: Friday, November 1, 2019 11:30 AM
-> >> To: Rasmus Villemoes <linux@rasmusvillemoes.dk>; Qiang Zhao
-> >> <qiang.zhao@nxp.com>; Leo Li <leoyang.li@nxp.com>
-> >> Cc: linuxppc-dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.or=
-g;
-> >> linux-kernel@vger.kernel.org; Scott Wood <oss@buserror.net>;
-> >> netdev@vger.kernel.org
-> >> Subject: Re: [PATCH v3 35/36] net/wan: make FSL_UCC_HDLC explicitly
-> >> depend on PPC32
-> >>
-> >>
-> >>
-> >> Le 01/11/2019 =C3=A0 13:42, Rasmus Villemoes a =C3=A9crit :
-> >>> Currently, FSL_UCC_HDLC depends on QUICC_ENGINE, which in turn
-> >> depends
-> >>> on PPC32. As preparation for removing the latter and thus allowing th=
-e
-> >>> core QE code to be built for other architectures, make FSL_UCC_HDLC
-> >>> explicitly depend on PPC32.
-> >>
-> >> Is that really powerpc specific ? Can't the ARM QE perform HDLC on UCC=
- ?
->
-> I think the driver would build on ARM. Whether it works I don't know. I
-> know it does not build on 64 bit hosts (see kbuild report for v2,23/23).
+On Mon, Nov 04, 2019 at 12:48:13PM -0800, John Hubbard wrote:
+> On 11/4/19 12:33 PM, Jason Gunthorpe wrote:
+> ...
+> >> diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
+> >> index 24244a2f68cc..c5a78d3e674b 100644
+> >> +++ b/drivers/infiniband/core/umem.c
+> >> @@ -272,11 +272,10 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, unsigned long addr,
+> >>  
+> >>  	while (npages) {
+> >>  		down_read(&mm->mmap_sem);
+> >> -		ret = get_user_pages(cur_base,
+> >> +		ret = pin_longterm_pages(cur_base,
+> >>  				     min_t(unsigned long, npages,
+> >>  					   PAGE_SIZE / sizeof (struct page *)),
+> >> -				     gup_flags | FOLL_LONGTERM,
+> >> -				     page_list, NULL);
+> >> +				     gup_flags, page_list, NULL);
+> > 
+> > FWIW, this one should be converted to fast as well, I think we finally
+> > got rid of all the blockers for that?
+> > 
+> 
+> I'm not aware of any blockers on the gup.c end, anyway. The only broken thing we
+> have there is "gup remote + FOLL_LONGTERM". But we can do "gup fast + LONGTERM". 
 
-The problem for arm64 can be easy to fix.  Actually I don't think it
-is neccessarily to be compiled on all architectures except powerpc,
-arm and arm64.  I am surprised that you made the core QE code compile
-for all architecture(although still have some kbuild warnings)
+I mean the use of the mmap_sem here is finally in a way where we can
+just delete the mmap_sem and use _fast
+ 
+ie, AFAIK there is no need for the mmap_sem to be held during
+ib_umem_add_sg_table()
 
->
-> > No.  Actually the HDLC and TDM are the major reason to integrate a QE o=
-n the ARM based Layerscape SoCs.
->
-> [citation needed].
+This should probably be a standalone patch however
 
-I got this message from our marketing team.  Also it is reflected on
-marketing materials like
-https://www.nxp.com/products/processors-and-microcontrollers/arm-processors=
-/layerscape-communication-process/qoriq-layerscape-1043a-and-1023a-multicor=
-e-communications-processors:LS1043A
-
-"The QorIQ LS1043A ... integrated QUICC Engine=C2=AE for legacy glue-less
-HDLC, TDM or Profibus support."
-
->
-> > Since Rasmus doesn't have the hardware to test this feature Qiang Zhao =
-probably can help verify the functionality of TDM and we can drop this patc=
-h.
->
-> No, this patch cannot be dropped. Please see the kbuild complaints for
-> v2,23/23 about use of IS_ERR_VALUE on not-sizeof(long) entities. I see
-> kbuild has complained about the same thing for v3 since apparently the
-> same thing appears in ucc_slow.c. So I'll fix that.
-
-When I made this comment I didn't notice you have removed all the
-architectural dependencies for CONFIG_QUICC_ENGINE.  If the
-QUICC_ENGINE is only buidable on powerpc, arm and arm64, this change
-will not be needed.
-
-BTW, I'm not sure if it is a good idea to make it selectable on these
-unrelavent architectures.  Real architectural dependencies and
-COMPILE_TEST dependency will be better if we really want to test the
-buildability on other platforms.
-
-Regards,
-Leo
+Jason
