@@ -2,78 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08EDEDA03
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 08:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC689EDA4F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 09:04:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4764Th3XrDzF58H
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 18:40:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47651W30TqzF509
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 19:04:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::244;
- helo=mail-lj1-x244.google.com; envelope-from=linux@rasmusvillemoes.dk;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=tiwai@suse.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="fKyAoSLb"; dkim-atps=neutral
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4764Rb1NFwzF4ys
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2019 18:38:49 +1100 (AEDT)
-Received: by mail-lj1-x244.google.com with SMTP id t5so16437175ljk.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Nov 2019 23:38:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Skx+IlvEjbz4Ey3Z8Es5BpI/gDpf4xIU9seBvakWE2o=;
- b=fKyAoSLbBB7K6Hwz7WQ1hkLB8UolD91873nvpgYDwu3vHgk9FskSurtOXN9GkL1c/5
- O1QO4r/LPsSNuj4aQkwxPg2auKprW4F4lCLH/I6JsLtqOEwdNwfRS8W2sWECsVQqK6CO
- JdWAYkhmIGvDXKDiJ6rIDpzfpG3P7N4TPq36U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=Skx+IlvEjbz4Ey3Z8Es5BpI/gDpf4xIU9seBvakWE2o=;
- b=DDHv5lz15x5KyqZyKFXaHVjPWuzHC8ankLnpccbG7JYcFYJzGFcNyJ8n0UHdFK19AH
- XYFs49pdS4lPKDjy8ATXAPe4w4k+LNU31Zbmqq6zcfzVVPC1m5FPSIdf34h+rTT+dStP
- UVxMYpGrii1609Ty03EpjoNPyO8EOt6u7QXfdg+LaPUGPWeveK3eNFDIeUJOcos34eX+
- 2AOQn9u/mv6gsROP7PyF9NqWaRI7jfl528UR6s2Dui5CkKakfbvHaK0jaYXYIrSa64Qn
- lmNxwKW86CoK/qlsT2RWDhAoUJJD3s5Al3EkePBJ+z8JHIYLheosZBFXPzYbkV5MGh7N
- WlXA==
-X-Gm-Message-State: APjAAAW3ZOir3wg8jiq+eKV7TlcL9Jlg7ZE0KrmWGr65lGHsLEacWNc+
- YYyZP8Efw8qiSugO08bmNek6Cw==
-X-Google-Smtp-Source: APXvYqy0dojhXdV/Wyv7nl7DnnJ1xyl+IlR4kyBZvriN/BA2WM6WGs9kvJj6pwDEOoKIklqLOYQZtg==
-X-Received: by 2002:a2e:5d1:: with SMTP id 200mr18228489ljf.50.1572853123654; 
- Sun, 03 Nov 2019 23:38:43 -0800 (PST)
-Received: from [172.16.11.28] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id c5sm6344575ljd.57.2019.11.03.23.38.42
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 03 Nov 2019 23:38:42 -0800 (PST)
-Subject: Re: [PATCH v3 28/36] serial: ucc_uart: explicitly include
- soc/fsl/cpm.h
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
-References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-1-linux@rasmusvillemoes.dk>
- <20191101124210.14510-29-linux@rasmusvillemoes.dk>
- <a921b57b-04d5-4874-89e2-df29dfe99bfc@c-s.fr>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <0acb2e96-3485-5e49-bed1-8deb2051cb91@rasmusvillemoes.dk>
-Date: Mon, 4 Nov 2019 08:38:41 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <a921b57b-04d5-4874-89e2-df29dfe99bfc@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4764zM35rWzF3Zq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2019 19:02:47 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 80E71AD0B;
+ Mon,  4 Nov 2019 08:02:42 +0000 (UTC)
+Date: Mon, 04 Nov 2019 09:02:41 +0100
+Message-ID: <s5himo0cbmm.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: youling 257 <youling257@gmail.com>
+Subject: Re: ALSA: pcm: use dma_can_mmap() to check if a device supports
+ dma_mmap_*
+In-Reply-To: <CAOzgRdYSaaF6OkXGME2=fn1dfTbpyt_GqEs=10oXH=V6SudfyA@mail.gmail.com>
+References: <CAOzgRdYSaaF6OkXGME2=fn1dfTbpyt_GqEs=10oXH=V6SudfyA@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,27 +48,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-serial@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
+ Vladimir Murzin <vladimir.murzin@arm.com>, linux-parisc@vger.kernel.org,
+ linux-sh@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
+ Robin Murphy <robin.murphy@arm.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-m68k@lists.linux-m68k.org, gregkh@google.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/11/2019 17.19, Christophe Leroy wrote:
-> Le 01/11/2019 à 13:42, Rasmus Villemoes a écrit :
->> This driver uses #defines from soc/fsl/cpm.h, so instead of relying on
->> some other header pulling that in, do that explicitly. This is
->> preparation for allowing this driver to build on ARM.
->>
+On Mon, 04 Nov 2019 08:06:37 +0100,
+youling 257 wrote:
 > 
-> UCC are only on QE.
-> CPM has SCCs. instead.
-> So this driver shouldn't need cpm.h
+> This patch cause oops on android mainline kernel about gadget audio_source.
+> Androidx86 run on android mainline kernel.
+> 
+> [ 385.104963] android_work: sent uevent USB_STATE=CONNECTED
+> [ 385.109006] android_work: sent uevent USB_STATE=DISCONNECTED
+> [ 385.182024] android_work: sent uevent USB_STATE=CONNECTED
+> [ 385.184737] configfs-gadget gadget: high-speed config #1: b
+> [ 385.184921] android_work: sent uevent USB_STATE=CONFIGURED
+> [ 385.285268] BUG: kernel NULL pointer dereference, address: 0000000000000220
+> [ 385.285339] #PF: supervisor read access in kernel mode
+> [ 385.285374] #PF: error_code(0x0000) - not-present page
+> [ 385.285436] PGD 80000000791e6067 P4D 80000000791e6067 PUD 0
+> [ 385.285473] Oops: 0000 [#1] PREEMPT SMP PTI
+> [ 385.285509] CPU: 0 PID: 5780 Comm: Binder:1383_5 Tainted: G O
+> 5.4.0-rc6-android-x86_64+ #1
+> [ 385.285571] Hardware name: Insyde ONDA Tablet/ONDA Tablet, BIOS
+> ONDA.D890HBBNR0A 03/11/2015
+> [ 385.285639] RIP: 0010:dma_can_mmap+0x5/0x30
+> [ 385.285675] Code: 74 11 e9 ae 98 b2 00 48 8b 05 9f 40 94 01 48 85 c0
+> 75 e3 31 c0 c3 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44
+> 00 00 <48> 8b 87 20 02 00 00 48 85 c0 74 09 48 83 78 10 00 0f 95 c0 c3
+> 48
+> [ 385.285762] RSP: 0018:ffffb39443b63b78 EFLAGS: 00010246
+> [ 385.285797] RAX: 0000000000000001 RBX: ffffa28b91756600 RCX: 0000000000000040
+> [ 385.285857] RDX: ffffffffb62b2a00 RSI: 0000000000000000 RDI: 0000000000000000
+> [ 385.285917] RBP: ffffa28bac69f800 R08: ffffffffb63141b0 R09: ffffa28bf9a34a88
+> [ 385.285952] R10: ffffffffb62b2be0 R11: ffffffffb62b2bd0 R12: 0000000000000008
+> [ 385.286013] R13: 0000000000000000 R14: ffffa28bacd736a8 R15: ffffa28bacd736c8
+> [ 385.286076] FS: 0000000000000000(0000) GS:ffffa28bfb600000(0063)
+> knlGS:00000000f5d81970
+> [ 385.286110] CS: 0010 DS: 002b ES: 002b CR0: 0000000080050033
+> [ 385.286171] CR2: 0000000000000220 CR3: 000000007b2f6000 CR4: 00000000001006f0
+> [ 385.286232] Call Trace:
+> [ 385.286275] snd_pcm_hw_constraints_complete+0x3e/0x1f0
+> [ 385.286314] snd_pcm_open_substream+0x94/0x140
+> [ 385.286377] snd_pcm_open+0xf0/0x240
+> [ 385.286416] ? wake_up_q+0x60/0x60
+> [ 385.286460] snd_pcm_playback_open+0x3d/0x60
+> [ 385.286533] chrdev_open+0xa2/0x1c0
+> [ 385.286574] ? cdev_put.part.0+0x20/0x20
+> [ 385.286615] do_dentry_open+0x13a/0x380
+> [ 385.286686] path_openat+0x588/0x15d0
+> [ 385.286728] do_filp_open+0x91/0x100
+> [ 385.286769] ? __check_object_size+0x136/0x147
+> [ 385.286840] do_sys_open+0x184/0x280
+> [ 385.286880] ? handle_mm_fault+0xd7/0x1c0
+> [ 385.286920] do_fast_syscall_32+0x8e/0x250
+> [ 385.286992] entry_SYSENTER_compat+0x7c/0x8e
+> 
+> [ 385.287302] CR2: 0000000000000220
+> [ 385.287391] ---[ end trace 73ffcefcbbe2b9a0 ]---
 
-But it does. At the very least for the BD_SC_* defines, possibly others
-things. It's possible one could split off the common part to a separate
-header, but that sort of cleanup/refactoring is beyond what I'd be
-comfortable including in this series.
+Exactly which driver is hit?  The code path is via hw_support_mmap()
+and it's currently:
 
-Rasmus
+static bool hw_support_mmap(struct snd_pcm_substream *substream)
+{
+	if (!(substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP))
+		return false;
+
+	if (substream->ops->mmap ||
+	    substream->dma_buffer.dev.type != SNDRV_DMA_TYPE_DEV)
+		return true;
+
+	return dma_can_mmap(substream->dma_buffer.dev.dev);
+}
+
+so at least the driver has already set the SNDRV_DMA_TYPE_DEV
+explicitly (it's non-zero) and some device object, but the device
+object was invalid for dma_can_mmap() call.
+
+This smells more like a driver-side issue, not in the core side.
+
+
+thanks,
+
+Takashi
