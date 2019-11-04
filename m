@@ -2,71 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF306EF1DE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 01:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E1CEF24D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 01:55:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476Vh25rDKzF42n
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 11:21:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476WS43ZdrzF3fj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 11:55:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d41;
+ helo=mail-io1-xd41.google.com; envelope-from=youling257@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="nx62lGrP"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Kmj2s2Wh"; 
  dkim-atps=neutral
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476VdG0s5tzF3mm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 11:18:41 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dc0bfe10001>; Mon, 04 Nov 2019 16:18:41 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Mon, 04 Nov 2019 16:18:35 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Mon, 04 Nov 2019 16:18:35 -0800
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 5 Nov
- 2019 00:18:34 +0000
-Subject: Re: [PATCH v2 12/18] mm/gup: track FOLL_PIN pages
-To: Jerome Glisse <jglisse@redhat.com>
-References: <20191103211813.213227-1-jhubbard@nvidia.com>
- <20191103211813.213227-13-jhubbard@nvidia.com>
- <20191104185238.GG5134@redhat.com>
- <7821cf87-75a8-45e2-cf28-f85b62192416@nvidia.com>
- <20191104234920.GA18515@redhat.com>
-X-Nvconfidentiality: public
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <f587647d-83dc-5bde-d244-f522ec5bda60@nvidia.com>
-Date: Mon, 4 Nov 2019 16:18:33 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4763ks3GCLzF2R7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2019 18:06:57 +1100 (AEDT)
+Received: by mail-io1-xd41.google.com with SMTP id c11so17184311iom.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Nov 2019 23:06:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:from:date:message-id:subject:to;
+ bh=v3wRS/GCt1JcbtGZPLunVzhglTfqvaHyzRcXN60Gypc=;
+ b=Kmj2s2WhR+XPsN5lHjLIX7ONh1QlAnYolGlDouLDW4frOZHIoj3qP03fR3JlgZQ/HQ
+ QN5Ef8x2KeAwmS4Vn3pXhoQ2Jv53GGupsHzqzw9S/WDQMMIXvcSlg3b8qkxBrkR3cGuC
+ 4FV5bz2mNwFuQ//tTgwmcSXn8Jo0y7RRpwiaMd+7EUukDhv0NcfIPmrWu8hXNF3A9jsy
+ m4D28triGwlX6fPzPg+e4fwNgxjo2gxW4dEP5I0+QDtJkkgi3DfozK7QVW+ACqEoXTFp
+ FrWPu3sON0UxdV1Qt9u6Jje2RCq4madKVgkOBjUgCNgQd1Cr/uYGNxeNyHqOUOuomDgo
+ MoEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+ bh=v3wRS/GCt1JcbtGZPLunVzhglTfqvaHyzRcXN60Gypc=;
+ b=nOWvJqToYCIqFs06QCaV35Bw+jmjkHAssNiHUDnNWF+aPwuSpSWtnvgHhYHpnTq4bV
+ MhQ2GXz/Yu9e2Ypx3IomxC4DJQVRZ2hgUtRH1gHg9HBFuqd/cco8tB0qkhE5Rljb/1Al
+ 8X+hWPmSQ2Qa1yL/XrgJTHevfi5yhURiaTXRJMz2vdWAO4W83RixlZ3gjrTAQMG4On4S
+ KPhZ1F7/keMofjJgx4dqPO+KsfCVWoCcLVHgIsryYwv/2MBQjNnRc6OLtEFlR/GyfwU4
+ KMcW0nNb1mIju8OBQpDW+JyhQ29Rh/gKV6cgKvoSAPYlTqPyy5+tHAIPhgWbH52vmCzW
+ 7n6w==
+X-Gm-Message-State: APjAAAUiSLqQ/yRrxPEK+5wrc4/jQ9wI1+TvoqR1KiB4yRTzuoWl+xbd
+ WNobVk5kt+EC3RCQ45IfpSRO2zv5ZeODQec75OQ=
+X-Google-Smtp-Source: APXvYqySjZdVvaqyUTMLUFbcyeLTpZCKzFgAkvT8BjIlZ6MqTHedk9riyVyXoTdqiniHs2r3O/+1jeHNx5MSmZXMYRs=
+X-Received: by 2002:a5d:8e17:: with SMTP id e23mr11694586iod.263.1572851214146; 
+ Sun, 03 Nov 2019 23:06:54 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191104234920.GA18515@redhat.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="windows-1252"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1572913121; bh=it/avAzbdjbPt9c7ZhR3SugLAHDAeo7qSUQnTa8Gd0Y=;
- h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=nx62lGrPMlwQBcqF9vYxqUTNBIlMwnY3v4vXnUqcAbCO2/xdO7aUYp8qclkmts9z7
- gtH9Ov6maSgTLFms+gOL/dE2dCoQ1xMQpdGQy9Akbo7N7NyETXXQXZTJZqjI7N8kF+
- n3RQEPIGAaiZBh6nvWW7FoLz32nqtlJ71DClIb0EMAf4xWjkAmpFYtedbKPVLxdf/b
- tlQKPTEISDGthKQTi64XGZlvQXC4V843TbV9Pv5FMwu9POX8T7Ox5OlQOI/t1RVVuU
- ehgOt7zOUTQcQRd6bK+4WI3VER1yK/cV2GljR29nekSSEXFENv8o9uy5i0m+683Ub0
- piAG/LY3Z7DNw==
+From: youling 257 <youling257@gmail.com>
+Date: Mon, 4 Nov 2019 15:06:37 +0800
+Message-ID: <CAOzgRdYSaaF6OkXGME2=fn1dfTbpyt_GqEs=10oXH=V6SudfyA@mail.gmail.com>
+Subject: Re: ALSA: pcm: use dma_can_mmap() to check if a device supports
+ dma_mmap_*
+To: linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>, 
+ Vladimir Murzin <vladimir.murzin@arm.com>, linux-parisc@vger.kernel.org, 
+ linux-sh@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, 
+ Helge Deller <deller@gmx.de>, x86@kernel.org, 
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-m68k@lists.linux-m68k.org, 
+ Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org,
+ hch@lst.de, gregkh@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Tue, 05 Nov 2019 11:54:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,137 +79,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Dan, there is a question for you further down:
+This patch cause oops on android mainline kernel about gadget audio_source.
+Androidx86 run on android mainline kernel.
 
+[ 385.104963] android_work: sent uevent USB_STATE=CONNECTED
+[ 385.109006] android_work: sent uevent USB_STATE=DISCONNECTED
+[ 385.182024] android_work: sent uevent USB_STATE=CONNECTED
+[ 385.184737] configfs-gadget gadget: high-speed config #1: b
+[ 385.184921] android_work: sent uevent USB_STATE=CONFIGURED
+[ 385.285268] BUG: kernel NULL pointer dereference, address: 0000000000000220
+[ 385.285339] #PF: supervisor read access in kernel mode
+[ 385.285374] #PF: error_code(0x0000) - not-present page
+[ 385.285436] PGD 80000000791e6067 P4D 80000000791e6067 PUD 0
+[ 385.285473] Oops: 0000 [#1] PREEMPT SMP PTI
+[ 385.285509] CPU: 0 PID: 5780 Comm: Binder:1383_5 Tainted: G O
+5.4.0-rc6-android-x86_64+ #1
+[ 385.285571] Hardware name: Insyde ONDA Tablet/ONDA Tablet, BIOS
+ONDA.D890HBBNR0A 03/11/2015
+[ 385.285639] RIP: 0010:dma_can_mmap+0x5/0x30
+[ 385.285675] Code: 74 11 e9 ae 98 b2 00 48 8b 05 9f 40 94 01 48 85 c0
+75 e3 31 c0 c3 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44
+00 00 <48> 8b 87 20 02 00 00 48 85 c0 74 09 48 83 78 10 00 0f 95 c0 c3
+48
+[ 385.285762] RSP: 0018:ffffb39443b63b78 EFLAGS: 00010246
+[ 385.285797] RAX: 0000000000000001 RBX: ffffa28b91756600 RCX: 0000000000000040
+[ 385.285857] RDX: ffffffffb62b2a00 RSI: 0000000000000000 RDI: 0000000000000000
+[ 385.285917] RBP: ffffa28bac69f800 R08: ffffffffb63141b0 R09: ffffa28bf9a34a88
+[ 385.285952] R10: ffffffffb62b2be0 R11: ffffffffb62b2bd0 R12: 0000000000000008
+[ 385.286013] R13: 0000000000000000 R14: ffffa28bacd736a8 R15: ffffa28bacd736c8
+[ 385.286076] FS: 0000000000000000(0000) GS:ffffa28bfb600000(0063)
+knlGS:00000000f5d81970
+[ 385.286110] CS: 0010 DS: 002b ES: 002b CR0: 0000000080050033
+[ 385.286171] CR2: 0000000000000220 CR3: 000000007b2f6000 CR4: 00000000001006f0
+[ 385.286232] Call Trace:
+[ 385.286275] snd_pcm_hw_constraints_complete+0x3e/0x1f0
+[ 385.286314] snd_pcm_open_substream+0x94/0x140
+[ 385.286377] snd_pcm_open+0xf0/0x240
+[ 385.286416] ? wake_up_q+0x60/0x60
+[ 385.286460] snd_pcm_playback_open+0x3d/0x60
+[ 385.286533] chrdev_open+0xa2/0x1c0
+[ 385.286574] ? cdev_put.part.0+0x20/0x20
+[ 385.286615] do_dentry_open+0x13a/0x380
+[ 385.286686] path_openat+0x588/0x15d0
+[ 385.286728] do_filp_open+0x91/0x100
+[ 385.286769] ? __check_object_size+0x136/0x147
+[ 385.286840] do_sys_open+0x184/0x280
+[ 385.286880] ? handle_mm_fault+0xd7/0x1c0
+[ 385.286920] do_fast_syscall_32+0x8e/0x250
+[ 385.286992] entry_SYSENTER_compat+0x7c/0x8e
 
-On 11/4/19 3:49 PM, Jerome Glisse wrote:
-> On Mon, Nov 04, 2019 at 02:49:18PM -0800, John Hubbard wrote:
-...
->>> Maybe add a small comment about wrap around :)
->>
->>
->> I don't *think* the count can wrap around, due to the checks in user_page_ref_inc().
->>
->> But it's true that the documentation is a little light here...What did you have 
->> in mind?
-> 
-> About false positive case (and how unlikely they are) and that wrap
-> around is properly handle. Maybe just a pointer to the documentation
-> so that people know they can go look there for details. I know my
-> brain tend to forget where to look for things so i like to be constantly
-> reminded hey the doc is Documentations/foobar :)
-> 
+[ 385.287302] CR2: 0000000000000220
+[ 385.287391] ---[ end trace 73ffcefcbbe2b9a0 ]---
+[ 385.296269] RIP: 0010:dma_can_mmap+0x5/0x30
+[ 385.296337] Code: 74 11 e9 ae 98 b2 00 48 8b 05 9f 40 94 01 48 85 c0
+75 e3 31 c0 c3 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44
+00 00 <48> 8b 87 20 02 00 00 48 85 c0 74 09 48 83 78 10 00 0f 95 c0 c3
+48
+[ 385.296407] RSP: 0018:ffffb39443b63b78 EFLAGS: 00010246
+[ 385.296477] RAX: 0000000000000001 RBX: ffffa28b91756600 RCX: 0000000000000040
+[ 385.296516] RDX: ffffffffb62b2a00 RSI: 0000000000000000 RDI: 0000000000000000
+[ 385.296584] RBP: ffffa28bac69f800 R08: ffffffffb63141b0 R09: ffffa28bf9a34a88
+[ 385.296654] R10: ffffffffb62b2be0 R11: ffffffffb62b2bd0 R12: 0000000000000008
+[ 385.296693] R13: 0000000000000000 R14: ffffa28bacd736a8 R15: ffffa28bacd736c8
+[ 385.296761] FS: 0000000000000000(0000) GS:ffffa28bfb600000(0063)
+knlGS:00000000f5d81970
+[ 385.296830] CS: 0010 DS: 002b ES: 002b CR0: 0000000080050033
+[ 385.296867] CR2: 0000000000000220 CR3: 000000007b2f6000 CR4: 00000000001006f0
+[ 385.296936] Kernel panic - not syncing: Fatal exception
+[ 385.296985] Kernel Offset: 0x33e00000 from 0xffffffff81000000
+(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[ 385.305185] Rebooting in 5 seconds..
 
-I see. OK, here's a version with a thoroughly overhauled comment header:
+Revert it no the oops.
 
-/**
- * page_dma_pinned() - report if a page is pinned for DMA.
- *
- * This function checks if a page has been pinned via a call to
- * pin_user_pages*() or pin_longterm_pages*().
- *
- * The return value is partially fuzzy: false is not fuzzy, because it means
- * "definitely not pinned for DMA", but true means "probably pinned for DMA, but
- * possibly a false positive due to having at least GUP_PIN_COUNTING_BIAS worth
- * of normal page references".
- *
- * False positives are OK, because: a) it's unlikely for a page to get that many
- * refcounts, and b) all the callers of this routine are expected to be able to
- * deal gracefully with a false positive.
- *
- * For more information, please see Documentation/vm/pin_user_pages.rst.
- *
- * @page:	pointer to page to be queried.
- * @Return:	True, if it is likely that the page has been "dma-pinned".
- *		False, if the page is definitely not dma-pinned.
- */
-static inline bool page_dma_pinned(struct page *page)
+Revert "ALSA: pcm: use dma_can_mmap() to check if a
+ device supports dma_mmap_*"
 
+This reverts commit 425da159707b271dc865d7e167ac104a0e60e4af.
+---
+ sound/core/pcm_native.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
->>> [...]
->>>
->>>> @@ -1930,12 +2028,20 @@ static int __gup_device_huge(unsigned long pfn, unsigned long addr,
->>>>  
->>>>  		pgmap = get_dev_pagemap(pfn, pgmap);
->>>>  		if (unlikely(!pgmap)) {
->>>> -			undo_dev_pagemap(nr, nr_start, pages);
->>>> +			undo_dev_pagemap(nr, nr_start, flags, pages);
->>>>  			return 0;
->>>>  		}
->>>>  		SetPageReferenced(page);
->>>>  		pages[*nr] = page;
->>>> -		get_page(page);
->>>> +
->>>> +		if (flags & FOLL_PIN) {
->>>> +			if (unlikely(!user_page_ref_inc(page))) {
->>>> +				undo_dev_pagemap(nr, nr_start, flags, pages);
->>>> +				return 0;
->>>> +			}
->>>
->>> Maybe add a comment about a case that should never happens ie
->>> user_page_ref_inc() fails after the second iteration of the
->>> loop as it would be broken and a bug to call undo_dev_pagemap()
->>> after the first iteration of that loop.
->>>
->>> Also i believe that this should never happens as if first
->>> iteration succeed than __page_cache_add_speculative() will
->>> succeed for all the iterations.
->>>
->>> Note that the pgmap case above follows that too ie the call to
->>> get_dev_pagemap() can only fail on first iteration of the loop,
->>> well i assume you can never have a huge device page that span
->>> different pgmap ie different devices (which is a reasonable
->>> assumption). So maybe this code needs fixing ie :
->>>
->>> 		pgmap = get_dev_pagemap(pfn, pgmap);
->>> 		if (unlikely(!pgmap))
->>> 			return 0;
->>>
->>>
->>
->> OK, yes that does make sense. And I think a comment is adequate,
->> no need to check for bugs during every tail page iteration. So how 
->> about this, as a preliminary patch:
-> 
-> Actualy i thought about it and i think that there is pgmap
-> per section and thus maybe one device can have multiple pgmap
-> and that would be an issue for page bigger than section size
-> (ie bigger than 128MB iirc). I will go double check that, but
-> maybe Dan can chime in.
-> 
-> In any case my comment above is correct for the page ref
-> increment, if the first one succeed than others will too
-> or otherwise it means someone is doing too many put_page()/
-> put_user_page() which is _bad_ :)
-> 
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 91c6ad58729f..61f6229c9124 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -220,12 +220,13 @@ static bool hw_support_mmap(struct
+snd_pcm_substream *substream)
+ {
+  if (!(substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP))
+   return false;
+-
+- if (substream->ops->mmap ||
+- substream->dma_buffer.dev.type != SNDRV_DMA_TYPE_DEV)
+- return true;
+-
+- return dma_can_mmap(substream->dma_buffer.dev.dev);
++ /* architecture supports dma_mmap_coherent()? */
++#if defined(CONFIG_MMU) || !defined(CONFIG_HAS_DMA)
++ if (!substream->ops->mmap &&
++ substream->dma_buffer.dev.type == SNDRV_DMA_TYPE_DEV)
++ return false;
++#endif
++ return true;
+ }
 
-I'll wait to hear from Dan before doing anything rash. :)
-
-
-thanks,
-
-John Hubbard
-NVIDIA
+ static int constrain_mask_params(struct snd_pcm_substream *substream,
