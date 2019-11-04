@@ -1,81 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E029EEB3D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 22:35:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1476EEB42
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2019 22:36:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476R0K19VvzF4LM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 08:34:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476R2Q6tf3zDrj0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 08:36:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476QtS6Nf9zF4HS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 08:29:52 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA4LTD17004878
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 4 Nov 2019 16:29:51 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w2rhn8fvs-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 16:29:50 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Mon, 4 Nov 2019 21:29:48 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 4 Nov 2019 21:29:43 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xA4LT7fY41943420
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Nov 2019 21:29:08 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1E36A405F;
- Mon,  4 Nov 2019 21:29:42 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB1FFA4054;
- Mon,  4 Nov 2019 21:29:38 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.85.192.56])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  4 Nov 2019 21:29:38 +0000 (GMT)
-From: Ram Pai <linuxram@us.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC v1 2/2] powerpc/pseries/iommu: Use dma_iommu_ops for Secure VMs
- aswell.
-Date: Mon,  4 Nov 2019 13:28:43 -0800
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
-References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
- <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19110421-4275-0000-0000-0000037AC033
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110421-4276-0000-0000-0000388E0841
-Message-Id: <1572902923-8096-3-git-send-email-linuxram@us.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-04_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=646 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1911040205
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="qKL2SABn"; 
+ dkim-atps=neutral
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476QzR1Vq8zF4Kd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 08:34:10 +1100 (AEDT)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dc099520001>; Mon, 04 Nov 2019 13:34:10 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Mon, 04 Nov 2019 13:34:05 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate102.nvidia.com on Mon, 04 Nov 2019 13:34:05 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 4 Nov
+ 2019 21:34:05 +0000
+Subject: Re: [PATCH v2 05/18] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+To: Jason Gunthorpe <jgg@ziepe.ca>
+References: <20191103211813.213227-6-jhubbard@nvidia.com>
+ <20191104173325.GD5134@redhat.com>
+ <be9de35c-57e9-75c3-2e86-eae50904bbdf@nvidia.com>
+ <20191104191811.GI5134@redhat.com>
+ <e9656d47-b4a1-da8a-e8cc-ebcfb8cc06d6@nvidia.com>
+ <20191104195248.GA7731@redhat.com>
+ <25ec4bc0-caaa-2a01-2ae7-2d79663a40e1@nvidia.com>
+ <20191104203153.GB7731@redhat.com> <20191104203702.GG30938@ziepe.ca>
+ <d0890a8b-c349-0515-2570-10e83979836b@nvidia.com>
+ <20191104211525.GJ30938@ziepe.ca>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <caaaaf52-490b-6ce1-81d8-675013354c73@nvidia.com>
+Date: Mon, 4 Nov 2019 13:34:04 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20191104211525.GJ30938@ziepe.ca>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1572903250; bh=vbo/OzrYq7woOdeOQXzDRocZ8qkmDZ2GrWck8Ge0GIw=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=qKL2SABndBuE0IlTwGECBEmaXKNt9+NUVq+WFlqtOQFVTiU7nDI02BQTOx0obKarz
+ gpxOM5Y6JautiKfOu0FtwOKOgDIpCUi5YMn9VF5RbTl9cVhlQsO6c44+kqa1Gmkh8J
+ VEKyKNOG6Vqk5nkQbEsBguPgBI2Ja3iUp52oe4dwNevVkVV3ApvpTePgu21U23nzfu
+ yfLLAmDkD5PCoZMaxqbgr1s6DM7hOxhvmTI1aiChbyJF4tpKtWS0fJG0BnHlBMS2gJ
+ uFSIwTdydwTYYvW23EYrvHjEOYVqNSM3f00rEJ3//HPrJcaJAle1+bmyry6JSVv/h0
+ e3DYAyiBVB40w==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,42 +82,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, aik@ozlabs.ru, linuxram@us.ibm.com,
- mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
- cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com, hch@lst.de,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Jerome Glisse <jglisse@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This enables IOMMU support for pseries Secure VMs.
+On 11/4/19 1:15 PM, Jason Gunthorpe wrote:
+...
+>> Right, and I thought about this when converting, and realized that the above 
+>> code is working around the current gup.c limitations, which are "cannot support
+>> gup remote with FOLL_LONGTERM".
+> 
+> But AFAICT it doesn't have a problem, the protection test is just too
+> strict, and I guess the control flow needs a bit of fixing..
+> 
+> The issue is this:
+> 
+> static __always_inline long __get_user_pages_locked():
+> {
+>         if (locked) {
+>                 /* if VM_FAULT_RETRY can be returned, vmas become invalid */
+>                 BUG_ON(vmas);
+>                 /* check caller initialized locked */
+>                 BUG_ON(*locked != 1);
+>         }
+> 
+> 
+> so remote could be written as:
+> 
+> if (gup_flags & FOLL_LONGTERM) {
+>    if (WARN_ON_ONCE(locked))
+>         return -EINVAL;
+>    return __gup_longterm_locked(...)
+> }
+> 
+> return __get_user_pages_locked(...)
+> 
+> ??
 
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
----
- arch/powerpc/platforms/pseries/iommu.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+Yes, that loosens it up just enough for the vfio case (which doesn't set 
+"locked") to get through, great! OK, I'll put that (the above plus 
+corresponding vfio fix) in a separate patch first. 
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 07f0847..189717b 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1333,15 +1333,7 @@ void iommu_init_early_pSeries(void)
- 	of_reconfig_notifier_register(&iommu_reconfig_nb);
- 	register_memory_notifier(&iommu_mem_nb);
- 
--	/*
--	 * Secure guest memory is inacessible to devices so regular DMA isn't
--	 * possible.
--	 *
--	 * In that case keep devices' dma_map_ops as NULL so that the generic
--	 * DMA code path will use SWIOTLB to bounce buffers for DMA.
--	 */
--	if (!is_secure_guest())
--		set_pci_dma_ops(&dma_iommu_ops);
-+	set_pci_dma_ops(&dma_iommu_ops);
- }
- 
- static int __init disable_multitce(char *str)
+This should clear things up nicely.
+
+
+thanks,
 -- 
-1.8.3.1
-
+John Hubbard
+NVIDIA
