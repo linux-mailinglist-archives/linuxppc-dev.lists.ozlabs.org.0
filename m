@@ -1,49 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED0DEF1F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 01:28:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF306EF1DE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 01:21:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476Vqw679CzDrCj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 11:27:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476Vh25rDKzF42n
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 11:21:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476Vnv6FQjzF3T4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 11:26:11 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="aG/o4kHD"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 476Vnv2Bzgz9sPK; Tue,  5 Nov 2019 11:26:11 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 476Vnt53rWz9sPL; Tue,  5 Nov 2019 11:26:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1572913570;
- bh=4vQw8TFcfhpZmzAMEYsiE+e2CdNpLcvkZpaqh7Pdm7c=;
- h=From:To:Subject:Date:From;
- b=aG/o4kHD15XJb8q7J2iy8RnZvY38UacpQP4gUn2Ouy7QvB+ijOuh2oMFmtBGiJ/x6
- w88YGMWY+QFmtv595Y00ANkoU3SEN+17peutuVsUR3ANRZupg4n4CTZEkfcnTIm6xq
- WGrOJQraJXT4LaKWqDsoGAIjXTmgf93hwnpki7VwV1ABSCCPIbLfzqAZbHiGFckuw3
- mHPgr2lpmwcJqRHJgeRmcjMNBnY6z8/2NSK0Ou114uKOGHLhFWqjuHroxLTm7dTvEu
- f+Y87T+LZVcXYDs7QrdnlTPYlz9eaD2dTe10hNewHWS1F3fvftjenwLi46aEY+kYn0
- vtVFrzRQHTwyw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] selftests/powerpc: Skip tm-signal-sigreturn-nt if TM not
- available
-Date: Tue,  5 Nov 2019 10:35:24 +1100
-Message-Id: <20191104233524.24348-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="nx62lGrP"; 
+ dkim-atps=neutral
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476VdG0s5tzF3mm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 11:18:41 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dc0bfe10001>; Mon, 04 Nov 2019 16:18:41 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Mon, 04 Nov 2019 16:18:35 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Mon, 04 Nov 2019 16:18:35 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 5 Nov
+ 2019 00:18:34 +0000
+Subject: Re: [PATCH v2 12/18] mm/gup: track FOLL_PIN pages
+To: Jerome Glisse <jglisse@redhat.com>
+References: <20191103211813.213227-1-jhubbard@nvidia.com>
+ <20191103211813.213227-13-jhubbard@nvidia.com>
+ <20191104185238.GG5134@redhat.com>
+ <7821cf87-75a8-45e2-cf28-f85b62192416@nvidia.com>
+ <20191104234920.GA18515@redhat.com>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <f587647d-83dc-5bde-d244-f522ec5bda60@nvidia.com>
+Date: Mon, 4 Nov 2019 16:18:33 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191104234920.GA18515@redhat.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="windows-1252"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1572913121; bh=it/avAzbdjbPt9c7ZhR3SugLAHDAeo7qSUQnTa8Gd0Y=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=nx62lGrPMlwQBcqF9vYxqUTNBIlMwnY3v4vXnUqcAbCO2/xdO7aUYp8qclkmts9z7
+ gtH9Ov6maSgTLFms+gOL/dE2dCoQ1xMQpdGQy9Akbo7N7NyETXXQXZTJZqjI7N8kF+
+ n3RQEPIGAaiZBh6nvWW7FoLz32nqtlJ71DClIb0EMAf4xWjkAmpFYtedbKPVLxdf/b
+ tlQKPTEISDGthKQTi64XGZlvQXC4V843TbV9Pv5FMwu9POX8T7Ox5OlQOI/t1RVVuU
+ ehgOt7zOUTQcQRd6bK+4WI3VER1yK/cV2GljR29nekSSEXFENv8o9uy5i0m+683Ub0
+ piAG/LY3Z7DNw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,52 +78,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On systems where TM (Transactional Memory) is disabled the
-tm-signal-sigreturn-nt test causes a SIGILL:
+Hi Dan, there is a question for you further down:
 
-  test: tm_signal_sigreturn_nt
-  tags: git_version:7c202575ef63
-  !! child died by signal 4
-  failure: tm_signal_sigreturn_nt
 
-We should skip the test if TM is not available.
+On 11/4/19 3:49 PM, Jerome Glisse wrote:
+> On Mon, Nov 04, 2019 at 02:49:18PM -0800, John Hubbard wrote:
+...
+>>> Maybe add a small comment about wrap around :)
+>>
+>>
+>> I don't *think* the count can wrap around, due to the checks in user_page_ref_inc().
+>>
+>> But it's true that the documentation is a little light here...What did you have 
+>> in mind?
+> 
+> About false positive case (and how unlikely they are) and that wrap
+> around is properly handle. Maybe just a pointer to the documentation
+> so that people know they can go look there for details. I know my
+> brain tend to forget where to look for things so i like to be constantly
+> reminded hey the doc is Documentations/foobar :)
+> 
 
-Fixes: 34642d70ac7e ("selftests/powerpc: Add checks for transactional sigreturn")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I see. OK, here's a version with a thoroughly overhauled comment header:
 
-diff --git a/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c b/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c
-index 56fbf9f6bbf3..07c388147b75 100644
---- a/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c
-@@ -10,10 +10,12 @@
-  */
- 
- #define _GNU_SOURCE
-+#include <stdio.h>
- #include <stdlib.h>
- #include <signal.h>
- 
- #include "utils.h"
-+#include "tm.h"
- 
- void trap_signal_handler(int signo, siginfo_t *si, void *uc)
- {
-@@ -29,6 +31,8 @@ int tm_signal_sigreturn_nt(void)
- {
- 	struct sigaction trap_sa;
- 
-+	SKIP_IF(!have_htm());
-+
- 	trap_sa.sa_flags = SA_SIGINFO;
- 	trap_sa.sa_sigaction = trap_signal_handler;
- 
--- 
-2.21.0
+/**
+ * page_dma_pinned() - report if a page is pinned for DMA.
+ *
+ * This function checks if a page has been pinned via a call to
+ * pin_user_pages*() or pin_longterm_pages*().
+ *
+ * The return value is partially fuzzy: false is not fuzzy, because it means
+ * "definitely not pinned for DMA", but true means "probably pinned for DMA, but
+ * possibly a false positive due to having at least GUP_PIN_COUNTING_BIAS worth
+ * of normal page references".
+ *
+ * False positives are OK, because: a) it's unlikely for a page to get that many
+ * refcounts, and b) all the callers of this routine are expected to be able to
+ * deal gracefully with a false positive.
+ *
+ * For more information, please see Documentation/vm/pin_user_pages.rst.
+ *
+ * @page:	pointer to page to be queried.
+ * @Return:	True, if it is likely that the page has been "dma-pinned".
+ *		False, if the page is definitely not dma-pinned.
+ */
+static inline bool page_dma_pinned(struct page *page)
 
+
+>>> [...]
+>>>
+>>>> @@ -1930,12 +2028,20 @@ static int __gup_device_huge(unsigned long pfn, unsigned long addr,
+>>>>  
+>>>>  		pgmap = get_dev_pagemap(pfn, pgmap);
+>>>>  		if (unlikely(!pgmap)) {
+>>>> -			undo_dev_pagemap(nr, nr_start, pages);
+>>>> +			undo_dev_pagemap(nr, nr_start, flags, pages);
+>>>>  			return 0;
+>>>>  		}
+>>>>  		SetPageReferenced(page);
+>>>>  		pages[*nr] = page;
+>>>> -		get_page(page);
+>>>> +
+>>>> +		if (flags & FOLL_PIN) {
+>>>> +			if (unlikely(!user_page_ref_inc(page))) {
+>>>> +				undo_dev_pagemap(nr, nr_start, flags, pages);
+>>>> +				return 0;
+>>>> +			}
+>>>
+>>> Maybe add a comment about a case that should never happens ie
+>>> user_page_ref_inc() fails after the second iteration of the
+>>> loop as it would be broken and a bug to call undo_dev_pagemap()
+>>> after the first iteration of that loop.
+>>>
+>>> Also i believe that this should never happens as if first
+>>> iteration succeed than __page_cache_add_speculative() will
+>>> succeed for all the iterations.
+>>>
+>>> Note that the pgmap case above follows that too ie the call to
+>>> get_dev_pagemap() can only fail on first iteration of the loop,
+>>> well i assume you can never have a huge device page that span
+>>> different pgmap ie different devices (which is a reasonable
+>>> assumption). So maybe this code needs fixing ie :
+>>>
+>>> 		pgmap = get_dev_pagemap(pfn, pgmap);
+>>> 		if (unlikely(!pgmap))
+>>> 			return 0;
+>>>
+>>>
+>>
+>> OK, yes that does make sense. And I think a comment is adequate,
+>> no need to check for bugs during every tail page iteration. So how 
+>> about this, as a preliminary patch:
+> 
+> Actualy i thought about it and i think that there is pgmap
+> per section and thus maybe one device can have multiple pgmap
+> and that would be an issue for page bigger than section size
+> (ie bigger than 128MB iirc). I will go double check that, but
+> maybe Dan can chime in.
+> 
+> In any case my comment above is correct for the page ref
+> increment, if the first one succeed than others will too
+> or otherwise it means someone is doing too many put_page()/
+> put_user_page() which is _bad_ :)
+> 
+
+I'll wait to hear from Dan before doing anything rash. :)
+
+
+thanks,
+
+John Hubbard
+NVIDIA
