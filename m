@@ -2,99 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70355F09FE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 00:04:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52712F0A6C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 00:48:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4774xS6lltzF3dc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 10:04:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4775w52xxBzF3HQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 10:48:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4774tk1737zF5Bw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 10:02:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4774tj6kKjz8tTb
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 10:02:21 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4774tj5dkMz9sPn; Wed,  6 Nov 2019 10:02:21 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=erichte@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=nxp.com
+Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
+ [209.85.210.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4774th2mNDz9sPF
- for <linuxppc-dev@ozlabs.org>; Wed,  6 Nov 2019 10:02:20 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA5MqEHS016032
- for <linuxppc-dev@ozlabs.org>; Tue, 5 Nov 2019 18:02:18 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w3g6dm6nk-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 05 Nov 2019 18:02:18 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <erichte@linux.ibm.com>;
- Tue, 5 Nov 2019 23:02:15 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 5 Nov 2019 23:02:11 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA5N2AjT53739596
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Nov 2019 23:02:10 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 375D611C052;
- Tue,  5 Nov 2019 23:02:10 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 748F511C050;
- Tue,  5 Nov 2019 23:02:08 +0000 (GMT)
-Received: from [9.80.236.186] (unknown [9.80.236.186])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Nov 2019 23:02:08 +0000 (GMT)
-Subject: [PATCH v10a 3/9] powerpc: detect the trusted boot state of the system
-To: Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-References: <1572492694-6520-1-git-send-email-zohar@linux.ibm.com>
- <1572492694-6520-4-git-send-email-zohar@linux.ibm.com>
-From: Eric Richter <erichte@linux.ibm.com>
-Date: Tue, 5 Nov 2019 17:02:07 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4775t83WgpzF4V2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 10:46:55 +1100 (AEDT)
+Received: by mail-ot1-f67.google.com with SMTP id e17so10724543otk.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 15:46:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=iUouFbp90DaJNrdZUlRPbAF1tArrEhWp17DotmP+0tk=;
+ b=k2i8dBCpzYAcQEAs/cz0K6dNlrb4AOIuGtKWfxvMM+FYyCAzZb5jNuY618DDSXoEWu
+ OGCdtd4nWRFMlDH01xjcBOOhicXPxFbxYfCPDYiKOfns2LWyHClwiZDx/dW3m16OsqA3
+ nuEY1rcRZ3jsCq9cpAUDSe360N2JuyI+K14hsaZ+m/1lOcSpvT8R5pXxWFDnMkJXR4o0
+ 0YfBipH+EZ4b3f/vpsm3jVOakqfXVneZas2McyzCUFyLRL1RK8mH1Ubz7dh4fE/W3p+4
+ oJ+JvG4Kvb7N+8jr9C3m160oajPfVo6MGCdvJc0iuiiihlI0SATK1L09pOjPGyEZL5So
+ dyAQ==
+X-Gm-Message-State: APjAAAUab+LxR26Kjfqixxav9dSQLdEQBE5ouS6DOLGLOF6rVmGjp7+o
+ z3ilBaoKEyqv0oERcz8iaBR7KEzW
+X-Google-Smtp-Source: APXvYqxPRYCC80+37whUmt9sWYsPqJJi8dkiANWOuY91m/qBzwJM5wAP1H2ZUv9w9zJc5RPS4/QU3g==
+X-Received: by 2002:a9d:611c:: with SMTP id i28mr21542229otj.348.1572997611862; 
+ Tue, 05 Nov 2019 15:46:51 -0800 (PST)
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com.
+ [209.85.167.179])
+ by smtp.gmail.com with ESMTPSA id o22sm6396171otk.47.2019.11.05.15.46.51
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Nov 2019 15:46:51 -0800 (PST)
+Received: by mail-oi1-f179.google.com with SMTP id l20so7208487oie.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 15:46:51 -0800 (PST)
+X-Received: by 2002:aca:4891:: with SMTP id v139mr1318447oia.175.1572997610943; 
+ Tue, 05 Nov 2019 15:46:50 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1572492694-6520-4-git-send-email-zohar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110523-0020-0000-0000-00000382E141
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110523-0021-0000-0000-000021D90D36
-Message-Id: <e9eeee6b-b9bf-1e41-2954-61dbd6fbfbcf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-05_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=599 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1911050187
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+ <20191101124210.14510-1-linux@rasmusvillemoes.dk>
+ <20191101124210.14510-36-linux@rasmusvillemoes.dk>
+ <4e2ac670-2bf4-fb47-2130-c0120bcf0111@c-s.fr>
+ <VE1PR04MB6687D4620E32176BDC120DBA8F620@VE1PR04MB6687.eurprd04.prod.outlook.com>
+ <24ea27b6-adea-cc74-f480-b68de163f531@rasmusvillemoes.dk>
+ <CADRPPNQ4dq1pnvNU71vNEgk1V5ovrT9O2=UMJxG45=ZSRdJ4ig@mail.gmail.com>
+ <f48df0c7-77f1-268f-8588-7eff5e9fd7c5@rasmusvillemoes.dk>
+In-Reply-To: <f48df0c7-77f1-268f-8588-7eff5e9fd7c5@rasmusvillemoes.dk>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Tue, 5 Nov 2019 17:46:39 -0600
+X-Gmail-Original-Message-ID: <CADRPPNQ0dR4GkGNmi2dEepJFpULD8DW7_FiYzJZ-er2=UtZ8nA@mail.gmail.com>
+Message-ID: <CADRPPNQ0dR4GkGNmi2dEepJFpULD8DW7_FiYzJZ-er2=UtZ8nA@mail.gmail.com>
+Subject: Re: [PATCH v3 35/36] net/wan: make FSL_UCC_HDLC explicitly depend on
+ PPC32
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,81 +78,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Oliver O'Halloran <oohall@gmail.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nayna Jain <nayna@linux.ibm.com>
+On Tue, Nov 5, 2019 at 4:47 PM Rasmus Villemoes
+<linux@rasmusvillemoes.dk> wrote:
+>
+> On 04/11/2019 21.56, Li Yang wrote:
+>
+> >> No, this patch cannot be dropped. Please see the kbuild complaints for
+> >> v2,23/23 about use of IS_ERR_VALUE on not-sizeof(long) entities. I see
+> >> kbuild has complained about the same thing for v3 since apparently the
+> >> same thing appears in ucc_slow.c. So I'll fix that.
+> >
+> > When I made this comment I didn't notice you have removed all the
+> > architectural dependencies for CONFIG_QUICC_ENGINE.  If the
+> > QUICC_ENGINE is only buidable on powerpc, arm and arm64, this change
+> > will not be needed.
+> >
+> > BTW, I'm not sure if it is a good idea to make it selectable on these
+> > unrelavent architectures.  Real architectural dependencies and
+> > COMPILE_TEST dependency will be better if we really want to test the
+> > buildability on other platforms.
+>
+> Well, making QUICC_ENGINE depend on PPC32 || ARM would certainly make
+> things easier for me. Once you include ARM64 or any other 64 bit
+> architecture the buildbot complaints start rolling in from the
+> IS_ERR_VALUEs. And ARM64 should be supported as well, so there really
+> isn't much difference between dropping all arch restrictions and listing
+> the relevant archs in the Kconfig dependencies.
 
-While secure boot permits only properly verified signed kernels to be
-booted, trusted boot calculates the file hash of the kernel image and
-stores the measurement prior to boot, that can be subsequently compared
-against good known values via attestation services.
+I agree that it will be good to have the driver compile for all
+architectures for compile test.  But list all the relevant
+architectures and CONFIG_COMPILE_TEST as dependencies will make it not
+really selected for these irrelevant architectures in real system.
 
-This patch reads the trusted boot state of a PowerNV system. The state
-is used to conditionally enable additional measurement rules in the IMA
-arch-specific policies.
-
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Eric Richter <erichte@linux.ibm.com>
----
-v10a:
-- moved get_ppc_fw_sb_node to patch 1 in the series
-
- arch/powerpc/include/asm/secure_boot.h |  6 ++++++
- arch/powerpc/kernel/secure_boot.c      | 15 +++++++++++++++
- 2 files changed, 21 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/secure_boot.h b/arch/powerpc/include/asm/secure_boot.h
-index 07d0fe0ca81f..a2ff556916c6 100644
---- a/arch/powerpc/include/asm/secure_boot.h
-+++ b/arch/powerpc/include/asm/secure_boot.h
-@@ -11,6 +11,7 @@
- #ifdef CONFIG_PPC_SECURE_BOOT
- 
- bool is_ppc_secureboot_enabled(void);
-+bool is_ppc_trustedboot_enabled(void);
- 
- #else
- 
-@@ -19,5 +20,10 @@ static inline bool is_ppc_secureboot_enabled(void)
- 	return false;
- }
- 
-+static inline bool is_ppc_trustedboot_enabled(void)
-+{
-+	return false;
-+}
-+
- #endif
- #endif
-diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
-index 3f55be33f5c8..95d2ff086e55 100644
---- a/arch/powerpc/kernel/secure_boot.c
-+++ b/arch/powerpc/kernel/secure_boot.c
-@@ -32,3 +32,18 @@ bool is_ppc_secureboot_enabled(void)
- 
- 	return enabled;
- }
-+
-+bool is_ppc_trustedboot_enabled(void)
-+{
-+	struct device_node *node;
-+	bool enabled = false;
-+
-+	node = get_ppc_fw_sb_node();
-+	enabled = of_property_read_bool(node, "trusted-enabled");
-+
-+	of_node_put(node);
-+
-+	pr_info("Trusted boot mode %s\n", enabled ? "enabled" : "disabled");
-+
-+	return enabled;
-+}
--- 
-2.20.1
-
+Regards,
+Leo
