@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D27EFA0F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 10:51:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A12EEF9E5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 10:47:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476lL40MmjzF4Yp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 20:51:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476lF21Lz4zF4VX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 20:47:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,23 +19,23 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476kq43CXfzDrCX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 20:27:57 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476kq42m84zDrdV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 20:27:54 +1100 (AEDT)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tip-bot2@linutronix.de>)
- id 1iRv7f-0007Vp-0Q; Tue, 05 Nov 2019 10:27:35 +0100
+ id 1iRv7k-0007X3-0X; Tue, 05 Nov 2019 10:27:40 +0100
 Received: from [127.0.1.1] (localhost [IPv6:::1])
- by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 24A9F1C04D0;
+ by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 7C9FC1C0426;
  Tue,  5 Nov 2019 10:27:32 +0100 (CET)
-Date: Tue, 05 Nov 2019 09:27:31 -0000
+Date: Tue, 05 Nov 2019 09:27:32 -0000
 From: "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] vmlinux.lds.h: Replace RW_DATA_SECTION with RW_DATA
-In-Reply-To: <20191029211351.13243-14-keescook@chromium.org>
-References: <20191029211351.13243-14-keescook@chromium.org>
+Subject: [tip: x86/build] vmlinux.lds.h: Replace RO_DATA_SECTION with RO_DATA
+In-Reply-To: <20191029211351.13243-13-keescook@chromium.org>
+References: <20191029211351.13243-13-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <157294605183.29376.4264994567912835871.tip-bot2@tip-bot2>
+Message-ID: <157294605224.29376.12345489124896449797.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -75,18 +75,18 @@ Sender: "Linuxppc-dev"
 
 The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     c9174047b48d700a785b633319dd7d27288b86be
-Gitweb:        https://git.kernel.org/tip/c9174047b48d700a785b633319dd7d27288b86be
+Commit-ID:     93240b327929ff03c1878ea8badc5c6bd86f053f
+Gitweb:        https://git.kernel.org/tip/93240b327929ff03c1878ea8badc5c6bd86f053f
 Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Tue, 29 Oct 2019 14:13:35 -07:00
+AuthorDate:    Tue, 29 Oct 2019 14:13:34 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Nov 2019 15:57:41 +01:00
+CommitterDate: Mon, 04 Nov 2019 15:56:16 +01:00
 
-vmlinux.lds.h: Replace RW_DATA_SECTION with RW_DATA
+vmlinux.lds.h: Replace RO_DATA_SECTION with RO_DATA
 
-Rename RW_DATA_SECTION to RW_DATA. (Calling this a "section" is a lie,
-since it's multiple sections and section flags cannot be applied to
-the macro.)
+Finish renaming RO_DATA_SECTION to RO_DATA. (Calling this a "section"
+is a lie, since it's multiple sections and section flags cannot be
+applied to the macro.)
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
@@ -109,338 +109,233 @@ Cc: Segher Boessenkool <segher@kernel.crashing.org>
 Cc: Will Deacon <will@kernel.org>
 Cc: x86-ml <x86@kernel.org>
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Link: https://lkml.kernel.org/r/20191029211351.13243-14-keescook@chromium.org
+Link: https://lkml.kernel.org/r/20191029211351.13243-13-keescook@chromium.org
 ---
- arch/alpha/kernel/vmlinux.lds.S      | 2 +-
- arch/arc/kernel/vmlinux.lds.S        | 2 +-
- arch/arm/kernel/vmlinux-xip.lds.S    | 2 +-
- arch/arm/kernel/vmlinux.lds.S        | 2 +-
- arch/arm64/kernel/vmlinux.lds.S      | 2 +-
- arch/csky/kernel/vmlinux.lds.S       | 2 +-
- arch/h8300/kernel/vmlinux.lds.S      | 2 +-
- arch/hexagon/kernel/vmlinux.lds.S    | 2 +-
- arch/m68k/kernel/vmlinux-nommu.lds   | 2 +-
- arch/m68k/kernel/vmlinux-std.lds     | 2 +-
- arch/m68k/kernel/vmlinux-sun3.lds    | 2 +-
- arch/microblaze/kernel/vmlinux.lds.S | 2 +-
- arch/nds32/kernel/vmlinux.lds.S      | 2 +-
- arch/nios2/kernel/vmlinux.lds.S      | 2 +-
- arch/openrisc/kernel/vmlinux.lds.S   | 2 +-
- arch/parisc/kernel/vmlinux.lds.S     | 2 +-
- arch/riscv/kernel/vmlinux.lds.S      | 2 +-
- arch/s390/kernel/vmlinux.lds.S       | 2 +-
- arch/sh/kernel/vmlinux.lds.S         | 2 +-
- arch/sparc/kernel/vmlinux.lds.S      | 2 +-
- arch/unicore32/kernel/vmlinux.lds.S  | 2 +-
- arch/xtensa/kernel/vmlinux.lds.S     | 2 +-
- include/asm-generic/vmlinux.lds.h    | 4 ++--
- 23 files changed, 24 insertions(+), 24 deletions(-)
+ arch/arc/kernel/vmlinux.lds.S       | 2 +-
+ arch/c6x/kernel/vmlinux.lds.S       | 2 +-
+ arch/csky/kernel/vmlinux.lds.S      | 2 +-
+ arch/h8300/kernel/vmlinux.lds.S     | 2 +-
+ arch/hexagon/kernel/vmlinux.lds.S   | 2 +-
+ arch/m68k/kernel/vmlinux-nommu.lds  | 2 +-
+ arch/nds32/kernel/vmlinux.lds.S     | 2 +-
+ arch/nios2/kernel/vmlinux.lds.S     | 2 +-
+ arch/openrisc/kernel/vmlinux.lds.S  | 4 ++--
+ arch/parisc/kernel/vmlinux.lds.S    | 4 ++--
+ arch/riscv/kernel/vmlinux.lds.S     | 2 +-
+ arch/s390/kernel/vmlinux.lds.S      | 2 +-
+ arch/unicore32/kernel/vmlinux.lds.S | 2 +-
+ include/asm-generic/vmlinux.lds.h   | 7 ++-----
+ 14 files changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/arch/alpha/kernel/vmlinux.lds.S b/arch/alpha/kernel/vmlinux.lds.S
-index af41181..edc45f4 100644
---- a/arch/alpha/kernel/vmlinux.lds.S
-+++ b/arch/alpha/kernel/vmlinux.lds.S
-@@ -50,7 +50,7 @@ SECTIONS
- 
- 	_sdata = .;	/* Start of rw data section */
- 	_data = .;
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
- 
- 	.got : {
- 		*(.got)
 diff --git a/arch/arc/kernel/vmlinux.lds.S b/arch/arc/kernel/vmlinux.lds.S
-index 7d1d270..54139a6 100644
+index 1d6eef4..7d1d270 100644
 --- a/arch/arc/kernel/vmlinux.lds.S
 +++ b/arch/arc/kernel/vmlinux.lds.S
-@@ -101,7 +101,7 @@ SECTIONS
- 	 * 1. this is .data essentially
- 	 * 2. THREAD_SIZE for init.task, must be kernel-stk sz aligned
- 	 */
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
+@@ -95,7 +95,7 @@ SECTIONS
+ 	_etext = .;
  
+ 	_sdata = .;
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 
+ 	/*
+ 	 * 1. this is .data essentially
+diff --git a/arch/c6x/kernel/vmlinux.lds.S b/arch/c6x/kernel/vmlinux.lds.S
+index d6e3802..a3547f9 100644
+--- a/arch/c6x/kernel/vmlinux.lds.S
++++ b/arch/c6x/kernel/vmlinux.lds.S
+@@ -82,7 +82,7 @@ SECTIONS
+ 
+ 	EXCEPTION_TABLE(16)
+ 
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 	.const :
+ 	{
+ 		*(.const .const.* .gnu.linkonce.r.*)
+diff --git a/arch/csky/kernel/vmlinux.lds.S b/arch/csky/kernel/vmlinux.lds.S
+index 75dd314..8598bd7 100644
+--- a/arch/csky/kernel/vmlinux.lds.S
++++ b/arch/csky/kernel/vmlinux.lds.S
+@@ -49,7 +49,7 @@ SECTIONS
+ 
+ 
+ 	_sdata = .;
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
  	_edata = .;
  
-diff --git a/arch/arm/kernel/vmlinux-xip.lds.S b/arch/arm/kernel/vmlinux-xip.lds.S
-index d2a9651..21b8b27 100644
---- a/arch/arm/kernel/vmlinux-xip.lds.S
-+++ b/arch/arm/kernel/vmlinux-xip.lds.S
-@@ -112,7 +112,7 @@ SECTIONS
- 
- 	. = ALIGN(THREAD_SIZE);
- 	_sdata = .;
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
- 	.data.ro_after_init : AT(ADDR(.data.ro_after_init) - LOAD_OFFSET) {
- 		*(.data..ro_after_init)
+diff --git a/arch/h8300/kernel/vmlinux.lds.S b/arch/h8300/kernel/vmlinux.lds.S
+index 88776e7..d3247d3 100644
+--- a/arch/h8300/kernel/vmlinux.lds.S
++++ b/arch/h8300/kernel/vmlinux.lds.S
+@@ -38,7 +38,7 @@ SECTIONS
+ 	_etext = . ;
  	}
-diff --git a/arch/arm/kernel/vmlinux.lds.S b/arch/arm/kernel/vmlinux.lds.S
-index 068db68..319ccb1 100644
---- a/arch/arm/kernel/vmlinux.lds.S
-+++ b/arch/arm/kernel/vmlinux.lds.S
-@@ -141,7 +141,7 @@ SECTIONS
+ 	EXCEPTION_TABLE(16)
+-	RO_DATA_SECTION(4)
++	RO_DATA(4)
+ 	ROMEND = .;
+ #if defined(CONFIG_ROMKERNEL)
+ 	. = RAMTOP;
+diff --git a/arch/hexagon/kernel/vmlinux.lds.S b/arch/hexagon/kernel/vmlinux.lds.S
+index 6a6e8fc..0145251 100644
+--- a/arch/hexagon/kernel/vmlinux.lds.S
++++ b/arch/hexagon/kernel/vmlinux.lds.S
+@@ -50,7 +50,7 @@ SECTIONS
+ 
+ 	_sdata = .;
+ 		RW_DATA_SECTION(32,PAGE_SIZE,_THREAD_SIZE)
+-		RO_DATA_SECTION(PAGE_SIZE)
++		RO_DATA(PAGE_SIZE)
+ 	_edata = .;
+ 
+ 	EXCEPTION_TABLE(16)
+diff --git a/arch/m68k/kernel/vmlinux-nommu.lds b/arch/m68k/kernel/vmlinux-nommu.lds
+index cf6edda..de80f8b 100644
+--- a/arch/m68k/kernel/vmlinux-nommu.lds
++++ b/arch/m68k/kernel/vmlinux-nommu.lds
+@@ -60,7 +60,7 @@ SECTIONS {
+ #endif
+ 
+ 	_sdata = .;
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 	RW_DATA_SECTION(16, PAGE_SIZE, THREAD_SIZE)
+ 	_edata = .;
+ 
+diff --git a/arch/nds32/kernel/vmlinux.lds.S b/arch/nds32/kernel/vmlinux.lds.S
+index c4f1c5a..10ff570 100644
+--- a/arch/nds32/kernel/vmlinux.lds.S
++++ b/arch/nds32/kernel/vmlinux.lds.S
+@@ -53,7 +53,7 @@ SECTIONS
+ 	_etext = .;			/* End of text and rodata section */
+ 
+ 	_sdata = .;
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
+ 	_edata  =  .;
+ 
+diff --git a/arch/nios2/kernel/vmlinux.lds.S b/arch/nios2/kernel/vmlinux.lds.S
+index 20e4078..318804a 100644
+--- a/arch/nios2/kernel/vmlinux.lds.S
++++ b/arch/nios2/kernel/vmlinux.lds.S
+@@ -49,7 +49,7 @@ SECTIONS
  	__init_end = .;
  
  	_sdata = .;
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
  	_edata = .;
  
- 	BSS_SECTION(0, 0, 0)
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index e7dafc2..a4b3e6c 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -214,7 +214,7 @@ SECTIONS
- 
- 	_data = .;
- 	_sdata = .;
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
- 
- 	/*
- 	 * Data written with the MMU off but read with the MMU on requires
-diff --git a/arch/csky/kernel/vmlinux.lds.S b/arch/csky/kernel/vmlinux.lds.S
-index 8598bd7..2ff37be 100644
---- a/arch/csky/kernel/vmlinux.lds.S
-+++ b/arch/csky/kernel/vmlinux.lds.S
-@@ -50,7 +50,7 @@ SECTIONS
- 
- 	_sdata = .;
- 	RO_DATA(PAGE_SIZE)
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
- 	_edata = .;
- 
- 	EXCEPTION_TABLE(L1_CACHE_BYTES)
-diff --git a/arch/h8300/kernel/vmlinux.lds.S b/arch/h8300/kernel/vmlinux.lds.S
-index d3247d3..2ac7bdc 100644
---- a/arch/h8300/kernel/vmlinux.lds.S
-+++ b/arch/h8300/kernel/vmlinux.lds.S
-@@ -47,7 +47,7 @@ SECTIONS
- #endif
- 	_sdata = . ;
- 	__data_start = . ;
--	RW_DATA_SECTION(0, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(0, PAGE_SIZE, THREAD_SIZE)
- #if defined(CONFIG_ROMKERNEL)
- #undef ADDR
- #endif
-diff --git a/arch/hexagon/kernel/vmlinux.lds.S b/arch/hexagon/kernel/vmlinux.lds.S
-index 0145251..0ca2471 100644
---- a/arch/hexagon/kernel/vmlinux.lds.S
-+++ b/arch/hexagon/kernel/vmlinux.lds.S
-@@ -49,7 +49,7 @@ SECTIONS
- 	INIT_DATA_SECTION(PAGE_SIZE)
- 
- 	_sdata = .;
--		RW_DATA_SECTION(32,PAGE_SIZE,_THREAD_SIZE)
-+		RW_DATA(32,PAGE_SIZE,_THREAD_SIZE)
- 		RO_DATA(PAGE_SIZE)
- 	_edata = .;
- 
-diff --git a/arch/m68k/kernel/vmlinux-nommu.lds b/arch/m68k/kernel/vmlinux-nommu.lds
-index de80f8b..7b97542 100644
---- a/arch/m68k/kernel/vmlinux-nommu.lds
-+++ b/arch/m68k/kernel/vmlinux-nommu.lds
-@@ -61,7 +61,7 @@ SECTIONS {
- 
- 	_sdata = .;
- 	RO_DATA(PAGE_SIZE)
--	RW_DATA_SECTION(16, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(16, PAGE_SIZE, THREAD_SIZE)
- 	_edata = .;
- 
- 	EXCEPTION_TABLE(16)
-diff --git a/arch/m68k/kernel/vmlinux-std.lds b/arch/m68k/kernel/vmlinux-std.lds
-index 625a578..6e7eb49 100644
---- a/arch/m68k/kernel/vmlinux-std.lds
-+++ b/arch/m68k/kernel/vmlinux-std.lds
-@@ -33,7 +33,7 @@ SECTIONS
- 
-   RODATA
- 
--  RW_DATA_SECTION(16, PAGE_SIZE, THREAD_SIZE)
-+  RW_DATA(16, PAGE_SIZE, THREAD_SIZE)
- 
-   BSS_SECTION(0, 0, 0)
- 
-diff --git a/arch/m68k/kernel/vmlinux-sun3.lds b/arch/m68k/kernel/vmlinux-sun3.lds
-index 9868270..1a0ad6b 100644
---- a/arch/m68k/kernel/vmlinux-sun3.lds
-+++ b/arch/m68k/kernel/vmlinux-sun3.lds
-@@ -30,7 +30,7 @@ SECTIONS
- 
-   EXCEPTION_TABLE(16) :data
-   _sdata = .;			/* Start of rw data section */
--  RW_DATA_SECTION(16, PAGE_SIZE, THREAD_SIZE) :data
-+  RW_DATA(16, PAGE_SIZE, THREAD_SIZE) :data
-   /* End of data goes *here* so that freeing init code works properly. */
-   _edata = .;
-   NOTES
-diff --git a/arch/microblaze/kernel/vmlinux.lds.S b/arch/microblaze/kernel/vmlinux.lds.S
-index 2299694..b8efb08 100644
---- a/arch/microblaze/kernel/vmlinux.lds.S
-+++ b/arch/microblaze/kernel/vmlinux.lds.S
-@@ -69,7 +69,7 @@ SECTIONS {
- 	}
- 
- 	_sdata = . ;
--	RW_DATA_SECTION(32, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(32, PAGE_SIZE, THREAD_SIZE)
- 	_edata = . ;
- 
- 	/* Under the microblaze ABI, .sdata and .sbss must be contiguous */
-diff --git a/arch/nds32/kernel/vmlinux.lds.S b/arch/nds32/kernel/vmlinux.lds.S
-index 10ff570..f679d33 100644
---- a/arch/nds32/kernel/vmlinux.lds.S
-+++ b/arch/nds32/kernel/vmlinux.lds.S
-@@ -54,7 +54,7 @@ SECTIONS
- 
- 	_sdata = .;
- 	RO_DATA(PAGE_SIZE)
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
- 	_edata  =  .;
- 
- 	EXCEPTION_TABLE(16)
-diff --git a/arch/nios2/kernel/vmlinux.lds.S b/arch/nios2/kernel/vmlinux.lds.S
-index 318804a..c55a7cf 100644
---- a/arch/nios2/kernel/vmlinux.lds.S
-+++ b/arch/nios2/kernel/vmlinux.lds.S
-@@ -50,7 +50,7 @@ SECTIONS
- 
- 	_sdata = .;
- 	RO_DATA(PAGE_SIZE)
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
- 	_edata = .;
- 
- 	BSS_SECTION(0, 0, 0)
 diff --git a/arch/openrisc/kernel/vmlinux.lds.S b/arch/openrisc/kernel/vmlinux.lds.S
-index f73e0d3..60449fd 100644
+index 142c51c..f73e0d3 100644
 --- a/arch/openrisc/kernel/vmlinux.lds.S
 +++ b/arch/openrisc/kernel/vmlinux.lds.S
-@@ -74,7 +74,7 @@ SECTIONS
+@@ -67,8 +67,8 @@ SECTIONS
+ 
+ 	_sdata = .;
+ 
+-	/* Page alignment required for RO_DATA_SECTION */
+-	RO_DATA_SECTION(PAGE_SIZE)
++	/* Page alignment required for RO_DATA */
++	RO_DATA(PAGE_SIZE)
+ 	_e_kernel_ro = .;
+ 
  	/* Whatever comes after _e_kernel_ro had better be page-aligend, too */
- 
- 	/* 32 here is cacheline size... recheck this */
--	RW_DATA_SECTION(32, PAGE_SIZE, PAGE_SIZE)
-+	RW_DATA(32, PAGE_SIZE, PAGE_SIZE)
- 
-         _edata  =  .;
- 
 diff --git a/arch/parisc/kernel/vmlinux.lds.S b/arch/parisc/kernel/vmlinux.lds.S
-index e1c563c..12b3d7d 100644
+index 168d12b..e1c563c 100644
 --- a/arch/parisc/kernel/vmlinux.lds.S
 +++ b/arch/parisc/kernel/vmlinux.lds.S
-@@ -148,7 +148,7 @@ SECTIONS
- 	data_start = .;
+@@ -109,7 +109,7 @@ SECTIONS
+ 	_sdata = .;
  
- 	/* Data */
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, PAGE_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, PAGE_SIZE)
- 
- 	/* PA-RISC locks requires 16-byte alignment */
+ 	/* Architecturally we need to keep __gp below 0x1000000 and thus
+-	 * in front of RO_DATA_SECTION() which stores lots of tracepoint
++	 * in front of RO_DATA() which stores lots of tracepoint
+ 	 * and ftrace symbols. */
+ #ifdef CONFIG_64BIT
  	. = ALIGN(16);
+@@ -127,7 +127,7 @@ SECTIONS
+ 	}
+ #endif
+ 
+-	RO_DATA_SECTION(8)
++	RO_DATA(8)
+ 
+ 	/* RO because of BUILDTIME_EXTABLE_SORT */
+ 	EXCEPTION_TABLE(8)
 diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
-index 66dc17d..12f42f9 100644
+index df5229c..66dc17d 100644
 --- a/arch/riscv/kernel/vmlinux.lds.S
 +++ b/arch/riscv/kernel/vmlinux.lds.S
-@@ -57,7 +57,7 @@ SECTIONS
+@@ -52,7 +52,7 @@ SECTIONS
+ 
+ 	/* Start of data section */
+ 	_sdata = .;
+-	RO_DATA_SECTION(L1_CACHE_BYTES)
++	RO_DATA(L1_CACHE_BYTES)
+ 	.srodata : {
  		*(.srodata*)
  	}
- 
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
- 	.sdata : {
- 		__global_pointer$ = . + 0x800;
- 		*(.sdata*)
 diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
-index b33c482..3769549 100644
+index beb4df0..b33c482 100644
 --- a/arch/s390/kernel/vmlinux.lds.S
 +++ b/arch/s390/kernel/vmlinux.lds.S
-@@ -67,7 +67,7 @@ SECTIONS
+@@ -52,7 +52,7 @@ SECTIONS
+ 		_etext = .;		/* End of text section */
+ 	} :text = 0x0700
+ 
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 
  	. = ALIGN(PAGE_SIZE);
- 	__end_ro_after_init = .;
- 
--	RW_DATA_SECTION(0x100, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(0x100, PAGE_SIZE, THREAD_SIZE)
- 	BOOT_DATA_PRESERVED
- 
- 	_edata = .;		/* End of data section */
-diff --git a/arch/sh/kernel/vmlinux.lds.S b/arch/sh/kernel/vmlinux.lds.S
-index fef3905..c60b199 100644
---- a/arch/sh/kernel/vmlinux.lds.S
-+++ b/arch/sh/kernel/vmlinux.lds.S
-@@ -51,7 +51,7 @@ SECTIONS
- 
- 	_sdata = .;
- 	RO_DATA(PAGE_SIZE)
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
- 	_edata = .;
- 
- 	DWARF_EH_FRAME
-diff --git a/arch/sparc/kernel/vmlinux.lds.S b/arch/sparc/kernel/vmlinux.lds.S
-index 8929fbc..7ec7991 100644
---- a/arch/sparc/kernel/vmlinux.lds.S
-+++ b/arch/sparc/kernel/vmlinux.lds.S
-@@ -67,7 +67,7 @@ SECTIONS
- 	.data1 : {
- 		*(.data1)
- 	}
--	RW_DATA_SECTION(SMP_CACHE_BYTES, 0, THREAD_SIZE)
-+	RW_DATA(SMP_CACHE_BYTES, 0, THREAD_SIZE)
- 
- 	/* End of data section */
- 	_edata = .;
+ 	_sdata = .;		/* Start of data section */
 diff --git a/arch/unicore32/kernel/vmlinux.lds.S b/arch/unicore32/kernel/vmlinux.lds.S
-index 367c803..6fb320b 100644
+index 78c4c56..367c803 100644
 --- a/arch/unicore32/kernel/vmlinux.lds.S
 +++ b/arch/unicore32/kernel/vmlinux.lds.S
-@@ -44,7 +44,7 @@ SECTIONS
+@@ -43,7 +43,7 @@ SECTIONS
+ 	_etext = .;
  
  	_sdata = .;
- 	RO_DATA(PAGE_SIZE)
--	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
+-	RO_DATA_SECTION(PAGE_SIZE)
++	RO_DATA(PAGE_SIZE)
+ 	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
  	_edata = .;
  
- 	EXCEPTION_TABLE(L1_CACHE_BYTES)
-diff --git a/arch/xtensa/kernel/vmlinux.lds.S b/arch/xtensa/kernel/vmlinux.lds.S
-index b97e579..bdbd7c4 100644
---- a/arch/xtensa/kernel/vmlinux.lds.S
-+++ b/arch/xtensa/kernel/vmlinux.lds.S
-@@ -134,7 +134,7 @@ SECTIONS
-   /* Data section */
- 
-   _sdata = .;
--  RW_DATA_SECTION(XCHAL_ICACHE_LINESIZE, PAGE_SIZE, THREAD_SIZE)
-+  RW_DATA(XCHAL_ICACHE_LINESIZE, PAGE_SIZE, THREAD_SIZE)
-   _edata = .;
- 
-   /* Initialization code and data: */
 diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 061e57c..356078e 100644
+index a0a989f..061e57c 100644
 --- a/include/asm-generic/vmlinux.lds.h
 +++ b/include/asm-generic/vmlinux.lds.h
-@@ -24,7 +24,7 @@
+@@ -23,7 +23,7 @@
+  *	_etext = .;
   *
   *      _sdata = .;
-  *	RO_DATA(PAGE_SIZE)
-- *	RW_DATA_SECTION(...)
-+ *	RW_DATA(...)
+- *	RO_DATA_SECTION(PAGE_SIZE)
++ *	RO_DATA(PAGE_SIZE)
+  *	RW_DATA_SECTION(...)
   *	_edata = .;
   *
-  *	EXCEPTION_TABLE(...)
-@@ -975,7 +975,7 @@
-  * matches the requirement of PAGE_ALIGNED_DATA.
-  *
-  * use 0 as page_align if page_aligned data is not used */
--#define RW_DATA_SECTION(cacheline, pagealigned, inittask)		\
-+#define RW_DATA(cacheline, pagealigned, inittask)			\
- 	. = ALIGN(PAGE_SIZE);						\
- 	.data : AT(ADDR(.data) - LOAD_OFFSET) {				\
- 		INIT_TASK_DATA(inittask)				\
+@@ -363,7 +363,7 @@
+ /*
+  * Read only Data
+  */
+-#define RO_DATA_SECTION(align)						\
++#define RO_DATA(align)							\
+ 	. = ALIGN((align));						\
+ 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
+ 		__start_rodata = .;					\
+@@ -518,9 +518,6 @@
+ 	. = ALIGN((align));						\
+ 	__end_rodata = .;
+ 
+-/* All archs are supposed to use RO_DATA() */
+-#define RO_DATA(align)  RO_DATA_SECTION(align)
+-
+ /*
+  * .text section. Map to function alignment to avoid address changes
+  * during second ld run in second ld pass when generating System.map
