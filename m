@@ -1,79 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1D9F03CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 18:07:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 140F0F04EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 19:20:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476x110ZBkzF50g
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 04:07:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476yd436DVzF4rd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 05:20:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476wyb1DKkzF4yF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 04:05:10 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA5Gwcoe146817
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 5 Nov 2019 12:05:08 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w3csx0r07-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 12:05:06 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA5H0rRs016998
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 5 Nov 2019 17:03:43 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 2w11e7yae8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 17:03:43 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA5H3gGl53870866
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 5 Nov 2019 17:03:42 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C4281AE05C
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 17:03:42 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C87BAE060
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 17:03:42 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.85.144.27])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 17:03:42 +0000 (GMT)
-Subject: Re: [PATCH 0/9] Fixes and Enablement of ibm,drc-info property
-To: linuxppc-dev@lists.ozlabs.org
-References: <1572967453-9586-1-git-send-email-tyreld@linux.ibm.com>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <6958da5b-c518-64c2-50e3-db3f169d2337@linux.ibm.com>
-Date: Tue, 5 Nov 2019 11:03:42 -0600
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="ZSBhPlkU"; 
+ dkim-atps=neutral
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476yXy0KnHzF4qB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 05:16:33 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dc1bc810000>; Tue, 05 Nov 2019 10:16:33 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 05 Nov 2019 10:16:27 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Tue, 05 Nov 2019 10:16:27 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 5 Nov
+ 2019 18:16:25 +0000
+Subject: Re: [PATCH 09/19] drm/via: set FOLL_PIN via pin_user_pages_fast()
+To: Ira Weiny <ira.weiny@intel.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, Alex
+ Williamson <alex.williamson@redhat.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn.topel@intel.com>, Christoph Hellwig <hch@infradead.org>, Dan Williams
+ <dan.j.williams@intel.com>, Dave Chinner <david@fromorbit.com>, David Airlie
+ <airlied@linux.ie>, "David S . Miller" <davem@davemloft.net>, Jan Kara
+ <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>, 
+ Jonathan Corbet <corbet@lwn.net>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
+ <jglisse@redhat.com>, Magnus Karlsson <magnus.karlsson@intel.com>, Mauro
+ Carvalho Chehab <mchehab@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>, Paul
+ Mackerras <paulus@samba.org>, Shuah Khan <shuah@kernel.org>, Vlastimil Babka
+ <vbabka@suse.cz>, <bpf@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <kvm@vger.kernel.org>, <linux-block@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <netdev@vger.kernel.org>, <linux-mm@kvack.org>, LKML
+ <linux-kernel@vger.kernel.org>
+References: <20191030224930.3990755-1-jhubbard@nvidia.com>
+ <20191030224930.3990755-10-jhubbard@nvidia.com>
+ <20191031233628.GI14771@iweiny-DESK2.sc.intel.com>
+ <20191104181055.GP10326@phenom.ffwll.local>
+ <48d22c77-c313-59ff-4847-bc9a9813b8a7@nvidia.com>
+ <20191105094936.GZ10326@phenom.ffwll.local>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <9b9637f4-34e0-a665-a9c8-8fd59ff71063@nvidia.com>
+Date: Tue, 5 Nov 2019 10:16:25 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <1572967453-9586-1-git-send-email-tyreld@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20191105094936.GZ10326@phenom.ffwll.local>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-05_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1911050140
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1572977793; bh=R0RxaBiDFTq2JKu4s4y6dD52czu96JnYA/nMzL9A6aE=;
+ h=X-PGP-Universal:Subject:To:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=ZSBhPlkU00U2SId5ohXT4qfb7S3CRfF2QxUJyZ0MYASa23SxluEpDZf1THjnsB9k6
+ 3RTrsq64bDaJH6/fLXRNFkXaPhRm5A6gkx6RZdlDie0bGzD/RBx0po9cAdeDcz/1hI
+ lKGfT57a8xEYWihKfruZKPu2iv+9HpU34riNOb6hU1aeKe+Fw0TM0CdzQuEAMyVnn3
+ zPBLdfbRqsxHTlb9Dt1LPnE+4oLXwLOgCALb/FxR0bVQqL9MMuMnHnx6cwBXcGJC2q
+ 423PWzhyAI/MHMUhEHpOr+pguDR21zYFt0jsH+WX73ZsVIDhQ9aKqbWLguXDJ6ZEPH
+ qkWctNU3sUmkw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,56 +102,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 11/5/19 1:49 AM, Daniel Vetter wrote:
+> On Mon, Nov 04, 2019 at 11:20:38AM -0800, John Hubbard wrote:
+>> On 11/4/19 10:10 AM, Daniel Vetter wrote:
+>>> On Thu, Oct 31, 2019 at 04:36:28PM -0700, Ira Weiny wrote:
+>>>> On Wed, Oct 30, 2019 at 03:49:20PM -0700, John Hubbard wrote:
+>>>>> Convert drm/via to use the new pin_user_pages_fast() call, which sets
+>>>>> FOLL_PIN. Setting FOLL_PIN is now required for code that requires
+>>>>> tracking of pinned pages, and therefore for any code that calls
+>>>>> put_user_page().
+>>>>>
+>>>>
+>>>> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+>>>
+>>> No one's touching the via driver anymore, so feel free to merge this
+>>> through whatever tree suits best (aka I'll drop this on the floor and
+>>> forget about it now).
+>>>
+>>> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+>>>
+>>
+>> OK, great. Yes, in fact, I'm hoping Andrew can just push the whole series
+>> in through the mm tree, because that would allow it to be done in one 
+>> shot, in 5.5
+> 
+> btw is there more? We should have a bunch more userptr stuff in various
+> drivers, so was really surprised that drm/via is the only thing in your
+> series.
 
-On 11/5/19 9:24 AM, Tyrel Datwyler wrote:
 
-Hi, just pointing out a few typos...
-> There was a previous effort to add support for the PAPR
-> architected ibm,drc-info property. This property provides a more
-> memory compact representation of a paritions Dynamic Reconfig
-s/paritions/partition's
-> Connectors (DRC). These can otherwise be thought of as currently
-> partitioned, or available but yet to be partitioned system resources
-> such as cpus, memory, and physical/logical IOA devices.
->
-> The initial implementation proved buggy and was fully turned of by
+There is more, but:
 
-s/turned of/turned off
+1) Fortunately, the opt-in nature of FOLL_PIN allows converting a few call
+sites at a time. And so this patchset limits itself to converting the bare
+minimum required to get started, which is: 
 
-> disabling the bit in the appropriate CAS support vector. We now have
-> PowerVM firmware in the field that supports this new property, and
-> further to suppport partitions with 24TB+ of possible memory this
-s/suppport/support
-> property is required to perform platform migration.
->
-> This serious fixs the short comings of the previous submission
+    a) calls sites that have already been converted to put_user_page(), 
+       and
 
-Either "seriously fixes the shortcomings", or "fixes the serious 
-shortcomings?"
+    b) call sites that set FOLL_LONGTERM.
 
-Thanks,
+So yes, follow-up patches will be required. This is not everything.
+In fact, if I can fix this series up quickly enough that it makes it into
+mmotm soon-ish, then there may be time to get some follow-patches on top
+of it, in time for 5.5.
 
-Tom
 
-> in the areas of general implementation, cpu hotplug, and IOA hotplug.
->
-> Tyrel Datwyler (9):
->    powerpc/pseries: Fix bad drc_index_start value parsing of drc-info
->      entry
->    powerpc/pseries: Fix drc-info mappings of logical cpus to drc-index
->    powerpc/pseries: Add cpu DLPAR support for drc-info property
->    PCI: rpaphp: Fix up pointer to first drc-info entry
->    PCI: rpaphp: Don't rely on firmware feature to imply drc-info support
->    PCI: rpaphp: Add drc-info support for hotplug slot registration
->    PCI: rpaphp: annotate and correctly byte swap DRC properties
->    PCI: rpaphp: Correctly match ibm,my-drc-index to drc-name when using
->      drc-info
->    powerpc/pseries: Enable support for ibm,drc-info property
->
->   arch/powerpc/kernel/prom_init.c                 |   2 +-
->   arch/powerpc/platforms/pseries/hotplug-cpu.c    | 101 ++++++++++++++++---
->   arch/powerpc/platforms/pseries/of_helpers.c     |   8 +-
->   arch/powerpc/platforms/pseries/pseries_energy.c |  23 ++---
->   drivers/pci/hotplug/rpaphp_core.c               | 124 +++++++++++++++++-------
->   5 files changed, 187 insertions(+), 71 deletions(-)
->
+2) If I recall correctly, Jerome and maybe others are working to remove
+as many get_user_pages() callers from drm as possible, and instead use
+a non-pinned page approach, with mmu notifiers instead.  I'm not sure of
+the exact status of that work, but I see that etnaviv, amdgpu, i915, and
+radeon still call gup() in linux-next.
+
+Anyway, some of those call sites will disappear. Although I'd expect a 
+few to remain, because I doubt the simpler GPUs can support page faulting.
+
+
+
+thanks,
+
+John Hubbard
+NVIDIA
