@@ -1,73 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B95DEF4A0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 05:58:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E023EF4AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 06:03:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476cqn1wDtzF1Jy
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 15:58:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476cxX5wJNzDqtm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 16:03:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::343;
- helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="yhHHwHps"; 
- dkim-atps=neutral
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476cPt3Zm4zF3Bx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 15:39:10 +1100 (AEDT)
-Received: by mail-ot1-x343.google.com with SMTP id z6so16538298otb.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 20:39:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=LQ/3CY3Z/pwD7vktjhd0l5Hf+cHLJkYRKb4mMFAX40w=;
- b=yhHHwHpstkv84TevZIhs/Wm18KmjQCTMD7QlgnCZ3d31OxhoY6s6I3rfk8ud7Ml9XW
- NzkBxxxgjNUnDFVFhwgBwUgJux1TVnbKP5vdJwRFwQ+/giMyREG6ohSNQy9TeoSZJP8T
- SPIO/dUqQUV+56+4q+tqGSp5zgkTlc1mY6zJa37wVenBzWpatnn2O1AzlEI006uGn0Ia
- +fAj7hOgp2UmAGxqae4eaNY8IDMTTdkrkZFK6SjUqy87+8sumJ4XhFeiC35vbDkoayxx
- uGfCGRfgl5zfXbcSzaVw9hv/WN8gLBd6EeLAtnBu48QoPLD4qlg6djtdWgKDg7cH2aI4
- CIaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=LQ/3CY3Z/pwD7vktjhd0l5Hf+cHLJkYRKb4mMFAX40w=;
- b=gJrbBpgDXzVUcChlplAtPrYcR9FayPcnx0KKD6jZFBkrqjPgIXKp0ciYa3J1PXw2Ph
- zJOp4iSKaTukBJaClashwkO+hSsUKUjfbTD6tuIFXhIDL/6MNNNHRvmuHaDwGd7EgnPv
- H44NPlQUZNfwEugiuGb29l3DOHhzHbV6CYS5/mgy2CnvCs0Y5O3/b/2Vx5aejTt0eQE/
- Rih8jgDY6Ux4dc/xU6Uq89cmtQg107mZu4Pgx3vTXy+Vzib3TzxPjyaC8zOGGfgDNoZ7
- vZ8RqdG7osPSTeccG/lj9KLt5isJe0Yofh6aKi/z38z/x4HJvgMLPI0IZeVDgKW+6SP1
- 2XcQ==
-X-Gm-Message-State: APjAAAWgLQcJjK38DiT57VvhuDnHfhO8mRZMA+MNxcQHVPCA2XEHDKHQ
- PCAn9ceHdTPOojmSRv7ubKkWV5Qwa4v2TT8y/WDokQ==
-X-Google-Smtp-Source: APXvYqw5MaEjuPSBWubL0ieUUp4Y5rryBa4JzAq8q4R6lrgIw09Afe+NdZFy6gkARWQQx7v95Lg8Rh1zBTQaSC9BU+U=
-X-Received: by 2002:a9d:30c8:: with SMTP id r8mr3863066otg.363.1572928747302; 
- Mon, 04 Nov 2019 20:39:07 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476cvS272szF40Z
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 16:01:23 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ xA54v9xB142984
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 5 Nov 2019 00:01:21 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2w15eufsaq-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 00:01:20 -0500
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Tue, 5 Nov 2019 05:01:09 -0000
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 5 Nov 2019 05:01:07 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xA5516IN34537626
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 5 Nov 2019 05:01:06 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9C50F42042;
+ Tue,  5 Nov 2019 05:01:06 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4BA0342041;
+ Tue,  5 Nov 2019 05:01:06 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  5 Nov 2019 05:01:06 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D4A4AA020E;
+ Tue,  5 Nov 2019 16:01:03 +1100 (AEDT)
+Subject: Re: [PATCH 3/3] powerpc/pseries: Fixup config space size of OpenCAPI
+ devices
+To: christophe lombard <clombard@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com, groug@kaod.org
+References: <20191022075247.16266-1-clombard@linux.vnet.ibm.com>
+ <20191022075247.16266-4-clombard@linux.vnet.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Tue, 5 Nov 2019 16:01:04 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191024120938.11237-1-david@redhat.com>
- <20191024120938.11237-4-david@redhat.com>
-In-Reply-To: <20191024120938.11237-4-david@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 4 Nov 2019 20:38:56 -0800
-Message-ID: <CAPcyv4jyTxEpw5ep5Noy0YRV7Dybzj+8OTVMwRK_zeFigF-LsQ@mail.gmail.com>
-Subject: Re: [PATCH v1 03/10] KVM: Prepare kvm_is_reserved_pfn() for
- PG_reserved changes
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Tue, 05 Nov 2019 15:56:32 +1100
+In-Reply-To: <20191022075247.16266-4-clombard@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19110505-0028-0000-0000-000003B2BF95
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19110505-0029-0000-0000-0000247515E2
+Message-Id: <f80de6db-cfea-5897-288f-64d002b25d8d@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-11-05_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1911050039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,103 +98,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
- KarimAllah Ahmed <karahmed@amazon.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
- YueHaibing <yuehaibing@huawei.com>,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
- Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
- "Isaac J. Manjarres" <isaacm@codeaurora.org>,
- Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Sasha Levin <sashal@kernel.org>,
- kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
- Alex Williamson <alex.williamson@redhat.com>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
- xen-devel <xen-devel@lists.xenproject.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Allison Randal <allison@lohutok.net>,
- Jim Mattson <jmattson@google.com>, Mel Gorman <mgorman@techsingularity.net>,
- Adam Borowski <kilobyte@angband.pl>, Cornelia Huck <cohuck@redhat.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 24, 2019 at 5:11 AM David Hildenbrand <david@redhat.com> wrote:
->
-> Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
-> change that.
->
-> KVM has this weird use case that you can map anything from /dev/mem
-> into the guest. pfn_valid() is not a reliable check whether the memmap
-> was initialized and can be touched. pfn_to_online_page() makes sure
-> that we have an initialized memmap (and don't have ZONE_DEVICE memory).
->
-> Rewrite kvm_is_reserved_pfn() to make sure the function produces the
-> same result once we stop setting ZONE_DEVICE pages PG_reserved.
->
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: "Radim Kr=C4=8Dm=C3=A1=C5=99" <rkrcmar@redhat.com>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: KarimAllah Ahmed <karahmed@amazon.de>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On 22/10/19 6:52 pm, christophe lombard wrote:
+> Fix up the pci config size of the OpenCAPI PCIe devices in the pseries
+> environment.
+> Most of OpenCAPI PCIe devices have 4096 bytes of configuration space.
+
+It's not "most of", it's "all" - the OpenCAPI Discovery and 
+Configuration Spec requires the use of extended capabilities that fall 
+in the 0x100-0xFFF range.
+
+> 
+> Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
 > ---
->  virt/kvm/kvm_main.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index e9eb666eb6e8..9d18cc67d124 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -151,9 +151,15 @@ __weak int kvm_arch_mmu_notifier_invalidate_range(st=
-ruct kvm *kvm,
->
->  bool kvm_is_reserved_pfn(kvm_pfn_t pfn)
->  {
-> -       if (pfn_valid(pfn))
-> -               return PageReserved(pfn_to_page(pfn));
-> +       struct page *page =3D pfn_to_online_page(pfn);
->
-> +       /*
-> +        * We treat any pages that are not online (not managed by the bud=
-dy)
-> +        * as reserved - this includes ZONE_DEVICE pages and pages withou=
-t
-> +        * a memmap (e.g., mapped via /dev/mem).
-> +        */
-> +       if (page)
-> +               return PageReserved(page);
->         return true;
->  }
+>   arch/powerpc/platforms/pseries/pci.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/pci.c b/arch/powerpc/platforms/pseries/pci.c
+> index 1eae1d09980c..3397784767b0 100644
+> --- a/arch/powerpc/platforms/pseries/pci.c
+> +++ b/arch/powerpc/platforms/pseries/pci.c
+> @@ -291,6 +291,15 @@ static void fixup_winbond_82c105(struct pci_dev* dev)
+>   DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_WINBOND, PCI_DEVICE_ID_WINBOND_82C105,
+>   			 fixup_winbond_82c105);
+>   
+> +static void fixup_opencapi_cfg_size(struct pci_dev *pdev)
+> +{
+> +	if (!machine_is(pseries))
+> +		return;
+> +
+> +	pdev->cfg_size = PCI_CFG_SPACE_EXP_SIZE;
+> +}
+> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IBM, 0x062b, fixup_opencapi_cfg_size);
 
-So after this all the pfn_valid() usage in kvm_main.c is replaced with
-pfn_to_online_page()? Looks correct to me.
+An OpenCAPI device can have any PCI ID, is there a particular reason 
+we're limiting this to 1014:062b? On PowerNV, we check the PHB type to 
+determine whether the device is OpenCAPI or not, what's the equivalent 
+for pseries?
 
-However, I'm worried that kvm is taking reference on ZONE_DEVICE pages
-through some other path resulting in this:
+> +
+>   int pseries_root_bridge_prepare(struct pci_host_bridge *bridge)
+>   {
+>   	struct device_node *dn, *pdn;
+> 
 
-    https://lore.kernel.org/linux-nvdimm/20190919154708.GA24650@angband.pl/
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
-I'll see if this patch set modulates or maintains that failure mode.
