@@ -2,82 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FBAEF38C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 03:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B95DEF4A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 05:58:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 476Yfg3zt9zF4Fn
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 13:35:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 476cqn1wDtzF1Jy
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 15:58:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::842;
- helo=mail-qt1-x842.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::343;
+ helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
+ dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.b="RrEUUprS"; 
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="yhHHwHps"; 
  dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 476Ybr0j09zF4FJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 13:32:39 +1100 (AEDT)
-Received: by mail-qt1-x842.google.com with SMTP id l24so8928504qtp.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 18:32:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=4urm9i82HUz7ctZoqeaJ+eDwbY+Le9I8/NmP0pY1rnA=;
- b=RrEUUprScGGCs1P3lOuGj4a5RoiWbVbfDZ4+HpgRvyTXCYVlJAXQB+MYamRZtedVHY
- f5+sxNxk2K5wkp7PjMMeD8HJWFAJHo3RtLYXlCrUl00LuH1GNIO+43+qB9VoRPGoMtd2
- MhxxJSrVmcyNdw2dcAOft+ieDHmjkqcbx3xo51HlgztpG3sVxpkHZVlG9m+fgORfqdhb
- XySrfwIPRDIjnSUQNZ9F7DSfvHrKSEQZxN/D+pZKoiFoN1H+0mMnDQ/zYc1NegbKO5Qw
- fR/889wgnwS9AagFL4h4X1w9N0H+8w+Cg8HTo2zBy3ABWuxHxMoo0KJgJWvcNzShW5B1
- QLlQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476cPt3Zm4zF3Bx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2019 15:39:10 +1100 (AEDT)
+Received: by mail-ot1-x343.google.com with SMTP id z6so16538298otb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2019 20:39:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=LQ/3CY3Z/pwD7vktjhd0l5Hf+cHLJkYRKb4mMFAX40w=;
+ b=yhHHwHpstkv84TevZIhs/Wm18KmjQCTMD7QlgnCZ3d31OxhoY6s6I3rfk8ud7Ml9XW
+ NzkBxxxgjNUnDFVFhwgBwUgJux1TVnbKP5vdJwRFwQ+/giMyREG6ohSNQy9TeoSZJP8T
+ SPIO/dUqQUV+56+4q+tqGSp5zgkTlc1mY6zJa37wVenBzWpatnn2O1AzlEI006uGn0Ia
+ +fAj7hOgp2UmAGxqae4eaNY8IDMTTdkrkZFK6SjUqy87+8sumJ4XhFeiC35vbDkoayxx
+ uGfCGRfgl5zfXbcSzaVw9hv/WN8gLBd6EeLAtnBu48QoPLD4qlg6djtdWgKDg7cH2aI4
+ CIaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=4urm9i82HUz7ctZoqeaJ+eDwbY+Le9I8/NmP0pY1rnA=;
- b=gEqYmwS2Z6qAw2cylMciGGFAGEZbREsnU2H7rlDSVgFa8WDe2SSFT7y64+bop8oGME
- Rb4RYcQiSX2dXdDnGchn+yne7ZFXKRSMc3Is8Q3naILwC4qMbc2Zi4uzQFgxtH8EAe12
- hvWQFPgXXMoW89Pd54yFDj5pDVnjsxdcc3agOGiZrlFwH32uaf06RM+fGal3C2BLaua0
- +R/gNuKo25UxUvfTJn8Uh+bBuKwWH2YMIpzAwg1EtfZTqI9qnn6o8PCMv5tSNA3muml1
- xLctbsv/sR4i/owemaEA1XY4a5d7QbknOgXOSxkU/MMkbA4XLUpGDratkwxe5ENs9K+J
- by8g==
-X-Gm-Message-State: APjAAAW28Ne1rqvn+HGsw8wayNZPJ71dLOWDN9ZdsbUHTNvVk48Zwco2
- nFxsA9ruQd/vQzKgGr+6+1MRCw==
-X-Google-Smtp-Source: APXvYqzymmufBg1PiSWGxkk4f7LXgsvyOrzTuuRBB+uFmwh9UO+iQP682ubsI0h94l7eDVroneUqZg==
-X-Received: by 2002:a0c:9838:: with SMTP id c53mr25556531qvd.250.1572921156814; 
- Mon, 04 Nov 2019 18:32:36 -0800 (PST)
-Received: from ziepe.ca
- (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [142.162.113.180])
- by smtp.gmail.com with ESMTPSA id t65sm8907102qkh.23.2019.11.04.18.32.36
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 04 Nov 2019 18:32:36 -0800 (PST)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
- (envelope-from <jgg@ziepe.ca>)
- id 1iRoe3-0002uH-K9; Mon, 04 Nov 2019 22:32:35 -0400
-Date: Mon, 4 Nov 2019 22:32:35 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v2 07/18] infiniband: set FOLL_PIN, FOLL_LONGTERM via
- pin_longterm_pages*()
-Message-ID: <20191105023235.GA11093@ziepe.ca>
-References: <20191103211813.213227-1-jhubbard@nvidia.com>
- <20191103211813.213227-8-jhubbard@nvidia.com>
- <20191104203346.GF30938@ziepe.ca>
- <578c1760-7221-4961-9f7d-c07c22e5c259@nvidia.com>
- <20191104205738.GH30938@ziepe.ca>
- <1560fa00-0c2b-0f3b-091c-d628f021ce09@nvidia.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=LQ/3CY3Z/pwD7vktjhd0l5Hf+cHLJkYRKb4mMFAX40w=;
+ b=gJrbBpgDXzVUcChlplAtPrYcR9FayPcnx0KKD6jZFBkrqjPgIXKp0ciYa3J1PXw2Ph
+ zJOp4iSKaTukBJaClashwkO+hSsUKUjfbTD6tuIFXhIDL/6MNNNHRvmuHaDwGd7EgnPv
+ H44NPlQUZNfwEugiuGb29l3DOHhzHbV6CYS5/mgy2CnvCs0Y5O3/b/2Vx5aejTt0eQE/
+ Rih8jgDY6Ux4dc/xU6Uq89cmtQg107mZu4Pgx3vTXy+Vzib3TzxPjyaC8zOGGfgDNoZ7
+ vZ8RqdG7osPSTeccG/lj9KLt5isJe0Yofh6aKi/z38z/x4HJvgMLPI0IZeVDgKW+6SP1
+ 2XcQ==
+X-Gm-Message-State: APjAAAWgLQcJjK38DiT57VvhuDnHfhO8mRZMA+MNxcQHVPCA2XEHDKHQ
+ PCAn9ceHdTPOojmSRv7ubKkWV5Qwa4v2TT8y/WDokQ==
+X-Google-Smtp-Source: APXvYqw5MaEjuPSBWubL0ieUUp4Y5rryBa4JzAq8q4R6lrgIw09Afe+NdZFy6gkARWQQx7v95Lg8Rh1zBTQaSC9BU+U=
+X-Received: by 2002:a9d:30c8:: with SMTP id r8mr3863066otg.363.1572928747302; 
+ Mon, 04 Nov 2019 20:39:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1560fa00-0c2b-0f3b-091c-d628f021ce09@nvidia.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20191024120938.11237-1-david@redhat.com>
+ <20191024120938.11237-4-david@redhat.com>
+In-Reply-To: <20191024120938.11237-4-david@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 4 Nov 2019 20:38:56 -0800
+Message-ID: <CAPcyv4jyTxEpw5ep5Noy0YRV7Dybzj+8OTVMwRK_zeFigF-LsQ@mail.gmail.com>
+Subject: Re: [PATCH v1 03/10] KVM: Prepare kvm_is_reserved_pfn() for
+ PG_reserved changes
+To: David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Tue, 05 Nov 2019 15:56:32 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,81 +79,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+ =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ KarimAllah Ahmed <karahmed@amazon.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
+ YueHaibing <yuehaibing@huawei.com>,
+ "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
+ "Isaac J. Manjarres" <isaacm@codeaurora.org>,
+ Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Sasha Levin <sashal@kernel.org>,
+ kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
+ xen-devel <xen-devel@lists.xenproject.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Allison Randal <allison@lohutok.net>,
+ Jim Mattson <jmattson@google.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Adam Borowski <kilobyte@angband.pl>, Cornelia Huck <cohuck@redhat.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 04, 2019 at 02:03:43PM -0800, John Hubbard wrote:
-> On 11/4/19 12:57 PM, Jason Gunthorpe wrote:
-> > On Mon, Nov 04, 2019 at 12:48:13PM -0800, John Hubbard wrote:
-> >> On 11/4/19 12:33 PM, Jason Gunthorpe wrote:
-> >> ...
-> >>>> diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-> >>>> index 24244a2f68cc..c5a78d3e674b 100644
-> >>>> +++ b/drivers/infiniband/core/umem.c
-> >>>> @@ -272,11 +272,10 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, unsigned long addr,
-> >>>>  
-> >>>>  	while (npages) {
-> >>>>  		down_read(&mm->mmap_sem);
-> >>>> -		ret = get_user_pages(cur_base,
-> >>>> +		ret = pin_longterm_pages(cur_base,
-> >>>>  				     min_t(unsigned long, npages,
-> >>>>  					   PAGE_SIZE / sizeof (struct page *)),
-> >>>> -				     gup_flags | FOLL_LONGTERM,
-> >>>> -				     page_list, NULL);
-> >>>> +				     gup_flags, page_list, NULL);
-> >>>
-> >>> FWIW, this one should be converted to fast as well, I think we finally
-> >>> got rid of all the blockers for that?
-> >>>
-> >>
-> >> I'm not aware of any blockers on the gup.c end, anyway. The only broken thing we
-> >> have there is "gup remote + FOLL_LONGTERM". But we can do "gup fast + LONGTERM". 
-> > 
-> > I mean the use of the mmap_sem here is finally in a way where we can
-> > just delete the mmap_sem and use _fast
-> >  
-> > ie, AFAIK there is no need for the mmap_sem to be held during
-> > ib_umem_add_sg_table()
-> > 
-> > This should probably be a standalone patch however
-> > 
-> 
-> Yes. Oh, actually I guess the patch flow should be: change to 
-> get_user_pages_fast() and remove the mmap_sem calls, as one patch. And then change 
-> to pin_longterm_pages_fast() as the next patch. Otherwise, the internal fallback
-> from _fast to slow gup would attempt to take the mmap_sem (again) in the same
-> thread, which is not good. :)
-> 
-> Or just defer the change until after this series. Either way is fine, let me
-> know if you prefer one over the other.
-> 
-> The patch itself is trivial, but runtime testing to gain confidence that
-> it's solid is much harder. Is there a stress test you would recommend for that?
-> (I'm not promising I can quickly run it yet--my local IB setup is still nascent 
-> at best.)
+On Thu, Oct 24, 2019 at 5:11 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
+> change that.
+>
+> KVM has this weird use case that you can map anything from /dev/mem
+> into the guest. pfn_valid() is not a reliable check whether the memmap
+> was initialized and can be touched. pfn_to_online_page() makes sure
+> that we have an initialized memmap (and don't have ZONE_DEVICE memory).
+>
+> Rewrite kvm_is_reserved_pfn() to make sure the function produces the
+> same result once we stop setting ZONE_DEVICE pages PG_reserved.
+>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: "Radim Kr=C4=8Dm=C3=A1=C5=99" <rkrcmar@redhat.com>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: KarimAllah Ahmed <karahmed@amazon.de>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  virt/kvm/kvm_main.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index e9eb666eb6e8..9d18cc67d124 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -151,9 +151,15 @@ __weak int kvm_arch_mmu_notifier_invalidate_range(st=
+ruct kvm *kvm,
+>
+>  bool kvm_is_reserved_pfn(kvm_pfn_t pfn)
+>  {
+> -       if (pfn_valid(pfn))
+> -               return PageReserved(pfn_to_page(pfn));
+> +       struct page *page =3D pfn_to_online_page(pfn);
+>
+> +       /*
+> +        * We treat any pages that are not online (not managed by the bud=
+dy)
+> +        * as reserved - this includes ZONE_DEVICE pages and pages withou=
+t
+> +        * a memmap (e.g., mapped via /dev/mem).
+> +        */
+> +       if (page)
+> +               return PageReserved(page);
+>         return true;
+>  }
 
-If you make a patch we can probably get it tested, it is something
-we should do I keep forgetting about.
+So after this all the pfn_valid() usage in kvm_main.c is replaced with
+pfn_to_online_page()? Looks correct to me.
 
-Jason
+However, I'm worried that kvm is taking reference on ZONE_DEVICE pages
+through some other path resulting in this:
+
+    https://lore.kernel.org/linux-nvdimm/20190919154708.GA24650@angband.pl/
+
+I'll see if this patch set modulates or maintains that failure mode.
