@@ -1,83 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09436F0626
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 20:38:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42ACF06DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2019 21:28:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4770Mt236kzF32f
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 06:38:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4771Sl0lCZzDr9Q
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 07:28:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=de.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@de.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=sean.j.christopherson@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4770Kq3f70zF4fg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 06:36:59 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA5JXq4b117658
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 5 Nov 2019 14:36:54 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w3cnapr5j-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 14:36:54 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <gerald.schaefer@de.ibm.com>;
- Tue, 5 Nov 2019 19:36:50 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 5 Nov 2019 19:36:41 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA5JaeNI31719424
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Nov 2019 19:36:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6370DAE057;
- Tue,  5 Nov 2019 19:36:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 43F44AE056;
- Tue,  5 Nov 2019 19:36:39 +0000 (GMT)
-Received: from thinkpad (unknown [9.152.97.32])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Nov 2019 19:36:39 +0000 (GMT)
-Date: Tue, 5 Nov 2019 20:36:38 +0100
-From: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page
- table helpers
-In-Reply-To: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
-References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 476vWb3R1zzF4yH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 03:00:04 +1100 (AEDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2019 08:00:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,271,1569308400"; d="scan'208";a="205019568"
+Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com)
+ ([10.54.74.41])
+ by orsmga003.jf.intel.com with ESMTP; 05 Nov 2019 08:00:00 -0800
+Date: Tue, 5 Nov 2019 08:00:00 -0800
+From: Sean Christopherson <sean.j.christopherson@intel.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v1 03/10] KVM: Prepare kvm_is_reserved_pfn() for
+ PG_reserved changes
+Message-ID: <20191105160000.GC8128@linux.intel.com>
+References: <20191024120938.11237-1-david@redhat.com>
+ <20191024120938.11237-4-david@redhat.com>
+ <CAPcyv4jyTxEpw5ep5Noy0YRV7Dybzj+8OTVMwRK_zeFigF-LsQ@mail.gmail.com>
+ <bbe59155-24ae-f229-e182-107730423c47@redhat.com>
+ <01adb4cb-6092-638c-0bab-e61322be7cf5@redhat.com>
+ <613f3606-748b-0e56-a3ad-1efaffa1a67b@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110519-0020-0000-0000-00000382D869
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110519-0021-0000-0000-000021D903DD
-Message-Id: <20191105203638.6889a994@thinkpad>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-05_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1911050162
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <613f3606-748b-0e56-a3ad-1efaffa1a67b@redhat.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Mailman-Approved-At: Wed, 06 Nov 2019 07:24:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,72 +60,194 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
- Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+ Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ KarimAllah Ahmed <karahmed@amazon.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
+ YueHaibing <yuehaibing@huawei.com>,
+ "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
+ "Isaac J. Manjarres" <isaacm@codeaurora.org>,
+ Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Sasha Levin <sashal@kernel.org>,
+ kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
+ xen-devel <xen-devel@lists.xenproject.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Allison Randal <allison@lohutok.net>,
+ Jim Mattson <jmattson@google.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Adam Borowski <kilobyte@angband.pl>, Cornelia Huck <cohuck@redhat.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Johannes Weiner <hannes@cmpxchg.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 28 Oct 2019 10:59:22 +0530
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+On Tue, Nov 05, 2019 at 11:02:46AM +0100, David Hildenbrand wrote:
+> On 05.11.19 10:49, David Hildenbrand wrote:
+> >On 05.11.19 10:17, David Hildenbrand wrote:
+> >>On 05.11.19 05:38, Dan Williams wrote:
+> >>>On Thu, Oct 24, 2019 at 5:11 AM David Hildenbrand <david@redhat.com> wrote:
+> >>>>
+> >>>>Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
+> >>>>change that.
+> >>>>
+> >>>>KVM has this weird use case that you can map anything from /dev/mem
+> >>>>into the guest. pfn_valid() is not a reliable check whether the memmap
+> >>>>was initialized and can be touched. pfn_to_online_page() makes sure
+> >>>>that we have an initialized memmap (and don't have ZONE_DEVICE memory).
+> >>>>
+> >>>>Rewrite kvm_is_reserved_pfn() to make sure the function produces the
+> >>>>same result once we stop setting ZONE_DEVICE pages PG_reserved.
+> >>>>
+> >>>>Cc: Paolo Bonzini <pbonzini@redhat.com>
+> >>>>Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+> >>>>Cc: Michal Hocko <mhocko@kernel.org>
+> >>>>Cc: Dan Williams <dan.j.williams@intel.com>
+> >>>>Cc: KarimAllah Ahmed <karahmed@amazon.de>
+> >>>>Signed-off-by: David Hildenbrand <david@redhat.com>
+> >>>>---
+> >>>>    virt/kvm/kvm_main.c | 10 ++++++++--
+> >>>>    1 file changed, 8 insertions(+), 2 deletions(-)
+> >>>>
+> >>>>diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> >>>>index e9eb666eb6e8..9d18cc67d124 100644
+> >>>>--- a/virt/kvm/kvm_main.c
+> >>>>+++ b/virt/kvm/kvm_main.c
+> >>>>@@ -151,9 +151,15 @@ __weak int kvm_arch_mmu_notifier_invalidate_range(struct kvm *kvm,
+> >>>>
+> >>>>    bool kvm_is_reserved_pfn(kvm_pfn_t pfn)
+> >>>>    {
+> >>>>-       if (pfn_valid(pfn))
+> >>>>-               return PageReserved(pfn_to_page(pfn));
+> >>>>+       struct page *page = pfn_to_online_page(pfn);
+> >>>>
+> >>>>+       /*
+> >>>>+        * We treat any pages that are not online (not managed by the buddy)
+> >>>>+        * as reserved - this includes ZONE_DEVICE pages and pages without
+> >>>>+        * a memmap (e.g., mapped via /dev/mem).
+> >>>>+        */
+> >>>>+       if (page)
+> >>>>+               return PageReserved(page);
+> >>>>           return true;
+> >>>>    }
+> >>>
+> >>>So after this all the pfn_valid() usage in kvm_main.c is replaced with
+> >>>pfn_to_online_page()? Looks correct to me.
+> >>>
+> >>>However, I'm worried that kvm is taking reference on ZONE_DEVICE pages
+> >>>through some other path resulting in this:
+> >>>
+> >>>       https://lore.kernel.org/linux-nvdimm/20190919154708.GA24650@angband.pl/
+> >>>
+> >>>I'll see if this patch set modulates or maintains that failure mode.
+> >>>
+> >>
+> >>I'd assume that the behavior is unchanged. Ithink we get a reference to
+> >>these ZONE_DEVICE pages via __get_user_pages_fast() and friends in
+> >>hva_to_pfn_fast() and friends in virt/kvm/kvm_main.c
+> >>
+> >
+> >I think I know what's going wrong:
+> >
+> >Pages that are pinned via gfn_to_pfn() and friends take a references,
+> >however are often released via
+> >kvm_release_pfn_clean()/kvm_release_pfn_dirty()/kvm_release_page_clean()...
+> >
+> >
+> >E.g., in arch/x86/kvm/x86.c:reexecute_instruction()
+> >
+> >...
+> >pfn = gfn_to_pfn(vcpu->kvm, gpa_to_gfn(gpa));
+> >...
+> >kvm_release_pfn_clean(pfn);
+> >
+> >
+> >
+> >void kvm_release_pfn_clean(kvm_pfn_t pfn)
+> >{
+> >	if (!is_error_noslot_pfn(pfn) && !kvm_is_reserved_pfn(pfn))
+> >		put_page(pfn_to_page(pfn));
+> >}
+> >
+> >This function makes perfect sense as the counterpart for kvm_get_pfn():
+> >
+> >void kvm_get_pfn(kvm_pfn_t pfn)
+> >{
+> >	if (!kvm_is_reserved_pfn(pfn))
+> >		get_page(pfn_to_page(pfn));
+> >}
+> >
+> >
+> >As all ZONE_DEVICE pages are currently reserved, pages pinned via
+> >gfn_to_pfn() and friends will often not see a put_page() AFAIKS.
 
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
+Assuming gup() takes a reference for ZONE_DEVICE pages, yes, this is a
+KVM bug.
+
+> >Now, my patch does not change that, the result of
+> >kvm_is_reserved_pfn(pfn) will be unchanged. A proper fix for that would
+> >probably be
+> >
+> >a) To drop the reference to ZONE_DEVICE pages in gfn_to_pfn() and
+> >friends, after you successfully pinned the pages. (not sure if that's
+> >the right thing to do but you're the expert)
+> >
+> >b) To not use kvm_release_pfn_clean() and friends on pages that were
+> >definitely pinned.
+
+This is already KVM's intent, i.e. the purpose of the PageReserved() check
+is simply to avoid putting a non-existent reference.  The problem is that
+KVM assumes pages with PG_reserved set are never pinned, which AFAICT was
+true when the code was first added.
+
+> (talking to myself, sorry)
 > 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
+> Thinking again, dropping this patch from this series could effectively also
+> fix that issue. E.g., kvm_release_pfn_clean() and friends would always do a
+> put_page() if "pfn_valid() and !PageReserved()", so after patch 9 also on
+> ZONDE_DEVICE pages.
+
+Yeah, this appears to be the correct fix.
+
+> But it would have side effects that might not be desired. E.g.,:
 > 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
+> 1. kvm_pfn_to_page() would also return ZONE_DEVICE pages (might even be the
+> right thing to do).
 
-I've prepared a couple of commits to our arch code to make this work on s390,
-they will go upstream in the next merge window. After that, we can add s390
-to the supported architectures.
+This should be ok, at least on x86.  There are only three users of
+kvm_pfn_to_page().  Two of those are on allocations that are controlled by
+KVM and are guaranteed to be vanilla MAP_ANONYMOUS.  The third is on guest
+memory when running a nested guest, and in that case supporting ZONE_DEVICE
+memory is desirable, i.e. KVM should play nice with a guest that is backed
+by ZONE_DEVICE memory.
 
-We had some issues, e.g. because we do not report large entries as bad in
-pxd_bad(), do not check for folded page tables in pxd_free(), or assume
-that primitives like pmd_mkdirty() will only be called after pmd_mkhuge().
-None of those should have any impact on current code, but your test module
-revealed that we do not behave like other architectures in some aspects,
-and it's good to find and fix such things to prevent possible future issues.
+> 2. kvm_set_pfn_dirty() would also set ZONE_DEVICE pages dirty (might be
+> okay)
 
-Thanks a lot for the effort!
+This is ok from a KVM perspective.
 
-Regards,
-Gerald
+The scarier code (for me) is transparent_hugepage_adjust() and
+kvm_mmu_zap_collapsible_spte(), as I don't at all understand the
+interaction between THP and _PAGE_DEVMAP.
 
