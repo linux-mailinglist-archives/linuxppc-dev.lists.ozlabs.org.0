@@ -1,45 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F6FF1071
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 08:36:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7845F10AF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 08:58:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477JHY4JVRzF5hB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 18:36:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477Jmp6QvXzDqsQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 18:58:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 477JFQ60RTzF3mt
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 18:34:15 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1EE3430E;
- Tue,  5 Nov 2019 23:34:13 -0800 (PST)
-Received: from [192.168.225.149] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F42D3F71A;
- Tue,  5 Nov 2019 23:36:40 -0800 (PST)
-Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
- helpers
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
-References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
- <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
- <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <0e0c2ce9-636d-1153-2451-baf7317ed45f@arm.com>
-Date: Wed, 6 Nov 2019 13:04:20 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::243;
+ helo=mail-lj1-x243.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="SRkgLFaa"; dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477Jks67tVzF5fs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 18:56:19 +1100 (AEDT)
+Received: by mail-lj1-x243.google.com with SMTP id n21so11317223ljg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 23:56:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=xweVifWZ/YqguIkP3wRFBeRke8fVrDKetgEyLrXZK4A=;
+ b=SRkgLFaa63C9qmcFdcf/s/KAPgAENphVcMUoM+vz9BIEzbf8c06I0Y1Hb5KXR42LXI
+ G+i3eaIvU5rZa0kOrwSOnHxSXGm7OyVoMHx/peFrsf/OMV0cjkz5laiG3DlkVHfPCESn
+ Pq9m25d73Eymy1sG4V505XAYT460OEuZk3NdY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=xweVifWZ/YqguIkP3wRFBeRke8fVrDKetgEyLrXZK4A=;
+ b=dzV/gO6M8coyP4DVsLSHKBldryZKUFmAptSKjIMHBivbVOiPXfCMcAe03TljF6VOGG
+ AlYRprjykLYw9hiSZjG1xvIRtPBOMCL0qmpYNDY97v3VOOYW2KroJa76HJLdlWtBMpKK
+ uWtCvoo0JLywiFxKBzbZRcZJiDokWt9BHVlpLCQb3hQpd2R8wmdukw3Xo5fRMsjlpleu
+ /IVJuDXE8tJinmx82T6iWBo0edoIhSX7QRER05Ge9U34WrxfyGVBAQlrbvRsBtPV8rmN
+ WFCRyd1Uhh1nqz/ZDk/n8po/6CtcrOmsl6Ro4XtBxYZ7Z8kn4zknzr+Fvm/8rB8tTKhv
+ sXNA==
+X-Gm-Message-State: APjAAAVVjSEhCfAvyH50O6FA0pvGmWXDsZ0d7OLQtGvDlFchKWH2eqZ2
+ tE5VeC18WjY4wv9aLCZZVhCXug==
+X-Google-Smtp-Source: APXvYqx0UMAxK46d8rifJbbO0Iei8z4btT+kJJezWPrwvpREfmjRSXZQf51n+CDfByMCvypaqmMFbg==
+X-Received: by 2002:a05:651c:105:: with SMTP id a5mr819866ljb.45.1573026973653; 
+ Tue, 05 Nov 2019 23:56:13 -0800 (PST)
+Received: from [172.16.11.28] ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id d27sm11001361lfb.3.2019.11.05.23.56.12
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 05 Nov 2019 23:56:12 -0800 (PST)
+Subject: Re: [PATCH v3 35/36] net/wan: make FSL_UCC_HDLC explicitly depend on
+ PPC32
+To: Qiang Zhao <qiang.zhao@nxp.com>, Leo Li <leoyang.li@nxp.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
+References: <20191018125234.21825-1-linux@rasmusvillemoes.dk>
+ <20191101124210.14510-1-linux@rasmusvillemoes.dk>
+ <20191101124210.14510-36-linux@rasmusvillemoes.dk>
+ <4e2ac670-2bf4-fb47-2130-c0120bcf0111@c-s.fr>
+ <VE1PR04MB6687D4620E32176BDC120DBA8F620@VE1PR04MB6687.eurprd04.prod.outlook.com>
+ <24ea27b6-adea-cc74-f480-b68de163f531@rasmusvillemoes.dk>
+ <VE1PR04MB67686E14A4E0D33C77B43EA6917E0@VE1PR04MB6768.eurprd04.prod.outlook.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <d8bf1d7f-b4c6-ef92-9fac-a3668ff37d8d@rasmusvillemoes.dk>
+Date: Wed, 6 Nov 2019 08:56:11 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
+In-Reply-To: <VE1PR04MB67686E14A4E0D33C77B43EA6917E0@VE1PR04MB6768.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,95 +88,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
- Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-arm-kernel@lists.infradead.org,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Scott Wood <oss@buserror.net>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 11/06/2019 12:11 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 06/11/2019 à 04:22, Anshuman Khandual a écrit :
->>
->>
->> On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
->>> +    -----------------------
->>> +    |         arch |status|
->>> +    -----------------------
->>> +    |       alpha: | TODO |
->>> +    |         arc: | TODO |
->>> +    |         arm: | TODO |
->>> +    |       arm64: |  ok  |
->>> +    |         c6x: | TODO |
->>> +    |        csky: | TODO |
->>> +    |       h8300: | TODO |
->>> +    |     hexagon: | TODO |
->>> +    |        ia64: | TODO |
->>> +    |        m68k: | TODO |
->>> +    |  microblaze: | TODO |
->>> +    |        mips: | TODO |
->>> +    |       nds32: | TODO |
->>> +    |       nios2: | TODO |
->>> +    |    openrisc: | TODO |
->>> +    |      parisc: | TODO |
->>> +    |     powerpc: | TODO |
->>> +    |       ppc32: |  ok  |
-> 
-> Note that ppc32 is a part of powerpc, not a standalone arch.
-
-Right, I understand. But we are yet to hear about how this test
-came about on powerpc server platforms. Will update 'powerpc'
-arch listing above once we get some confirmation. May be once
-this works on all relevant powerpc platforms, we can just merge
-'powerpc' and 'ppc32' entries here as just 'powerpc'.
+On 05/11/2019 07.16, Qiang Zhao wrote:
 
 > 
-> Maybe something like the following would be more correct:
-> |  powerpc/32: |  ok  |
-> |  powerpc/64: | TODO |
-> 
-> Christophe
-> 
->>> +    |       riscv: | TODO |
->>> +    |        s390: | TODO |
->>> +    |          sh: | TODO |
->>> +    |       sparc: | TODO |
->>> +    |          um: | TODO |
->>> +    |   unicore32: | TODO |
->>> +    |         x86: |  ok  |
->>> +    |      xtensa: | TODO |
->>> +    -----------------------
->>
->> While here, are there some volunteers to test this on any of the
->> 'yet to be tested and supported' platforms ?
->>
->> - Anshuman
->>
-> 
+> I tested your v3 patches on ls1043ardb which is arm64 for fsl_ucc_hdlc, it can work,
+> Only it will put a compile warning, I also made a patch to fix it.
+> I can send a patch to remove PPC32 dependency when I send my patch to support ARM64.
+> Or I add my patch in your patchset.
+
+Please send your patch (without whatever Kconfig hunk you needed to add)
+with a proper changelog etc. If it looks reasonable (to me, reviewers of
+the whole thing obviously also need to agree), I'll include it in my
+series and drop adding the PPC32 addition to FSL_UCC_HDLC. Otherwise
+I'll keep that and then you can later drop the PPC32 dependency.
+
+Rasmus
+
