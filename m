@@ -2,85 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97A9F1CE0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 18:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FAEFF1D44
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 19:14:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477Z1s1JrJzF48C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 04:55:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477ZSY2Md8zF5Qj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 05:14:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477Yzk5RwHzDrhd
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 04:53:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 477Yzk13GDz8syF
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 04:53:22 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 477Yzj6CWQz9sP7; Thu,  7 Nov 2019 04:53:21 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=mst@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="JSCa0DCE"; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 477Yzh6VSgz9s7T
- for <linuxppc-dev@ozlabs.org>; Thu,  7 Nov 2019 04:53:20 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA6HmbXR130780; Wed, 6 Nov 2019 12:53:18 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2w41x4tfn3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Nov 2019 12:53:17 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA6Ho4Y6017465;
- Wed, 6 Nov 2019 17:53:16 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma05wdc.us.ibm.com with ESMTP id 2w41ujgj1c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Nov 2019 17:53:16 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA6HrGSM34013612
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Nov 2019 17:53:16 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EEC4928060;
- Wed,  6 Nov 2019 17:53:15 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 776892805C;
- Wed,  6 Nov 2019 17:53:15 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.85.194.118])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  6 Nov 2019 17:53:15 +0000 (GMT)
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [RFC PATCH v2] powerpc/pseries/mobility: notify network peers after
- migration
-Date: Wed,  6 Nov 2019 11:53:11 -0600
-Message-Id: <1573062791-31276-1-git-send-email-tlfalcon@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-06_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911060172
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477ZHP19pLzF5MW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 05:06:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1573063608;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Mc0CfKFNSumdX6DJ613pFznuf2fCrMDQvvSKwwkRmvo=;
+ b=JSCa0DCE4upjNYqfZl7x4n/mZqSjDMWXB3L2I2HuvcWv1qr1Y29Y1Xy3JXUJSkBgrOQFJr
+ ZvnwtqZN85Q7BrMuUsjh4xFpi3KVtv5BR07oN/OscjgvJHjA8WOZwHQdwfze/eagOwM+bz
+ U2iPjMAjr4oZInqR2uJ6A3dawddbuX4=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-27-dVcGWq4ZMmayMrLQZ277cQ-1; Wed, 06 Nov 2019 13:06:46 -0500
+Received: by mail-qk1-f199.google.com with SMTP id m189so25591445qkc.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 10:06:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=NqfzdUNcXeLkdXp8DQ/xxrnz7TDp3lCj6CeS25u8znQ=;
+ b=pwSNAg1ogAD1Y6UBvfemL3DVobYeNhQEXCGNVpoW9xGlPxTEv35zGQdrArKVWyXP8b
+ hRveTQbMHQtw80v6hD5JoSAMyIpozUKOSWpNVsA8+FJs4yBhbqBzFiUL4xV+d5VM5NLq
+ By1MD2nkJmKpNtEbbGnbR8OcPHpikXCJa9PPlH3BH4rf1YOjr+X52NmRlZHiJq7PoXNj
+ LXrHKAmZxkrIh/aSjhoQYOszWYW3AUfip66IIj/2EbLmQ0FfrwrNhO/Y1s2l2PMjaAA+
+ 7M4V47vGjyKyDjq8B8ZvaWtCPyYUoNZq2APGy3npVjRxZ+e01Odp4r19njhFQUX1F2hs
+ BTzA==
+X-Gm-Message-State: APjAAAWzxTB+an+qPgnH5MmLdSjKoKVFYIUDMnQADVxyp1dmsk8OX8+W
+ yI64YUse/vACH7DtoIoo34N4NUrLwO/KLvP+QGWFL4HHV9MjATLQhKsRoOEYgAdC3N8ZAOgKtHW
+ sS8GTRhdHZ8980SSRMfrRpaFrqw==
+X-Received: by 2002:aed:35f4:: with SMTP id d49mr3723080qte.20.1573063606282; 
+ Wed, 06 Nov 2019 10:06:46 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyOhMFoH+z07w8YBa359Wh6c2mb8FRixZPOonwYmlAbW0henI/EGic2ZkzRnEfuMVA+wm2czg==
+X-Received: by 2002:aed:35f4:: with SMTP id d49mr3723053qte.20.1573063605969; 
+ Wed, 06 Nov 2019 10:06:45 -0800 (PST)
+Received: from redhat.com (bzq-79-178-12-128.red.bezeqint.net. [79.178.12.128])
+ by smtp.gmail.com with ESMTPSA id k3sm15336883qtf.68.2019.11.06.10.06.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Nov 2019 10:06:45 -0800 (PST)
+Date: Wed, 6 Nov 2019 13:06:37 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [RFC v1 0/2] Enable IOMMU support for pseries Secure VMs
+Message-ID: <20191106130558-mutt-send-email-mst@kernel.org>
+References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
+ <265679db-9cb3-1660-0cf6-97f740b1b48b@ozlabs.ru>
+MIME-Version: 1.0
+In-Reply-To: <265679db-9cb3-1660-0cf6-97f740b1b48b@ozlabs.ru>
+X-MC-Unique: dVcGWq4ZMmayMrLQZ277cQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,73 +87,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, tyreld@linux.ibm.com, msuchanek@suse.com,
- netdev@vger.kernel.org, Thomas Falcon <tlfalcon@linux.ibm.com>
+Cc: andmike@us.ibm.com, Ram Pai <linuxram@us.ibm.com>,
+ mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
+ cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After a migration, it is necessary to send a gratuitous ARP
-from all running interfaces so that the rest of the network
-is aware of its new location. However, some supported network
-devices are unaware that they have been migrated. To avoid network
-interruptions and other unwanted behavior, force a GARP on all
-valid, running interfaces as part of the post_mobility_fixup
-routine.
+On Wed, Nov 06, 2019 at 12:59:50PM +1100, Alexey Kardashevskiy wrote:
+>=20
+>=20
+> On 05/11/2019 08:28, Ram Pai wrote:
+> > This patch series enables IOMMU support for pseries Secure VMs.
+> >=20
+> >=20
+> > Tested using QEMU command line option:
+> >=20
+> >  "-device virtio-scsi-pci,id=3Dscsi0,bus=3Dpci.0,addr=3D0x4,
+> >  =09iommu_platform=3Don,disable-modern=3Doff,disable-legacy=3Don"
+> >  and=20
+> >=20
+> >  "-device virtio-blk-pci,scsi=3Doff,bus=3Dpci.0,
+> >  =09addr=3D0x5,drive=3Ddrive-virtio-disk0,id=3Dvirtio-disk0,
+> >  =09iommu_platform=3Don,disable-modern=3Doff,disable-legacy=3Don"
+>=20
+>=20
+> Worth mentioning that SLOF won't boot with such devices as SLOF does not =
+know about iommu_platform=3Don.
 
-Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
----
-v2: fix missing brackets caught by Russell Currey
----
- arch/powerpc/platforms/pseries/mobility.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+Shouldn't be hard to support: set up the iommu to allow everything
+and ack the feature. Right?
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index b571285..dddc3c1 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -17,6 +17,9 @@
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <linux/stringify.h>
-+#include <linux/netdevice.h>
-+#include <linux/rtnetlink.h>
-+#include <net/net_namespace.h>
- 
- #include <asm/machdep.h>
- #include <asm/rtas.h>
-@@ -331,6 +334,8 @@ void post_mobility_fixup(void)
- {
- 	int rc;
- 	int activate_fw_token;
-+	struct net_device *netdev;
-+	struct net *net;
- 
- 	activate_fw_token = rtas_token("ibm,activate-firmware");
- 	if (activate_fw_token == RTAS_UNKNOWN_SERVICE) {
-@@ -371,6 +376,22 @@ void post_mobility_fixup(void)
- 	/* Possibly switch to a new RFI flush type */
- 	pseries_setup_rfi_flush();
- 
-+	/* need to force a gratuitous ARP on running interfaces */
-+	rtnl_lock();
-+	for_each_net(net) {
-+		for_each_netdev(net, netdev) {
-+			if (netif_device_present(netdev) &&
-+			    netif_running(netdev) &&
-+			    !(netdev->flags & (IFF_NOARP | IFF_LOOPBACK))) {
-+				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
-+							 netdev);
-+				call_netdevice_notifiers(NETDEV_RESEND_IGMP,
-+							 netdev);
-+			}
-+		}
-+	}
-+	rtnl_unlock();
-+
- 	return;
- }
- 
--- 
-1.8.3.1
+> >=20
+> > Ram Pai (2):
+> >   powerpc/pseries/iommu: Share the per-cpu TCE page with the hypervisor=
+.
+> >   powerpc/pseries/iommu: Use dma_iommu_ops for Secure VMs aswell.
+> >=20
+> >  arch/powerpc/platforms/pseries/iommu.c | 30 ++++++++++++++++++--------=
+----
+> >  1 file changed, 18 insertions(+), 12 deletions(-)
+> >=20
+>=20
+> --=20
+> Alexey
 
