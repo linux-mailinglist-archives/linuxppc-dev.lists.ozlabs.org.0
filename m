@@ -1,83 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0410F0ECF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 07:22:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9D1F0F16
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 07:43:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477Gfq2CsfzF5gV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 17:22:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477H6c2hVHzDrCX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 17:43:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="uDQK58sa"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477Gcy2g5fzF5dg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 17:21:06 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA66Ghpn033427
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 6 Nov 2019 01:21:02 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2w3pfm48cd-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 01:21:02 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Wed, 6 Nov 2019 06:21:00 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 6 Nov 2019 06:20:57 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA66KtIf32375004
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Nov 2019 06:20:55 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FA9BA405B;
- Wed,  6 Nov 2019 06:20:55 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8EEB3A405F;
- Wed,  6 Nov 2019 06:20:53 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.124.35.101])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed,  6 Nov 2019 06:20:53 +0000 (GMT)
-Date: Wed, 6 Nov 2019 11:50:51 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Paul Mackerras <paulus@ozlabs.org>
-Subject: Re: [PATCH v10 0/8] KVM: PPC: Driver to manage pages of secure guest
-References: <20191104041800.24527-1-bharata@linux.ibm.com>
- <20191106043058.GA12069@oak.ozlabs.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477H4F0h5pzF5Bt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 17:41:14 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 477H450GyXz9v00D;
+ Wed,  6 Nov 2019 07:41:09 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=uDQK58sa; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id NP7mUVlPVLBt; Wed,  6 Nov 2019 07:41:08 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 477H445kq5z9v00C;
+ Wed,  6 Nov 2019 07:41:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1573022468; bh=ldK6jtPphgl+yNa6VSaAerjL+prNDwgkLRC6nRKEIeI=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=uDQK58saIN0zvehZkL7oENgA4DemT8lDWmLXhETHs2fgk7tiYooqK7uit5oPw6kqK
+ UOoMgZlJGvnNPw1TVCdC6OsuYDkWv6rJFk3JlidSUeiN1jyfI5kOdxu8g2Q0UGfHfG
+ nJ9ksEtevKFg7K5FRpbJoChZCjEM1dr9rYK/i7Rk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 973408B82D;
+ Wed,  6 Nov 2019 07:41:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id A7VVbo-RdBde; Wed,  6 Nov 2019 07:41:09 +0100 (CET)
+Received: from [172.25.230.101] (unknown [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 27E838B7CC;
+ Wed,  6 Nov 2019 07:41:09 +0100 (CET)
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+ <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
+Date: Wed, 6 Nov 2019 07:41:08 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191106043058.GA12069@oak.ozlabs.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19110606-0020-0000-0000-00000382F67F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110606-0021-0000-0000-000021D9233E
-Message-Id: <20191106062051.GA21634@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-06_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=980 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1911060065
+In-Reply-To: <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,26 +79,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 06, 2019 at 03:30:58PM +1100, Paul Mackerras wrote:
-> On Mon, Nov 04, 2019 at 09:47:52AM +0530, Bharata B Rao wrote:
-> > 
-> > Now, all the dependencies required by this patchset are in powerpc/next
-> > on which this patchset is based upon.
+
+
+Le 06/11/2019 à 04:22, Anshuman Khandual a écrit :
 > 
-> Can you tell me what patches that are in powerpc/next but not upstream
-> this depends on?
+> 
+> On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
+>> +    -----------------------
+>> +    |         arch |status|
+>> +    -----------------------
+>> +    |       alpha: | TODO |
+>> +    |         arc: | TODO |
+>> +    |         arm: | TODO |
+>> +    |       arm64: |  ok  |
+>> +    |         c6x: | TODO |
+>> +    |        csky: | TODO |
+>> +    |       h8300: | TODO |
+>> +    |     hexagon: | TODO |
+>> +    |        ia64: | TODO |
+>> +    |        m68k: | TODO |
+>> +    |  microblaze: | TODO |
+>> +    |        mips: | TODO |
+>> +    |       nds32: | TODO |
+>> +    |       nios2: | TODO |
+>> +    |    openrisc: | TODO |
+>> +    |      parisc: | TODO |
+>> +    |     powerpc: | TODO |
+>> +    |       ppc32: |  ok  |
 
-Sorry, I should have been clear. All the dependencies are upstream.
+Note that ppc32 is a part of powerpc, not a standalone arch.
 
-Regards,
-Bharata.
+Maybe something like the following would be more correct:
+|  powerpc/32: |  ok  |
+|  powerpc/64: | TODO |
 
+Christophe
+
+>> +    |       riscv: | TODO |
+>> +    |        s390: | TODO |
+>> +    |          sh: | TODO |
+>> +    |       sparc: | TODO |
+>> +    |          um: | TODO |
+>> +    |   unicore32: | TODO |
+>> +    |         x86: |  ok  |
+>> +    |      xtensa: | TODO |
+>> +    -----------------------
+> 
+> While here, are there some volunteers to test this on any of the
+> 'yet to be tested and supported' platforms ?
+> 
+> - Anshuman
+> 
