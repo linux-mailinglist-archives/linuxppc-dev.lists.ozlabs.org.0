@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA4CF189E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 15:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A257F18A7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 15:30:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477TRb1n5LzF23w
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 01:28:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477TV62QGQzF5QF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 01:30:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::344;
- helo=mail-wm1-x344.google.com; envelope-from=richard.henderson@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=richard.henderson@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="Xf2Ks/Jq"; 
+ unprotected) header.d=linaro.org header.i=@linaro.org header.b="o3RLE9hu"; 
  dkim-atps=neutral
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477T644J24zF3B3
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 01:13:32 +1100 (AEDT)
-Received: by mail-wm1-x344.google.com with SMTP id v3so2457016wmh.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 06:13:32 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477T660czNzF3Dc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 01:13:33 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id 8so3553928wmo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 06:13:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=QNZ1kA4q8aBB50NVJWu8PbKcs9AjHNKMK3pxZ9fNJP4=;
- b=Xf2Ks/Jq/ihGwNCma8VLqakFtNZHKXIuWjUMxPXRRbJUiPMCjNJdWtn/qgWP/5sax7
- Ujfw6TL3LrTHr+uDBhPChxFljQzS5xgGpRxtwOO3Cwx5CN9yZ8J+CA955DxnUVBtrQY9
- UQ1bY0WghbSRoxyO+YnPSEFpDzUjl87KqEH5SgdaSVeeYvhaF4C+6ymBYsygd0tMpK+B
- v1Ysb6J+hZxqg7dNd/kemAXJbzAWO4QDbjPoSV2WnuX18FdLVu+FkYfbLwr3DTApGJwK
- qos9OGs4AuUlU8h/o/Y+yYw2NPn+omvenj9islnObpixtFKklAt0n2mEtWosrHsO99wv
- YyoA==
+ bh=WSWMpSoTK1qPuZQMUXUs+rrNl9psDWT+JwajLc5x63s=;
+ b=o3RLE9hugfNMGeayOKXMF63poaTZyNZSixnercrQpPsfWWgoGcVsahZ9wGvxqajkTL
+ 65VNFHB6mdXVYgOXplvY1kFNexysDEPq5Mte9WIOjqcg1aowVtTrhVDsnT0wub/uMIGv
+ 9plm99mfCRtSEw63V2+FJEO0avUTLLDH0v6gLjF9DVOTaBg6oIbNyb7sjS7eGkIP45xe
+ 49mB8MByUP2KQml5xF2ln4ggynO86gSJMmUBV6ZeCzC7nwpX1YYgQOkj2KBMtTdJsDRM
+ SSr5E0h3bqcqVqwF535O59szwWAxXieho+zlqJlenhqMZUeXa7L9rW2HfuF4DfbrOvdy
+ Hi6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=QNZ1kA4q8aBB50NVJWu8PbKcs9AjHNKMK3pxZ9fNJP4=;
- b=GD6RYA+slgRVV6YJsphlFBV7Loz6MeD++1AF2e4DPm+hkfW8KlXWKz8Xm10W9fP5ZR
- BkvZMA3oyvqPp2wAJpb8pPUgytwhZX/HvhbgJQPfnpeHS0HCA2pS7oQTqKwy1I+Diuof
- 6+TOtXheKLejApOUyphV9y4zW/q7kdDJzUcEsSNrmorlQET3UDuJADEPlCdbATOTXLij
- HO/cueXgy+7Q3aUvDllSlNx4/iFAYKWaqnVDv0w3+A7mTZVWbeH8+y41VUtxtR3HbVrt
- 58E7Z6iB2XjBqMM5YDGmlrVWPBJs2HTIqX1rLSbAH/jIka/B+XbetSepoTcPVHJMMURO
- Tc4Q==
-X-Gm-Message-State: APjAAAXraIHIkT3tJYzZsM2x0fOq4oAyHDNsDsyJ+cmIEd+JxNmorN5k
- E5cKaNwhlwfWfyp4rRmrHvWhQQ==
-X-Google-Smtp-Source: APXvYqxlrxPHyV7WtfZwm6qyJvzgfUOUugHAQxtpX4eBnKipnxbgOwtoZZo0ZBiVDsCnO8UnT+Wz5A==
-X-Received: by 2002:a1c:544b:: with SMTP id p11mr2802294wmi.46.1573049609122; 
- Wed, 06 Nov 2019 06:13:29 -0800 (PST)
+ bh=WSWMpSoTK1qPuZQMUXUs+rrNl9psDWT+JwajLc5x63s=;
+ b=h+GtADyTuvFpUVKgI2eH9fSdA1bM1+HtfwJCYxh7p+Fe8297DeGf6s90hn/j2YEKqT
+ 7sbO6xQFT37b+txNSBYoh79tyAJAUfLbiBQx72R4jY8qhEoW02wONiZR+1DdK76kys2W
+ 4dePi4KC552oF2INl27ECN9ApscGUk3Eh32mHobKmAz1cr0MF4WDZrq9a/3MVWM+tiEy
+ OcWIfLzT1YjZW55JHyam8lJvwgmaJVwDCVMsuaOWkzuucEfUq9iD27jpG2f2Auwh8Eca
+ KPvu932L9bSerL6nBqUB0N0OiOftj7Rg5VQeSmfrEX8csCwWgl1a5IlcaSqKY5LaWgTd
+ x1Wg==
+X-Gm-Message-State: APjAAAW1OrvGSm0AZ8PwhYoErkFp/na9iU1+ucq/f3qnb1H1sahHz69y
+ cuZIoVjB8EH8ObAEABHPybcI/w==
+X-Google-Smtp-Source: APXvYqwYT+P4BzTIZpyLp/lptFTQGB4DXq5HOBhfHF4antZVjWqLX7iHjEffS3qreneqv0oqdHj7Hw==
+X-Received: by 2002:a1c:9a15:: with SMTP id c21mr2802805wme.93.1573049610656; 
+ Wed, 06 Nov 2019 06:13:30 -0800 (PST)
 Received: from localhost.localdomain
  (31.red-176-87-122.dynamicip.rima-tde.net. [176.87.122.31])
- by smtp.gmail.com with ESMTPSA id b3sm2837556wma.13.2019.11.06.06.13.27
+ by smtp.gmail.com with ESMTPSA id b3sm2837556wma.13.2019.11.06.06.13.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Nov 2019 06:13:28 -0800 (PST)
+ Wed, 06 Nov 2019 06:13:30 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 X-Google-Original-From: Richard Henderson <rth@twiddle.net>
 To: linux-crypto@vger.kernel.org
-Subject: [PATCH v2 04/10] linux/random.h: Remove arch_has_random,
- arch_has_random_seed
-Date: Wed,  6 Nov 2019 15:13:02 +0100
-Message-Id: <20191106141308.30535-5-rth@twiddle.net>
+Subject: [PATCH v2 05/10] linux/random.h: Use false with bool
+Date: Wed,  6 Nov 2019 15:13:03 +0100
+Message-Id: <20191106141308.30535-6-rth@twiddle.net>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191106141308.30535-1-rth@twiddle.net>
 References: <20191106141308.30535-1-rth@twiddle.net>
@@ -85,43 +84,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The arm64 version of archrandom.h will need to be able to test for
-support and read the random number without preemption, so a separate
-query predicate is not practical.
+Keep the generic fallback versions in sync with the other architecture
+specific implementations and use the proper name for false.
 
-Since this part of the generic interface is unused, remove it.
-
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Richard Henderson <rth@twiddle.net>
 ---
- include/linux/random.h | 8 --------
- 1 file changed, 8 deletions(-)
+ include/linux/random.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/include/linux/random.h b/include/linux/random.h
-index f189c927fdea..7fd0360908d2 100644
+index 7fd0360908d2..ea0e2f5f1ec5 100644
 --- a/include/linux/random.h
 +++ b/include/linux/random.h
-@@ -175,10 +175,6 @@ static inline bool arch_get_random_int(unsigned int *v)
+@@ -169,19 +169,19 @@ static inline void prandom_seed_state(struct rnd_state *state, u64 seed)
+ #else
+ static inline bool arch_get_random_long(unsigned long *v)
  {
- 	return 0;
- }
--static inline bool arch_has_random(void)
--{
 -	return 0;
--}
++	return false;
+ }
+ static inline bool arch_get_random_int(unsigned int *v)
+ {
+-	return 0;
++	return false;
+ }
  static inline bool arch_get_random_seed_long(unsigned long *v)
  {
- 	return 0;
-@@ -187,10 +183,6 @@ static inline bool arch_get_random_seed_int(unsigned int *v)
- {
- 	return 0;
- }
--static inline bool arch_has_random_seed(void)
--{
 -	return 0;
--}
++	return false;
+ }
+ static inline bool arch_get_random_seed_int(unsigned int *v)
+ {
+-	return 0;
++	return false;
+ }
  #endif
  
- /* Pseudo random number generator from numerical recipes. */
 -- 
 2.17.1
 
