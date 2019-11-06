@@ -1,152 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9648F0BE3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 03:03:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5737F0C50
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 04:05:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4778vT4KW7zDqwB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 13:03:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477BHP1LFZzF5B4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 14:05:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="oms4bk67"; 
- dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4778qg4w5hzF5Bk
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 12:59:59 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id r18so289483pgu.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 17:59:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=54D3H2fvgmj7UfN9kcIXu5bTYFooWzrymK59XwR2oVQ=;
- b=oms4bk67qQDm/kjDp3stqvIdXj2K5zpx+7fu35BeESCMqTCyYDCgYlMbNYvHi9K/Ti
- jF8Vq5NFm+f6iKOIFSGvDwJ+qqZ8BVBbMgPg2se2R4c6t6doM5w7f/Yg0xxR5ycb+F3Y
- yyQ1ZzAG6tk5vTtjSGazMmOudruqo/DFXbMzIf5Fe97kefc3gEewJCCrsaQ6XICcif6V
- D3HpxPHg0prdsU7cqq/DTPzNRhKm2skr/V4Hay8E71DJNtyQD0/O6OeCgULNTWBYSdTT
- KdHnRB5rcVt1KwrIxCVNr5kCkHwgAlqsshMXbcX+j0ZWHJ+Mb8G2ym3o5vRTYC3E54Ol
- Yzlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=54D3H2fvgmj7UfN9kcIXu5bTYFooWzrymK59XwR2oVQ=;
- b=cy8bW4RpFjLeJ4yqQwUhmTrq8XB+ZKcuowq3fiXdArQ5cE/hHb/sC7AdOsY916/vwW
- KARQEcf+/giEeuZuyxEEMqXTcCFFagNvkEolyrY6ktpIkWUiNzRX/630oJz+ZUcFyGYi
- B5VgPZa1h/h7J6qbmkqTgB66smmZa+K07FjTPj7AIZhlv+UDNd4dA+rHTG6OLVa7bILc
- OqLqiRaWhv/sAiMeW54jqTSbKdGpGkhlUcgc0JQSkD6JhgsSG9I51mJOupLNrKzUEdK1
- B8L8yvP5ge4Tu2i7CQOPEXpRUuiuvKfRGw2YkZ8er7GdmUdXA5vPXvlizn5QbnA84oUd
- ba/g==
-X-Gm-Message-State: APjAAAVlo/drjdrWdeRc/asZfIBskDG9yNssexXgKtp71Iobf9ftMYyi
- SVEbV980kuUUAKx2+HGJbxhPmA==
-X-Google-Smtp-Source: APXvYqyWeRKhrb4BksRnfjw0FVWf3/DiaGnWb5s0Jh47LdzDUWyhKe8fXfjIPZ3/t76sNRqO2BttYA==
-X-Received: by 2002:a63:2ac9:: with SMTP id
- q192mr33319100pgq.351.1573005597018; 
- Tue, 05 Nov 2019 17:59:57 -0800 (PST)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id i71sm24188969pfe.103.2019.11.05.17.59.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Nov 2019 17:59:56 -0800 (PST)
-Subject: Re: [RFC v1 0/2] Enable IOMMU support for pseries Secure VMs
-To: Ram Pai <linuxram@us.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <265679db-9cb3-1660-0cf6-97f740b1b48b@ozlabs.ru>
-Date: Wed, 6 Nov 2019 12:59:50 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 477BFN3JyszF1pB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 14:03:49 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1394D30E;
+ Tue,  5 Nov 2019 19:03:44 -0800 (PST)
+Received: from [192.168.225.149] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EAE593F719;
+ Tue,  5 Nov 2019 19:03:20 -0800 (PST)
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+To: Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+ <e0aa8d49-5511-15e4-f413-62c99eea4fab@arm.com>
+ <e0dc3636-8c6e-0177-9a7f-fefd28c74f27@synopsys.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <dc2746c9-bde4-ac00-88d1-2bd1cea1f105@arm.com>
+Date: Wed, 6 Nov 2019 08:33:52 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
+In-Reply-To: <e0dc3636-8c6e-0177-9a7f-fefd28c74f27@synopsys.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -158,41 +53,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, ram.n.pai@gmail.com, cai@lca.pw,
- tglx@linutronix.de, sukadev@linux.vnet.ibm.com, hch@lst.de,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, "x86@kernel.org" <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 05/11/2019 08:28, Ram Pai wrote:
-> This patch series enables IOMMU support for pseries Secure VMs.
-> 
-> 
-> Tested using QEMU command line option:
-> 
->  "-device virtio-scsi-pci,id=scsi0,bus=pci.0,addr=0x4,
->  	iommu_platform=on,disable-modern=off,disable-legacy=on"
->  and 
-> 
->  "-device virtio-blk-pci,scsi=off,bus=pci.0,
->  	addr=0x5,drive=drive-virtio-disk0,id=virtio-disk0,
->  	iommu_platform=on,disable-modern=off,disable-legacy=on"
+On 11/06/2019 04:00 AM, Vineet Gupta wrote:
+> Hi Anshuman,
 
-
-Worth mentioning that SLOF won't boot with such devices as SLOF does not know about iommu_platform=on.
+Hello Vineet,
 
 > 
-> Ram Pai (2):
->   powerpc/pseries/iommu: Share the per-cpu TCE page with the hypervisor.
->   powerpc/pseries/iommu: Use dma_iommu_ops for Secure VMs aswell.
+> On 11/4/19 4:00 PM, Anshuman Khandual wrote:
+>> On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
+>>> This adds tests which will validate architecture page table helpers and
+>>> other accessors in their compliance with expected generic MM semantics.
+>>> This will help various architectures in validating changes to existing
+>>> page table helpers or addition of new ones.
+>>>
+>>> This test covers basic page table entry transformations including but not
+>>> limited to old, young, dirty, clean, write, write protect etc at various
+>>> level along with populating intermediate entries with next page table page
+>>> and validating them.
+>>>
+>>> Test page table pages are allocated from system memory with required size
+>>> and alignments. The mapped pfns at page table levels are derived from a
+>>> real pfn representing a valid kernel text symbol. This test gets called
+>>> right after page_alloc_init_late().
+>>>
+>>> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+>>> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+>>> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+>>> arm64. Going forward, other architectures too can enable this after fixing
+>>> build or runtime problems (if any) with their page table helpers.
+>>>
+>>> Folks interested in making sure that a given platform's page table helpers
+>>> conform to expected generic MM semantics should enable the above config
+>>> which will just trigger this test during boot. Any non conformity here will
+>>> be reported as an warning which would need to be fixed. This test will help
+>>> catch any changes to the agreed upon semantics expected from generic MM and
+>>> enable platforms to accommodate it thereafter.
+>>>
 > 
->  arch/powerpc/platforms/pseries/iommu.c | 30 ++++++++++++++++++------------
->  1 file changed, 18 insertions(+), 12 deletions(-)
+> I tried enabling this on ARC and ran into a build issue
 > 
+> ../mm/debug_vm_pgtable.c: In function ‘pmd_basic_tests’:
+> ../mm/debug_vm_pgtable.c:73:14: error: implicit declaration of function ‘pfn_pmd’;
+> did you mean ‘pfn_pte’? [-Werror=implicit-function-declaration]
+>   pmd_t pmd = pfn_pmd(pfn, prot);
+>               ^~~~~~~
+> 
+> The reason being THP was not enabled (although ARC supports THP) - for the
+> combination below
+> CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE=y
+> # CONFIG_TRANSPARENT_HUGEPAGE is not set
+> 
+> I think you need to use latter for guarding pmd_basic_tests()
 
--- 
-Alexey
+So the build complains that pfn_pmd() is not defined when the following config
+combination is in place.
+
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE=y
+CONFIG_TRANSPARENT_HUGEPAGE=n
+
+But should not pfn_pmd() be encapsulated inside HAVE_ARCH_TRANSPARENT_HUGEPAGE
+at the minimum (but I would say it should be available always, nonetheless) when
+the platform subscribes to THP irrespective of whether THP is enabled or not.
+
+I could see in the file (arch/arc/include/asm/pgtable.h) that fetching pfn_pmd()
+and all other basic PMD definitions is conditional on CONFIG_TRANSPARENT_HUGEPAGE.
+
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+#include <asm/hugepage.h>
+#endif
+
+IIUC, CONFIG_TRANSPARENT_HUGEPAGE should only encapsulate PMD page table helpers
+which are expected from generic THP code (pmd_trans_huge, pmdp_set_access_flags
+etc) but not the basic PMD helpers like pmd_pfn, pmd_mkyoung, pmd_mkdirty,
+pmd_mkclean etc. Hence wondering will it be possible to accommodate following
+code change on arc platform (not even compiled) in order to fix the problem ?
+
+diff --git a/arch/arc/include/asm/hugepage.h b/arch/arc/include/asm/hugepage.h
+index 9a74ce7..2ae15a8 100644
+--- a/arch/arc/include/asm/hugepage.h
++++ b/arch/arc/include/asm/hugepage.h
+@@ -36,11 +36,11 @@ static inline pmd_t pte_pmd(pte_t pte)
+ #define pmd_dirty(pmd)         pte_dirty(pmd_pte(pmd))
+ 
+ #define mk_pmd(page, prot)     pte_pmd(mk_pte(page, prot))
++#define pfn_pmd(pfn, prot)     (__pmd(((pfn) << PAGE_SHIFT) | pgprot_val(prot)))
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ #define pmd_trans_huge(pmd)    (pmd_val(pmd) & _PAGE_HW_SZ)
+ 
+-#define pfn_pmd(pfn, prot)     (__pmd(((pfn) << PAGE_SHIFT) | pgprot_val(prot)))
+-
+ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ {
+         /*
+@@ -73,5 +73,6 @@ extern void flush_pmd_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 
+ /* We don't have hardware dirty/accessed bits, generic_pmdp_establish is fine.*/
+ #define pmdp_establish generic_pmdp_establish
++#endif
+ 
+ #endif
+diff --git a/arch/arc/include/asm/pgtable.h b/arch/arc/include/asm/pgtable.h
+index 9019ed9..20395f1 100644
+--- a/arch/arc/include/asm/pgtable.h
++++ b/arch/arc/include/asm/pgtable.h
+@@ -385,7 +385,7 @@ void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+  * remap a physical page `pfn' of size `size' with page protection `prot'
+  * into virtual address `from'
+  */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
+ #include <asm/hugepage.h>
+ #endif
+
+> 
+> Other than that the tests pass for !THP and THP too. So once fixed, you could
+
+Glad that it works on arc platform as well.
+
+> enable that for ARC as well> Thx for doing this.
+> 
+> -Vineet
+> 
