@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E13BF1F69
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 21:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF77F1F80
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 21:03:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477cpK26lpzF5kt
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 07:00:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477css0zsvzF3F5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 07:03:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=arista.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=dima@arista.com;
+ smtp.mailfrom=arista.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=dima@arista.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
  header.from=arista.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=arista.com header.i=@arista.com header.b="MpZHturj"; 
+ unprotected) header.d=arista.com header.i=@arista.com header.b="CdDAyQ43"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477Wl902FWzF4Pk
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 03:12:20 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id h27so508560pgn.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 08:12:20 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477X5F6n8FzF0Tr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 03:27:59 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id e4so17498188pgs.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 08:27:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=arista.com; s=googlenew;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=6YKC1kJOcWpyD+8pjGdr6zJNIwDWfqyBu/N6KBSP97U=;
- b=MpZHturjPCBg33iU1ozhAjvA8LCtPPFI3DR58OYlFEaUZGZqfEzhUtttDDrlEOGegQ
- 4vDex9qExlxkA9WH33d8HwoxTLWivc69W/6aer4DXfteqgbtXwv3cNxCcRds4ZAMweGX
- 5ZXj+X+FYkL8t+hZqh4LwhZRZNRrqod+Up3sqXtFrQSRV7C3Y69W33Z8X4jj1Fl7gbuY
- R6u824u7CLy//WZ/duinZirY1ifbAiK575WJqRiWdVx2qkiQPu6t7SWS7JDhyX5hOHLe
- oe8RLdwEfd46kke7TKQhcEtTSIZl2oUQhbinVc7bj3yYIQzIfU4ltgAEvZlXwG6aLosM
- UhRA==
+ bh=ILRv70ifsS4R/1VQKE/+LZSUA7puynZg3ILLVfy9hZk=;
+ b=CdDAyQ43Jv36qsn9EkuUTZw8nt/+mOBKFoXfvdiENDFswTz54lmUElxhgNjniKxvLI
+ izkIqTz62/+BsaxfKUgZ8S2RMG637jnDm+u0E1aGEUIzsEbWwsDV18EKNobslN2UlmYW
+ WhC8g2REeIsonwoMKiOWl5u0CwVw1KGMvWwvlr5qjl4PZWOYWYsDg5p9F3UN6uGx7U/X
+ y0XyKjPvcy9QpHnBDaHHpgbyRB/umgRbu9qBjoNr1nlR2d6FHD+lGiNEfvnrob7yl41T
+ Rb+d5GPnNkrUNEfbqJzu6sSRExc4iKzcT+7U+xgq+doooMPjYjmc+eE6U7r6YPGlvf7O
+ nVDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=6YKC1kJOcWpyD+8pjGdr6zJNIwDWfqyBu/N6KBSP97U=;
- b=aQThQnilMc1Yhj3AII4+G8Vr4uKdOLjvk94yDo3KDCBZMN1u881otVM32l2z+9ORli
- 1TvBnsFAMEoh9ii4IaNVxSVvtjHmGJfMpEIocLQmunt9TA75UtcAh88IOffoQAtVvgAu
- u+vppgsxuFuNf/qswPETAMdEGH5/pMjfFs6rsNWiEMVOJ+5CdJp8GChCGHB/ubgnQWSv
- 0xQOf7gAJOmOiCQVcH8G8+GEIeS0P37s+MU0DoPD2L0/dVmvduRuvCNGWDhYCg5UQoFp
- qYtux+TqbX+pCvdmL3C3RAP2O111YLXqkCmfZ2Rtz0N1wuRdZ7iKCZb1CvNA3gEv4VKE
- lf7g==
-X-Gm-Message-State: APjAAAVJrl1wWSAtLdsg5NyqiuNgmTmsL+1hOMpdf2TUm6RZEs84msAz
- NIRq2dtIF6WraplwTHFT7wGR2g==
-X-Google-Smtp-Source: APXvYqwR0pSNn59pPusYKfkpnLRmR/vqqpv4L3qv+M0Onv9D6hRgWRQkxTVXtCrUTdykmM2sB1/Rnw==
-X-Received: by 2002:aa7:908b:: with SMTP id i11mr4396653pfa.140.1573056738752; 
- Wed, 06 Nov 2019 08:12:18 -0800 (PST)
+ bh=ILRv70ifsS4R/1VQKE/+LZSUA7puynZg3ILLVfy9hZk=;
+ b=VvceebfdjciPOLIAQMZf/RLuxL/x8wboSU3PPj+nxkwZhBZR04y8lkn3uM8hHFKcqC
+ uDwZeIOTGqInaqLJhmTe1g1wwdjUEEO7Ek02YDpocLhCcgC/3Qsz0KYNDt0o551F+4X/
+ qnt74VJ6KRyaieq0NK0aOLVPPfAMdkTdkfoBkzLQO0YpZs5ZDD+Zwk0uoCkMkpjjbZ6h
+ WL+TrV8hICMMdefQAvIdspmwNd0oXM3UCjZ3Sc21InqPG8pU0Y5vKVuKABCD5WhBzOjP
+ oG3kLcWgP5DX1V3ZlJ8uxjmr1CyGeu+dodvYT6ZZ60ofU0nKQPZdG6Yb/AZi+PrvzYXm
+ Brfw==
+X-Gm-Message-State: APjAAAXc7YZijuznlcFU3tMWKWip4/qtNxPZqu/NpPNE4MJ77vENCJqn
+ C39AmUDmqDSwAYlOBusCcCc1xQ==
+X-Google-Smtp-Source: APXvYqwbfJs+Rexz1GsgVLAw54LaKdVOAeh16aFzChJ5nDbwhrH1h0946xekzcVYBN4WN+Q23T6sbg==
+X-Received: by 2002:a63:66c1:: with SMTP id a184mr3898212pgc.164.1573057676186; 
+ Wed, 06 Nov 2019 08:27:56 -0800 (PST)
 Received: from [10.83.36.153] ([217.173.96.166])
- by smtp.gmail.com with ESMTPSA id j4sm5535967pjf.25.2019.11.06.08.12.03
+ by smtp.gmail.com with ESMTPSA id m15sm21253387pgv.58.2019.11.06.08.27.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Nov 2019 08:12:17 -0800 (PST)
+ Wed, 06 Nov 2019 08:27:55 -0800 (PST)
 Subject: Re: [PATCH 00/50] Add log level to show_stack()
-To: Petr Mladek <pmladek@suse.com>
+To: Peter Zijlstra <peterz@infradead.org>
 References: <20191106030542.868541-1-dima@arista.com>
- <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
+ <20191106092039.GT4131@hirez.programming.kicks-ass.net>
 From: Dmitry Safonov <dima@arista.com>
-Message-ID: <de8a397d-8660-4ace-9626-127debcf43a7@arista.com>
-Date: Wed, 6 Nov 2019 16:12:01 +0000
+Message-ID: <10db6fa1-5b17-ebe6-09e0-6335e09e4db8@arista.com>
+Date: Wed, 6 Nov 2019 16:27:33 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
+In-Reply-To: <20191106092039.GT4131@hirez.programming.kicks-ass.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -124,7 +124,7 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
  Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
  linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
  "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
- Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Petr Mladek <pmladek@suse.com>, "H. Peter Anvin" <hpa@zytor.com>,
  sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
  Anton Ivanov <anton.ivanov@cambridgegreys.com>,
  Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
@@ -141,8 +141,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/6/19 8:35 AM, Petr Mladek wrote:
-> On Wed 2019-11-06 03:04:51, Dmitry Safonov wrote:
+Hi Peter,
+
+On 11/6/19 9:20 AM, Peter Zijlstra wrote:
+> On Wed, Nov 06, 2019 at 03:04:51AM +0000, Dmitry Safonov wrote:
 >> Add log level argument to show_stack().
 >> Done in three stages:
 >> 1. Introducing show_stack_loglvl() for every architecture
@@ -154,26 +156,6 @@ On 11/6/19 8:35 AM, Petr Mladek wrote:
 >>   into platform realization detail.
 >> o I have currently two patches sets that would benefit from this work:
 >>   Removing console_loglevel jumps in sysrq driver [1]
-> 
-> Just to clarify. The problem in sysrq driver is a bit different.
-> It modifies console_loglevel to show even less important message
-> on the console.
-> 
-> IMHO, it should be solved by printing the header line with pr_error().
-> It is not ideal. A cleaner solution might be to introduce another
-> loglevel that will always get pushed to the console. But I am
-> not sure if it is worth this single line.
-
-I believe why it's not done - there is a comment in sysrq code that said
-the userspace relies on the loglevel of sysrq messages (and may trigger
-alerts from emerg/err log level):
-  * Raise the apparent loglevel to maximum so that the sysrq header
-  * is shown to provide the user with positive feedback.  We do not
-  * simply emit this at KERN_EMERG as that would change message
-  * routing in the consumers of /proc/kmsg.
-
-But I don't mind any solution.
-
 >>   Hung task warning before panic [2] - suggested by Tetsuo (but he
 >>   probably didn't realise what it would involve).
 >> o While doing (1), (2) the backtraces were adjusted to headers
@@ -182,23 +164,34 @@ But I don't mind any solution.
 >>   they have lesser log level (or the reverse).
 >> o As the result in (2) plays with console_loglevel for kdb are removed.
 > 
->> The least important for upstream, but maybe still worth to note that
->> every company I've worked in so far had an off-list patch to print
->> backtrace with the needed log level (but only for the architecture they
->> cared about).
->> If you have other ideas how you will benefit from show_stack() with
->> a log level - please, reply to this cover letter.
+> I really don't understand that word salad. Why are you doing this?
 > 
-> I agree with all the other justification.
-> 
-> I would add. The backtrace is really useful for debugging. It should
-> be possible to print it even in less critical situations.
-> 
-> I am afraid that many people use WARN() for this purpose. But WARN()
-> is not always appropriate. WARN() misuse huts when panic_on_warn
-> option is used.
 
-Thanks, Petr.
+Sorry, I should have tried to describe better.
 
--- 
+I'm trying to remove external users of console_loglevel by following
+reasons:
+- changing console_loglevel on SMP means that unwanted messages from
+other CPUs will appear (that have lower log level)
+- on UMP unwanted messages may appear if the code is preempted while it
+hasn't set the console_loglevel back to old
+- rising console_loglevel to print wanted message(s) may not work at all
+if printk() has being delayed and the console_loglevel is already set
+back to old value
+
+Sysrq driver changes console_loglevel because it needs to print message
+with a specific log level (the code said userspace relies on this).
+Kdb changes console_loglevel to print backtrace as the log level depends
+on architecture realisation.
+
+I also have patches in wip those needs to print backtrace with specific
+loglevel (higher when it's critical, lower when it's notice and
+shouldn't go to serial console).
+
+Besides on local tests I see hits those have headers (messages like
+"Backtrace: ") without an actual backtrace and the reverse - a backtrace
+without a reason for it. It's quite annoying and worth addressing by
+syncing headers log levels to backtraces.
+
+Thanks,
           Dmitry
