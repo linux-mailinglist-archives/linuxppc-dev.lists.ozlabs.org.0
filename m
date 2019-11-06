@@ -2,90 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F333F0D57
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 04:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7998FF0DA0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 05:15:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477CHy5GSJzF5SB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 14:51:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477Cqr095HzF5TT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 15:15:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477Cnh2NK1zDrgV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 15:13:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="XD0hI0L8"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="lmaNePXr"; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 477Cnh1ghCz8tJY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 15:13:28 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 477Cnh1B2Lz9sPn; Wed,  6 Nov 2019 15:13:28 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.28;
+ helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="XD0hI0L8"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="lmaNePXr"; dkim-atps=neutral
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
+ [66.111.4.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477CDD3pSMzDrFb
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 14:47:56 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA63lmds035124
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 5 Nov 2019 22:47:52 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2w3j6bq0vn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2019 22:47:51 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Wed, 6 Nov 2019 03:46:53 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 6 Nov 2019 03:46:45 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xA63kiwk46727510
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Nov 2019 03:46:44 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63DEE42041;
- Wed,  6 Nov 2019 03:46:44 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C2B142049;
- Wed,  6 Nov 2019 03:46:44 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  6 Nov 2019 03:46:44 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6FF61A00F1;
- Wed,  6 Nov 2019 14:46:39 +1100 (AEDT)
-Subject: Re: [PATCH 10/10] ocxl: Conditionally bind SCM devices to the generic
- OCXL driver
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20191025044721.16617-1-alastair@au1.ibm.com>
- <20191025044721.16617-11-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Wed, 6 Nov 2019 14:46:40 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by ozlabs.org (Postfix) with ESMTPS id 477Cnf2lzLz9sPk
+ for <linuxppc-dev@ozlabs.org>; Wed,  6 Nov 2019 15:13:25 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id 5AF1A20CF2;
+ Tue,  5 Nov 2019 23:13:21 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Tue, 05 Nov 2019 23:13:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
+ 9fPd8NkoyeMPutvOXwvfGAl4ZrfOV/gls8KMdRI4UEk=; b=XD0hI0L86Lo6Vf/8
+ gb6X6NQc+ZajB1lZ7xA6/wvYZAF0gJ6LKNZz4CFOVDwyKI/+ErhInawo9C6r+pR/
+ Y8fGD7SGJNjS38a4QJMpOU0oUDZEIwdtuOSWFST/wAmPCVzgH4fY7iB7V2JB4exY
+ t+DSfVD9Z3iNakZ6lNqHN5vVClD3iMa57GWH+aj3ORXSq8rT+aZGS4pjaXoxBnfz
+ PZTtEvYNc+Y9c25Qb2c/8wog60mAHeNrSuHLLWp82EZV+uUin1iSU4lTpsR9o4MC
+ q9Xh4oRBtPxPjVPoUALoS3eQ6grSp4XraKTNgYbQExWRxqp+YS7F+4waU6XZhBRE
+ Zbst4Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=9fPd8NkoyeMPutvOXwvfGAl4ZrfOV/gls8KMdRI4U
+ Ek=; b=lmaNePXrO8OOlZCxY1Wlsa9tNYJKP3sJ6h41DCn1GzeqAQbzGUBccdltK
+ gpszokTyoFbOvK7LKiAjaRi8n4vWoqKLloeA/eTbqhVXHfs88KzufU1PgodQpJYm
+ /BBWJ+ZQCGUwFr2LIZIzf0ykWwgdCxTMCyftpwJzdTcFu652LiGRHN6inRsQ9WBx
+ kbGhaevsbEh4yHjR8KBLaE4r3NJJAxX3pQ4nFggZqI2LzyUYw//GgcgaJw5fuCAc
+ zrIhj4N8R/uauAc6weCw/2M5orHjcQaTVMOhBcfz3w2+VwW92yw8L57i51222CQ+
+ 9pLj+0X4ZrE8ApaNc9Rc433xFJ+Aw==
+X-ME-Sender: <xms:YEjCXY9fmfe4XuJ4SnmvQxk5omqFxceO8tyaCDHHoN9qEPA5mhkIvg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudduiedgieekucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfffjghftggfggfgsehtjeertddt
+ reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
+ hsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecurfgrrhgrmhepmhgr
+ ihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggtnecuvehluhhsthgvrhfuih
+ iivgeptd
+X-ME-Proxy: <xmx:YEjCXb5n-yFOXWPZZ3XOf4LzVl0sT-hUjE68NRrhV1vaKCIauqOhjg>
+ <xmx:YEjCXR1eoPqnoYKEVSv9Sj-gsSn7DMNfT4dDSGFVVeNCjiBGSi7e4w>
+ <xmx:YEjCXSwmP5JQMRIrC3P0I0oHq7qbH5KZ1DoivTjwivqDdkK1ViSVPw>
+ <xmx:YUjCXZtGBV9ZdLuJV7a1_rzcEXdh2xB_9TBvSDj3SL83a4yq7jd0Kg>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 62F183060057;
+ Tue,  5 Nov 2019 23:13:18 -0500 (EST)
+Message-ID: <b42f1dbdba88f74149de669cb285408d640cdb79.camel@russell.cc>
+Subject: Re: [RFC PATCH] powerpc/pseries/mobility: notify network peers
+ after migration
+From: Russell Currey <ruscur@russell.cc>
+To: Thomas Falcon <tlfalcon@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Date: Wed, 06 Nov 2019 15:13:15 +1100
+In-Reply-To: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
+References: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1 
 MIME-Version: 1.0
-In-Reply-To: <20191025044721.16617-11-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110603-0008-0000-0000-0000032B1484
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110603-0009-0000-0000-00004A4A7093
-Message-Id: <e1a28cc0-2a48-3149-ee77-0c4bc2727aa7@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-05_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1911060038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,63 +110,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Wei Yang <richard.weiyang@gmail.com>, Keith Busch <keith.busch@intel.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- Qian Cai <cai@lca.pw>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>,
- David Gibson <david@gibson.dropbear.id.au>, linux-mm@kvack.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, netdev@vger.kernel.org, msuchanek@suse.com,
+ tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/10/19 3:47 pm, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
+On Tue, 2019-11-05 at 18:06 -0600, Thomas Falcon wrote:
+> After a migration, it is necessary to send a gratuitous ARP
+> from all running interfaces so that the rest of the network
+> is aware of its new location. However, some supported network
+> devices are unaware that they have been migrated. To avoid network
+> interruptions and other unwanted behavior, force a GARP on all
+> valid, running interfaces as part of the post_mobility_fixup
+> routine.
 > 
-> This patch allows the user to bind OpenCAPI SCM devices to the generic OCXL
-> driver.
+> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+
+Hi Thomas,
+
+> ---
+>  arch/powerpc/platforms/pseries/mobility.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 > 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> diff --git a/arch/powerpc/platforms/pseries/mobility.c
+> b/arch/powerpc/platforms/pseries/mobility.c
+> index b571285f6c14..c1abc14cf2bb 100644
+> --- a/arch/powerpc/platforms/pseries/mobility.c
+> +++ b/arch/powerpc/platforms/pseries/mobility.c
+> @@ -17,6 +17,9 @@
+>  #include <linux/delay.h>
+>  #include <linux/slab.h>
+>  #include <linux/stringify.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/rtnetlink.h>
+> +#include <net/net_namespace.h>
+>  
+>  #include <asm/machdep.h>
+>  #include <asm/rtas.h>
+> @@ -331,6 +334,8 @@ void post_mobility_fixup(void)
+>  {
+>  	int rc;
+>  	int activate_fw_token;
+> +	struct net_device *netdev;
+> +	struct net *net;
+>  
+>  	activate_fw_token = rtas_token("ibm,activate-firmware");
+>  	if (activate_fw_token == RTAS_UNKNOWN_SERVICE) {
+> @@ -371,6 +376,21 @@ void post_mobility_fixup(void)
+>  	/* Possibly switch to a new RFI flush type */
+>  	pseries_setup_rfi_flush();
+>  
+> +	/* need to force a gratuitous ARP on running interfaces */
+> +	rtnl_lock();
+> +	for_each_net(net) {
+> +		for_each_netdev(net, netdev) {
+> +			if (netif_device_present(netdev) &&
+> +			    netif_running(netdev) &&
+> +			    !(netdev->flags & (IFF_NOARP |
+> IFF_LOOPBACK)))
+> +				call_netdevice_notifiers(NETDEV_NOTIFY_
+> PEERS,
+> +							 netdev);
 
-Agree that this needs more explanation - both in the commit and the 
-Kconfig help.
+Without curly braces following the "if" statment, the second line
+(below) will be executed unconditionally, which I assume with this
+indentation isn't what you want.
 
-> diff --git a/drivers/misc/ocxl/pci.c b/drivers/misc/ocxl/pci.c
-> index cb920aa88d3a..7137055c1883 100644
-> --- a/drivers/misc/ocxl/pci.c
-> +++ b/drivers/misc/ocxl/pci.c
-> @@ -10,6 +10,9 @@
->    */
->   static const struct pci_device_id ocxl_pci_tbl[] = {
->   	{ PCI_DEVICE(PCI_VENDOR_ID_IBM, 0x062B), },
-> +#ifdef CONFIG_OCXL_SCM_GENERIC
-> +	{ PCI_DEVICE(PCI_VENDOR_ID_IBM, 0x0625), },
-> +#endif
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(pci, ocxl_pci_tbl);
-> 
+(reported by snowpatch)
 
-If there's no way to use the ID table from ocxl-scm directly, there 
-should at least be a comment both here and in the ocxl-scm device ID 
-table mentioning that you need to keep these in sync.
+- Russell
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+> +				call_netdevice_notifiers(NETDEV_RESEND_
+> IGMP,
+> +							 netdev);
+> +		}
+> +	}
+> +	rtnl_unlock();
+> +
+>  	return;
+>  }
+>  
 
