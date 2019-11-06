@@ -2,81 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4782FF1FA0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 21:17:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46941F200F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 21:46:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477dBC45ZrzF5qv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 07:17:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477dqJ4j4qzF5sg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 07:46:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="dLqPPOZn"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477d8D75DqzF5qB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 07:15:56 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA6K9tdr099996; Wed, 6 Nov 2019 15:15:51 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w41wcf8jg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Nov 2019 15:15:51 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA6KFKOQ009025;
- Wed, 6 Nov 2019 20:15:50 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04dal.us.ibm.com with ESMTP id 2w41uj9xt0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Nov 2019 20:15:50 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA6KFmr047972712
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Nov 2019 20:15:48 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E67F1BE053;
- Wed,  6 Nov 2019 20:15:47 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8D88BE05A;
- Wed,  6 Nov 2019 20:15:46 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.81.178])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  6 Nov 2019 20:15:46 +0000 (GMT)
-Subject: Re: [PATCH 3/9] powerpc/pseries: Add cpu DLPAR support for drc-info
- property
-To: Thomas Falcon <tlfalcon@linux.ibm.com>, mpe@ellerman.id.au
-References: <1572967453-9586-1-git-send-email-tyreld@linux.ibm.com>
- <1572967453-9586-4-git-send-email-tyreld@linux.ibm.com>
- <d0bb5aa2-3a52-5d5b-f5bb-0a1ee90f353a@linux.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <e470721f-2c74-3765-51a1-611f37a555ff@linux.ibm.com>
-Date: Wed, 6 Nov 2019 12:15:45 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477dZ82Bh0zF5S6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 07:34:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=IJrcQXptkMvPiExxcW5iB0NzeMYZeKfH93+EIxkwDzY=; b=dLqPPOZnjveWBeyFqFHqrbtNZ
+ Duw5YArJPTaMMMK8SsjUxFjkIDQhNUSGD5PvNQVqSS+e/GWXU1Um5AVf/5sUPjLz45CKuM0IRDAMs
+ VJOI3PF4FsdFW2Mj099DRLCzazEzb+zrotnV0I1WVxXeWHoGdNsYMsg3hXOH54aFacQzs/oy4AisX
+ 0iQV33+aUEMHy+n5TIl+aUKiWMNj3wlvtrjuO4fCRVPkUgi8SKL+BQOZYBkn7NslBLpVF53Y5s7wl
+ nyOBB1ExO8CnC6/BiF+fSyjnLlUc7UEIcgZ13IIdTf4f2/4oA2gULPIuZ+oV94CGzcp/+zHem6q8U
+ 4ISIm47TA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=worktop.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1iSS0p-0001aI-GA; Wed, 06 Nov 2019 20:34:43 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+ id C2126980DF5; Wed,  6 Nov 2019 21:34:40 +0100 (CET)
+Date: Wed, 6 Nov 2019 21:34:40 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Dmitry Safonov <dima@arista.com>
+Subject: Re: [PATCH 00/50] Add log level to show_stack()
+Message-ID: <20191106203440.GH3079@worktop.programming.kicks-ass.net>
+References: <20191106030542.868541-1-dima@arista.com>
+ <20191106092039.GT4131@hirez.programming.kicks-ass.net>
+ <10db6fa1-5b17-ebe6-09e0-6335e09e4db8@arista.com>
 MIME-Version: 1.0
-In-Reply-To: <d0bb5aa2-3a52-5d5b-f5bb-0a1ee90f353a@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-06_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911060198
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10db6fa1-5b17-ebe6-09e0-6335e09e4db8@arista.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Thu, 07 Nov 2019 07:44:51 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,200 +68,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
+ Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Burton <paulburton@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Mel Gorman <mgorman@suse.de>, Jiri Slaby <jslaby@suse.com>,
+ Matt Turner <mattst88@gmail.com>, uclinux-h8-devel@lists.sourceforge.jp,
+ Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-um@lists.infradead.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Richard Henderson <rth@twiddle.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ia64@vger.kernel.org,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ James Hogan <jhogan@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org, Stafford Horne <shorne@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Tony Luck <tony.luck@intel.com>, Douglas Anderson <dianders@chromium.org>,
+ Dmitry Safonov <0x7f454c46@gmail.com>, Will Deacon <will@kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Brian Cain <bcain@codeaurora.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ kgdb-bugreport@lists.sourceforge.net, linux-snps-arc@lists.infradead.org,
+ Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Jeff Dike <jdike@addtoit.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
+ "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
+ Petr Mladek <pmladek@suse.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ Mark Salter <msalter@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Michal Simek <monstr@monstr.eu>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-mips@vger.kernel.org, Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Jason Wessel <jason.wessel@windriver.com>,
+ nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/5/19 8:55 AM, Thomas Falcon wrote:
+On Wed, Nov 06, 2019 at 04:27:33PM +0000, Dmitry Safonov wrote:
+> Hi Peter,
 > 
-> On 11/5/19 9:24 AM, Tyrel Datwyler wrote:
->> From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
->>
->> Older firmwares provided information about Dynamic Reconfig
->> Connectors (DRC) through several device tree properties, namely
->> ibm,drc-types, ibm,drc-indexes, ibm,drc-names, and
->> ibm,drc-power-domains. New firmwares have the ability to present this
->> same information in a much condensed format through a device tree
->> property called ibm,drc-info.
->>
->> The existing cpu DLPAR hotplug code only understands the older DRC
->> property format when validating the drc-index of a cpu during a
->> hotplug add. This updates those code paths to use the ibm,drc-info
->> property, when present, instead for validation.
->>
->> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
->> ---
->>   arch/powerpc/platforms/pseries/hotplug-cpu.c | 101 ++++++++++++++++++++++-----
->>   1 file changed, 85 insertions(+), 16 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c
->> b/arch/powerpc/platforms/pseries/hotplug-cpu.c
->> index bbda646..9ba006c 100644
->> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
->> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
->> @@ -407,17 +407,58 @@ static bool dlpar_cpu_exists(struct device_node *parent,
->> u32 drc_index)
->>       return found;
->>   }
->>
->> +static bool drc_info_valid_index(struct device_node *parent, u32 drc_index)
->> +{
->> +    struct property *info;
->> +    struct of_drc_info drc;
->> +    const __be32 *value;
->> +    int count, i, j;
->> +
->> +    info = of_find_property(parent, "ibm,drc-info", NULL);
->> +    if (!info)
->> +        return false;
->> +
->> +    value = of_prop_next_u32(info, NULL, &count);
->> +
->> +    /* First value of ibm,drc-info is number of drc-info records */
->> +    if (value)
->> +        value++;
->> +    else
->> +        return false;
->> +
->> +    for (i = 0; i < count; i++) {
->> +        if (of_read_drc_info_cell(&info, &value, &drc))
->> +            return false;
->> +
->> +        if (strncmp(drc.drc_type, "CPU", 3))
->> +            break;
->> +
->> +        if (drc_index > drc.last_drc_index)
->> +            continue;
->> +
->> +        for (j = 0; j < drc.num_sequential_elems; j++)
->> +            if (drc_index == (drc.drc_index_start + (drc.sequential_inc * j)))
->> +                    return true;
->> +    }
->> +
->> +    return false;
->> +}
->> +
->>   static bool valid_cpu_drc_index(struct device_node *parent, u32 drc_index)
->>   {
->>       bool found = false;
->>       int rc, index;
->>
->> -    index = 0;
->> +    if (of_find_property(parent, "ibm,drc-info", NULL))
->> +        return drc_info_valid_index(parent, drc_index);
->> +
->> +    index = 1;
+> On 11/6/19 9:20 AM, Peter Zijlstra wrote:
+> > On Wed, Nov 06, 2019 at 03:04:51AM +0000, Dmitry Safonov wrote:
+> >> Add log level argument to show_stack().
+> >> Done in three stages:
+> >> 1. Introducing show_stack_loglvl() for every architecture
+> >> 2. Migrating old users with an explicit log level
+> >> 3. Renaming show_stack_loglvl() into show_stack()
+> >>
+> >> Justification:
+> >> o It's a design mistake to move a business-logic decision
+> >>   into platform realization detail.
+> >> o I have currently two patches sets that would benefit from this work:
+> >>   Removing console_loglevel jumps in sysrq driver [1]
+> >>   Hung task warning before panic [2] - suggested by Tetsuo (but he
+> >>   probably didn't realise what it would involve).
+> >> o While doing (1), (2) the backtraces were adjusted to headers
+> >>   and other messages for each situation - so there won't be a situation
+> >>   when the backtrace is printed, but the headers are missing because
+> >>   they have lesser log level (or the reverse).
+> >> o As the result in (2) plays with console_loglevel for kdb are removed.
+> > 
+> > I really don't understand that word salad. Why are you doing this?
+> > 
 > 
-> Hi, this change was confusing to me until I continued reading the patch and saw
-> the comment below regarding the first element of the ibm,drc-info property. 
-> Would it be good to have a similar comment here too?
+> Sorry, I should have tried to describe better.
 > 
+> I'm trying to remove external users of console_loglevel by following
+> reasons:
 
-Yeah, clearly wouldn't hurt. Probably should split it out into a separate fix
-prior to this patch.
+I suppose since all my machines have 'debug ignore_loglevel
+earlyprintk=serial,ttyS0,115200 console=ttyS0,115200' I don't have this
+experience.
 
-> 
->>       while (!found) {
->>           u32 drc;
->>
->>           rc = of_property_read_u32_index(parent, "ibm,drc-indexes",
->>                           index++, &drc);
->> +
-> 
-> Another nitpick but this could be cleaned up.
+> - changing console_loglevel on SMP means that unwanted messages from
+> other CPUs will appear (that have lower log level)
+> - on UMP unwanted messages may appear if the code is preempted while it
+> hasn't set the console_loglevel back to old
+> - rising console_loglevel to print wanted message(s) may not work at all
+> if printk() has being delayed and the console_loglevel is already set
+> back to old value
 
-Yep, noticed the newline addition after I'd already sent it out.
+Sure, frobbing the global console_loglevel is bad.
 
--Tyrel
+> I also have patches in wip those needs to print backtrace with specific
+> loglevel (higher when it's critical, lower when it's notice and
+> shouldn't go to serial console).
 
-> 
-> Thanks,
-> 
-> Tom
-> 
-> 
->>           if (rc)
->>               break;
->>
->> @@ -720,8 +761,11 @@ static int dlpar_cpu_remove_by_count(u32 cpus_to_remove)
->>   static int find_dlpar_cpus_to_add(u32 *cpu_drcs, u32 cpus_to_add)
->>   {
->>       struct device_node *parent;
->> +    struct property *info;
->>       int cpus_found = 0;
->>       int index, rc;
->> +    int i, j;
->> +    u32 drc_index;
->>
->>       parent = of_find_node_by_path("/cpus");
->>       if (!parent) {
->> @@ -730,24 +774,49 @@ static int find_dlpar_cpus_to_add(u32 *cpu_drcs, u32
->> cpus_to_add)
->>           return -1;
->>       }
->>
->> -    /* Search the ibm,drc-indexes array for possible CPU drcs to
->> -     * add. Note that the format of the ibm,drc-indexes array is
->> -     * the number of entries in the array followed by the array
->> -     * of drc values so we start looking at index = 1.
->> -     */
->> -    index = 1;
->> -    while (cpus_found < cpus_to_add) {
->> -        u32 drc;
->> +    info = of_find_property(parent, "ibm,drc-info", NULL);
->> +    if (info) {
->> +        struct of_drc_info drc;
->> +        const __be32 *value;
->> +        int count;
->>
->> -        rc = of_property_read_u32_index(parent, "ibm,drc-indexes",
->> -                        index++, &drc);
->> -        if (rc)
->> -            break;
->> +        value = of_prop_next_u32(info, NULL, &count);
->> +        if (value)
->> +            value++;
->>
->> -        if (dlpar_cpu_exists(parent, drc))
->> -            continue;
->> +        for (i = 0; i < count; i++) {
->> +            of_read_drc_info_cell(&info, &value, &drc);
->> +            if (strncmp(drc.drc_type, "CPU", 3))
->> +                break;
->> +
->> +            for (j = 0; j < drc.num_sequential_elems && cpus_found <
->> cpus_to_add; j++) {
->> +                drc_index = drc.drc_index_start + (drc.sequential_inc * j);
->> +
->> +                if (dlpar_cpu_exists(parent, drc_index))
->> +                    continue;
->> +
->> +                cpu_drcs[cpus_found++] = drc_index;
->> +            }
->> +        }
->> +    } else {
->> +        /* Search the ibm,drc-indexes array for possible CPU drcs to
->> +         * add. Note that the format of the ibm,drc-indexes array is
->> +         * the number of entries in the array followed by the array
->> +         * of drc values so we start looking at index = 1.
->> +         */
->> +        index = 1;
->> +        while (cpus_found < cpus_to_add) {
->> +            rc = of_property_read_u32_index(parent, "ibm,drc-indexes",
->> +                            index++, &drc_index);
->> +
->> +            if (rc)
->> +                break;
->>
->> -        cpu_drcs[cpus_found++] = drc;
->> +            if (dlpar_cpu_exists(parent, drc_index))
->> +                continue;
->> +
->> +            cpu_drcs[cpus_found++] = drc_index;
->> +        }
->>       }
->>
->>       of_node_put(parent);
+(everything always should go to serial, serial is awesome :-)
 
+> Besides on local tests I see hits those have headers (messages like
+> "Backtrace: ") without an actual backtrace and the reverse - a backtrace
+> without a reason for it. It's quite annoying and worth addressing by
+> syncing headers log levels to backtraces.
+
+I suppose I'm surprised there are backtraces that are not important.
+Either badness happened and it needs printing, or the user asked for it
+and it needs printing.
+
+Perhaps we should be removing backtraces if they're not important
+instead of allowing to print them as lower loglevels?
