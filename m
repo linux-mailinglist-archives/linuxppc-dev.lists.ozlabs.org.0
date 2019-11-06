@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A38F0EB0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 07:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01624F0EBE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 07:08:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477GJK47LMzF5ct
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 17:06:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477GLT1pl0zF3XT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 17:08:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477G6q5TVTzF3sr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477G6q6vTKzF3ww
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 16:58:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="HHMCpQKd"; 
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="ciR7ncEP"; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 477G6q2hTsz9sPk; Wed,  6 Nov 2019 16:58:27 +1100 (AEDT)
+ id 477G6q5JGMz9sQy; Wed,  6 Nov 2019 16:58:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1573019907; bh=46gVeJC3dAyUhPqJ+NlvAv/IlXtVW7QrzM+5gy1u8eM=;
+ t=1573019907; bh=uxD2BTixjqrm1dB6sKzow9x5pztHfF4238phxQ8BQKU=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=HHMCpQKdyTCYf5CoNlipflMhC6MOArs1jnJrZWiyfg3s4UQLqUKCAk7jPXWgC7yAe
- 2ZHWBR0YUuPk4zD9tAwQTZtRmIHc6dtWaGsNGXGnFOQb4wPirBZTrUnUJ10HC1H6o4
- nKZ2OIFN6jI+nxz9U3H4gPsliLqud8BLRcuEiuU8p27O16C8ueKYVMK8CrQ0mQpXkI
- RqlylrOVP7xlVWlS+RF2ye0g8YibvqaO//2XNQ+sFD+Nog0DruyN7vZhjolrqeEk7U
- UwAK2UJuF/fbivVZliFKXO0XJoZ7dQ3jGSr/3eUllAfeGb27dVreStB8ngrbt4GmI/
- rzuV5+OKu7pAw==
-Date: Wed, 6 Nov 2019 15:33:29 +1100
+ b=ciR7ncEPNUOWorVTvgXfESPYNSN7jm+1hXyZWGYwgCOVWVQAABvrmxGJUn0lbFxDO
+ kRCHi3iRYKvCe6p/C/hmqZBxW7DyTHoAm94WB/4Z8HUIZV9QbLREGsRRq7GhHEWSDg
+ maJv1xzn7cjVJve4Saz0lG7qwhpQHoIsgfO/zeOMdnTMqHhK35t1XLMHIRBk7Piokg
+ zGzMC1UassrHrRfJp5dIOnh+EuF29AMcsfuALIWUtpOoODRhy5dzCRpJXofdQvpGmq
+ KlAPYgunlyi9E6Po8S39aVXpIHpnRcNHlZqSZWAGgbql8jWCifdZCPNex+5ybe9I4d
+ hIYmpQty8wLCQ==
+Date: Wed, 6 Nov 2019 15:34:57 +1100
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v10 1/8] mm: ksm: Export ksm_madvise()
-Message-ID: <20191106043329.GB12069@oak.ozlabs.ibm.com>
+Subject: Re: [PATCH v10 2/8] KVM: PPC: Support for running secure guests
+Message-ID: <20191106043457.GC12069@oak.ozlabs.ibm.com>
 References: <20191104041800.24527-1-bharata@linux.ibm.com>
- <20191104041800.24527-2-bharata@linux.ibm.com>
+ <20191104041800.24527-3-bharata@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191104041800.24527-2-bharata@linux.ibm.com>
+In-Reply-To: <20191104041800.24527-3-bharata@linux.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,15 +62,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 04, 2019 at 09:47:53AM +0530, Bharata B Rao wrote:
-> KVM PPC module needs ksm_madvise() for supporting secure guests.
-> Guest pages that become secure are represented as device private
-> pages in the host. Such pages shouldn't participate in KSM merging.
-
-If we don't do the ksm_madvise call, then as far as I can tell, it
-should all still work correctly, but we might have KSM pulling pages
-in unnecessarily, causing a reduction in performance.  Is that right?
-
+On Mon, Nov 04, 2019 at 09:47:54AM +0530, Bharata B Rao wrote:
+> A pseries guest can be run as secure guest on Ultravisor-enabled
+> POWER platforms. On such platforms, this driver will be used to manage
+> the movement of guest pages between the normal memory managed by
+> hypervisor (HV) and secure memory managed by Ultravisor (UV).
+> 
+> HV is informed about the guest's transition to secure mode via hcalls:
+> 
+> H_SVM_INIT_START: Initiate securing a VM
+> H_SVM_INIT_DONE: Conclude securing a VM
+> 
+> As part of H_SVM_INIT_START, register all existing memslots with
+> the UV. H_SVM_INIT_DONE call by UV informs HV that transition of
+> the guest to secure mode is complete.
+> 
+> These two states (transition to secure mode STARTED and transition
+> to secure mode COMPLETED) are recorded in kvm->arch.secure_guest.
+> Setting these states will cause the assembly code that enters the
+> guest to call the UV_RETURN ucall instead of trying to enter the
+> guest directly.
+> 
+> Migration of pages betwen normal and secure memory of secure
+> guest is implemented in H_SVM_PAGE_IN and H_SVM_PAGE_OUT hcalls.
+> 
+> H_SVM_PAGE_IN: Move the content of a normal page to secure page
+> H_SVM_PAGE_OUT: Move the content of a secure page to normal page
+> 
+> Private ZONE_DEVICE memory equal to the amount of secure memory
+> available in the platform for running secure guests is created.
+> Whenever a page belonging to the guest becomes secure, a page from
+> this private device memory is used to represent and track that secure
+> page on the HV side. The movement of pages between normal and secure
+> memory is done via migrate_vma_pages() using UV_PAGE_IN and
+> UV_PAGE_OUT ucalls.
+> 
 > Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
 
-Acked-by: Paul Mackerras <paulus@ozlabs.org>
+Reviewed-by: Paul Mackerras <paulus@ozlabs.org>
