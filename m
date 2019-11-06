@@ -1,85 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C4EF1C0D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 18:04:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43426F1CD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 18:51:39 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477XvH0rypzF3vF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 04:04:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477Yxh0lrhzF4hJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 04:51:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477Xrj5Z0hzF5Nq
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 04:02:13 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA6GqMNi008682
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 6 Nov 2019 12:02:09 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w41wfgw5a-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 12:02:09 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Wed, 6 Nov 2019 17:02:06 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 6 Nov 2019 17:02:01 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA6H20Bx41681096
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Nov 2019 17:02:00 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A1C74C046;
- Wed,  6 Nov 2019 17:02:00 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC2054C040;
- Wed,  6 Nov 2019 17:01:56 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.80.236.142])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed,  6 Nov 2019 17:01:56 +0000 (GMT)
-Date: Wed, 6 Nov 2019 09:01:53 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
- <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
- <af0a236f-37b2-ee16-0ebd-576b4e12d8cd@ozlabs.ru>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477YvM2w4yzF4ft
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 04:49:32 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id xA6Hn9SQ005721;
+ Wed, 6 Nov 2019 11:49:09 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id xA6Hn792005718;
+ Wed, 6 Nov 2019 11:49:07 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 6 Nov 2019 11:49:07 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v5 1/6] powerpc: Allow flush_icache_range to work across
+ ranges >4GB
+Message-ID: <20191106174907.GR16031@gate.crashing.org>
+References: <20191104023305.9581-1-alastair@au1.ibm.com>
+ <20191104023305.9581-2-alastair@au1.ibm.com>
+ <20191104194357.GE16031@gate.crashing.org>
+ <74435ba6-51dc-1dff-b55b-cdcf85e2e302@c-s.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <af0a236f-37b2-ee16-0ebd-576b4e12d8cd@ozlabs.ru>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19110617-4275-0000-0000-0000037B60E4
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110617-4276-0000-0000-0000388EAFD6
-Message-Id: <20191106170153.GC5201@oc0525413822.ibm.com>
-Subject: RE: [RFC v1 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
- with the hypervisor.
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-06_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=48 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911060163
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <74435ba6-51dc-1dff-b55b-cdcf85e2e302@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,94 +56,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, ram.n.pai@gmail.com, cai@lca.pw,
- tglx@linutronix.de, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de, bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: Alastair D'Silva <alastair@au1.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Nicholas Piggin <npiggin@gmail.com>, alastair@d-silva.org,
+ Qian Cai <cai@lca.pw>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 06, 2019 at 12:58:50PM +1100, Alexey Kardashevskiy wrote:
+On Tue, Nov 05, 2019 at 07:04:04AM +0100, Christophe Leroy wrote:
+> Le 04/11/2019 à 20:43, Segher Boessenkool a écrit :
+> >Please send this separately, to be committed right now?  It is a bug fix,
+> >independent of the rest of the series.
 > 
+> Patch 4/6 needs it, as it drops the function.
 > 
-> On 05/11/2019 08:28, Ram Pai wrote:
-> > The hypervisor needs to access the contents of the page holding the TCE
-> > entries while setting up the TCE entries in the IOMMU's TCE table. For
-> > SecureVMs, since this page is encrypted, the hypervisor cannot access
-> > valid entries. Share the page with the hypervisor. This ensures that the
-> > hypervisor sees the valid entries.
-> > 
-> > Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-> > ---
-> >  arch/powerpc/platforms/pseries/iommu.c | 20 +++++++++++++++++---
-> >  1 file changed, 17 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> > index 8d9c2b1..07f0847 100644
-> > --- a/arch/powerpc/platforms/pseries/iommu.c
-> > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> > @@ -37,6 +37,7 @@
-> >  #include <asm/mmzone.h>
-> >  #include <asm/plpar_wrappers.h>
-> >  #include <asm/svm.h>
-> > +#include <asm/ultravisor.h>
-> >  
-> >  #include "pseries.h"
-> >  
-> > @@ -179,6 +180,19 @@ static int tce_build_pSeriesLP(struct iommu_table *tbl, long tcenum,
-> >  
-> >  static DEFINE_PER_CPU(__be64 *, tce_page);
-> >  
-> > +/*
-> > + * Allocate a tce page.  If secure VM, share the page with the hypervisor.
-> > + */
-> > +static __be64 *alloc_tce_page(void)
-> > +{
-> > +	__be64 *tcep = (__be64 *)__get_free_page(GFP_ATOMIC);
-> > +
-> > +	if (tcep && is_secure_guest())
-> > +		uv_share_page(PHYS_PFN(__pa(tcep)), 1);
-> 
-> 
-> There is no matching unshare in this patch.
+> Or do you mean that the series should drop the assembly at once, and 
+> this patch should only go into stable ?
 
-The page is allocated and shared, and stays that way for the life of the
-kernel. It is not explicitly unshared or freed.  It is however
-implicitly unshared by the guest kernel, through a UV_UNSHARE_ALL_PAGES ucall
-when the guest kernel reboots. And it also gets implicitly unshared by
-the Ultravisor/Hypervisor, if the SVM abruptly terminates.
+I meant that you can say these patches (yes, 2/ as well) are bug fixes,
+independent of the rest, and they can be picked up immediately, there
+is no need to wait for v18 of this series.
 
-> 
-> 
-> > +
-> > +	return tcep;
-> > +}
-> > +
-> >  static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
-> >  				     long npages, unsigned long uaddr,
-> >  				     enum dma_data_direction direction,
-> > @@ -206,8 +220,7 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
-> >  	 * from iommu_alloc{,_sg}()
-> >  	 */
-> >  	if (!tcep) {
-> > -		tcep = (__be64 *)__get_free_page(GFP_ATOMIC);
-> > -		/* If allocation fails, fall back to the loop implementation */
-> > +		tcep = alloc_tce_page();
-> >  		if (!tcep) {
-> >  			local_irq_restore(flags);
-> >  			return tce_build_pSeriesLP(tbl, tcenum, npages, uaddr,
-> > @@ -391,6 +404,7 @@ static int tce_clearrange_multi_pSeriesLP(unsigned long start_pfn,
-> >  	return rc;
-> >  }
-> >  
-> > +
-> 
-> Unrelated.
+> But I guess mpe can take this patch alone if he wants to ?
 
-yes. will fix it.
+Yeah, but you can help him do that ;-)
 
-Thanks,
-RP
 
+Segher
