@@ -2,56 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E9F0AF1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 01:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D88F0AF8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 01:19:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4776Xf1y7rzF5FP
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 11:16:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4776bW5fcMzF3hL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 11:19:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=sean.j.christopherson@intel.com; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4776K81k8ZzF59T
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 11:06:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4776K724fpz8tVR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 11:06:51 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4776K71YMSz9sPK; Wed,  6 Nov 2019 11:06:51 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4776FB6qJ5zDsTS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 11:03:21 +1100 (AEDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2019 16:03:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,271,1569308400"; d="scan'208";a="200547335"
-Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com)
- ([10.54.74.41])
- by fmsmga008.fm.intel.com with ESMTP; 05 Nov 2019 16:03:15 -0800
-Date: Tue, 5 Nov 2019 16:03:15 -0800
-From: Sean Christopherson <sean.j.christopherson@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v1 03/10] KVM: Prepare kvm_is_reserved_pfn() for
- PG_reserved changes
-Message-ID: <20191106000315.GI23297@linux.intel.com>
-References: <CAPcyv4jyTxEpw5ep5Noy0YRV7Dybzj+8OTVMwRK_zeFigF-LsQ@mail.gmail.com>
- <bbe59155-24ae-f229-e182-107730423c47@redhat.com>
- <01adb4cb-6092-638c-0bab-e61322be7cf5@redhat.com>
- <613f3606-748b-0e56-a3ad-1efaffa1a67b@redhat.com>
- <20191105160000.GC8128@linux.intel.com>
- <ed89cd61-7c45-8c9c-ffeb-f27b1872bd7a@redhat.com>
- <CAPcyv4htPCeui80fOOno+7AFo3V-=VEiWkAv8j+-Kkad+UnFGQ@mail.gmail.com>
- <20191105231316.GE23297@linux.intel.com>
- <CAPcyv4iRP0Sz=mcT+iuoVaD4-o2q1nCH2Hixc5OkfWu+SBQmkg@mail.gmail.com>
- <CAPcyv4i7tnjyghYhSjK8fxUu8Qkdc2RuD9kUwJcKEMDzOf51ng@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4i7tnjyghYhSjK8fxUu8Qkdc2RuD9kUwJcKEMDzOf51ng@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Mailman-Approved-At: Wed, 06 Nov 2019 11:05:37 +1100
+ by ozlabs.org (Postfix) with ESMTPS id 4776K64KmYz9sPF
+ for <linuxppc-dev@ozlabs.org>; Wed,  6 Nov 2019 11:06:49 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ xA606k0o003293; Tue, 5 Nov 2019 19:06:46 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2w3hxp21s3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2019 19:06:46 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA606dXa018665;
+ Wed, 6 Nov 2019 00:06:40 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma05wdc.us.ibm.com with ESMTP id 2w11e72g20-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Nov 2019 00:06:40 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xA606c5w47251768
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Nov 2019 00:06:38 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B7EB5BE056;
+ Wed,  6 Nov 2019 00:06:38 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D9F41BE053;
+ Wed,  6 Nov 2019 00:06:37 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.85.144.27])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Nov 2019 00:06:37 +0000 (GMT)
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [RFC PATCH] powerpc/pseries/mobility: notify network peers after
+ migration
+Date: Tue,  5 Nov 2019 18:06:34 -0600
+Message-Id: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-11-05_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1911050195
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,97 +93,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- KVM list <kvm@vger.kernel.org>, David Hildenbrand <david@redhat.com>,
- KarimAllah Ahmed <karahmed@amazon.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Linux MM <linux-mm@kvack.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Wanpeng Li <wanpengli@tencent.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
- YueHaibing <yuehaibing@huawei.com>,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
- Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
- "Isaac J. Manjarres" <isaacm@codeaurora.org>,
- Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Sasha Levin <sashal@kernel.org>,
- kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
- Alex Williamson <alex.williamson@redhat.com>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
- xen-devel <xen-devel@lists.xenproject.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Allison Randal <allison@lohutok.net>,
- Jim Mattson <jmattson@google.com>, Mel Gorman <mgorman@techsingularity.net>,
- Adam Borowski <kilobyte@angband.pl>, Cornelia Huck <cohuck@redhat.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: nathanl@linux.ibm.com, netdev@vger.kernel.org,
+ Thomas Falcon <tlfalcon@linux.ibm.com>, msuchanek@suse.com,
+ tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 05, 2019 at 03:43:29PM -0800, Dan Williams wrote:
-> On Tue, Nov 5, 2019 at 3:30 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > On Tue, Nov 5, 2019 at 3:13 PM Sean Christopherson
-> > <sean.j.christopherson@intel.com> wrote:
-> > >
-> > > On Tue, Nov 05, 2019 at 03:02:40PM -0800, Dan Williams wrote:
-> > > > On Tue, Nov 5, 2019 at 12:31 PM David Hildenbrand <david@redhat.com> wrote:
-> > > > > > The scarier code (for me) is transparent_hugepage_adjust() and
-> > > > > > kvm_mmu_zap_collapsible_spte(), as I don't at all understand the
-> > > > > > interaction between THP and _PAGE_DEVMAP.
-> > > > >
-> > > > > The x86 KVM MMU code is one of the ugliest code I know (sorry, but it
-> > > > > had to be said :/ ). Luckily, this should be independent of the
-> > > > > PG_reserved thingy AFAIKs.
-> > > >
-> > > > Both transparent_hugepage_adjust() and kvm_mmu_zap_collapsible_spte()
-> > > > are honoring kvm_is_reserved_pfn(), so again I'm missing where the
-> > > > page count gets mismanaged and leads to the reported hang.
-> > >
-> > > When mapping pages into the guest, KVM gets the page via gup(), which
-> > > increments the page count for ZONE_DEVICE pages.  But KVM puts the page
-> > > using kvm_release_pfn_clean(), which skips put_page() if PageReserved()
-> > > and so never puts its reference to ZONE_DEVICE pages.
-> >
-> > Oh, yeah, that's busted.
-> 
-> Ugh, it's extra busted because every other gup user in the kernel
-> tracks the pages resulting from gup and puts them (put_page()) when
-> they are done. KVM wants to forget about whether it did a gup to get
-> the page and optionally trigger put_page() based purely on the pfn.
-> Outside of VFIO device assignment that needs pages pinned for DMA, why
-> does KVM itself need to pin pages? If pages are pinned over a return
-> to userspace that needs to be a FOLL_LONGTERM gup.
+After a migration, it is necessary to send a gratuitous ARP
+from all running interfaces so that the rest of the network
+is aware of its new location. However, some supported network
+devices are unaware that they have been migrated. To avoid network
+interruptions and other unwanted behavior, force a GARP on all
+valid, running interfaces as part of the post_mobility_fixup
+routine.
 
-Short answer, KVM pins the page to ensure correctness with respect to the
-primary MMU invalidating the associated host virtual address, e.g. when
-the page is being migrated or unmapped from host userspace.
+Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/mobility.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-The main use of gup() is to handle guest page faults and map pages into
-the guest, i.e. into KVM's secondary MMU.  KVM uses gup() to both get the
-PFN and to temporarily pin the page.  The pin is held just long enough to
-guaranteed that any invalidation via the mmu_notifier will be stalled
-until after KVM finishes installing the page into the secondary MMU, i.e.
-the pin is short-term and not held across a return to userspace or entry
-into the guest.  When a subsequent mmu_notifier invalidation occurs, KVM
-pulls the PFN from the secondary MMU and uses that to update accessed
-and dirty bits in the host.
+diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+index b571285f6c14..c1abc14cf2bb 100644
+--- a/arch/powerpc/platforms/pseries/mobility.c
++++ b/arch/powerpc/platforms/pseries/mobility.c
+@@ -17,6 +17,9 @@
+ #include <linux/delay.h>
+ #include <linux/slab.h>
+ #include <linux/stringify.h>
++#include <linux/netdevice.h>
++#include <linux/rtnetlink.h>
++#include <net/net_namespace.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/rtas.h>
+@@ -331,6 +334,8 @@ void post_mobility_fixup(void)
+ {
+ 	int rc;
+ 	int activate_fw_token;
++	struct net_device *netdev;
++	struct net *net;
+ 
+ 	activate_fw_token = rtas_token("ibm,activate-firmware");
+ 	if (activate_fw_token == RTAS_UNKNOWN_SERVICE) {
+@@ -371,6 +376,21 @@ void post_mobility_fixup(void)
+ 	/* Possibly switch to a new RFI flush type */
+ 	pseries_setup_rfi_flush();
+ 
++	/* need to force a gratuitous ARP on running interfaces */
++	rtnl_lock();
++	for_each_net(net) {
++		for_each_netdev(net, netdev) {
++			if (netif_device_present(netdev) &&
++			    netif_running(netdev) &&
++			    !(netdev->flags & (IFF_NOARP | IFF_LOOPBACK)))
++				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
++							 netdev);
++				call_netdevice_notifiers(NETDEV_RESEND_IGMP,
++							 netdev);
++		}
++	}
++	rtnl_unlock();
++
+ 	return;
+ }
+ 
+-- 
+2.12.3
 
-There are a few other KVM flows that eventually call into gup(), but those
-are "traditional" short-term pins and use put_page() directly.
