@@ -2,103 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7998FF0DA0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 05:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B473FF0DFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 05:49:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477Cqr095HzF5TT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 15:15:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477DbK2HFPzF5PM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 15:49:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477Cnh2NK1zDrgV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 15:13:28 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477DYZ5P4SzF1Yv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 15:48:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="XD0hI0L8"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="lmaNePXr"; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 477Cnh1ghCz8tJY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 15:13:28 +1100 (AEDT)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 477DYZ1BB0z8snv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 15:48:02 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 477Cnh1B2Lz9sPn; Wed,  6 Nov 2019 15:13:28 +1100 (AEDT)
+ id 477DYZ0mCBz9sPn; Wed,  6 Nov 2019 15:48:02 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=66.111.4.28;
- helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="XD0hI0L8"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="lmaNePXr"; dkim-atps=neutral
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
- [66.111.4.28])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 477Cnf2lzLz9sPk
- for <linuxppc-dev@ozlabs.org>; Wed,  6 Nov 2019 15:13:25 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id 5AF1A20CF2;
- Tue,  5 Nov 2019 23:13:21 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Tue, 05 Nov 2019 23:13:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm3; bh=
- 9fPd8NkoyeMPutvOXwvfGAl4ZrfOV/gls8KMdRI4UEk=; b=XD0hI0L86Lo6Vf/8
- gb6X6NQc+ZajB1lZ7xA6/wvYZAF0gJ6LKNZz4CFOVDwyKI/+ErhInawo9C6r+pR/
- Y8fGD7SGJNjS38a4QJMpOU0oUDZEIwdtuOSWFST/wAmPCVzgH4fY7iB7V2JB4exY
- t+DSfVD9Z3iNakZ6lNqHN5vVClD3iMa57GWH+aj3ORXSq8rT+aZGS4pjaXoxBnfz
- PZTtEvYNc+Y9c25Qb2c/8wog60mAHeNrSuHLLWp82EZV+uUin1iSU4lTpsR9o4MC
- q9Xh4oRBtPxPjVPoUALoS3eQ6grSp4XraKTNgYbQExWRxqp+YS7F+4waU6XZhBRE
- Zbst4Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; bh=9fPd8NkoyeMPutvOXwvfGAl4ZrfOV/gls8KMdRI4U
- Ek=; b=lmaNePXrO8OOlZCxY1Wlsa9tNYJKP3sJ6h41DCn1GzeqAQbzGUBccdltK
- gpszokTyoFbOvK7LKiAjaRi8n4vWoqKLloeA/eTbqhVXHfs88KzufU1PgodQpJYm
- /BBWJ+ZQCGUwFr2LIZIzf0ykWwgdCxTMCyftpwJzdTcFu652LiGRHN6inRsQ9WBx
- kbGhaevsbEh4yHjR8KBLaE4r3NJJAxX3pQ4nFggZqI2LzyUYw//GgcgaJw5fuCAc
- zrIhj4N8R/uauAc6weCw/2M5orHjcQaTVMOhBcfz3w2+VwW92yw8L57i51222CQ+
- 9pLj+0X4ZrE8ApaNc9Rc433xFJ+Aw==
-X-ME-Sender: <xms:YEjCXY9fmfe4XuJ4SnmvQxk5omqFxceO8tyaCDHHoN9qEPA5mhkIvg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudduiedgieekucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfffjghftggfggfgsehtjeertddt
- reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
- hsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecurfgrrhgrmhepmhgr
- ihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggtnecuvehluhhsthgvrhfuih
- iivgeptd
-X-ME-Proxy: <xmx:YEjCXb5n-yFOXWPZZ3XOf4LzVl0sT-hUjE68NRrhV1vaKCIauqOhjg>
- <xmx:YEjCXR1eoPqnoYKEVSv9Sj-gsSn7DMNfT4dDSGFVVeNCjiBGSi7e4w>
- <xmx:YEjCXSwmP5JQMRIrC3P0I0oHq7qbH5KZ1DoivTjwivqDdkK1ViSVPw>
- <xmx:YUjCXZtGBV9ZdLuJV7a1_rzcEXdh2xB_9TBvSDj3SL83a4yq7jd0Kg>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 62F183060057;
- Tue,  5 Nov 2019 23:13:18 -0500 (EST)
-Message-ID: <b42f1dbdba88f74149de669cb285408d640cdb79.camel@russell.cc>
-Subject: Re: [RFC PATCH] powerpc/pseries/mobility: notify network peers
- after migration
-From: Russell Currey <ruscur@russell.cc>
-To: Thomas Falcon <tlfalcon@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Date: Wed, 06 Nov 2019 15:13:15 +1100
-In-Reply-To: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
+ by ozlabs.org (Postfix) with ESMTPS id 477DYY1fsSz9sPF
+ for <linuxppc-dev@ozlabs.org>; Wed,  6 Nov 2019 15:47:59 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ xA64l0DA015295; Tue, 5 Nov 2019 23:47:56 -0500
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2w3hhmsd7e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Nov 2019 23:47:56 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA64ii7S032519;
+ Wed, 6 Nov 2019 04:47:54 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04wdc.us.ibm.com with ESMTP id 2w11e7ccp7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Nov 2019 04:47:54 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xA64lrOa32965076
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Nov 2019 04:47:53 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 667A67805F;
+ Wed,  6 Nov 2019 04:47:53 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D44878063;
+ Wed,  6 Nov 2019 04:47:52 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.85.194.118])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Nov 2019 04:47:52 +0000 (GMT)
+Subject: Re: [RFC PATCH] powerpc/pseries/mobility: notify network peers after
+ migration
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@ozlabs.org
 References: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1 
+ <b42f1dbdba88f74149de669cb285408d640cdb79.camel@russell.cc>
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+Message-ID: <15e84597-7b5a-1269-f1b8-753268e90741@linux.ibm.com>
+Date: Tue, 5 Nov 2019 22:47:51 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
+In-Reply-To: <b42f1dbdba88f74149de669cb285408d640cdb79.camel@russell.cc>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-11-05_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1911060050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,79 +107,83 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-11-05 at 18:06 -0600, Thomas Falcon wrote:
-> After a migration, it is necessary to send a gratuitous ARP
-> from all running interfaces so that the rest of the network
-> is aware of its new location. However, some supported network
-> devices are unaware that they have been migrated. To avoid network
-> interruptions and other unwanted behavior, force a GARP on all
-> valid, running interfaces as part of the post_mobility_fixup
-> routine.
-> 
-> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
 
-Hi Thomas,
+On 11/5/19 10:13 PM, Russell Currey wrote:
+> On Tue, 2019-11-05 at 18:06 -0600, Thomas Falcon wrote:
+>> After a migration, it is necessary to send a gratuitous ARP
+>> from all running interfaces so that the rest of the network
+>> is aware of its new location. However, some supported network
+>> devices are unaware that they have been migrated. To avoid network
+>> interruptions and other unwanted behavior, force a GARP on all
+>> valid, running interfaces as part of the post_mobility_fixup
+>> routine.
+>>
+>> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+> Hi Thomas,
+>
+>> ---
+>>   arch/powerpc/platforms/pseries/mobility.c | 20 ++++++++++++++++++++
+>>   1 file changed, 20 insertions(+)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/mobility.c
+>> b/arch/powerpc/platforms/pseries/mobility.c
+>> index b571285f6c14..c1abc14cf2bb 100644
+>> --- a/arch/powerpc/platforms/pseries/mobility.c
+>> +++ b/arch/powerpc/platforms/pseries/mobility.c
+>> @@ -17,6 +17,9 @@
+>>   #include <linux/delay.h>
+>>   #include <linux/slab.h>
+>>   #include <linux/stringify.h>
+>> +#include <linux/netdevice.h>
+>> +#include <linux/rtnetlink.h>
+>> +#include <net/net_namespace.h>
+>>   
+>>   #include <asm/machdep.h>
+>>   #include <asm/rtas.h>
+>> @@ -331,6 +334,8 @@ void post_mobility_fixup(void)
+>>   {
+>>   	int rc;
+>>   	int activate_fw_token;
+>> +	struct net_device *netdev;
+>> +	struct net *net;
+>>   
+>>   	activate_fw_token = rtas_token("ibm,activate-firmware");
+>>   	if (activate_fw_token == RTAS_UNKNOWN_SERVICE) {
+>> @@ -371,6 +376,21 @@ void post_mobility_fixup(void)
+>>   	/* Possibly switch to a new RFI flush type */
+>>   	pseries_setup_rfi_flush();
+>>   
+>> +	/* need to force a gratuitous ARP on running interfaces */
+>> +	rtnl_lock();
+>> +	for_each_net(net) {
+>> +		for_each_netdev(net, netdev) {
+>> +			if (netif_device_present(netdev) &&
+>> +			    netif_running(netdev) &&
+>> +			    !(netdev->flags & (IFF_NOARP |
+>> IFF_LOOPBACK)))
+>> +				call_netdevice_notifiers(NETDEV_NOTIFY_
+>> PEERS,
+>> +							 netdev);
+> Without curly braces following the "if" statment, the second line
+> (below) will be executed unconditionally, which I assume with this
+> indentation isn't what you want.
+>
+> (reported by snowpatch)
+>
+> - Russell
 
-> ---
->  arch/powerpc/platforms/pseries/mobility.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/mobility.c
-> b/arch/powerpc/platforms/pseries/mobility.c
-> index b571285f6c14..c1abc14cf2bb 100644
-> --- a/arch/powerpc/platforms/pseries/mobility.c
-> +++ b/arch/powerpc/platforms/pseries/mobility.c
-> @@ -17,6 +17,9 @@
->  #include <linux/delay.h>
->  #include <linux/slab.h>
->  #include <linux/stringify.h>
-> +#include <linux/netdevice.h>
-> +#include <linux/rtnetlink.h>
-> +#include <net/net_namespace.h>
->  
->  #include <asm/machdep.h>
->  #include <asm/rtas.h>
-> @@ -331,6 +334,8 @@ void post_mobility_fixup(void)
->  {
->  	int rc;
->  	int activate_fw_token;
-> +	struct net_device *netdev;
-> +	struct net *net;
->  
->  	activate_fw_token = rtas_token("ibm,activate-firmware");
->  	if (activate_fw_token == RTAS_UNKNOWN_SERVICE) {
-> @@ -371,6 +376,21 @@ void post_mobility_fixup(void)
->  	/* Possibly switch to a new RFI flush type */
->  	pseries_setup_rfi_flush();
->  
-> +	/* need to force a gratuitous ARP on running interfaces */
-> +	rtnl_lock();
-> +	for_each_net(net) {
-> +		for_each_netdev(net, netdev) {
-> +			if (netif_device_present(netdev) &&
-> +			    netif_running(netdev) &&
-> +			    !(netdev->flags & (IFF_NOARP |
-> IFF_LOOPBACK)))
-> +				call_netdevice_notifiers(NETDEV_NOTIFY_
-> PEERS,
-> +							 netdev);
+Thanks for catching that! I'll fix that and send a v2 soon.
 
-Without curly braces following the "if" statment, the second line
-(below) will be executed unconditionally, which I assume with this
-indentation isn't what you want.
+Tom
 
-(reported by snowpatch)
 
-- Russell
-
-> +				call_netdevice_notifiers(NETDEV_RESEND_
-> IGMP,
-> +							 netdev);
-> +		}
-> +	}
-> +	rtnl_unlock();
-> +
->  	return;
->  }
->  
-
+>> +				call_netdevice_notifiers(NETDEV_RESEND_
+>> IGMP,
+>> +							 netdev);
+>> +		}
+>> +	}
+>> +	rtnl_unlock();
+>> +
+>>   	return;
+>>   }
+>>   
