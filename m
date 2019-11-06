@@ -2,45 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADD6F1045
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 08:31:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F6FF1071
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 08:36:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477JB30gZWzF57w
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 18:31:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477JHY4JVRzF5hB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 18:36:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477J7r2775zF4PV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 18:29:25 +1100 (AEDT)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 16AB42001C8;
- Wed,  6 Nov 2019 08:29:21 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8CC4E20013E;
- Wed,  6 Nov 2019 08:29:16 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id AD12340285;
- Wed,  6 Nov 2019 15:29:10 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: fsl_audmix: Add spin lock to protect tdms
-Date: Wed,  6 Nov 2019 15:27:45 +0800
-Message-Id: <1573025265-31852-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 477JFQ60RTzF3mt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 18:34:15 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1EE3430E;
+ Tue,  5 Nov 2019 23:34:13 -0800 (PST)
+Received: from [192.168.225.149] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F42D3F71A;
+ Tue,  5 Nov 2019 23:36:40 -0800 (PST)
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+ <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
+ <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <0e0c2ce9-636d-1153-2451-baf7317ed45f@arm.com>
+Date: Wed, 6 Nov 2019 13:04:20 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,72 +51,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Audmix support two substream, When two substream start
-to run, the trigger function may be called by two substream
-in same time, that the priv->tdms may be updated wrongly.
 
-The expected priv->tdms is 0x3, but sometimes the
-result is 0x2, or 0x1.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_audmix.c | 6 ++++++
- sound/soc/fsl/fsl_audmix.h | 1 +
- 2 files changed, 7 insertions(+)
+On 11/06/2019 12:11 PM, Christophe Leroy wrote:
+> 
+> 
+> Le 06/11/2019 à 04:22, Anshuman Khandual a écrit :
+>>
+>>
+>> On 10/28/2019 10:59 AM, Anshuman Khandual wrote:
+>>> +    -----------------------
+>>> +    |         arch |status|
+>>> +    -----------------------
+>>> +    |       alpha: | TODO |
+>>> +    |         arc: | TODO |
+>>> +    |         arm: | TODO |
+>>> +    |       arm64: |  ok  |
+>>> +    |         c6x: | TODO |
+>>> +    |        csky: | TODO |
+>>> +    |       h8300: | TODO |
+>>> +    |     hexagon: | TODO |
+>>> +    |        ia64: | TODO |
+>>> +    |        m68k: | TODO |
+>>> +    |  microblaze: | TODO |
+>>> +    |        mips: | TODO |
+>>> +    |       nds32: | TODO |
+>>> +    |       nios2: | TODO |
+>>> +    |    openrisc: | TODO |
+>>> +    |      parisc: | TODO |
+>>> +    |     powerpc: | TODO |
+>>> +    |       ppc32: |  ok  |
+> 
+> Note that ppc32 is a part of powerpc, not a standalone arch.
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index c7e4e9757dce..a1db1bce330f 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -286,6 +286,7 @@ static int fsl_audmix_dai_trigger(struct snd_pcm_substream *substream, int cmd,
- 				  struct snd_soc_dai *dai)
- {
- 	struct fsl_audmix *priv = snd_soc_dai_get_drvdata(dai);
-+	unsigned long lock_flags;
- 
- 	/* Capture stream shall not be handled */
- 	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
-@@ -295,12 +296,16 @@ static int fsl_audmix_dai_trigger(struct snd_pcm_substream *substream, int cmd,
- 	case SNDRV_PCM_TRIGGER_START:
- 	case SNDRV_PCM_TRIGGER_RESUME:
- 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
-+		spin_lock_irqsave(&priv->lock, lock_flags);
- 		priv->tdms |= BIT(dai->driver->id);
-+		spin_unlock_irqrestore(&priv->lock, lock_flags);
- 		break;
- 	case SNDRV_PCM_TRIGGER_STOP:
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-+		spin_lock_irqsave(&priv->lock, lock_flags);
- 		priv->tdms &= ~BIT(dai->driver->id);
-+		spin_unlock_irqrestore(&priv->lock, lock_flags);
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -491,6 +496,7 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->ipg_clk);
- 	}
- 
-+	spin_lock_init(&priv->lock);
- 	platform_set_drvdata(pdev, priv);
- 	pm_runtime_enable(dev);
- 
-diff --git a/sound/soc/fsl/fsl_audmix.h b/sound/soc/fsl/fsl_audmix.h
-index 7812ffec45c5..479f05695d53 100644
---- a/sound/soc/fsl/fsl_audmix.h
-+++ b/sound/soc/fsl/fsl_audmix.h
-@@ -96,6 +96,7 @@ struct fsl_audmix {
- 	struct platform_device *pdev;
- 	struct regmap *regmap;
- 	struct clk *ipg_clk;
-+	spinlock_t lock; /* Protect tdms */
- 	u8 tdms;
- };
- 
--- 
-2.21.0
+Right, I understand. But we are yet to hear about how this test
+came about on powerpc server platforms. Will update 'powerpc'
+arch listing above once we get some confirmation. May be once
+this works on all relevant powerpc platforms, we can just merge
+'powerpc' and 'ppc32' entries here as just 'powerpc'.
 
+> 
+> Maybe something like the following would be more correct:
+> |  powerpc/32: |  ok  |
+> |  powerpc/64: | TODO |
+> 
+> Christophe
+> 
+>>> +    |       riscv: | TODO |
+>>> +    |        s390: | TODO |
+>>> +    |          sh: | TODO |
+>>> +    |       sparc: | TODO |
+>>> +    |          um: | TODO |
+>>> +    |   unicore32: | TODO |
+>>> +    |         x86: |  ok  |
+>>> +    |      xtensa: | TODO |
+>>> +    -----------------------
+>>
+>> While here, are there some volunteers to test this on any of the
+>> 'yet to be tested and supported' platforms ?
+>>
+>> - Anshuman
+>>
+> 
