@@ -2,45 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371D0F0E98
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 07:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A38F0EB0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 07:06:44 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477G960lFhzF5Y1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 17:00:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477GJK47LMzF5ct
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2019 17:06:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477G6q3KFqzF3jG
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477G6q5TVTzF3sr
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2019 16:58:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="YSGwBlFf"; 
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="HHMCpQKd"; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 477G6q0k0vz9sPF; Wed,  6 Nov 2019 16:58:26 +1100 (AEDT)
+ id 477G6q2hTsz9sPk; Wed,  6 Nov 2019 16:58:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1573019907; bh=56y9/gEaDzQmeKp9iXKr2ut32/omIfnBdtSxBPQKzkQ=;
+ t=1573019907; bh=46gVeJC3dAyUhPqJ+NlvAv/IlXtVW7QrzM+5gy1u8eM=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=YSGwBlFfFtQL4eL2wF4UIeyChrpdMx5L4IUbxmr/LjnZOVz2ZGoNtyB+yYlJ6NtA2
- BeiWR2+BwJtRlAFJrHh8lmPqOVgoYHtG0PfPjtM+e0PeWvuqkDpPGr/usj1GDyfEfe
- v1g/aAkoeln+bBZwG8gP542+NfUDHOPkANX9UwdtqbLw+Qk7muJ+fjhgRTTIashezE
- YasQaF3hsR+LdzQHDsUrLk2WFEphkX6v8Sl/K5HoygKmAeqgteBfTNiOwlS/jcYEcs
- yBeX2BAOvFfASn2EVcrYBWyqM7kW5RvCdTgYnw6cxkN0oc4oBVajsfezPoNdhnmrbm
- SJqhWdJMjCEZw==
-Date: Wed, 6 Nov 2019 15:30:58 +1100
+ b=HHMCpQKdyTCYf5CoNlipflMhC6MOArs1jnJrZWiyfg3s4UQLqUKCAk7jPXWgC7yAe
+ 2ZHWBR0YUuPk4zD9tAwQTZtRmIHc6dtWaGsNGXGnFOQb4wPirBZTrUnUJ10HC1H6o4
+ nKZ2OIFN6jI+nxz9U3H4gPsliLqud8BLRcuEiuU8p27O16C8ueKYVMK8CrQ0mQpXkI
+ RqlylrOVP7xlVWlS+RF2ye0g8YibvqaO//2XNQ+sFD+Nog0DruyN7vZhjolrqeEk7U
+ UwAK2UJuF/fbivVZliFKXO0XJoZ7dQ3jGSr/3eUllAfeGb27dVreStB8ngrbt4GmI/
+ rzuV5+OKu7pAw==
+Date: Wed, 6 Nov 2019 15:33:29 +1100
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v10 0/8] KVM: PPC: Driver to manage pages of secure guest
-Message-ID: <20191106043058.GA12069@oak.ozlabs.ibm.com>
+Subject: Re: [PATCH v10 1/8] mm: ksm: Export ksm_madvise()
+Message-ID: <20191106043329.GB12069@oak.ozlabs.ibm.com>
 References: <20191104041800.24527-1-bharata@linux.ibm.com>
+ <20191104041800.24527-2-bharata@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191104041800.24527-1-bharata@linux.ibm.com>
+In-Reply-To: <20191104041800.24527-2-bharata@linux.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,44 +62,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 04, 2019 at 09:47:52AM +0530, Bharata B Rao wrote:
-> Hi,
-> 
-> This is the next version of the patchset that adds required support
-> in the KVM hypervisor to run secure guests on PEF-enabled POWER platforms.
-> 
-> The major change in this version is about not using kvm.arch->rmap[]
-> array to store device PFNs, thus not depending on the memslot availability
-> to reach to the device PFN from the fault path. Instead of rmap[], we
-> now have a different array which gets created and destroyed along with
-> memslot creation and deletion. These arrays hang off from kvm.arch and
-> are arragned in a simple linked list for now. We could move to some other
-> data structure in future if walking of linked list becomes an overhead
-> due to large number of memslots.
+On Mon, Nov 04, 2019 at 09:47:53AM +0530, Bharata B Rao wrote:
+> KVM PPC module needs ksm_madvise() for supporting secure guests.
+> Guest pages that become secure are represented as device private
+> pages in the host. Such pages shouldn't participate in KSM merging.
 
-Thanks.  This is looking really close now.
+If we don't do the ksm_madvise call, then as far as I can tell, it
+should all still work correctly, but we might have KSM pulling pages
+in unnecessarily, causing a reduction in performance.  Is that right?
 
-> Other changes include:
-> 
-> - Rearranged/Merged/Cleaned up patches, removed all Acks/Reviewed-by since
->   all the patches have changed.
-> - Added a new patch to support H_SVM_INIT_ABORT hcall (From Suka)
-> - Added KSM unmerge support so that VMAs that have device PFNs don't
->   participate in KSM merging and eventually crash in KSM code.
-> - Release device pages during unplug (Paul) and ensure that memory
->   hotplug and unplug works correctly.
-> - Let kvm-hv module to load on PEF-disabled platforms (Ram) when
->   CONFIG_PPC_UV is enabled allowing regular non-secure guests
->   to still run.
-> - Support guest reset when swithing to secure is in progress.
-> - Check if page is already secure in kvmppc_send_page_to_uv() before
->   sending it to UV.
-> - Fixed sentinal for header file kvm_book3s_uvmem.h (Jason)
-> 
-> Now, all the dependencies required by this patchset are in powerpc/next
-> on which this patchset is based upon.
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
 
-Can you tell me what patches that are in powerpc/next but not upstream
-this depends on?
-
-Paul.
+Acked-by: Paul Mackerras <paulus@ozlabs.org>
