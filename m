@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C89F2DCC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 12:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1855DF2EA9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 14:00:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4782211dw1zF5vn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 22:56:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4783RN0S6fzF59d
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 00:00:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4781zD2LrVzF5bK
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 22:54:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4783JH6yvtzF4QQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 23:54:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="GK2zmzQS"; dkim-atps=neutral
+ header.b="J2h2GXut"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4781z871F7z9sP3;
- Thu,  7 Nov 2019 22:54:28 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4783J72b3Dz9sR7;
+ Thu,  7 Nov 2019 23:54:14 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1573127670;
- bh=+OqaUvb1czjnKLj7FFJP1J5EwOqrmOwhqu8kZf47j3M=;
+ s=201909; t=1573131261;
+ bh=kVcSRWwnPjpL30z4/b6SOIlevawzxnLE8imaExIycJY=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=GK2zmzQSxVGyhgvYs0tzkcMIwkEmyTnz/zSWM6offu95DbfG3Llkgxx4r+tBceft4
- 4Ta5D1+GkMRx/Ql1gnkLxmr8Chi6MvlBz8CFAzDLc8jzQAaj2xu9rVmuKsBxh6BSyJ
- EsRwQU96nHFL9dNtSAfdVYrFH/9FQVdh+dmxGIV09oL6eJSlafEFcPTw/EaUIjuJ2j
- EZVyEyPKixHo/SM+ksr0D2QqBA9eXFbt7OIILwgm6es/jD6lmuGpDd2JWSWdR8HFGv
- eYzUG6AG3LJ3Tx9WaorS4+YN5t5XUFRd0dcK1+HATaCSmEnHI2HNIJm2TqLqNrTpBc
- EIv6mdMICtKyg==
+ b=J2h2GXut1G+LNf/hqVUky6Kv1okUdOEISaHZnkeLHqrnhlwT+bA9T64CihqGYeSi8
+ FHqUnJ0oF72N0INlgQid9nAvR37A00no52vbAalB76M0lCSA0BbkwPYukjEI9zgIqJ
+ tb7uzy0rwx9XsO7BF+60IISTFRNOQFeSPiO/N7vBTSKV/xk5TRX4wUogeJt5tridyc
+ ajDOlF9wzJOEvH9zg+9K3CNkwMLwmaLgT2Ak7loNO3/YuuIOYxxMGIE180Ya7SHWI7
+ TmxPjV3AUAn3SdBlwRrQJlfPszjY2prRFisV7GuIvzRBmAWb6K7cUfMqWt55qNZ9my
+ MCHuJ+1AEdMgw==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
-Subject: Re: [PATCH v5 5/6] powerpc: Chunk calls to flush_dcache_range in
- arch_*_memory
-In-Reply-To: <20191104023305.9581-6-alastair@au1.ibm.com>
-References: <20191104023305.9581-1-alastair@au1.ibm.com>
- <20191104023305.9581-6-alastair@au1.ibm.com>
-Date: Thu, 07 Nov 2019 22:54:26 +1100
-Message-ID: <87y2wr52bx.fsf@mpe.ellerman.id.au>
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+In-Reply-To: <0e0c2ce9-636d-1153-2451-baf7317ed45f@arm.com>
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+ <3229d68d-0b9d-0719-3370-c6e1df0ea032@arm.com>
+ <42160baa-0e9d-73d0-bf72-58bdbacf10ff@c-s.fr>
+ <0e0c2ce9-636d-1153-2451-baf7317ed45f@arm.com>
+Date: Thu, 07 Nov 2019 23:54:08 +1100
+Message-ID: <87tv7f4zkf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,88 +62,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Qian Cai <cai@lca.pw>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, Ingo Molnar <mingo@kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill
+ A . Shutemov" <kirill@shutemov.name>, Dan Williams <dan.j.williams@intel.com>,
+ Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Alastair D'Silva" <alastair@au1.ibm.com> writes:
-> From: Alastair D'Silva <alastair@d-silva.org>
->
-> When presented with large amounts of memory being hotplugged
-> (in my test case, ~890GB), the call to flush_dcache_range takes
-> a while (~50 seconds), triggering RCU stalls.
->
-> This patch breaks up the call into 1GB chunks, calling
-> cond_resched() inbetween to allow the scheduler to run.
->
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-
-I'm going to mark this as:
-  Fixes: fb5924fddf9e ("powerpc/mm: Flush cache on memory hot(un)plug")
-
-Because anyone doing large memory hotplugs on older kernels is going to
-want to backport this to at least that point, otherwise they will see
-the softlockups/RCU stalls.
-
-cheers
-
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 54d61ba15e93..a7b662fc02c8 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -104,6 +104,27 @@ int __weak remove_section_mapping(unsigned long start, unsigned long end)
->  	return -ENODEV;
->  }
->  
-> +#define FLUSH_CHUNK_SIZE SZ_1G
-> +/**
-> + * flush_dcache_range_chunked(): Write any modified data cache blocks out to
-> + * memory and invalidate them, in chunks of up to FLUSH_CHUNK_SIZE
-> + * Does not invalidate the corresponding instruction cache blocks.
-> + *
-> + * @start: the start address
-> + * @stop: the stop address (exclusive)
-> + * @chunk: the max size of the chunks
-> + */
-> +static void flush_dcache_range_chunked(unsigned long start, unsigned long stop,
-> +				       unsigned long chunk)
-> +{
-> +	unsigned long i;
-> +
-> +	for (i = start; i < stop; i += chunk) {
-> +		flush_dcache_range(i, min(stop, start + chunk));
-> +		cond_resched();
-> +	}
-> +}
-> +
->  int __ref arch_add_memory(int nid, u64 start, u64 size,
->  			struct mhp_restrictions *restrictions)
->  {
-> @@ -120,7 +141,8 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
->  			start, start + size, rc);
->  		return -EFAULT;
->  	}
-> -	flush_dcache_range(start, start + size);
-> +
-> +	flush_dcache_range_chunked(start, start + size, FLUSH_CHUNK_SIZE);
->  
->  	return __add_pages(nid, start_pfn, nr_pages, restrictions);
->  }
-> @@ -137,7 +159,8 @@ void __ref arch_remove_memory(int nid, u64 start, u64 size,
->  
->  	/* Remove htab bolted mappings for this section of memory */
->  	start = (unsigned long)__va(start);
-> -	flush_dcache_range(start, start + size);
-> +	flush_dcache_range_chunked(start, start + size, FLUSH_CHUNK_SIZE);
-> +
->  	ret = remove_section_mapping(start, start + size);
->  	WARN_ON_ONCE(ret);
->  
-> -- 
-> 2.21.0
+QW5zaHVtYW4gS2hhbmR1YWwgPGFuc2h1bWFuLmtoYW5kdWFsQGFybS5jb20+IHdyaXRlczoNCj4g
+T24gMTEvMDYvMjAxOSAxMjoxMSBQTSwgQ2hyaXN0b3BoZSBMZXJveSB3cm90ZToNCj4+IExlIDA2
+LzExLzIwMTkgw6AgMDQ6MjIsIEFuc2h1bWFuIEtoYW5kdWFsIGEgw6ljcml0wqA6DQo+Pj4gT24g
+MTAvMjgvMjAxOSAxMDo1OSBBTSwgQW5zaHVtYW4gS2hhbmR1YWwgd3JvdGU6DQo+Pj4+ICvCoMKg
+wqAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4+Pj4gK8KgwqDCoCB8wqDCoMKgwqDCoMKgwqDC
+oCBhcmNoIHxzdGF0dXN8DQo+Pj4+ICvCoMKgwqAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4+
+Pj4gK8KgwqDCoCB8wqDCoMKgwqDCoMKgIGFscGhhOiB8IFRPRE8gfA0KPj4+PiArwqDCoMKgIHzC
+oMKgwqDCoMKgwqDCoMKgIGFyYzogfCBUT0RPIHwNCj4+Pj4gK8KgwqDCoCB8wqDCoMKgwqDCoMKg
+wqDCoCBhcm06IHwgVE9ETyB8DQo+Pj4+ICvCoMKgwqAgfMKgwqDCoMKgwqDCoCBhcm02NDogfMKg
+IG9rwqAgfA0KPj4+PiArwqDCoMKgIHzCoMKgwqDCoMKgwqDCoMKgIGM2eDogfCBUT0RPIHwNCj4+
+Pj4gK8KgwqDCoCB8wqDCoMKgwqDCoMKgwqAgY3NreTogfCBUT0RPIHwNCj4+Pj4gK8KgwqDCoCB8
+wqDCoMKgwqDCoMKgIGg4MzAwOiB8IFRPRE8gfA0KPj4+PiArwqDCoMKgIHzCoMKgwqDCoCBoZXhh
+Z29uOiB8IFRPRE8gfA0KPj4+PiArwqDCoMKgIHzCoMKgwqDCoMKgwqDCoCBpYTY0OiB8IFRPRE8g
+fA0KPj4+PiArwqDCoMKgIHzCoMKgwqDCoMKgwqDCoCBtNjhrOiB8IFRPRE8gfA0KPj4+PiArwqDC
+oMKgIHzCoCBtaWNyb2JsYXplOiB8IFRPRE8gfA0KPj4+PiArwqDCoMKgIHzCoMKgwqDCoMKgwqDC
+oCBtaXBzOiB8IFRPRE8gfA0KPj4+PiArwqDCoMKgIHzCoMKgwqDCoMKgwqAgbmRzMzI6IHwgVE9E
+TyB8DQo+Pj4+ICvCoMKgwqAgfMKgwqDCoMKgwqDCoCBuaW9zMjogfCBUT0RPIHwNCj4+Pj4gK8Kg
+wqDCoCB8wqDCoMKgIG9wZW5yaXNjOiB8IFRPRE8gfA0KPj4+PiArwqDCoMKgIHzCoMKgwqDCoMKg
+IHBhcmlzYzogfCBUT0RPIHwNCj4+Pj4gK8KgwqDCoCB8wqDCoMKgwqAgcG93ZXJwYzogfCBUT0RP
+IHwNCj4+Pj4gK8KgwqDCoCB8wqDCoMKgwqDCoMKgIHBwYzMyOiB8wqAgb2vCoCB8DQo+PiANCj4+
+IE5vdGUgdGhhdCBwcGMzMiBpcyBhIHBhcnQgb2YgcG93ZXJwYywgbm90IGEgc3RhbmRhbG9uZSBh
+cmNoLg0KPg0KPiBSaWdodCwgSSB1bmRlcnN0YW5kLiBCdXQgd2UgYXJlIHlldCB0byBoZWFyIGFi
+b3V0IGhvdyB0aGlzIHRlc3QNCj4gY2FtZSBhYm91dCBvbiBwb3dlcnBjIHNlcnZlciBwbGF0Zm9y
+bXMuIFdpbGwgdXBkYXRlICdwb3dlcnBjJw0KPiBhcmNoIGxpc3RpbmcgYWJvdmUgb25jZSB3ZSBn
+ZXQgc29tZSBjb25maXJtYXRpb24uIE1heSBiZSBvbmNlDQo+IHRoaXMgd29ya3Mgb24gYWxsIHJl
+bGV2YW50IHBvd2VycGMgcGxhdGZvcm1zLCB3ZSBjYW4ganVzdCBtZXJnZQ0KPiAncG93ZXJwYycg
+YW5kICdwcGMzMicgZW50cmllcyBoZXJlIGFzIGp1c3QgJ3Bvd2VycGMnLg0KDQpPbiBwc2VyaWVz
+Og0KDQogIHdhdGNoZG9nOiBCVUc6IHNvZnQgbG9ja3VwIC0gQ1BVIzAgc3R1Y2sgZm9yIDIzcyEg
+W3N3YXBwZXIvMDoxXQ0KICBNb2R1bGVzIGxpbmtlZCBpbjoNCiAgQ1BVOiAwIFBJRDogMSBDb21t
+OiBzd2FwcGVyLzAgTm90IHRhaW50ZWQgNS40LjAtcmM2LWdjYy04LjIuMC1uZXh0LTIwMTkxMTA3
+LTAwMDAxLWcyNTAzMzlkNjc0N2ItZGlydHkgIzE1Mg0KICBOSVA6ICBjMDAwMDAwMDAxMDQzNWEw
+IExSOiBjMDAwMDAwMDAxMDQzNGI0IENUUjogMDAwMDAwMDAwMDAwMDAwMA0KICBSRUdTOiBjMDAw
+MDAwMDNhNDAzOTgwIFRSQVA6IDA5MDEgICBOb3QgdGFpbnRlZCAgKDUuNC4wLXJjNi1nY2MtOC4y
+LjAtbmV4dC0yMDE5MTEwNy0wMDAwMS1nMjUwMzM5ZDY3NDdiLWRpcnR5KQ0KICBNU1I6ICA4MDAw
+MDAwMDAyMDA5MDMzIDxTRixWRUMsRUUsTUUsSVIsRFIsUkksTEU+ICBDUjogNDQwMDAyMjIgIFhF
+UjogMDAwMDAwMDANCiAgQ0ZBUjogYzAwMDAwMDAwMTA0MzVhOCBJUlFNQVNLOiAwIA0KICBHUFIw
+MDogYzAwMDAwMDAwMTA0MzRiNCBjMDAwMDAwMDNhNDAzYzEwIGMwMDAwMDAwMDEyOTUwMDAgMDUy
+MTAwMDEwMDAwMDBjMCANCiAgR1BSMDQ6IDgwMDAwMDAwMDAwMDAxMDUgMDAwMDAwMDAwMDQwMGRj
+MCAwMDAwMDAwMDNlYjAwMDAwIDAwMDAwMDAwMDAwMDAwMDEgDQogIEdQUjA4OiAwMDAwMDAwMDAw
+MDAwMDAwIGZmZmZmZmZmZmZmZmZmZmYgMDAwMDAwMDAwMDAwMDAwMSAwMDAwMDAwMDAwMDAwMTAw
+IA0KICBHUFIxMjogMDAwMDAwMDAwMDAwMDAwMCBjMDAwMDAwMDAxOGYwMDAwIA0KICBOSVAgW2Mw
+MDAwMDAwMDEwNDM1YTBdIGRlYnVnX3ZtX3BndGFibGUrMHg0M2MvMHg4MmMNCiAgTFIgW2MwMDAw
+MDAwMDEwNDM0YjRdIGRlYnVnX3ZtX3BndGFibGUrMHgzNTAvMHg4MmMNCiAgQ2FsbCBUcmFjZToN
+CiAgW2MwMDAwMDAwM2E0MDNjMTBdIFtjMDAwMDAwMDAxMDQzNDZjXSBkZWJ1Z192bV9wZ3RhYmxl
+KzB4MzA4LzB4ODJjICh1bnJlbGlhYmxlKQ0KICBbYzAwMDAwMDAzYTQwM2NlMF0gW2MwMDAwMDAw
+MDEwMDQzMTBdIGtlcm5lbF9pbml0X2ZyZWVhYmxlKzB4MWQwLzB4MzljDQogIFtjMDAwMDAwMDNh
+NDAzZGIwXSBbYzAwMDAwMDAwMDAxMGRhMF0ga2VybmVsX2luaXQrMHgyNC8weDE3NA0KICBbYzAw
+MDAwMDAzYTQwM2UyMF0gW2MwMDAwMDAwMDAwMGJkYzRdIHJldF9mcm9tX2tlcm5lbF90aHJlYWQr
+MHg1Yy8weDc4DQogIEluc3RydWN0aW9uIGR1bXA6DQogIDdkMDc1MDc4IDdjZTc0Yjc4IDdjZTBm
+OWFkIDQwYzJmZmYwIDM4ODAwMDAwIDdmODNlMzc4IDRiMDJlZWUxIDYwMDAwMDAwIA0KICA0ODAw
+MDA4MCAzOTIwZmZmZiAzOTQwMDAwMSAzOTAwMDAwMCA8N2VhMGY4YTg+IDdlYTc1MDM5IDQwYzJm
+ZmY4IDdlYTc0ODc4IA0KDQpMb29raW5nIGF0IHRoZSBhc20gSSB0aGluayBpdCdzIHN0dWNrIGlu
+IGhhc2hfX3B0ZV91cGRhdGUoKSB3YWl0aW5nIGZvcg0KSF9QQUdFX0JVU1kgdG8gY2xlYXIsIGJ1
+dCBub3Qgc3VyZSB3aHkuDQoNClRoYXQncyBqdXN0IHVzaW5nIHFlbXUgVENHLCBpbnN0cnVjdGlv
+bnMgaGVyZSBpZiBhbnlvbmUgd2FudHMgdG8gdGVzdCBpdA0KdGhlbXNlbHZlcyA6KQ0KDQogIGh0
+dHBzOi8vZ2l0aHViLmNvbS9saW51eHBwYy93aWtpL3dpa2kvQm9vdGluZy13aXRoLVFlbXUNCg0K
+DQpJZiBJIGJvb3Qgd2l0aCAtY3B1IHBvd2VyOSAodXNpbmcgUmFkaXggTU1VKSwgSSBnZXQgYSBw
+bGFpbiBvbGQgQlVHOg0KDQogIGRlYnVnX3ZtX3BndGFibGU6IGRlYnVnX3ZtX3BndGFibGU6IFZh
+bGlkYXRpbmcgYXJjaGl0ZWN0dXJlIHBhZ2UgdGFibGUgaGVscGVycw0KICAtLS0tLS0tLS0tLS1b
+IGN1dCBoZXJlIF0tLS0tLS0tLS0tLS0NCiAga2VybmVsIEJVRyBhdCBhcmNoL3Bvd2VycGMvbW0v
+cGd0YWJsZS5jOjI3NCENCiAgT29wczogRXhjZXB0aW9uIGluIGtlcm5lbCBtb2RlLCBzaWc6IDUg
+WyMxXQ0KICBMRSBQQUdFX1NJWkU9NjRLIE1NVT1SYWRpeCBTTVAgTlJfQ1BVUz0zMiBOVU1BIHBT
+ZXJpZXMNCiAgTW9kdWxlcyBsaW5rZWQgaW46DQogIENQVTogMCBQSUQ6IDEgQ29tbTogc3dhcHBl
+ci8wIE5vdCB0YWludGVkIDUuNC4wLXJjNi1nY2MtOC4yLjAtbmV4dC0yMDE5MTEwNy0wMDAwMS1n
+MjUwMzM5ZDY3NDdiLWRpcnR5ICMxNTINCiAgTklQOiAgYzAwMDAwMDAwMDA3MjRlOCBMUjogYzAw
+MDAwMDAwMTA0MzU4YyBDVFI6IDAwMDAwMDAwMDAwMDAwMDANCiAgUkVHUzogYzAwMDAwMDAzYTQ4
+Mzk4MCBUUkFQOiAwNzAwICAgTm90IHRhaW50ZWQgICg1LjQuMC1yYzYtZ2NjLTguMi4wLW5leHQt
+MjAxOTExMDctMDAwMDEtZzI1MDMzOWQ2NzQ3Yi1kaXJ0eSkNCiAgTVNSOiAgODAwMDAwMDAwMjAy
+OTAzMyA8U0YsVkVDLEVFLE1FLElSLERSLFJJLExFPiAgQ1I6IDI0MDAwMjI0ICBYRVI6IDIwMDAw
+MDAwDQogIENGQVI6IGMwMDAwMDAwMDEwNDM1ODggSVJRTUFTSzogMCANCiAgR1BSMDA6IGMwMDAw
+MDAwMDEwNDM1OGMgYzAwMDAwMDAzYTQ4M2MxMCBjMDAwMDAwMDAxMjk1MDAwIDAwMDAwMDAwMDAw
+MDAwMDkgDQogIEdQUjA0OiAwMDAwMDAwMDAwMDAwMDAwIDAwMDAwMDAwMDAwMDAwMDUgMDAwMDAw
+MDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDA5IA0KICBHUFIwODogMDAwMDAwMDAwMDAwMDAwMSAw
+MDAwMDAwMDAwMDAwMDBlIDAwMDAwMDAwMDAwMDAwMDEgYzAwMDAwMDAzYTVmMDAwMCANCiAgR1BS
+MTI6IDAwMDAwMDAwMDAwMDAwMDAgYzAwMDAwMDAwMThmMDAwMCBjMDAwMDAwMDAwMDEwZDg0IDAw
+MDAwMDAwMDAwMDAwMDAgDQogIEdQUjE2OiAwMDAwMDAwMDAwMDAwMDAwIDAwMDAwMDAwMDAwMDAw
+MDAgYzAwMDAwMDAzYTVmMDAwMCA4MDAwMDAwMDAwMDAwMTA1IA0KICBHUFIyMDogYzAwMDAwMDAw
+MTAwM2FiOCAwMDAwMDAwMDAwMDAwMDE1IDA1MDA2MTNhMDAwMDAwODAgMDkwMDYwM2EwMDAwMDA4
+MCANCiAgR1BSMjQ6IDA5MjAyZTNhMDAwMDAwODAgYzAwMDAwMDAwMTMzYmQ5MCBjMDAwMDAwMDAx
+MzNiZDk4IGMwMDAwMDAwMDEzM2JkYTAgDQogIEdQUjI4OiBjMDAwMDAwMDNhNWUwMDAwIGMwMDAw
+MDAwM2E2MDBhZjggYzAwMDAwMDAzYTJlMmQ0OCBjMDAwMDAwMDNhNjEwMGEwIA0KICBOSVAgW2Mw
+MDAwMDAwMDAwNzI0ZThdIGFzc2VydF9wdGVfbG9ja2VkKzB4ODgvMHgxOTANCiAgTFIgW2MwMDAw
+MDAwMDEwNDM1OGNdIGRlYnVnX3ZtX3BndGFibGUrMHg0MjgvMHg4MmMNCiAgQ2FsbCBUcmFjZToN
+CiAgW2MwMDAwMDAwM2E0ODNjMTBdIFtjMDAwMDAwMDAxMDQzNDZjXSBkZWJ1Z192bV9wZ3RhYmxl
+KzB4MzA4LzB4ODJjICh1bnJlbGlhYmxlKQ0KICBbYzAwMDAwMDAzYTQ4M2NlMF0gW2MwMDAwMDAw
+MDEwMDQzMTBdIGtlcm5lbF9pbml0X2ZyZWVhYmxlKzB4MWQwLzB4MzljDQogIFtjMDAwMDAwMDNh
+NDgzZGIwXSBbYzAwMDAwMDAwMDAxMGRhMF0ga2VybmVsX2luaXQrMHgyNC8weDE3NA0KICBbYzAw
+MDAwMDAzYTQ4M2UyMF0gW2MwMDAwMDAwMDAwMGJkYzRdIHJldF9mcm9tX2tlcm5lbF90aHJlYWQr
+MHg1Yy8weDc4DQogIEluc3RydWN0aW9uIGR1bXA6DQogIDdkMjUxYTE0IDM5MDcwMDEwIDdkNDYz
+MDMwIDdkMDg0YTE0IDM4YzZmZmZmIDdjODg0NDM2IDdjYzYwN2I0IDdkMDgzMDM4IA0KICA3OTA4
+MWYyNCA3Y2NiNDAyYSA3Y2M4MDA3NCA3OTA4ZDE4MiA8MGIwODAwMDA+IDc4Y2IwMDIyIDU0Yzhj
+MDNlIDdkNDczODMwIA0KICAtLS1bIGVuZCB0cmFjZSBhNjk0ZjFiYzU2NTI5YzBlIF0tLS0NCg0K
+DQpjaGVlcnMNCg==
