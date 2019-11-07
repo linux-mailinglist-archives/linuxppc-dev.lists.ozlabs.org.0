@@ -1,71 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD613F392C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 21:07:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2B4F3935
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 21:09:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478Dvy39kBzF6Pq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 07:07:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478Dy06qM5zF5lT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 07:09:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-1.mimecast.com; envelope-from=dhildenb@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="oKCc36Mb"; 
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="dbzlCADz"; 
  dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4787080LLlzF6Mm
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 02:40:32 +1100 (AEDT)
-Received: by mail-oi1-x242.google.com with SMTP id l20so2310396oie.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Nov 2019 07:40:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Q58dgR5BjEdLFCMc/OF3RFMdn955E8grbP7luNA8CNY=;
- b=oKCc36Mb9fip+zU5tGKr6J+l4XlDcFUtvr2mmmCNv6TF0HlwkicRCrTT1sQlx12vxa
- UY8S81D7tBut+V/4ZkpyJtSVYco9A0bQaPWztNxHQubXXDgTxmJGos9WA1uUQELcy96J
- T6Bh3rJMvXgSo4xERJ53HxifVFLgwy/o3viVP+9B0CbTTzJLC88VhXkF2cZ+0Tuobk14
- zVNN5QACqwe5KWkIPC4t1TSKEn6spSMULzAANECJfJo6fn8JsC5HEU9YsPR/FcLvIWCT
- HseWP/zMGzW78EfAwZAkw31fNd4FCq5eyjs4aTOmObHRdvGMJcGjHaaY5l49bbOdcFbv
- BxLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Q58dgR5BjEdLFCMc/OF3RFMdn955E8grbP7luNA8CNY=;
- b=j6qHe8o+2w0Avbs6Jthn3mMyy49Xs6RmeqmoXqsfE7opjz5rwBVoejLrG39u5UEk61
- lM+VT4LnCbZaV5Myvk2+mvdVfo+zaCYZgOlE5Qtwm5TZJFhLBgwpBQfr4uXLXi7V7J8l
- 5OoDyFLv7ZURs3xMJxOywxxtTELTtVJpeesdycOf1Ktzp4AQ0sTJh7StsJ1EI+TsxGdt
- T0vYuWAq13YtDMj7ofPsC+wMpO7yLy+eq15uo2ynLmkk+S9Um4EROOPXJcShuswGgSwy
- gStFeUXnntQktXVDt4AviShc1zen+bhpbe/0HuBUwGZsZ8LYKCABCWtzQuQYgijoK0OY
- FUFw==
-X-Gm-Message-State: APjAAAUUpXfjsC5RSCdfFemOwTBMDVtYrVr4lgvaunC4ysPyUXEq4d5r
- BeVWYQ1gFzEt9CdgbiAAsvttSoQYfGD6a3d29pPixw==
-X-Google-Smtp-Source: APXvYqzlAbNtEQcnOULhGp1Ld3ejpyCy6BqfHWE8h+548I8goxJKdozDEoUnp7xCpHOKMURL2hHkCxlnCDsp6qKvW2g=
-X-Received: by 2002:aca:ad52:: with SMTP id w79mr3140190oie.149.1573141228551; 
- Thu, 07 Nov 2019 07:40:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 478BZw36zyzF6c6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 05:22:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1573150945;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7iLLDW7QM1xnQc7BXIS/h4Apa1ZBB2zXuGDVuVIx4/w=;
+ b=dbzlCADzLQ6zcUGD4Zr0iGdtUqAaxIWBqBYJ9Lka9L5psELp3mNfDQlujN836VzT04SiDI
+ Sq1WbSANqP4WMCk32YnLWCNXDBtZfohylUtZptemKbHpm/GKFajh5MfYbudEcbX0I/OeLx
+ Duqme091/saTuuOotKjYOkERGMcBbOE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-12-fKdDWJsqPc21aH5FVitopg-1; Thu, 07 Nov 2019 13:22:23 -0500
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 480271005502;
+ Thu,  7 Nov 2019 18:22:17 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D2CD4AF;
+ Thu,  7 Nov 2019 18:22:15 +0000 (UTC)
+Received: from zmail19.collab.prod.int.phx2.redhat.com
+ (zmail19.collab.prod.int.phx2.redhat.com [10.5.83.22])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id 3E1C518095FF;
+ Thu,  7 Nov 2019 18:22:12 +0000 (UTC)
+From: David Hildenbrand <dhildenb@redhat.com>
 MIME-Version: 1.0
-References: <20191024120938.11237-1-david@redhat.com>
- <20191024120938.11237-5-david@redhat.com>
-In-Reply-To: <20191024120938.11237-5-david@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 7 Nov 2019 07:40:17 -0800
-Message-ID: <CAPcyv4hxs+KqY5gU8Ds1a73eub1imvm9Qo8KdKGiDD1e-p0cww@mail.gmail.com>
 Subject: Re: [PATCH v1 04/10] vfio/type1: Prepare is_invalid_reserved_pfn()
  for PG_reserved changes
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Fri, 08 Nov 2019 07:05:47 +1100
+Date: Thu, 7 Nov 2019 13:22:12 -0500 (EST)
+Message-Id: <DF536BED-6F4F-4351-AC7E-3C9FC8545332@redhat.com>
+References: <CAPcyv4hxs+KqY5gU8Ds1a73eub1imvm9Qo8KdKGiDD1e-p0cww@mail.gmail.com>
+In-Reply-To: <CAPcyv4hxs+KqY5gU8Ds1a73eub1imvm9Qo8KdKGiDD1e-p0cww@mail.gmail.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Thread-Topic: vfio/type1: Prepare is_invalid_reserved_pfn() for PG_reserved
+ changes
+Thread-Index: +s2g58aTrOooMxUTMjHg25AUP3zIIA==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-MC-Unique: fKdDWJsqPc21aH5FVitopg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Mailman-Approved-At: Fri, 08 Nov 2019 07:05:46 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,13 +80,14 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ =?utf-8?Q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+ KVM list <kvm@vger.kernel.org>, David Hildenbrand <david@redhat.com>,
  KarimAllah Ahmed <karahmed@amazon.de>,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Linux MM <linux-mm@kvack.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Wanpeng Li <wanpengli@tencent.com>,
  Alexander Duyck <alexander.h.duyck@linux.intel.com>,
  "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
  Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
@@ -119,40 +122,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 24, 2019 at 5:12 AM David Hildenbrand <david@redhat.com> wrote:
->
-> Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
-> change that.
->
-> KVM has this weird use case that you can map anything from /dev/mem
-> into the guest. pfn_valid() is not a reliable check whether the memmap
-> was initialized and can be touched. pfn_to_online_page() makes sure
-> that we have an initialized memmap (and don't have ZONE_DEVICE memory).
->
-> Rewrite is_invalid_reserved_pfn() similar to kvm_is_reserved_pfn() to make
-> sure the function produces the same result once we stop setting ZONE_DEVICE
-> pages PG_reserved.
->
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> Cc: Cornelia Huck <cohuck@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/vfio/vfio_iommu_type1.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-> index 2ada8e6cdb88..f8ce8c408ba8 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -299,9 +299,15 @@ static int vfio_lock_acct(struct vfio_dma *dma, long npage, bool async)
->   */
->  static bool is_invalid_reserved_pfn(unsigned long pfn)
->  {
-> -       if (pfn_valid(pfn))
-> -               return PageReserved(pfn_to_page(pfn));
-> +       struct page *page = pfn_to_online_page(pfn);
+DQoNCj4gQW0gMDcuMTEuMjAxOSB1bSAxNjo0MCBzY2hyaWViIERhbiBXaWxsaWFtcyA8ZGFuLmou
+d2lsbGlhbXNAaW50ZWwuY29tPjoNCj4gDQo+IO+7v09uIFRodSwgT2N0IDI0LCAyMDE5IGF0IDU6
+MTIgQU0gRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+IHdyb3RlOg0KPj4gDQo+
+PiBSaWdodCBub3csIFpPTkVfREVWSUNFIG1lbW9yeSBpcyBhbHdheXMgc2V0IFBHX3Jlc2VydmVk
+LiBXZSB3YW50IHRvDQo+PiBjaGFuZ2UgdGhhdC4NCj4+IA0KPj4gS1ZNIGhhcyB0aGlzIHdlaXJk
+IHVzZSBjYXNlIHRoYXQgeW91IGNhbiBtYXAgYW55dGhpbmcgZnJvbSAvZGV2L21lbQ0KPj4gaW50
+byB0aGUgZ3Vlc3QuIHBmbl92YWxpZCgpIGlzIG5vdCBhIHJlbGlhYmxlIGNoZWNrIHdoZXRoZXIg
+dGhlIG1lbW1hcA0KPj4gd2FzIGluaXRpYWxpemVkIGFuZCBjYW4gYmUgdG91Y2hlZC4gcGZuX3Rv
+X29ubGluZV9wYWdlKCkgbWFrZXMgc3VyZQ0KPj4gdGhhdCB3ZSBoYXZlIGFuIGluaXRpYWxpemVk
+IG1lbW1hcCAoYW5kIGRvbid0IGhhdmUgWk9ORV9ERVZJQ0UgbWVtb3J5KS4NCj4+IA0KPj4gUmV3
+cml0ZSBpc19pbnZhbGlkX3Jlc2VydmVkX3BmbigpIHNpbWlsYXIgdG8ga3ZtX2lzX3Jlc2VydmVk
+X3BmbigpIHRvIG1ha2UNCj4+IHN1cmUgdGhlIGZ1bmN0aW9uIHByb2R1Y2VzIHRoZSBzYW1lIHJl
+c3VsdCBvbmNlIHdlIHN0b3Agc2V0dGluZyBaT05FX0RFVklDRQ0KPj4gcGFnZXMgUEdfcmVzZXJ2
+ZWQuDQo+PiANCj4+IENjOiBBbGV4IFdpbGxpYW1zb24gPGFsZXgud2lsbGlhbXNvbkByZWRoYXQu
+Y29tPg0KPj4gQ2M6IENvcm5lbGlhIEh1Y2sgPGNvaHVja0ByZWRoYXQuY29tPg0KPj4gU2lnbmVk
+LW9mZi1ieTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+DQo+PiAtLS0NCj4+
+IGRyaXZlcnMvdmZpby92ZmlvX2lvbW11X3R5cGUxLmMgfCAxMCArKysrKysrKy0tDQo+PiAxIGZp
+bGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPj4gDQo+PiBkaWZm
+IC0tZ2l0IGEvZHJpdmVycy92ZmlvL3ZmaW9faW9tbXVfdHlwZTEuYyBiL2RyaXZlcnMvdmZpby92
+ZmlvX2lvbW11X3R5cGUxLmMNCj4+IGluZGV4IDJhZGE4ZTZjZGI4OC4uZjhjZThjNDA4YmE4IDEw
+MDY0NA0KPj4gLS0tIGEvZHJpdmVycy92ZmlvL3ZmaW9faW9tbXVfdHlwZTEuYw0KPj4gKysrIGIv
+ZHJpdmVycy92ZmlvL3ZmaW9faW9tbXVfdHlwZTEuYw0KPj4gQEAgLTI5OSw5ICsyOTksMTUgQEAg
+c3RhdGljIGludCB2ZmlvX2xvY2tfYWNjdChzdHJ1Y3QgdmZpb19kbWEgKmRtYSwgbG9uZyBucGFn
+ZSwgYm9vbCBhc3luYykNCj4+ICAqLw0KPj4gc3RhdGljIGJvb2wgaXNfaW52YWxpZF9yZXNlcnZl
+ZF9wZm4odW5zaWduZWQgbG9uZyBwZm4pDQo+PiB7DQo+PiAtICAgICAgIGlmIChwZm5fdmFsaWQo
+cGZuKSkNCj4+IC0gICAgICAgICAgICAgICByZXR1cm4gUGFnZVJlc2VydmVkKHBmbl90b19wYWdl
+KHBmbikpOw0KPj4gKyAgICAgICBzdHJ1Y3QgcGFnZSAqcGFnZSA9IHBmbl90b19vbmxpbmVfcGFn
+ZShwZm4pOw0KPiANCj4gVWdoLCBJIGp1c3QgcmVhbGl6ZWQgdGhpcyBpcyBub3QgYSBzYWZlIGNv
+bnZlcnNpb24gdW50aWwNCj4gcGZuX3RvX29ubGluZV9wYWdlKCkgaXMgbW92ZWQgb3ZlciB0byBz
+dWJzZWN0aW9uIGdyYW51bGFyaXR5LiBBcyBpdA0KPiBzdGFuZHMgaXQgd2lsbCByZXR1cm4gdHJ1
+ZSBmb3IgYW55IFpPTkVfREVWSUNFIHBhZ2VzIHRoYXQgc2hhcmUgYQ0KPiBzZWN0aW9uIHdpdGgg
+Ym9vdCBtZW1vcnkuDQoNClRoYXQgc2hvdWxkIG5vdCBoYXBwZW4gcmlnaHQgbm93IGFuZCBJIGNv
+bW1lbnRlZCBiYWNrIHdoZW4geW91IGludHJvZHVjZWQgc3Vic2VjdGlvbiBzdXBwb3J0IHRoYXQg
+SSBkb27igJl0IHdhbnQgdG8gaGF2ZSBaT05FX0RFVklDRSBtaXhlZCB3aXRoIG9ubGluZSBwYWdl
+cyBpbiBhIHNlY3Rpb24uIEhhdmluZyBtZW1vcnkgYmxvY2sgZGV2aWNlcyB0aGF0IHBhcnRpYWxs
+eSBzcGFuIFpPTkVfREVWSUNFIHdvdWxkIGJlIC4uLiByZWFsbHkgd2VpcmQuIFdpdGggc29tZXRo
+aW5nIGxpa2UgcGZuX2FjdGl2ZSgpIC0gYXMgZGlzY3Vzc2VkIC0gd2UgY291bGQgYXQgbGVhc3Qg
+bWFrZSB0aGlzIGNoZWNrIHdvcmsgLSBidXQgSSBhbSBub3Qgc3VyZSBpZiB3ZSByZWFsbHkgd2Fu
+dCB0byBnbyBkb3duIHRoYXQgcGF0aC4gSW4gdGhlIHdvcnN0IGNhc2UsIHNvbWUgTUIgb2YgUkFN
+IGFyZSBsb3N0IC4uLiBJIGd1ZXNzIHRoaXMgbmVlZHMgbW9yZSB0aG91Z2h0Lg==
 
-Ugh, I just realized this is not a safe conversion until
-pfn_to_online_page() is moved over to subsection granularity. As it
-stands it will return true for any ZONE_DEVICE pages that share a
-section with boot memory.
