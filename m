@@ -1,52 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B7DF2C4D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 11:32:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DE8F2D61
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 12:25:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47808409TTzF6Gc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 21:32:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4781K93vQlzF1ls
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 22:25:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47805b72zJzF453
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 21:29:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4781Fc4lH3zF63k
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 22:21:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="Ez26eB0/"; dkim-atps=neutral
+ header.b="Ml77gR1F"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47805b3GX7z9sPT;
- Thu,  7 Nov 2019 21:29:55 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4781FY6nbkz9sPk;
+ Thu,  7 Nov 2019 22:21:52 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1573122595;
- bh=a4m1nWotTG2jewKpNRdw9eW8MeOxKL/KXr8bS4jNwEw=;
+ s=201909; t=1573125714;
+ bh=SQjOUdmp2dtdcIZfeEWQOp+PIbNXiuzVApc6kLzPTKY=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Ez26eB0/Hao264oY8mdCEcLSGzesBH8ckKBuWVZsrTh7FwY+3G0FRpQcMW8t07TIL
- GxNEm5xTZqeXEz/Oge1/J59c/E03qxZuVJKwy5G52tt5n75byMSGD078yUa5X+WFeU
- jDJXX5hY6t9FhEANapoy+TL4hGXNpYWoe7eiypzProrFH+5clfz5BLdQgJOdh6jWTp
- uShCQT5qGdJROGj3Yv4OrneWx0IRvISROWJ7LC0GVYLQ/sqZiVa6FkMAFyCIW2DdVN
- /tk6hZpqkJw9/rPKaKSxObLxRbuQ7EDWVWPouPRR6KrI63QH1o8ucesuGyBhHK//Z0
- 8Yqlq6lO/s81g==
+ b=Ml77gR1Fw0n0YfITP4YrFd8lvFF3z05cSaeBXVnkc773KQxpPdng3SHv3ImLfW1dQ
+ TmyY0wG5hy2lBweYfx4hOFVDTyBEUKftNjpsPHmXAgyJyqKWACQYAHarbG7rPK4SEN
+ cG4xCqDtSu4ZiEMfQnQ8CB88m4tSVmpxoWiffIgpSC7FBZQXKcEK22QzeGL9QdRUld
+ LNVlWGOzhUgjSPQHl7u1D3AEaSw6TGNZpOEiHUPKE4+uxn8X90JWEGyX0RkV+85n6F
+ 0OVVNrBzl15/VgDri0u4WuV0PCvwT2IRvrVaaZjocWET8WzcFY77w3N/ydjZCYJwRK
+ UmAznZIU67zvw==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ram Pai <linuxram@us.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC v1 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
- with the hypervisor.
-In-Reply-To: <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
-References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
- <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
-Date: Thu, 07 Nov 2019 21:29:54 +1100
-Message-ID: <87h83g568t.fsf@mpe.ellerman.id.au>
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "christophe.leroy\@c-s.fr" <christophe.leroy@c-s.fr>,
+ "paulus\@samba.org" <paulus@samba.org>,
+ "benh\@kernel.crashing.org" <benh@kernel.crashing.org>,
+ "malat\@debian.org" <malat@debian.org>
+Subject: Re: [PATCH v3] powerpc: Support CMDLINE_EXTEND
+In-Reply-To: <46da00814535270a2b525de1f75afc79f3abbf5c.camel@alliedtelesis.co.nz>
+References: <20190801225006.21952-1-chris.packham@alliedtelesis.co.nz>
+ <9262a291-161f-e172-9d13-88a717da9de4@c-s.fr>
+ <46da00814535270a2b525de1f75afc79f3abbf5c.camel@alliedtelesis.co.nz>
+Date: Thu, 07 Nov 2019 22:21:47 +1100
+Message-ID: <87eeyk53uc.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,86 +63,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andmike@us.ibm.com, mst@redhat.com, aik@ozlabs.ru, linuxram@us.ibm.com,
- mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
- cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com, hch@lst.de,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ram Pai <linuxram@us.ibm.com> writes:
-> The hypervisor needs to access the contents of the page holding the TCE
-> entries while setting up the TCE entries in the IOMMU's TCE table. For
-> SecureVMs, since this page is encrypted, the hypervisor cannot access
-> valid entries. Share the page with the hypervisor. This ensures that the
-> hypervisor sees the valid entries.
+Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
+> Hi All,
+>
+> On Fri, 2019-08-02 at 06:40 +0200, Christophe Leroy wrote:
+>>=20
+>> Le 02/08/2019 =C3=A0 00:50, Chris Packham a =C3=A9crit :
+>> > Bring powerpc in line with other architectures that support extending =
+or
+>> > overriding the bootloader provided command line.
+>> >=20
+>> > The current behaviour is most like CMDLINE_FROM_BOOTLOADER where the
+>> > bootloader command line is preferred but the kernel config can provide=
+ a
+>> > fallback so CMDLINE_FROM_BOOTLOADER is the default. CMDLINE_EXTEND can
+>> > be used to append the CMDLINE from the kernel config to the one provid=
+ed
+>> > by the bootloader.
+>> >=20
+>> > Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+>>=20
+>> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>
+> Just going over some old patches this doesn't appear to be in next. Is
+> there anything stopping it from being accepted?
 
-Can you please give people some explanation of why this is safe. After
-all the point of the Ultravisor is to protect the guest from a malicious
-hypervisor. Giving the hypervisor access to a page of TCEs sounds
-dangerous, so please explain why it's not.
+Just me not being overloaded :/, sorry.
+
+Have put it in my next-test branch, which means it should appear in next
+in the next few days.
 
 cheers
-
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index 8d9c2b1..07f0847 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -37,6 +37,7 @@
->  #include <asm/mmzone.h>
->  #include <asm/plpar_wrappers.h>
->  #include <asm/svm.h>
-> +#include <asm/ultravisor.h>
->  
->  #include "pseries.h"
->  
-> @@ -179,6 +180,19 @@ static int tce_build_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  
->  static DEFINE_PER_CPU(__be64 *, tce_page);
->  
-> +/*
-> + * Allocate a tce page.  If secure VM, share the page with the hypervisor.
-> + */
-> +static __be64 *alloc_tce_page(void)
-> +{
-> +	__be64 *tcep = (__be64 *)__get_free_page(GFP_ATOMIC);
-> +
-> +	if (tcep && is_secure_guest())
-> +		uv_share_page(PHYS_PFN(__pa(tcep)), 1);
-> +
-> +	return tcep;
-> +}
-> +
->  static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  				     long npages, unsigned long uaddr,
->  				     enum dma_data_direction direction,
-> @@ -206,8 +220,7 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  	 * from iommu_alloc{,_sg}()
->  	 */
->  	if (!tcep) {
-> -		tcep = (__be64 *)__get_free_page(GFP_ATOMIC);
-> -		/* If allocation fails, fall back to the loop implementation */
-> +		tcep = alloc_tce_page();
->  		if (!tcep) {
->  			local_irq_restore(flags);
->  			return tce_build_pSeriesLP(tbl, tcenum, npages, uaddr,
-> @@ -391,6 +404,7 @@ static int tce_clearrange_multi_pSeriesLP(unsigned long start_pfn,
->  	return rc;
->  }
->  
-> +
->  static int tce_setrange_multi_pSeriesLP(unsigned long start_pfn,
->  					unsigned long num_pfn, const void *arg)
->  {
-> @@ -405,7 +419,7 @@ static int tce_setrange_multi_pSeriesLP(unsigned long start_pfn,
->  	tcep = __this_cpu_read(tce_page);
->  
->  	if (!tcep) {
-> -		tcep = (__be64 *)__get_free_page(GFP_ATOMIC);
-> +		tcep = alloc_tce_page();
->  		if (!tcep) {
->  			local_irq_enable();
->  			return -ENOMEM;
-> -- 
-> 1.8.3.1
