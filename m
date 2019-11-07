@@ -1,49 +1,155 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4188DF2923
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:32:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1312FF2995
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:46:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477xTh5CfqzF6DB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:32:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477xp52yqHzF6DP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:46:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 477xDp3v3pzF5mv
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 19:20:56 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 867FF7A7;
- Wed,  6 Nov 2019 20:44:18 -0800 (PST)
-Received: from [10.163.1.1] (unknown [10.163.1.1])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C69DD3F71A;
- Wed,  6 Nov 2019 20:43:56 -0800 (PST)
-Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
- helpers
-To: Vineet Gupta <Vineet.Gupta1@synopsys.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
- <e0aa8d49-5511-15e4-f413-62c99eea4fab@arm.com>
- <e0dc3636-8c6e-0177-9a7f-fefd28c74f27@synopsys.com>
- <dc2746c9-bde4-ac00-88d1-2bd1cea1f105@arm.com>
- <b93ffe1f-b198-a042-ecd4-b0f2b0171f72@synopsys.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <da665683-6946-b411-57f9-e1689d4b50fe@arm.com>
-Date: Thu, 7 Nov 2019 10:14:30 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="jVJtjknC"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477xjY6pqkzF6Cs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 19:42:25 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id x28so2096101pfo.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Nov 2019 00:42:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=jEZVUx0Bokdy5jQIiZllK6O5/e8/p0QuHbwHLeGIlr4=;
+ b=jVJtjknCwoos57ZJWQVhH/BNsxOzmfC6fszZ9TdQsy0Wh32Fb7mWOETl5iJjLrAvvh
+ 9C7KbbxXqRIHuPBo5o8KO+sgLcRTMgraKOCtIyCGKBV/f6gTFgeX0G2j8sCi21hLMY8x
+ kLv8uRN7C7m0RPo0dFu9ITVWdm0JXcjJpllEl3xpdiYr6rmlUkiyQzm/85IQFwQbUDWR
+ awmsIO2MFItlTwd9T6CCXA/1HLhNAKHu/NVVk54PS58TCDbSYGjUza3X7RtrsyterJMo
+ 1xMyg5ykKLgFeTYuRxatG2vgsSPyqM2kfoc6nn//Kh3Lw3ffB5GKq95+jRg/1/UXbsfh
+ 1Pzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=jEZVUx0Bokdy5jQIiZllK6O5/e8/p0QuHbwHLeGIlr4=;
+ b=VCViqZY9jF0d0icEe3kgZZkIZVeOS7conUM4LK1y1qWcGBk+q14uh2SqgR3ycXti1i
+ wCtFBPfb0NGajeCRFlU/jGtI5Qqlq2Anz8nbf4HQzANOzDg1ia2oP2AZTG8CysE6SzG1
+ x6BQszCGXgQ8IH8kroIRDVoaUHRDykXpC5qqLv3P0i3FuPdky0RUgRzkZHlYXPw7fPiy
+ S223HpMm7CwnGroCPf/Od/omJohZRsZUD/w/z3RBx+OZCZAa7kHanEKbwIHGP/W0PRyM
+ 4aNShoQa2VU+GmST6HLq5XYsFlJiPORPn4pviMqbNrnMVPIL1r3/9LdIb+3FIfCrBMps
+ MMKw==
+X-Gm-Message-State: APjAAAUw15l6Iy6Pe+iWEjayXPTJ6tM/xyS+g2pEPnla1ZnI7atkWFAQ
+ mlfTeyGerHL11mUs1D4+k4qZVm+GCvs=
+X-Google-Smtp-Source: APXvYqxx0EI5xrvDN32EQtXf6Dzvur0I3s23OvbPFG7lFSGdt6+yLU1fqzdTqCZ6g/43e/RAfmWPhA==
+X-Received: by 2002:a63:2e01:: with SMTP id u1mr2381713pgu.25.1573106343962;
+ Wed, 06 Nov 2019 21:59:03 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id 65sm1383578pff.2.2019.11.06.21.58.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Nov 2019 21:59:02 -0800 (PST)
+Subject: Re: [RFC v1 1/2] powerpc/pseries/iommu: Share the per-cpu TCE page
+ with the hypervisor.
+To: Ram Pai <linuxram@us.ibm.com>
+References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
+ <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
+ <af0a236f-37b2-ee16-0ebd-576b4e12d8cd@ozlabs.ru>
+ <20191106170153.GC5201@oc0525413822.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <6c367fc2-03f5-3ea4-3cd7-9c4af1df1d4c@ozlabs.ru>
+Date: Thu, 7 Nov 2019 16:58:55 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <b93ffe1f-b198-a042-ecd4-b0f2b0171f72@synopsys.com>
+In-Reply-To: <20191106170153.GC5201@oc0525413822.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,133 +161,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, "x86@kernel.org" <x86@kernel.org>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- Ralf Baechle <ralf@linux-mips.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: andmike@us.ibm.com, mst@redhat.com, mdroth@linux.vnet.ibm.com,
+ linux-kernel@vger.kernel.org, ram.n.pai@gmail.com, cai@lca.pw,
+ tglx@linutronix.de, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ hch@lst.de, bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 11/06/2019 11:37 PM, Vineet Gupta wrote:
-> On 11/5/19 7:03 PM, Anshuman Khandual wrote:
->> But should not pfn_pmd() be encapsulated inside HAVE_ARCH_TRANSPARENT_HUGEPAGE
->> at the minimum (but I would say it should be available always, nonetheless) when
->> the platform subscribes to THP irrespective of whether THP is enabled or not.
-> 
-> For ARC it was only introduced/needed when I added THP support so it is dependent
-> in some way.
-Right, it is dependent.
-
-> 
->> I could see in the file (arch/arc/include/asm/pgtable.h) that fetching pfn_pmd()
->> and all other basic PMD definitions is conditional on CONFIG_TRANSPARENT_HUGEPAGE.
+On 07/11/2019 04:01, Ram Pai wrote:
+> On Wed, Nov 06, 2019 at 12:58:50PM +1100, Alexey Kardashevskiy wrote:
 >>
->> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> #include <asm/hugepage.h>
->> #endif
 >>
->> IIUC, CONFIG_TRANSPARENT_HUGEPAGE should only encapsulate PMD page table helpers
->> which are expected from generic THP code (pmd_trans_huge, pmdp_set_access_flags
->> etc) but not the basic PMD helpers like pmd_pfn, pmd_mkyoung, pmd_mkdirty,
->> pmd_mkclean etc. 
+>> On 05/11/2019 08:28, Ram Pai wrote:
+>>> The hypervisor needs to access the contents of the page holding the TCE
+>>> entries while setting up the TCE entries in the IOMMU's TCE table. For
+>>> SecureVMs, since this page is encrypted, the hypervisor cannot access
+>>> valid entries. Share the page with the hypervisor. This ensures that the
+>>> hypervisor sees the valid entries.
+>>>
+>>> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+>>> ---
+>>>  arch/powerpc/platforms/pseries/iommu.c | 20 +++++++++++++++++---
+>>>  1 file changed, 17 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>>> index 8d9c2b1..07f0847 100644
+>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>> @@ -37,6 +37,7 @@
+>>>  #include <asm/mmzone.h>
+>>>  #include <asm/plpar_wrappers.h>
+>>>  #include <asm/svm.h>
+>>> +#include <asm/ultravisor.h>
+>>>  
+>>>  #include "pseries.h"
+>>>  
+>>> @@ -179,6 +180,19 @@ static int tce_build_pSeriesLP(struct iommu_table *tbl, long tcenum,
+>>>  
+>>>  static DEFINE_PER_CPU(__be64 *, tce_page);
+>>>  
+>>> +/*
+>>> + * Allocate a tce page.  If secure VM, share the page with the hypervisor.
+>>> + */
+>>> +static __be64 *alloc_tce_page(void)
+>>> +{
+>>> +	__be64 *tcep = (__be64 *)__get_free_page(GFP_ATOMIC);
+>>> +
+>>> +	if (tcep && is_secure_guest())
+>>> +		uv_share_page(PHYS_PFN(__pa(tcep)), 1);
+>>
+>>
+>> There is no matching unshare in this patch.
 > 
-> ARC only has 2 levels of paging, so these don't make any sense in general and
-> needed only for THP case.
-> I case of arch/arm you see it is only defined in pgtable-3level.h
+> The page is allocated and shared, and stays that way for the life of the
+> kernel. It is not explicitly unshared or freed.
 
-There is no uniformity for all these across architectures. It has been bit
-difficult to get some of these required helpers right (compile and run) on
-different platforms.
 
-> 
->> Hence wondering will it be possible to accommodate following
->> code change on arc platform (not even compiled) in order to fix the problem ?
-> 
-> I'm open to making changes in ARC code but lets do the right thing.
-> 
->>   */
->> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
->>  #include <asm/hugepage.h>
->>  #endif
-> 
-> This in wrong.  CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE is a just a glue toggle,
-> used only in Kconfig files (and not in any "C" code).  It enables generic Kconfig
-> code to allow visibility of CONFIG_TRANSPARENT_HUGEPAGE w/o every arch needing to
-> do a me too.
-> 
-> I think you need to use CONFIG_TRANSPARENT_HUGEPAGE to guard appropriate tests. I
-> understand that it only
+Ah, fair enough, I missed that, strange that we do not free it but ok. Thanks,
 
-We can probably replace CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE wrapper with
-CONFIG_TRANSPARENT_HUGEPAGE. But CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-explicitly depends on CONFIG_TRANSPARENT_HUGEPAGE as a prerequisite. Could
-you please confirm if the following change on this test will work on ARC
-platform for both THP and !THP cases ? Thank you.
 
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 621ac09..99ebc7c 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -67,7 +67,7 @@ static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
- 	WARN_ON(pte_write(pte_wrprotect(pte)));
- }
- 
--#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
- {
- 	pmd_t pmd = pfn_pmd(pfn, prot);
-@@ -85,9 +85,6 @@ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
- 	 */
- 	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
- }
--#else
--static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
--#endif
- 
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
- static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
-@@ -112,6 +109,10 @@ static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
- #else
- static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
- #endif
-+#else
-+static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
-+static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
-+#endif
- 
- static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
- {
-
-> -Vineet
+>  It is however
+> implicitly unshared by the guest kernel, through a UV_UNSHARE_ALL_PAGES ucall
+> when the guest kernel reboots. And it also gets implicitly unshared by
+> the Ultravisor/Hypervisor, if the SVM abruptly terminates.
 > 
+>>
+>>
+>>> +
+>>> +	return tcep;
+>>> +}
+>>> +
+>>>  static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+>>>  				     long npages, unsigned long uaddr,
+>>>  				     enum dma_data_direction direction,
+>>> @@ -206,8 +220,7 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+>>>  	 * from iommu_alloc{,_sg}()
+>>>  	 */
+>>>  	if (!tcep) {
+>>> -		tcep = (__be64 *)__get_free_page(GFP_ATOMIC);
+>>> -		/* If allocation fails, fall back to the loop implementation */
+>>> +		tcep = alloc_tce_page();
+>>>  		if (!tcep) {
+>>>  			local_irq_restore(flags);
+>>>  			return tce_build_pSeriesLP(tbl, tcenum, npages, uaddr,
+>>> @@ -391,6 +404,7 @@ static int tce_clearrange_multi_pSeriesLP(unsigned long start_pfn,
+>>>  	return rc;
+>>>  }
+>>>  
+>>> +
+>>
+>> Unrelated.
+> 
+> yes. will fix it.
+> 
+> Thanks,
+> RP
+> 
+
+-- 
+Alexey
