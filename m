@@ -1,73 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF820F2B95
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 10:56:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B860F2C20
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 11:28:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477zLY5xQKzF66X
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 20:56:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47803c73nszF3lW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 21:28:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::7;
- helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="TmAq1zW3"; 
- dkim-atps=neutral
-Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
- [IPv6:2a01:238:20a:202:5301::7])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47801g5G74zF68m
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 21:26:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="gb5wc+hW"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477zJT03l6zF5mc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 20:54:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573120445;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=trwx3J088ifMSXDlrnn6C1GkVE/t8HLHXAAVx/62/F8=;
- b=TmAq1zW3bgiB1xlkZl0YwLS1cUoUuQQFQxiLm5cKc1mt0ZmKZFT18NJtGejPrm+dZt
- 7Xlpn5b6MbCibF8eiFpSy8sIQYNV4UDuw9WL1pz+tbOxETQctaVZkPyL3r7SCfkunD9l
- bgF3x3muGM8QiDc0Bte2fxhfNYTZTOFLtkNlUoGRa7K+OtXGzDzl74innyDRuH8BKfBV
- da1Qgsq6yA7ZwA+N84m4VcOgQ3z9ZaRRtKD6JX3ZxeCdPqE9IxgU5eEB/DTxCquWU6r+
- CNUs8OOwe4ThCyx/NF3TEIAUeaBgsUyYxKEkj79vZbVYZsYd8vEw0xASgEstojTVGqRO
- lbpw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhWJ4neaR1DEPK76ZrzkovbziPV9Q=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:5146:21ae:8547:c1e0]
- by smtp.strato.de (RZmta 44.29.0 AUTH)
- with ESMTPSA id q007c8vA79rB0Ct
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
- 521 ECDH bits, eq. 15360 bits RSA))
- (Client did not present a certificate);
- Thu, 7 Nov 2019 10:53:11 +0100 (CET)
-Subject: Re: Bug 205201 - overflow of DMA mask and bus mask
-To: Christoph Hellwig <hch@lst.de>
-References: <20181213112511.GA4574@lst.de>
- <e109de27-f4af-147d-dc0e-067c8bafb29b@xenosoft.de>
- <ad5a5a8a-d232-d523-a6f7-e9377fc3857b@xenosoft.de>
- <e60d6ca3-860c-f01d-8860-c5e022ec7179@xenosoft.de>
- <008c981e-bdd2-21a7-f5f7-c57e4850ae9a@xenosoft.de>
- <20190103073622.GA24323@lst.de>
- <71A251A5-FA06-4019-B324-7AED32F7B714@xenosoft.de>
- <1b0c5c21-2761-d3a3-651b-3687bb6ae694@xenosoft.de>
- <3504ee70-02de-049e-6402-2d530bf55a84@xenosoft.de>
- <46025f1b-db20-ac23-7dcd-10bc43bbb6ee@xenosoft.de>
- <20191105162856.GA15402@lst.de>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <2f3c81bd-d498-066a-12c0-0a7715cda18f@xenosoft.de>
-Date: Thu, 7 Nov 2019 10:53:10 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47801f5SWCz9sPT;
+ Thu,  7 Nov 2019 21:26:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1573122391;
+ bh=ubT6PqHfq+AeskgzniFZvOikXlHxhlqZ5cQjsrS0lnQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=gb5wc+hWL6b3Ya0OtGZix/sJtUue+204GeoQas8US15HICstxZ6MRb2umgOieCFtU
+ tWQs99Bxp0Yj0OgxFyw4ItXJq4B85MoXu32FHmXJJtfQiAdj9aPEQuBwaVDllUDxP9
+ MlFZLvd+TSUoWnRv7YTnrRClNDLH+hhP9lW0oGcog0c7uzG6s7VUjNqKW16QFJzZz4
+ Un9NpYnNSvlucUMGeg00xE+Az8F/e3URCB2Vmrgw9mC+/DpXJ4g6RLVQUSmjbstMi8
+ Q1ima+wUoaMn0mwroazcEZk4jB2LBbwIrH7yCZRdQn4SD1BvK3hc26dAmxSnzbKCP8
+ xJKrpXUcxgaIg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ram Pai <linuxram@us.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC v1 2/2] powerpc/pseries/iommu: Use dma_iommu_ops for Secure
+ VMs aswell.
+In-Reply-To: <1572902923-8096-3-git-send-email-linuxram@us.ibm.com>
+References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
+ <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
+ <1572902923-8096-3-git-send-email-linuxram@us.ibm.com>
+Date: Thu, 07 Nov 2019 21:26:28 +1100
+Message-ID: <87k18c56ej.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20191105162856.GA15402@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,175 +59,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net,
- mad skateman <madskateman@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Rob Herring <robh+dt@kernel.org>, paulus@samba.org, rtd2@xtra.co.nz,
- "contact@a-eon.com" <contact@a-eon.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: andmike@us.ibm.com, mst@redhat.com, aik@ozlabs.ru, linuxram@us.ibm.com,
+ mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
+ cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com, hch@lst.de,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05 November 2019 at 5:28 pm, Christoph Hellwig wrote:
-> On Tue, Nov 05, 2019 at 08:56:27AM +0100, Christian Zigotzky wrote:
->> Hi All,
->>
->> We still have DMA problems with some PCI devices. Since the PowerPC updates
->> 4.21-1 [1] we need to decrease the RAM to 3500MB (mem=3500M) if we want to
->> work with our PCI devices. The FSL P5020 and P5040 have these problems
->> currently.
->>
->> Error message:
->>
->> [   25.654852] bttv 1000:04:05.0: overflow 0x00000000fe077000+4096 of DMA
->> mask ffffffff bus mask df000000
->>
->> All 5.x Linux kernels can't initialize a SCSI PCI card anymore so booting
->> of a Linux userland isn't possible.
->>
->> PLEASE check the DMA changes in the PowerPC updates 4.21-1 [1]. The kernel
->> 4.20 works with all PCI devices without limitation of RAM.
-> Can you send me the .config and a dmesg?  And in the meantime try the
-> patch below?
->
-> ---
-> >From 4d659b7311bd4141fdd3eeeb80fa2d7602ea01d4 Mon Sep 17 00:00:00 2001
-> From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-> Date: Fri, 18 Oct 2019 13:00:43 +0200
-> Subject: dma-direct: check for overflows on 32 bit DMA addresses
->
-> As seen on the new Raspberry Pi 4 and sta2x11's DMA implementation it is
-> possible for a device configured with 32 bit DMA addresses and a partial
-> DMA mapping located at the end of the address space to overflow. It
-> happens when a higher physical address, not DMAable, is translated to
-> it's DMA counterpart.
->
-> For example the Raspberry Pi 4, configurable up to 4 GB of memory, has
-> an interconnect capable of addressing the lower 1 GB of physical memory
-> with a DMA offset of 0xc0000000. It transpires that, any attempt to
-> translate physical addresses higher than the first GB will result in an
-> overflow which dma_capable() can't detect as it only checks for
-> addresses bigger then the maximum allowed DMA address.
->
-> Fix this by verifying in dma_capable() if the DMA address range provided
-> is at any point lower than the minimum possible DMA address on the bus.
->
-> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-> ---
->   include/linux/dma-direct.h | 8 ++++++++
->   1 file changed, 8 insertions(+)
->
-> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-> index adf993a3bd58..6ad9e9ea7564 100644
-> --- a/include/linux/dma-direct.h
-> +++ b/include/linux/dma-direct.h
-> @@ -3,6 +3,7 @@
->   #define _LINUX_DMA_DIRECT_H 1
->   
->   #include <linux/dma-mapping.h>
-> +#include <linux/memblock.h> /* for min_low_pfn */
->   #include <linux/mem_encrypt.h>
->   
->   #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
-> @@ -27,6 +28,13 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
->   	if (!dev->dma_mask)
->   		return false;
->   
-> +#ifndef CONFIG_ARCH_DMA_ADDR_T_64BIT
-> +	/* Check if DMA address overflowed */
-> +	if (min(addr, addr + size - 1) <
-> +		__phys_to_dma(dev, (phys_addr_t)(min_low_pfn << PAGE_SHIFT)))
-> +		return false;
-> +#endif
-> +
->   	return addr + size - 1 <=
->   		min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
->   }
-Hello Christoph,
+Ram Pai <linuxram@us.ibm.com> writes:
+> This enables IOMMU support for pseries Secure VMs.
 
-Thanks a lot for your patch! Unfortunately this patch doesn't solve the 
-issue.
+Can you give us some more explanation please?
 
-Error messages:
+This is basically a revert of commit:
+  edea902c1c1e ("powerpc/pseries/iommu: Don't use dma_iommu_ops on secure guests")
 
-[    6.041163] bttv: driver version 0.9.19 loaded
-[    6.041167] bttv: using 8 buffers with 2080k (520 pages) each for capture
-[    6.041559] bttv: Bt8xx card found (0)
-[    6.041609] bttv: 0: Bt878 (rev 17) at 1000:04:05.0, irq: 19, 
-latency: 128, mmio: 0xc20001000
-[    6.041622] bttv: 0: using: Typhoon TView RDS + FM Stereo / KNC1 TV 
-Station RDS [card=53,insmod option]
-[    6.042216] bttv: 0: tuner type=5
-[    6.111994] bttv: 0: audio absent, no audio device found!
-[    6.176425] bttv: 0: Setting PLL: 28636363 => 35468950 (needs up to 
-100ms)
-[    6.200005] bttv: PLL set ok
-[    6.209351] bttv: 0: registered device video0
-[    6.211576] bttv: 0: registered device vbi0
-[    6.214897] bttv: 0: registered device radio0
-[  114.218806] bttv 1000:04:05.0: overflow 0x00000000ff507000+4096 of 
-DMA mask ffffffff bus mask df000000
-[  114.218848] Modules linked in: rfcomm bnep tuner_simple tuner_types 
-tea5767 tuner tda7432 tvaudio msp3400 bttv tea575x tveeprom 
-videobuf_dma_sg videobuf_core rc_core videodev mc btusb btrtl btbcm 
-btintel bluetooth uio_pdrv_genirq uio ecdh_generic ecc
-[  114.219012] [c0000001ecddf720] [80000000008ff6e8] 
-.buffer_prepare+0x150/0x268 [bttv]
-[  114.219029] [c0000001ecddf860] [80000000008fff6c] 
-.bttv_qbuf+0x50/0x64 [bttv]
+But neglects to remove the now unnecessary include of svm.h.
 
------
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 07f0847..189717b 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -1333,15 +1333,7 @@ void iommu_init_early_pSeries(void)
+>  	of_reconfig_notifier_register(&iommu_reconfig_nb);
+>  	register_memory_notifier(&iommu_mem_nb);
+>  
+> -	/*
+> -	 * Secure guest memory is inacessible to devices so regular DMA isn't
+> -	 * possible.
+> -	 *
+> -	 * In that case keep devices' dma_map_ops as NULL so that the generic
+> -	 * DMA code path will use SWIOTLB to bounce buffers for DMA.
 
-Trace:
+Please explain what has changed to make this no longer necessary.
 
-[  462.783184] Call Trace:
-[  462.783187] [c0000001c6c67420] [c0000000000b3358] 
-.report_addr+0xb8/0xc0 (unreliable)
-[  462.783192] [c0000001c6c67490] [c0000000000b351c] 
-.dma_direct_map_page+0xf0/0x128
-[  462.783195] [c0000001c6c67530] [c0000000000b35b0] 
-.dma_direct_map_sg+0x5c/0xac
-[  462.783205] [c0000001c6c675e0] [8000000000862e88] 
-.__videobuf_iolock+0x660/0x6d8 [videobuf_dma_sg]
-[  462.783220] [c0000001c6c676b0] [8000000000854274] 
-.videobuf_iolock+0x98/0xb4 [videobuf_core]
-[  462.783271] [c0000001c6c67720] [80000000008686e8] 
-.buffer_prepare+0x150/0x268 [bttv]
-[  462.783276] [c0000001c6c677c0] [8000000000854afc] 
-.videobuf_qbuf+0x2b8/0x428 [videobuf_core]
-[  462.783288] [c0000001c6c67860] [8000000000868f6c] 
-.bttv_qbuf+0x50/0x64 [bttv]
-[  462.783383] [c0000001c6c678e0] [80000000007bf208] .v4l_qbuf+0x54/0x60 
-[videodev]
-[  462.783402] [c0000001c6c67970] [80000000007c1eac] 
-.__video_do_ioctl+0x30c/0x3f8 [videodev]
-[  462.783421] [c0000001c6c67a80] [80000000007c3c08] 
-.video_usercopy+0x18c/0x3dc [videodev]
-[  462.783440] [c0000001c6c67c00] [80000000007bb14c] 
-.v4l2_ioctl+0x60/0x78 [videodev]
-[  462.783460] [c0000001c6c67c90] [80000000007d3c48] 
-.v4l2_compat_ioctl32+0x9b4/0x1850 [videodev]
-[  462.783468] [c0000001c6c67d70] [c0000000001ad9cc] 
-.__se_compat_sys_ioctl+0x284/0x127c
-[  462.783473] [c0000001c6c67e20] [c00000000000067c] system_call+0x60/0x6c
-[  462.783475] Instruction dump:
-[  462.783477] 40fe0044 60000000 892255d0 2f890000 40fe0020 3c82ffc5 
-39200001 60000000
-[  462.783483] 38842029 992255d0 485ad0d9 60000000 <0fe00000> 38210070 
-e8010010 7c0803a6
-[  462.783490] ---[ end trace b677d4a00458e277 ]---
+cheers
 
------
-
-dmesg fsl p5040: https://bugzilla.kernel.org/attachment.cgi?id=285813
-
-Kernel 5.4-rc6 config for the Cyrus+ board and for the QEMU ppce500 
-board (CPU: P5040 and P5020): 
-https://bugzilla.kernel.org/attachment.cgi?id=285815
-
-Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=205201
-
-Thanks for your help,
-
-Christian
+> -	 */
+> -	if (!is_secure_guest())
+> -		set_pci_dma_ops(&dma_iommu_ops);
+> +	set_pci_dma_ops(&dma_iommu_ops);
+>  }
+>  
+>  static int __init disable_multitce(char *str)
+> -- 
+> 1.8.3.1
