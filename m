@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03389F2903
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:23:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D434F28FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:21:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477xHN1rTHzF5yy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:23:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477xFG34fZzF5mv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:21:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477q73425rzF5wX
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477q734Ly5zF5wZ
  for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 14:45:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 477q7216Dlz9sQp; Thu,  7 Nov 2019 14:45:34 +1100 (AEDT)
+ id 477q730FcSz9sRD; Thu,  7 Nov 2019 14:45:35 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 477q720WRBz9sQy; Thu,  7 Nov 2019 14:45:33 +1100 (AEDT)
+ id 477q725sMzz9sR4; Thu,  7 Nov 2019 14:45:34 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: e44ff9ea8f4c8a90c82f7b85bd4f5e497c841960
-In-Reply-To: <20191024004730.32135-1-mpe@ellerman.id.au>
+X-powerpc-patch-commit: b9e0805abf2e92fc275ac5fbd8c1c9a92b00413d
+In-Reply-To: <20191030111231.22720-1-mpe@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/tools: Don't quote $objdump in scripts
-Message-Id: <477q720WRBz9sQy@ozlabs.org>
-Date: Thu,  7 Nov 2019 14:45:33 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc: Add build-time check of ptrace PT_xx defines
+Message-Id: <477q725sMzz9sR4@ozlabs.org>
+Date: Thu,  7 Nov 2019 14:45:34 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,23 +45,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-10-24 at 00:47:30 UTC, Michael Ellerman wrote:
-> Some of our scripts are passed $objdump and then call it as
-> "$objdump". This doesn't work if it contains spaces because we're
-> using ccache, for example you get errors such as:
+On Wed, 2019-10-30 at 11:12:31 UTC, Michael Ellerman wrote:
+> As part of the uapi we export a lot of PT_xx defines for each register
+> in struct pt_regs. These are expressed as an index from gpr[0], in
+> units of unsigned long.
 > 
->   ./arch/powerpc/tools/relocs_check.sh: line 48: ccache ppc64le-objdump: No such file or directory
->   ./arch/powerpc/tools/unrel_branch_check.sh: line 26: ccache ppc64le-objdump: No such file or directory
+> Currently there's nothing tying the values of those defines to the
+> actual layout of the struct.
 > 
-> Fix it by not quoting the string when we expand it, allowing the shell
-> to do the right thing for us.
+> But we *don't* want to change the uapi defines to derive the PT_xx
+> values based on the layout of the struct, those values are ABI and
+> must never change.
 > 
-> Fixes: a71aa05e1416 ("powerpc: Convert relocs_check to a shell script using grep")
-> Fixes: 4ea80652dc75 ("powerpc/64s: Tool to flag direct branches from unrelocated interrupt vectors")
+> Instead we want to do the reverse, make sure that the layout of the
+> struct never changes vs the PT_xx defines. So add build time checks of
+> that.
+> 
+> This probably seems paranoid, but at least once in the past someone
+> has sent a patch that would have broken the ABI if it hadn't been
+> spotted. Although it probably would have been detected via testing,
+> it's preferable to just quash any issues at the source.
+> 
 > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
 Applied to powerpc next.
 
-https://git.kernel.org/powerpc/c/e44ff9ea8f4c8a90c82f7b85bd4f5e497c841960
+https://git.kernel.org/powerpc/c/b9e0805abf2e92fc275ac5fbd8c1c9a92b00413d
 
 cheers
