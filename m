@@ -1,96 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183B3F28C9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:12:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CE5F2912
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:28:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477x352D0vzF4ZZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:12:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477xPn1jskzF683
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:28:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.3.49; helo=eur03-am5-obe.outbound.protection.outlook.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="rcCKqK5Z"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="KypO2u9q"; 
  dkim-atps=neutral
-Received: from EUR03-AM5-obe.outbound.protection.outlook.com
- (mail-eopbgr30049.outbound.protection.outlook.com [40.107.3.49])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477wdG2pzBzF1Hr
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 18:53:37 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ot6KtDEIaBB26gGvxMlr6fjoZPvwaL1QHMLgBcuI4NQD+ecxeEcPQ7XNDAsDAxtdmYy7C4lWg3rR2doe/Qt6zTlleKxNmQTnyid6LHmbsh+PJSgGUdMknbSUuBrec2t66ssp9lqbZFLjxdJaqHEWX8cMtrzeFjUx0b8+EegMgrFB5OWu+5T/pMnREDVdDFbgxr0w/b0Hxd9nOzbRVbrpCMxRjnqdw8l9ywUHMS5uYrbRTwvJaW/SnfiyhZT0CT43MbIhLh1SN09cqFzul7Ekv4CMfYO6Lq9Ds1hNt841mDaMNTS5HyU4Byp4dvxyV3J0f6nxfkWKsWuVNzFvVTnw1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=msFlGiKfaJwHoMxesxTXiLzxrZHaTCBWlBSEl36KY+I=;
- b=OPVFUTvCJPIcRp2A8qtP1dSzjvxx8x6oHkZOGL7s3fW7qaziYcfN6y9NlApr7aCqFZYwoQ833Lv5KbCTtq/RvFE1SgnQmsjl7SADPhBsE2Sl3CXjL5WgFhCj9gat7coUZcyaVr9daEjtV8EtAqVyUZcEKW98xxAZL52ohcg6uWwefl/HhhFuWHhTM++kk1mk13R7p+fCaj04jlDaxswcXAL4N4nNfuvav5n4DHBnXjjE/OcVpSPzgU83CEWRWHXb4S056uYqZyJsfwgRWlQ3/UyF1bDLSrrBSaDqlOY3fCvaYocrS9pAVBtKBHd+4/8gdAHU0EnzQV8rtZHq21PIYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=msFlGiKfaJwHoMxesxTXiLzxrZHaTCBWlBSEl36KY+I=;
- b=rcCKqK5ZPZw1uhN+L9ax24M+NemLTGhFVFo9FnNvKPZEmWOYbf5SgrcL7CRL07Z6WxfY1qGSR+hjWxu1uVxWL8UDkgSxIkVvLPd+Ik8AvCEDQXzaulS8XknrTR4W2UcMI9CePX9gQO0ZKQNusB5T6zBsI3OIL0RqAWFleprbVSg=
-Received: from AM0PR04MB6468.eurprd04.prod.outlook.com (20.179.254.214) by
- AM0PR04MB5490.eurprd04.prod.outlook.com (20.178.115.24) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2430.20; Thu, 7 Nov 2019 07:51:19 +0000
-Received: from AM0PR04MB6468.eurprd04.prod.outlook.com
- ([fe80::24aa:9d65:b376:5ae7]) by AM0PR04MB6468.eurprd04.prod.outlook.com
- ([fe80::24aa:9d65:b376:5ae7%7]) with mapi id 15.20.2430.020; Thu, 7 Nov 2019
- 07:51:19 +0000
-From: "S.j. Wang" <shengjiu.wang@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH V2 1/2] ASoC: dt-bindings: fsl_asrc: add compatible string
- for imx8qm
-Thread-Topic: [PATCH V2 1/2] ASoC: dt-bindings: fsl_asrc: add compatible
- string for imx8qm
-Thread-Index: AdWVP8IifFfTCEP2RpqREdYX4F5jzg==
-Date: Thu, 7 Nov 2019 07:51:19 +0000
-Message-ID: <AM0PR04MB64687210E053B6ECE90C860DE3780@AM0PR04MB6468.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=shengjiu.wang@nxp.com; 
-x-originating-ip: [119.31.174.66]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: a974b462-1ec3-49b0-a903-08d76357468a
-x-ms-traffictypediagnostic: AM0PR04MB5490:
-x-microsoft-antispam-prvs: <AM0PR04MB549041657A3E54828C428181E3780@AM0PR04MB5490.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 0214EB3F68
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(39850400004)(136003)(376002)(366004)(346002)(396003)(199004)(189003)(66476007)(256004)(64756008)(33656002)(66446008)(8936002)(66556008)(7416002)(76116006)(4326008)(316002)(102836004)(6246003)(2906002)(3846002)(26005)(66946007)(5660300002)(6116002)(8676002)(6436002)(7696005)(52536014)(14454004)(55016002)(9686003)(229853002)(54906003)(186003)(71190400001)(14444005)(86362001)(6916009)(476003)(6506007)(486006)(66066001)(74316002)(478600001)(25786009)(81156014)(305945005)(7736002)(99286004)(81166006)(71200400001)(32563001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:AM0PR04MB5490;
- H:AM0PR04MB6468.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: XYF7YZkKjc6AkWWhtQphLbiKkEqRiBxbRerpzWvNHaIVW9jDsmZYFDl1XMMQZVEKrGR4weR6MKQe/ZBCse4y/ImgP+r30EgVDiIa09Yf/vj3q8WwKDKJEdraEly38k4paqr6LacaqkjWI5hZCA3DBOTbDu1cewbqYSNvNo8hSVxGuCH/+JStE8kYgngYfF7hrL5s15rV2d0PFi6vc3kSaDPZUA34kFKMYZnWocTuFtyZlY2KxRMISqyMPMPwcvlNhb4pQ9dC1BoDfCuKXje3XgosAsAyi5woLHaFHTcvh5pXlczSWtNkNj6Gv7xCjGAvmfkCiHTOLbxuCTt4LQMBAh4ZsyzYoffrkN5V1aHxDOYbCK/I60w3hGhSO2ni1kh6I1qGb7/ATYegjEKPU7vBlaksrR/MGPbOk/szQnK8fNI4b0NUkpVDJBd+U+OoxhbH
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477wx73f3MzF40n
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 19:07:22 +1100 (AEDT)
+Received: from rapoport-lnx (nesher1.haifa.il.ibm.com [195.110.40.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 14F2F2077C;
+ Thu,  7 Nov 2019 08:07:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1573114040;
+ bh=Vs0vmuJFZJfCdBWbcef1JshwZZc9l+YrjwUdtsaNu3k=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=KypO2u9qQZOpCT97PagoJmJ05jNzzAwEOh5TQuJtaHcnw290kuyiCyRgXcpTDgoff
+ yL2r3/5Nv3OxL5iW1vDTUMldS7lvQVWUl8vBPDTErZIqUCYXU5EvD9rUB9CL4lekw9
+ M70s0IBFr/3wdhsUYXeg/j3kPNjd4MGq8LMTqoAU=
+Date: Thu, 7 Nov 2019 10:07:07 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v2 05/18] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+Message-ID: <20191107080706.GB3239@rapoport-lnx>
+References: <20191103211813.213227-1-jhubbard@nvidia.com>
+ <20191103211813.213227-6-jhubbard@nvidia.com>
+ <20191105131032.GG25005@rapoport-lnx>
+ <9ac948a4-59bf-2427-2007-e460aad2848a@nvidia.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a974b462-1ec3-49b0-a903-08d76357468a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2019 07:51:19.2341 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SwmEDG5SOPXnPhbGYXHnC/lRZmZOMeql6MrBDMXKQbjhc5MahvS2XNxO9j5RFME1VlSGjSB3n9zluQWGQDeWvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5490
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9ac948a4-59bf-2427-2007-e460aad2848a@nvidia.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,63 +59,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "perex@perex.cz" <perex@perex.cz>,
- "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob
->=20
-> On Wed, Oct 30, 2019 at 07:41:26PM +0800, Shengjiu Wang wrote:
-> > In order to support the two asrc modules in imx8qm, we need to add
-> > compatible string "fsl,imx8qm-asrc0" and "fsl,imx8qm-asrc1"
->=20
-> Are the blocks different in some way?
->=20
-> If not, why do you need to distinguish them?
->=20
-The internal clock mapping is different for each module.
+On Tue, Nov 05, 2019 at 11:00:06AM -0800, John Hubbard wrote:
+> On 11/5/19 5:10 AM, Mike Rapoport wrote:
+> ...
+> >> ---
+> >>  Documentation/vm/index.rst          |   1 +
+> >>  Documentation/vm/pin_user_pages.rst | 212 ++++++++++++++++++++++
+> > 
+> > I think it belongs to Documentation/core-api.
+> 
+> Done:
+> 
+> diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
+> index ab0eae1c153a..413f7d7c8642 100644
+> --- a/Documentation/core-api/index.rst
+> +++ b/Documentation/core-api/index.rst
+> @@ -31,6 +31,7 @@ Core utilities
+>     generic-radix-tree
+>     memory-allocation
+>     mm-api
+> +   pin_user_pages
+>     gfp_mask-from-fs-io
+>     timekeeping
+>     boot-time-mm
 
-Or we can use one compatible string, but need add another
-property "fsl,asrc-clk-map" to distinguish the different clock map.
+Thanks!
+ 
+> ...
+> >> diff --git a/Documentation/vm/pin_user_pages.rst b/Documentation/vm/pin_user_pages.rst
+> >> new file mode 100644
+> >> index 000000000000..3910f49ca98c
+> >> --- /dev/null
+> >> +++ b/Documentation/vm/pin_user_pages.rst
+> >> @@ -0,0 +1,212 @@
+> >> +.. SPDX-License-Identifier: GPL-2.0
+> >> +
+> >> +====================================================
+> >> +pin_user_pages() and related calls
+> >> +====================================================
+> > 
+> > I know this is too much to ask, but having pin_user_pages() a part of more
+> > general GUP description would be really great :)
+> > 
+> 
+> Yes, definitely. But until I saw the reaction to the pin_user_pages() API
+> family, I didn't want to write too much--it could have all been tossed out
+> in favor of a whole different API. But now that we've had some initial
+> reviews, I'm much more confident in being able to write about the larger 
+> API set.
+> 
+> So yes, I'll put that on my pending list.
+> 
+> 
+> ...
+> >> +This document describes the following functions: ::
+> >> +
+> >> + pin_user_pages
+> >> + pin_user_pages_fast
+> >> + pin_user_pages_remote
+> >> +
+> >> + pin_longterm_pages
+> >> + pin_longterm_pages_fast
+> >> + pin_longterm_pages_remote
+> >> +
+> >> +Basic description of FOLL_PIN
+> >> +=============================
+> >> +
+> >> +A new flag for get_user_pages ("gup") has been added: FOLL_PIN. FOLL_PIN has
+> > 
+> > Consider reading this after, say, half a year ;-)
+> > 
+> 
+> OK, OK. I knew when I wrote that that it was not going to stay new forever, but
+> somehow failed to write the right thing anyway. :) 
+> 
+> Here's a revised set of paragraphs:
+> 
+> Basic description of FOLL_PIN
+> =============================
+> 
+> FOLL_PIN and FOLL_LONGTERM are flags that can be passed to the get_user_pages*()
+> ("gup") family of functions. FOLL_PIN has significant interactions and
+> interdependencies with FOLL_LONGTERM, so both are covered here.
+> 
+> Both FOLL_PIN and FOLL_LONGTERM are internal to gup, meaning that neither
+> FOLL_PIN nor FOLL_LONGTERM should not appear at the gup call sites. This allows
+> the associated wrapper functions  (pin_user_pages() and others) to set the
+> correct combination of these flags, and to check for problems as well.
 
-The change is in below.
+Great, thanks! 
+ 
+> thanks,
+> 
+> John Hubbard
+> NVIDIA
 
-Which one do you think is better?=20
-
-Required properties:
-
--  - compatible         : Contains "fsl,imx35-asrc" or "fsl,imx53-asrc".
-+  - compatible         : Contains "fsl,imx35-asrc", "fsl,imx53-asrc",
-+                         "fsl,imx8qm-asrc".
-
-   - reg                        : Offset and length of the register set for=
- the device.
-
-@@ -35,6 +36,11 @@ Required properties:
-
-    - fsl,asrc-width    : Defines a mutual sample width used by DPCM Back E=
-nds.
-
-+   - fsl,asrc-clk-map   : Defines clock map used in driver. which is requi=
-red
-+                         by imx8qm
-+                         <0> - select the map for asrc0
-+                         <1> - select the map for asrc1
-+
- Optional properties:
-
-
-Best regards
-Wang shengjiu
+-- 
+Sincerely yours,
+Mike.
