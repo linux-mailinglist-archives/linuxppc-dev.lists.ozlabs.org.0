@@ -1,73 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2B4F3935
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 21:09:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4AEF3A4B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 22:18:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478Dy06qM5zF5lT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 07:09:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478GTd6PX5zF4Dh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 08:18:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-1.mimecast.com; envelope-from=dhildenb@redhat.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 478GRk27dXzF6cB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 08:16:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="dbzlCADz"; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 478GRh2g0kz8tCx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 08:16:32 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 478GRh0H2Nz9sPV; Fri,  8 Nov 2019 08:16:32 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 478BZw36zyzF6c6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 05:22:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1573150945;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7iLLDW7QM1xnQc7BXIS/h4Apa1ZBB2zXuGDVuVIx4/w=;
- b=dbzlCADzLQ6zcUGD4Zr0iGdtUqAaxIWBqBYJ9Lka9L5psELp3mNfDQlujN836VzT04SiDI
- Sq1WbSANqP4WMCk32YnLWCNXDBtZfohylUtZptemKbHpm/GKFajh5MfYbudEcbX0I/OeLx
- Duqme091/saTuuOotKjYOkERGMcBbOE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-12-fKdDWJsqPc21aH5FVitopg-1; Thu, 07 Nov 2019 13:22:23 -0500
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 480271005502;
- Thu,  7 Nov 2019 18:22:17 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D2CD4AF;
- Thu,  7 Nov 2019 18:22:15 +0000 (UTC)
-Received: from zmail19.collab.prod.int.phx2.redhat.com
- (zmail19.collab.prod.int.phx2.redhat.com [10.5.83.22])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id 3E1C518095FF;
- Thu,  7 Nov 2019 18:22:12 +0000 (UTC)
-From: David Hildenbrand <dhildenb@redhat.com>
+ by ozlabs.org (Postfix) with ESMTPS id 478GRg3ddzz9sPL;
+ Fri,  8 Nov 2019 08:16:29 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ xA7LCPoY063441; Thu, 7 Nov 2019 16:16:26 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2w41w5pe9x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Nov 2019 16:16:25 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA7LBEp6001407;
+ Thu, 7 Nov 2019 21:16:20 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma05wdc.us.ibm.com with ESMTP id 2w41ujuya0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Nov 2019 21:16:20 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xA7LGJI837552446
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 7 Nov 2019 21:16:19 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 58B2C136061;
+ Thu,  7 Nov 2019 21:16:19 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4FE5136059;
+ Thu,  7 Nov 2019 21:16:18 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.41.178.211])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  7 Nov 2019 21:16:18 +0000 (GMT)
+Subject: Re: [RFC PATCH] powerpc/pseries/mobility: notify network peers after
+ migration
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+References: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
+ <87tv7g5v3e.fsf@mpe.ellerman.id.au>
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+Message-ID: <601046ba-7bf4-f323-c708-8a5d99c961cd@linux.ibm.com>
+Date: Thu, 7 Nov 2019 15:16:18 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 04/10] vfio/type1: Prepare is_invalid_reserved_pfn()
- for PG_reserved changes
-Date: Thu, 7 Nov 2019 13:22:12 -0500 (EST)
-Message-Id: <DF536BED-6F4F-4351-AC7E-3C9FC8545332@redhat.com>
-References: <CAPcyv4hxs+KqY5gU8Ds1a73eub1imvm9Qo8KdKGiDD1e-p0cww@mail.gmail.com>
-In-Reply-To: <CAPcyv4hxs+KqY5gU8Ds1a73eub1imvm9Qo8KdKGiDD1e-p0cww@mail.gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Thread-Topic: vfio/type1: Prepare is_invalid_reserved_pfn() for PG_reserved
- changes
-Thread-Index: +s2g58aTrOooMxUTMjHg25AUP3zIIA==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-MC-Unique: fKdDWJsqPc21aH5FVitopg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Mailman-Approved-At: Fri, 08 Nov 2019 07:05:46 +1100
+In-Reply-To: <87tv7g5v3e.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-11-07_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911070197
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,87 +101,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- =?utf-8?Q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
- KVM list <kvm@vger.kernel.org>, David Hildenbrand <david@redhat.com>,
- KarimAllah Ahmed <karahmed@amazon.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Linux MM <linux-mm@kvack.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Wanpeng Li <wanpengli@tencent.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
- YueHaibing <yuehaibing@huawei.com>,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
- Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
- "Isaac J. Manjarres" <isaacm@codeaurora.org>,
- Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Sasha Levin <sashal@kernel.org>,
- kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
- Alex Williamson <alex.williamson@redhat.com>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
- xen-devel <xen-devel@lists.xenproject.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Allison Randal <allison@lohutok.net>,
- Jim Mattson <jmattson@google.com>, Mel Gorman <mgorman@techsingularity.net>,
- Cornelia Huck <cohuck@redhat.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: nathanl@linux.ibm.com, netdev@vger.kernel.org, msuchanek@suse.com,
+ tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCj4gQW0gMDcuMTEuMjAxOSB1bSAxNjo0MCBzY2hyaWViIERhbiBXaWxsaWFtcyA8ZGFuLmou
-d2lsbGlhbXNAaW50ZWwuY29tPjoNCj4gDQo+IO+7v09uIFRodSwgT2N0IDI0LCAyMDE5IGF0IDU6
-MTIgQU0gRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+IHdyb3RlOg0KPj4gDQo+
-PiBSaWdodCBub3csIFpPTkVfREVWSUNFIG1lbW9yeSBpcyBhbHdheXMgc2V0IFBHX3Jlc2VydmVk
-LiBXZSB3YW50IHRvDQo+PiBjaGFuZ2UgdGhhdC4NCj4+IA0KPj4gS1ZNIGhhcyB0aGlzIHdlaXJk
-IHVzZSBjYXNlIHRoYXQgeW91IGNhbiBtYXAgYW55dGhpbmcgZnJvbSAvZGV2L21lbQ0KPj4gaW50
-byB0aGUgZ3Vlc3QuIHBmbl92YWxpZCgpIGlzIG5vdCBhIHJlbGlhYmxlIGNoZWNrIHdoZXRoZXIg
-dGhlIG1lbW1hcA0KPj4gd2FzIGluaXRpYWxpemVkIGFuZCBjYW4gYmUgdG91Y2hlZC4gcGZuX3Rv
-X29ubGluZV9wYWdlKCkgbWFrZXMgc3VyZQ0KPj4gdGhhdCB3ZSBoYXZlIGFuIGluaXRpYWxpemVk
-IG1lbW1hcCAoYW5kIGRvbid0IGhhdmUgWk9ORV9ERVZJQ0UgbWVtb3J5KS4NCj4+IA0KPj4gUmV3
-cml0ZSBpc19pbnZhbGlkX3Jlc2VydmVkX3BmbigpIHNpbWlsYXIgdG8ga3ZtX2lzX3Jlc2VydmVk
-X3BmbigpIHRvIG1ha2UNCj4+IHN1cmUgdGhlIGZ1bmN0aW9uIHByb2R1Y2VzIHRoZSBzYW1lIHJl
-c3VsdCBvbmNlIHdlIHN0b3Agc2V0dGluZyBaT05FX0RFVklDRQ0KPj4gcGFnZXMgUEdfcmVzZXJ2
-ZWQuDQo+PiANCj4+IENjOiBBbGV4IFdpbGxpYW1zb24gPGFsZXgud2lsbGlhbXNvbkByZWRoYXQu
-Y29tPg0KPj4gQ2M6IENvcm5lbGlhIEh1Y2sgPGNvaHVja0ByZWRoYXQuY29tPg0KPj4gU2lnbmVk
-LW9mZi1ieTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+DQo+PiAtLS0NCj4+
-IGRyaXZlcnMvdmZpby92ZmlvX2lvbW11X3R5cGUxLmMgfCAxMCArKysrKysrKy0tDQo+PiAxIGZp
-bGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPj4gDQo+PiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy92ZmlvL3ZmaW9faW9tbXVfdHlwZTEuYyBiL2RyaXZlcnMvdmZpby92
-ZmlvX2lvbW11X3R5cGUxLmMNCj4+IGluZGV4IDJhZGE4ZTZjZGI4OC4uZjhjZThjNDA4YmE4IDEw
-MDY0NA0KPj4gLS0tIGEvZHJpdmVycy92ZmlvL3ZmaW9faW9tbXVfdHlwZTEuYw0KPj4gKysrIGIv
-ZHJpdmVycy92ZmlvL3ZmaW9faW9tbXVfdHlwZTEuYw0KPj4gQEAgLTI5OSw5ICsyOTksMTUgQEAg
-c3RhdGljIGludCB2ZmlvX2xvY2tfYWNjdChzdHJ1Y3QgdmZpb19kbWEgKmRtYSwgbG9uZyBucGFn
-ZSwgYm9vbCBhc3luYykNCj4+ICAqLw0KPj4gc3RhdGljIGJvb2wgaXNfaW52YWxpZF9yZXNlcnZl
-ZF9wZm4odW5zaWduZWQgbG9uZyBwZm4pDQo+PiB7DQo+PiAtICAgICAgIGlmIChwZm5fdmFsaWQo
-cGZuKSkNCj4+IC0gICAgICAgICAgICAgICByZXR1cm4gUGFnZVJlc2VydmVkKHBmbl90b19wYWdl
-KHBmbikpOw0KPj4gKyAgICAgICBzdHJ1Y3QgcGFnZSAqcGFnZSA9IHBmbl90b19vbmxpbmVfcGFn
-ZShwZm4pOw0KPiANCj4gVWdoLCBJIGp1c3QgcmVhbGl6ZWQgdGhpcyBpcyBub3QgYSBzYWZlIGNv
-bnZlcnNpb24gdW50aWwNCj4gcGZuX3RvX29ubGluZV9wYWdlKCkgaXMgbW92ZWQgb3ZlciB0byBz
-dWJzZWN0aW9uIGdyYW51bGFyaXR5LiBBcyBpdA0KPiBzdGFuZHMgaXQgd2lsbCByZXR1cm4gdHJ1
-ZSBmb3IgYW55IFpPTkVfREVWSUNFIHBhZ2VzIHRoYXQgc2hhcmUgYQ0KPiBzZWN0aW9uIHdpdGgg
-Ym9vdCBtZW1vcnkuDQoNClRoYXQgc2hvdWxkIG5vdCBoYXBwZW4gcmlnaHQgbm93IGFuZCBJIGNv
-bW1lbnRlZCBiYWNrIHdoZW4geW91IGludHJvZHVjZWQgc3Vic2VjdGlvbiBzdXBwb3J0IHRoYXQg
-SSBkb27igJl0IHdhbnQgdG8gaGF2ZSBaT05FX0RFVklDRSBtaXhlZCB3aXRoIG9ubGluZSBwYWdl
-cyBpbiBhIHNlY3Rpb24uIEhhdmluZyBtZW1vcnkgYmxvY2sgZGV2aWNlcyB0aGF0IHBhcnRpYWxs
-eSBzcGFuIFpPTkVfREVWSUNFIHdvdWxkIGJlIC4uLiByZWFsbHkgd2VpcmQuIFdpdGggc29tZXRo
-aW5nIGxpa2UgcGZuX2FjdGl2ZSgpIC0gYXMgZGlzY3Vzc2VkIC0gd2UgY291bGQgYXQgbGVhc3Qg
-bWFrZSB0aGlzIGNoZWNrIHdvcmsgLSBidXQgSSBhbSBub3Qgc3VyZSBpZiB3ZSByZWFsbHkgd2Fu
-dCB0byBnbyBkb3duIHRoYXQgcGF0aC4gSW4gdGhlIHdvcnN0IGNhc2UsIHNvbWUgTUIgb2YgUkFN
-IGFyZSBsb3N0IC4uLiBJIGd1ZXNzIHRoaXMgbmVlZHMgbW9yZSB0aG91Z2h0Lg==
 
+On 11/6/19 7:33 PM, Michael Ellerman wrote:
+> Hi Thomas,
+>
+> Thomas Falcon <tlfalcon@linux.ibm.com> writes:
+>> After a migration, it is necessary to send a gratuitous ARP
+>> from all running interfaces so that the rest of the network
+>> is aware of its new location. However, some supported network
+>> devices are unaware that they have been migrated. To avoid network
+>> interruptions and other unwanted behavior, force a GARP on all
+>> valid, running interfaces as part of the post_mobility_fixup
+>> routine.
+>>
+>> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+>> ---
+>>   arch/powerpc/platforms/pseries/mobility.c | 20 ++++++++++++++++++++
+>>   1 file changed, 20 insertions(+)
+> This patch is in powerpc code, but it's doing networking stuff that I
+> don't really understand.
+>
+> So I'd like an Ack from Dave or someone else in netdev land before I
+> merge it.
+
+Thanks, I've already included netdev in the CC list. I'll wait and keep 
+an eye out for any comments from that side.
+
+Tom
+
+
+
+>
+> cheers
+>
+>
+>> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+>> index b571285f6c14..c1abc14cf2bb 100644
+>> --- a/arch/powerpc/platforms/pseries/mobility.c
+>> +++ b/arch/powerpc/platforms/pseries/mobility.c
+>> @@ -17,6 +17,9 @@
+>>   #include <linux/delay.h>
+>>   #include <linux/slab.h>
+>>   #include <linux/stringify.h>
+>> +#include <linux/netdevice.h>
+>> +#include <linux/rtnetlink.h>
+>> +#include <net/net_namespace.h>
+>>   
+>>   #include <asm/machdep.h>
+>>   #include <asm/rtas.h>
+>> @@ -331,6 +334,8 @@ void post_mobility_fixup(void)
+>>   {
+>>   	int rc;
+>>   	int activate_fw_token;
+>> +	struct net_device *netdev;
+>> +	struct net *net;
+>>   
+>>   	activate_fw_token = rtas_token("ibm,activate-firmware");
+>>   	if (activate_fw_token == RTAS_UNKNOWN_SERVICE) {
+>> @@ -371,6 +376,21 @@ void post_mobility_fixup(void)
+>>   	/* Possibly switch to a new RFI flush type */
+>>   	pseries_setup_rfi_flush();
+>>   
+>> +	/* need to force a gratuitous ARP on running interfaces */
+>> +	rtnl_lock();
+>> +	for_each_net(net) {
+>> +		for_each_netdev(net, netdev) {
+>> +			if (netif_device_present(netdev) &&
+>> +			    netif_running(netdev) &&
+>> +			    !(netdev->flags & (IFF_NOARP | IFF_LOOPBACK)))
+>> +				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
+>> +							 netdev);
+>> +				call_netdevice_notifiers(NETDEV_RESEND_IGMP,
+>> +							 netdev);
+>> +		}
+>> +	}
+>> +	rtnl_unlock();
+>> +
+>>   	return;
+>>   }
+>>   
+>> -- 
+>> 2.12.3
