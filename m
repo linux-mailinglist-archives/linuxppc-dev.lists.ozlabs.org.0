@@ -1,53 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CE5F2912
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:28:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4188DF2923
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:32:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477xPn1jskzF683
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:28:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477xTh5CfqzF6DB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:32:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="KypO2u9q"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477wx73f3MzF40n
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 19:07:22 +1100 (AEDT)
-Received: from rapoport-lnx (nesher1.haifa.il.ibm.com [195.110.40.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 14F2F2077C;
- Thu,  7 Nov 2019 08:07:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573114040;
- bh=Vs0vmuJFZJfCdBWbcef1JshwZZc9l+YrjwUdtsaNu3k=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=KypO2u9qQZOpCT97PagoJmJ05jNzzAwEOh5TQuJtaHcnw290kuyiCyRgXcpTDgoff
- yL2r3/5Nv3OxL5iW1vDTUMldS7lvQVWUl8vBPDTErZIqUCYXU5EvD9rUB9CL4lekw9
- M70s0IBFr/3wdhsUYXeg/j3kPNjd4MGq8LMTqoAU=
-Date: Thu, 7 Nov 2019 10:07:07 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v2 05/18] mm/gup: introduce pin_user_pages*() and FOLL_PIN
-Message-ID: <20191107080706.GB3239@rapoport-lnx>
-References: <20191103211813.213227-1-jhubbard@nvidia.com>
- <20191103211813.213227-6-jhubbard@nvidia.com>
- <20191105131032.GG25005@rapoport-lnx>
- <9ac948a4-59bf-2427-2007-e460aad2848a@nvidia.com>
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 477xDp3v3pzF5mv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 19:20:56 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 867FF7A7;
+ Wed,  6 Nov 2019 20:44:18 -0800 (PST)
+Received: from [10.163.1.1] (unknown [10.163.1.1])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C69DD3F71A;
+ Wed,  6 Nov 2019 20:43:56 -0800 (PST)
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+To: Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+ <e0aa8d49-5511-15e4-f413-62c99eea4fab@arm.com>
+ <e0dc3636-8c6e-0177-9a7f-fefd28c74f27@synopsys.com>
+ <dc2746c9-bde4-ac00-88d1-2bd1cea1f105@arm.com>
+ <b93ffe1f-b198-a042-ecd4-b0f2b0171f72@synopsys.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <da665683-6946-b411-57f9-e1689d4b50fe@arm.com>
+Date: Thu, 7 Nov 2019 10:14:30 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9ac948a4-59bf-2427-2007-e460aad2848a@nvidia.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <b93ffe1f-b198-a042-ecd4-b0f2b0171f72@synopsys.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,126 +55,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, "x86@kernel.org" <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 05, 2019 at 11:00:06AM -0800, John Hubbard wrote:
-> On 11/5/19 5:10 AM, Mike Rapoport wrote:
-> ...
-> >> ---
-> >>  Documentation/vm/index.rst          |   1 +
-> >>  Documentation/vm/pin_user_pages.rst | 212 ++++++++++++++++++++++
-> > 
-> > I think it belongs to Documentation/core-api.
-> 
-> Done:
-> 
-> diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-> index ab0eae1c153a..413f7d7c8642 100644
-> --- a/Documentation/core-api/index.rst
-> +++ b/Documentation/core-api/index.rst
-> @@ -31,6 +31,7 @@ Core utilities
->     generic-radix-tree
->     memory-allocation
->     mm-api
-> +   pin_user_pages
->     gfp_mask-from-fs-io
->     timekeeping
->     boot-time-mm
 
-Thanks!
+
+On 11/06/2019 11:37 PM, Vineet Gupta wrote:
+> On 11/5/19 7:03 PM, Anshuman Khandual wrote:
+>> But should not pfn_pmd() be encapsulated inside HAVE_ARCH_TRANSPARENT_HUGEPAGE
+>> at the minimum (but I would say it should be available always, nonetheless) when
+>> the platform subscribes to THP irrespective of whether THP is enabled or not.
+> 
+> For ARC it was only introduced/needed when I added THP support so it is dependent
+> in some way.
+Right, it is dependent.
+
+> 
+>> I could see in the file (arch/arc/include/asm/pgtable.h) that fetching pfn_pmd()
+>> and all other basic PMD definitions is conditional on CONFIG_TRANSPARENT_HUGEPAGE.
+>>
+>> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> #include <asm/hugepage.h>
+>> #endif
+>>
+>> IIUC, CONFIG_TRANSPARENT_HUGEPAGE should only encapsulate PMD page table helpers
+>> which are expected from generic THP code (pmd_trans_huge, pmdp_set_access_flags
+>> etc) but not the basic PMD helpers like pmd_pfn, pmd_mkyoung, pmd_mkdirty,
+>> pmd_mkclean etc. 
+> 
+> ARC only has 2 levels of paging, so these don't make any sense in general and
+> needed only for THP case.
+> I case of arch/arm you see it is only defined in pgtable-3level.h
+
+There is no uniformity for all these across architectures. It has been bit
+difficult to get some of these required helpers right (compile and run) on
+different platforms.
+
+> 
+>> Hence wondering will it be possible to accommodate following
+>> code change on arc platform (not even compiled) in order to fix the problem ?
+> 
+> I'm open to making changes in ARC code but lets do the right thing.
+> 
+>>   */
+>> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
+>>  #include <asm/hugepage.h>
+>>  #endif
+> 
+> This in wrong.  CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE is a just a glue toggle,
+> used only in Kconfig files (and not in any "C" code).  It enables generic Kconfig
+> code to allow visibility of CONFIG_TRANSPARENT_HUGEPAGE w/o every arch needing to
+> do a me too.
+> 
+> I think you need to use CONFIG_TRANSPARENT_HUGEPAGE to guard appropriate tests. I
+> understand that it only
+
+We can probably replace CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE wrapper with
+CONFIG_TRANSPARENT_HUGEPAGE. But CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+explicitly depends on CONFIG_TRANSPARENT_HUGEPAGE as a prerequisite. Could
+you please confirm if the following change on this test will work on ARC
+platform for both THP and !THP cases ? Thank you.
+
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 621ac09..99ebc7c 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -67,7 +67,7 @@ static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
+ 	WARN_ON(pte_write(pte_wrprotect(pte)));
+ }
  
-> ...
-> >> diff --git a/Documentation/vm/pin_user_pages.rst b/Documentation/vm/pin_user_pages.rst
-> >> new file mode 100644
-> >> index 000000000000..3910f49ca98c
-> >> --- /dev/null
-> >> +++ b/Documentation/vm/pin_user_pages.rst
-> >> @@ -0,0 +1,212 @@
-> >> +.. SPDX-License-Identifier: GPL-2.0
-> >> +
-> >> +====================================================
-> >> +pin_user_pages() and related calls
-> >> +====================================================
-> > 
-> > I know this is too much to ask, but having pin_user_pages() a part of more
-> > general GUP description would be really great :)
-> > 
-> 
-> Yes, definitely. But until I saw the reaction to the pin_user_pages() API
-> family, I didn't want to write too much--it could have all been tossed out
-> in favor of a whole different API. But now that we've had some initial
-> reviews, I'm much more confident in being able to write about the larger 
-> API set.
-> 
-> So yes, I'll put that on my pending list.
-> 
-> 
-> ...
-> >> +This document describes the following functions: ::
-> >> +
-> >> + pin_user_pages
-> >> + pin_user_pages_fast
-> >> + pin_user_pages_remote
-> >> +
-> >> + pin_longterm_pages
-> >> + pin_longterm_pages_fast
-> >> + pin_longterm_pages_remote
-> >> +
-> >> +Basic description of FOLL_PIN
-> >> +=============================
-> >> +
-> >> +A new flag for get_user_pages ("gup") has been added: FOLL_PIN. FOLL_PIN has
-> > 
-> > Consider reading this after, say, half a year ;-)
-> > 
-> 
-> OK, OK. I knew when I wrote that that it was not going to stay new forever, but
-> somehow failed to write the right thing anyway. :) 
-> 
-> Here's a revised set of paragraphs:
-> 
-> Basic description of FOLL_PIN
-> =============================
-> 
-> FOLL_PIN and FOLL_LONGTERM are flags that can be passed to the get_user_pages*()
-> ("gup") family of functions. FOLL_PIN has significant interactions and
-> interdependencies with FOLL_LONGTERM, so both are covered here.
-> 
-> Both FOLL_PIN and FOLL_LONGTERM are internal to gup, meaning that neither
-> FOLL_PIN nor FOLL_LONGTERM should not appear at the gup call sites. This allows
-> the associated wrapper functions  (pin_user_pages() and others) to set the
-> correct combination of these flags, and to check for problems as well.
-
-Great, thanks! 
+-#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+ {
+ 	pmd_t pmd = pfn_pmd(pfn, prot);
+@@ -85,9 +85,6 @@ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+ 	 */
+ 	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
+ }
+-#else
+-static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
+-#endif
  
-> thanks,
-> 
-> John Hubbard
-> NVIDIA
+ #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+ static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+@@ -112,6 +109,10 @@ static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+ #else
+ static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+ #endif
++#else
++static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
++static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
++#endif
+ 
+ static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
+ {
 
--- 
-Sincerely yours,
-Mike.
+> -Vineet
+> 
