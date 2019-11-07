@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B7DF2891
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFAEF287D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 08:55:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477wmY6mtmzF3GK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 18:59:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477wgf2rJMzF1tp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 18:55:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477wd72sTHzF15Z
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477wd72pz0zF15Q
  for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 18:53:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="btTM+JO9"; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 477snc6KMbz9sWx; Thu,  7 Nov 2019 16:45:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1573105540; bh=v04gpqPuQsMYJe1XTEi01nFH99poTytMgQDqvHAql10=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=btTM+JO9ec0tnAra1rxspTAzuX4dmHSwx5F3iPKpRDE1Dyy7H2lCI89oVQBvfAAQ6
- ur1klG5Ekm5jzpUWTLAyOyJfJYPs4n1XrxybuX7LMqvepoNxTZMhhRZjboNtJJLraS
- L3rUCeqJ/N28fmgLbr+39yfvgI3hDzdJJEeHAEzXTsWT67aUSTjT2TrM9FRmsb2ZX+
- Dz+9847F24kuYlHhFHYRBvoYF5KLRww2/hDpxO5JiiYWtSEecVc8c34OzzZdGNegYn
- v0ZcRc24HBfiQUQXgmKhdq5Xpou5e2aLTaQ7WnAZ4YuiA/kofjJz6JiuTee/DVEPZ2
- FauPmtkkfgc8g==
-Date: Thu, 7 Nov 2019 16:45:35 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v10 1/8] mm: ksm: Export ksm_madvise()
-Message-ID: <20191107054535.GA2882@oak.ozlabs.ibm.com>
-References: <20191104041800.24527-1-bharata@linux.ibm.com>
- <20191104041800.24527-2-bharata@linux.ibm.com>
- <20191106043329.GB12069@oak.ozlabs.ibm.com>
- <20191106064542.GB21634@in.ibm.com>
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.b="l5EM9iXC"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 477ttV3Hh4zB3tP;
+ Thu,  7 Nov 2019 17:34:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1573108500;
+ bh=8QWFC8ATOW/EWg2Fx4XSxd/+I6wxAZCxEEB8iiH/Ywo=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=l5EM9iXCztIvbZInfj1ruXyv6YaYOKS3Ef5x5s+/TphU4cBRKtqq+6aNQgGvgkGZR
+ 7nfbzNySMTkA6jJftTOwd7SmXLtFsum33xOsHfu678QnYkL5hzuBaNx+qYZKqy+GG4
+ BnrmvPa6HCOqYavtI0Rpo5NEhMA7K/2RwHhOKpDqbysn0s7e5B0cxRRDcCVwpwD5Qj
+ wjnJUB930g+Z89iEqjr10awoXsZsRiV9eQgHCPCu1RsyXF7srI03RWgHBr9E7TMzVK
+ KWPIf4bYo0KxNlOFVMBCVXIg8uQOqmOEHCAvA0SG5soPbvZWU+i2HozMyKmcy7maTf
+ wPA0Su1RnUitw==
+Date: Thu, 7 Nov 2019 17:34:51 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: Please add powerpc topic/kasan-bitops branch to linux-next
+Message-ID: <20191107173451.6be74953@canb.auug.org.au>
+In-Reply-To: <87r22k5nrz.fsf@mpe.ellerman.id.au>
+References: <87r22k5nrz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191106064542.GB21634@in.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/signed; boundary="Sig_/QLj.mRHKb6JGbFGyiT8jLoU";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,68 +57,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de
+Cc: linux-s390@vger.kernel.org, x86@kernel.org, kasan-dev@googlegroups.com,
+ linux-next@vger.kernel.org, linux-arch@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 06, 2019 at 12:15:42PM +0530, Bharata B Rao wrote:
-> On Wed, Nov 06, 2019 at 03:33:29PM +1100, Paul Mackerras wrote:
-> > On Mon, Nov 04, 2019 at 09:47:53AM +0530, Bharata B Rao wrote:
-> > > KVM PPC module needs ksm_madvise() for supporting secure guests.
-> > > Guest pages that become secure are represented as device private
-> > > pages in the host. Such pages shouldn't participate in KSM merging.
-> > 
-> > If we don't do the ksm_madvise call, then as far as I can tell, it
-> > should all still work correctly, but we might have KSM pulling pages
-> > in unnecessarily, causing a reduction in performance.  Is that right?
-> 
-> I thought so too. When KSM tries to merge a secure page, it should
-> cause a fault resulting in page-out the secure page. However I see
-> the below crash when KSM is enabled and KSM scan tries to kmap and
-> memcmp the device private page.
-> 
-> BUG: Unable to handle kernel data access at 0xc007fffe00010000
-> Faulting instruction address: 0xc0000000000ab5a0
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
-> Modules linked in:
-> CPU: 0 PID: 22 Comm: ksmd Not tainted 5.4.0-rc2-00026-g2249c0ae4a53-dirty #376
-> NIP:  c0000000000ab5a0 LR: c0000000003d7c3c CTR: 0000000000000004
-> REGS: c0000001c85d79b0 TRAP: 0300   Not tainted  (5.4.0-rc2-00026-g2249c0ae4a53-dirty)
-> MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24002242  XER: 20040000
-> CFAR: c0000000000ab3d0 DAR: c007fffe00010000 DSISR: 40000000 IRQMASK: 0 
-> GPR00: 0000000000000004 c0000001c85d7c40 c0000000018ce000 c0000001c3880000 
-> GPR04: c007fffe00010000 0000000000010000 0000000000000000 ffffffffffffffff 
-> GPR08: c000000001992298 0000603820002138 ffffffffffffffff ffffffff00003a69 
-> GPR12: 0000000024002242 c000000002550000 c0000001c8700000 c00000000179b728 
-> GPR16: c00c01ffff800040 c00000000179b5b8 c00c00000070e200 ffffffffffffffff 
-> GPR20: 0000000000000000 0000000000000000 fffffffffffff000 c00000000179b648 
-> GPR24: c0000000024464a0 c00000000249f568 c000000001118918 0000000000000000 
-> GPR28: c0000001c804c590 c00000000249f518 0000000000000000 c0000001c8700000 
-> NIP [c0000000000ab5a0] memcmp+0x320/0x6a0
-> LR [c0000000003d7c3c] memcmp_pages+0x8c/0xe0
-> Call Trace:
-> [c0000001c85d7c40] [c0000001c804c590] 0xc0000001c804c590 (unreliable)
-> [c0000001c85d7c70] [c0000000004591d0] ksm_scan_thread+0x960/0x21b0
-> [c0000001c85d7db0] [c0000000001bf328] kthread+0x198/0x1a0
-> [c0000001c85d7e20] [c00000000000bfbc] ret_from_kernel_thread+0x5c/0x80
-> Instruction dump:
-> ebc1fff0 eba1ffe8 eb81ffe0 eb61ffd8 4e800020 38600001 4d810020 3860ffff 
-> 4e800020 38000004 7c0903a6 7d201c28 <7d402428> 7c295040 38630008 38840008 
+--Sig_/QLj.mRHKb6JGbFGyiT8jLoU
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hmmm, that seems like a bug in the ZONE_DEVICE stuff generally.  All
-that ksm is doing as far as I can see is follow_page() and
-kmap_atomic().  I wonder how many other places in the kernel might
-also be prone to crashing if they try to touch device pages?
+Hi Michael,
 
-> In anycase, we wouldn't want secure guests pages to be pulled out due
-> to KSM, hence disabled merging.
+On Thu, 07 Nov 2019 15:11:12 +1100 Michael Ellerman <mpe@ellerman.id.au> wr=
+ote:
+>
+> Can you please add the topic/kasan-bitops tree of the powerpc repository
+> to linux-next.
+>=20
+> powerpc         git     git://git.kernel.org/pub/scm/linux/kernel/git/pow=
+erpc/linux.git#topic/kasan-bitops
+>=20
+> See:
+>   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?=
+h=3Dtopic/kasan-bitops
+>=20
+> This will be a (hopefully) short lived branch to carry some cross
+> architecture KASAN related patches for v5.5.
 
-Sure, I don't disagree with that, but I worry that we are papering
-over a bug here.
+Added from today.
 
-Paul.
+Thanks for adding your subsystem tree as a participant of linux-next.  As
+you may know, this is not a judgement of your code.  The purpose of
+linux-next is for integration testing and to lower the impact of
+conflicts between subsystems in the next merge window.=20
+
+You will need to ensure that the patches/commits in your tree/series have
+been:
+     * submitted under GPL v2 (or later) and include the Contributor's
+        Signed-off-by,
+     * posted to the relevant mailing list,
+     * reviewed by you (or another maintainer of your subsystem tree),
+     * successfully unit tested, and=20
+     * destined for the current or next Linux merge window.
+
+Basically, this should be just what you would send to Linus (or ask him
+to fetch).  It is allowed to be rebased if you deem it necessary.
+
+--=20
+Cheers,
+Stephen Rothwell=20
+sfr@canb.auug.org.au
+
+--Sig_/QLj.mRHKb6JGbFGyiT8jLoU
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl3DuwsACgkQAVBC80lX
+0Gx+nQf+Kb9/DdUAxGd+w9sWu1q0Z+Hiq9qD8vwzOM0/tFtNdMhWLOJRM0idUy9Q
+NHHN0yi54olE5bolHbOqmXXITBE+Dy7RyRUchaPSMkUgAAI8n+iteHy4/ZakmJr+
+6lYeGHjGzM9+9q5eYl6yD7hj6cAAyI4wBUu0fMYBcuWix/xOImWZAe/6iGRhgRLf
+UAzDGUbnyqpox0S0v10SJjbTkGXyuvaxzs27pGUBZbRODNPbZYEX7hpo5TnQxzBq
+ZMkJaRdxAKi0szigouKz9d75XPKNmc4zz5tY9gCShmBlE6bjJHzVF0ntNGrge78W
+mMgfvcvatGMcL/fbSn8nu3+vqMnFpg==
+=XNA5
+-----END PGP SIGNATURE-----
+
+--Sig_/QLj.mRHKb6JGbFGyiT8jLoU--
