@@ -1,88 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E9EF299C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:48:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA3AF29B9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:51:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477xrf1XcjzF6Fk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:48:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477xvj3pg3zF6Hh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:51:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=wsnh=y7=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477xpW2mvQzF6DG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 19:46:42 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA78cNYe094150
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 7 Nov 2019 03:46:40 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w41w50x5u-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Nov 2019 03:46:39 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <clombard@linux.vnet.ibm.com>;
- Thu, 7 Nov 2019 08:46:30 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 7 Nov 2019 08:46:27 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA78kQ6752428958
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 7 Nov 2019 08:46:26 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 67446A405B;
- Thu,  7 Nov 2019 08:46:26 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 34F97A4060;
- Thu,  7 Nov 2019 08:46:26 +0000 (GMT)
-Received: from [9.134.167.121] (unknown [9.134.167.121])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  7 Nov 2019 08:46:26 +0000 (GMT)
-Subject: Re: [PATCH 3/3] powerpc/pseries: Fixup config space size of OpenCAPI
- devices
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- fbarrat@linux.vnet.ibm.com, groug@kaod.org
-References: <20191022075247.16266-1-clombard@linux.vnet.ibm.com>
- <20191022075247.16266-4-clombard@linux.vnet.ibm.com>
- <f80de6db-cfea-5897-288f-64d002b25d8d@linux.ibm.com>
-From: christophe lombard <clombard@linux.vnet.ibm.com>
-Date: Thu, 7 Nov 2019 09:46:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477xpw42cBzF6FS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 19:47:04 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205201] Booting halts if Dawicontrol DC-2976 UW SCSI board
+ installed, unless RAM size limited to 3500M
+Date: Thu, 07 Nov 2019 08:46:34 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: chzigotzky@xenosoft.de
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-205201-206035-LLASS7fcZq@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205201-206035@https.bugzilla.kernel.org/>
+References: <bug-205201-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <f80de6db-cfea-5897-288f-64d002b25d8d@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110708-0016-0000-0000-000002C18215
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110708-0017-0000-0000-000033230239
-Message-Id: <35141b5c-a48c-d0c8-a566-cd3e36121c59@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-07_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911070087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,56 +65,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/11/2019 06:01, Andrew Donnellan wrote:
-> On 22/10/19 6:52 pm, christophe lombard wrote:
->> Fix up the pci config size of the OpenCAPI PCIe devices in the pseries
->> environment.
->> Most of OpenCAPI PCIe devices have 4096 bytes of configuration space.
-> 
-> It's not "most of", it's "all" - the OpenCAPI Discovery and 
-> Configuration Spec requires the use of extended capabilities that fall 
-> in the 0x100-0xFFF range.
-> 
->>
->> Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
->> ---
->>   arch/powerpc/platforms/pseries/pci.c | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/arch/powerpc/platforms/pseries/pci.c 
->> b/arch/powerpc/platforms/pseries/pci.c
->> index 1eae1d09980c..3397784767b0 100644
->> --- a/arch/powerpc/platforms/pseries/pci.c
->> +++ b/arch/powerpc/platforms/pseries/pci.c
->> @@ -291,6 +291,15 @@ static void fixup_winbond_82c105(struct pci_dev* 
->> dev)
->>   DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_WINBOND, 
->> PCI_DEVICE_ID_WINBOND_82C105,
->>                fixup_winbond_82c105);
->> +static void fixup_opencapi_cfg_size(struct pci_dev *pdev)
->> +{
->> +    if (!machine_is(pseries))
->> +        return;
->> +
->> +    pdev->cfg_size = PCI_CFG_SPACE_EXP_SIZE;
->> +}
->> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IBM, 0x062b, 
->> fixup_opencapi_cfg_size);
-> 
-> An OpenCAPI device can have any PCI ID, is there a particular reason 
-> we're limiting this to 1014:062b? On PowerNV, we check the PHB type to 
-> determine whether the device is OpenCAPI or not, what's the equivalent 
-> for pseries?
-> 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205201
 
-Thanks for the review. For pseries, there is no specific OpenCapi PHB 
-type which constraints this kind of request.
-We are working to found an other solution.
+--- Comment #7 from Christian Zigotzky (chzigotzky@xenosoft.de) ---
+Unfortunately this patch doesn't solve the issue.=20
 
->> +
->>   int pseries_root_bridge_prepare(struct pci_host_bridge *bridge)
->>   {
->>       struct device_node *dn, *pdn;
->>
-> 
+Error message:
 
+    [    6.041163] bttv: driver version 0.9.19 loaded
+    [    6.041167] bttv: using 8 buffers with 2080k (520 pages) each for
+capture
+    [    6.041559] bttv: Bt8xx card found (0)
+    [    6.041609] bttv: 0: Bt878 (rev 17) at 1000:04:05.0, irq: 19, latenc=
+y:
+128, mmio: 0xc20001000
+    [    6.041622] bttv: 0: using: Typhoon TView RDS + FM Stereo / KNC1 TV
+Station RDS [card=3D53,insmod option]
+    [    6.042216] bttv: 0: tuner type=3D5
+    [    6.111994] bttv: 0: audio absent, no audio device found!
+    [    6.176425] bttv: 0: Setting PLL: 28636363 =3D> 35468950 (needs up to
+100ms)
+    [    6.200005] bttv: PLL set ok
+    [    6.209351] bttv: 0: registered device video0
+    [    6.211576] bttv: 0: registered device vbi0
+    [    6.214897] bttv: 0: registered device radio0
+    [  114.218806] bttv 1000:04:05.0: overflow 0x00000000ff507000+4096 of D=
+MA
+mask ffffffff bus mask df000000
+    [  114.218848] Modules linked in: rfcomm bnep tuner_simple tuner_types
+tea5767 tuner tda7432 tvaudio msp3400 bttv tea575x tveeprom videobuf_dma_sg
+videobuf_core rc_core videodev mc btusb btrtl btbcm btintel bluetooth
+uio_pdrv_genirq uio ecdh_generic ecc
+    [  114.219012] [c0000001ecddf720] [80000000008ff6e8]
+.buffer_prepare+0x150/0x268 [bttv]
+    [  114.219029] [c0000001ecddf860] [80000000008fff6c] .bttv_qbuf+0x50/0x=
+64
+[bttv]
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
