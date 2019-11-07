@@ -1,54 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B897F2455
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 02:35:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF24DF2563
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 03:27:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477mDX5zVLzF4Ms
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 12:35:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477nNf58TJzF5sp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 13:27:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477mBP4JHbzDrc9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 12:33:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="Lcx6oiQj"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 477mBM6gjKz9sP7; Thu,  7 Nov 2019 12:33:15 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 477mBM1pCWz9sP3;
- Thu,  7 Nov 2019 12:33:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1573090395;
- bh=VsO3fAeYbjN3S7yG234wazO8/qEHsnbG2v/22nq4++I=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Lcx6oiQjxm6zMh4RQJV3KsUIPJRUwi8f6KDb0MP9MUJLbu8fT9BEVUd+K5MbrMJ/t
- UqlONSGcEoKlE+gHySDu6EpQxb+6IkonQflL45F2U6hXFNB+ka+I6rQGaTQNmF554k
- j4ZoaosB270YkC2Hvecy/S6dgX7AdkKjC0MjjrG/lvFy2YIDs0oSM6ERTbY03xd57y
- K2Mf+hO/RjzQhNQ3TWT9H8iLSNG1yum4We6FUgJt7vv2BxTYbF0AxIdb2MH2f19imM
- eMoOnou/89LDKZs3uEbygAfzrsHGPbVd/JuFPUnJd1Z15tf2LL/0Vyqj2YCp+Fu5Lc
- BQRGkh7+yZe8A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thomas Falcon <tlfalcon@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [RFC PATCH] powerpc/pseries/mobility: notify network peers after
- migration
-In-Reply-To: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
-References: <1572998794-9392-1-git-send-email-tlfalcon@linux.ibm.com>
-Date: Thu, 07 Nov 2019 12:33:09 +1100
-Message-ID: <87tv7g5v3e.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477nLS3RKZzF5sF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 13:25:13 +1100 (AEDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2019 18:25:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,276,1569308400"; d="scan'208";a="227685020"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by fmsmga004.fm.intel.com with ESMTP; 06 Nov 2019 18:25:08 -0800
+Date: Wed, 6 Nov 2019 18:25:08 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v2 05/18] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+Message-ID: <20191107022508.GB32084@iweiny-DESK2.sc.intel.com>
+References: <20191103211813.213227-1-jhubbard@nvidia.com>
+ <20191103211813.213227-6-jhubbard@nvidia.com>
+ <20191105131032.GG25005@rapoport-lnx>
+ <9ac948a4-59bf-2427-2007-e460aad2848a@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9ac948a4-59bf-2427-2007-e460aad2848a@nvidia.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,82 +54,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, netdev@vger.kernel.org,
- Thomas Falcon <tlfalcon@linux.ibm.com>, msuchanek@suse.com,
- tyreld@linux.ibm.com
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Thomas,
+> 
+> 
+> ...
+> >> +This document describes the following functions: ::
+> >> +
+> >> + pin_user_pages
+> >> + pin_user_pages_fast
+> >> + pin_user_pages_remote
+> >> +
+> >> + pin_longterm_pages
+> >> + pin_longterm_pages_fast
+> >> + pin_longterm_pages_remote
+> >> +
+> >> +Basic description of FOLL_PIN
+> >> +=============================
+> >> +
+> >> +A new flag for get_user_pages ("gup") has been added: FOLL_PIN. FOLL_PIN has
+> > 
+> > Consider reading this after, say, half a year ;-)
+> > 
+> 
+> OK, OK. I knew when I wrote that that it was not going to stay new forever, but
+> somehow failed to write the right thing anyway. :) 
+> 
+> Here's a revised set of paragraphs:
+> 
+> Basic description of FOLL_PIN
+> =============================
+> 
+> FOLL_PIN and FOLL_LONGTERM are flags that can be passed to the get_user_pages*()
+> ("gup") family of functions. FOLL_PIN has significant interactions and
+> interdependencies with FOLL_LONGTERM, so both are covered here.
+> 
+> Both FOLL_PIN and FOLL_LONGTERM are internal to gup, meaning that neither
+> FOLL_PIN nor FOLL_LONGTERM should not appear at the gup call sites. This allows
+> the associated wrapper functions  (pin_user_pages() and others) to set the
+> correct combination of these flags, and to check for problems as well.
 
-Thomas Falcon <tlfalcon@linux.ibm.com> writes:
-> After a migration, it is necessary to send a gratuitous ARP
-> from all running interfaces so that the rest of the network
-> is aware of its new location. However, some supported network
-> devices are unaware that they have been migrated. To avoid network
-> interruptions and other unwanted behavior, force a GARP on all
-> valid, running interfaces as part of the post_mobility_fixup
-> routine.
->
-> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/mobility.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+I like this revision as well.
 
-This patch is in powerpc code, but it's doing networking stuff that I
-don't really understand.
+Ira
 
-So I'd like an Ack from Dave or someone else in netdev land before I
-merge it.
-
-cheers
-
-
-> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-> index b571285f6c14..c1abc14cf2bb 100644
-> --- a/arch/powerpc/platforms/pseries/mobility.c
-> +++ b/arch/powerpc/platforms/pseries/mobility.c
-> @@ -17,6 +17,9 @@
->  #include <linux/delay.h>
->  #include <linux/slab.h>
->  #include <linux/stringify.h>
-> +#include <linux/netdevice.h>
-> +#include <linux/rtnetlink.h>
-> +#include <net/net_namespace.h>
->  
->  #include <asm/machdep.h>
->  #include <asm/rtas.h>
-> @@ -331,6 +334,8 @@ void post_mobility_fixup(void)
->  {
->  	int rc;
->  	int activate_fw_token;
-> +	struct net_device *netdev;
-> +	struct net *net;
->  
->  	activate_fw_token = rtas_token("ibm,activate-firmware");
->  	if (activate_fw_token == RTAS_UNKNOWN_SERVICE) {
-> @@ -371,6 +376,21 @@ void post_mobility_fixup(void)
->  	/* Possibly switch to a new RFI flush type */
->  	pseries_setup_rfi_flush();
->  
-> +	/* need to force a gratuitous ARP on running interfaces */
-> +	rtnl_lock();
-> +	for_each_net(net) {
-> +		for_each_netdev(net, netdev) {
-> +			if (netif_device_present(netdev) &&
-> +			    netif_running(netdev) &&
-> +			    !(netdev->flags & (IFF_NOARP | IFF_LOOPBACK)))
-> +				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
-> +							 netdev);
-> +				call_netdevice_notifiers(NETDEV_RESEND_IGMP,
-> +							 netdev);
-> +		}
-> +	}
-> +	rtnl_unlock();
-> +
->  	return;
->  }
->  
-> -- 
-> 2.12.3
