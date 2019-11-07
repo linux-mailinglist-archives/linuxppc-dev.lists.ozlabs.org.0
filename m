@@ -2,96 +2,152 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC04F28F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE17F290A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 09:25:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 477xBl3H44zF5TT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:19:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 477xKv4BgTzF67w
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2019 19:25:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 477wdH33kZzF1KD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 18:53:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 477wdC4P5Yz8xjp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 18:53:35 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 477qyW4z3mz9sTC; Thu,  7 Nov 2019 15:23:15 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=erichte@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="nnELPvHb"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 477qyW1VM7z9sTB
- for <linuxppc-dev@ozlabs.org>; Thu,  7 Nov 2019 15:23:15 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA74N4BH019577
- for <linuxppc-dev@ozlabs.org>; Wed, 6 Nov 2019 23:23:13 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w46g02g0f-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 06 Nov 2019 23:23:05 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <erichte@linux.ibm.com>;
- Thu, 7 Nov 2019 04:22:27 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 7 Nov 2019 04:22:22 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xA74MLjr39911824
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 7 Nov 2019 04:22:21 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECF01AE04D;
- Thu,  7 Nov 2019 04:22:20 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7B41CAE055;
- Thu,  7 Nov 2019 04:22:18 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.40.192.65])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  7 Nov 2019 04:22:18 +0000 (GMT)
-From: Eric Richter <erichte@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
- linux-integrity@vger.kernel.org
-Subject: [PATCH v7 4/4] powerpc: load firmware trusted keys/hashes into kernel
- keyring
-Date: Wed,  6 Nov 2019 22:22:05 -0600
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191107042205.13710-1-erichte@linux.ibm.com>
-References: <20191107042205.13710-1-erichte@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 477wl05FWjzF377
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2019 18:58:35 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id n13so1988377pff.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2019 23:58:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=e00d5YBmHccKDNwDC/ZSC9s25lwYabyM9BiQUjCXOhw=;
+ b=nnELPvHbtwYJRa+fArupGTgIpR4z/Ph7VSpfIJTTVmMFC9dCABmvCeqnb+b3W5NZ0g
+ 9muoOzc1QrjLMMKpKKO3G1b9Zwu3fuADrSCJWyEgVYg8bHM23EuTxgVV12r6txnnzvpz
+ BLjWGzpSg+sleEGE6biXa+Ksob1nmVBtCywNrJUD9l7SeKzoiTSskAVZz8svTv/I4Kjk
+ g/SrP6UfPStX/ZlssnQoyynevXIxZxPc9vGQ1YcM9jdploHIgvFnCKr/Krn1s5EwtI/z
+ lwdpXGf1qL48xKemsxypWhwrlK9PthaCw2ep5q1QTENZbZ2lFrFHC0ebb069rCUSD4W/
+ TZqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=e00d5YBmHccKDNwDC/ZSC9s25lwYabyM9BiQUjCXOhw=;
+ b=lEHhnbzbtt9ciBwSqWsRUqm1C6WXPmAZguoN339oFZB6r7jx6wkYEmcycmt8TSJg5/
+ +i7DvI7rlrSbTC4mctv1biiR7WIqzffFD1BhP7N282+QuvaQ+j4SPCa4uYdVR154zy5Q
+ tCvX1gQeMQw33qVgHk8tdGB/5IIf5D1iEsQG5S3mAHtijp2sOM2iBgq6DiLf2gKOfYkW
+ 3Sd785ATdzEpMTtWzkMhGvSpJtCEiOA/tJxy8u7X4PCoGVLAKOIDP5uknrD7fOSR+H5o
+ y6B5rAQhlxiKGZg3MD21sc8Kl3D7NU3ITPV2W60v7XqI/Nur94WBeMiRcQpua7f/4R46
+ ymPQ==
+X-Gm-Message-State: APjAAAXIENAIs+zFvFJY0q0eC9REJu/VZTKeD6rjflhOsHoafzLiJZT6
+ 7CDfuSvgqBMGlom4+hSQL5lXiprNQUc=
+X-Google-Smtp-Source: APXvYqw26KF+stBaP6nGUej8n8EA4QNx+LxQtza98i9RABAtt4qKouJ705ljyKqBLFm4SY9/pnwgww==
+X-Received: by 2002:a63:ce51:: with SMTP id r17mr2301059pgi.16.1573106489073; 
+ Wed, 06 Nov 2019 22:01:29 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id j7sm925149pgl.38.2019.11.06.22.01.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Nov 2019 22:01:28 -0800 (PST)
+Subject: Re: [RFC v1 0/2] Enable IOMMU support for pseries Secure VMs
+To: "Michael S. Tsirkin" <mst@redhat.com>
+References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
+ <265679db-9cb3-1660-0cf6-97f740b1b48b@ozlabs.ru>
+ <20191106130558-mutt-send-email-mst@kernel.org>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <cd60f9ad-7050-188a-8863-10436e6928ca@ozlabs.ru>
+Date: Thu, 7 Nov 2019 17:01:22 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110704-0016-0000-0000-000002C17159
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110704-0017-0000-0000-00003322F07A
-Message-Id: <20191107042205.13710-5-erichte@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-06_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911070044
+In-Reply-To: <20191106130558-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,187 +159,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- George Wilson <gcwilson@linux.ibm.com>
+Cc: andmike@us.ibm.com, Ram Pai <linuxram@us.ibm.com>,
+ mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
+ cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nayna Jain <nayna@linux.ibm.com>
 
-The keys used to verify the Host OS kernel are managed by firmware as
-secure variables. This patch loads the verification keys into the .platform
-keyring and revocation hashes into .blacklist keyring. This enables
-verification and loading of the kernels signed by the boot time keys which
-are trusted by firmware.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Eric Richter <erichte@linux.ibm.com>
----
- arch/powerpc/Kconfig                          |  1 +
- security/integrity/Kconfig                    |  8 ++
- security/integrity/Makefile                   |  4 +-
- .../integrity/platform_certs/load_powerpc.c   | 98 +++++++++++++++++++
- 4 files changed, 110 insertions(+), 1 deletion(-)
- create mode 100644 security/integrity/platform_certs/load_powerpc.c
+On 07/11/2019 05:06, Michael S. Tsirkin wrote:
+> On Wed, Nov 06, 2019 at 12:59:50PM +1100, Alexey Kardashevskiy wrote:
+>>
+>>
+>> On 05/11/2019 08:28, Ram Pai wrote:
+>>> This patch series enables IOMMU support for pseries Secure VMs.
+>>>
+>>>
+>>> Tested using QEMU command line option:
+>>>
+>>>  "-device virtio-scsi-pci,id=scsi0,bus=pci.0,addr=0x4,
+>>>  	iommu_platform=on,disable-modern=off,disable-legacy=on"
+>>>  and 
+>>>
+>>>  "-device virtio-blk-pci,scsi=off,bus=pci.0,
+>>>  	addr=0x5,drive=drive-virtio-disk0,id=virtio-disk0,
+>>>  	iommu_platform=on,disable-modern=off,disable-legacy=on"
+>>
+>>
+>> Worth mentioning that SLOF won't boot with such devices as SLOF does not know about iommu_platform=on.
+> 
+> Shouldn't be hard to support: set up the iommu to allow everything
+> and ack the feature. Right?
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index cabc091f3fe1..498967a5ef4e 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -939,6 +939,7 @@ config PPC_SECURE_BOOT
- 	bool
- 	depends on PPC_POWERNV
- 	depends on IMA_ARCH_POLICY
-+	select LOAD_PPC_KEYS
- 	help
- 	  Systems with firmware secure boot enabled need to define security
- 	  policies to extend secure boot to the OS. This config allows a user
-diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
-index 0bae6adb63a9..26abee23e4e3 100644
---- a/security/integrity/Kconfig
-+++ b/security/integrity/Kconfig
-@@ -72,6 +72,14 @@ config LOAD_IPL_KEYS
-        depends on S390
-        def_bool y
- 
-+config LOAD_PPC_KEYS
-+	bool "Enable loading of platform and blacklisted keys for POWER"
-+	depends on INTEGRITY_PLATFORM_KEYRING
-+	depends on PPC_SECURE_BOOT
-+	help
-+	  Enable loading of keys to the .platform keyring and blacklisted
-+	  hashes to the .blacklist keyring for powerpc based platforms.
-+
- config INTEGRITY_AUDIT
- 	bool "Enables integrity auditing support "
- 	depends on AUDIT
-diff --git a/security/integrity/Makefile b/security/integrity/Makefile
-index 351c9662994b..7ee39d66cf16 100644
---- a/security/integrity/Makefile
-+++ b/security/integrity/Makefile
-@@ -14,6 +14,8 @@ integrity-$(CONFIG_LOAD_UEFI_KEYS) += platform_certs/efi_parser.o \
- 				      platform_certs/load_uefi.o \
- 				      platform_certs/keyring_handler.o
- integrity-$(CONFIG_LOAD_IPL_KEYS) += platform_certs/load_ipl_s390.o
--
-+integrity-$(CONFIG_LOAD_PPC_KEYS) += platform_certs/efi_parser.o \
-+                                     platform_certs/load_powerpc.o \
-+                                     platform_certs/keyring_handler.o
- obj-$(CONFIG_IMA)			+= ima/
- obj-$(CONFIG_EVM)			+= evm/
-diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/integrity/platform_certs/load_powerpc.c
-new file mode 100644
-index 000000000000..805f7df64769
---- /dev/null
-+++ b/security/integrity/platform_certs/load_powerpc.c
-@@ -0,0 +1,98 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Nayna Jain
-+ *
-+ *      - loads keys and hashes stored and controlled by the firmware.
-+ */
-+#include <linux/kernel.h>
-+#include <linux/sched.h>
-+#include <linux/cred.h>
-+#include <linux/err.h>
-+#include <linux/slab.h>
-+#include <linux/of.h>
-+#include <asm/secure_boot.h>
-+#include <asm/secvar.h>
-+#include "keyring_handler.h"
-+
-+/*
-+ * Get a certificate list blob from the named secure variable.
-+ */
-+static __init void *get_cert_list(u8 *key, unsigned long keylen, uint64_t *size)
-+{
-+	int rc;
-+	void *db;
-+
-+	rc = secvar_ops->get(key, keylen, NULL, size);
-+	if (rc) {
-+		pr_err("Couldn't get size: %d\n", rc);
-+		return NULL;
-+	}
-+
-+	db = kmalloc(*size, GFP_KERNEL);
-+	if (!db)
-+		return NULL;
-+
-+	rc = secvar_ops->get(key, keylen, db, size);
-+	if (rc) {
-+		kfree(db);
-+		pr_err("Error reading db var: %d\n", rc);
-+		return NULL;
-+	}
-+
-+	return db;
-+}
-+
-+/*
-+ * Load the certs contained in the keys databases into the platform trusted
-+ * keyring and the blacklisted X.509 cert SHA256 hashes into the blacklist
-+ * keyring.
-+ */
-+static int __init load_powerpc_certs(void)
-+{
-+	void *db = NULL, *dbx = NULL;
-+	uint64_t dbsize = 0, dbxsize = 0;
-+	int rc = 0;
-+	struct device_node *node;
-+
-+	if (!secvar_ops)
-+		return -ENODEV;
-+
-+	/* The following only applies for the edk2-compat backend.
-+	 * Return early if it is not set.
-+	 */
-+
-+	node = of_find_compatible_node(NULL, NULL, "ibm,edk2-compat-v1");
-+	if (!node)
-+		return -ENODEV;
-+
-+	/* Get db, and dbx.  They might not exist, so it isn't
-+	 * an error if we can't get them.
-+	 */
-+	db = get_cert_list("db", 3, &dbsize);
-+	if (!db) {
-+		pr_err("Couldn't get db list from firmware\n");
-+	} else {
-+		rc = parse_efi_signature_list("powerpc:db", db, dbsize,
-+					      get_handler_for_db);
-+		if (rc)
-+			pr_err("Couldn't parse db signatures: %d\n", rc);
-+		kfree(db);
-+	}
-+
-+	dbx = get_cert_list("dbx", 4,  &dbxsize);
-+	if (!dbx) {
-+		pr_info("Couldn't get dbx list from firmware\n");
-+	} else {
-+		rc = parse_efi_signature_list("powerpc:dbx", dbx, dbxsize,
-+					      get_handler_for_dbx);
-+		if (rc)
-+			pr_err("Couldn't parse dbx signatures: %d\n", rc);
-+		kfree(dbx);
-+	}
-+
-+	of_node_put(node);
-+
-+	return rc;
-+}
-+late_initcall(load_powerpc_certs);
+With the defaults we have (32bit window limited by 1GB and SLOF residing close to the end of the second GB), it is not
+straight forward; also SLOF's XHCI and E1000 already use IOMMU so we should just do this for virtio as well, I am
+hacking it now. Thanks,
+
+
+
+> 
+>>>
+>>> Ram Pai (2):
+>>>   powerpc/pseries/iommu: Share the per-cpu TCE page with the hypervisor.
+>>>   powerpc/pseries/iommu: Use dma_iommu_ops for Secure VMs aswell.
+>>>
+>>>  arch/powerpc/platforms/pseries/iommu.c | 30 ++++++++++++++++++------------
+>>>  1 file changed, 18 insertions(+), 12 deletions(-)
+>>>
+>>
+>> -- 
+>> Alexey
+> 
+
 -- 
-2.20.1
-
+Alexey
