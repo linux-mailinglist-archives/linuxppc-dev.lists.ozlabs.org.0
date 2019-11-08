@@ -1,88 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A1CF3CFD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 01:39:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631B2F3EE5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 05:28:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478Lxn0VCwzF4fj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 11:39:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478S2S3CVRzF6Hq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 15:28:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 478Lvc60v1zF6h1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 11:37:32 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA80WGV8145119
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 7 Nov 2019 19:37:28 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w4tvadrsb-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Nov 2019 19:37:28 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Fri, 8 Nov 2019 00:37:25 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 8 Nov 2019 00:37:17 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xA80bGhr40173716
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Nov 2019 00:37:16 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C106F52050;
- Fri,  8 Nov 2019 00:37:16 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2601B5204E;
- Fri,  8 Nov 2019 00:37:16 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C87D3A01E3;
- Fri,  8 Nov 2019 11:37:13 +1100 (AEDT)
-Subject: Re: [PATCH 10/10] ocxl: Conditionally bind SCM devices to the
- generic OCXL driver
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Fri, 08 Nov 2019 11:37:14 +1100
-In-Reply-To: <b70644d6-2c71-cd71-5d00-e25d99beea91@linux.ibm.com>
-References: <20191025044721.16617-1-alastair@au1.ibm.com>
- <20191025044721.16617-11-alastair@au1.ibm.com>
- <b70644d6-2c71-cd71-5d00-e25d99beea91@linux.ibm.com>
-Organization: IBM Australia
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1 (3.34.1-1.fc31) 
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 478S0V66JjzF6hm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 15:27:04 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EFEA630E;
+ Thu,  7 Nov 2019 20:27:00 -0800 (PST)
+Received: from [10.163.1.237] (unknown [10.163.1.237])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B3AF3F6C4;
+ Thu,  7 Nov 2019 20:26:43 -0800 (PST)
+Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
+ helpers
+To: Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
+ <e0aa8d49-5511-15e4-f413-62c99eea4fab@arm.com>
+ <e0dc3636-8c6e-0177-9a7f-fefd28c74f27@synopsys.com>
+ <dc2746c9-bde4-ac00-88d1-2bd1cea1f105@arm.com>
+ <b93ffe1f-b198-a042-ecd4-b0f2b0171f72@synopsys.com>
+ <da665683-6946-b411-57f9-e1689d4b50fe@arm.com>
+ <c204de13-48e7-015f-1a09-263fce7882f1@synopsys.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <a4c5f1cd-7d9e-0f97-5e0e-19d17adc5b33@arm.com>
+Date: Fri, 8 Nov 2019 09:57:18 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <c204de13-48e7-015f-1a09-263fce7882f1@synopsys.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110800-0020-0000-0000-0000038390E2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110800-0021-0000-0000-000021D9C758
-Message-Id: <46d72d7b2f91900c4499db127e365baade38e18c.camel@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-07_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911080004
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,95 +57,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
- David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Wei Yang <richard.weiyang@gmail.com>, Keith Busch <keith.busch@intel.com>,
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, "x86@kernel.org" <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
  Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, Vishal Verma <vishal.l.verma@intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- Qian Cai <cai@lca.pw>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Allison Randal <allison@lohutok.net>,
- David Gibson <david@gibson.dropbear.id.au>, linux-mm@kvack.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-11-07 at 19:08 +0100, Frederic Barrat wrote:
+
+
+On 11/08/2019 12:35 AM, Vineet Gupta wrote:
+> On 11/6/19 8:44 PM, Anshuman Khandual wrote:
+>>
+>>>
+>>>>   */
+>>>> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
+>>>>  #include <asm/hugepage.h>
+>>>>  #endif
+>>> This in wrong.  CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE is a just a glue toggle,
+>>> used only in Kconfig files (and not in any "C" code).  It enables generic Kconfig
+>>> code to allow visibility of CONFIG_TRANSPARENT_HUGEPAGE w/o every arch needing to
+>>> do a me too.
+>>>
+>>> I think you need to use CONFIG_TRANSPARENT_HUGEPAGE to guard appropriate tests. I
+>>> understand that it only
+>> We can probably replace CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE wrapper with
+>> CONFIG_TRANSPARENT_HUGEPAGE. But CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>> explicitly depends on CONFIG_TRANSPARENT_HUGEPAGE as a prerequisite. Could
+>> you please confirm if the following change on this test will work on ARC
+>> platform for both THP and !THP cases ? Thank you.
+>>
+>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>> index 621ac09..99ebc7c 100644
+>> --- a/mm/debug_vm_pgtable.c
+>> +++ b/mm/debug_vm_pgtable.c
+>> @@ -67,7 +67,7 @@ static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
+>>  	WARN_ON(pte_write(pte_wrprotect(pte)));
+>>  }
+>>  
+>> -#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>  static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+>>  {
+>>  	pmd_t pmd = pfn_pmd(pfn, prot);
+>> @@ -85,9 +85,6 @@ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+>>  	 */
+>>  	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
+>>  }
+>> -#else
+>> -static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> -#endif
+>>  
+>>  #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>  static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+>> @@ -112,6 +109,10 @@ static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+>>  #else
+>>  static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>>  #endif
+>> +#else
+>> +static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +#endif
 > 
-> Le 25/10/2019 à 06:47, Alastair D'Silva a écrit :
-> > From: Alastair D'Silva <alastair@d-silva.org>
-> > 
-> > This patch allows the user to bind OpenCAPI SCM devices to the
-> > generic OCXL
-> > driver.
-> > 
-> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> > ---
+> Fails to build for THP case since
 > 
-> I'm wondering if we should upstream this. Is it of any use outside
-> of 
-> some serious debug session for a developer?
-> Also we would now have 2 drivers picking up the same device ID,
-> since 
-> the SCM driver is always registering for that ID, irrespective of 
-> CONFIG_OCXL_SCM_GENERIC
+> CONFIG_TRANSPARENT_HUGEPAGE=y
+> CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD=n
 > 
->    Fred
+> ../mm/debug_vm_pgtable.c:112:20: error: redefinition of ‘pmd_basic_tests’
 > 
 
-I think I'll drop this patch. It's easy enough to maintain out-of-tree
-for our in-house SCM hardware engineers.
+Hmm, really ? With arm64 defconfig we have the same default combination
+where it builds.
 
-> 
-> >   drivers/misc/ocxl/Kconfig | 7 +++++++
-> >   drivers/misc/ocxl/pci.c   | 3 +++
-> >   2 files changed, 10 insertions(+)
-> > 
-> > diff --git a/drivers/misc/ocxl/Kconfig b/drivers/misc/ocxl/Kconfig
-> > index 1916fa65f2f2..8a683715c97c 100644
-> > --- a/drivers/misc/ocxl/Kconfig
-> > +++ b/drivers/misc/ocxl/Kconfig
-> > @@ -29,3 +29,10 @@ config OCXL
-> >   	  dedicated OpenCAPI link, and don't follow the same protocol.
-> >   
-> >   	  If unsure, say N.
-> > +
-> > +config OCXL_SCM_GENERIC
-> > +	bool "Treat OpenCAPI Storage Class Memory as a generic OpenCAPI
-> > device"
-> > +	default n
-> > +	help
-> > +	  Select this option to treat OpenCAPI Storage Class Memory
-> > +	  devices an generic OpenCAPI devices.
-> > diff --git a/drivers/misc/ocxl/pci.c b/drivers/misc/ocxl/pci.c
-> > index cb920aa88d3a..7137055c1883 100644
-> > --- a/drivers/misc/ocxl/pci.c
-> > +++ b/drivers/misc/ocxl/pci.c
-> > @@ -10,6 +10,9 @@
-> >    */
-> >   static const struct pci_device_id ocxl_pci_tbl[] = {
-> >   	{ PCI_DEVICE(PCI_VENDOR_ID_IBM, 0x062B), },
-> > +#ifdef CONFIG_OCXL_SCM_GENERIC
-> > +	{ PCI_DEVICE(PCI_VENDOR_ID_IBM, 0x0625), },
-> > +#endif
-> >   	{ }
-> >   };
-> >   MODULE_DEVICE_TABLE(pci, ocxl_pci_tbl);
-> > 
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
+CONFIG_TRANSPARENT_HUGEPAGE=y
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE=y
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD=n	/* It should not even appear */
 
+With the above change, we have now
+
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+{
+----
+----
+}
+
+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+{
+----
+----
+}
+#else /* !CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+#endif
+#else	/* !CONFIG_TRANSPARENT_HUGEPAGE */
+static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
+static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+#endif
+
+When !CONFIG_TRANSPARENT_HUGEPAGE
+
+- Dummy definitions for pmd_basic_tests() and pud_basic_tests()
+
+When CONFIG_TRANSPARENT_HUGEPAGE and !CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+
+- Actual pmd_basic_tests() and dummy pud_basic_tests()
+
+When CONFIG_TRANSPARENT_HUGEPAGE and CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+
+- Actual pmd_basic_tests() and pud_basic_tests()
+
+Tested this on arm64 which does not have CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+for THP and !THP and on x86 which has CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+for THP and !THP which basically covered all combination for these configs.
+
+Is there something I am still missing in plain sight :)
+
+- Anshuman
