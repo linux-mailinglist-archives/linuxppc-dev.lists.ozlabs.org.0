@@ -1,55 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880B4F4605
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 12:39:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 318B4F470E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 12:48:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478dbm5B0czF6fw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 22:39:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478dnl0r49zDqTZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 22:48:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="iWFuYTQc"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="svwlLwWQ"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 478dXl0x6TzF6rs
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 22:37:10 +1100 (AEDT)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 478dfw74S2zF6tT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 22:42:32 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C480320869;
- Fri,  8 Nov 2019 11:37:07 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 92FEE21D7B;
+ Fri,  8 Nov 2019 11:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573213028;
- bh=G5j+RwShAgrettv3VQJ2Hzibs0yOoFaJu63CqOxn8Oo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=iWFuYTQcqXM/DR65wCIopKLQsBH2V3ve8n4fUHcE6O0QCwEWq5LcBR7HT3UYbVuXy
- LLH+DzR/qTOHmtgWKoaaTL5pocOV+6Wehrg/cMS5rr/2mDYoYQbR8bXug4dIKrlFDH
- izPZgMynJUZ3fTgx+ygLAuT+nnb+N95WoPMCQjcs=
-Date: Fri, 8 Nov 2019 12:37:05 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH 4/5] power: avs: smartreflex: Remove superfluous cast in
- debugfs_create_file() call
-Message-ID: <20191108113705.GA721212@kroah.com>
-References: <20191021145149.31657-1-geert+renesas@glider.be>
- <20191021145149.31657-5-geert+renesas@glider.be>
- <4367615.jSCgeRn5tF@kreacher>
+ s=default; t=1573213351;
+ bh=lxoQO1EoauxQvVrXhOgcjT27wnFtW9WZsPTLQMG3sWA=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=svwlLwWQZWdZx5xue/2NOi8fzDwdofOv11A20r1JNW0XsXBNmEBBbOr3lnjEYMwCj
+ 7FNE8RaZsOstn4Bbw7XSJ00LQW+/kJIIeQ7/5yNdiZEZDUBOopi4RTASqrs+nrIFSw
+ jOQh48fl1F6r+AzFJzkZ9piy9Pv58+83bi8lnbG4=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 182/205] powerpc/vdso: Correct call frame
+ information
+Date: Fri,  8 Nov 2019 06:37:29 -0500
+Message-Id: <20191108113752.12502-182-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191108113752.12502-1-sashal@kernel.org>
+References: <20191108113752.12502-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4367615.jSCgeRn5tF@kreacher>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,33 +60,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nishanth Menon <nm@ti.com>, Geert Uytterhoeven <geert+renesas@glider.be>,
- David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
- Paul Mackerras <paulus@samba.org>,
- Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>, David@rox.of.borg,
- Herbert Xu <herbert@gondor.apana.org.au>, Kevin Hilman <khilman@kernel.org>,
- Nayna Jain <nayna@linux.ibm.com>, amd-gfx@lists.freedesktop.org,
- Casey Leedom <leedom@chelsio.com>, linux-pm@vger.kernel.org,
- Pensando Drivers <drivers@pensando.io>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- linux-crypto@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
- Alex Deucher <alexander.deucher@amd.com>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
- Shannon Nelson <snelson@pensando.io>, linuxppc-dev@lists.ozlabs.org,
- Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: Sasha Levin <sashal@kernel.org>, Reza Arbab <arbab@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 08, 2019 at 12:24:42PM +0100, Rafael J. Wysocki wrote:
-> On Monday, October 21, 2019 4:51:48 PM CET Geert Uytterhoeven wrote:
-> > There is no need to cast a typed pointer to a void pointer when calling
-> > a function that accepts the latter.  Remove it, as the cast prevents
-> > further compiler checks.
-> > 
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> 
-> Greg, have you taken this one by any chance?
+From: Alan Modra <amodra@gmail.com>
 
-Nope, it's all yours!  :)
+[ Upstream commit 56d20861c027498b5a1112b4f9f05b56d906fdda ]
+
+Call Frame Information is used by gdb for back-traces and inserting
+breakpoints on function return for the "finish" command.  This failed
+when inside __kernel_clock_gettime.  More concerning than difficulty
+debugging is that CFI is also used by stack frame unwinding code to
+implement exceptions.  If you have an app that needs to handle
+asynchronous exceptions for some reason, and you are unlucky enough to
+get one inside the VDSO time functions, your app will crash.
+
+What's wrong:  There is control flow in __kernel_clock_gettime that
+reaches label 99 without saving lr in r12.  CFI info however is
+interpreted by the unwinder without reference to control flow: It's a
+simple matter of "Execute all the CFI opcodes up to the current
+address".  That means the unwinder thinks r12 contains the return
+address at label 99.  Disabuse it of that notion by resetting CFI for
+the return address at label 99.
+
+Note that the ".cfi_restore lr" could have gone anywhere from the
+"mtlr r12" a few instructions earlier to the instruction at label 99.
+I put the CFI as late as possible, because in general that's best
+practice (and if possible grouped with other CFI in order to reduce
+the number of CFI opcodes executed when unwinding).  Using r12 as the
+return address is perfectly fine after the "mtlr r12" since r12 on
+that code path still contains the return address.
+
+__get_datapage also has a CFI error.  That function temporarily saves
+lr in r0, and reflects that fact with ".cfi_register lr,r0".  A later
+use of r0 means the CFI at that point isn't correct, as r0 no longer
+contains the return address.  Fix that too.
+
+Signed-off-by: Alan Modra <amodra@gmail.com>
+Tested-by: Reza Arbab <arbab@linux.ibm.com>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/vdso32/datapage.S     | 1 +
+ arch/powerpc/kernel/vdso32/gettimeofday.S | 1 +
+ arch/powerpc/kernel/vdso64/datapage.S     | 1 +
+ arch/powerpc/kernel/vdso64/gettimeofday.S | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
+index 3745113fcc652..2a7eb5452aba7 100644
+--- a/arch/powerpc/kernel/vdso32/datapage.S
++++ b/arch/powerpc/kernel/vdso32/datapage.S
+@@ -37,6 +37,7 @@ data_page_branch:
+ 	mtlr	r0
+ 	addi	r3, r3, __kernel_datapage_offset-data_page_branch
+ 	lwz	r0,0(r3)
++  .cfi_restore lr
+ 	add	r3,r0,r3
+ 	blr
+   .cfi_endproc
+diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
+index 75cff3f336b3a..afd516b572f86 100644
+--- a/arch/powerpc/kernel/vdso32/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
+@@ -139,6 +139,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
+ 	 */
+ 99:
+ 	li	r0,__NR_clock_gettime
++  .cfi_restore lr
+ 	sc
+ 	blr
+   .cfi_endproc
+diff --git a/arch/powerpc/kernel/vdso64/datapage.S b/arch/powerpc/kernel/vdso64/datapage.S
+index abf17feffe404..bf96686915116 100644
+--- a/arch/powerpc/kernel/vdso64/datapage.S
++++ b/arch/powerpc/kernel/vdso64/datapage.S
+@@ -37,6 +37,7 @@ data_page_branch:
+ 	mtlr	r0
+ 	addi	r3, r3, __kernel_datapage_offset-data_page_branch
+ 	lwz	r0,0(r3)
++  .cfi_restore lr
+ 	add	r3,r0,r3
+ 	blr
+   .cfi_endproc
+diff --git a/arch/powerpc/kernel/vdso64/gettimeofday.S b/arch/powerpc/kernel/vdso64/gettimeofday.S
+index afbad2ac31472..1f324c28705bc 100644
+--- a/arch/powerpc/kernel/vdso64/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso64/gettimeofday.S
+@@ -169,6 +169,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
+ 	 */
+ 99:
+ 	li	r0,__NR_clock_gettime
++  .cfi_restore lr
+ 	sc
+ 	blr
+   .cfi_endproc
+-- 
+2.20.1
 
