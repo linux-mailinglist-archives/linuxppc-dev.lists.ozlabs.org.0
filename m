@@ -2,73 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C8EF4001
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 06:32:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F8FF4020
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 06:51:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478TRX10JkzF6kD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 16:32:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478Tsw3CLqzF6ld
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 16:51:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::241;
- helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="RkTDhtjy"; 
- dkim-atps=neutral
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 478SyB0fHNzF3pV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 16:10:01 +1100 (AEDT)
-Received: by mail-oi1-x241.google.com with SMTP id v138so4187507oif.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Nov 2019 21:10:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=5hxLqM7wbQepnmpAkx3kQrqUx9W7V5kbuct3VgNLCfE=;
- b=RkTDhtjykB7j2cuaWtNSU3sVjWoWCIze54YYFBujyaWCIQJkapqLD4MeV2dhxoJWMC
- 7xv0dkRHVnZYw3zW1L+ru2fry1bNNwjg7RgLcYQ3R76p8RcKcd+8i/rDWNxpbJmoe0cP
- mnziZ7Pb+0gfzkkbAysW5E2nHGmXIzy3yuQyUw867guN3bcJNvAgOPmHzqtFqwetCnH/
- e8probWK/BURthbe/OQp8zpLcy69QDF3nmw/997epMxX6jS1VTwSL6XvfsYPUS4fTA1T
- BXUEKElSBd6VBrdE1u2lF9amw29zsQk0lrhqLqMzdjSSMdojeG9wjbJQfzg4/TSptXIp
- GJXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=5hxLqM7wbQepnmpAkx3kQrqUx9W7V5kbuct3VgNLCfE=;
- b=AK0Qd4VsIx0fGZcN6PVSg6j2pJDrUZOt8XeWD0IHcpPAeGv8EHgR7xlmXJLQuULZNs
- CQqgjDCoy/ZMm9oH+8mptsbG+sZOO5zEi6ilG8tTTrXRcN6x6w9thVIWDXtu0cL0uItk
- 57jX2LoKr0sAFzAC8YF6XBCynUTye4SUR3f9/FM1cNl/V8pQnYIJhdkoPlgXBpMpLSOh
- b/8augCEQ1ocPj4btdSU4OkQPNpQyMgi6iSbaK69lfPEvnf/JT2M7qDJuqgk0fSK6MBr
- 4FV0G1JPGX8yhH8GTrim/9EmcSCcO3TuAkeAYycbu9f7JrCBJ/9IizK+SWUloUL2MRfT
- xwGg==
-X-Gm-Message-State: APjAAAUj6TaV43Tgq1/RRXjK6G5c9dxUY8NGYtV2MFfo1LPpWDaibCy0
- Xmw/zMw2cpcHen6vVTojdw9lib5LU7WMDJ8+PRhdHA==
-X-Google-Smtp-Source: APXvYqykH4Y+YpdJn/i8XOAkjaabFQF8UbaSg/jnSgqkUxCA1/ca81jEPmL8H19fMIeKE0KMVQC/PCci0jvS512PO8A=
-X-Received: by 2002:aca:55c1:: with SMTP id j184mr7906855oib.105.1573189797950; 
- Thu, 07 Nov 2019 21:09:57 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 478Tqm3xM6zF6k8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 16:49:40 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ xA85kkOM109199
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 8 Nov 2019 00:49:37 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2w5252gpev-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2019 00:49:37 -0500
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Fri, 8 Nov 2019 05:49:34 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 8 Nov 2019 05:49:30 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id xA85ms8x28180780
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 8 Nov 2019 05:48:54 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 646A311C04A;
+ Fri,  8 Nov 2019 05:49:29 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4DA311C04C;
+ Fri,  8 Nov 2019 05:49:25 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.80.217.215])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri,  8 Nov 2019 05:49:25 +0000 (GMT)
+Date: Thu, 7 Nov 2019 21:49:22 -0800
+From: Ram Pai <linuxram@us.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <1572902923-8096-1-git-send-email-linuxram@us.ibm.com>
+ <1572902923-8096-2-git-send-email-linuxram@us.ibm.com>
+ <1572902923-8096-3-git-send-email-linuxram@us.ibm.com>
+ <87k18c56ej.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <CAPcyv4hxs+KqY5gU8Ds1a73eub1imvm9Qo8KdKGiDD1e-p0cww@mail.gmail.com>
- <DF536BED-6F4F-4351-AC7E-3C9FC8545332@redhat.com>
- <0eb001e0-bb26-59bb-c514-d2f8a86a7eab@redhat.com>
-In-Reply-To: <0eb001e0-bb26-59bb-c514-d2f8a86a7eab@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 7 Nov 2019 21:09:46 -0800
-Message-ID: <CAPcyv4h0yX4g6ETymQEpp52FFLaOmps_hO7w_yuYGk7BqQQcMQ@mail.gmail.com>
-Subject: Re: [PATCH v1 04/10] vfio/type1: Prepare is_invalid_reserved_pfn()
- for PG_reserved changes
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Fri, 08 Nov 2019 16:30:19 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87k18c56ej.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19110805-0016-0000-0000-000002C1CC24
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19110805-0017-0000-0000-0000332351B9
+Message-Id: <20191108054922.GH5201@oc0525413822.ibm.com>
+Subject: RE: [RFC v1 2/2] powerpc/pseries/iommu: Use dma_iommu_ops for Secure
+ VMs aswell.
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-11-08_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=939 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911080057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,130 +92,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- KVM list <kvm@vger.kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
- KarimAllah Ahmed <karahmed@amazon.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, Michal Hocko <mhocko@kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Wanpeng Li <wanpengli@tencent.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Kees Cook <keescook@chromium.org>, devel@driverdev.osuosl.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, X86 ML <x86@kernel.org>,
- YueHaibing <yuehaibing@huawei.com>,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
- Anthony Yznaga <anthony.yznaga@oracle.com>, Oscar Salvador <osalvador@suse.de>,
- "Isaac J. Manjarres" <isaacm@codeaurora.org>,
- Matt Sickler <Matt.Sickler@daktronics.com>, Juergen Gross <jgross@suse.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Sasha Levin <sashal@kernel.org>,
- kvm-ppc@vger.kernel.org, Qian Cai <cai@lca.pw>,
- Alex Williamson <alex.williamson@redhat.com>,
- Mike Rapoport <rppt@linux.vnet.ibm.com>,
- David Hildenbrand <dhildenb@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, xen-devel <xen-devel@lists.xenproject.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Allison Randal <allison@lohutok.net>,
- Jim Mattson <jmattson@google.com>, Mel Gorman <mgorman@techsingularity.net>,
- Cornelia Huck <cohuck@redhat.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Borislav Petkov <bp@alien8.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: andmike@us.ibm.com, mst@redhat.com, aik@ozlabs.ru,
+ mdroth@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, ram.n.pai@gmail.com,
+ cai@lca.pw, tglx@linutronix.de, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 7, 2019 at 2:07 PM David Hildenbrand <david@redhat.com> wrote:
->
-> On 07.11.19 19:22, David Hildenbrand wrote:
-> >
-> >
-> >> Am 07.11.2019 um 16:40 schrieb Dan Williams <dan.j.williams@intel.com>=
-:
-> >>
-> >> =EF=BB=BFOn Thu, Oct 24, 2019 at 5:12 AM David Hildenbrand <david@redh=
-at.com> wrote:
-> >>>
-> >>> Right now, ZONE_DEVICE memory is always set PG_reserved. We want to
-> >>> change that.
-> >>>
-> >>> KVM has this weird use case that you can map anything from /dev/mem
-> >>> into the guest. pfn_valid() is not a reliable check whether the memma=
-p
-> >>> was initialized and can be touched. pfn_to_online_page() makes sure
-> >>> that we have an initialized memmap (and don't have ZONE_DEVICE memory=
-).
-> >>>
-> >>> Rewrite is_invalid_reserved_pfn() similar to kvm_is_reserved_pfn() to=
- make
-> >>> sure the function produces the same result once we stop setting ZONE_=
-DEVICE
-> >>> pages PG_reserved.
-> >>>
-> >>> Cc: Alex Williamson <alex.williamson@redhat.com>
-> >>> Cc: Cornelia Huck <cohuck@redhat.com>
-> >>> Signed-off-by: David Hildenbrand <david@redhat.com>
-> >>> ---
-> >>> drivers/vfio/vfio_iommu_type1.c | 10 ++++++++--
-> >>> 1 file changed, 8 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iomm=
-u_type1.c
-> >>> index 2ada8e6cdb88..f8ce8c408ba8 100644
-> >>> --- a/drivers/vfio/vfio_iommu_type1.c
-> >>> +++ b/drivers/vfio/vfio_iommu_type1.c
-> >>> @@ -299,9 +299,15 @@ static int vfio_lock_acct(struct vfio_dma *dma, =
-long npage, bool async)
-> >>>   */
-> >>> static bool is_invalid_reserved_pfn(unsigned long pfn)
-> >>> {
-> >>> -       if (pfn_valid(pfn))
-> >>> -               return PageReserved(pfn_to_page(pfn));
-> >>> +       struct page *page =3D pfn_to_online_page(pfn);
-> >>
-> >> Ugh, I just realized this is not a safe conversion until
-> >> pfn_to_online_page() is moved over to subsection granularity. As it
-> >> stands it will return true for any ZONE_DEVICE pages that share a
-> >> section with boot memory.
-> >
-> > That should not happen right now and I commented back when you introduc=
-ed subsection support that I don=E2=80=99t want to have ZONE_DEVICE mixed w=
-ith online pages in a section. Having memory block devices that partially s=
-pan ZONE_DEVICE would be ... really weird. With something like pfn_active()=
- - as discussed - we could at least make this check work - but I am not sur=
-e if we really want to go down that path. In the worst case, some MB of RAM=
- are lost ... I guess this needs more thought.
-> >
->
-> I just realized the "boot memory" part. Is that a real thing? IOW, can
-> we have ZONE_DEVICE falling into a memory block (with holes)? I somewhat
-> have doubts that this would work ...
+On Thu, Nov 07, 2019 at 09:26:28PM +1100, Michael Ellerman wrote:
+> Ram Pai <linuxram@us.ibm.com> writes:
+> > This enables IOMMU support for pseries Secure VMs.
+> 
+> Can you give us some more explanation please?
 
-One of the real world failure cases that started the subsection effect
-is that Persistent Memory collides with System RAM on a 64MB boundary
-on shipping platforms. System RAM ends on a 64MB boundary and due to a
-lack of memory controller resources PMEM is mapped contiguously at the
-end of that boundary. Some more details in the subsection cover letter
-/ changelogs [1] [2]. It's not sufficient to just lose some memory,
-that's the broken implementation that lead to the subsection work
-because the lost memory may change from one boot to the next and
-software can't reliably inject a padding that conforms to the x86
-128MB section constraint.
+Yes. Will do. 
 
-Suffice to say I think we need your pfn_active() to get subsection
-granularity pfn_to_online_page() before PageReserved() can be removed.
+The simple explanation is -- it was a mistake. We should 
+not have disabled IOMMU ops for secure guests. Though it enabled
+us to use virtio devices, with the help of some additional patches to
+the virtio subsystem; in hindsight, we should not have disabled IOMMU
+ops for secure VMs  :-(. 
 
-[1]: https://lore.kernel.org/linux-mm/156092349300.979959.17603710711957735=
-135.stgit@dwillia2-desk3.amr.corp.intel.com/
-[2]: https://lore.kernel.org/linux-mm/156092354368.979959.62324439234409523=
-59.stgit@dwillia2-desk3.amr.corp.intel.com/
+RP
+
+
+
+> 
+> This is basically a revert of commit:
+>   edea902c1c1e ("powerpc/pseries/iommu: Don't use dma_iommu_ops on secure guests")
+> 
+> But neglects to remove the now unnecessary include of svm.h.
+> 
+> > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> > index 07f0847..189717b 100644
+> > --- a/arch/powerpc/platforms/pseries/iommu.c
+> > +++ b/arch/powerpc/platforms/pseries/iommu.c
+> > @@ -1333,15 +1333,7 @@ void iommu_init_early_pSeries(void)
+> >  	of_reconfig_notifier_register(&iommu_reconfig_nb);
+> >  	register_memory_notifier(&iommu_mem_nb);
+> >  
+> > -	/*
+> > -	 * Secure guest memory is inacessible to devices so regular DMA isn't
+> > -	 * possible.
+> > -	 *
+> > -	 * In that case keep devices' dma_map_ops as NULL so that the generic
+> > -	 * DMA code path will use SWIOTLB to bounce buffers for DMA.
+> 
+> Please explain what has changed to make this no longer necessary.
+> 
+> cheers
+> 
+> > -	 */
+> > -	if (!is_secure_guest())
+> > -		set_pci_dma_ops(&dma_iommu_ops);
+> > +	set_pci_dma_ops(&dma_iommu_ops);
+> >  }
+> >  
+> >  static int __init disable_multitce(char *str)
+> > -- 
+> > 1.8.3.1
+
+-- 
+Ram Pai
+
