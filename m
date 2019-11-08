@@ -2,85 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9875AF46A0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 12:44:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFB5F47FC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 12:54:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478dhc05X2zF6v4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 22:44:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478dwP42kSzF1gQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 22:54:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="0W3ESCLN"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 478db23PTtzF6t5
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 22:39:09 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xA8Bcjxv184702
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 8 Nov 2019 06:39:06 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2w57p0r0cg-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2019 06:39:06 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <hbathini@linux.ibm.com>;
- Fri, 8 Nov 2019 11:39:04 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 8 Nov 2019 11:39:01 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xA8BcP8R38994364
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Nov 2019 11:38:25 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F0B8E11C05C;
- Fri,  8 Nov 2019 11:39:00 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2D7311C04A;
- Fri,  8 Nov 2019 11:38:59 +0000 (GMT)
-Received: from [9.184.183.121] (unknown [9.184.183.121])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  8 Nov 2019 11:38:59 +0000 (GMT)
-Subject: Re: [PATCH v3] powerpc/fadump: when fadump is supported register the
- fadump sysfs files.
-To: Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
-References: <20191023175651.24833-1-msuchanek@suse.de>
- <20191107164757.15140-1-msuchanek@suse.de>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Date: Fri, 8 Nov 2019 17:08:58 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 478dkH5MZ1zF6v0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2019 22:45:27 +1100 (AEDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id CB412222CB;
+ Fri,  8 Nov 2019 11:45:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1573213525;
+ bh=fyEovHonIi28L8n/cm3MK/odCyRSRZIyQ7OjuLbLtdA=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=0W3ESCLNEtHNQryRMtid4/fJg1Sz5w2nncdLqTihuLNx2ErR+I99wdsD6TLHkbd70
+ YnStqrg/wvKQWAjMiPdjF3CMD/cFIGbVPisduNIU+qU7bmvx7NwNbawmugYvb+rA+x
+ Stj7u7KOuuGEyu0ZM0tCcn2DUnXjzvDfQk4q0A7M=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 089/103] powerpc/vdso: Correct call frame
+ information
+Date: Fri,  8 Nov 2019 06:42:54 -0500
+Message-Id: <20191108114310.14363-89-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191108114310.14363-1-sashal@kernel.org>
+References: <20191108114310.14363-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20191107164757.15140-1-msuchanek@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110811-0012-0000-0000-00000361DDEF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110811-0013-0000-0000-0000219D424D
-Message-Id: <119d91aa-57d4-00db-054c-60769b309c8d@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-08_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911080114
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,81 +60,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>, Reza Arbab <arbab@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Alan Modra <amodra@gmail.com>
 
+[ Upstream commit 56d20861c027498b5a1112b4f9f05b56d906fdda ]
 
-On 07/11/19 10:17 PM, Michal Suchanek wrote:
-> Currently it is not possible to distinguish the case when fadump is
-> supported by firmware and disabled in kernel and completely unsupported
-> using the kernel sysfs interface. User can investigate the devicetree
-> but it is more reasonable to provide sysfs files in case we get some
-> fadumpv2 in the future.
-> 
-> With this patch sysfs files are available whenever fadump is supported
-> by firmware.
-> 
-> There is duplicate message about lack of support by firmware in
-> fadump_reserve_mem and setup_fadump. Remove the duplicate message in
-> setup_fadump.
+Call Frame Information is used by gdb for back-traces and inserting
+breakpoints on function return for the "finish" command.  This failed
+when inside __kernel_clock_gettime.  More concerning than difficulty
+debugging is that CFI is also used by stack frame unwinding code to
+implement exceptions.  If you have an app that needs to handle
+asynchronous exceptions for some reason, and you are unlucky enough to
+get one inside the VDSO time functions, your app will crash.
 
-Thanks for doing this, Michal.
-Exporting the node will be helpful in finding if FADump is supported,
-given FADump is now supported on two different platforms...
+What's wrong:  There is control flow in __kernel_clock_gettime that
+reaches label 99 without saving lr in r12.  CFI info however is
+interpreted by the unwinder without reference to control flow: It's a
+simple matter of "Execute all the CFI opcodes up to the current
+address".  That means the unwinder thinks r12 contains the return
+address at label 99.  Disabuse it of that notion by resetting CFI for
+the return address at label 99.
 
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
+Note that the ".cfi_restore lr" could have gone anywhere from the
+"mtlr r12" a few instructions earlier to the instruction at label 99.
+I put the CFI as late as possible, because in general that's best
+practice (and if possible grouped with other CFI in order to reduce
+the number of CFI opcodes executed when unwinding).  Using r12 as the
+return address is perfectly fine after the "mtlr r12" since r12 on
+that code path still contains the return address.
 
-> 
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
-> v2: move the sysfs initialization earlier to avoid condition nesting
-> v3: remove duplicate message
-> ---
->  arch/powerpc/kernel/fadump.c | 15 ++++++---------
->  1 file changed, 6 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index ed59855430b9..ff0114aeba9b 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -1466,16 +1466,15 @@ static void fadump_init_files(void)
->   */
->  int __init setup_fadump(void)
->  {
-> -	if (!fw_dump.fadump_enabled)
-> -		return 0;
-> -
-> -	if (!fw_dump.fadump_supported) {
-> -		printk(KERN_ERR "Firmware-assisted dump is not supported on"
-> -			" this hardware\n");
-> +	if (!fw_dump.fadump_supported)
->  		return 0;
-> -	}
->  
-> +	fadump_init_files();
->  	fadump_show_config();
-> +
-> +	if (!fw_dump.fadump_enabled)
-> +		return 1;
-> +
->  	/*
->  	 * If dump data is available then see if it is valid and prepare for
->  	 * saving it to the disk.
-> @@ -1492,8 +1491,6 @@ int __init setup_fadump(void)
->  	else if (fw_dump.reserve_dump_area_size)
->  		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
->  
-> -	fadump_init_files();
-> -
->  	return 1;
->  }
->  subsys_initcall(setup_fadump);
-> 
+__get_datapage also has a CFI error.  That function temporarily saves
+lr in r0, and reflects that fact with ".cfi_register lr,r0".  A later
+use of r0 means the CFI at that point isn't correct, as r0 no longer
+contains the return address.  Fix that too.
 
+Signed-off-by: Alan Modra <amodra@gmail.com>
+Tested-by: Reza Arbab <arbab@linux.ibm.com>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/vdso32/datapage.S     | 1 +
+ arch/powerpc/kernel/vdso32/gettimeofday.S | 1 +
+ arch/powerpc/kernel/vdso64/datapage.S     | 1 +
+ arch/powerpc/kernel/vdso64/gettimeofday.S | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
+index 3745113fcc652..2a7eb5452aba7 100644
+--- a/arch/powerpc/kernel/vdso32/datapage.S
++++ b/arch/powerpc/kernel/vdso32/datapage.S
+@@ -37,6 +37,7 @@ data_page_branch:
+ 	mtlr	r0
+ 	addi	r3, r3, __kernel_datapage_offset-data_page_branch
+ 	lwz	r0,0(r3)
++  .cfi_restore lr
+ 	add	r3,r0,r3
+ 	blr
+   .cfi_endproc
+diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
+index 769c2624e0a6b..1e0bc5955a400 100644
+--- a/arch/powerpc/kernel/vdso32/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
+@@ -139,6 +139,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
+ 	 */
+ 99:
+ 	li	r0,__NR_clock_gettime
++  .cfi_restore lr
+ 	sc
+ 	blr
+   .cfi_endproc
+diff --git a/arch/powerpc/kernel/vdso64/datapage.S b/arch/powerpc/kernel/vdso64/datapage.S
+index abf17feffe404..bf96686915116 100644
+--- a/arch/powerpc/kernel/vdso64/datapage.S
++++ b/arch/powerpc/kernel/vdso64/datapage.S
+@@ -37,6 +37,7 @@ data_page_branch:
+ 	mtlr	r0
+ 	addi	r3, r3, __kernel_datapage_offset-data_page_branch
+ 	lwz	r0,0(r3)
++  .cfi_restore lr
+ 	add	r3,r0,r3
+ 	blr
+   .cfi_endproc
+diff --git a/arch/powerpc/kernel/vdso64/gettimeofday.S b/arch/powerpc/kernel/vdso64/gettimeofday.S
+index 3820213248836..09b2a49f6dd53 100644
+--- a/arch/powerpc/kernel/vdso64/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso64/gettimeofday.S
+@@ -124,6 +124,7 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
+ 	 */
+ 99:
+ 	li	r0,__NR_clock_gettime
++  .cfi_restore lr
+ 	sc
+ 	blr
+   .cfi_endproc
 -- 
-- Hari
+2.20.1
 
