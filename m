@@ -2,65 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DDDF5900
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 22:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15832F5918
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 22:07:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478t5G5Y1WzF7nw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Nov 2019 08:02:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478tC04PQ4zF7pj
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Nov 2019 08:07:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
- [209.85.210.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.135; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 478t1f183ZzF7PC
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2019 07:59:33 +1100 (AEDT)
-Received: by mail-ot1-f66.google.com with SMTP id r24so6333783otk.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2019 12:59:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=iHMB6rGLleO6OxcrYYe8ZvDxdU9fIQ0DXLT+ABSPcOU=;
- b=GKmG0B+D16bFWbpVZ/jMAMHmls048euqr2LBfopJpnJfYQLIXNUqJskYf7cW3HeeI+
- pMI+pkNLgD1oI+rE+v1uRluWkGn4+kMbAitI9JCaQ5Cnfj7TnzE1xyL20RNDFBddPojO
- bbfGm0JyUAAgk/sDeQrVPkpohg1PKE3upU3dFzCAWRH6/ZVuD+gbFTut04t5Ojv2kyA/
- B+rfAsLvWALWidihE2X+M13cQENp4VhX5fCc5WEHrclMZXBoWwRQZNGoqvsZe9B7BFfm
- Sl4Ef8ZcFxzWxV8eWoQ6oJOeI1QPahWSQYpYCrzQ43LY3Tnep/8WGGhNXqZ0Zeq6Lj+c
- G8UQ==
-X-Gm-Message-State: APjAAAX0sOFA8bV8dCctR6cLLtS1zGxuJzJ8JxoSPGXOYPYC8ZdWEoOV
- ZcXz51zrMujm6uGOlDae71b62l+R
-X-Google-Smtp-Source: APXvYqxUeHZONOoZsro78gDH1p8em0Gn2lB2KNP3Q7HgwiFtiM6p4wv/rfrzvgDoe4VbBiG1zdZmZw==
-X-Received: by 2002:a05:6830:13d3:: with SMTP id
- e19mr10416571otq.346.1573246770285; 
- Fri, 08 Nov 2019 12:59:30 -0800 (PST)
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com.
- [209.85.210.54])
- by smtp.gmail.com with ESMTPSA id l23sm2122616oig.44.2019.11.08.12.59.29
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Nov 2019 12:59:29 -0800 (PST)
-Received: by mail-ot1-f54.google.com with SMTP id v24so6383520otp.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2019 12:59:29 -0800 (PST)
-X-Received: by 2002:a9d:173:: with SMTP id 106mr10294718otu.205.1573246769515; 
- Fri, 08 Nov 2019 12:59:29 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 478t8v55S3zF7nk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2019 08:05:51 +1100 (AEDT)
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MI41P-1ifa9R3rIV-00FECL; Fri, 08 Nov 2019 22:03:03 +0100
+From: Arnd Bergmann <arnd@arndb.de>
+To: y2038@lists.linaro.org
+Subject: [PATCH 00/23] y2038 cleanups
+Date: Fri,  8 Nov 2019 22:02:21 +0100
+Message-Id: <20191108210236.1296047-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-References: <20191108130213.23684-1-yuehaibing@huawei.com>
- <20191108151720.GB216543@piout.net>
-In-Reply-To: <20191108151720.GB216543@piout.net>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Fri, 8 Nov 2019 14:59:18 -0600
-X-Gmail-Original-Message-ID: <CADRPPNS0z913xkwJwZRU_37RHOs_-AjivR_aqOh-LGZPm607iA@mail.gmail.com>
-Message-ID: <CADRPPNS0z913xkwJwZRU_37RHOs_-AjivR_aqOh-LGZPm607iA@mail.gmail.com>
-Subject: Re: [PATCH -next] soc: fsl: Enable COMPILE_TEST
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:UnBnEVvh9e/TAlbVJpAgl+cZfINqrWh9dLOxhM2cR8aLh8bxi43
+ imnX6NUaeePS5+DRA0WRYUJVamsiPbbVcIxpp/4FOrH5eYIasgtQ9F4iNEhxTjL7CjcCc5K
+ bAv59di7IK248c9R001Bzfk5n9zBi6XSKGbbURpyvKXfff1XY6BWVKsSxLxE879MSpi2NAc
+ hQzqPBvdAyeO+K+Sge1xw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OIDj0+r1Q9A=:9gN4BqFLWG42/ujpgO6Cgr
+ o8zqBPZmLIUIEnDlrrAXeH2vLeBpIadNXhV86RgylTicv9xsmYlpVaFpBMf/H/Yjlzbw54cpy
+ eh/U17TACQhr/ys8Bi+1eshVGdQxS5ivhF8awvsaZnAXg9mNAA8jkqXgpcpwWt367C/8Kd86R
+ PArvSuqzyeR9kXxr8BvqUTmoaE4g6Rd8F0lY4P97kcm/hZDDTFU9lm0mHxnM0bHAyM+SvOHYd
+ iw+439TjI1JHDeQqBpLukAr0wnd9IY2f05cEO8b48Hy7kYtbaI2rom9bTJZ3BbKszOykd7H0q
+ oK4Ya32pPC2rfGc0OBMvlJAfW+U7J0Y2JHzAkyUMd/7/mal+bfzBkSg8A0O6/exDyl/Z/WNJy
+ m3TRmxcGqeD+mrruFnCOYH9J91b9cbHcwtFZD/CAY9jd9786DVfTW8CKd5BLmZRsHl71EyEi5
+ K6mfaAx63kT3i52V/5zPjVHi/xplJ3YpYGzCTEeY7jgkxp6i6NqIi2ghC/8j5/eYAtCM51h3d
+ Z8Ob7p2gDLZwWhpdQ4b78C5ehph2lPjnzxiqzxTyMT+MD96QhPQWmWVKsWIK0FAs0qvDqsP2a
+ GKGNlVHb+qr7JyGt+fF9+SvIKG13x6Bhw26DKuQtLgfO6qnyM9jMr6nN5/5EV/9nPPKgeZMi6
+ a1svux7RWVOd64AYgjbwsp2PjdbU/xpWDDSVGOMhQmktNt60nxmbkWIkGbMHoosfsFgXXEfB4
+ i7LmjSLuzVGAOXL0n7HULZV9tfkZIv5cbllBdYB5FinD1QYgQQG36yK6WhFCFvCPmv1hlou8U
+ ye11gYsvTwOfF7tDpZ1QmTJ1v1Q1y1VYzfbIpHyUIMvlz8YcXL2vDgC6IMOdob8B3C6bh7EPJ
+ j24sn73RDOt7PznprOsg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,70 +61,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- YueHaibing <yuehaibing@huawei.com>, lkml <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+Cc: linux-aio@kvack.org, linux-ia64@vger.kernel.org, peterz@infradead.org,
+ heiko.carstens@de.ibm.com, linux-mips@vger.kernel.org, netdev@vger.kernel.org,
+ deepa.kernel@gmail.com, sparclinux@vger.kernel.org, vincenzo.frascino@arm.com,
+ will@kernel.org, linux-arch@vger.kernel.org, paul@paul-moore.com,
+ deller@gmx.de, x86@kernel.org, sds@tycho.nsa.gov,
+ Arnd Bergmann <arnd@arndb.de>, selinux@vger.kernel.org, jdike@addtoit.com,
+ linux-alpha@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
+ john.stultz@linaro.org, viro@zeniv.linux.org.uk, eparis@parisplace.org,
+ tglx@linutronix.de, christian@brauner.io, rth@twiddle.net, tony.luck@intel.com,
+ linux-parisc@vger.kernel.org, sboyd@kernel.org, linux-api@vger.kernel.org,
+ linux-kernel@vger.kernel.org, paul.burton@mips.com, bcrl@kvack.org,
+ ebiederm@xmission.com, richard@nod.at, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, green.hu@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 8, 2019 at 9:20 AM Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
->
-> Hi,
->
-> On 08/11/2019 21:02:13+0800, YueHaibing wrote:
-> > When do COMPILE_TEST buiding for RTC_DRV_FSL_FTM_ALARM,
-> > we get this warning:
-> >
-> > WARNING: unmet direct dependencies detected for FSL_RCPM
-> >   Depends on [n]: PM_SLEEP [=y] && (ARM || ARM64)
-> >   Selected by [m]:
-> >   - RTC_DRV_FSL_FTM_ALARM [=m] && RTC_CLASS [=y] && (ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST [=y])
-> >
-> > This enable COMPILE_TEST for FSL_RCPM to fix the issue.
-> >
-> > Fixes: e1c2feb1efa2 ("rtc: fsl-ftm-alarm: allow COMPILE_TEST")
->
-> I've removed that patch until the fsl maintainers apply this one.
+This is a series of cleanups for the y2038 work, mostly intended
+for namespace cleaning: the kernel defines the traditional
+time_t, timeval and timespec types that often lead to y2038-unsafe
+code. Even though the unsafe usage is mostly gone from the kernel,
+having the types and associated functions around means that we
+can still grow new users, and that we may be missing conversions
+to safe types that actually matter.
 
-I think it is wrong to have RTC_DRV_FSL_FTM_ALARM select FSL_RCPM from
-the begining.  The FTM_ALARM is primarily used as a wakeup source for
-the deep sleep.  But it shouldn't be depending on it or selecting it.
-I will create a patch to move that.
+As there is no rush on any of these patches, I would either
+queue them up in linux-next through my y2038 branch, or
+Thomas could add them to the tip tree if he wants.
 
-Regards,
-Leo
+As mentioned in another series, this is part of a larger
+effort to fix all the remaining bits and pieces that are
+not completed yet from the y2038 conversion, and the full
+set can be found at:
 
->
-> > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> > ---
-> > In commit c6c2d36bc46f ("rtc: fsl-ftm-alarm: Fix build error without PM_SLEEP")
-> > I posted a wrong kconfig warning(which PM_SLEEP is n), sorry for confusion.
-> > ---
-> >  drivers/soc/fsl/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/soc/fsl/Kconfig b/drivers/soc/fsl/Kconfig
-> > index 4df32bc..e142662 100644
-> > --- a/drivers/soc/fsl/Kconfig
-> > +++ b/drivers/soc/fsl/Kconfig
-> > @@ -43,7 +43,7 @@ config DPAA2_CONSOLE
-> >
-> >  config FSL_RCPM
-> >       bool "Freescale RCPM support"
-> > -     depends on PM_SLEEP && (ARM || ARM64)
-> > +     depends on PM_SLEEP && (ARM || ARM64 || COMPILE_TEST)
-> >       help
-> >         The NXP QorIQ Processors based on ARM Core have RCPM module
-> >         (Run Control and Power Management), which performs all device-level
-> > --
-> > 2.7.4
-> >
-> >
->
-> --
-> Alexandre Belloni, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=y2038-endgame
+
+Maintainers, please review and provide Acks.
+
+Let me know if you have any opinion on whether we should do
+the include last two patches of this series or not.
+
+     Arnd
+
+Arnd Bergmann (23):
+  y2038: remove CONFIG_64BIT_TIME
+  y2038: add __kernel_old_timespec and __kernel_old_time_t
+  y2038: vdso: change timeval to __kernel_old_timeval
+  y2038: vdso: change timespec to __kernel_old_timespec
+  y2038: vdso: change time_t to __kernel_old_time_t
+  y2038: vdso: nds32: open-code timespec_add_ns()
+  y2038: vdso: powerpc: avoid timespec references
+  y2038: ipc: remove __kernel_time_t reference from headers
+  y2038: stat: avoid 'time_t' in 'struct stat'
+  y2038: uapi: change __kernel_time_t to __kernel_old_time_t
+  y2038: rusage: use __kernel_old_timeval
+  y2038: syscalls: change remaining timeval to __kernel_old_timeval
+  y2038: socket: remove timespec reference in timestamping
+  y2038: make ns_to_compat_timeval use __kernel_old_timeval
+  y2038: elfcore: Use __kernel_old_timeval for process times
+  y2038: timerfd: Use timespec64 internally
+  y2038: time: avoid timespec usage in settimeofday()
+  y2038: itimer: compat handling to itimer.c
+  y2038: use compat_{get,set}_itimer on alpha
+  y2038: move itimer reset into itimer.c
+  y2038: itimer: change implementation to timespec64
+  [RFC] y2038: itimer: use ktime_t internally
+  y2038: allow disabling time32 system calls
+
+ arch/Kconfig                              |  11 +-
+ arch/alpha/kernel/osf_sys.c               |  67 +-----
+ arch/alpha/kernel/syscalls/syscall.tbl    |   4 +-
+ arch/ia64/kernel/asm-offsets.c            |   2 +-
+ arch/mips/include/uapi/asm/msgbuf.h       |   6 +-
+ arch/mips/include/uapi/asm/sembuf.h       |   4 +-
+ arch/mips/include/uapi/asm/shmbuf.h       |   6 +-
+ arch/mips/include/uapi/asm/stat.h         |  16 +-
+ arch/mips/kernel/binfmt_elfn32.c          |   4 +-
+ arch/mips/kernel/binfmt_elfo32.c          |   4 +-
+ arch/nds32/kernel/vdso/gettimeofday.c     |  61 +++--
+ arch/parisc/include/uapi/asm/msgbuf.h     |   6 +-
+ arch/parisc/include/uapi/asm/sembuf.h     |   4 +-
+ arch/parisc/include/uapi/asm/shmbuf.h     |   6 +-
+ arch/powerpc/include/asm/asm-prototypes.h |   3 +-
+ arch/powerpc/include/asm/vdso_datapage.h  |   6 +-
+ arch/powerpc/include/uapi/asm/msgbuf.h    |   6 +-
+ arch/powerpc/include/uapi/asm/sembuf.h    |   4 +-
+ arch/powerpc/include/uapi/asm/shmbuf.h    |   6 +-
+ arch/powerpc/include/uapi/asm/stat.h      |   2 +-
+ arch/powerpc/kernel/asm-offsets.c         |  18 +-
+ arch/powerpc/kernel/syscalls.c            |   4 +-
+ arch/powerpc/kernel/time.c                |   5 +-
+ arch/powerpc/kernel/vdso32/gettimeofday.S |   6 +-
+ arch/powerpc/kernel/vdso64/gettimeofday.S |   8 +-
+ arch/sparc/include/uapi/asm/msgbuf.h      |   6 +-
+ arch/sparc/include/uapi/asm/sembuf.h      |   4 +-
+ arch/sparc/include/uapi/asm/shmbuf.h      |   6 +-
+ arch/sparc/include/uapi/asm/stat.h        |  24 +-
+ arch/sparc/vdso/vclock_gettime.c          |  36 +--
+ arch/x86/entry/vdso/vclock_gettime.c      |   6 +-
+ arch/x86/entry/vsyscall/vsyscall_64.c     |   4 +-
+ arch/x86/include/uapi/asm/msgbuf.h        |   6 +-
+ arch/x86/include/uapi/asm/sembuf.h        |   4 +-
+ arch/x86/include/uapi/asm/shmbuf.h        |   6 +-
+ arch/x86/um/vdso/um_vdso.c                |  12 +-
+ fs/aio.c                                  |   2 +-
+ fs/binfmt_elf.c                           |  12 +-
+ fs/binfmt_elf_fdpic.c                     |  12 +-
+ fs/compat_binfmt_elf.c                    |   4 +-
+ fs/select.c                               |  10 +-
+ fs/timerfd.c                              |  14 +-
+ fs/utimes.c                               |   8 +-
+ include/linux/compat.h                    |  19 +-
+ include/linux/syscalls.h                  |  16 +-
+ include/linux/time.h                      |   9 +-
+ include/linux/time32.h                    |   2 +-
+ include/linux/types.h                     |   2 +-
+ include/trace/events/timer.h              |  29 +--
+ include/uapi/asm-generic/msgbuf.h         |  12 +-
+ include/uapi/asm-generic/posix_types.h    |   1 +
+ include/uapi/asm-generic/sembuf.h         |   7 +-
+ include/uapi/asm-generic/shmbuf.h         |  12 +-
+ include/uapi/linux/cyclades.h             |   6 +-
+ include/uapi/linux/elfcore.h              |   8 +-
+ include/uapi/linux/errqueue.h             |   7 +
+ include/uapi/linux/msg.h                  |   6 +-
+ include/uapi/linux/ppp_defs.h             |   4 +-
+ include/uapi/linux/resource.h             |   4 +-
+ include/uapi/linux/sem.h                  |   4 +-
+ include/uapi/linux/shm.h                  |   6 +-
+ include/uapi/linux/time.h                 |   6 +-
+ include/uapi/linux/time_types.h           |   5 +
+ include/uapi/linux/utime.h                |   4 +-
+ ipc/syscall.c                             |   2 +-
+ kernel/compat.c                           |  24 --
+ kernel/power/power.h                      |   2 +-
+ kernel/sys.c                              |   4 +-
+ kernel/sys_ni.c                           |  23 ++
+ kernel/time/hrtimer.c                     |   2 +-
+ kernel/time/itimer.c                      | 280 ++++++++++++++--------
+ kernel/time/time.c                        |  32 ++-
+ lib/vdso/gettimeofday.c                   |   4 +-
+ net/core/scm.c                            |   6 +-
+ net/socket.c                              |   2 +-
+ security/selinux/hooks.c                  |  10 +-
+ 76 files changed, 501 insertions(+), 504 deletions(-)
+
+-- 
+2.20.0
+
+Cc: rth@twiddle.net
+Cc: tony.luck@intel.com
+Cc: paul.burton@mips.com
+Cc: green.hu@gmail.com
+Cc: deller@gmx.de
+Cc: mpe@ellerman.id.au
+Cc: davem@davemloft.net
+Cc: tglx@linutronix.de
+Cc: x86@kernel.org
+Cc: jdike@addtoit.com
+Cc: richard@nod.at
+Cc: viro@zeniv.linux.org.uk
+Cc: bcrl@kvack.org
+Cc: john.stultz@linaro.org
+Cc: sboyd@kernel.org
+Cc: rostedt@goodmis.org
+Cc: arnd@arndb.de
+Cc: vincenzo.frascino@arm.com
+Cc: paul@paul-moore.com
+Cc: sds@tycho.nsa.gov
+Cc: eparis@parisplace.org
+Cc: peterz@infradead.org
+Cc: will@kernel.org
+Cc: deepa.kernel@gmail.com
+Cc: christian@brauner.io
+Cc: heiko.carstens@de.ibm.com
+Cc: christophe.leroy@c-s.fr
+Cc: ebiederm@xmission.com
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org>
+Cc: linux-ia64@vger.kernel.org>
+Cc: linux-mips@vger.kernel.org>
+Cc: linux-parisc@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org>
+Cc: sparclinux@vger.kernel.org>
+Cc: linux-um@lists.infradead.org>
+Cc: linux-fsdevel@vger.kernel.org>
+Cc: linux-aio@kvack.org>
+Cc: linux-api@vger.kernel.org>
+Cc: linux-arch@vger.kernel.org>
+Cc: netdev@vger.kernel.org>
+Cc: selinux@vger.kernel.org>
+
