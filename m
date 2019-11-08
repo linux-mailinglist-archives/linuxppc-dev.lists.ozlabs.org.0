@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F003F5020
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 16:47:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5434F502A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2019 16:50:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 478l574B4WzF6ww
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Nov 2019 02:47:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 478l8d0ZlbzF50Z
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Nov 2019 02:50:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::241;
- helo=mail-lj1-x241.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::143;
+ helo=mail-lf1-x143.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="JPiH6ZKd"; dkim-atps=neutral
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
+ header.b="O/6AGo/Z"; dkim-atps=neutral
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
+ [IPv6:2a00:1450:4864:20::143])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 478gR85WWgzF6x6
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2019 00:02:28 +1100 (AEDT)
-Received: by mail-lj1-x241.google.com with SMTP id n21so6107573ljg.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2019 05:02:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 478gRB0Ll4zF6wZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2019 00:02:30 +1100 (AEDT)
+Received: by mail-lf1-x143.google.com with SMTP id d6so4019436lfc.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2019 05:02:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=BB15j+OZLSCqmbjpw6Rixs0w7wUAu62j+M3Q47LEWSI=;
- b=JPiH6ZKd2ZnUmbFTOFb+zecHncuK5W1rGbGHK2U2HNNwnIhWkIOIPn3+7Ay7T0tzM1
- 5EAegX18KxWev95bX7gOYwgvjHEidVs2vmnDI0xounVD1lgao9hp6JuWyqGGmyzDgY1m
- DdQZLrXfOdpXw03FSH6fnD3E4Vvj1RGWqOAVA=
+ bh=eoU6yRz6gH6qOWyRe/vJLGf2pgvTpCjyg96xNihJCPI=;
+ b=O/6AGo/ZGsFlsmLzJdyEPO3mV8xhZwNRXLRrD1SwfTKq6IMDjQUNw7j0VpK1oVFyLL
+ wc5e8wLviGXZ87K0ZB9XM3865S7c5VlogZhWCTbefzWUbe06CEYaPSev0sIHG2QmP0NR
+ 92+WT/4laZ948//hxG0mEeosoGrg8VxvjMNyk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=BB15j+OZLSCqmbjpw6Rixs0w7wUAu62j+M3Q47LEWSI=;
- b=Zd9/zTbUwt3bYEri7gbAKkwBZqHYZCMR14QaKa6RF51bQQztvlRNXYkvR0/hbIlBLb
- XTGy6V3xlc/TMcksyZs6fdDULeFMp5x9lyZ/hlk8JYD9Kk9qI3ROUG2S1kHAz4C8kCHD
- n6S0uwJ22oNn8F5+4DHD1DnJq5bna1NnoDVhV7tcOQ6gPSTg2e+rqSqKS1rVZMTdWYA1
- 10VK5l/1M1hawh4KUwdtdUJ+AK7YN+PbrG25S/IuD/lw+HOXfOuFTFl2yZIK2TU+J3Jy
- CUsXvs+AfuPmsaBwel8YHqjEuata+lTQC+JoyXnujP45W1t9Htn2wDlnJFJEsidYLWQa
- M+Rg==
-X-Gm-Message-State: APjAAAUnZzei1vtAFDhgkmQO2hsM5Y4SG0yZnhuLH+yw//4MCwPWdpLv
- P0GTCTzIV82+Cm6NQG51vHiA6fx9+ylZxh4I
-X-Google-Smtp-Source: APXvYqxJ5+E/xDqZwwVj1PKuG5R1Tse40MqtXo1j/SjaIDAjgO45IHqu0Kxn9Mf/lNqB6jnMlGV11g==
-X-Received: by 2002:a2e:b5a2:: with SMTP id f2mr6613757ljn.108.1573218145233; 
- Fri, 08 Nov 2019 05:02:25 -0800 (PST)
+ bh=eoU6yRz6gH6qOWyRe/vJLGf2pgvTpCjyg96xNihJCPI=;
+ b=Po9FhWtpLiSDPwHG4VW4IaJs1QOOdyC1hDq6M4lB+HHXkuFKtn+vFAu54bpA4DnTVF
+ 1K4g1Xb4oPVs1JSFr8HViBK8lWlZAq8wC0WFssioNQkOTm5vhBZDZDyLnWqgqRMY+WXd
+ bCMuW0ZVu8H0SaFLX0U0frd1UBQ5Ed0pgkt/a63GNbImio/z3WhddlA7TCXD3R/i4yXK
+ n/YQz/YJy24kRT6sf6Oe+013ZmI4hVvt7letJPO4ymebFSo9afbzbo9Ou1Vlaf8+4dDc
+ eAjAVjTrYCTCklipKzClkHcjVoDwTpL8Q02N0Fuprgq4d3WZU2C/zYLP8ESnLpY9sALo
+ 9ciQ==
+X-Gm-Message-State: APjAAAUZA2OGevOL5ynYK2sgOtrfEcYMnxQqQal4t9WEymw8cavQRlx7
+ w7x6gxHJr3gadj7Z5eG5XoQsrg==
+X-Google-Smtp-Source: APXvYqwxS6IOvsV8gHqknaTDjoYrWzUraN+5B9FEomuPHvbNlLsU0KSDBbHmOzMq8nrZpelvp/lTbQ==
+X-Received: by 2002:ac2:5097:: with SMTP id f23mr6576512lfm.90.1573218146378; 
+ Fri, 08 Nov 2019 05:02:26 -0800 (PST)
 Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id d28sm2454725lfn.33.2019.11.08.05.02.24
+ by smtp.gmail.com with ESMTPSA id d28sm2454725lfn.33.2019.11.08.05.02.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Nov 2019 05:02:24 -0800 (PST)
+ Fri, 08 Nov 2019 05:02:25 -0800 (PST)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v4 46/47] net: ethernet: freescale: make UCC_GETH explicitly
- depend on PPC32
-Date: Fri,  8 Nov 2019 14:01:22 +0100
-Message-Id: <20191108130123.6839-47-linux@rasmusvillemoes.dk>
+Subject: [PATCH v4 47/47] soc: fsl: qe: remove PPC32 dependency from
+ CONFIG_QUICC_ENGINE
+Date: Fri,  8 Nov 2019 14:01:23 +0100
+Message-Id: <20191108130123.6839-48-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
 References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
@@ -78,36 +78,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Scott Wood <oss@buserror.net>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, QUICC_ENGINE depends on PPC32, so this in itself does not
-change anything. In order to allow removing the PPC32 dependency from
-QUICC_ENGINE and avoid allmodconfig build failures, add this explicit
-dependency.
+There are also ARM and ARM64 based SOCs with a QUICC Engine, and the
+core QE code as well as net/wan/fsl_ucc_hdlc and tty/serial/ucc_uart
+has now been modified to not rely on ppcisms.
+
+So extend the architectures that can select QUICC_ENGINE, and add the
+rather modest requirements of OF && HAS_IOMEM.
+
+The core code as well as the ucc_uart driver has been tested on an
+LS1021A (arm), and it has also been tested that the QE code still
+works on an mpc8309 (ppc).
 
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/net/ethernet/freescale/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/fsl/qe/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
-index 6a7e8993119f..2bd7ace0a953 100644
---- a/drivers/net/ethernet/freescale/Kconfig
-+++ b/drivers/net/ethernet/freescale/Kconfig
-@@ -74,7 +74,7 @@ config FSL_XGMAC_MDIO
+diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+index cfa4b2939992..f1974f811572 100644
+--- a/drivers/soc/fsl/qe/Kconfig
++++ b/drivers/soc/fsl/qe/Kconfig
+@@ -5,7 +5,8 @@
  
- config UCC_GETH
- 	tristate "Freescale QE Gigabit Ethernet"
--	depends on QUICC_ENGINE
-+	depends on QUICC_ENGINE && PPC32
- 	select FSL_PQ_MDIO
- 	select PHYLIB
- 	---help---
+ config QUICC_ENGINE
+ 	bool "QUICC Engine (QE) framework support"
+-	depends on FSL_SOC && PPC32
++	depends on OF && HAS_IOMEM
++	depends on PPC32 || ARM || ARM64 || COMPILE_TEST
+ 	select GENERIC_ALLOCATOR
+ 	select CRC32
+ 	help
 -- 
 2.23.0
 
