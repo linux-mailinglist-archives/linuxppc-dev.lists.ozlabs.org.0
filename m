@@ -2,51 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7801F5F5D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Nov 2019 14:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A1FF6106
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Nov 2019 20:03:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 479HvL2nVvzF789
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 00:25:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 479RPT553jzF4M9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 06:03:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.50.32; helo=7.mo69.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 479RLF0knxzF6QV
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 06:00:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 949 seconds by postgrey-1.36 at bilbo;
- Sun, 10 Nov 2019 00:23:41 AEDT
-Received: from 7.mo69.mail-out.ovh.net (7.mo69.mail-out.ovh.net [46.105.50.32])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 479RLD6bwCz8svV
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 06:00:52 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 479RLD6LxQz9sP6; Sun, 10 Nov 2019 06:00:52 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 479Hs94w2dzF6JK
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 00:23:37 +1100 (AEDT)
-Received: from player798.ha.ovh.net (unknown [10.108.35.103])
- by mo69.mail-out.ovh.net (Postfix) with ESMTP id 5518A6DE60
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2019 14:07:41 +0100 (CET)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player798.ha.ovh.net (Postfix) with ESMTPSA id 9B921BFA4E0F;
- Sat,  9 Nov 2019 13:07:36 +0000 (UTC)
-Date: Sat, 9 Nov 2019 14:07:35 +0100
-From: Greg Kurz <groug@kaod.org>
-To: christophe lombard <clombard@linux.vnet.ibm.com>
-Subject: Re: [PATCH 3/3] powerpc/pseries: Fixup config space size of
- OpenCAPI devices
-Message-ID: <20191109140735.52e0698e@bahia.lan>
-In-Reply-To: <35141b5c-a48c-d0c8-a566-cd3e36121c59@linux.vnet.ibm.com>
-References: <20191022075247.16266-1-clombard@linux.vnet.ibm.com>
- <20191022075247.16266-4-clombard@linux.vnet.ibm.com>
- <f80de6db-cfea-5897-288f-64d002b25d8d@linux.ibm.com>
- <35141b5c-a48c-d0c8-a566-cd3e36121c59@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by ozlabs.org (Postfix) with ESMTPS id 479RLC6y5wz9sNH
+ for <linuxppc-dev@ozlabs.org>; Sun, 10 Nov 2019 06:00:50 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ xA9Iv0Hd127863
+ for <linuxppc-dev@ozlabs.org>; Sat, 9 Nov 2019 14:00:48 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2w5q8wj0cv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Sat, 09 Nov 2019 14:00:47 -0500
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
+ Sat, 9 Nov 2019 19:00:45 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sat, 9 Nov 2019 19:00:41 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id xA9J0dp415925604
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 9 Nov 2019 19:00:39 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E9F7252073;
+ Sat,  9 Nov 2019 19:00:38 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.40.192.65])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6ADAE52067;
+ Sat,  9 Nov 2019 19:00:36 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: [PATCH v8 0/4] powerpc: expose secure variables to the kernel and
+ userspace
+Date: Sat,  9 Nov 2019 13:00:28 -0600
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Ovh-Tracer-Id: 13410593792977508658
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedruddvfedghedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdqfffguegfifdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecukfhppedtrddtrddtrddtpdekvddrvdehfedrvddtkedrvdegkeenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeelkedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19110919-0028-0000-0000-000003B478C6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19110919-0029-0000-0000-000024777CC0
+Message-Id: <20191109190032.96259-1-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-11-09_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911090193
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,78 +98,207 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Andrew Donnellan <ajd@linux.ibm.com>,
- fbarrat@linux.vnet.ibm.com
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 7 Nov 2019 09:46:25 +0100
-christophe lombard <clombard@linux.vnet.ibm.com> wrote:
+In order to verify the OS kernel on PowerNV systems, secure boot requires
+X.509 certificates trusted by the platform. These are stored in secure
+variables controlled by OPAL, called OPAL secure variables. In order to
+enable users to manage the keys, the secure variables need to be exposed
+to userspace.
 
-> On 05/11/2019 06:01, Andrew Donnellan wrote:
-> > On 22/10/19 6:52 pm, christophe lombard wrote:
-> >> Fix up the pci config size of the OpenCAPI PCIe devices in the pseries
-> >> environment.
-> >> Most of OpenCAPI PCIe devices have 4096 bytes of configuration space.
-> >=20
-> > It's not "most of", it's "all" - the OpenCAPI Discovery and=20
-> > Configuration Spec requires the use of extended capabilities that fall=
-=20
-> > in the 0x100-0xFFF range.
-> >=20
-> >>
-> >> Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
-> >> ---
-> >> =C2=A0 arch/powerpc/platforms/pseries/pci.c | 9 +++++++++
-> >> =C2=A0 1 file changed, 9 insertions(+)
-> >>
-> >> diff --git a/arch/powerpc/platforms/pseries/pci.c=20
-> >> b/arch/powerpc/platforms/pseries/pci.c
-> >> index 1eae1d09980c..3397784767b0 100644
-> >> --- a/arch/powerpc/platforms/pseries/pci.c
-> >> +++ b/arch/powerpc/platforms/pseries/pci.c
-> >> @@ -291,6 +291,15 @@ static void fixup_winbond_82c105(struct pci_dev*=
-=20
-> >> dev)
-> >> =C2=A0 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_WINBOND,=20
-> >> PCI_DEVICE_ID_WINBOND_82C105,
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 fixup_winbond_82c105);
-> >> +static void fixup_opencapi_cfg_size(struct pci_dev *pdev)
-> >> +{
-> >> +=C2=A0=C2=A0=C2=A0 if (!machine_is(pseries))
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> >> +
-> >> +=C2=A0=C2=A0=C2=A0 pdev->cfg_size =3D PCI_CFG_SPACE_EXP_SIZE;
-> >> +}
-> >> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IBM, 0x062b,=20
-> >> fixup_opencapi_cfg_size);
-> >=20
-> > An OpenCAPI device can have any PCI ID, is there a particular reason=20
-> > we're limiting this to 1014:062b? On PowerNV, we check the PHB type to=
-=20
-> > determine whether the device is OpenCAPI or not, what's the equivalent=
-=20
-> > for pseries?
-> >=20
->=20
-> Thanks for the review. For pseries, there is no specific OpenCapi PHB=20
-> type which constraints this kind of request.
-> We are working to found an other solution.
->=20
+OPAL provides the runtime services for the kernel to be able to access the
+secure variables[1]. This patchset defines the kernel interface for the
+OPAL APIs. These APIs are used by the hooks, which load these variables
+to the keyring and expose them to the userspace for reading/writing.
 
-Well... we have an old PAPR+ addendum draft that mentions an "open-capi"
-PHB type. The specification was never finalized and AFAIK PowerVM doesn't
-support the OpenCAPI interface, so we didn't stick to the addendum during
-our in-house prototyping. But now that we want to upstream things, I think
-we should probably come up with a dedicated PHB type.
+The previous version[2] of the patchset added support only for the sysfs
+interface. This patch adds two more patches that involves loading of
+the firmware trusted keys to the kernel keyring.
 
-> >> +
-> >> =C2=A0 int pseries_root_bridge_prepare(struct pci_host_bridge *bridge)
-> >> =C2=A0 {
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device_node *dn, *pdn;
-> >>
-> >=20
->=20
+Overall, this patchset adds the following support:
+
+* expose secure variables to the kernel via OPAL Runtime API interface
+* expose secure variables to the userspace via kernel sysfs interface
+* load kernel verification and revocation keys to .platform and
+.blacklist keyring respectively.
+
+The secure variables can be read/written using simple linux utilities
+cat/hexdump.
+
+For example:
+Path to the secure variables is:
+/sys/firmware/secvar/vars
+
+Each secure variable is listed as directory. 
+$ ls -l
+total 0
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 db
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 KEK
+drwxr-xr-x. 2 root root 0 Aug 20 21:20 PK
+
+The attributes of each of the secure variables are(for example: PK):
+[db]$ ls -l
+total 0
+-r--r--r--. 1 root root  4096 Oct  1 15:10 data
+-r--r--r--. 1 root root 65536 Oct  1 15:10 size
+--w-------. 1 root root  4096 Oct  1 15:12 update
+
+The "data" is used to read the existing variable value using hexdump. The
+data is stored in ESL format.
+The "update" is used to write a new value using cat. The update is
+to be submitted as AUTH file.
+
+[1] Depends on skiboot OPAL API changes which removes metadata from
+the API. https://lists.ozlabs.org/pipermail/skiboot/2019-September/015203.html.
+[2] https://lkml.org/lkml/2019/6/13/1644
+
+Changelog:
+v8
+* rebased on v5.4-rc6
+* Patch 2 related to sysfs
+  * fixed error message as per Greg's feedback
+  * fixed minor formatting 
+  * renamed error code from ret to rc in backend_show()
+* Patch 4 - loading of keys to keyring
+  * as per Michael's feedback, removed select for LOAD_PPC_KEYS, instead
+  made it default "yes" if the pre-requisites are satisfied
+  * fixed an error message for more clarity
+
+v7 (on behalf of Nayna, by Eric Richter):
+* secvar-sysfs now a bool rather than a tristate option
+* added documentation for backend sysfs entry
+
+v6 (on behalf of Nayna, by Eric Richter):
+* updated device tree layout
+  * secvar node now sets compatible based on backend
+  * all ibm,secvar-v1 compatible-checking code checks for
+    ibm,edk2-compat-v1
+* added backend attribute to secvar-sysfs to expose backend version to
+  userspace
+* loading certs from db now depends on backend (not all backends may
+  have a "db")
+* fixed device node leaks
+* fixed leaking string on early exit
+
+v5:
+* rebased to v5.4-rc3
+* includes Oliver's feedbacks
+  * changed OPAL API as platform driver
+  * sysfs are made default enabled and dependent on PPC_SECURE_BOOT
+  * fixed code specific changes in both OPAL API and sysfs
+  * reading size of the "data" and "update" file from device-tree.  
+  * fixed sysfs documentation to also reflect the data and update file
+  size interpretation
+  * This patchset is no more dependent on ima-arch/blacklist patchset
+
+v4:
+* rebased to v5.4-rc1 
+* uses __BIN_ATTR_WO macro to create binary attribute as suggested by
+  Greg
+* removed email id from the file header
+* renamed argument keysize to keybufsize in get_next() function
+* updated default binary file sizes to 0, as firmware handles checking
+against the maximum size
+* fixed minor formatting issues in Patch 4/4
+* added Greg's and Mimi's Reviewed-by and Ack-by
+
+v3:
+* includes Greg's feedbacks:
+ * fixes in Patch 2/4
+   * updates the Documentation.
+   * fixes code feedbacks
+    * adds SYSFS Kconfig dependency for SECVAR_SYSFS
+    * fixes mixed tabs and spaces
+    * removes "name" attribute for each of the variable name based
+    directories
+    * fixes using __ATTR_RO() and __BIN_ATTR_RO() and statics and const
+    * fixes the racing issue by using kobj_type default groups. Also,
+    fixes the kobject leakage.
+    * removes extra print messages
+  * updates patch description for Patch 3/4
+  * removes file name from Patch 4/4 file header comment and removed
+  def_bool y from the LOAD_PPC_KEYS Kconfig
+
+* includes Oliver's feedbacks:
+  * fixes Patch 1/2
+   * moves OPAL API wrappers after opal_nx_proc_init(), fixed the
+   naming, types and removed extern.
+   * fixes spaces
+   * renames get_variable() to get(), get_next_variable() to get_next()
+   and set_variable() to set()
+   * removed get_secvar_ops() and defined secvar_ops as global
+   * fixes consts and statics
+   * removes generic secvar_init() and defined platform specific
+   opal_secar_init()
+   * updates opal_secvar_supported() to check for secvar support even
+   before checking the OPAL APIs support and also fixed the error codes.
+   * addes function that converts OPAL return codes to linux errno
+   * moves secvar check support in the opal_secvar_init() and defined its
+   prototype in opal.h
+  * fixes Patch 2/2
+   * fixes static/const
+   * defines macro for max name size
+   * replaces OPAL error codes with linux errno and also updated error
+   handling
+   * moves secvar support check before creating sysfs kobjects in 
+   secvar_sysfs_init()
+   * fixes spaces  
+
+v2:
+* removes complete efi-sms from the sysfs implementation and is simplified
+* includes Greg's and Oliver's feedbacks:
+ * adds sysfs documentation
+ * moves sysfs code to arch/powerpc
+ * other code related feedbacks.
+* adds two new patches to load keys to .platform and .blacklist keyring.
+These patches are added to this series as they are also dependent on
+OPAL APIs.
+
+Nayna Jain (4):
+  powerpc/powernv: Add OPAL API interface to access secure variable
+  powerpc: expose secure variables to userspace via sysfs
+  x86/efi: move common keyring handler functions to new file
+  powerpc: load firmware trusted keys/hashes into kernel keyring
+
+ Documentation/ABI/testing/sysfs-secvar        |  46 ++++
+ arch/powerpc/Kconfig                          |  11 +
+ arch/powerpc/include/asm/opal-api.h           |   5 +-
+ arch/powerpc/include/asm/opal.h               |   7 +
+ arch/powerpc/include/asm/secvar.h             |  35 +++
+ arch/powerpc/kernel/Makefile                  |   3 +-
+ arch/powerpc/kernel/secvar-ops.c              |  16 ++
+ arch/powerpc/kernel/secvar-sysfs.c            | 248 ++++++++++++++++++
+ arch/powerpc/platforms/powernv/Makefile       |   2 +-
+ arch/powerpc/platforms/powernv/opal-call.c    |   3 +
+ arch/powerpc/platforms/powernv/opal-secvar.c  | 140 ++++++++++
+ arch/powerpc/platforms/powernv/opal.c         |   3 +
+ security/integrity/Kconfig                    |   9 +
+ security/integrity/Makefile                   |   7 +-
+ .../platform_certs/keyring_handler.c          |  80 ++++++
+ .../platform_certs/keyring_handler.h          |  32 +++
+ .../integrity/platform_certs/load_powerpc.c   |  98 +++++++
+ security/integrity/platform_certs/load_uefi.c |  67 +----
+ 18 files changed, 741 insertions(+), 71 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-secvar
+ create mode 100644 arch/powerpc/include/asm/secvar.h
+ create mode 100644 arch/powerpc/kernel/secvar-ops.c
+ create mode 100644 arch/powerpc/kernel/secvar-sysfs.c
+ create mode 100644 arch/powerpc/platforms/powernv/opal-secvar.c
+ create mode 100644 security/integrity/platform_certs/keyring_handler.c
+ create mode 100644 security/integrity/platform_certs/keyring_handler.h
+ create mode 100644 security/integrity/platform_certs/load_powerpc.c
+
+-- 
+2.20.1
 
