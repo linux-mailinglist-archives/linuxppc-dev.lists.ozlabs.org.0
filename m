@@ -1,57 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD63F686A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 11:17:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5252EF68AE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 12:27:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 479qgv10XWzF6CX
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 21:17:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 479sDx71ynzF4xW
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 22:27:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xs4all.nl (client-ip=194.109.24.26;
- helo=lb2-smtp-cloud9.xs4all.net; envelope-from=hverkuil@xs4all.nl;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.66; helo=mail-wr1-f66.google.com;
+ envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xs4all.nl
-Received: from lb2-smtp-cloud9.xs4all.net (lb2-smtp-cloud9.xs4all.net
- [194.109.24.26])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=dolbeau.org
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
+ [209.85.221.66])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 479qbL49YTzF4ns
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 21:13:34 +1100 (AEDT)
-Received: from [192.168.2.10] ([46.9.232.237])
- by smtp-cloud9.xs4all.net with ESMTPA
- id TkCAiNAD3QBsYTkCDi1SAO; Sun, 10 Nov 2019 11:11:50 +0100
-Subject: Re: [PATCH v2 13/18] media/v4l2-core: pin_longterm_pages (FOLL_PIN)
- and put_user_page() conversion
-To: John Hubbard <jhubbard@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20191103211813.213227-1-jhubbard@nvidia.com>
- <20191103211813.213227-14-jhubbard@nvidia.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Message-ID: <6d21391e-01c4-0605-0d0d-15f574cc3ed4@xs4all.nl>
-Date: Sun, 10 Nov 2019 11:11:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 479rJK04Y5zF3VP
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 21:45:31 +1100 (AEDT)
+Received: by mail-wr1-f66.google.com with SMTP id b3so11528995wrs.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 02:45:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=LO1XPuEvTtlrVaqKKtYuiOehC2ZIjZxMVvrEqliyZeE=;
+ b=aVf80DiEOLNI0VSTODkCcExlOy7Nk02zhurdYYyIr2EQCHSfK9HuDYx6IKeTM00fSL
+ JOuF0UnkepmslCF65w1bE7E4cNXI9E+alY7N1qCn5H5CPkq4cxn64RPz4FeqpfoAevEi
+ RIuYT+S4q+0yBzkoOBxT8OkD4qmxF4LTnv6OqY7mrKCwqEsv8vTHZgZJR7Xz2/qKX022
+ FLC/i6hpFbNWoU2SULmX2L5u8qbZ5OiA0qs6kEbZFXaqtRbNFlmoTPXzfjvfxnmgmtkj
+ 3YNkRel0tp8fRzDU9PR5WZBBCcLL46qDTLHxGcYHBtW9EnvU6zlUd6Im6f6Q5kUy+BCJ
+ B8vQ==
+X-Gm-Message-State: APjAAAVL8B2Fgbnxlcmp2UTPDuuDK8jAGx8Vyid8CLbFbukTomaCIswU
+ xCGINDSxT6L+JIhejgzMsHc22PbsyNYdC3aEooI=
+X-Google-Smtp-Source: APXvYqz9za8hXp9VVZIDNZzAg0EpjaG7rKihOzM0fZrRVYV+ild2dSX6Pq5A8GOgM4L+Ex8w7AYwm5ztL4Bazb8n2hM=
+X-Received: by 2002:a05:6000:49:: with SMTP id
+ k9mr16376274wrx.43.1573382727114; 
+ Sun, 10 Nov 2019 02:45:27 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191103211813.213227-14-jhubbard@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfFSTukyJqfxV4HrGGQ0j5/iKKr13OkEzy05WqAOfOSWrg/qEYKz7zmsSLuZTQBp28yCz+dvkf6VRv+kw027uNzPdnpP1TG1MNl/DxEey7uZK5/xalM5y
- 5mek2ggN11NHCI9OB51pAxH9HazB5AMpcNYWMTjkyDZlvUJtbfWW4ZUZq85nxiyCH9Wkwv75NaxcyvTMitOA+o4+U5rJjg8sA8gvfV9NbRRVFg3M6alu0IKv
- kyfdjDFwuG4F6JKpbt9v3E049Xx0YF8ppWdgVnIjGfusfyNaLb+90K4NGhzfPU11L+2UeV4HzuHSmBSjFWbsZNO99HRrZoUYxfZil98flfM0I4Tl92e2ZZ6T
- oLNGV585kbb26i0UwqgRbX0qClJpOQIX8JPemeIZHsAISH4A6EIzai79YkaAZrrdJDqsHcU/g5pBk7M+m8f1h0UhG93G+VP07un/zdrM5krNUgUcOHqWl6c8
- yg5UitZLkuZJeoj3AZIHtptGajhOljPiqFe3qrME7yIGvxpfurp6646fJOQdrdhgQ99ZW5ZVLjxCYcB39QCEQQpm6CL4XMXAsAilPNdyDqQvU26KgyC+BY4C
- EfgFzK7XJbQ28t/ACJ7DTyyH14NWDMPJXEZyBEirCE+SenjaNpo1ArEbqixnm5RCT+dULYmvp/soWFNQsgosWPukS+PH1BUonrmmMVLsT7pZ55bv6EkNWDl4
- 9ypHPyVuYZBeyd/QB3263NKtG9W94IRv7gkIMIXqe+gaZqosCCZGLoQ/R3NrX+UELfTllPBXIEjGQ6GcqW4vDLnC6e5LObzBu95S05AVd/j5Z489creqnOqz
- al1X+EBLb7SCFjH5bT0l7XPwxsPFls2nYnNC2VvjaojW5EGzj+P9FMGrDMXQYA5CwZYMR9jVieofsVzZROWuyWgzGX0IWmVMrVJ+O9Cd6w+r38l2u6VzMDO3
- vrKP72jlsDujiCNkz8SZOuEiycTOpqK7FnQXWC0vHy8ZQ5kE+5U3ZOrlf3bE5a7YMuwWWgEf1wyekRKSE5FPwRln1aFBkEu6RfHldiY5r6mScJHM0Hmz3L1G
- jmpevDng1F0dM0khzD8Rn/xNHOQmjygIoT2XjmtiT+xp1E4E+mkPp1qzmYUhF73no8Ws5q3/bDKWOdGuUrZQjRZdQtb3gNeBRaDBFMdPnfgT4QkU99ovX9La
- 0JO93Bw0hzkTQPZYGAQEEyZ5mT+kT8y0hQD80773+KE9/qHPFnhe80tvkU1RdNM3L33ptC7eREOqMAmdRO6tk0ZlucAIUVw5MRfKAm2acO9sl5to+l22CFB1
- ACY3IoeSiNIkXxalh1O2DqvLWJh0AapBIq9krEjBZouKIfbQ+FRgwsFcvPJZJS2eW70SQX+omUmZZ5xpSWDV1lpAjnprcaVW+xX7OhGfCCj2gQOCd9Q=
+References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
+ <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
+ <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+In-Reply-To: <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+From: Romain Dolbeau <romain@dolbeau.org>
+Date: Sun, 10 Nov 2019 11:45:15 +0100
+Message-ID: <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+Subject: Re: 5.3.7 64-bits kernel doesn't boot on G5 Quad
+To: PowerPC List Debian <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
+Content-Type: multipart/mixed; boundary="0000000000008bbfca0596fbb62a"
+X-Mailman-Approved-At: Sun, 10 Nov 2019 22:25:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,87 +64,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mathieu Malaterre <malat@debian.org>,
+ Christian Marillat <marillat@debian.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/3/19 10:18 PM, John Hubbard wrote:
-> 1. Change v4l2 from get_user_pages(FOLL_LONGTERM), to
-> pin_longterm_pages(), which sets both FOLL_LONGTERM and FOLL_PIN.
-> 
-> 2. Because all FOLL_PIN-acquired pages must be released via
-> put_user_page(), also convert the put_page() call over to
-> put_user_pages_dirty_lock().
-> 
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+--0000000000008bbfca0596fbb62a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Hello,
 
-Looks good, thanks!
+Following my bug report on debian-powerpc and the following, I'm
+adding linuxppc-dev to my answer.
 
-	Hans
+Le jeu. 7 nov. 2019 =C3=A0 11:09, Mathieu Malaterre <malat@debian.org> a =
+=C3=A9crit :
+> On Thu, Nov 7, 2019 at 9:34 AM John Paul Adrian Glaubitz
+> > The answer here would be git bisect [1]. I would first start downloadin=
+g
+> > the current kernel source tarball for 5.3.7 from upstream and build the
+> > kernel with "make localmodconfig" to see whether it's an upstream or De=
+bian
+> > problem.
+> I suspect this is upstream and even before 5.3.7. The original report
+> by Christian has been discussed on linuxpcc-dev:
+> <https://www.mail-archive.com/linuxppc-dev@lists.ozlabs.org/msg155248.htm=
+l>
 
+Thanks to you guys I was able to cross-build a kernel (native would
+have been way to slow) and try to bisect the bug.
+However, I ended up in another buggy behavior that may or may not be relate=
+d :-(
+I tried to localize the bug(s) as best I could.
 
-> ---
->  drivers/media/v4l2-core/videobuf-dma-sg.c | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/media/v4l2-core/videobuf-dma-sg.c b/drivers/media/v4l2-core/videobuf-dma-sg.c
-> index 28262190c3ab..9b9c5b37bf59 100644
-> --- a/drivers/media/v4l2-core/videobuf-dma-sg.c
-> +++ b/drivers/media/v4l2-core/videobuf-dma-sg.c
-> @@ -183,12 +183,12 @@ static int videobuf_dma_init_user_locked(struct videobuf_dmabuf *dma,
->  	dprintk(1, "init user [0x%lx+0x%lx => %d pages]\n",
->  		data, size, dma->nr_pages);
->  
-> -	err = get_user_pages(data & PAGE_MASK, dma->nr_pages,
-> -			     flags | FOLL_LONGTERM, dma->pages, NULL);
-> +	err = pin_longterm_pages(data & PAGE_MASK, dma->nr_pages,
-> +				 flags, dma->pages, NULL);
->  
->  	if (err != dma->nr_pages) {
->  		dma->nr_pages = (err >= 0) ? err : 0;
-> -		dprintk(1, "get_user_pages: err=%d [%d]\n", err,
-> +		dprintk(1, "pin_longterm_pages: err=%d [%d]\n", err,
->  			dma->nr_pages);
->  		return err < 0 ? err : -EINVAL;
->  	}
-> @@ -349,11 +349,8 @@ int videobuf_dma_free(struct videobuf_dmabuf *dma)
->  	BUG_ON(dma->sglen);
->  
->  	if (dma->pages) {
-> -		for (i = 0; i < dma->nr_pages; i++) {
-> -			if (dma->direction == DMA_FROM_DEVICE)
-> -				set_page_dirty_lock(dma->pages[i]);
-> -			put_page(dma->pages[i]);
-> -		}
-> +		put_user_pages_dirty_lock(dma->pages, dma->nr_pages,
-> +					  dma->direction == DMA_FROM_DEVICE);
->  		kfree(dma->pages);
->  		dma->pages = NULL;
->  	}
-> 
+I attach to this the result of 'git bisect log' to see if someone can
+figure out what's going on. Some of the commits were hand-picked to
+avoid doing too many 'skip' configurations with the bug described
+below.
 
+As I marked this:
+
+*bad*: seems to behave the same as the Debian kernel or git HEAD, that
+is, crash as reported (or very similar to, at least) by Christian.
+
+*good*: either a full boot, or occasionally the kernel dropped me into
+initramfs complaining about versioning of some symbols - I figured it
+went far enough so it did not have the bug. The last one in the file
+is a full boot as I remember it.
+
+*skip*: most of them involves hanging just after cpus start (i.e.
+including 3 messages about kick-up for the extra cpu and one about
+bringing up being done, then nothing further). Those covers a lot of
+commits :-(
+
+(I used <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git=
+>
+and my build command was "make ARCH=3Dpowerpc
+CROSS_COMPILE=3Dpowerpc64-linux-gnu- oldconfig && make ARCH=3Dpowerpc
+CROSS_COMPILE=3Dpowerpc64-linux-gnu- -j56 bindeb-pkg", using default
+values for oldconfig, starting with the config file from Debian at the
+beginning, cross-gcc is 8.3 from buster, tested on a G5 Quad).
+
+Any suggestion, advice, or patch to try welcome :-)
+
+Thanks in advance& cordially,
+
+--=20
+Romain Dolbeau
+
+--0000000000008bbfca0596fbb62a
+Content-Type: application/x-gzip; name="ppc64_bisect.log.gz"
+Content-Disposition: attachment; filename="ppc64_bisect.log.gz"
+Content-Transfer-Encoding: base64
+Content-ID: <f_k2sv44d50>
+X-Attachment-Id: f_k2sv44d50
+
+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
+--0000000000008bbfca0596fbb62a--
