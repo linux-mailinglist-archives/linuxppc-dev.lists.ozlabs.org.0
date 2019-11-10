@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E49F6470
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 938BCF650B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:04:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 479dzN2w8WzF4qX
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:00:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 479f3z5QrdzF4y4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:04:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="SmrSCTRw"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="En4ZCbQu"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 479dY858mHzF3x6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:41:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 479dY703mSzF3xL
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:40:59 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C16832196F;
- Sun, 10 Nov 2019 02:40:57 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id BF8B0215EA;
+ Sun, 10 Nov 2019 02:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573353658;
- bh=q+cN5ok+VrAZGQOSbtWyaOQZIbwaK+5NNW/nn9cFBnU=;
+ s=default; t=1573353656;
+ bh=COVWsDCNKbR38Yw+05vHLBxceN6cUCoS+2GIdiYO/IE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SmrSCTRw4hzoI7Jre2VI8gHXC6rDwmP7sFtp0yDUD6eFHgGqf3csTbFiAQb2UdC9s
- EB3Ok5SVAbnuoK/lK1WJaZmaPprJM+w+N4ZMqn1Zq5RcyBIjhNGkY+zIQNzB7Zp0Mo
- dnB6ISlO3LovTreQiKf/Zr86grmUmyVupNl+AIfg=
+ b=En4ZCbQunj0rTnalbr4gdE+QpPIiZ9LIRAGAPGKJ/HebMz/WPYd4ynkBAdvzd5JbG
+ W5gm/3QN4TNT4q7tc3h3wxACg3SrgFq/v++Qb3L8J8soAVdA+kyd2V94SN12ottXuX
+ FkPn2HGlRmJxXabotcBMistj70npvPhO3WiLGiyI=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 031/191] powerpc: Fix duplicate const clang
- warning in user access code
-Date: Sat,  9 Nov 2019 21:37:33 -0500
-Message-Id: <20191110024013.29782-31-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 030/191] powerpc/pseries: Disable CPU hotplug
+ across migrations
+Date: Sat,  9 Nov 2019 21:37:32 -0500
+Message-Id: <20191110024013.29782-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191110024013.29782-1-sashal@kernel.org>
 References: <20191110024013.29782-1-sashal@kernel.org>
@@ -60,76 +60,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
- clang-built-linux@googlegroups.com, Anton Blanchard <anton@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>
+Cc: Sasha Levin <sashal@kernel.org>, Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anton Blanchard <anton@samba.org>
+From: Nathan Fontenot <nfont@linux.vnet.ibm.com>
 
-[ Upstream commit e00d93ac9a189673028ac125a74b9bc8ae73eebc ]
+[ Upstream commit 85a88cabad57d26d826dd94ea34d3a785824d802 ]
 
-This re-applies commit b91c1e3e7a6f ("powerpc: Fix duplicate const
-clang warning in user access code") (Jun 2015) which was undone in
-commits:
-  f2ca80905929 ("powerpc/sparse: Constify the address pointer in __get_user_nosleep()") (Feb 2017)
-  d466f6c5cac1 ("powerpc/sparse: Constify the address pointer in __get_user_nocheck()") (Feb 2017)
-  f84ed59a612d ("powerpc/sparse: Constify the address pointer in __get_user_check()") (Feb 2017)
+When performing partition migrations all present CPUs must be online
+as all present CPUs must make the H_JOIN call as part of the migration
+process. Once all present CPUs make the H_JOIN call, one CPU is returned
+to make the rtas call to perform the migration to the destination system.
 
-We see a large number of duplicate const errors in the user access
-code when building with llvm/clang:
+During testing of migration and changing the SMT state we have found
+instances where CPUs are offlined, as part of the SMT state change,
+before they make the H_JOIN call. This results in a hung system where
+every CPU is either in H_JOIN or offline.
 
-  include/linux/pagemap.h:576:8: warning: duplicate 'const' declaration specifier [-Wduplicate-decl-specifier]
-        ret = __get_user(c, uaddr);
+To prevent this this patch disables CPU hotplug during the migration
+process.
 
-The problem is we are doing const __typeof__(*(ptr)), which will hit
-the warning if ptr is marked const.
-
-Removing const does not seem to have any effect on GCC code
-generation.
-
-Signed-off-by: Anton Blanchard <anton@samba.org>
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Fontenot <nfont@linux.vnet.ibm.com>
+Reviewed-by: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/uaccess.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/rtas.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 1ca9e37f7cc99..38a25ff8afb76 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -260,7 +260,7 @@ do {								\
- ({								\
- 	long __gu_err;						\
- 	__long_type(*(ptr)) __gu_val;				\
--	const __typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
-+	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
- 	__chk_user_ptr(ptr);					\
- 	if (!is_kernel_addr((unsigned long)__gu_addr))		\
- 		might_fault();					\
-@@ -274,7 +274,7 @@ do {								\
- ({									\
- 	long __gu_err = -EFAULT;					\
- 	__long_type(*(ptr)) __gu_val = 0;				\
--	const __typeof__(*(ptr)) __user *__gu_addr = (ptr);		\
-+	__typeof__(*(ptr)) __user *__gu_addr = (ptr);		\
- 	might_fault();							\
- 	if (access_ok(VERIFY_READ, __gu_addr, (size))) {		\
- 		barrier_nospec();					\
-@@ -288,7 +288,7 @@ do {								\
- ({								\
- 	long __gu_err;						\
- 	__long_type(*(ptr)) __gu_val;				\
--	const __typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
-+	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
- 	__chk_user_ptr(ptr);					\
- 	barrier_nospec();					\
- 	__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 9e41a9de43235..95d1264ba7952 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -985,6 +985,7 @@ int rtas_ibm_suspend_me(u64 handle)
+ 		goto out;
+ 	}
+ 
++	cpu_hotplug_disable();
+ 	stop_topology_update();
+ 
+ 	/* Call function on all CPUs.  One of us will make the
+@@ -999,6 +1000,7 @@ int rtas_ibm_suspend_me(u64 handle)
+ 		printk(KERN_ERR "Error doing global join\n");
+ 
+ 	start_topology_update();
++	cpu_hotplug_enable();
+ 
+ 	/* Take down CPUs not online prior to suspend */
+ 	cpuret = rtas_offline_cpus_mask(offline_mask);
 -- 
 2.20.1
 
