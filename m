@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B59F671F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2657DF6720
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:48:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 479g1B2Y65zF6h1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:46:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 479g3C0BlmzF3SX
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:48:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="iluuvFwO"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="PF3CnHpw"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 479dkG2hj4zF49n
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:48:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 479dkH4PFYzF49n
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:48:55 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6161422573;
- Sun, 10 Nov 2019 02:48:51 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3BAA422581;
+ Sun, 10 Nov 2019 02:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573354132;
- bh=ekjUL9iEKKF0msi9brH469zdJuKPgU6PU/D6LgKa3SA=;
+ s=default; t=1573354133;
+ bh=iwRWbDProyYvqoWQb+Dd2CWpBQbyunJ8/Hs4YVIOTCw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iluuvFwOyTcb2MUUd31672baK6BvMk2EzqFbSk4Y6gYJtBFzW/BxBItspwcEM4KJ7
- qiqBXiCxQPYUDJGPVzvBuLwqeVhIY/pTeVUhV0+PauSzvpzFIo7vLpGwYRE9J6Eg7K
- MrmKgLvTEOr9VUIMzrOVccr3O2rHeWCMDNdT7Xwg=
+ b=PF3CnHpwbhRUZqiJhzhAtQbPNBJ2Kg9/aVqFqEo4VcQH/kIXPnjg4y0O8snqhnN0b
+ kleHJV4IJO8BnwKEhnTIksR7wxrFEVfXMoeZos8djI3OQvLo5EgWaZOVD+qVebt42h
+ fl9NIu3OwSff2FHUVhyvWoFi3qK/bThnomHQm0y8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 04/66] powerpc/iommu: Avoid derefence before
- pointer check
-Date: Sat,  9 Nov 2019 21:47:43 -0500
-Message-Id: <20191110024846.32598-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 05/66] powerpc/64s/hash: Fix stab_rr off by one
+ initialization
+Date: Sat,  9 Nov 2019 21:47:44 -0500
+Message-Id: <20191110024846.32598-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191110024846.32598-1-sashal@kernel.org>
 References: <20191110024846.32598-1-sashal@kernel.org>
@@ -60,44 +60,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Breno Leitao <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Breno Leitao <leitao@debian.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 984ecdd68de0fa1f63ce205d6c19ef5a7bc67b40 ]
+[ Upstream commit 09b4438db13fa83b6219aee5993711a2aa2a0c64 ]
 
-The tbl pointer is being derefenced by IOMMU_PAGE_SIZE prior the check
-if it is not NULL.
+This causes SLB alloation to start 1 beyond the start of the SLB.
+There is no real problem because after it wraps it stats behaving
+properly, it's just surprisig to see when looking at SLB traces.
 
-Just moving the dereference code to after the check, where there will
-be guarantee that 'tbl' will not be NULL.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/iommu.c | 2 +-
+ arch/powerpc/mm/slb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 5f202a566ec5f..9bfdd2510fd5e 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -765,9 +765,9 @@ dma_addr_t iommu_map_page(struct device *dev, struct iommu_table *tbl,
+diff --git a/arch/powerpc/mm/slb.c b/arch/powerpc/mm/slb.c
+index 64c9a91773af4..96c41b55b106b 100644
+--- a/arch/powerpc/mm/slb.c
++++ b/arch/powerpc/mm/slb.c
+@@ -321,7 +321,7 @@ void slb_initialize(void)
+ #endif
+ 	}
  
- 	vaddr = page_address(page) + offset;
- 	uaddr = (unsigned long)vaddr;
--	npages = iommu_num_pages(uaddr, size, IOMMU_PAGE_SIZE(tbl));
+-	get_paca()->stab_rr = SLB_NUM_BOLTED;
++	get_paca()->stab_rr = SLB_NUM_BOLTED - 1;
  
- 	if (tbl) {
-+		npages = iommu_num_pages(uaddr, size, IOMMU_PAGE_SIZE(tbl));
- 		align = 0;
- 		if (tbl->it_page_shift < PAGE_SHIFT && size >= PAGE_SIZE &&
- 		    ((unsigned long)vaddr & ~PAGE_MASK) == 0)
+ 	lflags = SLB_VSID_KERNEL | linear_llp;
+ 	vflags = SLB_VSID_KERNEL | vmalloc_llp;
 -- 
 2.20.1
 
