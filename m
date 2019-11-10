@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D06F672C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 05:01:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D581EF672D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 05:04:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 479gLV4VmdzF6vD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 15:01:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 479gNv6P9lzF4J9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 15:03:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="l7YKZ+UE"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="VEry+ysN"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 479dmS3j22zF4Q2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:50:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 479dmZ6RM7zF4R4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:50:54 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 752D622583;
- Sun, 10 Nov 2019 02:50:45 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id E9DD922790;
+ Sun, 10 Nov 2019 02:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573354246;
- bh=0K5Le4/yUVvQ+7LVnDH2eIxwNTpwnAm+e6EkDjNqOyY=;
+ s=default; t=1573354252;
+ bh=ujhPlnlerUbVFby2mytHtPwSpm/UGTUI8gqoX3sAceo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=l7YKZ+UEa8YCzk9LgdCmrh8s71NSYeAiNhXDpFUGvujfMw4uDAhvHRdJ71tG4vLBg
- rLmnQ7EgQZctkJxHiom+aNcY9KZPZ1FPw8df7AB4QSynlznp5MstSErV5dsiTlxdv8
- yPUNOLWSWtixTy8Lvu+pIWmmzGKg7Gh6Tr1x+Fuk=
+ b=VEry+ysNwStVVVkzZK+SFDE4BG+8mKvOPNeJ7j3ktHb4N/qt6bEMtFon+e9VZSEWt
+ BrCGbm1yy0GGxHQogdqCP1w13wJbkplRMSjIf+uawXXN3rolaGnnqCuHWWbsBU+u1t
+ YrLXe2hH0IqOVR4z4sH2WDGYg8gCz9teaIHJ++Xs=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 07/40] libfdt: Ensure INT_MAX is defined in
- libfdt_env.h
-Date: Sat,  9 Nov 2019 21:49:59 -0500
-Message-Id: <20191110025032.827-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 10/40] net: toshiba: fix return type of
+ ndo_start_xmit function
+Date: Sat,  9 Nov 2019 21:50:02 -0500
+Message-Id: <20191110025032.827-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191110025032.827-1-sashal@kernel.org>
 References: <20191110025032.827-1-sashal@kernel.org>
@@ -60,73 +60,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Rob Herring <robh@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, YueHaibing <yuehaibing@huawei.com>,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Rob Herring <robh@kernel.org>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 53dd9dce6979bc54d64a3a09a2fb20187a025be7 ]
+[ Upstream commit bacade822524e02f662d88f784d2ae821a5546fb ]
 
-The next update of libfdt has a new dependency on INT_MAX. Update the
-instances of libfdt_env.h in the kernel to either include the necessary
-header with the definition or define it locally.
+The method ndo_start_xmit() is defined as returning an 'netdev_tx_t',
+which is a typedef for an enum type, so make sure the implementation in
+this driver has returns 'netdev_tx_t' value, and change the function
+return type to netdev_tx_t.
 
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Rob Herring <robh@kernel.org>
+Found by coccinelle.
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/compressed/libfdt_env.h | 2 ++
- arch/powerpc/boot/libfdt_env.h        | 2 ++
- include/linux/libfdt_env.h            | 1 +
- 3 files changed, 5 insertions(+)
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c | 4 ++--
+ drivers/net/ethernet/toshiba/ps3_gelic_net.h | 2 +-
+ drivers/net/ethernet/toshiba/spider_net.c    | 4 ++--
+ drivers/net/ethernet/toshiba/tc35815.c       | 6 ++++--
+ 4 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/compressed/libfdt_env.h b/arch/arm/boot/compressed/libfdt_env.h
-index 17ae0f3efac8e..005bf4ff1b4cb 100644
---- a/arch/arm/boot/compressed/libfdt_env.h
-+++ b/arch/arm/boot/compressed/libfdt_env.h
-@@ -5,6 +5,8 @@
- #include <linux/string.h>
- #include <asm/byteorder.h>
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+index 79f0ec4e51ace..964df98b54ea1 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+@@ -845,9 +845,9 @@ static int gelic_card_kick_txdma(struct gelic_card *card,
+  * @skb: packet to send out
+  * @netdev: interface device structure
+  *
+- * returns 0 on success, <0 on failure
++ * returns NETDEV_TX_OK on success, NETDEV_TX_BUSY on failure
+  */
+-int gelic_net_xmit(struct sk_buff *skb, struct net_device *netdev)
++netdev_tx_t gelic_net_xmit(struct sk_buff *skb, struct net_device *netdev)
+ {
+ 	struct gelic_card *card = netdev_card(netdev);
+ 	struct gelic_descr *descr;
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.h b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
+index 8505196be9f52..d123644bd720b 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_net.h
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
+@@ -370,7 +370,7 @@ void gelic_card_up(struct gelic_card *card);
+ void gelic_card_down(struct gelic_card *card);
+ int gelic_net_open(struct net_device *netdev);
+ int gelic_net_stop(struct net_device *netdev);
+-int gelic_net_xmit(struct sk_buff *skb, struct net_device *netdev);
++netdev_tx_t gelic_net_xmit(struct sk_buff *skb, struct net_device *netdev);
+ void gelic_net_set_multi(struct net_device *netdev);
+ void gelic_net_tx_timeout(struct net_device *netdev);
+ int gelic_net_change_mtu(struct net_device *netdev, int new_mtu);
+diff --git a/drivers/net/ethernet/toshiba/spider_net.c b/drivers/net/ethernet/toshiba/spider_net.c
+index 3c54a2cae5dfd..8e53211aedd82 100644
+--- a/drivers/net/ethernet/toshiba/spider_net.c
++++ b/drivers/net/ethernet/toshiba/spider_net.c
+@@ -881,9 +881,9 @@ spider_net_kick_tx_dma(struct spider_net_card *card)
+  * @skb: packet to send out
+  * @netdev: interface device structure
+  *
+- * returns 0 on success, !0 on failure
++ * returns NETDEV_TX_OK on success, NETDEV_TX_BUSY on failure
+  */
+-static int
++static netdev_tx_t
+ spider_net_xmit(struct sk_buff *skb, struct net_device *netdev)
+ {
+ 	int cnt;
+diff --git a/drivers/net/ethernet/toshiba/tc35815.c b/drivers/net/ethernet/toshiba/tc35815.c
+index 868fb6306df02..3e33c165a4278 100644
+--- a/drivers/net/ethernet/toshiba/tc35815.c
++++ b/drivers/net/ethernet/toshiba/tc35815.c
+@@ -475,7 +475,8 @@ static void free_rxbuf_skb(struct pci_dev *hwdev, struct sk_buff *skb, dma_addr_
+ /* Index to functions, as function prototypes. */
  
-+#define INT_MAX			((int)(~0U>>1))
-+
- typedef __be16 fdt16_t;
- typedef __be32 fdt32_t;
- typedef __be64 fdt64_t;
-diff --git a/arch/powerpc/boot/libfdt_env.h b/arch/powerpc/boot/libfdt_env.h
-index 7e3789ea396b8..0b3db6322c793 100644
---- a/arch/powerpc/boot/libfdt_env.h
-+++ b/arch/powerpc/boot/libfdt_env.h
-@@ -4,6 +4,8 @@
- #include <types.h>
- #include <string.h>
- 
-+#define INT_MAX			((int)(~0U>>1))
-+
- #include "of.h"
- 
- typedef u32 uint32_t;
-diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
-index 2a663c6bb4285..8850e243c9406 100644
---- a/include/linux/libfdt_env.h
-+++ b/include/linux/libfdt_env.h
-@@ -1,6 +1,7 @@
- #ifndef _LIBFDT_ENV_H
- #define _LIBFDT_ENV_H
- 
-+#include <linux/kernel.h>	/* For INT_MAX */
- #include <linux/string.h>
- 
- #include <asm/byteorder.h>
+ static int	tc35815_open(struct net_device *dev);
+-static int	tc35815_send_packet(struct sk_buff *skb, struct net_device *dev);
++static netdev_tx_t	tc35815_send_packet(struct sk_buff *skb,
++					    struct net_device *dev);
+ static irqreturn_t	tc35815_interrupt(int irq, void *dev_id);
+ static int	tc35815_rx(struct net_device *dev, int limit);
+ static int	tc35815_poll(struct napi_struct *napi, int budget);
+@@ -1279,7 +1280,8 @@ tc35815_open(struct net_device *dev)
+  * invariant will hold if you make sure that the netif_*_queue()
+  * calls are done at the proper times.
+  */
+-static int tc35815_send_packet(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t
++tc35815_send_packet(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct tc35815_local *lp = netdev_priv(dev);
+ 	struct TxFD *txfd;
 -- 
 2.20.1
 
