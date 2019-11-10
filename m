@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC40F6710
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC36FF6712
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:31:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 479fbY67K1zDqRj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:28:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 479ffz11K8zF0YD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:31:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="LHmYWKZS"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="KukGrOqU"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 479dbT27CnzF1Lg
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:43:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 479dd74TQQzF414
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:44:27 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5A0D621655;
- Sun, 10 Nov 2019 02:42:58 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5ED1F21848;
+ Sun, 10 Nov 2019 02:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573353779;
- bh=JQk9omXxklF8VgVrkHHZjnjSyVreUFDVuykH+LeLiPA=;
+ s=default; t=1573353865;
+ bh=Ths97q+qE2uN8VtqEniJVy9I5rsNu3PZl7dyEi1Iplw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LHmYWKZSYRtYNnvk8bCxMtZcDryaB0QRE6hPCNEh9MERo64lz0Hdb2tYaPTD/raSe
- xrvZeYDkj93F+wKzPQRzZZEKqxIBOtGwiu9xc82r4PMxT1rfgzOAuXKBPL7DEIOy4a
- AWotOcSBGIgWMjMsIykoF2rm6YMUIazaBNkWHRkg=
+ b=KukGrOqUICyiJSbW/pQWDH84grI1aIFC2B2qwPumaZEtS8YS45ycgm+pu09ctTyD7
+ otADzKyAZkvMx/2h8LrFPmJlIXLis/yAguktAowUtGGkjGUJSDOAa3Z0uTSHAjjo09
+ 1p/HBZ4ki4xx64wE5PfnzOxL2jtYm8TkpQg822lw=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 085/191] net: freescale: fix return type of
- ndo_start_xmit function
-Date: Sat,  9 Nov 2019 21:38:27 -0500
-Message-Id: <20191110024013.29782-85-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 145/191] PCI/ERR: Run error recovery callbacks
+ for all affected devices
+Date: Sat,  9 Nov 2019 21:39:27 -0500
+Message-Id: <20191110024013.29782-145-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191110024013.29782-1-sashal@kernel.org>
 References: <20191110024013.29782-1-sashal@kernel.org>
@@ -60,113 +60,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, YueHaibing <yuehaibing@huawei.com>,
- "David S . Miller" <davem@davemloft.net>
+Cc: Sasha Levin <sashal@kernel.org>, linux-pci@vger.kernel.org,
+ Sinan Kaya <okaya@kernel.org>, Keith Busch <keith.busch@intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Keith Busch <keith.busch@intel.com>
 
-[ Upstream commit 06983aa526c759ebdf43f202d8d0491d9494e2f4 ]
+[ Upstream commit bfcb79fca19d267712e425af1dd48812c40dec0c ]
 
-The method ndo_start_xmit() is defined as returning an 'netdev_tx_t',
-which is a typedef for an enum type, so make sure the implementation in
-this driver has returns 'netdev_tx_t' value, and change the function
-return type to netdev_tx_t.
+If an Endpoint reported an error with ERR_FATAL, we previously ran driver
+error recovery callbacks only for the Endpoint's driver.  But if we reset a
+Link to recover from the error, all downstream components are affected,
+including the Endpoint, any multi-function peers, and children of those
+peers.
 
-Found by coccinelle.
+Initiate the Link reset from the deepest Downstream Port that is
+reliable, and call the error recovery callbacks for all its children.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+If a Downstream Port (including a Root Port) reports an error, we assume
+the Port itself is reliable and we need to reset its downstream Link.  In
+all other cases (Switch Upstream Ports, Endpoints, Bridges, etc), we assume
+the Link leading to the component needs to be reset, so we initiate the
+reset at the parent Downstream Port.
+
+This allows two other clean-ups.  First, we currently only use a Link
+reset, which can only be initiated using a Downstream Port, so we can
+remove checks for Endpoints.  Second, the Downstream Port where we initiate
+the Link reset is reliable (unlike components downstream from it), so the
+special cases for error detect and resume are no longer necessary.
+
+Signed-off-by: Keith Busch <keith.busch@intel.com>
+[bhelgaas: changelog]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Sinan Kaya <okaya@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_eth.c        | 3 ++-
- drivers/net/ethernet/freescale/fec_mpc52xx.c          | 3 ++-
- drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 3 ++-
- drivers/net/ethernet/freescale/gianfar.c              | 4 ++--
- drivers/net/ethernet/freescale/ucc_geth.c             | 3 ++-
- 5 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/pci/pcie/err.c | 85 +++++++++++-------------------------------
+ 1 file changed, 21 insertions(+), 64 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index d7915cd68dc14..462bb8c4f80c9 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -2046,7 +2046,8 @@ static inline int dpaa_xmit(struct dpaa_priv *priv,
- 	return 0;
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index 12c1205e1d804..2c3b5bd59b18f 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -63,30 +63,12 @@ static int report_error_detected(struct pci_dev *dev, void *data)
+ 	if (!dev->driver ||
+ 		!dev->driver->err_handler ||
+ 		!dev->driver->err_handler->error_detected) {
+-		if (result_data->state == pci_channel_io_frozen &&
+-			dev->hdr_type != PCI_HEADER_TYPE_BRIDGE) {
+-			/*
+-			 * In case of fatal recovery, if one of down-
+-			 * stream device has no driver. We might be
+-			 * unable to recover because a later insmod
+-			 * of a driver for this device is unaware of
+-			 * its hw state.
+-			 */
+-			pci_printk(KERN_DEBUG, dev, "device has %s\n",
+-				   dev->driver ?
+-				   "no AER-aware driver" : "no driver");
+-		}
+-
+ 		/*
+-		 * If there's any device in the subtree that does not
+-		 * have an error_detected callback, returning
+-		 * PCI_ERS_RESULT_NO_AER_DRIVER prevents calling of
+-		 * the subsequent mmio_enabled/slot_reset/resume
+-		 * callbacks of "any" device in the subtree. All the
+-		 * devices in the subtree are left in the error state
+-		 * without recovery.
++		 * If any device in the subtree does not have an error_detected
++		 * callback, PCI_ERS_RESULT_NO_AER_DRIVER prevents subsequent
++		 * error callbacks of "any" device in the subtree, and will
++		 * exit in the disconnected error state.
+ 		 */
+-
+ 		if (dev->hdr_type != PCI_HEADER_TYPE_BRIDGE)
+ 			vote = PCI_ERS_RESULT_NO_AER_DRIVER;
+ 		else
+@@ -184,34 +166,23 @@ static pci_ers_result_t default_reset_link(struct pci_dev *dev)
+ 
+ static pci_ers_result_t reset_link(struct pci_dev *dev, u32 service)
+ {
+-	struct pci_dev *udev;
+ 	pci_ers_result_t status;
+ 	struct pcie_port_service_driver *driver = NULL;
+ 
+-	if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE) {
+-		/* Reset this port for all subordinates */
+-		udev = dev;
+-	} else {
+-		/* Reset the upstream component (likely downstream port) */
+-		udev = dev->bus->self;
+-	}
+-
+-	/* Use the aer driver of the component firstly */
+-	driver = pcie_port_find_service(udev, service);
+-
++	driver = pcie_port_find_service(dev, service);
+ 	if (driver && driver->reset_link) {
+-		status = driver->reset_link(udev);
+-	} else if (udev->has_secondary_link) {
+-		status = default_reset_link(udev);
++		status = driver->reset_link(dev);
++	} else if (dev->has_secondary_link) {
++		status = default_reset_link(dev);
+ 	} else {
+ 		pci_printk(KERN_DEBUG, dev, "no link-reset support at upstream device %s\n",
+-			pci_name(udev));
++			pci_name(dev));
+ 		return PCI_ERS_RESULT_DISCONNECT;
+ 	}
+ 
+ 	if (status != PCI_ERS_RESULT_RECOVERED) {
+ 		pci_printk(KERN_DEBUG, dev, "link reset at upstream device %s failed\n",
+-			pci_name(udev));
++			pci_name(dev));
+ 		return PCI_ERS_RESULT_DISCONNECT;
+ 	}
+ 
+@@ -243,31 +214,7 @@ static pci_ers_result_t broadcast_error_message(struct pci_dev *dev,
+ 	else
+ 		result_data.result = PCI_ERS_RESULT_RECOVERED;
+ 
+-	if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE) {
+-		/*
+-		 * If the error is reported by a bridge, we think this error
+-		 * is related to the downstream link of the bridge, so we
+-		 * do error recovery on all subordinates of the bridge instead
+-		 * of the bridge and clear the error status of the bridge.
+-		 */
+-		if (cb == report_error_detected)
+-			dev->error_state = state;
+-		pci_walk_bus(dev->subordinate, cb, &result_data);
+-		if (cb == report_resume) {
+-			pci_aer_clear_device_status(dev);
+-			pci_cleanup_aer_uncorrect_error_status(dev);
+-			dev->error_state = pci_channel_io_normal;
+-		}
+-	} else {
+-		/*
+-		 * If the error is reported by an end point, we think this
+-		 * error is related to the upstream link of the end point.
+-		 * The error is non fatal so the bus is ok; just invoke
+-		 * the callback for the function that logged the error.
+-		 */
+-		cb(dev, &result_data);
+-	}
+-
++	pci_walk_bus(dev->subordinate, cb, &result_data);
+ 	return result_data.result;
  }
  
--static int dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
-+static netdev_tx_t
-+dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
- {
- 	const int queue_mapping = skb_get_queue_mapping(skb);
- 	bool nonlinear = skb_is_nonlinear(skb);
-diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx.c b/drivers/net/ethernet/freescale/fec_mpc52xx.c
-index 6d7269d87a850..b90bab72efdb3 100644
---- a/drivers/net/ethernet/freescale/fec_mpc52xx.c
-+++ b/drivers/net/ethernet/freescale/fec_mpc52xx.c
-@@ -305,7 +305,8 @@ static int mpc52xx_fec_close(struct net_device *dev)
-  * invariant will hold if you make sure that the netif_*_queue()
-  * calls are done at the proper times.
-  */
--static int mpc52xx_fec_start_xmit(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t
-+mpc52xx_fec_start_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct mpc52xx_fec_priv *priv = netdev_priv(dev);
- 	struct bcom_fec_bd *bd;
-diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-index 2c2976a2dda6b..7c548ed535da5 100644
---- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-@@ -481,7 +481,8 @@ static struct sk_buff *tx_skb_align_workaround(struct net_device *dev,
- }
- #endif
+@@ -347,6 +294,14 @@ void pcie_do_nonfatal_recovery(struct pci_dev *dev)
  
--static int fs_enet_start_xmit(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t
-+fs_enet_start_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct fs_enet_private *fep = netdev_priv(dev);
- 	cbd_t __iomem *bdp;
-diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
-index f27f9bae1a4ac..c97c4edfa31bc 100644
---- a/drivers/net/ethernet/freescale/gianfar.c
-+++ b/drivers/net/ethernet/freescale/gianfar.c
-@@ -112,7 +112,7 @@
- const char gfar_driver_version[] = "2.0";
+ 	state = pci_channel_io_normal;
  
- static int gfar_enet_open(struct net_device *dev);
--static int gfar_start_xmit(struct sk_buff *skb, struct net_device *dev);
-+static netdev_tx_t gfar_start_xmit(struct sk_buff *skb, struct net_device *dev);
- static void gfar_reset_task(struct work_struct *work);
- static void gfar_timeout(struct net_device *dev);
- static int gfar_close(struct net_device *dev);
-@@ -2334,7 +2334,7 @@ static inline bool gfar_csum_errata_76(struct gfar_private *priv,
- /* This is called by the kernel when a frame is ready for transmission.
-  * It is pointed to by the dev->hard_start_xmit function pointer
-  */
--static int gfar_start_xmit(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t gfar_start_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct gfar_private *priv = netdev_priv(dev);
- 	struct gfar_priv_tx_q *tx_queue = NULL;
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 1e2b53a934fb9..a5bf02ae4bc5c 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -3085,7 +3085,8 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
++	/*
++	 * Error recovery runs on all subordinates of the first downstream port.
++	 * If the downstream port detected the error, it is cleared at the end.
++	 */
++	if (!(pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
++	      pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM))
++		dev = dev->bus->self;
++
+ 	status = broadcast_error_message(dev,
+ 			state,
+ 			"error_detected",
+@@ -378,6 +333,8 @@ void pcie_do_nonfatal_recovery(struct pci_dev *dev)
+ 				"resume",
+ 				report_resume);
  
- /* This is called by the kernel when a frame is ready for transmission. */
- /* It is pointed to by the dev->hard_start_xmit function pointer */
--static int ucc_geth_start_xmit(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t
-+ucc_geth_start_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct ucc_geth_private *ugeth = netdev_priv(dev);
- #ifdef CONFIG_UGETH_TX_ON_DEMAND
++	pci_aer_clear_device_status(dev);
++	pci_cleanup_aer_uncorrect_error_status(dev);
+ 	pci_info(dev, "AER: Device recovery successful\n");
+ 	return;
+ 
 -- 
 2.20.1
 
