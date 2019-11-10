@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A84F670C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:18:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FAA9F670D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 04:21:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 479fN46YyJzF3GL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:18:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 479fRm1jRFzF6P9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Nov 2019 14:21:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,32 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="IgFSrB+y"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="u6I/M2HC"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 479dbG316nzF3xn
+ by lists.ozlabs.org (Postfix) with ESMTPS id 479dbG5HMDzF3y0
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 13:42:50 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id EA54F21848;
- Sun, 10 Nov 2019 02:42:46 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2B5DF21655;
+ Sun, 10 Nov 2019 02:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573353767;
- bh=8GO4XkRygHmVTWKvH9SbwPX3T6ChRn2RDaOvhj0FWc0=;
+ s=default; t=1573353769;
+ bh=AaJ/mLERXI2BGShxQaRJWcyC7zaq2lLv8vFC69G+pfw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IgFSrB+yh4W0GvXVRhb3f2yzSKXf7Yt61ofrKRC57OCrhkQjoOUwrIjaebs5nekhC
- fdsQsXOkTlQ4W2eBU2yastYGtG0osWFlJuWYDxquWZR9450hKxaWqWVwRD67Cq8/gD
- d88eo51RF2n3Q/b/ZP6Sw4korhj7n9pfpdxO1U7E=
+ b=u6I/M2HCzhECfnvb54W8gn3qSm8JtGPXKY2Ma6XPbmHaau5ndejYWVvgv1V1oH3tF
+ JoAal4m1aw5OqsHvva/pP5UsbAlkOF2kILwTZeVrYjpiq57wJpW2QlcgpAVQft3ytU
+ ZoIPx9xZtFq7t0oxOykdD2RzLTOkEuHUdVIZbgdc=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 079/191] PCI/AER: Take reference on error devices
-Date: Sat,  9 Nov 2019 21:38:21 -0500
-Message-Id: <20191110024013.29782-79-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 080/191] PCI/AER: Don't read upstream ports below
+ fatal errors
+Date: Sat,  9 Nov 2019 21:38:22 -0500
+Message-Id: <20191110024013.29782-80-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191110024013.29782-1-sashal@kernel.org>
 References: <20191110024013.29782-1-sashal@kernel.org>
@@ -68,41 +69,39 @@ Sender: "Linuxppc-dev"
 
 From: Keith Busch <keith.busch@intel.com>
 
-[ Upstream commit 60271ab044a53edb9dcbe76bebea2221c4ff04d9 ]
+[ Upstream commit 9d938ea53b265ed6df6cdd1715d971f0235fdbfc ]
 
-Error handling may be running in parallel with a hot removal.  Reference
-count the device during AER handling so the device can not be freed while
-AER wants to reference it.
+The AER driver has never read the config space of an endpoint that reported
+a fatal error because the link to that device is considered unreliable.
+
+An ERR_FATAL from an upstream port almost certainly indicates an error on
+its upstream link, so we can't expect to reliably read its config space for
+the same reason.
 
 Signed-off-by: Keith Busch <keith.busch@intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Reviewed-by: Sinan Kaya <okaya@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/aer.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 637d638f73da5..ffbbd759683c5 100644
+index ffbbd759683c5..5c3ea7254c6ae 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
-@@ -866,7 +866,7 @@ void cper_print_aer(struct pci_dev *dev, int aer_severity,
- static int add_error_device(struct aer_err_info *e_info, struct pci_dev *dev)
- {
- 	if (e_info->error_dev_num < AER_MAX_MULTI_ERR_DEVICES) {
--		e_info->dev[e_info->error_dev_num] = dev;
-+		e_info->dev[e_info->error_dev_num] = pci_dev_get(dev);
- 		e_info->error_dev_num++;
- 		return 0;
- 	}
-@@ -1013,6 +1013,7 @@ static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
- 		pcie_do_nonfatal_recovery(dev);
- 	else if (info->severity == AER_FATAL)
- 		pcie_do_fatal_recovery(dev, PCIE_PORT_SERVICE_AER);
-+	pci_dev_put(dev);
- }
+@@ -1116,8 +1116,9 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+ 			&info->mask);
+ 		if (!(info->status & ~info->mask))
+ 			return 0;
+-	} else if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE ||
+-		info->severity == AER_NONFATAL) {
++	} else if (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
++	           pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM ||
++		   info->severity == AER_NONFATAL) {
  
- #ifdef CONFIG_ACPI_APEI_PCIEAER
+ 		/* Link is still healthy for IO reads */
+ 		pci_read_config_dword(dev, pos + PCI_ERR_UNCOR_STATUS,
 -- 
 2.20.1
 
