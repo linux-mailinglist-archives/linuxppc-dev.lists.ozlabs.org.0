@@ -1,81 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DF5F6E28
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 06:34:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A89F6E3F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 06:47:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BKLY1KzgzF363
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 16:34:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BKdl1m2jzF4gJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 16:47:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BK4Y3LW1zF1bQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 16:22:05 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xAB5HW9J171109; Mon, 11 Nov 2019 00:21:57 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w5s551q9w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 Nov 2019 00:21:57 -0500
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id xAB5HYM7171165;
- Mon, 11 Nov 2019 00:21:56 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w5s551q9h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 Nov 2019 00:21:56 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAB5K6e2030131;
- Mon, 11 Nov 2019 05:21:55 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 2w5n35xs1h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 Nov 2019 05:21:55 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAB5LsK355443746
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 Nov 2019 05:21:54 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C96772805A;
- Mon, 11 Nov 2019 05:21:54 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1E8AE28059;
- Mon, 11 Nov 2019 05:21:54 +0000 (GMT)
-Received: from ltcalpine2-lp18.aus.stglabs.ibm.com (unknown [9.40.195.201])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 11 Nov 2019 05:21:54 +0000 (GMT)
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2 9/9] powerpc/pseries: Enable support for ibm,
- drc-info property
-Date: Sun, 10 Nov 2019 23:21:37 -0600
-Message-Id: <1573449697-5448-11-git-send-email-tyreld@linux.ibm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1573449697-5448-1-git-send-email-tyreld@linux.ibm.com>
-References: <1573449697-5448-1-git-send-email-tyreld@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-10_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911110051
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BKCb6NwMzF1bv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 16:28:11 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="tzO9kkm+"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 47BKCY6XtWz9sPn; Mon, 11 Nov 2019 16:28:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1573450089; bh=Gk49bVSafO6qIOkqpX6nJCaX1ioKZx1OXiY1Eid0yQc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=tzO9kkm++WvSl259JyipYeMhoPff9fwIU5yZswgTFotSFTW8+QyqmIoXIsPh8/GWx
+ C1d7HZsIxm7gjhzHagA36jMYph6dSnsKJu4vtzSQpp/NvijxvGXUd14h13HucKCJnV
+ P/Y+PyMcPtwNQr2pqrJgmCD9OmL7bQaTwBiW+p3Lne0GkchrCKb6S2sP+Je+g3YgQp
+ 1zMuYge180wtE6ElW8JGmUgzb6CjWrpCCFL4TD1w6KshiemCO4opWIUzd6F+TVNquI
+ qvtQ5FLv7KjaWBTKtAVWDy9a5bbcZCaJp1jxbphDRimvSNLEWgwj8xGkbf7PM+HiaL
+ aS+a880rDPU/Q==
+Date: Mon, 11 Nov 2019 16:28:06 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v10 6/8] KVM: PPC: Support reset of secure guest
+Message-ID: <20191111052806.GC4017@oak.ozlabs.ibm.com>
+References: <20191104041800.24527-1-bharata@linux.ibm.com>
+ <20191104041800.24527-7-bharata@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191104041800.24527-7-bharata@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,35 +54,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, Tyrel Datwyler <tyreld@linux.ibm.com>,
- tlfalcon@linux.ibm.com, linux-pci@vger.kernel.org, bhelgaas@google.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
+ paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Advertise client support for the PAPR architected ibm,drc-info device
-tree property during CAS handshake.
+On Mon, Nov 04, 2019 at 09:47:58AM +0530, Bharata B Rao wrote:
+> Add support for reset of secure guest via a new ioctl KVM_PPC_SVM_OFF.
+> This ioctl will be issued by QEMU during reset and includes the
+> the following steps:
+> 
+> - Ask UV to terminate the guest via UV_SVM_TERMINATE ucall
+> - Unpin the VPA pages so that they can be migrated back to secure
+>   side when guest becomes secure again. This is required because
+>   pinned pages can't be migrated.
 
-Fixes: c7a3275e0f9e ("powerpc/pseries: Revert support for ibm,drc-info devtree property")
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
----
- arch/powerpc/kernel/prom_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Unpinning the VPA pages is normally handled during VM reset by QEMU
+doing set_one_reg operations to set the values for the
+KVM_REG_PPC_VPA_ADDR, KVM_REG_PPC_VPA_SLB and KVM_REG_PPC_VPA_DTL
+pseudo-registers to zero.  Is there some reason why this isn't
+happening for a secure VM, and if so, what is that reason?
+If it is happening, then why do we need to unpin the pages explicitly
+here?
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 100f1b5..eba9d4e 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -1053,7 +1053,7 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
- 		.reserved2 = 0,
- 		.reserved3 = 0,
- 		.subprocessors = 1,
--		.byte22 = OV5_FEAT(OV5_DRMEM_V2),
-+		.byte22 = OV5_FEAT(OV5_DRMEM_V2) | OV5_FEAT(OV5_DRC_INFO),
- 		.intarch = 0,
- 		.mmu = 0,
- 		.hash_ext = 0,
--- 
-2.7.4
+> - Reinitialize guest's partitioned scoped page tables. These are
+>   freed when guest becomes secure (H_SVM_INIT_DONE)
 
+It doesn't seem particularly useful to me to free the partition-scoped
+page tables when the guest becomes secure, and it feels like it makes
+things more fragile.  If you don't free them then, then you don't need
+to reallocate them now.
+
+> - Release all device pages of the secure guest.
+> 
+> After these steps, guest is ready to issue UV_ESM call once again
+> to switch to secure mode.
+
+Paul.
