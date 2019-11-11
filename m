@@ -2,77 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E82F6C70
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 02:46:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01225F6CB4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 03:30:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BDJ91m7TzF4RJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 12:46:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BFG41b4qzF41F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 13:30:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=eric.dumazet@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=sergey.senozhatsky.work@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="OuiFYHhb"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="PEUFO8IE"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BDGF2rL7zDrCJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 12:45:05 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id n13so9589543pff.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 17:45:05 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BCnW5RSpzF42M
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 12:23:43 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id q22so8379511pgk.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 17:23:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=80X0XSD0z9TSGmjUVgRibRN8mNevgQEBc1olihW2u6g=;
- b=OuiFYHhbZ9Jlgoq/7aQ7D0VlRd9aa0SuAm/xmePlv1T/040HatzWfRj/hJcLZa3cWl
- KnM2nXGTg6LmyIIGYQF9iRWBXC8f5Y+uaL9ac9d4kaA6dk8Sx9lQyJntnXIWifO/yr1z
- 0RT3gkcUNJO/RKdqlK0wRudZuTiAuCm2xuz3G9XYqecXQmi+IrzL3F/brfVbv6VlQx56
- CTD+nRI7PIushCJ085u4FrzZDmofIReN95+TQJyODH4UJQTIFrxJN4FojhuDt/5VkvwA
- RQe3t6wyBTfocf10L13HjL7lmRKy52BbCrjzCO9P+9dvLlFRmgZ3XcA22pOIc8cq6tCZ
- ChLQ==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=meRRGW7ni43do21CnMh1ypMYB7GRo8yRghEKxpnOMtM=;
+ b=PEUFO8IEu1osGIrKprDzvbxlNRJeZ7+VQZKgcPA4VWwOYdra1vch/X2sOCSKa29N9n
+ VdblGN+C6xXZa66p438tGiFX2wH1ZMvXaLBCYR4jMYFYKpHWbu3dvuf4i51nfGHovAdM
+ kJ21eWqlCVZNsUh7vR0KmZmoQmTZB1DoPsxQK2h0K8DrMvb84HP3pZHYPYw+F3AAOb8s
+ 2PUdw4923VWsoF2jPoVNv2KKLc7p6DTbwWWIyb/CwJRvDtzNsBcrU623traZ5+UDPhd8
+ dvUZh/U5lV6A1081bATRr1q945s51Yb6awkYmElXIQG0WkPEPjbs1iqGD3WlzUt7rcka
+ L5/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=80X0XSD0z9TSGmjUVgRibRN8mNevgQEBc1olihW2u6g=;
- b=W83St0Z9YMokVcrxQLogY0UTB8ZTU2aDZl2x+1mqkE1Np0xPT/E+sglbeM0MbqWVrY
- 1/qu92TQ2BJSG0h6kGJuyqvR9XPrCJp69d/admNxX2tsd13WfgtZzFrkfY5ahf9QYict
- uACSHKsu43rYutrhk91cc3051F46XgCdunaNAcYOxNXK3LDUApS6fdLeiXCVZXJ1ahDr
- 2Uw7rYThesX0hMf/YjuJp5BHU1Gxq5qL62j1sR8nt+51lLFtiW7yNxx6mJpnFbOTDXIs
- DTR7Hj1qACEGHdEpig6U9+PU+hN//fxJ5F1eC3Wo4YY49zPlDMBDjSWK7oEuaLaIcf+O
- H2kg==
-X-Gm-Message-State: APjAAAXXWCX46RemDgO355sDxd8fG9t+NHaNQHuI0Yi98D9rUKxw81Tj
- vezU4qHpqWSmaCE7L7KSCr19Wgav
-X-Google-Smtp-Source: APXvYqzq3k1xgi5K27cvzCuxPJRBEviwJSeyWLqUc78Sumo9fyb0YLWuKtwUi8vNz/jJ3hJ8eT158A==
-X-Received: by 2002:a62:1953:: with SMTP id 80mr27049192pfz.72.1573436702889; 
- Sun, 10 Nov 2019 17:45:02 -0800 (PST)
-Received: from [192.168.86.235] (c-73-241-150-58.hsd1.ca.comcast.net.
- [73.241.150.58])
- by smtp.gmail.com with ESMTPSA id y3sm11526006pgl.78.2019.11.10.17.45.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Nov 2019 17:45:02 -0800 (PST)
-Subject: Re: linux-next: build warning after merge of the net-next tree
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- David Miller <davem@davemloft.net>, Networking <netdev@vger.kernel.org>
-References: <20191111123922.540319a2@canb.auug.org.au>
-From: Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <e71126d6-6c15-297d-0138-4c76d6720186@gmail.com>
-Date: Sun, 10 Nov 2019 17:45:00 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=meRRGW7ni43do21CnMh1ypMYB7GRo8yRghEKxpnOMtM=;
+ b=Aiiqu92PGILkDubeHQnFSPoyKW+Ep90zDTNrB5NRTxTcECUgJ0qm82aWsWZWJ9AWxZ
+ WlPK52671RFb/a6gY+qsNAXS1GC7thoLPp4PZ2tLKmWRI1EgC6rO6+F6TdhPNxhQlv4K
+ Tx38Tc0u6vVoRV/7EYQTF/0CXIqBShbUiosM3hS/56/5TusKg4eKC2U8EmvCXOqRirDO
+ po/oFOlUHeUDtSXW0JgCpiTsLDgeCmC1Pi5TlKIaWa5ippRJdX/g46eJWIn9nfxg+FIu
+ jTjked+RRphShW51tpsquHgMGcirQqB1Owrbm+HPULNpLiM5njCtFjgi5amtynz+ACLo
+ iJ8w==
+X-Gm-Message-State: APjAAAXuhPizrRE8iI2Y5/YG2VJ6LHJxbqv8wj1HH272x5B+k7HDK3ad
+ b5Emzo9QUSRHKs/E0qGO2Ms=
+X-Google-Smtp-Source: APXvYqy6vC5fNwNO+7Jnp+tE/qbyOeavvD3kd+/MEwk8H/f5hGFY+WAM1K+Wsl4w+fZzo2o0jtZpqg==
+X-Received: by 2002:a63:b047:: with SMTP id z7mr20331363pgo.224.1573435419566; 
+ Sun, 10 Nov 2019 17:23:39 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:250d:e71d:5a0a:9afe])
+ by smtp.gmail.com with ESMTPSA id r8sm12584714pgr.59.2019.11.10.17.23.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 10 Nov 2019 17:23:38 -0800 (PST)
+Date: Mon, 11 Nov 2019 10:23:36 +0900
+From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH 00/50] Add log level to show_stack()
+Message-ID: <20191111012336.GA85185@google.com>
+References: <20191106030542.868541-1-dima@arista.com>
+ <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
+ <20191108103719.GB175344@google.com>
+ <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20191111123922.540319a2@canb.auug.org.au>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Mon, 11 Nov 2019 13:28:27 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,118 +83,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Dumazet <edumazet@google.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Ben Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Burton <paulburton@kernel.org>, Dmitry Safonov <dima@arista.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
+ Jiri Slaby <jslaby@suse.com>, Matt Turner <mattst88@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, Len Brown <len.brown@intel.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-um@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Richard Henderson <rth@twiddle.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ia64@vger.kernel.org,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ James Hogan <jhogan@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org, Stafford Horne <shorne@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Tony Luck <tony.luck@intel.com>, Douglas Anderson <dianders@chromium.org>,
+ Dmitry Safonov <0x7f454c46@gmail.com>, Will Deacon <will@kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Brian Cain <bcain@codeaurora.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ kgdb-bugreport@lists.sourceforge.net, linux-snps-arc@lists.infradead.org,
+ Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Jeff Dike <jdike@addtoit.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
+ "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
+ Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ Mark Salter <msalter@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Michal Simek <monstr@monstr.eu>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-mips@vger.kernel.org, Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Jason Wessel <jason.wessel@windriver.com>,
+ nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On (19/11/08 14:04), Petr Mladek wrote:
+[..]
+> I agree that it is complicated to pass the loglevel as
+> a parameter. It would be better define the default
+> log level for a given code section. It might be stored
+> in task_struct for the normal context and in per-CPU
+> variables for interrupt contexts.
 
+I do recall that we talked about per-CPU printk state bit which would
+start/end "just print it" section. We probably can extend it to "just
+log_store" type of functionality. Doesn't look like a very bad idea.
+"This task/context is in trouble, whatever it printk()-s is important".
 
-On 11/10/19 5:39 PM, Stephen Rothwell wrote:
-> Hi all,
-> 
-> After merging the net-next tree, today's linux-next build (powerpc
-> ppc64_defconfig) produced this warning:
-> 
-> In file included from ./arch/powerpc/include/generated/asm/local64.h:1,
->                  from include/linux/u64_stats_sync.h:72,
->                  from include/linux/cgroup-defs.h:20,
->                  from include/linux/cgroup.h:28,
->                  from include/linux/memcontrol.h:13,
->                  from include/linux/swap.h:9,
->                  from include/linux/suspend.h:5,
->                  from arch/powerpc/kernel/asm-offsets.c:23:
-> include/linux/u64_stats_sync.h: In function 'u64_stats_read':
-> include/asm-generic/local64.h:30:37: warning: passing argument 1 of 'local_read' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
->    30 | #define local64_read(l)  local_read(&(l)->a)
->       |                                     ^~~~~~~
-> include/linux/u64_stats_sync.h:80:9: note: in expansion of macro 'local64_read'
->    80 |  return local64_read(&p->v);
->       |         ^~~~~~~~~~~~
-> In file included from include/asm-generic/local64.h:22,
->                  from ./arch/powerpc/include/generated/asm/local64.h:1,
->                  from include/linux/u64_stats_sync.h:72,
->                  from include/linux/cgroup-defs.h:20,
->                  from include/linux/cgroup.h:28,
->                  from include/linux/memcontrol.h:13,
->                  from include/linux/swap.h:9,
->                  from include/linux/suspend.h:5,
->                  from arch/powerpc/kernel/asm-offsets.c:23:
-> arch/powerpc/include/asm/local.h:20:44: note: expected 'local_t *' {aka 'struct <anonymous> *'} but argument is of type 'const local_t *' {aka 'const struct <anonymous> *'}
->    20 | static __inline__ long local_read(local_t *l)
->       |                                   ~~~~~~~~~^
-> 
-> Introduced by commit
-> 
->   316580b69d0a ("u64_stats: provide u64_stats_t type")
-> 
-> Powerpc folks: is there some reason that local_read() cannot take a
-> const argument?
-> 
-> I have added this patch (which builds fine) for today:
-> 
-> From: Stephen Rothwell <sfr@canb.auug.org.au>
-> Date: Mon, 11 Nov 2019 12:32:24 +1100
-> Subject: [PATCH] powerpc: local_read() should take a const local_t argument
-> 
-> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> ---
->  arch/powerpc/include/asm/local.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/local.h b/arch/powerpc/include/asm/local.h
-> index fdd00939270b..bc4bd19b7fc2 100644
-> --- a/arch/powerpc/include/asm/local.h
-> +++ b/arch/powerpc/include/asm/local.h
-> @@ -17,7 +17,7 @@ typedef struct
->  
->  #define LOCAL_INIT(i)	{ (i) }
->  
-> -static __inline__ long local_read(local_t *l)
-> +static __inline__ long local_read(const local_t *l)
->  {
->  	return READ_ONCE(l->v);
->  }
-> 
+Per-console loglevel also might help sometimes. Slower consoles would
+->write() only critical messages, faster consoles everything.
 
-I have sent this patch two days ago, I do not believe I had any answer from ppc maintainers.
+Passing log_level as part of message payload, which printk machinery
+magically hides is not entirely exciting. What we have in the code
+now - printk("%s blah\n", lvl) - is not what we see in the logs.
+Because the leading '%s' becomes special. And printk()/sprintf()
+documentation should reflect that: '%s' prints a string, but sometimes
+it doesn't.
 
-From 47c47befdcf31fb8498c9e630bb8e0dc3ef88079 Mon Sep 17 00:00:00 2001
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 8 Nov 2019 06:04:35 -0800
-Subject: [PATCH] powerpc: add const qual to local_read() parameter
-
-A patch in net-next triggered a compile error on powerpc.
-
-This seems reasonable to relax powerpc local_read() requirements.
-
-Fixes: 316580b69d0a ("u64_stats: provide u64_stats_t type")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: kbuild test robot <lkp@intel.com>
-Cc:	Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc:	Paul Mackerras <paulus@samba.org>
-Cc:	Michael Ellerman <mpe@ellerman.id.au>
-Cc:	linuxppc-dev@lists.ozlabs.org
----
- arch/powerpc/include/asm/local.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/local.h b/arch/powerpc/include/asm/local.h
-index fdd00939270bf08113b537a090d6a6e34a048361..bc4bd19b7fc235b80ec1132f44409b6fe1057975 100644
---- a/arch/powerpc/include/asm/local.h
-+++ b/arch/powerpc/include/asm/local.h
-@@ -17,7 +17,7 @@ typedef struct
- 
- #define LOCAL_INIT(i)	{ (i) }
- 
--static __inline__ long local_read(local_t *l)
-+static __inline__ long local_read(const local_t *l)
- {
- 	return READ_ONCE(l->v);
- }
--- 
-2.24.0.432.g9d3f5f5b63-goog
-
+	-ss
