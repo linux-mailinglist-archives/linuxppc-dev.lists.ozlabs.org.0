@@ -1,75 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64169F6FA1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 09:19:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477ADF7026
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 10:08:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BP1S3VcjzF3nn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 19:19:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BQ5G40n0zDqd0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 20:08:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo6-p02-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5302::9;
- helo=mo6-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="lwdmIs4S"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.0.84; helo=eur02-am5-obe.outbound.protection.outlook.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="S/UMbi/8"; 
  dkim-atps=neutral
-Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de
- [IPv6:2a01:238:20a:202:5302::9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BNzH2LRCzF3jr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 19:17:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573460259;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=I34eY/Xc9cf0a6K3KuyVWJGfAFrDKl9f+FC20iCE5jc=;
- b=lwdmIs4Sv6umRPRNtSpo0oNzSoq55f8lsmgBHOPjo16xlj12CU310obe5Bycw/Goy6
- Ytvt34gFLJturiebHCctNkcN/XgTrRjyOccs9ekeaLW/vZlqVJrpoktFqbZIuxCfTZiQ
- IY2l9A0hY2PnbHGLmj6XGW+L2I4Hps/CGlUZwH2a65CWjA9pDlX6gfqrkYhXXbkH7qN0
- rz0V+LvBVLIg+WWNtN1916X8H5u8IJ80iM/DbAnf7k/isYiGLvDvsGZJdX4Vdvwtr0xz
- PPE4bXYfzI51Lk5blrP6SHcZ/l3aRsQtX1GVBapPRh/3d+XY0J6XcgqwOVih/uqSbnN9
- xO4g==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySd+h5FvloCRpQViBsLQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [192.168.178.47] by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
- with ESMTPSA id q007c8vAB8GtS7D
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
- 521 ECDH bits, eq. 15360 bits RSA))
- (Client did not present a certificate);
- Mon, 11 Nov 2019 09:16:55 +0100 (CET)
-Subject: Re: Bug 205201 - overflow of DMA mask and bus mask
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Christoph Hellwig <hch@lst.de>
-References: <20181213112511.GA4574@lst.de>
- <e109de27-f4af-147d-dc0e-067c8bafb29b@xenosoft.de>
- <ad5a5a8a-d232-d523-a6f7-e9377fc3857b@xenosoft.de>
- <e60d6ca3-860c-f01d-8860-c5e022ec7179@xenosoft.de>
- <008c981e-bdd2-21a7-f5f7-c57e4850ae9a@xenosoft.de>
- <20190103073622.GA24323@lst.de>
- <71A251A5-FA06-4019-B324-7AED32F7B714@xenosoft.de>
- <1b0c5c21-2761-d3a3-651b-3687bb6ae694@xenosoft.de>
- <3504ee70-02de-049e-6402-2d530bf55a84@xenosoft.de>
- <46025f1b-db20-ac23-7dcd-10bc43bbb6ee@xenosoft.de>
- <20191105162856.GA15402@lst.de>
- <2f3c81bd-d498-066a-12c0-0a7715cda18f@xenosoft.de>
- <d2c614ec-c56e-3ec2-12d0-7561cd30c643@xenosoft.de>
- <af32bfcc-5559-578d-e1f4-75e454c965bf@xenosoft.de>
-Message-ID: <0c5a8009-d28b-601f-3d1a-9de0e869911c@xenosoft.de>
-Date: Mon, 11 Nov 2019 09:16:55 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com
+ (mail-eopbgr00084.outbound.protection.outlook.com [40.107.0.84])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BQ3M65dSzF43G
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 20:06:19 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ADTfuy7yYb3Z7BvLnYWqg7eyFOVLTsKnHd44Ix5xyJqXA6ZwDCIDjdbgsRGe4Duq5GYYzHF0kgZAKISMCOwuemXSKkavxePNV8zUuk6B4IA3QOQKjUnJr/+iZw3fgnukeBoBoIYueWQdMRZFEUh7lYlXLJ+X9cXHvtxNctOOyoXuIVEMYkXB161Y5mWqnbTbD/EdC7WrNZYAsLcRC4p9/esywYIhiN9vrSQdlDAcU7Ds2ER0D8aYRY/w5ikzv3IUJq8MymIsHuHfY7qauAbXGFeIPExlGLN7fFwqhYJy/1ekBNaGKFbFKWi+dBGFZk7QNg1y2w96rpP+9IbkrSdyvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jqfhLy15q3DKXp1ZpKfv6q73du1gcBDOB0dOCiIhhPk=;
+ b=ken2ReQtxJvnk/sqZlxUZE0quTdFsYbG8V6BdktBG2K01sG7hH5qQslVdCHrcFITvEiT5Q8M81Vn1ja8wsIK3h6lkec4F4wHFsik531Fh1A76D0AyJg/alJBmP+ElWWuifBeMG2+8rTNhGkRpICPvVs9IQxCngnCm/aBLrSMsae7lTX1fVTx0RP8kaLJ+sbGUhoNQ9qSI8c1dGDeotymMMjqD5wfziAyOyOdckC77RRI7Ra5+qe+6abOsFZZpXFi/qLh1HKb+6c2gULUu3V+B4Tag7+X3bx84lTEM2lwQJnA2/D9mVyN+QY1WjtSQk/FBFRm1wzWZUBGYwUM0AxdTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jqfhLy15q3DKXp1ZpKfv6q73du1gcBDOB0dOCiIhhPk=;
+ b=S/UMbi/8wpmqGX0e8l8iRdvYB4Va5xSo0BAjQoww/v8L0GaVbRHVpi1BVdKXP89aQvkI3B6X89B5EFYN031nxAEpjVHDAY9VWqemes/tkijN6+AK0y41vJ42YKq1XUer8wql5lOJem3S7RFJj8429kVmWvrcwfeUyx+JUhUStlY=
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.232.225) by
+ VE1PR04MB6350.eurprd04.prod.outlook.com (20.179.234.91) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.20; Mon, 11 Nov 2019 09:06:07 +0000
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::9c38:e113:f0b4:f9]) by VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::9c38:e113:f0b4:f9%7]) with mapi id 15.20.2430.027; Mon, 11 Nov 2019
+ 09:06:07 +0000
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+To: Rob Herring <robh@kernel.org>, "nicoleotsuka@gmail.com"
+ <nicoleotsuka@gmail.com>
+Subject: Re: [alsa-devel] [PATCH V2 1/2] ASoC: dt-bindings: fsl_asrc: add
+ compatible string for imx8qm
+Thread-Topic: [alsa-devel] [PATCH V2 1/2] ASoC: dt-bindings: fsl_asrc: add
+ compatible string for imx8qm
+Thread-Index: AdWYbsgh8IXPoWIwTOytoNQoYAeMEw==
+Date: Mon, 11 Nov 2019 09:06:07 +0000
+Message-ID: <VE1PR04MB6479812133EDC588EE5768BAE3740@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=shengjiu.wang@nxp.com; 
+x-originating-ip: [119.31.174.66]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 432c21f6-3686-4758-eb6a-08d7668663a2
+x-ms-traffictypediagnostic: VE1PR04MB6350:
+x-microsoft-antispam-prvs: <VE1PR04MB6350F8CF6EC6451E9DB6CB95E3740@VE1PR04MB6350.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 0218A015FA
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(136003)(346002)(376002)(39860400002)(396003)(366004)(199004)(189003)(186003)(54906003)(6436002)(86362001)(305945005)(55016002)(66446008)(6116002)(66066001)(66946007)(66476007)(66556008)(76116006)(102836004)(256004)(14444005)(316002)(74316002)(64756008)(6246003)(71200400001)(71190400001)(229853002)(110136005)(478600001)(25786009)(81156014)(7736002)(6506007)(2501003)(7696005)(81166006)(9686003)(26005)(14454004)(33656002)(99286004)(7416002)(2906002)(4326008)(476003)(8936002)(5660300002)(8676002)(52536014)(486006)(3846002)(32563001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6350;
+ H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: BMjPrC9cSAkLC4vh8ygCcYEwlGhUbDiqnwOVMVgkjkGIXfnjaJLYLt8I4byQVqypxZ7a8wNhNGCD1x50bVnO0vP0bbv3to3jwgdylNed1xpLJ1l1xuP20Dq8xDZA2Hv/BpmZ1Kv+Eq4wCeJPFq4W3H3bgpfa0J576SYvRGmYcNOnUrJQmV6ZS3+t4hFSfZpNgiwZS44lhWdFCcL9E0eQxmDGHCFipQaLXAU+id5NWtcGXh7H0azL/U/fIsbhng9Nl/HLx+OMDhzCb1uebGRxTxMjsHdQVsZIsqAjXaCwWyKb8iVCQ3VQQlK8Nl6V2ObFmpXtBVYkilJJskLI+Bb/8SIhx874Ehefo/OfNnBlvX03NHIKpEGjDUOpNK5p5MbUtyokvizJaYfkPKa9UWy9PRp7Q6b52RLAYTQLzUiUa8eJjkso73VP6miTRQJ7c5h0
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <af32bfcc-5559-578d-e1f4-75e454c965bf@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 432c21f6-3686-4758-eb6a-08d7668663a2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2019 09:06:07.7967 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: h1eigLkZycDyuWu2wlZigzxo89NFLzDid4DGzCpsE5reZ8qaEyJp+XdRB/+vq9tVgn7QdxUc3VCBHXvEPzuU4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6350
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,224 +103,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net,
- mad skateman <madskateman@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Rob Herring <robh+dt@kernel.org>, paulus@samba.org, rtd2@xtra.co.nz,
- "contact@a-eon.com" <contact@a-eon.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>, "tiwai@suse.com" <tiwai@suse.com>,
+ "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11 November 2019 at 09:12 am, Christian Zigotzky wrote:
-> On 10 November 2019 at 08:27 am, Christian Zigotzky wrote:
->> On 07 November 2019 at 10:53 am, Christian Zigotzky wrote:
->>> On 05 November 2019 at 05:28 pm, Christoph Hellwig wrote:
->>>> On Tue, Nov 05, 2019 at 08:56:27AM +0100, Christian Zigotzky wrote:
->>>>> Hi All,
->>>>>
->>>>> We still have DMA problems with some PCI devices. Since the 
->>>>> PowerPC updates
->>>>> 4.21-1 [1] we need to decrease the RAM to 3500MB (mem=3500M) if we 
->>>>> want to
->>>>> work with our PCI devices. The FSL P5020 and P5040 have these 
->>>>> problems
->>>>> currently.
->>>>>
->>>>> Error message:
->>>>>
->>>>> [   25.654852] bttv 1000:04:05.0: overflow 0x00000000fe077000+4096 
->>>>> of DMA
->>>>> mask ffffffff bus mask df000000
->>>>>
->>>>> All 5.x Linux kernels can't initialize a SCSI PCI card anymore so 
->>>>> booting
->>>>> of a Linux userland isn't possible.
->>>>>
->>>>> PLEASE check the DMA changes in the PowerPC updates 4.21-1 [1]. 
->>>>> The kernel
->>>>> 4.20 works with all PCI devices without limitation of RAM.
->>>> Can you send me the .config and a dmesg?  And in the meantime try the
->>>> patch below?
->>>>
->>>> ---
->>>> >From 4d659b7311bd4141fdd3eeeb80fa2d7602ea01d4 Mon Sep 17 00:00:00 
->>>> 2001
->>>> From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
->>>> Date: Fri, 18 Oct 2019 13:00:43 +0200
->>>> Subject: dma-direct: check for overflows on 32 bit DMA addresses
->>>>
->>>> As seen on the new Raspberry Pi 4 and sta2x11's DMA implementation 
->>>> it is
->>>> possible for a device configured with 32 bit DMA addresses and a 
->>>> partial
->>>> DMA mapping located at the end of the address space to overflow. It
->>>> happens when a higher physical address, not DMAable, is translated to
->>>> it's DMA counterpart.
->>>>
->>>> For example the Raspberry Pi 4, configurable up to 4 GB of memory, has
->>>> an interconnect capable of addressing the lower 1 GB of physical 
->>>> memory
->>>> with a DMA offset of 0xc0000000. It transpires that, any attempt to
->>>> translate physical addresses higher than the first GB will result 
->>>> in an
->>>> overflow which dma_capable() can't detect as it only checks for
->>>> addresses bigger then the maximum allowed DMA address.
->>>>
->>>> Fix this by verifying in dma_capable() if the DMA address range 
->>>> provided
->>>> is at any point lower than the minimum possible DMA address on the 
->>>> bus.
->>>>
->>>> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
->>>> ---
->>>>   include/linux/dma-direct.h | 8 ++++++++
->>>>   1 file changed, 8 insertions(+)
->>>>
->>>> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
->>>> index adf993a3bd58..6ad9e9ea7564 100644
->>>> --- a/include/linux/dma-direct.h
->>>> +++ b/include/linux/dma-direct.h
->>>> @@ -3,6 +3,7 @@
->>>>   #define _LINUX_DMA_DIRECT_H 1
->>>>     #include <linux/dma-mapping.h>
->>>> +#include <linux/memblock.h> /* for min_low_pfn */
->>>>   #include <linux/mem_encrypt.h>
->>>>     #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
->>>> @@ -27,6 +28,13 @@ static inline bool dma_capable(struct device 
->>>> *dev, dma_addr_t addr, size_t size)
->>>>       if (!dev->dma_mask)
->>>>           return false;
->>>>   +#ifndef CONFIG_ARCH_DMA_ADDR_T_64BIT
->>>> +    /* Check if DMA address overflowed */
->>>> +    if (min(addr, addr + size - 1) <
->>>> +        __phys_to_dma(dev, (phys_addr_t)(min_low_pfn << PAGE_SHIFT)))
->>>> +        return false;
->>>> +#endif
->>>> +
->>>>       return addr + size - 1 <=
->>>>           min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
->>>>   }
->>> Hello Christoph,
->>>
->>> Thanks a lot for your patch! Unfortunately this patch doesn't solve 
->>> the issue.
->>>
->>> Error messages:
->>>
->>> [    6.041163] bttv: driver version 0.9.19 loaded
->>> [    6.041167] bttv: using 8 buffers with 2080k (520 pages) each for 
->>> capture
->>> [    6.041559] bttv: Bt8xx card found (0)
->>> [    6.041609] bttv: 0: Bt878 (rev 17) at 1000:04:05.0, irq: 19, 
->>> latency: 128, mmio: 0xc20001000
->>> [    6.041622] bttv: 0: using: Typhoon TView RDS + FM Stereo / KNC1 
->>> TV Station RDS [card=53,insmod option]
->>> [    6.042216] bttv: 0: tuner type=5
->>> [    6.111994] bttv: 0: audio absent, no audio device found!
->>> [    6.176425] bttv: 0: Setting PLL: 28636363 => 35468950 (needs up 
->>> to 100ms)
->>> [    6.200005] bttv: PLL set ok
->>> [    6.209351] bttv: 0: registered device video0
->>> [    6.211576] bttv: 0: registered device vbi0
->>> [    6.214897] bttv: 0: registered device radio0
->>> [  114.218806] bttv 1000:04:05.0: overflow 0x00000000ff507000+4096 
->>> of DMA mask ffffffff bus mask df000000
->>> [  114.218848] Modules linked in: rfcomm bnep tuner_simple 
->>> tuner_types tea5767 tuner tda7432 tvaudio msp3400 bttv tea575x 
->>> tveeprom videobuf_dma_sg videobuf_core rc_core videodev mc btusb 
->>> btrtl btbcm btintel bluetooth uio_pdrv_genirq uio ecdh_generic ecc
->>> [  114.219012] [c0000001ecddf720] [80000000008ff6e8] 
->>> .buffer_prepare+0x150/0x268 [bttv]
->>> [  114.219029] [c0000001ecddf860] [80000000008fff6c] 
->>> .bttv_qbuf+0x50/0x64 [bttv]
->>>
->>> -----
->>>
->>> Trace:
->>>
->>> [  462.783184] Call Trace:
->>> [  462.783187] [c0000001c6c67420] [c0000000000b3358] 
->>> .report_addr+0xb8/0xc0 (unreliable)
->>> [  462.783192] [c0000001c6c67490] [c0000000000b351c] 
->>> .dma_direct_map_page+0xf0/0x128
->>> [  462.783195] [c0000001c6c67530] [c0000000000b35b0] 
->>> .dma_direct_map_sg+0x5c/0xac
->>> [  462.783205] [c0000001c6c675e0] [8000000000862e88] 
->>> .__videobuf_iolock+0x660/0x6d8 [videobuf_dma_sg]
->>> [  462.783220] [c0000001c6c676b0] [8000000000854274] 
->>> .videobuf_iolock+0x98/0xb4 [videobuf_core]
->>> [  462.783271] [c0000001c6c67720] [80000000008686e8] 
->>> .buffer_prepare+0x150/0x268 [bttv]
->>> [  462.783276] [c0000001c6c677c0] [8000000000854afc] 
->>> .videobuf_qbuf+0x2b8/0x428 [videobuf_core]
->>> [  462.783288] [c0000001c6c67860] [8000000000868f6c] 
->>> .bttv_qbuf+0x50/0x64 [bttv]
->>> [  462.783383] [c0000001c6c678e0] [80000000007bf208] 
->>> .v4l_qbuf+0x54/0x60 [videodev]
->>> [  462.783402] [c0000001c6c67970] [80000000007c1eac] 
->>> .__video_do_ioctl+0x30c/0x3f8 [videodev]
->>> [  462.783421] [c0000001c6c67a80] [80000000007c3c08] 
->>> .video_usercopy+0x18c/0x3dc [videodev]
->>> [  462.783440] [c0000001c6c67c00] [80000000007bb14c] 
->>> .v4l2_ioctl+0x60/0x78 [videodev]
->>> [  462.783460] [c0000001c6c67c90] [80000000007d3c48] 
->>> .v4l2_compat_ioctl32+0x9b4/0x1850 [videodev]
->>> [  462.783468] [c0000001c6c67d70] [c0000000001ad9cc] 
->>> .__se_compat_sys_ioctl+0x284/0x127c
->>> [  462.783473] [c0000001c6c67e20] [c00000000000067c] 
->>> system_call+0x60/0x6c
->>> [  462.783475] Instruction dump:
->>> [  462.783477] 40fe0044 60000000 892255d0 2f890000 40fe0020 3c82ffc5 
->>> 39200001 60000000
->>> [  462.783483] 38842029 992255d0 485ad0d9 60000000 <0fe00000> 
->>> 38210070 e8010010 7c0803a6
->>> [  462.783490] ---[ end trace b677d4a00458e277 ]---
->>>
->>> -----
->>>
->>> dmesg fsl p5040: https://bugzilla.kernel.org/attachment.cgi?id=285813
->>>
->>> Kernel 5.4-rc6 config for the Cyrus+ board and for the QEMU ppce500 
->>> board (CPU: P5040 and P5020): 
->>> https://bugzilla.kernel.org/attachment.cgi?id=285815
->>>
->>> Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=205201
->>>
->>> Thanks for your help,
->>>
->>> Christian
->>
->> Christoph,
->>
->> Do you have another patch for testing or shall I bisect?
->>
->> Thanks,
->> Christian
->
-> Hi Christoph,
->
-> I have seen that I have activated the kernel config option 
-> CONFIG_ARCH_DMA_ADDR_T_64BIT. That means your code in your patch won't 
-> work if this kernel option is enabled.
->
-> +#ifndef CONFIG_ARCH_DMA_ADDR_T_64BIT
-> +    /* Check if DMA address overflowed */
-> +    if (min(addr, addr + size - 1) <
-> +        __phys_to_dma(dev, (phys_addr_t)(min_low_pfn << PAGE_SHIFT)))
-> +        return false;
-> +#endif
->
-> I will delete the lines with ifndef and endif and will try it again.
->
-> Cheers,
-> Christian
+Hi Rob, Nicolin
 
-Christoph,
+>=20
+> Hi Rob
+> >
+> > On Wed, Oct 30, 2019 at 07:41:26PM +0800, Shengjiu Wang wrote:
+> > > In order to support the two asrc modules in imx8qm, we need to add
+> > > compatible string "fsl,imx8qm-asrc0" and "fsl,imx8qm-asrc1"
+> >
+> > Are the blocks different in some way?
+> >
+> > If not, why do you need to distinguish them?
+> >
+> The internal clock mapping is different for each module.
+>=20
+> Or we can use one compatible string, but need add another property
+> "fsl,asrc-clk-map" to distinguish the different clock map.
+>=20
+> The change is in below.
+>=20
+> Which one do you think is better?
+>=20
+> Required properties:
+>=20
+> -  - compatible         : Contains "fsl,imx35-asrc" or "fsl,imx53-asrc".
+> +  - compatible         : Contains "fsl,imx35-asrc", "fsl,imx53-asrc",
+> +                         "fsl,imx8qm-asrc".
+>=20
+>    - reg                        : Offset and length of the register set f=
+or the device.
+>=20
+> @@ -35,6 +36,11 @@ Required properties:
+>=20
+>     - fsl,asrc-width    : Defines a mutual sample width used by DPCM Back
+> Ends.
+>=20
+> +   - fsl,asrc-clk-map   : Defines clock map used in driver. which is req=
+uired
+> +                         by imx8qm
+> +                         <0> - select the map for asrc0
+> +                         <1> - select the map for asrc1
+> +
+>  Optional properties:
+>=20
 
-I have seen that the patch above isn't from you. It's from Nicolas Saenz 
-Julienne.
+I will do a update for this change in v3.
 
-Cheers,
-Christian
+Best regards
+Wang shengjiu
+
