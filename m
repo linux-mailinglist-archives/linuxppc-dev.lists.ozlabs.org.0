@@ -1,77 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22D6F6F1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 08:36:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CD0F6F37
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 08:49:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BN355TY1zF3Dn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 18:36:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BNLh6nDJzF3sk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 18:49:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::142;
- helo=mail-lf1-x142.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f41;
+ helo=mail-qv1-xf41.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="QIoixCtM"; dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Gvu+8N/l"; 
+ dkim-atps=neutral
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com
+ [IPv6:2607:f8b0:4864:20::f41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BN0q2x77zDr3M
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 18:34:02 +1100 (AEDT)
-Received: by mail-lf1-x142.google.com with SMTP id y186so3236764lfa.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 23:34:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=11XyuX75h6wLXlM8eIF2c6GY+p1TuOaj5FL64Q+XyMA=;
- b=QIoixCtMLQtH5ivP/i+BLVDDT85cUSsT96NwuYXO3sqDavMb8qbqaQ1rEt/1rhsQA7
- 9bKf54a4NzkBgFwDRc6SljVSQAg1BpYhc8pdaWjO7e6h4+yXUcxfj4fCMA6hFTn/pwYL
- UTkRBuhH71NZcBtzr9R67ULNVOR+UkkeOxlpA=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BN5L4z5QzDrBZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 18:37:55 +1100 (AEDT)
+Received: by mail-qv1-xf41.google.com with SMTP id cg2so4485050qvb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Nov 2019 23:37:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=t4Zb47p2XPwOCswEiVCxFP3pBYMa8dixjcKcMTAk1Xk=;
+ b=Gvu+8N/lhR7xyJ0lGg6oiJJrH5spP3uTiLTY1hjI1MQw7T2ABX41o5lsHenviAHG9e
+ Lfax9OZnTplip+abpfLRUNX3sr8mCLZyv01XVtD+uuObGt5p/ShA4nfi5nrooxc2l0xR
+ q8p+MbexiTGoAT5xg4F1AFUwJ3lZiI3PwB0lJeTFffms9sRF8cm3hlKgDIFvpj0MW9CU
+ s5d6s/uQ7G/7saHs+tYTUrm/1UXYhR+Oeui90reYAfFE0Z41w18BqZxZNlBcUNiWozBq
+ K2SjQ6OOgFyJTqyGsJqx/9dNCr60a6pmjVGB/+s4bonMwDVTYCZy+ar2pJYDVR8qS4yC
+ xXvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=11XyuX75h6wLXlM8eIF2c6GY+p1TuOaj5FL64Q+XyMA=;
- b=YWTUZy3gJ8n1GCDV+or+rHN1r7mBvYXl3l3fmaIh/N0aLSx5zq6vFdd6ZHqgDMLKtZ
- pe8KwtkK4plY/dpCsCdwQT19mEDdjA44U++FEH+Z83/sUqmVlWph6rr/1Y7GYsUTUqM3
- humTH9HE78nbcB0bDYVqLMST3+BthrdroUz7x1JswwwHcKDBL7CgyR/+4XCAun9YkR88
- 1RfH+OyF+1X5ewNV5zUvDl8PYxWthxW/iT79I43H1IVrkZZpdbdF/8HV1oybzSN9JjYp
- 8SZ38Ay88MVp37k15kll7THHGmnRiU9C5fdIpikKNOXUps3wz3RokTMkCtyt5tOpfi3C
- DldQ==
-X-Gm-Message-State: APjAAAWs/4qA8cW+btyKa00zWmXhadkvp8N80YcvsrEl75po/3SCHkw5
- 6QWh9lhWmPoufiRgUEzRTwZ6ag==
-X-Google-Smtp-Source: APXvYqwWjm4XW5IM/KA1VQfUmHJXZcUSfm6veYrOgywqCu+f4k/Fz0EK4oxRy/gcrvKaSfQ4yzaE2Q==
-X-Received: by 2002:a19:855:: with SMTP id 82mr14378120lfi.44.1573457634762;
- Sun, 10 Nov 2019 23:33:54 -0800 (PST)
-Received: from [172.16.11.28] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id z127sm5941129lfa.19.2019.11.10.23.33.53
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 10 Nov 2019 23:33:54 -0800 (PST)
-Subject: Re: [PATCH v4 47/47] soc: fsl: qe: remove PPC32 dependency from
- CONFIG_QUICC_ENGINE
-To: Li Yang <leoyang.li@nxp.com>
-References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
- <20191108130123.6839-48-linux@rasmusvillemoes.dk>
- <CADRPPNQwnmPCh8nzQ5vBTLoieO-r2u0huh17mwcinhfhNgo04A@mail.gmail.com>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <14894529-a6bd-9b7e-eacc-06d5e49cc8e8@rasmusvillemoes.dk>
-Date: Mon, 11 Nov 2019 08:33:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=t4Zb47p2XPwOCswEiVCxFP3pBYMa8dixjcKcMTAk1Xk=;
+ b=r/tfeRDp2CDu+gbs1UBjEQqxOACpSR1reQkexXvkxTLb7IPslDJYD6aFgVHt7huLAP
+ L4DwIf3ord8cZcE/qY6FlzO4TrWp/0Ynqw7Pu22KU6i8H1X57StSCMOEiXFKDGutTJz7
+ Tdz5jzmOKOkZcpex8Y4cJqxtA5+WObfCr8/w+SadaxQkaVia0g8/IdEhnieS6EkhZ577
+ Oihg3DkfGzJOJVBQsbVLoipbVUUqeCV3Bp5Q7ZnR51xpeR3Krc0PO2sx6eHcx4hisxix
+ O9dw8dM2ygE+F+1/PNs8110RWwsla277S1h3+Eevqlt2vmDgVoVFBwHh0XlnYHlvEH80
+ 9XwA==
+X-Gm-Message-State: APjAAAWO+VDT8cTBK3tsf1oakj/flAZdApqMZnxsjocMYSQRd3G+g4Gh
+ kXoWjeCkkLeTpFyNmCFzj5CYzvX/NnEphsH+EeQ=
+X-Google-Smtp-Source: APXvYqxpJG9+Wp9uWvq5SOdQ0ClpNoEw5Bq9RYcUBHDxKCS9kLWbq+/2zfW9+9hTfC22q3nUJO9pss3ALBiVuNJqFsg=
+X-Received: by 2002:ad4:538b:: with SMTP id i11mr18033921qvv.211.1573457871628; 
+ Sun, 10 Nov 2019 23:37:51 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CADRPPNQwnmPCh8nzQ5vBTLoieO-r2u0huh17mwcinhfhNgo04A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1573025265-31852-1-git-send-email-shengjiu.wang@nxp.com>
+ <20191109024502.GA9187@Asurada-Nvidia.nvidia.com>
+In-Reply-To: <20191109024502.GA9187@Asurada-Nvidia.nvidia.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 11 Nov 2019 15:37:40 +0800
+Message-ID: <CAA+D8APXbQYTUBpaPSBtK7J3LfKL0LA8sXrOomEaHTBjqpOV6A@mail.gmail.com>
+Subject: Re: [alsa-devel] [PATCH] ASoC: fsl_audmix: Add spin lock to protect
+ tdms
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Mon, 11 Nov 2019 18:47:54 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,52 +75,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lkml <linux-kernel@vger.kernel.org>, Scott Wood <oss@buserror.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com,
+ linux-kernel@vger.kernel.org, broonie@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/11/2019 00.48, Li Yang wrote:
-> On Fri, Nov 8, 2019 at 7:05 AM Rasmus Villemoes
-> <linux@rasmusvillemoes.dk> wrote:
->>
->> There are also ARM and ARM64 based SOCs with a QUICC Engine, and the
->> core QE code as well as net/wan/fsl_ucc_hdlc and tty/serial/ucc_uart
->> has now been modified to not rely on ppcisms.
->>
->> So extend the architectures that can select QUICC_ENGINE, and add the
->> rather modest requirements of OF && HAS_IOMEM.
->>
->> The core code as well as the ucc_uart driver has been tested on an
->> LS1021A (arm), and it has also been tested that the QE code still
->> works on an mpc8309 (ppc).
->>
->> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
->> ---
->>  drivers/soc/fsl/qe/Kconfig | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
->> index cfa4b2939992..f1974f811572 100644
->> --- a/drivers/soc/fsl/qe/Kconfig
->> +++ b/drivers/soc/fsl/qe/Kconfig
->> @@ -5,7 +5,8 @@
->>
->>  config QUICC_ENGINE
->>         bool "QUICC Engine (QE) framework support"
->> -       depends on FSL_SOC && PPC32
->> +       depends on OF && HAS_IOMEM
->> +       depends on PPC32 || ARM || ARM64 || COMPILE_TEST
-> 
-> Can you also add PPC64?  It is also used on some PPC64 platforms
-> (QorIQ T series).
+Hi
 
-Sure, but if that's the only thing in the whole series, perhaps you
-could amend it when applying instead of me sending all 47 patches again.
+On Sat, Nov 9, 2019 at 10:48 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+>
+> On Wed, Nov 06, 2019 at 03:27:45PM +0800, Shengjiu Wang wrote:
+> > Audmix support two substream, When two substream start
+> > to run, the trigger function may be called by two substream
+> > in same time, that the priv->tdms may be updated wrongly.
+> >
+> > The expected priv->tdms is 0x3, but sometimes the
+> > result is 0x2, or 0x1.
+>
+> Feels like a bug fix to me, so  might be better to have a "Fixes"
+> line and CC stable tree?
+>
+> Anyway, change looks good to me:
+>
+> Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+>
 
-Should PPC32 || PPC64 be spelled PPC?
+Ok, will send v2.
 
-Rasmus
+best regards
+wang shengjiu
