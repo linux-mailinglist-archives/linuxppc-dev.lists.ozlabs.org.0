@@ -2,45 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732E3F6F3B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 08:54:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62118F6F96
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 09:15:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BNSW4fTJzF4cC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 18:54:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BNw10psRzF39q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 19:14:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::7;
+ helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BNQd0fw5zDqsb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 18:52:54 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 85E671A0B09;
- Mon, 11 Nov 2019 08:52:50 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9EC231A05F3;
- Mon, 11 Nov 2019 08:52:45 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 4ADC7402F1;
- Mon, 11 Nov 2019 15:52:39 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V2] ASoC: fsl_audmix: Add spin lock to protect tdms
-Date: Mon, 11 Nov 2019 15:50:48 +0800
-Message-Id: <1e706afe53fdd1fbbbc79277c48a98f8416ba873.1573458378.git.shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="pwN+pob8"; 
+ dkim-atps=neutral
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5301::7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BNsz4yhMzF1wq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 19:13:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573459982;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=3/MqObd2KBYhkLHMy8MLFEFld3owrwS9kDyklpFMgIE=;
+ b=pwN+pob8lO9IgKyFpytU6W73/KDlV0u6ofj9RCEgidFFiu0EvBV+d4pde9RKbyWmmq
+ jvISl+aFbRlg4ZhzJe7v5Dq7TM8ZD9eH1A+AaMqVVcngCUxnbyZJDAj8r3+P+nPDoRwi
+ 8rIlWDMJVmsLR9G5ZwTUjs5RutxfhvmBVju3cO9jbCAu/mUXB4JJPuTbAFfdU9e4aY6j
+ X5FhEZPFCA6a5IeYKV4rJcROtGyw5eELfPJ3o1t3DblZnwwU/Yb0aG/oPJLFJ38wy7gj
+ /JNM+iiKGy6G0iD109BsQsXcCYnuNTFlCEapt6nex9/Zbwp1J0E7k2026h6opSJ/cHOR
+ 6zKQ==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhUdStcud4ztdvxL67fR7ahIrEKaw=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:7cd8:48a4:7aa4:e860]
+ by smtp.strato.de (RZmta 44.29.0 AUTH)
+ with ESMTPSA id q007c8vAB8CCS3t
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
+ 521 ECDH bits, eq. 15360 bits RSA))
+ (Client did not present a certificate);
+ Mon, 11 Nov 2019 09:12:12 +0100 (CET)
+Subject: Re: Bug 205201 - overflow of DMA mask and bus mask
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: Christoph Hellwig <hch@lst.de>
+References: <20181213112511.GA4574@lst.de>
+ <e109de27-f4af-147d-dc0e-067c8bafb29b@xenosoft.de>
+ <ad5a5a8a-d232-d523-a6f7-e9377fc3857b@xenosoft.de>
+ <e60d6ca3-860c-f01d-8860-c5e022ec7179@xenosoft.de>
+ <008c981e-bdd2-21a7-f5f7-c57e4850ae9a@xenosoft.de>
+ <20190103073622.GA24323@lst.de>
+ <71A251A5-FA06-4019-B324-7AED32F7B714@xenosoft.de>
+ <1b0c5c21-2761-d3a3-651b-3687bb6ae694@xenosoft.de>
+ <3504ee70-02de-049e-6402-2d530bf55a84@xenosoft.de>
+ <46025f1b-db20-ac23-7dcd-10bc43bbb6ee@xenosoft.de>
+ <20191105162856.GA15402@lst.de>
+ <2f3c81bd-d498-066a-12c0-0a7715cda18f@xenosoft.de>
+ <d2c614ec-c56e-3ec2-12d0-7561cd30c643@xenosoft.de>
+Message-ID: <af32bfcc-5559-578d-e1f4-75e454c965bf@xenosoft.de>
+Date: Mon, 11 Nov 2019 09:12:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
+MIME-Version: 1.0
+In-Reply-To: <d2c614ec-c56e-3ec2-12d0-7561cd30c643@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,78 +81,210 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net,
+ mad skateman <madskateman@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Rob Herring <robh+dt@kernel.org>, paulus@samba.org, rtd2@xtra.co.nz,
+ "contact@a-eon.com" <contact@a-eon.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Audmix support two substream, When two substream start
-to run, the trigger function may be called by two substream
-in same time, that the priv->tdms may be updated wrongly.
+On 10 November 2019 at 08:27 am, Christian Zigotzky wrote:
+> On 07 November 2019 at 10:53 am, Christian Zigotzky wrote:
+>> On 05 November 2019 at 05:28 pm, Christoph Hellwig wrote:
+>>> On Tue, Nov 05, 2019 at 08:56:27AM +0100, Christian Zigotzky wrote:
+>>>> Hi All,
+>>>>
+>>>> We still have DMA problems with some PCI devices. Since the PowerPC 
+>>>> updates
+>>>> 4.21-1 [1] we need to decrease the RAM to 3500MB (mem=3500M) if we 
+>>>> want to
+>>>> work with our PCI devices. The FSL P5020 and P5040 have these problems
+>>>> currently.
+>>>>
+>>>> Error message:
+>>>>
+>>>> [   25.654852] bttv 1000:04:05.0: overflow 0x00000000fe077000+4096 
+>>>> of DMA
+>>>> mask ffffffff bus mask df000000
+>>>>
+>>>> All 5.x Linux kernels can't initialize a SCSI PCI card anymore so 
+>>>> booting
+>>>> of a Linux userland isn't possible.
+>>>>
+>>>> PLEASE check the DMA changes in the PowerPC updates 4.21-1 [1]. The 
+>>>> kernel
+>>>> 4.20 works with all PCI devices without limitation of RAM.
+>>> Can you send me the .config and a dmesg?  And in the meantime try the
+>>> patch below?
+>>>
+>>> ---
+>>> >From 4d659b7311bd4141fdd3eeeb80fa2d7602ea01d4 Mon Sep 17 00:00:00 2001
+>>> From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+>>> Date: Fri, 18 Oct 2019 13:00:43 +0200
+>>> Subject: dma-direct: check for overflows on 32 bit DMA addresses
+>>>
+>>> As seen on the new Raspberry Pi 4 and sta2x11's DMA implementation 
+>>> it is
+>>> possible for a device configured with 32 bit DMA addresses and a 
+>>> partial
+>>> DMA mapping located at the end of the address space to overflow. It
+>>> happens when a higher physical address, not DMAable, is translated to
+>>> it's DMA counterpart.
+>>>
+>>> For example the Raspberry Pi 4, configurable up to 4 GB of memory, has
+>>> an interconnect capable of addressing the lower 1 GB of physical memory
+>>> with a DMA offset of 0xc0000000. It transpires that, any attempt to
+>>> translate physical addresses higher than the first GB will result in an
+>>> overflow which dma_capable() can't detect as it only checks for
+>>> addresses bigger then the maximum allowed DMA address.
+>>>
+>>> Fix this by verifying in dma_capable() if the DMA address range 
+>>> provided
+>>> is at any point lower than the minimum possible DMA address on the bus.
+>>>
+>>> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+>>> ---
+>>>   include/linux/dma-direct.h | 8 ++++++++
+>>>   1 file changed, 8 insertions(+)
+>>>
+>>> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+>>> index adf993a3bd58..6ad9e9ea7564 100644
+>>> --- a/include/linux/dma-direct.h
+>>> +++ b/include/linux/dma-direct.h
+>>> @@ -3,6 +3,7 @@
+>>>   #define _LINUX_DMA_DIRECT_H 1
+>>>     #include <linux/dma-mapping.h>
+>>> +#include <linux/memblock.h> /* for min_low_pfn */
+>>>   #include <linux/mem_encrypt.h>
+>>>     #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
+>>> @@ -27,6 +28,13 @@ static inline bool dma_capable(struct device 
+>>> *dev, dma_addr_t addr, size_t size)
+>>>       if (!dev->dma_mask)
+>>>           return false;
+>>>   +#ifndef CONFIG_ARCH_DMA_ADDR_T_64BIT
+>>> +    /* Check if DMA address overflowed */
+>>> +    if (min(addr, addr + size - 1) <
+>>> +        __phys_to_dma(dev, (phys_addr_t)(min_low_pfn << PAGE_SHIFT)))
+>>> +        return false;
+>>> +#endif
+>>> +
+>>>       return addr + size - 1 <=
+>>>           min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
+>>>   }
+>> Hello Christoph,
+>>
+>> Thanks a lot for your patch! Unfortunately this patch doesn't solve 
+>> the issue.
+>>
+>> Error messages:
+>>
+>> [    6.041163] bttv: driver version 0.9.19 loaded
+>> [    6.041167] bttv: using 8 buffers with 2080k (520 pages) each for 
+>> capture
+>> [    6.041559] bttv: Bt8xx card found (0)
+>> [    6.041609] bttv: 0: Bt878 (rev 17) at 1000:04:05.0, irq: 19, 
+>> latency: 128, mmio: 0xc20001000
+>> [    6.041622] bttv: 0: using: Typhoon TView RDS + FM Stereo / KNC1 
+>> TV Station RDS [card=53,insmod option]
+>> [    6.042216] bttv: 0: tuner type=5
+>> [    6.111994] bttv: 0: audio absent, no audio device found!
+>> [    6.176425] bttv: 0: Setting PLL: 28636363 => 35468950 (needs up 
+>> to 100ms)
+>> [    6.200005] bttv: PLL set ok
+>> [    6.209351] bttv: 0: registered device video0
+>> [    6.211576] bttv: 0: registered device vbi0
+>> [    6.214897] bttv: 0: registered device radio0
+>> [  114.218806] bttv 1000:04:05.0: overflow 0x00000000ff507000+4096 of 
+>> DMA mask ffffffff bus mask df000000
+>> [  114.218848] Modules linked in: rfcomm bnep tuner_simple 
+>> tuner_types tea5767 tuner tda7432 tvaudio msp3400 bttv tea575x 
+>> tveeprom videobuf_dma_sg videobuf_core rc_core videodev mc btusb 
+>> btrtl btbcm btintel bluetooth uio_pdrv_genirq uio ecdh_generic ecc
+>> [  114.219012] [c0000001ecddf720] [80000000008ff6e8] 
+>> .buffer_prepare+0x150/0x268 [bttv]
+>> [  114.219029] [c0000001ecddf860] [80000000008fff6c] 
+>> .bttv_qbuf+0x50/0x64 [bttv]
+>>
+>> -----
+>>
+>> Trace:
+>>
+>> [  462.783184] Call Trace:
+>> [  462.783187] [c0000001c6c67420] [c0000000000b3358] 
+>> .report_addr+0xb8/0xc0 (unreliable)
+>> [  462.783192] [c0000001c6c67490] [c0000000000b351c] 
+>> .dma_direct_map_page+0xf0/0x128
+>> [  462.783195] [c0000001c6c67530] [c0000000000b35b0] 
+>> .dma_direct_map_sg+0x5c/0xac
+>> [  462.783205] [c0000001c6c675e0] [8000000000862e88] 
+>> .__videobuf_iolock+0x660/0x6d8 [videobuf_dma_sg]
+>> [  462.783220] [c0000001c6c676b0] [8000000000854274] 
+>> .videobuf_iolock+0x98/0xb4 [videobuf_core]
+>> [  462.783271] [c0000001c6c67720] [80000000008686e8] 
+>> .buffer_prepare+0x150/0x268 [bttv]
+>> [  462.783276] [c0000001c6c677c0] [8000000000854afc] 
+>> .videobuf_qbuf+0x2b8/0x428 [videobuf_core]
+>> [  462.783288] [c0000001c6c67860] [8000000000868f6c] 
+>> .bttv_qbuf+0x50/0x64 [bttv]
+>> [  462.783383] [c0000001c6c678e0] [80000000007bf208] 
+>> .v4l_qbuf+0x54/0x60 [videodev]
+>> [  462.783402] [c0000001c6c67970] [80000000007c1eac] 
+>> .__video_do_ioctl+0x30c/0x3f8 [videodev]
+>> [  462.783421] [c0000001c6c67a80] [80000000007c3c08] 
+>> .video_usercopy+0x18c/0x3dc [videodev]
+>> [  462.783440] [c0000001c6c67c00] [80000000007bb14c] 
+>> .v4l2_ioctl+0x60/0x78 [videodev]
+>> [  462.783460] [c0000001c6c67c90] [80000000007d3c48] 
+>> .v4l2_compat_ioctl32+0x9b4/0x1850 [videodev]
+>> [  462.783468] [c0000001c6c67d70] [c0000000001ad9cc] 
+>> .__se_compat_sys_ioctl+0x284/0x127c
+>> [  462.783473] [c0000001c6c67e20] [c00000000000067c] 
+>> system_call+0x60/0x6c
+>> [  462.783475] Instruction dump:
+>> [  462.783477] 40fe0044 60000000 892255d0 2f890000 40fe0020 3c82ffc5 
+>> 39200001 60000000
+>> [  462.783483] 38842029 992255d0 485ad0d9 60000000 <0fe00000> 
+>> 38210070 e8010010 7c0803a6
+>> [  462.783490] ---[ end trace b677d4a00458e277 ]---
+>>
+>> -----
+>>
+>> dmesg fsl p5040: https://bugzilla.kernel.org/attachment.cgi?id=285813
+>>
+>> Kernel 5.4-rc6 config for the Cyrus+ board and for the QEMU ppce500 
+>> board (CPU: P5040 and P5020): 
+>> https://bugzilla.kernel.org/attachment.cgi?id=285815
+>>
+>> Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=205201
+>>
+>> Thanks for your help,
+>>
+>> Christian
+>
+> Christoph,
+>
+> Do you have another patch for testing or shall I bisect?
+>
+> Thanks,
+> Christian
 
-The expected priv->tdms is 0x3, but sometimes the
-result is 0x2, or 0x1.
+Hi Christoph,
 
-Fixes: be1df61cf06e ("ASoC: fsl: Add Audio Mixer CPU DAI driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
----
-Change in v2
--add Fixes, Cc stable, and Acked-by.
+I have seen that I have activated the kernel config option 
+CONFIG_ARCH_DMA_ADDR_T_64BIT. That means your code in your patch won't 
+work if this kernel option is enabled.
 
- sound/soc/fsl/fsl_audmix.c | 6 ++++++
- sound/soc/fsl/fsl_audmix.h | 1 +
- 2 files changed, 7 insertions(+)
++#ifndef CONFIG_ARCH_DMA_ADDR_T_64BIT
++    /* Check if DMA address overflowed */
++    if (min(addr, addr + size - 1) <
++        __phys_to_dma(dev, (phys_addr_t)(min_low_pfn << PAGE_SHIFT)))
++        return false;
++#endif
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index c7e4e9757dce..a1db1bce330f 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -286,6 +286,7 @@ static int fsl_audmix_dai_trigger(struct snd_pcm_substream *substream, int cmd,
- 				  struct snd_soc_dai *dai)
- {
- 	struct fsl_audmix *priv = snd_soc_dai_get_drvdata(dai);
-+	unsigned long lock_flags;
- 
- 	/* Capture stream shall not be handled */
- 	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
-@@ -295,12 +296,16 @@ static int fsl_audmix_dai_trigger(struct snd_pcm_substream *substream, int cmd,
- 	case SNDRV_PCM_TRIGGER_START:
- 	case SNDRV_PCM_TRIGGER_RESUME:
- 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
-+		spin_lock_irqsave(&priv->lock, lock_flags);
- 		priv->tdms |= BIT(dai->driver->id);
-+		spin_unlock_irqrestore(&priv->lock, lock_flags);
- 		break;
- 	case SNDRV_PCM_TRIGGER_STOP:
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-+		spin_lock_irqsave(&priv->lock, lock_flags);
- 		priv->tdms &= ~BIT(dai->driver->id);
-+		spin_unlock_irqrestore(&priv->lock, lock_flags);
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -491,6 +496,7 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->ipg_clk);
- 	}
- 
-+	spin_lock_init(&priv->lock);
- 	platform_set_drvdata(pdev, priv);
- 	pm_runtime_enable(dev);
- 
-diff --git a/sound/soc/fsl/fsl_audmix.h b/sound/soc/fsl/fsl_audmix.h
-index 7812ffec45c5..479f05695d53 100644
---- a/sound/soc/fsl/fsl_audmix.h
-+++ b/sound/soc/fsl/fsl_audmix.h
-@@ -96,6 +96,7 @@ struct fsl_audmix {
- 	struct platform_device *pdev;
- 	struct regmap *regmap;
- 	struct clk *ipg_clk;
-+	spinlock_t lock; /* Protect tdms */
- 	u8 tdms;
- };
- 
--- 
-2.21.0
+I will delete the lines with ifndef and endif and will try it again.
 
+Cheers,
+Christian
