@@ -1,56 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171D7F7A9F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 19:18:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D4AF7AAD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 19:22:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BfJY5YbDzF1g3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 05:18:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BfPK5QqVzF4Rs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 05:22:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
- [209.85.210.66])
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=nxp.com
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
+ [209.85.210.68])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Bf5Z5FZFzDrQj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 05:09:06 +1100 (AEDT)
-Received: by mail-ot1-f66.google.com with SMTP id n23so11986152otr.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 10:09:06 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Bf8k1x1hzF1Rb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 05:11:49 +1100 (AEDT)
+Received: by mail-ot1-f68.google.com with SMTP id f10so12034551oto.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 10:11:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=pB6c4pFOe94ggxtiHB2kKLTOBOYOEpvnXnv9wnKmZAU=;
- b=RhJNoefqlwD6TcBhnOLSZQRNJ92MyOTTTpSO31Zq6OWSCAma16oNNGov2iYCzyeO4w
- grCkEOiTE91hfGE0aHjA4Ny0WqpiCdFSU+Dwo4ixSJ++1JMfQCW2huUqXED14CBCQwy2
- IL6T318gxSthYJjQ8HGO/YQz7eDSrjPXJqi2LiAK+qvRCmERtYL0RmY4Kyfns6JpJNEA
- Z7lb6axLjL3lu3PuYwaIma/LfflYrAJzWh+gToug3E2kikEmUGbDHd7uVKIIVvMYAoyn
- rGet+3/NkGF28rq80qRj8EDQZkjgCdwqani4lAQPJlKiQYkVpBaXfViUSfFf9fRh3gzf
- sTjA==
-X-Gm-Message-State: APjAAAXCZeGjgv7HYPi+loOg3Bju4u2y/C12kIKcd6nXGvwd4NOw/M9Y
- EA99ap5xg6RupgSIbIQfvzVro/1HRoEkL0CGDAk=
-X-Google-Smtp-Source: APXvYqwz3yURFWyrc4txNYG5Aijjty7ogMGADNC5Z1wYd4gVa5brKlAgJqkxDayccnlPhvVhacX5bel06VJjIpOaGlc=
-X-Received: by 2002:a05:6830:2363:: with SMTP id
- r3mr22934879oth.39.1573495742542; 
- Mon, 11 Nov 2019 10:09:02 -0800 (PST)
+ bh=3pgVptoZYzsTOg+Xnbn8wJxFJTLIjKkmJmwvN7XoJgQ=;
+ b=FllgeF+oq9RSM0ZBtvmkLmAmqqYgzywW7X+FcUxmJLO9Cy4VMes6YaZXgjlz/n+zRr
+ 8LqP4cwzzvu1Q4QAVjYRtGa0+fx+tLkhcTmcEwEFOZbMDrKHhf5g3NRmyohlM9WvQJb+
+ gB6OoA0om1c1oMR0H4QWGDVhU/oWQjzvZhN6QNMj3EDOSBsi/6lE9XyQvEFpSerGjioe
+ i+N9tbKsP62btg8kKacA2bKIP5WUuHhdCzv1BThgEf47+CiGMqa1Mqf3FbA09P3APHzy
+ ZZXPRNkL37kffd5T7f6yskwdf1OOOlqq0v+AoTm6s/bSLNY05WoDMgPJ4v4Y9mAgVgFS
+ rEEA==
+X-Gm-Message-State: APjAAAVDKpeQo/v+CoU+FN8/v2DBBEsZabk4MRGsl7pWf8hk2C2U07Aq
+ NAwmf8FVEaV7Sd6UGgRS6XRAmGUQ
+X-Google-Smtp-Source: APXvYqzDa4daAoriDBOZWPknTiCQwJvDjYUIGEtJRc7jKImNC1t+RHlCAduhZ5eWEyXlvnjVJKjAyg==
+X-Received: by 2002:a9d:4a9c:: with SMTP id i28mr21491311otf.169.1573495906307; 
+ Mon, 11 Nov 2019 10:11:46 -0800 (PST)
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com.
+ [209.85.167.173])
+ by smtp.gmail.com with ESMTPSA id m205sm5210222oib.27.2019.11.11.10.11.45
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Nov 2019 10:11:45 -0800 (PST)
+Received: by mail-oi1-f173.google.com with SMTP id n16so12322988oig.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 10:11:45 -0800 (PST)
+X-Received: by 2002:aca:1702:: with SMTP id j2mr240762oii.13.1573495904943;
+ Mon, 11 Nov 2019 10:11:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20191011000609.29728-1-keescook@chromium.org>
- <20191011000609.29728-12-keescook@chromium.org>
- <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com>
- <201911110922.17A2112B0@keescook>
-In-Reply-To: <201911110922.17A2112B0@keescook>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 11 Nov 2019 19:08:51 +0100
-Message-ID: <CAMuHMdUJ8QPvqf51nVmOg1Zm20SNT7pXR72z=qmco=ecwawZ7A@mail.gmail.com>
-Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
-To: Kees Cook <keescook@chromium.org>
+References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
+ <20191108130123.6839-48-linux@rasmusvillemoes.dk>
+ <CADRPPNQwnmPCh8nzQ5vBTLoieO-r2u0huh17mwcinhfhNgo04A@mail.gmail.com>
+ <14894529-a6bd-9b7e-eacc-06d5e49cc8e8@rasmusvillemoes.dk>
+In-Reply-To: <14894529-a6bd-9b7e-eacc-06d5e49cc8e8@rasmusvillemoes.dk>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Mon, 11 Nov 2019 12:11:33 -0600
+X-Gmail-Original-Message-ID: <CADRPPNQHtRhZOw0DuTQoPF_RgFHSFG4rGCtETFvCCSS8H6i=iQ@mail.gmail.com>
+Message-ID: <CADRPPNQHtRhZOw0DuTQoPF_RgFHSFG4rGCtETFvCCSS8H6i=iQ@mail.gmail.com>
+Subject: Re: [PATCH v4 47/47] soc: fsl: qe: remove PPC32 dependency from
+ CONFIG_QUICC_ENGINE
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,72 +74,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Michal Simek <monstr@monstr.eu>,
- the arch/x86 maintainers <x86@kernel.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- linux-c6x-dev@linux-c6x.org, Arnd Bergmann <arnd@arndb.de>,
- linux-xtensa@linux-xtensa.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Borislav Petkov <bp@alien8.de>,
- Parisc List <linux-parisc@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
- alpha <linux-alpha@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Will Deacon <will@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Scott Wood <oss@buserror.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kees,
-
-On Mon, Nov 11, 2019 at 6:23 PM Kees Cook <keescook@chromium.org> wrote:
-> On Mon, Nov 11, 2019 at 05:58:06PM +0100, Geert Uytterhoeven wrote:
-> > On Fri, Oct 11, 2019 at 2:07 AM Kees Cook <keescook@chromium.org> wrote:
-> > > There's no reason to keep the RODATA macro: replace the callers with
-> > > the expected RO_DATA macro.
-> > >
-> > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > > ---
-> > >  arch/alpha/kernel/vmlinux.lds.S      | 2 +-
-> > >  arch/ia64/kernel/vmlinux.lds.S       | 2 +-
-> > >  arch/microblaze/kernel/vmlinux.lds.S | 2 +-
-> > >  arch/mips/kernel/vmlinux.lds.S       | 2 +-
-> > >  arch/um/include/asm/common.lds.S     | 2 +-
-> > >  arch/xtensa/kernel/vmlinux.lds.S     | 2 +-
-> > >  include/asm-generic/vmlinux.lds.h    | 4 +---
-> > >  7 files changed, 7 insertions(+), 9 deletions(-)
-> >
-> > Somehow you missed:
-> >
-> >     arch/m68k/kernel/vmlinux-std.lds:  RODATA
-> >     arch/m68k/kernel/vmlinux-sun3.lds:      RODATA
+On Mon, Nov 11, 2019 at 1:36 AM Rasmus Villemoes
+<linux@rasmusvillemoes.dk> wrote:
 >
-> Argh. I've sent a patch; sorry and thanks for catching this. For my own
-> cross-build testing, which defconfig targets will hit these two linker
-> scripts?
-
-vmlinux-sun3.lds: sun3_defconfig
-vmlinux-std.lds: All other classic 680x0 targets with an MMU, e.g. plain
-                 defconfig aka multi_defconfig.
-
-> > Leading to build failures in next-20191111:
+> On 09/11/2019 00.48, Li Yang wrote:
+> > On Fri, Nov 8, 2019 at 7:05 AM Rasmus Villemoes
+> > <linux@rasmusvillemoes.dk> wrote:
+> >>
+> >> There are also ARM and ARM64 based SOCs with a QUICC Engine, and the
+> >> core QE code as well as net/wan/fsl_ucc_hdlc and tty/serial/ucc_uart
+> >> has now been modified to not rely on ppcisms.
+> >>
+> >> So extend the architectures that can select QUICC_ENGINE, and add the
+> >> rather modest requirements of OF && HAS_IOMEM.
+> >>
+> >> The core code as well as the ucc_uart driver has been tested on an
+> >> LS1021A (arm), and it has also been tested that the QE code still
+> >> works on an mpc8309 (ppc).
+> >>
+> >> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> >> ---
+> >>  drivers/soc/fsl/qe/Kconfig | 3 ++-
+> >>  1 file changed, 2 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+> >> index cfa4b2939992..f1974f811572 100644
+> >> --- a/drivers/soc/fsl/qe/Kconfig
+> >> +++ b/drivers/soc/fsl/qe/Kconfig
+> >> @@ -5,7 +5,8 @@
+> >>
+> >>  config QUICC_ENGINE
+> >>         bool "QUICC Engine (QE) framework support"
+> >> -       depends on FSL_SOC && PPC32
+> >> +       depends on OF && HAS_IOMEM
+> >> +       depends on PPC32 || ARM || ARM64 || COMPILE_TEST
 > >
-> >     /opt/cross/kisskb/gcc-4.6.3-nolibc/m68k-linux/bin/m68k-linux-ld:./arch/m68k/kernel/vmlinux.lds:29:
-> > syntax error
-> >     make[1]: *** [/kisskb/src/Makefile:1075: vmlinux] Error 1
-> >
-> > Reported-by: noreply@ellerman.id.au
-> > http://kisskb.ellerman.id.au/kisskb/buildresult/14022846/
+> > Can you also add PPC64?  It is also used on some PPC64 platforms
+> > (QorIQ T series).
+>
+> Sure, but if that's the only thing in the whole series, perhaps you
+> could amend it when applying instead of me sending all 47 patches again.
 
-Gr{oetje,eeting}s,
+Sure.  I can do that.
 
-                        Geert
+>
+> Should PPC32 || PPC64 be spelled PPC?
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Yes.  That will be good.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Regards,
+Leo
