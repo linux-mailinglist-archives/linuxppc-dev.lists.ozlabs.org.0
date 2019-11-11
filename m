@@ -1,44 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16341F7154
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 11:05:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88114F72B6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 12:05:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BRMj2LglzF4Yw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 21:05:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BShf4GGdzF4GP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 22:05:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx1.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhsharma@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.com
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="CxpkZizN"; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BQBG3xgVzF44S
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 20:12:20 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 54EB2ACA3;
- Mon, 11 Nov 2019 09:12:15 +0000 (UTC)
-Date: Mon, 11 Nov 2019 10:12:07 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Subject: Re: [PATCH 00/50] Add log level to show_stack()
-Message-ID: <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
-References: <20191106030542.868541-1-dima@arista.com>
- <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
- <20191108103719.GB175344@google.com>
- <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
- <20191111012336.GA85185@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191111012336.GA85185@google.com>
-User-Agent: NeoMutt/20170912 (1.9.0)
-X-Mailman-Approved-At: Mon, 11 Nov 2019 21:03:40 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BSfZ72GCzDqvl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 22:03:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1573470211;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/y8p7TWJ4+9dx0qZYntYI0vqqca78jHSFlqFEn+6Y9I=;
+ b=CxpkZizNkV3iIjlPIF8m0iAl/PSBwLDfvdzWdroSQf3UYptIETu512VHVoHQocvY+8PUe2
+ 60vwVpyi0hexNGYLdX83w6UyIACyMBm97ZC2Sa2XjyPXrQ2CsAyjQxV2rWmP9GWEGlwylg
+ yXJ5guAC1Rv6hTZz/Cmqx/b9/9fc20A=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-397-6HpxqJn3Mo-4zxwZqIjciA-1; Mon, 11 Nov 2019 03:01:43 -0500
+Received: by mail-pf1-f198.google.com with SMTP id a1so12068281pfn.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 00:01:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references;
+ bh=D7Q1sNAJK7KGCeC1/osi4u/yd8LMbojW2DcAg7eyhwk=;
+ b=iMXmAZBZMh+h+o5XWHZU20JYScX++SGNuus5fMgmPSHXWtVdFeAemjfyxWtQuA/0p0
+ PXFZEABzhpbpo0GWSFXB3WBtpZLlDJyjlDTSQuYF2HnBmIgGvrLxbIElO0r2ao6cEW9f
+ WwD8mr5VjzVCsoxK0Ln7Bhlq72OC79fGT+Px6JT6SRiAAz9KCC6L+/oH+klbruvSyZkc
+ 1xCJR0Bb3vzfHBucEypdo7RvTVJyXiZmFPYCdsCdPiI9ZrMUdAakK0w3absbLtHVdL0t
+ fAmlJaNszLDVHN6svp2YV3yLCY0Y+3CyTs6bWIeOqQht8lr/eEcOUz9P/Z2DcKJu9BWI
+ dYow==
+X-Gm-Message-State: APjAAAVlzQL1J+6XVkLlf5Jf4ZMDWCcGgkd0AlaVG4OoFRwSBdC8mhM9
+ fnnR3cnwaBMPh290HB5yV2P5W0CorRYwaBw5HgOGa57SUxL5jjH9cTNSKG0ACH1Z/Omug/J8wW6
+ i8a6oWtUhl2QDP4Cqik49RivYoQ==
+X-Received: by 2002:a62:fcd2:: with SMTP id e201mr404504pfh.52.1573459301444; 
+ Mon, 11 Nov 2019 00:01:41 -0800 (PST)
+X-Google-Smtp-Source: APXvYqw/PM/uE1YEEDp1OQcYhDW64ur/c96jF9ficCBtta087Mx43bjXxmhjovhzV8sTDdZdS3kXpw==
+X-Received: by 2002:a62:fcd2:: with SMTP id e201mr404459pfh.52.1573459301055; 
+ Mon, 11 Nov 2019 00:01:41 -0800 (PST)
+Received: from localhost ([122.177.0.15])
+ by smtp.gmail.com with ESMTPSA id r33sm12736180pjb.5.2019.11.11.00.01.38
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 11 Nov 2019 00:01:39 -0800 (PST)
+From: Bhupesh Sharma <bhsharma@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/3] crash_core,
+ vmcoreinfo: Append 'MAX_PHYSMEM_BITS' to vmcoreinfo
+Date: Mon, 11 Nov 2019 13:31:20 +0530
+Message-Id: <1573459282-26989-2-git-send-email-bhsharma@redhat.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1573459282-26989-1-git-send-email-bhsharma@redhat.com>
+References: <1573459282-26989-1-git-send-email-bhsharma@redhat.com>
+X-MC-Unique: 6HpxqJn3Mo-4zxwZqIjciA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,112 +86,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
- Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Paul Burton <paulburton@kernel.org>, Dmitry Safonov <dima@arista.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
- Jiri Slaby <jslaby@suse.com>, Matt Turner <mattst88@gmail.com>,
- uclinux-h8-devel@lists.sourceforge.jp, Len Brown <len.brown@intel.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-um@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Richard Henderson <rth@twiddle.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ia64@vger.kernel.org,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- James Hogan <jhogan@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
- linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>,
- Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
- linux-m68k@lists.linux-m68k.org, Stafford Horne <shorne@gmail.com>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Tony Luck <tony.luck@intel.com>, Douglas Anderson <dianders@chromium.org>,
- Dmitry Safonov <0x7f454c46@gmail.com>, Will Deacon <will@kernel.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Brian Cain <bcain@codeaurora.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- kgdb-bugreport@lists.sourceforge.net, linux-snps-arc@lists.infradead.org,
- Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@alien8.de>,
- Jeff Dike <jdike@addtoit.com>, Steven Rostedt <rostedt@goodmis.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
- Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
- linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
- "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
- Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
- Mark Salter <msalter@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>,
- Michal Simek <monstr@monstr.eu>, Vineet Gupta <vgupta@synopsys.com>,
- linux-mips@vger.kernel.org, Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Jason Wessel <jason.wessel@windriver.com>,
- nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
+ Steve Capper <steve.capper@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ bhsharma@redhat.com, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ kexec@lists.infradead.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ James Morse <james.morse@arm.com>, linux-arm-kernel@lists.infradead.org,
+ Boris Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ bhupesh.linux@gmail.com, Will Deacon <will@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Dave Anderson <anderson@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 2019-11-11 10:23:36, Sergey Senozhatsky wrote:
-> On (19/11/08 14:04), Petr Mladek wrote:
-> [..]
-> > I agree that it is complicated to pass the loglevel as
-> > a parameter. It would be better define the default
-> > log level for a given code section. It might be stored
-> > in task_struct for the normal context and in per-CPU
-> > variables for interrupt contexts.
-> 
-> I do recall that we talked about per-CPU printk state bit which would
-> start/end "just print it" section. We probably can extend it to "just
-> log_store" type of functionality. Doesn't look like a very bad idea.
+Right now user-space tools like 'makedumpfile' and 'crash' need to rely
+on a best-guess method of determining value of 'MAX_PHYSMEM_BITS'
+supported by underlying kernel.
 
-The problem with per-CPU printk is that we would need to disable
-interrupts. It is not always wanted. Also people might not expect
-this from a printk() API.
+This value is used in user-space code to calculate the bit-space
+required to store a section for SPARESMEM (similar to the existing
+calculation method used in the kernel implementation):
 
+  #define SECTIONS_SHIFT    (MAX_PHYSMEM_BITS - SECTION_SIZE_BITS)
 
-> "This task/context is in trouble, whatever it printk()-s is important".
+Now, regressions have been reported in user-space utilities
+like 'makedumpfile' and 'crash' on arm64, with the recently added
+kernel support for 52-bit physical address space, as there is
+no clear method of determining this value in user-space
+(other than reading kernel CONFIG flags).
 
-It might be a minimal loglevel. More important messages would still
-be printed() with the higher loglevel.
+As per suggestion from makedumpfile maintainer (Kazu), it makes more
+sense to append 'MAX_PHYSMEM_BITS' to vmcoreinfo in the core code itself
+rather than in arch-specific code, so that the user-space code for other
+archs can also benefit from this addition to the vmcoreinfo and use it
+as a standard way of determining 'SECTIONS_SHIFT' value in user-land.
 
-But yes, this per-code-section loglevel is problematic. The feedback
-against the patchset shows that people want it also the other way.
-I mean to keep pr_debug() as pr_debug().
+A reference 'makedumpfile' implementation which reads the
+'MAX_PHYSMEM_BITS' value from vmcoreinfo in a arch-independent fashion
+is available here:
 
-A solution might be to use the per-code-section loglevel only instead
-of some special loglevel.
+[0]. https://github.com/bhupesh-sharma/makedumpfile/blob/remove-max-phys-me=
+m-bit-v1/arch/ppc64.c#L471
 
+Cc: Boris Petkov <bp@alien8.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: James Morse <james.morse@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steve Capper <steve.capper@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Dave Anderson <anderson@redhat.com>
+Cc: Kazuhito Hagio <k-hagio@ab.jp.nec.com>
+Cc: x86@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org
+Signed-off-by: Bhupesh Sharma <bhsharma@redhat.com>
+---
+ kernel/crash_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Per-console loglevel also might help sometimes. Slower consoles would
-> ->write() only critical messages, faster consoles everything.
+diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+index 9f1557b98468..18175687133a 100644
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -413,6 +413,7 @@ static int __init crash_save_vmcoreinfo_init(void)
+ =09VMCOREINFO_LENGTH(mem_section, NR_SECTION_ROOTS);
+ =09VMCOREINFO_STRUCT_SIZE(mem_section);
+ =09VMCOREINFO_OFFSET(mem_section, section_mem_map);
++=09VMCOREINFO_NUMBER(MAX_PHYSMEM_BITS);
+ #endif
+ =09VMCOREINFO_STRUCT_SIZE(page);
+ =09VMCOREINFO_STRUCT_SIZE(pglist_data);
+--=20
+2.7.4
 
-This looks like another problem to me. Anyway, this filtering will
-work better when the loglevel will be consistent across the related
-lines.
-
-> Passing log_level as part of message payload, which printk machinery
-> magically hides is not entirely exciting. What we have in the code
-> now - printk("%s blah\n", lvl) - is not what we see in the logs.
-> Because the leading '%s' becomes special. And printk()/sprintf()
-> documentation should reflect that: '%s' prints a string, but sometimes
-> it doesn't.
-
-I personally do not see this as a big problem.
-
-The explicitly passed loglevel makes me feel more confident that
-all needed printk() calls were updated. But it might be a false
-feeling. I do not really have any strong preference.
-
-Best Regards,
-Petr
