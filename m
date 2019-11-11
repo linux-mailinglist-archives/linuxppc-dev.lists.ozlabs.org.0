@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2AFF7960
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 18:00:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DDCF79C6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Nov 2019 18:23:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BcZc2m7RzF0wQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 04:00:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Bd4K6y24zDrDD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 04:22:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
- helo=mail-oi1-f195.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
- [209.85.167.195])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.b="qyuqe1jF"; 
+ dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BcWw6HdqzDrCt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 03:58:20 +1100 (AEDT)
-Received: by mail-oi1-f195.google.com with SMTP id y194so12111655oie.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 08:58:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=N5Vcj3yE2rkXP4doP0O2V7gRihUnv+nSjX4pf/13Rw8=;
- b=kBI2jjsGqw0oV0o79Xg1N3I+nRrIk3Lz5tVbN4/Jy2V6KnxKn3wXoNIqpQbs7h5K8k
- HtHUSKzutwujLD2sxtRwbybixy4xJefdcE8Ea+TBIg38Lwh3bRJuHgFOQ/UAamYT0Atz
- X1/B9OO1wj1oiPgW7N0ZdINy+MZwFtZ5mGcmX2rxfgzTiGhyx0lVOB80JW2MMOcdI6FH
- dGknh0knpjBGz5e7LZp9osbmCnAXNiPpBpWdK2fmPqYMvX6Qo+CAcsWtThqzDnOpBb5P
- 3+Z0WBmba5QYWAvCrLDVP8bKBOV3wYoc29UZVmEmV4RJIBdEL29WZsg24NpHXrIsK6Fx
- A/3w==
-X-Gm-Message-State: APjAAAWXFi+nIoVOnBpM5SZKc2iNXluRj/BBw+VCVtufeE6regAQoUxo
- B8HYjwZ+oPrCsyvcM32/1idIPcNCSf3UTmJ5Uhg=
-X-Google-Smtp-Source: APXvYqy/vMjYcYeqIvTqdLd5GGnLez7ZmWGDKl5AqUc+6PF8GisVTiuTjJisyx2dw7CZpTj+GRrxuJBIdtOSyrbYjfw=
-X-Received: by 2002:aca:fc92:: with SMTP id
- a140mr23499698oii.153.1573491497306; 
- Mon, 11 Nov 2019 08:58:17 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Bd1P2YbNzF3SY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 04:20:21 +1100 (AEDT)
+Received: from zn.tnic (p200300EC2F26BB00D592BD3399DA4BDA.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f26:bb00:d592:bd33:99da:4bda])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1FA4E1EC0C25;
+ Mon, 11 Nov 2019 18:20:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1573492809;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=3tu/7JPN4tV5i1X8iQrVSJW+CCc7eYR1Dlq3I5+LVX8=;
+ b=qyuqe1jFxo+K8LpqQlIAKT4knwZJson6Dvyz8Q1EbH8WUy/pnEULfJDRJhknMQgBSqHA7b
+ 0jAl0vdQ6vQKlNAxpErBdf/04xKzI48cJfK3z2WqrCdCYctQTdfSo3SRTzXCzYebnJ3rlb
+ lWXbQPBg6M9I7MtRDGog4//j2Gp6meQ=
+Date: Mon, 11 Nov 2019 18:20:06 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v2 00/10] Improvements for random.h/archrandom.h
+Message-ID: <20191111172006.GC2799@zn.tnic>
+References: <20191106141308.30535-1-rth@twiddle.net>
 MIME-Version: 1.0
-References: <20191011000609.29728-1-keescook@chromium.org>
- <20191011000609.29728-12-keescook@chromium.org>
-In-Reply-To: <20191011000609.29728-12-keescook@chromium.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 11 Nov 2019 17:58:06 +0100
-Message-ID: <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com>
-Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
-To: Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191106141308.30535-1-rth@twiddle.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,63 +59,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Michal Simek <monstr@monstr.eu>,
- the arch/x86 maintainers <x86@kernel.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- linux-c6x-dev@linux-c6x.org, Arnd Bergmann <arnd@arndb.de>,
- linux-xtensa@linux-xtensa.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Borislav Petkov <bp@alien8.de>,
- Parisc List <linux-parisc@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
- alpha <linux-alpha@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Will Deacon <will@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ herbert@gondor.apana.org.au, x86@kernel.org, linux-crypto@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kees,
+On Wed, Nov 06, 2019 at 03:12:58PM +0100, Richard Henderson wrote:
+> During patch review for an addition of archrandom.h for arm64, it was
+> suggeted that the arch_random_get_* functions should be marked __must_check.
+> Which does sound like a good idea, since the by-reference integer output
+> may be uninitialized when the boolean result is false.
+> 
+> In addition, it turns out that arch_has_random() and arch_has_random_seed()
+> are not used, and not easy to support for arm64.  Rather than cobble
+> something together that would not be testable, remove the interfaces
+> against some future accidental use.
+> 
+> In addition, I noticed a few other minor inconsistencies between the
+> different architectures, e.g. powerpc isn't using bool.
+> 
+> Change since v1:
+>   * Remove arch_has_random, arch_has_random_seed.
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (10):
+>   x86: Remove arch_has_random, arch_has_random_seed
+>   powerpc: Remove arch_has_random, arch_has_random_seed
+>   s390: Remove arch_has_random, arch_has_random_seed
+>   linux/random.h: Remove arch_has_random, arch_has_random_seed
+>   linux/random.h: Use false with bool
+>   linux/random.h: Mark CONFIG_ARCH_RANDOM functions __must_check
+>   x86: Mark archrandom.h functions __must_check
+>   powerpc: Use bool in archrandom.h
+>   powerpc: Mark archrandom.h functions __must_check
+>   s390x: Mark archrandom.h functions __must_check
+> 
+>  arch/powerpc/include/asm/archrandom.h | 27 +++++++++-----------------
+>  arch/s390/include/asm/archrandom.h    | 20 ++++---------------
+>  arch/x86/include/asm/archrandom.h     | 28 ++++++++++++---------------
+>  include/linux/random.h                | 24 ++++++++---------------
+>  4 files changed, 33 insertions(+), 66 deletions(-)
+> 
+> -- 
 
-On Fri, Oct 11, 2019 at 2:07 AM Kees Cook <keescook@chromium.org> wrote:
-> There's no reason to keep the RODATA macro: replace the callers with
-> the expected RO_DATA macro.
->
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  arch/alpha/kernel/vmlinux.lds.S      | 2 +-
->  arch/ia64/kernel/vmlinux.lds.S       | 2 +-
->  arch/microblaze/kernel/vmlinux.lds.S | 2 +-
->  arch/mips/kernel/vmlinux.lds.S       | 2 +-
->  arch/um/include/asm/common.lds.S     | 2 +-
->  arch/xtensa/kernel/vmlinux.lds.S     | 2 +-
->  include/asm-generic/vmlinux.lds.h    | 4 +---
->  7 files changed, 7 insertions(+), 9 deletions(-)
+They look good to me.
 
-Somehow you missed:
+Is anyone going to take them or should I though the tip tree?
 
-    arch/m68k/kernel/vmlinux-std.lds:  RODATA
-    arch/m68k/kernel/vmlinux-sun3.lds:      RODATA
+Thx.
 
-Leading to build failures in next-20191111:
+-- 
+Regards/Gruss,
+    Boris.
 
-    /opt/cross/kisskb/gcc-4.6.3-nolibc/m68k-linux/bin/m68k-linux-ld:./arch/m68k/kernel/vmlinux.lds:29:
-syntax error
-    make[1]: *** [/kisskb/src/Makefile:1075: vmlinux] Error 1
-
-Reported-by: noreply@ellerman.id.au
-http://kisskb.ellerman.id.au/kisskb/buildresult/14022846/
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+https://people.kernel.org/tglx/notes-about-netiquette
