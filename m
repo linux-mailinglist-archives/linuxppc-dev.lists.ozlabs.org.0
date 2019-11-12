@@ -1,77 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C15F8877
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 07:26:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD68DF887F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 07:28:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ByRz1TgpzF5BC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 17:26:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ByVc6tzSzF3T9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 17:28:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=sergey.senozhatsky.work@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=sergey.senozhatsky.work@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="D8FdqJ91"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="AI85TZux"; 
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BwCC6kcGzF4cj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 15:44:54 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id 3so12411901pfb.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 20:44:53 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BwTL4tdhzF4wx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 15:57:09 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id x28so12447780pfo.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 20:57:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=z6L3+hI6K7wkMCOOKfC6B5htW9e/NujoD4rmfI82OVU=;
- b=D8FdqJ91C9CViimFs5HkqTNzLfTnpza7YcDlJMaUW/GYDtbpWN+jf3gagVp5Pb54ut
- pJnpc/x6Rud5mFzPf0ZReA35hd11ljJ6cO/5F7Ue3e6hQ2TSEJ94YRDSGLm6NhnyCdqt
- CzzD2BCnxTXK5GtYHwa3Uusyd8eoRKj//LeZNogwczP3XkHhZ0DhI0uDpEhLu6Pcihhn
- H3BS+MU+Nl1Oowf4/jk8zWm4nc12KVZM+ffZ6sfZ7WtTjgYJy574lkrjNaKPgYx+dzhc
- p2jV1Cc9pO8ZsG8xspjchyhzIZQ4FAt5l5TNSRCxJncAjNaATr8g0kc1uRTSgUAVAp1B
- 466Q==
+ bh=tE21poLWpjs1GduZLj+PgABwuxQTljOZlec7LOXTsTQ=;
+ b=AI85TZuxJFzpojKZJlquzPJ/5YvDFz8JEdaGZ7N9Bmfov5X7GyMy3TfvkUyQANtqKe
+ uWjtNNrB596OMU00c6+qct2nMEsGN4W/ajrsVlovtW2vJG2fjivE6vkHc9d5Fc8S37eB
+ 0VpD+e7K/Ht0coC/nAVEUQFQLhXtyB4aw6jKMKF9ff8HzhVOsLQ13K9MvUH4nh17A3b8
+ X0IG+zvP4YjZB9qcfjrPIBuuKfgEibO6DzaNR3cG8TZwz73XhoRwn86VlJzYDpndT6LU
+ MtpcwxBGTg4+qOqVF/y48uFNpA2bAo7xyKsOHk/v6yI7+ZG1IGpxyK0r3md+ToHLMdrK
+ mWjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=z6L3+hI6K7wkMCOOKfC6B5htW9e/NujoD4rmfI82OVU=;
- b=YsMcFYiB6ggHd2P/SJIQCPESvla4I0Yb6lM2iLjI2jvEf2Ua8a31Gg5zfJTuv/Q/K+
- 4lihdQZfFweAU9CL6y/EXJMWYqc+XK8ZoJR0q6AL0Ps9stkxEhUZ+zWa4y0+Z+ICexwS
- su1qFIa4mvnJNCz3WLLZkXSYBg5g08F7Is6bBJo0TjVYhzxtWF1hMvWegQU+v75QrIRU
- p5U0WSGppW0MQsWhwLKM5GIkpfnC5u5jNH/qQjfbbuhhK93ydH7+n4g2sDKCIE47AqT7
- TcPn8Z9TcQg1RN8lQtt8CcW0fa6k7bdeq4BDW6NatHZlrXlk/ZxwQpgmdul/sK16LlUD
- q7rA==
-X-Gm-Message-State: APjAAAXA9Zv1RC15kiFS+K2rSR1tMUvXE71+YmFJA17a2i/2jZQDo02f
- wzgyyCM3lgJ4h33IbuyGnW0=
-X-Google-Smtp-Source: APXvYqwNPlyjQTahvdEBWCuI4Zd+Adrk+027CcV4KySo2l3EKHcRsdH9n54f0hJl6o3TjoADo67N4w==
-X-Received: by 2002:a63:d802:: with SMTP id b2mr32909872pgh.414.1573533890747; 
- Mon, 11 Nov 2019 20:44:50 -0800 (PST)
+ bh=tE21poLWpjs1GduZLj+PgABwuxQTljOZlec7LOXTsTQ=;
+ b=HJUYBgb7eXYYZt2+KnOrOfaj6kOMBx/zKjZKGWNT6jsEiXwr/1A9yVsp1mQeKM9Oy8
+ YjmGfFAQMJlJm2yqFhp3nNj4uadl35Iowk2ZmknZdRktLCvmtCdLRCOmIVmQohY/nLD2
+ Kja38rS58foozDiHahAEG1SctP2wbx7Pc/pBHU1zIDEqpynLbGrcbVSPsa/Da6/tDcgA
+ +ZfeB2+MELN2fGUjj5x0pib3rP9qUsHn32taaxPYMCd6a6ft051ZBtP3mIIGaGg13ztW
+ xpd/CgsQg0wOeH2zF+Hei2tSsAJlVEUrKFkUepnXZ1b6sL9A21rMakQAr5Yx+BPYY6T8
+ nGZg==
+X-Gm-Message-State: APjAAAVNevaAkl7CdeNks7BHuiIJKuWOoivv4hNS2bU/M23Zf7o0Wvp1
+ vpVt0SfjYxCF+mYNVavi8BU=
+X-Google-Smtp-Source: APXvYqwONZTehdk35XitEb5MFGQ3YaKV519c02Q5wasJGEVSNUQOf6OoebSn7yVrmWLCDumcSeljhQ==
+X-Received: by 2002:a17:90a:f48a:: with SMTP id
+ bx10mr3683941pjb.103.1573534626683; 
+ Mon, 11 Nov 2019 20:57:06 -0800 (PST)
 Received: from localhost ([2401:fa00:8f:203:250d:e71d:5a0a:9afe])
- by smtp.gmail.com with ESMTPSA id l62sm18583061pgl.24.2019.11.11.20.44.48
+ by smtp.gmail.com with ESMTPSA id n23sm15226461pff.137.2019.11.11.20.57.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Nov 2019 20:44:49 -0800 (PST)
-Date: Tue, 12 Nov 2019 13:44:47 +0900
+ Mon, 11 Nov 2019 20:57:05 -0800 (PST)
+Date: Tue, 12 Nov 2019 13:57:04 +0900
 From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
 To: Petr Mladek <pmladek@suse.com>
 Subject: Re: [PATCH 00/50] Add log level to show_stack()
-Message-ID: <20191112044447.GA121272@google.com>
+Message-ID: <20191112045704.GA138013@google.com>
 References: <20191106030542.868541-1-dima@arista.com>
  <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
  <20191108103719.GB175344@google.com>
  <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
  <20191111012336.GA85185@google.com>
  <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
+ <20191112044447.GA121272@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
+In-Reply-To: <20191112044447.GA121272@google.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Mailman-Approved-At: Tue, 12 Nov 2019 17:17:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -142,41 +144,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On (19/11/11 10:12), Petr Mladek wrote:
+On (19/11/12 13:44), Sergey Senozhatsky wrote:
 [..]
-> > I do recall that we talked about per-CPU printk state bit which would
-> > start/end "just print it" section. We probably can extend it to "just
-> > log_store" type of functionality. Doesn't look like a very bad idea.
+> > But yes, this per-code-section loglevel is problematic. The feedback
+> > against the patchset shows that people want it also the other way.
+> > I mean to keep pr_debug() as pr_debug().
 > 
-> The problem with per-CPU printk is that we would need to disable
-> interrupts.
+> Hmm. Right.
+> 
+> > A solution might be to use the per-code-section loglevel only instead
+> > of some special loglevel.
+> 
+> So maybe we can "overwrite" only KERN_DEFAULT loglevels?
 
-Or disable preemption and have loglevel per-CPU and per-context.
-preempt_count can navigate us to the right context loglevel on
-particular CPU. I'm talking here only about backtrace (error)
-reporting contexts. Those can be atomic perfectly fine.
+LOGLEVEL_DEFAULT, LOGLEVEL_NOTICE, LOGLEVEL_INFO?
 
-I posted a silly code snippet.
+So we can downgrade some messages (log_store() only) or promote
+some messages.
 
-[..]
-> But yes, this per-code-section loglevel is problematic. The feedback
-> against the patchset shows that people want it also the other way.
-> I mean to keep pr_debug() as pr_debug().
+DEBUG perhaps should stay debug.
 
-Hmm. Right.
+> We certainly should not mess with SCHED or with anything in between
+> EMERG and ERR.
 
-> A solution might be to use the per-code-section loglevel only instead
-> of some special loglevel.
-
-So maybe we can "overwrite" only KERN_DEFAULT loglevels?
-We certainly should not mess with SCHED or with anything in between
-EMERG and ERR.
-
-> The explicitly passed loglevel makes me feel more confident that
-> all needed printk() calls were updated. But it might be a false
-> feeling. I do not really have any strong preference.
-
-I'm not like really objecting, just trying to explore some other
-options.
+  [EMERG, WARN]
 
 	-ss
