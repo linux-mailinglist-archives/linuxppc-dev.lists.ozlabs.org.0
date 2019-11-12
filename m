@@ -2,32 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2420F8C53
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 10:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB462F8C9D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 11:17:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47C39p0Pt6zF3W5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 20:59:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47C3b16PtGzF4yW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 21:17:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx1.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=sergey.senozhatsky.work@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.com
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="lVQpY920"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47C1K85j3PzF55C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 19:35:22 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id D1671AC68;
- Tue, 12 Nov 2019 08:35:16 +0000 (UTC)
-Date: Tue, 12 Nov 2019 09:35:09 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47C3TM08S8zF4qX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 21:12:36 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id 193so12971965pfc.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 02:12:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=iABlNrF2pKWSZ44AJQZkuRtZU/cPi9wpLdONGxReYeE=;
+ b=lVQpY920ERl+suupN9XSt5AI00c2Bwp6YTe+nuAxfJ0tx8/CHdvsOX8KqHu3FmMDHw
+ pKJz2qZ3MIZdI/LvHcuOQwnw03zOL+xBaPoBM3Sk8cqEAObtva+w2W+VwUQXyt+Yzl0z
+ 2Ik5jh60mk6441pRqx3/IONqYdeiU8UBQPNLpaFQv+9/cOgrSL80TVTu8IIfCepoYN0k
+ 46xEtzM2XHEzQhHHKxX5sVHiAqwMvF9Sq45W8ZvBkd56VxLaVtoM4UNEcrlWR3NAHdQy
+ xhQtHdonv/wnGP9QHISUJ1hs6f5eymrLlJUCAqXrERs33xe9PtMv6394ZI1rErDw09YV
+ v71Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=iABlNrF2pKWSZ44AJQZkuRtZU/cPi9wpLdONGxReYeE=;
+ b=FsqDp5tibtezoQgAyduHJbtvoc9fL1ZBH7rm+H6Nd6dhwYpKWM4m6AOFnctQuRqZOw
+ 102vzfYuGYKLyF6X0fD+MdB6x2yIKZWLEKhlyELcgBYkK74QRGMkb++4G48nRfnFQXyk
+ Q7w77+WL47lM4j2apki/ntBXfjaH3cqZw/n3tmY7+9HT8ip1/r+NotKLhGeF/C/dBd8s
+ Xu3twIOybKm6vs3wQMiSWMxS8C+zjka2t+U6YlQgRHXrfk+4oV/20kQysl/Gtto70n6O
+ h5CMZ1SrSXZMWQ6CDZWBOr70y6oJ5EMHdOJMetXyr/oyPiVfbHhPq0GnS5U/oAecDEG3
+ XTvQ==
+X-Gm-Message-State: APjAAAW7G9NFTzhcs+nzKcZIDGuncfTmlFXVpk7cLpygt8tt2jeGtST+
+ DUIYbewT4vCJcPNN2lViXe0=
+X-Google-Smtp-Source: APXvYqzbLkT+ewX6d5aDmf1lCSG1EnFPCAEpBjMiCepHVQ5OZ8DJHna0XlH2m+np53cmAKdzl8CVcA==
+X-Received: by 2002:a62:fb02:: with SMTP id x2mr28010053pfm.254.1573553553232; 
+ Tue, 12 Nov 2019 02:12:33 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:250d:e71d:5a0a:9afe])
+ by smtp.gmail.com with ESMTPSA id k9sm19867384pfk.72.2019.11.12.02.12.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Nov 2019 02:12:31 -0800 (PST)
+Date: Tue, 12 Nov 2019 19:12:29 +0900
+From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Petr Mladek <pmladek@suse.com>
 Subject: Re: [PATCH 00/50] Add log level to show_stack()
-Message-ID: <20191112083509.gmgjpkjffsfaw5lm@pathway.suse.cz>
+Message-ID: <20191112101229.GA201294@google.com>
 References: <20191106030542.868541-1-dima@arista.com>
  <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
  <20191108103719.GB175344@google.com>
@@ -36,12 +70,13 @@ References: <20191106030542.868541-1-dima@arista.com>
  <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
  <20191112044447.GA121272@google.com>
  <20191112045704.GA138013@google.com>
+ <20191112083509.gmgjpkjffsfaw5lm@pathway.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191112045704.GA138013@google.com>
-User-Agent: NeoMutt/20170912 (1.9.0)
-X-Mailman-Approved-At: Tue, 12 Nov 2019 20:57:18 +1100
+In-Reply-To: <20191112083509.gmgjpkjffsfaw5lm@pathway.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Tue, 12 Nov 2019 21:15:35 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,10 +88,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
- Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Vincent Guittot <vincent.guittot@linaro.org>,
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Ben Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, Vincent Guittot <vincent.guittot@linaro.org>,
  Paul Burton <paulburton@kernel.org>, Dmitry Safonov <dima@arista.com>,
  Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
  Jiri Slaby <jslaby@suse.com>, Matt Turner <mattst88@gmail.com>,
@@ -109,38 +145,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 2019-11-12 13:57:04, Sergey Senozhatsky wrote:
-> On (19/11/12 13:44), Sergey Senozhatsky wrote:
-> [..]
-> > > But yes, this per-code-section loglevel is problematic. The feedback
-> > > against the patchset shows that people want it also the other way.
-> > > I mean to keep pr_debug() as pr_debug().
-> > 
-> > Hmm. Right.
-> > 
-> > > A solution might be to use the per-code-section loglevel only instead
-> > > of some special loglevel.
-> > 
-> > So maybe we can "overwrite" only KERN_DEFAULT loglevels?
-> 
-> LOGLEVEL_DEFAULT, LOGLEVEL_NOTICE, LOGLEVEL_INFO?
-> 
-> So we can downgrade some messages (log_store() only) or promote
-> some messages.
-> 
-> DEBUG perhaps should stay debug.
-> 
-> > We certainly should not mess with SCHED or with anything in between
-> > EMERG and ERR.
-> 
->   [EMERG, WARN]
+On (19/11/12 09:35), Petr Mladek wrote:
+[..]
+> This is getting too complicated. It would introduce too many
+> hidden rules. While the explicitly passed loglevel parameter
+> is straightforward and clear.
 
-This is getting too complicated. It would introduce too many
-hidden rules. While the explicitly passed loglevel parameter
-is straightforward and clear.
+If loglevel is DEFAULT or NOTICE or INFO then we can overwrite it
+(either downgrade or upgrade). That's one rule, basically. Not too
+complicated, I guess.
 
-I am getting more inclined to the solution introduced by this
-patchset. It looks reasonable for the different use-cases.
+> I am getting more inclined to the solution introduced by this
+> patchset. It looks reasonable for the different use-cases.
 
-Best Regards,
-Petr
+No pressure from my side. Up to arch maintainers.
+
+	-ss
