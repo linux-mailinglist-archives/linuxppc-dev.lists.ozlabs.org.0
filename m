@@ -2,50 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6609BF86FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 03:47:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF59F8758
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 05:21:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Bsbr3lwXzF54G
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 13:47:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Bvgt5VcHzF4Bs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 15:21:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BsYR6Gt3zF510
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 13:45:24 +1100 (AEDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2019 18:45:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,294,1569308400"; 
- d="gz'50?scan'50,208,50";a="252533182"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by FMSMGA003.fm.intel.com with ESMTP; 11 Nov 2019 18:45:19 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1iUMBC-0003Mh-PH; Tue, 12 Nov 2019 10:45:18 +0800
-Date: Tue, 12 Nov 2019 10:44:50 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc/perf: Check pmus_inuse flag in
- perf_event_print_debug()
-Message-ID: <201911121040.n70XLOKN%lkp@intel.com>
-References: <20191107130159.14146-2-maddy@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="h5qqxteyl55knkfo"
-Content-Disposition: inline
-In-Reply-To: <20191107130159.14146-2-maddy@linux.vnet.ibm.com>
-X-Patchwork-Hint: ignore
-User-Agent: NeoMutt/20170113 (1.7.2)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47BvdG652vzF46R
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 15:18:56 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F36831B;
+ Mon, 11 Nov 2019 20:18:52 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.1.187])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1A0383F52E;
+ Mon, 11 Nov 2019 20:18:27 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V9] mm/debug: Add tests validating architecture page table
+ helpers
+Date: Tue, 12 Nov 2019 09:48:46 +0530
+Message-Id: <1573532326-24084-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,516 +42,810 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, kbuild-all@lists.01.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linux-s390@vger.kernel.org, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This adds tests which will validate architecture page table helpers and
+other accessors in their compliance with expected generic MM semantics.
+This will help various architectures in validating changes to existing
+page table helpers or addition of new ones.
 
---h5qqxteyl55knkfo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This test covers basic page table entry transformations including but not
+limited to old, young, dirty, clean, write, write protect etc at various
+level along with populating intermediate entries with next page table page
+and validating them.
 
-Hi Madhavan,
+Test page table pages are allocated from system memory with required size
+and alignments. The mapped pfns at page table levels are derived from a
+real pfn representing a valid kernel text symbol. This test gets called
+right after page_alloc_init_late().
 
-Thank you for the patch! Perhaps something to improve:
+This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+arm64. Going forward, other architectures too can enable this after fixing
+build or runtime problems (if any) with their page table helpers.
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on v5.4-rc7 next-20191111]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+Folks interested in making sure that a given platform's page table helpers
+conform to expected generic MM semantics should enable the above config
+which will just trigger this test during boot. Any non conformity here will
+be reported as an warning which would need to be fixed. This test will help
+catch any changes to the agreed upon semantics expected from generic MM and
+enable platforms to accommodate it thereafter.
 
-url:    https://github.com/0day-ci/linux/commits/Madhavan-Srinivasan/powerpc-perf-Add-mtmmcr0-FC-after-ppc_set_pmu_inuse-1/20191109-143451
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-pmac32_defconfig (attached as .config)
-compiler: powerpc-linux-gcc (GCC) 7.4.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # save the attached .config to linux build tree
-        GCC_VERSION=7.4.0 make.cross ARCH=powerpc 
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Steven Price <Steven.Price@arm.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: James Hogan <jhogan@kernel.org>
+Cc: Paul Burton <paul.burton@mips.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Kirill A. Shutemov <kirill@shutemov.name>
+Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/powerpc/oprofile/common.c:17:0:
-   arch/powerpc/include/asm/pmc.h: In function 'ppc_get_pmu_inuse':
->> arch/powerpc/include/asm/pmc.h:56:1: warning: no return statement in function returning non-void [-Wreturn-type]
-    static inline u8 ppc_get_pmu_inuse(void) { }
-    ^~~~~~
-
-vim +56 arch/powerpc/include/asm/pmc.h
-
-    54	
-    55	static inline void ppc_set_pmu_inuse(int inuse) { }
-  > 56	static inline u8 ppc_get_pmu_inuse(void) { }
-    57	
-
+Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
+Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
+This adds a test validation for architecture exported page table helpers.
+Patch adds basic transformation tests at various levels of the page table.
 
---h5qqxteyl55knkfo
-Content-Type: application/gzip
-Content-Disposition: attachment; filename=".config.gz"
-Content-Transfer-Encoding: base64
+This test was originally suggested by Catalin during arm64 THP migration
+RFC discussion earlier. Going forward it can include more specific tests
+with respect to various generic MM functions like THP, HugeTLB etc and
+platform specific tests.
 
-H4sICBMXyl0AAy5jb25maWcAjDzbktu4se/7FSrvS1Kp3czNjpNT8wCCoIQVCdAEqBn5haWV
-Ze/Uzi0azcb++9MN3gAQkCaVxKPuRgNoAH1Dgz//9POMvB6eHjaHu+3m/v7H7NvucbffHHZf
-Zl/v7nf/N0vlTEg9YynXvwJxfvf4+v2fz0//2+2ft7P3v179evbLfnsxW+72j7v7GX16/Hr3
-7RUY3D09/vTzT/DfnwH48Ay89v+Zde1+uUcuv3zbbmd/m1P699m/kA/QUikyPm8obbhqAHP9
-owfBj2bFKsWluP7X2dXZ2UCbEzEfUGcWiwVRDVFFM5dajow6xA2pRFOQdcKaWnDBNSc5/8zS
-kZBXn5obWS1HSFLzPNW8YA271STJWaNkpUe8XlSMpA0XmYT/azRR2NiIYG6kej972R1en8eJ
-JpVcMtFI0aiitLqG8TRMrBpSzZucF1xfX16gILspyKLk0LtmSs/uXmaPTwdkPBIsYBismuA7
-bC4pyXuBvXs3NrMRDam1DDQ2MmgUyTU27fsjK9YsWSVY3sw/c2smNub28wh3iYcRDJSBnlOW
-kTrXzUIqLUjBrt/97fHpcff3YRTqhlg9q7Va8ZJOAPgv1fkIL6Xit03xqWY1C0MnTWgllWoK
-Vshq3RCtCV3Ys6gVy3kSXBlSwzkKTM7IiVR00VJghyTP+90DW3H28vr7y4+Xw+5h3D1zJljF
-qdmpaiFvrNPiYZqcrVju7u1UFoQLF5bJirK028hczC3plaRSDInsmdr9pCyp55lyp717/DJ7
-+upNwB+lOVKrcc4emsK+XML4hVYBZCFVU5cp0ayXlr572O1fQgLTnC7hsDEQiXVshWwWn/FQ
-FVLYkwNgCX3IlNPAirWteJozj5O1+fl80VRMmQlWyvDuBDIZ47DvKsaKUgMrwezB9PCVzGuh
-SbUObq+Oysa1Gris/6k3L3/ODtDvbANjeDlsDi+zzXb79Pp4uHv85gkJGjSEUgl9tdtg6GLF
-K+2hG0E0X7HgiHBnmPUdyYN0iUph9JIyOFhAGtZrqFGVJlqFJ694cPO9YfJGSBWtZyq0acS6
-AZwtBPgJNgB2R+gsq5bYbq769t2Q3K6GE7hs/7DO5HJYWEntAfBlq+NVUL+jms7g4PNMX59f
-jVuLC70E3Z0xn+aylYDa/rH78gqWevZ1tzm87ncvBtwNOoC1bNK8knUZGg7qatAesLLjvGqt
-GmH9Rr0slKdDKwAF+JU8ddoKpr22dMHospQwWzx9WlbhramALjV2zow9TLNWmQLVBgeLgopJ
-g0QVy8k6ZCvzJTRdGXNe2Z4F/iYFMFayBoVrWdIq9QwoABIAXDiQ/HNBHIBtWg1eer+vHAdI
-lnAkwdtBfY86Dv4piKCOwvHJFPwRM1zgEaTo+VCZsgZUMWkYei2oFqRlYXwz2v6Gg0RZiZQN
-SIVa6jQpM3tE0QNXgFvAccNYrOdMF6AtmolVaVd0As4WRDi6vHUABs3tnCH/dyMKbruJ1glm
-eQZiqexZEbCjWe10Xmt26/2EfW5xKaUzBz4XJM+sLWXGaQOMvbQBagH+yviTcGuLcNnUlWPu
-SbriivVisgQATBJSVdwW9hJJ1oVzBntYA/8GlmxAG2ngAUILYjOAxe+7Dx46XG/jEGZpgL9x
-pdDPH8fbIKuE0KU1G3BpHH8GiFmashBHs9HxrDSDK2KUYxf4lLv916f9w+Zxu5uxv3aPYF8I
-qE2KFgYs/WhOXBaDcn0jm57Lqmh5NMaoOltU5XXSOmPOcYaYgWgIOJZhPZeTJGTKgJfNmSQg
-0GrOemfc7sFgM3BAcq5A8cJxkkW0r5FwQaoUfLmwZlWLOssg0ikJ9AnLBwEKqPPQQNdKs6LV
-PRDB8IxTT/mABc147mxyo26MnXCWwo3VLP+ipB+uQgYJjFci5fJSNZcX/bYo90/b3cvL0x58
-vOfnp/3B2gEj/Yfv3x0nz8KcnYedHCD5+P779zgygrs6i8CvwnB2cXYWmOzgd5eOQ8Quz87o
-BULDzBB9GUXPr3zURCDWQgIsKy0PC2JR0B3UpWgDz5qVLngK6QjJhNCHtAqgqBtVl6UT9yPW
-HGuqK0cJQlAf9Einm2M416mSl5axR0c7QQGKlBPhdGmTXV4k3BpQUdjiQVVYFKRsKgHOBASX
-TUFur8//dYwAAsPz8zBBr0lOMXLoHH6iwrBAXb8/vxjOL8TQS3Mep+JtwdAiy8lcTfEYHoKH
-NkX0e3VxwyAScxfMspSkytdTw05EF5nKGhzkj0NiqfUaZcE16DBwbRujQGxz2IqBrLsdA7s1
-tboz8b2hmQ7U8RxApfVTAitagsIHP8dTaq2Z4wmrWl8LvRbFE9uPMSSqViVsoTi668aYDaNt
-jbKNkdWgTBPbn/8M0WqT2k5pOW8zZCbxoK4vOq14vzmgfbOUouWOyyKcRLCOGV1UYUcdkUVJ
-YUvFVSPiL1z1aJ/gglBfGX+8OKZpL48hP0SQvYsRw5OCzwmIM4hcgt2f17G0HytJCf48qQgG
-6ZFpit7TsmAyQy2r8aQV4GlyYeGLkjtiwd9NoeYhK9wJ+fzsQ28GUa1n+91/X3eP2x+zl+3m
-3sk1oHoDT8DxwXoY6oTQJAZ8nxCcy1U0iAnSyhtwmEgkYRFsgs6miWHf3kSKlMF4wn5NsAXg
-oJvVJJfit5nON0jRzzKCH6YUlNfbZ3Bs5MMW+OpvgdmX/d1fjl88MBzO4Zi+CWyhnjX/cr/r
-mA3XDdAAwbZyQe6Yq4sliLoGFsRmbGegQm4K6O+m0s4xUbwoQf3NSy7DLoCvCe1g4ukZr08s
-4WAmsQ3f7OzkedBDA8TF+zOP9NIl9biE2VwDG9fqLSpMDnpWgQmj6Lts+ELqMrfNWJimgr/c
-eG/JbhkNb7WKqEWT1q4zZbMHx0AD764bK67NczYneW+imxXJazbeEaG6uloac+f5lybe6HJj
-g4/SXe8MKbNe60KwrifEJhLxgSa9jk6TMZgSAp8K3aJxpkWKyheVcSho7tBWugh6rghsSgjJ
-IIYZ4UYqNwQCGxNofcboVwpdSTuJ0PoEE0Dfws5jtw4GC4XQlvdhybAA7Z2iKdJcd9dMFipn
-zLn2ARim4Qw8bFELmM2SoacXTAkWTteT4Bf5pytUlmmLjHWCN2a9HIL9tGMfeujF7XlnA8ub
-T60eblgGESnHgL3T+KEYllH0mQNZgV4fDPtaEfS2oF/eG9rk9WWqNobrmZbe3eMcQoqKUQ0e
-KrfHnKm8yRMa1Fp2L6Zb8uUvzFV8GS42Rz+mF7g0uT01sQvp7uvm9d4AMAf/MgN1ONv0/Lb2
-RXLf52yz381eX3Zfxinm8gZPPmYnr8++g5oz/xm9eDjHMssU04DdetjuthH8jCqELhdrxWHH
-DwRnHoE2Cca256HxICtPNO4NSo23zWa7TOTSpx82++0fd4fdFjPtv3zZPQPb3eNhusitenRz
-jLLNdlgQE4tY4FHvtr588ET8Bjq3yUnCQtpoEgSYLsaNXguY41xgip3itY5nEsD/MJfJmosm
-ca9uDSMOE8JQEnrRHmoZ7HlZMR1GtFC8Zc+8DLPBZ7WgJnhiVSUhNBW/MeqqM0Pm5HjH+1rD
-cSGlZRb7Ywfhv3E6Osvhh21EoUHQPFv39wAugQnqcfc2vgCwqqGQaXdV78+3YhAlg9/WBtWd
-9Dtd4dC1yU8btLhpEhhqe3ni4UyGA3mH4Oa6pu0PDXVIUONm8rBFUTdzohes6uwunihfVu0C
-tJdXtChv6cL3MW5g3JhJZphRJvRTzSufDVpEc9fUXmb3NRCBwXa6uIHT4sT2MbhpaeaP+xX2
-j7SQXcmJi+5veHvGkbZeIwU23E5hmn4DV7L+YZrewvqLINNu5iWjmD61IkCZ1jmcHzyxeJ2B
-2foAf3aLu1W0NQc46sB+N81NZthZ41HuThrqWA7LSieZ1lSW695D07m/R017sYLwFnSghaQ5
-Ji7Qo7khVWohJBa58PnER+rgxFMQH67wqKKELd5t/qs9xS5qkAeamEbLzjhbF4qZWSZzTRTU
-zOgJ2TcAU/M6p3L1y+8bMJazP1sv4nn/9PWui7/H1CuQdYbw2DWKIeusR9NenI358iM9DbYU
-YgJQ9Fi7Q+n1u2//+IdbPITlXS2NXePhALtZ0dnz/eu3u8cXdxY9JWgYjVJh6O2W4SoJixo3
-I5yp2i84GKZmdeffD5ww0P0s4GwWeKFn2yVz66UKFOSZd8ycXIsBdWFDLknIJ+1oaoF4/9B2
-TQekzbm3HkERdc1VRYd6sMhO7Cl52Knu0HgYKjBDx2gw5XjTFFyptqakKxtoIJLGrGP4FlCA
-VoIjuS4SmYdJdMWLnm6Jd45RIcJRhNAHBC2XtWXCEjxs9k9w+qjicEo/YSrOxeB9f6LmQWDO
-E3sNxvIAzeYV1+HN2lNhxBhOxSBFHzkaw1ZFyW6SUODRdoGZ30z5A1TGgyf5RL+Um/3hzjjn
-+sfzzr7g7IO+IQSweRJwVMVIE06B8tsTFFJlp3hgGvUUDfj1PEzT7wtCrSB2PFwqlcpBOHVM
-KVfLidc87nYuYH6qTo4PTskcRqea248fTkyjBn5gvtiJfvO0OMFIzSPSGLvK4TSdWhxVn1rg
-JamKyOJ0FCzjYfliFeeHjyf4W6chRNWn4LwdbB+H4lMXFlswk2Vo6zHlWAxl7XxoxGWbKcNy
-GC+PPiKX68T4jmM1V4dIsk/h8kmnv8E4K3Fu5bqEmbIqwaqhvgf/oC3WdPHGQWrxx3DBtjeg
-pFissY10W7t3R0SD80ebqrDKVceMkxEv+77bvh42v9/vTA36zFREHCxBJ1xkhUZv0rrGyzM3
-BsZfJhgZkuzofXZlc9bKtrwUrXipJ2CwRvT6wWbZhTfD2sQGa2ZS7B6e9j9mxeZx8233EAzf
-u9ylJQwAQHCQmnQpaCA/mMKKFiPklmaCz4jSzdw2YGYBlpi36tta8UWZg3taasMRYgh1fTXO
-FhxYz9EFrVp5ub4E/E87djXRCPi0Se0WBKkicM77pTG+PWhGsBlpdX119u8PPYVgcDBKTGBC
-gLN0UuAUYj1BCRydoBbIIFTSmFmI6AgShH8uveTriEnqsAH+bDw5Gc5emwSAiWsxU7CM1b/C
-DHGC8epWWNEmYYIuCuLW8ExiCs3aII44Xnp8K46StouiGUTKYl45iRu1TDDlzESfdjCbXOwO
-/3va/4m3OpPdDRtoyZwyoRYCtorMA7NAWzb2VxtLSZ1FNzC/9ejs5SH37jarrAOGv8DZnEsP
-1FUQDrwMEOx0g1eiNOydGZr2UIQ3YcsEVpUrzWmwPhaksWRru+cOFGI8KF17sXjZ1kBSohxZ
-A3xIw1YSgpDQpS0QGRy+pAHXO/UYlCJ8fswGKfkx5BwVMCvq2/DBgEGbjoPlXALUj1xyNx5q
-2a40j3aaydD9HEqrIVbBhQFAeOHMtYNhxs2PtVwiXqJqjPWDe9PrSdOyB7uc6rSM72VDUZGb
-ExSIBTFjZii8R7F3+HNMyQdGPtDQOrFzP71+7vHX77avv99t37nci/R9LP6D5foQWy18XYUZ
-NV+jTWjKxdpkUOAcFaWnQUdSPyc3gOxApHuQtt+h2gKDfdjtJ4/WJu0ninBEwV/g/ixHH2FE
-ZRCD5GtQzKW3h92mk+cOUcL2iVKgp54gl3NAH+kK4qZQT1iiLISxT077zLwTgMYQgB4dITY3
-eSiv+cC2ia+xTYVBblBH2kT4FsINVB10W1t7uq+ututthGbnnSY10VdsAtrcZcgmpdRyzmyM
-ojqCAUUBfhqLTppgoQY5JbkM2McWaHF5cXmqPa9otD1shgTimCaSUHJolXiLMMtSv4FKkUit
-lEvFQ/raXeZWOo7wx9N95FDN8xqMZ3QjCRJFmRK5iE/QddI+NFUwAqO5bk2k8TLbPj38fve4
-+zJ7eMKo8CWktW61OXXhwd9qM3X/WDqdHDb7b7uDk2h1GLR1B+1zG1WH3PsguXEzsnV0XD1d
-YHjHG0TkHCBNFQ3uhwDpIj810IlHfpQa4wHzWuPNLfJI3i9IK48aR4uy2xpHKETW2pOjJL1N
-OjoqIc0Re+PI0OXFvOoJpkD0ZrHgxfBt6IlWkNjcER+dNzg9hVInaWSpwS3jpX96HzaH7R+7
-+MEqiMaXwBAK63X5hlm29EmZvZWU5rUKRwMhYlkUTMTXo6cSIlnrSCVBpEGstiBGbp7Cnx5H
-JESOUE/9ngBd8HlCgNAY9+O8wJmaPDg8Qq1oGdloLQGj4jhenRrQgqiFEe3bRrRgeQl+9rE+
-jyjNliAaQgVpKyLmcSXTUuUX+o38cibmenF0/P1Gi1NgkepxfFS9dgQYsJv3CsfnJbLoc+gA
-dcTBDxDeiBNr2GY9jpMsNSqoEzP4VEsddE2npKPqP0LDSF6coKCtvoqTGE/7+LAVfnXgzYLH
-FM+bNfWQD3qbVNCGiJglbkmOGqSOBEsQjhHUlxdGJH0N9LEg2UnjqIiYALWaFibw8j9viL0z
-TD1UxCQQrrygo10Zg4l61sbgHyVJ6/IoHkNfEnlt0qH95iO2YlhE1g9+lAegeDm49A68M/qL
-MLzV8rZoB1RVtisZzu0NZFrnPusuY+JBezfMTGHaaYdWazFxqjxKEXy/0Y9JzHMW5d45KMGo
-zSF0rJ+DCcy3Ijc+CFY4vBykF2sAYY++v6I7sqsjMWlS8XQe1hnJ0SXtfIweYJKAtE8xdq4m
-AmaU8vRlcsRsiZt2SHYxLYwOUF16yeERcbK5zira9BUQndCigxyn0FVALzbbP73KpZ5xoKDb
-Zu8xcBUXjWQYqjRSSwJ+S6SUIPzW2fdKxhWeLH6HaEsdTYxK/Nw3gILMVjkRzcezi/NPQXQK
-hySiovOcXsRqI/JwUHt78T7MipThbx6VCxnrnjPGcNzvI1oY9QzejIenRUNP1lOh8KsfEj9k
-5RRmwBIRU5MSZCZLJlbqhoOmDIu4NTrR6MZkgqKJ+qKMFCe1Hy8Jd7lQ0RxB047US8s6FPkl
-aCnUoc0xKkHdj+ZYqOoWr3DXjfvpieRT7ki1zJrf+PSDQ92d4Oywezl45xZ5g+M4Z+HaDbPP
-Kwk6VgruPfYfTvaEvYew7yItgZKiIqn/IKtDUhKqQ0ksNzLBzyew1LphAEiVYXjsELUgsD9r
-hzIRrHSZCbyRp5Na4h7VZn4D2AVPXU4L5eDdAn8DiOgzwCmWZ5EPxSW6f4/bX5wk96+7w9PT
-4Y/Zl91fd9ud9YzP5rmgPNG1CquDFl+T4AvVrjEtLs4ub23voEOU5PzsNt4ug06nrVKdhz+m
-0A/1MqzUO3ReM0qqSO2dIVnB/2LoolrlwT0claWlhMFlua1iJidrljSUdL3hWAVvX1f1ELy8
-t6DMJIHtmhkD6r41ZYNUuZ4Q8ZVVa5PNUY2fO456bkDmTVUh08jT2a4hKimWS6zzwC8zQrgT
-SosP1Fh6CXMyH8LBu202T5PpaEzFevfIx5DgpboK0PW3nKX7GakRPXmU7pPQKiXWBwimPFBo
-AQYFob3gPIip5ajsMvweAX5UwQUEhfZLChs7FNW8her63cPd48thv7tv/jhY97oDacFc++Tj
-Ubk4pcU94thbfpu76otjYrUxLkdoIkLJuIEKomuT0jIPLdvnWSOvGw7QsM+XLXmkxhlt0r8j
-ZUSEh7OulJWYRwrrQJGFz3SpCD4bjg6CZ2FcfqNrES7hn1cSxtJ+w2mgzwjP5SoYX7SvKTq7
-3uv9tNVQqf9ou/vChVUo2RacOyD/R/flSeUCxy9yjdKgnOGBAjckLC1oVgT9F8Sghlgqj9+x
-5584CF1HfFhAchn2oxAH6jCOI4qHrUf3WBqpJh4UwrZPj4f90/9zdm3Nkdu4+v38Cj+dSqo2
-tS31Tf0wD2xJ7eZYN4vqbnleVM6MN3HtjCdlO5XNv1+AlFqkBEhzzlaNs01AFMUrAAIfviLk
-Xn/QmrP28csTYkQB15PF9kYBa2A3wjyN4gxGBiMwyONotkb3ow4V/PWYqHJkwBd1kXAcU9zU
-CMlUjz4+enp7/u3lguGe2A/aFKWsL+sUvCm2q5sv3ZHXTo5fvvzx/fll2GUIuaPD4Mjech68
-VvX21/P759/pYXPn2aWV4KthzLtVP19bP81RMOnPjiJMQymGv3XkSBNK++SDx4x/Ztv2Xz4/
-vn65+fX1+ctv9mXyQ5xVVn36Z5NbwEOmBIY4Pw4LKzksgcnQwD4VjzhzdZR7R9stos3W39E6
-Y+Avdj656PGzMK5O21cdOIZSFHIg+ffBts+f253tJr/6L16fPJkoK3PpwajX5yotmIMOmpJF
-IhkAunQtLk3lB1mm2oNfoyt3o3J4fv32F87tr99hbb5aLsMXPaS2VmCAALp6HFTnK7cJ0pz4
-kJ6TDtdp5+awXV0bTPwOxqo4ftLXXsKzOwKxke1GzRCfS+YO0TDoEH1TTWNQJGhLDbIJ9ZCF
-HbOOAqYOyB7RTKMQaL6+Z0FwdHysze9G+raXXIpYD9DxEYKqHlzDAxIPeu/VF8tklzLT8BrZ
-bzQEZ162ACNF2oyORytYv3vwuvBzEBPcCFMU921Awq5bMi5aq6IcCKPK6o/cwe3MD+i0WzFK
-JlDR4x0jr+wKWlguknSX7z86BXhT7ig8UOaEIMBvx2EWfqewHfQ7W44me8SwgSEcAK0ACUUl
-GuLVBKYiutgV7asQ5VALaIsovdVEd1FhYdkpSfAHrVi2TCT4JUYtHUCZKqzbuzAq85R6DR7D
-SsFXV7JY+jUtG3fMJ+gb/iswcs6Jm+tLtW+/8RAMxtWG5UNR5cg3+fao3PMRcLrLZuiqDiZa
-X4p03HgMGTbt9jYUTesXOl6hl/yxq9HEFUZnuj2IDYNzqokr2vR3fcPMB5WqHgtP2TmNHWlp
-2EtIJzUMIDRDzaQzrNmVmtiW57fP1MYkorW/rhsQnmibLxwM6QMuT8ZYLLKKAQ6t5CHVZwst
-F4Rqt/TVigHOhB04ydUJjQawzGXIHDJH2NoT2kIoikjtQMUUjC1XqsTfLRbLCaJPy8sqzlRe
-qqYCpvV6mmd/9LbbaRbd0N2CXsrHNNws17TRP1LeJqBJCiY7K+t3ojKfkcLI+Y2KDgzIU3Eu
-EHGRVqX94e5pwsRiOLpSSuMxFFhmPn2v0NIRHIqJ62g5UlFvgi1939Gy7JZhTXu4twwyqppg
-dyxiRQ9IyxbHoE2tyLU3+FCrY/ZbbzFaESYJwtN/Ht9uJFp2/vymcYTffgeZ7cvN++vjyxvW
-c/P1+eXp5gus4uc/8P/aitX/4+nxNEykWqKcRC8mtGoLFI+LcWyxfHl/+nqTwnT435vXp686
-G00/zAMWFHMiBwBOhfJAFJ/heHFK+8sdOKAGUtTgJcfvb++D6npiiLoT0QSW//sfVwBY9Q5f
-Z0dl/RTmKv3ZMrVc2261u7t0nugna4KFR3pDw+BGGIgQQeAZA7ZmKStV/wAHZ/A/ir3IRCPo
-7AzOMeLYlWTk3GPIaDzLMQ6/M5+PcJZ1kH6aR64eKCPM2EImTsAHrGA3fNxBzdIlnUu4W6qF
-6P6eRLerbdDN+99/PN38BEvl3/+4eX/84+kfN2H0Cyzon62A1k5AsRAcwmNpygiEAVVSZQ0I
-8ZEDPNNV4UKBd6UhZdfVnxNqHXqgEWhKkt/ecnZazaBCvGVFxYserarbQd4GI6UKaUZm0LWH
-8Frsvknqv6PBHDQHk0DNsyRyD/+Z4CkLqpouM8bgw/7H7bFLl33HkgaQUoW0vGuoGpFVZyvg
-mxXWt/ul4Z9mWs0x7bPan+DZx/4EsZ2By0tTw//0IuPfdCwYLwZNhTp2NaOFdAyTIyXYuzpD
-FuGweQ5Zhlt4fa83tQUIKaB0GDJ8KAiPH/z1csiCCiTemIKm2KTqg7e2oOI6HmPDGOJUulTM
-W/Fh9GQZa3tRVbVY1aPlgIy7qZ4Dht1qiiE9T/Zsej6lEzMoKio47emTxrwfo/BgQk9wlGHK
-OD1oegzt82l6CrKc3tyz+MK5Flx5JgS/K890VxTVco7Bn95QUlFWxf1Ef54O6hhOrqNKMgqz
-WdEnBZs1I1KbRj6U9IkNuyFzQWXazgnq7ZFZL72dN9Hyg7kAYkUKzXQbMbqx2fuLib7V6fwm
-JiLQBXd1YT6wiiknA0N7SNfLMIAV6Q8Oqp6isTmNTQqhjPD2+8OC4+0ibMWtsmwMAy68ytQc
-mxXHkeqMLsNumlhN93p6NJ4fTHTFfSJGJoEhfeZoSYqpCqJwuVvTUOhmT8AP3G1pRc5IZKpY
-Mkorki/R1ttN7Hqc46JZIrE6DoYZixptWEZv9Q/rMXFwEKysc8AwiRC/aTUariIdHU5DhmDB
-2DfMmj9Mj1Z4jBMlc+DJuZxYlsTS3h9NdN1ghdri0EAqvx5nlSVQt9la9jkiCyL4ptXVSCv0
-FUIbst3fSP71/P47vPXlF3U43Lw8voNadPOM+XH+9fjZQf3WlQjOOedKbYpEVAinTmuqyBHG
-Z7ofNPU+LyVtztLvgP0m9DY+Mwd1K/TN1XRLlUx8yttc0w6Hq+oBffJ52Fmf/3x7//7tJkLM
-E6qjigiE7IhBRNFvv1cjXzyncTXXtH1qdCjTOCihW6jZHDMijr+UE52W0tfxmpZN0NCYIhUz
-/9ueniIyJ48mni888ZRMjO6ZW2eGWMFRMlZ/ix/vzkJPM6YFhpjSG48hlhUjaxhyBSM1SS+C
-zZYeS80A4vVmNUV/4OEDNQOcovT01FSQlZYb2kp3pU81D+m1T0uVPQNt+dV0WQW+N0efaMDH
-VIYliZSmyXCiuKd/W1rCLk7PZc2QxVU4zSCzj4I5XA2DCrYrjzaQaoY8idhVbBhAjB3sPDYZ
-diZ/4W/r0cfhlgWV8xWjqy+nbRiGiDFF65XM+IEbIl4UlghNMlE97CIbRrIqpjYSTWxdIiYY
-SnlI4ol+HWwoNukis32eXf0MCpn/8v3l69/DnWS0fehFumDFdjPnpkfbzJeJXsHpwM6Fzr1l
-MBOmTm8z0p+GSS4c549/PX79+uvj53/f/PPm69Nvj5//HmcnwVpaR4HRTBxrk50uGY2tdKnl
-rpOCJiqzWJROEUqAi1GJNy5Z2D3RFq7WG7IhbbipsONeoVSrHg4Sw36Epzb4gCjtYNvHHxel
-dlVRysrWupKDvoAfsRu8VQyxErdxqZGOOYNjhMCuOsKeBDUCsr5Z7j8ZSlQmCp3/2X11dUSF
-tMzPErHNJl7I480BUYMgTnLEJb2osWbGSyhChDEtHbtNxgjE6cREwMQYu4DyKS6H/X+dJFxt
-0TDTrUM8MZd/OEzawYSjHhJxF7P1Yj5HBhwXx5OP2Wn7SA8K41KUzqDvXrFImEvnw0lRORww
-runGW+5WNz8dnl+fLvDvZ+qi8iDLGJ3z6bpbYpPlatC67v5n6jWWNwh8Y44pdLQjlA2rbnvN
-w48mPEXCLSmcVIKmAF2+yUKNQGt5FqEjSpsbxXJKxNI0jqTYi4cBMyKxJ4NcfU55u9na+GrF
-qcI2HKWNfg3PwEvTHNbHvrJ2KswykOIBGBmH6b5ZhiKiarvaOJEnyAzCJaMcZioJ6VQxAg0E
-4V0amxjSXqLvbulJJGoDtiWdbNmptK6lsvgatNFv2nCa07Bo2tnCfnt8r1OP8PAznP1A49jF
-jBMAfCzGIJI0WbCkc81R8KxlPPtumYhKaINinAtQzs2h1xNqe4WJYHcQ/GzOupPLXKmGccY/
-c547WZKSYro6Zbdxikh29sCJchiZaXYHDCror9oHvt/R89v76/Ovf+JtrzI+wsKCond8jjtH
-6R985OpOiqshG+KBmuvFZhm6nmStl/EyXDNWup4hoF16z3lZMbJs9VAcc7JHrRaJSBRV7Ehm
-bZHO3XMY7LBEBSBpOCsqrrylR9mA7YcSEerz/ugY8hIZ5opZ2v2jVeziWsMRzlnVW1eJSs19
-RCo+2cC8DskFYU+jwPO8ofvZdbjgSZ1ddjiCWRomZJik/aqisK+20kGGQfzdCHGSDecRadL/
-ERXDzpVVUtDEknkIJ3Lu3B2LKuFCnpkwQSTQ2wBSuEGbmz0nkOgcn3dT0mT7ICAz8lkP78tc
-RINluF/Rq28fprib0sIXXvuShJCbjZW8zTPakoGVMfY6nZ57OOL2gwz2kPXBGMHifG/GgMp0
-z7QhL+S8CMVZnlKaZGzkrseEMZtX9Py4kuluuZLp8enJZwa759oyqUKnXcMtg3gEE0xlzjSD
-Y0hm8rrF03LxgDCuOHK3Wy0dnBIaZdF6qnWd6V+U+ExC+lMWIWbrdH2YdC92bEP72J9te/wp
-PEonOMGUNFmhWr0zNTlk5mo6nD7KSp2IrfKQnj96wcwecJvntwk9QY9O+44FnevTfuAkLrEk
-65KBv65rmgTaj+OZEnMXo/HQhOJSGJ/cW/qCGcrPdNikrLlHgMC8ZMW+nd7CPqYz06o1nDrn
-1nmzWtY167GdnlMOWUDdMSgv6u6BimOyGwKtEFnuzPA0qVcN5+GQ1GteWQWqukySD5eZ9siw
-dOfLnQqCtQfP0lbkO/UpCFYj70G65ny4LOHbt9DrP/CkilN67qcPpZPdEn97C2ZADrFIspnX
-ZaJqX9ZvfqaI1gdUsAz8mbWboY44THTiM9PpXJO4MW51ZZ7lKb2zZG7bZQP1/d92vWC5WxBb
-nqi54ySL/TvebGyeLoaaENHys4ykc5bpaOOIFmOtB/M755uBP585N9ssBXF2KzMXg/4IYjbM
-U/JTHmIMgTvIGRG5iDOFSfDI4TFeGfYb7xOx5Fzi7hNWUIM66zhrOPI9aTK1G3JC1+DUkTHv
-Q/RUhw4gqyzT2SEsIzcsc7NYzawNhPurYkdoCLzljnGdRFKV0wunDLzNbu5lGfqYkQNTIgBQ
-SZKUSFG/d5YvHleMgmU/Gds5OG0Cpn86wD9H5lWcc8chbA44XDMzT0nYUl23k52/WHpzT7nO
-t1LtOO8pqbzdzICqVIXE7qHScOeFO1obiQsZsh5bUN/OYy5PNXE1t/+qPITd1wFHsamVPmKc
-LqhSbWKcHd5T5u4dRfGQxoLCaTAGIkfrQJzsjDlWJINHe33zQ5YX6sEZuOgSNnVyO1i+42er
-+HiqnB3TlMw85T4hm7AAaQNTNygmI1k1a0w4u9s9/GzKo2QA35GKIDLhwJg/rvYiP2VuVhpT
-0lzW3Cy7MiznBHET6mRX3gY/4b6JIP5k/S1PkkBfzw5QLUvaBocEn3GNPEQRPZdA6CqosUWB
-tnN3/uYUInSAc/eIZSFexknubDA8stoLDuSlrbhJT8aZsYx/hFHfWIEOyBi0NfNRotMpe2xp
-HtgnEFZHUuGtMIcRuPDaB+oyMOPi1UdVylu8rwTSyJ4L9d5gOQ+aJSK8fjzSl1AijXhaaxXj
-Geog2O42e56hChbLmiXDuGr/8wl6sJ2it6YqliGUoYj49rcWDJYeCZigE9VHBQrg/iS9CgPP
-m65hFUzTN9shvVt2so718DlYp2GRnBRbo9bKm/oiHliWBN3hK2/heSHPgzhdDK1VcWfpoCvx
-PFobnCRrle4HOCq++6/6HcuR6Yx0gm9JVsMbPgoQEvh5ej/5ilYKnaBrwZGng/A42RUoqPDE
-KvYWjH8d3g3A0SBD/uWt+yBLb8+eW9im/BL/UntgYUX2ww9MdIooIda9bqEzLWL+ZedkKrps
-6bT2B+S0KCiNVpNwfx8aDYGQcw/oyDO3pdpXu3LdXBRtqlTJ0Xr4pPYtHGV3b359HkmhqOgD
-BYl34sKZipBcxLdCMbBWSC+rJPCYSPCeTgvLSEfLSVBTpgykwj+Uf74NPxTPCm9bc4Rd420D
-MaaGUaityXYHW7QmJkEjbI4sTKmHjU2z42A/tqsl3ctppijdbRj3+Y5FlbstIwJaLMEcC6zm
-7ZrR2W2m3RzTbbLxF9RFR8eQ4SkQLKjuwzOGNqZ2HGmotsFy+lvKLJKKwA0jBkCd9oq0AHRM
-n8SpdGXH6+N14C+9BWtf7fjuRJIyrtIdyz3s45cL41jQMcERu/Zqfi7I4jjVFCXjstQOtCzL
-OdnMzJLwCMr3NIu4Dz2PUs8vRpG3fvWX4enAXgIlgc/WYl2VutekxwmwPKCu6YsbTWGNfUDd
-sc/t7pojs6WGokx2HoN7AY9u7mgVU5TrtU9fy10kLC3GFRVq9BZ0Oy9httyQO6vbmalrJ9cF
-zLu2m3C9GMXPE7Va176ddL1aWkjAqyWK48IhN0rt3QLQnWKlGRuRRS29l9cdDlqkv7IosslI
-R1gQRNMC3R+zCPw9oOnkzBxdN62Q+eCpUcHxobkdF2XjoqQYlx0HL21hTK2S46V0bXpYyHm0
-Aq11Tfs2KprqjJ5jqktarlEb2/KupSOCbi1JGMySrhmDPu659VQpUFHOB9fwDhcL9Ou8Y4IN
-I4A5RR2JB9o4Yq+S0TW5kCWD6CMRHJXy1bHrG92RyuLic3YipHGburwkq92GDpYA2nK3YmkX
-eaCk8mEzSyWdluKpzeS/RndHMvdgsV7plF+54xaHpZw0gTT6gg8p7qQtSqnStZUUxf4E4t41
-kfu4rJhI6o6ovbcR/JBWILHzGPey9JIEVKowp1Xoqzo4UlPYtBfeia4TaP9ZTNGY+1ek+VM0
-vs7Fkn/OW1PKkv2FpRiqWGXl16Sh03lsfDWj9RIm6sXQtkSlQNGQpI5kqNl3PuPa3lKZML6W
-ymwySN36SzFJZZwNzEcETO7B9r0TVBDEJt6L30sPMlLruuaIl4BCtnMGSzn2efjZ7EgPR/sh
-N514ePH82UnhXgNcEs9f01I2khjlB0gBSxr6LxBt+PQQiZG6/imC1tNNQZLnlZTzg12tNrXG
-metOdV9leCZpHEV6dzSm+VI8hEzAl2GAA2DNtK/HhL+oGRXXaGsX1uNallUzPEwMmtoL5qa8
-uTwjPvpP4zwaP9+8fwfup5v33zsuwo7NqV3nFJ0DaEHcuLxzH6Zd0gm48v50VBF5i3R2Lkjg
-Z1MM0DRbWK4//nxnMaR0eMEw2sA90UzZ4YC4oW3ahb5tmoYZVLgkLIZDFaJU8V3KnNWGKRVV
-Keshk/6I09vT69fHly99dLczKu3zGA0x3Y6P+QOd6tuQ4/MAq7QrHsjEVsdyyPHmybv4YZ8j
-hLXtUdSWgdparNfuvsYx0W7lPVN1xwBpXlnuK2/B2NscHkYFtXh8bzPDE7XJgspNQAt8V87k
-brbhVSg2K4+ObbaZgpU305VJGiwZXdnhWc7wwNawXa5nhiRlNsOeoShhU57myeJLldMbzpUH
-EzvhkTHzOlXlF3Fhgtt6rlM2OyA5LFDa07cfjtRvqvwUHrmotytnPT9zQ1HgxQa7aPWyd2RX
-LGgKRVuPDVXFpSTdFAxZO/nrLxhXDNr7msNrMRzhgyhoy4Khx3jmcsCRhuWsQBgSU5Woh0wU
-+lpkuqaej1NvrlsjZuykjUKGRScSZBKdGQbsMRWWMeO+2Q4Y6K+0mJfKFY32eXx8/aIh2eU/
-85shuB66FvbHFYFY3XFcX6QLGhksVgyujqbDX9aj33CATMRNM8MACtw0QykYQA1NbS+u6kKx
-09kwtiE000xAxeumqWrKcO5FBftBJ81Bkm5FGo+7so3dosa2BwAlhBdz8v/++Pr4GXNR9hDN
-7ducxGRnS7oJTYwc4tRnKtGXqsrm7BioskYlcWyZ2Y4XkrsvbvZSBy1a122ZrHdBU1R2jqbO
-aMQUttjc/nrjjoRI2jwQWcTBAWb5p5xz2m1uFQNBjRD+jYLzmxblYTXFhSjK5nhuMBt6eGQE
-Yo3uXpGOSkmkcVlPiIgurKBWkL0G0PRQcjdAZDcwO0+vz49fxygGbc8E/toCGLAKocKijENR
-xZEGYjDjP+xYzXlAcxNlObGZMPMP+Z64FoOY2J5G2uNshqxsMHuc+rCiqCXMB5nGVxbyHXEN
-elzE5JW0GYUqYuiM8zBdHckc8XvVtXWVHwSMq6Jhyw8koIVBdv/+8gtWAyV6gHV0KBFW3laF
-jR46nLkcOpB4OEIYuvwJFK5bnoIzl5oaH5ll05IVKJ5MVG/HEYYZ4+hw5fA2Um05HEvD1O73
-HytxOzdyLescW3vUwEkzW2HJ+Ogaclnw5weQDyppkmLuHZpLZogAM8caomOryCrQN25lCFsK
-nVFzsGWMqkF4Dy4P1/EcNqdoT98UyiKVIGlkUUKnG7vAGZ9FuXP/fy3UScvh1KTTTmRnk7Lh
-+hyKpegMNlo4LZDdZ+JQ7D/0IQu1YsZoJmigxAyyKy4OqmdYMZ7KYekzIFey6HI0kqPDtt8S
-Dv/L2LU0t60j6/39FVrdmlnMjKgndafOAgIpCTFfJkE9smH52M6Ja5w4FSdVk39/u5ukBJJo
-MIucY6E/4o1GA+iHOLmi62gJ/zJbL8LI9uOVwGSPLlxYmaFkYVaiHrW8LDQG1LGLsSYIvRzX
-QYeGFwggtw8vZMy4O/CjokMQLIW0m4y6SUL30g4ADY8dRTxIjkvr4Qkodawk2oq7OYlon25v
-4fGwplcxDV3M95zVZ3JSxJj+Gd3Iu8OD1dkrbzlnHoNa+ooJNNHSGXdkRI+D9dJ+ZdCQ/Z7W
-QYcOBwMHkfOchUR0DmU/GSI1IXMeO3skOtn/VHtmXiGkUMVyueF7DugrRt+lIW9WzAoFMuek
-r6Fl+TDAWPzwODr2ZgelpzCvLeBva+DX+4/nL5M/MZxT/c3kb18gs9dfk+cvfz4/PT0/Tf7V
-oP4BEsLj55dvf+9PqSDEWKkUZMzpL6uPZfQ4aN0wgWmRlvJXLtRMOeK2qx6MeBAezyAzoQPD
-/wJr+gpbGWD+Vff8w9PDtx/8agtUihcOJXNNQPWtAzhV5IOGReXpNtW78uPHKi2YqKAI0yIt
-KpDleYBKLv3bCKp0+uMzNOPWMGNKdMJCcOyo179csEsiRoKR1OoZgo66+FA8VwgyyhEIt8+Y
-7N/4jonVXGSMc82MOeMdGJfFWdd8oubfOps8vr49/scaXlNnlbf0ffTfJYfvC827Sm1DMME7
-+iTU6DqQtFBQvoFTapyh+x7jgeXh6ekFn11gHlPB7/80B3hYH6M6KpE6t6sa7TOY6kxI2pOd
-pRNDqsSReboiKvk7tmyhNRWjIkcdcwkz3RWQFa0CEGrJGr1KEa1rpVTo4Rc3+eyAzrxyejKY
-rpiI4ELDcQBqVczWzDN2B/IbudhMvFtA7V1r8F2xZUTQpgUcvf1+ez9bcxajLSYWZ2/NSao9
-EOMipKkNgPwNE/aqxUSZv56tnZAg1BSZkApdrBj5pEVDExcg47i7Kd7OF/ZC2wbuRbkPq0jL
-2WZhU5A8nHp6MJTQ8r+DGj7FJbU/astec3X8FawXHuPP3ITYn2tukNibMg8kXYxdGupi7J3d
-xdhfdDqY+Wh9NjPucHTFaNZDaBczVhZ6cuPO2gZmLJgaYUb6sJiP5VLI9WpstOiuyQ3R58yd
-SVCsRoLMYZC3kZqo5R0cAuz7RIvZrZfz9ZLxhd1g9tHS89kroStmNh3DrFdTxj32DeEe6oM6
-rDxG8m8xHyT73lEDYG/JvdlI/5JLV87jR4shhuOeVITZjJSlJXBB92AiZsa4aO5gZu7GE2a8
-zosZ8/zdxbjrjFvAasqoSnZAnpsrEWbl5qSI2di3CQOyGls0hJmPVme1GplkhBkJAkmY8TrP
-vfXIBIplNh/bRbRcLd3bVRQzlxE3wHoUMDKz4rW7uQBwD3MUc3FOboCxSjL6GgZgrJJjCzpm
-PCAYgLFKbpaz+dh4AWYxwjYI425vomXtN1Xx0SFaqNQgULvbhphNPwZmH5ORPbKbTcudv9ww
-55mYu8Vuvy4OemRBAGLORKy5IeRIHo6LqhYTxtJbMIK1gZl545jVidN9vFYoLuRiHXsj86/Q
-uliP7DhFHK9GeLcIpDfzA39UyC3gADWCgdb5YwJNImZTN2tGyMi8Ash8NsosuVBFLeAQyxHu
-ruPMG1kqBHGPOkHcXQcQLlyyCRlp8lGJlb9yy2dHjeZ9TsjJn6/XcyaypIHxudBiBoYNP2Zi
-Zr+BcXcxQdwTHSDR2l9qN8+pUSvGNQaxWGG/0jkJLQ9Bag1ghXbGaVGoTqxBNPf6YkKKLDct
-yjCJPPCbSkOUlVRoTmLPsqX28mkMwba5CvaDD/BJq5/jrWc6EKZ19XvX1XjKXrMuyDBvIiuz
-wSdkQPelAxp0B6XWVcfoUdY8rvTOBc+VUFg9kBH9VuHBpw0JXfhUMrZrltTA/q1a/Rjx8/XH
-y6efXx/xatHhjSTeBZWQ2ocjCqNihwA49DJn8JbMnCiyWMlacZc5StH3aDBZ4Qu3ZMLB31CH
-SDKxXBBDColThrcTINgs1158smtGUzHnbDY985qEO9R6DbjYDtTeQGymc74OSF7OnCUQxM5t
-WjJzCL6S7eysIXP+BogcJXzWIKaggzpn5Q8Kzj0edYUVAwJTlYlCSXsVo0xWinlYRBr36IhF
-fxDJR1gtKeefEzF3YZwxwYSQ7PsUeW+Ezo8N0VdTfvjpznPJHHEawHrNXe3cAI4hrAG+/abv
-BmC2vCvAXzgB/mbqbIS/Ye4jr3TmWHuj22Uaoms4gDs+D5PdzNvG/Cw9qgzDEXIqgwjJQ82Y
-4QERTh5LWGV8D+WBnHOBvoiul1PX53Kpl8wpleh3PiPyETVZ6hUjcSO9CKXDOywC1GK9Oo9g
-YtaKCal3Fx8mOs9L8BhiJYrteTmdjpQN0qqDeikkYy2AZI2xRufz5bnShRSO/STK5hvHIsCn
-DsZqpSkmih0zSEQxY+2qs2LlTZk3DyQup0wMOyqXAI7lXwOY+4krYObx6wubBo137HINYsmc
-Do1SHB2IAJ/R0rgCNp57MwUQMHTmSKJPEZy7HZMNAOi51D0b0cBxPXdjoni+dKx3LedLnwle
-S/T7+OwY0uPZdwgMINUeErFn4iaS2JOrj2kinB15iv2FY2cE8txziwYIWU7HIJsNY1KCjC09
-xCDFrVmrURMEYpaDBWqUUBz8S8e7XhHNm7xTtr5lkof7MhLcbVnuYsBohk6v5j1LgTqW3feH
-b59fHt+HGnNibzjpgh+oZ59AFkYkuOMeI3wabkKaBAo7vc9KMzB1kHeDvOVxFWSVKM+tep21
-8gSjR9MijHb4UG85/SDoLi4atTsjaluTvtu2pF8mabdF5VQMBUAmCzYiGo+KCCb8H9502q0V
-Kh9W0LUBxtuKUemJb0BWydB2bEMimZtedbaevz6+PT1/n7x9n3x+fv0Gf6FWVueQhR/VWonr
-6dS+hltIoSJvZZ/+LYRc3IEQv2G0ywe4vqRoaN1wlafaYyQsU3u2+c5M7paaw8GI2XaRLOKg
-p9BXFyOzyd/Ez6eXt4l8y76/Qb7vb9//jnGgP7389fP7Ay6zTgV+64Nu2UlaHkNh34xpTPeh
-/ehJxDtrAC9qE+xzcHwH1tpRq0VSGdjvcegzLn4e0OK92HN+RZAuVZ6XRXUfMrIFjYQUeRWc
-qkPA6ERdQdExYALmAeL+zDdhC3sK1yuZSMiPShvE6tvrw69J9vD1+XWwLgjqrkUNKRSc2/gV
-W4PSSMXhuYpkgH8m5Rn431i+tUfvqliFvhB8tzfoUN2l1WJ+Ou68vXVZ9Zprdkv/cuyW7ZXS
-6THVmnhPtt9fnv56HnSeSAT6kD/DH+e+E8DunAkSVAfg50JQxlvaCwLGIw8xUBilCm1sA0bv
-iqYvWmwdVIYPCEF2xtuCfVht/eX0OK92drsZWqHArjKdzBfMo3LdWchiKhDoVsyFE6KAh8I/
-5XNn6BqjNlMmhFFL597WkI5uaEL4r1zNoVe86cwBrQP81hLe2sHce0C79E1AVeldxqnONIgi
-WS1hxBmZsd0kRHBcL/t3e72ZPJyG3XxCnYij4qUBkctsz/OqfezNyrnVcTtNujYMZLeBQVc4
-M9maN/P7cgvwVMdQ86yHUwOn78RRWONzGOwoV2GiSVap7kuV36HbG1rEu+8PX54nf/789An2
-3KBvtwnij4zRd4DBLCAtSbXaXcwks1taoYZEHEu1IIMgkJ0MJfzbqSjKO17IGoJMswtkJwYE
-FUO7t5HqfgJn7lteX3qEa159wi0vY8SwViAbq30C3AZEYZvTj7bENCs6mQbhLszzMKjMW/wd
-yrd4L2jG2oRESxBShAKuET+7cK0iqquujVmHA/m5VcW23LRj59HObZ1QO4ysamdp+OFlG+az
-qdUjD5DTXXeM0kTnadRJQxV82A/jTuJRRHcXmKLdr/VquVx2or5AqgCmCgNhk+VpRhRa976A
-zYTxVQFEEMYK+8rC5jj9OODAe4HXj5NirJI2dkw/qbEoMnNqCJyrvxvCnClmBrk6su1Qa2vE
-E5qMMEDn3vzEpCqGFRQmqjdQLRH9EtyXYa8ODdX+onij907dRhtIbO8UWCd1TbBuyWxn1GRH
-bwp9Qe78a5DELEWhL/3flewXi4lNxPbKHqK3BZ0HmXFNKew3NUgZsP0OldlMcCaFKTA7ZRev
-gA5LMbXXfQ6bXa9+mFQJKUOb546WPpzvxzQN0tR+6YFkDUIT23INQioX2hu7M7dbyhNrYzOF
-M0jMhfnA/owLWfbvYQw+wpyxcPVtQbQ468WSOUphc1WuS+a1HddNG1yLBWyhuxipm+YCe2Kh
-lq29HsNv5C6rbEBbyfbh8T+vL399/jH53wnO9IEvq2sBeAKSkSiKJqyHZZbcIm2bQONp+0pv
-FlfXfqElZrG/WXjVKWIUmm9IEWS+z0j3PRSjY20EB4/nnAamATouZ9N1ZDcyv8G2wcpjnrKM
-auXyLJPEOmAjw2JctRW69pnfpODxvBUk5NvX97dXEB0aqbsWIWxji8c0yQa5pjjgQ48cnWT4
-f1TGSfGHP7XT8/RU/DFbXhlKLmJg6jsQrYY5W4iNhQe6AI1F3hHebeg8rWVk+1KxZt8IeVrc
-hUN3ca35srtHr0440r0hKuKviq4OQA5M7AQSbawUGZV6NltQg5taDK5rrxoraZkEhoIO/qww
-EHlXeaWbXqHXjkgoU42nk0sS1Jb03aSMvO4bCYdTEGbdpCK8H8QAwvRcnGKQgbqJUB+8hu3U
-AoSXMwwSkAaFs4nouX6vTOczLbFuhaknhNXOKdk6UZAeXBKBKhgx3ntbvYtgQ+uL9SqNgkpk
-qld0nspq16vPEZ+K0ZMWEHdFv1I3qko0E+MW68aIRZRFDKzBvO1uBqTEsMa5ZZxwtQ6Sa/Sw
-r/ELHMIqPML+bad1U29xMMzEptBOq0SUpowXD2wXnEkVE4yKZozOhP3ioK5b7dzEgxMJo0eJ
-eWRlT7WxM5NUf7hE4PmMG8G6QcWciz9Xk1m3EDVdLRec1izStVKc25MrmY6gjKEMgkrf5+ym
-GjJnudKQOfMYJJ8YfVSkfdTzOaekC/St9pl3aaRKMfWY5w8ix4qzQSeOc77sGWdq9HWxmDE2
-mg15xen8Ilmfd3zRgcgj4ejRPSkds+RIXJyf19kzusRt9jy5zp6nwzbGaOwSy+ZpoTyknJYu
-kNGpF2PyfSNzgZKvgODDaA78sLVZ8AjYpLzpHT8vGrojg6TwWJO/K91RQOFt5vyKQTJntATk
-Xcw54KDdMCh4ToJEnoXALu8Nzh99umNSkad8/8z3Swvgq3CX5ntv5qhDlEb85IzOq8VqwdwR
-0cwWYQHnN0atu5ZWWIdKQE7iGWOYXO8r5wMvhuQq04pxSU70OJzz7Qbqhi+ZqIxaVb1pMgoz
-REwTJY9q6+g31ym/3tKFz5pP3OgjWxgdvdOC5w7HM2ulCNRLvOvtFbVzzOAf9C7cscWmtSDq
-CWk9J1y/+p/eJxm6vY9SfJX/GP6xWnQEi0z2BMfWn8sXWyp5FgKxqveRSEUXDwnVTmzpKktc
-0lIPyWlyOQ9TtSgsiSmMdzhMpzNFHdqToVRq1qOWZnCZJgFaFai0LxJS3DHhORhXHZnsPGNi
-4DUIKZS4dyJWO8UocbSIg9oJJq4ACSwy6F+rD7LIUsZ65EY/uBE6TSxOP3ugowBh13al3RyI
-ZDdAbr1GMoxUzeebBTRA0u6hpmYIcriKVDDULYJEs3j4efNhofMw2TMhtADIeXYtD9Z3Ksz6
-duNUe7n89vyIPuvwg4EzJcSLBTrg7FdQSFmSI16uZoDIrS7BiIaejwdZYqKyc36ic6H+iFjm
-9ojQ1JthdKeSQR+HOs2qnX0ACaD22zDpIQy6PIR5blyi12kKfl36ZUk4MgtH22RaciqESAYu
-B9zSvqSRDofnQN2FF75/JCm+8WToPQ3n0qrYTpfWpxVCXYBtd33zYzLMwn2a5IoJI4KQEBXP
-+J4OuUgLNTHkjFdqsu1qnygfoUv6ld2H8VYxmulE3zHOtJB4SKOev9but3rlz/lRhNq4l8zd
-he/BUqI6CmP2AfSTiDRzW4DkowpPJKFwXOGSt3p/ne8wrLDtKpRoerCGP8D+ys8yfVLJwfrk
-XHdPUihgdsNKRJL3R0R05n68piXpkZsh2KU27tam44/M3qlXCDOtkZ6X8TYKMxHMXKj9ZjF1
-0U+HMIycy4fevsgRuwMS4YuLg37ZRaI4MB2Vh/Ui7zK7OqhwutO95BSDaA2XHoWhda+ARNsC
-YNWUXO37OcLGb3WfTDxRJGjyGaXdwBhGsqtLszCJ0Sk2l3moRXTpBqindHQOK/nZmAGjw3FQ
-jHvUmpmrWNgPAfVQQAbMAYjoqZTCLrcgGbYhvs8ahb3ucBa9/Qx/u7qOHPBEnHNvQuhQ8EwW
-qDDfQUaxBlYjRJlgVNZ+5+eckzrkbxguQBSOLbCI4cj6Ib1gzjwHUywvAe5bQMP7lUJttj3f
-WH1AB671FTXP+1HOqzLm4ZwQs93HkInPV+8Ori30pFScan5KnRUsBpaKBTs7DQNJSRfzqQ24
-qwPjSZHkuyjrFdC6XLbIr3U0n2JrF7frs8tgoDJlX7YNfKCT35TfL+bmyrZT9jU78ojbL8p0
-OWl+dj1GmwUY9UoPUlWoNRWFjTqXEQgArdLr55huYhOWsBfYKwrpfsJ+J0mHyihTfTeTBpki
-YhxEUR1k0CmvW3jv0YC+TBLgtDLEQDTNK9nQeWT88v74/Pr68PX57ec7dXoTUas7rkG4E7DL
-VKhfpopew7svWP1qpJpvO9Cq0wEYZ6QcAZwxohX1IbrNg4T+udRsM0YoLYFT0uNVJC5/zExy
-PT63aYxOb+XN6W0wVIGjgV2tz9MpDgBbxTNOmINVkQfJYUPuRien1DxNMZQ4nLh7vUpUjSG0
-TwWciAILtY5gcK0IRhqhVSUDi//ZTn3p811h1yMxa0xBI1L7ptTFuRzm0lify5k3PWTOflRF
-5nmrsxOzg1kDOTm6O227uz8Vu42qmCiKNqhVb6ELHK7A9Lc7p7TMnw6giHyMsOdA5L5YrZab
-tROElWEjJ7eAwhGXHenkybQfJPe6qJqYavL14f19ePNBi9R82SfmlVN42H7k9VPAd5iOh5dA
-Cey1/zeh3tJpjhpvT8/fgNO/T96+TgpZqMmfP39MttEdxQsogsmXh1+tE/SH1/e3yZ/Pk6/P
-z0/PT/+eoKtbM6fD8+u3yae375Mvb9+fJy9fP71129Tg+k1okh1+ZE1UE7J0FBcILXaCH6QW
-twPhjJNPTJwqAleo9xYGfzMCsIkqgiBnvBn1YYz5pwn7UMZZcUjHixWRKAPBLNIWlCZNXDBm
-mO5E7lgbLaq5rqlgFOT4IIQJ9Nx2NWPUAeqb5+HGjEtJfXn4C4NcWuJB0G4WSM7tA5HxFOmY
-TirjzTlp2wsSRjKm3IkbBEw4ERILToy7jIbIBaLakutaFYT8SOA2se6q5V07jcLOWPlOrZsx
-GPtaY6O5vuWHsw0SwypIGiihconh1kZx+d3cY1TODVh9zzqGkoc54zXPAJG0dQhd67gJqaL2
-qtbW5d8BzMIz2JJ5eaNFNSsntj8fG8gwzkIHw2wCzehAwYjYTo4G6qjgENTdcBqKysQ9Mx2Y
-O2WzhsH+t3qmxVXafoo22+N7M+aRtYtaMl4MzPlMSspjKJUx7xwGpCzd/Yv345lI8OXG2ssN
-nenou4gx8TMx6Rbt4+RoX8dSw5F9vAtJTXoUlBbrNaMD04P5jNtoE3Yuf2e2JOIYM3f2BiqL
-ZnPGwZ6BSrVa+cvRpXYvRTk6ne5LEeEBd5Q/ZjLzz459vYGJ3ShzLFSY58IeeciCvsTblD/P
-NKjxNUh2Sx8EE0rTAJ6Bx7tkq2YMMlZL2ETFiUqYR9FeZnI8tzPe+1TxaHYnVRy2KWPIYHZt
-UXou8bCZIXp02ZVZsPZ30zWjymfuPlYPcbi9dy8sLEZrdCqNFeNsrKEyLuXpdBKU2rkejoVj
-Z8pVyllv1FcZ+1Szby6EcJze2u1TXtaS8ZZWw8gnIy89BfybBh2wcVvtPx2aPYQPygHIYHi/
-0ufqqoD/HRnbVWog3z4M7SnDo9rmrA8Sqn96Ejl0NI/ou/DoXVkUoa4PsTt11qVDBFYFGlIw
-FuAIuMDXtsd4KucjdeZ51u8jvO2B/8+W3tlx0C6UxD/mSwejb0GLFeOYmDocw8bBUIW5u1/k
-QaRFL+bzddlln3+9vzw+vE6ih1/2YEVJmlE2ZxkyhtWt5D7vq9kYV75MOd1M9gJkKntD9P9X
-diXNjdtK+K+o5pRUZZKRvMmHOXCVOOJmLlp8YXlsxaOKLbkkuV78fv3rBggKILspv0PiEfoj
-9qXR6GWVMlGZxOoUsWAXQcE55OO8r3lRJ7yyara3EAJKzbYCxZXCPkmXB51Sq86DoAmyM5x0
-MS50DEg7teKJ+Q4reh3fZolREDlY8cW30dUtvQZlGU50zWlFnwAM7yAAwjcUvdGd6PQerOic
-r/mGfst4OxCA1LFu+0tAT2j0sqjpV1eM8+ATnXH4qOjMKVPTx5yzOUXnTMtODWQcqjWAa+Ym
-IAfRHXFezaVM3bHQLVsPIHSuboeM5mQzzFe0u3FBD/KLoR9eDBk3YTqmpaHZmuVC+PbzZbP9
-57fh72KryCb2oNZQeN+iRyDiyWrw2+mt8PfOOrFxa6TPSUGPwmXGnPWCjkGzezpP+NKrn4XI
-lhX7zfOzIabQnzq624d6A+ENigwYsHZt0RkFg5N8xhY19ayssDl5gQFtDA/PQ7ngmwbIcopg
-HtBBqI36129Tp7edzdsRw5odBkfZwacpEq+Pf29eMNzeo/C8NPgNx+H4sH9eH7vzo+lvDDke
-cBrGZsusiHO0a+DgQswImwwYXAo4p2Wt7FCvkb4ZmJ1aco5mUdaDrqKDsNXnDSKA/8eBbcXU
-u4vnosZwkeBDYO5kpfY+KUidJ9OscIA1sc0EdWxqSVOnSPIVnaiM/77sj4/fvugAIBbJ1DG/
-qhNbXzXtQwhn8Ya0uI5wLuYJJAw2ysuMtoIRGMSFj4X5rVqLdDTII5Ix9OuHWReVXpWBJzzI
-kaMiap3NO7xd82CONSU4BfWdZdtX9x4j6T2BvOSeFuqfIMsxIwFUEDcH3o8+bnQIE6NAg1zf
-0KeagkxX0ZgLQaswGKXmlrmqKUyWXzkXZ8oK8nA4YvzamhjGOKAFom+mCrQECC1dUQgRX4Th
-WwwM53DbAF18BvQZDOMXuBmNy2HBRMBREPvuYkRLZRQiB5bzlonFpTB+dMFF2mpGHSYyY6uo
-Qa4Y0z09F8abtIJ4EfDp/eshmwOkf3Jl8/GYuSM2HePCuht3dgcMS2ruDvrug662UN0+bez9
-EY8xQj+xq7j5BSeH1abFaPiZ5t+aT0Uy6OnLwxE4wtdz9XCihBYdarvJiHE4pkE6/sYIyFX/
-GOC2Nb6qfCsKGI1zDXnDXI1OkNElc+VvxryYDW8Kq3/uRJfj4kzrEcJE+9YhV/2nQ5RH16Mz
-jbLvLrnrSjMf0iuHuVMpCM6Y/sV7v4rvom5szN32K/Kl7ILATwm3Is1Ms1y0Ze/ffAr417m9
-JY+ZeLZNJ9y0JCiNCUy+3h7gmsSsCRejQMxJNTAg2aXf1f3KV7GDLtLM6CcLkU5LWeqcKJok
-NT52ab3DVk00/rRc1jJHumCGrUWrPeUbgODrkBwk6HzfiHVbJ3PG3eqrKCBiqm8e97vD7u/j
-YPrxtt5/nQ+e39eHo6GzqLwyn4GeCpxk3ooNDVZYk4AJzjNdwJ4dk6GfHRGiOd+971thVpQr
-EoquicSsILQTSvYZwIW31Ph96QF6vV3vN48DQRykD3DfEpGn826vnINqFxJRkmDZ/e6cztav
-u+P6bb97JA8ID1VzkRknpyHxscz07fXwTOaXRrmaGHSOxpfa8KH54qJlFCiPW6jbb/nH4bh+
-HSTbgfNr8/b74IBCjr+he07KitIl8evL7hmS851DjSZFlt9Bhusn9rMuVXp12u8enh53r9x3
-JF0qaS3Tv/z9en14fIAxvdvtgzsuk3NQedf/M1pyGXRognj3/vACVWPrTtL18XJaz4ji4+Xm
-ZbP9t5Nn/ZFUx6zmTknODerjRhH7U7PgVFSKvsznfubRdqjesnC4OBOwJDLm6s/srnFBv2DA
-Tbmt03yq4CLq9F6Q3Qk33l2tcqCgOpC+OaMORFt4ojS92/loTUgtZ8ZWSkSJV24oQ1O6JhnO
-6Qp2oJ8HMRD60Co3fgigcradqJphnAJ88mFRkK44iMqlLaNMSE8+fh5WQbQcR3dYJgtD10ch
-/D8N+rNLl1Y1GseReG06j8JmkmNj9qD2Nb6HOhbd6MjUsJNDsd4j6/+whYPpdbfdHHd76nTt
-g2kDT+jeWdun/W7zpI8y3ISyhDEvUHCN0yGtopX8SP/ZiIkkD7cYHPcPj6jzR5g45AUtqxZu
-Aqq2MbMycehmefrST5mHWp9RyslZ1yZhwMYuFcq98O/YYzR4HLQIYzyi1erErr6D+xs4D+Q8
-MnbZuRUGrlV4UH30u92SzjdNQ77BSjX55LIYVaaPrDqpWlpFQUvaAXFR+RRLCZRLwx1XnYCh
-+NDvuRO2ShLE3HPKjJO8ChAnmvxhuyM9R/zNOzTNq8h2LGdqcPSZF0BnAc2nR/AHT1ryJGDK
-RhzNLnqKi4Ow51N/xH8JFHrttbq/6VfkUdtDL9NkYMUqSakxxitRJQIv6lZ9EewSqLmwatP1
-+sH+na14rSBAwFWFfvbw87Y7bbedEMgE8TRlFGxJAlnmXZkUlOo0WtP4uZjMr2aakeRDYTLh
-tKI5/ZL65sQMH/pFhAteRXDzzsPjL1MF2s/FPCZ3jRot4e7XLIn+cueu2DhO+4bqsjy5vb7+
-ZizZH0kYeNpjxT2AdHrp+qrFqkS6FHm7TvK/fKv4Ky7oGgDN6NAohy+MlHkbgr/VwxcGN0jR
-+ODy4oaiBwkGvwH+5vuXzWE3Hl/dfh1+0afGCVoWPi0wigti0aktmm6ePKsP6/en3eBvqtkd
-v4UiYWb6khRpGBytCFuJ2GS06ApgxRmWyEgEnjF0M49SYZp5WWx4SzQfaoooNTcEkXDaPcju
-kZjOaXFirP3aF4Sx7co/fMcSnddkGeRSMINvWl5kVDjJUGWE3yQtt4fm8zRPbFz0oTdt7Qnw
-G21XW9uC3VMru6dgnuRkVsSQ8rvSyqcMcd5zbkVBDEPNbVER/+E05Wl38fKyl3rNU7O+QlM0
-NGHcBa3yOfdZ2dPdWdIhqm3AKxZJNmvNPEWUc8D4PR+1fl+0f5snski71GczpuQL5nog4RUt
-EUYiHk0yHAeclWSLahDuCsBFu7HZAM1kE39Bezr1dduNcqlWud1muZLFkE6zuBa4FVquncNg
-JGIcky5O8WKZBdfGFDiLRLMkxeLbP2U9td6BlnRf75HQGDyr6VbGmeFiTPyuJqYiXJ3KW8Q5
-Xjpll3vAERLX4vc0bjaH+mCHuToGjXNSI6uDtoKDVt/WDNrNBf2kZYJu6BcVAzRmTMZaIPrF
-pAX6VHGfqDinsdYCMQvSBH2m4szTcgtEv4S1QJ/pgmv6LawFop+6DNDtxSdy6oS5o3P6RD/d
-Xn6iTmNGsQJBwN/ihK8Y7k/PZsiZMrZR/CSwciegHNLoNRm2V5gi8N2hEPycUYjzHcHPFoXg
-B1gh+PWkEPyoNd1wvjHD860Z8s2ZJcG4omUcDZnW1kMy+okE9oQxWVIIxwuLgJYdniBx4ZWM
-VVYDyhKrCM4VtsqCMDxT3MTyzkIyjzGeVYjAQSsJ2p6hwcRlwBzceveda1RRZrOAdCOFCLy2
-GVYGceB0fBmpUB268Ey+M60f3/eb40f3+RdN9/SzG39XGXptz+Ha2b19K5ZUegmBEcUvsiCe
-MCx/nSXNhUo5iefyECBU7hSDL0kna8w9oJasVW7k5ULSX2QBI4nslcIpIn0BsuZeJWLMxp4r
-xC8YQKwSzlit1g21A6MlQcBwoSgnT8qM8weKQSgckQ36Y5ABwIjKqev9qSssjU8L8+j7F3zt
-fdr9Z/vHx8Prwx8vu4ent832j8PD32vIZ/P0B+o6PuMs+SInzWy9365fRPiw9Raly6fJI5/B
-16+7/cdgs90cNw8vm/+qkKh1mXDFKrD6zqyKk9i4FU8cpw6xgG46S7j4e9aM17Wm4fYq82gt
-hB48jhYjwQ5Qv1iOpqZw3AtG7wssVmkA0L2kyHwnN6+D7bWrOlgsnkQ9LDj7j7fjbvCIziua
-wLmn0ZBgaN7ECC5hJI+66Z7lkoldqB3OnCCd6uEi2pTuR1O4vpOJXWimi2FPaSSw4fI7VWdr
-YnG1n6VpFw2Jp1ujygEuSwQUdn5glrr51umGXL8mtRcC+SEq9aMDAqEVnHeyn/jD0RhjobSr
-GZdh2EFjIlUT8YfSBVdtLosp7OLEl6Sucvr+82Xz+PWf9cfgUUzXZwxD89GZpVluEVm61NlY
-0zzH6bTUc1zDDUiTnLlmmD/5Ivh+/LXeHjePD8f108DbigpiKPX/bI6/BtbhsHvcCJL7cHzo
-1NjRHd6oIXAionhnCoeqNfqWJuFqeMFo+jYrbRKg8iLf7ty7C+ZEy6cW7FFztTfYQtHndfek
-q7Gr+tjU8Dm+zRfqFBnVsII6NJsa2cQnYUbbXdbkpK8SKVa8m+WyrXTWWrjeapExkibV6egM
-riijnsbkueh0+aD7cPjFda3heF3tbpFFdfgSmtNXq3lkdd0huZvn9eHYLTdzLkbkqCKhr5Tl
-ckp7Mj1lUAy/uYHf3W/EVt4dD2qat/Yz97LTSZF7RVQfUtFZV18DogCmvtB56IVlkTtkdK41
-BCMIOSG4WAwnBB1BWC3eqTUkmonJ7Xa21k1gIwqK74wDn3w1HBHjAwT6+qnoTJBERS6ABbIT
-6h1aHQSTbHg76ozwIpX1kbzL5u2XoYyrtdPy8u5R6+VEUyC1Ip3gKnpc2kE3M1FI5lxSOUIy
-n58dJgs/ELOeJijxKbFXWpEHF1jqRbZB4P1Lfd+lXZGp12TrjADD6jD1cmLq+eIvX6vZ1Lq3
-XGoaWWHORRNqHXy908nzergNYItSGSqsO0t7xqnQIzyrtEVCDl2dfur5Ogri69t+fTgY95um
-I/0QH/2I0+2eFnXU5DGjK998Tct8TuRp7xZ3nxddk/LsYfu0ex3E768/13uphqtubZ25H+dB
-5aRZ3LO23cyeKMVqgsIcdZLGGcjrIId8a9UQnXJ/BGgl6aGOX7piWGsMr3e2/AaY1xeDT4Ez
-Rkm7jcMrFN8yrBuaYibdq9GC6k9vjhFF4urmlrEl14BWATsPssufA+Jx8u2S1iDTwOjsZ+m0
-I9l0cY4DxwXRcCtfReixKXCExAddPJzarhHT0g5rTF7aJmx59e22cjyUqAQOqohJ/TBDb2Dm
-5GP0RTlHOubC6pAh9Abmdp6jqJvO6ka6GGk51DiJboIJSoBST+oKoc6PqFlA2Io76/0RtX3h
-hnEQdvCHzfP24fgOl/nHX+vHfzbbZ91kA59lqwL9X0vhWWYoKXXp+fcvmjpITfeWRWbpPcaJ
-xJLYtbJVuzwaLbO2Q2Epnhc0WCnUfKLRqk12EGMdhB9RX91rws3P/cP+Y7DfvR83W1N3CHWB
-A3LzsgNgWtBYRJs8SsUX+JnYSVeVnyWR0rAiIKEXM9TYQxWbQH92dJLMDbSLQKNO7ARtPUXg
-r2GNBIUhuXCG1yaiy4I7VVCUVaEfZ8Dpm3sFJDSGOeTeIwCwvDx7NSY+lRTuUBIQK1tw00gi
-bEZQDlTmhc9psWA64YZoBvA79fXHOJAdxkjOit0k6u+Ye2ShYDcOjSDJ95KxaqXCkY+sg4r1
-oqW6HpV+SaYv7zG5/btajq87aUKzOu1iA+v6spNoZRGVVkzLyO4Qctjzuvnazg99atSpTM+d
-2lZN7gNtmmsEGwgjkhLeRxZJWN4z+IRJv+wuU11oX5MK2A9zD52xU2nVLNJEflq6HZHJfq6l
-W3meOIEME2RlmaVHPrKEsrKuNS6ThENJY3PAdFfvkxi45SoXVncYrGVSaDXHNBeDMmcYV3sq
-eCJ95JCOnAgb/3cSyk7SsrzTBIeTMLENkT787ltFcYiac8RACH8S+mR1wvuqsIzMg+wOBQlU
-kKooDQwXE24QGb/hh+9q22ki4oBM4GjS40/5SVxoGjDaA01MSrUEfvzvuJXD+F99q87R8CHR
-+qxx9J+iWYAhh29IpXTSUflhmU+VFrfKELZPOSO05yE8XcmOb47Zzilpvu4o5kKkvu032+M/
-wgT86XV90N98TieriCgtXNTQb4OSjnG3aDl2HS89TCYhnMNhI62/YRF3JerqNqEOFVvWyeFS
-m+B1yAJCC6nuF7atzZ1v87L+ety81uzIQUAfZfqe6hlRluDciWZ7sRDXRyVe7KeeM9MmD0aT
-rxZWFn8ffhtdmsObwvaBRiQRZ9ZkuSJjQJF7MFbJVHedwifA/kBF88IiVxW6oYyCew8gYRC3
-NNxllsAXIieLaqqR1fK2dmIdDYhoYZXE4aqbnZ9kDnQBPtSllPsgxTJ+dlSaqYIBnpAtze5O
-/a0lNs93cni+f/t3SKFqx9IfZrdKjcJ2KiruKg61fv1z1z/fn5/lOtM4VPQdviwweBfz0Cgg
-ySJmrp+CnCYBhidjGHJZpVT6nmeMtgUksX94DiM8z8PSVjAm2DUi8K2afTivewx2PnyN7U4A
-RemponxMLnHp96Dm1DJo9tcag4FerbBbi5rALiRpQCkegLsfT4PJNPKo4rUeEI1AKwg/TBbE
-stLJXE6SIbFyPWiN44j2iVTKiYEgEBnKD0Sx34edZ+vTxO305MxJ5p3iIS9IRndaqItqVgAI
-fYM7RcvOzgsHlj8Id4//vL/JlT592D4bmy5GUUO11jKFnAqYw4zXUEmspiWcl4WV0xNtcQeb
-FGxVbkKfGVx99DUZw64Bu15C2xUZdLRnK2HTaXZMDAMjO8Q45TG5s7pMcr06MCyOOF16uhpP
-7pnnpa09Q16p8aWwGfXBb4e3zRZfDw9/DF7fj+t/1/CP9fHxzz///F3zaYdmVCLvieBGuoxU
-msGcVuZSZNVEHtjGnoojR1wCk80Eiq4nEuEOoQU5n8liIUGwsSWL1GLCyNa1WuQeczhLgGia
-YKZ7QMqxWggDcyYv7GMhmqTdbOgdCosB3d/ybmFPDe1lIf+PWdHMZZyPYiPQJ4JgAaAvqjJG
-YT/MW3kH72nyTB5N7J4M/8F+aSe5191O2ahT9bl4hp73HarC3C5oOR1pYZzMw7jlwDsQ3iuc
-kmYMgIBMkM+PGiLODq0AZVygaaR6d3kPf2zWr7NC7mqeLeOdPdbjI2YiMDooAmYUJeuurLws
-SzI4Xn9I1pEE1yZvvRgUy8TOqhXXtSktlR2j3UfFueqXseRY+6mTzEqnNEbdOnw18Y0M5LEY
-CWNoYMccGWBTh6AZHK4OgQTOLtZVewTCqT+UuWiiCpG3g319ShSXQ7v0fb2icGOC4hFvSI3h
-D8ovaufJneZpWYm9bCFMdszyjfzqhK5hid/ZFFr9ztwqPS+Cawkw46IBjCF6dgf8gN+XkTwt
-ewDTBcyePkB9k1M3B4lkrJXlsNTDSmPk91UeW504SDXCRq/pUzxExUtCW51SpWM4QDhAoXXy
-A+aEa+Awz3qBkqPo6QgVaCtIuhtNDSmhNNurh0y7KdXrpJ3eQp/GBN8SlNdcvhfFiqlsWPrT
-yMoYV4LaRP48EvoCttuU3221+SnCEvJIOSW8OYYMsVLxOER0XAarG/g0kQ3Wo+2/Kpy5jLMI
-8SglHl9yLhyJgLBUWx3cginoOWBs1P7ooQv5ZBImES5tDiV8R2Bn9GcGByIcMzxdCRIZRkZv
-+NRbumVEc1myZ6RUTSpbM9OtxuUOo9stnwYBUTD+NARAvmfxdCnx66XDuckEXBCIsmSiswrq
-UoijeTp1EzURGb5WF2woLNnh3GO7oAYu/b4s5zHjvVsQ5xHPVcvG44M7q34vezDt6358x5wm
-YrOnL69+ABcuGIUzW0kdiyKLgP/t6ShpBd/THrG19E1IYS3AmlPISRklPTMi8iIHjr/e1SGe
-VpmnPJUJCwAauzylhElEP8Rn06zkvWjkFoZpY8VNUkQycY13BPzdJxwqbSELgRt6gcJPKzQk
-RIJKHXHiKysMJnHk6SyZJnQSjoCCXHJOeqRXaalSI4w3j8Sk0ZsimtnWeuALwTtTEgcASaJ+
-zuJBKQ9410uL6ffrSzNb9EYteAle7oAGSOiX3JnybxAnPghDscAB2guL8qDe8vpxWEE8aVH2
-A4doPmPfsZaG/TL+6hoHyFToxhwu8na4ovFVloiQqC1x78TUC7ExXl0n/IgiJkmxFK+EBvuG
-vW1l4arHYhoxadE9tdpWJPIx53/t1EVcVpcBAA==
+https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
 
---h5qqxteyl55knkfo--
+Needs to be applied on linux-next (next-20191025).
+
+Changes in V9:
+
+- Changed feature support enumeration for powerpc platforms per Christophe
+- Changed config wrapper for basic_[pmd|pud]_tests() to enable ARC platform
+- Enabled the test on ARC platform
+
+Changes in V8: (https://patchwork.kernel.org/project/linux-mm/list/?series=194297)
+
+- Enabled ARCH_HAS_DEBUG_VM_PGTABLE on PPC32 platform per Christophe
+- Updated feature documentation as DEBUG_VM_PGTABLE is now enabled on PPC32 platform
+- Moved ARCH_HAS_DEBUG_VM_PGTABLE earlier to indent it with DEBUG_VM per Christophe
+- Added an information message in debug_vm_pgtable() per Christophe
+- Dropped random_vaddr boundary condition checks per Christophe and Qian
+- Replaced virt_addr_valid() check with pfn_valid() check in debug_vm_pgtable()
+- Slightly changed pr_fmt(fmt) information
+
+Changes in V7: (https://patchwork.kernel.org/project/linux-mm/list/?series=193051)
+
+- Memory allocation and free routines for mapped pages have been droped
+- Mapped pfns are derived from standard kernel text symbol per Matthew
+- Moved debug_vm_pgtaable() after page_alloc_init_late() per Michal and Qian 
+- Updated the commit message per Michal
+- Updated W=1 GCC warning problem on x86 per Qian Cai
+- Addition of new alloc_contig_pages() helper has been submitted separately
+
+Changes in V6: (https://patchwork.kernel.org/project/linux-mm/list/?series=187589)
+
+- Moved alloc_gigantic_page_order() into mm/page_alloc.c per Michal
+- Moved alloc_gigantic_page_order() within CONFIG_CONTIG_ALLOC in the test
+- Folded Andrew's include/asm-generic/pgtable.h fix into the test patch 2/2
+
+Changes in V5: (https://patchwork.kernel.org/project/linux-mm/list/?series=185991)
+
+- Redefined and moved X86 mm_p4d_folded() into a different header per Kirill/Ingo
+- Updated the config option comment per Ingo and dropped 'kernel module' reference
+- Updated the commit message and dropped 'kernel module' reference
+- Changed DEBUG_ARCH_PGTABLE_TEST into DEBUG_VM_PGTABLE per Ingo
+- Moved config option from mm/Kconfig.debug into lib/Kconfig.debug
+- Renamed core test function arch_pgtable_tests() as debug_vm_pgtable()
+- Renamed mm/arch_pgtable_test.c as mm/debug_vm_pgtable.c
+- debug_vm_pgtable() gets called from kernel_init_freeable() after init_mm_internals()
+- Added an entry in Documentation/features/debug/ per Ingo
+- Enabled the test on arm64 and x86 platforms for now
+
+Changes in V4: (https://patchwork.kernel.org/project/linux-mm/list/?series=183465)
+
+- Disable DEBUG_ARCH_PGTABLE_TEST for ARM and IA64 platforms
+
+Changes in V3: (https://lore.kernel.org/patchwork/project/lkml/list/?series=411216)
+
+- Changed test trigger from module format into late_initcall()
+- Marked all functions with __init to be freed after completion
+- Changed all __PGTABLE_PXX_FOLDED checks as mm_pxx_folded()
+- Folded in PPC32 fixes from Christophe
+
+Changes in V2:
+
+https://lore.kernel.org/linux-mm/1568268173-31302-1-git-send-email-anshuman.khandual@arm.com/T/#t
+
+- Fixed small typo error in MODULE_DESCRIPTION()
+- Fixed m64k build problems for lvalue concerns in pmd_xxx_tests()
+- Fixed dynamic page table level folding problems on x86 as per Kirril
+- Fixed second pointers during pxx_populate_tests() per Kirill and Gerald
+- Allocate and free pte table with pte_alloc_one/pte_free per Kirill
+- Modified pxx_clear_tests() to accommodate s390 lower 12 bits situation
+- Changed RANDOM_NZVALUE value from 0xbe to 0xff
+- Changed allocation, usage, free sequence for saved_ptep
+- Renamed VMA_FLAGS as VMFLAGS
+- Implemented a new method for random vaddr generation
+- Implemented some other cleanups
+- Dropped extern reference to mm_alloc()
+- Created and exported new alloc_gigantic_page_order()
+- Dropped the custom allocator and used new alloc_gigantic_page_order()
+
+Changes in V1:
+
+https://lore.kernel.org/linux-mm/1567497706-8649-1-git-send-email-anshuman.khandual@arm.com/
+
+- Added fallback mechanism for PMD aligned memory allocation failure
+
+Changes in RFC V2:
+
+https://lore.kernel.org/linux-mm/1565335998-22553-1-git-send-email-anshuman.khandual@arm.com/T/#u
+
+- Moved test module and it's config from lib/ to mm/
+- Renamed config TEST_ARCH_PGTABLE as DEBUG_ARCH_PGTABLE_TEST
+- Renamed file from test_arch_pgtable.c to arch_pgtable_test.c
+- Added relevant MODULE_DESCRIPTION() and MODULE_AUTHOR() details
+- Dropped loadable module config option
+- Basic tests now use memory blocks with required size and alignment
+- PUD aligned memory block gets allocated with alloc_contig_range()
+- If PUD aligned memory could not be allocated it falls back on PMD aligned
+  memory block from page allocator and pud_* tests are skipped
+- Clear and populate tests now operate on real in memory page table entries
+- Dummy mm_struct gets allocated with mm_alloc()
+- Dummy page table entries get allocated with [pud|pmd|pte]_alloc_[map]()
+- Simplified [p4d|pgd]_basic_tests(), now has random values in the entries
+
+Original RFC V1:
+
+https://lore.kernel.org/linux-mm/1564037723-26676-1-git-send-email-anshuman.khandual@arm.com/
+
+ .../debug/debug-vm-pgtable/arch-support.txt   |  35 ++
+ arch/arm64/Kconfig                            |   1 +
+ arch/powerpc/Kconfig                          |   1 +
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/include/asm/pgtable_64.h             |   6 +
+ include/asm-generic/pgtable.h                 |   6 +
+ init/main.c                                   |   1 +
+ lib/Kconfig.debug                             |  21 +
+ mm/Makefile                                   |   1 +
+ mm/debug_vm_pgtable.c                         | 388 ++++++++++++++++++
+ 10 files changed, 461 insertions(+)
+ create mode 100644 Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+ create mode 100644 mm/debug_vm_pgtable.c
+
+diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+new file mode 100644
+index 000000000000..f3f8111edbe3
+--- /dev/null
++++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+@@ -0,0 +1,35 @@
++#
++# Feature name:          debug-vm-pgtable
++#         Kconfig:       ARCH_HAS_DEBUG_VM_PGTABLE
++#         description:   arch supports pgtable tests for semantics compliance
++#
++    -----------------------
++    |         arch |status|
++    -----------------------
++    |       alpha: | TODO |
++    |         arc: |  ok  |
++    |         arm: | TODO |
++    |       arm64: |  ok  |
++    |         c6x: | TODO |
++    |        csky: | TODO |
++    |       h8300: | TODO |
++    |     hexagon: | TODO |
++    |        ia64: | TODO |
++    |        m68k: | TODO |
++    |  microblaze: | TODO |
++    |        mips: | TODO |
++    |       nds32: | TODO |
++    |       nios2: | TODO |
++    |    openrisc: | TODO |
++    |      parisc: | TODO |
++    |  powerpc/32: |  ok  |
++    |  powerpc/64: | TODO |
++    |       riscv: | TODO |
++    |        s390: | TODO |
++    |          sh: | TODO |
++    |       sparc: | TODO |
++    |          um: | TODO |
++    |   unicore32: | TODO |
++    |         x86: |  ok  |
++    |      xtensa: | TODO |
++    -----------------------
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 50df79d4aa3b..ade454e9266f 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -11,6 +11,7 @@ config ARM64
+ 	select ACPI_PPTT if ACPI
+ 	select ARCH_CLOCKSOURCE_DATA
+ 	select ARCH_HAS_DEBUG_VIRTUAL
++	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_HAS_DMA_PREP_COHERENT
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE if ACPI
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 4c4a0fcd1674..27c5aa438587 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -120,6 +120,7 @@ config PPC
+ 	#
+ 	select ARCH_32BIT_OFF_T if PPC32
+ 	select ARCH_HAS_DEBUG_VIRTUAL
++	select ARCH_HAS_DEBUG_VM_PGTABLE if PPC32
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_FORTIFY_SOURCE
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 4f71a8b33b2e..4db92314d5cd 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -61,6 +61,7 @@ config X86
+ 	select ARCH_CLOCKSOURCE_INIT
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_DEBUG_VIRTUAL
++	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_FAST_MULTIPLIER
+diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
+index 0b6c4042942a..fb0e76d254b3 100644
+--- a/arch/x86/include/asm/pgtable_64.h
++++ b/arch/x86/include/asm/pgtable_64.h
+@@ -53,6 +53,12 @@ static inline void sync_initial_page_table(void) { }
+ 
+ struct mm_struct;
+ 
++#define mm_p4d_folded mm_p4d_folded
++static inline bool mm_p4d_folded(struct mm_struct *mm)
++{
++	return !pgtable_l5_enabled();
++}
++
+ void set_pte_vaddr_p4d(p4d_t *p4d_page, unsigned long vaddr, pte_t new_pte);
+ void set_pte_vaddr_pud(pud_t *pud_page, unsigned long vaddr, pte_t new_pte);
+ 
+diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
+index b5d20e096e88..70fa1470b9bd 100644
+--- a/include/asm-generic/pgtable.h
++++ b/include/asm-generic/pgtable.h
+@@ -1168,6 +1168,12 @@ static inline bool arch_has_pfn_modify_check(void)
+ # define PAGE_KERNEL_EXEC PAGE_KERNEL
+ #endif
+ 
++#ifdef CONFIG_DEBUG_VM_PGTABLE
++extern void debug_vm_pgtable(void);
++#else
++static inline void debug_vm_pgtable(void) { }
++#endif
++
+ #endif /* !__ASSEMBLY__ */
+ 
+ #ifndef io_remap_pfn_range
+diff --git a/init/main.c b/init/main.c
+index 91f6ebb30ef0..af8379ed53dc 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -1185,6 +1185,7 @@ static noinline void __init kernel_init_freeable(void)
+ 	sched_init_smp();
+ 
+ 	page_alloc_init_late();
++	debug_vm_pgtable();
+ 	/* Initialize page ext after all struct pages are initialized. */
+ 	page_ext_init();
+ 
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 63db31b8c908..91f39d6a6bc9 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -664,6 +664,12 @@ config SCHED_STACK_END_CHECK
+ 	  data corruption or a sporadic crash at a later stage once the region
+ 	  is examined. The runtime overhead introduced is minimal.
+ 
++config ARCH_HAS_DEBUG_VM_PGTABLE
++	bool
++	help
++	  An architecture should select this when it can successfully
++	  build and run DEBUG_VM_PGTABLE.
++
+ config DEBUG_VM
+ 	bool "Debug VM"
+ 	depends on DEBUG_KERNEL
+@@ -699,6 +705,21 @@ config DEBUG_VM_PGFLAGS
+ 
+ 	  If unsure, say N.
+ 
++config DEBUG_VM_PGTABLE
++	bool "Debug arch page table for semantics compliance"
++	depends on MMU
++	depends on DEBUG_VM
++	depends on ARCH_HAS_DEBUG_VM_PGTABLE
++	help
++	  This option provides a debug method which can be used to test
++	  architecture page table helper functions on various platforms in
++	  verifying if they comply with expected generic MM semantics. This
++	  will help architecture code in making sure that any changes or
++	  new additions of these helpers still conform to expected
++	  semantics of the generic MM.
++
++	  If unsure, say N.
++
+ config ARCH_HAS_DEBUG_VIRTUAL
+ 	bool
+ 
+diff --git a/mm/Makefile b/mm/Makefile
+index 41e6aa432781..79a0c1fe199d 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -86,6 +86,7 @@ obj-$(CONFIG_HWPOISON_INJECT) += hwpoison-inject.o
+ obj-$(CONFIG_DEBUG_KMEMLEAK) += kmemleak.o
+ obj-$(CONFIG_DEBUG_KMEMLEAK_TEST) += kmemleak-test.o
+ obj-$(CONFIG_DEBUG_RODATA_TEST) += rodata_test.o
++obj-$(CONFIG_DEBUG_VM_PGTABLE) += debug_vm_pgtable.o
+ obj-$(CONFIG_PAGE_OWNER) += page_owner.o
+ obj-$(CONFIG_CLEANCACHE) += cleancache.o
+ obj-$(CONFIG_MEMORY_ISOLATION) += page_isolation.o
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+new file mode 100644
+index 000000000000..99ebc7c2bf63
+--- /dev/null
++++ b/mm/debug_vm_pgtable.c
+@@ -0,0 +1,388 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * This kernel test validates architecture page table helpers and
++ * accessors and helps in verifying their continued compliance with
++ * expected generic MM semantics.
++ *
++ * Copyright (C) 2019 ARM Ltd.
++ *
++ * Author: Anshuman Khandual <anshuman.khandual@arm.com>
++ */
++#define pr_fmt(fmt) "debug_vm_pgtable: %s: " fmt, __func__
++
++#include <linux/gfp.h>
++#include <linux/highmem.h>
++#include <linux/hugetlb.h>
++#include <linux/kernel.h>
++#include <linux/kconfig.h>
++#include <linux/mm.h>
++#include <linux/mman.h>
++#include <linux/mm_types.h>
++#include <linux/module.h>
++#include <linux/pfn_t.h>
++#include <linux/printk.h>
++#include <linux/random.h>
++#include <linux/spinlock.h>
++#include <linux/swap.h>
++#include <linux/swapops.h>
++#include <linux/start_kernel.h>
++#include <linux/sched/mm.h>
++#include <asm/pgalloc.h>
++#include <asm/pgtable.h>
++
++/*
++ * Basic operations
++ *
++ * mkold(entry)			= An old and not a young entry
++ * mkyoung(entry)		= A young and not an old entry
++ * mkdirty(entry)		= A dirty and not a clean entry
++ * mkclean(entry)		= A clean and not a dirty entry
++ * mkwrite(entry)		= A write and not a write protected entry
++ * wrprotect(entry)		= A write protected and not a write entry
++ * pxx_bad(entry)		= A mapped and non-table entry
++ * pxx_same(entry1, entry2)	= Both entries hold the exact same value
++ */
++#define VMFLAGS	(VM_READ|VM_WRITE|VM_EXEC)
++
++/*
++ * On s390 platform, the lower 12 bits are used to identify given page table
++ * entry type and for other arch specific requirements. But these bits might
++ * affect the ability to clear entries with pxx_clear(). So while loading up
++ * the entries skip all lower 12 bits in order to accommodate s390 platform.
++ * It does not have affect any other platform.
++ */
++#define RANDOM_ORVALUE	(0xfffffffffffff000UL)
++#define RANDOM_NZVALUE	(0xff)
++
++static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
++{
++	pte_t pte = pfn_pte(pfn, prot);
++
++	WARN_ON(!pte_same(pte, pte));
++	WARN_ON(!pte_young(pte_mkyoung(pte)));
++	WARN_ON(!pte_dirty(pte_mkdirty(pte)));
++	WARN_ON(!pte_write(pte_mkwrite(pte)));
++	WARN_ON(pte_young(pte_mkold(pte)));
++	WARN_ON(pte_dirty(pte_mkclean(pte)));
++	WARN_ON(pte_write(pte_wrprotect(pte)));
++}
++
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
++{
++	pmd_t pmd = pfn_pmd(pfn, prot);
++
++	WARN_ON(!pmd_same(pmd, pmd));
++	WARN_ON(!pmd_young(pmd_mkyoung(pmd)));
++	WARN_ON(!pmd_dirty(pmd_mkdirty(pmd)));
++	WARN_ON(!pmd_write(pmd_mkwrite(pmd)));
++	WARN_ON(pmd_young(pmd_mkold(pmd)));
++	WARN_ON(pmd_dirty(pmd_mkclean(pmd)));
++	WARN_ON(pmd_write(pmd_wrprotect(pmd)));
++	/*
++	 * A huge page does not point to next level page table
++	 * entry. Hence this must qualify as pmd_bad().
++	 */
++	WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
++}
++
++#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
++static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
++{
++	pud_t pud = pfn_pud(pfn, prot);
++
++	WARN_ON(!pud_same(pud, pud));
++	WARN_ON(!pud_young(pud_mkyoung(pud)));
++	WARN_ON(!pud_write(pud_mkwrite(pud)));
++	WARN_ON(pud_write(pud_wrprotect(pud)));
++	WARN_ON(pud_young(pud_mkold(pud)));
++
++	if (mm_pmd_folded(mm) || __is_defined(ARCH_HAS_4LEVEL_HACK))
++		return;
++
++	/*
++	 * A huge page does not point to next level page table
++	 * entry. Hence this must qualify as pud_bad().
++	 */
++	WARN_ON(!pud_bad(pud_mkhuge(pud)));
++}
++#else
++static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
++#endif
++#else
++static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
++static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
++#endif
++
++static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
++{
++	p4d_t p4d;
++
++	memset(&p4d, RANDOM_NZVALUE, sizeof(p4d_t));
++	WARN_ON(!p4d_same(p4d, p4d));
++}
++
++static void __init pgd_basic_tests(unsigned long pfn, pgprot_t prot)
++{
++	pgd_t pgd;
++
++	memset(&pgd, RANDOM_NZVALUE, sizeof(pgd_t));
++	WARN_ON(!pgd_same(pgd, pgd));
++}
++
++#ifndef __ARCH_HAS_4LEVEL_HACK
++static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp)
++{
++	pud_t pud = READ_ONCE(*pudp);
++
++	if (mm_pmd_folded(mm))
++		return;
++
++	pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
++	WRITE_ONCE(*pudp, pud);
++	pud_clear(pudp);
++	pud = READ_ONCE(*pudp);
++	WARN_ON(!pud_none(pud));
++}
++
++static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
++				      pmd_t *pmdp)
++{
++	pud_t pud;
++
++	if (mm_pmd_folded(mm))
++		return;
++	/*
++	 * This entry points to next level page table page.
++	 * Hence this must not qualify as pud_bad().
++	 */
++	pmd_clear(pmdp);
++	pud_clear(pudp);
++	pud_populate(mm, pudp, pmdp);
++	pud = READ_ONCE(*pudp);
++	WARN_ON(pud_bad(pud));
++}
++#else
++static void __init pud_clear_tests(struct mm_struct *mm, pud_t *pudp) { }
++static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
++				      pmd_t *pmdp)
++{
++}
++#endif
++
++#ifndef __ARCH_HAS_5LEVEL_HACK
++static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp)
++{
++	p4d_t p4d = READ_ONCE(*p4dp);
++
++	if (mm_pud_folded(mm))
++		return;
++
++	p4d = __p4d(p4d_val(p4d) | RANDOM_ORVALUE);
++	WRITE_ONCE(*p4dp, p4d);
++	p4d_clear(p4dp);
++	p4d = READ_ONCE(*p4dp);
++	WARN_ON(!p4d_none(p4d));
++}
++
++static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
++				      pud_t *pudp)
++{
++	p4d_t p4d;
++
++	if (mm_pud_folded(mm))
++		return;
++
++	/*
++	 * This entry points to next level page table page.
++	 * Hence this must not qualify as p4d_bad().
++	 */
++	pud_clear(pudp);
++	p4d_clear(p4dp);
++	p4d_populate(mm, p4dp, pudp);
++	p4d = READ_ONCE(*p4dp);
++	WARN_ON(p4d_bad(p4d));
++}
++
++static void __init pgd_clear_tests(struct mm_struct *mm, pgd_t *pgdp)
++{
++	pgd_t pgd = READ_ONCE(*pgdp);
++
++	if (mm_p4d_folded(mm))
++		return;
++
++	pgd = __pgd(pgd_val(pgd) | RANDOM_ORVALUE);
++	WRITE_ONCE(*pgdp, pgd);
++	pgd_clear(pgdp);
++	pgd = READ_ONCE(*pgdp);
++	WARN_ON(!pgd_none(pgd));
++}
++
++static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
++				      p4d_t *p4dp)
++{
++	pgd_t pgd;
++
++	if (mm_p4d_folded(mm))
++		return;
++
++	/*
++	 * This entry points to next level page table page.
++	 * Hence this must not qualify as pgd_bad().
++	 */
++	p4d_clear(p4dp);
++	pgd_clear(pgdp);
++	pgd_populate(mm, pgdp, p4dp);
++	pgd = READ_ONCE(*pgdp);
++	WARN_ON(pgd_bad(pgd));
++}
++#else
++static void __init p4d_clear_tests(struct mm_struct *mm, p4d_t *p4dp) { }
++static void __init pgd_clear_tests(struct mm_struct *mm, pgd_t *pgdp) { }
++static void __init p4d_populate_tests(struct mm_struct *mm, p4d_t *p4dp,
++				      pud_t *pudp)
++{
++}
++static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
++				      p4d_t *p4dp)
++{
++}
++#endif
++
++static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep)
++{
++	pte_t pte = READ_ONCE(*ptep);
++
++	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
++	WRITE_ONCE(*ptep, pte);
++	pte_clear(mm, 0, ptep);
++	pte = READ_ONCE(*ptep);
++	WARN_ON(!pte_none(pte));
++}
++
++static void __init pmd_clear_tests(struct mm_struct *mm, pmd_t *pmdp)
++{
++	pmd_t pmd = READ_ONCE(*pmdp);
++
++	pmd = __pmd(pmd_val(pmd) | RANDOM_ORVALUE);
++	WRITE_ONCE(*pmdp, pmd);
++	pmd_clear(pmdp);
++	pmd = READ_ONCE(*pmdp);
++	WARN_ON(!pmd_none(pmd));
++}
++
++static void __init pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
++				      pgtable_t pgtable)
++{
++	pmd_t pmd;
++
++	/*
++	 * This entry points to next level page table page.
++	 * Hence this must not qualify as pmd_bad().
++	 */
++	pmd_clear(pmdp);
++	pmd_populate(mm, pmdp, pgtable);
++	pmd = READ_ONCE(*pmdp);
++	WARN_ON(pmd_bad(pmd));
++}
++
++static unsigned long __init get_random_vaddr(void)
++{
++	unsigned long random_vaddr, random_pages, total_user_pages;
++
++	total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
++
++	random_pages = get_random_long() % total_user_pages;
++	random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
++
++	return random_vaddr;
++}
++
++void __init debug_vm_pgtable(void)
++{
++	struct mm_struct *mm;
++	pgd_t *pgdp;
++	p4d_t *p4dp, *saved_p4dp;
++	pud_t *pudp, *saved_pudp;
++	pmd_t *pmdp, *saved_pmdp, pmd;
++	pte_t *ptep;
++	pgtable_t saved_ptep;
++	pgprot_t prot;
++	phys_addr_t paddr;
++	unsigned long vaddr, pte_aligned, pmd_aligned;
++	unsigned long pud_aligned, p4d_aligned, pgd_aligned;
++
++	pr_info("Validating architecture page table helpers\n");
++	prot = vm_get_page_prot(VMFLAGS);
++	vaddr = get_random_vaddr();
++	mm = mm_alloc();
++	if (!mm) {
++		pr_err("mm_struct allocation failed\n");
++		return;
++	}
++
++	/*
++	 * PFN for mapping at PTE level is determined from a standard kernel
++	 * text symbol. But pfns for higher page table levels are derived by
++	 * masking lower bits of this real pfn. These derived pfns might not
++	 * exist on the platform but that does not really matter as pfn_pxx()
++	 * helpers will still create appropriate entries for the test. This
++	 * helps avoid large memory block allocations to be used for mapping
++	 * at higher page table levels.
++	 */
++	paddr = __pa(&start_kernel);
++
++	pte_aligned = (paddr & PAGE_MASK) >> PAGE_SHIFT;
++	pmd_aligned = (paddr & PMD_MASK) >> PAGE_SHIFT;
++	pud_aligned = (paddr & PUD_MASK) >> PAGE_SHIFT;
++	p4d_aligned = (paddr & P4D_MASK) >> PAGE_SHIFT;
++	pgd_aligned = (paddr & PGDIR_MASK) >> PAGE_SHIFT;
++	WARN_ON(!pfn_valid(pte_aligned));
++
++	pgdp = pgd_offset(mm, vaddr);
++	p4dp = p4d_alloc(mm, pgdp, vaddr);
++	pudp = pud_alloc(mm, p4dp, vaddr);
++	pmdp = pmd_alloc(mm, pudp, vaddr);
++	ptep = pte_alloc_map(mm, pmdp, vaddr);
++
++	/*
++	 * Save all the page table page addresses as the page table
++	 * entries will be used for testing with random or garbage
++	 * values. These saved addresses will be used for freeing
++	 * page table pages.
++	 */
++	pmd = READ_ONCE(*pmdp);
++	saved_p4dp = p4d_offset(pgdp, 0UL);
++	saved_pudp = pud_offset(p4dp, 0UL);
++	saved_pmdp = pmd_offset(pudp, 0UL);
++	saved_ptep = pmd_pgtable(pmd);
++
++	pte_basic_tests(pte_aligned, prot);
++	pmd_basic_tests(pmd_aligned, prot);
++	pud_basic_tests(pud_aligned, prot);
++	p4d_basic_tests(p4d_aligned, prot);
++	pgd_basic_tests(pgd_aligned, prot);
++
++	pte_clear_tests(mm, ptep);
++	pmd_clear_tests(mm, pmdp);
++	pud_clear_tests(mm, pudp);
++	p4d_clear_tests(mm, p4dp);
++	pgd_clear_tests(mm, pgdp);
++
++	pte_unmap(ptep);
++
++	pmd_populate_tests(mm, pmdp, saved_ptep);
++	pud_populate_tests(mm, pudp, saved_pmdp);
++	p4d_populate_tests(mm, p4dp, saved_pudp);
++	pgd_populate_tests(mm, pgdp, saved_p4dp);
++
++	p4d_free(mm, saved_p4dp);
++	pud_free(mm, saved_pudp);
++	pmd_free(mm, saved_pmdp);
++	pte_free(mm, saved_ptep);
++
++	mm_dec_nr_puds(mm);
++	mm_dec_nr_pmds(mm);
++	mm_dec_nr_ptes(mm);
++	__mmdrop(mm);
++}
+-- 
+2.20.1
+
