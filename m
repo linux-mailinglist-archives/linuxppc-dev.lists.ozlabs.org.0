@@ -1,92 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3EC0F9906
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 19:46:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C8AF9925
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 19:53:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CGtP55qfzF5dJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 05:46:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CH2q3bwmzF25m
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 05:53:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=eric.dumazet@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Kgu/GllJ"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CFMx0LDrzF1w6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 04:38:36 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xACHbW15085144
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 12:38:28 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w7yacdd5x-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 12:38:28 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Tue, 12 Nov 2019 17:38:26 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 12 Nov 2019 17:38:23 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xACHcLuS34013334
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Nov 2019 17:38:22 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D98954204C;
- Tue, 12 Nov 2019 17:38:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 821DF42041;
- Tue, 12 Nov 2019 17:38:21 +0000 (GMT)
-Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 12 Nov 2019 17:38:21 +0000 (GMT)
-Subject: Re: [PATCH 01/11] powerpc/powernv/ioda: Fix ref count for devices
- with their own PE
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Andrew Donnellan
- <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com,
- Alistair Popple <alistair@popple.id.au>
-References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
- <20190909154600.19917-2-fbarrat@linux.ibm.com>
- <66f8a321-2d6e-dc82-26e1-7f6d9292470a@linux.ibm.com>
- <f7f2a2b0-aca9-a312-7d68-ad1199cb2b9f@linux.ibm.com>
- <010252f2-7f94-4a8a-90ae-82ff49b622d6@ozlabs.ru>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 12 Nov 2019 18:38:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CGDw2C3YzF5X1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 05:17:36 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id w11so12351061pga.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 10:17:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=6u8AuSwwEE+YzGjQ7qfJp6neppsuNi6MySBbeF4/IPk=;
+ b=Kgu/GllJJW+hHZrChI1erjsLqLhM4zsC5sx0iwwMF+a9Jzy9LOjqpJcgsPpm7LV7E+
+ 5lhtCGSYnmaXdzaOdhr2dPsDec+bP2GsFoL76MoBDQ1cdGhDTHFhQz8Zj4JKg5L6lRUS
+ cn441jUZWJCGSOMKxb3lajAPyNZX2lTGt8gIJyQWahOTPWJmEWHffqJlotB6PnW7XoAW
+ 58jz2Yio7zzqtuPFzbmS1qRf6eXYdzAno4LyzZ7dmYhEBnieUj0N5V+jXau3h9mIedp+
+ OVjwUNh0OPhCMfcbBqg/mUB+mR/FuloVxjzzBJ1XmvWkqBPQTVyKZv8Gc32hh+Pvujip
+ qEYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=6u8AuSwwEE+YzGjQ7qfJp6neppsuNi6MySBbeF4/IPk=;
+ b=pmRz7Vu2daNXBoTHTvP6sSfmaHfMi1aSKq+P2/1sq8+E5gZ3ebpOJv2w9laua8k88K
+ vUMFZxODkckRO37SzM10DmvSVK90Jw4F96blGeHBfaOpkLWs6AIUYdG83Z6wqq0GUKLR
+ eztFark5fCOFZPppD/5QrVCKk9NLVcFql06Qymd8EVtu5Jr7x/w9fxmy5S/VViV5BztP
+ go40GHiLBPgJpEpPU6tl6DU/eB5GADrgvpO/fO2nBDTyExsZhJNfzQ9Q++2dEQmxEy1w
+ CcggPT+1RW82QE20FjOAstSk+rVnOiZ1j6CAmja85Jp7wNIER6fpqyC+29t6soipQ0wo
+ HR0g==
+X-Gm-Message-State: APjAAAV89RlJTs3IG5vR2OvrKPAhTtyiZ4fJ9ngedFxJEelZWXyEiWzk
+ M6F3UMojiRxfoGbzyxsKzls=
+X-Google-Smtp-Source: APXvYqwwSH0qDU9uj6WdYBx522qw+uctwzudp+uGOiDq9r/xUGj7tA3eafhCY2h5xpmPHLqI9MGhLA==
+X-Received: by 2002:a62:aa0d:: with SMTP id e13mr38879031pff.214.1573582651106; 
+ Tue, 12 Nov 2019 10:17:31 -0800 (PST)
+Received: from ?IPv6:2620:15c:2c1:200:55c7:81e6:c7d8:94b?
+ ([2620:15c:2c1:200:55c7:81e6:c7d8:94b])
+ by smtp.gmail.com with ESMTPSA id 206sm10280425pfu.45.2019.11.12.10.17.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Nov 2019 10:17:30 -0800 (PST)
+Subject: Re: net-next branch fails to build on my P8 CI system
+To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <1573538337.1382.3.camel@abdul>
+From: Eric Dumazet <eric.dumazet@gmail.com>
+Message-ID: <951e74ff-07ef-faac-2a55-6dce8bd3d2d5@gmail.com>
+Date: Tue, 12 Nov 2019 10:17:28 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <010252f2-7f94-4a8a-90ae-82ff49b622d6@ozlabs.ru>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <1573538337.1382.3.camel@abdul>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111217-4275-0000-0000-0000037D2692
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111217-4276-0000-0000-00003890854C
-Message-Id: <e8cb8ac1-b54e-ce15-e1ea-6131b7386342@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-12_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=48 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=617 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911120151
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,120 +84,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Reza Arbab <arbab@linux.ibm.com>, groug@kaod.org, alastair@au1.ibm.com
+Cc: netdev <netdev@vger.kernel.org>, David Miller <davem@davemloft.net>,
+ Eric Dumazet <eric.dumazet@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 27/09/2019 à 08:54, Alexey Kardashevskiy a écrit :
+On 11/11/19 9:58 PM, Abdul Haleem wrote:
+> Greeting's
+> 
+> I see a build failure for net-next branch on my Power 8 system
+> 
+> 13:25:10 ERROR| [stderr] ./include/linux/u64_stats_sync.h: In function 64_stats_read�:
+> 13:25:10 ERROR| [stderr] ./include/linux/u64_stats_sync.h:80:2: warning: passing argument 1 of 鈥榣ocal_read鈥� discards 鈥榗onst鈥� qualifier from pointer target type [enabled by default]
+> 13:25:10 ERROR| [stderr]   return local64_read(&p->v);
+> 13:25:10 ERROR| [stderr]   ^
+> 13:25:10 ERROR| [stderr] In file included from ./include/asm-generic/local64.h:22:0,
+> 13:25:10 ERROR| [stderr]                  from ./arch/powerpc/include/generated/asm/local64.h:1,
+> 13:25:10 ERROR| [stderr]                  from ./include/linux/u64_stats_sync.h:72,
+> 13:25:10 ERROR| [stderr]                  from ./include/linux/cgroup-defs.h:20,
+> 13:25:10 ERROR| [stderr]                  from ./include/linux/cgroup.h:28,
+> 13:25:10 ERROR| [stderr]                  from ./include/linux/memcontrol.h:13,
+> 13:25:10 ERROR| [stderr]                  from ./include/linux/swap.h:9,
+> 13:25:10 ERROR| [stderr]                  from ./include/linux/suspend.h:5,
+> 13:25:10 ERROR| [stderr]                  from init/do_mounts.c:7:
+> 13:25:10 ERROR| [stderr] ./arch/powerpc/include/asm/local.h:20:24: note: expected 鈥榮truct local_t *鈥� but argument is of type 鈥榗onst struct local_t *鈥�
+> 13:25:10 ERROR| [stderr]  static __inline__ long local_read(local_t *l)
+> 13:25:10 ERROR| [stderr]                         ^
+> 13:25:11 ERROR| [stderr] In file included from ./include/linux/cgroup-defs.h:20:0,
+> 13:25:11 ERROR| [stderr]                  from ./include/linux/cgroup.h:28,
+> 13:25:11 ERROR| [stderr]                  from ./include/linux/hugetlb.h:9,
+> 13:25:11 ERROR| [stderr]                  from arch/powerpc/kvm/book3s_64_vio_hv.c:16:
+> 13:25:11 ERROR| [stderr] ./include/linux/u64_stats_sync.h: In function 鈥榰64_stats_read鈥�:
+> 13:25:11 ERROR| [stderr] ./include/linux/u64_stats_sync.h:80:2: error: passing argument 1 of 鈥榣ocal_read鈥� discards 鈥榗onst鈥� qualifier from pointer target type [-Werror]
+> 13:25:11 ERROR| [stderr]   return local64_read(&p->v);
+> 13:25:11 ERROR| [stderr]   ^
+> 
+> I see some recent code changes here
+> 
+> 9dfd871481c8e9c512938e9ce632beed645363e0 Merge branch 'u64_stats_t'
+> fd2f4737870eb866537fbbffa2b59414b9b0c0a2 net: use u64_stats_t in struct
+> pcpu_lstats
+> 5260dd3ed1ff7eba39251b28977e4d8950e2f099 tun: switch to u64_stats_t
+> 316580b69d0a7aeeee5063af47438b626bc47cbd u64_stats: provide u64_stats_t
+> type
 > 
 > 
-> On 27/09/2019 03:15, Frederic Barrat wrote:
->>
->>
->> Le 26/09/2019 à 18:44, Andrew Donnellan a écrit :
->>> On 9/9/19 5:45 pm, Frederic Barrat wrote:
->>>> Taking a reference on the pci_dev structure was required with initial
->>>> commit 184cd4a3b962 ("powerpc/powernv: PCI support for p7IOC under
->>>> OPAL v2"), where we were storing the pci_dev in the pci_dn structure.
->>>>
->>>> However, the pci_dev was later removed from the pci_dn structure, but
->>>> the reference was kept. See commit 902bdc57451c ("powerpc/powernv/idoa:
->>>> Remove unnecessary pcidev from pci_dn").
->>>>
->>>> The pnv_ioda_pe structure life cycle is the same as the pci_dev
->>>> structure, the PE is freed when the device is released. So we don't
->>>> need a reference for the pci_dev stored in the PE, otherwise the
->>>> pci_dev will never be released. Which is not really a surprise as the
->>>> comment (removed here as no longer needed) was stating as much.
->>>>
->>>> Fixes: 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary pcidev from pci_dn")
->>>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->>>> ---
->>>>    arch/powerpc/platforms/powernv/pci-ioda.c | 11 +----------
->>>>    1 file changed, 1 insertion(+), 10 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
->>>> index d8080558d020..92767f006f20 100644
->>>> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
->>>> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
->>>> @@ -1062,14 +1062,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->>>>            return NULL;
->>>>        }
->>>> -    /* NOTE: We get only one ref to the pci_dev for the pdn, not for the
->>>> -     * pointer in the PE data structure, both should be destroyed at the
->>>> -     * same time. However, this needs to be looked at more closely again
->>>> -     * once we actually start removing things (Hotplug, SR-IOV, ...)
->>>> -     *
->>>> -     * At some point we want to remove the PDN completely anyways
->>>> -     */
->>>> -    pci_dev_get(dev);
->>>>        pdn->pe_number = pe->pe_number;
->>>>        pe->flags = PNV_IODA_PE_DEV;
->>>>        pe->pdev = dev;
->>>> @@ -1084,7 +1076,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->>>>            pnv_ioda_free_pe(pe);
->>>>            pdn->pe_number = IODA_INVALID_PE;
->>>>            pe->pdev = NULL;
->>>> -        pci_dev_put(dev);
->>>>            return NULL;
->>>>        }
->>>> @@ -1228,7 +1219,7 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
->>>>                 */
->>>>                dev_info(&npu_pdev->dev,
->>>>                    "Associating to existing PE %x\n", pe_num);
->>>> -            pci_dev_get(npu_pdev);
->>>> +            pci_dev_get(npu_pdev); // still needed after 902bdc57451c ?
->>>
->>> Did you mean to leave that comment in?
->>
->> Yes, I assumed the series wouldn't get in on the first try and a nvlink-minded developer would weigh in :)
-> 
-> I am looking at it and I am still not so sure what exactly guarantees that lifetime(@dev) == lifetime(@pe). For example,
-> sriov_disable() removes VFs first, and only then releases PEs so there is a window when we may have a stale pdev. Not sure.
 
+Fix has been sent few days ago.
 
-Indeed, for SRIOV, PE life-cycle is handled differently. And hopefully 
-correctly, but I don’t think this patch alters it.
+For some reason the linuxppc-dev@lists.ozlabs.org  list has not received the patch.
 
-I was discussing with Greg about it, as he had to look in that area in 
-the past. My understanding is that this patch is ok as it follows the 
-initial comment in pnv_ioda_setup_dev_PE() that we don’t need to get a 
-reference for the PE, it makes sense and I could trace the origin of the 
-pci_dev_get() and it seemed like it should have been removed in a 
-previous patch (902bdc57451c).
+From 47c47befdcf31fb8498c9e630bb8e0dc3ef88079 Mon Sep 17 00:00:00 2001
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 8 Nov 2019 06:04:35 -0800
+Subject: [PATCH] powerpc: add const qual to local_read() parameter
 
-However, one question is whether this patch breaks nvlink and if nvlink 
-assumes the devices won’t go away because we explicitly take a reference 
-forever. In npu_dma.c, there are 2 functions which allow to find the GPU 
-associated to a npu device, and vice-versa. Both functions return a 
-pointer to a struct pci_dev, but they don’t take a reference on the 
-device being returned. So that seems dangerous. I’m probably missing 
-something.
+A patch in net-next triggered a compile error on powerpc.
 
-Alexey, Alistair: what, if anything, guarantees, that the npu or gpu 
-devices stay valid. Is it because we simply don’t provide any means to 
-get rid of them ? Otherwise, don’t we need the callers of 
-pnv_pci_get_gpu_dev() and pnv_pci_get_npu_dev() to worry about reference 
-counting ? I’ve started looking into it and the changes are scary, which 
-explains Greg’s related commit 02c5f5394918b.
+This seems reasonable to relax powerpc local_read() requirements.
 
-   Fred
+Fixes: 316580b69d0a ("u64_stats: provide u64_stats_t type")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: kbuild test robot <lkp@intel.com>
+Cc:	Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:	Paul Mackerras <paulus@samba.org>
+Cc:	Michael Ellerman <mpe@ellerman.id.au>
+Cc:	linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/include/asm/local.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-
-> 
->>
->>    Fred
->>
->>
->>>>                npu_pdn = pci_get_pdn(npu_pdev);
->>>>                rid = npu_pdev->bus->number << 8 | npu_pdn->devfn;
->>>>                npu_pdn->pe_number = pe_num;
->>>>
->>>
->>
-> 
+diff --git a/arch/powerpc/include/asm/local.h b/arch/powerpc/include/asm/local.h
+index fdd00939270bf08113b537a090d6a6e34a048361..bc4bd19b7fc235b80ec1132f44409b6fe1057975 100644
+--- a/arch/powerpc/include/asm/local.h
++++ b/arch/powerpc/include/asm/local.h
+@@ -17,7 +17,7 @@ typedef struct
+ 
+ #define LOCAL_INIT(i)	{ (i) }
+ 
+-static __inline__ long local_read(local_t *l)
++static __inline__ long local_read(const local_t *l)
+ {
+ 	return READ_ONCE(l->v);
+ }
+-- 
+2.24.0.432.g9d3f5f5b63-goog
 
