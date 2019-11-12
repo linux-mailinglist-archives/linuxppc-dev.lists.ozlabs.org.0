@@ -1,88 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1680F8B29
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 09:55:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC73F8B68
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 10:10:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47C1mn3fVfzF45x
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 19:55:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47C25R4DqPzF52b
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 20:10:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
+ envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.b="TXMJi5aa"; 
+ dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47C1j32WG3zF4ly
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 19:52:38 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xAC8lPMZ006417
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 03:52:35 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w7qddv7xs-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 03:52:35 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 12 Nov 2019 08:52:33 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 12 Nov 2019 08:52:29 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAC8qSKA55116014
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Nov 2019 08:52:28 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 43A2E11C04A;
- Tue, 12 Nov 2019 08:52:28 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F0B6411C05E;
- Tue, 12 Nov 2019 08:52:27 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 12 Nov 2019 08:52:27 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47C23B4ljfzDqRj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 20:08:17 +1100 (AEDT)
+Received: from zn.tnic (p2E584DC9.dip0.t-ipconnect.de [46.88.77.201])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id CBCDAA004F;
- Tue, 12 Nov 2019 19:52:23 +1100 (AEDT)
-To: stable@vger.kernel.org
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Subject: [4.4] Backport request: powerpc: Fix compiling a BE kernel with a
- powerpc64le toolchain
-Date: Tue, 12 Nov 2019 19:52:24 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B7B2B1EC0CA6;
+ Tue, 12 Nov 2019 10:08:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1573549692;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OgSHUZN/Tc3i/urvdGyHhzYbE4TfA+OAcjxyh6wdl0g=;
+ b=TXMJi5aaVamyTSkyaP9txWDmgil75yVNGXtDUK2qSQN3N80SBfbaeRkTqeGgjmWl075E2M
+ Kt8DTCIeiyBtyF1bzFcLzy3ueZApeoMic9zdYDtq0MMAzlOQB5cV9nqr1C/S/PPR32Bt9a
+ r2knCvp2XhycAsilLgrafbGrFBj7hRs=
+Date: Tue, 12 Nov 2019 10:07:36 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
+Message-ID: <20191112090736.GA32336@zn.tnic>
+References: <20191011000609.29728-1-keescook@chromium.org>
+ <20191011000609.29728-12-keescook@chromium.org>
+ <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com>
+ <201911110922.17A2112B0@keescook>
+ <CAMuHMdUJ8QPvqf51nVmOg1Zm20SNT7pXR72z=qmco=ecwawZ7A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111208-0020-0000-0000-000003857138
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111208-0021-0000-0000-000021DB77DF
-Message-Id: <1a589ec5-7df2-788a-e354-50386ba84ffa@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-12_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911120083
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdUJ8QPvqf51nVmOg1Zm20SNT7pXR72z=qmco=ecwawZ7A@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,36 +64,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Michal Simek <monstr@monstr.eu>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ linux-xtensa@linux-xtensa.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Parisc List <linux-parisc@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ alpha <linux-alpha@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, Will Deacon <will@kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-c6x-dev@linux-c6x.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear stable team
+On Mon, Nov 11, 2019 at 07:08:51PM +0100, Geert Uytterhoeven wrote:
+> vmlinux-std.lds: All other classic 680x0 targets with an MMU, e.g. plain
+>                  defconfig aka multi_defconfig.
 
-Please backport the following patches.
+FWIW, the defconfig doesn't build with the cross compiler¹ here, even with Kees'
+patch applied but for a different reason:
 
-Commits:
+$ make.cross ARCH=m68k defconfig
+...
 
-- 164af597ce945751e2dcd53d0a86e84203a6d117
-   ("powerpc/Makefile: Use cflags-y/aflags-y for setting endian options")
-
-- 4dc831aa88132f835cefe876aa0206977c4d7710
-   ("powerpc: Fix compiling a BE kernel with a powerpc64le toolchain")
-
-Stable tree targeted: 4.4 (applies cleanly)
-
-Justification: This fixes the build when attempting to compile a BE 
-powerpc kernel using a bi-endian toolchain that defaults to LE, which is 
-a common setup.
-
-I have tested that these patches apply cleanly and appear to rectify the 
-build failure on my machine.
+$make.cross ARCH=m68k 2>w.log
+...
+drivers/video/fbdev/c2p_planar.o: In function `transp8':
+c2p_planar.c:(.text+0x13a): undefined reference to `c2p_unsupported'
+c2p_planar.c:(.text+0x1de): undefined reference to `c2p_unsupported'
+drivers/video/fbdev/c2p_iplan2.o: In function `transp4x.constprop.0':
+c2p_iplan2.c:(.text+0x98): undefined reference to `c2p_unsupported'
+make: *** [Makefile:1094: vmlinux] Error 1
 
 
-Thanks,
+¹ https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.1.0/
+
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
