@@ -1,57 +1,157 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC327F8601
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 02:23:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4D0F86D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 03:18:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BqkL6xpGzDrhb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 12:23:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Brxq2jpFzDrBH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 13:18:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="vJTUM9A6"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Bqgy4Hk6zF51H
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 12:21:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="MoSZd7gI"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 47Bqgy17VBz9sPF; Tue, 12 Nov 2019 12:21:02 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47Bqgx1Ywjz9sP4;
- Tue, 12 Nov 2019 12:21:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1573521661;
- bh=F9ZI7aJXVRSlCItRZVrAQItH8rcNwZbNz7XhEYGd5MM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MoSZd7gInPCPqS8Y0iT98x1HK1vNNhVr/zZB4JiXZjLV1BMkNQT13BWWbUIqA0zBO
- JDFYy4EazB84GH1G6G2PPmoRnt0K9ChPMSxwpRYUbhePPcLg2K+M9sswNV1nyfWvTI
- Xiid+IBG0a/bOQycR7OvXIxjUmVwYErB+vS3lX5gZDZLOtkVAEdlpk1077UIzTr0z6
- GCiinP46ZWqf+B8+TrbDVVVpiaGIaZmTjGi0PuBExuFganVMoBm9VcqB6Xd+K6J74z
- TaxZH44Ms9pe5myYbyUf7AMTY7fv1Bd6UIx9AqhJkeRwsRLvKASWbtQuCphrm0eYQx
- 03lK0YzT3KyTg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v9 0/4] powerpc: expose secure variables to the kernel and
- userspace
-In-Reply-To: <216572e5-d8c6-f181-3ec0-b4a840f20f46@linux.microsoft.com>
-References: <1573441836-3632-1-git-send-email-nayna@linux.ibm.com>
- <216572e5-d8c6-f181-3ec0-b4a840f20f46@linux.microsoft.com>
-Date: Tue, 12 Nov 2019 12:21:00 +1100
-Message-ID: <87sgmt3n5v.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BrvW4s6RzF4y6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 13:16:05 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id 15so10779193pgh.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 18:16:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=vg5GZn7cuA8a+qTAsby63wHy/0gMWEVsLgDaVmj9nBU=;
+ b=vJTUM9A6tYqE1tXPkPqWC1upIDkchYjmgSJY2ET75SXGm3t64+GtYRARfiwwCaMbaL
+ 5y0ZKbPJR+ITL3AcYOrrZJn/p3A9KR6K6g5/IL2VQ8dpFlBV/A5HWYmEq1ygCWczrdM0
+ 5dzzX8ci24ctb6hKrnOtXz0MItgB6GLNRsBVjkSgelNVkgCs/fg0MMq8ZyHiHcBSCTes
+ Cjg7lVzNjlkTXYK8FZTzPixLhpJ9tjKCxCRjyjK5Pe441N+q/vkG8DZr1qxdFtrPe1fC
+ Hq1Pwpno96RRQvRxs83VX7xtmCOCc4QZTrjWDpd9BDXF0Q0fV2v+AGehfr1B9q++macI
+ TLwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=vg5GZn7cuA8a+qTAsby63wHy/0gMWEVsLgDaVmj9nBU=;
+ b=FZtj29C+J93ndIRZX6Ov/ZDuXO+txiBIbELgI9JCKDkJycWgNRqZ6QCeCSlhV4rLmL
+ eDo6ro6Q4jlba1cU10sB6dQiGjNMb6uZB0dOpMeoeSu2vSmJR9mA31rwxOjSnmZvMkTB
+ WTWAjKr0Vw7dfwtrsXX69wA1z9jK61ncKsLkP+KD8S/bQ0xhQHAKSROi+sLO1MTeMMeO
+ PW8v6u6gSLioCAzYr9Jx4O9WZ1XgmlTyKjebJqpb3bRE7fKmdoBU0NgMPy2L7U1kpjAz
+ IxzFsuA5NHUMDDjE7fQljEnpVK/K+SXOYbdgo+0ytlKfIRuAG5fQLDfyKJmpH+nfKjy6
+ Kx6A==
+X-Gm-Message-State: APjAAAUoPmweawWnYaXLmsWdg7dKMgCXyrbagct1io90TtegvmmOjoKR
+ IvNtLCrNaZt595cAlwNEwH8SVw==
+X-Google-Smtp-Source: APXvYqw7IyPaTXwDKZ1jXpyEq3RKCUkznhjKMammXmxjWbNuCxFE4sLtke9F+j71WlO2vsWMFVmGcw==
+X-Received: by 2002:a63:4951:: with SMTP id y17mr26558951pgk.231.1573524962326; 
+ Mon, 11 Nov 2019 18:16:02 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id p18sm12601978pff.9.2019.11.11.18.15.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Nov 2019 18:16:01 -0800 (PST)
+Subject: Re: [PATCH 2/2] vfio/pci: Introduce OpenCAPI devices support.
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ christophe lombard <clombard@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com, groug@kaod.org,
+ clg@kaod.org
+References: <20191024132805.30701-1-clombard@linux.vnet.ibm.com>
+ <20191024132805.30701-3-clombard@linux.vnet.ibm.com>
+ <10424e1f-1b65-9ce7-a690-efaa3ccc5b37@ozlabs.ru>
+ <7376a8e2-262f-49a8-ba5a-8c9d1f2d09a1@linux.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <8dd01439-a141-a0b6-bb10-7b3a320c7a04@ozlabs.ru>
+Date: Tue, 12 Nov 2019 13:15:57 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <7376a8e2-262f-49a8-ba5a-8c9d1f2d09a1@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,33 +163,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, Paul Mackerras <paulus@samba.org>,
- Jeremy Kerr <jk@ozlabs.org>, Elaine Palmer <erpalmer@us.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Oliver O'Halloran <oohall@gmail.com>, George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
-> On 11/10/19 7:10 PM, Nayna Jain wrote:
->
-> Hi Nayna,
->
->> In order to verify the OS kernel on PowerNV systems, secure boot requires
->> X.509 certificates trusted by the platform. These are stored in secure
->> variables controlled by OPAL, called OPAL secure variables. In order to
->> enable users to manage the keys, the secure variables need to be exposed
->> to userspace.
-> Are you planning to split the patches in this patch set into smaller 
-> chunks so that it is easier to code review and also perhaps make it 
-> easier when merging the changes?
 
-I don't think splitting them would add any value. They're already split
-into the firmware specific bits (patch 1), and the sysfs parts (patch
-2), which is sufficient for me.
 
-cheers
+On 11/11/2019 15:28, Andrew Donnellan wrote:
+> On 11/11/19 3:17 pm, Alexey Kardashevskiy wrote:
+>> What driver do you expect to work with this in the guest?
+>> arch/powerpc/platforms/powernv/ocxl.c is a powernv-tied driver which
+>> calls into OPAL so it won't work on pseries.
+> 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=135087&state=*
+> 
+> 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=137704&state=*
+
+This does not help much and this is definitely outdated as those
+proposed hcalls do not match ioctls proposed by this patchset.
+
+
+-- 
+Alexey
