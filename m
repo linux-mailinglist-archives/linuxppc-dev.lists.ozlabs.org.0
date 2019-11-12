@@ -2,65 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9652F8874
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 07:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DEEF8876
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 07:24:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ByM51HdKzF4hs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 17:21:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ByPV3W5NzF3Yp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 17:23:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=arista.com (client-ip=2a00:1450:4864:20::344;
- helo=mail-wm1-x344.google.com; envelope-from=dima@arista.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=sergey.senozhatsky.work@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=arista.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=arista.com header.i=@arista.com header.b="MX42aMTT"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="cdGWTYNC"; 
  dkim-atps=neutral
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BsRY1W4bzF3d6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 13:40:24 +1100 (AEDT)
-Received: by mail-wm1-x344.google.com with SMTP id l17so1429422wmh.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 18:40:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=arista.com; s=googlenew;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=hc0bl6ua3Awo0puTEJJtiCFLlsTJGov09J6GyMYDUcw=;
- b=MX42aMTTzAgzmolo19ziCaVvJW01j4llkcsSSsPBgIZf5M/QJqFnu0ykgQ+YU9I1XM
- lWWUfFOOmvWQUbOV/+iKy4yX6WRH0x7F+7sbAobnLPJdwSzb9YWyJ9/pnJvSWZVMB+xV
- UFEneok+5nQrKqWY1H/ryexuorVth0ci9XQccgC0yNGEatwsWoLWkeJcz3zYnXhenkJH
- nhLbJhqGH8CSvC3ekwmNTkFJs9KRa26JVi5KOJ0GN3lmDlPGH14xef5YqFU0Sk8qUi0p
- NtXZ7DYgZXwHf2rN/1LtOFtVEw8aJlkAZJ8tf3acCKNzLndcz00BKo1YrVsWG4zo53JF
- Pi/g==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BvnF2cj1zF4sK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 15:25:52 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id az9so7978664plb.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 20:25:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=9VefD4i9ErvjrjSu5lBHBfa2VMuQnRlhyfcHWoSsFGA=;
+ b=cdGWTYNC6NHRu+kvA4I6kS1Y2LfiO2jKF0r2reR+0mRqcG8yKudKBCw9I9DOXABIX4
+ /3TUFbNC4J3e6CiNMFB22KOrjhFeNSMw6A4f5zE4eujUVPhwdAy4UE6JiknhjlsRGWe7
+ RTgQRbIczKqjQpk9q9jHQE31BO+69ykoGYVcUuJlUop2q+ad5Zn3tErki59ff20RUtZo
+ yWETgjDNltG315ymhYBMnymIi7dXr1HTD7KD2QIijuj5xF7vcEzw9cliyVtugI35e748
+ tq7YxpziGywkq1lpdx1pl1YBrcMuX71SP1knncXeWdL4sRO4vx39eBLBEYWFTo///pwr
+ NCHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=hc0bl6ua3Awo0puTEJJtiCFLlsTJGov09J6GyMYDUcw=;
- b=crgpXI7WGsgiq1Z8GwQDrE8mhEzlaFmTm+7VDgHEo2YueetfneLtqD9aPvq1KEdEIG
- PVbAgMn2A3iOHc3VcvfZMw0cRNN8EhLb9Duv/Q5TDm+JjGPctbIRWnDrnnDUjiR3mHr/
- YcTOc05suVrio0yrMIPTPA18LOhyWNN5LcOvPZYhsHFeeXByh5UCZyqPgpz3sdYOrbvv
- 2JLGYQorirzjz83qIHLpDT9uPtUETUk+tSaOZIJVROoOBrroN4nQzWq1ZveofheRjiAk
- Qf4BwSYxdkd5wULVQiF33s4UxXg7AY+eIELMEz+XU6aFelNVID/V4EPn5zUBdjHM4nnz
- D+nw==
-X-Gm-Message-State: APjAAAX1WktSQWoe+ueQ9WQk0UYlpceh7aGxuKsLu0Oe+1y2PNuXvPM2
- dw6S7RkqiKx2khIxBPJOrATqkg==
-X-Google-Smtp-Source: APXvYqwGQmDILzErOejMnS6vcYmyu3aXwuweLJ3fDyVGcyV1rhcTRlJUkjSBJvf4yqYURAoU8N6Q/w==
-X-Received: by 2002:a7b:c211:: with SMTP id x17mr1567811wmi.71.1573526420054; 
- Mon, 11 Nov 2019 18:40:20 -0800 (PST)
-Received: from [10.83.36.153] ([217.173.96.166])
- by smtp.gmail.com with ESMTPSA id u26sm1511046wmj.9.2019.11.11.18.40.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Nov 2019 18:40:19 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=9VefD4i9ErvjrjSu5lBHBfa2VMuQnRlhyfcHWoSsFGA=;
+ b=LABLG7uCaq11MvoqPUIRB4RpY/N/m1WeHR3UEdLnP24LtvV+jqtPq9gt1iiQQM5oE3
+ OZYwytPHL3YBVg9wkxCJmMnLv/cDX4tEtJFFUlN1nZirkIGpS+0lxc5FEWvZ7W+TFatJ
+ fDZgOizbFhpBXq4oZx9X6PbWtEoNp+ySLqAWf97jxdcftRFAyCbDXtePrmqs9LdK2Nim
+ AaTkWqlqnv8ftt9ZwPRSrR0hWSZoYyaYtKGarqbDseTdFAm+OWNEuIP9+J47f1XqNHgI
+ PsYUqDPyZmrlho7Q2myEdsYl+ykJOQhO1F/9ZT2vNhg7LKkqNumt3sPOwJZIcC1Ju/V8
+ q04w==
+X-Gm-Message-State: APjAAAVws+SsnlQo71hor39lNlT6V5tHuSah/RCuK6L00WzH8W2eldxA
+ TlIfhS6uhmWnJ3i6qHVd38U=
+X-Google-Smtp-Source: APXvYqyjkigrHz92j3yARMh7vwLk0eQQU3iBJc8XJ3FFSXhKkmIaB79Wx/YFJE8etx6MkatMc7zyFg==
+X-Received: by 2002:a17:902:246:: with SMTP id
+ 64mr28628529plc.339.1573532749511; 
+ Mon, 11 Nov 2019 20:25:49 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:250d:e71d:5a0a:9afe])
+ by smtp.gmail.com with ESMTPSA id 186sm23754823pfb.99.2019.11.11.20.25.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Nov 2019 20:25:48 -0800 (PST)
+Date: Tue, 12 Nov 2019 13:25:46 +0900
+From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Dmitry Safonov <dima@arista.com>
 Subject: Re: [PATCH 00/50] Add log level to show_stack()
-To: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Message-ID: <20191112042546.GA119579@google.com>
 References: <20191106030542.868541-1-dima@arista.com>
  <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
  <20191108103719.GB175344@google.com>
@@ -68,16 +70,12 @@ References: <20191106030542.868541-1-dima@arista.com>
  <20191111012336.GA85185@google.com>
  <13e72b62-c842-8ed5-5b41-bc1692b28f53@arista.com>
  <20191112021747.GA68506@google.com>
-From: Dmitry Safonov <dima@arista.com>
-Message-ID: <25cb9647-007a-9c18-4784-49c0aef4f54b@arista.com>
-Date: Tue, 12 Nov 2019 02:40:11 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+ <25cb9647-007a-9c18-4784-49c0aef4f54b@arista.com>
 MIME-Version: 1.0
-In-Reply-To: <20191112021747.GA68506@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <25cb9647-007a-9c18-4784-49c0aef4f54b@arista.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Mailman-Approved-At: Tue, 12 Nov 2019 17:17:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -90,14 +88,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
- Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Vincent Guittot <vincent.guittot@linaro.org>,
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Ben Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, Vincent Guittot <vincent.guittot@linaro.org>,
  Paul Burton <paulburton@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
  Mel Gorman <mgorman@suse.de>, Jiri Slaby <jslaby@suse.com>,
  Matt Turner <mattst88@gmail.com>, uclinux-h8-devel@lists.sourceforge.jp,
- Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org,
+ Petr Mladek <pmladek@suse.com>, linux-pm@vger.kernel.org,
  Heiko Carstens <heiko.carstens@de.ibm.com>, linux-um@lists.infradead.org,
  Thomas Gleixner <tglx@linutronix.de>,
  Dietmar Eggemann <dietmar.eggemann@arm.com>,
@@ -129,7 +128,7 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
  Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
  linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
  "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
- Petr Mladek <pmladek@suse.com>, Peter Zijlstra <peterz@infradead.org>,
+ Len Brown <len.brown@intel.com>, Peter Zijlstra <peterz@infradead.org>,
  "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
  linux-riscv@lists.infradead.org,
  Anton Ivanov <anton.ivanov@cambridgegreys.com>,
@@ -147,34 +146,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sergey,
-
-On 11/12/19 2:17 AM, Sergey Senozhatsky wrote:
-> On (19/11/11 19:47), Dmitry Safonov wrote:
+On (19/11/12 02:40), Dmitry Safonov wrote:
 [..]
->> What I'm going to do - is to fix all build and reported issues, I'll
->> send v2 this week and feel free to NAK it, I will forget about those
->> patches and won't be offended.
-> 
-> Lovely.
-> And - no, I'm not going to NAK platform specific changes. Just so you know.
-> 
-> *All* I'm talking about is an alternative, less "go and touch a ton of
-> platform code" approach. The argument "I patched so many files that I'm
-> not even going to discuss anything now" is not productive, to say the
-> least. Hope this clarifies.
+> In my point of view the cost of one-time [mostly build] testing every
+> architecture is cheaper than introducing some new smart code that will
+> live forever.
 
-It probably was a wrong impression from the both sides.
-My impression was "You touch every architecture - we won't even consider
-that". Sorry for the the wrong impression from my side - I'm open for
-discussion.
+Well, there may be the need to pass loglevel deeper due to "hey __show_stack()
+on that arch invokes bar(), which invokes foo() and now foo() does printk(),
+but we don't see it". The context which decided to backtaraces decided
+to do so for a reason, probably, so I guess we can look at it as "a special
+error reporting code block".
 
-In my point of view the cost of one-time [mostly build] testing every
-architecture is cheaper than introducing some new smart code that will
-live forever. Though, again you and Petr understand more than me in
-printk() code, so I'm not any insisting.
+The proposed patch set passes loglevel via slightly unusual channel -
+via sprintf(). We probably can do it, but I would prefer to minimize
+the number of such printk-s in the kernel. The code snippet which I
+posted also does pretty unusual thing w.r.t loglevel. Both approaches
+are "non-standard" from that POV.
 
-I'll reply to your suggestion tomorrow, it's a bit late in my tz.
+> I'll reply to your suggestion tomorrow, it's a bit late in my tz.
 
-Thanks,
-          Dmitry
+Sure.
+
+To anyone who will comment on that code snippet - this is not a
+"look, here is what you need to do" type of proposal. Just an
+alternative approach with its pros and cons.
+
+We had several requests over the years to have something like "forcibly
+allow all underlying printk-s from here to here" or "forcibly suppress
+or postpone underlying printk-s from here to here", etc.
+
+	-ss
