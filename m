@@ -1,68 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDC9F85B2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 01:57:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E0FF85DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 02:06:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Bq8t53B7zF4w2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 11:57:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BqLl64MCzF4yh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 12:06:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=dmitry.torokhov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="jeDFucw7"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dfVyYcPQ"; 
  dkim-atps=neutral
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Bp3D1gzJzF1Qk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 11:07:35 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dc9f7c50000>; Mon, 11 Nov 2019 16:07:33 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Mon, 11 Nov 2019 16:07:30 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Mon, 11 Nov 2019 16:07:30 -0800
-Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 12 Nov
- 2019 00:07:30 +0000
-Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
- Frontend Transport; Tue, 12 Nov 2019 00:07:29 +0000
-Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
- rnnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5dc9f7c00003>; Mon, 11 Nov 2019 16:07:29 -0800
-From: John Hubbard <jhubbard@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 23/23] mm/gup: remove support for gup(FOLL_LONGTERM)
-Date: Mon, 11 Nov 2019 16:07:00 -0800
-Message-ID: <20191112000700.3455038-24-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191112000700.3455038-1-jhubbard@nvidia.com>
-References: <20191112000700.3455038-1-jhubbard@nvidia.com>
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Bppr5j2szF4pg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 11:41:52 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id d29so8576169plj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 16:41:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=xm0oEa6ohv0s8ocGEmhFk7hVOJ6zProJv5uL2Qxk76k=;
+ b=dfVyYcPQvxhTCuUDi9uqsHpozU+XWgYqtf63Gu7RLbCacf7uHO/zOvbbNWrHJ8gV/G
+ eTHlWuUlJGWLM64ayzpdspK5OwuJkxuOYOsdlm9X/rCPo3t7MCnw8dpbyRLIQFYeQbO3
+ sEuFHiLWTi+Kz54vZbhIeiRniDRufId009QEGYmMTKitR604tx/JXCzii0JlHXqvB9Fg
+ 9Ha89fSr8NOiD4ylF7mvwLL81DYrA3ZNgnk1jz/xtV0wCL2LuBJvaFWaImjRpqSYEPbr
+ r1pOwnr8XbkYY6T+ej0kUUHgZsipjahPNOnxlolF0KNSNcx7//+Hgkw9m8JfZdiezyFx
+ iZGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=xm0oEa6ohv0s8ocGEmhFk7hVOJ6zProJv5uL2Qxk76k=;
+ b=MOhKOgG++12snE+3iFcUYK83SajeSpvqklSDZLkrp/2prYOfG113NvMpXE6zfQj3JP
+ +ct8I69dP4rE41JQyq6QkwCh6vSo4d3IHwtty6yyvXkuAWDhpfsam1wYqasF+3NRCydD
+ H/MerTSVDEe+MKwdC1jwNpVniydb16cyxmGGZXv27wD85/IiT/Lwmkm+4HKN6fvfB68Q
+ Q9/2xCtgwYnMYjSLSZ7DimbX8zzqszPYIMVOfY77xNyWv4+/OMpMoXVHpNQBpX0eG6JE
+ Tb+6BCTPdqg4wjx6CfblfRKFUk/K+kVJZ6RmwS1ANcG6SrNnH1Ty9VJ9ekjnjvDOdx79
+ 7DlQ==
+X-Gm-Message-State: APjAAAX+mstJi81shQH2qSayaRQQ54Z+ndVmdMd1hLfL7xwzokm/FKkt
+ cVhG1fPbmib0+rarzECA35g=
+X-Google-Smtp-Source: APXvYqwpiqUy+/0T8dSfETDMS1SVm8RLUGI8vCvLiPf8IFTTYf996luPqlcQKqdV0I8qJ68iHom3nw==
+X-Received: by 2002:a17:902:aa86:: with SMTP id
+ d6mr29485793plr.268.1573519306911; 
+ Mon, 11 Nov 2019 16:41:46 -0800 (PST)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+ by smtp.gmail.com with ESMTPSA id c9sm25669367pfb.114.2019.11.11.16.41.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Nov 2019 16:41:46 -0800 (PST)
+Date: Mon, 11 Nov 2019 16:41:44 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] macintosh/ams-input: switch to using input device
+ polling mode
+Message-ID: <20191112004144.GC192119@dtor-ws>
+References: <20191002214854.GA114387@dtor-ws>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1573517253; bh=cQGm03MwEI364eqhkDgW3lkBD2mDh5xmPmbbGUpAUxU=;
- h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
- In-Reply-To:References:MIME-Version:X-NVConfidentiality:
- Content-Transfer-Encoding:Content-Type;
- b=jeDFucw7tE0NfME1gtSntL7jl6FwAVKx401Zg0zd1OkOK23btFnhhwRkX1BypOId8
- tB5L/HA86k7OcI07xiKO7SPq60A52WvJh6+uA0reTiW0Z5JqnjbNT8xfKH/mHa0AAf
- LXGFigUduDHPhfFDSdZFC243oMyts/7+rCWm2Jy33t/ZP00CwXdKXT72ELCCro7Ypj
- RelyojEcjFUpR+VNp3Kz50mWDTbe3Hqv0UhXwYhoLmNdXakM0Dw9hV3hWsEAA2x0LI
- p1qiFqadYG8i1oiRlkGsryI6OZveEzbEGW+7+g6ht6r3kDox/sRMIxnR+qCRLVVO1J
- rLJMc31P/tZAA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191002214854.GA114387@dtor-ws>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,144 +82,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
- =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Jean Delvare <jdelvare@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that all other kernel callers of get_user_pages(FOLL_LONGTERM)
-have been converted to pin_longterm_pages(), lock it down:
+On Wed, Oct 02, 2019 at 02:48:54PM -0700, Dmitry Torokhov wrote:
+> Now that instances of input_dev support polling mode natively,
+> we no longer need to create input_polled_dev instance.
 
-1) Add an assertion to get_user_pages(), preventing callers from
-   passing FOLL_LONGTERM (in addition to the existing assertion that
-   prevents FOLL_PIN).
+Michael, could you please take this? Or I could push through my tree...
 
-2) Remove the associated GUP_LONGTERM_BENCHMARK test.
+Thanks!
 
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- mm/gup.c                                   | 8 ++++----
- mm/gup_benchmark.c                         | 9 +--------
- tools/testing/selftests/vm/gup_benchmark.c | 7 ++-----
- 3 files changed, 7 insertions(+), 17 deletions(-)
+> 
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> ---
+>  drivers/macintosh/Kconfig         |  1 -
+>  drivers/macintosh/ams/ams-input.c | 37 +++++++++++++++----------------
+>  drivers/macintosh/ams/ams.h       |  4 ++--
+>  3 files changed, 20 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
+> index 574e122ae105..da6a943ad746 100644
+> --- a/drivers/macintosh/Kconfig
+> +++ b/drivers/macintosh/Kconfig
+> @@ -247,7 +247,6 @@ config PMAC_RACKMETER
+>  config SENSORS_AMS
+>  	tristate "Apple Motion Sensor driver"
+>  	depends on PPC_PMAC && !PPC64 && INPUT && ((ADB_PMU && I2C = y) || (ADB_PMU && !I2C) || I2C)
+> -	select INPUT_POLLDEV
+>  	help
+>  	  Support for the motion sensor included in PowerBooks. Includes
+>  	  implementations for PMU and I2C.
+> diff --git a/drivers/macintosh/ams/ams-input.c b/drivers/macintosh/ams/ams-input.c
+> index 06a96b3f11de..0da493d449b2 100644
+> --- a/drivers/macintosh/ams/ams-input.c
+> +++ b/drivers/macintosh/ams/ams-input.c
+> @@ -25,9 +25,8 @@ MODULE_PARM_DESC(invert, "Invert input data on X and Y axis");
+>  
+>  static DEFINE_MUTEX(ams_input_mutex);
+>  
+> -static void ams_idev_poll(struct input_polled_dev *dev)
+> +static void ams_idev_poll(struct input_dev *idev)
+>  {
+> -	struct input_dev *idev = dev->input;
+>  	s8 x, y, z;
+>  
+>  	mutex_lock(&ams_info.lock);
+> @@ -59,14 +58,10 @@ static int ams_input_enable(void)
+>  	ams_info.ycalib = y;
+>  	ams_info.zcalib = z;
+>  
+> -	ams_info.idev = input_allocate_polled_device();
+> -	if (!ams_info.idev)
+> +	input = input_allocate_device();
+> +	if (!input)
+>  		return -ENOMEM;
+>  
+> -	ams_info.idev->poll = ams_idev_poll;
+> -	ams_info.idev->poll_interval = 25;
+> -
+> -	input = ams_info.idev->input;
+>  	input->name = "Apple Motion Sensor";
+>  	input->id.bustype = ams_info.bustype;
+>  	input->id.vendor = 0;
+> @@ -75,28 +70,32 @@ static int ams_input_enable(void)
+>  	input_set_abs_params(input, ABS_X, -50, 50, 3, 0);
+>  	input_set_abs_params(input, ABS_Y, -50, 50, 3, 0);
+>  	input_set_abs_params(input, ABS_Z, -50, 50, 3, 0);
+> +	input_set_capability(input, EV_KEY, BTN_TOUCH);
+>  
+> -	set_bit(EV_ABS, input->evbit);
+> -	set_bit(EV_KEY, input->evbit);
+> -	set_bit(BTN_TOUCH, input->keybit);
+> +	error = input_setup_polling(input, ams_idev_poll);
+> +	if (error)
+> +		goto err_free_input;
+>  
+> -	error = input_register_polled_device(ams_info.idev);
+> -	if (error) {
+> -		input_free_polled_device(ams_info.idev);
+> -		ams_info.idev = NULL;
+> -		return error;
+> -	}
+> +	input_set_poll_interval(input, 25);
+>  
+> +	error = input_register_device(input);
+> +	if (error)
+> +		goto err_free_input;
+> +
+> +	ams_info.idev = input;
+>  	joystick = true;
+>  
+>  	return 0;
+> +
+> +err_free_input:
+> +	input_free_device(input);
+> +	return error;
+>  }
+>  
+>  static void ams_input_disable(void)
+>  {
+>  	if (ams_info.idev) {
+> -		input_unregister_polled_device(ams_info.idev);
+> -		input_free_polled_device(ams_info.idev);
+> +		input_unregister_device(ams_info.idev);
+>  		ams_info.idev = NULL;
+>  	}
+>  
+> diff --git a/drivers/macintosh/ams/ams.h b/drivers/macintosh/ams/ams.h
+> index fe8d596f9845..935bdd9cd9a6 100644
+> --- a/drivers/macintosh/ams/ams.h
+> +++ b/drivers/macintosh/ams/ams.h
+> @@ -1,6 +1,6 @@
+>  /* SPDX-License-Identifier: GPL-2.0 */
+>  #include <linux/i2c.h>
+> -#include <linux/input-polldev.h>
+> +#include <linux/input.h>
+>  #include <linux/kthread.h>
+>  #include <linux/mutex.h>
+>  #include <linux/spinlock.h>
+> @@ -51,7 +51,7 @@ struct ams {
+>  #endif
+>  
+>  	/* Joystick emulation */
+> -	struct input_polled_dev *idev;
+> +	struct input_dev *idev;
+>  	__u16 bustype;
+>  
+>  	/* calibrated null values */
+> -- 
+> 2.23.0.444.g18eeb5a265-goog
+> 
+> 
+> -- 
+> Dmitry
 
-diff --git a/mm/gup.c b/mm/gup.c
-index fc164c2ee6b5..db73ba216dff 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1743,11 +1743,11 @@ long get_user_pages(unsigned long start, unsigned l=
-ong nr_pages,
- 		struct vm_area_struct **vmas)
- {
- 	/*
--	 * FOLL_PIN must only be set internally by the pin_user_page*() and
--	 * pin_longterm_*() APIs, never directly by the caller, so enforce that
--	 * with an assertion:
-+	 * FOLL_PIN and FOLL_LONGTERM must only be set internally by the
-+	 * pin_user_page*() and pin_longterm_*() APIs, never directly by the
-+	 * caller, so enforce that with an assertion:
- 	 */
--	if (WARN_ON_ONCE(gup_flags & FOLL_PIN))
-+	if (WARN_ON_ONCE(gup_flags & (FOLL_PIN | FOLL_LONGTERM)))
- 		return -EINVAL;
-=20
- 	return __gup_longterm_locked(current, current->mm, start, nr_pages,
-diff --git a/mm/gup_benchmark.c b/mm/gup_benchmark.c
-index 8f980d91dbf5..679f0e6a0adb 100644
---- a/mm/gup_benchmark.c
-+++ b/mm/gup_benchmark.c
-@@ -6,7 +6,7 @@
- #include <linux/debugfs.h>
-=20
- #define GUP_FAST_BENCHMARK	_IOWR('g', 1, struct gup_benchmark)
--#define GUP_LONGTERM_BENCHMARK	_IOWR('g', 2, struct gup_benchmark)
-+/* Command 2 has been deleted. */
- #define GUP_BENCHMARK		_IOWR('g', 3, struct gup_benchmark)
- #define PIN_FAST_BENCHMARK	_IOWR('g', 4, struct gup_benchmark)
- #define PIN_LONGTERM_BENCHMARK	_IOWR('g', 5, struct gup_benchmark)
-@@ -28,7 +28,6 @@ static void put_back_pages(int cmd, struct page **pages, =
-unsigned long nr_pages)
-=20
- 	switch (cmd) {
- 	case GUP_FAST_BENCHMARK:
--	case GUP_LONGTERM_BENCHMARK:
- 	case GUP_BENCHMARK:
- 		for (i =3D 0; i < nr_pages; i++)
- 			put_page(pages[i]);
-@@ -97,11 +96,6 @@ static int __gup_benchmark_ioctl(unsigned int cmd,
- 			nr =3D get_user_pages_fast(addr, nr, gup->flags,
- 						 pages + i);
- 			break;
--		case GUP_LONGTERM_BENCHMARK:
--			nr =3D get_user_pages(addr, nr,
--					    gup->flags | FOLL_LONGTERM,
--					    pages + i, NULL);
--			break;
- 		case GUP_BENCHMARK:
- 			nr =3D get_user_pages(addr, nr, gup->flags, pages + i,
- 					    NULL);
-@@ -159,7 +153,6 @@ static long gup_benchmark_ioctl(struct file *filep, uns=
-igned int cmd,
-=20
- 	switch (cmd) {
- 	case GUP_FAST_BENCHMARK:
--	case GUP_LONGTERM_BENCHMARK:
- 	case GUP_BENCHMARK:
- 	case PIN_FAST_BENCHMARK:
- 	case PIN_LONGTERM_BENCHMARK:
-diff --git a/tools/testing/selftests/vm/gup_benchmark.c b/tools/testing/sel=
-ftests/vm/gup_benchmark.c
-index 03928e47a86f..836b7082db13 100644
---- a/tools/testing/selftests/vm/gup_benchmark.c
-+++ b/tools/testing/selftests/vm/gup_benchmark.c
-@@ -15,7 +15,7 @@
- #define PAGE_SIZE sysconf(_SC_PAGESIZE)
-=20
- #define GUP_FAST_BENCHMARK	_IOWR('g', 1, struct gup_benchmark)
--#define GUP_LONGTERM_BENCHMARK	_IOWR('g', 2, struct gup_benchmark)
-+/* Command 2 has been deleted. */
- #define GUP_BENCHMARK		_IOWR('g', 3, struct gup_benchmark)
-=20
- /*
-@@ -49,7 +49,7 @@ int main(int argc, char **argv)
- 	char *file =3D "/dev/zero";
- 	char *p;
-=20
--	while ((opt =3D getopt(argc, argv, "m:r:n:f:abctTLUuwSH")) !=3D -1) {
-+	while ((opt =3D getopt(argc, argv, "m:r:n:f:abctTUuwSH")) !=3D -1) {
- 		switch (opt) {
- 		case 'a':
- 			cmd =3D PIN_FAST_BENCHMARK;
-@@ -75,9 +75,6 @@ int main(int argc, char **argv)
- 		case 'T':
- 			thp =3D 0;
- 			break;
--		case 'L':
--			cmd =3D GUP_LONGTERM_BENCHMARK;
--			break;
- 		case 'U':
- 			cmd =3D GUP_BENCHMARK;
- 			break;
---=20
-2.24.0
-
+-- 
+Dmitry
