@@ -2,84 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FE8F8943
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 08:02:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F5CF8973
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 08:16:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BzFr0GF6zF5GT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 18:02:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BzZ029VSzF5HM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 18:16:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::242;
+ helo=mail-lj1-x242.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="WMGkKeOZ"; dkim-atps=neutral
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BzCG2BwNzF5Cy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 18:00:09 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xAC6ugU1121912
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 02:00:05 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w7qdygwdb-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 02:00:05 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 12 Nov 2019 07:00:03 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 12 Nov 2019 07:00:00 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAC6xxfb48627768
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Nov 2019 06:59:59 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 29AC8AE053;
- Tue, 12 Nov 2019 06:59:59 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD3F6AE056;
- Tue, 12 Nov 2019 06:59:58 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 12 Nov 2019 06:59:58 +0000 (GMT)
-Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C606CA004F;
- Tue, 12 Nov 2019 17:59:53 +1100 (AEDT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: stable@vger.kernel.org
-Subject: [PATCH stable 4.4] powerpc/boot: Request no dynamic linker for boot
- wrapper
-Date: Tue, 12 Nov 2019 17:59:41 +1100
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BzWm5XzJzF3cQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 18:14:26 +1100 (AEDT)
+Received: by mail-lj1-x242.google.com with SMTP id d5so7039033ljl.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 23:14:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=moBLNgsFkEFILNTGmzFVRskFLWF0bywiqBaR+demKl0=;
+ b=WMGkKeOZSZv4nK3kYqjUDbJgm6OIX8/Pp5ul5RcMLv8HRndoSur1Gj5yp8uTwr6viK
+ 8pIe3W5+rvA5uDSH0I+6oPAWY7C94jtjF9Ot+31Ik/dH+uPG7MB8lgizP93vIMt3xMc5
+ N+J/WomRl5rVfra1rtwsIIzgkQZcJ0HySeqwA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=moBLNgsFkEFILNTGmzFVRskFLWF0bywiqBaR+demKl0=;
+ b=Je2EFLhOwH465ATgSf9MvBQEplVeciChmQAxKsJW8MWkcmyi8R4qmyLHbAAwHSBVY0
+ rVp8Nu+mz04YsRUPNQWz9SNL0JBx6ReRcUQ47mOCzHPIglwrTP/YnKO9SAMvSIV9g2xd
+ QFWzusc2Pt0/GaxqhuRl3OrVxwSaUrky4L58Bk3LHr3s9B9ao//y0jIBFphyl1sVfG26
+ eQqXuTRbSclwG215pSG9PebDgCN87oW1WbacOOPy3N4wp6sAx6a453KjLqfW4RVPyHat
+ JEDWPqE4OxGvEAM+v35o4kPdEAsRhxV4BqJa6be38wK03265AMyJX3DqzVjCgB0ukZQt
+ 2JyA==
+X-Gm-Message-State: APjAAAXJwQ5GoGVaOmoRptFKWCd60i1U1r7LNJ98HMCAPHYVcqsXvyCn
+ G3Gd4DrmyqusABReaNCXxg/erA==
+X-Google-Smtp-Source: APXvYqyGJCHfIoWOsBaNjhwiw9M0OJ8bZPYtuCumKkdWcGPrH+aj9AtA3dwPCKUzoK1SUKCQ1cmZMA==
+X-Received: by 2002:a2e:8544:: with SMTP id u4mr2947819ljj.25.1573542862167;
+ Mon, 11 Nov 2019 23:14:22 -0800 (PST)
+Received: from [172.16.11.28] ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id p193sm12765748lfa.18.2019.11.11.23.14.21
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 11 Nov 2019 23:14:21 -0800 (PST)
+Subject: Re: [PATCH v4 04/47] soc: fsl: qe: introduce qe_io{read,write}*
+ wrappers
+To: Timur Tabi <timur@kernel.org>
+References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
+ <20191108130123.6839-5-linux@rasmusvillemoes.dk>
+ <CAOZdJXU35+G5CMrS3247mgMjQH7__MxP8wpW6yjn1_MLD-sGqw@mail.gmail.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <e37d24c5-6d4f-c8bf-1c38-f3e8b8e85eeb@rasmusvillemoes.dk>
+Date: Tue, 12 Nov 2019 08:14:20 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111207-0012-0000-0000-00000362DBBB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111207-0013-0000-0000-0000219E4962
-Message-Id: <20191112065941.9548-1-ajd@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-12_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=15 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=958 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911120063
+In-Reply-To: <CAOZdJXU35+G5CMrS3247mgMjQH7__MxP8wpW6yjn1_MLD-sGqw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,83 +83,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Anton Blanchard <anton@samba.org>,
- npiggin@gmail.com
+Cc: lkml <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>,
+ Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On 12/11/2019 06.17, Timur Tabi wrote:
+> On Fri, Nov 8, 2019 at 7:03 AM Rasmus Villemoes
+> <linux@rasmusvillemoes.dk> wrote:
+>>
+>> The QUICC engine drivers use the powerpc-specific out_be32() etc. In
+>> order to allow those drivers to build for other architectures, those
+>> must be replaced by iowrite32be(). However, on powerpc, out_be32() is
+>> a simple inline function while iowrite32be() is out-of-line. So in
+>> order not to introduce a performance regression on powerpc when making
+>> the drivers work on other architectures, introduce qe_io* helpers.
+> 
+> Isn't it also true that iowrite32be() assumes a little-endian platform
+> and always does a byte swap?
+> 
 
-Commit ff45000fcb56b5b0f1a14a865d3541746d838a0a upstream.
+No. You're probably thinking of the implementation in lib/iomap.c where
+one has
 
-The boot wrapper performs its own relocations and does not require
-PT_INTERP segment. However currently we don't tell the linker that.
+#define mmio_read32be(addr) swab32(readl(addr))
+unsigned int ioread32be(void __iomem *addr)
+{
+        IO_COND(addr, return pio_read32be(port), return
+mmio_read32be(addr));
+        return 0xffffffff;
+}
 
-Prior to binutils 2.28 that works OK. But since binutils commit
-1a9ccd70f9a7 ("Fix the linker so that it will not silently generate ELF
-binaries with invalid program headers. Fix readelf to report such
-invalid binaries.") binutils tries to create a program header segment
-due to PT_INTERP, and the link fails because there is no space for it:
 
-  ld: arch/powerpc/boot/zImage.pseries: Not enough room for program headers, try linking with -N
-  ld: final link failed: Bad value
+#define mmio_write32be(val,port) writel(swab32(val),port)
+void iowrite32be(u32 val, void __iomem *addr)
+{
+        IO_COND(addr, pio_write32be(val,port), mmio_write32be(val, addr));
+}
 
-So tell the linker not to do that, by passing --no-dynamic-linker.
+but that's because readl and writel by definition work on little-endian
+registers. I.e., on a BE platform, the readl and writel implementation
+must themselves contain a swab, so the above would end up doing two
+swabs on a BE platform.
 
-Cc: stable@vger.kernel.org
-Reported-by: Anton Blanchard <anton@samba.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[mpe: Drop dependency on ld-version.sh and massage change log]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-[ajd: backport to v4.4 (resolve conflict with a comment line)]
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- arch/powerpc/boot/wrapper | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+(On PPC, there's a separate definition of mmio_read32be, namely
+writel_be, which in turn does a out_be32, so on PPC that doesn't
+actually end up doing two swabs).
 
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index ceaa75d5a684..be4831acda22 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -161,6 +161,28 @@ case "$elfformat" in
-     elf32-powerpc)	format=elf32ppc	;;
- esac
- 
-+ld_version()
-+{
-+    # Poached from scripts/ld-version.sh, but we don't want to call that because
-+    # this script (wrapper) is distributed separately from the kernel source.
-+    # Extract linker version number from stdin and turn into single number.
-+    awk '{
-+	gsub(".*\\)", "");
-+	gsub(".*version ", "");
-+	gsub("-.*", "");
-+	split($1,a, ".");
-+	print a[1]*100000000 + a[2]*1000000 + a[3]*10000;
-+	exit
-+    }'
-+}
-+
-+# Do not include PT_INTERP segment when linking pie. Non-pie linking
-+# just ignores this option.
-+LD_VERSION=$(${CROSS}ld --version | ld_version)
-+LD_NO_DL_MIN_VERSION=$(echo 2.26 | ld_version)
-+if [ "$LD_VERSION" -ge "$LD_NO_DL_MIN_VERSION" ] ; then
-+	nodl="--no-dynamic-linker"
-+fi
- 
- platformo=$object/"$platform".o
- lds=$object/zImage.lds
-@@ -412,7 +434,7 @@ if [ "$platform" != "miboot" ]; then
-     if [ -n "$link_address" ] ; then
-         text_start="-Ttext $link_address"
-     fi
--    ${CROSS}ld -m $format -T $lds $text_start $pie -o "$ofile" \
-+    ${CROSS}ld -m $format -T $lds $text_start $pie $nodl -o "$ofile" \
- 	$platformo $tmp $object/wrapper.a
-     rm $tmp
- fi
--- 
-2.17.1
-
+So ioread32be etc. have well-defined semantics: access a big-endian
+register and return the result in native endianness.
