@@ -1,83 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CD2F8A00
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 08:55:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E84F8A16
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 09:03:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47C0QW4mhGzF4Gc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 18:54:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47C0cb4SZgzDr22
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 19:03:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=permerror (SPF Permanent Error: Void lookup limit
+ of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe08::60f;
+ helo=eur03-am5-obe.outbound.protection.outlook.com;
+ envelope-from=qiang.zhao@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="QhMCbvXC"; 
+ dkim-atps=neutral
+Received: from EUR03-AM5-obe.outbound.protection.outlook.com
+ (mail-am5eur03on060f.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe08::60f])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47C0Mg6Y4wzF4FR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 18:52:31 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xAC7qKSs073461
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 02:52:28 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w7qe3a3rn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 02:52:28 -0500
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Tue, 12 Nov 2019 07:52:26 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 12 Nov 2019 07:52:23 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAC7qL2s54198442
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Nov 2019 07:52:21 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A3AD05204E;
- Tue, 12 Nov 2019 07:52:21 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.85.181.122])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 745FA5204F;
- Tue, 12 Nov 2019 07:52:18 +0000 (GMT)
-Date: Mon, 11 Nov 2019 23:52:15 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Paul Mackerras <paulus@ozlabs.org>
-Subject: Re: [PATCH v10 7/8] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-References: <20191104041800.24527-1-bharata@linux.ibm.com>
- <20191104041800.24527-8-bharata@linux.ibm.com>
- <20191111041924.GA4017@oak.ozlabs.ibm.com>
- <20191112010158.GB5159@oc0525413822.ibm.com>
- <20191112053836.GB10885@oak.ozlabs.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47C0ZJ4H9KzF5HN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 19:01:41 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gHeJzBTh/Ly9OObMJJHq894B4brw2zHK8xZ3TbMHLhER6+XmqOMPTiTib0TrsZs0rX5K1l0i16rn6kBxpMwPG0YXpsTACJ9830zQI6cSAg3acZ60To4cGpqOQpSYYvv9tuzXJp18yAhtdhZ7szyj3FMH6FpuUmP/gA6BAPN93GPTPcy6Y/CpOhB0UcBnf7wFXHPSmg91QNTRMyo8pRy3GRU1DE8G/yTjyllA84JpehMdqxtYyfCL2UJ9Jn6pOpNH8gqQKlSpKu+brkZjYYMC36hVSZkcTqq0eeJ/D5nEMvJVesWjC2iHe8sdZBXVLmSaFPStCPdNvgYq0BktE9lwjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yOyfBGVihnHRqbAekVYyajBvt0kbJJHAIH4iK6D7lew=;
+ b=PpbXd/frCdJPcVe8uZotGizDFwq8mel7TWXxR4qJIRx+MbYKlb98eT1Pfs3mdVWmyrg4BEDk9GFuG/hgsrmvn7FmIgKfE0PO6TshBJNuyk8+GrY/jgG7fsSDg+CA3j0r6Ag+zZyo1AmJwF/NsfBh6kg0FDmZlxxATrE3GHukR8CNxFxMl+GdJgFFj7kFM8o25ezd9x9tkwAP6eMY0Lm9XyDmDwVw3ct0nP2ozNYYVLH5c18aFwKTL9JQ1IrjoLR/2TnqfA06kp1tr0x9w6m2730xznqdCukfAktnZbBszTe5cvrruRxAy6qSG5kNcTcVqjSVuvlKXVI5+YBn4/DxKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yOyfBGVihnHRqbAekVYyajBvt0kbJJHAIH4iK6D7lew=;
+ b=QhMCbvXC/UT8xhTrfrkxR88qXOk6/rirYUaVhMfxpEMU6WcFol5MtTz36T1qPttwfoDOP5kGYsZCTJvaGoN+1JRlmlYgFBMWyemmBVGJUcJU4wymGkKAbtQglSSHIbfL4XDx3A8rMJfH4uhKPdPdWMBRcG2tWX1ihYh1MMcr2J0=
+Received: from VE1PR04MB6768.eurprd04.prod.outlook.com (10.255.118.26) by
+ VE1PR04MB6445.eurprd04.prod.outlook.com (20.179.232.214) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.22; Tue, 12 Nov 2019 08:01:23 +0000
+Received: from VE1PR04MB6768.eurprd04.prod.outlook.com
+ ([fe80::9d62:61ea:616e:9996]) by VE1PR04MB6768.eurprd04.prod.outlook.com
+ ([fe80::9d62:61ea:616e:9996%6]) with mapi id 15.20.2430.027; Tue, 12 Nov 2019
+ 08:01:23 +0000
+From: Qiang Zhao <qiang.zhao@nxp.com>
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Leo Li <leoyang.li@nxp.com>, 
+ Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: RE: [PATCH v4 34/47] soc: fsl: qe: change return type of
+ cpm_muram_alloc() to s32
+Thread-Topic: [PATCH v4 34/47] soc: fsl: qe: change return type of
+ cpm_muram_alloc() to s32
+Thread-Index: AQHVljS9t36aq5kBp0CU3JvhgX4m3aeHMKSw
+Date: Tue, 12 Nov 2019 08:01:23 +0000
+Message-ID: <VE1PR04MB6768D483426A2B6CC04E069D91770@VE1PR04MB6768.eurprd04.prod.outlook.com>
+References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
+ <20191108130123.6839-35-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191108130123.6839-35-linux@rasmusvillemoes.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=qiang.zhao@nxp.com; 
+x-originating-ip: [119.31.174.73]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 7e5dcf51-2943-40f9-f7b0-08d767468301
+x-ms-traffictypediagnostic: VE1PR04MB6445:|VE1PR04MB6445:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VE1PR04MB64450489562B49EFFC8F7BBA91770@VE1PR04MB6445.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4303;
+x-forefront-prvs: 021975AE46
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(136003)(376002)(39860400002)(366004)(346002)(396003)(199004)(189003)(13464003)(316002)(6116002)(3846002)(2906002)(14454004)(81166006)(66556008)(66476007)(66446008)(33656002)(66946007)(76116006)(110136005)(99286004)(64756008)(25786009)(81156014)(8936002)(8676002)(478600001)(54906003)(6436002)(102836004)(446003)(7696005)(11346002)(26005)(4326008)(9686003)(4744005)(476003)(256004)(229853002)(186003)(66066001)(6506007)(53546011)(76176011)(71190400001)(71200400001)(305945005)(74316002)(7736002)(52536014)(86362001)(5660300002)(486006)(6246003)(55016002)(44832011);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6445;
+ H:VE1PR04MB6768.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: WrrQ7ORjpbhazxeh75KdLHvDdnaN+2sOO7FzeT0jDK22g9ZaPmmRfNpwKv3QNECAeuHSPLbsxvZHugV+Bvqk9yky6cF8jTHN5xugrvHlTXgGxOa9nEfPpvoHFdxzv/IaiT7Zy0u9zs5WkdmujZVYHAXQTs49HsehTwAIRMCahBfqKWlcFI9moteszHFlukvuff1aRPRCWlOQPZx9R2yMvb0GP8hcr2aSe7MUGI5iLt8WofhuCMwdAspLIWZEISwCwtLfLjDuPDvgauNZhDSvILBMfNGaY29P2/vUuCTwXI0biwNNGuBTN2ebW0hP4VUjFbVjBPuZwlGWnfsI+ZvB0QWUpO/k4qHKluha1HQT8cyzBrjQPWG0vj7TQuj00fyzAYYzimP8OvUegNSJRY+g3tNkGse0+L5//smWBG661i4sE+Kj+82HvQ4mYfZa5LtC
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191112053836.GB10885@oak.ozlabs.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19111207-0008-0000-0000-0000032E4184
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111207-0009-0000-0000-00004A4D4496
-Message-Id: <20191112075215.GD5159@oc0525413822.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-12_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=971 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911120072
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e5dcf51-2943-40f9-f7b0-08d767468301
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2019 08:01:23.8311 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8DMh8dQ16LtpBd87jL597Jrw9ODIhwu0J5cd7WRb0wF8r8VtpphxhvcPhQ+mU1CqKsms31RicAhljyZvJoYqig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6445
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,83 +108,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>, cclaudio@linux.ibm.com,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, jglisse@redhat.com, Ram Pai <linuxram@linux.ibm.com>,
- aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: Scott Wood <oss@buserror.net>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 12, 2019 at 04:38:36PM +1100, Paul Mackerras wrote:
-> On Mon, Nov 11, 2019 at 05:01:58PM -0800, Ram Pai wrote:
-> > On Mon, Nov 11, 2019 at 03:19:24PM +1100, Paul Mackerras wrote:
-> > > On Mon, Nov 04, 2019 at 09:47:59AM +0530, Bharata B Rao wrote:
-> > > > From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-> > > > 
-> > > > Implement the H_SVM_INIT_ABORT hcall which the Ultravisor can use to
-> > > > abort an SVM after it has issued the H_SVM_INIT_START and before the
-> > > > H_SVM_INIT_DONE hcalls. This hcall could be used when Ultravisor
-> > > > encounters security violations or other errors when starting an SVM.
-> > > > 
-> > > > Note that this hcall is different from UV_SVM_TERMINATE ucall which
-> > > > is used by HV to terminate/cleanup an SVM.
-> > > > 
-> > > > In case of H_SVM_INIT_ABORT, we should page-out all the pages back to
-> > > > HV (i.e., we should not skip the page-out). Otherwise the VM's pages,
-> > > > possibly including its text/data would be stuck in secure memory.
-> > > > Since the SVM did not go secure, its MSR_S bit will be clear and the
-> > > > VM wont be able to access its pages even to do a clean exit.
-> > > 
-...skip...
-> > 
-> > If the ultravisor cleans up the SVM's state on its side and then informs
-> > the Hypervisor to abort the SVM, the hypervisor will not be able to
-> > cleanly terminate the VM.  Because to terminate the SVM, the hypervisor
-> > still needs the services of the Ultravisor. For example: to get the
-> > pages back into the hypervisor if needed. Another example is, the
-> > hypervisor can call UV_SVM_TERMINATE.  Regardless of which ucall
-> > gets called, the ultravisor has to hold on to enough state of the
-> > SVM to service that request.
-> 
-> OK, that's a good reason.  That should be explained in the commit
-> message.
-> 
-> > The current design assumes that the hypervisor explicitly informs the
-> > ultravisor, that it is done with the SVM, through the UV_SVM_TERMINATE
-> > ucall. Till that point the Ultravisor must to be ready to service any
-> > ucalls made by the hypervisor on the SVM's behalf.
-> 
-> I see that UV_SVM_TERMINATE is done when the VM is being destroyed (at
-> which point kvm->arch.secure_guest doesn't matter any more), and in
-> kvmhv_svm_off(), where kvm->arch.secure_guest gets cleared
-> explicitly.  Hence I don't see any need for clearing it in the
-> assembly code on the next secure guest entry.  I think the change to
-> book3s_hv_rmhandlers.S can just be dropped.
-
-There is subtle problem removing that code from the assembly.
-
-If the H_SVM_INIT_ABORT hcall returns to the ultravisor without clearing
-kvm->arch.secure_guest, the hypervisor will continue to think that the
-VM is a secure VM.   However the primary reason the H_SVM_INIT_ABORT
-hcall was invoked, was to inform the Hypervisor that it should no longer
-consider the VM as a Secure VM. So there is a inconsistency there.
-
-This is fine, as long as the VM does not invoke any hcall or does not
-receive any hypervisor-exceptions.  The moment either of those happen,
-the control goes into the hypervisor, the hypervisor services
-the exception/hcall and while returning, it will see that the
-kvm->arch.secure_guest flag is set and **incorrectly** return
-to the ultravisor through a UV_RETURN ucall.  Ultravisor will
-not know what to do with it, because it does not consider that
-VM as a Secure VM.  Bad things happen.
-
-( Sidenote: when H_SVM_INIT_ABORT hcalls returns from the hypervisor,
-  the ultravisor cleans up its internal state corresponding of that
-  aborted-SVM and returns back to the caller with MSR[S]=0 )
-
-
-RP
-
+T24gRnJpLCBOb3YgOCwgMjAxOSBhdCAyMTowMSBSYXNtdXMgVmlsbGVtb2VzIDxsaW51eEByYXNt
+dXN2aWxsZW1vZXMuZGs+IHdyb3RlOg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+
+IEZyb206IFJhc211cyBWaWxsZW1vZXMgPGxpbnV4QHJhc211c3ZpbGxlbW9lcy5kaz4NCj4gU2Vu
+dDogMjAxOcTqMTHUwjjI1SAyMTowMQ0KPiBUbzogUWlhbmcgWmhhbyA8cWlhbmcuemhhb0BueHAu
+Y29tPjsgTGVvIExpIDxsZW95YW5nLmxpQG54cC5jb20+Ow0KPiBDaHJpc3RvcGhlIExlcm95IDxj
+aHJpc3RvcGhlLmxlcm95QGMtcy5mcj4NCj4gQ2M6IGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMu
+b3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmc7IFNjb3R0IFdvb2QgPG9zc0BidXNlcnJvci5uZXQ+OyBSYXNtdXMN
+Cj4gVmlsbGVtb2VzIDxsaW51eEByYXNtdXN2aWxsZW1vZXMuZGs+DQo+IFN1YmplY3Q6IFtQQVRD
+SCB2NCAzNC80N10gc29jOiBmc2w6IHFlOiBjaGFuZ2UgcmV0dXJuIHR5cGUgb2YNCj4gY3BtX211
+cmFtX2FsbG9jKCkgdG8gczMyDQo+IA0KPiAtdW5zaWduZWQgbG9uZyBjcG1fbXVyYW1fYWxsb2Nf
+Zml4ZWQodW5zaWduZWQgbG9uZyBvZmZzZXQsIHVuc2lnbmVkIGxvbmcNCj4gc2l6ZSkNCj4gK3Mz
+MiBjcG1fbXVyYW1fYWxsb2NfZml4ZWQodW5zaWduZWQgbG9uZyBvZmZzZXQsIHVuc2lnbmVkIGxv
+bmcgc2l6ZSkNCj4gIHsNCj4gLQl1bnNpZ25lZCBsb25nIHN0YXJ0Ow0KPiArCWxvbmcgc3RhcnQ7
+DQo+ICAJdW5zaWduZWQgbG9uZyBmbGFnczsNCj4gIAlzdHJ1Y3QgZ2VucG9vbF9kYXRhX2ZpeGVk
+IG11cmFtX3Bvb2xfZGF0YV9maXhlZDsNCiANCiJzdGFydCIgc2hvdWxkIGJlIHMzMiBoZXJlIHRv
+bz8NCg0KDQpCZXN0IFJlZ2FyZHMNClFpYW5nIFpoYW8NCg0K
