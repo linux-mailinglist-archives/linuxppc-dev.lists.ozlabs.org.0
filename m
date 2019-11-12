@@ -1,60 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AFF5F8B8B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 10:17:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2420F8C53
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 10:59:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47C2FS2qqLzF56f
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 20:17:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47C39p0Pt6zF3W5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 20:59:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.196;
- helo=mail-oi1-f196.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com
- [209.85.167.196])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.com
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47C29t63wQzF25Y
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 20:14:08 +1100 (AEDT)
-Received: by mail-oi1-f196.google.com with SMTP id e9so14150771oif.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 01:14:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=CcFia2f8UjT7Hz7B3H/t2zQe97c4U387QE8r5XjOH8A=;
- b=a4LFBxoNmxFXwQQ78b6cBAry6Xv0k6oMddMK6dEVcxADaPaQle8pSqFeASdIV8SioR
- B8jqOLwoQ92N+QOCoH8fwTWeerJ+H0u0EFklyFWlZ1Dp4qTgpRE22FS7F03Gy8jsZPEx
- LU2YVTNGKbgOurj2GkHVVT5BH7Ot3yEYJW1NAKfbpTusAaQ/53BtqcRVAvhHDLF4s9w+
- 73JKSlaxXoW8RjcRzp3IZirPX2xvt8xbP3yml3Nk1sY256cSbKDn3XJm6w+6cZi3faFP
- tDKKxfkGNXks3reLWmWybFQ7b4xFRbLA9iGSUTqh31mEv/cOX0O5Qyc0TBrjRiWzkhvV
- xuCw==
-X-Gm-Message-State: APjAAAWVe0wmtbJujc9lhf53WN8dwHFhMrn4Yka6ESqRPRP5+CxI0tMS
- M0aBa0I3KkmcHlrXsiYAIDqGa83EM5dcjqIS0aY=
-X-Google-Smtp-Source: APXvYqxbSiMMCm9vOSRUI81fzjT2IZ3Fd4CYajnzFOk7q7brNKIrKnb1uqJhXwzzLHRJu12wVQ5KC28YV3eKlUAChCc=
-X-Received: by 2002:aca:3a86:: with SMTP id h128mr2951038oia.131.1573550045207; 
- Tue, 12 Nov 2019 01:14:05 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47C1K85j3PzF55C
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 19:35:22 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id D1671AC68;
+ Tue, 12 Nov 2019 08:35:16 +0000 (UTC)
+Date: Tue, 12 Nov 2019 09:35:09 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Subject: Re: [PATCH 00/50] Add log level to show_stack()
+Message-ID: <20191112083509.gmgjpkjffsfaw5lm@pathway.suse.cz>
+References: <20191106030542.868541-1-dima@arista.com>
+ <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
+ <20191108103719.GB175344@google.com>
+ <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
+ <20191111012336.GA85185@google.com>
+ <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
+ <20191112044447.GA121272@google.com>
+ <20191112045704.GA138013@google.com>
 MIME-Version: 1.0
-References: <20191011000609.29728-1-keescook@chromium.org>
- <20191011000609.29728-12-keescook@chromium.org>
- <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com>
- <201911110922.17A2112B0@keescook>
- <CAMuHMdUJ8QPvqf51nVmOg1Zm20SNT7pXR72z=qmco=ecwawZ7A@mail.gmail.com>
- <20191112090736.GA32336@zn.tnic>
-In-Reply-To: <20191112090736.GA32336@zn.tnic>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 12 Nov 2019 10:13:53 +0100
-Message-ID: <CAMuHMdXayF+z4z+Ds-gm4+YFA=BCMo0_9Q3uXcbQQgQkLxZ4uw@mail.gmail.com>
-Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
-To: Borislav Petkov <bp@alien8.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191112045704.GA138013@google.com>
+User-Agent: NeoMutt/20170912 (1.9.0)
+X-Mailman-Approved-At: Tue, 12 Nov 2019 20:57:18 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,61 +53,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Michal Simek <monstr@monstr.eu>,
- the arch/x86 maintainers <x86@kernel.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- linux-xtensa@linux-xtensa.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Parisc List <linux-parisc@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
- alpha <linux-alpha@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Will Deacon <will@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-c6x-dev@linux-c6x.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
+ Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Burton <paulburton@kernel.org>, Dmitry Safonov <dima@arista.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
+ Jiri Slaby <jslaby@suse.com>, Matt Turner <mattst88@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, Len Brown <len.brown@intel.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-um@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Richard Henderson <rth@twiddle.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ia64@vger.kernel.org,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ James Hogan <jhogan@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org, Stafford Horne <shorne@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Tony Luck <tony.luck@intel.com>, Douglas Anderson <dianders@chromium.org>,
+ Dmitry Safonov <0x7f454c46@gmail.com>, Will Deacon <will@kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Brian Cain <bcain@codeaurora.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ kgdb-bugreport@lists.sourceforge.net, linux-snps-arc@lists.infradead.org,
+ Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Jeff Dike <jdike@addtoit.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
+ "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
+ Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ Mark Salter <msalter@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Michal Simek <monstr@monstr.eu>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-mips@vger.kernel.org, Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Jason Wessel <jason.wessel@windriver.com>,
+ nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Borislav,
+On Tue 2019-11-12 13:57:04, Sergey Senozhatsky wrote:
+> On (19/11/12 13:44), Sergey Senozhatsky wrote:
+> [..]
+> > > But yes, this per-code-section loglevel is problematic. The feedback
+> > > against the patchset shows that people want it also the other way.
+> > > I mean to keep pr_debug() as pr_debug().
+> > 
+> > Hmm. Right.
+> > 
+> > > A solution might be to use the per-code-section loglevel only instead
+> > > of some special loglevel.
+> > 
+> > So maybe we can "overwrite" only KERN_DEFAULT loglevels?
+> 
+> LOGLEVEL_DEFAULT, LOGLEVEL_NOTICE, LOGLEVEL_INFO?
+> 
+> So we can downgrade some messages (log_store() only) or promote
+> some messages.
+> 
+> DEBUG perhaps should stay debug.
+> 
+> > We certainly should not mess with SCHED or with anything in between
+> > EMERG and ERR.
+> 
+>   [EMERG, WARN]
 
-On Tue, Nov 12, 2019 at 10:08 AM Borislav Petkov <bp@alien8.de> wrote:
-> On Mon, Nov 11, 2019 at 07:08:51PM +0100, Geert Uytterhoeven wrote:
-> > vmlinux-std.lds: All other classic 680x0 targets with an MMU, e.g. plai=
-n
-> >                  defconfig aka multi_defconfig.
->
-> FWIW, the defconfig doesn't build with the cross compiler=C2=B9 here, eve=
-n with Kees'
-> patch applied but for a different reason:
->
-> $ make.cross ARCH=3Dm68k defconfig
-> ...
->
-> $make.cross ARCH=3Dm68k 2>w.log
-> ...
-> drivers/video/fbdev/c2p_planar.o: In function `transp8':
-> c2p_planar.c:(.text+0x13a): undefined reference to `c2p_unsupported'
-> c2p_planar.c:(.text+0x1de): undefined reference to `c2p_unsupported'
-> drivers/video/fbdev/c2p_iplan2.o: In function `transp4x.constprop.0':
-> c2p_iplan2.c:(.text+0x98): undefined reference to `c2p_unsupported'
-> make: *** [Makefile:1094: vmlinux] Error 1
+This is getting too complicated. It would introduce too many
+hidden rules. While the explicitly passed loglevel parameter
+is straightforward and clear.
 
-The fix for that regression (finally) made it in rc7:
-b330f3972f4f2a82 ("fbdev: c2p: Fix link failure on non-inlining").
+I am getting more inclined to the solution introduced by this
+patchset. It looks reasonable for the different use-cases.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Best Regards,
+Petr
