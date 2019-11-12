@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213E1F8529
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 01:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78D9F8523
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 01:23:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BpS4548MzF4bZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 11:25:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BpPr3T4FzF3DS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 11:23:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="KhLyNKkC"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="SJ2uh291"; 
  dkim-atps=neutral
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Bp2t2b8xzF4MP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 11:07:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Bp2r1mb5zF4Lw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 11:07:15 +1100 (AEDT)
 Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dc9f7b10000>; Mon, 11 Nov 2019 16:07:13 -0800
+ hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dc9f7780003>; Mon, 11 Nov 2019 16:06:16 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
  by hqpgpgate101.nvidia.com (PGP Universal service);
- Mon, 11 Nov 2019 16:07:11 -0800
+ Mon, 11 Nov 2019 16:07:12 -0800
 X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Mon, 11 Nov 2019 16:07:11 -0800
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 12 Nov
- 2019 00:07:10 +0000
-Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
- Frontend Transport; Tue, 12 Nov 2019 00:07:09 +0000
+ by hqpgpgate101.nvidia.com on Mon, 11 Nov 2019 16:07:12 -0800
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 12 Nov
+ 2019 00:07:12 +0000
+Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
+ Frontend Transport; Tue, 12 Nov 2019 00:07:11 +0000
 Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
  rnnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5dc9f7ac0001>; Mon, 11 Nov 2019 16:07:09 -0800
+ id <B5dc9f7ae0000>; Mon, 11 Nov 2019 16:07:11 -0800
 From: John Hubbard <jhubbard@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 06/23] IB/umem: use get_user_pages_fast() to pin DMA pages
-Date: Mon, 11 Nov 2019 16:06:43 -0800
-Message-ID: <20191112000700.3455038-7-jhubbard@nvidia.com>
+Subject: [PATCH v3 08/23] vfio,
+ mm: fix get_user_pages_remote() and FOLL_LONGTERM
+Date: Mon, 11 Nov 2019 16:06:45 -0800
+Message-ID: <20191112000700.3455038-9-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191112000700.3455038-1-jhubbard@nvidia.com>
 References: <20191112000700.3455038-1-jhubbard@nvidia.com>
@@ -53,16 +53,16 @@ X-NVConfidentiality: public
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1573517233; bh=PPNQFWxgYbSBG60Oh3uZy3iaVFj8VG12aJVlvrNgBtA=;
+ t=1573517177; bh=LHd6nlstYt/+WO2arS2xO7M4BDaQ4oXhsosl4/alSFg=;
  h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
  In-Reply-To:References:MIME-Version:X-NVConfidentiality:
  Content-Transfer-Encoding:Content-Type;
- b=KhLyNKkCzhj34VhXuUGSIyHKFQpNlddwQKTMNRSggrE3w/lk5jSmv2ZPbZbufxy2D
- DwaHNn9deLnwb+9S3bnPYQt2Y8a3N/x+xRd7lyCZjJtBVXS48USN4LyP/T0wSL31A9
- PHqCuFVCls1I4InDR/rmL4jQ59eW6S2dzy1GP6jDulz/TY3IS2beeDr/v5uOBQkkt8
- cgTue/HPtPzjoomkooCtsjx52sbOSGnuwdu4CRFlEX4ieAvkNbohjJOFrY+GPgctFC
- eybfSvcxdSFjY5MlzuusMY1vIOFT2942rU66o5rV0txugAXwkPygIU4TkcCtTuqA4d
- LT2EnhJx44zxw==
+ b=SJ2uh291o0n2KAathWWaARa6MvN+m/A73UL04mBGFpYz9dwZwEu2YOKZK/z6oR36f
+ S4MmrBohFcW7M4U4sGwLAQQaa4ErNxr5zszFsv1ppGBtK5nFe0oidXZ1r/1d+C5hHD
+ 7OdWLPmiW5F6FVC/3nIr5wwa+GbS2yQdK9nseWpjIMdx642Wxvb5Kkid/PLVxBV3h0
+ OGPpdpsgYBaWnEIgbpCi7rX0MmoFtgOyBhqm3y6VOtt9bGAvDRddLo4gcp8LgfWb9W
+ RGx06m/cZaFaW7nNL6zPl1lRK04yV8Qj7tUjurbVty1S8No3Te9OtVs5tQeXtoroeI
+ mB7ag0CyWpHAw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,56 +99,101 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-And get rid of the mmap_sem calls, as part of that. Note
-that get_user_pages_fast() will, if necessary, fall back to
-__gup_longterm_unlocked(), which takes the mmap_sem as needed.
+As it says in the updated comment in gup.c: current FOLL_LONGTERM
+behavior is incompatible with FAULT_FLAG_ALLOW_RETRY because of the
+FS DAX check requirement on vmas.
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
+However, the corresponding restriction in get_user_pages_remote() was
+slightly stricter than is actually required: it forbade all
+FOLL_LONGTERM callers, but we can actually allow FOLL_LONGTERM callers
+that do not set the "locked" arg.
+
+Update the code and comments accordingly, and update the VFIO caller
+to take advantage of this, fixing a bug as a result: the VFIO caller
+is logically a FOLL_LONGTERM user.
+
+Thanks to Jason Gunthorpe for pointing out a clean way to fix this.
+
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jerome Glisse <jglisse@redhat.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/infiniband/core/umem.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 30 +++++++++++++-----------------
+ mm/gup.c                        | 13 ++++++++-----
+ 2 files changed, 21 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.=
-c
-index 24244a2f68cc..3d664a2539eb 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -271,16 +271,13 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, u=
-nsigned long addr,
- 	sg =3D umem->sg_head.sgl;
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type=
+1.c
+index d864277ea16f..017689b7c32b 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -348,24 +348,20 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsign=
+ed long vaddr,
+ 		flags |=3D FOLL_WRITE;
 =20
- 	while (npages) {
--		down_read(&mm->mmap_sem);
--		ret =3D get_user_pages(cur_base,
--				     min_t(unsigned long, npages,
--					   PAGE_SIZE / sizeof (struct page *)),
--				     gup_flags | FOLL_LONGTERM,
--				     page_list, NULL);
--		if (ret < 0) {
--			up_read(&mm->mmap_sem);
-+		ret =3D get_user_pages_fast(cur_base,
-+					  min_t(unsigned long, npages,
-+						PAGE_SIZE /
-+						sizeof(struct page *)),
-+					  gup_flags | FOLL_LONGTERM, page_list);
-+		if (ret < 0)
- 			goto umem_release;
+ 	down_read(&mm->mmap_sem);
+-	if (mm =3D=3D current->mm) {
+-		ret =3D get_user_pages(vaddr, 1, flags | FOLL_LONGTERM, page,
+-				     vmas);
+-	} else {
+-		ret =3D get_user_pages_remote(NULL, mm, vaddr, 1, flags, page,
+-					    vmas, NULL);
+-		/*
+-		 * The lifetime of a vaddr_get_pfn() page pin is
+-		 * userspace-controlled. In the fs-dax case this could
+-		 * lead to indefinite stalls in filesystem operations.
+-		 * Disallow attempts to pin fs-dax pages via this
+-		 * interface.
+-		 */
+-		if (ret > 0 && vma_is_fsdax(vmas[0])) {
+-			ret =3D -EOPNOTSUPP;
+-			put_page(page[0]);
 -		}
-=20
- 		cur_base +=3D ret * PAGE_SIZE;
- 		npages   -=3D ret;
-@@ -288,8 +285,6 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, uns=
-igned long addr,
- 		sg =3D ib_umem_add_sg_table(sg, page_list, ret,
- 			dma_get_max_seg_size(context->device->dma_device),
- 			&umem->sg_nents);
--
--		up_read(&mm->mmap_sem);
++	ret =3D get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
++				    page, vmas, NULL);
++	/*
++	 * The lifetime of a vaddr_get_pfn() page pin is
++	 * userspace-controlled. In the fs-dax case this could
++	 * lead to indefinite stalls in filesystem operations.
++	 * Disallow attempts to pin fs-dax pages via this
++	 * interface.
++	 */
++	if (ret > 0 && vma_is_fsdax(vmas[0])) {
++		ret =3D -EOPNOTSUPP;
++		put_page(page[0]);
  	}
++
+ 	up_read(&mm->mmap_sem);
 =20
- 	sg_mark_end(sg);
+ 	if (ret =3D=3D 1) {
+diff --git a/mm/gup.c b/mm/gup.c
+index 933524de6249..cfe6dc5fc343 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1167,13 +1167,16 @@ long get_user_pages_remote(struct task_struct *tsk,=
+ struct mm_struct *mm,
+ 		struct vm_area_struct **vmas, int *locked)
+ {
+ 	/*
+-	 * FIXME: Current FOLL_LONGTERM behavior is incompatible with
++	 * Current FOLL_LONGTERM behavior is incompatible with
+ 	 * FAULT_FLAG_ALLOW_RETRY because of the FS DAX check requirement on
+-	 * vmas.  As there are no users of this flag in this call we simply
+-	 * disallow this option for now.
++	 * vmas. However, this only comes up if locked is set, and there are
++	 * callers that do request FOLL_LONGTERM, but do not set locked. So,
++	 * allow what we can.
+ 	 */
+-	if (WARN_ON_ONCE(gup_flags & FOLL_LONGTERM))
+-		return -EINVAL;
++	if (gup_flags & FOLL_LONGTERM) {
++		if (WARN_ON_ONCE(locked))
++			return -EINVAL;
++	}
+=20
+ 	return __get_user_pages_locked(tsk, mm, start, nr_pages, pages, vmas,
+ 				       locked,
 --=20
 2.24.0
 
