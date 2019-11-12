@@ -2,81 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5074BF8855
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 07:01:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63069F8896
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 07:32:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BxvS5gPyzF4Lx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 17:01:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ByZv3zKXzF5DF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 17:32:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=abdhalee@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=mingo.kernel.org@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="CmNQS9o0"; 
+ dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Bxs06QGPzF3X5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 16:59:09 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xAC5upED013407; Tue, 12 Nov 2019 00:59:04 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w7nus1uqe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Nov 2019 00:59:03 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id xAC5x3Hf017018;
- Tue, 12 Nov 2019 00:59:03 -0500
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w7nus1uq0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Nov 2019 00:59:03 -0500
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAC5sfo3028381;
- Tue, 12 Nov 2019 05:59:02 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01dal.us.ibm.com with ESMTP id 2w5n36b1x2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Nov 2019 05:59:02 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAC5x2H150528654
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Nov 2019 05:59:02 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 02CE46A04D;
- Tue, 12 Nov 2019 05:59:02 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E2FC6A047;
- Tue, 12 Nov 2019 05:58:59 +0000 (GMT)
-Received: from [9.199.43.206] (unknown [9.199.43.206])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 12 Nov 2019 05:58:58 +0000 (GMT)
-Message-ID: <1573538337.1382.3.camel@abdul>
-Subject: net-next branch fails to build on my P8 CI system
-From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Date: Tue, 12 Nov 2019 11:28:57 +0530
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-12_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911120053
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ByXW0HzwzF3V9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 17:29:59 +1100 (AEDT)
+Received: by mail-wr1-x441.google.com with SMTP id i12so10233888wro.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 22:29:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=lAYMmo1eJk0nu5Pp/QFztO4nECppTXXyiwDmyLApAMU=;
+ b=CmNQS9o057m02iB3aVZCvD9IKuX8qvcKJgJUgyo4KExtj2bJGSViNfCsIbt5SiuwMO
+ vuoCblpkhQtIhImySY2l9xgcSalma2cLx/gmbDWtxOG+KeWeZqQREyCEiZtz2MaeiTEY
+ RldTTXX6x5mGp2gTJOMJKKnH3ErtuhTGJVb/oxnV4qflBhEKc0iGhFu9X9Z6Ewwj/nv7
+ RJ+bk94WWdoFyERGDm1828mxsXI6cvzgXYdmifbVY3rPGuNlfG2Jz7tz9D0yBEL7amvI
+ N9XaeSRhLvOl3rh+bmOKbDc4uYMU01us4xdrDKX0UOdp1yr6ys5I9p7y6gCnhALJgHcw
+ WXUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=lAYMmo1eJk0nu5Pp/QFztO4nECppTXXyiwDmyLApAMU=;
+ b=uMTU3AAevuks4VxAVxGbIVJLO6G4DGv6Wv9TysyI67cvHn1XdpH4dunAFN5Y4x8zDt
+ b2QiDxsru/uaRLurzVYDPmsjGK/bvM/xnP5motVEE9NQKRP8To69AK3BVkihNT/UiNjn
+ pi3LkdHAow4FtDwbNlAEdtE4fR+yAXTAvS0Dvs5k4qyf0RUz1svpBH0hRAthChpaNN0n
+ 3pUeHlmSoQ9DJCpWSH1YISeBzsLiomHYNLO3Hps7CCaYNS0zdUsy5S32qvZcIW0gpWG4
+ MSFLfAV1+sNtEGv1FJrEKwRk8zlU9em3Wz64q6gTRNXO+21ki7wMoNWUjRrLxMWP/HVl
+ RbbA==
+X-Gm-Message-State: APjAAAVp1uZ5QDEUoGRx6Q6k+oLw7byivPG79YIIVkw3vva/RjJ1Wmyk
+ 9DAf232noWhH4Wb9RHza6a4=
+X-Google-Smtp-Source: APXvYqwg7II6op5rkcQCA+kVGqp8JW9qmm3wOv2otknPBBGlW4hCTPNNQNQ0ueZUnows/DjxDY46Ng==
+X-Received: by 2002:adf:ab4c:: with SMTP id r12mr23079230wrc.3.1573540195668; 
+ Mon, 11 Nov 2019 22:29:55 -0800 (PST)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+ by smtp.gmail.com with ESMTPSA id 19sm40418570wrc.47.2019.11.11.22.29.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Nov 2019 22:29:54 -0800 (PST)
+Date: Tue, 12 Nov 2019 07:29:51 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V9] mm/debug: Add tests validating architecture page
+ table helpers
+Message-ID: <20191112062951.GA100264@gmail.com>
+References: <1573532326-24084-1-git-send-email-anshuman.khandual@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1573532326-24084-1-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,56 +80,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev <netdev@vger.kernel.org>, David Miller <davem@davemloft.net>,
- Eric Dumazet <eric.dumazet@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greeting's
 
-I see a build failure for net-next branch on my Power 8 system
+* Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-13:25:10 ERROR| [stderr] ./include/linux/u64_stats_sync.h: In function 64_stats_read�:
-13:25:10 ERROR| [stderr] ./include/linux/u64_stats_sync.h:80:2: warning: passing argument 1 of 鈥榣ocal_read鈥� discards 鈥榗onst鈥� qualifier from pointer target type [enabled by default]
-13:25:10 ERROR| [stderr]   return local64_read(&p->v);
-13:25:10 ERROR| [stderr]   ^
-13:25:10 ERROR| [stderr] In file included from ./include/asm-generic/local64.h:22:0,
-13:25:10 ERROR| [stderr]                  from ./arch/powerpc/include/generated/asm/local64.h:1,
-13:25:10 ERROR| [stderr]                  from ./include/linux/u64_stats_sync.h:72,
-13:25:10 ERROR| [stderr]                  from ./include/linux/cgroup-defs.h:20,
-13:25:10 ERROR| [stderr]                  from ./include/linux/cgroup.h:28,
-13:25:10 ERROR| [stderr]                  from ./include/linux/memcontrol.h:13,
-13:25:10 ERROR| [stderr]                  from ./include/linux/swap.h:9,
-13:25:10 ERROR| [stderr]                  from ./include/linux/suspend.h:5,
-13:25:10 ERROR| [stderr]                  from init/do_mounts.c:7:
-13:25:10 ERROR| [stderr] ./arch/powerpc/include/asm/local.h:20:24: note: expected 鈥榮truct local_t *鈥� but argument is of type 鈥榗onst struct local_t *鈥�
-13:25:10 ERROR| [stderr]  static __inline__ long local_read(local_t *l)
-13:25:10 ERROR| [stderr]                         ^
-13:25:11 ERROR| [stderr] In file included from ./include/linux/cgroup-defs.h:20:0,
-13:25:11 ERROR| [stderr]                  from ./include/linux/cgroup.h:28,
-13:25:11 ERROR| [stderr]                  from ./include/linux/hugetlb.h:9,
-13:25:11 ERROR| [stderr]                  from arch/powerpc/kvm/book3s_64_vio_hv.c:16:
-13:25:11 ERROR| [stderr] ./include/linux/u64_stats_sync.h: In function 鈥榰64_stats_read鈥�:
-13:25:11 ERROR| [stderr] ./include/linux/u64_stats_sync.h:80:2: error: passing argument 1 of 鈥榣ocal_read鈥� discards 鈥榗onst鈥� qualifier from pointer target type [-Werror]
-13:25:11 ERROR| [stderr]   return local64_read(&p->v);
-13:25:11 ERROR| [stderr]   ^
+> +config DEBUG_VM_PGTABLE
+> +	bool "Debug arch page table for semantics compliance"
+> +	depends on MMU
+> +	depends on DEBUG_VM
+> +	depends on ARCH_HAS_DEBUG_VM_PGTABLE
+> +	help
+> +	  This option provides a debug method which can be used to test
+> +	  architecture page table helper functions on various platforms in
+> +	  verifying if they comply with expected generic MM semantics. This
+> +	  will help architecture code in making sure that any changes or
+> +	  new additions of these helpers still conform to expected
+> +	  semantics of the generic MM.
+> +
+> +	  If unsure, say N.
 
-I see some recent code changes here
+Since CONFIG_DEBUG_VM is generally disabled in distro kernel packages, 
+why not make this 'default y' to maximize testing coverage? The code size 
+increase should be minimal, and DEBUG_VM increases size anyway.
 
-9dfd871481c8e9c512938e9ce632beed645363e0 Merge branch 'u64_stats_t'
-fd2f4737870eb866537fbbffa2b59414b9b0c0a2 net: use u64_stats_t in struct
-pcpu_lstats
-5260dd3ed1ff7eba39251b28977e4d8950e2f099 tun: switch to u64_stats_t
-316580b69d0a7aeeee5063af47438b626bc47cbd u64_stats: provide u64_stats_t
-type
+Other than that this looks good to me:
 
+  Reviewed-by: Ingo Molnar <mingo@kernel.org>
 
--- 
-Regard's
+Thanks,
 
-Abdul Haleem
-IBM Linux Technology Centre
-
-
-
+	Ingo
