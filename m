@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D03F989F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 19:28:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57411F98AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 19:31:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CGTg1BX6zF3WB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 05:28:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CGXs6H4KzF5b3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 05:31:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,17 +18,17 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CDNT16tPzF3By
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 03:54:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CDNW4sSqzF1Nv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 03:54:03 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id DEBDFB133;
- Tue, 12 Nov 2019 16:53:57 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 628D7B134;
+ Tue, 12 Nov 2019 16:53:59 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 29/33] powerpc/perf: consolidate valid_user_sp
-Date: Tue, 12 Nov 2019 17:52:27 +0100
-Message-Id: <ba56f4270e5e2b0832367d3a045f1306c116c215.1573576649.git.msuchanek@suse.de>
+Subject: [PATCH 30/33] powerpc/perf: remove current_is_64bit()
+Date: Tue, 12 Nov 2019 17:52:28 +0100
+Message-Id: <fbad11e3607273b0af7d4196d2f7c2d7b0a2b4f9.1573576649.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1573576649.git.msuchanek@suse.de>
 References: <cover.1573576649.git.msuchanek@suse.de>
@@ -75,76 +75,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Merge the 32bit and 64bit version.
+Since commit ed1cd6deb013 ("powerpc: Activate CONFIG_THREAD_INFO_IN_TASK")
+current_is_64bit() is quivalent to !is_32bit_task().
+Remove the redundant function.
 
-Halve the check constants on 32bit.
+Link: https://github.com/linuxppc/issues/issues/275
+Link: https://lkml.org/lkml/2019/9/12/540
 
-Use STACK_TOP since it is defined.
-
-This removes a page from the valid 32bit area on 64bit:
- #define TASK_SIZE_USER32 (0x0000000100000000UL - (1 * PAGE_SIZE))
- #define STACK_TOP_USER32 TASK_SIZE_USER32
-
+Fixes: linuxppc#275
+Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 ---
-v8: new patch
----
- arch/powerpc/perf/callchain.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ arch/powerpc/perf/callchain.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
 diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
-index d86bdbffda9e..7863ee0a0e69 100644
+index 7863ee0a0e69..fbf76cb01026 100644
 --- a/arch/powerpc/perf/callchain.c
 +++ b/arch/powerpc/perf/callchain.c
-@@ -102,6 +102,20 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
+@@ -275,16 +275,6 @@ static void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
  	}
  }
  
-+static inline int valid_user_sp(unsigned long sp, int is_64)
-+{
-+	unsigned long stack_top;
-+
-+	if (IS_ENABLED(CONFIG_PPC32))
-+		stack_top = STACK_TOP;
-+	else    /* STACK_TOP uses is_32bit_task() but we want is_64 */
-+		stack_top = is_64 ? STACK_TOP_USER64 : STACK_TOP_USER32;
-+
-+	if (!sp || (sp & (is_64 ? 7 : 3)) || sp > stack_top - (is_64 ? 32 : 16))
-+		return 0;
-+	return 1;
-+}
-+
- #ifdef CONFIG_PPC64
- /*
-  * On 64-bit we don't want to invoke hash_page on user addresses from
-@@ -165,13 +179,6 @@ static int read_user_stack_64(unsigned long __user *ptr, unsigned long *ret)
- 	return read_user_stack_slow(ptr, ret, 8);
- }
- 
--static inline int valid_user_sp(unsigned long sp, int is_64)
+-static inline int current_is_64bit(void)
 -{
--	if (!sp || (sp & 7) || sp > (is_64 ? TASK_SIZE : 0x100000000UL) - 32)
--		return 0;
--	return 1;
+-	/*
+-	 * We can't use test_thread_flag() here because we may be on an
+-	 * interrupt stack, and the thread flags don't get copied over
+-	 * from the thread_info on the main stack to the interrupt stack.
+-	 */
+-	return !test_ti_thread_flag(task_thread_info(current), TIF_32BIT);
 -}
 -
- /*
-  * 64-bit user processes use the same stack frame for RT and non-RT signals.
-  */
-@@ -294,13 +301,6 @@ static inline int current_is_64bit(void)
- 	return 0;
+ #else  /* CONFIG_PPC64 */
+ static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
+ {
+@@ -296,11 +286,6 @@ static inline void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry
+ {
  }
  
--static inline int valid_user_sp(unsigned long sp, int is_64)
+-static inline int current_is_64bit(void)
 -{
--	if (!sp || (sp & 7) || sp > TASK_SIZE - 32)
--		return 0;
--	return 1;
+-	return 0;
 -}
 -
  #define __SIGNAL_FRAMESIZE32	__SIGNAL_FRAMESIZE
  #define sigcontext32		sigcontext
  #define mcontext32		mcontext
+@@ -477,7 +462,7 @@ static void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+ void
+ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
+ {
+-	if (current_is_64bit())
++	if (!is_32bit_task())
+ 		perf_callchain_user_64(entry, regs);
+ 	else
+ 		perf_callchain_user_32(entry, regs);
 -- 
 2.23.0
 
