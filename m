@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA60F9004
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 13:53:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7098BF9011
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 13:58:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47C72k56W4zDqdX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 23:53:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47C78P02ydzDr37
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 23:58:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47C6xQ1hWtzF31M
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 23:48:42 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47C6xm2qfMzF3Wj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 23:49:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="QWldi17X"; dkim-atps=neutral
+ header.b="kPMSVVQH"; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47C6xM6z4Rz9sPJ;
- Tue, 12 Nov 2019 23:48:39 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47C6xl61Bmz9sNT;
+ Tue, 12 Nov 2019 23:48:59 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1573562920;
- bh=yGPX0ihRsGHoBSHw3nM8YEYTqEx8IEUHP7uLcPtPQD0=;
+ s=201909; t=1573562940;
+ bh=0H2ckzenIEUdMeCuWV8YnQ3qDS5tDmmeebFIVA9G0MI=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=QWldi17X64RcjmSvWnT6aPC+hWjq25kDxm7dwPNBxX4z+GBonz9DE9HXXTi8CMMbR
- VtZfk+dOMHWXlhcMyFsd8FlXMBK2u3KfqbufLY+vYO3hfouTGXhQ79ew06k1QxP6WX
- IsjwnuwLnCX3y0wS75aIicIcDnSGaUPv6FYLzzY7KAkl4kGnOix8kgjXgJpbCXGtqf
- EPlj0djpApJ8K7kvxH0ASlJBpJlHX5iQgSXFwkib3YEnavcCLqW5A0ubbcDaoaOj3D
- emI6LRjcoKeorCISgDPmt4KecfdMTwW3vhSmT/Un1TeVP0m32xgbZEegBAgfa71p3H
- jrv+/09Ut48QA==
+ b=kPMSVVQHO2yuVbDjgLxrErywmOK9wydgd407kEodq/NWXkZX01saj/9m1RMJGkBzO
+ 3hxIZ9nC/rE8GCWjMeISUpaQittbwWBLoKY+vbH1BttdhuBxAl5zTGUyOyODQXSZ0c
+ vZlaxdsCVD6EkPewb9AxsaydNG17vqVzA7fteb2Q4j6ErkI2ui7LXS5Xgd2bjutVmI
+ pasyZ1azAOahGlSTs4qf12ch64aVtzoY3DI+Xl1IrWdcYnNXn6F//Q19j9J+QJMk1U
+ 0O+uPTWcbDNl2nMuJNU8N4DCFX9S9UfEu2z3DNYdl43ga/fHQ3qH5TCojGVfHfZ0n2
+ qA6di46GG0ApA==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Andrew Murray <andrew.murray@arm.com>, Rob Herring <robh+dt@kernel.org>,
  Mark Rutland <mark.rutland@arm.com>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v1 5/7] powerpc: dts: fsl: Use IRQ flags for legacy PCI
- IRQ interrupts
-In-Reply-To: <20191104163834.8932-6-andrew.murray@arm.com>
+Subject: Re: [PATCH v1 6/7] powerpc: dts: Use IRQ flags for legacy PCI IRQ
+ interrupts
+In-Reply-To: <20191104163834.8932-7-andrew.murray@arm.com>
 References: <20191104163834.8932-1-andrew.murray@arm.com>
- <20191104163834.8932-6-andrew.murray@arm.com>
-Date: Tue, 12 Nov 2019 23:48:39 +1100
-Message-ID: <87y2wl1crc.fsf@mpe.ellerman.id.au>
+ <20191104163834.8932-7-andrew.murray@arm.com>
+Date: Tue, 12 Nov 2019 23:48:58 +1100
+Message-ID: <87v9rp1cqt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,43 +67,48 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Andrew Murray <andrew.murray@arm.com> writes:
-
 > Replace magic numbers used to describe legacy PCI IRQ interrupts
 > with #define.
 >
 > Signed-off-by: Andrew Murray <andrew.murray@arm.com>
 > ---
->  arch/powerpc/boot/dts/fsl/b4420qds.dts        |   4 +-
->  arch/powerpc/boot/dts/fsl/b4420si-post.dtsi   |   2 +-
->  arch/powerpc/boot/dts/fsl/b4860qds.dts        |   4 +-
->  arch/powerpc/boot/dts/fsl/b4860si-post.dtsi   |   2 +-
->  arch/powerpc/boot/dts/fsl/b4qds.dtsi          |   2 +-
->  arch/powerpc/boot/dts/fsl/b4si-post.dtsi      |  12 +-
->  arch/powerpc/boot/dts/fsl/bsc9132qds.dts      |   2 +-
->  arch/powerpc/boot/dts/fsl/bsc9132si-post.dtsi |  12 +-
->  arch/powerpc/boot/dts/fsl/c293pcie.dts        |   2 +-
->  arch/powerpc/boot/dts/fsl/c293si-post.dtsi    |  12 +-
->  arch/powerpc/boot/dts/fsl/gef_sbc310.dts      |  12 +-
->  arch/powerpc/boot/dts/fsl/mpc8536ds.dts       |  12 +-
->  arch/powerpc/boot/dts/fsl/mpc8536ds_36b.dts   |  12 +-
->  arch/powerpc/boot/dts/fsl/mpc8540ads.dts      | 100 ++++++------
->  arch/powerpc/boot/dts/fsl/mpc8544ds.dts       |  22 +--
->  arch/powerpc/boot/dts/fsl/mpc8544ds.dtsi      |  22 +--
->  arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts  |  14 +-
->  arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts  |  14 +-
->  arch/powerpc/boot/dts/fsl/mpc8548si-post.dtsi |  12 +-
->  arch/powerpc/boot/dts/fsl/mpc8560ads.dts      | 100 ++++++------
->  arch/powerpc/boot/dts/fsl/mpc8568mds.dts      |  22 +--
->  arch/powerpc/boot/dts/fsl/mpc8568si-post.dtsi |  12 +-
->  arch/powerpc/boot/dts/fsl/mpc8569mds.dts      |   2 +-
->  arch/powerpc/boot/dts/fsl/mpc8569si-post.dtsi |  12 +-
->  arch/powerpc/boot/dts/fsl/mpc8641_hpcn.dts    | 150 +++++++++---------
->  .../powerpc/boot/dts/fsl/mpc8641_hpcn_36b.dts | 150 +++++++++---------
->  arch/powerpc/boot/dts/fsl/p2020ds.dts         |   2 +-
->  arch/powerpc/boot/dts/fsl/p2020ds.dtsi        |  46 +++---
->  arch/powerpc/boot/dts/fsl/ppa8548.dts         |   2 +-
->  arch/powerpc/boot/dts/fsl/sbc8641d.dts        |   4 +-
->  30 files changed, 408 insertions(+), 368 deletions(-)
+>  arch/powerpc/boot/dts/bluestone.dts       | 12 +++--
+>  arch/powerpc/boot/dts/charon.dts          | 12 +++--
+>  arch/powerpc/boot/dts/digsy_mtc.dts       | 12 +++--
+>  arch/powerpc/boot/dts/haleakala.dts       | 12 +++--
+>  arch/powerpc/boot/dts/holly.dts           | 42 ++++++++--------
+>  arch/powerpc/boot/dts/hotfoot.dts         | 12 +++--
+>  arch/powerpc/boot/dts/kuroboxHD.dts       | 28 ++++++-----
+>  arch/powerpc/boot/dts/kuroboxHG.dts       | 28 ++++++-----
+>  arch/powerpc/boot/dts/lite5200.dts        | 12 +++--
+>  arch/powerpc/boot/dts/lite5200b.dts       | 22 +++++----
+>  arch/powerpc/boot/dts/media5200.dts       | 26 +++++-----
+>  arch/powerpc/boot/dts/mpc5121ads.dts      | 20 ++++----
+>  arch/powerpc/boot/dts/mpc8308rdb.dts      | 12 +++--
+>  arch/powerpc/boot/dts/mpc8313erdb.dts     | 20 ++++----
+>  arch/powerpc/boot/dts/mpc832x_mds.dts     | 60 ++++++++++++-----------
+>  arch/powerpc/boot/dts/mpc832x_rdb.dts     | 22 +++++----
+>  arch/powerpc/boot/dts/mpc8349emitxgp.dts  |  8 +--
+>  arch/powerpc/boot/dts/mpc836x_mds.dts     | 60 ++++++++++++-----------
+>  arch/powerpc/boot/dts/mpc836x_rdk.dts     | 16 +++---
+>  arch/powerpc/boot/dts/mucmc52.dts         | 12 +++--
+>  arch/powerpc/boot/dts/mvme5100.dts        | 48 +++++++++---------
+>  arch/powerpc/boot/dts/pcm030.dts          | 22 +++++----
+>  arch/powerpc/boot/dts/pcm032.dts          | 22 +++++----
+>  arch/powerpc/boot/dts/pq2fads.dts         | 28 ++++++-----
+>  arch/powerpc/boot/dts/socrates.dts        |  8 +--
+>  arch/powerpc/boot/dts/storcenter.dts      | 28 ++++++-----
+>  arch/powerpc/boot/dts/stx_gp3_8560.dts    | 36 +++++++-------
+>  arch/powerpc/boot/dts/taishan.dts         | 20 ++++----
+>  arch/powerpc/boot/dts/tqm5200.dts         | 12 +++--
+>  arch/powerpc/boot/dts/tqm8540.dts         | 16 +++---
+>  arch/powerpc/boot/dts/tqm8541.dts         | 16 +++---
+>  arch/powerpc/boot/dts/tqm8555.dts         | 16 +++---
+>  arch/powerpc/boot/dts/tqm8560.dts         | 16 +++---
+>  arch/powerpc/boot/dts/virtex440-ml510.dts | 43 ++++++++--------
+>  arch/powerpc/boot/dts/xcalibur1501.dts    | 13 +++--
+>  arch/powerpc/boot/dts/xpedite5200.dts     |  8 +--
+>  36 files changed, 437 insertions(+), 363 deletions(-)
 
 Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
