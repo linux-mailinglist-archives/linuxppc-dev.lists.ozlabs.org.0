@@ -2,74 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028DEF9E35
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 00:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1B1F9E51
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 00:45:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CPC72V1RzF5tx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:31:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CPW366FdzF5Vs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:45:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="RAj1WC+w"; 
+ secure) header.d=ziepe.ca header.i=@ziepe.ca header.b="it8jHl8A"; 
  dkim-atps=neutral
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CP8d0lznzF4tP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 10:29:20 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dcb404e0000>; Tue, 12 Nov 2019 15:29:18 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Tue, 12 Nov 2019 15:29:15 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Tue, 12 Nov 2019 15:29:15 -0800
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 12 Nov
- 2019 23:29:14 +0000
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CPSK3VqHzDqVx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 10:42:55 +1100 (AEDT)
+Received: by mail-qt1-x843.google.com with SMTP id n4so511758qte.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 15:42:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=vZiC7XI6w4qmcJhiszw5fcLLfKl81FBqJhCu/q1OZew=;
+ b=it8jHl8Aeod0zYq+Skrwrg8GwHh9Iu8Lk4aklL2UU1A7NrkgqGz5TacHTvuZENKCSO
+ zX5vQsxL6WoNuMWNKkEQjxDubFJia3lLQ6vtybpi5bU815x8TqvUIIt9Kr2Uo5cBSRzI
+ 2VZYj93gQX0itc+geQUWbcwpbx7dsR+jspiqHjxUKDMEHdunGEQMz6R4qhshIz6xtcbf
+ Zhwk9IxmoxlDCj68H/K3Yi1WAV8gDwI3vnoSzzJ5OjxNZ+oTEONNaXk9owbEXpdua0Ac
+ Ytg9ljas4ej2TjoNx1nr1x9pd15vss2zsUb9mCqXq0UcPC7FIXHufZoDuL/IWSFTzLDE
+ UAww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=vZiC7XI6w4qmcJhiszw5fcLLfKl81FBqJhCu/q1OZew=;
+ b=HA7sMTiq9goFc4xACcHPmSHPLaU9ryBmZC9SntXjTiRJBhvADVDut3DxSkYqtHXa4C
+ QSHw9/+3XWwy0FX5jSk6Eao+yuR68veX8GphQGDkWIVRdmEWAukpkGotUnjRJMpbXH8a
+ 6QrWFD1NJrPBMUgObcawQ/LkiHD9Z+e+tEK+qlytEGy6BQLgVFadxA5kCbPiWYPGRmAW
+ 8Reis/t+QkrwqncNL2i/AGWv+w5hOOZWPFMRpftriyQb11pavmUAzOCli0CHyvpqK+gd
+ PeAVY/SlHuM2PDrBlB8qqBTYsf8gOvIgB5Iqi9y/7oub1mJvlTiN/RAsnQDyicMmcBut
+ EQ7Q==
+X-Gm-Message-State: APjAAAUZ4KdUG2I/OL5k+Zdc2uwSsfSbOy2EujvJOn0aG6ojtIrb/fvg
+ aVbkQnn1yJ7kpLpr+8B8u6yG5A==
+X-Google-Smtp-Source: APXvYqz3aftIVfOw8Wxd6a6UdmY0tmO8rvvaAb/aUmwkho+fgsveWFsBhLgURBNyxpICpzEXHNU+vQ==
+X-Received: by 2002:aed:26e2:: with SMTP id q89mr18576100qtd.391.1573602171951; 
+ Tue, 12 Nov 2019 15:42:51 -0800 (PST)
+Received: from ziepe.ca
+ (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net.
+ [142.162.113.180])
+ by smtp.gmail.com with ESMTPSA id u11sm212203qtg.11.2019.11.12.15.42.51
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 12 Nov 2019 15:42:51 -0800 (PST)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+ (envelope-from <jgg@ziepe.ca>)
+ id 1iUfoA-0005Um-OB; Tue, 12 Nov 2019 19:42:50 -0400
+Date: Tue, 12 Nov 2019 19:42:50 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Dan Williams <dan.j.williams@intel.com>
 Subject: Re: [PATCH v3 08/23] vfio, mm: fix get_user_pages_remote() and
  FOLL_LONGTERM
-To: Dan Williams <dan.j.williams@intel.com>
+Message-ID: <20191112234250.GA19615@ziepe.ca>
 References: <20191112000700.3455038-1-jhubbard@nvidia.com>
  <20191112000700.3455038-9-jhubbard@nvidia.com>
- <CAPcyv4hgKEqoxeQJH9R=YiZosvazj308Kk7jJA1NLxJkNenDcQ@mail.gmail.com>
- <471e513c-833f-2f8b-60db-5d9c56a8f766@nvidia.com>
- <CAPcyv4it5fxU71uXFHW_WAAXBw4suQvwWTjX0Wru8xKFoz_dbw@mail.gmail.com>
- <729a16cb-3947-c7cb-c57f-6c917d240665@nvidia.com>
- <CAPcyv4gUe__09cnAh3jeFogJH=sGm9U+8axRq_kCASkdbLfNbQ@mail.gmail.com>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <337c1eae-0bc0-f10e-1d94-bfaabb458ef1@nvidia.com>
-Date: Tue, 12 Nov 2019 15:29:14 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <20191112204338.GE5584@ziepe.ca>
+ <0db36e86-b779-01af-77e7-469af2a2e19c@nvidia.com>
+ <CAPcyv4hAEgw6ySNS+EFRS4yNRVGz9A3Fu1vOk=XtpjYC64kQJw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4gUe__09cnAh3jeFogJH=sGm9U+8axRq_kCASkdbLfNbQ@mail.gmail.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1573601358; bh=o6ia2d63RJ0qxkFwgtD+YyXN5GfFC9WoewC+wxSu4kw=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=RAj1WC+waGrwzzu1rcNVg5xTDJ4YFSGOJSfwi2oimLIOQaVkk915bIrPMUaThYfIw
- ky/YXTMGIvWaDuZc47fvOH+PSyqmQoTrBwt0Wa509eFKFDuIhRxPrlGygvCZBlYH7F
- e7G7i7kI+5JBe9jpDcCLEF8nqBf+7Jp0Acs8Bh7NVnPfxELLKIp8A2qiCGfFQtoi0U
- 1hVsHCbQquq5G7id5r5AVCDNCbejp+r3iesGNJpN/Jlv6Xqu0/TA5bPv+XypWrU59G
- D1u3GlrRZEncRTYPb/7asQBi8wwD6pWmTiU8qTKzfKwu3yComaEYolsu4mdM+kKDAa
- r3XrSXBXN1ykw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4hAEgw6ySNS+EFRS4yNRVGz9A3Fu1vOk=XtpjYC64kQJw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,16 +97,16 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
  Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
  linux-rdma <linux-rdma@vger.kernel.org>, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
  "Linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- Shuah Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+ linux-block@vger.kernel.org,
+ =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
  Al Viro <viro@zeniv.linux.org.uk>, Mauro Carvalho Chehab <mchehab@kernel.org>,
  bpf@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>,
  Jens Axboe <axboe@kernel.dk>, Netdev <netdev@vger.kernel.org>,
  Alex Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  linux-fsdevel <linux-fsdevel@vger.kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
@@ -109,28 +116,42 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/12/19 3:14 PM, Dan Williams wrote:
-...
->>
->> Is that OK, or did you want to go further (possibly in a follow-up
->> patchset, as I'm hoping to get this one in soon)?
+On Tue, Nov 12, 2019 at 02:45:51PM -0800, Dan Williams wrote:
+> On Tue, Nov 12, 2019 at 2:43 PM John Hubbard <jhubbard@nvidia.com> wrote:
+> >
+> > On 11/12/19 12:43 PM, Jason Gunthorpe wrote:
+> > ...
+> > >> -            }
+> > >> +    ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
+> > >> +                                page, vmas, NULL);
+> > >> +    /*
+> > >> +     * The lifetime of a vaddr_get_pfn() page pin is
+> > >> +     * userspace-controlled. In the fs-dax case this could
+> > >> +     * lead to indefinite stalls in filesystem operations.
+> > >> +     * Disallow attempts to pin fs-dax pages via this
+> > >> +     * interface.
+> > >> +     */
+> > >> +    if (ret > 0 && vma_is_fsdax(vmas[0])) {
+> > >> +            ret = -EOPNOTSUPP;
+> > >> +            put_page(page[0]);
+> > >>      }
+> > >
+> > > AFAIK this chunk is redundant now as it is some hack to emulate
+> > > FOLL_LONGTERM? So vmas can be deleted too.
+> >
+> > Let me first make sure I understand what Dan has in mind for the vma
+> > checking, in the other thread...
 > 
-> That looks ok. Something to maybe push down into the core in a future
+> It's not redundant relative to upstream which does not do anything the
+> FOLL_LONGTERM in the gup-slow path... but I have not looked at patches
+> 1-7 to see if something there made it redundant.
 
+Oh, the hunk John had below for get_user_pages_remote() also needs to
+call __gup_longterm_locked() when FOLL_LONGTERM is specified, then
+that calls check_dax_vmas() which duplicates the vma_is_fsdax() check
+above.
 
-Great! I'll post a cleaned up v4 (with the extraneous up_read()/down_read()
-removed), then.
+Certainly no caller of FOLL_LONGTERM should have to do dax specific
+VMA checking.
 
-
-> cleanup, but not something that needs to be done now.
-> 
-
-Yes. I've put the FOLL_LONGTERM cleanup items on my list now, in case
-they don't get done as part of something else. There's a lot more
-change coming in this area.
-
-
-thanks,
--- 
-John Hubbard
-NVIDIA
+Jason
