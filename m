@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E845F9D73
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 23:47:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5905F9D78
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 23:50:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CNDb5WyDzF5mQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 09:47:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CNHR22H3zF5mq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 09:50:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::244;
- helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::242;
+ helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="Jq7Ptqpe"; 
+ header.i=@intel-com.20150623.gappssmtp.com header.b="g+shynx9"; 
  dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
+ [IPv6:2607:f8b0:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CN7p0xXmzF18B
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 09:43:28 +1100 (AEDT)
-Received: by mail-oi1-x244.google.com with SMTP id y194so16447845oie.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 14:43:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CNBj2srRzF5l0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 09:46:05 +1100 (AEDT)
+Received: by mail-oi1-x242.google.com with SMTP id l20so16417650oie.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 14:46:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=SwaaHNLQ6Cwcgbew071VEYLmiCBwwXoXuuoAi+2uA2o=;
- b=Jq7Ptqpebw7UGAIdEQ/unEBsB7QbaXVZNTWXCanS5nvK3elyglZtGcUaQ89X7Thh8h
- IAM86ORfnzN6917rhUVFsUy3UD57DPR+XlrbhhZ/NXNnmHMPvg4XpzzSKBe4NqErKRUy
- bZxd+tm9M+MwB7qsXrtdhh4D3/L98cHAZWd0Ns8kuwxv1QWg3yEpu0lT5cnjJPtGKrYR
- anyG20BRg0b0DeF7mLr0STZrxT4BCOm+zZEBDW3gpHBI3V/JOgKkFou2F3URCWxql04L
- MQNOT/7KMRt8tV9Ump9WAqJ7q3xqWRAJd3iDm6wl8QcfVduDF9h8k23QxQ9DnzN60j3u
- /xqQ==
+ :cc; bh=7VZux41I9l8WsaFw4dnSKoQ+DL1POYbdTwXxPgsqOD8=;
+ b=g+shynx9wA4O7/ZPSOmOhvhdFUBcChFyBb7EYzal20VNZRr14tSC8CEEu8RhYVOSKP
+ ujUV0PqIhIH36zKviPook+HnkIHuRG88nmkcJhEvO3dJXo36vkvTp3d/Rv5+wpQSmOnU
+ bQU0r/Fslk/8pH+0JUylPowC6D4ZnT5PrmHiZ30JXUbKpZ1rMZQ7kmT50jl8KfJoHp7m
+ VvEK+ooBIm3vYED6+FUL9oFvr5SRhfXOEafMoAbLZrqHGNUi1aW7WiDjR5Rr2M+YKo5Q
+ 1bTGao6fq7ZjCHqOdYHjYnxFv2rb5XbPoQBWE0A1WALsbQq7HL4C3F5HipXsfgbDt8Vf
+ nWjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=SwaaHNLQ6Cwcgbew071VEYLmiCBwwXoXuuoAi+2uA2o=;
- b=JsdwfvoSmfBjmW18AsCWA7K2SZhi68Rbck/c1BX2XEz2x1sohciSUHEJ5n5DSChbZu
- jwOLTj1TRmgNfXMCUw6uBwlTTJ6rZMTXHOPZWAbDVqaEEWy3InmSf3omjejH3d+Sb0pP
- pc9Op8gGR/6vLTUrOud7b6/OFVjgp+c4VnoxdiJdP1q3D1D0CqCzB6+biQ6AXXpjFCdK
- VlFIhUhOD70yTvGWFu0rg5+GE1C+iTtNClQXk3EZsHtwDOQXN99/wYQRND6AxHpHC7Et
- a2ywH6mhwu1C8GsO3yRyy63Z1JrF+T72HMikD/UQHf0yMEea6MLf1zQeM3WWnnXkk29j
- EnFA==
-X-Gm-Message-State: APjAAAU1Oo5HR82jmX8zZsLSVmCfvq1gwdCXT9A6ngvUaYA0KM787ebE
- EbAI0aB3BRErd9qmHEBqfMOOWh79lMIvcRKaq0G/7Q==
-X-Google-Smtp-Source: APXvYqxLBopeTTnZkVho8CVk6N+hGkn5uHiE62zpra+sAfITZV3BdLQKTEc55Ljq6ZrLX2Tr24PR9eCQkyGplH1DN48=
-X-Received: by 2002:aca:ead7:: with SMTP id i206mr135827oih.0.1573598604957;
- Tue, 12 Nov 2019 14:43:24 -0800 (PST)
+ bh=7VZux41I9l8WsaFw4dnSKoQ+DL1POYbdTwXxPgsqOD8=;
+ b=opFfR5YImZZ8lcusQcej7VXPXSq0klTyxBGSADvJsRMHdC/0+hxj11dQgW2MuLjyB+
+ uj0Esh+yXGJ9C/Cao1TpVuky52Q7vXRE85bo5RcRgRln98t28gHTM//pnbc4J0LTdtlG
+ dc5ETOv+MT4qntvoJF66LajboiuOygej1Gm0Sua3RYOBMIsjpXfq/Bip9Ke8y9xCMWsW
+ H1lpOOZttG2qUScoEqw62a1YxHo/PMXSknvP8uRa7y28fiLLAlcyeqGPqVS2ZNLlZnzt
+ F/RWRFInOzFUFBa2szDvFwjTuboxJx9VOygIc/5qubW49PzmfvKZ34nnl7LFxknVj5fI
+ flUA==
+X-Gm-Message-State: APjAAAWGmMPe9gRpuq3QCdVTM4NNEJUqcnmhVla3nBkWeaAB/SlyMkY9
+ 8tLbfM8UBJr9j1JY5KQ2bGySnlyKHd2WGvSw0XRmmw==
+X-Google-Smtp-Source: APXvYqwYMdEjXlo/ZXkQ25Q7OqLij5wE38qfmFx+c4Kh6ETnZQ80hOGe2SgdovvfY1Nwmo4LDa9vLeLDcR91Ofxlyck=
+X-Received: by 2002:aca:ea57:: with SMTP id i84mr83905oih.73.1573598761920;
+ Tue, 12 Nov 2019 14:46:01 -0800 (PST)
 MIME-Version: 1.0
 References: <20191112000700.3455038-1-jhubbard@nvidia.com>
  <20191112000700.3455038-9-jhubbard@nvidia.com>
- <CAPcyv4hgKEqoxeQJH9R=YiZosvazj308Kk7jJA1NLxJkNenDcQ@mail.gmail.com>
- <471e513c-833f-2f8b-60db-5d9c56a8f766@nvidia.com>
-In-Reply-To: <471e513c-833f-2f8b-60db-5d9c56a8f766@nvidia.com>
+ <20191112204338.GE5584@ziepe.ca>
+ <0db36e86-b779-01af-77e7-469af2a2e19c@nvidia.com>
+In-Reply-To: <0db36e86-b779-01af-77e7-469af2a2e19c@nvidia.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 12 Nov 2019 14:43:14 -0800
-Message-ID: <CAPcyv4it5fxU71uXFHW_WAAXBw4suQvwWTjX0Wru8xKFoz_dbw@mail.gmail.com>
+Date: Tue, 12 Nov 2019 14:45:51 -0800
+Message-ID: <CAPcyv4hAEgw6ySNS+EFRS4yNRVGz9A3Fu1vOk=XtpjYC64kQJw@mail.gmail.com>
 Subject: Re: [PATCH v3 08/23] vfio,
  mm: fix get_user_pages_remote() and FOLL_LONGTERM
 To: John Hubbard <jhubbard@nvidia.com>
@@ -96,7 +96,6 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  bpf@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>,
  Jens Axboe <axboe@kernel.dk>, Netdev <netdev@vger.kernel.org>,
  Alex Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  linux-fsdevel <linux-fsdevel@vger.kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
@@ -106,82 +105,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 12, 2019 at 2:24 PM John Hubbard <jhubbard@nvidia.com> wrote:
+On Tue, Nov 12, 2019 at 2:43 PM John Hubbard <jhubbard@nvidia.com> wrote:
 >
-> On 11/12/19 1:57 PM, Dan Williams wrote:
+> On 11/12/19 12:43 PM, Jason Gunthorpe wrote:
 > ...
-> >> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-> >> index d864277ea16f..017689b7c32b 100644
-> >> --- a/drivers/vfio/vfio_iommu_type1.c
-> >> +++ b/drivers/vfio/vfio_iommu_type1.c
-> >> @@ -348,24 +348,20 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
-> >>                 flags |= FOLL_WRITE;
-> >>
-> >>         down_read(&mm->mmap_sem);
-> >> -       if (mm == current->mm) {
-> >> -               ret = get_user_pages(vaddr, 1, flags | FOLL_LONGTERM, page,
-> >> -                                    vmas);
-> >> -       } else {
-> >> -               ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags, page,
-> >> -                                           vmas, NULL);
-> >> -               /*
-> >> -                * The lifetime of a vaddr_get_pfn() page pin is
-> >> -                * userspace-controlled. In the fs-dax case this could
-> >> -                * lead to indefinite stalls in filesystem operations.
-> >> -                * Disallow attempts to pin fs-dax pages via this
-> >> -                * interface.
-> >> -                */
-> >> -               if (ret > 0 && vma_is_fsdax(vmas[0])) {
-> >> -                       ret = -EOPNOTSUPP;
-> >> -                       put_page(page[0]);
-> >> -               }
-> >> +       ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
-> >> +                                   page, vmas, NULL);
+> >> -            }
+> >> +    ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
+> >> +                                page, vmas, NULL);
+> >> +    /*
+> >> +     * The lifetime of a vaddr_get_pfn() page pin is
+> >> +     * userspace-controlled. In the fs-dax case this could
+> >> +     * lead to indefinite stalls in filesystem operations.
+> >> +     * Disallow attempts to pin fs-dax pages via this
+> >> +     * interface.
+> >> +     */
+> >> +    if (ret > 0 && vma_is_fsdax(vmas[0])) {
+> >> +            ret = -EOPNOTSUPP;
+> >> +            put_page(page[0]);
+> >>      }
 > >
-> > Hmm, what's the point of passing FOLL_LONGTERM to
-> > get_user_pages_remote() if get_user_pages_remote() is not going to
-> > check the vma? I think we got to this code state because the
+> > AFAIK this chunk is redundant now as it is some hack to emulate
+> > FOLL_LONGTERM? So vmas can be deleted too.
 >
-> FOLL_LONGTERM is short-lived in this location, because patch 23
-> ("mm/gup: remove support for gup(FOLL_LONGTERM)") removes it, after
-> callers are changed over to pin_longterm_pages*().
->
-> So FOLL_LONGTERM is not doing much now, but it is basically a marker for
-> "change gup(FOLL_LONGTERM) to pin_longterm_pages()", and patch 18
-> actually makes that change.
->
-> And then pin_longterm_pages*() is, in turn, a way to mark all the
-> places that need file system and/or user space interactions (layout
-> leases, etc), as per "Case 2: RDMA" in the new
-> Documentation/vm/pin_user_pages.rst.
+> Let me first make sure I understand what Dan has in mind for the vma
+> checking, in the other thread...
 
-Ah, sorry. This was the first time I had looked at this series and
-jumped in without reading the background.
-
-Your patch as is looks ok, I assume you've removed the FOLL_LONGTERM
-warning in get_user_pages_remote in another patch?
-
->
-> > get_user_pages() vs get_user_pages_remote() split predated the
-> > introduction of FOLL_LONGTERM.
->
-> Yes. And I do want clean this up as I go, so we don't end up with
-> stale concepts lingering in gup.c...
->
-> >
-> > I think check_vma_flags() should do the ((FOLL_LONGTERM | FOLL_GET) &&
-> > vma_is_fsdax()) check and that would also remove the need for
-> > __gup_longterm_locked.
-> >
->
-> Good idea, but there is still the call to check_and_migrate_cma_pages(),
-> inside __gup_longterm_locked().  So it's a little more involved and
-> we can't trivially delete __gup_longterm_locked() yet, right?
-
-[ add Aneesh ]
-
-Yes, you're right. I had overlooked that had snuck in there. That to
-me similarly needs to be pushed down into the core with its own FOLL
-flag, or it needs to be an explicit fixup that each caller does after
-get_user_pages. The fact that migration silently happens as a side
-effect of gup is too magical for my taste.
+It's not redundant relative to upstream which does not do anything the
+FOLL_LONGTERM in the gup-slow path... but I have not looked at patches
+1-7 to see if something there made it redundant.
