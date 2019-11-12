@@ -2,71 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0625BF9DE2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 00:13:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB0DF9DFC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 00:17:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CNp56x2TzDqg9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:13:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CNtr0M0GzF5rq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:17:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::243;
+ helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="JvY3zmeT"; 
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="xlO/3o/F"; 
  dkim-atps=neutral
-Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CNhQ65bLzF1P8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 10:08:22 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dcb3b5e0001>; Tue, 12 Nov 2019 15:08:14 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Tue, 12 Nov 2019 15:08:15 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Tue, 12 Nov 2019 15:08:15 -0800
-Received: from [10.110.48.28] (172.20.13.39) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 12 Nov
- 2019 23:08:14 +0000
-Subject: Re: [PATCH v3 08/23] vfio, mm: fix get_user_pages_remote() and
- FOLL_LONGTERM
-To: Dan Williams <dan.j.williams@intel.com>
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CNrP62MZzF5KP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 10:15:12 +1100 (AEDT)
+Received: by mail-oi1-x243.google.com with SMTP id i185so9300oif.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 15:15:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Ahg4ogj/xxSIi3Tz2dndpoesa0PkRLQ36VHrjNwVguE=;
+ b=xlO/3o/FAhmPzmX5yHbU6ZNuHn4V9nHbloPGHpZqsb+DPkTsTeMinCTT3P2xrA0A3t
+ XjX5crvs+XLSDSgcai6PZWx41nUjrksNl4jkRdGfTQpb6e1yLtFehh/VkrzYDg6mpqa6
+ nIua0PamDKkJ2o4Dp1t2Oe3HiXMlIx7Jxg8UopWGV46jcBHLtzfhKxYanb2GfMvC3xgc
+ V252jaKpAjhpDskcu/pPNVnV9ekVH+4FC/dXONxMnvQ71JXMw8m5ltg2SL6haNirS3nS
+ 2zfdpmAUDtoGxjGX0JdEV3chYwlXK5G60EaIDM8oX92yL7sroQqX5o/Sf8CBMjZV3ums
+ ZwPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Ahg4ogj/xxSIi3Tz2dndpoesa0PkRLQ36VHrjNwVguE=;
+ b=mWy2yjrMz40Flhh5Ivm9FyCTH6WKzbcfuhcOZIP7feyGM43oecKTkPT3bX1UuuYGpp
+ AJYd7KbwbskZMLHhUnXsGwt6HBcjuh1oTSghyRKqopJxbXIznSj+5scAqii1E2enESRd
+ sHyXdUgG8Z+jaIOccEU1F5hRfLxVmQSqU0IhNXd/zU+oBsH2EDznEzkFN0h9524x5ilP
+ JLsS9+RT7IJ7XXQdWYcquAmJRtUoLKPyQ59mWpaXVcBIf0e2dyQZTIzeFYzyJk7iSrQw
+ CNRXs3sLT5xhfG3S2JNgHs+lWIIj/qws6AnqVDhqfxMa0MmcWm5QgA7M5e86gvvcTbxC
+ /ALg==
+X-Gm-Message-State: APjAAAUzOarA3MiFRnr1oZjMh5oTRfUF6O/X9ziwJ0t4KmvnNgz36SWr
+ r+MnsE4AvGLwwD0qNwkV8LfUHA2693SJ7P6p/GTswQ==
+X-Google-Smtp-Source: APXvYqw0y1/AL1ibfnKpdRZPCFvNtcNTDnagWkblsIboSxBlSGgp0qhR7HkhIvJGPGFUg8U4pz3vKkN+eKromPrOJOY=
+X-Received: by 2002:aca:ad52:: with SMTP id w79mr178668oie.149.1573600509804; 
+ Tue, 12 Nov 2019 15:15:09 -0800 (PST)
+MIME-Version: 1.0
 References: <20191112000700.3455038-1-jhubbard@nvidia.com>
  <20191112000700.3455038-9-jhubbard@nvidia.com>
  <CAPcyv4hgKEqoxeQJH9R=YiZosvazj308Kk7jJA1NLxJkNenDcQ@mail.gmail.com>
  <471e513c-833f-2f8b-60db-5d9c56a8f766@nvidia.com>
  <CAPcyv4it5fxU71uXFHW_WAAXBw4suQvwWTjX0Wru8xKFoz_dbw@mail.gmail.com>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <729a16cb-3947-c7cb-c57f-6c917d240665@nvidia.com>
-Date: Tue, 12 Nov 2019 15:08:14 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <CAPcyv4it5fxU71uXFHW_WAAXBw4suQvwWTjX0Wru8xKFoz_dbw@mail.gmail.com>
-X-Originating-IP: [172.20.13.39]
-X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1573600094; bh=ZOGE9U96RXAj3ATG1sqbSZZ5kwKlu8c/XBmXyMkeZ/I=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=JvY3zmeTvnqgCyD2eBvVojVMLoe0aW2k69Nce6daGQNuZS4OsQi4vkVZmA+1GnELv
- 9AW/hBWdwsnm9M2X9ccJ1Q1EuL87OWE6ERhYkDbGlO9dGbrg5s9odv3o6SDYGWmMVY
- GNUfTamy0raCrCHfMqKxT3RFwaKftzmGLH4kXtE5Nu/om60pfZAwk5XUuEq4+pDXr9
- TOA3eiznp+/2/rv+84vF++CRsbBzx7ZRqbdYYs2TfJtMqwkIwZn6qPEjYpAQ+i4CU4
- MYXtb4n7BN0I9m2qMiQj4POMqt1O9QnTa/T3NAcLAnwom6J6Dq4eXTwoMi4Hyuf3+0
- zpRS7T71BD4vw==
+ <729a16cb-3947-c7cb-c57f-6c917d240665@nvidia.com>
+In-Reply-To: <729a16cb-3947-c7cb-c57f-6c917d240665@nvidia.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 12 Nov 2019 15:14:58 -0800
+Message-ID: <CAPcyv4gUe__09cnAh3jeFogJH=sGm9U+8axRq_kCASkdbLfNbQ@mail.gmail.com>
+Subject: Re: [PATCH v3 08/23] vfio,
+ mm: fix get_user_pages_remote() and FOLL_LONGTERM
+To: John Hubbard <jhubbard@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,61 +108,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/12/19 2:43 PM, Dan Williams wrote:
-... 
-> Ah, sorry. This was the first time I had looked at this series and
-> jumped in without reading the background.
-> 
-> Your patch as is looks ok, I assume you've removed the FOLL_LONGTERM
-> warning in get_user_pages_remote in another patch?
-> 
+On Tue, Nov 12, 2019 at 3:08 PM John Hubbard <jhubbard@nvidia.com> wrote:
+>
+> On 11/12/19 2:43 PM, Dan Williams wrote:
+> ...
+> > Ah, sorry. This was the first time I had looked at this series and
+> > jumped in without reading the background.
+> >
+> > Your patch as is looks ok, I assume you've removed the FOLL_LONGTERM
+> > warning in get_user_pages_remote in another patch?
+> >
+>
+> Actually, I haven't gone quite that far. Actually this patch is the last
+> change to that function. Therefore, at the end of this patchset,
+> get_user_pages_remote() ends up with this check in it which
+> is a less-restrictive version of the warning:
+>
+>         /*
+>          * Current FOLL_LONGTERM behavior is incompatible with
+>          * FAULT_FLAG_ALLOW_RETRY because of the FS DAX check requirement on
+>          * vmas. However, this only comes up if locked is set, and there are
+>          * callers that do request FOLL_LONGTERM, but do not set locked. So,
+>          * allow what we can.
+>          */
+>         if (gup_flags & FOLL_LONGTERM) {
+>                 if (WARN_ON_ONCE(locked))
+>                         return -EINVAL;
+>         }
+>
+> Is that OK, or did you want to go further (possibly in a follow-up
+> patchset, as I'm hoping to get this one in soon)?
 
-Actually, I haven't gone quite that far. Actually this patch is the last
-change to that function. Therefore, at the end of this patchset, 
-get_user_pages_remote() ends up with this check in it which
-is a less-restrictive version of the warning:
+That looks ok. Something to maybe push down into the core in a future
+cleanup, but not something that needs to be done now.
 
-	/*
-	 * Current FOLL_LONGTERM behavior is incompatible with
-	 * FAULT_FLAG_ALLOW_RETRY because of the FS DAX check requirement on
-	 * vmas. However, this only comes up if locked is set, and there are
-	 * callers that do request FOLL_LONGTERM, but do not set locked. So,
-	 * allow what we can.
-	 */
-	if (gup_flags & FOLL_LONGTERM) {
-		if (WARN_ON_ONCE(locked))
-			return -EINVAL;
-	}
+> ...
+> >>> I think check_vma_flags() should do the ((FOLL_LONGTERM | FOLL_GET) &&
+> >>> vma_is_fsdax()) check and that would also remove the need for
+> >>> __gup_longterm_locked.
+> >>>
+> >>
+> >> Good idea, but there is still the call to check_and_migrate_cma_pages(),
+> >> inside __gup_longterm_locked().  So it's a little more involved and
+> >> we can't trivially delete __gup_longterm_locked() yet, right?
+> >
+> > [ add Aneesh ]
+> >
+> > Yes, you're right. I had overlooked that had snuck in there. That to
+> > me similarly needs to be pushed down into the core with its own FOLL
+> > flag, or it needs to be an explicit fixup that each caller does after
+> > get_user_pages. The fact that migration silently happens as a side
+> > effect of gup is too magical for my taste.
+> >
+>
+> Yes. It's an intrusive side effect that is surprising, and not in a
+> "happy surprise" way. :) .   Fixing up the CMA pages by splitting that
+> functionality into separate function calls sounds like an improvement
+> worth exploring.
 
-Is that OK, or did you want to go further (possibly in a follow-up
-patchset, as I'm hoping to get this one in soon)?  
-
-...
->>> I think check_vma_flags() should do the ((FOLL_LONGTERM | FOLL_GET) &&
->>> vma_is_fsdax()) check and that would also remove the need for
->>> __gup_longterm_locked.
->>>
->>
->> Good idea, but there is still the call to check_and_migrate_cma_pages(),
->> inside __gup_longterm_locked().  So it's a little more involved and
->> we can't trivially delete __gup_longterm_locked() yet, right?
-> 
-> [ add Aneesh ]
-> 
-> Yes, you're right. I had overlooked that had snuck in there. That to
-> me similarly needs to be pushed down into the core with its own FOLL
-> flag, or it needs to be an explicit fixup that each caller does after
-> get_user_pages. The fact that migration silently happens as a side
-> effect of gup is too magical for my taste.
-> 
-
-Yes. It's an intrusive side effect that is surprising, and not in a 
-"happy surprise" way. :) .   Fixing up the CMA pages by splitting that
-functionality into separate function calls sounds like an improvement
-worth exploring.
-
-
-thanks,
--- 
-John Hubbard
-NVIDIA
+Right, future work.
