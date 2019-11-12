@@ -1,74 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3A1F9B55
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 21:57:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAF8F9B9C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 22:13:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CKnD3QBQzF5jf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 07:57:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CL7N0g8WzDrHb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 08:13:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="jzJxHJOh";
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="XDTPGbX/"; 
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CKkr6KcCzF5XW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 07:55:15 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id q13so1779923pff.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 12:55:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=p3sGAQxZSRJH4UZHNpIdLrEGYPs7j+wXkkL7B23DozY=;
- b=jzJxHJOhBgrxXGo+3hwTEULMtqhW32uUMjkXF6xooOB4YLF0fDp9kjF2ZcEXOqjPmZ
- wb3eB6O717UcTt+tyAbO8B80zA3u9jbuMXSpdMqJOUrOIw/6tlJouhIZBM+a5PnCN1vj
- lat++UKcoOXZLI/EBlS4RFvn1FgV/ybJGuQ4A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=p3sGAQxZSRJH4UZHNpIdLrEGYPs7j+wXkkL7B23DozY=;
- b=NPi8Bmsr4zKaBmefEUJkL/4rRExV/cnLpvH7VYTceX0Y4s3h/mtDcenzqgaesGUY8w
- GzkT1Eo1BybMm0rdj+cpG+ACjT1zRrxm5bHSs2xdZUsglHfqiSnD4IcWYGYfl/3kdM+w
- mzvTi4zc2SEG7SxoPgcd+dwDGM3GAIOViN6+r6IPt9xnSInEWY1JrGa3UxrMmTUVvLs5
- Z6f8Mkd/gnXnWrQhbAFZoKc5hA3RWeRO4KU4xm9A+sQhdfW5QzKIVzL96eBd7Y3Iov7l
- COvT3kdqsGOYN4soLjEcb8mN8zo0cFHaZaLrDc4mYv9QIHLdgq6U7cvMLo/mDcmAg8iQ
- R+Sw==
-X-Gm-Message-State: APjAAAVxfT0qjne7YDkb7pS9hhwXAeqbs7/yRHN1mjDi/gW5xYQQGSdo
- alzBhB4+CUeWABSu7asla+pJxg==
-X-Google-Smtp-Source: APXvYqwhpXomPvDY55lP5tiV27rDluqLmojMV7DK9uMTENiwD2XDmRYC37Ogc+dw1yE3QtfbhDL3ZQ==
-X-Received: by 2002:a17:90a:cd03:: with SMTP id
- d3mr9056375pju.137.1573592111764; 
- Tue, 12 Nov 2019 12:55:11 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id l74sm11993pje.29.2019.11.12.12.55.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Nov 2019 12:55:10 -0800 (PST)
-Date: Tue, 12 Nov 2019 12:55:09 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
-Message-ID: <201911121252.25720DC6@keescook>
-References: <20191011000609.29728-1-keescook@chromium.org>
- <20191011000609.29728-12-keescook@chromium.org>
- <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com>
- <201911110922.17A2112B0@keescook>
- <CAMuHMdUJ8QPvqf51nVmOg1Zm20SNT7pXR72z=qmco=ecwawZ7A@mail.gmail.com>
+Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CL4s6dFlzF5hW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 08:10:53 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dcb1fa00000>; Tue, 12 Nov 2019 13:09:52 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 12 Nov 2019 13:10:48 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Tue, 12 Nov 2019 13:10:48 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 12 Nov
+ 2019 21:10:47 +0000
+Subject: Re: [PATCH v3 00/23] mm/gup: track dma-pinned pages: FOLL_PIN,
+ FOLL_LONGTERM
+To: Jason Gunthorpe <jgg@ziepe.ca>
+References: <20191112000700.3455038-1-jhubbard@nvidia.com>
+ <20191112203802.GD5584@ziepe.ca>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <02fa935c-3469-b766-b691-5660084b60b9@nvidia.com>
+Date: Tue, 12 Nov 2019 13:10:47 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdUJ8QPvqf51nVmOg1Zm20SNT7pXR72z=qmco=ecwawZ7A@mail.gmail.com>
+In-Reply-To: <20191112203802.GD5584@ziepe.ca>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1573592992; bh=FYNiQqIIwAjaPTLdgZDFjzpc3PZA+IOd8Qzq/L3NYFI=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=XDTPGbX/pfLSLEPMZj0U4ST8nWeqLQb9L0gJo2fojuRXhn2sbJZCbDvwG00vq+XIQ
+ colylZtLpZg40dx1ABr6UMyL7nDz+Ko0zZq5udmfA2v8o8KV6jbQ8nMJaMjSxXz3jT
+ /IQas6U39IMXowKsu+Lp15YvwNvsj9I4GEW1qSNrdbdQur8MbFNPpL74slNbnNTKiw
+ 2tvXn1JIXwNPZ2+bJmHJ2nQzCpfl0RwWLH4Y7hj0SisnidmxgFdWv36tY7VU9S2345
+ uRxyqWTOY6lQqCfoY1uSgUmsGBjI6laWSw8oWM5BJSMXcH/MubF7tkJ0NoA3AfLsvB
+ eNrIf7Db8lhiQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,58 +75,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Michal Simek <monstr@monstr.eu>,
- the arch/x86 maintainers <x86@kernel.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- linux-c6x-dev@linux-c6x.org, Arnd Bergmann <arnd@arndb.de>,
- linux-xtensa@linux-xtensa.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Borislav Petkov <bp@alien8.de>,
- Parisc List <linux-parisc@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
- alpha <linux-alpha@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Will Deacon <will@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 11, 2019 at 07:08:51PM +0100, Geert Uytterhoeven wrote:
-> Hi Kees,
+On 11/12/19 12:38 PM, Jason Gunthorpe wrote:
+> On Mon, Nov 11, 2019 at 04:06:37PM -0800, John Hubbard wrote:
+>> Hi,
+>>
+>> The cover letter is long, so the more important stuff is first:
+>>
+>> * Jason, if you or someone could look at the the VFIO cleanup (patch 8)
+>>   and conversion to FOLL_PIN (patch 18), to make sure it's use of
+>>   remote and longterm gup matches what we discussed during the review
+>>   of v2, I'd appreciate it.
+>>
+>> * Also for Jason and IB: as noted below, in patch 11, I am (too?) boldly
+>>   converting from put_user_pages() to release_pages().
 > 
-> On Mon, Nov 11, 2019 at 6:23 PM Kees Cook <keescook@chromium.org> wrote:
-> > On Mon, Nov 11, 2019 at 05:58:06PM +0100, Geert Uytterhoeven wrote:
-> > > On Fri, Oct 11, 2019 at 2:07 AM Kees Cook <keescook@chromium.org> wrote:
-> > > > There's no reason to keep the RODATA macro: replace the callers with
-> > > > the expected RO_DATA macro.
-> > > >
-> > > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > > > ---
-> > > >  arch/alpha/kernel/vmlinux.lds.S      | 2 +-
-> > > >  arch/ia64/kernel/vmlinux.lds.S       | 2 +-
-> > > >  arch/microblaze/kernel/vmlinux.lds.S | 2 +-
-> > > >  arch/mips/kernel/vmlinux.lds.S       | 2 +-
-> > > >  arch/um/include/asm/common.lds.S     | 2 +-
-> > > >  arch/xtensa/kernel/vmlinux.lds.S     | 2 +-
-> > > >  include/asm-generic/vmlinux.lds.h    | 4 +---
-> > > >  7 files changed, 7 insertions(+), 9 deletions(-)
-> > >
-> > > Somehow you missed:
-> > >
-> > >     arch/m68k/kernel/vmlinux-std.lds:  RODATA
-> > >     arch/m68k/kernel/vmlinux-sun3.lds:      RODATA
-> >
-> > Argh. I've sent a patch; sorry and thanks for catching this. For my own
-> > cross-build testing, which defconfig targets will hit these two linker
-> > scripts?
+> Why are we doing this? I think things got confused here someplace, as
+
+
+Because:
+
+a) These need put_page() calls,  and
+
+b) there is no put_pages() call, but there is a release_pages() call that
+is, arguably, what put_pages() would be.
+
+
+> the comment still says:
 > 
-> vmlinux-sun3.lds: sun3_defconfig
-> vmlinux-std.lds: All other classic 680x0 targets with an MMU, e.g. plain
->                  defconfig aka multi_defconfig.
+> /**
+>  * put_user_page() - release a gup-pinned page
+>  * @page:            pointer to page to be released
+>  *
+>  * Pages that were pinned via get_user_pages*() must be released via
+>  * either put_user_page(), or one of the put_user_pages*() routines
+>  * below.
 
-Excellent, thank you; I've updated my multi-arch build list. :)
 
--- 
-Kees Cook
+Ohhh, I missed those comments. They need to all be changed over to
+say "pages that were pinned via pin_user_pages*() or 
+pin_longterm_pages*() must be released via put_user_page*()."
+
+The get_user_pages*() pages must still be released via put_page.
+
+The churn is due to a fairly significant change in strategy, whis
+is: instead of changing all get_user_pages*() sites to call 
+put_user_page(), change selected sites to call pin_user_pages*() or 
+pin_longterm_pages*(), plus put_user_page().
+
+That allows incrementally converting the kernel over to using the
+new pin APIs, without taking on the huge risk of a big one-shot
+conversion. 
+
+So, I've ended up with one place that actually needs to get reverted
+back to get_user_pages(), and that's the IB ODP code.
+
+> 
+> I feel like if put_user_pages() is not the correct way to undo
+> get_user_pages() then it needs to be deleted.
+> 
+
+Yes, you're right. I'll fix the put_user_page comments() as described.
+
+
+thanks,
+
+John Hubbard
+NVIDIA
