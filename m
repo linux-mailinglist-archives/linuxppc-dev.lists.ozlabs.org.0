@@ -2,49 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC95F882F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 06:44:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F628F8830
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 06:46:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47BxWb6bMczDr5s
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 16:44:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47BxZj0MkkzF562
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2019 16:46:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47BxPD5mTGzDsV6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 16:38:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::243;
+ helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+ dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="hQVWmXDm"; 
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="z4j2NS4a"; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 47BxPD2xJtz9sP3; Tue, 12 Nov 2019 16:38:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1573537120; bh=SZoRRTRm9ztAOpkmJzAzQX6odqFqiF8GoxUebpLCgpc=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=hQVWmXDmoBI0+5xEt5CjywarL2yoySowzmAqTVwVg1xkSnDUgP/aU/UML3IcaW4O1
- 0JC0EzBb7RM+zH9EvbepmZRmTR/OJaFv7mn9NDOpFncCFKJha5Ur6FigHCBoIxbIt2
- +l6CjnPsLU7W2Cmsgm5Ix3Hx20pHhHAMqRqxmBjU1TaxhW/UdZxiJuYSvRe1EZNNpa
- 51XwLhASGKTEueiKLuNJElxxNM5Ye28r+nyJCqBju1dcp3PUuYi4Ne4aIE5HKFJ9KR
- rH1nu1co4WZywoaXY/Rx+ww2ZHRGl8nCb0OIVp/AQYJMVKrExItkOArcA7oQS+heg4
- wnpzJJGUtPlJg==
-Date: Tue, 12 Nov 2019 16:38:36 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH v10 7/8] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-Message-ID: <20191112053836.GB10885@oak.ozlabs.ibm.com>
-References: <20191104041800.24527-1-bharata@linux.ibm.com>
- <20191104041800.24527-8-bharata@linux.ibm.com>
- <20191111041924.GA4017@oak.ozlabs.ibm.com>
- <20191112010158.GB5159@oc0525413822.ibm.com>
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47BxTD5DhxzF54Y
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 16:42:08 +1100 (AEDT)
+Received: by mail-oi1-x243.google.com with SMTP id a14so13739094oid.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2019 21:42:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=y1UHzMmFEkM5onMwEsrCsnNnK6fLByKuV5T2S+GXUf4=;
+ b=z4j2NS4a/62RDRgQv0wyTTTdiD0E6AIXk14NXEM4Mq9gi8g9T9lLFekNvHQgRMYYOU
+ tGNqih+iAU1D4qlGiC7ddDVm4EumCTcNd/hAv2yjak0w3lvUAa957nB0AlNIkkU42I20
+ uQWT0qzAONA+JGssoiGghs26AaFu8sViFsME3VvvRR9/BV4FpGChb5ybwBO+M85yAZSF
+ PmsybuGahzSKkGg6XV4BDTnGO8/UGwQPXJ/1CRCeWTCMHSblRdM4+jpUeU938+3fahBV
+ yb+BgYW6OBYUFYngTp+CXAM9Wx3cCmPDMnjv8o2wOidUe4FYMPanlcjt1yI7aKYyb3ah
+ nyGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=y1UHzMmFEkM5onMwEsrCsnNnK6fLByKuV5T2S+GXUf4=;
+ b=VPJ6/+1S/Nz6ytB0ARtoSee653IBnw9LmHx1W8fKcndMQhsM0ouMJg4cWh0Wu6JgPp
+ dL4Y3/aESAjB8P3HzSGRY2yyy5XwbdTADT+4ZRsoaqgZtW9D3hJZ3JI2dlKie2BlFQOh
+ +3vZIbhpwdF01MYvaMOgEDByLFUzwIhWLpydQDCLgewt36XRlZL1tIOI5AYj5JpcnpGu
+ /D+PiGkABcIhYZR4olex64e/iDsGw6kX3UaDUau+xonGTX5mhP3NVRQCx0z2SqdsqUmD
+ 3elrOkxyX+P9B3+6iZuvA7eYg5fz5Nm5zWsXCq4T4kBXfnA0zZYEJ+zcqM128kf0hpD4
+ zRSw==
+X-Gm-Message-State: APjAAAVmpmuY6Z7X2N72IVmOGbqfrwJ3DMJTdhuFLxNnYDNruUIkQAWG
+ VuFPFtRMfFtB/Hhy4oAHnLSANb/xDq6WxgheRxspAnPB
+X-Google-Smtp-Source: APXvYqwZYFG6Q5EnNVP1bW29WLL2wtZY+qdkz7lJ2at4UUUVw9zgoaxDEeQZ4RbyIlO1OQfBFTMpO3a52pTUYvbZubg=
+X-Received: by 2002:aca:ad52:: with SMTP id w79mr2493405oie.149.1573537324051; 
+ Mon, 11 Nov 2019 21:42:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191112010158.GB5159@oc0525413822.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191025044721.16617-1-alastair@au1.ibm.com>
+ <20191025044721.16617-9-alastair@au1.ibm.com>
+ <87woc6wtpw.fsf@linux.ibm.com>
+ <CAPcyv4iaWN9R5u_2OBjqGt7nirxXKVZ=mCZnDkzyc5np8UCe=A@mail.gmail.com>
+In-Reply-To: <CAPcyv4iaWN9R5u_2OBjqGt7nirxXKVZ=mCZnDkzyc5np8UCe=A@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 11 Nov 2019 21:41:53 -0800
+Message-ID: <CAPcyv4hWdszToHwHesP9UtMxBmFdYxU0mtd7BGifFQHbvXbokQ@mail.gmail.com>
+Subject: Re: [PATCH 08/10] nvdimm: Add driver for OpenCAPI Storage Class Memory
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,89 +77,635 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>, cclaudio@linux.ibm.com,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, jglisse@redhat.com, Ram Pai <linuxram@linux.ibm.com>,
- aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alastair D'Silva <alastair@au1.ibm.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 11, 2019 at 05:01:58PM -0800, Ram Pai wrote:
-> On Mon, Nov 11, 2019 at 03:19:24PM +1100, Paul Mackerras wrote:
-> > On Mon, Nov 04, 2019 at 09:47:59AM +0530, Bharata B Rao wrote:
-> > > From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-> > > 
-> > > Implement the H_SVM_INIT_ABORT hcall which the Ultravisor can use to
-> > > abort an SVM after it has issued the H_SVM_INIT_START and before the
-> > > H_SVM_INIT_DONE hcalls. This hcall could be used when Ultravisor
-> > > encounters security violations or other errors when starting an SVM.
-> > > 
-> > > Note that this hcall is different from UV_SVM_TERMINATE ucall which
-> > > is used by HV to terminate/cleanup an SVM.
-> > > 
-> > > In case of H_SVM_INIT_ABORT, we should page-out all the pages back to
-> > > HV (i.e., we should not skip the page-out). Otherwise the VM's pages,
-> > > possibly including its text/data would be stuck in secure memory.
-> > > Since the SVM did not go secure, its MSR_S bit will be clear and the
-> > > VM wont be able to access its pages even to do a clean exit.
-> > 
-> > It seems fragile to me to have one more transfer back into the
-> > ultravisor after this call.  Why does the UV need to do this call and
-> > then get control back again one more time?  
-> > Why can't the UV defer
-> > doing this call until it can do it without expecting to see a return
-> > from the hcall?  
-> 
-> Sure. But, what if the hypervisor calls back into the UV through a
-> ucall, asking for some page to be paged-out?  If the ultravisor has
-> cleaned up the state associated with the SVM, it wont be able to service
-> that request.
-> 
-> H_SVM_INIT_ABORT is invoked to tell the hypervisor that the
-> secure-state-transition for the VM cannot be continued any further.
-> Hypervisor can than choose to do whatever with that information. It can
-> cleanup its state, and/or make ucalls to get some information from the
-> ultravisor.  It can also choose not to return control back to the ultravisor.
-> 
-> 
-> > And if it does need to see a return from the hcall,
-> > what would happen if a malicious hypervisor doesn't do the return?
-> 
-> That is fine.  At most it will be a denail-of-service attack.
-> 
-> RP
-> 
-> > 
-> > Paul.
-> 
-> 
-> 
-> 
-> 
-> If the ultravisor cleans up the SVM's state on its side and then informs
-> the Hypervisor to abort the SVM, the hypervisor will not be able to
-> cleanly terminate the VM.  Because to terminate the SVM, the hypervisor
-> still needs the services of the Ultravisor. For example: to get the
-> pages back into the hypervisor if needed. Another example is, the
-> hypervisor can call UV_SVM_TERMINATE.  Regardless of which ucall
-> gets called, the ultravisor has to hold on to enough state of the
-> SVM to service that request.
+On Mon, Nov 11, 2019 at 9:37 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Mon, Nov 11, 2019 at 3:34 AM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+> >
+> > "Alastair D'Silva" <alastair@au1.ibm.com> writes:
+> >
+> > > From: Alastair D'Silva <alastair@d-silva.org>
+> > >
+> > > This driver exposes LPC memory on OpenCAPI SCM cards
+> > > as an NVDIMM, allowing the existing nvram infrastructure
+> > > to be used.
+> > >
+> > > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> > > ---
+> > >  drivers/nvdimm/Kconfig             |   17 +
+> > >  drivers/nvdimm/Makefile            |    3 +
+> > >  drivers/nvdimm/ocxl-scm.c          | 2210 ++++++++++++++++++++++++++++
+> > >  drivers/nvdimm/ocxl-scm_internal.c |  232 +++
+> > >  drivers/nvdimm/ocxl-scm_internal.h |  331 +++++
+> > >  drivers/nvdimm/ocxl-scm_sysfs.c    |  219 +++
+> > >  include/uapi/linux/ocxl-scm.h      |  128 ++
+> > >  mm/memory_hotplug.c                |    2 +-
+> > >  8 files changed, 3141 insertions(+), 1 deletion(-)
+> > >  create mode 100644 drivers/nvdimm/ocxl-scm.c
+> > >  create mode 100644 drivers/nvdimm/ocxl-scm_internal.c
+> > >  create mode 100644 drivers/nvdimm/ocxl-scm_internal.h
+> > >  create mode 100644 drivers/nvdimm/ocxl-scm_sysfs.c
+> > >  create mode 100644 include/uapi/linux/ocxl-scm.h
+> > >
+> > > diff --git a/drivers/nvdimm/Kconfig b/drivers/nvdimm/Kconfig
+> > > index 36af7af6b7cf..e4f7b6b08efd 100644
+> > > --- a/drivers/nvdimm/Kconfig
+> > > +++ b/drivers/nvdimm/Kconfig
+> > > @@ -130,4 +130,21 @@ config NVDIMM_TEST_BUILD
+> > >         core devm_memremap_pages() implementation and other
+> > >         infrastructure.
+> > >
+> > > +config OCXL_SCM
+> > > +     tristate "OpenCAPI Storage Class Memory"
+> > > +     depends on LIBNVDIMM
+> > > +     select ZONE_DEVICE
+> > > +     select OCXL
+> > > +     help
+> > > +       Exposes devices that implement the OpenCAPI Storage Class Memory
+> > > +       specification as persistent memory regions.
+> > > +
+> > > +       Select N if unsure.
+> > > +
+> > > +config OCXL_SCM_DEBUG
+> > > +     bool "OpenCAPI Storage Class Memory debugging"
+> > > +     depends on OCXL_SCM
+> > > +     help
+> > > +       Enables low level IOCTLs for OpenCAPI SCM firmware development
+> > > +
+> > >  endif
+> > > diff --git a/drivers/nvdimm/Makefile b/drivers/nvdimm/Makefile
+> > > index 29203f3d3069..43d826397bfc 100644
+> > > --- a/drivers/nvdimm/Makefile
+> > > +++ b/drivers/nvdimm/Makefile
+> > > @@ -6,6 +6,9 @@ obj-$(CONFIG_ND_BLK) += nd_blk.o
+> > >  obj-$(CONFIG_X86_PMEM_LEGACY) += nd_e820.o
+> > >  obj-$(CONFIG_OF_PMEM) += of_pmem.o
+> > >  obj-$(CONFIG_VIRTIO_PMEM) += virtio_pmem.o nd_virtio.o
+> > > +obj-$(CONFIG_OCXL_SCM) += ocxlscm.o
+> > > +
+> > > +ocxlscm-y := ocxl-scm.o ocxl-scm_internal.o ocxl-scm_sysfs.o
+> > >
+> > >  nd_pmem-y := pmem.o
+> > >
+> > > diff --git a/drivers/nvdimm/ocxl-scm.c b/drivers/nvdimm/ocxl-scm.c
+> > > new file mode 100644
+> > > index 000000000000..f4e6cc022de8
+> > > --- /dev/null
+> > > +++ b/drivers/nvdimm/ocxl-scm.c
+> >
+> > how about drivers/nvdimm/ocxl/scm.c ? Or may be place the driver as an
+> > ocxl driver.
+> >
+> >
+> > > @@ -0,0 +1,2210 @@
+> > > +// SPDX-License-Identifier: GPL-2.0+
+> > > +// Copyright 2019 IBM Corp.
+> > > +
+> > > +/*
+> > > + * A driver for Storage Class Memory, connected via OpenCAPI
+> > > + */
+> > > +
+> > > +#include <linux/module.h>
+> > > +#include <misc/ocxl.h>
+> > > +#include <linux/delay.h>
+> > > +#include <linux/ndctl.h>
+> > > +#include <linux/eventfd.h>
+> > > +#include <linux/fs.h>
+> > > +#include <linux/mm_types.h>
+> > > +#include <linux/memory_hotplug.h>
+> > > +#include "ocxl-scm_internal.h"
+> > > +
+> > > +
+> > > +static const struct pci_device_id scm_pci_tbl[] = {
+> > > +     { PCI_DEVICE(PCI_VENDOR_ID_IBM, 0x0625), },
+> > > +     { }
+> > > +};
+> > > +
+> > > +MODULE_DEVICE_TABLE(pci, scm_pci_tbl);
+> > > +
+> > > +#define SCM_NUM_MINORS 256 // Total to reserve
+> > > +#define SCM_USABLE_TIMEOUT 120 // seconds
+> > > +
+> > > +static dev_t scm_dev;
+> > > +static struct class *scm_class;
+> > > +static struct mutex minors_idr_lock;
+> > > +static struct idr minors_idr;
+> > > +
+> > > +static const struct attribute_group *scm_pmem_attribute_groups[] = {
+> > > +     &nvdimm_bus_attribute_group,
+> > > +     NULL,
+> > > +};
+> > > +
+> > > +static const struct attribute_group *scm_pmem_region_attribute_groups[] = {
+> > > +     &nd_region_attribute_group,
+> > > +     &nd_device_attribute_group,
+> > > +     &nd_mapping_attribute_group,
+> > > +     &nd_numa_attribute_group,
+> > > +     NULL,
+> > > +};
+> > > +
+> >
+> >
+> > There is another patch series that is moving this from device driver to
+> > nvdimm core.
+> >
+> > https://lore.kernel.org/linux-mm/157309899529.1582359.15358067933360719580.stgit@dwillia2-desk3.amr.corp.intel.com
+> >
+> >
+> > > +/**
+> > > + * scm_ndctl_config_write() - Handle a ND_CMD_SET_CONFIG_DATA command from ndctl
+> > > + * @scm_data: the SCM metadata
+> > > + * @command: the incoming data to write
+> > > + * Return: 0 on success, negative on failure
+> > > + */
+> > > +static int scm_ndctl_config_write(struct scm_data *scm_data,
+> > > +                               struct nd_cmd_set_config_hdr *command)
+> > > +{
+> > > +     if (command->in_offset + command->in_length > SCM_LABEL_AREA_SIZE)
+> > > +             return -EINVAL;
+> > > +
+> > > +     memcpy_flushcache(scm_data->metadata_addr + command->in_offset, command->in_buf,
+> > > +                       command->in_length);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +/**
+> > > + * scm_ndctl_config_read() - Handle a ND_CMD_GET_CONFIG_DATA command from ndctl
+> > > + * @scm_data: the SCM metadata
+> > > + * @command: the read request
+> > > + * Return: 0 on success, negative on failure
+> > > + */
+> > > +static int scm_ndctl_config_read(struct scm_data *scm_data,
+> > > +                              struct nd_cmd_get_config_data_hdr *command)
+> > > +{
+> > > +     if (command->in_offset + command->in_length > SCM_LABEL_AREA_SIZE)
+> > > +             return -EINVAL;
+> > > +
+> > > +     memcpy(command->out_buf, scm_data->metadata_addr + command->in_offset,
+> > > +            command->in_length);
+> > > +
+> >
+> > memcpy_mcsafe()?
+> >
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +/**
+> > > + * scm_ndctl_config_size() - Handle a ND_CMD_GET_CONFIG_SIZE command from ndctl
+> > > + * @scm_data: the SCM metadata
+> > > + * @command: the read request
+> > > + * Return: 0 on success, negative on failure
+> > > + */
+> > > +static int scm_ndctl_config_size(struct nd_cmd_get_config_size *command)
+> > > +{
+> > > +     command->status = 0;
+> > > +     command->config_size = SCM_LABEL_AREA_SIZE;
+> > > +     command->max_xfer = PAGE_SIZE;
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int read_smart_attrib(struct scm_data *scm_data, u16 offset,
+> > > +                          struct scm_smart_attribs *attribs)
+> > > +{
+> > > +     u64 val;
+> > > +     int rc;
+> > > +     struct scm_smart_attrib *attrib;
+> > > +     u8 attrib_id;
+> > > +
+> > > +     rc = ocxl_global_mmio_read64(scm_data->ocxl_afu, offset, OCXL_LITTLE_ENDIAN,
+> > > +                                  &val);
+> > > +     if (rc)
+> > > +             return rc;
+> > > +
+> > > +     attrib_id = (val >> 56) & 0xff;
+> > > +     switch (attrib_id) {
+> > > +     case SCM_SMART_ATTR_POWER_ON_HOURS:
+> > > +             attrib = &attribs->power_on_hours;
+> > > +             break;
+> > > +
+> > > +     case SCM_SMART_ATTR_TEMPERATURE:
+> > > +             attrib = &attribs->temperature;
+> > > +             break;
+> > > +
+> > > +     case SCM_SMART_ATTR_LIFE_REMAINING:
+> > > +             attrib = &attribs->life_remaining;
+> > > +             break;
+> > > +
+> > > +     default:
+> > > +             dev_err(&scm_data->dev, "Unknown smart attrib '%d'", attrib_id);
+> > > +             return -EFAULT;
+> > > +     }
+> > > +
+> > > +     attrib->id = attrib_id;
+> > > +     attrib->attribute_flags = (val >> 40) & 0xffff;
+> > > +     attrib->current_val = (val >> 32) & 0xff;
+> > > +     attrib->threshold_val = (val >> 24) & 0xff;
+> > > +     attrib->worst_val = (val >> 16) & 0xff;
+> > > +
+> > > +     rc = ocxl_global_mmio_read64(scm_data->ocxl_afu, offset + 0x08,
+> > > +                                  OCXL_LITTLE_ENDIAN, &val);
+> > > +     if (rc)
+> > > +             return rc;
+> > > +
+> > > +     attrib->raw_val = val;
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int scm_smart_offset_0x00(struct scm_data *scm_data, u32 *length)
+> > > +'
+> >
+> > What is special about _0x00?
+> >
+> > {
+> > > +     int rc;
+> > > +     u64 val;
+> > > +
+> > > +     u16 data_identifier;
+> > > +     u32 data_length;
+> > > +
+> > > +     rc = ocxl_global_mmio_read64(scm_data->ocxl_afu,
+> > > +                                  scm_data->admin_command.data_offset,
+> > > +                                  OCXL_LITTLE_ENDIAN, &val);
+> > > +     if (rc)
+> > > +             return rc;
+> > > +
+> > > +     data_identifier = val >> 48;
+> > > +     data_length = val & 0xFFFFFFFF;
+> > > +
+> > > +     if (data_identifier != 0x534D) {
+> > > +             dev_err(&scm_data->dev,
+> > > +                     "Bad data identifier for smart data, expected 'SM', got '%-.*s'\n",
+> > > +                     2, (char *)&data_identifier);
+> > > +             return -EFAULT;
+> > > +     }
+> > > +
+> > > +     *length = data_length;
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int scm_smart_update(struct scm_data *scm_data)
+> > > +{
+> > > +     u32 length, i;
+> > > +     int rc;
+> > > +
+> > > +     mutex_lock(&scm_data->admin_command.lock);
+> > > +
+> > > +     rc = scm_admin_command_request(scm_data, ADMIN_COMMAND_SMART);
+> > > +     if (rc)
+> > > +             goto out;
+> > > +
+> > > +     rc = scm_admin_command_execute(scm_data);
+> > > +     if (rc)
+> > > +             goto out;
+> > > +
+> > > +     rc = scm_admin_command_complete_timeout(scm_data, ADMIN_COMMAND_SMART);
+> > > +     if (rc < 0) {
+> > > +             dev_err(&scm_data->dev, "SMART timeout\n");
+> > > +             goto out;
+> > > +     }
+> > > +
+> > > +     rc = scm_admin_response(scm_data);
+> > > +     if (rc < 0)
+> > > +             goto out;
+> > > +     if (rc != STATUS_SUCCESS) {
+> > > +             scm_warn_status(scm_data, "Unexpected status from SMART", rc);
+> > > +             goto out;
+> > > +     }
+> > > +
+> > > +     rc = scm_smart_offset_0x00(scm_data, &length);
+> > > +     if (rc)
+> > > +             goto out;
+> > > +
+> > > +     length /= 0x10; // Length now contains the number of attributes
+> > > +
+> > > +     for (i = 0; i < length; i++)
+> > > +             read_smart_attrib(scm_data,
+> > > +                               scm_data->admin_command.data_offset + 0x08 + i * 0x10,
+> > > +                               &scm_data->smart);
+> > > +
+> > > +     rc = scm_admin_response_handled(scm_data);
+> > > +     if (rc)
+> > > +             goto out;
+> > > +
+> > > +     rc = 0;
+> > > +     goto out;
+> > > +
+> > > +out:
+> > > +     mutex_unlock(&scm_data->admin_command.lock);
+> > > +     return rc;
+> > > +}
+> > > +
+> > > +static int scm_ndctl_smart(struct scm_data *scm_data, void *buf,
+> > > +                        unsigned int buf_len)
+> > > +{
+> > > +     int rc;
+> > > +
+> > > +     if (buf_len != sizeof(scm_data->smart))
+> > > +             return -EINVAL;
+> > > +
+> > > +     rc = scm_smart_update(scm_data);
+> > > +     if (rc)
+> > > +             return rc;
+> > > +
+> > > +     memcpy(buf, &scm_data->smart, buf_len);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +
+> > > +static int scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+> > > +                  struct nvdimm *nvdimm,
+> > > +                  unsigned int cmd, void *buf, unsigned int buf_len, int *cmd_rc)
+> > > +{
+> > > +     struct scm_data *scm_data = container_of(nd_desc, struct scm_data, bus_desc);
+> > > +
+> > > +     switch (cmd) {
+> > > +     case ND_CMD_SMART:
+> > > +             *cmd_rc = scm_ndctl_smart(scm_data, buf, buf_len);
+> > > +             return 0;
+> > > +
+> > > +     case ND_CMD_GET_CONFIG_SIZE:
+> > > +             *cmd_rc = scm_ndctl_config_size(buf);
+> > > +             return 0;
+> > > +
+> > > +     case ND_CMD_GET_CONFIG_DATA:
+> > > +             *cmd_rc = scm_ndctl_config_read(scm_data, buf);
+> > > +             return 0;
+> > > +
+> > > +     case ND_CMD_SET_CONFIG_DATA:
+> > > +             *cmd_rc = scm_ndctl_config_write(scm_data, buf);
+> > > +             return 0;
+> > > +
+> > > +     default:
+> > > +             return -ENOTTY;
+> > > +     }
+> > > +}
+> > > +
+> > > +static ssize_t serial_show(struct device *dev,
+> > > +                        struct device_attribute *attr, char *buf)
+> > > +{
+> > > +     struct nvdimm *nvdimm = to_nvdimm(dev);
+> > > +     struct scm_data *scm_data = nvdimm_provider_data(nvdimm);
+> > > +     const struct ocxl_fn_config *config = ocxl_function_config(scm_data->ocxl_fn);
+> > > +
+> > > +     return sprintf(buf, "0x%llx\n", config->serial);
+> > > +}
+> > > +static DEVICE_ATTR_RO(serial);
+> > > +
+> > > +static struct attribute *scm_dimm_attributes[] = {
+> > > +     &dev_attr_serial.attr,
+> > > +     NULL,
+> > > +};
+> > > +
+> > > +static umode_t scm_dimm_attr_visible(struct kobject *kobj,
+> > > +                                  struct attribute *a, int n)
+> > > +{
+> > > +     return a->mode;
+> > > +}
+> > > +
+> > > +static const struct attribute_group scm_dimm_attribute_group = {
+> > > +     .name = "scm",
+> > > +     .attrs = scm_dimm_attributes,
+> > > +     .is_visible = scm_dimm_attr_visible,
+> > > +};
+> > > +
+> >
+> > That is a generic name for dimm attribute
+> >
+> > > +static const struct attribute_group *scm_dimm_attribute_groups[] = {
+> > > +     &nvdimm_attribute_group,
+> > > +     &nd_device_attribute_group,
+> > > +     &scm_dimm_attribute_group,
+> > > +     NULL,
+> > > +};
+> > > +
+> > > +/**
+> > > + * scm_reserve_metadata() - Reserve space for nvdimm metadata
+> > > + * @scm_data: The SCM device data
+> > > + * @lpc_mem: The resource representing the LPC memory of the SCM device
+> > > + */
+> > > +static int scm_reserve_metadata(struct scm_data *scm_data,
+> > > +                             struct resource *lpc_mem)
+> > > +{
+> > > +     scm_data->metadata_addr = devm_memremap(&scm_data->dev, lpc_mem->start,
+> > > +                                             SCM_LABEL_AREA_SIZE, MEMREMAP_WB);
+> > > +     if (IS_ERR(scm_data->metadata_addr))
+> > > +             return PTR_ERR(scm_data->metadata_addr);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +/**
+> > > + * scm_overwrite() - Overwrite all data on the card
+> > > + * @scm_data: The SCM device data
+> > > + * Return: 0 on success
+> > > + */
+> > > +int scm_overwrite(struct scm_data *scm_data)
+> > > +{
+> > > +     int rc;
+> > > +
+> > > +     mutex_lock(&scm_data->ns_command.lock);
+> > > +
+> > > +     rc = scm_ns_command_request(scm_data, NS_COMMAND_SECURE_ERASE);
+> > > +     if (rc)
+> > > +             goto out;
+> > > +
+> > > +     rc = scm_ns_command_execute(scm_data);
+> > > +     if (rc)
+> > > +             goto out;
+> > > +
+> > > +     scm_data->overwrite_state = SCM_OVERWRITE_BUSY;
+> > > +
+> > > +     return 0;
+> > > +
+> > > +out:
+> > > +     mutex_unlock(&scm_data->ns_command.lock);
+> > > +     return rc;
+> > > +}
+> > > +
+> > > +/**
+> > > + * scm_secop_overwrite() - Overwrite all data on the card
+> > > + * @nvdimm: The nvdimm representation of the SCM device to start the overwrite on
+> > > + * @key_data: Unused (no security key implementation)
+> > > + * Return: 0 on success
+> > > + */
+> > > +static int scm_secop_overwrite(struct nvdimm *nvdimm,
+> > > +                            const struct nvdimm_key_data *key_data)
+> > > +{
+> > > +     struct scm_data *scm_data = nvdimm_provider_data(nvdimm);
+> > > +
+> > > +     return scm_overwrite(scm_data);
+> > > +}
+> > > +
+> > > +/**
+> > > + * scm_secop_query_overwrite() - Get the current overwrite state
+> > > + * @nvdimm: The nvdimm representation of the SCM device to start the overwrite on
+> > > + * Return: 0 if successful or idle, -EBUSY if busy, -EFAULT if failed
+> > > + */
+> > > +static int scm_secop_query_overwrite(struct nvdimm *nvdimm)
+> > > +{
+> > > +     struct scm_data *scm_data = nvdimm_provider_data(nvdimm);
+> > > +
+> > > +     if (scm_data->overwrite_state == SCM_OVERWRITE_BUSY)
+> > > +             return -EBUSY;
+> > > +
+> > > +     if (scm_data->overwrite_state == SCM_OVERWRITE_FAILED)
+> > > +             return -EFAULT;
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +/**
+> > > + * scm_secop_get_flags() - return the security flags for the SCM device
+> > > + */
+> > > +static unsigned long scm_secop_get_flags(struct nvdimm *nvdimm,
+> > > +             enum nvdimm_passphrase_type ptype)
+> > > +{
+> > > +     struct scm_data *scm_data = nvdimm_provider_data(nvdimm);
+> > > +
+> > > +     if (scm_data->overwrite_state == SCM_OVERWRITE_BUSY)
+> > > +             return BIT(NVDIMM_SECURITY_OVERWRITE);
+> > > +
+> > > +     return BIT(NVDIMM_SECURITY_DISABLED);
+> > > +}
+> > > +
+> > > +static const struct nvdimm_security_ops sec_ops  = {
+> > > +     .get_flags = scm_secop_get_flags,
+> > > +     .overwrite = scm_secop_overwrite,
+> > > +     .query_overwrite = scm_secop_query_overwrite,
+> > > +};
+> > > +
+> > > +/**
+> > > + * scm_register_lpc_mem() - Discover persistent memory on a device and register it with the NVDIMM subsystem
+> > > + * @scm_data: The SCM device data
+> > > + * Return: 0 on success
+> > > + */
+> > > +static int scm_register_lpc_mem(struct scm_data *scm_data)
+> > > +{
+> > > +     struct nd_region_desc region_desc;
+> > > +     struct nd_mapping_desc nd_mapping_desc;
+> > > +     struct resource *lpc_mem;
+> > > +     const struct ocxl_afu_config *config;
+> > > +     const struct ocxl_fn_config *fn_config;
+> > > +     int rc;
+> > > +     unsigned long nvdimm_cmd_mask = 0;
+> > > +     unsigned long nvdimm_flags = 0;
+> > > +     int target_node;
+> > > +     char serial[16+1];
+> > > +
+> > > +     // Set up the reserved metadata area
+> > > +     rc = ocxl_afu_map_lpc_mem(scm_data->ocxl_afu);
+> > > +     if (rc < 0)
+> > > +             return rc;
+> > > +
+> > > +     lpc_mem = ocxl_afu_lpc_mem(scm_data->ocxl_afu);
+> > > +     if (lpc_mem == NULL)
+> > > +             return -EINVAL;
+> > > +
+> > > +     config = ocxl_afu_config(scm_data->ocxl_afu);
+> > > +     fn_config = ocxl_function_config(scm_data->ocxl_fn);
+> > > +
+> > > +     rc = scm_reserve_metadata(scm_data, lpc_mem);
+> > > +     if (rc)
+> > > +             return rc;
+> > > +
+> > > +     scm_data->bus_desc.attr_groups = scm_pmem_attribute_groups;
+> > > +     scm_data->bus_desc.provider_name = "scm";
+> > > +     scm_data->bus_desc.ndctl = scm_ndctl;
+> > > +     scm_data->bus_desc.module = THIS_MODULE;
+> > > +
+> > > +     scm_data->nvdimm_bus = nvdimm_bus_register(&scm_data->dev,
+> > > +                            &scm_data->bus_desc);
+> > > +     if (!scm_data->nvdimm_bus)
+> > > +             return -EINVAL;
+> > > +
+> > > +     scm_data->scm_res.start = (u64)lpc_mem->start + SCM_LABEL_AREA_SIZE;
+> > > +     scm_data->scm_res.end = (u64)lpc_mem->start + config->lpc_mem_size - 1;
+> > > +     scm_data->scm_res.name = "SCM persistent memory";
+> > > +
+> > > +     set_bit(ND_CMD_GET_CONFIG_SIZE, &nvdimm_cmd_mask);
+> > > +     set_bit(ND_CMD_GET_CONFIG_DATA, &nvdimm_cmd_mask);
+> > > +     set_bit(ND_CMD_SET_CONFIG_DATA, &nvdimm_cmd_mask);
+> > > +     set_bit(ND_CMD_SMART, &nvdimm_cmd_mask);
+> > > +
+> > > +     set_bit(NDD_ALIASING, &nvdimm_flags);
+> > > +
+> > > +     snprintf(serial, sizeof(serial), "%llx", fn_config->serial);
+> > > +     nd_mapping_desc.nvdimm = __nvdimm_create(scm_data->nvdimm_bus, scm_data,
+> > > +                              scm_dimm_attribute_groups,
+> > > +                              nvdimm_flags, nvdimm_cmd_mask,
+> > > +                              0, NULL, serial, &sec_ops);
+> >
+> >
+> > nvdimm_create()?
+> >
+> > > +     if (!nd_mapping_desc.nvdimm)
+> > > +             return -ENOMEM;
+> > > +
+> > > +     if (nvdimm_bus_check_dimm_count(scm_data->nvdimm_bus, 1))
+> > > +             return -EINVAL;
+> > > +
+> > > +     nd_mapping_desc.start = scm_data->scm_res.start;
+> > > +     nd_mapping_desc.size = resource_size(&scm_data->scm_res);
+> > > +     nd_mapping_desc.position = 0;
+> > > +
+> > > +     scm_data->nd_set.cookie1 = fn_config->serial + 1; // allow for empty serial
+> > > +     scm_data->nd_set.cookie2 = fn_config->serial + 1;
+> > > +
+> > > +     target_node = of_node_to_nid(scm_data->pdev->dev.of_node);
+> > > +
+> > > +     memset(&region_desc, 0, sizeof(region_desc));
+> > > +     region_desc.res = &scm_data->scm_res;
+> > > +     region_desc.attr_groups = scm_pmem_region_attribute_groups;
+> > > +     region_desc.numa_node = NUMA_NO_NODE;
+> > > +     region_desc.target_node = target_node;
+> > > +     region_desc.num_mappings = 1;
+> > > +     region_desc.mapping = &nd_mapping_desc;
+> > > +     region_desc.nd_set = &scm_data->nd_set;
+> > > +
+> > > +     set_bit(ND_REGION_PAGEMAP, &region_desc.flags);
+> > > +     /*
+> > > +      * NB: libnvdimm copies the data from ndr_desc into it's own
+> > > +      * structures so passing a stack pointer is fine.
+> > > +      */
+> > > +     scm_data->nd_region = nvdimm_pmem_region_create(scm_data->nvdimm_bus,
+> > > +                           &region_desc);
+> > > +     if (!scm_data->nd_region)
+> > > +             return -EINVAL;
+> > > +
+> > > +     dev_info(&scm_data->dev,
+> > > +              "Onlining %lluMB of persistent memory\n",
+> > > +              nd_mapping_desc.size / SZ_1M);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> >
+> > Would it be possible to split the driver such that we add features like
+> > security ops in later patch? Can this patch be a baisc dirver that just get
+> > the nvdimm initialized. Any attribute specific to ocxl can be exported
+> > in follow up patches?
+>
+> Yes, please. This diffstat:
+>
+> 8 files changed, 3141 insertions(+), 1 deletion(-)
+>
+> ...is too big for a single patch, and one sentence of changelog for
+> that diffstat is too small.
+>
+> You might look at the early history of driver/nvdimm/
+> drivers/acpi/nfit* to get some ideas on how to break this up into
+> smaller pieces that just do one theme per patch.
 
-OK, that's a good reason.  That should be explained in the commit
-message.
-
-> The current design assumes that the hypervisor explicitly informs the
-> ultravisor, that it is done with the SVM, through the UV_SVM_TERMINATE
-> ucall. Till that point the Ultravisor must to be ready to service any
-> ucalls made by the hypervisor on the SVM's behalf.
-
-I see that UV_SVM_TERMINATE is done when the VM is being destroyed (at
-which point kvm->arch.secure_guest doesn't matter any more), and in
-kvmhv_svm_off(), where kvm->arch.secure_guest gets cleared
-explicitly.  Hence I don't see any need for clearing it in the
-assembly code on the next secure guest entry.  I think the change to
-book3s_hv_rmhandlers.S can just be dropped.
-
-Paul.
+Also, given the timeframe / proximity to the v5.5 merge window opening
+we're looking at the v5.6 merge window as the target.
