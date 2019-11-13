@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A4DFB953
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:03:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6F5FB94D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:01:44 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CwVY4hSXzF75Z
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:01:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CwY75n2XzF3wc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:03:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,32 +17,29 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Cph56CFwzF5PK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 02:39:33 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CpkN1Z6NzF6gm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 02:41:32 +1100 (AEDT)
 Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
  [66.24.58.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 688C62248C;
- Wed, 13 Nov 2019 15:39:24 +0000 (UTC)
-Date: Wed, 13 Nov 2019 10:39:22 -0500
+ by mail.kernel.org (Postfix) with ESMTPSA id 29788224EF;
+ Wed, 13 Nov 2019 15:41:23 +0000 (UTC)
+Date: Wed, 13 Nov 2019 10:41:21 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
-To: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
 Subject: Re: [PATCH 00/50] Add log level to show_stack()
-Message-ID: <20191113103922.3dc3e8e9@gandalf.local.home>
-In-Reply-To: <20191112021747.GA68506@google.com>
+Message-ID: <20191113104121.696c9093@gandalf.local.home>
+In-Reply-To: <20191106203440.GH3079@worktop.programming.kicks-ass.net>
 References: <20191106030542.868541-1-dima@arista.com>
- <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
- <20191108103719.GB175344@google.com>
- <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
- <20191111012336.GA85185@google.com>
- <13e72b62-c842-8ed5-5b41-bc1692b28f53@arista.com>
- <20191112021747.GA68506@google.com>
+ <20191106092039.GT4131@hirez.programming.kicks-ass.net>
+ <10db6fa1-5b17-ebe6-09e0-6335e09e4db8@arista.com>
+ <20191106203440.GH3079@worktop.programming.kicks-ass.net>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Thu, 14 Nov 2019 06:57:19 +1100
+X-Mailman-Approved-At: Thu, 14 Nov 2019 06:57:20 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,8 +90,8 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
  linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org,
  Ley Foon Tan <lftan@altera.com>, "David S. Miller" <davem@davemloft.net>,
  Rich Felker <dalias@libc.org>, Petr Mladek <pmladek@suse.com>,
- Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
  Anton Ivanov <anton.ivanov@cambridgegreys.com>,
  Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
  x86@kernel.org, Russell King <linux@armlinux.org.uk>,
@@ -110,24 +107,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 12 Nov 2019 11:17:47 +0900
-Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com> wrote:
+On Wed, 6 Nov 2019 21:34:40 +0100
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-> void show_stack(struct task_struct *task, unsigned long *sp, int log_level)
-> {
-> 	printk_emergency_enter(log_level);
-> 	__show_stack(task, sp);
-> 	printk_emergency_exit();
-> }
-> // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+> I suppose I'm surprised there are backtraces that are not important.
+> Either badness happened and it needs printing, or the user asked for it
+> and it needs printing.
+
+Unfortunately that is the case. As my tests will fail if a backtrace is
+detected.
+
 > 
-> show_stack() never schedules, disabling preemption around it should
-> not change anything. Should it be interrupted, we will handle it via
-> preempt count.
+> Perhaps we should be removing backtraces if they're not important
+> instead of allowing to print them as lower loglevels?
 
-Please no! The whole point of the printk rewrite was to allow for
-printk to be preemptible and used in more contexts. The show_stack() can
-be all over the place and is not a fast function. Let's not disable
-preemption for it.
+I usually end up removing backtraces for my tests, so I'm for this.
+Specifically this happens in the drm and i915 drivers :-p
 
 -- Steve
+
