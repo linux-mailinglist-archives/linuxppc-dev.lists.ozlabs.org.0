@@ -2,46 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23190FAE4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 11:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC29FAE54
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 11:17:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CgTf6LqPzF5JT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:15:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CgXl0K3QzF7cj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:17:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::7;
+ helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CgQY6QshzF7cx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 21:12:21 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 826B9B3ED;
- Wed, 13 Nov 2019 10:12:15 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id CA3AA1E1498; Wed, 13 Nov 2019 11:12:10 +0100 (CET)
-Date: Wed, 13 Nov 2019 11:12:10 +0100
-From: Jan Kara <jack@suse.cz>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v3 00/23] mm/gup: track dma-pinned pages: FOLL_PIN,
- FOLL_LONGTERM
-Message-ID: <20191113101210.GD6367@quack2.suse.cz>
-References: <20191112000700.3455038-1-jhubbard@nvidia.com>
- <20191112203802.GD5584@ziepe.ca>
- <02fa935c-3469-b766-b691-5660084b60b9@nvidia.com>
- <CAKMK7uHvk+ti00mCCF2006U003w1dofFg9nSfmZ4bS2Z2pEDNQ@mail.gmail.com>
- <7b671bf9-4d94-f2cc-8453-863acd5a1115@nvidia.com>
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="IaPBejWA"; 
+ dkim-atps=neutral
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5301::7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CgTm41KnzF65S
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 21:15:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573640098;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=J7/OnwrZ9IrNVa3LANzeKLBHmUi2jZG0D6gUnLn+clU=;
+ b=IaPBejWAAJYKVKMyhzz9n+WaDD3NhuSt0cRuEEx3o3f92SdbACRwBMaUGrUMpGvEJ/
+ XdcnksUTlf/Z1jTrEpWyrxeVxxK81JBrA9Bfgaw3sWRa6FG8D/4Ic6iwK1fBoBa6384f
+ F8VHRPuMBO6qtFccnTint6yR2XM6G5b18aCmYEiQEPuMTQwAqgz+YgWJsTb+HnuL8QPk
+ vri+aCxRpyDrDgHkjqnIAjDpVXRJccZO2q8X1GjgZOeqYAHSVijcFgH7nGv42kiXqvq4
+ Th4qvGlzKO6wHHMF723s4v2F9xtbLr+vYfVgrhQUTFqZgPS91doBSaUtBdXSjmLjc0yD
+ /wSw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgFIzdVjkULP4r2k+hZ6iFmBbj9vw=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:f53b:829e:4025:ce2b]
+ by smtp.strato.de (RZmta 44.29.0 AUTH)
+ with ESMTPSA id q007c8vADAEHlLm
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
+ 521 ECDH bits, eq. 15360 bits RSA))
+ (Client did not present a certificate);
+ Wed, 13 Nov 2019 11:14:17 +0100 (CET)
+Subject: Re: Bug 205201 - overflow of DMA mask and bus mask
+To: Christoph Hellwig <hch@lst.de>
+References: <71A251A5-FA06-4019-B324-7AED32F7B714@xenosoft.de>
+ <1b0c5c21-2761-d3a3-651b-3687bb6ae694@xenosoft.de>
+ <3504ee70-02de-049e-6402-2d530bf55a84@xenosoft.de>
+ <46025f1b-db20-ac23-7dcd-10bc43bbb6ee@xenosoft.de>
+ <20191105162856.GA15402@lst.de>
+ <2f3c81bd-d498-066a-12c0-0a7715cda18f@xenosoft.de>
+ <d2c614ec-c56e-3ec2-12d0-7561cd30c643@xenosoft.de>
+ <af32bfcc-5559-578d-e1f4-75e454c965bf@xenosoft.de>
+ <0c5a8009-d28b-601f-3d1a-9de0e869911c@xenosoft.de>
+ <a794864f-04ae-9b90-50e7-01b416c861fe@xenosoft.de>
+ <20191112144109.GA11805@lst.de>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <9b14ca1b-2d5d-52b5-c7b4-0e637dbb1157@xenosoft.de>
+Date: Wed, 13 Nov 2019 11:14:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7b671bf9-4d94-f2cc-8453-863acd5a1115@nvidia.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191112144109.GA11805@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,91 +79,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- "open list:DMA BUFFER SHARING FRAMEWORK" <linux-media@vger.kernel.org>,
- Shuah Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf <bpf@vger.kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev <netdev@vger.kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net,
+ mad skateman <madskateman@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Rob Herring <robh+dt@kernel.org>, paulus@samba.org, rtd2@xtra.co.nz,
+ "contact@a-eon.com" <contact@a-eon.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 13-11-19 01:02:02, John Hubbard wrote:
-> On 11/13/19 12:22 AM, Daniel Vetter wrote:
-> ...
-> > > > Why are we doing this? I think things got confused here someplace, as
-> > > 
-> > > 
-> > > Because:
-> > > 
-> > > a) These need put_page() calls,  and
-> > > 
-> > > b) there is no put_pages() call, but there is a release_pages() call that
-> > > is, arguably, what put_pages() would be.
-> > > 
-> > > 
-> > > > the comment still says:
-> > > > 
-> > > > /**
-> > > >   * put_user_page() - release a gup-pinned page
-> > > >   * @page:            pointer to page to be released
-> > > >   *
-> > > >   * Pages that were pinned via get_user_pages*() must be released via
-> > > >   * either put_user_page(), or one of the put_user_pages*() routines
-> > > >   * below.
-> > > 
-> > > 
-> > > Ohhh, I missed those comments. They need to all be changed over to
-> > > say "pages that were pinned via pin_user_pages*() or
-> > > pin_longterm_pages*() must be released via put_user_page*()."
-> > > 
-> > > The get_user_pages*() pages must still be released via put_page.
-> > > 
-> > > The churn is due to a fairly significant change in strategy, whis
-> > > is: instead of changing all get_user_pages*() sites to call
-> > > put_user_page(), change selected sites to call pin_user_pages*() or
-> > > pin_longterm_pages*(), plus put_user_page().
-> > 
-> > Can't we call this unpin_user_page then, for some symmetry? Or is that
-> > even more churn?
-> > 
-> > Looking from afar the naming here seems really confusing.
-> 
-> 
-> That look from afar is valuable, because I'm too close to the problem to see
-> how the naming looks. :)
-> 
-> unpin_user_page() sounds symmetrical. It's true that it would cause more
-> churn (which is why I started off with a proposal that avoids changing the
-> names of put_user_page*() APIs). But OTOH, the amount of churn is proportional
-> to the change in direction here, and it's really only 10 or 20 lines changed,
-> in the end.
-> 
-> So I'm open to changing to that naming. It would be nice to hear what others
-> prefer, too...
+Hello Christoph,
 
-FWIW I'd find unpin_user_page() also better than put_user_page() as a
-counterpart to pin_user_pages().
+I have found the issue. :-)
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+GFP_DMA32 was renamed to GFP_DMA in the PowerPC updates 4.21-1 in 
+December last year.
+
+Some PCI devices still use GFP_DMA32 (grep -r GFP_DMA32 *). I renamed 
+GFP_DMA32 to GFP_DMA in the file 
+"drivers/media/v4l2-core/videobuf-dma-sg.c". After compiling the RC7 of 
+kernel 5.4 my TV card works again.
+
+Cheers,
+Christian
+
+
+On 12 November 2019 at 3:41 pm, Christoph Hellwig wrote:
+> On Mon, Nov 11, 2019 at 01:22:55PM +0100, Christian Zigotzky wrote:
+>> Now, I can definitely say that this patch does not solve the issue.
+>>
+>> Do you have another patch for testing or shall I bisect?
+> I'm still interested in the .config and dmesg.  Especially if the
+> board is using arch/powerpc/sysdev/fsl_pci.c, which is the only
+> place inside the powerpc arch code doing funny things with the
+> bus_dma_mask, which Robin pointed out looks fishy.
+>
+>> Thanks,
+>> Christian
+> ---end quoted text---
+>
+
