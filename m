@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD8BFAB64
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 08:55:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E4AFAB41
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 08:50:47 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CcH81NcdzF7SF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 18:50:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CcNL0XcZzF4h5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 18:55:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,33 +19,32 @@ Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org
  [IPv6:2001:67c:2050::465:201])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CcDq1b98zF47J
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 18:48:40 +1100 (AEDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:2:0])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CcKp5QJJzDqbx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 18:53:02 +1100 (AEDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
  (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47CcDY3vdYzQlBb;
- Wed, 13 Nov 2019 08:48:29 +0100 (CET)
+ by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47CcKk24kPzQlBh;
+ Wed, 13 Nov 2019 08:52:58 +0100 (CET)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
- [80.241.56.123]) (amavisd-new, port 10030)
- with ESMTP id 3hMGDl1msr0T; Wed, 13 Nov 2019 08:48:23 +0100 (CET)
-Date: Wed, 13 Nov 2019 18:47:57 +1100
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de
+ [80.241.56.117]) (amavisd-new, port 10030)
+ with ESMTP id Bp_N38N4yiqo; Wed, 13 Nov 2019 08:52:50 +0100 (CET)
+Date: Wed, 13 Nov 2019 18:52:27 +1100
 From: Aleksa Sarai <cyphar@cyphar.com>
 To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v15 4/9] namei: LOOKUP_BENEATH: O_BENEATH-like scoped
- resolution
-Message-ID: <20191113074757.5b4u5vlyx2u6pbn6@yavin.dot.cyphar.com>
+Subject: Re: [PATCH v15 6/9] namei: LOOKUP_{IN_ROOT,BENEATH}: permit limited
+ ".." resolution
+Message-ID: <20191113075227.lu5b5uvc2nuk76uk@yavin.dot.cyphar.com>
 References: <20191105090553.6350-1-cyphar@cyphar.com>
- <20191105090553.6350-5-cyphar@cyphar.com>
- <20191113015534.GA26530@ZenIV.linux.org.uk>
+ <20191105090553.6350-7-cyphar@cyphar.com>
+ <20191113020917.GC26530@ZenIV.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="odomi6wtik4yoblv"
+ protocol="application/pgp-signature"; boundary="qprdfpbfkuvffdu5"
 Content-Disposition: inline
-In-Reply-To: <20191113015534.GA26530@ZenIV.linux.org.uk>
+In-Reply-To: <20191113020917.GC26530@ZenIV.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,44 +86,29 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---odomi6wtik4yoblv
+--qprdfpbfkuvffdu5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> Minor nit here - I'd split "move the conditional call of set_root()
-> into nd_jump_root()" into a separate patch before that one.  Makes
-> for fewer distractions in this one.  I'd probably fold "and be
-> ready for errors other than -ECHILD" into the same preliminary
-> patch.
-
-Will do.
-
-> > +			/* Not currently safe for scoped-lookups. */
-> > +			if (unlikely(nd->flags & LOOKUP_IS_SCOPED))
-> > +				return ERR_PTR(-EXDEV);
+> On Tue, Nov 05, 2019 at 08:05:50PM +1100, Aleksa Sarai wrote:
 >=20
-> Also a candidate for doing in nd_jump_link()...
+> > One other possible alternative (which previous versions of this patch
+> > used) would be to check with path_is_under() if there was a racing
+> > rename or mount (after re-taking the relevant seqlocks). While this does
+> > work, it results in possible O(n*m) behaviour if there are many renames
+> > or mounts occuring *anywhere on the system*.
 >=20
-> > @@ -1373,8 +1403,11 @@ static int follow_dotdot_rcu(struct nameidata *n=
-d)
-> >  	struct inode *inode =3D nd->inode;
-> > =20
-> >  	while (1) {
-> > -		if (path_equal(&nd->path, &nd->root))
-> > +		if (path_equal(&nd->path, &nd->root)) {
-> > +			if (unlikely(nd->flags & LOOKUP_BENEATH))
-> > +				return -EXDEV;
->=20
-> Umm...  Are you sure it's not -ECHILD?
+> BTW, do you realize that open-by-fhandle (or working nfsd, for that matte=
+r)
+> will trigger arseloads of write_seqlock(&rename_lock) simply on d_splice_=
+alias()
+> bringing disconnected subtrees in contact with parent?
 
-It wouldn't hurt to be -ECHILD -- though it's not clear to me how likely
-a success would be in REF-walk if the parent components didn't already
-trigger an unlazy_walk() in RCU-walk.
-
-I guess that also means LOOKUP_NO_XDEV should trigger -ECHILD in
-follow_dotdot_rcu()?
+I wasn't aware of that -- that makes path_is_under() even less viable.
+I'll reword it to be clearer that path_is_under() isn't a good idea and
+why we went with -EAGAIN over an in-kernel retry.
 
 --=20
 Aleksa Sarai
@@ -132,15 +116,15 @@ Senior Software Engineer (Containers)
 SUSE Linux GmbH
 <https://www.cyphar.com/>
 
---odomi6wtik4yoblv
+--qprdfpbfkuvffdu5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXcu1KgAKCRCdlLljIbnQ
-EpYSAQDaNIB4LkhLlbFgkuRPiavU6vZ03HuSIHKseqaD6uMARwD+OcGzTDahyjJ6
-YeuKal+s33ETzSjupl7K2mKfYQpA2Q0=
-=nyQ8
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXcu2OAAKCRCdlLljIbnQ
+EtqZAQCjNdiANKBF7WCOTHUeD48U+o/7WczR7I/1WTsCcSBp9gEA6HgEdHKRHmol
++5Fvn3Eg1Tya83fWQgWoVLu8i6CUUwE=
+=voMa
 -----END PGP SIGNATURE-----
 
---odomi6wtik4yoblv--
+--qprdfpbfkuvffdu5--
