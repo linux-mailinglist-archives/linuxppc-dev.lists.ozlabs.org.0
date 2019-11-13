@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBCBFAF07
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 11:54:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 560E3FAF23
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 11:57:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47ChMN2p5GzF5Ph
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:54:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ChQW4KWfzF7jl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:57:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,26 +18,27 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ChGV5B1KzF6DH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 21:50:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ChH31J6YzF6Y0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 21:50:55 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 91AAEB320;
- Wed, 13 Nov 2019 10:50:23 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 6B1ACB13C;
+ Wed, 13 Nov 2019 10:50:51 +0000 (UTC)
 Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 550261E1498; Wed, 13 Nov 2019 11:50:23 +0100 (CET)
-Date: Wed, 13 Nov 2019 11:50:23 +0100
+ id 23C1B1E1498; Wed, 13 Nov 2019 11:50:51 +0100 (CET)
+Date: Wed, 13 Nov 2019 11:50:51 +0100
 From: Jan Kara <jack@suse.cz>
 To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v4 03/23] mm/gup: move try_get_compound_head() to top,
- fix minor issues
-Message-ID: <20191113105023.GG6367@quack2.suse.cz>
+Subject: Re: [PATCH v4 01/23] mm/gup: pass flags arg to __gup_device_*
+ functions
+Message-ID: <20191113105051.GH6367@quack2.suse.cz>
 References: <20191113042710.3997854-1-jhubbard@nvidia.com>
- <20191113042710.3997854-4-jhubbard@nvidia.com>
+ <20191113042710.3997854-2-jhubbard@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20191113042710.3997854-4-jhubbard@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191113042710.3997854-2-jhubbard@nvidia.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,76 +71,131 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S . Miller" <davem@davemloft.net>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
  Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 12-11-19 20:26:50, John Hubbard wrote:
-> An upcoming patch uses try_get_compound_head() more widely,
-> so move it to the top of gup.c.
+On Tue 12-11-19 20:26:48, John Hubbard wrote:
+> A subsequent patch requires access to gup flags, so
+> pass the flags argument through to the __gup_device_*
+> functions.
 > 
-> Also fix a tiny spelling error and a checkpatch.pl warning.
+> Also placate checkpatch.pl by shortening a nearby line.
 > 
+> Reviewed-by: Jérôme Glisse <jglisse@redhat.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-Looks good. You can add:
+Looks good! You can add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
 
 > ---
->  mm/gup.c | 29 +++++++++++++++--------------
->  1 file changed, 15 insertions(+), 14 deletions(-)
+>  mm/gup.c | 28 ++++++++++++++++++----------
+>  1 file changed, 18 insertions(+), 10 deletions(-)
 > 
 > diff --git a/mm/gup.c b/mm/gup.c
-> index 199da99e8ffc..933524de6249 100644
+> index 8f236a335ae9..85caf76b3012 100644
 > --- a/mm/gup.c
 > +++ b/mm/gup.c
-> @@ -29,6 +29,21 @@ struct follow_page_context {
->  	unsigned int page_mask;
->  };
+> @@ -1890,7 +1890,8 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
 >  
-> +/*
-> + * Return the compound head page with ref appropriately incremented,
-> + * or NULL if that failed.
-> + */
-> +static inline struct page *try_get_compound_head(struct page *page, int refs)
-> +{
-> +	struct page *head = compound_head(page);
-> +
-> +	if (WARN_ON_ONCE(page_ref_count(head) < 0))
-> +		return NULL;
-> +	if (unlikely(!page_cache_add_speculative(head, refs)))
-> +		return NULL;
-> +	return head;
-> +}
-> +
->  /**
->   * put_user_pages_dirty_lock() - release and optionally dirty gup-pinned pages
->   * @pages:  array of pages to be maybe marked dirty, and definitely released.
-> @@ -1793,20 +1808,6 @@ static void __maybe_unused undo_dev_pagemap(int *nr, int nr_start,
->  	}
+>  #if defined(CONFIG_ARCH_HAS_PTE_DEVMAP) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
+>  static int __gup_device_huge(unsigned long pfn, unsigned long addr,
+> -		unsigned long end, struct page **pages, int *nr)
+> +			     unsigned long end, unsigned int flags,
+> +			     struct page **pages, int *nr)
+>  {
+>  	int nr_start = *nr;
+>  	struct dev_pagemap *pgmap = NULL;
+> @@ -1916,13 +1917,14 @@ static int __gup_device_huge(unsigned long pfn, unsigned long addr,
 >  }
 >  
-> -/*
-> - * Return the compund head page with ref appropriately incremented,
-> - * or NULL if that failed.
-> - */
-> -static inline struct page *try_get_compound_head(struct page *page, int refs)
-> -{
-> -	struct page *head = compound_head(page);
-> -	if (WARN_ON_ONCE(page_ref_count(head) < 0))
-> -		return NULL;
-> -	if (unlikely(!page_cache_add_speculative(head, refs)))
-> -		return NULL;
-> -	return head;
-> -}
-> -
->  #ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
->  static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
->  			 unsigned int flags, struct page **pages, int *nr)
+>  static int __gup_device_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+> -		unsigned long end, struct page **pages, int *nr)
+> +				 unsigned long end, unsigned int flags,
+> +				 struct page **pages, int *nr)
+>  {
+>  	unsigned long fault_pfn;
+>  	int nr_start = *nr;
+>  
+>  	fault_pfn = pmd_pfn(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> -	if (!__gup_device_huge(fault_pfn, addr, end, pages, nr))
+> +	if (!__gup_device_huge(fault_pfn, addr, end, flags, pages, nr))
+>  		return 0;
+>  
+>  	if (unlikely(pmd_val(orig) != pmd_val(*pmdp))) {
+> @@ -1933,13 +1935,14 @@ static int __gup_device_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>  }
+>  
+>  static int __gup_device_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+> -		unsigned long end, struct page **pages, int *nr)
+> +				 unsigned long end, unsigned int flags,
+> +				 struct page **pages, int *nr)
+>  {
+>  	unsigned long fault_pfn;
+>  	int nr_start = *nr;
+>  
+>  	fault_pfn = pud_pfn(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+> -	if (!__gup_device_huge(fault_pfn, addr, end, pages, nr))
+> +	if (!__gup_device_huge(fault_pfn, addr, end, flags, pages, nr))
+>  		return 0;
+>  
+>  	if (unlikely(pud_val(orig) != pud_val(*pudp))) {
+> @@ -1950,14 +1953,16 @@ static int __gup_device_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+>  }
+>  #else
+>  static int __gup_device_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+> -		unsigned long end, struct page **pages, int *nr)
+> +				 unsigned long end, unsigned int flags,
+> +				 struct page **pages, int *nr)
+>  {
+>  	BUILD_BUG();
+>  	return 0;
+>  }
+>  
+>  static int __gup_device_huge_pud(pud_t pud, pud_t *pudp, unsigned long addr,
+> -		unsigned long end, struct page **pages, int *nr)
+> +				 unsigned long end, unsigned int flags,
+> +				 struct page **pages, int *nr)
+>  {
+>  	BUILD_BUG();
+>  	return 0;
+> @@ -2062,7 +2067,8 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>  	if (pmd_devmap(orig)) {
+>  		if (unlikely(flags & FOLL_LONGTERM))
+>  			return 0;
+> -		return __gup_device_huge_pmd(orig, pmdp, addr, end, pages, nr);
+> +		return __gup_device_huge_pmd(orig, pmdp, addr, end, flags,
+> +					     pages, nr);
+>  	}
+>  
+>  	refs = 0;
+> @@ -2092,7 +2098,8 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>  }
+>  
+>  static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+> -		unsigned long end, unsigned int flags, struct page **pages, int *nr)
+> +			unsigned long end, unsigned int flags,
+> +			struct page **pages, int *nr)
+>  {
+>  	struct page *head, *page;
+>  	int refs;
+> @@ -2103,7 +2110,8 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+>  	if (pud_devmap(orig)) {
+>  		if (unlikely(flags & FOLL_LONGTERM))
+>  			return 0;
+> -		return __gup_device_huge_pud(orig, pudp, addr, end, pages, nr);
+> +		return __gup_device_huge_pud(orig, pudp, addr, end, flags,
+> +					     pages, nr);
+>  	}
+>  
+>  	refs = 0;
 > -- 
 > 2.24.0
 > 
