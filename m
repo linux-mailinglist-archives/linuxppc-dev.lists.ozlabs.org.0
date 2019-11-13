@@ -1,54 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B4CFA697
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 03:38:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC92FA6ED
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 03:58:58 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CTpR4chVzF3nc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 13:58:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CTLn3sjtzF3K4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 13:38:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="vxZt4NVK"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=195.92.253.2;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CSRf3skWzF64p
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:57:34 +1100 (AEDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C87342245A;
- Wed, 13 Nov 2019 01:57:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573610252;
- bh=tumwbkLJx4WESNM/WDRtCUOjFtxKWYFdxn2zjnFdH44=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=vxZt4NVKuErWdh7zySaN28NlQpASci/OqPBOVN+Hv2PxMKjvjVz8U+xDHwVHWXdi8
- YNMMrF3i5NMONdb21mdAFAwPPWBgNDu08KhdIKKIkIBf1lLEIYY7xhfGPVZ7WUCR8q
- 7W7/Vv5HCRB5XqY0NJk5/ZoNaAP2w7dgZqfBTykA=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 048/115] powerpc/time: Use
- clockevents_register_device(), fixing an issue with large decrementer
-Date: Tue, 12 Nov 2019 20:55:15 -0500
-Message-Id: <20191113015622.11592-48-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191113015622.11592-1-sashal@kernel.org>
-References: <20191113015622.11592-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CSQ542NnzF64J
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:56:13 +1100 (AEDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1iUhsc-0007v0-Hn; Wed, 13 Nov 2019 01:55:34 +0000
+Date: Wed, 13 Nov 2019 01:55:34 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v15 4/9] namei: LOOKUP_BENEATH: O_BENEATH-like scoped
+ resolution
+Message-ID: <20191113015534.GA26530@ZenIV.linux.org.uk>
+References: <20191105090553.6350-1-cyphar@cyphar.com>
+ <20191105090553.6350-5-cyphar@cyphar.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191105090553.6350-5-cyphar@cyphar.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,64 +47,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Christian Brauner <christian.brauner@ubuntu.com>,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, Jiri Olsa <jolsa@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ Chanho Min <chanho.min@lge.com>, Jeff Layton <jlayton@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
+ linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anton Blanchard <anton@ozlabs.org>
+On Tue, Nov 05, 2019 at 08:05:48PM +1100, Aleksa Sarai wrote:
 
-[ Upstream commit 8b78fdb045de60a4eb35460092bbd3cffa925353 ]
+Minor nit here - I'd split "move the conditional call of set_root()
+into nd_jump_root()" into a separate patch before that one.  Makes
+for fewer distractions in this one.  I'd probably fold "and be
+ready for errors other than -ECHILD" into the same preliminary
+patch.
 
-We currently cap the decrementer clockevent at 4 seconds, even on systems
-with large decrementer support. Fix this by converting the code to use
-clockevents_register_device() which calculates the upper bound based on
-the max_delta passed in.
+> +			/* Not currently safe for scoped-lookups. */
+> +			if (unlikely(nd->flags & LOOKUP_IS_SCOPED))
+> +				return ERR_PTR(-EXDEV);
 
-Signed-off-by: Anton Blanchard <anton@ozlabs.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/kernel/time.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+Also a candidate for doing in nd_jump_link()...
 
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index fe6f3a2854557..870e75d304591 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -984,10 +984,10 @@ static void register_decrementer_clockevent(int cpu)
- 	*dec = decrementer_clockevent;
- 	dec->cpumask = cpumask_of(cpu);
- 
-+	clockevents_config_and_register(dec, ppc_tb_freq, 2, decrementer_max);
-+
- 	printk_once(KERN_DEBUG "clockevent: %s mult[%x] shift[%d] cpu[%d]\n",
- 		    dec->name, dec->mult, dec->shift, cpu);
--
--	clockevents_register_device(dec);
- }
- 
- static void enable_large_decrementer(void)
-@@ -1035,18 +1035,7 @@ static void __init set_decrementer_max(void)
- 
- static void __init init_decrementer_clockevent(void)
- {
--	int cpu = smp_processor_id();
--
--	clockevents_calc_mult_shift(&decrementer_clockevent, ppc_tb_freq, 4);
--
--	decrementer_clockevent.max_delta_ns =
--		clockevent_delta2ns(decrementer_max, &decrementer_clockevent);
--	decrementer_clockevent.max_delta_ticks = decrementer_max;
--	decrementer_clockevent.min_delta_ns =
--		clockevent_delta2ns(2, &decrementer_clockevent);
--	decrementer_clockevent.min_delta_ticks = 2;
--
--	register_decrementer_clockevent(cpu);
-+	register_decrementer_clockevent(smp_processor_id());
- }
- 
- void secondary_cpu_time_init(void)
--- 
-2.20.1
+> @@ -1373,8 +1403,11 @@ static int follow_dotdot_rcu(struct nameidata *nd)
+>  	struct inode *inode = nd->inode;
+>  
+>  	while (1) {
+> -		if (path_equal(&nd->path, &nd->root))
+> +		if (path_equal(&nd->path, &nd->root)) {
+> +			if (unlikely(nd->flags & LOOKUP_BENEATH))
+> +				return -EXDEV;
 
+Umm...  Are you sure it's not -ECHILD?
