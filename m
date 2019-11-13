@@ -2,95 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19744FB9EC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C2CFBA04
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:36:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CxBT4bqJzF7GB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:32:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CxGh5RgqzF7CC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:36:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="K3ELKy0L"; 
- dkim-atps=neutral
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Cx8F1HzXzF6dH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 07:30:52 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dcc67fb0000>; Wed, 13 Nov 2019 12:30:51 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Wed, 13 Nov 2019 12:30:48 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Wed, 13 Nov 2019 12:30:48 -0800
-Received: from [10.2.160.107] (172.20.13.39) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 Nov
- 2019 20:30:47 +0000
-Subject: Re: [PATCH v3 00/23] mm/gup: track dma-pinned pages: FOLL_PIN,
- FOLL_LONGTERM
-To: Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton
- <akpm@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, Alex
- Williamson <alex.williamson@redhat.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn.topel@intel.com>, Christoph Hellwig <hch@infradead.org>, Dan Williams
- <dan.j.williams@intel.com>, Dave Chinner <david@fromorbit.com>, David Airlie
- <airlied@linux.ie>, "David S . Miller" <davem@davemloft.net>, Ira Weiny
- <ira.weiny@intel.com>, Jens Axboe <axboe@kernel.dk>, Jonathan Corbet
- <corbet@lwn.net>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko
- <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>, Paul Mackerras
- <paulus@samba.org>, Shuah Khan <shuah@kernel.org>, Vlastimil Babka
- <vbabka@suse.cz>, bpf <bpf@vger.kernel.org>, dri-devel
- <dri-devel@lists.freedesktop.org>, <kvm@vger.kernel.org>,
- <linux-block@vger.kernel.org>, Linux Doc Mailing List
- <linux-doc@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>, "open
- list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open
- list:DMA BUFFER SHARING FRAMEWORK" <linux-media@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- netdev <netdev@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, LKML
- <linux-kernel@vger.kernel.org>
-References: <20191112000700.3455038-1-jhubbard@nvidia.com>
- <20191112203802.GD5584@ziepe.ca>
- <02fa935c-3469-b766-b691-5660084b60b9@nvidia.com>
- <CAKMK7uHvk+ti00mCCF2006U003w1dofFg9nSfmZ4bS2Z2pEDNQ@mail.gmail.com>
- <7b671bf9-4d94-f2cc-8453-863acd5a1115@nvidia.com>
- <20191113101210.GD6367@quack2.suse.cz>
- <20191113114311.GP23790@phenom.ffwll.local>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <283b121d-f526-f43f-de45-dc2f8318d860@nvidia.com>
-Date: Wed, 13 Nov 2019 12:28:02 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47CxDT4l0dzF61k
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 07:34:31 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2ECF57A7;
+ Wed, 13 Nov 2019 12:34:28 -0800 (PST)
+Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CFC03F52E;
+ Wed, 13 Nov 2019 12:34:23 -0800 (PST)
+Subject: Re: [PATCH] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+To: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+ Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
+References: <20191113161340.27228-1-nsaenzjulienne@suse.de>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <f74cd8a6-00bf-46c3-8e2e-d278e72d6e0e@arm.com>
+Date: Wed, 13 Nov 2019 20:34:15 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191113114311.GP23790@phenom.ffwll.local>
-X-Originating-IP: [172.20.13.39]
-X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+In-Reply-To: <20191113161340.27228-1-nsaenzjulienne@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1573677051; bh=w2mV+XepuxnOtihiYgL/XuqwUYU2QI7jYfF/MppVAWE=;
- h=X-PGP-Universal:Subject:To:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=K3ELKy0LEaE4Frm6QQ4jLw8cJF3zobatTYiyQ/Vg2jO630IkqTksnY4sEeXMrgt5a
- b46qAh7TsgPVJKCPcTPIoUnjxNn6h2xUdpivOkXuz3queuSeoxqaSFBxc3yHdAdKf1
- weqLMTvKu8Vs4tf6la1SbXQc5ZvBvuc6pK240FvHmEYJ0o2WePNqZANag+FSCa5U1i
- 2iyzSKadjF0T/uRVrR4KM4Ey20Bg7sJaaQBcaSS9Pr1q7odGMaBmeJ4hRBriIHKA4P
- 1LTpfohPn7iHAuSCtXbApQkiiVLKyUBXMKbsJDCLOd3JNZEji1iUk1dM5atghZtAzC
- EJVJspvV4f3sw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,46 +56,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mips@vger.kernel.org, linux-ide@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Paul Burton <paulburton@kernel.org>, x86@kernel.org, phil@raspberrypi.org,
+ linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-pci@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+ Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+ iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/13/19 3:43 AM, Daniel Vetter wrote:
-...
->>>> Can't we call this unpin_user_page then, for some symmetry? Or is that
->>>> even more churn?
->>>>
->>>> Looking from afar the naming here seems really confusing.
->>>
->>>
->>> That look from afar is valuable, because I'm too close to the problem to see
->>> how the naming looks. :)
->>>
->>> unpin_user_page() sounds symmetrical. It's true that it would cause more
->>> churn (which is why I started off with a proposal that avoids changing the
->>> names of put_user_page*() APIs). But OTOH, the amount of churn is proportional
->>> to the change in direction here, and it's really only 10 or 20 lines changed,
->>> in the end.
->>>
->>> So I'm open to changing to that naming. It would be nice to hear what others
->>> prefer, too...
->>
->> FWIW I'd find unpin_user_page() also better than put_user_page() as a
->> counterpart to pin_user_pages().
+On 13/11/2019 4:13 pm, Nicolas Saenz Julienne wrote:
+> Using a mask to represent bus DMA constraints has a set of limitations.
+> The biggest one being it can only hold a power of two (minus one). The
+> DMA mapping code is already aware of this and treats dev->bus_dma_mask
+> as a limit. This quirk is already used by some architectures although
+> still rare.
 > 
-> One more point from afar on pin/unpin: We use that a lot in graphics for
-> permanently pinned graphics buffer objects. Which really only should be
-> used for scanout. So at least graphics folks should have an appropriate
-> mindset and try to make sure we don't overuse this stuff.
-> -Daniel
+> With the introduction of the Raspberry Pi 4 we've found a new contender
+> for the use of bus DMA limits, as its PCIe bus can only address the
+> lower 3GB of memory (of a total of 4GB). This is impossible to represent
+> with a mask. To make things worse the device-tree code rounds non power
+> of two bus DMA limits to the next power of two, which is unacceptable in
+> this case.
 > 
+> In the light of this, rename dev->bus_dma_mask to dev->bus_dma_limit all
+> over the tree and treat it as such. Note that dev->bus_dma_limit is
+> meant to contain the higher accesible DMA address.
 
-OK, Ira also likes "unpin", and so far no one has said *anything* in favor
-of the "put_user_page" names, so I think we have a winner! I'll change the
-names to unpin_user_page*().
+Neat, you win a "why didn't I do it that way in the first place?" :)
 
+Looking at it without all the history of previous attempts, this looks 
+entirely reasonable, and definitely a step in the right direction.
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+[...]
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 5a7551d060f2..f18827cf96df 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1097,7 +1097,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+>   		 * Limit coherent and dma mask based on size
+>   		 * retrieved from firmware.
+>   		 */
+> -		dev->bus_dma_mask = mask;
+> +		dev->bus_dma_limit = mask;
+
+Although this preserves the existing behaviour, as in of_dma_configure() 
+we can do better here since we have the original address range to hand. 
+I think it's worth keeping the ACPI and OF paths in sync for minor 
+tweaks like this, rather than letting them diverge unnecessarily.
+
+Otherwise, the rest looks OK to me - in principle we could store it as 
+an exclusive limit such that we could then streamline the min_not_zero() 
+tests to just min(mask, limit - 1), but that's probably too clever for 
+its own good.
+
+Robin.
+
+>   		dev->coherent_dma_mask = mask;
+>   		*dev->dma_mask = mask;
+>   	}
