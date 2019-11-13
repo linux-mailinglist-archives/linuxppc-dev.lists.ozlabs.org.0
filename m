@@ -2,74 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC428FBADE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 22:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E76C8FBB00
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 22:43:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CyVd2LsXzF7Ky
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 08:31:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Cylc4QKQzDrPn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 08:43:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="uY58BuYH"; 
- dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.74; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CySJ3b7jzF6F1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 08:29:51 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id x28so2521686pfo.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 13:29:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=AVqWPleKaz31XmHuM5Ar+WLW3xPppIUP+VoAlnFtLBw=;
- b=uY58BuYHB8vwpNFQzLSanEitfWdr1sIaJEBa/ZXgEaCMCR0/3DKmOvMRfQsyzmihsX
- zZz40DxW/ddhUtb/HBbeBAJYAo76JfnZFs9RYhC70nS8EPxvsJ5hDWRyin8MiNeb4zpm
- CojDvqLC5OAcBUFlepvACs7RRLbJopc+6cp6LW93+YyquBehtxfcVF4F9CCJjEIBbaV0
- pmgu6m/9du0C+uIHqW4LUs8TYM/tvVenFp//abs9ORws8Cu+D81AlGQ7glmA2iUMzoZW
- +UgL/36jDRb3kGLRMg54m5p+8ghrBjeDW7eBENqfxBZ+foBUi3PLtH0BGdp/SUf7Of+Z
- UxGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=AVqWPleKaz31XmHuM5Ar+WLW3xPppIUP+VoAlnFtLBw=;
- b=kqDQYN1V7U9Mny2MpoXzV2pRm0kxELZCrlDsPxCPziPOun4jTCLFIuvlKgNTSWVZd6
- y9HYhxe0IT74dBvMy9LVj72fbuXWVBW1cFJDHkGeb7WU5lsajhXEliP4mTwndRtJeoKb
- 1Suq6FX7QNkiVY7bOypCfnH6qrNem0qtA8WRz6ToK9g7u35dXdQdynZwdpsVziEGBZu9
- GNJTZLyr7vzCLm+ATbOGNuiex0R37boz34iZxP3ugPXpGrwddpBpg3BVfc6Tfxby4vUJ
- sQ3QGCvLm5slEVbpHq5QreSPkFLdOJrIh/6KoAEhqmRiP+bhqjLvWoRiGUgTYJg6nvId
- Ignw==
-X-Gm-Message-State: APjAAAU5oSzLZ8u04ZeO78N1NewPb5Ndd/ThYmzesbVFrpqeSYeEQaBO
- QQLEfZPCZOrUAp+kqvp/y+E=
-X-Google-Smtp-Source: APXvYqy9XSFSBUmcN5u6GCN8pPVS5+DCHCUev3ISERx87mJ8d3APZRegPuspjAPxngMAq5PvUtPRHg==
-X-Received: by 2002:a63:535c:: with SMTP id t28mr6226419pgl.173.1573680588338; 
- Wed, 13 Nov 2019 13:29:48 -0800 (PST)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id t12sm3519512pgv.45.2019.11.13.13.29.46
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 13 Nov 2019 13:29:46 -0800 (PST)
-Date: Wed, 13 Nov 2019 13:27:44 -0800
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH V3 2/2] ASoC: fsl_asrc: Add support for imx8qm
-Message-ID: <20191113212743.GA2844@Asurada-Nvidia.nvidia.com>
-References: <b1c922b3496020f611ecd6ea27d262369646d830.1573462647.git.shengjiu.wang@nxp.com>
- <3c3e59ae7adde852f133a5d7c2cbb2730362fc53.1573462647.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CyjR5sxDzF72Z
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 08:41:14 +1100 (AEDT)
+Received: from mail-qt1-f179.google.com ([209.85.160.179]) by
+ mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MVMNF-1iLpoo2OCl-00SQeu for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov
+ 2019 22:41:09 +0100
+Received: by mail-qt1-f179.google.com with SMTP id r20so4269507qtp.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 13:41:09 -0800 (PST)
+X-Gm-Message-State: APjAAAUsR8/yrC6uaDJXcgIRLnOC932Dz8lGGiCrlszBF8TusIKqtW2E
+ ldrie1fpMdy6546v0+lzrjyy88n57smRsR/v1fc=
+X-Google-Smtp-Source: APXvYqyjRd+a6foxC3+k9qUEopPf1CRknFxQHbHw9aZuys53MC+zVt0jx9JeruKLHIsAWsaGcA9LllqlMRQxiR5o4ug=
+X-Received: by 2002:a37:4f0a:: with SMTP id d10mr4703334qkb.286.1573681267104; 
+ Wed, 13 Nov 2019 13:41:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c3e59ae7adde852f133a5d7c2cbb2730362fc53.1573462647.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20191108210236.1296047-1-arnd@arndb.de>
+In-Reply-To: <20191108210236.1296047-1-arnd@arndb.de>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 13 Nov 2019 22:40:50 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1CbDaPqNsOVOuq2UDPSOwzd2U_WEmmXBMwCOhv1=iaSQ@mail.gmail.com>
+Message-ID: <CAK8P3a1CbDaPqNsOVOuq2UDPSOwzd2U_WEmmXBMwCOhv1=iaSQ@mail.gmail.com>
+Subject: Re: [PATCH 00/23] y2038 cleanups
+To: y2038 Mailman List <y2038@lists.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:W3bjDzLZF1tKQIYe9JIKsdzbwIL417VikqiVHsmR8O4T2ax7MV1
+ V+oSCkKpf+J4iMBGxbeNSayOknLodWaYeC2yyNh9Z4bJ3Nce5Zrg9KFf2dSiOhRVIr0Fn87
+ BHops8fdr4rx8oMXKxTaqQwgHFz3aTZl5jSBLdUR09IhckuNYlvc4YQPVNb3SAleZPXcJ5v
+ MU6djQPcG4BkmyHMqtqLw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:g+8iPcENPrk=:S9TCojgPgq2dlzpMsy5RW1
+ BkgD0NPWxZDPkw2ERzVe/JFzgg30ALwc04zvDNgLj8De9Nxxrunox3+QURmatDJs3kFLqTErC
+ vRq9g+blw3j9ISWpSNb9KXd77wVTi40A8/8PIL/C0EXo/tXHYIvE29QteLmfpbMinauGS5NQA
+ 39enBYSKwC94c9lfoCTkRiwPvpUiLRmrlunHUhjn7t6lc5SDooEiB23ns4Ui0rDQ7UbHkpI2H
+ 3KxT1p1C3XGK5lB+vQf6SwScLt/c2gyHoivNBG/xldmgsqNGPXArmJfif5pqFK4K6h0/3eEog
+ 0FPlhb4tq8hhejxtUrQl+A8aS3tZlYFdJx0yT9zOnoqxqCbwsqYQQeTUOGHUoeS/w5I9gABch
+ 5RLAeZ5rTmTXFnbGd/tQekcubZx3d7TwsKpVNXAtViZ5iD8nTa+hGq5rdXL+rZIUPIQHI8VHc
+ ubOkVpix0UrdKEbAzp+F4RtQdIOMZW60+W49d1lOEhXOZRNhBEaiVj+guBucYF1+UW/g5432T
+ x19zzLxlxRxRe1Cx4Q/Gs14Gip/iFPdubTOiDgzs9MLSTtP0syQx4Yx/iXpkdzVEte4KTESeH
+ WWPDics8++MbiBcoMKkRQYssnBwhXyT5Lgims5PzzkwJbYrXISCYhJu2zQjNPNZEsCiUxqNui
+ df9hWD71S3Lttdfh1fZCItujFUNnvtl2YD13LmutpUFZeU4aQ1mcvolCEAWOL/t8uOUPkb78y
+ ZUMnhTFSKJZ2eTqC6eCEtHPuMv/XdZcJ3s8Pu4GR7wxTE0ZFY+Ry0co+vuC+bIcHfj71Yrhz0
+ TvqHRTcuCOodG1GxDLDJmAubmjEPVAC1WQFo6Fq1YDadZ92KANXmrN7SxWSd9XFhdyFTDGgfu
+ qoiAaixGZfU2J+m1lCFg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,81 +71,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: linux-aio <linux-aio@kvack.org>, linux-ia64@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ Networking <netdev@vger.kernel.org>, Deepa Dinamani <deepa.kernel@gmail.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Stephen Smalley <sds@tycho.nsa.gov>, SElinux list <selinux@vger.kernel.org>,
+ Jeff Dike <jdike@addtoit.com>, alpha <linux-alpha@vger.kernel.org>,
+ linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>,
+ John Stultz <john.stultz@linaro.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Eric Paris <eparis@parisplace.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Christian Brauner <christian@brauner.io>, Richard Henderson <rth@twiddle.net>,
+ Tony Luck <tony.luck@intel.com>, Parisc List <linux-parisc@vger.kernel.org>,
+ Stephen Boyd <sboyd@kernel.org>, Linux API <linux-api@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Burton <paul.burton@mips.com>, Benjamin LaHaise <bcrl@kvack.org>,
+ "Eric W . Biederman" <ebiederm@xmission.com>,
+ Richard Weinberger <richard@nod.at>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 11, 2019 at 05:18:23PM +0800, Shengjiu Wang wrote:
-> There are two asrc module in imx8qm, each module has different
-> clock configuration, and the DMA type is EDMA.
-> 
-> So in this patch, we define the new clocks, refine the clock map,
-> and include struct fsl_asrc_soc_data for different soc usage.
-> 
-> The EDMA channel is fixed with each dma request, one dma request
-> corresponding to one dma channel. So we need to request dma
-> channel with dma request of asrc module.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+On Fri, Nov 8, 2019 at 10:04 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> This is a series of cleanups for the y2038 work, mostly intended
+> for namespace cleaning: the kernel defines the traditional
+> time_t, timeval and timespec types that often lead to y2038-unsafe
+> code. Even though the unsafe usage is mostly gone from the kernel,
+> having the types and associated functions around means that we
+> can still grow new users, and that we may be missing conversions
+> to safe types that actually matter.
+>
+> As there is no rush on any of these patches, I would either
+> queue them up in linux-next through my y2038 branch, or
+> Thomas could add them to the tip tree if he wants.
+>
+> As mentioned in another series, this is part of a larger
+> effort to fix all the remaining bits and pieces that are
+> not completed yet from the y2038 conversion, and the full
+> set can be found at:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=y2038-endgame
+>
+> Maintainers, please review and provide Acks.
+>
+> Let me know if you have any opinion on whether we should do
+> the include last two patches of this series or not.
+>
+>      Arnd
+>
+> Arnd Bergmann (23):
+>   y2038: remove CONFIG_64BIT_TIME
+>   y2038: add __kernel_old_timespec and __kernel_old_time_t
+>   y2038: vdso: change timeval to __kernel_old_timeval
+>   y2038: vdso: change timespec to __kernel_old_timespec
+>   y2038: vdso: change time_t to __kernel_old_time_t
+>   y2038: vdso: nds32: open-code timespec_add_ns()
+>   y2038: vdso: powerpc: avoid timespec references
+>   y2038: ipc: remove __kernel_time_t reference from headers
+>   y2038: stat: avoid 'time_t' in 'struct stat'
+>   y2038: uapi: change __kernel_time_t to __kernel_old_time_t
+>   y2038: rusage: use __kernel_old_timeval
+>   y2038: syscalls: change remaining timeval to __kernel_old_timeval
+>   y2038: socket: remove timespec reference in timestamping
+>   y2038: make ns_to_compat_timeval use __kernel_old_timeval
+>   y2038: elfcore: Use __kernel_old_timeval for process times
+>   y2038: timerfd: Use timespec64 internally
+>   y2038: time: avoid timespec usage in settimeofday()
+>   y2038: itimer: compat handling to itimer.c
+>   y2038: use compat_{get,set}_itimer on alpha
+>   y2038: move itimer reset into itimer.c
+>   y2038: itimer: change implementation to timespec64
+>   [RFC] y2038: itimer: use ktime_t internally
+>   y2038: allow disabling time32 system calls
 
-Two small comments inline. Once they are addressed,
+I've dropped the "[RFC] y2038: itimer: use ktime_t internally" patch
+for the moment,
+and added two other patches from other series:
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+y2038: remove CONFIG_64BIT_TIME
+y2038: socket: use __kernel_old_timespec instead of timespec
 
-> ---
-> changes in v2
-> - use !use_edma to wrap code in fsl_asrc_dma
-> - add Acked-by: Nicolin Chen
-> 
-> changes in v3
-> - remove the acked-by for commit is updated
-> - read "fsl,asrc-clk-map" property, and update table
->   clk_map_imx8qm.
-> 
->  sound/soc/fsl/fsl_asrc.c     | 112 ++++++++++++++++++++++++++++-------
->  sound/soc/fsl/fsl_asrc.h     |  64 +++++++++++++++++++-
->  sound/soc/fsl/fsl_asrc_dma.c |  42 +++++++++----
->  3 files changed, 183 insertions(+), 35 deletions(-)
-> 
-> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> index a3cfceea7d2f..03de33de8633 100644
-> --- a/sound/soc/fsl/fsl_asrc.c
-> +++ b/sound/soc/fsl/fsl_asrc.c
-> @@ -964,14 +1001,33 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+Tentatively pushed out the patches with the Acks I have received so
+far to my y2038 branch on git.kernel.org so it gets included in linux-next.
 
-> +	} else if (of_device_is_compatible(np, "fsl,imx8qm-asrc")) {
+If I hear no complaints, I'll send a pull request for the merge window,
+along with the compat-ioctl series I have already queued up in the same
+branch.
 
-> +		ret = of_property_read_u32(np, "fsl,asrc-clk-map",
-> +					   &map_idx);
-
-This seems to fit a single line?
-
-> diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-> index d6146de9acd2..f871fdb9d1c6 100644
-> --- a/sound/soc/fsl/fsl_asrc_dma.c
-> +++ b/sound/soc/fsl/fsl_asrc_dma.c
-> @@ -197,21 +197,37 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
-
-> +	/*
-> +	 * For EDMA DEV_TO_DEV channel, we don't need to configure
-> +	 * dma_request and dma_request2, we can get dma channel through
-> +	 * dma_request_slave_channel directly.
-> +	 * Compare with SDMA channel, EDMA channel is bound with dma
-> +	 * request event of each peripheral, and it is fixed. Not like SDMA,
-> +	 * the channel is allocated dynamically. So when DMA is EDMA, we
-> +	 * can only get EDMA channel through dma-names of Front-End device.
-> +	 */
-
-Just trying to make it concise :)
-
-+	/*
-+	 * An EDMA DEV_TO_DEV channel is fixed and bound with DMA event of each
-+	 * peripheral, unlike SDMA channel that is allocated dynamically. So no
-+	 * need to configure dma_request and dma_request2, but get dma_chan via
-+	 * dma_request_slave_channel directly with dma name of Front-End device
-+	 */
+    Arnd
