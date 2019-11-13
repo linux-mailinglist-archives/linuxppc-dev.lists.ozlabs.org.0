@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA0BFA338
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 03:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A8AFA3E5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 03:13:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CSjM2plWzF3tQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 13:09:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CSnn0PZxzDrg2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 13:13:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="uj0RSs9X"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="z8n2omzp"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CSJz5vzZzF641
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:51:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CSKm08ZyzF644
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:52:28 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 549F6222CA;
- Wed, 13 Nov 2019 01:51:45 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3D9A2222CA;
+ Wed, 13 Nov 2019 01:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573609906;
- bh=8OznHZtnyeuyoa0ykOvMSTWxOaJVdKSRPp8ZeapPiWo=;
+ s=default; t=1573609945;
+ bh=ZYrFksE4yNjkyeNCuIbjQzFI5EWbnQ4cFzJZE5BH2JE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=uj0RSs9XuIVRP7q2bMKCOdR3bkkVmZ7rnV0HUBJZMAK1nANR/opiCnF1oIg+tF18W
- dlzIdQnM75jzJ6llPm7qy6FMM2ghrC8EP3XgeY0BwvbZhhSV36tSsxLRWvMxtV0NcY
- mS89atsdcuYlam6B6hUG+mrhEiP41FA73JcbzjiQ=
+ b=z8n2omzpd5LitsKMCeJQBzflXWT2hakmJreUveR3h+oENbalhrP/RL3h5oXjRpzjc
+ VY/gtjnvz9kqjjG22v1qNTcR08musC95/v5Maabxb2zY0zMNrgeBnzXTQv4NteQhMJ
+ 3EJoAr29uJuhKZ+t4ze3ON/qWAmVlI0yMaXEpLTA=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 057/209] powerpc/xive: Move a dereference below a
- NULL test
-Date: Tue, 12 Nov 2019 20:47:53 -0500
-Message-Id: <20191113015025.9685-57-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 084/209] powerpc/time: Use
+ clockevents_register_device(), fixing an issue with large decrementer
+Date: Tue, 12 Nov 2019 20:48:20 -0500
+Message-Id: <20191113015025.9685-84-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
 References: <20191113015025.9685-1-sashal@kernel.org>
@@ -60,46 +60,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, zhong jiang <zhongjiang@huawei.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: zhong jiang <zhongjiang@huawei.com>
+From: Anton Blanchard <anton@ozlabs.org>
 
-[ Upstream commit cd5ff94577e004e0a4457e70d0ef3a030f4010b8 ]
+[ Upstream commit 8b78fdb045de60a4eb35460092bbd3cffa925353 ]
 
-Move the dereference of xc below the NULL test.
+We currently cap the decrementer clockevent at 4 seconds, even on systems
+with large decrementer support. Fix this by converting the code to use
+clockevents_register_device() which calculates the upper bound based on
+the max_delta passed in.
 
-Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+Signed-off-by: Anton Blanchard <anton@ozlabs.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/xive/common.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/time.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index 0b24b10312213..f3af53abd40fb 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -1009,12 +1009,13 @@ static void xive_ipi_eoi(struct irq_data *d)
- {
- 	struct xive_cpu *xc = __this_cpu_read(xive_cpu);
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 70f145e024877..6a1f0a084ca35 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -984,10 +984,10 @@ static void register_decrementer_clockevent(int cpu)
+ 	*dec = decrementer_clockevent;
+ 	dec->cpumask = cpumask_of(cpu);
  
--	DBG_VERBOSE("IPI eoi: irq=%d [0x%lx] (HW IRQ 0x%x) pending=%02x\n",
--		    d->irq, irqd_to_hwirq(d), xc->hw_ipi, xc->pending_prio);
++	clockevents_config_and_register(dec, ppc_tb_freq, 2, decrementer_max);
++
+ 	printk_once(KERN_DEBUG "clockevent: %s mult[%x] shift[%d] cpu[%d]\n",
+ 		    dec->name, dec->mult, dec->shift, cpu);
 -
- 	/* Handle possible race with unplug and drop stale IPIs */
- 	if (!xc)
- 		return;
-+
-+	DBG_VERBOSE("IPI eoi: irq=%d [0x%lx] (HW IRQ 0x%x) pending=%02x\n",
-+		    d->irq, irqd_to_hwirq(d), xc->hw_ipi, xc->pending_prio);
-+
- 	xive_do_source_eoi(xc->hw_ipi, &xc->ipi_data);
- 	xive_do_queue_eoi(xc);
+-	clockevents_register_device(dec);
  }
+ 
+ static void enable_large_decrementer(void)
+@@ -1035,18 +1035,7 @@ static void __init set_decrementer_max(void)
+ 
+ static void __init init_decrementer_clockevent(void)
+ {
+-	int cpu = smp_processor_id();
+-
+-	clockevents_calc_mult_shift(&decrementer_clockevent, ppc_tb_freq, 4);
+-
+-	decrementer_clockevent.max_delta_ns =
+-		clockevent_delta2ns(decrementer_max, &decrementer_clockevent);
+-	decrementer_clockevent.max_delta_ticks = decrementer_max;
+-	decrementer_clockevent.min_delta_ns =
+-		clockevent_delta2ns(2, &decrementer_clockevent);
+-	decrementer_clockevent.min_delta_ticks = 2;
+-
+-	register_decrementer_clockevent(cpu);
++	register_decrementer_clockevent(smp_processor_id());
+ }
+ 
+ void secondary_cpu_time_init(void)
 -- 
 2.20.1
 
