@@ -2,89 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9A2FAA3B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 07:35:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A33FAD88
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:47:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CZbh3s9VzF6s3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 17:34:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Cfsz1PDQzF7Zp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:47:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=sergey.senozhatsky.work@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="U+7/ZvVf"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CZYG60SNzF6lT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 17:32:50 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xAD6Rsom134456
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 01:32:46 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2w8byph7ec-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 01:32:46 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
- Wed, 13 Nov 2019 06:32:44 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 13 Nov 2019 06:32:40 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAD6WdgV24510648
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Nov 2019 06:32:39 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E35C1A4059;
- Wed, 13 Nov 2019 06:32:38 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5DC78A4053;
- Wed, 13 Nov 2019 06:32:36 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.85.181.122])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed, 13 Nov 2019 06:32:36 +0000 (GMT)
-Date: Tue, 12 Nov 2019 22:32:33 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Paul Mackerras <paulus@ozlabs.org>
-Subject: Re: [PATCH v10 7/8] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-References: <20191104041800.24527-1-bharata@linux.ibm.com>
- <20191104041800.24527-8-bharata@linux.ibm.com>
- <20191111041924.GA4017@oak.ozlabs.ibm.com>
- <20191112010158.GB5159@oc0525413822.ibm.com>
- <20191112053836.GB10885@oak.ozlabs.ibm.com>
- <20191112075215.GD5159@oc0525413822.ibm.com>
- <20191112113204.GA10178@blackberry>
- <20191112144555.GE5159@oc0525413822.ibm.com>
- <20191113001427.GA17829@oak.ozlabs.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CZZF4GdnzF3nh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 17:33:41 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id ay6so649267plb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2019 22:33:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=KPZG4VqXDKJQhwt8QhBKSdwu6zZ1yvGSLXAAovETV8E=;
+ b=U+7/ZvVfxKk+hxsLJDRIKIa9v9E62t1+RHHdRG8fTOKlKCc4Kg8kLlVghoiEvtLKpI
+ pPB/09WWUgNDAvmTd9ZCgUOuDBo7+0/f9WrOXWR2uZQ/aTiznYX6i7YMJNAQqiVBiT9D
+ uNMlkpfHxoC092SA3lqUUmN6Py1jaNvbxPVR7bhPPMcnC5VVTdQfrrvn9g+mwUT9wmS5
+ IpQo+ozODVnxdup9AaHr+12x4K6wNPJd6H6aHacy3JkNKTrjQ9VPgzg12dvkP1Aua/p8
+ JdT9N+L+Gr2JhZIIZgVnzKCc48NZMHSHGJjqaFnpF0Bg0opyuGJWVOEoMHo8Jbl+CwGg
+ Qilw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=KPZG4VqXDKJQhwt8QhBKSdwu6zZ1yvGSLXAAovETV8E=;
+ b=hVSZ27rIlHYkvLqZ5b6ojZdYD3difA/LPMPwXsa0AVAn8MxMItEmTj0oJChmIebd1R
+ vlLLfH3RyQK8RBSGkoSVJ+HGthWU1tRaf4C5jr14eYvA08/BvKbA5RnB3eGS8KI+hj5m
+ bKxD9FvAhdDI27UxNI3mvHu9TnuAqkhN2aF1EMpBVq/1tu6NJLWZ8tlEfkQQIxlu6F0Q
+ i6FYXhv6jRem7yuI9TI9JZE2EgpKxnbjnN+hgrlivldssvonVmIsZF7MIVFSzDS5qVfE
+ /T+bxIe0OrkULS6ee1j/fHyfy9FAiLRXbgi2nR3NWNy3INFhatvKZcgl/kHHE4FUBZnW
+ JM9A==
+X-Gm-Message-State: APjAAAXZU9J/rRTEdd7uXsyW4JKvGO28+KhYZb7pSQdO1ixHwdgOnSBf
+ f98NWHxK+htA29cUzc35WGo=
+X-Google-Smtp-Source: APXvYqw/EXwYt3YxwlYA4wZk8PjZNxrmOm0/6WUJy4pyQbt0uw3oeq/94f1ysfc7w8q8vIp4HTP4BA==
+X-Received: by 2002:a17:902:5a44:: with SMTP id
+ f4mr2028828plm.174.1573626818736; 
+ Tue, 12 Nov 2019 22:33:38 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:250d:e71d:5a0a:9afe])
+ by smtp.gmail.com with ESMTPSA id i16sm1209291pfa.184.2019.11.12.22.33.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Nov 2019 22:33:37 -0800 (PST)
+Date: Wed, 13 Nov 2019 15:33:34 +0900
+From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Dmitry Safonov <dima@arista.com>
+Subject: Re: [PATCH 00/50] Add log level to show_stack()
+Message-ID: <20191113063334.GA147997@google.com>
+References: <20191108103719.GB175344@google.com>
+ <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
+ <20191111012336.GA85185@google.com>
+ <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
+ <20191112044447.GA121272@google.com>
+ <20191112045704.GA138013@google.com>
+ <20191112083509.gmgjpkjffsfaw5lm@pathway.suse.cz>
+ <20191112101229.GA201294@google.com>
+ <20191113012337.GA70781@google.com>
+ <25ff45f0-6420-f660-55a8-637f11ab5ab4@arista.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191113001427.GA17829@oak.ozlabs.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19111306-0028-0000-0000-000003B670B9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111306-0029-0000-0000-0000247976B4
-Message-Id: <20191113063233.GF5159@oc0525413822.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-13_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911130057
+In-Reply-To: <25ff45f0-6420-f660-55a8-637f11ab5ab4@arista.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Wed, 13 Nov 2019 20:43:22 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,49 +90,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>, cclaudio@linux.ibm.com,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, jglisse@redhat.com, Ram Pai <linuxram@linux.ibm.com>,
- aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Ben Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Burton <paulburton@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Mel Gorman <mgorman@suse.de>, Jiri Slaby <jslaby@suse.com>,
+ Matt Turner <mattst88@gmail.com>, uclinux-h8-devel@lists.sourceforge.jp,
+ Petr Mladek <pmladek@suse.com>, linux-pm@vger.kernel.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-um@lists.infradead.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Richard Henderson <rth@twiddle.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ia64@vger.kernel.org,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ James Hogan <jhogan@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org, Stafford Horne <shorne@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Tony Luck <tony.luck@intel.com>, Douglas Anderson <dianders@chromium.org>,
+ Dmitry Safonov <0x7f454c46@gmail.com>, Will Deacon <will@kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Brian Cain <bcain@codeaurora.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ kgdb-bugreport@lists.sourceforge.net, linux-snps-arc@lists.infradead.org,
+ Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Jeff Dike <jdike@addtoit.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
+ "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
+ Len Brown <len.brown@intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ Mark Salter <msalter@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Michal Simek <monstr@monstr.eu>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-mips@vger.kernel.org, Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Jason Wessel <jason.wessel@windriver.com>,
+ nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 13, 2019 at 11:14:27AM +1100, Paul Mackerras wrote:
-> On Tue, Nov 12, 2019 at 06:45:55AM -0800, Ram Pai wrote:
-> > On Tue, Nov 12, 2019 at 10:32:04PM +1100, Paul Mackerras wrote:
-> > > On Mon, Nov 11, 2019 at 11:52:15PM -0800, Ram Pai wrote:
-> > > > There is subtle problem removing that code from the assembly.
-> > > > 
-> > > > If the H_SVM_INIT_ABORT hcall returns to the ultravisor without clearing
-> > > > kvm->arch.secure_guest, the hypervisor will continue to think that the
-> > > > VM is a secure VM.   However the primary reason the H_SVM_INIT_ABORT
-> > > > hcall was invoked, was to inform the Hypervisor that it should no longer
-> > > > consider the VM as a Secure VM. So there is a inconsistency there.
-> > > 
-> > > Most of the checks that look at whether a VM is a secure VM use code
-> > > like "if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)".  Now
-> > > since KVMPPC_SECURE_INIT_ABORT is 4, an if statement such as that will
-> > > take the false branch once we have set kvm->arch.secure_guest to
-> > > KVMPPC_SECURE_INIT_ABORT in kvmppc_h_svm_init_abort.  So in fact in
-> > > most places we will treat the VM as a normal VM from then on.  If
-> > > there are any places where we still need to treat the VM as a secure
-> > > VM while we are processing the abort we can easily do that too.
-> > 
-> > Is the suggestion --  KVMPPC_SECURE_INIT_ABORT should never return back
-> > to the Ultravisor?   Because removing that assembly code will NOT lead the
-> 
-> No.  The suggestion is that vcpu->arch.secure_guest stays set to
-> KVMPPC_SECURE_INIT_ABORT until userspace calls KVM_PPC_SVM_OFF.
+On (19/11/13 02:25), Dmitry Safonov wrote:
+> I guess I've pointed that in my point of view price for one-time testing
+> code is cheaper than adding a new printk feature to swap log levels on
+> the fly.
+[..]
+> I've gone through functions used by sysrq driver and the same changes
+> introducing log level parameter would be needed for: sched_show_task(),
+> debug_show_all_locks(), show_regs(), show_state(), show_mem(). Some of
+> them don't need any platform changes, but at least show_regs() needs.
 
-In the fast_guest_return path, if it finds 
-(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_ABORT) is true, should it return to
-UV or not?
+Good points and nice conclusion.
 
-Ideally it should return back to the ultravisor the first time
-KVMPPC_SECURE_INIT_ABORT is set, and not than onwards.
+Well, here we go. There is a number of generally useful functions that
+print nice data and where people might want to have better loglevel control
+(for debugging purposes). show_stack() is just one of them. Patching all
+those functions, which you have mentioned above, is hardly a fun task to do.
+Hence the printk() per-CPU per-context loglevel proposition. The code there
+is not clever or complicated and is meant for debugging purposes only, but
+with just 3 lines of code one can do some stuff:
 
-RP
+	/* @BTW you can't do this with "%s" KERN_FOO ;P */
++	printk_emergency_enter(LOGLEVEL_SCHED);
++	debug_show_all_locks();
++	printk_emergency_exit();
 
+Now...
+I'm not sure if this whole thing is up to "printk maintainers only".
+If no one is going to use "emergency printk contexts" then there is
+no point in having that code in the kernel.
+
+	-ss
