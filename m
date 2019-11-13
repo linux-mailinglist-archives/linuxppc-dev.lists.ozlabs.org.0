@@ -2,70 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F399AFAC8F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39638FACE9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:25:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Cdz92qXLzF7MK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:07:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CfNZ1cWczF4mQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:25:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CfL43tn4zF32n
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 20:23:24 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="qgoX2qy8"; 
- dkim-atps=neutral
-Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Cdwm0kvnzF62F
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 20:04:55 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dcbc7300000>; Wed, 13 Nov 2019 01:04:48 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Wed, 13 Nov 2019 01:04:48 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Wed, 13 Nov 2019 01:04:48 -0800
-Received: from [10.2.160.173] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 Nov
- 2019 09:04:48 +0000
-Subject: Re: [PATCH v3 00/23] mm/gup: track dma-pinned pages: FOLL_PIN,
- FOLL_LONGTERM
-To: Daniel Vetter <daniel@ffwll.ch>
-References: <20191112000700.3455038-1-jhubbard@nvidia.com>
- <20191112203802.GD5584@ziepe.ca>
- <02fa935c-3469-b766-b691-5660084b60b9@nvidia.com>
- <CAKMK7uHvk+ti00mCCF2006U003w1dofFg9nSfmZ4bS2Z2pEDNQ@mail.gmail.com>
-X-Nvconfidentiality: public
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <7b671bf9-4d94-f2cc-8453-863acd5a1115@nvidia.com>
-Date: Wed, 13 Nov 2019 01:02:02 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="FKSsvq52"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47CfL40Tytz9s7T;
+ Wed, 13 Nov 2019 20:23:23 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1573637004;
+ bh=618kMMEqfdzXeTyrenc7f6K8wo7KTVq6bE2vNMU/OCk=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=FKSsvq52lRBNNe1D7ydzsHP3hkNyyN+IjUTY4dKJaTOHMjvjjvWEeGU4MxNra7PxJ
+ b4xnHkMY/24F2BUXDqaG9k3Q8xXC4F183baSbhvDPIVkoD9UF4+9Ju4yFazs6GmqxN
+ WGatrN2uPh424E9Anz+Fzglk7LUwGOHVaSHQ1C5TrZM9zRda+0mfPAeAIb7jjLiiDJ
+ yFUp8wJ4m7rS758lJPKHkpWd4bzjXPK900BjHTff5YXac+/7up+8tkrK8ibuNDuJsc
+ b7WTB2iGZoODahI0HrKrP71jvvZPr1zkSh4oD0QwsfIte7Boip87+VvcJ/BiRl7zvq
+ 0Pmg9HA9ESHDw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jason Yan <yanaijie@huawei.com>
+Subject: Re: Pull request: scottwood/linux.git next
+In-Reply-To: <20191022232155.GA26174@home.buserror.net>
+References: <20191022232155.GA26174@home.buserror.net>
+Date: Wed, 13 Nov 2019 20:23:21 +1100
+Message-ID: <87pnhw165y.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <CAKMK7uHvk+ti00mCCF2006U003w1dofFg9nSfmZ4bS2Z2pEDNQ@mail.gmail.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1573635888; bh=WuCLw1mNhRSSrQbzE2XtsJC46JZuOt82gJ5Z6A5sU6M=;
- h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=qgoX2qy8q+Pz4xwaUpJCPUDYqLc7AOyeowDXx94iSygezEmzpCR7ZZxo0cljsfswu
- ukE0Cm+f0R483iPntRfn/ABXBRqJdTjYQOd5BMk3/+ahH8sNYpooo8xojMC+j2QKMp
- YnZN0Muwss41C3UGdYFy5MS6hRmL0789DFptbHHfPd5vitO0CxsRYBJyPt01+pG4cX
- 6cPdl9NwtrthmFzBA5/mOnD1+FGwYZl+/Gsvcsk8njJ9ZjDk+S/T82e3qWgu+CaLxi
- GAWOKJgmoqYLWXc9CemtInbG0/tG5R+23jPdDf2TY9FLXzVWhi+Ia12J1oxABZoP9Y
- i24f/CxZw1J0Q==
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,87 +56,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "open
- list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>, "open
- list:DMA BUFFER SHARING FRAMEWORK" <linux-media@vger.kernel.org>,
- Shuah Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf <bpf@vger.kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev <netdev@vger.kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/13/19 12:22 AM, Daniel Vetter wrote:
-...
->>> Why are we doing this? I think things got confused here someplace, as
->>
->>
->> Because:
->>
->> a) These need put_page() calls,  and
->>
->> b) there is no put_pages() call, but there is a release_pages() call that
->> is, arguably, what put_pages() would be.
->>
->>
->>> the comment still says:
->>>
->>> /**
->>>   * put_user_page() - release a gup-pinned page
->>>   * @page:            pointer to page to be released
->>>   *
->>>   * Pages that were pinned via get_user_pages*() must be released via
->>>   * either put_user_page(), or one of the put_user_pages*() routines
->>>   * below.
->>
->>
->> Ohhh, I missed those comments. They need to all be changed over to
->> say "pages that were pinned via pin_user_pages*() or
->> pin_longterm_pages*() must be released via put_user_page*()."
->>
->> The get_user_pages*() pages must still be released via put_page.
->>
->> The churn is due to a fairly significant change in strategy, whis
->> is: instead of changing all get_user_pages*() sites to call
->> put_user_page(), change selected sites to call pin_user_pages*() or
->> pin_longterm_pages*(), plus put_user_page().
-> 
-> Can't we call this unpin_user_page then, for some symmetry? Or is that
-> even more churn?
-> 
-> Looking from afar the naming here seems really confusing.
+Scott Wood <oss@buserror.net> writes:
+> This contains KASLR support for book3e 32-bit.
+>
+> The following changes since commit 612ee81b9461475b5a5612c2e8d71559dd3c7920:
+>
+>   powerpc/papr_scm: Fix an off-by-one check in papr_scm_meta_{get, set} (2019-10-10 20:15:53 +1100)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/scottwood/linux.git next
+>
+> for you to fetch changes up to 9df1ef3f1376ec5d3a1b51a4546c94279bcd88ca:
+>
+>   powerpc/fsl_booke/32: Document KASLR implementation (2019-10-21 16:09:16 -0500)
+>
+> ----------------------------------------------------------------
+> Jason Yan (12):
+>       powerpc: unify definition of M_IF_NEEDED
+>       powerpc: move memstart_addr and kernstart_addr to init-common.c
+>       powerpc: introduce kernstart_virt_addr to store the kernel base
+>       powerpc/fsl_booke/32: introduce create_kaslr_tlb_entry() helper
+>       powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
+>       powerpc/fsl_booke/32: implement KASLR infrastructure
+
+This commit breaks booting on the qemu mac99 machine, using pmac32_defconfig.
+
+  $ qemu-system-ppc -nographic -vga none -M mac99 -m 1G -kernel vmlinux 
+  >> =============================================================
+  >> OpenBIOS 1.1 [Oct 5 2018 08:21]
+  >> Configuration device id QEMU version 1 machine id 1
+  >> CPUs: 1
+  >> Memory: 1024M
+  >> UUID: 00000000-0000-0000-0000-000000000000
+  >> CPU type PowerPC,G4
+  milliseconds isn't unique.
+  Welcome to OpenBIOS v1.1 built on Oct 5 2018 08:21
+  >> [ppc] Kernel already loaded (0x01000000 + 0x009d2920) (initrd 0x00000000 + 0x00000000)
+  >> [ppc] Kernel command line: 
+  >> switching to new context:
+  OF stdout device is: /pci@f2000000/mac-io@c/escc@13000/ch-a@13020
+  Preparing to boot Linux version 5.4.0-rc2-gcc49-05398-g4e1bb50 (michael@alpine1-p1) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #30 Wed Nov 13 15:07:39 AEDT 2019
+  Detected machine type: 00000400
+  command line: 
+  memory layout at init:
+    memory_limit : 00000000 (16 MB aligned)
+    alloc_bottom : 019d7000
+    alloc_top    : 30000000
+    alloc_top_hi : 40000000
+    rmo_top      : 30000000
+    ram_top      : 40000000
+  copying OF device tree...
+  Building dt strings...
+  Building dt structure...
+  Device tree strings 0x019d8000 -> 0x019d70a4
+  Device tree struct  0x019d9000 -> 0x3fde7eb0
+  Quiescing Open Firmware ...
+  Booting Linux via __start() @ 0x01000000 ...
+
+And no output after that.
+
+The problematic hunk is the change to early_32.c:
+
+diff --git a/arch/powerpc/kernel/early_32.c b/arch/powerpc/kernel/early_32.c
+index 3482118ffe76..6f8689d7ca7b 100644
+--- a/arch/powerpc/kernel/early_32.c
++++ b/arch/powerpc/kernel/early_32.c
+@@ -22,7 +22,8 @@ notrace unsigned long __init early_init(unsigned long dt_ptr)
+        unsigned long offset = reloc_offset();
+ 
+        /* First zero the BSS */
+-       memset(PTRRELOC(&__bss_start), 0, __bss_stop - __bss_start);
++       if (kernstart_virt_addr == KERNELBASE)
++               memset(PTRRELOC(&__bss_start), 0, __bss_stop - __bss_start);
+ 
+        /*
+         * Identify the CPU type and fix up code sections
+@@ -32,5 +33,5 @@ notrace unsigned long __init early_init(unsigned long dt_ptr)
+ 
+        apply_feature_fixups();
+ 
+-       return KERNELBASE + offset;
++       return kernstart_virt_addr + offset;
+ }
 
 
-That look from afar is valuable, because I'm too close to the problem to see
-how the naming looks. :)
+It needs to use PTRRELOC() for the kernstart_virt_addr accesses.
 
-unpin_user_page() sounds symmetrical. It's true that it would cause more
-churn (which is why I started off with a proposal that avoids changing the
-names of put_user_page*() APIs). But OTOH, the amount of churn is proportional
-to the change in direction here, and it's really only 10 or 20 lines changed,
-in the end.
-
-So I'm open to changing to that naming. It would be nice to hear what others
-prefer, too...
+I've made that change and squashed it into the series. I've pushed that
+as a branch to here:
+  https://github.com/linuxppc/linux/commits/topic/kaslr-book3e32
 
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+That boots for me on qemu mac99.
+
+Jason can you please test it on your setup with KASLR enabled to make
+sure it still works.
+
+cheers
