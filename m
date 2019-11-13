@@ -2,48 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128A2FAD99
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:51:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F399AFAC8F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 10:07:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Cfxr4xg9zF6Ss
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:50:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Cdz92qXLzF7MK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:07:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx1.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.com
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CdXn39jtzF7Wh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 19:47:35 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 06A25AEA4;
- Wed, 13 Nov 2019 08:47:31 +0000 (UTC)
-Date: Wed, 13 Nov 2019 09:47:22 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Subject: Re: [PATCH 00/50] Add log level to show_stack()
-Message-ID: <20191113084722.emzee7g34zki4kkl@pathway.suse.cz>
-References: <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
- <20191111012336.GA85185@google.com>
- <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
- <20191112044447.GA121272@google.com>
- <20191112045704.GA138013@google.com>
- <20191112083509.gmgjpkjffsfaw5lm@pathway.suse.cz>
- <20191112101229.GA201294@google.com>
- <20191113012337.GA70781@google.com>
- <25ff45f0-6420-f660-55a8-637f11ab5ab4@arista.com>
- <20191113063334.GA147997@google.com>
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="qgoX2qy8"; 
+ dkim-atps=neutral
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Cdwm0kvnzF62F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 20:04:55 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dcbc7300000>; Wed, 13 Nov 2019 01:04:48 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Wed, 13 Nov 2019 01:04:48 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Wed, 13 Nov 2019 01:04:48 -0800
+Received: from [10.2.160.173] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 Nov
+ 2019 09:04:48 +0000
+Subject: Re: [PATCH v3 00/23] mm/gup: track dma-pinned pages: FOLL_PIN,
+ FOLL_LONGTERM
+To: Daniel Vetter <daniel@ffwll.ch>
+References: <20191112000700.3455038-1-jhubbard@nvidia.com>
+ <20191112203802.GD5584@ziepe.ca>
+ <02fa935c-3469-b766-b691-5660084b60b9@nvidia.com>
+ <CAKMK7uHvk+ti00mCCF2006U003w1dofFg9nSfmZ4bS2Z2pEDNQ@mail.gmail.com>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <7b671bf9-4d94-f2cc-8453-863acd5a1115@nvidia.com>
+Date: Wed, 13 Nov 2019 01:02:02 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191113063334.GA147997@google.com>
-User-Agent: NeoMutt/20170912 (1.9.0)
-X-Mailman-Approved-At: Wed, 13 Nov 2019 20:43:21 +1100
+In-Reply-To: <CAKMK7uHvk+ti00mCCF2006U003w1dofFg9nSfmZ4bS2Z2pEDNQ@mail.gmail.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1573635888; bh=WuCLw1mNhRSSrQbzE2XtsJC46JZuOt82gJ5Z6A5sU6M=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=qgoX2qy8q+Pz4xwaUpJCPUDYqLc7AOyeowDXx94iSygezEmzpCR7ZZxo0cljsfswu
+ ukE0Cm+f0R483iPntRfn/ABXBRqJdTjYQOd5BMk3/+ahH8sNYpooo8xojMC+j2QKMp
+ YnZN0Muwss41C3UGdYFy5MS6hRmL0789DFptbHHfPd5vitO0CxsRYBJyPt01+pG4cX
+ 6cPdl9NwtrthmFzBA5/mOnD1+FGwYZl+/Gsvcsk8njJ9ZjDk+S/T82e3qWgu+CaLxi
+ GAWOKJgmoqYLWXc9CemtInbG0/tG5R+23jPdDf2TY9FLXzVWhi+Ia12J1oxABZoP9Y
+ i24f/CxZw1J0Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,106 +77,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
- Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Paul Burton <paulburton@kernel.org>, Dmitry Safonov <dima@arista.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Mel Gorman <mgorman@suse.de>,
- Jiri Slaby <jslaby@suse.com>, Matt Turner <mattst88@gmail.com>,
- uclinux-h8-devel@lists.sourceforge.jp, Len Brown <len.brown@intel.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-um@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Richard Henderson <rth@twiddle.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ia64@vger.kernel.org,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- James Hogan <jhogan@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
- linux-xtensa@linux-xtensa.org, Vasily Gorbik <gor@linux.ibm.com>,
- Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
- linux-m68k@lists.linux-m68k.org, Stafford Horne <shorne@gmail.com>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Tony Luck <tony.luck@intel.com>, Douglas Anderson <dianders@chromium.org>,
- Dmitry Safonov <0x7f454c46@gmail.com>, Will Deacon <will@kernel.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Brian Cain <bcain@codeaurora.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- kgdb-bugreport@lists.sourceforge.net, linux-snps-arc@lists.infradead.org,
- Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@alien8.de>,
- Jeff Dike <jdike@addtoit.com>, Steven Rostedt <rostedt@goodmis.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
- Guan Xuetao <gxt@pku.edu.cn>, linux-parisc@vger.kernel.org,
- linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
- "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>,
- Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
- Mark Salter <msalter@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>,
- Michal Simek <monstr@monstr.eu>, Vineet Gupta <vgupta@synopsys.com>,
- linux-mips@vger.kernel.org, Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Jason Wessel <jason.wessel@windriver.com>,
- nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "open
+ list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>, "open
+ list:DMA BUFFER SHARING FRAMEWORK" <linux-media@vger.kernel.org>,
+ Shuah Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf <bpf@vger.kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev <netdev@vger.kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 2019-11-13 15:33:34, Sergey Senozhatsky wrote:
-> On (19/11/13 02:25), Dmitry Safonov wrote:
-> > I guess I've pointed that in my point of view price for one-time testing
-> > code is cheaper than adding a new printk feature to swap log levels on
-> > the fly.
-> [..]
-> > I've gone through functions used by sysrq driver and the same changes
-> > introducing log level parameter would be needed for: sched_show_task(),
-> > debug_show_all_locks(), show_regs(), show_state(), show_mem(). Some of
-> > them don't need any platform changes, but at least show_regs() needs.
+On 11/13/19 12:22 AM, Daniel Vetter wrote:
+...
+>>> Why are we doing this? I think things got confused here someplace, as
+>>
+>>
+>> Because:
+>>
+>> a) These need put_page() calls,  and
+>>
+>> b) there is no put_pages() call, but there is a release_pages() call that
+>> is, arguably, what put_pages() would be.
+>>
+>>
+>>> the comment still says:
+>>>
+>>> /**
+>>>   * put_user_page() - release a gup-pinned page
+>>>   * @page:            pointer to page to be released
+>>>   *
+>>>   * Pages that were pinned via get_user_pages*() must be released via
+>>>   * either put_user_page(), or one of the put_user_pages*() routines
+>>>   * below.
+>>
+>>
+>> Ohhh, I missed those comments. They need to all be changed over to
+>> say "pages that were pinned via pin_user_pages*() or
+>> pin_longterm_pages*() must be released via put_user_page*()."
+>>
+>> The get_user_pages*() pages must still be released via put_page.
+>>
+>> The churn is due to a fairly significant change in strategy, whis
+>> is: instead of changing all get_user_pages*() sites to call
+>> put_user_page(), change selected sites to call pin_user_pages*() or
+>> pin_longterm_pages*(), plus put_user_page().
 > 
-> Good points and nice conclusion.
+> Can't we call this unpin_user_page then, for some symmetry? Or is that
+> even more churn?
 > 
-> Well, here we go. There is a number of generally useful functions that
-> print nice data and where people might want to have better loglevel control
-> (for debugging purposes). show_stack() is just one of them.
+> Looking from afar the naming here seems really confusing.
 
-Could you please provide some examples so that we get an idea about
-the scope, usefulness, and requirements?
 
-> Patching all
-> those functions, which you have mentioned above, is hardly a fun task to do.
-> Hence the printk() per-CPU per-context loglevel proposition. The code there
-> is not clever or complicated and is meant for debugging purposes only, but
-> with just 3 lines of code one can do some stuff:
-> 
-> 	/* @BTW you can't do this with "%s" KERN_FOO ;P */
-> +	printk_emergency_enter(LOGLEVEL_SCHED);
-> +	debug_show_all_locks();
-> +	printk_emergency_exit();
+That look from afar is valuable, because I'm too close to the problem to see
+how the naming looks. :)
 
-But this will not solve situations where the original loglevel should
-stay from any reason. It happened in this patchset, see
+unpin_user_page() sounds symmetrical. It's true that it would cause more
+churn (which is why I started off with a proposal that avoids changing the
+names of put_user_page*() APIs). But OTOH, the amount of churn is proportional
+to the change in direction here, and it's really only 10 or 20 lines changed,
+in the end.
 
-https://lkml.kernel.org/r/20191106091258.GS25745@shell.armlinux.org.uk
-https://lkml.kernel.org/r/20191106132516.GC5808@willie-the-truck
+So I'm open to changing to that naming. It would be nice to hear what others
+prefer, too...
 
-We would need to investigate more potential users of this feature to
-see eventual requirements. If there are too many exceptions and modes
-then the generic API might get pretty complicated.
 
-At the moment, I am in favor of this patchset. It is huge and
-needed a lot of manual work. But the result is straightforward and
-easy to understand.
-
-Best Regards,
-Petr
+thanks,
+-- 
+John Hubbard
+NVIDIA
