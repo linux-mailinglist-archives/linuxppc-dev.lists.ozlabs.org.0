@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA05FA73A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 04:24:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD29FA726
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 04:21:28 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CVJP6KlwzF69Z
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 14:21:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CVMT0mmBzF3VL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 14:24:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="n3+kqv5l"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="mIUuHviK"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CSVs3S5ZzF5R4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 13:00:21 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CSX72rdbzF665
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 13:01:27 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 7782122467;
- Wed, 13 Nov 2019 02:00:18 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 45B5D2247D;
+ Wed, 13 Nov 2019 02:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573610419;
- bh=P+UQtROkCA51/TMMU3JLQRCuGXr6mCdR6xtD5hFuvU4=;
+ s=default; t=1573610485;
+ bh=7jmaLZ+hrUZZxUmiRO0qSUqbgKSq96bs8xMAOPC8FKM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=n3+kqv5ltnrMobpiIp5BKI+BEX/PARISuZMrqyc6dFNrIa5Q7vP96kqQ6J93mD0T1
- KfU/4Srz0FbTQdiLYEcIg3BlK7O7KgYD6+mke3Qzg24BLOB4w0IrTrZHBRkvUPZU2b
- OZ7hxZK7XQkQcydhBT3BkysdnsF2SE07ObSMnp88=
+ b=mIUuHviKvAhNMwT3ZjmPqnBHSVPYDv8DNsxZMRjufkEiJ8igDZ6c171m9eeffyLSD
+ h2s5vJNyuv3Ky31D32WOYu7Ks1P4XcuY32IuaTsogZhBOd5UcKobh/4cu6r1AfQ05L
+ EX3DoS6983CDLh8MzMi0O0qbx7z/SdU5yi5HOjXc=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 29/68] KVM: PPC: Book3S PR: Exiting split hack
- mode needs to fixup both PC and LR
-Date: Tue, 12 Nov 2019 20:58:53 -0500
-Message-Id: <20191113015932.12655-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 65/68] misc: cxl: Fix possible null pointer
+ dereference
+Date: Tue, 12 Nov 2019 20:59:29 -0500
+Message-Id: <20191113015932.12655-65-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015932.12655-1-sashal@kernel.org>
 References: <20191113015932.12655-1-sashal@kernel.org>
@@ -60,48 +60,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Cameron Kaiser <spectre@floodgap.com>, kvm-ppc@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, zhong jiang <zhongjiang@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Cameron Kaiser <spectre@floodgap.com>
+From: zhong jiang <zhongjiang@huawei.com>
 
-[ Upstream commit 1006284c5e411872333967b1970c2ca46a9e225f ]
+[ Upstream commit 3dac3583bf1a61db6aaf31dfd752c677a4400afd ]
 
-When an OS (currently only classic Mac OS) is running in KVM-PR and makes a
-linked jump from code with split hack addressing enabled into code that does
-not, LR is not correctly updated and reflects the previously munged PC.
+It is not safe to dereference an object before a null test. It is
+not needed and just remove them. Ftrace can be used instead.
 
-To fix this, this patch undoes the address munge when exiting split
-hack mode so that code relying on LR being a proper address will now
-execute. This does not affect OS X or other operating systems running
-on KVM-PR.
-
-Signed-off-by: Cameron Kaiser <spectre@floodgap.com>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+Acked-by: Andrew Donnellan <andrew.donnellan@au1.ibm.com>
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/cxl/guest.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index 73c3c127d8584..209cad89a11a5 100644
---- a/arch/powerpc/kvm/book3s.c
-+++ b/arch/powerpc/kvm/book3s.c
-@@ -78,8 +78,11 @@ void kvmppc_unfixup_split_real(struct kvm_vcpu *vcpu)
+diff --git a/drivers/misc/cxl/guest.c b/drivers/misc/cxl/guest.c
+index 3e102cd6ed914..d08509cd978a4 100644
+--- a/drivers/misc/cxl/guest.c
++++ b/drivers/misc/cxl/guest.c
+@@ -1026,8 +1026,6 @@ int cxl_guest_init_afu(struct cxl *adapter, int slice, struct device_node *afu_n
+ 
+ void cxl_guest_remove_afu(struct cxl_afu *afu)
  {
- 	if (vcpu->arch.hflags & BOOK3S_HFLAG_SPLIT_HACK) {
- 		ulong pc = kvmppc_get_pc(vcpu);
-+		ulong lr = kvmppc_get_lr(vcpu);
- 		if ((pc & SPLIT_HACK_MASK) == SPLIT_HACK_OFFS)
- 			kvmppc_set_pc(vcpu, pc & ~SPLIT_HACK_MASK);
-+		if ((lr & SPLIT_HACK_MASK) == SPLIT_HACK_OFFS)
-+			kvmppc_set_lr(vcpu, lr & ~SPLIT_HACK_MASK);
- 		vcpu->arch.hflags &= ~BOOK3S_HFLAG_SPLIT_HACK;
- 	}
- }
+-	pr_devel("in %s - AFU(%d)\n", __func__, afu->slice);
+-
+ 	if (!afu)
+ 		return;
+ 
 -- 
 2.20.1
 
