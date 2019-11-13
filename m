@@ -2,58 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FAC2FB1B2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 14:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C13FB2A7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 15:34:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CmF46SnPzF5nl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 00:49:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CnDn3JbNzF52J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 01:34:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+b6a0ef5c1751a0763e03+5925+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="fRArwwZ8"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="l5woY5f+"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47ClzR3XbfzF7cs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 00:37:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
- :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=vd87c/OZvZU2+HCFQx5jGJXERPWwrRnXVRv4xDkmiOQ=; b=fRArwwZ8ALgwutgrbxEL1GbYOL
- cVuKUvqjNtsNfQz7fMcY3vdRY6K0Bndx97p5YsD8AalPpQoetY8335/HepoM3IfVc3nZyaqqZAkuB
- pqQ/qiM5wew90HoUoGWWLzp2LD8LZi7GK1lxRV9SJdDCsem0QNUq2e4TCY2x4P8VbbYJ2uHo8SHYT
- Y1d0WA5Pxvz+KeXJllNbUkBt5Odi/+LXHwQqZ2dW7UwdoiaAyyXHjRTaoAkcYWOSVUWogQd/MhkPc
- AGUXIIOBMRK8810/dJsZ8ifJTCEsYtpplqZk0dyBIiElDWOPsve4JlJViwshLJUsGWDUs9nWO/meM
- Ph8R2HuA==;
-Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1iUsq1-0008Nr-19; Wed, 13 Nov 2019 13:37:37 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: iommu@lists.linux-foundation.org,
-	Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH 2/2] powerpc: use the generic dma_ops_bypass mode
-Date: Wed, 13 Nov 2019 14:37:31 +0100
-Message-Id: <20191113133731.20870-3-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191113133731.20870-1-hch@lst.de>
-References: <20191113133731.20870-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Cn9w6vYszF6td
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 01:31:48 +1100 (AEDT)
+Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3EB5E22466;
+ Wed, 13 Nov 2019 14:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1573655505;
+ bh=tE8WXy9944L3yf6UfmB6Q/LfiN+2WIWDMBHg+6DQEuE=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=l5woY5f+aBW0tqC5hgr0PC/dXIp9asNvrjjrSZ1/lXM/np6GDp/7gIPhqbuWjVYPh
+ cVxpjqSXnytPnvYR3fDobPYsjHWnBR3cYHasRng3b8fEmH53f+h1YikpmILixs9w5h
+ yDMDwrcD85gMEI+8Y6A6y+Pb6I06LJcPLuAWl8+M=
+Date: Wed, 13 Nov 2019 08:31:43 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Oliver O'Halloran <oohall@gmail.com>
+Subject: Re: [PATCH] powerpc/powernv: Disable native PCIe port management
+Message-ID: <20191113143143.GA54971@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191113094035.22394-1-oohall@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,232 +55,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the DMA API bypass mechanism for direct window mappings.  This uses
-common code and speed up the direct mapping case by avoiding indirect
-calls just when not using dma ops at all.  It also fixes a problem where
-the sync_* methods were using the bypass check for DMA allocations, but
-those are part of the streaming ops.
+On Wed, Nov 13, 2019 at 08:40:35PM +1100, Oliver O'Halloran wrote:
+> On PowerNV the PCIe topology is (currently) managed the powernv platform
+> code in cooperation with firmware. The PCIe-native service drivers bypass
+> both and this can cause problems.
+> 
+> Historically this hasn't been a big deal since the only port service
+> driver that saw much use was the AER driver. The AER driver relies
+> a kernel service to report when errors occur rather than acting autonmously
+> so it's fairly easy to ignore. On PowerNV (and pseries) AER events are
+> handled through EEH, which ignores the AER service, so it's never been
+> an issue.
+> 
+> Unfortunately, the hotplug port service driver (pciehp) does act
+> autonomously and conflicts with the platform specific hotplug
+> driver (pnv_php). The main issue is that pciehp claims the interrupt
+> associated with the PCIe capability which in turn prevents pnv_php from
+> claiming it.
+> 
+> This results in hotplug events being handled by pciehp which does not
+> notify firmware when the PCIe topology changes, and does not setup/teardown
+> the arch specific PCI device structures (pci_dn) when the topology changes.
+> The end result is that hot-added devices cannot be enabled and hot-removed
+> devices may not be fully torn-down on removal.
+> 
+> We can fix these problems by setting the "pcie_ports_disabled" flag during
+> platform initialisation. The flag indicates the platform owns the PCIe
+> ports which stops the portbus driver being registered.
+> 
+> Cc: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+> Fixes: 66725152fb9f ("PCI/hotplug: PowerPC PowerNV PCI hotplug driver")
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ---
+> Sergey, just FYI. I'll try sort out the rest of the hotplug
+> trainwreck in 5.6.
+> 
+> The Fixes: here is for the patch that added pnv_php in 4.8. It's been
+> a problem since then, but wasn't noticed until people started testing
+> it after the EEH fixes in commit 799abe283e51 ("powerpc/eeh: Clean up
+> EEH PEs after recovery finishes") went in earlier in the 5.4 cycle.
+> ---
+>  arch/powerpc/platforms/powernv/pci.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+> index 2825d00..ae62583 100644
+> --- a/arch/powerpc/platforms/powernv/pci.c
+> +++ b/arch/powerpc/platforms/powernv/pci.c
+> @@ -941,6 +941,23 @@ void __init pnv_pci_init(void)
+>  
+>  	pci_add_flags(PCI_CAN_SKIP_ISA_ALIGN);
+>  
+> +#ifdef CONFIG_PCIEPORTBUS
+> +	/*
+> +	 * On PowerNV PCIe devices are (currently) managed in cooperation
+> +	 * with firmware. This isn't *strictly* required, but there's enough
+> +	 * assumptions baked into both firmware and the platform code that
+> +	 * it's unwise to allow the portbus services to be used.
+> +	 *
+> +	 * We need to fix this eventually, but for now set this flag to disable
+> +	 * the portbus driver. The AER service isn't required since that AER
+> +	 * events are handled via EEH. The pciehp hotplug driver can't work
+> +	 * without kernel changes (and portbus binding breaks pnv_php). The
+> +	 * other services also require some thinking about how we're going
+> +	 * to integrate them.
+> +	 */
+> +	pcie_ports_disabled = true;
+> +#endif
 
-Note that this patch loses the DMA_ATTR_WEAK_ORDERING override, which
-has never been well defined, as is only used by a few drivers, which
-IIRC never showed up in the typical Cell blade setups that are affected
-by the ordering workaround.
+This is fine, but it feels like sort of a blunt instrument.  Is there
+any practical way to clear pci_host_bridge.native_pcie_hotplug (and
+native_aer if appropriate) for the PHBs in question?  That would also
+prevent pciehp from binding.
 
-Fixes: efd176a04bef ("powerpc/pseries/dma: Allow SWIOTLB")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/include/asm/device.h |  5 --
- arch/powerpc/kernel/dma-iommu.c   | 90 ++++---------------------------
- 2 files changed, 9 insertions(+), 86 deletions(-)
+We might someday pull portdrv into the PCI core directly instead of as
+a separate driver, and I'm thinking that might be easier if we have
+more specific indications of what the core shouldn't use.
 
-diff --git a/arch/powerpc/include/asm/device.h b/arch/powerpc/include/asm/device.h
-index 266542769e4b..452402215e12 100644
---- a/arch/powerpc/include/asm/device.h
-+++ b/arch/powerpc/include/asm/device.h
-@@ -18,11 +18,6 @@ struct iommu_table;
-  * drivers/macintosh/macio_asic.c
-  */
- struct dev_archdata {
--	/*
--	 * Set to %true if the dma_iommu_ops are requested to use a direct
--	 * window instead of dynamically mapping memory.
--	 */
--	bool			iommu_bypass : 1;
- 	/*
- 	 * These two used to be a union. However, with the hybrid ops we need
- 	 * both so here we store both a DMA offset for direct mappings and
-diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-index e486d1d78de2..569fecd7b5b2 100644
---- a/arch/powerpc/kernel/dma-iommu.c
-+++ b/arch/powerpc/kernel/dma-iommu.c
-@@ -14,23 +14,6 @@
-  * Generic iommu implementation
-  */
- 
--/*
-- * The coherent mask may be smaller than the real mask, check if we can
-- * really use a direct window.
-- */
--static inline bool dma_iommu_alloc_bypass(struct device *dev)
--{
--	return dev->archdata.iommu_bypass && !iommu_fixed_is_weak &&
--		dma_direct_supported(dev, dev->coherent_dma_mask);
--}
--
--static inline bool dma_iommu_map_bypass(struct device *dev,
--		unsigned long attrs)
--{
--	return dev->archdata.iommu_bypass &&
--		(!iommu_fixed_is_weak || (attrs & DMA_ATTR_WEAK_ORDERING));
--}
--
- /* Allocates a contiguous real buffer and creates mappings over it.
-  * Returns the virtual address of the buffer and sets dma_handle
-  * to the dma address (mapping) of the first page.
-@@ -39,8 +22,6 @@ static void *dma_iommu_alloc_coherent(struct device *dev, size_t size,
- 				      dma_addr_t *dma_handle, gfp_t flag,
- 				      unsigned long attrs)
- {
--	if (dma_iommu_alloc_bypass(dev))
--		return dma_direct_alloc(dev, size, dma_handle, flag, attrs);
- 	return iommu_alloc_coherent(dev, get_iommu_table_base(dev), size,
- 				    dma_handle, dev->coherent_dma_mask, flag,
- 				    dev_to_node(dev));
-@@ -50,11 +31,7 @@ static void dma_iommu_free_coherent(struct device *dev, size_t size,
- 				    void *vaddr, dma_addr_t dma_handle,
- 				    unsigned long attrs)
- {
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_free(dev, size, vaddr, dma_handle, attrs);
--	else
--		iommu_free_coherent(get_iommu_table_base(dev), size, vaddr,
--				dma_handle);
-+	iommu_free_coherent(get_iommu_table_base(dev), size, vaddr, dma_handle);
- }
- 
- /* Creates TCEs for a user provided buffer.  The user buffer must be
-@@ -67,9 +44,6 @@ static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
- 				     enum dma_data_direction direction,
- 				     unsigned long attrs)
- {
--	if (dma_iommu_map_bypass(dev, attrs))
--		return dma_direct_map_page(dev, page, offset, size, direction,
--				attrs);
- 	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
- 			      size, dma_get_mask(dev), direction, attrs);
- }
-@@ -79,11 +53,8 @@ static void dma_iommu_unmap_page(struct device *dev, dma_addr_t dma_handle,
- 				 size_t size, enum dma_data_direction direction,
- 				 unsigned long attrs)
- {
--	if (!dma_iommu_map_bypass(dev, attrs))
--		iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size,
--				direction,  attrs);
--	else
--		dma_direct_unmap_page(dev, dma_handle, size, direction, attrs);
-+	iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size, direction,
-+			 attrs);
- }
- 
- 
-@@ -91,8 +62,6 @@ static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
- 			    int nelems, enum dma_data_direction direction,
- 			    unsigned long attrs)
- {
--	if (dma_iommu_map_bypass(dev, attrs))
--		return dma_direct_map_sg(dev, sglist, nelems, direction, attrs);
- 	return ppc_iommu_map_sg(dev, get_iommu_table_base(dev), sglist, nelems,
- 				dma_get_mask(dev), direction, attrs);
- }
-@@ -101,11 +70,8 @@ static void dma_iommu_unmap_sg(struct device *dev, struct scatterlist *sglist,
- 		int nelems, enum dma_data_direction direction,
- 		unsigned long attrs)
- {
--	if (!dma_iommu_map_bypass(dev, attrs))
--		ppc_iommu_unmap_sg(get_iommu_table_base(dev), sglist, nelems,
-+	ppc_iommu_unmap_sg(get_iommu_table_base(dev), sglist, nelems,
- 			   direction, attrs);
--	else
--		dma_direct_unmap_sg(dev, sglist, nelems, direction, attrs);
- }
- 
- static bool dma_iommu_bypass_supported(struct device *dev, u64 mask)
-@@ -113,8 +79,9 @@ static bool dma_iommu_bypass_supported(struct device *dev, u64 mask)
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
- 
--	return phb->controller_ops.iommu_bypass_supported &&
--		phb->controller_ops.iommu_bypass_supported(pdev, mask);
-+	if (iommu_fixed_is_weak || !phb->controller_ops.iommu_bypass_supported)
-+		return false;
-+	return phb->controller_ops.iommu_bypass_supported(pdev, mask);
- }
- 
- /* We support DMA to/from any memory page via the iommu */
-@@ -123,7 +90,7 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
- 	struct iommu_table *tbl = get_iommu_table_base(dev);
- 
- 	if (dev_is_pci(dev) && dma_iommu_bypass_supported(dev, mask)) {
--		dev->archdata.iommu_bypass = true;
-+		dev->dma_ops_bypass = true;
- 		dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
- 		return 1;
- 	}
-@@ -141,7 +108,7 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
- 	}
- 
- 	dev_dbg(dev, "iommu: not 64-bit, using default ops\n");
--	dev->archdata.iommu_bypass = false;
-+	dev->dma_ops_bypass = false;
- 	return 1;
- }
- 
-@@ -153,47 +120,12 @@ u64 dma_iommu_get_required_mask(struct device *dev)
- 	if (!tbl)
- 		return 0;
- 
--	if (dev_is_pci(dev)) {
--		u64 bypass_mask = dma_direct_get_required_mask(dev);
--
--		if (dma_iommu_bypass_supported(dev, bypass_mask))
--			return bypass_mask;
--	}
--
- 	mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1);
- 	mask += mask - 1;
- 
- 	return mask;
- }
- 
--static void dma_iommu_sync_for_cpu(struct device *dev, dma_addr_t addr,
--		size_t size, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_single_for_cpu(dev, addr, size, dir);
--}
--
--static void dma_iommu_sync_for_device(struct device *dev, dma_addr_t addr,
--		size_t sz, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_single_for_device(dev, addr, sz, dir);
--}
--
--extern void dma_iommu_sync_sg_for_cpu(struct device *dev,
--		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_sg_for_cpu(dev, sgl, nents, dir);
--}
--
--extern void dma_iommu_sync_sg_for_device(struct device *dev,
--		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
--{
--	if (dma_iommu_alloc_bypass(dev))
--		dma_direct_sync_sg_for_device(dev, sgl, nents, dir);
--}
--
- const struct dma_map_ops dma_iommu_ops = {
- 	.alloc			= dma_iommu_alloc_coherent,
- 	.free			= dma_iommu_free_coherent,
-@@ -203,10 +135,6 @@ const struct dma_map_ops dma_iommu_ops = {
- 	.map_page		= dma_iommu_map_page,
- 	.unmap_page		= dma_iommu_unmap_page,
- 	.get_required_mask	= dma_iommu_get_required_mask,
--	.sync_single_for_cpu	= dma_iommu_sync_for_cpu,
--	.sync_single_for_device	= dma_iommu_sync_for_device,
--	.sync_sg_for_cpu	= dma_iommu_sync_sg_for_cpu,
--	.sync_sg_for_device	= dma_iommu_sync_sg_for_device,
- 	.mmap			= dma_common_mmap,
- 	.get_sgtable		= dma_common_get_sgtable,
- };
--- 
-2.20.1
-
+>  	/* If we don't have OPAL, eg. in sim, just skip PCI probe */
+>  	if (!firmware_has_feature(FW_FEATURE_OPAL))
+>  		return;
+> -- 
+> 2.9.5
+> 
