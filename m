@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6F8FB947
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6F5FB94D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:01:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CwS101RdzF5RB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 06:59:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CwVY4hSXzF75Z
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:01:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,27 +17,27 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CpWt0LvnzF6bV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 02:32:25 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Cph56CFwzF5PK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 02:39:33 +1100 (AEDT)
 Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
  [66.24.58.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BEBEA20679;
- Wed, 13 Nov 2019 15:32:15 +0000 (UTC)
-Date: Wed, 13 Nov 2019 10:32:14 -0500
+ by mail.kernel.org (Postfix) with ESMTPSA id 688C62248C;
+ Wed, 13 Nov 2019 15:39:24 +0000 (UTC)
+Date: Wed, 13 Nov 2019 10:39:22 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
 Subject: Re: [PATCH 00/50] Add log level to show_stack()
-Message-ID: <20191113103214.1585923c@gandalf.local.home>
-In-Reply-To: <20191112044447.GA121272@google.com>
+Message-ID: <20191113103922.3dc3e8e9@gandalf.local.home>
+In-Reply-To: <20191112021747.GA68506@google.com>
 References: <20191106030542.868541-1-dima@arista.com>
  <20191106083538.z5nlpuf64cigxigh@pathway.suse.cz>
  <20191108103719.GB175344@google.com>
  <20191108130447.h3wfgo4efjkto56f@pathway.suse.cz>
  <20191111012336.GA85185@google.com>
- <20191111091207.u3lrd6cmumnx4czr@pathway.suse.cz>
- <20191112044447.GA121272@google.com>
+ <13e72b62-c842-8ed5-5b41-bc1692b28f53@arista.com>
+ <20191112021747.GA68506@google.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -110,22 +110,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 12 Nov 2019 13:44:47 +0900
+On Tue, 12 Nov 2019 11:17:47 +0900
 Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com> wrote:
 
-> > > I do recall that we talked about per-CPU printk state bit which would
-> > > start/end "just print it" section. We probably can extend it to "just
-> > > log_store" type of functionality. Doesn't look like a very bad idea.  
-> > 
-> > The problem with per-CPU printk is that we would need to disable
-> > interrupts.  
+> void show_stack(struct task_struct *task, unsigned long *sp, int log_level)
+> {
+> 	printk_emergency_enter(log_level);
+> 	__show_stack(task, sp);
+> 	printk_emergency_exit();
+> }
+> // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 > 
-> Or disable preemption and have loglevel per-CPU and per-context.
-> preempt_count can navigate us to the right context loglevel on
-> particular CPU. I'm talking here only about backtrace (error)
-> reporting contexts. Those can be atomic perfectly fine.
+> show_stack() never schedules, disabling preemption around it should
+> not change anything. Should it be interrupted, we will handle it via
+> preempt count.
 
-With my real-time hat on, I'm totally against disabling of preemption
-for this purpose.
+Please no! The whole point of the printk rewrite was to allow for
+printk to be preemptible and used in more contexts. The show_stack() can
+be all over the place and is not a fast function. Let's not disable
+preemption for it.
 
 -- Steve
