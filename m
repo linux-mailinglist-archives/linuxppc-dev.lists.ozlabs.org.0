@@ -1,110 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428F9FB10D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 14:06:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D129FAFF6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 12:46:15 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CjVq5g9HzF719
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 22:46:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47ClHJ5y0XzF69G
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 00:06:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ffwll.ch
- (client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com;
- envelope-from=daniel@ffwll.ch; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=ffwll.ch header.i=@ffwll.ch header.b="C0Dbe7TC"; 
+ dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ziepe.ca header.i=@ziepe.ca header.b="nx3682LY"; 
  dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CjRY4FCNzF1Rg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 22:43:20 +1100 (AEDT)
-Received: by mail-wr1-x441.google.com with SMTP id i12so1991829wro.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 03:43:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ffwll.ch; s=google;
- h=sender:date:from:to:cc:subject:message-id:mail-followup-to
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=NWmx5zlrVzI636UV5zn7jwNNYyPpT2kzazOSeqZFCPQ=;
- b=C0Dbe7TCduZqSim4I/9b7E74bGQO34GH/iKoO+dE+3EHLfWv1lLPGbvorBCoaRGMDb
- 48v7HTSQHP1LaVgvLNGy/yOxyJTlvTeKuq2CZR/Q7GIgmnQIbkvYhHi8TV/Ec+0WSA8P
- awH+k+k5IQBNK5RO6uqKbJl7dFmz19ED4sy2I=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47ClBW1S1GzF72m
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 00:02:07 +1100 (AEDT)
+Received: by mail-qt1-x843.google.com with SMTP id r20so2403543qtp.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 05:02:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=oMayMeIif+74vqoR9Hg244XFAjXhPl1nedXCyPx66Cc=;
+ b=nx3682LY4M40wGJ/sVGEu1B6oRowx3yCQZUXaDyQPZ8wp2PPM1JbbnvXpnwJ+1w7kN
+ lveYAqZtu6ZiCNE2GeOgCzqCbaPveYJh+bEnyDI89VRNGCHDXS9A7L5ZDDa96GF+3bm0
+ VmapuAT4FqF5vTUEuSGlcRA+NIY79GOrBmWnh2u551hGbiYfLURBD9nS87LvoXBLbrK0
+ o1TB/3BSIGkHlZVczCO3ubOoj5u0dVQwEYLzu7svoxCzx/+RmvcCH+ACjaNBf3sl94Zf
+ NRZR8twQGuvzHtghZ4nzQu/TUj0hyyqfJ3dXa+O6cdFNGC6w6BZNjOabe9aQdvwtecNu
+ AUCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :mail-followup-to:references:mime-version:content-disposition
- :in-reply-to:user-agent;
- bh=NWmx5zlrVzI636UV5zn7jwNNYyPpT2kzazOSeqZFCPQ=;
- b=aM8fV1qyLoryrhF9ETL1HvpNiZAAyAx4HnHBSh7QZedSD79PI56cu0QcItuk8RaP6Q
- 137FfAzwUlW9RdB1po8chltJBSesu1FvUrxXPTs+nF3RnHYuV72uOJyaZWEs7FrB37wM
- PGVfbeDiZlwt/iMx9mFfl+0OGJeSf/YmwpuEYE8sUwVMHjUEab0I5BjYpqmBFWoJjRJ0
- VEM+MrMH1yWiSnmanlFxsB4+x9AIgghlsUlGGaAEWLW+1MyYfKXxFv+F2+ekO81UVmiD
- YF6uuLA1S82TGvTpRwXcfZhBNkh0Enpsg4gwSSok2v1wihkGGmWdZOSSSqJ0g0EwAtf9
- x4LA==
-X-Gm-Message-State: APjAAAWxbFFmisc57QoveL0Zdsqv4lC+zYJ7SUoZ/TtixR7V26MuZY0n
- yZifcp61QIe3ojrYaV1wN4ZQBA==
-X-Google-Smtp-Source: APXvYqw4ALVmGTh9KFISsJCvLVpFEzXuyu2WMWEkcAdM7khXUlUWKA93QR1nKFP8k/o5YdLFIE0ItA==
-X-Received: by 2002:a5d:50ce:: with SMTP id f14mr2625324wrt.219.1573645394576; 
- Wed, 13 Nov 2019 03:43:14 -0800 (PST)
-Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net.
- [212.51.149.96])
- by smtp.gmail.com with ESMTPSA id w4sm2544060wrs.1.2019.11.13.03.43.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Nov 2019 03:43:13 -0800 (PST)
-Date: Wed, 13 Nov 2019 12:43:11 +0100
-From: Daniel Vetter <daniel@ffwll.ch>
-To: Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH v3 00/23] mm/gup: track dma-pinned pages: FOLL_PIN,
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=oMayMeIif+74vqoR9Hg244XFAjXhPl1nedXCyPx66Cc=;
+ b=sXAqVoaLWUi4oObbQO0qjR2rJA6dW2GbuBL3C1c+/lkmRG+3rDN88Ds9Dbx1lpSLHf
+ Ain9zmaGXhsit5lNLhpw/Pd5r7GoE1RPQCSVW6hG90kgrbA/qmzBZa0UY1cxmS5O0Vpz
+ MScTiZcCPhrQMw7btnlfOO3mTUsoLe8C68o5S8Dp8pYDCT0/6twHUQokXsyBStotna5z
+ lc7B/e0oU14Rib6Xxhbp+fNgdWdxPaZJK+fa6+CgRlMxucn+KCuYPTyW1Q4eMVuxrWof
+ Vx4x73rtXIhpIDn1rA3kd/Xa3rQ+fl2qH8bbLBzT89bUNKe8mgYxhTYjuBktpf0DMNbd
+ 49cA==
+X-Gm-Message-State: APjAAAWnoT613WvmFdemTfc+MIYLKTOGkcAj84/1Jnj3nGIsC3wgIl0w
+ 0kJdIawit2ppN3fYuRpKr90mVw==
+X-Google-Smtp-Source: APXvYqwGbusmGQAfGHn3CXk2dU2JO4knhTY4prDGLzmyu8apMpc1WOd3WOgt9K6JkDyAWe/3c1LxDA==
+X-Received: by 2002:ac8:724f:: with SMTP id l15mr2476006qtp.234.1573650124104; 
+ Wed, 13 Nov 2019 05:02:04 -0800 (PST)
+Received: from ziepe.ca
+ (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net.
+ [142.162.113.180])
+ by smtp.gmail.com with ESMTPSA id 187sm918223qkk.103.2019.11.13.05.02.03
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 13 Nov 2019 05:02:03 -0800 (PST)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+ (envelope-from <jgg@ziepe.ca>)
+ id 1iUsHa-000767-Jc; Wed, 13 Nov 2019 09:02:02 -0400
+Date: Wed, 13 Nov 2019 09:02:02 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v4 08/23] vfio, mm: fix get_user_pages_remote() and
  FOLL_LONGTERM
-Message-ID: <20191113114311.GP23790@phenom.ffwll.local>
-Mail-Followup-To: Jan Kara <jack@suse.cz>,
- John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>,
- Alex Williamson <alex.williamson@redhat.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- Christoph Hellwig <hch@infradead.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Dave Chinner <david@fromorbit.com>, David Airlie <airlied@linux.ie>,
- "David S . Miller" <davem@davemloft.net>,
- Ira Weiny <ira.weiny@intel.com>, Jens Axboe <axboe@kernel.dk>,
- Jonathan Corbet <corbet@lwn.net>,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Magnus Karlsson <magnus.karlsson@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- Paul Mackerras <paulus@samba.org>, Shuah Khan <shuah@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, bpf <bpf@vger.kernel.org>,
- dri-devel <dri-devel@lists.freedesktop.org>, kvm@vger.kernel.org,
- linux-block@vger.kernel.org,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linux-fsdevel@vger.kernel.org,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- "open list:DMA BUFFER SHARING FRAMEWORK" <linux-media@vger.kernel.org>,
- linux-rdma@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- netdev <netdev@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>
-References: <20191112000700.3455038-1-jhubbard@nvidia.com>
- <20191112203802.GD5584@ziepe.ca>
- <02fa935c-3469-b766-b691-5660084b60b9@nvidia.com>
- <CAKMK7uHvk+ti00mCCF2006U003w1dofFg9nSfmZ4bS2Z2pEDNQ@mail.gmail.com>
- <7b671bf9-4d94-f2cc-8453-863acd5a1115@nvidia.com>
- <20191113101210.GD6367@quack2.suse.cz>
+Message-ID: <20191113130202.GA26068@ziepe.ca>
+References: <20191113042710.3997854-1-jhubbard@nvidia.com>
+ <20191113042710.3997854-9-jhubbard@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191113101210.GD6367@quack2.suse.cz>
-X-Operating-System: Linux phenom 5.2.0-3-amd64 
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20191113042710.3997854-9-jhubbard@nvidia.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,98 +85,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- "open list:DMA BUFFER SHARING FRAMEWORK" <linux-media@vger.kernel.org>,
- Shuah Khan <shuah@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  linux-block@vger.kernel.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
  Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf <bpf@vger.kernel.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
  Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev <netdev@vger.kernel.org>, Alex Williamson <alex.williamson@redhat.com>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
  Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S . Miller" <davem@davemloft.net>,
  Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 13, 2019 at 11:12:10AM +0100, Jan Kara wrote:
-> On Wed 13-11-19 01:02:02, John Hubbard wrote:
-> > On 11/13/19 12:22 AM, Daniel Vetter wrote:
-> > ...
-> > > > > Why are we doing this? I think things got confused here someplace, as
-> > > > 
-> > > > 
-> > > > Because:
-> > > > 
-> > > > a) These need put_page() calls,  and
-> > > > 
-> > > > b) there is no put_pages() call, but there is a release_pages() call that
-> > > > is, arguably, what put_pages() would be.
-> > > > 
-> > > > 
-> > > > > the comment still says:
-> > > > > 
-> > > > > /**
-> > > > >   * put_user_page() - release a gup-pinned page
-> > > > >   * @page:            pointer to page to be released
-> > > > >   *
-> > > > >   * Pages that were pinned via get_user_pages*() must be released via
-> > > > >   * either put_user_page(), or one of the put_user_pages*() routines
-> > > > >   * below.
-> > > > 
-> > > > 
-> > > > Ohhh, I missed those comments. They need to all be changed over to
-> > > > say "pages that were pinned via pin_user_pages*() or
-> > > > pin_longterm_pages*() must be released via put_user_page*()."
-> > > > 
-> > > > The get_user_pages*() pages must still be released via put_page.
-> > > > 
-> > > > The churn is due to a fairly significant change in strategy, whis
-> > > > is: instead of changing all get_user_pages*() sites to call
-> > > > put_user_page(), change selected sites to call pin_user_pages*() or
-> > > > pin_longterm_pages*(), plus put_user_page().
-> > > 
-> > > Can't we call this unpin_user_page then, for some symmetry? Or is that
-> > > even more churn?
-> > > 
-> > > Looking from afar the naming here seems really confusing.
-> > 
-> > 
-> > That look from afar is valuable, because I'm too close to the problem to see
-> > how the naming looks. :)
-> > 
-> > unpin_user_page() sounds symmetrical. It's true that it would cause more
-> > churn (which is why I started off with a proposal that avoids changing the
-> > names of put_user_page*() APIs). But OTOH, the amount of churn is proportional
-> > to the change in direction here, and it's really only 10 or 20 lines changed,
-> > in the end.
-> > 
-> > So I'm open to changing to that naming. It would be nice to hear what others
-> > prefer, too...
+On Tue, Nov 12, 2019 at 08:26:55PM -0800, John Hubbard wrote:
+> As it says in the updated comment in gup.c: current FOLL_LONGTERM
+> behavior is incompatible with FAULT_FLAG_ALLOW_RETRY because of the
+> FS DAX check requirement on vmas.
 > 
-> FWIW I'd find unpin_user_page() also better than put_user_page() as a
-> counterpart to pin_user_pages().
+> However, the corresponding restriction in get_user_pages_remote() was
+> slightly stricter than is actually required: it forbade all
+> FOLL_LONGTERM callers, but we can actually allow FOLL_LONGTERM callers
+> that do not set the "locked" arg.
+> 
+> Update the code and comments accordingly, and update the VFIO caller
+> to take advantage of this, fixing a bug as a result: the VFIO caller
+> is logically a FOLL_LONGTERM user.
+> 
+> Also, remove an unnessary pair of calls that were releasing and
+> reacquiring the mmap_sem. There is no need to avoid holding mmap_sem
+> just in order to call page_to_pfn().
+> 
+> Also, move the DAX check ("if a VMA is DAX, don't allow long term
+> pinning") from the VFIO call site, all the way into the internals
+> of get_user_pages_remote() and __gup_longterm_locked(). That is:
+> get_user_pages_remote() calls __gup_longterm_locked(), which in turn
+> calls check_dax_vmas(). It's lightly explained in the comments as well.
+> 
+> Thanks to Jason Gunthorpe for pointing out a clean way to fix this,
+> and to Dan Williams for helping clarify the DAX refactoring.
+> 
+> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Jerome Glisse <jglisse@redhat.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>  drivers/vfio/vfio_iommu_type1.c | 25 ++-----------------------
+>  mm/gup.c                        | 27 ++++++++++++++++++++++-----
+>  2 files changed, 24 insertions(+), 28 deletions(-)
+> 
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index d864277ea16f..7301b710c9a4 100644
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -340,7 +340,6 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
+>  {
+>  	struct page *page[1];
+>  	struct vm_area_struct *vma;
+> -	struct vm_area_struct *vmas[1];
+>  	unsigned int flags = 0;
+>  	int ret;
+>  
+> @@ -348,33 +347,13 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
+>  		flags |= FOLL_WRITE;
+>  
+>  	down_read(&mm->mmap_sem);
+> -	if (mm == current->mm) {
+> -		ret = get_user_pages(vaddr, 1, flags | FOLL_LONGTERM, page,
+> -				     vmas);
+> -	} else {
+> -		ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags, page,
+> -					    vmas, NULL);
+> -		/*
+> -		 * The lifetime of a vaddr_get_pfn() page pin is
+> -		 * userspace-controlled. In the fs-dax case this could
+> -		 * lead to indefinite stalls in filesystem operations.
+> -		 * Disallow attempts to pin fs-dax pages via this
+> -		 * interface.
+> -		 */
+> -		if (ret > 0 && vma_is_fsdax(vmas[0])) {
+> -			ret = -EOPNOTSUPP;
+> -			put_page(page[0]);
+> -		}
+> -	}
+> -	up_read(&mm->mmap_sem);
+> -
+> +	ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
+> +				    page, NULL, NULL);
+>  	if (ret == 1) {
+>  		*pfn = page_to_pfn(page[0]);
+>  		return 0;
 
-One more point from afar on pin/unpin: We use that a lot in graphics for
-permanently pinned graphics buffer objects. Which really only should be
-used for scanout. So at least graphics folks should have an appropriate
-mindset and try to make sure we don't overuse this stuff.
--Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Mind the return with the lock held this needs some goto unwind
+
+Jason
