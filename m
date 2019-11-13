@@ -1,53 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58840FB6D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 18:58:04 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Csls46PQzDqSf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 04:58:01 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EE9FB7AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 19:33:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CtY33VD3zF3RG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 05:33:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.97.215; helo=14.mo1.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 3294 seconds by postgrey-1.36 at bilbo;
- Thu, 14 Nov 2019 04:55:56 AEDT
-Received: from 14.mo1.mail-out.ovh.net (14.mo1.mail-out.ovh.net
- [178.32.97.215])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CsjS47gSzF6XH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 04:55:52 +1100 (AEDT)
-Received: from player792.ha.ovh.net (unknown [10.108.42.75])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id 4C48B1953EE
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 18:00:53 +0100 (CET)
-Received: from kaod.org (deibp9eh1--blueice1n4.emea.ibm.com [195.212.29.166])
- (Authenticated sender: clg@kaod.org)
- by player792.ha.ovh.net (Postfix) with ESMTPSA id B5E55C0CFAD3;
- Wed, 13 Nov 2019 17:00:36 +0000 (UTC)
-Subject: Re: [PATCH v2 2/2] KVM: PPC: Book3S HV: XIVE: Fix potential page leak
- on error path
-To: Greg Kurz <groug@kaod.org>, Paul Mackerras <paulus@ozlabs.org>
-References: <157366357346.1026356.14522564753643067538.stgit@bahia.lan>
- <157366357929.1026356.18181561111939034621.stgit@bahia.lan>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <e49f522e-c265-4f00-f6f8-57f8583e7d8a@kaod.org>
-Date: Wed, 13 Nov 2019 18:00:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CtVm4m8yzF6r8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 05:31:43 +1100 (AEDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2019 10:31:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,301,1569308400"; d="scan'208";a="355555407"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by orsmga004.jf.intel.com with ESMTP; 13 Nov 2019 10:31:38 -0800
+Date: Wed, 13 Nov 2019 10:31:38 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH v4 09/23] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+Message-ID: <20191113183137.GA12699@iweiny-DESK2.sc.intel.com>
+References: <20191113042710.3997854-1-jhubbard@nvidia.com>
+ <20191113042710.3997854-10-jhubbard@nvidia.com>
+ <20191113104308.GE6367@quack2.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <157366357929.1026356.18181561111939034621.stgit@bahia.lan>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 3946560650099067671
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrudefuddgleelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdqfffguegfifdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpudelhedrvdduvddrvdelrdduieeinecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejledvrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghenucevlhhushhtvghrufhiiigvpedt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191113104308.GE6367@quack2.suse.cz>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,60 +53,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- stable@vger.kernel.org, Lijun Pan <ljp@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
+ linux-block@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 13/11/2019 17:46, Greg Kurz wrote:
-> We need to check the host page size is big enough to accomodate the
-> EQ. Let's do this before taking a reference on the EQ page to avoid
-> a potential leak if the check fails.
+> > +/**
+> > + * pin_user_pages_fast() - pin user pages in memory without taking locks
+> > + *
+> > + * Nearly the same as get_user_pages_fast(), except that FOLL_PIN is set. See
+> > + * get_user_pages_fast() for documentation on the function arguments, because
+> > + * the arguments here are identical.
+> > + *
+> > + * FOLL_PIN means that the pages must be released via put_user_page(). Please
+> > + * see Documentation/vm/pin_user_pages.rst for further details.
+> > + *
+> > + * This is intended for Case 1 (DIO) in Documentation/vm/pin_user_pages.rst. It
+> > + * is NOT intended for Case 2 (RDMA: long-term pins).
+> > + */
+> > +int pin_user_pages_fast(unsigned long start, int nr_pages,
+> > +			unsigned int gup_flags, struct page **pages)
+> > +{
+> > +	/* FOLL_GET and FOLL_PIN are mutually exclusive. */
+> > +	if (WARN_ON_ONCE(gup_flags & FOLL_GET))
+> > +		return -EINVAL;
+> > +
+> > +	gup_flags |= FOLL_PIN;
+> > +	return internal_get_user_pages_fast(start, nr_pages, gup_flags, pages);
+> > +}
+> > +EXPORT_SYMBOL_GPL(pin_user_pages_fast);
 > 
-> Cc: stable@vger.kernel.org # v5.2
-> Fixes: 13ce3297c576 ("KVM: PPC: Book3S HV: XIVE: Add controls for the EQ configuration")
-> Signed-off-by: Greg Kurz <groug@kaod.org>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-> ---
->  arch/powerpc/kvm/book3s_xive_native.c |   13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
+> I was somewhat wondering about the number of functions you add here. So we
+> have:
 > 
-> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-> index 0e1fc5a16729..d83adb1e1490 100644
-> --- a/arch/powerpc/kvm/book3s_xive_native.c
-> +++ b/arch/powerpc/kvm/book3s_xive_native.c
-> @@ -630,12 +630,6 @@ static int kvmppc_xive_native_set_queue_config(struct kvmppc_xive *xive,
->  
->  	srcu_idx = srcu_read_lock(&kvm->srcu);
->  	gfn = gpa_to_gfn(kvm_eq.qaddr);
-> -	page = gfn_to_page(kvm, gfn);
-> -	if (is_error_page(page)) {
-> -		srcu_read_unlock(&kvm->srcu, srcu_idx);
-> -		pr_err("Couldn't get queue page %llx!\n", kvm_eq.qaddr);
-> -		return -EINVAL;
-> -	}
->  
->  	page_size = kvm_host_page_size(kvm, gfn);
->  	if (1ull << kvm_eq.qshift > page_size) {
-> @@ -644,6 +638,13 @@ static int kvmppc_xive_native_set_queue_config(struct kvmppc_xive *xive,
->  		return -EINVAL;
->  	}
->  
-> +	page = gfn_to_page(kvm, gfn);
-> +	if (is_error_page(page)) {
-> +		srcu_read_unlock(&kvm->srcu, srcu_idx);
-> +		pr_err("Couldn't get queue page %llx!\n", kvm_eq.qaddr);
-> +		return -EINVAL;
-> +	}
-> +
->  	qaddr = page_to_virt(page) + (kvm_eq.qaddr & ~PAGE_MASK);
->  	srcu_read_unlock(&kvm->srcu, srcu_idx);
->  
+> pin_user_pages()
+> pin_user_pages_fast()
+> pin_user_pages_remote()
 > 
+> and then longterm variants:
+> 
+> pin_longterm_pages()
+> pin_longterm_pages_fast()
+> pin_longterm_pages_remote()
+> 
+> and obviously we have gup like:
+> get_user_pages()
+> get_user_pages_fast()
+> get_user_pages_remote()
+> ... and some other gup variants ...
+> 
+> I think we really should have pin_* vs get_* variants as they are very
+> different in terms of guarantees and after conversion, any use of get_*
+> variant in non-mm code should be closely scrutinized. OTOH pin_longterm_*
+> don't look *that* useful to me and just using pin_* instead with
+> FOLL_LONGTERM flag would look OK to me and somewhat reduce the number of
+> functions which is already large enough? What do people think? I don't feel
+> too strongly about this but wanted to bring this up.
+
+I'm a bit concerned with the function explosion myself.  I think what you
+suggest is a happy medium.  So I'd be ok with that.
+
+Ira
 
