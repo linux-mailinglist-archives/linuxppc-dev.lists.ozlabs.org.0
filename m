@@ -1,54 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064CAF9F25
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 01:16:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CQCC2DyMzF5wL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 11:16:39 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A893CF9F8F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 01:49:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CQwt04kHzF3xH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 11:49:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CQ8n4VL5zF4Hd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 11:14:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=cyphar.com (client-ip=80.241.56.151; helo=mout-p-101.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="tHOIFJ1a"; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 47CQ8n24p7z9sQp; Wed, 13 Nov 2019 11:14:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1573604073; bh=eaKlwgdIJsn3cYx0pG4CKYUAolYzy7bggI3IJ4S28AA=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=tHOIFJ1aAXXPXE/f6Js+XN05su1cvwOOR8xTEilo5y6hTG2AXO/heOo4+hDJXY5Ad
- Eir1KR4sScjbJRiF0dXzzck5iNHTv7hkB9TQwygDVpsYd7IsvyOOx0J/7S9iFrc02T
- 6iurluDgA9EI2/Whftfdvn8mlCBb8YfF2eezroDsREjyct5/Obv4SCDKWmODQlwp57
- U5cIHsJyt5czMWTLjsEH8ulgxo6zAtyxWedJYvBjs8DhIQ2YURxk8uCbZvkq4Mg+ds
- kKuuWN3HECgYTsAdNx4vbRijYZYf986wgAUJwJ686x8nf69Xc+rdrIH0PjZFUlaGOV
- Ts5qUlizrz5mQ==
-Date: Wed, 13 Nov 2019 11:14:27 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH v10 7/8] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-Message-ID: <20191113001427.GA17829@oak.ozlabs.ibm.com>
-References: <20191104041800.24527-1-bharata@linux.ibm.com>
- <20191104041800.24527-8-bharata@linux.ibm.com>
- <20191111041924.GA4017@oak.ozlabs.ibm.com>
- <20191112010158.GB5159@oc0525413822.ibm.com>
- <20191112053836.GB10885@oak.ozlabs.ibm.com>
- <20191112075215.GD5159@oc0525413822.ibm.com>
- <20191112113204.GA10178@blackberry>
- <20191112144555.GE5159@oc0525413822.ibm.com>
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CQtV6gvvzF5tL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 11:47:11 +1100 (AEDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:2:0])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mout-p-101.mailbox.org (Postfix) with ESMTPS id 47CQtM1PgvzKm9q;
+ Wed, 13 Nov 2019 01:47:07 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+ by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de
+ [80.241.56.122]) (amavisd-new, port 10030)
+ with ESMTP id rfbcH-n--HBG; Wed, 13 Nov 2019 01:47:00 +0100 (CET)
+Date: Wed, 13 Nov 2019 11:46:34 +1100
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v15 0/9] open: introduce openat2(2) syscall
+Message-ID: <20191113004634.tz7geloshltkafwj@yavin.dot.cyphar.com>
+References: <20191105090553.6350-1-cyphar@cyphar.com>
+ <20191111132404.y523iqicbn6fivx5@yavin.dot.cyphar.com>
+ <201911121457.7D02692@keescook>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="7ndczamgwxls6q65"
 Content-Disposition: inline
-In-Reply-To: <20191112144555.GE5159@oc0525413822.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <201911121457.7D02692@keescook>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,71 +54,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>, cclaudio@linux.ibm.com,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, jglisse@redhat.com, Ram Pai <linuxram@linux.ibm.com>,
- aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ Shuah Khan <shuah@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ Chanho Min <chanho.min@lge.com>, Jeff Layton <jlayton@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
+ linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 12, 2019 at 06:45:55AM -0800, Ram Pai wrote:
-> On Tue, Nov 12, 2019 at 10:32:04PM +1100, Paul Mackerras wrote:
-> > On Mon, Nov 11, 2019 at 11:52:15PM -0800, Ram Pai wrote:
-> > > There is subtle problem removing that code from the assembly.
-> > > 
-> > > If the H_SVM_INIT_ABORT hcall returns to the ultravisor without clearing
-> > > kvm->arch.secure_guest, the hypervisor will continue to think that the
-> > > VM is a secure VM.   However the primary reason the H_SVM_INIT_ABORT
-> > > hcall was invoked, was to inform the Hypervisor that it should no longer
-> > > consider the VM as a Secure VM. So there is a inconsistency there.
-> > 
-> > Most of the checks that look at whether a VM is a secure VM use code
-> > like "if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)".  Now
-> > since KVMPPC_SECURE_INIT_ABORT is 4, an if statement such as that will
-> > take the false branch once we have set kvm->arch.secure_guest to
-> > KVMPPC_SECURE_INIT_ABORT in kvmppc_h_svm_init_abort.  So in fact in
-> > most places we will treat the VM as a normal VM from then on.  If
-> > there are any places where we still need to treat the VM as a secure
-> > VM while we are processing the abort we can easily do that too.
-> 
-> Is the suggestion --  KVMPPC_SECURE_INIT_ABORT should never return back
-> to the Ultravisor?   Because removing that assembly code will NOT lead the
 
-No.  The suggestion is that vcpu->arch.secure_guest stays set to
-KVMPPC_SECURE_INIT_ABORT until userspace calls KVM_PPC_SVM_OFF.
+--7ndczamgwxls6q65
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Hypervisor back into the Ultravisor.  This is fine with the
-> ultravisor. But then the hypervisor will not know where to return to.
-> If it wants to return directly to the VM, it wont know to
-> which address. It will be in a limbo.
-> 
-> > 
-> > > This is fine, as long as the VM does not invoke any hcall or does not
-> > > receive any hypervisor-exceptions.  The moment either of those happen,
-> > > the control goes into the hypervisor, the hypervisor services
-> > > the exception/hcall and while returning, it will see that the
-> > > kvm->arch.secure_guest flag is set and **incorrectly** return
-> > > to the ultravisor through a UV_RETURN ucall.  Ultravisor will
-> > > not know what to do with it, because it does not consider that
-> > > VM as a Secure VM.  Bad things happen.
-> > 
-> > If bad things happen in the ultravisor because the hypervisor did
-> > something it shouldn't, then it's game over, you just lost, thanks for
-> > playing.  The ultravisor MUST be able to cope with bogus UV_RETURN
-> > calls for a VM that it doesn't consider to be a secure VM.  You need
-> > to work out how to handle such calls safely and implement that in the
-> > ultravisor.
-> 
-> Actually we do handle this gracefully in the ultravisor :). 
-> We just retun back to the hypervisor saying "sorry dont know what
-> to do with it, please handle it yourself".
-> 
-> However hypervisor would not know what to do with that return, and bad
-> things happen in the hypervisor.
+On 2019-11-12, Kees Cook <keescook@chromium.org> wrote:
+> On Tue, Nov 12, 2019 at 12:24:04AM +1100, Aleksa Sarai wrote:
+> > On 2019-11-05, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> > > This patchset is being developed here:
+> > >   <https://github.com/cyphar/linux/tree/openat2/master>
+> > >=20
+> > > Patch changelog:
+> > >  v15:
+> > >   * Fix code style for LOOKUP_IN_ROOT handling in path_init(). [Linus=
+ Torvalds]
+> > >   * Split out patches for each individual LOOKUP flag.
+> > >   * Reword commit messages to give more background information about =
+the
+> > >     series, as well as mention the semantics of each flag in more det=
+ail.
+> > > [...]
+> >=20
+> > Ping -- this patch hasn't been touched for a week. Thanks.
+>=20
+> If I've been following correctly, everyone is happy with this series.
+> (i.e. Linus's comment appear to have been addressed.)
+>=20
+> Perhaps the next question is should this go via a pull request by you to
+> Linus directly during the v5.5 merge window, via akpm, via akpm, via
+> Christian, or some other path? Besides Linus, it's not been clear who
+> should "claim" this series. :)
 
-Right.  We need something after the "sc 2" to handle the case where
-the ultravisor returns with an error from the UV_RETURN.
+Given the namei changes, I wanted to avoid stepping on Al's toes. Though
+he did review the series a few versions ago, the discussion didn't focus
+on the openat2(2) semantics (which have also changed since then). I'm
+not sure whether to interpret the silence to mean he's satisfied with
+things as they are, or if he hasn't had more time to look at the series.
 
-Paul.
+As for which tree it should be routed to, I don't mind -- Christian is
+the most straight-forward choice (but if Al wants to route it, that's
+fine with me too).
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--7ndczamgwxls6q65
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXctSZgAKCRCdlLljIbnQ
+Ej+PAP0UBMczq8p/OLMeyIryF0EfQ+noWktKHkfgvrRf7bKN7AEAiW1OItA5gtV4
+HiJnADyDHQw1h7livSSrD2X7HKS2BAA=
+=yOzJ
+-----END PGP SIGNATURE-----
+
+--7ndczamgwxls6q65--
