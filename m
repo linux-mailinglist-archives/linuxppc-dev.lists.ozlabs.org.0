@@ -2,71 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7670EFB8BD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:25:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A242FB9B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 21:24:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Cvj86k5PzF6lw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 06:25:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Cx152tRvzF5YZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:24:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="bb6122LJ"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="n1t9MMHi"; 
  dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CvfZ3DHfzF3KS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 06:23:34 +1100 (AEDT)
-Received: by mail-oi1-x242.google.com with SMTP id n16so2879227oig.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 11:23:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=4HKVOkxUXCqQFAssnrt5HN+d13KJzjRJ1pFFkgydGzo=;
- b=bb6122LJyN4TYG5IK7mHh5xygfwPeVWP6I4JnFmlEb2IzPnSXePzt9c7h6VlwCNKNf
- 6iTeoCZ+WCekF2UjJKYypJ3VDkp2bZI1sBd8OZia/73qpNgBlVpDNRkT98ztqaV4Pdpl
- ZVL0JboDgCGP8I4MHVFtdYs0p8UDQrSyipyLboTogqOsqYbQVAZcsnUwAJG32rUPMPmj
- ssxQ90TSW2CRqTDYyVFKczonUtqdX4nXBKSakXhSzcp3X5BqgSICBAOxp0Q1Cy1lQWwq
- g444805boKvN2nKVTBF8Zd13UMFnq8mUuIPok109u72I0derPDbhoGvKrYVRikRhE4Pc
- Y6hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=4HKVOkxUXCqQFAssnrt5HN+d13KJzjRJ1pFFkgydGzo=;
- b=SUVeUevo693HjqrDq9V1zfol/ilOqqsCLPdwkC3AcxXS8MmzNis2g402k/e836mLgy
- j2VN/EZqTifQGY+LivWjrBznkLbjsdRx658TQk1XoLarJqgzwDo018tOUOjSmR6Tf+Yy
- ecRzGrU44QVFLsGOTeGFpwMp8FU6OJhnz9IlZu9R07A45yAC0DKbqFTZ4/NMzjyzzOAE
- Su/MpkeoQbR+fv0SuFmE10Yah8GK8dVVIXdOoSyDNSCZ71ZfscQY03214TG/KY7IGfIj
- TlIEMmaVjnn9zAvynLHAPeadISssdCwPGSuhQ3cUT5IKuUQM6JBUpPRA7nnQ8HxV4aVF
- YZHg==
-X-Gm-Message-State: APjAAAV/7bgNsrNu8leDb1kPPZCptKORTrROazLi4mq++eJ0Js4RFZML
- fkDGqwq4q46Ju8FsCw9eetK/MqrwX/mGJe5keL/z0g==
-X-Google-Smtp-Source: APXvYqw/J/xJikM9Sn2uJoSKIkSXprx6L2hjLUq/51PEKKOZdQDk8LIwVzxcWXUccXtFtayP/c8+SilHtOvsl5tzGrQ=
-X-Received: by 2002:aca:ea57:: with SMTP id i84mr174326oih.73.1573673011067;
- Wed, 13 Nov 2019 11:23:31 -0800 (PST)
-MIME-Version: 1.0
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Cwyr1ccKzF7Bg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 07:22:43 +1100 (AEDT)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dcc660b0000>; Wed, 13 Nov 2019 12:22:35 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Wed, 13 Nov 2019 12:22:36 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate102.nvidia.com on Wed, 13 Nov 2019 12:22:36 -0800
+Received: from [10.2.160.107] (172.20.13.39) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 13 Nov
+ 2019 20:22:35 +0000
+Subject: Re: [PATCH v4 08/23] vfio, mm: fix get_user_pages_remote() and
+ FOLL_LONGTERM
+To: Ira Weiny <ira.weiny@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>
 References: <20191113042710.3997854-1-jhubbard@nvidia.com>
- <20191113042710.3997854-5-jhubbard@nvidia.com>
-In-Reply-To: <20191113042710.3997854-5-jhubbard@nvidia.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 13 Nov 2019 11:23:19 -0800
-Message-ID: <CAPcyv4gGu=G-c1czSAYJ3joTYS_ZYOJ6i9umKzCQEFzpwZMiiA@mail.gmail.com>
-Subject: Re: [PATCH v4 04/23] mm: devmap: refactor 1-based refcounting for
- ZONE_DEVICE pages
-To: John Hubbard <jhubbard@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20191113042710.3997854-9-jhubbard@nvidia.com>
+ <20191113130202.GA26068@ziepe.ca>
+ <20191113191705.GE12947@iweiny-DESK2.sc.intel.com>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <290ba4aa-247e-6570-9eff-ccf2087e1120@nvidia.com>
+Date: Wed, 13 Nov 2019 12:19:50 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20191113191705.GE12947@iweiny-DESK2.sc.intel.com>
+X-Originating-IP: [172.20.13.39]
+X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1573676555; bh=FW0krwPwWqciO/Z2LS4wGz5Cikl4rg4mIFXWQ1mXpqU=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=n1t9MMHier43EuFZpftpwQVDKG8oSo9TdOvV+OMzrOIN0Kprv6dkR4Jpu6/PqCqXm
+ /jCxLMJDxPPXF7oklQ45MeW/Fl3jyAJJ4cfyLvk1YJ3ZXQloakTUN/6QsjTZ2e8wLd
+ Vi5ItQz0+ykvg9G6LEUGgX0gLMaFmq2awJU2Kk5qVpihlMSAmAuGK9LjnFEEtlsHOE
+ JOaWrzJR8vtoHRO1QeIa0YnKmF32io8xAGlhrbiuGj5eUhM/rh5jJ0AdTIvnBhqGbA
+ tSsPrYCj4XsKBHj/d5S4XMsaWdBoBg5n+7WnTPKexUFAUitbBsugmf2TNoS/6cs3Dr
+ dZibHSHNj0z1Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,144 +78,71 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- KVM list <kvm@vger.kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma <linux-rdma@vger.kernel.org>, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
  =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- "Linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- Shuah Khan <shuah@kernel.org>, linux-block@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-block@vger.kernel.org,
  =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- bpf@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>,
- Jens Axboe <axboe@kernel.dk>, Netdev <netdev@vger.kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S . Miller" <davem@davemloft.net>,
  Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 12, 2019 at 8:27 PM John Hubbard <jhubbard@nvidia.com> wrote:
->
-> An upcoming patch changes and complicates the refcounting and
-> especially the "put page" aspects of it. In order to keep
-> everything clean, refactor the devmap page release routines:
->
-> * Rename put_devmap_managed_page() to page_is_devmap_managed(),
->   and limit the functionality to "read only": return a bool,
->   with no side effects.
->
-> * Add a new routine, put_devmap_managed_page(), to handle checking
->   what kind of page it is, and what kind of refcount handling it
->   requires.
->
-> * Rename __put_devmap_managed_page() to free_devmap_managed_page(),
->   and limit the functionality to unconditionally freeing a devmap
->   page.
->
-> This is originally based on a separate patch by Ira Weiny, which
-> applied to an early version of the put_user_page() experiments.
-> Since then, J=C3=A9r=C3=B4me Glisse suggested the refactoring described a=
-bove.
->
-> Suggested-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  include/linux/mm.h | 27 ++++++++++++++++---
->  mm/memremap.c      | 67 ++++++++++++++++++++--------------------------
->  2 files changed, 53 insertions(+), 41 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index a2adf95b3f9c..96228376139c 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -967,9 +967,10 @@ static inline bool is_zone_device_page(const struct =
-page *page)
->  #endif
->
->  #ifdef CONFIG_DEV_PAGEMAP_OPS
-> -void __put_devmap_managed_page(struct page *page);
-> +void free_devmap_managed_page(struct page *page);
->  DECLARE_STATIC_KEY_FALSE(devmap_managed_key);
-> -static inline bool put_devmap_managed_page(struct page *page)
-> +
-> +static inline bool page_is_devmap_managed(struct page *page)
->  {
->         if (!static_branch_unlikely(&devmap_managed_key))
->                 return false;
-> @@ -978,7 +979,6 @@ static inline bool put_devmap_managed_page(struct pag=
-e *page)
->         switch (page->pgmap->type) {
->         case MEMORY_DEVICE_PRIVATE:
->         case MEMORY_DEVICE_FS_DAX:
-> -               __put_devmap_managed_page(page);
->                 return true;
->         default:
->                 break;
-> @@ -986,6 +986,27 @@ static inline bool put_devmap_managed_page(struct pa=
-ge *page)
->         return false;
->  }
->
-> +static inline bool put_devmap_managed_page(struct page *page)
-> +{
-> +       bool is_devmap =3D page_is_devmap_managed(page);
-> +
-> +       if (is_devmap) {
-> +               int count =3D page_ref_dec_return(page);
-> +
-> +               /*
-> +                * devmap page refcounts are 1-based, rather than 0-based=
-: if
-> +                * refcount is 1, then the page is free and the refcount =
-is
-> +                * stable because nobody holds a reference on the page.
-> +                */
-> +               if (count =3D=3D 1)
-> +                       free_devmap_managed_page(page);
-> +               else if (!count)
-> +                       __put_page(page);
-> +       }
-> +
-> +       return is_devmap;
-> +}
-> +
->  #else /* CONFIG_DEV_PAGEMAP_OPS */
->  static inline bool put_devmap_managed_page(struct page *page)
->  {
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 03ccbdfeb697..bc7e2a27d025 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -410,48 +410,39 @@ struct dev_pagemap *get_dev_pagemap(unsigned long p=
-fn,
->  EXPORT_SYMBOL_GPL(get_dev_pagemap);
->
->  #ifdef CONFIG_DEV_PAGEMAP_OPS
-> -void __put_devmap_managed_page(struct page *page)
-> +void free_devmap_managed_page(struct page *page)
->  {
-> -       int count =3D page_ref_dec_return(page);
-> +       /* Clear Active bit in case of parallel mark_page_accessed */
-> +       __ClearPageActive(page);
-> +       __ClearPageWaiters(page);
-> +
-> +       mem_cgroup_uncharge(page);
+On 11/13/19 11:17 AM, Ira Weiny wrote:
+...
+>>> @@ -348,33 +347,13 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
+>>>   		flags |= FOLL_WRITE;
+>>>   
+>>>   	down_read(&mm->mmap_sem);
+>>> -	if (mm == current->mm) {
+>>> -		ret = get_user_pages(vaddr, 1, flags | FOLL_LONGTERM, page,
+>>> -				     vmas);
+>>> -	} else {
+>>> -		ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags, page,
+>>> -					    vmas, NULL);
+>>> -		/*
+>>> -		 * The lifetime of a vaddr_get_pfn() page pin is
+>>> -		 * userspace-controlled. In the fs-dax case this could
+>>> -		 * lead to indefinite stalls in filesystem operations.
+>>> -		 * Disallow attempts to pin fs-dax pages via this
+>>> -		 * interface.
+>>> -		 */
+>>> -		if (ret > 0 && vma_is_fsdax(vmas[0])) {
+>>> -			ret = -EOPNOTSUPP;
+>>> -			put_page(page[0]);
+>>> -		}
+>>> -	}
+>>> -	up_read(&mm->mmap_sem);
+>>> -
+>>> +	ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
+>>> +				    page, NULL, NULL);
+>>>   	if (ret == 1) {
+>>>   		*pfn = page_to_pfn(page[0]);
+>>>   		return 0;
+>>
+>> Mind the return with the lock held this needs some goto unwind
+> 
+> Ah yea...  retract my reviewed by...  :-(
+> 
 
-Ugh, when did all this HMM specific manipulation sneak into the
-generic ZONE_DEVICE path? It used to be gated by pgmap type with its
-own put_zone_device_private_page(). For example it's certainly
-unnecessary and might be broken (would need to check) to call
-mem_cgroup_uncharge() on a DAX page. ZONE_DEVICE users are not a
-monolith and the HMM use case leaks pages into code paths that DAX
-explicitly avoids.
+ooops, embarrassed that I missed that, good catch. Will repost with it fixed.
+
+
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
+
