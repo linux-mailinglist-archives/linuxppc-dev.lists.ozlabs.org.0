@@ -2,45 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DEFFB814
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 19:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9DFFB83E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 20:01:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Ctwz5GgRzF6D9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 05:50:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Cv8l6KL7zF6xm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 06:01:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
  envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CtsW486SzDqd7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 05:47:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Cv6L3vxbzF4Yc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 05:59:06 +1100 (AEDT)
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2019 10:47:56 -0800
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2019 10:59:03 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,301,1569308400"; d="scan'208";a="216489509"
+X-IronPort-AV: E=Sophos;i="5.68,301,1569308400"; d="scan'208";a="406064294"
 Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by orsmga002.jf.intel.com with ESMTP; 13 Nov 2019 10:47:53 -0800
-Date: Wed, 13 Nov 2019 10:47:53 -0800
+ by fmsmga006.fm.intel.com with ESMTP; 13 Nov 2019 10:59:02 -0800
+Date: Wed, 13 Nov 2019 10:59:02 -0800
 From: Ira Weiny <ira.weiny@intel.com>
 To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v4 08/23] vfio, mm: fix get_user_pages_remote() and
- FOLL_LONGTERM
-Message-ID: <20191113184752.GD12699@iweiny-DESK2.sc.intel.com>
+Subject: Re: [PATCH v4 09/23] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+Message-ID: <20191113185902.GB12915@iweiny-DESK2.sc.intel.com>
 References: <20191113042710.3997854-1-jhubbard@nvidia.com>
- <20191113042710.3997854-9-jhubbard@nvidia.com>
+ <20191113042710.3997854-10-jhubbard@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191113042710.3997854-9-jhubbard@nvidia.com>
+In-Reply-To: <20191113042710.3997854-10-jhubbard@nvidia.com>
 User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,8 +59,8 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
  linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@linux.ibm.com>, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
  =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, linux-block@vger.kernel.org,
  =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
@@ -77,141 +76,28 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 12, 2019 at 08:26:55PM -0800, John Hubbard wrote:
-> As it says in the updated comment in gup.c: current FOLL_LONGTERM
-> behavior is incompatible with FAULT_FLAG_ALLOW_RETRY because of the
-> FS DAX check requirement on vmas.
+On Tue, Nov 12, 2019 at 08:26:56PM -0800, John Hubbard wrote:
+> Introduce pin_user_pages*() variations of get_user_pages*() calls,
+> and also pin_longterm_pages*() variations.
 > 
-> However, the corresponding restriction in get_user_pages_remote() was
-> slightly stricter than is actually required: it forbade all
-> FOLL_LONGTERM callers, but we can actually allow FOLL_LONGTERM callers
-> that do not set the "locked" arg.
+> These variants all set FOLL_PIN, which is also introduced, and
+> thoroughly documented.
 > 
-> Update the code and comments accordingly, and update the VFIO caller
-> to take advantage of this, fixing a bug as a result: the VFIO caller
-> is logically a FOLL_LONGTERM user.
+> The pin_longterm*() variants also set FOLL_LONGTERM, in addition
+> to FOLL_PIN:
 > 
-> Also, remove an unnessary pair of calls that were releasing and
-> reacquiring the mmap_sem. There is no need to avoid holding mmap_sem
-> just in order to call page_to_pfn().
+>     pin_user_pages()
+>     pin_user_pages_remote()
+>     pin_user_pages_fast()
 > 
-> Also, move the DAX check ("if a VMA is DAX, don't allow long term
-> pinning") from the VFIO call site, all the way into the internals
-> of get_user_pages_remote() and __gup_longterm_locked(). That is:
-> get_user_pages_remote() calls __gup_longterm_locked(), which in turn
-> calls check_dax_vmas(). It's lightly explained in the comments as well.
-> 
-> Thanks to Jason Gunthorpe for pointing out a clean way to fix this,
-> and to Dan Williams for helping clarify the DAX refactoring.
-> 
-> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Jerome Glisse <jglisse@redhat.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
+>     pin_longterm_pages()
+>     pin_longterm_pages_remote()
+>     pin_longterm_pages_fast()
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+At some point in this conversation I thought we were going to put in "unpin_*"
+versions of these.
 
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  drivers/vfio/vfio_iommu_type1.c | 25 ++-----------------------
->  mm/gup.c                        | 27 ++++++++++++++++++++++-----
->  2 files changed, 24 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-> index d864277ea16f..7301b710c9a4 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -340,7 +340,6 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
->  {
->  	struct page *page[1];
->  	struct vm_area_struct *vma;
-> -	struct vm_area_struct *vmas[1];
->  	unsigned int flags = 0;
->  	int ret;
->  
-> @@ -348,33 +347,13 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
->  		flags |= FOLL_WRITE;
->  
->  	down_read(&mm->mmap_sem);
-> -	if (mm == current->mm) {
-> -		ret = get_user_pages(vaddr, 1, flags | FOLL_LONGTERM, page,
-> -				     vmas);
-> -	} else {
-> -		ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags, page,
-> -					    vmas, NULL);
-> -		/*
-> -		 * The lifetime of a vaddr_get_pfn() page pin is
-> -		 * userspace-controlled. In the fs-dax case this could
-> -		 * lead to indefinite stalls in filesystem operations.
-> -		 * Disallow attempts to pin fs-dax pages via this
-> -		 * interface.
-> -		 */
-> -		if (ret > 0 && vma_is_fsdax(vmas[0])) {
-> -			ret = -EOPNOTSUPP;
-> -			put_page(page[0]);
-> -		}
-> -	}
-> -	up_read(&mm->mmap_sem);
-> -
-> +	ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
-> +				    page, NULL, NULL);
->  	if (ret == 1) {
->  		*pfn = page_to_pfn(page[0]);
->  		return 0;
->  	}
->  
-> -	down_read(&mm->mmap_sem);
-> -
->  	vaddr = untagged_addr(vaddr);
->  
->  	vma = find_vma_intersection(mm, vaddr, vaddr + 1);
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 933524de6249..83702b2e86c8 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -29,6 +29,13 @@ struct follow_page_context {
->  	unsigned int page_mask;
->  };
->  
-> +static __always_inline long __gup_longterm_locked(struct task_struct *tsk,
-> +						  struct mm_struct *mm,
-> +						  unsigned long start,
-> +						  unsigned long nr_pages,
-> +						  struct page **pages,
-> +						  struct vm_area_struct **vmas,
-> +						  unsigned int flags);
->  /*
->   * Return the compound head page with ref appropriately incremented,
->   * or NULL if that failed.
-> @@ -1167,13 +1174,23 @@ long get_user_pages_remote(struct task_struct *tsk, struct mm_struct *mm,
->  		struct vm_area_struct **vmas, int *locked)
->  {
->  	/*
-> -	 * FIXME: Current FOLL_LONGTERM behavior is incompatible with
-> +	 * Parts of FOLL_LONGTERM behavior are incompatible with
->  	 * FAULT_FLAG_ALLOW_RETRY because of the FS DAX check requirement on
-> -	 * vmas.  As there are no users of this flag in this call we simply
-> -	 * disallow this option for now.
-> +	 * vmas. However, this only comes up if locked is set, and there are
-> +	 * callers that do request FOLL_LONGTERM, but do not set locked. So,
-> +	 * allow what we can.
->  	 */
-> -	if (WARN_ON_ONCE(gup_flags & FOLL_LONGTERM))
-> -		return -EINVAL;
-> +	if (gup_flags & FOLL_LONGTERM) {
-> +		if (WARN_ON_ONCE(locked))
-> +			return -EINVAL;
-> +		/*
-> +		 * This will check the vmas (even if our vmas arg is NULL)
-> +		 * and return -ENOTSUPP if DAX isn't allowed in this case:
-> +		 */
-> +		return __gup_longterm_locked(tsk, mm, start, nr_pages, pages,
-> +					     vmas, gup_flags | FOLL_TOUCH |
-> +					     FOLL_REMOTE);
-> +	}
->  
->  	return __get_user_pages_locked(tsk, mm, start, nr_pages, pages, vmas,
->  				       locked,
-> -- 
-> 2.24.0
-> 
+Is that still in the plans?
+
+Ira
+
