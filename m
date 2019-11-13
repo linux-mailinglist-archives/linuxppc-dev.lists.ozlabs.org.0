@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7603FA115
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 02:55:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CSP75C0hzF5NS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 12:55:23 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09078FA1B8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 03:00:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CSVw6h8RzF5Tt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 13:00:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="1HvkMZIz"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="TI089SMz"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CSJW1zC0zF63q
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:51:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CSJv46BlzF644
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:51:43 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8F25322466;
- Wed, 13 Nov 2019 01:51:19 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id D9681222D4;
+ Wed, 13 Nov 2019 01:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573609880;
- bh=nJkBAQLBBkqX8QZJrgLlumKcXjkCQC5TSG3sVUz0Rm0=;
+ s=default; t=1573609901;
+ bh=Az8WxDraHNcUFx9xR5GISRxf036B+CkXnCd+OMq09B0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=1HvkMZIz0bFiaQM+UFRgVcjZA/enNk9eUgscCjV/jYoszwQGTtiuZLZSScoa+p9fE
- IRvsWxR7omOXOd8YL/GSCqgxyFjaib5E0F+l2P6hOr1wK9a2s/k4Bs0r6WVGQxqF1y
- P9pQ1R+zAwno2kNA2ZzTm3FCEZ6/bodxV7f8ddm4=
+ b=TI089SMzJ4gG7Hs7xwopEIVLNqrVCwgPICKkX3U1x8duLFCXdSoxNf60t4SdFXu4q
+ 9P6Y99KmjN9t5wA/m1P3vnpNiUkAge/3msbmg7X0xmplCHrjvcd5R7iK8QXvURg1F1
+ i2wb2k4FMTcShu1FI71Db4CvSNgo9htnKmwfTtEU=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 042/209] KVM: PPC: Inform the userspace about TCE
- update failures
-Date: Tue, 12 Nov 2019 20:47:38 -0500
-Message-Id: <20191113015025.9685-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 055/209] powerpc/pseries: Fix DTL buffer
+ registration
+Date: Tue, 12 Nov 2019 20:47:51 -0500
+Message-Id: <20191113015025.9685-55-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
 References: <20191113015025.9685-1-sashal@kernel.org>
@@ -60,92 +60,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Sasha Levin <sashal@kernel.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 
-[ Upstream commit f7960e299f13f069d6f3d4e157d91bfca2669677 ]
+[ Upstream commit db787af1b8a6b4be428ee2ea7d409dafcaa4a43c ]
 
-We return H_TOO_HARD from TCE update handlers when we think that
-the next handler (realmode -> virtual mode -> user mode) has a chance to
-handle the request; H_HARDWARE/H_CLOSED otherwise.
+When CONFIG_VIRT_CPU_ACCOUNTING_NATIVE is not set, we register the DTL
+buffer for a cpu when the associated file under powerpc/dtl in debugfs
+is opened. When doing so, we need to set the size of the buffer being
+registered in the second u32 word of the buffer. This needs to be in big
+endian, but we are not doing the conversion resulting in the below error
+showing up in dmesg:
 
-This changes the handlers to return H_TOO_HARD on every error giving
-the userspace an opportunity to handle any request or at least log
-them all.
+	dtl_start: DTL registration for cpu 0 (hw 0) failed with -4
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+Fix this in the obvious manner.
+
+Fixes: 7c105b63bd98 ("powerpc: Add CONFIG_CPU_LITTLE_ENDIAN kernel config option.")
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_64_vio.c    | 8 ++++----
- arch/powerpc/kvm/book3s_64_vio_hv.c | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/powerpc/platforms/pseries/dtl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index 07a8004c3c237..65486c3d029b5 100644
---- a/arch/powerpc/kvm/book3s_64_vio.c
-+++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -401,7 +401,7 @@ static long kvmppc_tce_iommu_do_unmap(struct kvm *kvm,
- 	long ret;
+diff --git a/arch/powerpc/platforms/pseries/dtl.c b/arch/powerpc/platforms/pseries/dtl.c
+index 18014cdeb590a..c762689e0eb33 100644
+--- a/arch/powerpc/platforms/pseries/dtl.c
++++ b/arch/powerpc/platforms/pseries/dtl.c
+@@ -149,7 +149,7 @@ static int dtl_start(struct dtl *dtl)
  
- 	if (WARN_ON_ONCE(iommu_tce_xchg(tbl, entry, &hpa, &dir)))
--		return H_HARDWARE;
-+		return H_TOO_HARD;
+ 	/* Register our dtl buffer with the hypervisor. The HV expects the
+ 	 * buffer size to be passed in the second word of the buffer */
+-	((u32 *)dtl->buf)[1] = DISPATCH_LOG_BYTES;
++	((u32 *)dtl->buf)[1] = cpu_to_be32(DISPATCH_LOG_BYTES);
  
- 	if (dir == DMA_NONE)
- 		return H_SUCCESS;
-@@ -449,15 +449,15 @@ long kvmppc_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
- 		return H_TOO_HARD;
- 
- 	if (WARN_ON_ONCE(mm_iommu_ua_to_hpa(mem, ua, tbl->it_page_shift, &hpa)))
--		return H_HARDWARE;
-+		return H_TOO_HARD;
- 
- 	if (mm_iommu_mapped_inc(mem))
--		return H_CLOSED;
-+		return H_TOO_HARD;
- 
- 	ret = iommu_tce_xchg(tbl, entry, &hpa, &dir);
- 	if (WARN_ON_ONCE(ret)) {
- 		mm_iommu_mapped_dec(mem);
--		return H_HARDWARE;
-+		return H_TOO_HARD;
- 	}
- 
- 	if (dir != DMA_NONE)
-diff --git a/arch/powerpc/kvm/book3s_64_vio_hv.c b/arch/powerpc/kvm/book3s_64_vio_hv.c
-index eb8b11515a7ff..d258ed4ef77c3 100644
---- a/arch/powerpc/kvm/book3s_64_vio_hv.c
-+++ b/arch/powerpc/kvm/book3s_64_vio_hv.c
-@@ -300,10 +300,10 @@ static long kvmppc_rm_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
- 
- 	if (WARN_ON_ONCE_RM(mm_iommu_ua_to_hpa_rm(mem, ua, tbl->it_page_shift,
- 			&hpa)))
--		return H_HARDWARE;
-+		return H_TOO_HARD;
- 
- 	if (WARN_ON_ONCE_RM(mm_iommu_mapped_inc(mem)))
--		return H_CLOSED;
-+		return H_TOO_HARD;
- 
- 	ret = iommu_tce_xchg_rm(kvm->mm, tbl, entry, &hpa, &dir);
- 	if (ret) {
-@@ -501,7 +501,7 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *vcpu,
- 
- 		rmap = (void *) vmalloc_to_phys(rmap);
- 		if (WARN_ON_ONCE_RM(!rmap))
--			return H_HARDWARE;
-+			return H_TOO_HARD;
- 
- 		/*
- 		 * Synchronize with the MMU notifier callbacks in
+ 	hwcpu = get_hard_smp_processor_id(dtl->cpu);
+ 	addr = __pa(dtl->buf);
 -- 
 2.20.1
 
