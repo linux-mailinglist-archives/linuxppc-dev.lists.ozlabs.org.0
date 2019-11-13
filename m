@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C184CFA295
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 03:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA0BFA338
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 03:09:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47CScF4MtCzF4wM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 13:05:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47CSjM2plWzF3tQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2019 13:09:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="d6GznGTD"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="uj0RSs9X"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47CSJx391rzF63t
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:51:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47CSJz5vzZzF641
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2019 12:51:47 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1F6B3222D3;
- Wed, 13 Nov 2019 01:51:43 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 549F6222CA;
+ Wed, 13 Nov 2019 01:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573609903;
- bh=zyZYw0nM4RFgVaebb4BmvAOIVPjPO6GvSiUzaPlDJ34=;
+ s=default; t=1573609906;
+ bh=8OznHZtnyeuyoa0ykOvMSTWxOaJVdKSRPp8ZeapPiWo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=d6GznGTD8cYVF/UE8JZHRj6rdn4xrTERBvvRknnW+VXBOK/b4dG7EvMEZwGtz1RZA
- +rFRA1b9jocj/br4JAmiNFzHF4jLf1wzBjws/WQLFyua3Ux6J5FRnCvjYU3mQvhPs6
- NmIduVrksDD+SajkVdV2Tlv5dCXHjZBuquL5CJWg=
+ b=uj0RSs9XuIVRP7q2bMKCOdR3bkkVmZ7rnV0HUBJZMAK1nANR/opiCnF1oIg+tF18W
+ dlzIdQnM75jzJ6llPm7qy6FMM2ghrC8EP3XgeY0BwvbZhhSV36tSsxLRWvMxtV0NcY
+ mS89atsdcuYlam6B6hUG+mrhEiP41FA73JcbzjiQ=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 056/209] powerpc/pseries: Fix how we iterate over
- the DTL entries
-Date: Tue, 12 Nov 2019 20:47:52 -0500
-Message-Id: <20191113015025.9685-56-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 057/209] powerpc/xive: Move a dereference below a
+ NULL test
+Date: Tue, 12 Nov 2019 20:47:53 -0500
+Message-Id: <20191113015025.9685-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
 References: <20191113015025.9685-1-sashal@kernel.org>
@@ -60,45 +60,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+Cc: Sasha Levin <sashal@kernel.org>, zhong jiang <zhongjiang@huawei.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+From: zhong jiang <zhongjiang@huawei.com>
 
-[ Upstream commit 9258227e9dd1da8feddb07ad9702845546a581c9 ]
+[ Upstream commit cd5ff94577e004e0a4457e70d0ef3a030f4010b8 ]
 
-When CONFIG_VIRT_CPU_ACCOUNTING_NATIVE is not set, we look up dtl_idx in
-the lppaca to determine the number of entries in the buffer. Since
-lppaca is in big endian, we need to do an endian conversion before using
-this in our calculation to determine the number of entries in the
-buffer. Without this, we do not iterate over the existing entries in the
-DTL buffer properly.
+Move the dereference of xc below the NULL test.
 
-Fixes: 7c105b63bd98 ("powerpc: Add CONFIG_CPU_LITTLE_ENDIAN kernel config option.")
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Signed-off-by: zhong jiang <zhongjiang@huawei.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/dtl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/sysdev/xive/common.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/dtl.c b/arch/powerpc/platforms/pseries/dtl.c
-index c762689e0eb33..ef6595153642e 100644
---- a/arch/powerpc/platforms/pseries/dtl.c
-+++ b/arch/powerpc/platforms/pseries/dtl.c
-@@ -184,7 +184,7 @@ static void dtl_stop(struct dtl *dtl)
- 
- static u64 dtl_current_index(struct dtl *dtl)
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index 0b24b10312213..f3af53abd40fb 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1009,12 +1009,13 @@ static void xive_ipi_eoi(struct irq_data *d)
  {
--	return lppaca_of(dtl->cpu).dtl_idx;
-+	return be64_to_cpu(lppaca_of(dtl->cpu).dtl_idx);
- }
- #endif /* CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
+ 	struct xive_cpu *xc = __this_cpu_read(xive_cpu);
  
+-	DBG_VERBOSE("IPI eoi: irq=%d [0x%lx] (HW IRQ 0x%x) pending=%02x\n",
+-		    d->irq, irqd_to_hwirq(d), xc->hw_ipi, xc->pending_prio);
+-
+ 	/* Handle possible race with unplug and drop stale IPIs */
+ 	if (!xc)
+ 		return;
++
++	DBG_VERBOSE("IPI eoi: irq=%d [0x%lx] (HW IRQ 0x%x) pending=%02x\n",
++		    d->irq, irqd_to_hwirq(d), xc->hw_ipi, xc->pending_prio);
++
+ 	xive_do_source_eoi(xc->hw_ipi, &xc->ipi_data);
+ 	xive_do_queue_eoi(xc);
+ }
 -- 
 2.20.1
 
