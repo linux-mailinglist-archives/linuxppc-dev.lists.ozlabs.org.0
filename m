@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CA7FC819
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 14:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9047DFC82A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 14:54:23 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DN9t0Lj9zF60q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 00:48:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DNJD52KkzF7jy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 00:54:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d41;
- helo=mail-io1-xd41.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2d;
+ helo=mail-io1-xd2d.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="alUJk1RQ"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Sw0PAKVJ"; 
  dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com
+ [IPv6:2607:f8b0:4864:20::d2d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DMt45B4jzF7gZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 00:35:08 +1100 (AEDT)
-Received: by mail-io1-xd41.google.com with SMTP id s3so6795141ioe.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 05:35:08 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DMxF4WGqzF4qw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 00:37:53 +1100 (AEDT)
+Received: by mail-io1-xd2d.google.com with SMTP id i11so6744759iol.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 05:37:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=SDMYH8wyhFJnrn+Ox/2VWjvOZYIwEyWGWTeXD5Vgcdk=;
- b=alUJk1RQQwuxGMqaBmhWEA3xWwlf84pGl1oPk1UGnp6sNptml0YSuwSmzfOdaLngvm
- xT9yXTbdpD+5Mmjq9qfgd99SR2Xd9/WKlXVb753/XZB0eLbp2ilzQ814E9RshkDMNePK
- XVYZek9gQ9r5icYTst/3MYqvE102Us7C4+IP6PJpztGtYwAJOGfsJDgi99h4zC/qIsbr
- T7Qkg6ApEJYiJWj7uZVKnz9hfA0NmYN8bzQjkZ4m0zdVL6MqJABjrdaZVHGtXo9p0avt
- 9jGDrUjuTVG5fke8UncntagtKL8gq+ZiCqhWBaSriK+N1Z8d7MCKtLzOjZ1Q1dflbKV6
- wXhw==
+ :cc; bh=XUdhNg+72/RtwmrV6AWV6mpB24rxemJqtcAcSQr09S0=;
+ b=Sw0PAKVJfVVqsnA/UpdGgKs1f/ZTAJ2foJg0EjXiJrWcwKWaRnwVCrvprlbk+lEGXa
+ juoaaLwhOLsBumRkuSNSkYK4TEdldnFmsnwkhtcUr2bIKylk/jkaP+LYVseNJVnwiG0j
+ aQsu8IeNFzgYu1arIaoRi9zhY9FMPXRgQyaBaKrVtYoq7QDaFWByo9Nsf3KSVljagiMP
+ LfFHvcmi5765dheOi6PUwkU7IMNoeaufaQUval04uYXI0A9RlVPtd0drFOFiP1alCSR2
+ JlinEy0QQEp08rCWLlKljhP8Vv90+IzF/m1FQZnMtjheLOEnhcvWZpW2CLNWvZU+AQh6
+ tjPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=SDMYH8wyhFJnrn+Ox/2VWjvOZYIwEyWGWTeXD5Vgcdk=;
- b=R0SxqsiTmrWjovxs71E9uxvE7eCmFtcGxcns1RQYsyQbgiJYwk01myP5vM6hbWk8cX
- xYlz5f7z6ND+w6PomJ3oyPqC/JY1JIqaQlvyMxCWDNBM1f9ffa3mg2mWIMhjVUrVHEmM
- bK+XPoVCsV6Tag6UlhGQR5fLubih4iNlP4NQW53/mIUrpgch2x8AM6wdMctRNXQL80mt
- ynDhqrGSJBGhuA6OlnpLaCJl2+/MaVkVkbBjmYpWdLyqY7edCeEZpcmGZ/cwcgAtffj9
- bQnJ7ijOFYDjPsNn6dn+jNM3IhgND5WOJDmuWrmzh3x7YASdJL5wVHCJBjVn/xcw4X+F
- l6Dg==
-X-Gm-Message-State: APjAAAXR0iNAYNZWQqcrbAg8Vu7qvc2ysveOYHCbqyJWxwvzduyqHr3b
- +Hy0vXfTtEVrf2LsIXuU3sd1WKkn5GEVe04r1cU=
-X-Google-Smtp-Source: APXvYqw8JmfGbQA+DhukuQdd5C2QtFkiE5/ehse5+R9TvBZT5tIQ4lki5Zbxe09l6ZD+NsFNDDvvJnvONkdK/MFQECE=
-X-Received: by 2002:a02:730d:: with SMTP id y13mr7613282jab.124.1573738501850; 
- Thu, 14 Nov 2019 05:35:01 -0800 (PST)
+ bh=XUdhNg+72/RtwmrV6AWV6mpB24rxemJqtcAcSQr09S0=;
+ b=fnP+tozwXzx9/ciAgsI+Oym3Qlv7ZvdDCjM7EjtzUbVLwOgzjixGYxAP702SKDR5po
+ J8WeKWmkd5rvGYh9/72XI0wI4ZXAhaTAV4y5VTGmLmtb6/x8JHLwx8dEoq2mQ4Fpij+F
+ C9DgXKbVDqyGIS/4+CR5pq0jDySTOxRNtjjBVRItRKBmEXbLCttAU4bZ6mb+o0mf3e3S
+ hOVkXoI3BtKikoh34cinhoD8LOFDCHJasSa7Dwh3JW8bYx3O/Nt2wDB9m/Je11ZK5s+j
+ pJTFGpz0AcnAPyeE7yuhlNXdtTtoApiokuJ0x1G7ehhAN850Eaw1H4uPxiqMV7Fee17w
+ 3nyQ==
+X-Gm-Message-State: APjAAAVxi47gOZz4LKSBi+CDS1iTY6tHVbPt7YKqbjx6FbdM/KaClc5+
+ YS02QY80XYxkC/vI/F98WcsZVMeWapaGDbx33F0=
+X-Google-Smtp-Source: APXvYqyWKXlZxP7+m938s2NtnVh7uWUzz/3JLXFMrU3CoI7uc/fCFHsxayO2EcXrVdJe4vG8AYd6iO08LgT0HlvgUr4=
+X-Received: by 2002:a6b:e315:: with SMTP id u21mr9070641ioc.192.1573738669604; 
+ Thu, 14 Nov 2019 05:37:49 -0800 (PST)
 MIME-Version: 1.0
 References: <20191113094035.22394-1-oohall@gmail.com>
- <20191113143143.GA54971@google.com>
-In-Reply-To: <20191113143143.GA54971@google.com>
+ <5a12d199-fa1f-5a60-05d8-df9edffbc227@linux.ibm.com>
+In-Reply-To: <5a12d199-fa1f-5a60-05d8-df9edffbc227@linux.ibm.com>
 From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 15 Nov 2019 00:34:50 +1100
-Message-ID: <CAOSf1CHzBJjxOd0f-CZcGPDW6S5GXMvw+6VmzBADJWeP2y1WAQ@mail.gmail.com>
+Date: Fri, 15 Nov 2019 00:37:38 +1100
+Message-ID: <CAOSf1CGVjRC6PfLeoJWQe4WwhcsbrK-=1867BqiGaaRGz_LVzg@mail.gmail.com>
 Subject: Re: [PATCH] powerpc/powernv: Disable native PCIe port management
-To: Bjorn Helgaas <helgaas@kernel.org>
+To: Tyrel Datwyler <tyreld@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,34 +79,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 14, 2019 at 1:31 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Thu, Nov 14, 2019 at 7:39 AM Tyrel Datwyler <tyreld@linux.ibm.com> wrote:
 >
-> This is fine, but it feels like sort of a blunt instrument.  Is there
-> any practical way to clear pci_host_bridge.native_pcie_hotplug (and
-> native_aer if appropriate) for the PHBs in question? That would also
-> prevent pciehp from binding.
+> Nothing but pedantic spelling and grammar nits of the commit log follow.
+>
+> -Tyrel
 
-It is a large hammer, but I don't see a better way to handle it for
-the moment. I had another look and my initial assessment was wrong in
-that it's the portbus driver which claims the MSI rather than pciehp
-itself. The MSI in the PCIe capability is shared between hotplug
-events, PMEs, and BW notifications so to make the portbus concept work
-the portbus driver needs to own the interrupt. Basicly, pnv_php and
-portbus are fundamentally at odds with each other and can't be used
-concurrently.
-
-I also think there's some latent issues with the interaction of DPC
-and EEH since they operate off the same set of error messages. We
-haven't run into any problems yet, but I think that's largely because
-we haven't shipped any systems with DPC enabled. In any case, I'd
-prefer we disabled portbus until we've fully unpacked what's going on
-there.
-
-> We might someday pull portdrv into the PCI core directly instead of as
-> a separate driver, and I'm thinking that might be easier if we have
-> more specific indications of what the core shouldn't use.
-
-It's not intended to be a permanent change. In the long term I want to
-move everything except the initialisation and reset of the PHB out of
-firmware and into the kernel so we can use more of the native PCIe
-management features.
+Thanks. My speeling is bad even on a good day and it was not a good day.
