@@ -1,33 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2701FC2B5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 10:37:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DGbM1vwrzF49n
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 20:37:03 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 784F1FC2C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 10:38:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DGdV54pdzF7ZV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 20:38:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DFxh73hkzF5CH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 20:07:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DFxm2DfPzF5JP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 20:07:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 47DFxg3C3tz9sRR; Thu, 14 Nov 2019 20:07:51 +1100 (AEDT)
+ id 47DFxh45YSz9sRd; Thu, 14 Nov 2019 20:07:52 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 3366ebe9e19ba3c672a00a6fb86f0ac8636ee989
-In-Reply-To: <20191016183611.10867-2-nathanl@linux.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: de84ffc3ccbeec3678f95a3d898fc188efa0d9c5
+In-Reply-To: <43817cb6e6631b0828b9a6e266f60d1f8ca8eb22.1571288375.git.sbobroff@linux.ibm.com>
+To: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2 1/2] powerpc/pseries: address checkpatch warnings in
- dlpar_offline_cpu
-Message-Id: <47DFxg3C3tz9sRR@ozlabs.org>
-Date: Thu, 14 Nov 2019 20:07:51 +1100 (AEDT)
+Subject: Re: [PATCH 1/1] powerpc/eeh: differentiate duplicate detection message
+Message-Id: <47DFxh45YSz9sRd@ozlabs.org>
+Date: Thu, 14 Nov 2019 20:07:52 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,25 +38,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-10-16 at 18:36:10 UTC, Nathan Lynch wrote:
-> Remove some stray blank lines, convert a printk to pr_warn, and
-> address a line length violation.
+On Thu, 2019-10-17 at 04:59:37 UTC, Sam Bobroff wrote:
+> Currently when an EEH error is detected, the system log receives the
+> same (or almost the same) message twice:
 > 
-> One functional change: use WARN_ON instead of BUG_ON in case H_PROD of
-> a ceded thread yields an unexpected result from the platform. We can
-> expect this code path to get uninterruptibly stuck in __cpu_die() if
-> this happens, but that's more desirable than crashing.
+> EEH: PHB#0 failure detected, location: N/A
+> EEH: PHB#0 failure detected, location: N/A
+> or
+> EEH: eeh_dev_check_failure: Frozen PHB#0-PE#0 detected
+> EEH: Frozen PHB#0-PE#0 detected
 > 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> Fixes: b6db63d1a7f0 ("pseries/pseries: Add code to online/offline CPUs of a DLPAR node")
+> This looks like a bug, but in fact the messages are from different
+> functions and mean slightly different things.  So keep both but change
+> one of the messages slightly, so that it's clear they are different:
+> 
+> EEH: PHB#0 failure detected, location: N/A
+> EEH: Recovering PHB#0, location: N/A
+> or
+> EEH: eeh_dev_check_failure: Frozen PHB#0-PE#0 detected
+> EEH: Recovering PHB#0-PE#0
+> 
+> Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
 
 Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/3366ebe9e19ba3c672a00a6fb86f0ac8636ee989
+https://git.kernel.org/powerpc/c/de84ffc3ccbeec3678f95a3d898fc188efa0d9c5
 
 cheers
