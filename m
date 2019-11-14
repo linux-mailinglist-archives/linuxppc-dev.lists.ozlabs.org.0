@@ -2,36 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695D9FC442
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 11:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F55CFC440
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 11:36:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DHyZ6BLQzF7Rk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 21:38:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DHwH3zYGzF4BL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 21:36:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DFyY0NPmzF64H
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DFyX6qr8zF63L
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 20:08:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 47DFyS5DKkz9sRs; Thu, 14 Nov 2019 20:08:32 +1100 (AEDT)
+ id 47DFyT6f97z9sSW; Thu, 14 Nov 2019 20:08:33 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 090d5ab93d0b8a079dd516c16649bd00ba4f7302
-In-Reply-To: <1543498518-107601-1-git-send-email-yuehaibing@huawei.com>
+X-powerpc-patch-commit: bfa2325e5b8b800cc6720cad8d2f066cd0136bee
+In-Reply-To: <1545705876-63132-1-git-send-email-yuehaibing@huawei.com>
 To: YueHaibing <yuehaibing@huawei.com>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michal Suchanek <msuchanek@suse.de>,
- Diana Craciun <diana.craciun@nxp.com>,
- "Mauricio Faria de Oliveira" <mauricfo@linux.vnet.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+ Paul Mackerras <paulus@samba.org>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Alastair D'Silva <alastair@d-silva.org>,
+ "Frederic Barrat" <fbarrat@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH -next] powerpc/64s: Fix debugfs_simple_attr.cocci warnings
-Message-Id: <47DFyS5DKkz9sRs@ozlabs.org>
-Date: Thu, 14 Nov 2019 20:08:32 +1100 (AEDT)
+Subject: Re: [PATCH -next] powerpc/powernv/npu: Fix debugfs_simple_attr.cocci
+ warnings
+Message-Id: <47DFyT6f97z9sSW@ozlabs.org>
+Date: Thu, 14 Nov 2019 20:08:33 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,7 +53,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2018-11-29 at 13:35:18 UTC, YueHaibing wrote:
+On Tue, 2018-12-25 at 02:44:36 UTC, YueHaibing wrote:
 > Use DEFINE_DEBUGFS_ATTRIBUTE rather than DEFINE_SIMPLE_ATTRIBUTE
 > for debugfs files.
 > 
@@ -64,6 +68,6 @@ On Thu, 2018-11-29 at 13:35:18 UTC, YueHaibing wrote:
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/090d5ab93d0b8a079dd516c16649bd00ba4f7302
+https://git.kernel.org/powerpc/c/bfa2325e5b8b800cc6720cad8d2f066cd0136bee
 
 cheers
