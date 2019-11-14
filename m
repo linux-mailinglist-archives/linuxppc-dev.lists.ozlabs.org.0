@@ -2,55 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.auug.org.au [IPv6:2401:3900:2:1::4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB658FBF00
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 06:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A958FBF2E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 06:14:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47D8jr3ftXzF748
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 16:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47D8mW36vWzDqPF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 16:14:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47D8dS1HkqzF6lq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 16:08:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="A85mzLCe"; 
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="oP2extHT"; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 47D8dR40m4z9s7T; Thu, 14 Nov 2019 16:08:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1573708107; bh=kPRYQtgfmwdv40EbuZcqeYZToO/RlWVUa8XfGajWvEI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=A85mzLCe/m8AOIXYfoAJDqpK70LNQTu2NI6GpcGjIrL25sgnKF4HZRCR3kxRgBTf0
- G172C2juWrJytAFkuaI+uojelB+dtpIJod2mwqc6bXxz5pU2EbAwmg0m4QNXU2clFC
- RDi0G4X+NjFnbjSk0g0YYXLGkjQDO1DMhXRKTSKGoPtCi+ueh2/hkbx+89sDFfLkZ6
- HDL8rgIVAUeLPPowCl2fFbLv/u6yq0hhN57mTIl+TYgTxH3zcFaVwGlCWdBMs1vjn9
- PfySVcQ910QyGD55HBHYIqO6ldJ2Nk64IK6NM/MF46bZWK22t6sZrm8aU2Q9l2vR2y
- xs13pE6bm/PlA==
-Date: Thu, 14 Nov 2019 16:08:25 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH v10 7/8] KVM: PPC: Implement H_SVM_INIT_ABORT hcall
-Message-ID: <20191114050825.GB28382@oak.ozlabs.ibm.com>
-References: <20191111041924.GA4017@oak.ozlabs.ibm.com>
- <20191112010158.GB5159@oc0525413822.ibm.com>
- <20191112053836.GB10885@oak.ozlabs.ibm.com>
- <20191112075215.GD5159@oc0525413822.ibm.com>
- <20191112113204.GA10178@blackberry>
- <20191112144555.GE5159@oc0525413822.ibm.com>
- <20191113001427.GA17829@oak.ozlabs.ibm.com>
- <20191113063233.GF5159@oc0525413822.ibm.com>
- <20191113211824.GA20535@blackberry>
- <20191113215042.GG5159@oc0525413822.ibm.com>
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47D8dY0cpKzF6lr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 16:08:32 +1100 (AEDT)
+Received: from [192.168.1.20] (cpe-24-28-70-126.austin.res.rr.com
+ [24.28.70.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C49F1205C9;
+ Thu, 14 Nov 2019 05:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1573708110;
+ bh=bwDoBs1Gl7X6kr+VvLWmGBoPwoIr2qMGBpkJq35K1x0=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=oP2extHTQUlymGuKHYc5HIla8CRurumrsbn+oG0uNtHazxGpSd3Oak/5IYj6pOQdX
+ KGU6zsBBp82kB2G9cquR+DjnYRoOSwG54tzqCaNhuzcg9lbIOID2FB1PfnKDHSKsP2
+ 1wcjKT4GVc9de18GzwVY2KFn6AM6YhbBiGc6Z8tM=
+Subject: Re: [PATCH v4 04/47] soc: fsl: qe: introduce qe_io{read,write}*
+ wrappers
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
+ <20191108130123.6839-5-linux@rasmusvillemoes.dk>
+ <CAOZdJXU35+G5CMrS3247mgMjQH7__MxP8wpW6yjn1_MLD-sGqw@mail.gmail.com>
+ <e37d24c5-6d4f-c8bf-1c38-f3e8b8e85eeb@rasmusvillemoes.dk>
+From: Timur Tabi <timur@kernel.org>
+Message-ID: <38d87cf8-5945-61d7-80a7-c8374cbe729b@kernel.org>
+Date: Wed, 13 Nov 2019 23:08:28 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191113215042.GG5159@oc0525413822.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <e37d24c5-6d4f-c8bf-1c38-f3e8b8e85eeb@rasmusvillemoes.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,58 +63,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>, cclaudio@linux.ibm.com,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linux-mm@kvack.org, jglisse@redhat.com, Ram Pai <linuxram@linux.ibm.com>,
- aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: lkml <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>,
+ Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 13, 2019 at 01:50:42PM -0800, Ram Pai wrote:
-> On Thu, Nov 14, 2019 at 08:18:24AM +1100, Paul Mackerras wrote:
-> > On Tue, Nov 12, 2019 at 10:32:33PM -0800, Ram Pai wrote:
-> > > On Wed, Nov 13, 2019 at 11:14:27AM +1100, Paul Mackerras wrote:
-> > > > On Tue, Nov 12, 2019 at 06:45:55AM -0800, Ram Pai wrote:
-> > > > > On Tue, Nov 12, 2019 at 10:32:04PM +1100, Paul Mackerras wrote:
-> > > > > > On Mon, Nov 11, 2019 at 11:52:15PM -0800, Ram Pai wrote:
-> > > > > > > There is subtle problem removing that code from the assembly.
-> > > > > > > 
-> > > > > > > If the H_SVM_INIT_ABORT hcall returns to the ultravisor without clearing
-> > > > > > > kvm->arch.secure_guest, the hypervisor will continue to think that the
-> > > > > > > VM is a secure VM.   However the primary reason the H_SVM_INIT_ABORT
-> > > > > > > hcall was invoked, was to inform the Hypervisor that it should no longer
-> > > > > > > consider the VM as a Secure VM. So there is a inconsistency there.
-> > > > > > 
-> > > > > > Most of the checks that look at whether a VM is a secure VM use code
-> > > > > > like "if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)".  Now
-> > > > > > since KVMPPC_SECURE_INIT_ABORT is 4, an if statement such as that will
-> > > > > > take the false branch once we have set kvm->arch.secure_guest to
-> > > > > > KVMPPC_SECURE_INIT_ABORT in kvmppc_h_svm_init_abort.  So in fact in
-> > > > > > most places we will treat the VM as a normal VM from then on.  If
-> > > > > > there are any places where we still need to treat the VM as a secure
-> > > > > > VM while we are processing the abort we can easily do that too.
-> > > > > 
-> > > > > Is the suggestion --  KVMPPC_SECURE_INIT_ABORT should never return back
-> > > > > to the Ultravisor?   Because removing that assembly code will NOT lead the
-> > > > 
-> > > > No.  The suggestion is that vcpu->arch.secure_guest stays set to
-> > > > KVMPPC_SECURE_INIT_ABORT until userspace calls KVM_PPC_SVM_OFF.
-> > > 
-> > > In the fast_guest_return path, if it finds 
-> > > (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_ABORT) is true, should it return to
-> > > UV or not?
-> > > 
-> > > Ideally it should return back to the ultravisor the first time
-> > > KVMPPC_SECURE_INIT_ABORT is set, and not than onwards.
-> > 
-> > What is ideal about that behavior?  Why would that be a particularly
-> > good thing to do?
+On 11/12/19 1:14 AM, Rasmus Villemoes wrote:
+> but that's because readl and writel by definition work on little-endian
+> registers. I.e., on a BE platform, the readl and writel implementation
+> must themselves contain a swab, so the above would end up doing two
+> swabs on a BE platform.
+
+Do you know whether the compiler optimizes-out the double swab?
+
+> (On PPC, there's a separate definition of mmio_read32be, namely
+> writel_be, which in turn does a out_be32, so on PPC that doesn't
+> actually end up doing two swabs).
 > 
-> It is following the rule -- "return back to the caller".
+> So ioread32be etc. have well-defined semantics: access a big-endian
+> register and return the result in native endianness.
 
-That doesn't address the question of why vcpu->arch.secure_guest
-should be cleared at the point where we do that.
-
-Paul.
+It seems weird that there aren't any cross-arch lightweight 
+endian-specific I/O accessors.
