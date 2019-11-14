@@ -1,81 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1660FCE1A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 19:46:13 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DVmz2KFxzF85q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 05:46:11 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EB8FCED6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 20:41:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DX0r5fBwzDsYg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 06:41:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=mhocko@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DVkj6tfvzF811
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 05:44:13 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- xAEIhiW5041171; Thu, 14 Nov 2019 13:44:05 -0500
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2w9bhcaasm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Nov 2019 13:44:05 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAEIejrd014729;
- Thu, 14 Nov 2019 18:44:08 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma01wdc.us.ibm.com with ESMTP id 2w5n373v2n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Nov 2019 18:44:08 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAEIi2jc40173880
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Nov 2019 18:44:03 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF4C6BE05A;
- Thu, 14 Nov 2019 18:44:02 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87F83BE051;
- Thu, 14 Nov 2019 18:44:01 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.18.235.137])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 14 Nov 2019 18:44:01 +0000 (GMT)
-Message-ID: <c792fdc629d87f452d4348d33ab179df01d42017.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 1/4] powerpc/kvm/book3s: Fixes possible 'use after
- release' of kvm
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Date: Thu, 14 Nov 2019 15:43:57 -0300
-In-Reply-To: <87mud13d4r.fsf@mpe.ellerman.id.au>
-References: <20191107170258.36379-1-leonardo@linux.ibm.com>
- <20191107170258.36379-2-leonardo@linux.ibm.com>
- <87mud13d4r.fsf@mpe.ellerman.id.au>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-zmSym6hLOrd0Lb87qEYc"
-User-Agent: Evolution 3.34.1 (3.34.1-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DWyY10W3zF7P3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 06:39:31 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id E7941ACA3;
+ Thu, 14 Nov 2019 19:39:27 +0000 (UTC)
+Date: Thu, 14 Nov 2019 20:39:26 +0100
+From: Michal Hocko <mhocko@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v2 1/2] mm: remove the memory isolate notifier
+Message-ID: <20191114193925.GB24848@dhcp22.suse.cz>
+References: <20191114131911.11783-1-david@redhat.com>
+ <20191114131911.11783-2-david@redhat.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-11-14_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911140157
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191114131911.11783-2-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,119 +47,207 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-kernel@vger.kernel.org,
+ Pingfan Liu <kernelfans@gmail.com>, linux-mm@kvack.org, Qian Cai <cai@lca.pw>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu 14-11-19 14:19:10, David Hildenbrand wrote:
+> Luckily, we have no users left, so we can get rid of it. Cleanup
+> set_migratetype_isolate() a little bit.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Qian Cai <cai@lca.pw>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Pingfan Liu <kernelfans@gmail.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
---=-zmSym6hLOrd0Lb87qEYc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+\o/
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-On Tue, 2019-11-12 at 15:57 +1100, Michael Ellerman wrote:
-> Hi Leonardo,
+There is some potential on a further cleanups but this is definitely a
+great step
 
-Hello Micheal, thanks for the feedback!
+> ---
+>  drivers/base/memory.c  | 19 -------------------
+>  include/linux/memory.h | 27 ---------------------------
+>  mm/page_isolation.c    | 38 ++++----------------------------------
+>  3 files changed, 4 insertions(+), 80 deletions(-)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index a757d9ed88a7..03c18c97c2bf 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -73,20 +73,6 @@ void unregister_memory_notifier(struct notifier_block *nb)
+>  }
+>  EXPORT_SYMBOL(unregister_memory_notifier);
+>  
+> -static ATOMIC_NOTIFIER_HEAD(memory_isolate_chain);
+> -
+> -int register_memory_isolate_notifier(struct notifier_block *nb)
+> -{
+> -	return atomic_notifier_chain_register(&memory_isolate_chain, nb);
+> -}
+> -EXPORT_SYMBOL(register_memory_isolate_notifier);
+> -
+> -void unregister_memory_isolate_notifier(struct notifier_block *nb)
+> -{
+> -	atomic_notifier_chain_unregister(&memory_isolate_chain, nb);
+> -}
+> -EXPORT_SYMBOL(unregister_memory_isolate_notifier);
+> -
+>  static void memory_block_release(struct device *dev)
+>  {
+>  	struct memory_block *mem = to_memory_block(dev);
+> @@ -178,11 +164,6 @@ int memory_notify(unsigned long val, void *v)
+>  	return blocking_notifier_call_chain(&memory_chain, val, v);
+>  }
+>  
+> -int memory_isolate_notify(unsigned long val, void *v)
+> -{
+> -	return atomic_notifier_call_chain(&memory_isolate_chain, val, v);
+> -}
+> -
+>  /*
+>   * The probe routines leave the pages uninitialized, just as the bootmem code
+>   * does. Make sure we do not access them, but instead use only information from
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index 0ebb105eb261..d3fde2d0d94b 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -55,19 +55,6 @@ struct memory_notify {
+>  	int status_change_nid;
+>  };
+>  
+> -/*
+> - * During pageblock isolation, count the number of pages within the
+> - * range [start_pfn, start_pfn + nr_pages) which are owned by code
+> - * in the notifier chain.
+> - */
+> -#define MEM_ISOLATE_COUNT	(1<<0)
+> -
+> -struct memory_isolate_notify {
+> -	unsigned long start_pfn;	/* Start of range to check */
+> -	unsigned int nr_pages;		/* # pages in range to check */
+> -	unsigned int pages_found;	/* # pages owned found by callbacks */
+> -};
+> -
+>  struct notifier_block;
+>  struct mem_section;
+>  
+> @@ -94,27 +81,13 @@ static inline int memory_notify(unsigned long val, void *v)
+>  {
+>  	return 0;
+>  }
+> -static inline int register_memory_isolate_notifier(struct notifier_block *nb)
+> -{
+> -	return 0;
+> -}
+> -static inline void unregister_memory_isolate_notifier(struct notifier_block *nb)
+> -{
+> -}
+> -static inline int memory_isolate_notify(unsigned long val, void *v)
+> -{
+> -	return 0;
+> -}
+>  #else
+>  extern int register_memory_notifier(struct notifier_block *nb);
+>  extern void unregister_memory_notifier(struct notifier_block *nb);
+> -extern int register_memory_isolate_notifier(struct notifier_block *nb);
+> -extern void unregister_memory_isolate_notifier(struct notifier_block *nb);
+>  int create_memory_block_devices(unsigned long start, unsigned long size);
+>  void remove_memory_block_devices(unsigned long start, unsigned long size);
+>  extern void memory_dev_init(void);
+>  extern int memory_notify(unsigned long val, void *v);
+> -extern int memory_isolate_notify(unsigned long val, void *v);
+>  extern struct memory_block *find_memory_block(struct mem_section *);
+>  typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
+>  extern int walk_memory_blocks(unsigned long start, unsigned long size,
+> diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+> index 04ee1663cdbe..21af88b718aa 100644
+> --- a/mm/page_isolation.c
+> +++ b/mm/page_isolation.c
+> @@ -18,9 +18,7 @@
+>  static int set_migratetype_isolate(struct page *page, int migratetype, int isol_flags)
+>  {
+>  	struct zone *zone;
+> -	unsigned long flags, pfn;
+> -	struct memory_isolate_notify arg;
+> -	int notifier_ret;
+> +	unsigned long flags;
+>  	int ret = -EBUSY;
+>  
+>  	zone = page_zone(page);
+> @@ -35,41 +33,11 @@ static int set_migratetype_isolate(struct page *page, int migratetype, int isol_
+>  	if (is_migrate_isolate_page(page))
+>  		goto out;
+>  
+> -	pfn = page_to_pfn(page);
+> -	arg.start_pfn = pfn;
+> -	arg.nr_pages = pageblock_nr_pages;
+> -	arg.pages_found = 0;
+> -
+> -	/*
+> -	 * It may be possible to isolate a pageblock even if the
+> -	 * migratetype is not MIGRATE_MOVABLE. The memory isolation
+> -	 * notifier chain is used by balloon drivers to return the
+> -	 * number of pages in a range that are held by the balloon
+> -	 * driver to shrink memory. If all the pages are accounted for
+> -	 * by balloons, are free, or on the LRU, isolation can continue.
+> -	 * Later, for example, when memory hotplug notifier runs, these
+> -	 * pages reported as "can be isolated" should be isolated(freed)
+> -	 * by the balloon driver through the memory notifier chain.
+> -	 */
+> -	notifier_ret = memory_isolate_notify(MEM_ISOLATE_COUNT, &arg);
+> -	notifier_ret = notifier_to_errno(notifier_ret);
+> -	if (notifier_ret)
+> -		goto out;
+>  	/*
+>  	 * FIXME: Now, memory hotplug doesn't call shrink_slab() by itself.
+>  	 * We just check MOVABLE pages.
+>  	 */
+> -	if (!has_unmovable_pages(zone, page, arg.pages_found, migratetype,
+> -				 isol_flags))
+> -		ret = 0;
+> -
+> -	/*
+> -	 * immobile means "not-on-lru" pages. If immobile is larger than
+> -	 * removable-by-driver pages reported by notifier, we'll fail.
+> -	 */
+> -
+> -out:
+> -	if (!ret) {
+> +	if (!has_unmovable_pages(zone, page, 0, migratetype, isol_flags)) {
+>  		unsigned long nr_pages;
+>  		int mt = get_pageblock_migratetype(page);
+>  
+> @@ -79,8 +47,10 @@ static int set_migratetype_isolate(struct page *page, int migratetype, int isol_
+>  									NULL);
+>  
+>  		__mod_zone_freepage_state(zone, -nr_pages, mt);
+> +		ret = 0;
+>  	}
+>  
+> +out:
+>  	spin_unlock_irqrestore(&zone->lock, flags);
+>  	if (!ret)
+>  		drain_all_pages(zone);
+> -- 
+> 2.21.0
 
->=20
-> Leonardo Bras <leonardo@linux.ibm.com> writes:
-> > Fixes a possible 'use after free' of kvm variable in
-> > kvm_vm_ioctl_create_spapr_tce, where it does a mutex_unlock(&kvm-
-> > >lock)
-> > after a kvm_put_kvm(kvm).
->=20
-> There is no potential for an actual use after free here AFAICS.
->=20
-> > diff --git a/arch/powerpc/kvm/book3s_64_vio.c
-> > b/arch/powerpc/kvm/book3s_64_vio.c
-> > index 5834db0a54c6..a402ead833b6 100644
-> > --- a/arch/powerpc/kvm/book3s_64_vio.c
-> > +++ b/arch/powerpc/kvm/book3s_64_vio.c
->=20
-> The preceeding context is:
->=20
-> 	mutex_lock(&kvm->lock);
->=20
-> 	/* Check this LIOBN hasn't been previously allocated */
-> 	ret =3D 0;
-> 	list_for_each_entry(siter, &kvm->arch.spapr_tce_tables, list) {
-> 		if (siter->liobn =3D=3D args->liobn) {
-> 			ret =3D -EBUSY;
-> 			break;
-> 		}
-> 	}
->=20
-> 	kvm_get_kvm(kvm);
-> 	if (!ret)
-> 		ret =3D anon_inode_getfd("kvm-spapr-tce",
-> &kvm_spapr_tce_fops,
-> 				       stt, O_RDWR | O_CLOEXEC);
->=20
-> > @@ -316,14 +316,13 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm
-> > *kvm,
-> > =20
-> >  	if (ret >=3D 0)
-> >  		list_add_rcu(&stt->list, &kvm->arch.spapr_tce_tables);
-> > -	else
-> > -		kvm_put_kvm(kvm);
-> > =20
-> >  	mutex_unlock(&kvm->lock);
-> > =20
-> >  	if (ret >=3D 0)
-> >  		return ret;
-> > =20
-> > +	kvm_put_kvm(kvm);
-> >  	kfree(stt);
-> >   fail_acct:
-> >  	account_locked_vm(current->mm, kvmppc_stt_pages(npages),
-> > false);
->=20
-> If the kvm_put_kvm() you've moved actually caused the last reference
-> to
-> be dropped that would mean that our caller had passed us a kvm struct
-> without holding a reference to it, and that would be a bug in our
-> caller.
->=20
-
-So, there is no chance that between this function's kvm_get_kvm() and=20
-kvm_put_kvm(), another thread can decrease this reference counter?
-
-> Or put another way, it would mean the mutex_lock() above could
-> already
-> be operating on a freed kvm struct.
->=20
-> The kvm_get_kvm() prior to the anon_inode_getfd() is to account for
-> the
-> reference that's held by the `stt` struct, and dropped in
-> kvm_spapr_tce_release().
->=20
-> So although this patch isn't wrong, the explanation is not accurate.
->=20
-> cheers
-
-Kind regards
-
---=-zmSym6hLOrd0Lb87qEYc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl3NoG0ACgkQlQYWtz9S
-ttT2MBAAw0s38wOkqRjRWeoZ0TV3qd7Gkqzy4gGKHiDNL82fHh6O6X4JSLTYP11u
-co3J9O1jORkIG7AAHQh68iiGJZY6MB5ZUJkUsn3XVH2gMWcQ/547HpcgCCMkrL8k
-keCqL7CKz5B7WxKK+8daUvMaTPAY5AaSEOHIHG/In4vEeHuUWJEgBN60tGxvhc1m
-7VIEBySrLqKeAgs70rThjBVaqg+66SbLZb7ToVIcoRu3Jc/3O4HHG+f6SnD3tqDM
-E3BrLge33ZTBt32TdKyogJ6RMUC+SXQXbXfUeNwjXuQIkH3D/zekc31o1GjcenCU
-Sv0z3Bmcgz2av0FxrA36K7Ch8Mgcnt7Yk5oHwF76kzOMSYyZMw9mJgTwrOHUsxnQ
-pH73v2e9ol1vDD+bdqkGBpusQae25A3/CDLZPXKvRdSqyaaI3yhwNMJ4deh8Glix
-bMpjCaUO+Q1o+VuhujYvmB7+tDYSEjWhOgo7m4yuffBu/MDtbaMkbkuqm66mrqrf
-3582+Kxt8nEWePhyVBKuJTC+IBqqZEIFO7VCR/XPnac7dYhIOUug4hj2QuYuMStF
-Bgsqa9pPIECX07kZR4LUVaEfV+uKadq5DcbdAhfR6NlFBgrJn+XBiuCSIalD7G3D
-bC6v7rRE4tjEoO12FYm165cYeD8I30YqLqkR7/z5OmbB9KkSAj8=
-=alk4
------END PGP SIGNATURE-----
-
---=-zmSym6hLOrd0Lb87qEYc--
-
+-- 
+Michal Hocko
+SUSE Labs
