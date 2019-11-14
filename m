@@ -1,49 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.auug.org.au [IPv6:2401:3900:2:1::4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84463FBEE6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 06:00:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.auug.org.au [203.11.71.3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B998FBEFF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 06:10:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47D8Sb3P1qzF44d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 16:00:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47D8gb6mhVzF3Sy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 16:10:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cyphar.com (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47D8Pl3lTnzF4gh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 15:58:18 +1100 (AEDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mout-p-102.mailbox.org (Postfix) with ESMTPS id 47D8Pf2Sf9zKmdL;
- Thu, 14 Nov 2019 05:58:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de
- [80.241.56.117]) (amavisd-new, port 10030)
- with ESMTP id QpQxpch70Axr; Thu, 14 Nov 2019 05:58:06 +0100 (CET)
-Date: Thu, 14 Nov 2019 15:57:44 +1100
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v15 4/9] namei: LOOKUP_BENEATH: O_BENEATH-like scoped
- resolution
-Message-ID: <20191114045744.d3e7mp3zrupfe2wr@yavin.dot.cyphar.com>
-References: <20191105090553.6350-1-cyphar@cyphar.com>
- <20191105090553.6350-5-cyphar@cyphar.com>
- <20191113015534.GA26530@ZenIV.linux.org.uk>
- <20191113074757.5b4u5vlyx2u6pbn6@yavin.dot.cyphar.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47D8dS1gTVzF71c
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 16:08:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="BqT3vL+O"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 47D8dR2cqzz9sNT; Thu, 14 Nov 2019 16:08:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1573708107; bh=p6shdsFGA+Mt3rC6QY+JMFnpJ9Vvy/PGW13T7kQhVR4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=BqT3vL+OGTmVG6XcYOfXIpYiUGAB6LUw9xl8knY5g0RdwHx30L63ZNHk/kZWUgD4p
+ J78EBD2MyFT1VED9gkZBYsgZWC+w7+ZREdpYYwUAIKxerBCRXFgqurYysFjkZeeVI7
+ 08jKM0dD44HBrVqwGsuV/f7V3iMP8I99eW0WDLzgvdVQdPwNksLrN+QYE/3ISBMPPQ
+ 9+9opeM+Uj4C18nJgb5h4oNSmqTYo+CGI3G0vxy/fmnnF677FIGIzJYVMkmbQQN1hf
+ fVorjDiCin49KFVIQ8nvBBM7Xlq40hwfYw+bRCQpTnl0g0/6ScnhYux315VHTK2pyX
+ BhU5b88eC4kTQ==
+Date: Thu, 14 Nov 2019 16:07:38 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v10 6/8] KVM: PPC: Support reset of secure guest
+Message-ID: <20191114050738.GA28382@oak.ozlabs.ibm.com>
+References: <20191104041800.24527-1-bharata@linux.ibm.com>
+ <20191104041800.24527-7-bharata@linux.ibm.com>
+ <20191112053434.GA10885@oak.ozlabs.ibm.com>
+ <20191113152908.GI21634@in.ibm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="6gz2i7fpwlz4mefu"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191113074757.5b4u5vlyx2u6pbn6@yavin.dot.cyphar.com>
+In-Reply-To: <20191113152908.GI21634@in.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,91 +56,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>, linux-mips@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, Christian Brauner <christian.brauner@ubuntu.com>,
- Jiri Olsa <jolsa@redhat.com>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- Oleg Nesterov <oleg@redhat.com>, linux-m68k@lists.linux-m68k.org,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Namhyung Kim <namhyung@kernel.org>, David Drysdale <drysdale@google.com>,
- linux-arm-kernel@lists.infradead.org, "J. Bruce Fields" <bfields@fieldses.org>,
- libc-alpha@sourceware.org, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, linux-kernel@vger.kernel.org,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, containers@lists.linux-foundation.org
+Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
+ paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Nov 13, 2019 at 08:59:08PM +0530, Bharata B Rao wrote:
+> On Tue, Nov 12, 2019 at 04:34:34PM +1100, Paul Mackerras wrote:
+> > On Mon, Nov 04, 2019 at 09:47:58AM +0530, Bharata B Rao wrote:
+> > [snip]
+> > > @@ -5442,6 +5471,64 @@ static int kvmhv_store_to_eaddr(struct kvm_vcpu *vcpu, ulong *eaddr, void *ptr,
+> > >  	return rc;
+> > >  }
+> > >  
+> > > +/*
+> > > + *  IOCTL handler to turn off secure mode of guest
+> > > + *
+> > > + * - Issue ucall to terminate the guest on the UV side
+> > > + * - Unpin the VPA pages (Enables these pages to be migrated back
+> > > + *   when VM becomes secure again)
+> > > + * - Recreate partition table as the guest is transitioning back to
+> > > + *   normal mode
+> > > + * - Release all device pages
+> > > + */
+> > > +static int kvmhv_svm_off(struct kvm *kvm)
+> > > +{
+> > > +	struct kvm_vcpu *vcpu;
+> > > +	int srcu_idx;
+> > > +	int ret = 0;
+> > > +	int i;
+> > > +
+> > > +	if (!(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START))
+> > > +		return ret;
+> > > +
+> > 
+> > A further comment on this code: it should check that no vcpus are
+> > running and fail if any are running, and it should prevent any vcpus
+> > from running until the function is finished, using code like that in
+> > kvmhv_configure_mmu().  That is, it should do something like this:
+> > 
+> > 	mutex_lock(&kvm->arch.mmu_setup_lock);
+> > 	mmu_was_ready = kvm->arch.mmu_ready;
+> > 	if (kvm->arch.mmu_ready) {
+> > 		kvm->arch.mmu_ready = 0;
+> > 		/* order mmu_ready vs. vcpus_running */
+> > 		smp_mb();
+> > 		if (atomic_read(&kvm->arch.vcpus_running)) {
+> > 			kvm->arch.mmu_ready = 1;
+> > 			ret = -EBUSY;
+> > 			goto out_unlock;
+> > 		}
+> > 	}
+> > 
+> > and then after clearing kvm->arch.secure_guest below:
+> > 
+> > > +	srcu_idx = srcu_read_lock(&kvm->srcu);
+> > > +	for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
+> > > +		struct kvm_memory_slot *memslot;
+> > > +		struct kvm_memslots *slots = __kvm_memslots(kvm, i);
+> > > +
+> > > +		if (!slots)
+> > > +			continue;
+> > > +
+> > > +		kvm_for_each_memslot(memslot, slots) {
+> > > +			kvmppc_uvmem_drop_pages(memslot, kvm, true);
+> > > +			uv_unregister_mem_slot(kvm->arch.lpid, memslot->id);
+> > > +		}
+> > > +	}
+> > > +	srcu_read_unlock(&kvm->srcu, srcu_idx);
+> > > +
+> > > +	ret = uv_svm_terminate(kvm->arch.lpid);
+> > > +	if (ret != U_SUCCESS) {
+> > > +		ret = -EINVAL;
+> > > +		goto out;
+> > > +	}
+> > > +
+> > > +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> > > +		spin_lock(&vcpu->arch.vpa_update_lock);
+> > > +		unpin_vpa_reset(kvm, &vcpu->arch.dtl);
+> > > +		unpin_vpa_reset(kvm, &vcpu->arch.slb_shadow);
+> > > +		unpin_vpa_reset(kvm, &vcpu->arch.vpa);
+> > > +		spin_unlock(&vcpu->arch.vpa_update_lock);
+> > > +	}
+> > > +
+> > > +	ret = kvmppc_reinit_partition_table(kvm);
+> > > +	if (ret)
+> > > +		goto out;
+> > > +
+> > > +	kvm->arch.secure_guest = 0;
+> > 
+> > you need to do:
+> > 
+> > 	kvm->arch.mmu_ready = mmu_was_ready;
+> >  out_unlock:
+> > 	mutex_unlock(&kvm->arch.mmu_setup_lock);
+> > 
+> > > +out:
+> > > +	return ret;
+> > > +}
+> > > +
+> > 
+> > With that extra check in place, it should be safe to unpin the vpas if
+> > there is a good reason to do so.  ("Userspace has some bug that we
+> > haven't found" isn't a good reason to do so.)
+> 
+> QEMU indeed does set_one_reg to reset the VPAs but that only marks
+> the VPA update as pending. The actual unpinning happens when vcpu
+> gets to run after reset at which time the VPAs are updated after
+> any unpinning (if required)
+> 
+> When secure guest reboots, vpu 0 gets to run and does unpin its
+> VPA pages and then proceeds with switching to secure. Here UV
+> tries to page-in all the guest pages, including the still pinned
+> VPA pages corresponding to other vcpus which haven't had a chance
+> to run till now. They are all still pinned and hence page-in fails.
+> 
+> To prevent this, we have to explicitly unpin the VPA pages during
+> this svm off ioctl. This will ensure that SMP secure guest is able
+> to reboot correctly.
 
---6gz2i7fpwlz4mefu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+OK, that makes sense.  Please put a comment in the code explaining
+this briefly.
 
-On 2019-11-13, Aleksa Sarai <cyphar@cyphar.com> wrote:
-> On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > Minor nit here - I'd split "move the conditional call of set_root()
-> > into nd_jump_root()" into a separate patch before that one.  Makes
-> > for fewer distractions in this one.  I'd probably fold "and be
-> > ready for errors other than -ECHILD" into the same preliminary
-> > patch.
->=20
-> Will do.
->=20
-> > > +			/* Not currently safe for scoped-lookups. */
-> > > +			if (unlikely(nd->flags & LOOKUP_IS_SCOPED))
-> > > +				return ERR_PTR(-EXDEV);
-> >=20
-> > Also a candidate for doing in nd_jump_link()...
-> >=20
-> > > @@ -1373,8 +1403,11 @@ static int follow_dotdot_rcu(struct nameidata =
-*nd)
-> > >  	struct inode *inode =3D nd->inode;
-> > > =20
-> > >  	while (1) {
-> > > -		if (path_equal(&nd->path, &nd->root))
-> > > +		if (path_equal(&nd->path, &nd->root)) {
-> > > +			if (unlikely(nd->flags & LOOKUP_BENEATH))
-> > > +				return -EXDEV;
-> >=20
-> > Umm...  Are you sure it's not -ECHILD?
->=20
-> It wouldn't hurt to be -ECHILD -- though it's not clear to me how likely
-> a success would be in REF-walk if the parent components didn't already
-> trigger an unlazy_walk() in RCU-walk.
->=20
-> I guess that also means LOOKUP_NO_XDEV should trigger -ECHILD in
-> follow_dotdot_rcu()?
+> So I will incorporate the code chunk you have shown above to fail
+> if any vcpu is running and prevent any vcpu from running when
+> we unpin VPAs from this ioctl.
 
-Scratch the last question -- AFAICS we don't need to do that for
-LOOKUP_NO_XDEV because we check against mount_lock so it's very unlikely
-that -ECHILD will have any benefit.
+Sounds good.
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---6gz2i7fpwlz4mefu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXczexQAKCRCdlLljIbnQ
-Em3mAQDOIg6+v9zFmJZ9+uYnLQ8tGd3ay8OeAsu6/xVlfCimMwD/cMP8o+o1KTbo
-+rDSfA6D7b6Zhy7K3Vlf0k0OTebeSwI=
-=kHIA
------END PGP SIGNATURE-----
-
---6gz2i7fpwlz4mefu--
+Paul.
