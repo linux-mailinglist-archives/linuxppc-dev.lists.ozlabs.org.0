@@ -1,49 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FA2FC859
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 15:04:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71394FC840
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 14:59:37 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DNQG43LDzF5C7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 00:59:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DNWz2ZGYzF7H6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 01:04:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="RzUgS6QA"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="DYUqRhBS"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DNHz1GYwzF6hc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 00:54:06 +1100 (AEDT)
-Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DNNK4NR2zF4yY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 00:57:53 +1100 (AEDT)
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com
+ [209.85.219.48])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8C0652075E;
- Thu, 14 Nov 2019 13:54:03 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 74B4F2071B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 13:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573739643;
- bh=chRsb111oIkb8Tzn2xgWqviCPKmTcyrTGOQXYvjbrPM=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=RzUgS6QAWtYQM41uHu/0NEkORyOPiv325Qhmm7647HI3Gp1vfvxwBbT/ANNLl87/e
- u20KA1F4oSl3xM2vUxLtICSGhHdsM4iAM1WjWJbxbCwJHVXx1btx/0hLRQlcSCSKGT
- li4+815TmqcxzSwQPemQnofeF2RPOZqXeYjoe+AQ=
-Date: Thu, 14 Nov 2019 07:54:02 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Oliver O'Halloran <oohall@gmail.com>
-Subject: Re: [PATCH] powerpc/powernv: Disable native PCIe port management
-Message-ID: <20191114135402.GA200503@google.com>
+ s=default; t=1573739870;
+ bh=GB5ZNZwpUnrvTVpWesWOxcFz8LGlrrjCF/2UjAprWow=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=DYUqRhBS/0/ZWwPyWgKQMpSSxeMvAecfdApg1bCdDt9EKfmb7Yo1HHuOZ7fWBEcGV
+ 0Q2EKCCbPwEkyIj7bg3vpRuS8wmbpbGnFvY6pIXDaIpJm9qX1aCrI640uHbEJqRgYz
+ pARS+Q7caIIdin7QRA7Q+fyYp98hhzth1wHsxfFI=
+Received: by mail-qv1-f48.google.com with SMTP id y18so2355038qve.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 05:57:50 -0800 (PST)
+X-Gm-Message-State: APjAAAVhj/0Gj6wS5EQluZfE/woCd4jWAw3tdrf8LQVztpGNuT9GYF+O
+ M1Sf6H2fbeyCDSoQNaiS5BlVuQXnGeBJhGowmIY=
+X-Google-Smtp-Source: APXvYqyBwvvpAdeB4tgNqw9NSS0VCm/ghop0mnQxOg76y+Cc8IN2tg15+QDHF2Yk/XPly8FONJJ4zXVNSp1SW8FSCJA=
+X-Received: by 2002:ad4:4089:: with SMTP id l9mr2672727qvp.241.1573739869543; 
+ Thu, 14 Nov 2019 05:57:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOSf1CHzBJjxOd0f-CZcGPDW6S5GXMvw+6VmzBADJWeP2y1WAQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
+ <20191108130123.6839-33-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191108130123.6839-33-linux@rasmusvillemoes.dk>
+From: Timur Tabi <timur@kernel.org>
+Date: Thu, 14 Nov 2019 07:57:12 -0600
+X-Gmail-Original-Message-ID: <CAOZdJXU1ELqQh7TitAJW7bsmnj89wq3opJGVizC2B19nL_3_rQ@mail.gmail.com>
+Message-ID: <CAOZdJXU1ELqQh7TitAJW7bsmnj89wq3opJGVizC2B19nL_3_rQ@mail.gmail.com>
+Subject: Re: [PATCH v4 32/47] serial: ucc_uart: use of_property_read_u32() in
+ ucc_uart_probe()
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,36 +65,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Cc: lkml <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>,
+ Scott Wood <oss@buserror.net>, linux-serial@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 15, 2019 at 12:34:50AM +1100, Oliver O'Halloran wrote:
-> On Thu, Nov 14, 2019 at 1:31 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> >
-> > This is fine, but it feels like sort of a blunt instrument.  Is there
-> > any practical way to clear pci_host_bridge.native_pcie_hotplug (and
-> > native_aer if appropriate) for the PHBs in question? That would also
-> > prevent pciehp from binding.
-> 
-> It is a large hammer, but I don't see a better way to handle it for
-> the moment. I had another look and my initial assessment was wrong in
-> that it's the portbus driver which claims the MSI rather than pciehp
-> itself. The MSI in the PCIe capability is shared between hotplug
-> events, PMEs, and BW notifications so to make the portbus concept work
-> the portbus driver needs to own the interrupt. Basicly, pnv_php and
-> portbus are fundamentally at odds with each other and can't be used
-> concurrently.
+On Fri, Nov 8, 2019 at 7:03 AM Rasmus Villemoes
+<linux@rasmusvillemoes.dk> wrote:
+>
+> -       if (*iprop)
+> -               qe_port->port.uartclk = *iprop;
+> +       if (val)
+> +               qe_port->port.uartclk = val;
+>         else {
+>                 /*
+>                  * Older versions of U-Boot do not initialize the brg-frequency
+>                  * property, so in this case we assume the BRG frequency is
+>                  * half the QE bus frequency.
+>                  */
 
-Yeah, that makes sense.  Is there a Kconfig symbol for pnv_php?  If
-so, you could make CONFIG_PCIEPORTBUS unselectable in the first place.
-
-But I'm guessing there isn't such a symbol because you probably want
-to be able to build generic kernels that run on machines that *can*
-use portdrv as well as on PowerNV.
-
-So I'm find with the patch as posted.
-
-Bjorn
+This bug in older U-Boots is definitely PowerPC-specific, so could you
+change this so that it reports an error on ARM if brg-frequency is
+zero, and displays a warning on PowerPC?
