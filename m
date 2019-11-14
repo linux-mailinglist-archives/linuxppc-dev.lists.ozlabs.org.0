@@ -2,69 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869FFFCAD3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 17:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32948FCB07
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 17:48:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DRwL5l85zF4lG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 03:37:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DS9W3dk3zF7wV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 03:48:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="wzDdYVXq"; 
- dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DRt60SR3zF7sb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 03:35:19 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id r24so5367683otk.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 08:35:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UNGw4TfqpfUCJ1fFVpttb7yfMciDUeoomP1skmq9jqo=;
- b=wzDdYVXqT4Ey6M67cJpE2V9RW05xslTchPTS/hgQLgzS1Adyn/SSVZe8h+/FV3+OEr
- 52aw9+G2ykaRfJ+mRf/qS93DqP/b1+Z7BIrrOLGGb96L9dS13FR/cQ5cJs76bWWlrK6W
- fqNBszqmuQdRuM/2GYczu5lSzGyKaI9xXrl4V/ZNMXYZfWwpYAi0lOB/oV28HZ7TjStS
- Zqfj2Avr6iBAu3jFnq7z/TQ870HCPlT3y93YEl4aHjCjK+JNpENeUdIZtSkOrBX6im9e
- w+lAIM11QP6vdr3x7EMoEeyf6fIy5ZiIpMHQUXkqsZwsodfqmPUjwrQgkGmNxSc/hft5
- YFfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=UNGw4TfqpfUCJ1fFVpttb7yfMciDUeoomP1skmq9jqo=;
- b=CCev5X7xiI92Xw1F9+xw9P6x4YHmhCaVqqM8BnYzXWr9kuOitBkEIChY6dUn7DKfxj
- uoZ9gHEH/MTrzMBYmiVO64qIW6H1HIIx8BynpAebdIMClkraYEl4eoheb3rvwf3wFUS0
- 3aARGGNNUAPWzYVEtm8mR18KQXMCglqkGYBJhn+IiAJeTIb0QF6wTZGYRveoD/4lS3ye
- U0D7H22fXbwHdJNeaLXJjLTaXySHzPwGs9XrAHtbV7WzYf1D/Ifl6uXErxzxj/YAaFp+
- qQErPD6IedR/GuKh0zAoJ7WXab9ssBsvPWo+rm0dId7LfCBJL7tBYBL0PghsYtGcQ4hv
- ivEA==
-X-Gm-Message-State: APjAAAW0B1y0T3bf7pEdmptaB6YUiHoYLUE0KOvgiLZPJq9C72x2WxMG
- PKOTsFRfA7cST/TESjZ46DydUUyqqFHiVF22kJBDAQ==
-X-Google-Smtp-Source: APXvYqwhlbMIqVoDMtemn28FjHxtHG8v5mkLAQT8X9GpCHUizz0JFqeybR7UBBP0zJO9mCY12klfr97VHx+i97m3uhU=
-X-Received: by 2002:a9d:2d89:: with SMTP id g9mr7713217otb.126.1573749316381; 
- Thu, 14 Nov 2019 08:35:16 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DS7V6pD2zF55m
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 03:47:01 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 43931B146
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 16:46:56 +0000 (UTC)
+Date: Thu, 14 Nov 2019 17:46:55 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: WARN_ONCE does not warn once
+Message-ID: <20191114164655.GH11661@kitsune.suse.cz>
 MIME-Version: 1.0
-References: <20191025044721.16617-1-alastair@au1.ibm.com>
- <20191025044721.16617-9-alastair@au1.ibm.com>
- <8232c1a6-d52a-6c32-6178-de082174a92a@linux.ibm.com>
-In-Reply-To: <8232c1a6-d52a-6c32-6178-de082174a92a@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 14 Nov 2019 08:35:04 -0800
-Message-ID: <CAPcyv4g9b6PyREurH9NcQf4BO2YcRGJPBZDqGKy-Vz91mBKjew@mail.gmail.com>
-Subject: Re: [PATCH 08/10] nvdimm: Add driver for OpenCAPI Storage Class Memory
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,53 +44,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
- David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Wei Yang <richard.weiyang@gmail.com>, Keith Busch <keith.busch@intel.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Vishal Verma <vishal.l.verma@intel.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- alastair@d-silva.org, Andrew Donnellan <ajd@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Qian Cai <cai@lca.pw>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Alastair D'Silva <alastair@au1.ibm.com>, Linux MM <linux-mm@kvack.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some quick feedback on your intro concerns...
+Hello,
 
-On Thu, Nov 14, 2019 at 5:41 AM Frederic Barrat <fbarrat@linux.ibm.com> wrote:
->
-> Hi Alastair,
->
-> The patch is huge and could/should probably be split in smaller pieces
+on powernv with 5.3.8 kernel I get flood of messages on boot.
 
-Yeah, it's a must. Split the minimum viable infrastructure by topic
-and then follow on with per-feature topic patches.
+The messages match WARN_ONCE(1, "opal: OPAL_CONSOLE_FLUSH missing.\n");
 
-> to ease the review. However, having sinned on that same topic in the
-> past, I made a first pass anyway. I haven't covered everything but tried
-> to focus on the general setup of the driver for now.
-> Since the patch is very long, I'm writing all the comments in one chunk
-> here instead of spreading them over a few thousand lines, where some
-> would be easy to miss.
->
->
-> Update MAINTAINERS for the new files
->
-> Have you discussed with the directory owner if it's ok to split the
-> driver over several files?
+------------[ cut here ]------------
+opal: OPAL_CONSOLE_FLUSH missing.
+WARNING: CPU: 0 PID: 0 at ../arch/powerpc/platforms/powernv/opal.c:435 __opal_flush_console+0xfc/0x110
+Modules linked in:
+Supported: No, Unreleased kernel
+CPU: 0 PID: 0 Comm: swapper Not tainted 5.3.8-11.gea9b07d-default #1 SLE15-SP2 (unreleased)
+NIP:  c0000000000b9b9c LR: c0000000000b9b98 CTR: c000000000c06ca0
+REGS: c00000000158b8c0 TRAP: 0700   Not tainted  (5.3.8-11.gea9b07d-default)
+MSR:  9000000000021033 <SF,HV,ME,IR,DR,RI,LE>  CR: 28004222  XER: 20000000
+CFAR: c000000000132df0 IRQMASK: 1 
+GPR00: c0000000000b9b98 c00000000158bb50 c00000000158c600 0000000000000022 
+GPR04: c000000000e63b7a 0000000000000002 4f534e4f435f4c41 4853554c465f454c 
+GPR08: 676e697373696d20 0000000000000000 0000000000000027 9000000000001033 
+GPR12: c0000000001cc080 c000000002150000 0000000000000000 0000000000000000 
+GPR16: 00003ffff13114c0 0000000000000000 c0000000014641e0 0000000000000000 
+GPR20: 0000000000000000 c000000001765738 c000000001763738 0000000000000001 
+GPR24: c0000000015c1ed8 c000000001763318 c000000001762dec 0000000000000001 
+GPR28: 0000000000000000 c000000002130d18 0000000000000000 0000000000000000 
+NIP [c0000000000b9b9c] __opal_flush_console+0xfc/0x110
+LR [c0000000000b9b98] __opal_flush_console+0xf8/0x110
+Call Trace:
+[c00000000158bb50] [c0000000000b9b98] __opal_flush_console+0xf8/0x110 (unreliable)
+[c00000000158bbd0] [c0000000000b9dbc] opal_flush_console+0x2c/0x60
+[c00000000158bc00] [c00000000080c180] udbg_opal_putc+0x80/0xd0
+[c00000000158bc50] [c000000000033660] udbg_write+0x90/0x140
+[c00000000158bc90] [c0000000001c888c] console_unlock+0x32c/0x820
+[c00000000158bd70] [c0000000001c9768] register_console+0x5d8/0x790
+[c00000000158be10] [c000000000fb9dcc] register_early_udbg_console+0x9c/0xb4
+[c00000000158be80] [c000000000fb99c8] setup_arch+0x78/0x39c
+[c00000000158bef0] [c000000000fb3c00] start_kernel+0xb4/0x6bc
+[c00000000158bf90] [c00000000000c4d4] start_here_common+0x1c/0x20
+Instruction dump:
+60000000 3860fffe 4bffffa8 60000000 60000000 3c62ff8d 39200001 3d42fff6 
+38637558 992afea8 480791f5 60000000 <0fe00000> 4bffff54 48079715 60000000 
+random: get_random_bytes called from print_oops_end_marker+0x6c/0xa0 with crng_init=0
+---[ end trace 0000000000000000 ]---
 
-My thought is to establish drivers/opencapi/ and move this and the
-existing drivers/misc/ocxl/ bits there.
+This is reapated numerous times and the kernel eventually boots.
+
+Is that an issue with the WARN_ONCE implementation?
+
+Thanks
+
+Michal
