@@ -2,82 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FA6FC007
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EF1FC016
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 07:09:56 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47D9xh3XXKzF49r
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 17:07:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DB0J189FzF74g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 17:09:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kroah.com (client-ip=66.111.4.29;
- helo=out5-smtp.messagingengine.com; envelope-from=greg@kroah.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kroah.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kroah.com header.i=@kroah.com header.b="OLJ+O93w"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="OVL3/BdK"; dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
- [66.111.4.29])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47D9r16bF5zF3bv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 17:02:41 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id 1360C21C39;
- Thu, 14 Nov 2019 01:02:39 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Thu, 14 Nov 2019 01:02:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
- date:from:to:cc:subject:message-id:references:mime-version
- :content-type:in-reply-to; s=fm2; bh=QwzVKI6tbra34TY6z9msluLBFLL
- DyCMl9KOPaMBmeK8=; b=OLJ+O93w/O7Wp5kWCE+tvkvr2WFCNVT5+nBYEaDSHQ4
- /ox/ufRmWDzcrokhj76Wnxwjid/BeRG1XLBGHslRwElaWBsZ/mn6LjoJAQtkml2c
- SH2sLydouvS5C0HsvbdYeZLkHjTmcFf4a/jt7H2sg9WMZjZEB55gXf/lsyFdJvni
- Uf4OlfVHuxAKcZdyh9IwS7dIi6z9BHbYJt2cOtsnVBT1atWLSDPNMdHg7sPD989N
- 82PetVNqe8NNEacSYxXFLN/vFhEb+fQ9udUsolp5pZUACCZjMDgd5yXippMXU3HH
- zLwf2gKj1oadM22rckdgPvgpXGm9oV5WEB6wUfO2uHA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=QwzVKI
- 6tbra34TY6z9msluLBFLLDyCMl9KOPaMBmeK8=; b=OVL3/BdKpNr5udch4gDTyu
- 0aIqgJpBFPMfbV++7uwtRL9RyeURuSz8QCv7ZetiHOU8yDDZBfmTm7eHod1rf7cL
- CXZa+6nTnofYMOgw21ZsNhlT1OFu2LnvYNo++GM/16ngkzXTOv+096ffY3izP0Yj
- KSwFKjeeT5X7nFHejSJvjrvBPHgkvZ+Ze2pxiz4bbgRRVKBInQ8/u4FCy2STC4/t
- YfY7xlT3zcCsQQmJ+5rUQA+eVvTuArYu0P1bI7nFSx3XmxOd7F4KceURu3jyDD9k
- AZlIZfSRmJqUxjsSbubtZRDhewU4az1s4tJQ7HGbea48QHexAFBEBWfx3KA+nXWw
- ==
-X-ME-Sender: <xms:_u3MXUx5LkVzmiDz2KSWQRGojs1i6UrSeanc2L1teh4qVBvLgyTkVQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudefvddgleefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttdervdenucfhrhhomhepifhrvghg
- ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecukfhppeduvdegrddvudelrdefud
- drleefnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhen
- ucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:_u3MXfWDL7CWnv13zTr92-2piKG7RUXgt6PwEV0DDm8qAdVrIDkynw>
- <xmx:_u3MXeBub9qSdK5Q8FoVCJ9tRsDzh3OGqSAu09wpSaVX_8RmWKlibA>
- <xmx:_u3MXY4pnl_EUh6cB1XDE6FVRtMe3RDC2nOnw2FOkJrd6fJHorw5Xw>
- <xmx:_-3MXQ9nm12lyg17MUMbm1TFor1dsaE8s_DdB7uVi4A8ITf5p6gfDA>
-Received: from localhost (unknown [124.219.31.93])
- by mail.messagingengine.com (Postfix) with ESMTPA id 5772A3060062;
- Thu, 14 Nov 2019 01:02:38 -0500 (EST)
-Date: Thu, 14 Nov 2019 14:02:36 +0800
-From: Greg KH <greg@kroah.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Subject: Re: [PATCH stable 4.4] powerpc/boot: Request no dynamic linker for
- boot wrapper
-Message-ID: <20191114060236.GD353293@kroah.com>
-References: <20191112065941.9548-1-ajd@linux.ibm.com>
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="f9GCQv7T"; 
+ dkim-atps=neutral
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47D9yY2LsgzF6sb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 17:08:21 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dccef4c0000>; Wed, 13 Nov 2019 22:08:12 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Wed, 13 Nov 2019 22:08:13 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Wed, 13 Nov 2019 22:08:13 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 14 Nov
+ 2019 06:08:12 +0000
+Subject: Re: [PATCH v4 09/23] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+From: John Hubbard <jhubbard@nvidia.com>
+To: Jan Kara <jack@suse.cz>
+References: <20191113042710.3997854-1-jhubbard@nvidia.com>
+ <20191113042710.3997854-10-jhubbard@nvidia.com>
+ <20191113104308.GE6367@quack2.suse.cz>
+ <3850aa22-6f03-bd2b-024f-5736c4461199@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <7c590a1a-25c6-a8e7-d471-8855ceea8606@nvidia.com>
+Date: Wed, 13 Nov 2019 22:08:12 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191112065941.9548-1-ajd@linux.ibm.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <3850aa22-6f03-bd2b-024f-5736c4461199@nvidia.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1573711692; bh=DIdS7z+upWWwriggk7xvQh6W6C7nto/Dlb+Yd8YHyyo=;
+ h=X-PGP-Universal:Subject:From:To:CC:References:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=f9GCQv7TfzjvQX+YKkhiJDV/kP32g+HvR9S+vDLbLe8tqa50A8oxNI045niH9oWR6
+ Q+cRQMMuOwkhrc3UyHNB5dnYTxj30KiXA71H5zxupkKbZfd2ps9XV2bsxg1JSEMDdw
+ qf9Vcd6U4xnrGLaZQaGULc5hp7BtrN3TQq1+4QNeiyHZ0EANBdTplhxuReTGSebwB/
+ f90gLRmPU4TtSLCTxR2K8crrcttWruVUEFFlnGiNse7TapK6yl28TNAEQQYeEakb+c
+ 3z6jTyDq+9/ON54Pzsd2O5eKTbjzgyBeQwB7ztFRyxIYohzwkLXX9l0JxAXtOLXL+I
+ x4TC/t1hFahNQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,42 +76,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, stable@vger.kernel.org,
- Anton Blanchard <anton@samba.org>
+Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 12, 2019 at 05:59:41PM +1100, Andrew Donnellan wrote:
-> From: Nicholas Piggin <npiggin@gmail.com>
+On 11/13/19 3:22 PM, John Hubbard wrote:
+> On 11/13/19 2:43 AM, Jan Kara wrote:
+> ...
+>> How does FOLL_PIN result in grabbing (at least normal, for now) page reference?
+>> I didn't find that anywhere in this patch but it is a prerequisite to
+>> converting any user to pin_user_pages() interface, right?
 > 
-> Commit ff45000fcb56b5b0f1a14a865d3541746d838a0a upstream.
 > 
-> The boot wrapper performs its own relocations and does not require
-> PT_INTERP segment. However currently we don't tell the linker that.
+> ohhh, I messed up on this intermediate patch: it doesn't quite stand alone as
+> it should, as you noticed. To correct this, I can do one of the following:
 > 
-> Prior to binutils 2.28 that works OK. But since binutils commit
-> 1a9ccd70f9a7 ("Fix the linker so that it will not silently generate ELF
-> binaries with invalid program headers. Fix readelf to report such
-> invalid binaries.") binutils tries to create a program header segment
-> due to PT_INTERP, and the link fails because there is no space for it:
+> a) move the new pin*() routines into the later patch 16 ("mm/gup:
+> track FOLL_PIN pages"), or
 > 
->   ld: arch/powerpc/boot/zImage.pseries: Not enough room for program headers, try linking with -N
->   ld: final link failed: Bad value
+> b) do a temporary thing here, such as setting FOLL_GET and adding a TODO,
+> within the pin*() implementations. And this switching it over to FOLL_PIN
+> in patch 16.
 > 
-> So tell the linker not to do that, by passing --no-dynamic-linker.
+> I'm thinking (a) is less error-prone, so I'm going with that unless someone
+> points out that that is stupid. :)
 > 
-> Cc: stable@vger.kernel.org
-> Reported-by: Anton Blanchard <anton@samba.org>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> [mpe: Drop dependency on ld-version.sh and massage change log]
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> [ajd: backport to v4.4 (resolve conflict with a comment line)]
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> ---
->  arch/powerpc/boot/wrapper | 24 +++++++++++++++++++++++-
->  1 file changed, 23 insertions(+), 1 deletion(-)
 
-Now queud up, thanks.
+OK, just to save anyone from wasting time reading the above: (a) is, in fact,
+stupid, after all. ha. That is because pin_user_pages() is called in the 
+intervening patches.
+ 
+So anyway, I'll work out an ordering to fix it up, it's not complicated.
 
-greg k-h
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
+
