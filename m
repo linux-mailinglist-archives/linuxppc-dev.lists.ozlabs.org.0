@@ -1,52 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C216BFC809
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 14:44:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DN4q4W9rzF675
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 00:44:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CA7FC819
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 14:48:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DN9t0Lj9zF60q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 00:48:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cyphar.com (client-ip=2001:67c:2050::465:201;
- helo=mout-p-201.mailbox.org; envelope-from=cyphar@cyphar.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d41;
+ helo=mail-io1-xd41.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org
- [IPv6:2001:67c:2050::465:201])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="alUJk1RQ"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DMrV1Lj4zF6Bm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 00:33:43 +1100 (AEDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:1:0])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47DMrH5rJDzQl9x;
- Thu, 14 Nov 2019 14:33:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
- by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de
- [80.241.56.117]) (amavisd-new, port 10030)
- with ESMTP id Wtrcg9lX2PUE; Thu, 14 Nov 2019 14:33:30 +0100 (CET)
-Date: Fri, 15 Nov 2019 00:33:00 +1100
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v15 3/9] namei: LOOKUP_NO_XDEV: block mountpoint crossing
-Message-ID: <20191114133300.soxnzmufwbt2ddid@yavin.dot.cyphar.com>
-References: <20191105090553.6350-1-cyphar@cyphar.com>
- <20191105090553.6350-4-cyphar@cyphar.com>
- <20191113013630.GZ26530@ZenIV.linux.org.uk>
- <20191114044945.ldedzjrb4s7i7irr@yavin.dot.cyphar.com>
- <20191114054348.GH26530@ZenIV.linux.org.uk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DMt45B4jzF7gZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 00:35:08 +1100 (AEDT)
+Received: by mail-io1-xd41.google.com with SMTP id s3so6795141ioe.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 05:35:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=SDMYH8wyhFJnrn+Ox/2VWjvOZYIwEyWGWTeXD5Vgcdk=;
+ b=alUJk1RQQwuxGMqaBmhWEA3xWwlf84pGl1oPk1UGnp6sNptml0YSuwSmzfOdaLngvm
+ xT9yXTbdpD+5Mmjq9qfgd99SR2Xd9/WKlXVb753/XZB0eLbp2ilzQ814E9RshkDMNePK
+ XVYZek9gQ9r5icYTst/3MYqvE102Us7C4+IP6PJpztGtYwAJOGfsJDgi99h4zC/qIsbr
+ T7Qkg6ApEJYiJWj7uZVKnz9hfA0NmYN8bzQjkZ4m0zdVL6MqJABjrdaZVHGtXo9p0avt
+ 9jGDrUjuTVG5fke8UncntagtKL8gq+ZiCqhWBaSriK+N1Z8d7MCKtLzOjZ1Q1dflbKV6
+ wXhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=SDMYH8wyhFJnrn+Ox/2VWjvOZYIwEyWGWTeXD5Vgcdk=;
+ b=R0SxqsiTmrWjovxs71E9uxvE7eCmFtcGxcns1RQYsyQbgiJYwk01myP5vM6hbWk8cX
+ xYlz5f7z6ND+w6PomJ3oyPqC/JY1JIqaQlvyMxCWDNBM1f9ffa3mg2mWIMhjVUrVHEmM
+ bK+XPoVCsV6Tag6UlhGQR5fLubih4iNlP4NQW53/mIUrpgch2x8AM6wdMctRNXQL80mt
+ ynDhqrGSJBGhuA6OlnpLaCJl2+/MaVkVkbBjmYpWdLyqY7edCeEZpcmGZ/cwcgAtffj9
+ bQnJ7ijOFYDjPsNn6dn+jNM3IhgND5WOJDmuWrmzh3x7YASdJL5wVHCJBjVn/xcw4X+F
+ l6Dg==
+X-Gm-Message-State: APjAAAXR0iNAYNZWQqcrbAg8Vu7qvc2ysveOYHCbqyJWxwvzduyqHr3b
+ +Hy0vXfTtEVrf2LsIXuU3sd1WKkn5GEVe04r1cU=
+X-Google-Smtp-Source: APXvYqw8JmfGbQA+DhukuQdd5C2QtFkiE5/ehse5+R9TvBZT5tIQ4lki5Zbxe09l6ZD+NsFNDDvvJnvONkdK/MFQECE=
+X-Received: by 2002:a02:730d:: with SMTP id y13mr7613282jab.124.1573738501850; 
+ Thu, 14 Nov 2019 05:35:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="zoh3k636biknnjmo"
-Content-Disposition: inline
-In-Reply-To: <20191114054348.GH26530@ZenIV.linux.org.uk>
+References: <20191113094035.22394-1-oohall@gmail.com>
+ <20191113143143.GA54971@google.com>
+In-Reply-To: <20191113143143.GA54971@google.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 15 Nov 2019 00:34:50 +1100
+Message-ID: <CAOSf1CHzBJjxOd0f-CZcGPDW6S5GXMvw+6VmzBADJWeP2y1WAQ@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/powernv: Disable native PCIe port management
+To: Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,135 +73,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, Christian Brauner <christian.brauner@ubuntu.com>,
- Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
- Aleksa Sarai <asarai@suse.de>, Jiri Olsa <jolsa@redhat.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
- linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- Chanho Min <chanho.min@lge.com>, Jeff Layton <jlayton@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
- linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: linux-pci@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Nov 14, 2019 at 1:31 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> This is fine, but it feels like sort of a blunt instrument.  Is there
+> any practical way to clear pci_host_bridge.native_pcie_hotplug (and
+> native_aer if appropriate) for the PHBs in question? That would also
+> prevent pciehp from binding.
 
---zoh3k636biknnjmo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It is a large hammer, but I don't see a better way to handle it for
+the moment. I had another look and my initial assessment was wrong in
+that it's the portbus driver which claims the MSI rather than pciehp
+itself. The MSI in the PCIe capability is shared between hotplug
+events, PMEs, and BW notifications so to make the portbus concept work
+the portbus driver needs to own the interrupt. Basicly, pnv_php and
+portbus are fundamentally at odds with each other and can't be used
+concurrently.
 
-On 2019-11-14, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Thu, Nov 14, 2019 at 03:49:45PM +1100, Aleksa Sarai wrote:
-> > On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > > On Tue, Nov 05, 2019 at 08:05:47PM +1100, Aleksa Sarai wrote:
-> > >=20
-> > > > @@ -862,6 +870,8 @@ static int nd_jump_root(struct nameidata *nd)
-> > > >  void nd_jump_link(struct path *path)
-> > > >  {
-> > > >  	struct nameidata *nd =3D current->nameidata;
-> > > > +
-> > > > +	nd->last_magiclink.same_mnt =3D (nd->path.mnt =3D=3D path->mnt);
-> > > >  	path_put(&nd->path);
-> > > > =20
-> > > >  	nd->path =3D *path;
-> > > > @@ -1082,6 +1092,10 @@ const char *get_link(struct nameidata *nd)
-> > > >  		if (nd->flags & LOOKUP_MAGICLINK_JUMPED) {
-> > > >  			if (unlikely(nd->flags & LOOKUP_NO_MAGICLINKS))
-> > > >  				return ERR_PTR(-ELOOP);
-> > > > +			if (unlikely(nd->flags & LOOKUP_NO_XDEV)) {
-> > > > +				if (!nd->last_magiclink.same_mnt)
-> > > > +					return ERR_PTR(-EXDEV);
-> > > > +			}
-> > > >  		}
-> > >=20
-> > > Ugh...  Wouldn't it be better to take that logics (some equivalent th=
-ereof)
-> > > into nd_jump_link()?  Or just have nd_jump_link() return an error...
-> >=20
-> > This could be done, but the reason for stashing it away in
-> > last_magiclink is because of the future magic-link re-opening patches
-> > which can't be implemented like that without putting the open_flags
-> > inside nameidata (which was decided to be too ugly a while ago).
-> >=20
-> > My point being that I could implement it this way for this series, but
-> > I'd have to implement something like last_magiclink when I end up
-> > re-posting the magic-link stuff in a few weeks.
-> >=20
-> > Looking at all the nd_jump_link() users, the other option is to just
-> > disallow magic-link crossings entirely for LOOKUP_NO_XDEV. The only
-> > thing allowing them permits is to resolve file descriptors that are
-> > pointing to the same procfs mount -- and it's unclear to me how useful
-> > that really is (apparmorfs and nsfs will always give -EXDEV because
-> > aafs_mnt and nsfs_mnt are internal kernel vfsmounts).
->=20
-> I would rather keep the entire if (nd->flags & LOOKUP_MAGICLINK_JUMPED)
-> out of the get_link().  If you want to generate some error if
-> nd_jump_link() has been called, just do it right there.  The fewer
-> pieces of state need to be carried around, the better...
+I also think there's some latent issues with the interaction of DPC
+and EEH since they operate off the same set of error messages. We
+haven't run into any problems yet, but I think that's largely because
+we haven't shipped any systems with DPC enabled. In any case, I'd
+prefer we disabled portbus until we've fully unpacked what's going on
+there.
 
-Sure, I can make nd_jump_link() give -ELOOP and drop the current need
-for LOOKUP_MAGICLINK_JUMPED -- if necessary we can re-add it for the
-magic-link reopening patches.
+> We might someday pull portdrv into the PCI core directly instead of as
+> a separate driver, and I'm thinking that might be easier if we have
+> more specific indications of what the core shouldn't use.
 
-> And as for opening them...  Why would you need full open_flags in there?
-> Details, please...
-
-I was referring to [1] which has been dropped from this series. I
-misspoke -- you don't need the full open_flags, you just need acc_mode
-in nameidata -- but from memory you (understandably) weren't in favour
-of that either because it further muddled the open semantics with namei.
-
-So the solution I went with was to stash away the i_mode of the
-magiclink in nd->last_magiclink.mode (though to avoid a race which Jann
-found, you actually need to recalculate it when you call nd_jump_link()
-but that's a different topic) and then check it in trailing_magiclink().
-
-However, I've since figured out that we need to restrict things like
-bind-mounts and truncate() because they can be used to get around the
-restrictions. I dropped that patch from this series so that I could work
-on implementing the restrictions for the other relevant VFS syscalls
-separately from openat2 (upgrade_mask will be re-added to open_how with
-those patches).
-
-My point was that AFAICS we will either have to have nd->acc_mode (or
-something similar) or have nd->last_magiclink in order to implement the
-magic-link reopening hardening.
-
-[1]: https://lore.kernel.org/lkml/20190930183316.10190-2-cyphar@cyphar.com/
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---zoh3k636biknnjmo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXc1XiQAKCRCdlLljIbnQ
-EgEVAQDde9bpKjJAbLEIt4D/9cw3B8CHqEBeW8SnIT4PqQNQUQD/TtE4FY5p3N1d
-gPZFRde/N3ihwtWscDvPXctFNxykJAQ=
-=TSKH
------END PGP SIGNATURE-----
-
---zoh3k636biknnjmo--
+It's not intended to be a permanent change. In the long term I want to
+move everything except the initialisation and reset of the PHB out of
+firmware and into the kernel so we can use more of the native PCIe
+management features.
