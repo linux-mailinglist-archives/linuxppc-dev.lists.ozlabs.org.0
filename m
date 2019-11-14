@@ -2,36 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605A5FC3B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 11:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03436FC3C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 11:13:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DHJX3jxczF7PJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 21:09:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DHP12WDBzF4Rk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2019 21:13:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DFy55GvGzF5nd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 20:08:13 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DFy82CzczF5gT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 20:08:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 47DFy51qvdz9sSS; Thu, 14 Nov 2019 20:08:13 +1100 (AEDT)
+ id 47DFy65flMz9sSS; Thu, 14 Nov 2019 20:08:14 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 47DFy45qFBz9sST; Thu, 14 Nov 2019 20:08:12 +1100 (AEDT)
+ id 47DFy61bydz9sSL; Thu, 14 Nov 2019 20:08:13 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: dc87f18615db9dc74a75cfb4a57ed33b07a3903a
-In-Reply-To: <1572492694-6520-9-git-send-email-zohar@linux.ibm.com>
+X-powerpc-patch-commit: d72ea4915c7e6fa5e7b9022a34df66e375bfe46c
+In-Reply-To: <1572492694-6520-10-git-send-email-zohar@linux.ibm.com>
 To: Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org,
  linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v10 8/9] powerpc/ima: update ima arch policy to check for
- blacklist
-Message-Id: <47DFy45qFBz9sST@ozlabs.org>
-Date: Thu, 14 Nov 2019 20:08:12 +1100 (AEDT)
+Subject: Re: [RFC PATCH v10 9/9] powerpc/ima: indicate kernel modules appended
+ signatures are enforced
+Message-Id: <47DFy61bydz9sSL@ozlabs.org>
+Date: Thu, 14 Nov 2019 20:08:13 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,18 +52,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-10-31 at 03:31:33 UTC, Mimi Zohar wrote:
-> From: Nayna Jain <nayna@linux.ibm.com>
+On Thu, 2019-10-31 at 03:31:34 UTC, Mimi Zohar wrote:
+> The arch specific kernel module policy rule requires kernel modules to
+> be signed, either as an IMA signature, stored as an xattr, or as an
+> appended signature.  As a result, kernel modules appended signatures
+> could be enforced without "sig_enforce" being set or reflected in
+> /sys/module/module/parameters/sig_enforce.  This patch sets
+> "sig_enforce".
 > 
-> This patch updates the arch-specific policies for PowerNV system to make
-> sure that the binary hash is not blacklisted.
-> 
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> Cc: Jessica Yu <jeyu@kernel.org>
 > Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+> Cc: Jessica Yu <jeyu@kernel.org>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/dc87f18615db9dc74a75cfb4a57ed33b07a3903a
+https://git.kernel.org/powerpc/c/d72ea4915c7e6fa5e7b9022a34df66e375bfe46c
 
 cheers
