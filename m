@@ -2,51 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B061FD3AA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 05:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0D9FD3AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 05:32:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Dll61V2mzF7kk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 15:30:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Dlnw24XYzF48D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 15:32:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::241;
+ helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="guB1CbXX"; 
+ dkim-atps=neutral
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Dlj21kyFzF7dT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 15:28:38 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="TdNXZRi4"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47Dlj16q4Nz9sP3;
- Fri, 15 Nov 2019 15:28:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1573792118;
- bh=MWdn41PZG6SZc8Chav2+ActZ+b4sq7GWSSOQtit0J64=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=TdNXZRi4NOqbMSvdLS7nMZC7omM3sukXKqe3Ndimj4J7mqhooznCbAJDWI/f457cK
- B/9XXs1KVmRXMTn13YKRrSS5GQ5OWQgSfrGavUaIGFHRJ9v6vlDYQYqm7VeincO2fR
- cac6MmkmgY3zkN+5b7L51ZVPSp15dv7w/Doo4J7iPFms9YD6Fs/tWtu4dwR3FRREd9
- tuBESXKObtkZdR/1hslqabODpfAXj4CSzCAis6luQNSBfn9ZF3teekZIKAVKSVSEsn
- J/mxX0DDdiVtiTcekr104D9ZvB7QAbuXNcNc4y8DlFrg9iohSA0mvfgh6mXfSmLqpp
- KnVod41p2D1WA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/powernv: Disable native PCIe port management
-In-Reply-To: <5a12d199-fa1f-5a60-05d8-df9edffbc227@linux.ibm.com>
-References: <20191113094035.22394-1-oohall@gmail.com>
- <5a12d199-fa1f-5a60-05d8-df9edffbc227@linux.ibm.com>
-Date: Fri, 15 Nov 2019 15:28:35 +1100
-Message-ID: <87a78xepak.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Dllg1wpTzDqZX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 15:30:53 +1100 (AEDT)
+Received: by mail-oi1-x241.google.com with SMTP id n14so7475694oie.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 20:30:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=kRWArS8EY6M5DOjOjqwZ6+pvf8YoFwoc/oPe6h/50XU=;
+ b=guB1CbXX81G22dmWZBHxcVVxa54wwF5isiRP8DfyGl6WLw5qsD8/1yYkL94xe1bvja
+ YWrfIftutXLXDL0eJK6ZS/da065bfHQYvNr79ght47XY6Zo0Ik8kf5tpJXSMFAAFQnCw
+ ubcAHiqDy1ycfTVOPB41eht7V6f8fV65ZKDZ0inrspQuNJKy3jkEwKSowxth/UevHA+Z
+ fTEAoFQL0v3zpTHMc57OpaWN8U0odan50b9dK7PBSP1E9f0eElQWxG9JTLJNXx33+/fU
+ uN/a1NVNCswzKJSR8+RQj5yu/EViETOWFER8emzdphHbCRqRIAw57SwazMYWno23m3Pf
+ w2vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=kRWArS8EY6M5DOjOjqwZ6+pvf8YoFwoc/oPe6h/50XU=;
+ b=ns5hE9Vr2vk2Y2dnME7TzXh8oEgStC89KjD2FNfKYqPj1g8Ckn5S0hOXcOe8Zx0dUv
+ yl+JYCiFWR0bJlI/jqCO29VzLY4ai5zk31GFWdRB8Wwnl6MSyoYkb9Khr+W+Srx1juqL
+ 2q0eEwrimgoAI850TioqFkMt6N2nFzRTIi7IqdPBC/0OLnu2Wi+emUwODoouvhV/6Dfg
+ 3AH0CuHmMAGgtYcsyPdwwytNFScd9W1lyQRDKwWkdEOnO7oHNG1LSnZamZZR4fE9QvI7
+ MHYqG0atVOZ9Pwmg16zGYa4DZs0cL+vl3xApDU73NFmHioDOzGWeWaKITYh2rHuYXHvT
+ edXQ==
+X-Gm-Message-State: APjAAAVp/RrQgpdlQA4+YPKkvKMmenj6vTJyEJwIKh4RbNIUNxVfEGek
+ XWA+Yq4uOyUVGkXYwAc9a0uEr62/d11heEsQwsebZw==
+X-Google-Smtp-Source: APXvYqxglauMMGlyWf/TClpfIHTmgAmcgrRFm8og4eYzgO7jYK3rFnEyN8B0fbbAiBI0hQLPzfZ1wmS7ammk00zCWVA=
+X-Received: by 2002:aca:ead7:: with SMTP id i206mr6863559oih.0.1573792250134; 
+ Thu, 14 Nov 2019 20:30:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20191025044721.16617-1-alastair@au1.ibm.com>
+ <20191025044721.16617-3-alastair@au1.ibm.com>
+In-Reply-To: <20191025044721.16617-3-alastair@au1.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 14 Nov 2019 20:30:38 -0800
+Message-ID: <CAPcyv4gb7xZpY+F9qupJbLznqHbyCOuOee8R6aLby72UkyjtZg@mail.gmail.com>
+Subject: Re: [PATCH 02/10] nvdimm: remove prototypes for nonexistent functions
+To: "Alastair D'Silva" <alastair@au1.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,98 +75,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org,
- Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Vishal Verma <vishal.l.verma@intel.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>, alastair@d-silva.org,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Qian Cai <cai@lca.pw>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Keith Busch <keith.busch@intel.com>, Linux MM <linux-mm@kvack.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tyrel Datwyler <tyreld@linux.ibm.com> writes:
-> Nothing but pedantic spelling and grammar nits of the commit log follow.
+On Thu, Oct 24, 2019 at 9:49 PM Alastair D'Silva <alastair@au1.ibm.com> wrote:
+>
+> From: Alastair D'Silva <alastair@d-silva.org>
+>
+> These functions don't exist, so remove the prototypes for them.
+>
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 
-Thanks, they were annoying me :)
-
-cheers
-
-> On 11/13/19 1:40 AM, Oliver O'Halloran wrote:
->> On PowerNV the PCIe topology is (currently) managed the powernv platform
->
-> s/the powernv/by the powernv
->
->> code in cooperation with firmware. The PCIe-native service drivers bypass
->> both and this can cause problems.
->> 
->> Historically this hasn't been a big deal since the only port service
->> driver that saw much use was the AER driver. The AER driver relies
->> a kernel service to report when errors occur rather than acting autonmously
->
-> s/a kernel/on a kernel
-> autonomously
->
->> so it's fairly easy to ignore. On PowerNV (and pseries) AER events are
->> handled through EEH, which ignores the AER service, so it's never been
->> an issue.
->> 
->> Unfortunately, the hotplug port service driver (pciehp) does act
->> autonomously and conflicts with the platform specific hotplug
->> driver (pnv_php). The main issue is that pciehp claims the interrupt
->> associated with the PCIe capability which in turn prevents pnv_php from
->> claiming it.
->> 
->> This results in hotplug events being handled by pciehp which does not
->> notify firmware when the PCIe topology changes, and does not setup/teardown
->> the arch specific PCI device structures (pci_dn) when the topology changes.
->> The end result is that hot-added devices cannot be enabled and hot-removed
->> devices may not be fully torn-down on removal.
->> 
->> We can fix these problems by setting the "pcie_ports_disabled" flag during
->> platform initialisation. The flag indicates the platform owns the PCIe
->> ports which stops the portbus driver being registered.
->
-> s/being/from being
->
->> 
->> Cc: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
->> Fixes: 66725152fb9f ("PCI/hotplug: PowerPC PowerNV PCI hotplug driver")
->> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
->> ---
->> Sergey, just FYI. I'll try sort out the rest of the hotplug
->> trainwreck in 5.6.
->> 
->> The Fixes: here is for the patch that added pnv_php in 4.8. It's been
->> a problem since then, but wasn't noticed until people started testing
->> it after the EEH fixes in commit 799abe283e51 ("powerpc/eeh: Clean up
->> EEH PEs after recovery finishes") went in earlier in the 5.4 cycle.
->> ---
->>  arch/powerpc/platforms/powernv/pci.c | 17 +++++++++++++++++
->>  1 file changed, 17 insertions(+)
->> 
->> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
->> index 2825d00..ae62583 100644
->> --- a/arch/powerpc/platforms/powernv/pci.c
->> +++ b/arch/powerpc/platforms/powernv/pci.c
->> @@ -941,6 +941,23 @@ void __init pnv_pci_init(void)
->> 
->>  	pci_add_flags(PCI_CAN_SKIP_ISA_ALIGN);
->> 
->> +#ifdef CONFIG_PCIEPORTBUS
->> +	/*
->> +	 * On PowerNV PCIe devices are (currently) managed in cooperation
->> +	 * with firmware. This isn't *strictly* required, but there's enough
->> +	 * assumptions baked into both firmware and the platform code that
->> +	 * it's unwise to allow the portbus services to be used.
->> +	 *
->> +	 * We need to fix this eventually, but for now set this flag to disable
->> +	 * the portbus driver. The AER service isn't required since that AER
->> +	 * events are handled via EEH. The pciehp hotplug driver can't work
->> +	 * without kernel changes (and portbus binding breaks pnv_php). The
->> +	 * other services also require some thinking about how we're going
->> +	 * to integrate them.
->> +	 */
->> +	pcie_ports_disabled = true;
->> +#endif
->> +
->>  	/* If we don't have OPAL, eg. in sim, just skip PCI probe */
->>  	if (!firmware_has_feature(FW_FEATURE_OPAL))
->>  		return;
->> 
+Looks good, applied.
