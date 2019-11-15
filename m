@@ -1,82 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA415FDF26
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 14:43:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47F00h10TvzF5Tk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 00:43:00 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5052FDF33
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 14:45:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47F02y0p8qzF7MY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 00:44:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::143;
+ helo=mail-lf1-x143.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
+ header.b="Xma2EgzK"; dkim-atps=neutral
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
+ [IPv6:2a00:1450:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Dzyc35YTzF1Pw
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 00:41:12 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAFDUuvv051817
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 08:41:09 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2w9nsfrmtj-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 08:41:08 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Fri, 15 Nov 2019 13:41:07 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 15 Nov 2019 13:41:05 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAFDf4Te45482058
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 15 Nov 2019 13:41:04 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33E2A4C050;
- Fri, 15 Nov 2019 13:41:04 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 213464C04A;
- Fri, 15 Nov 2019 13:41:03 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 15 Nov 2019 13:41:02 +0000 (GMT)
-Date: Fri, 15 Nov 2019 19:11:02 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/smp: Use nid as fallback for package_id
-References: <20190822143853.19138-1-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47F00M2JGQzF55L
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 00:42:42 +1100 (AEDT)
+Received: by mail-lf1-x143.google.com with SMTP id q28so8060603lfa.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 05:42:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rasmusvillemoes.dk; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=7M8XWf+aSDuZ60G0e6vwA3UVsGqy52moHTICwgTGdKE=;
+ b=Xma2EgzKd5UJeq5rjgYO/fzDuIC/Z9BgtHLjQs9+P5c/7/SXXE2ft7Hh+9GwYMfTE+
+ 9du2iMEIHbg/0YaeyOJHFdSyMe9GMWHFRsBrm9DXPfQ+JJIx7HZWZ8DNnGCQrqRN50pY
+ 8CiCBcoL8DRIdBmVshEqN4b0TeAtXiVOcIOLs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=7M8XWf+aSDuZ60G0e6vwA3UVsGqy52moHTICwgTGdKE=;
+ b=bnpUmddxpp/1ck0/bYm6KF5jv/XoyRcYyd4GCDG1ZPdSTy0HwZQRq7+kR28VF15DD7
+ jH+9RgAd9zEgpwTaR1ENzEGzDzIqnqo3XNjBLinYYqyFHKCIlB8KAEC5GZzcMilozmHw
+ QtE9F1wIb+dzMoa/Fdod7bUpj2za1f/cefO4oRMI36OoTDDAZf8uiwdoObI74VWk0Ff3
+ W1midz0ZJXuFAjILsTLsNPUFXxYaf7SlOItm6HoJawaDqswL8Jb/BWhWhGTyTN8bs6cw
+ gWc09Jzb3Ib/fepsdgQzYKqmrOJH1VC/ugF9DJuAfZdkxiNg4/Sf8JaDrO+xFuDOvS2w
+ +eDQ==
+X-Gm-Message-State: APjAAAWTmaggRK3mSjejf/7lzmce+0mGiel89sNICcLAEY0Li+IedjnD
+ uAqIheMDrSsnH5L+mdRlprRP0w==
+X-Google-Smtp-Source: APXvYqwHN2Yvm0PLT+a7BaSRp11SLB5XySfnSHH3TF13kuNUSwKuiAUR9T+ZHUG0/JfvfbuuNjwNSA==
+X-Received: by 2002:ac2:43a3:: with SMTP id t3mr11623097lfl.150.1573825355715; 
+ Fri, 15 Nov 2019 05:42:35 -0800 (PST)
+Received: from [172.16.11.28] ([81.216.59.226])
+ by smtp.gmail.com with ESMTPSA id u4sm4063165ljj.87.2019.11.15.05.42.34
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 15 Nov 2019 05:42:35 -0800 (PST)
+Subject: Re: [PATCH v3 36/36] soc: fsl: qe: remove PPC32 dependency from
+ CONFIG_QUICC_ENGINE
+To: kbuild test robot <lkp@intel.com>
+References: <20191101124210.14510-37-linux@rasmusvillemoes.dk>
+ <201911152105.ojcD68ZC%lkp@intel.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <41765275-dbd5-406e-8ba1-bd0f92b737ee@rasmusvillemoes.dk>
+Date: Fri, 15 Nov 2019 14:42:33 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20190822143853.19138-1-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19111513-0016-0000-0000-000002C3EE6B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111513-0017-0000-0000-000033259602
-Message-Id: <20191115134102.GC21514@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-15_04:2019-11-15,2019-11-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=1 adultscore=0
- spamscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 mlxlogscore=774 priorityscore=1501 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911150121
+In-Reply-To: <201911152105.ojcD68ZC%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,26 +82,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hey Michael,
-
-* Srikar Dronamraju <srikar@linux.vnet.ibm.com> [2019-08-22 20:08:53]:
-
-> Package_id is to find out all cores that are part of the same chip. On
-> PowerNV machines, package_id defaults to chip_id. However ibm,chip_id
-> property is not present in device-tree of PowerVM Lpars. Hence lscpu
-> output shows one core per socket and multiple cores.
+On 15/11/2019 14.31, kbuild test robot wrote:
+> Hi Rasmus,
 > 
+> Thank you for the patch! Perhaps something to improve:
 
-Can you let me know if you have any comments on this patch?
+Hello kbuild
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+Thanks for your reports, but this has already been fixed. Is there some
+way to indicate to the kbuild bot that it should stop using resources on
+a specific patch set? There's really no point in the bot doing lots of
+builds and sending out reports for a series that has already been
+superseded - and reviewers might easily think that the report concerns
+the latest revision. Perhaps something like
 
+kbuild-ignore: <msg id of cover letter of revision N-1>
+
+in the cover-letter of revision N? Or is there some smarter (automatic)
+way of doing this?
+
+Rasmus
