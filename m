@@ -2,75 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB330FE6DB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 22:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B4FFE831
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 23:42:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47F9tr71WCzF6qD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 08:08:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47FCzV54mDzF5nD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 09:42:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=yadro.com (client-ip=89.207.88.252; helo=mta-01.yadro.com;
+ envelope-from=r.bolshakov@yadro.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="TK0eriJD"; 
+ dmarc=pass (p=none dis=none) header.from=yadro.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="GZ2V7+gb"; 
  dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47F9rd2v2GzF43g
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 08:06:40 +1100 (AEDT)
-Received: by mail-qt1-x842.google.com with SMTP id t8so12260408qtc.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 13:06:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=PVeUd0Z9qID74jwTLN71/X5ho1REfkJ1WwqU2FF2PSI=;
- b=TK0eriJDcFnWuO9O157SGzkRAyr6VHRcA7oMDgqrEmpehZYvWbIXiYVuMtdHtdn1y6
- 6y8xxDuJ/xzb/5fbtQAjwpXd7iMrXIZz15GFEQ91jHgA0G/cOlbPnNZz5er57yCILzyf
- O6GsrUgx8v9gK+PFWALE9lj+lKn6q4lXdJ8hpTeU+EgLwr7TnG0p9Nm1k0uOKUSFQc2f
- wQKhKin3tmKzlNqngYtpxcgxw1fHrZfNdHzFj4Xgm9bYFUUrxYV2FDSxTT4NlXTJ25WG
- r+PzjOkX0Az2Pgtllj8bPpOC4gxl6f6lFtyPc/a3wuqoTQZnpVCJ6Ck//OxjJBe+TXry
- O9+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=PVeUd0Z9qID74jwTLN71/X5ho1REfkJ1WwqU2FF2PSI=;
- b=OxD9pKlK32tty/HNIMXmIYeRhimbAKagFtYW+636W2wg0qRmdehtjOxMV41OrI33l6
- /ZNkbrdtbqAVfhyXmfy4DZL2wviYr3l9zfD77Jl3OJ2LB5WbQM12DYqh8479/PLEstJZ
- svOwtb4zMwubB7eaLY4UcLlWstyxCr3DmarC9nIgP5ebDXPZzZSR7VXB8RPrdXLNnIQQ
- vpn6QhVNrd+kB515MD//FaWOIDC2w/CZast4/qqovtncXvVbif4H0E+TKZUMMc9aL7Ws
- QKQvW9KG8rXtFCzXRlNY9I0S04GcPArwJKggLJ1IKHMMtDVMZOzCnGlmTfP9cQMv0tOE
- vbaQ==
-X-Gm-Message-State: APjAAAUE4wCeXwbB9LxoI1NhSCkhDSaUmPilz95Mm5mlHy3/EsYbLp6I
- hXyxe4Hk2FKJyqpUPuJS99gPn/PdkCo=
-X-Google-Smtp-Source: APXvYqw4SOGDOoWQJs12lnlimfm/ZUDq9OCmmNY6RKMEEYMcSf2xS9P8MXAO3XVBW7XJs3aVHB+K1Q==
-X-Received: by 2002:ac8:3142:: with SMTP id h2mr16647308qtb.182.1573851996738; 
- Fri, 15 Nov 2019 13:06:36 -0800 (PST)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
- [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id m65sm5397635qte.54.2019.11.15.13.06.35
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 15 Nov 2019 13:06:35 -0800 (PST)
-Message-ID: <1573851994.5937.138.camel@lca.pw>
-Subject: Re: powerpc ftrace broken due to "manual merge of the ftrace tree
- with the arm64 tree"
-From: Qian Cai <cai@lca.pw>
-To: Steven Rostedt <rostedt@goodmis.org>
-Date: Fri, 15 Nov 2019 16:06:34 -0500
-In-Reply-To: <20191115160230.78871d8f@gandalf.local.home>
-References: <1573849732.5937.136.camel@lca.pw>
- <20191115160230.78871d8f@gandalf.local.home>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47F2LX0zfczF6Pr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 02:28:32 +1100 (AEDT)
+Received: from localhost (unknown [127.0.0.1])
+ by mta-01.yadro.com (Postfix) with ESMTP id 512BD42F13;
+ Fri, 15 Nov 2019 15:28:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+ content-disposition:content-type:content-type:mime-version
+ :message-id:subject:subject:from:from:date:date:received
+ :received:received; s=mta-01; t=1573831707; x=1575646108; bh=5I0
+ qlFsD/6qkO9Q90l8beRR+HsrAVuvuSVaE8ni23ok=; b=GZ2V7+gbAnd/v1SDSoV
+ gQk++PjHQNZc3n/xLqJu05ZiRulN2ha1ZNK77RrIwxwCsK1iWYAw4Qt653ygQeGu
+ ZuTk/6vGCSEqXPorD1LPciYomJqsB/reqgV/lsF2WDXPcaRRK8WM+uJTW4OFq6wz
+ 6Jv7WlxdVUQfhpx7Z/aOiwa0=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+ by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id OWmDexcDP9pg; Fri, 15 Nov 2019 18:28:27 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
+ [172.17.10.102])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mta-01.yadro.com (Postfix) with ESMTPS id E325642A6D;
+ Fri, 15 Nov 2019 18:28:26 +0300 (MSK)
+Received: from localhost (172.17.128.60) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Fri, 15
+ Nov 2019 18:28:26 +0300
+Date: Fri, 15 Nov 2019 18:28:26 +0300
+From: Roman Bolshakov <r.bolshakov@yadro.com>
+To: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Subject: HPT allocation failures on POWER8 KVM hosts
+Message-ID: <20191115152826.hvcu3borgx4hp275@SPB-NB-133.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-Originating-IP: [172.17.128.60]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
+X-Mailman-Approved-At: Sat, 16 Nov 2019 09:41:08 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,89 +70,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>
+Cc: qemu-ppc@nongnu.org, linuxppc-dev@lists.ozlabs.org, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-11-15 at 16:02 -0500, Steven Rostedt wrote:
-> On Fri, 15 Nov 2019 15:28:52 -0500
-> Qian Cai <cai@lca.pw> wrote:
-> 
-> > # echo function >/sys/kernel/debug/tracing/current_tracer
-> > 
-> > It hangs forever with today's linux-next on powerpc. Reverted the conflict fix
-> > [1] as below fixes the issue.
-> > 
-> > [1] https://lore.kernel.org/linux-next/20191115135357.10386fac@canb.auug.org.au/
-> 
-> What's your config file.
+Hi Aneesh,
 
-https://raw.githubusercontent.com/cailca/linux-mm/master/powerpc.config
+We're running a lot of KVM virtual machines on POWER8 hosts and
+sometimes new VMs can't be started because there are no contiguous
+regions for HPT because of CMA region fragmentation.
 
-> 
-> And can you test the two conflicting commits to see which one caused
-> your error?
-> 
-> Test this commit please: b83b43ffc6e4b514ca034a0fbdee01322e2f7022
+The issue is covered in the LWN article: https://lwn.net/Articles/684611/
+The article points that you raised the problem on LSFMM 2016. However I
+couldn't find a follow up article on the issue.
 
-# git reset --hard b83b43ffc6e4b514ca034a0fbdee01322e2f7022
+Looking at the kernel commit log I've identified a few commits that
+might reduce CMA fragmentaiton and overcome HPT allocation failure:
+  - bd2e75633c801 ("dma-contiguous: use fallback alloc_pages for single pages")
+  - 678e174c4c16a ("powerpc/mm/iommu: allow migration of cma allocated
+    pages during mm_iommu_do_alloc")
+  - 9a4e9f3b2d739 ("mm: update get_user_pages_longterm to migrate pages allocated from
+    CMA region")
+  - d7fefcc8de914 ("mm/cma: add PF flag to force non cma alloc")
 
-Yes, that one is bad.
+Are there any other commits that address the issue? What is the first
+kernel version that shouldn't have the HPT allocation problem due to CMA
+fragmentation?
 
-> 
-> And see if the issue is with that one, and not with the one without it.
-> 
-> -- Steve
-> 
-> 
-> > 
-> > diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-
-> > generic/vmlinux.lds.h
-> > index 7d0d03a03d4d..a92222f79b53 100644
-> > --- a/include/asm-generic/vmlinux.lds.h
-> > +++ b/include/asm-generic/vmlinux.lds.h
-> > @@ -136,29 +136,20 @@
-> >  #endif
-> >  
-> >  #ifdef CONFIG_FTRACE_MCOUNT_RECORD
-> > -/*
-> > - * The ftrace call sites are logged to a section whose name depends on the
-> > - * compiler option used. A given kernel image will only use one, AKA
-> > - * FTRACE_CALLSITE_SECTION. We capture all of them here to avoid header
-> > - * dependencies for FTRACE_CALLSITE_SECTION's definition.
-> > - */
-> > -/*
-> > - * Need to also make ftrace_graph_stub point to ftrace_stub
-> > - * so that the same stub location may have different protocols
-> > - * and not mess up with C verifiers.
-> > - */
-> > -#define MCOUNT_REC()	. = ALIGN(8);				\
-> > +#ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
-> > +#define MCOUNT_REC()	. = ALIGN(8)				\
-> >  			__start_mcount_loc = .;			\
-> > -			KEEP(*(__mcount_loc))			\
-> >  			KEEP(*(__patchable_function_entries))	\
-> >  			__stop_mcount_loc = .;			\
-> >  			ftrace_graph_stub = ftrace_stub;
-> >  #else
-> > -# ifdef CONFIG_FUNCTION_TRACER
-> > -#  define MCOUNT_REC()	ftrace_graph_stub = ftrace_stub;
-> > -# else
-> > -#  define MCOUNT_REC()
-> > -# endif
-> > +#define MCOUNT_REC()	. = ALIGN(8);				\
-> > +			__start_mcount_loc = .;			\
-> > +			KEEP(*(__mcount_loc))			\
-> > +			__stop_mcount_loc = .;
-> > +#endif
-> > +#else
-> > +#define MCOUNT_REC()
-> >  #endif
-> >  
-> >  #ifdef CONFIG_TRACE_BRANCH_PROFILING
-> 
-> 
+Thank you,
+Roman
