@@ -2,73 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC4DFD74B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 08:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0140FD769
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 08:56:37 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Dr5d6zgyzF3jn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 18:46:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DrJy6ttlzF59k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 18:56:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::244;
- helo=mail-lj1-x244.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::241;
+ helo=mail-lj1-x241.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="cimPOY7g"; dkim-atps=neutral
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
+ header.b="Tj7gXOnq"; dkim-atps=neutral
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Dr2v3Ds0zF5yW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 18:44:22 +1100 (AEDT)
-Received: by mail-lj1-x244.google.com with SMTP id r7so9633266ljg.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 23:44:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DrGb4K3gzF6d7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 18:54:30 +1100 (AEDT)
+Received: by mail-lj1-x241.google.com with SMTP id t5so9663126ljk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2019 23:54:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=MerzeYQd7mMrWj7xug82ip0Zzuk57QC86rO5mCSsEzs=;
- b=cimPOY7g4EAlwVyfr4cwpdgRJdBwRgLjtx/sUwL01IBFA4qPtm6hLBgyIKILrFzJM9
- xiOtbLJf0y4FyFS5wuHNxaB4q8sFK2F7P67/5/RQWCsQ9oGFBnDTdc4D+B26iZzap9Qa
- gTUwq1Rz9t3IIvqDWNeazaS9zPcEWsGD6g1ZM=
+ bh=+C6UFetkkOkabjlrx29bRj2f/pHq6ZunDxUzZ7B8oJI=;
+ b=Tj7gXOnqtuG0wJhNZbvfhuhFF7Ajj+d/fkSs7BOhJuk6zYcUK3pqsPz4KlpJ5C6cZu
+ CQ9MRWf2wM06ny9O2bnOKcTBNvY1ewmlHc0/L/nIx34DK3gZJOIMBOt6MJMcRJUnM6lj
+ Sty8aREsnWc3bR9ednCLj5/uDLng1EyPh4j+w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=MerzeYQd7mMrWj7xug82ip0Zzuk57QC86rO5mCSsEzs=;
- b=VsXZkpBzVW7pb/efdjAunVlABMHEb85fIh1CA02PVjyqU+VfihwaYrWJniz9kT//OX
- ldF6WWmKsK+DJWo9m4yp7/vsY6Vv5PvlgQAAuBYYkrcyqv6JUxiuFkcOEkElm0/xq+1z
- vz8LXYm1wzeqt83YcOAgW0SJTzdNdpAi92HdCnrOGf0YZwRB7+scoGx3Dubs7zZpdagH
- r7dupABZYFyPsFRZdVSG8aXgPyYQIhc/e+FmFOLI9dHYKvyOEhzekPirGqmnClwbpljE
- VhNEqNrWkvBA85f1rsDBo/XF9m3GgS7AyTCpNjrWCy18EDUIG+hUJeUkrLTFgxfc2Y5l
- rPPQ==
-X-Gm-Message-State: APjAAAUk6cz6WROsJmI8uPWmgEteHtrCDa4EHNXkCjZTsAY4DH3wb/Ku
- JPYQCociNU/p3Kfb4Ikmv73xcg==
-X-Google-Smtp-Source: APXvYqw8OAiLBu508szXHtSnz3QQioa3U2uijYFbTHFzEtm/A+7bHMI6CgvxmnwrGknlwyb2z4HUYw==
-X-Received: by 2002:a2e:9784:: with SMTP id y4mr10091304lji.77.1573803854082; 
- Thu, 14 Nov 2019 23:44:14 -0800 (PST)
+ bh=+C6UFetkkOkabjlrx29bRj2f/pHq6ZunDxUzZ7B8oJI=;
+ b=H2J+/T1gQKssk6KgpI3XwiNefh/w8DZUoxNS5LgoZYI0WCu9Ggo66deyqPD57f2umb
+ LVchkvD35LNHDPNBuqRITMCWi7TAS2iM0lUwVnrJeFzDrCM+7HTb2Xk+m7WeKuwLuj8C
+ MsZHGyFIofCTu5Fk/8ljoJn4HN85dln1Xz/yxoyZgrtEXqFXJPzvjQ4ewCiigufgZZ7P
+ KMY5IEnH+G0Gfx+GXPW4lB11m6/1ZcLQCgYmkPZH13y4DeUYuA++Li8S5+OQ2xuIWPMS
+ PJq+WJ8VjnJrq3ANYyK/e3qOxbE8qHRP7WRldRimqoR6f+gVGKMgAz6KkLcxUaRIpsRh
+ 7QtQ==
+X-Gm-Message-State: APjAAAU/gzxJx4pGwxHLejQd6FSeKYawpd5KlKzZNSnkFsaw644MHUt5
+ 7BfGgvFnixiCRsRxlzGSBBYxbA==
+X-Google-Smtp-Source: APXvYqwtca4V1MXOZa/BxeDe/jqUfjT4UHa/rribPRAykBqSAV8Y1dWumBHX7aG8dBwq5CyNgx3uLQ==
+X-Received: by 2002:a2e:8809:: with SMTP id x9mr9979158ljh.82.1573804466324;
+ Thu, 14 Nov 2019 23:54:26 -0800 (PST)
 Received: from [172.16.11.28] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id p19sm3689755lji.65.2019.11.14.23.44.13
+ by smtp.gmail.com with ESMTPSA id w11sm4254332lji.45.2019.11.14.23.54.25
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 14 Nov 2019 23:44:13 -0800 (PST)
-Subject: Re: [PATCH v4 45/47] net/wan/fsl_ucc_hdlc: reject muram offsets above
- 64K
-To: Timur Tabi <timur@kernel.org>
+ Thu, 14 Nov 2019 23:54:25 -0800 (PST)
+Subject: Re: [PATCH v4 46/47] net: ethernet: freescale: make UCC_GETH
+ explicitly depend on PPC32
+To: Li Yang <leoyang.li@nxp.com>, Timur Tabi <timur@kernel.org>
 References: <20191108130123.6839-1-linux@rasmusvillemoes.dk>
- <20191108130123.6839-46-linux@rasmusvillemoes.dk>
- <CAOZdJXUibQ6RM8O4CfkYBdGsg+LMcE2ZoZEQ4txn2yvquUWwCA@mail.gmail.com>
+ <20191108130123.6839-47-linux@rasmusvillemoes.dk>
+ <CAOZdJXUX2cZfaQTkBdNrwD=jT2399rZzRFtDj6vNa==9Bmkh5A@mail.gmail.com>
+ <CADRPPNS00uU+f6ap9D-pYQUFo_T-o2bgtnYaE9qAXOwck86-OQ@mail.gmail.com>
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <79101f00-e3ff-9dd0-7a05-760f8be1ff69@rasmusvillemoes.dk>
-Date: Fri, 15 Nov 2019 08:44:12 +0100
+Message-ID: <29b45e76-f384-fe16-0891-cc51cfecefd4@rasmusvillemoes.dk>
+Date: Fri, 15 Nov 2019 08:54:24 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <CAOZdJXUibQ6RM8O4CfkYBdGsg+LMcE2ZoZEQ4txn2yvquUWwCA@mail.gmail.com>
+In-Reply-To: <CADRPPNS00uU+f6ap9D-pYQUFo_T-o2bgtnYaE9qAXOwck86-OQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -84,36 +85,38 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: netdev <netdev@vger.kernel.org>, lkml <linux-kernel@vger.kernel.org>,
- Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>,
- linuxppc-dev@lists.ozlabs.org,
+ Scott Wood <oss@buserror.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
  Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/11/2019 05.41, Timur Tabi wrote:
-> On Fri, Nov 8, 2019 at 7:04 AM Rasmus Villemoes
-> <linux@rasmusvillemoes.dk> wrote:
-> 
->> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
->> index 8d13586bb774..f029eaa7cfc0 100644
->> --- a/drivers/net/wan/fsl_ucc_hdlc.c
->> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
->> @@ -245,6 +245,11 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
->>                 ret = -ENOMEM;
->>                 goto free_riptr;
->>         }
->> +       if (riptr != (u16)riptr || tiptr != (u16)tiptr) {
-> 
-> "riptr/tiptr > U16_MAX" is clearer.
-> 
+On 15/11/2019 06.44, Li Yang wrote:
+> On Thu, Nov 14, 2019 at 10:37 PM Timur Tabi <timur@kernel.org> wrote:
+>>
+>> On Fri, Nov 8, 2019 at 7:04 AM Rasmus Villemoes
+>> <linux@rasmusvillemoes.dk> wrote:
+>>>
+>>> Currently, QUICC_ENGINE depends on PPC32, so this in itself does not
+>>> change anything. In order to allow removing the PPC32 dependency from
+>>> QUICC_ENGINE and avoid allmodconfig build failures, add this explicit
+>>> dependency.
+>>
+>> Can you add an explanation why we don't want ucc_geth on non-PowerPC platforms?
 
-I can change it, sure, but it's a matter of taste. To me the above asks
-"does the value change when it is truncated to a u16" which makes
-perfect sense when the value is next used with iowrite16be(). Using a
-comparison to U16_MAX takes more brain cycles for me, because I have to
-think whether it should be > or >=, and are there some
-signedness/integer promotion business interfering with that test.
+It's not that "we" don't want to allow building this on non-PPC per se,
+but making it build requires some surgery that I think should be done by
+whoever might eventually want it. So _my_ reason for lowering this
+dependency from QUICC_ENGINE to UCC_GETH is exactly what it says above.
+
+> I think it is because the QE Ethernet was never integrated in any
+> non-PowerPC SoC and most likely will not be in the future. 
+
+Well, that kind of thing is impossible to know for outsiders like me.
+Maybe one can amend the commit log with that info:
+
+"Also, the QE Ethernet has never been integrated on any non-PowerPC SoC
+and most likely will not be in the future."
 
 Rasmus
