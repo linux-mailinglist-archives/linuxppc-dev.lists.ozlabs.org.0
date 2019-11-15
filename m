@@ -1,46 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EA2FDEB2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 14:16:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47DzQN70w9zF3vX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 00:16:44 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F68FDE9E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 14:13:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47DzL96kTVzF75B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 00:13:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.178.242;
- helo=mslow2.mail.gandi.net; envelope-from=alexandre.belloni@bootlin.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=bootlin.com
-Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47DzN7498hzF7Dj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 00:14:43 +1100 (AEDT)
-Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id 1CCC93AEE4C
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 13:01:54 +0000 (UTC)
-X-Originating-IP: 90.66.177.178
-Received: from localhost (lfbn-1-2888-178.w90-66.abo.wanadoo.fr
- [90.66.177.178])
- (Authenticated sender: alexandre.belloni@bootlin.com)
- by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 55AB2FF805;
- Fri, 15 Nov 2019 13:01:21 +0000 (UTC)
-Date: Fri, 15 Nov 2019 14:01:21 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Li Yang <leoyang.li@nxp.com>
-Subject: Re: [PATCH] rtc: fsl-ftm-alarm: remove select FSL_RCPM and default y
- from Kconfig
-Message-ID: <20191115130121.GS3572@piout.net>
-References: <1573252856-11759-1-git-send-email-leoyang.li@nxp.com>
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="Jn5lFI/f"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47DzJ34Z0kzF0x4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 00:11:14 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id n13so6674772pff.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 05:11:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=VdF8MMu+bP4e0rsVfdQpCfgpPGQbFW5Ll/rpGu4Pq10=;
+ b=Jn5lFI/f8wVcj9sHWruYQfb/Eeq9z4tdOzYGpmkvxX7Tae6JoQRWzJRhSsjsfng2Uo
+ V2U+XvpdhwQ5jdNrVAvLN/n4yvCWp3p4KoX+/Lq6YtsVLwZJSdwC+n8BnlrRSvEMTxiP
+ 6RPMtKW8787++U21euvzijpFqHwM3CtkVoEhY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=VdF8MMu+bP4e0rsVfdQpCfgpPGQbFW5Ll/rpGu4Pq10=;
+ b=t05I5l5BDbvVGZjEC85FznLKlfL4hi/Oqt2BK1RD97YIGIdzzGPBTURXjLtVwdHR3L
+ 4bpQFlhOwxJsoCWVLK0CrY2abMpEzoOc+QxR2Xp5BsnoifE0IwEkjnKkGEVO81+6Dv43
+ RdlxpL2RrBX6XbCvPaBDAQgxzgcemeC9PLTECGYtpZkOXPA8GCxYu3J8V8Q3hDKpBWZe
+ yso8gtlDGde1vpG45VxyF/0GnOA0m1NWmWCjvPRYU3Huo7jDRf60u7ltPzX5+4iVTQgK
+ rqT8bgDw1hLef3tOFSPSGZ0C1UdCv3T6VrOQUdxELx3nc+m4Z9dWBB1oEuRdiog2i6Jc
+ oMNQ==
+X-Gm-Message-State: APjAAAVMM54X2tbDozxSVQ5rAUiq6MU0gcKygM0q6YsU7ph6tFv0HLyp
+ tmU4MNt9tBhm65qt/9inV5+ZXw==
+X-Google-Smtp-Source: APXvYqwjS1Ph0MWCRDZcAnOkeAb5th9CJ6963WKqiajxypv1u6VDdP6icoztl/u3rGq4zV6UWWidjA==
+X-Received: by 2002:a62:6044:: with SMTP id u65mr17331024pfb.227.1573823468977; 
+ Fri, 15 Nov 2019 05:11:08 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-f1d8-c2a6-5354-14d8.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:f1d8:c2a6:5354:14d8])
+ by smtp.gmail.com with ESMTPSA id y16sm11164122pfo.62.2019.11.15.05.11.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Nov 2019 05:11:07 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Marco Elver <elver@google.com>
+Subject: Re: [PATCH v2 1/2] kasan: support instrumented bitops combined with
+ generic bitops
+In-Reply-To: <CANpmjNOCxTxTpbB_LwUQS5jzfQ_2zbZVAc4nKf0FRXmrwO-7sA@mail.gmail.com>
+References: <20190820024941.12640-1-dja@axtens.net>
+ <877e6vutiu.fsf@dja-thinkpad.axtens.net>
+ <878sp57z44.fsf@dja-thinkpad.axtens.net>
+ <CANpmjNOCxTxTpbB_LwUQS5jzfQ_2zbZVAc4nKf0FRXmrwO-7sA@mail.gmail.com>
+Date: Sat, 16 Nov 2019 00:11:03 +1100
+Message-ID: <87a78xgu8o.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1573252856-11759-1-git-send-email-leoyang.li@nxp.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,29 +79,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- YueHaibing <yuehaibing@huawei.com>, lkml <linux-kernel@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org, Biwen Li <biwen.li@nxp.com>
+Cc: linux-s390@vger.kernel.org, the arch/x86 maintainers <x86@kernel.org>,
+ kasan-dev <kasan-dev@googlegroups.com>,
+ linux-arch <linux-arch@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/11/2019 16:40:56-0600, Li Yang wrote:
-> The Flextimer alarm is primarily used as a wakeup source for system
-> power management.  But it shouldn't select the power management driver
-> as they don't really have dependency of each other.
-> 
-> Also remove the default y as it is not a critical feature for the
-> systems.
-> 
-> Signed-off-by: Li Yang <leoyang.li@nxp.com>
-> ---
->  drivers/rtc/Kconfig | 2 --
->  1 file changed, 2 deletions(-)
-> 
-Applied, thanks.
+> test_bit() is an atomic bitop. I assume it was meant to be in
+> instrumented-atomic.h?
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Hmm, interesting.
+
+I was tricked by the generic version doing just a simple read, with only
+a volatile attribute to ensure the read occurs more-or-less as written:
+
+/**
+ * test_bit - Determine whether a bit is set
+ * @nr: bit number to test
+ * @addr: Address to start counting from
+ */
+static inline int test_bit(int nr, const volatile unsigned long *addr)
+{
+        return 1UL & (addr[BIT_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
+}
+
+But the docs do seem to indicate that it's atomic (for whatever that
+means for a single read operation?), so you are right, it should live in
+instrumented-atomic.h.
+
+Sadly, only x86 and s390 specify an arch_test_bit, which will make moving it
+into instumented-atomic.h break powerpc :(
+
+I'll have a crack at something next week, probably with a similar trick
+to arch_clear_bit_unlock_is_negative_byte.
+
+Regards,
+Daniel
+
+
+>
+> Thanks,
+> -- Marco
+>
+>> >> +
+>> >> +#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
+>> >> --
+>> >> 2.20.1
+>>
+>> --
+>> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
+>> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
+>> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/878sp57z44.fsf%40dja-thinkpad.axtens.net.
