@@ -1,47 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1023FE493
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 19:08:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47F5v82Y8XzF6sG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 05:08:36 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AFFBFE4A5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2019 19:13:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47F6092wcvzF4f3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 05:12:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kaod.org (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=groug@kaod.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47F5s01D1GzF3dk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 05:06:38 +1100 (AEDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 15 Nov 2019 10:06:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,309,1569308400"; d="scan'208";a="203454343"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by fmsmga008.fm.intel.com with ESMTP; 15 Nov 2019 10:06:32 -0800
-Date: Fri, 15 Nov 2019 10:06:32 -0800
-From: Ira Weiny <ira.weiny@intel.com>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v5 09/24] vfio, mm: fix get_user_pages_remote() and
- FOLL_LONGTERM
-Message-ID: <20191115180631.GA23832@iweiny-DESK2.sc.intel.com>
-References: <20191115055340.1825745-1-jhubbard@nvidia.com>
- <20191115055340.1825745-10-jhubbard@nvidia.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47F5y52M2dzF0RM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 05:11:07 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAFI8759081693
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 13:11:04 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2w9nur1dur-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2019 13:11:03 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <groug@kaod.org>;
+ Fri, 15 Nov 2019 18:11:02 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 15 Nov 2019 18:10:59 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAFIAwZo10485950
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 15 Nov 2019 18:10:59 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E4DAEA4055;
+ Fri, 15 Nov 2019 18:10:58 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ADDDAA404D;
+ Fri, 15 Nov 2019 18:10:58 +0000 (GMT)
+Received: from bahia.lan (unknown [9.145.70.126])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 15 Nov 2019 18:10:58 +0000 (GMT)
+Subject: [PATCH] powerpc/xive: Drop extern qualifiers from header function
+ prototypes
+From: Greg Kurz <groug@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 15 Nov 2019 19:10:58 +0100
+User-Agent: StGit/unknown-version
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191115055340.1825745-10-jhubbard@nvidia.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19111518-0008-0000-0000-0000032F8EB0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19111518-0009-0000-0000-00004A4EA2A5
+Message-Id: <157384145834.181768.944827793193636924.stgit@bahia.lan>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-15_05:2019-11-15,2019-11-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 clxscore=1034
+ phishscore=0 bulkscore=0 impostorscore=0 suspectscore=2 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1911150162
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,176 +88,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, linux-block@vger.kernel.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: trivial@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ =?utf-8?q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 14, 2019 at 09:53:25PM -0800, John Hubbard wrote:
-> As it says in the updated comment in gup.c: current FOLL_LONGTERM
-> behavior is incompatible with FAULT_FLAG_ALLOW_RETRY because of the
-> FS DAX check requirement on vmas.
-> 
-> However, the corresponding restriction in get_user_pages_remote() was
-> slightly stricter than is actually required: it forbade all
-> FOLL_LONGTERM callers, but we can actually allow FOLL_LONGTERM callers
-> that do not set the "locked" arg.
-> 
-> Update the code and comments accordingly, and update the VFIO caller
-> to take advantage of this, fixing a bug as a result: the VFIO caller
-> is logically a FOLL_LONGTERM user.
-> 
-> Also, remove an unnessary pair of calls that were releasing and
-> reacquiring the mmap_sem. There is no need to avoid holding mmap_sem
-> just in order to call page_to_pfn().
-> 
-> Also, move the DAX check ("if a VMA is DAX, don't allow long term
-> pinning") from the VFIO call site, all the way into the internals
-> of get_user_pages_remote() and __gup_longterm_locked(). That is:
-> get_user_pages_remote() calls __gup_longterm_locked(), which in turn
-> calls check_dax_vmas(). It's lightly explained in the comments as well.
-> 
-> Thanks to Jason Gunthorpe for pointing out a clean way to fix this,
-> and to Dan Williams for helping clarify the DAX refactoring.
-> 
-> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Jerome Glisse <jglisse@redhat.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
+As reported by ./scripts/checkpatch.pl --strict:
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+CHECK: extern prototypes should be avoided in .h files
 
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  drivers/vfio/vfio_iommu_type1.c | 30 +++++-------------------------
->  mm/gup.c                        | 27 ++++++++++++++++++++++-----
->  2 files changed, 27 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-> index d864277ea16f..c7a111ad9975 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -340,7 +340,6 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
->  {
->  	struct page *page[1];
->  	struct vm_area_struct *vma;
-> -	struct vm_area_struct *vmas[1];
->  	unsigned int flags = 0;
->  	int ret;
->  
-> @@ -348,33 +347,14 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
->  		flags |= FOLL_WRITE;
->  
->  	down_read(&mm->mmap_sem);
-> -	if (mm == current->mm) {
-> -		ret = get_user_pages(vaddr, 1, flags | FOLL_LONGTERM, page,
-> -				     vmas);
-> -	} else {
-> -		ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags, page,
-> -					    vmas, NULL);
-> -		/*
-> -		 * The lifetime of a vaddr_get_pfn() page pin is
-> -		 * userspace-controlled. In the fs-dax case this could
-> -		 * lead to indefinite stalls in filesystem operations.
-> -		 * Disallow attempts to pin fs-dax pages via this
-> -		 * interface.
-> -		 */
-> -		if (ret > 0 && vma_is_fsdax(vmas[0])) {
-> -			ret = -EOPNOTSUPP;
-> -			put_page(page[0]);
-> -		}
-> -	}
-> -	up_read(&mm->mmap_sem);
-> -
-> +	ret = get_user_pages_remote(NULL, mm, vaddr, 1, flags | FOLL_LONGTERM,
-> +				    page, NULL, NULL);
->  	if (ret == 1) {
->  		*pfn = page_to_pfn(page[0]);
-> -		return 0;
-> +		ret = 0;
-> +		goto done;
->  	}
->  
-> -	down_read(&mm->mmap_sem);
-> -
->  	vaddr = untagged_addr(vaddr);
->  
->  	vma = find_vma_intersection(mm, vaddr, vaddr + 1);
-> @@ -384,7 +364,7 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
->  		if (is_invalid_reserved_pfn(*pfn))
->  			ret = 0;
->  	}
-> -
-> +done:
->  	up_read(&mm->mmap_sem);
->  	return ret;
->  }
-> diff --git a/mm/gup.c b/mm/gup.c
-> index b859bd4da4d7..6cf613bfe7dc 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -29,6 +29,13 @@ struct follow_page_context {
->  	unsigned int page_mask;
->  };
->  
-> +static __always_inline long __gup_longterm_locked(struct task_struct *tsk,
-> +						  struct mm_struct *mm,
-> +						  unsigned long start,
-> +						  unsigned long nr_pages,
-> +						  struct page **pages,
-> +						  struct vm_area_struct **vmas,
-> +						  unsigned int flags);
->  /*
->   * Return the compound head page with ref appropriately incremented,
->   * or NULL if that failed.
-> @@ -1167,13 +1174,23 @@ long get_user_pages_remote(struct task_struct *tsk, struct mm_struct *mm,
->  		struct vm_area_struct **vmas, int *locked)
->  {
->  	/*
-> -	 * FIXME: Current FOLL_LONGTERM behavior is incompatible with
-> +	 * Parts of FOLL_LONGTERM behavior are incompatible with
->  	 * FAULT_FLAG_ALLOW_RETRY because of the FS DAX check requirement on
-> -	 * vmas.  As there are no users of this flag in this call we simply
-> -	 * disallow this option for now.
-> +	 * vmas. However, this only comes up if locked is set, and there are
-> +	 * callers that do request FOLL_LONGTERM, but do not set locked. So,
-> +	 * allow what we can.
->  	 */
-> -	if (WARN_ON_ONCE(gup_flags & FOLL_LONGTERM))
-> -		return -EINVAL;
-> +	if (gup_flags & FOLL_LONGTERM) {
-> +		if (WARN_ON_ONCE(locked))
-> +			return -EINVAL;
-> +		/*
-> +		 * This will check the vmas (even if our vmas arg is NULL)
-> +		 * and return -ENOTSUPP if DAX isn't allowed in this case:
-> +		 */
-> +		return __gup_longterm_locked(tsk, mm, start, nr_pages, pages,
-> +					     vmas, gup_flags | FOLL_TOUCH |
-> +					     FOLL_REMOTE);
-> +	}
->  
->  	return __get_user_pages_locked(tsk, mm, start, nr_pages, pages, vmas,
->  				       locked,
-> -- 
-> 2.24.0
-> 
+Signed-off-by: Greg Kurz <groug@kaod.org>
+---
+ arch/powerpc/include/asm/xive.h |   92 ++++++++++++++++++++-------------------
+ 1 file changed, 46 insertions(+), 46 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
+index 24cdf97376c4..93f982dbb3d4 100644
+--- a/arch/powerpc/include/asm/xive.h
++++ b/arch/powerpc/include/asm/xive.h
+@@ -87,56 +87,56 @@ extern bool __xive_enabled;
+ 
+ static inline bool xive_enabled(void) { return __xive_enabled; }
+ 
+-extern bool xive_spapr_init(void);
+-extern bool xive_native_init(void);
+-extern void xive_smp_probe(void);
+-extern int  xive_smp_prepare_cpu(unsigned int cpu);
+-extern void xive_smp_setup_cpu(void);
+-extern void xive_smp_disable_cpu(void);
+-extern void xive_teardown_cpu(void);
+-extern void xive_shutdown(void);
+-extern void xive_flush_interrupt(void);
++bool xive_spapr_init(void);
++bool xive_native_init(void);
++void xive_smp_probe(void);
++int  xive_smp_prepare_cpu(unsigned int cpu);
++void xive_smp_setup_cpu(void);
++void xive_smp_disable_cpu(void);
++void xive_teardown_cpu(void);
++void xive_shutdown(void);
++void xive_flush_interrupt(void);
+ 
+ /* xmon hook */
+-extern void xmon_xive_do_dump(int cpu);
+-extern int xmon_xive_get_irq_config(u32 hw_irq, struct irq_data *d);
++void xmon_xive_do_dump(int cpu);
++int xmon_xive_get_irq_config(u32 hw_irq, struct irq_data *d);
+ 
+ /* APIs used by KVM */
+-extern u32 xive_native_default_eq_shift(void);
+-extern u32 xive_native_alloc_vp_block(u32 max_vcpus);
+-extern void xive_native_free_vp_block(u32 vp_base);
+-extern int xive_native_populate_irq_data(u32 hw_irq,
+-					 struct xive_irq_data *data);
+-extern void xive_cleanup_irq_data(struct xive_irq_data *xd);
+-extern u32 xive_native_alloc_irq(void);
+-extern void xive_native_free_irq(u32 irq);
+-extern int xive_native_configure_irq(u32 hw_irq, u32 target, u8 prio, u32 sw_irq);
+-
+-extern int xive_native_configure_queue(u32 vp_id, struct xive_q *q, u8 prio,
+-				       __be32 *qpage, u32 order, bool can_escalate);
+-extern void xive_native_disable_queue(u32 vp_id, struct xive_q *q, u8 prio);
+-
+-extern void xive_native_sync_source(u32 hw_irq);
+-extern void xive_native_sync_queue(u32 hw_irq);
+-extern bool is_xive_irq(struct irq_chip *chip);
+-extern int xive_native_enable_vp(u32 vp_id, bool single_escalation);
+-extern int xive_native_disable_vp(u32 vp_id);
+-extern int xive_native_get_vp_info(u32 vp_id, u32 *out_cam_id, u32 *out_chip_id);
+-extern bool xive_native_has_single_escalation(void);
+-
+-extern int xive_native_get_queue_info(u32 vp_id, uint32_t prio,
+-				      u64 *out_qpage,
+-				      u64 *out_qsize,
+-				      u64 *out_qeoi_page,
+-				      u32 *out_escalate_irq,
+-				      u64 *out_qflags);
+-
+-extern int xive_native_get_queue_state(u32 vp_id, uint32_t prio, u32 *qtoggle,
+-				       u32 *qindex);
+-extern int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
+-				       u32 qindex);
+-extern int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
+-extern bool xive_native_has_queue_state_support(void);
++u32 xive_native_default_eq_shift(void);
++u32 xive_native_alloc_vp_block(u32 max_vcpus);
++void xive_native_free_vp_block(u32 vp_base);
++int xive_native_populate_irq_data(u32 hw_irq,
++				  struct xive_irq_data *data);
++void xive_cleanup_irq_data(struct xive_irq_data *xd);
++u32 xive_native_alloc_irq(void);
++void xive_native_free_irq(u32 irq);
++int xive_native_configure_irq(u32 hw_irq, u32 target, u8 prio, u32 sw_irq);
++
++int xive_native_configure_queue(u32 vp_id, struct xive_q *q, u8 prio,
++				__be32 *qpage, u32 order, bool can_escalate);
++void xive_native_disable_queue(u32 vp_id, struct xive_q *q, u8 prio);
++
++void xive_native_sync_source(u32 hw_irq);
++void xive_native_sync_queue(u32 hw_irq);
++bool is_xive_irq(struct irq_chip *chip);
++int xive_native_enable_vp(u32 vp_id, bool single_escalation);
++int xive_native_disable_vp(u32 vp_id);
++int xive_native_get_vp_info(u32 vp_id, u32 *out_cam_id, u32 *out_chip_id);
++bool xive_native_has_single_escalation(void);
++
++int xive_native_get_queue_info(u32 vp_id, uint32_t prio,
++			       u64 *out_qpage,
++			       u64 *out_qsize,
++			       u64 *out_qeoi_page,
++			       u32 *out_escalate_irq,
++			       u64 *out_qflags);
++
++int xive_native_get_queue_state(u32 vp_id, uint32_t prio, u32 *qtoggle,
++				u32 *qindex);
++int xive_native_set_queue_state(u32 vp_id, uint32_t prio, u32 qtoggle,
++				u32 qindex);
++int xive_native_get_vp_state(u32 vp_id, u64 *out_state);
++bool xive_native_has_queue_state_support(void);
+ 
+ #else
+ 
+
