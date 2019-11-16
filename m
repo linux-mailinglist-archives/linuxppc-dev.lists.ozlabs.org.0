@@ -2,57 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7C6FF466
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 18:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3B7FF467
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 18:40:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Fj9v6SSFzF3Hf
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 04:38:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47FjD83FVHzF4fJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 04:40:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com;
- envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=dolbeau.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
- [209.85.128.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=asarai@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47FgmC1fr1zF44h
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 03:34:34 +1100 (AEDT)
-Received: by mail-wm1-f66.google.com with SMTP id b17so13811791wmj.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 08:34:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=fDjqvE3RfwBMIzQihc3O0Op0t/0gZE2z7xuAVT+tIYY=;
- b=FiZebV0zNRnn40K9rqXN11M63SXrA5mkoriaWJCOl/W0Q1tRvYrY80/+GXELREC1qC
- MCE+vXoP90SOdM68PsN2KrUY8gaBJpPuLvJc0AOy3DgATXirGEuBlkxJjbdUbkXoK1BB
- IbV5lnvU7GwRKTsRtXH3N8MXB2pMNrm1TQweeDltTEXB496e8b6KTCNZTDeubzMhpYI2
- QLHqmUCH9vDqiK3MKzcyCBok5qBEFhqQQt8h41R2PAnbZcztg/F4OwveGa1dRrz3UvDJ
- qFvOkcyP4g5BtfCM2in1WS22wAhQpKFKth0dK/QW5e3WRqBWIoDUDXEs9DfnOvZQj+Lu
- FFQg==
-X-Gm-Message-State: APjAAAXygYRzCfKzlZOOBUu0YmA6/+NoW0i6L2cqZ8d46sxFil+v82ei
- 002fWTnCpwKnjxSd/FKdUjBj6CAOhWJl1WeP6QY=
-X-Google-Smtp-Source: APXvYqyyMjMQ3Lm9EAcK91cJNWnv5QoAiwsLv/hrVXsxSpuDkK0kkTytm6djh4JQs/7JsEuF0mjgQN2U2QpIa8ebOss=
-X-Received: by 2002:a1c:6588:: with SMTP id z130mr19050470wmb.87.1573922070714; 
- Sat, 16 Nov 2019 08:34:30 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Fgsp5M6DzF3kn
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 03:39:19 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 39FA6B250;
+ Sat, 16 Nov 2019 16:39:14 +0000 (UTC)
+Date: Sun, 17 Nov 2019 03:38:46 +1100
+From: Aleksa Sarai <asarai@suse.de>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v16 09/12] namei: LOOKUP_{IN_ROOT,BENEATH}: permit
+ limited ".." resolution
+Message-ID: <20191116163846.gy7q5py5w2p5pgz6@yavin.dot.cyphar.com>
+References: <20191116002802.6663-1-cyphar@cyphar.com>
+ <20191116002802.6663-10-cyphar@cyphar.com>
+ <20191116010327.GZ26530@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
- <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
- <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
- <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
-In-Reply-To: <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
-From: Romain Dolbeau <romain@dolbeau.org>
-Date: Sat, 16 Nov 2019 17:34:19 +0100
-Message-ID: <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
-Subject: Found the commit for: 5.3.7 64-bits kernel doesn't boot on G5 Quad
-To: PowerPC List Debian <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="jveret2iy2nocuo2"
+Content-Disposition: inline
+In-Reply-To: <20191116010327.GZ26530@ZenIV.linux.org.uk>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,51 +50,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mathieu Malaterre <malat@debian.org>,
- Christian Marillat <marillat@debian.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Song Liu <songliubraving@fb.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, containers@lists.linux-foundation.org,
+ Christian Brauner <christian.brauner@ubuntu.com>, linux-api@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jiri Olsa <jolsa@redhat.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ Yonghong Song <yhs@fb.com>, linux-mips@vger.kernel.org,
+ Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, dev@opencontainers.org,
+ Aleksa Sarai <cyphar@cyphar.com>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
+ linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ netdev@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le dim. 10 nov. 2019 =C3=A0 11:45, Romain Dolbeau <romain@dolbeau.org> a =
-=C3=A9crit :
-> Any suggestion, advice, or patch to try welcome :-)
 
-From my bisect, I figured that
-0034d395f89d9c092bb15adbabdca5283e258b41 was the likely culprit, but
-that the bug was masked by the printk() issues that were fixed later:
-commit 2ac5a3bf7042a1c4abbcce1b6f0ec61e5d3786c2 mentions "Report on
-Power: Kernel crashes very early during boot". Once that was merged,
-the current bug appears instead of the early crash.
+--jveret2iy2nocuo2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-So what I did was:
+On 2019-11-16, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Sat, Nov 16, 2019 at 11:27:59AM +1100, Aleksa Sarai wrote:
+>=20
+> > +		if (unlikely(nd->flags & LOOKUP_IS_SCOPED)) {
+> > +			bool m_retry =3D read_seqretry(&mount_lock, nd->m_seq);
+> > +			bool r_retry =3D read_seqretry(&rename_lock, nd->r_seq);
+> > +
+> > +			/*
+> > +			 * If there was a racing rename or mount along our
+> > +			 * path, then we can't be sure that ".." hasn't jumped
+> > +			 * above nd->root (and so userspace should retry or use
+> > +			 * some fallback).
+> > +			 */
+> > +			if (unlikely(m_retry || r_retry))
+> > +				return -EAGAIN;
+> > +		}
+> >  	}
+> >  	return 0;
+>=20
+> Elaborate...  Do these boolean variables make any sense now, really?
 
-1) checkout 0034d395f89d9c092bb15adbabdca5283e258b41
-2) merge printk-for-5.2 & printk-for-5.2-fixes from pmladek/printk,
-hoping to remove the printk issue ; there was only fairly trivial
-conflicts
-
--> the resulting kernel displays the same bug as Debian's and vanilla
-5.3 and HEAD, which is what I hoped for.
-
-However, the merges did pick up quite a few commits, so I then:
-
-3) did a revert of only 0034d395f89d9c092bb15adbabdca5283e258b41 ;
-that did not cause conflicts (on HEAD, this causes a lot of conflicts
-I don't know how to resolve).
-
--> the resulting kernel works fine ! :-)
-
-So it seems to me that 0034d395f89d9c092bb15adbabdca5283e258b41
-introduced the bug that crashes the PowerMac G5 (as/could anyone
-tried/try on some other PPC970-based system, like a JS20 ? to see if
-it's PowerMac-specific or not).
-
-If anyone has an idea on how to fix this, that would be very welcome,
-as I'm way out of my depth in the PPC64 MMU code.
-
-Cordially,
+You're quite right, they don't make sense any more. I'll drop them.
 
 --=20
-Romain Dolbeau
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--jveret2iy2nocuo2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXdAmEwAKCRCdlLljIbnQ
+EmzcAP9tyUNvqW5Zg4vIz0RSlWzF9h1gwHR6LfkIIKqg1KM7QgEArxHmVCll9gd7
+wAho9+kZCEx+tsCxFLjGmYzXP0S9KgI=
+=OgPb
+-----END PGP SIGNATURE-----
+
+--jveret2iy2nocuo2--
