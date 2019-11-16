@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFB4FF447
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 18:14:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47FhfW0yjXzF4S5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 04:14:43 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C16DEFF44B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 18:16:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Fhhv6FhQzDvJ2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 04:16:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,32 +15,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="hoGZFIij"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="nX2O6Owd"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47FfmF5FLnzF3tQ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 02:49:33 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47FfmH1Z4CzF3v1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 02:49:35 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8000620870;
- Sat, 16 Nov 2019 15:49:31 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 33F9A20895;
+ Sat, 16 Nov 2019 15:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573919371;
- bh=S0mzF6aUuCpWNC8VmiehPqJiME194Ey3syXdysl0clM=;
+ s=default; t=1573919373;
+ bh=9B51i506uoit8PvzKsp8Hnm676PvlawhR2kOkoqXzLA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=hoGZFIijQRPC0rpSWowznCHDynvU764TikZSv4StvDJgY8rDLUG61zFd4kHhEVYHH
- TJyVqiLHLGtSSO0sYyDCG/jFvLhhsRQAFFrApmbBNttthgOWFtmf5/mONou2LUg7Ae
- qDfQ1ykp3OaELrwsT+gaBqfnI9z70WFnmwCG+T7M=
+ b=nX2O6OwdqasLwJ4lGVUxeO6mAjfHhofzRl5v7H6JOM4Jy5p4APYhZYFDQyFQnvL4q
+ ZSf+7mZntz6XWI1xuagsAI94Mc67syN0151iyVZVpwsGq9Cs/ENGMAmMPdFqhbrzMo
+ D0PMlg97RSCtQW2oSlUAp4k9a5yMQKIedSZFG52s=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 091/150] selftests/powerpc/switch_endian: Fix
+Subject: [PATCH AUTOSEL 4.14 092/150] selftests/powerpc/cache_shape: Fix
  out-of-tree build
-Date: Sat, 16 Nov 2019 10:46:29 -0500
-Message-Id: <20191116154729.9573-91-sashal@kernel.org>
+Date: Sat, 16 Nov 2019 10:46:30 -0500
+Message-Id: <20191116154729.9573-92-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191116154729.9573-1-sashal@kernel.org>
 References: <20191116154729.9573-1-sashal@kernel.org>
@@ -67,29 +67,38 @@ Sender: "Linuxppc-dev"
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 266bac361d5677e61a6815bd29abeb3bdced2b07 ]
+[ Upstream commit 69f8117f17b332a68cd8f4bf8c2d0d3d5b84efc5 ]
 
-For the out-of-tree build to work we need to tell switch_endian_test
-to look for check-reversed.S in $(OUTPUT).
+Use TEST_GEN_PROGS and don't redefine all, this makes the out-of-tree
+build work. We need to move the extra dependencies below the include
+of lib.mk, because it adds the $(OUTPUT) prefix if it's defined.
+
+We can also drop the clean rule, lib.mk does it for us.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/switch_endian/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/powerpc/cache_shape/Makefile | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/switch_endian/Makefile b/tools/testing/selftests/powerpc/switch_endian/Makefile
-index 30b8ff8fb82e7..e4cedfe9753d7 100644
---- a/tools/testing/selftests/powerpc/switch_endian/Makefile
-+++ b/tools/testing/selftests/powerpc/switch_endian/Makefile
-@@ -7,6 +7,7 @@ EXTRA_CLEAN = $(OUTPUT)/*.o $(OUTPUT)/check-reversed.S
+diff --git a/tools/testing/selftests/powerpc/cache_shape/Makefile b/tools/testing/selftests/powerpc/cache_shape/Makefile
+index 1be547434a49c..7e0c175b82978 100644
+--- a/tools/testing/selftests/powerpc/cache_shape/Makefile
++++ b/tools/testing/selftests/powerpc/cache_shape/Makefile
+@@ -1,11 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+-TEST_PROGS := cache_shape
+-
+-all: $(TEST_PROGS)
+-
+-$(TEST_PROGS): ../harness.c ../utils.c
++TEST_GEN_PROGS := cache_shape
  
  include ../../lib.mk
  
-+$(OUTPUT)/switch_endian_test: ASFLAGS += -I $(OUTPUT)
- $(OUTPUT)/switch_endian_test: $(OUTPUT)/check-reversed.S
- 
- $(OUTPUT)/check-reversed.o: $(OUTPUT)/check.o
+-clean:
+-	rm -f $(TEST_PROGS) *.o
++$(TEST_GEN_PROGS): ../harness.c ../utils.c
 -- 
 2.20.1
 
