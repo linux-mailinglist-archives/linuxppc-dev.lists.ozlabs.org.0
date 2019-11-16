@@ -2,51 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1070FF462
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 18:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7C6FF466
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 18:38:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Fj7D0QsNzDrMl
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 04:36:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Fj9v6SSFzF3Hf
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 04:38:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com;
+ envelope-from=romain.dolbeau@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="nVDeWnJE"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=dolbeau.org
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
+ [209.85.128.66])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Ffsb2BmvzF3wl
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 02:54:11 +1100 (AEDT)
-Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 29C3721920;
- Sat, 16 Nov 2019 15:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573919648;
- bh=tGyuerj4tgHb0qQhYD5ienk8WW7ZV2NkS0UB4aqLey4=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=nVDeWnJEOrLfUxyVN3AD3+Qd8EYEl8XQYBCuX1XK3yK2eK+vV6WoTdOfxVzjt8759
- bsoMZHoQhP+SLZdWuE70xdFnNc7JNQmLCRMa4eETZzsK+zaLy7EIaTYda8lXHnxAJF
- 7cdUDcFjja9enHJVa5//JhzJsW7OMZRRnqAZoIeY=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 25/77] macintosh/windfarm_smu_sat: Fix debug output
-Date: Sat, 16 Nov 2019 10:52:47 -0500
-Message-Id: <20191116155339.11909-25-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116155339.11909-1-sashal@kernel.org>
-References: <20191116155339.11909-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47FgmC1fr1zF44h
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 03:34:34 +1100 (AEDT)
+Received: by mail-wm1-f66.google.com with SMTP id b17so13811791wmj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 08:34:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=fDjqvE3RfwBMIzQihc3O0Op0t/0gZE2z7xuAVT+tIYY=;
+ b=FiZebV0zNRnn40K9rqXN11M63SXrA5mkoriaWJCOl/W0Q1tRvYrY80/+GXELREC1qC
+ MCE+vXoP90SOdM68PsN2KrUY8gaBJpPuLvJc0AOy3DgATXirGEuBlkxJjbdUbkXoK1BB
+ IbV5lnvU7GwRKTsRtXH3N8MXB2pMNrm1TQweeDltTEXB496e8b6KTCNZTDeubzMhpYI2
+ QLHqmUCH9vDqiK3MKzcyCBok5qBEFhqQQt8h41R2PAnbZcztg/F4OwveGa1dRrz3UvDJ
+ qFvOkcyP4g5BtfCM2in1WS22wAhQpKFKth0dK/QW5e3WRqBWIoDUDXEs9DfnOvZQj+Lu
+ FFQg==
+X-Gm-Message-State: APjAAAXygYRzCfKzlZOOBUu0YmA6/+NoW0i6L2cqZ8d46sxFil+v82ei
+ 002fWTnCpwKnjxSd/FKdUjBj6CAOhWJl1WeP6QY=
+X-Google-Smtp-Source: APXvYqyyMjMQ3Lm9EAcK91cJNWnv5QoAiwsLv/hrVXsxSpuDkK0kkTytm6djh4JQs/7JsEuF0mjgQN2U2QpIa8ebOss=
+X-Received: by 2002:a1c:6588:: with SMTP id z130mr19050470wmb.87.1573922070714; 
+ Sat, 16 Nov 2019 08:34:30 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <CADuzgbqYpv40NvAMGjo1cU2cNnij-2p4SYpWgM-Xn0v-8Qapsg@mail.gmail.com>
+ <e87e2397-a8d4-c928-d3d4-7ae700603770@physik.fu-berlin.de>
+ <CA+7wUsxBkmG-jW_UVBUuMriZbDkJko3kg0hzmMrVMoJLu2+rPw@mail.gmail.com>
+ <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+In-Reply-To: <CADuzgbqoX3DQ6OVqdR6dw1oqnNn-Q0zLPshDi23DwDtYukDYdg@mail.gmail.com>
+From: Romain Dolbeau <romain@dolbeau.org>
+Date: Sat, 16 Nov 2019 17:34:19 +0100
+Message-ID: <CADuzgboWQtVqp7-Ru4uQQaPerkhLnaS9=WiwX2dD4-5VypT2MA@mail.gmail.com>
+Subject: Found the commit for: 5.3.7 64-bits kernel doesn't boot on G5 Quad
+To: PowerPC List Debian <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,82 +64,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Mathieu Malaterre <malat@debian.org>,
+ Christian Marillat <marillat@debian.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Le dim. 10 nov. 2019 =C3=A0 11:45, Romain Dolbeau <romain@dolbeau.org> a =
+=C3=A9crit :
+> Any suggestion, advice, or patch to try welcome :-)
 
-[ Upstream commit fc0c8b36d379a046525eacb9c3323ca635283757 ]
+From my bisect, I figured that
+0034d395f89d9c092bb15adbabdca5283e258b41 was the likely culprit, but
+that the bug was masked by the printk() issues that were fixed later:
+commit 2ac5a3bf7042a1c4abbcce1b6f0ec61e5d3786c2 mentions "Report on
+Power: Kernel crashes very early during boot". Once that was merged,
+the current bug appears instead of the early crash.
 
-There's some antiquated debug output that's trying
-to do a hand-made hexdump and turning into horrible
-1-byte-per-line output these days.
+So what I did was:
 
-Use print_hex_dump() instead
+1) checkout 0034d395f89d9c092bb15adbabdca5283e258b41
+2) merge printk-for-5.2 & printk-for-5.2-fixes from pmladek/printk,
+hoping to remove the printk issue ; there was only fairly trivial
+conflicts
 
-Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/macintosh/windfarm_smu_sat.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+-> the resulting kernel displays the same bug as Debian's and vanilla
+5.3 and HEAD, which is what I hoped for.
 
-diff --git a/drivers/macintosh/windfarm_smu_sat.c b/drivers/macintosh/windfarm_smu_sat.c
-index ad6223e883404..3d310dd60a0be 100644
---- a/drivers/macintosh/windfarm_smu_sat.c
-+++ b/drivers/macintosh/windfarm_smu_sat.c
-@@ -22,14 +22,6 @@
- 
- #define VERSION "1.0"
- 
--#define DEBUG
--
--#ifdef DEBUG
--#define DBG(args...)	printk(args)
--#else
--#define DBG(args...)	do { } while(0)
--#endif
--
- /* If the cache is older than 800ms we'll refetch it */
- #define MAX_AGE		msecs_to_jiffies(800)
- 
-@@ -106,13 +98,10 @@ struct smu_sdbp_header *smu_sat_get_sdb_partition(unsigned int sat_id, int id,
- 		buf[i+2] = data[3];
- 		buf[i+3] = data[2];
- 	}
--#ifdef DEBUG
--	DBG(KERN_DEBUG "sat %d partition %x:", sat_id, id);
--	for (i = 0; i < len; ++i)
--		DBG(" %x", buf[i]);
--	DBG("\n");
--#endif
- 
-+	printk(KERN_DEBUG "sat %d partition %x:", sat_id, id);
-+	print_hex_dump(KERN_DEBUG, "  ", DUMP_PREFIX_OFFSET,
-+		       16, 1, buf, len, false);
- 	if (size)
- 		*size = len;
- 	return (struct smu_sdbp_header *) buf;
-@@ -132,13 +121,13 @@ static int wf_sat_read_cache(struct wf_sat *sat)
- 	if (err < 0)
- 		return err;
- 	sat->last_read = jiffies;
-+
- #ifdef LOTSA_DEBUG
- 	{
- 		int i;
--		DBG(KERN_DEBUG "wf_sat_get: data is");
--		for (i = 0; i < 16; ++i)
--			DBG(" %.2x", sat->cache[i]);
--		DBG("\n");
-+		printk(KERN_DEBUG "wf_sat_get: data is");
-+		print_hex_dump(KERN_DEBUG, "  ", DUMP_PREFIX_OFFSET,
-+			       16, 1, sat->cache, 16, false);
- 	}
- #endif
- 	return 0;
--- 
-2.20.1
+However, the merges did pick up quite a few commits, so I then:
 
+3) did a revert of only 0034d395f89d9c092bb15adbabdca5283e258b41 ;
+that did not cause conflicts (on HEAD, this causes a lot of conflicts
+I don't know how to resolve).
+
+-> the resulting kernel works fine ! :-)
+
+So it seems to me that 0034d395f89d9c092bb15adbabdca5283e258b41
+introduced the bug that crashes the PowerMac G5 (as/could anyone
+tried/try on some other PPC970-based system, like a JS20 ? to see if
+it's PowerMac-specific or not).
+
+If anyone has an idea on how to fix this, that would be very welcome,
+as I'm way out of my depth in the PPC64 MMU code.
+
+Cordially,
+
+--=20
+Romain Dolbeau
