@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65FCFEF51
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 16:58:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47FfyG4pMLzF0fJ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 02:58:14 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46AEFEFEE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 17:02:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Fg364J0GzF3xV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 03:02:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,32 +15,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="o7xDhO/f"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="gC2B32sO"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47FfZv3qS1zF3p2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 02:41:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47FfcH3swTzF3pF
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 02:42:39 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 7902E2075E;
- Sat, 16 Nov 2019 15:41:25 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9E8C72086A;
+ Sat, 16 Nov 2019 15:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1573918885;
- bh=wyyl9s9xZv7JFxye6DTH7V7QfW8oBgfEhI9UUGwxt0g=;
+ s=default; t=1573918956;
+ bh=jTWzCOQwRiWhKbKWMLAjSFDku8KDuyLw1gEEl2r4qbs=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=o7xDhO/fbyh1QXaxTfc4IEgTR1Er3knw2dVRvHNn7l3wLZAkQgu0rEpwXJVmpaP0p
- CYL3kRxmEXmcleySYSoERt8TegZj2WrMJY4MsZX76GgQqaUxRYuZieG/xr9G4LRdeF
- t4ViN0gfiaIq8LlO7LQ7ruGkK07Yctoxz+ZaXhuM=
+ b=gC2B32sO2rm4bVWXVglD9ZTSsKM+8S4L2WIeSa4ErNGULl5u/gMJMIoJ7DXB3WeKP
+ 47YF245JtUfBNOqVjcptJjWkMWXyycFehbQ89UuznyHoloJjVWYzARmwkUQC7faXSj
+ gxlDb0YhK8ys52poQti3F2IA2yiFNi8/qSyNuw/E=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 014/237] powerpc/eeh: Fix use of EEH_PE_KEEP on
- wrong field
-Date: Sat, 16 Nov 2019 10:37:29 -0500
-Message-Id: <20191116154113.7417-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 075/237] macintosh/windfarm_smu_sat: Fix debug
+ output
+Date: Sat, 16 Nov 2019 10:38:30 -0500
+Message-Id: <20191116154113.7417-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
 References: <20191116154113.7417-1-sashal@kernel.org>
@@ -59,48 +59,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sam Bobroff <sbobroff@linux.ibm.com>
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 
-[ Upstream commit 473af09b56dc4be68e4af33220ceca6be67aa60d ]
+[ Upstream commit fc0c8b36d379a046525eacb9c3323ca635283757 ]
 
-eeh_add_to_parent_pe() sometimes removes the EEH_PE_KEEP flag, but it
-incorrectly removes it from pe->type, instead of pe->state.
+There's some antiquated debug output that's trying
+to do a hand-made hexdump and turning into horrible
+1-byte-per-line output these days.
 
-However, rather than clearing it from the correct field, remove it.
-Inspection of the code shows that it can't ever have had any effect
-(even if it had been cleared from the correct field), because the
-field is never tested after it is cleared by the statement in
-question.
+Use print_hex_dump() instead
 
-The clear statement was added by commit 807a827d4e74 ("powerpc/eeh:
-Keep PE during hotplug"), but it didn't explain why it was necessary.
-
-Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
+Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_pe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/macintosh/windfarm_smu_sat.c | 25 +++++++------------------
+ 1 file changed, 7 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index 1b238ecc553e2..210d239a93950 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -379,7 +379,7 @@ int eeh_add_to_parent_pe(struct eeh_dev *edev)
- 		while (parent) {
- 			if (!(parent->type & EEH_PE_INVALID))
- 				break;
--			parent->type &= ~(EEH_PE_INVALID | EEH_PE_KEEP);
-+			parent->type &= ~EEH_PE_INVALID;
- 			parent = parent->parent;
- 		}
+diff --git a/drivers/macintosh/windfarm_smu_sat.c b/drivers/macintosh/windfarm_smu_sat.c
+index da7f4fc1a51d1..a0f61eb853c55 100644
+--- a/drivers/macintosh/windfarm_smu_sat.c
++++ b/drivers/macintosh/windfarm_smu_sat.c
+@@ -22,14 +22,6 @@
  
+ #define VERSION "1.0"
+ 
+-#define DEBUG
+-
+-#ifdef DEBUG
+-#define DBG(args...)	printk(args)
+-#else
+-#define DBG(args...)	do { } while(0)
+-#endif
+-
+ /* If the cache is older than 800ms we'll refetch it */
+ #define MAX_AGE		msecs_to_jiffies(800)
+ 
+@@ -106,13 +98,10 @@ struct smu_sdbp_header *smu_sat_get_sdb_partition(unsigned int sat_id, int id,
+ 		buf[i+2] = data[3];
+ 		buf[i+3] = data[2];
+ 	}
+-#ifdef DEBUG
+-	DBG(KERN_DEBUG "sat %d partition %x:", sat_id, id);
+-	for (i = 0; i < len; ++i)
+-		DBG(" %x", buf[i]);
+-	DBG("\n");
+-#endif
+ 
++	printk(KERN_DEBUG "sat %d partition %x:", sat_id, id);
++	print_hex_dump(KERN_DEBUG, "  ", DUMP_PREFIX_OFFSET,
++		       16, 1, buf, len, false);
+ 	if (size)
+ 		*size = len;
+ 	return (struct smu_sdbp_header *) buf;
+@@ -132,13 +121,13 @@ static int wf_sat_read_cache(struct wf_sat *sat)
+ 	if (err < 0)
+ 		return err;
+ 	sat->last_read = jiffies;
++
+ #ifdef LOTSA_DEBUG
+ 	{
+ 		int i;
+-		DBG(KERN_DEBUG "wf_sat_get: data is");
+-		for (i = 0; i < 16; ++i)
+-			DBG(" %.2x", sat->cache[i]);
+-		DBG("\n");
++		printk(KERN_DEBUG "wf_sat_get: data is");
++		print_hex_dump(KERN_DEBUG, "  ", DUMP_PREFIX_OFFSET,
++			       16, 1, sat->cache, 16, false);
+ 	}
+ #endif
+ 	return 0;
 -- 
 2.20.1
 
