@@ -1,75 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C366BFF550
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 20:33:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E865FF4C9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 19:52:43 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47FkqX3kdFzF3S7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 05:52:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Flkp07vBzF4X7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 06:33:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhsharma@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="npL0W9Kg"; 
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="PlnQyzua"; 
  dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47FknR6sBpzF4VH
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 05:50:43 +1100 (AEDT)
-Received: by mail-ot1-x341.google.com with SMTP id w24so10466342otk.6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 10:50:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=QoYFZW9R1d8a2jA7OF9LL6qxm9ECdf9uJSjSEMDuhDQ=;
- b=npL0W9KgorQAYQRc87V3l+lkInNdHmoUmlKoaS30Qz8h1kbbszoWt+depF0Asu7mxl
- aqcsnvAYqLcf7/ASn7KEcz1nvZT+6EhXPwSFHVsh4UhMXGm/NbCH/WT5iF83p1KwmVdU
- mQcUOdNWqu8v8GtDHZmjwOL8D9F+qoBq5eXZ7HRjT5UEiVHxHnVa+vNAWpy7kswffPO1
- bwgXM6UixEyqVPlL2Wom470LfwdUXvvP6QVfk3q/t0wJGgMcqDuZt8bh6oc9k6L3q9t2
- yW/ZV4PTuSEdqXMed4ig6v5vfF9zhU+7WSjTNI2tIeOu7n7O2Y5HJYZ4/BpCKFv8jFDa
- ni4w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47FlhR3MLfzF3ww
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 06:31:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1573932691;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kXpw2dVrTazyKaZMh6ck8gLXd7z/Kkh/NRaCUtk9LZE=;
+ b=PlnQyzuaY1EjGbhSU9fdWwgKrOz4HXK8/Zi+70325lycXSkEge4OemNF2+IdN43r18+a3t
+ kuhD7oBlOTrfNnt/6fUh7VN9eX+m02BP/+7as05v8nm3xHcCvIXbGpNxWBhTlYfnEb0lA1
+ MBRRF2Jsakor9tBTDLNYeEH/ue8y19M=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-398-29BbZeNvNGahKkkcVnaUjQ-1; Sat, 16 Nov 2019 14:31:25 -0500
+Received: by mail-lj1-f197.google.com with SMTP id u6so2394843ljg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 11:31:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=QoYFZW9R1d8a2jA7OF9LL6qxm9ECdf9uJSjSEMDuhDQ=;
- b=Yfwo2oNN7Py75adWEzE4kK9oQOb/7JhteVEinIEMYM4Wn1UIj7VIwhTHhqciqbwwXx
- dCSoXGFECBBl1tURFNU5aAjASu4sm3mc2uGNjJM/MbmfMDNm5WkuIDzKXGGnmIw4BXya
- RhL/5uQDa1ZJE9o9Yt2uCPRt+SNkeI8hERocC9dPK8pTWLO35pqknrsUVL1khmZOJ+C2
- GADRty7U1AExX0ET9y23HxJOrSaWOOcbSEqp5J+yt4EwfU7uES5GRU57sGBH9YwTaKGs
- A7SA5T8Yac+8Nql/DtXZics/2acY90uGP8z33zi/wvE5vvfT5ZWtaO+Tx8pjLBtOj8kt
- ZWqw==
-X-Gm-Message-State: APjAAAXsr8f/6nxvmmFillQsECj9trHTuKdUpwLJ8A4zs79PXA8buWvj
- GNbAWPlUv0MthLCY0OPWfkL4IVQPmTswguwmxJGlA7i3
-X-Google-Smtp-Source: APXvYqyV/cgXxJSpVo+ep5Esuuu5uBbs9hzmhs5nbRzcUIbnZl99SOr9AdH9+7qoOn5QBj9jKBAQfldWgdn4Wt7pPjc=
-X-Received: by 2002:a9d:2d89:: with SMTP id g9mr2604806otb.126.1573930240792; 
- Sat, 16 Nov 2019 10:50:40 -0800 (PST)
+ :message-id:subject:to;
+ bh=tr1QPh7Xu6oqNv9urwYmGQnpnrlexXqmQZ13m1gKg9g=;
+ b=OERdLUFgG3lgNTcqVrVZtR6LGVZbrpYBk/2npH30ADu19mhfefzUZbeDkXpF9X3+Dm
+ h1a+v4j8L2dQclc8FNXoQdmkk3xA8ExoUv48w90gQs3+hvz5Px43ZmZbRGoX8ZGxGOeB
+ xpUf49pphh9Uf5hRyKzn9pGzal9BPY4ANfu1yiksKfSKG8owT+4/LIwGmrL9sTYDdjKz
+ mVFfNIr+k1nhQznleZE4u98iGCuYFIegdCw+0HD8Rhzxi//hJE89MtVCGYoikK7nAEYc
+ PcDat3srfGDRMPIAQZVHcXRXymT2bwFdc93UQgmbj5/k9+p1s8YHpYotiQ9TsqwGViKH
+ wpvQ==
+X-Gm-Message-State: APjAAAX7urfpXEl1SdcEV7spLCk9QqjX1SIiIwd6NKGkbvAPNA/eZWHc
+ vNQWSYeYzKcGkTu+ht6j+OD7PdEGz/PIZLjVOdKlkBXDYB34bgNXQMxY7BMEMYk41GlTc16ld8v
+ aYqcueu5hFFDtL8iLL8WfXG9pfYQ7uCu5yqtEwYQR8Q==
+X-Received: by 2002:a2e:98c6:: with SMTP id s6mr14176669ljj.235.1573932684240; 
+ Sat, 16 Nov 2019 11:31:24 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzV/Uq0MfcKB6Ngj9rRD+2Lhzxf6cVhsnPdiYYnO35ay585YEXFW53R4j8ojT574iLVnqEYnyQDdNGcl2Jhl3c=
+X-Received: by 2002:a2e:98c6:: with SMTP id s6mr14176647ljj.235.1573932683821; 
+ Sat, 16 Nov 2019 11:31:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
- <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
- <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
- <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
- <CAPcyv4h42_1deZDaaW1RqX0Ls+maiFO_1e=6xJuHTa3wdWvVvA@mail.gmail.com>
- <87o8xp5lo9.fsf@linux.ibm.com> <8736eohva1.fsf@linux.ibm.com>
-In-Reply-To: <8736eohva1.fsf@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Sat, 16 Nov 2019 10:50:29 -0800
-Message-ID: <CAPcyv4hroohsrXT1YHQB-L8ZFa2kUW+bKy03We4Mt7afeJgu3Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
- validation arch dependent
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <1573459282-26989-1-git-send-email-bhsharma@redhat.com>
+ <20191113063858.GE22427@linaro.org>
+ <CACi5LpP54d9DKW63G5W6X4euBjAm2NwkHOiM01dB7g8d60s=4w@mail.gmail.com>
+ <20191115015959.GI22427@linaro.org>
+In-Reply-To: <20191115015959.GI22427@linaro.org>
+From: Bhupesh Sharma <bhsharma@redhat.com>
+Date: Sun, 17 Nov 2019 01:01:05 +0530
+Message-ID: <CACi5LpNsDDQq1fkUatjXh3gRstiwOFi5VvtywEu4VyZM98=Hbw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] Append new variables to vmcoreinfo (TCR_EL1.T1SZ
+ for arm64 and MAX_PHYSMEM_BITS for all archs)
+To: AKASHI Takahiro <takahiro.akashi@linaro.org>,
+ Bhupesh Sharma <bhsharma@redhat.com>, 
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Bhupesh SHARMA <bhupesh.linux@gmail.com>, 
+ Boris Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, 
+ Jonathan Corbet <corbet@lwn.net>, James Morse <james.morse@arm.com>, 
+ Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
+ Steve Capper <steve.capper@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
+ Dave Anderson <anderson@redhat.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
+ x86@kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ kexec mailing list <kexec@lists.infradead.org>
+X-MC-Unique: 29BbZeNvNGahKkkcVnaUjQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,117 +101,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 16, 2019 at 4:15 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
->
-> Hi Dan,
->
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->
-> > Dan Williams <dan.j.williams@intel.com> writes:
-> >
-> >> On Wed, Oct 30, 2019 at 10:35 PM Aneesh Kumar K.V
-> >> <aneesh.kumar@linux.ibm.com> wrote:
-> >> [..]
-> >>> > True, for the pfn device and the device-dax mapping size, but I'm
-> >>> > suggesting adding another instance of alignment control at the raw
-> >>> > namespace level. That would need to be disconnected from the
-> >>> > device-dax page mapping granularity.
-> >>> >
-> >>>
-> >>> Can you explain what you mean by raw namespace level ? We don't have
-> >>> multiple values against which we need to check the alignment of
-> >>> namespace start and namespace size.
-> >>>
-> >>> If you can outline how and where you would like to enforce that check I
-> >>> can start working on it.
-> >>>
-> >>
-> >> What I mean is that the process of setting up a pfn namespace goes
-> >> something like this in shell script form:
-> >>
-> >> 1/ echo $size > /sys/bus/nd/devices/$namespace/size
-> >> 2/ echo $namespace > /sys/bus/nd/devices/$pfn/namespace
-> >> 3/ echo $pfn_align > /sys/bus/nd/devices/$pfn/align
-> >>
-> >> What I'm suggesting is add an optional 0th step that does:
-> >>
-> >> echo $raw_align > /sys/bus/nd/devices/$namespace/align
-> >>
-> >> Where the raw align needs to be needs to be max($pfn_align,
-> >> arch_mapping_granulariy).
-> >
-> >
-> > I started looking at this and was wondering about userspace being aware
-> > of the direct-map mapping size. We can figure that out by parsing kernel
-> > log
-> >
-> > [    0.000000] Page orders: linear mapping = 24, virtual = 16, io = 16, vmemmap = 24
-> >
-> >
-> > But I am not sure we want to do that. There is not set of raw_align
-> > value to select. What we need to make sure is the below.
-> >
-> > 1) While creating a namespace we need to make sure that namespace size
-> > is multiple of direct-map mapping size. If we ensure that
-> > size is aligned, we should also get the namespace start to be aligned?
-> >
-> > 2) While initialzing a namespace by scanning label area, we need to make
-> > sure every namespace in the region satisfy the above requirement. If not
-> > we should mark the region disabled.
-> >
-> >
-> >>
-> >> So on powerpc where PAGE_SIZE < arch_mapping_granulariy, the following:
-> >>
-> >> cat /sys/bus/nd/devices/$namespace/supported_aligns
-> >>
-> >> ...would show the same output as:
-> >>
-> >> cat /sys/bus/nd/devices/$pfn/align
-> >>
-> >> ...but with any alignment choice less than arch_mapping_granulariy removed.
-> >>
-> >
-> > I am not sure why we need to do that. For example: even if we have
-> > direct-map mapping size as PAGE_SIZE (64K), we still should allow an user
-> > mapping with hugepage size (16M)?
-> >
->
->
-> Considering the direct-map map size is not going to be user selectable,
-> do you agree that we can skip the above step 0 configuration you
-> suggested.
->
-> The changes proposed in the patch series essentially does the rest.
->
-> 1) It validate the size against the arch specific limit during
-> namespace creation. (part of step 1)
+Hi Akashi,
 
-This validation is a surprise failure to ndctl.
+On Fri, Nov 15, 2019 at 7:29 AM AKASHI Takahiro
+<takahiro.akashi@linaro.org> wrote:
+>
+> Bhupesh,
+>
+> On Fri, Nov 15, 2019 at 01:24:17AM +0530, Bhupesh Sharma wrote:
+> > Hi Akashi,
+> >
+> > On Wed, Nov 13, 2019 at 12:11 PM AKASHI Takahiro
+> > <takahiro.akashi@linaro.org> wrote:
+> > >
+> > > Hi Bhupesh,
+> > >
+> > > Do you have a corresponding patch for userspace tools,
+> > > including crash util and/or makedumpfile?
+> > > Otherwise, we can't verify that a generated core file is
+> > > correctly handled.
+> >
+> > Sure. I am still working on the crash-utility related changes, but you
+> > can find the makedumpfile changes I posted a couple of days ago here
+> > (see [0]) and the github link for the makedumpfile changes can be seen
+> > via [1].
+> >
+> > I will post the crash-util changes shortly as well.
+> > Thanks for having a look at the same.
+>
+> Thank you.
+> I have tested my kdump patch with a hacked version of crash
+> where VA_BITS_ACTUAL is calculated from tcr_el1_t1sz in vmcoreinfo.
 
-> 2) It also disable initializing a region if it find the size not
-> correctly aligned as per the platform requirement.
+Thanks a lot for testing the changes. I will push the crash utility
+changes for review shortly and also Cc you to the patches.
+It would be great to have your Tested-by for this patch-set, if the
+user-space works fine for you with these changes.
 
-There needs to be a way for the user to discover the correct alignment
-that the kernel will accept.
+Regards,
+Bhupesh
 
-> 3) Direct map  mapping size is different from supported_alignment for a
-> namespace. The supported alignment controls what possible PAGE SIZE user want the
-> namespace to be mapped to user space.
+> -Takahiro Akashi
+>
+>
+> > [0]. http://lists.infradead.org/pipermail/kexec/2019-November/023963.ht=
+ml
+> > [1]. https://github.com/bhupesh-sharma/makedumpfile/tree/52-bit-va-supp=
+ort-via-vmcore-upstream-v4
+> >
+> > Regards,
+> > Bhupesh
+> >
+> > >
+> > > Thanks,
+> > > -Takahiro Akashi
+> > >
+> > > On Mon, Nov 11, 2019 at 01:31:19PM +0530, Bhupesh Sharma wrote:
+> > > > Changes since v3:
+> > > > ----------------
+> > > > - v3 can be seen here:
+> > > >   http://lists.infradead.org/pipermail/kexec/2019-March/022590.html
+> > > > - Addressed comments from James and exported TCR_EL1.T1SZ in vmcore=
+info
+> > > >   instead of PTRS_PER_PGD.
+> > > > - Added a new patch (via [PATCH 3/3]), which fixes a simple typo in
+> > > >   'Documentation/arm64/memory.rst'
+> > > >
+> > > > Changes since v2:
+> > > > ----------------
+> > > > - v2 can be seen here:
+> > > >   http://lists.infradead.org/pipermail/kexec/2019-March/022531.html
+> > > > - Protected 'MAX_PHYSMEM_BITS' vmcoreinfo variable under CONFIG_SPA=
+RSEMEM
+> > > >   ifdef sections, as suggested by Kazu.
+> > > > - Updated vmcoreinfo documentation to add description about
+> > > >   'MAX_PHYSMEM_BITS' variable (via [PATCH 3/3]).
+> > > >
+> > > > Changes since v1:
+> > > > ----------------
+> > > > - v1 was sent out as a single patch which can be seen here:
+> > > >   http://lists.infradead.org/pipermail/kexec/2019-February/022411.h=
+tml
+> > > >
+> > > > - v2 breaks the single patch into two independent patches:
+> > > >   [PATCH 1/2] appends 'PTRS_PER_PGD' to vmcoreinfo for arm64 arch, =
+whereas
+> > > >   [PATCH 2/2] appends 'MAX_PHYSMEM_BITS' to vmcoreinfo in core kern=
+el code (all archs)
+> > > >
+> > > > This patchset primarily fixes the regression reported in user-space
+> > > > utilities like 'makedumpfile' and 'crash-utility' on arm64 architec=
+ture
+> > > > with the availability of 52-bit address space feature in underlying
+> > > > kernel. These regressions have been reported both on CPUs which don=
+'t
+> > > > support ARMv8.2 extensions (i.e. LVA, LPA) and are running newer ke=
+rnels
+> > > > and also on prototype platforms (like ARMv8 FVP simulator model) wh=
+ich
+> > > > support ARMv8.2 extensions and are running newer kernels.
+> > > >
+> > > > The reason for these regressions is that right now user-space tools
+> > > > have no direct access to these values (since these are not exported
+> > > > from the kernel) and hence need to rely on a best-guess method of
+> > > > determining value of 'vabits_actual' and 'MAX_PHYSMEM_BITS' support=
+ed
+> > > > by underlying kernel.
+> > > >
+> > > > Exporting these values via vmcoreinfo will help user-land in such c=
+ases.
+> > > > In addition, as per suggestion from makedumpfile maintainer (Kazu),
+> > > > it makes more sense to append 'MAX_PHYSMEM_BITS' to
+> > > > vmcoreinfo in the core code itself rather than in arm64 arch-specif=
+ic
+> > > > code, so that the user-space code for other archs can also benefit =
+from
+> > > > this addition to the vmcoreinfo and use it as a standard way of
+> > > > determining 'SECTIONS_SHIFT' value in user-land.
+> > > >
+> > > > Cc: Boris Petkov <bp@alien8.de>
+> > > > Cc: Ingo Molnar <mingo@kernel.org>
+> > > > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > > > Cc: Jonathan Corbet <corbet@lwn.net>
+> > > > Cc: James Morse <james.morse@arm.com>
+> > > > Cc: Mark Rutland <mark.rutland@arm.com>
+> > > > Cc: Will Deacon <will@kernel.org>
+> > > > Cc: Steve Capper <steve.capper@arm.com>
+> > > > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > > > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> > > > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > > > Cc: Paul Mackerras <paulus@samba.org>
+> > > > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > > > Cc: Dave Anderson <anderson@redhat.com>
+> > > > Cc: Kazuhito Hagio <k-hagio@ab.jp.nec.com>
+> > > > Cc: x86@kernel.org
+> > > > Cc: linuxppc-dev@lists.ozlabs.org
+> > > > Cc: linux-arm-kernel@lists.infradead.org
+> > > > Cc: linux-kernel@vger.kernel.org
+> > > > Cc: linux-doc@vger.kernel.org
+> > > > Cc: kexec@lists.infradead.org
+> > > >
+> > > > Bhupesh Sharma (3):
+> > > >   crash_core, vmcoreinfo: Append 'MAX_PHYSMEM_BITS' to vmcoreinfo
+> > > >   arm64/crash_core: Export TCR_EL1.T1SZ in vmcoreinfo
+> > > >   Documentation/arm64: Fix a simple typo in memory.rst
+> > > >
+> > > >  Documentation/arm64/memory.rst         | 2 +-
+> > > >  arch/arm64/include/asm/pgtable-hwdef.h | 1 +
+> > > >  arch/arm64/kernel/crash_core.c         | 9 +++++++++
+> > > >  kernel/crash_core.c                    | 1 +
+> > > >  4 files changed, 12 insertions(+), 1 deletion(-)
+> > > >
+> > > > --
+> > > > 2.7.4
+> > > >
+> > >
+> >
+>
 
-No, the namespace alignment is different than the page mapping size.
-The alignment is only interpreted as a mapping size at the device-dax
-level, otherwise at the raw namespace level it's just an arbitrary
-alignment.
-
-> With the above do you think the current patch series is good?
-
-I don't think we've quite converged on a solution.
