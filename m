@@ -1,41 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545AFFEA02
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 02:06:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47FH9F3fdfzF3SP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 12:06:25 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD85FEAED
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 07:24:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47FQDR1B02zF49P
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2019 17:24:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=ftp.linux.org.uk (client-ip=195.92.253.2;
- helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47FH6l3BrhzF7yw
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 12:04:15 +1100 (AEDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1iVmUp-0004pt-QX; Sat, 16 Nov 2019 01:03:28 +0000
-Date: Sat, 16 Nov 2019 01:03:27 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v16 09/12] namei: LOOKUP_{IN_ROOT,BENEATH}: permit
- limited ".." resolution
-Message-ID: <20191116010327.GZ26530@ZenIV.linux.org.uk>
-References: <20191116002802.6663-1-cyphar@cyphar.com>
- <20191116002802.6663-10-cyphar@cyphar.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47FQBk1mkqzF46j
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2019 17:23:07 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 0EC8968BE1; Sat, 16 Nov 2019 07:22:58 +0100 (CET)
+Date: Sat, 16 Nov 2019 07:22:58 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Robin Murphy <robin.murphy@arm.com>
+Subject: Re: generic DMA bypass flag
+Message-ID: <20191116062258.GA8913@lst.de>
+References: <20191113133731.20870-1-hch@lst.de>
+ <d27b7b29-df78-4904-8002-b697da5cb013@arm.com>
+ <20191114074105.GC26546@lst.de>
+ <9c8f4d7b-43e0-a336-5d93-88aef8aae716@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191116002802.6663-10-cyphar@cyphar.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <9c8f4d7b-43e0-a336-5d93-88aef8aae716@arm.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,54 +47,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, containers@lists.linux-foundation.org,
- Christian Brauner <christian.brauner@ubuntu.com>, linux-api@vger.kernel.org,
- Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
- Daniel Borkmann <daniel@iogearbox.net>, Jiri Olsa <jolsa@redhat.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- Yonghong Song <yhs@fb.com>, linux-mips@vger.kernel.org,
- Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linuxppc-dev@lists.ozlabs.org, dev@opencontainers.org,
- linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
- Aleksa Sarai <asarai@suse.de>, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Martin KaFai Lau <kafai@fb.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 16, 2019 at 11:27:59AM +1100, Aleksa Sarai wrote:
+On Fri, Nov 15, 2019 at 06:12:48PM +0000, Robin Murphy wrote:
+> And is that any different from where you would choose to "just" set a 
+> generic bypass flag?
 
-> +		if (unlikely(nd->flags & LOOKUP_IS_SCOPED)) {
-> +			bool m_retry = read_seqretry(&mount_lock, nd->m_seq);
-> +			bool r_retry = read_seqretry(&rename_lock, nd->r_seq);
-> +
-> +			/*
-> +			 * If there was a racing rename or mount along our
-> +			 * path, then we can't be sure that ".." hasn't jumped
-> +			 * above nd->root (and so userspace should retry or use
-> +			 * some fallback).
-> +			 */
-> +			if (unlikely(m_retry || r_retry))
-> +				return -EAGAIN;
-> +		}
->  	}
->  	return 0;
+Same spots, as intel-iommu moves from the identify to a dma domain when
+setting a 32-bit mask.  But that means once a 32-bit mask is set we can't
+ever go back to the 64-bit one.  And we had a couple drivers playing
+interesting games there.  FYI, this is the current intel-iommu
+WIP conversion to the dma bypass flag:
 
-Elaborate...  Do these boolean variables make any sense now, really?
+http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-bypass
