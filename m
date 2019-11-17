@@ -2,36 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B31EFF727
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 02:33:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2262FF72C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 02:34:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47FvjT2D8WzF4RV
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 12:33:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47FvlW61YXzF4R0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2019 12:34:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cyphar.com (client-ip=2001:67c:2050::465:101;
- helo=mout-p-101.mailbox.org; envelope-from=cyphar@cyphar.com;
+ smtp.mailfrom=cyphar.com (client-ip=2001:67c:2050::465:102;
+ helo=mout-p-102.mailbox.org; envelope-from=cyphar@cyphar.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org
- [IPv6:2001:67c:2050::465:101])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org
+ [IPv6:2001:67c:2050::465:102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47FvRP30DCzF4Fd
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 12:20:49 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47FvRw0w26zF3ll
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 12:21:16 +1100 (AEDT)
 Received: from smtp2.mailbox.org (smtp2.mailbox.org
  [IPv6:2001:67c:2050:105:465:1:2:0])
  (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by mout-p-101.mailbox.org (Postfix) with ESMTPS id 47FvRL4hlWzKmTB;
- Sun, 17 Nov 2019 02:20:46 +0100 (CET)
+ by mout-p-102.mailbox.org (Postfix) with ESMTPS id 47FvRs2lTzzKmhd;
+ Sun, 17 Nov 2019 02:21:13 +0100 (CET)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de
- [80.241.56.117]) (amavisd-new, port 10030)
- with ESMTP id 1s_hzVWoWjbG; Sun, 17 Nov 2019 02:20:42 +0100 (CET)
+ by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de
+ [80.241.56.122]) (amavisd-new, port 10030)
+ with ESMTP id 2BxD6DhJx7si; Sun, 17 Nov 2019 02:21:07 +0100 (CET)
 From: Aleksa Sarai <cyphar@cyphar.com>
 To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
  "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
@@ -41,10 +41,9 @@ To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
  Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <kafai@fb.com>,
  Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
  Andrii Nakryiko <andriin@fb.com>, Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH v17 06/13] namei: LOOKUP_NO_MAGICLINKS: block magic-link
- resolution
-Date: Sun, 17 Nov 2019 12:17:06 +1100
-Message-Id: <20191117011713.13032-7-cyphar@cyphar.com>
+Subject: [PATCH v17 07/13] namei: LOOKUP_NO_XDEV: block mountpoint crossing
+Date: Sun, 17 Nov 2019 12:17:07 +1100
+Message-Id: <20191117011713.13032-8-cyphar@cyphar.com>
 In-Reply-To: <20191117011713.13032-1-cyphar@cyphar.com>
 References: <20191117011713.13032-1-cyphar@cyphar.com>
 MIME-Version: 1.0
@@ -87,43 +86,31 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 /* Background. */
-There has always been a special class of symlink-like objects in procfs
-(and a few other pseudo-filesystems) which allow for non-lexical
-resolution of paths using nd_jump_link(). These "magic-links" do not
-follow traditional mount namespace boundaries, and have been used
-consistently in container escape attacks because they can be used to
-trick unsuspecting privileged processes into resolving unexpected paths.
-
-It is also non-trivial for userspace to unambiguously avoid resolving
-magic-links, because they do not have a reliable indication that they
-are a magic-link (in order to verify them you'd have to manually open
-the path given by readlink(2) and then verify that the two file
-descriptors reference the same underlying file, which is plagued with
-possible race conditions or supplementary attack scenarios).
-
-It would therefore be very helpful for userspace to be able to avoid
-these symlinks easily, thus hopefully removing a tool from attackers'
-toolboxes.
+The need to contain path operations within a mountpoint has been a
+long-standing usecase that userspace has historically implemented
+manually with liberal usage of stat(). find, rsync, tar and
+many other programs implement these semantics -- but it'd be much
+simpler to have a fool-proof way of refusing to open a path if it
+crosses a mountpoint.
 
 This is part of a refresh of Al's AT_NO_JUMPS patchset[1] (which was a
 variation on David Drysdale's O_BENEATH patchset[2], which in turn was
 based on the Capsicum project[3]).
 
 /* Userspace API. */
-LOOKUP_NO_MAGICLINKS will be exposed to userspace through openat2(2).
+LOOKUP_NO_XDEV will be exposed to userspace through openat2(2).
 
 /* Semantics. */
 Unlike most other LOOKUP flags (most notably LOOKUP_FOLLOW),
-LOOKUP_NO_MAGICLINKS applies to all components of the path.
+LOOKUP_NO_XDEV applies to all components of the path.
 
-With LOOKUP_NO_MAGICLINKS, any magic-link path component encountered
-during path resolution will yield -ELOOP. The handling of ~LOOKUP_FOLLOW
-for a trailing magic-link is identical to LOOKUP_NO_SYMLINKS.
-
-LOOKUP_NO_SYMLINKS implies LOOKUP_NO_MAGICLINKS.
+With LOOKUP_NO_XDEV, any path component which crosses a mount-point
+during path resolution (including "..") will yield an -EXDEV. Absolute
+paths, absolute symlinks, and magic-links will only yield an -EXDEV if
+the jump involved changing mount-points.
 
 /* Testing. */
-LOOKUP_NO_MAGICLINKS is tested as part of the openat2(2) selftests.
+LOOKUP_NO_XDEV is tested as part of the openat2(2) selftests.
 
 [1]: https://lore.kernel.org/lkml/20170429220414.GT29622@ZenIV.linux.org.uk/
 [2]: https://lore.kernel.org/lkml/1415094884-18349-1-git-send-email-drysdale@google.com/
@@ -136,46 +123,105 @@ Suggested-by: Andy Lutomirski <luto@kernel.org>
 Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
 ---
- fs/namei.c            | 10 +++++++++-
+ fs/namei.c            | 31 +++++++++++++++++++++++++++----
  include/linux/namei.h |  1 +
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
 diff --git a/fs/namei.c b/fs/namei.c
-index 303731935eb2..415a897729c8 100644
+index 415a897729c8..321c8ad5d6b3 100644
 --- a/fs/namei.c
 +++ b/fs/namei.c
-@@ -867,13 +867,21 @@ static int nd_jump_root(struct nameidata *nd)
-  */
- int nd_jump_link(struct path *path)
- {
-+	int error = -ELOOP;
- 	struct nameidata *nd = current->nameidata;
--	path_put(&nd->path);
+@@ -838,6 +838,11 @@ static inline void path_to_nameidata(const struct path *path,
  
-+	if (unlikely(nd->flags & LOOKUP_NO_MAGICLINKS))
-+		goto err;
+ static int nd_jump_root(struct nameidata *nd)
+ {
++	if (unlikely(nd->flags & LOOKUP_NO_XDEV)) {
++		/* Absolute path arguments to path_init() are allowed. */
++		if (nd->path.mnt != NULL && nd->path.mnt != nd->root.mnt)
++			return -EXDEV;
++	}
+ 	if (!nd->root.mnt) {
+ 		int error = set_root(nd);
+ 		if (error)
+@@ -873,6 +878,12 @@ int nd_jump_link(struct path *path)
+ 	if (unlikely(nd->flags & LOOKUP_NO_MAGICLINKS))
+ 		goto err;
+ 
++	error = -EXDEV;
++	if (unlikely(nd->flags & LOOKUP_NO_XDEV)) {
++		if (nd->path.mnt != path->mnt)
++			goto err;
++	}
 +
-+	path_put(&nd->path);
+ 	path_put(&nd->path);
  	nd->path = *path;
  	nd->inode = nd->path.dentry->d_inode;
- 	nd->flags |= LOOKUP_JUMPED;
- 	return 0;
-+
-+err:
-+	path_put(path);
-+	return error;
- }
+@@ -1280,12 +1291,16 @@ static int follow_managed(struct path *path, struct nameidata *nd)
+ 		break;
+ 	}
  
- static inline void put_link(struct nameidata *nd)
+-	if (need_mntput && path->mnt == mnt)
+-		mntput(path->mnt);
++	if (need_mntput) {
++		if (path->mnt == mnt)
++			mntput(path->mnt);
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			ret = -EXDEV;
++		else
++			nd->flags |= LOOKUP_JUMPED;
++	}
+ 	if (ret == -EISDIR || !ret)
+ 		ret = 1;
+-	if (need_mntput)
+-		nd->flags |= LOOKUP_JUMPED;
+ 	if (unlikely(ret < 0))
+ 		path_put_conditional(path, nd);
+ 	return ret;
+@@ -1342,6 +1357,8 @@ static bool __follow_mount_rcu(struct nameidata *nd, struct path *path,
+ 		mounted = __lookup_mnt(path->mnt, path->dentry);
+ 		if (!mounted)
+ 			break;
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			return false;
+ 		path->mnt = &mounted->mnt;
+ 		path->dentry = mounted->mnt.mnt_root;
+ 		nd->flags |= LOOKUP_JUMPED;
+@@ -1388,6 +1405,8 @@ static int follow_dotdot_rcu(struct nameidata *nd)
+ 				return -ECHILD;
+ 			if (&mparent->mnt == nd->path.mnt)
+ 				break;
++			if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++				return -ECHILD;
+ 			/* we know that mountpoint was pinned */
+ 			nd->path.dentry = mountpoint;
+ 			nd->path.mnt = &mparent->mnt;
+@@ -1402,6 +1421,8 @@ static int follow_dotdot_rcu(struct nameidata *nd)
+ 			return -ECHILD;
+ 		if (!mounted)
+ 			break;
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			return -ECHILD;
+ 		nd->path.mnt = &mounted->mnt;
+ 		nd->path.dentry = mounted->mnt.mnt_root;
+ 		inode = nd->path.dentry->d_inode;
+@@ -1500,6 +1521,8 @@ static int follow_dotdot(struct nameidata *nd)
+ 		}
+ 		if (!follow_up(&nd->path))
+ 			break;
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			return -EXDEV;
+ 	}
+ 	follow_mount(&nd->path);
+ 	nd->inode = nd->path.dentry->d_inode;
 diff --git a/include/linux/namei.h b/include/linux/namei.h
-index 0d86e75c04a7..1573b8493d98 100644
+index 1573b8493d98..25ee88c4acb1 100644
 --- a/include/linux/namei.h
 +++ b/include/linux/namei.h
-@@ -41,6 +41,7 @@ enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
- 
+@@ -42,6 +42,7 @@ enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
  /* Scoping flags for lookup. */
  #define LOOKUP_NO_SYMLINKS	0x010000 /* No symlink crossing. */
-+#define LOOKUP_NO_MAGICLINKS	0x020000 /* No nd_jump_link() crossing. */
+ #define LOOKUP_NO_MAGICLINKS	0x020000 /* No nd_jump_link() crossing. */
++#define LOOKUP_NO_XDEV		0x040000 /* No mountpoint crossing. */
  
  extern int path_pts(struct path *path);
  
