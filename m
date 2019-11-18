@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C371006DF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 14:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD641006EB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 14:59:52 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Gr954DNLzDqS0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 00:56:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47GrDj2XX3zDqDs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 00:59:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,26 +18,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Gnc51PgWzDqRC
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Gnc51sXDzDqTP
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 23:01:24 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id BB66FB02C;
+ by mx1.suse.de (Postfix) with ESMTP id 8CBC2AFDB;
  Mon, 18 Nov 2019 12:01:20 +0000 (UTC)
 Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 7DE191E4B03; Mon, 18 Nov 2019 10:49:18 +0100 (CET)
-Date: Mon, 18 Nov 2019 10:49:18 +0100
+ id BE4051E4B05; Mon, 18 Nov 2019 11:16:01 +0100 (CET)
+Date: Mon, 18 Nov 2019 11:16:01 +0100
 From: Jan Kara <jack@suse.cz>
 To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v5 07/24] IB/umem: use get_user_pages_fast() to pin DMA
- pages
-Message-ID: <20191118094918.GE17319@quack2.suse.cz>
+Subject: Re: [PATCH v5 10/24] mm/gup: introduce pin_user_pages*() and FOLL_PIN
+Message-ID: <20191118101601.GF17319@quack2.suse.cz>
 References: <20191115055340.1825745-1-jhubbard@nvidia.com>
- <20191115055340.1825745-8-jhubbard@nvidia.com>
+ <20191115055340.1825745-11-jhubbard@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191115055340.1825745-8-jhubbard@nvidia.com>
+In-Reply-To: <20191115055340.1825745-11-jhubbard@nvidia.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,8 +56,8 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
  linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
  Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jason Gunthorpe <jgg@mellanox.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@linux.ibm.com>, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
  =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  linux-block@vger.kernel.org,
@@ -75,65 +74,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 14-11-19 21:53:23, John Hubbard wrote:
-> And get rid of the mmap_sem calls, as part of that. Note
-> that get_user_pages_fast() will, if necessary, fall back to
-> __gup_longterm_unlocked(), which takes the mmap_sem as needed.
-> 
-> Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+On Thu 14-11-19 21:53:26, John Hubbard wrote:
+>  /*
+> - * NOTE on FOLL_LONGTERM:
+> + * FOLL_PIN and FOLL_LONGTERM may be used in various combinations with each
+> + * other. Here is what they mean, and how to use them:
+>   *
+>   * FOLL_LONGTERM indicates that the page will be held for an indefinite time
+> - * period _often_ under userspace control.  This is contrasted with
+> - * iov_iter_get_pages() where usages which are transient.
+> + * period _often_ under userspace control.  This is in contrast to
+> + * iov_iter_get_pages(), where usages which are transient.
+                          ^^^ when you touch this, please fix also the
+second sentense. It doesn't quite make sense to me... I'd probably write
+there "whose usages are transient" but maybe you can come up with something
+even better.
 
-Looks good to me. You can add:
+Otherwise the patch looks good to me so feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
-
-
-> ---
->  drivers/infiniband/core/umem.c | 17 ++++++-----------
->  1 file changed, 6 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-> index 24244a2f68cc..3d664a2539eb 100644
-> --- a/drivers/infiniband/core/umem.c
-> +++ b/drivers/infiniband/core/umem.c
-> @@ -271,16 +271,13 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, unsigned long addr,
->  	sg = umem->sg_head.sgl;
->  
->  	while (npages) {
-> -		down_read(&mm->mmap_sem);
-> -		ret = get_user_pages(cur_base,
-> -				     min_t(unsigned long, npages,
-> -					   PAGE_SIZE / sizeof (struct page *)),
-> -				     gup_flags | FOLL_LONGTERM,
-> -				     page_list, NULL);
-> -		if (ret < 0) {
-> -			up_read(&mm->mmap_sem);
-> +		ret = get_user_pages_fast(cur_base,
-> +					  min_t(unsigned long, npages,
-> +						PAGE_SIZE /
-> +						sizeof(struct page *)),
-> +					  gup_flags | FOLL_LONGTERM, page_list);
-> +		if (ret < 0)
->  			goto umem_release;
-> -		}
->  
->  		cur_base += ret * PAGE_SIZE;
->  		npages   -= ret;
-> @@ -288,8 +285,6 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, unsigned long addr,
->  		sg = ib_umem_add_sg_table(sg, page_list, ret,
->  			dma_get_max_seg_size(context->device->dma_device),
->  			&umem->sg_nents);
-> -
-> -		up_read(&mm->mmap_sem);
->  	}
->  
->  	sg_mark_end(sg);
-> -- 
-> 2.24.0
-> 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
