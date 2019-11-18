@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E088D1004C4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 12:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95C71004CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 12:56:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47GnS51Lr8zDqX9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 22:54:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47GnVj4vwyzDqRg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 22:56:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::441;
- helo=mail-wr1-x441.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::342;
+ helo=mail-wm1-x342.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="cUCcyumy"; dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
+ header.b="XwxihX/g"; dkim-atps=neutral
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
+ [IPv6:2a00:1450:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Gmmf2zKNzDqPn
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 22:23:46 +1100 (AEDT)
-Received: by mail-wr1-x441.google.com with SMTP id q15so6185145wrw.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 03:23:46 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Gmmh0h8HzDqPn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 22:23:47 +1100 (AEDT)
+Received: by mail-wm1-x342.google.com with SMTP id b17so18332790wmj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 03:23:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=c6cX64DMSTf/KsycxtOgXNPxmcIGKLx/O+3SoX0LMUM=;
- b=cUCcyumyZWoue8UKqpho89r5qAqWtZm3cCD3s6yvL1ZAIjEdjV/iA1g+uot/suUr76
- mgN3wnD109p+/BxYSQtR3MRIfynOlo8CHLqvYM/2VL//6doQaKXUzW0bBOXQIlKfDkVt
- bE2Zy1hsnKS6iQJLp7YN42rV8yqYAwM8H+ou4=
+ bh=XBMri+/30LVPDwr/Z+UtZHm4sLSriiAUm4o/nxS90ZM=;
+ b=XwxihX/gOwrx+y04fM23yehEh+sPis4cGHhlyJmxzkcnYDvy0QGxfaHnzbuslYnP8w
+ vPQYU+JOn6T6eUjPcYuJdpGSZpQQ8KopPXBLQLO+Cnq00CmTVfqoGU0TVjG9XsGrTeRI
+ 3EObzG2+QC760zIH/Z5JnFmsHP9k/oZs5kUPE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=c6cX64DMSTf/KsycxtOgXNPxmcIGKLx/O+3SoX0LMUM=;
- b=hHqlFGLzSuekoQwnZb9Nf0qcgDjD/DXR475HP8f5yKHua/wz250Komzgfn9MtBdaAY
- LoywJrlS20H9FuxpS4ya4dpjpnWCkZkVNwh2c+/Mcno3Od2/GGk8eY41zOwWgn66cXh4
- 7NqCBfi/fz95Ar9ZeqAqRQgE2d53W1X8pkWtG708urNgEZUP+VcXQhPcQWf1yQgZhQTN
- KmmmuiNk07o2miscXcDZ129c1TzOQjnBJ/0rdG5Rkn7D6kuh+bjmzy8bmu7QPI4vQELx
- m4f1lYQFZ7MJ2iHYiB/gERxVklxF0Zs1rTWJHIAeeY0vElZsMF/ylAkLy6NulHd51Hj5
- a8GQ==
-X-Gm-Message-State: APjAAAUoEy2/ikmLnIsiOtdbA1EyCfVoKWvXih8K1L9PIQ+38gk2hPU3
- oJDa4HL1uNEh3DWp5lG8BKqUxA==
-X-Google-Smtp-Source: APXvYqxKtQ/L0jtybhpqM+fbDm+9z0zHRS37cs3RGG+HQSXfkyGVUGkwSkFQQXJyDBhH+RoV9eP+Og==
-X-Received: by 2002:a5d:55c7:: with SMTP id i7mr30697760wrw.64.1574076222980; 
- Mon, 18 Nov 2019 03:23:42 -0800 (PST)
+ bh=XBMri+/30LVPDwr/Z+UtZHm4sLSriiAUm4o/nxS90ZM=;
+ b=mcVjVugKXHKXneUW0ujRloAmADxeKajIHSP9lh6Lym8IjGE1fY+u5TiMHPQ+v9+U5Q
+ 4nZbEUC2bmvL4B7FXdfIlilF3VCuDQj1TbH3Yev2kVLUGt+GXP/wlnfggToupOfkfVcL
+ AQS94LnThzYb8mQ5Ica+nQTwTCwbr4yeyOS+q5u/Za0+Q/iq6vUZ7QVCSzomwDePOagR
+ TI70wtf6TwNlaCKb/NiE/MuaM6wB/m//5ytbZzYX6bF4EW7cgG5K2dyK7UyGxHrJSUyw
+ QzIe6RvBdfXcHgId8aT2gLWeJ1rhchNq009xLVQ9ETbZ6gSaPAEtO/3gOGMZz87xJPc8
+ 2+NQ==
+X-Gm-Message-State: APjAAAVKRbl2U2j1HO152KBQWyz4kRFyNACz7wEzi6xoccphvRqyPOR9
+ /fl6qIad6p9hNgM4Ec2S2FtNzA==
+X-Google-Smtp-Source: APXvYqyofnRzcLiCqR4UEC7wz7/x2pof42n82PY10PtFAILsthfOJbkCddIWyFORHPtQjnOdgXG+Ww==
+X-Received: by 2002:a7b:ce11:: with SMTP id m17mr30646195wmc.113.1574076224233; 
+ Mon, 18 Nov 2019 03:23:44 -0800 (PST)
 Received: from prevas-ravi.prevas.se (ip-5-186-115-54.cgn.fibianet.dk.
  [5.186.115.54])
- by smtp.gmail.com with ESMTPSA id y2sm21140815wmy.2.2019.11.18.03.23.42
+ by smtp.gmail.com with ESMTPSA id y2sm21140815wmy.2.2019.11.18.03.23.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2019 03:23:42 -0800 (PST)
+ Mon, 18 Nov 2019 03:23:43 -0800 (PST)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v5 10/48] soc: fsl: qe: remove pointless sysfs registration in
- qe_ic.c
-Date: Mon, 18 Nov 2019 12:22:46 +0100
-Message-Id: <20191118112324.22725-11-linux@rasmusvillemoes.dk>
+Subject: [PATCH v5 11/48] soc: fsl: qe: use qe_ic_cascade_{low,
+ high}_mpic also on 83xx
+Date: Mon, 18 Nov 2019 12:22:47 +0100
+Message-Id: <20191118112324.22725-12-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191118112324.22725-1-linux@rasmusvillemoes.dk>
 References: <20191118112324.22725-1-linux@rasmusvillemoes.dk>
@@ -86,54 +86,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There's no point in registering with sysfs when that doesn't actually
-allow any interaction with the device or driver (no uevents, no sysfs
-files that provide information or allow configuration, no nothing).
+The *_ipic and *_mpic handlers are almost identical - the only
+difference is that the latter end with an unconditional
+chip->irq_eoi() call. Since IPIC does not have ->irq_eoi, we can
+reduce some code duplication by calling irq_eoi conditionally.
+
+This is similar to what is already done in mpc8xxx_gpio_irq_cascade().
+
+This leaves the functions slightly misnamed, but that will be fixed in
+a subsequent patch.
 
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/soc/fsl/qe/qe_ic.c | 31 -------------------------------
- 1 file changed, 31 deletions(-)
+ arch/powerpc/platforms/83xx/misc.c |  2 +-
+ include/soc/fsl/qe/qe_ic.h         | 24 ++++--------------------
+ 2 files changed, 5 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
-index 4b03060d8079..f170926ce4d1 100644
---- a/drivers/soc/fsl/qe/qe_ic.c
-+++ b/drivers/soc/fsl/qe/qe_ic.c
-@@ -474,34 +474,3 @@ int qe_ic_set_high_priority(unsigned int virq, unsigned int priority, int high)
- 
- 	return 0;
+diff --git a/arch/powerpc/platforms/83xx/misc.c b/arch/powerpc/platforms/83xx/misc.c
+index f46d7bf3b140..779791c0570f 100644
+--- a/arch/powerpc/platforms/83xx/misc.c
++++ b/arch/powerpc/platforms/83xx/misc.c
+@@ -100,7 +100,7 @@ void __init mpc83xx_qe_init_IRQ(void)
+ 		if (!np)
+ 			return;
+ 	}
+-	qe_ic_init(np, 0, qe_ic_cascade_low_ipic, qe_ic_cascade_high_ipic);
++	qe_ic_init(np, 0, qe_ic_cascade_low_mpic, qe_ic_cascade_high_mpic);
+ 	of_node_put(np);
  }
--
--static struct bus_type qe_ic_subsys = {
--	.name = "qe_ic",
--	.dev_name = "qe_ic",
--};
--
--static struct device device_qe_ic = {
--	.id = 0,
--	.bus = &qe_ic_subsys,
--};
--
--static int __init init_qe_ic_sysfs(void)
+ 
+diff --git a/include/soc/fsl/qe/qe_ic.h b/include/soc/fsl/qe/qe_ic.h
+index 714a9b890d8d..bfaa233d8328 100644
+--- a/include/soc/fsl/qe/qe_ic.h
++++ b/include/soc/fsl/qe/qe_ic.h
+@@ -74,24 +74,6 @@ void qe_ic_set_highest_priority(unsigned int virq, int high);
+ int qe_ic_set_priority(unsigned int virq, unsigned int priority);
+ int qe_ic_set_high_priority(unsigned int virq, unsigned int priority, int high);
+ 
+-static inline void qe_ic_cascade_low_ipic(struct irq_desc *desc)
 -{
--	int rc;
+-	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+-	unsigned int cascade_irq = qe_ic_get_low_irq(qe_ic);
 -
--	printk(KERN_DEBUG "Registering qe_ic with sysfs...\n");
--
--	rc = subsys_system_register(&qe_ic_subsys, NULL);
--	if (rc) {
--		printk(KERN_ERR "Failed registering qe_ic sys class\n");
--		return -ENODEV;
--	}
--	rc = device_register(&device_qe_ic);
--	if (rc) {
--		printk(KERN_ERR "Failed registering qe_ic sys device\n");
--		return -ENODEV;
--	}
--	return 0;
+-	if (cascade_irq != NO_IRQ)
+-		generic_handle_irq(cascade_irq);
 -}
 -
--subsys_initcall(init_qe_ic_sysfs);
+-static inline void qe_ic_cascade_high_ipic(struct irq_desc *desc)
+-{
+-	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+-	unsigned int cascade_irq = qe_ic_get_high_irq(qe_ic);
+-
+-	if (cascade_irq != NO_IRQ)
+-		generic_handle_irq(cascade_irq);
+-}
+-
+ static inline void qe_ic_cascade_low_mpic(struct irq_desc *desc)
+ {
+ 	struct qe_ic *qe_ic = irq_desc_get_handler_data(desc);
+@@ -101,7 +83,8 @@ static inline void qe_ic_cascade_low_mpic(struct irq_desc *desc)
+ 	if (cascade_irq != NO_IRQ)
+ 		generic_handle_irq(cascade_irq);
+ 
+-	chip->irq_eoi(&desc->irq_data);
++	if (chip->irq_eoi)
++		chip->irq_eoi(&desc->irq_data);
+ }
+ 
+ static inline void qe_ic_cascade_high_mpic(struct irq_desc *desc)
+@@ -113,7 +96,8 @@ static inline void qe_ic_cascade_high_mpic(struct irq_desc *desc)
+ 	if (cascade_irq != NO_IRQ)
+ 		generic_handle_irq(cascade_irq);
+ 
+-	chip->irq_eoi(&desc->irq_data);
++	if (chip->irq_eoi)
++		chip->irq_eoi(&desc->irq_data);
+ }
+ 
+ static inline void qe_ic_cascade_muxed_mpic(struct irq_desc *desc)
 -- 
 2.23.0
 
