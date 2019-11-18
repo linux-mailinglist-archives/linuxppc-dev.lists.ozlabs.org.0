@@ -1,70 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7791B1001CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 10:54:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5725DFFF02
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 07:58:10 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Gft73QZ7zDqMh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 17:58:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Gkn80RdjzDqV5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 20:54:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="QO01wbrQ"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Gfqt090MzDqH6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 17:56:09 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id q13so9905788pff.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2019 22:56:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Jh9Xf7UIdPMx7Id72kMrL4Yoelm45a9tP9VAeHLYcMk=;
- b=QO01wbrQ7iqGOHNUo7vjA1kqQMDV3AIlh+4w9cqJV5qSP03TsklDWBavoFXuMjZh5+
- pnlwNXFVW+EzjiT6y/eUkEj9fqO0fDj8Aeu8LpHNjuckt9UAsP0wZbWR08t94L24FGPU
- Ggug1CIBXNxIiSN0+oAOF8mNLUPn0NwNkbtRH/281KleV/BekjbyM5s0GetFRUuI+VC0
- Bnr55O1POhxzJqT9sJh/aXRygVJ4Zos04m5HUANMAll6F7GJNBg5whrVX+TDxjMXVAy8
- xzW+6Q+Y8/WgsEJh0TLMezmrbejyMMGeSTsqA2LwfSW6h/7ffX1foaCdUf8EzjjLHcc8
- +iXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Jh9Xf7UIdPMx7Id72kMrL4Yoelm45a9tP9VAeHLYcMk=;
- b=KA47HA6BfHdjydASWoaEhAmL48AwlvXASFU0vtiXnaY8mWUYGsEnQSr4SeNiGO65tc
- S1V2P1BO50tS/d+Dk5stcbGoQifounKQY0XZuXZLoiPhY5YX7cJndD/8XkfRtf7COJ58
- gm3mBW8v5rLkATckBWrYL2XzfjSKBjc0t5h3m3knVZ+Of4y66/euDnFD7H50WBoSwNYW
- 4A9pxCfhIJvh47IRcW8ZfcuP54hbDgrxKfZK6o+vi1S1+sHa+3/ovy1su/0YvdycXyxo
- Cl0ApbbCsHmB/709tXEG4v37YPvXXa5vZIc1XXtDxDt+Or+c1qIi2Z91Lbum7+ahzlCO
- rK9A==
-X-Gm-Message-State: APjAAAUS0cefzUtnYgAIk9QTA9T5xevzzQOdJrHHQTW+0J5dDvNNDDgv
- N63B8il5t1riG+Q09OwaUpHBXyhQ
-X-Google-Smtp-Source: APXvYqxrGg1jltWZbiXt/dVIjVSTm0P4GAAR2VohfW1A7pgAiWDZW3kVeWLS7kUF+Ruz8RlKraBn1g==
-X-Received: by 2002:a63:1057:: with SMTP id 23mr16501207pgq.171.1574060165494; 
- Sun, 17 Nov 2019 22:56:05 -0800 (PST)
-Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id w138sm21131774pfc.68.2019.11.17.22.56.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Nov 2019 22:56:04 -0800 (PST)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/powernv: Disable native PCIe port management
-Date: Mon, 18 Nov 2019 17:55:53 +1100
-Message-Id: <20191118065553.30362-1-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Gkl52w3HzDqVl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 20:52:17 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAI9ppF0069021; Mon, 18 Nov 2019 04:52:09 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wayf4xwg7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Nov 2019 04:52:08 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAI9o4s1006441;
+ Mon, 18 Nov 2019 09:52:07 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02wdc.us.ibm.com with ESMTP id 2wa8r61676-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Nov 2019 09:52:07 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAI9q7mZ61014302
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Nov 2019 09:52:07 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E537478060;
+ Mon, 18 Nov 2019 09:52:06 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BB5F078069;
+ Mon, 18 Nov 2019 09:52:00 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.34.246])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 18 Nov 2019 09:52:00 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
+ validation arch dependent
+In-Reply-To: <CAPcyv4hroohsrXT1YHQB-L8ZFa2kUW+bKy03We4Mt7afeJgu3Q@mail.gmail.com>
+References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
+ <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
+ <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
+ <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
+ <CAPcyv4h42_1deZDaaW1RqX0Ls+maiFO_1e=6xJuHTa3wdWvVvA@mail.gmail.com>
+ <87o8xp5lo9.fsf@linux.ibm.com> <8736eohva1.fsf@linux.ibm.com>
+ <CAPcyv4hroohsrXT1YHQB-L8ZFa2kUW+bKy03We4Mt7afeJgu3Q@mail.gmail.com>
+Date: Mon, 18 Nov 2019 15:21:57 +0530
+Message-ID: <87o8x9h5qa.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-18_01:2019-11-15,2019-11-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 priorityscore=1501 spamscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1911180088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,92 +90,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
- Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On PowerNV the PCIe topology is (currently) managed by the powernv platform
-code in Linux in cooperation with the platform firmware. Linux's native
-PCIe port service drivers operate independently of both and this can cause
-problems.
+Dan Williams <dan.j.williams@intel.com> writes:
 
-The main issue is that the portbus driver will conflict with the platform
-specific hotplug driver (pnv_php) over ownership of the MSI used to notify
-the host when a hotplug event occurs. The portbus driver claims this MSI on
-behalf of the individual port services because the same interrupt is used
-for hotplug events, PMEs (on root ports), and link bandwidth change
-notifications. The portbus driver will always claim the interrupt even if
-the individual port service drivers, such as pciehp, are compiled out.
+> On Sat, Nov 16, 2019 at 4:15 AM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+>>
 
-The second, bigger, problem is that the hotplug port service driver
-fundamentally does not work on PowerNV. The platform assumes that all
-PCI devices have a corresponding arch-specific handle derived from the DT
-node for the device (pci_dn) and without one the platform will not allow
-a PCI device to be enabled. This problem is largely due to historical
-baggage, but it can't be resolved without significant re-factoring of the
-platform PCI support.
+....
 
-We can fix these problems in the interim by setting the
-"pcie_ports_disabled" flag during platform initialisation. The flag
-indicates the platform owns the PCIe ports which stops the portbus driver
-from being registered.
 
-This does have the side effect of disabling all port services drivers
-that is: AER, PME, BW notifications, hotplug, and DPC. However, this is
-not a huge disadvantage on PowerNV since these services are either unused
-or handled through other means.
+>>
+>> Considering the direct-map map size is not going to be user selectable,
+>> do you agree that we can skip the above step 0 configuration you
+>> suggested.
+>>
+>> The changes proposed in the patch series essentially does the rest.
+>>
+>> 1) It validate the size against the arch specific limit during
+>> namespace creation. (part of step 1)
+>
+> This validation is a surprise failure to ndctl.
+>
+>> 2) It also disable initializing a region if it find the size not
+>> correctly aligned as per the platform requirement.
+>
+> There needs to be a way for the user to discover the correct alignment
+> that the kernel will accept.
+>
+>> 3) Direct map  mapping size is different from supported_alignment for a
+>> namespace. The supported alignment controls what possible PAGE SIZE user want the
+>> namespace to be mapped to user space.
+>
+> No, the namespace alignment is different than the page mapping size.
+> The alignment is only interpreted as a mapping size at the device-dax
+> level, otherwise at the raw namespace level it's just an arbitrary
+> alignment.
+>
+>> With the above do you think the current patch series is good?
+>
+> I don't think we've quite converged on a solution.
 
-Cc: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
-Fixes: 66725152fb9f ("PCI/hotplug: PowerPC PowerNV PCI hotplug driver")
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
-Sergey, just FYI. I'll try sort out the rest of the hotplug
-trainwreck in 5.6.
+How about we make it a property of seed device. ie,
+we add `supported_size_align` RO attribute to the seed device. ndctl can
+use this to validate the size value. So this now becomes step0
 
-The Fixes: here is for the patch that added pnv_php in 4.8. It's been
-a problem since then, but wasn't noticed until people started testing
-it after the EEH fixes in commit 799abe283e51 ("powerpc/eeh: Clean up
-EEH PEs after recovery finishes") went in earlier in the 5.4 cycle.
----
-v2: Moved setting the flag until after we check for OPAL support. No
-    actual functional change since we've already probed the platform,
-    but it looks neater.
+sys/bus/nd/devices/region0> cat btt0.0/supported_size_align 
+16777216
+/sys/bus/nd/devices/region0> cat pfn0.0/supported_size_align 
+16777216
+/sys/bus/nd/devices/region0> cat dax0.0/supported_size_align 
+16777216
+/sys/bus/nd/devices/region0>
 
-    Re-wrote the commit message.
----
- arch/powerpc/platforms/powernv/pci.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+We follow that up with validating the size value written to size
+attribute(step 1).
 
-diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-index 2825d00..c0bea75a 100644
---- a/arch/powerpc/platforms/powernv/pci.c
-+++ b/arch/powerpc/platforms/powernv/pci.c
-@@ -945,6 +945,23 @@ void __init pnv_pci_init(void)
- 	if (!firmware_has_feature(FW_FEATURE_OPAL))
- 		return;
- 
-+#ifdef CONFIG_PCIEPORTBUS
-+	/*
-+	 * On PowerNV PCIe devices are (currently) managed in cooperation
-+	 * with firmware. This isn't *strictly* required, but there's enough
-+	 * assumptions baked into both firmware and the platform code that
-+	 * it's unwise to allow the portbus services to be used.
-+	 *
-+	 * We need to fix this eventually, but for now set this flag to disable
-+	 * the portbus driver. The AER service isn't required since that AER
-+	 * events are handled via EEH. The pciehp hotplug driver can't work
-+	 * without kernel changes (and portbus binding breaks pnv_php). The
-+	 * other services also require some thinking about how we're going
-+	 * to integrate them.
-+	 */
-+	pcie_ports_disabled = true;
-+#endif
-+
- 	/* Look for IODA IO-Hubs. */
- 	for_each_compatible_node(np, NULL, "ibm,ioda-hub") {
- 		pnv_pci_init_ioda_hub(np);
--- 
-2.9.5
+While initializing the namespaces already present in a region we again
+validate the size and if not properly aligned we mark the region
+disabled.
 
+-aneesh
