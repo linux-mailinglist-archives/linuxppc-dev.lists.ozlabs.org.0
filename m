@@ -1,80 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F5E100B69
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 19:22:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D86E1009FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 18:13:22 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47GwWz45lRzDqdh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 04:13:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Gy4J2DFdzDqfC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 05:22:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="MH3iZKyp"; 
- dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47GwTz6lLczDqcG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 04:11:33 +1100 (AEDT)
-Received: by mail-qt1-x842.google.com with SMTP id i17so21052806qtq.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 09:11:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=CLWuzn35UcCrxAH0vPUkNSjLox6KKcBRbOlrNyg/FIg=;
- b=MH3iZKypeEMn6eJb9Ix/Otz7onqgGHRJL9afadNFwPY0KDIvW4KrX0L3JQ6qwF8/jA
- N1oCKYAU8Dz9r6TX6rqm31mg4N1/Wvg+5Yw096OvLhzj/43uvpC2fNWILPUDBNvmTDgL
- nvGRd6miKKmeDVZ8u3Z+HMjVMlLyJ3Ahewvbx4kx98y+GVFAgG7iDjuryjAnL8mSGvYs
- a+olFnVuUuc4Gg94cTcPII9Sykl9gDE9dPTjmymuo9L+k+y6GyLEdzyO3AAVW6YUW1pp
- R9lhOhRE5PqL2bcKrAjPMq1plY0/64fqqdSzd6An8Ugn8H8l9r9XN/bXU4yJQ8SNnsnV
- dcEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=CLWuzn35UcCrxAH0vPUkNSjLox6KKcBRbOlrNyg/FIg=;
- b=GQXpNnshMEKuzCEorlTihla4PVz6QWXdTVaj+ZpOKQ+CM/oHeAzS5ICn/CSrAacaGz
- Rl7s0m3M9Q9yqe4WYrYfV7f0B71VyPWZTd2M1nlYOp8G6hehZ+G1B/kWNxZmYSuDjRZv
- bR98FPJgjkVUETrPuhsB/s+pOjzkvHm46c+LMJ4Zc97LoJh9kcvc8S0DURLxiIkLIU+y
- obKLUtMLBDwzlTtJtsECaAkEX6Kz71p+ymMd3dE+pVMprPgILq/27/APfN93vSVgZ8C/
- CG4xylBnf1AkoIM/NswvHVVpHOxP4o3ezs7dTlL/QSP8opLSxIMQBzPme7gWljjxIg9q
- mBDQ==
-X-Gm-Message-State: APjAAAUwnEPepKtmLe/uqJX6UgyMR3DFPiDC2Rv4CX7shp3vKha56Vqx
- pjiAC0k9MkgnWnhYK4ZyActe2w==
-X-Google-Smtp-Source: APXvYqzliPKDmikS4XgP3WlBwNZGz6arPLK8vRNTOmMUT5SgSVY0OZfuJoTZKIegW2snRbtqR/4JdA==
-X-Received: by 2002:ac8:6f17:: with SMTP id g23mr9774921qtv.104.1574097090195; 
- Mon, 18 Nov 2019 09:11:30 -0800 (PST)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
- [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id t24sm11012562qtc.97.2019.11.18.09.11.28
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 18 Nov 2019 09:11:29 -0800 (PST)
-Message-ID: <1574097087.5937.141.camel@lca.pw>
-Subject: Re: powerpc ftrace broken due to "manual merge of the ftrace tree
- with the arm64 tree"
-From: Qian Cai <cai@lca.pw>
-To: Steven Rostedt <rostedt@goodmis.org>
-Date: Mon, 18 Nov 2019 12:11:27 -0500
-In-Reply-To: <20191118101645.2f68c521@oasis.local.home>
-References: <1573849732.5937.136.camel@lca.pw>
- <20191115160230.78871d8f@gandalf.local.home>
- <1573851994.5937.138.camel@lca.pw>
- <20191118095104.0daebbc3@oasis.local.home>
- <20191118095842.546b38d8@oasis.local.home>
- <20191118101645.2f68c521@oasis.local.home>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Gy2R2qNdzDqRn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 05:21:18 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAIIBvor122052
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 13:21:15 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wayepbbtb-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 13:21:14 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Mon, 18 Nov 2019 18:21:13 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 18 Nov 2019 18:21:11 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAIIL9hv39125170
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Nov 2019 18:21:09 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 85721AE051;
+ Mon, 18 Nov 2019 18:21:09 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D577AE04D;
+ Mon, 18 Nov 2019 18:21:09 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.185.128])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 18 Nov 2019 18:21:09 +0000 (GMT)
+Subject: Re: [PATCH 01/11] powerpc/powernv/ioda: Fix ref count for devices
+ with their own PE
+To: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
+ <7553103.1BsQ81z3e0@townsend>
+ <CAOSf1CEzb_Y4NdXGNPYTOxTR5w7OtBUU+VY46CR6Ou5kwEhJqA@mail.gmail.com>
+ <2783297.m1VkgVQdWf@townsend>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Mon, 18 Nov 2019 19:21:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
+MIME-Version: 1.0
+In-Reply-To: <2783297.m1VkgVQdWf@townsend>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19111818-4275-0000-0000-0000038129DB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19111818-4276-0000-0000-000038949AF2
+Message-Id: <c07ed277-b527-3b1c-9cf8-aecdb7145a5e@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-18_05:2019-11-15,2019-11-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ mlxscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 clxscore=1015
+ bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1911180155
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,101 +94,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Greg Kurz <groug@kaod.org>, Christophe Lombard <clombard@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Reza Arbab <arbab@linux.ibm.com>, Alastair D'Silva <alastair@au1.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-11-18 at 10:16 -0500, Steven Rostedt wrote:
-> On Mon, 18 Nov 2019 09:58:42 -0500
-> Steven Rostedt <rostedt@goodmis.org> wrote:
-> 
-> > On Mon, 18 Nov 2019 09:51:04 -0500
-> > Steven Rostedt <rostedt@goodmis.org> wrote:
-> > 
-> > > > > Test this commit please: b83b43ffc6e4b514ca034a0fbdee01322e2f7022      
-> > > > 
-> > > > # git reset --hard b83b43ffc6e4b514ca034a0fbdee01322e2f7022
-> > > > 
-> > > > Yes, that one is bad.    
-> > > 
-> > > Can you see if this patch fixes the issue for you?  
-> > 
-> > Don't bother. This isn't the right fix, I know see the real issue.
-> > 
-> > New fix coming shortly.
-> > 
-> 
-> Can you try this?
 
-Yes, it works fine.
 
+Le 18/11/2019 à 03:36, Alistair Popple a écrit :
+> On Monday, 18 November 2019 12:24:24 PM AEDT Oliver O'Halloran wrote:
+>> On Mon, Nov 18, 2019 at 12:06 PM Alistair Popple <alistair@popple.id.au>
+> wrote:
+>>>
+>>> On Wednesday, 13 November 2019 4:38:21 AM AEDT Frederic Barrat wrote:
+>>>>
+>>>> However, one question is whether this patch breaks nvlink and if nvlink
+>>>> assumes the devices won’t go away because we explicitly take a reference
+>>>> forever. In npu_dma.c, there are 2 functions which allow to find the GPU
+>>>> associated to a npu device, and vice-versa. Both functions return a
+>>>> pointer to a struct pci_dev, but they don’t take a reference on the
+>>>> device being returned. So that seems dangerous. I’m probably missing
+>>>> something.
+>>>>
+>>>> Alexey, Alistair: what, if anything, guarantees, that the npu or gpu
+>>>> devices stay valid. Is it because we simply don’t provide any means to
+>>>> get rid of them ? Otherwise, don’t we need the callers of
+>>>> pnv_pci_get_gpu_dev() and pnv_pci_get_npu_dev() to worry about reference
+>>>> counting ? I’ve started looking into it and the changes are scary, which
+>>>> explains Greg’s related commit 02c5f5394918b.
+>>>
+>>> To be honest the reference counting looks like it has evolved into
+> something
+>>> quite suspect and I don't think you're missing anything. In practice
+> though we
+>>> likely haven't hit any issues because the original callers didn't store
+>>> references to the pdev which would make the window quite small (although
+> the
+>>> pass through work may have changed that). And as you say there simply
+> wasn't
+>>> any means to get rid of them anyway (EEH, hotplug, etc. has never been
+>>> implemented or supported for GPUs and all sorts of terrible things happen
+> if
+>>> you try).
+>>
+>> In other words: leaking a ref is the only safe thing to do.
 > 
-> It appears that I picked a name "ftrace_graph_stub", that was already in
-> use by powerpc. This just renames the function stub I used.
+> Correct.
 > 
-> -- Steve
+>>> The best solution would likely be to review the reference counting and to
+>>> teach callers of get_*_dev() to call pci_put_dev(), etc.
+>>
+>> The issue is that the two callers of get_pci_dev() are non-GPL
+>> exported symbols so we don't know what's calling them or what their
+>> expectations are. We be doing whatever makes sense for OpenCAPI and if
+>> that happens to cause a problem for someone else, then they can deal
+>> with it.
 > 
-> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-> index 0f358be551cd..996db32c491b 100644
-> --- a/include/asm-generic/vmlinux.lds.h
-> +++ b/include/asm-generic/vmlinux.lds.h
-> @@ -112,7 +112,7 @@
->  #ifdef CONFIG_FTRACE_MCOUNT_RECORD
->  #ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
->  /*
-> - * Need to also make ftrace_graph_stub point to ftrace_stub
-> + * Need to also make ftrace_stub_graph point to ftrace_stub
->   * so that the same stub location may have different protocols
->   * and not mess up with C verifiers.
->   */
-> @@ -120,17 +120,17 @@
->  			__start_mcount_loc = .;			\
->  			KEEP(*(__patchable_function_entries))	\
->  			__stop_mcount_loc = .;			\
-> -			ftrace_graph_stub = ftrace_stub;
-> +			ftrace_stub_graph = ftrace_stub;
->  #else
->  #define MCOUNT_REC()	. = ALIGN(8);				\
->  			__start_mcount_loc = .;			\
->  			KEEP(*(__mcount_loc))			\
->  			__stop_mcount_loc = .;			\
-> -			ftrace_graph_stub = ftrace_stub;
-> +			ftrace_stub_graph = ftrace_stub;
->  #endif
->  #else
->  # ifdef CONFIG_FUNCTION_TRACER
-> -#  define MCOUNT_REC()	ftrace_graph_stub = ftrace_stub;
-> +#  define MCOUNT_REC()	ftrace_stub_graph = ftrace_stub;
->  # else
->  #  define MCOUNT_REC()
->  # endif
-> diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-> index fa3ce10d0405..67e0c462b059 100644
-> --- a/kernel/trace/fgraph.c
-> +++ b/kernel/trace/fgraph.c
-> @@ -336,10 +336,10 @@ int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace)
->   * Simply points to ftrace_stub, but with the proper protocol.
->   * Defined by the linker script in linux/vmlinux.lds.h
->   */
-> -extern void ftrace_graph_stub(struct ftrace_graph_ret *);
-> +extern void ftrace_stub_graph(struct ftrace_graph_ret *);
->  
->  /* The callbacks that hook a function */
-> -trace_func_graph_ret_t ftrace_graph_return = ftrace_graph_stub;
-> +trace_func_graph_ret_t ftrace_graph_return = ftrace_stub_graph;
->  trace_func_graph_ent_t ftrace_graph_entry = ftrace_graph_entry_stub;
->  static trace_func_graph_ent_t __ftrace_graph_entry = ftrace_graph_entry_stub;
->  
-> @@ -619,7 +619,7 @@ void unregister_ftrace_graph(struct fgraph_ops *gops)
->  		goto out;
->  
->  	ftrace_graph_active--;
-> -	ftrace_graph_return = ftrace_graph_stub;
-> +	ftrace_graph_return = ftrace_stub_graph;
->  	ftrace_graph_entry = ftrace_graph_entry_stub;
->  	__ftrace_graph_entry = ftrace_graph_entry_stub;
->  	ftrace_shutdown(&graph_ops, FTRACE_STOP_FUNC_RET);
+> The issue isn't that it's exported non-GPL vs. GPL, rather that there are
+> probably out-of-tree modules like the NVIDIA driver using it. However as you
+> say supporting out-of-tree modules is not generally a concern for kernel
+> developers so we certainly shouldn't let that prevent us doing a fix.
+
+
+Thanks Alistair and Oliver. I'll bite the bullet and try do the right 
+thing wrt ref counting in npu-dma.c
+
+   Fred
+
+> - Alistair
+> 
+>> Oliver
+> 
+> 
+> 
+> 
+
