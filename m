@@ -1,43 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAD410071E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 15:12:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47GrWq67hkzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 01:12:55 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FD11007AE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 15:53:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47GsR75Qs9zDqdg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 01:53:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=5krg=zk=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=goodmis.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Gnc84Y5mzDqFB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 23:01:28 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id E73AFB071;
- Mon, 18 Nov 2019 12:01:20 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 8AEB01E4B0D; Mon, 18 Nov 2019 11:34:09 +0100 (CET)
-Date: Mon, 18 Nov 2019 11:34:09 +0100
-From: Jan Kara <jack@suse.cz>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v5 15/24] fs/io_uring: set FOLL_PIN via pin_user_pages()
-Message-ID: <20191118103409.GI17319@quack2.suse.cz>
-References: <20191115055340.1825745-1-jhubbard@nvidia.com>
- <20191115055340.1825745-16-jhubbard@nvidia.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47GsMx6qNXzDqPN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 01:51:09 +1100 (AEDT)
+Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1607A2071B;
+ Mon, 18 Nov 2019 14:51:06 +0000 (UTC)
+Date: Mon, 18 Nov 2019 09:51:04 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Qian Cai <cai@lca.pw>
+Subject: Re: powerpc ftrace broken due to "manual merge of the ftrace tree
+ with the arm64 tree"
+Message-ID: <20191118095104.0daebbc3@oasis.local.home>
+In-Reply-To: <1573851994.5937.138.camel@lca.pw>
+References: <1573849732.5937.136.camel@lca.pw>
+ <20191115160230.78871d8f@gandalf.local.home>
+ <1573851994.5937.138.camel@lca.pw>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191115055340.1825745-16-jhubbard@nvidia.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,71 +50,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 14-11-19 21:53:31, John Hubbard wrote:
-> Convert fs/io_uring to use the new pin_user_pages() call, which sets
-> FOLL_PIN. Setting FOLL_PIN is now required for code that requires
-> tracking of pinned pages, and therefore for any code that calls
-> put_user_page().
-> 
-> In partial anticipation of this work, the io_uring code was already
-> calling put_user_page() instead of put_page(). Therefore, in order to
-> convert from the get_user_pages()/put_page() model, to the
-> pin_user_pages()/put_user_page() model, the only change required
-> here is to change get_user_pages() to pin_user_pages().
-> 
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+On Fri, 15 Nov 2019 16:06:34 -0500
+Qian Cai <cai@lca.pw> wrote:
 
-Looks good to me. You can add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/io_uring.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> > Test this commit please: b83b43ffc6e4b514ca034a0fbdee01322e2f7022  
 > 
-> diff --git a/fs/io_uring.c b/fs/io_uring.c
-> index f9a38998f2fc..cff64bd00db9 100644
-> --- a/fs/io_uring.c
-> +++ b/fs/io_uring.c
-> @@ -3433,7 +3433,7 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, void __user *arg,
->  
->  		ret = 0;
->  		down_read(&current->mm->mmap_sem);
-> -		pret = get_user_pages(ubuf, nr_pages,
-> +		pret = pin_user_pages(ubuf, nr_pages,
->  				      FOLL_WRITE | FOLL_LONGTERM,
->  				      pages, vmas);
->  		if (pret == nr_pages) {
-> -- 
-> 2.24.0
+> # git reset --hard b83b43ffc6e4b514ca034a0fbdee01322e2f7022
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Yes, that one is bad.
+
+Can you see if this patch fixes the issue for you?
+
+Thanks!
+
+-- Steve
+
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 0f358be551cd..fd8f4dc661dc 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -109,6 +109,13 @@
+ #define MEM_DISCARD(sec) *(.mem##sec)
+ #endif
+ 
++/* PowerPC defines ftrace_graph_stub in the code */
++#ifndef CONFIG_PPC
++# define DEFINE_FTRACE_GRAPH_STUB	ftrace_graph_stub = ftrace_stub;
++#else
++# define DEFINE_FTRACE_GRAPH_STUB
++#endif
++
+ #ifdef CONFIG_FTRACE_MCOUNT_RECORD
+ #ifdef CC_USING_PATCHABLE_FUNCTION_ENTRY
+ /*
+@@ -120,17 +127,17 @@
+ 			__start_mcount_loc = .;			\
+ 			KEEP(*(__patchable_function_entries))	\
+ 			__stop_mcount_loc = .;			\
+-			ftrace_graph_stub = ftrace_stub;
++			DEFINE_FTRACE_GRAPH_STUB
+ #else
+ #define MCOUNT_REC()	. = ALIGN(8);				\
+ 			__start_mcount_loc = .;			\
+ 			KEEP(*(__mcount_loc))			\
+ 			__stop_mcount_loc = .;			\
+-			ftrace_graph_stub = ftrace_stub;
++			DEFINE_FTRACE_GRAPH_STUB
+ #endif
+ #else
+ # ifdef CONFIG_FUNCTION_TRACER
+-#  define MCOUNT_REC()	ftrace_graph_stub = ftrace_stub;
++#  define MCOUNT_REC()	DEFINE_FTRACE_GRAPH_STUB
+ # else
+ #  define MCOUNT_REC()
+ # endif
