@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE461005F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 13:56:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Gpqy3hxJzDqRW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 23:56:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E39100603
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 13:58:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47GptS0KPpzDqW8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 23:58:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::442;
- helo=mail-wr1-x442.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="CcHL/wr1"; dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
+ header.b="WBqyJalM"; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47GmnG55jBzDqQH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 22:24:18 +1100 (AEDT)
-Received: by mail-wr1-x442.google.com with SMTP id w9so19021791wrr.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 03:24:18 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47GmnH3TS6zDqSv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 22:24:19 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id f3so18322246wmc.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 03:24:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=u8f4zkDbM2vRjhOU8bSiNRa1yRbCbXojjY2BLWPzI+4=;
- b=CcHL/wr1MdHVku5NXqYEh205MsV8nNbDhvOTjyrzGp7E05+OZTj+AZ65Mq6w5E7fC4
- QUUsnYvwWfYNPoDOFKaiWLBxE8orb1Uaokk6+Yh/3Va8yKkEh4CwI3Bvmo4RGmqS5LuR
- 7JMzpGl4mSsJFAgOgGnawmUsoJc5NQxoI5Jzs=
+ bh=IVPif8k5ZIR6D+wGrwJyE64cs7Iq/Iy6NadbSzu369Y=;
+ b=WBqyJalM20Pe2+yF9hF7XnXsYtxzLRnMRKlU7/1VgblKEWzSrmyIVbJGD8OkiIg0Vr
+ UlmpxFxPN87KDhJ6En8fXOli2Zo44+zz6/W09vpd+Xsqljhn0yhFAzrYHuJflVOyQaS+
+ z/1qNFcET4IUJ3z1szwXb0kXhrjHW7ZaUhJrE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=u8f4zkDbM2vRjhOU8bSiNRa1yRbCbXojjY2BLWPzI+4=;
- b=jlwJE6iqam4xv13PjsA6H321Z058ZlxIYC+LNOC0YSidVFzHu2ASm57njO/VPaoG4r
- +slFnBWQvK+izShniq6ObiMWuNPNrXx/nSnUHVD8a2UBWZMMK9GXt3zD5Bd0H/vvl7XI
- slbLy2qYEY2nQPMVNEWVRBgo8S8fTVojmRUvfYNHVMRKpyIyTN9vStUq4Hx/nWXSzxnb
- P6nzEhQIg+tqkqxQQShtZc3YS+U2usTqi/03HHsLjzpjOiYhavo7JZCubFPYuajrEtkW
- waZ8lslzFhgcCLWa4O5WaM4dB+83JUJm/EtVl+buq/BxdrsFT1EQIofFla2fPEPNwLZf
- FLFQ==
-X-Gm-Message-State: APjAAAXdgN04tdf7qhuF9QAHR9FfR7NIj9WKWbm+PZCWSq9mN88ojjrm
- iYLeDcc3l6dAu3/wFLPvxIcl1A==
-X-Google-Smtp-Source: APXvYqxiVIfcvMPElvIDiGYFueIrSfkJiIqk8i4Ft8HAmwqiGb21aiYg0hu8lk7xe2G5zIrvZe7G8Q==
-X-Received: by 2002:a5d:4e89:: with SMTP id e9mr31691608wru.342.1574076255340; 
- Mon, 18 Nov 2019 03:24:15 -0800 (PST)
+ bh=IVPif8k5ZIR6D+wGrwJyE64cs7Iq/Iy6NadbSzu369Y=;
+ b=kMk/aIKo/0JI9zKE2MADcChPnUvf58QJFtsL+XUm3FUdRtHhyuMlRUonD/9YQ1xwub
+ TpoQ5rhNRf1fM50D9VwGxkRvKp95za1FIR53jenjNbAtqty/jpqnjRBjnd3R9RKY4qUx
+ dbmGgZwDdpdvdzEFY7QLuJXUnMf5seZ/SM3xVhmiQJqvNiudRNSplfe7WP1iumkm9Pt2
+ 0kf5ThUy6y+PuYmmiB6BuQKp0j3Sg35OLvD9G4vyRfOicopv1JVVDTY0rtWsQdofaIPI
+ jRHxwRPl/EuFMgeDv4V0CAkRNaDQivi1Ir5WT1+NQE6d/+wNpQN9GzXUtSQQJUxFgf5Q
+ kNqg==
+X-Gm-Message-State: APjAAAXo9kJeahRXF3H7BHRDkJgJnuTg7BlIopUDFY97Myy4knFE9kCW
+ K+oYVAo1dxI62fOiXQA23NSIog==
+X-Google-Smtp-Source: APXvYqwSHGVqPcUA7VYXWlj6j53pgDT3YUvH8UuqMAU+wb80v+JDgc+bHai2XLBSBsbTbd8M19jYXw==
+X-Received: by 2002:a7b:c3d6:: with SMTP id t22mr29358315wmj.13.1574076256553; 
+ Mon, 18 Nov 2019 03:24:16 -0800 (PST)
 Received: from prevas-ravi.prevas.se (ip-5-186-115-54.cgn.fibianet.dk.
  [5.186.115.54])
- by smtp.gmail.com with ESMTPSA id y2sm21140815wmy.2.2019.11.18.03.24.14
+ by smtp.gmail.com with ESMTPSA id y2sm21140815wmy.2.2019.11.18.03.24.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2019 03:24:14 -0800 (PST)
+ Mon, 18 Nov 2019 03:24:16 -0800 (PST)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v5 33/48] serial: ucc_uart: limit brg-frequency workaround to
- PPC32
-Date: Mon, 18 Nov 2019 12:23:09 +0100
-Message-Id: <20191118112324.22725-34-linux@rasmusvillemoes.dk>
+Subject: [PATCH v5 34/48] serial: ucc_uart: access __be32 field using
+ be32_to_cpu
+Date: Mon, 18 Nov 2019 12:23:10 +0100
+Message-Id: <20191118112324.22725-35-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191118112324.22725-1-linux@rasmusvillemoes.dk>
 References: <20191118112324.22725-1-linux@rasmusvillemoes.dk>
@@ -87,38 +87,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-According to Timur Tabi
+The buf member of struct qe_bd is a __be32, so to make this work on
+little-endian hosts, use be32_to_cpu when reading it.
 
-    This bug in older U-Boots is definitely PowerPC-specific
-
-So before allowing this driver to be built for platforms other than
-PPC32, make sure that we don't accept malformed device trees on those
-other platforms.
-
-Suggested-by: Timur Tabi <timur@kernel.org>
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/tty/serial/ucc_uart.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/tty/serial/ucc_uart.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
-index c055abf4c919..9436b93d5cfa 100644
+index 9436b93d5cfa..afc2a5d69202 100644
 --- a/drivers/tty/serial/ucc_uart.c
 +++ b/drivers/tty/serial/ucc_uart.c
-@@ -1392,6 +1392,13 @@ static int ucc_uart_probe(struct platform_device *ofdev)
- 	if (val)
- 		qe_port->port.uartclk = val;
- 	else {
-+		if (!IS_ENABLED(CONFIG_PPC32)) {
-+			dev_err(&ofdev->dev,
-+				"invalid brg-frequency in device tree\n");
-+			ret = -EINVAL;
-+			goto out_np;
-+		}
-+
- 		/*
- 		 * Older versions of U-Boot do not initialize the brg-frequency
- 		 * property, so in this case we assume the BRG frequency is
+@@ -343,7 +343,7 @@ static int qe_uart_tx_pump(struct uart_qe_port *qe_port)
+ 		/* Pick next descriptor and fill from buffer */
+ 		bdp = qe_port->tx_cur;
+ 
+-		p = qe2cpu_addr(bdp->buf, qe_port);
++		p = qe2cpu_addr(be32_to_cpu(bdp->buf), qe_port);
+ 
+ 		*p++ = port->x_char;
+ 		qe_iowrite16be(1, &bdp->length);
+@@ -371,7 +371,7 @@ static int qe_uart_tx_pump(struct uart_qe_port *qe_port)
+ 	while (!(qe_ioread16be(&bdp->status) & BD_SC_READY) &&
+ 	       (xmit->tail != xmit->head)) {
+ 		count = 0;
+-		p = qe2cpu_addr(bdp->buf, qe_port);
++		p = qe2cpu_addr(be32_to_cpu(bdp->buf), qe_port);
+ 		while (count < qe_port->tx_fifosize) {
+ 			*p++ = xmit->buf[xmit->tail];
+ 			xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
+@@ -491,7 +491,7 @@ static void qe_uart_int_rx(struct uart_qe_port *qe_port)
+ 		}
+ 
+ 		/* get pointer */
+-		cp = qe2cpu_addr(bdp->buf, qe_port);
++		cp = qe2cpu_addr(be32_to_cpu(bdp->buf), qe_port);
+ 
+ 		/* loop through the buffer */
+ 		while (i-- > 0) {
 -- 
 2.23.0
 
