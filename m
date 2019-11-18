@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAD410071E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 15:12:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EE41006F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 15:04:56 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47GrLV69NBzDqSB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 01:04:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47GrWq67hkzDqdP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 01:12:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,27 +18,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Gnc51q8VzDqTN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 23:01:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Gnc84Y5mzDqFB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 23:01:28 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 8AF37AFB0;
+ by mx1.suse.de (Postfix) with ESMTP id E73AFB071;
  Mon, 18 Nov 2019 12:01:20 +0000 (UTC)
 Received: by quack2.suse.cz (Postfix, from userid 1000)
- id F053C1E4B0B; Mon, 18 Nov 2019 11:30:49 +0100 (CET)
-Date: Mon, 18 Nov 2019 11:30:49 +0100
+ id 8AEB01E4B0D; Mon, 18 Nov 2019 11:34:09 +0100 (CET)
+Date: Mon, 18 Nov 2019 11:34:09 +0100
 From: Jan Kara <jack@suse.cz>
 To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v5 13/24] mm/process_vm_access: set FOLL_PIN via
- pin_user_pages_remote()
-Message-ID: <20191118103049.GH17319@quack2.suse.cz>
+Subject: Re: [PATCH v5 15/24] fs/io_uring: set FOLL_PIN via pin_user_pages()
+Message-ID: <20191118103409.GI17319@quack2.suse.cz>
 References: <20191115055340.1825745-1-jhubbard@nvidia.com>
- <20191115055340.1825745-14-jhubbard@nvidia.com>
+ <20191115055340.1825745-16-jhubbard@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191115055340.1825745-14-jhubbard@nvidia.com>
+In-Reply-To: <20191115055340.1825745-16-jhubbard@nvidia.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,29 +74,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 14-11-19 21:53:29, John Hubbard wrote:
-> Convert process_vm_access to use the new pin_user_pages_remote()
-> call, which sets FOLL_PIN. Setting FOLL_PIN is now required for
-> code that requires tracking of pinned pages.
+On Thu 14-11-19 21:53:31, John Hubbard wrote:
+> Convert fs/io_uring to use the new pin_user_pages() call, which sets
+> FOLL_PIN. Setting FOLL_PIN is now required for code that requires
+> tracking of pinned pages, and therefore for any code that calls
+> put_user_page().
 > 
-> Also, release the pages via put_user_page*().
+> In partial anticipation of this work, the io_uring code was already
+> calling put_user_page() instead of put_page(). Therefore, in order to
+> convert from the get_user_pages()/put_page() model, to the
+> pin_user_pages()/put_user_page() model, the only change required
+> here is to change get_user_pages() to pin_user_pages().
 > 
-> Also, rename "pages" to "pinned_pages", as this makes for
-> easier reading of process_vm_rw_single_vec().
-> 
-> Reviewed-by: Jérôme Glisse <jglisse@redhat.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  mm/process_vm_access.c | 28 +++++++++++++++-------------
->  1 file changed, 15 insertions(+), 13 deletions(-)
 
-The patch looks good to me. You can add:
+Looks good to me. You can add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
 
+> ---
+>  fs/io_uring.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/io_uring.c b/fs/io_uring.c
+> index f9a38998f2fc..cff64bd00db9 100644
+> --- a/fs/io_uring.c
+> +++ b/fs/io_uring.c
+> @@ -3433,7 +3433,7 @@ static int io_sqe_buffer_register(struct io_ring_ctx *ctx, void __user *arg,
+>  
+>  		ret = 0;
+>  		down_read(&current->mm->mmap_sem);
+> -		pret = get_user_pages(ubuf, nr_pages,
+> +		pret = pin_user_pages(ubuf, nr_pages,
+>  				      FOLL_WRITE | FOLL_LONGTERM,
+>  				      pages, vmas);
+>  		if (pret == nr_pages) {
+> -- 
+> 2.24.0
+> 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
