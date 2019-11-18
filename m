@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B24100577
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 13:19:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B0E10057F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 13:22:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Gp1S4w05zDq61
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 23:19:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Gp4K3cXrzDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2019 23:22:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::443;
- helo=mail-wr1-x443.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="UVTics3l"; dkim-atps=neutral
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
- [IPv6:2a00:1450:4864:20::443])
+ header.b="Yk7p/G71"; dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Gmmt20cyzDqSv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 22:23:58 +1100 (AEDT)
-Received: by mail-wr1-x443.google.com with SMTP id r10so18997589wrx.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 03:23:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Gmmw2Dr2zDqVP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 22:24:00 +1100 (AEDT)
+Received: by mail-wr1-x441.google.com with SMTP id i12so18993168wro.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 03:24:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=6fFt1ZLVVia10843rsyK8F6LgIm9rFapqPGOb1a1zZs=;
- b=UVTics3lL4qvxi3oisNP7w0QJ8T5szNsG1ROc5MisQWYc3ObAFu0rpCi1aJlci2gds
- 3ltOHohbpQ1GBb+AkEOB/xMhLUt61gmR9I8uzbGKEHcBuFOAWSMIXaFnCUiygT8FuHJh
- mbBye4MDO/U9RS1YNe8F/V6sJn39y6c3lUahM=
+ bh=vCPu9Gq+U2RPRhQiWL2MkNy7+uq9EAlYdyc3guVWBBY=;
+ b=Yk7p/G71NJ4xYDxkVfbpJ1+UrVSfYV+gyTCQfmi46U9LouNYDNp+cxJmMwhPBuXOUh
+ zx3WOhz2CX4UJ3rdW9cXaDfJ5a8dpQfRnvTiQIDU/v9xJjXIeGSa28iLidu8W1G/bdi0
+ J/Klx8ZYp7nbuJnGizHDFsLErPLTgtpoRRlfo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=6fFt1ZLVVia10843rsyK8F6LgIm9rFapqPGOb1a1zZs=;
- b=LfdV/QqhCLy6G2EcMPJiS5Tl48W31YJrJT//bG4QsddQK3vbC/ViQN9xnL2lGsCkh5
- 9g0wJXeJeDYnNDjszoNewQGxqVScgIu0rn9cMv3M93yAruS/qmlNRFlRESMOesTC7GrZ
- 6NMoq8wnMK9f7I8I2IEWR0AkxBaJotTypSY9TB5IWbo7xx+VVYvZUQT/JRexu/6v17V6
- v0zA6FUnQPPIFyzGnDR2FcAzsPpvNydG4GOtm8V0XY9hkWggutOnflAAoE7P8KEj7azY
- WZ6jsxoFuER4AZCi92N+QrvmmgqYa0ILlezUknhUIIrI8RbUa0fKWEbzxWlGjt4l0Sni
- m51g==
-X-Gm-Message-State: APjAAAVOhQOAPa88sGHXL+6QHOLxeSdh1yyULroAJrNrkf6ezasJKiWn
- 3waaSWLNg9W5j6l+Ow5+zzmJ/A==
-X-Google-Smtp-Source: APXvYqwu9bkesrQ20K07+PxU2ELWKQJv+iHHK665aXHnshdru6I4+DvpjJQitC+c3pUvnpjk1+MopA==
-X-Received: by 2002:a5d:4585:: with SMTP id p5mr11457061wrq.134.1574076235447; 
- Mon, 18 Nov 2019 03:23:55 -0800 (PST)
+ bh=vCPu9Gq+U2RPRhQiWL2MkNy7+uq9EAlYdyc3guVWBBY=;
+ b=TQvVDzjrgq3anLPDtmf0HQxeitUled5lFBw3h8FOZUL3iUM4aShc5W24ik/sWSXRT+
+ k9Ht8slHr5IfowpAe8QsvHrXczlARpV0W9HCiE+1LY20adaJ60H0KJg71CaKs5QYZLqW
+ ysmoLE1jvteJWIg2MwZpkyhp14N303+o4Me15oTvXeiNHLM14/YlcXfzvsKTPKWdLF2C
+ 3r+NdCKU2IFPeTqk2tkUSTTPYO8X4U6xszA5q6sut+w3z9splTh42PIjiE2oXBPUrtwy
+ hBUs4BVarCp0Vg5hxAkBJgIHIyD/zReHKZZmwtlSEbahskb5PJUxdLc5zoKuq8zr+PyY
+ ZoZw==
+X-Gm-Message-State: APjAAAUE8WgclKgE6Gg9NS0z2zoGCRVnAFezbmqGMi0I5fzjQEj45h+S
+ rVd3friHllBhqHibHK2E2g/dGw==
+X-Google-Smtp-Source: APXvYqyZQpRRB/MFghGLS7bJn/RObD/k7dDdrG7vxDwjNjB8Ot+1GZEzgAMa9xVYMp80+4l7TXQLQQ==
+X-Received: by 2002:adf:e5c5:: with SMTP id a5mr14806776wrn.103.1574076236602; 
+ Mon, 18 Nov 2019 03:23:56 -0800 (PST)
 Received: from prevas-ravi.prevas.se (ip-5-186-115-54.cgn.fibianet.dk.
  [5.186.115.54])
- by smtp.gmail.com with ESMTPSA id y2sm21140815wmy.2.2019.11.18.03.23.54
+ by smtp.gmail.com with ESMTPSA id y2sm21140815wmy.2.2019.11.18.03.23.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Nov 2019 03:23:54 -0800 (PST)
+ Mon, 18 Nov 2019 03:23:56 -0800 (PST)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v5 19/48] soc: fsl: qe: make qe_ic_get_{low,high}_irq static
-Date: Mon, 18 Nov 2019 12:22:55 +0100
-Message-Id: <20191118112324.22725-20-linux@rasmusvillemoes.dk>
+Subject: [PATCH v5 20/48] soc: fsl: qe: simplify qe_ic_init()
+Date: Mon, 18 Nov 2019 12:22:56 +0100
+Message-Id: <20191118112324.22725-21-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191118112324.22725-1-linux@rasmusvillemoes.dk>
 References: <20191118112324.22725-1-linux@rasmusvillemoes.dk>
@@ -85,55 +85,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These are only called from within qe_ic.c, so make them static.
+qe_ic_init() takes a flags parameter, but all callers (including the
+sole remaining one) have always passed 0. So remove that parameter and
+simplify the body accordingly. We still explicitly initialize the
+Interrupt Configuration Register (CICR) to its reset value of
+all-zeroes, just in case the bootloader has played funny games.
 
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/soc/fsl/qe/qe_ic.c |  4 ++--
- include/soc/fsl/qe/qe_ic.h | 10 ----------
- 2 files changed, 2 insertions(+), 12 deletions(-)
+ drivers/soc/fsl/qe/qe_ic.c | 27 ++++-----------------------
+ 1 file changed, 4 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
-index 8f74bc6efd5c..23b457e884d8 100644
+index 23b457e884d8..4832884da5bb 100644
 --- a/drivers/soc/fsl/qe/qe_ic.c
 +++ b/drivers/soc/fsl/qe/qe_ic.c
-@@ -283,7 +283,7 @@ static const struct irq_domain_ops qe_ic_host_ops = {
- };
- 
- /* Return an interrupt vector or 0 if no interrupt is pending. */
--unsigned int qe_ic_get_low_irq(struct qe_ic *qe_ic)
-+static unsigned int qe_ic_get_low_irq(struct qe_ic *qe_ic)
- {
- 	int irq;
- 
-@@ -299,7 +299,7 @@ unsigned int qe_ic_get_low_irq(struct qe_ic *qe_ic)
+@@ -356,13 +356,13 @@ static void qe_ic_cascade_muxed_mpic(struct irq_desc *desc)
+ 	chip->irq_eoi(&desc->irq_data);
  }
  
- /* Return an interrupt vector or 0 if no interrupt is pending. */
--unsigned int qe_ic_get_high_irq(struct qe_ic *qe_ic)
-+static unsigned int qe_ic_get_high_irq(struct qe_ic *qe_ic)
+-static void __init qe_ic_init(struct device_node *node, unsigned int flags)
++static void __init qe_ic_init(struct device_node *node)
  {
- 	int irq;
+ 	void (*low_handler)(struct irq_desc *desc);
+ 	void (*high_handler)(struct irq_desc *desc);
+ 	struct qe_ic *qe_ic;
+ 	struct resource res;
+-	u32 temp = 0, ret;
++	u32 ret;
  
-diff --git a/include/soc/fsl/qe/qe_ic.h b/include/soc/fsl/qe/qe_ic.h
-index d47eb231519e..70bb5a0f6535 100644
---- a/include/soc/fsl/qe/qe_ic.h
-+++ b/include/soc/fsl/qe/qe_ic.h
-@@ -53,14 +53,4 @@ enum qe_ic_grp_id {
- 	QE_IC_GRP_RISCB		/* QE interrupt controller RISC group B */
- };
+ 	ret = of_address_to_resource(node, 0, &res);
+ 	if (ret)
+@@ -399,26 +399,7 @@ static void __init qe_ic_init(struct device_node *node, unsigned int flags)
+ 		high_handler = NULL;
+ 	}
  
--#ifdef CONFIG_QUICC_ENGINE
--unsigned int qe_ic_get_low_irq(struct qe_ic *qe_ic);
--unsigned int qe_ic_get_high_irq(struct qe_ic *qe_ic);
--#else
--static inline unsigned int qe_ic_get_low_irq(struct qe_ic *qe_ic)
--{ return 0; }
--static inline unsigned int qe_ic_get_high_irq(struct qe_ic *qe_ic)
--{ return 0; }
--#endif /* CONFIG_QUICC_ENGINE */
+-	/* default priority scheme is grouped. If spread mode is    */
+-	/* required, configure cicr accordingly.                    */
+-	if (flags & QE_IC_SPREADMODE_GRP_W)
+-		temp |= CICR_GWCC;
+-	if (flags & QE_IC_SPREADMODE_GRP_X)
+-		temp |= CICR_GXCC;
+-	if (flags & QE_IC_SPREADMODE_GRP_Y)
+-		temp |= CICR_GYCC;
+-	if (flags & QE_IC_SPREADMODE_GRP_Z)
+-		temp |= CICR_GZCC;
+-	if (flags & QE_IC_SPREADMODE_GRP_RISCA)
+-		temp |= CICR_GRTA;
+-	if (flags & QE_IC_SPREADMODE_GRP_RISCB)
+-		temp |= CICR_GRTB;
 -
- #endif /* _ASM_POWERPC_QE_IC_H */
+-	/* choose destination signal for highest priority interrupt */
+-	if (flags & QE_IC_HIGH_SIGNAL)
+-		temp |= (SIGNAL_HIGH << CICR_HPIT_SHIFT);
+-
+-	qe_ic_write(qe_ic->regs, QEIC_CICR, temp);
++	qe_ic_write(qe_ic->regs, QEIC_CICR, 0);
+ 
+ 	irq_set_handler_data(qe_ic->virq_low, qe_ic);
+ 	irq_set_chained_handler(qe_ic->virq_low, low_handler);
+@@ -439,7 +420,7 @@ static int __init qe_ic_of_init(void)
+ 		if (!np)
+ 			return -ENODEV;
+ 	}
+-	qe_ic_init(np, 0);
++	qe_ic_init(np);
+ 	of_node_put(np);
+ 	return 0;
+ }
 -- 
 2.23.0
 
