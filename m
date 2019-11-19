@@ -1,53 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A871019F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 08:02:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HGwg5MKqzDqX0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 18:02:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD93E1019F9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 08:04:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HGzY0YCCzDqP1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 18:04:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HGqr67bfzDqVv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:58:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="rqUBxFVH"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47HGqq4dKcz9sSP;
- Tue, 19 Nov 2019 17:58:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1574146696;
- bh=UJDJAAoM1z5MF3IYbIZX69JmcS9dmQDJlWRDIRsZqlY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=rqUBxFVHDz30tTohZ/5o4s0MG6uRLUgC+jddFLvTHOI23O6RYj6iAlN8BM6F/gpYo
- IOywwfiOTa3ViPBXLipcof5niocJACuF68pJyLl8QpMJwrdlcDTcAqModRec5sYIRl
- 507+UJ5jZMm2vfIitezy+PzkfrX9WbsX7sAXilKzyR5Uz9pvbM64sIWCDifSo7PofG
- ugWVXffzUZp+5/GsmKgNDV6c0+ADGddw64qIMeDyZWb9gyTiUhSgwcI2hIuyPi9Ftm
- F6pvPmWc/7DVqqn2r7/1BSOxpSJHXP3ZncO3HX0BBu9ei54wFIrBMDrmiThfuJUj0i
- Bnhm25x1zJnuQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com, dja@axtens.net
-Subject: Re: [PATCH v3 15/15] powerpc/32s: Activate CONFIG_VMAP_STACK
-In-Reply-To: <a99bdfb64e287b16b8cd3f7ec1abfdfb50c7cc64.1568106758.git.christophe.leroy@c-s.fr>
-References: <cover.1568106758.git.christophe.leroy@c-s.fr>
- <a99bdfb64e287b16b8cd3f7ec1abfdfb50c7cc64.1568106758.git.christophe.leroy@c-s.fr>
-Date: Tue, 19 Nov 2019 17:58:14 +1100
-Message-ID: <875zjgcpyx.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="OHB+eUp2"; 
+ dkim-atps=neutral
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HGtg1KsZzDqdb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 18:00:42 +1100 (AEDT)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dd3930f0000>; Mon, 18 Nov 2019 23:00:32 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Mon, 18 Nov 2019 23:00:34 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate102.nvidia.com on Mon, 18 Nov 2019 23:00:34 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 19 Nov
+ 2019 07:00:34 +0000
+Subject: Re: [PATCH v5 02/24] mm/gup: factor out duplicate code from four
+ routines
+To: Jan Kara <jack@suse.cz>
+References: <20191115055340.1825745-1-jhubbard@nvidia.com>
+ <20191115055340.1825745-3-jhubbard@nvidia.com>
+ <20191118094604.GC17319@quack2.suse.cz>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <152e2ea9-edd9-f868-7731-ff467d692f5f@nvidia.com>
+Date: Mon, 18 Nov 2019 23:00:33 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191118094604.GC17319@quack2.suse.cz>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1574146832; bh=u3YCRE77HsuXbqK9BxFmzDLl8JhQHMG9gXXaYRfagTQ=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=OHB+eUp2jQQmHLrGYBTtAkydhQax1jgPbRIdqXv/zT7mJheOoxm2jC/o00J+31bDd
+ psR1uWZTYTlZpkmYbJIlMzoHbpxnwxoe7ZrZ8UMQNDddfR1HU1k+hUj3JCOx3ZRd5b
+ XT8Ag7PAkGX6G4pIQ7geJmQblkDOtgu1RTN+An2f8z0fTBevVuF5GINewI0N+iPfcv
+ YgagSYh5LQVW6KL8izWZSAMBRDSFlAEl3uHonusWk1CkuRAUgvh73saFcEMPgIKbUo
+ 7msrJOumHG3EP3Mzt2Z3Dov3XH2Wq2MWpaj0JPNxYk4UIQaUft9LMOT0FAc0/WGi6i
+ OtciRBna4adWA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,60 +76,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Christoph Hellwig <hch@lst.de>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, "Aneesh Kumar
+ K . V" <aneesh.kumar@linux.ibm.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> A few changes to retrieve DAR and DSISR from struct regs
-> instead of retrieving them directly, as they may have
-> changed due to a TLB miss.
->
-> Also modifies hash_page() and friends to work with virtual
-> data addresses instead of physical ones.
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->  arch/powerpc/kernel/entry_32.S         |  4 +++
->  arch/powerpc/kernel/head_32.S          | 19 +++++++++++---
->  arch/powerpc/kernel/head_32.h          |  4 ++-
->  arch/powerpc/mm/book3s32/hash_low.S    | 46 +++++++++++++++++++++-------------
->  arch/powerpc/mm/book3s32/mmu.c         |  9 +++++--
->  arch/powerpc/platforms/Kconfig.cputype |  2 ++
->  6 files changed, 61 insertions(+), 23 deletions(-)
+On 11/18/19 1:46 AM, Jan Kara wrote:
+> On Thu 14-11-19 21:53:18, John Hubbard wrote:
+>> There are four locations in gup.c that have a fair amount of code
+>> duplication. This means that changing one requires making the same
+>> changes in four places, not to mention reading the same code four
+>> times, and wondering if there are subtle differences.
+>>
+>> Factor out the common code into static functions, thus reducing the
+>> overall line count and the code's complexity.
+>>
+>> Also, take the opportunity to slightly improve the efficiency of the
+>> error cases, by doing a mass subtraction of the refcount, surrounded
+>> by get_page()/put_page().
+>>
+>> Also, further simplify (slightly), by waiting until the the successful
+>> end of each routine, to increment *nr.
+>>
+>> Reviewed-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
+>> Cc: Jan Kara <jack@suse.cz>
+>> Cc: Ira Weiny <ira.weiny@intel.com>
+>> Cc: Christoph Hellwig <hch@lst.de>
+>> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> ---
+>>  mm/gup.c | 95 ++++++++++++++++++++++++--------------------------------
+>>  1 file changed, 40 insertions(+), 55 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 85caf76b3012..858541ea30ce 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -1969,6 +1969,29 @@ static int __gup_device_huge_pud(pud_t pud, pud_t=
+ *pudp, unsigned long addr,
+>>  }
+>>  #endif
+>> =20
+>> +static int __record_subpages(struct page *page, unsigned long addr,
+>> +			     unsigned long end, struct page **pages)
+>> +{
+>> +	int nr =3D 0;
+>> +	int nr_recorded_pages =3D 0;
+>> +
+>> +	do {
+>> +		pages[nr] =3D page;
+>> +		nr++;
+>> +		page++;
+>> +		nr_recorded_pages++;
+>> +	} while (addr +=3D PAGE_SIZE, addr !=3D end);
+>> +	return nr_recorded_pages;
+>=20
+> nr =3D=3D nr_recorded_pages so no need for both... BTW, structuring this =
+as a
+> for loop would be probably more logical and shorter now:
+>=20
+> 	for (nr =3D 0; addr !=3D end; addr +=3D PAGE_SIZE)
+> 		pages[nr++] =3D page++;
+> 	return nr;
+>=20
 
-This is faulting with qemu mac99 model:
+Nice touch, I've applied it.
 
-  Key type id_resolver registered
-  Key type id_legacy registered
-  BUG: Unable to handle kernel data access on read at 0x2f0db684
-  Faulting instruction address: 0x00004130
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  BE PAGE_SIZE=4K MMU=Hash PowerMac
-  Modules linked in:
-  CPU: 0 PID: 65 Comm: modprobe Not tainted 5.4.0-rc2-gcc49+ #63
-  NIP:  00004130 LR: 000008c8 CTR: b7eb86e0
-  REGS: f106de80 TRAP: 0300   Not tainted  (5.4.0-rc2-gcc49+)
-  MSR:  00003012 <FP,ME,DR,RI>  CR: 4106df38  XER: 20000000
-  DAR: 2f0db684 DSISR: 40000000 
-  GPR00: b7ec5d64 f106df38 00000000 bf988a70 00000000 2f0db540 b7ec3620 bf988d38 
-  GPR08: 10000880 0000d032 72656773 f106df38 b7ed10ec 00000000 b7ed3d38 b7ee8900 
-  GPR16: bf988d10 00000001 00000000 bf988d10 b7ec3620 bf988d50 b7ee76ec b7ee7320 
-  GPR24: 10000878 00000000 b7ee8900 00000000 10029f00 10000879 b7ee7ff4 bf988d30 
-  NIP [00004130] 0x4130
-  LR [000008c8] 0x8c8
-  Call Trace:
-  [f106df38] [c0016224] ret_from_syscall+0x0/0x34 (unreliable)
-  --- interrupt: c01 at 0xb7ed0f50
-      LR = 0xb7ec5d64
-  Instruction dump:
-  db8300e0 XXXXXXXX XXXXXXXX XXXXXXXX fc00048e XXXXXXXX XXXXXXXX XXXXXXXX 
-  60a52000 XXXXXXXX XXXXXXXX XXXXXXXX 80850144 XXXXXXXX XXXXXXXX XXXXXXXX 
-  ---[ end trace 265da51c6d8b86c5 ]---
+thanks,
+--=20
+John Hubbard
+NVIDIA
 
 
-I think I'll have to drop this series for now.
 
-cheers
+> The rest of the patch looks good to me.
+>=20
+> 								Honza
+>=20
