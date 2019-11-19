@@ -1,91 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB441016FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 06:58:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HFWD1cCzzDqNR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:58:48 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B29A1019E0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 07:59:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HGsS3wgHzDqcw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 17:59:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HFRK0Cc1zDqbm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 16:55:24 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAJ5oBHm054531
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:55:22 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wayf65ku5-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:55:21 -0500
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 19 Nov 2019 05:55:19 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 19 Nov 2019 05:55:18 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAJ5tGgd51773514
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Nov 2019 05:55:16 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AF0BBA4059;
- Tue, 19 Nov 2019 05:55:16 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5EC49A404D;
- Tue, 19 Nov 2019 05:55:16 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 19 Nov 2019 05:55:16 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5C534A012A;
- Tue, 19 Nov 2019 16:55:12 +1100 (AEDT)
-Subject: Re: [PATCH 02/11] powerpc/powernv/ioda: Protect PE list
-To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
-References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
- <20190909154600.19917-3-fbarrat@linux.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Tue, 19 Nov 2019 16:55:13 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HGpY0KfVzDqNx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:57:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="oEzgknc7"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47HGpW0SZfz9sRY;
+ Tue, 19 Nov 2019 17:57:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1574146627;
+ bh=abFbgG1igsThhgb3dlNVPaVj97B/UnH0/Rzd5PqAH+0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=oEzgknc7lx7h5mOjZB0zQ3OpkhQjE2o7K2yyBwiUDKIpC76o8tVULItublIoVzqSR
+ IdXlpROlMM68c7Ufy69ZgmokqgE4PAe0yrWx53/OeYK+qKsHRJHp/UkbV1I2lYoMvI
+ rb+qPgWWCxtRMW2fBV8yrPh+jL9kbZjyCD9Vvu76Ai9NolmcXQahEze5dtjpCfpj3b
+ 4p3UjTem+R663qkGKc21teebtxS+C74oXnNYQ4stRAaIdu/bgqzIZ2AJbrJt3+eA1i
+ FXSlzh2Chck58Mgg45i3Fe9GR9wP7WCPyGNi2K72I1H9ILsMSqLsVgpsgyvx8k1ksv
+ yh0y5KM8NT1Qw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, npiggin@gmail.com, dja@axtens.net
+Subject: Re: [PATCH v3 15/15] powerpc/32s: Activate CONFIG_VMAP_STACK
+In-Reply-To: <87v9rhcuc5.fsf@mpe.ellerman.id.au>
+References: <cover.1568106758.git.christophe.leroy@c-s.fr>
+ <a99bdfb64e287b16b8cd3f7ec1abfdfb50c7cc64.1568106758.git.christophe.leroy@c-s.fr>
+ <87v9rhcuc5.fsf@mpe.ellerman.id.au>
+Date: Tue, 19 Nov 2019 17:57:03 +1100
+Message-ID: <878soccq0w.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20190909154600.19917-3-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111905-4275-0000-0000-00000381BE98
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111905-4276-0000-0000-000038953135
-Message-Id: <741b0c16-d9cf-94c8-c98d-8e9cbca61f74@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-19_01:2019-11-15,2019-11-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- mlxscore=0 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- mlxlogscore=785 priorityscore=1501 spamscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911190052
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,22 +60,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: groug@kaod.org, alastair@au1.ibm.com
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/9/19 1:45 am, Frederic Barrat wrote:
-> Protect the PHB's list of PE. Probably not needed as long as it was
-> populated during PHB creation, but it feels right and will become
-> required once we can add/remove opencapi devices on hotplug.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>> A few changes to retrieve DAR and DSISR from struct regs
+>> instead of retrieving them directly, as they may have
+>> changed due to a TLB miss.
+>>
+>> Also modifies hash_page() and friends to work with virtual
+>> data addresses instead of physical ones.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>> ---
+>>  arch/powerpc/kernel/entry_32.S         |  4 +++
+>>  arch/powerpc/kernel/head_32.S          | 19 +++++++++++---
+>>  arch/powerpc/kernel/head_32.h          |  4 ++-
+>>  arch/powerpc/mm/book3s32/hash_low.S    | 46 +++++++++++++++++++++-------------
+>>  arch/powerpc/mm/book3s32/mmu.c         |  9 +++++--
+>>  arch/powerpc/platforms/Kconfig.cputype |  2 ++
+>>  6 files changed, 61 insertions(+), 23 deletions(-)
+>
+> If I build pmac32_defconfig with KVM enabled this causes a build break:
+>
+>   arch/powerpc/kernel/head_32.S: Assembler messages:
+>   arch/powerpc/kernel/head_32.S:324: Error: attempt to move .org backwards
+>   scripts/Makefile.build:357: recipe for target 'arch/powerpc/kernel/head_32.o' failed
+>   make[2]: *** [arch/powerpc/kernel/head_32.o] Error 1
+>
+> In the interests of getting the series merged I'm inclined to just make
+> VMAP_STACK and KVM incompatible for now with:
+>
+> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+> index 15c9097dc4f7..5074fe77af40 100644
+> --- a/arch/powerpc/platforms/Kconfig.cputype
+> +++ b/arch/powerpc/platforms/Kconfig.cputype
+> @@ -31,7 +31,7 @@ config PPC_BOOK3S_6xx
+>         select PPC_HAVE_PMU_SUPPORT
+>         select PPC_HAVE_KUEP
+>         select PPC_HAVE_KUAP
+> -       select HAVE_ARCH_VMAP_STACK
+> +       select HAVE_ARCH_VMAP_STACK if !KVM_BOOK3S_32
 
+For some reason this needs to be !KVM.
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+>  config PPC_BOOK3S_601
+>         bool "PowerPC 601"
+>
+>
+> Thoughts?
 
+cheers
