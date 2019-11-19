@@ -1,81 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F60102DBC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 21:45:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF731102DA6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 21:40:24 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Hd4P50srzDqh2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 07:40:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HdBn2hhSzDqhK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 07:45:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=kernelci.org
- (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com;
- envelope-from=bot@kernelci.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernelci-org.20150623.gappssmtp.com
- header.i=@kernelci-org.20150623.gappssmtp.com header.b="DLlyXCBF"; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="F7dezTir"; 
  dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HYKB4P5czDqSR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 04:51:07 +1100 (AEDT)
-Received: by mail-wr1-x444.google.com with SMTP id t1so24940096wrv.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 09:51:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=kernelci-org.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:content-transfer-encoding:subject:to
- :from:cc; bh=HGunqTxsSVrmsqxuAQRNx41lItIocTvSzHu9usFa0ec=;
- b=DLlyXCBFgTcOzP3m56mvDuC1gid0j/57FTNBDJxQaHFBG+Mx73qzutr+HGMESEb3A5
- vuRsXpJCLZNNzVyQDQO/62U0ux+IrJ9sfX6QLgKQXmNbEb1I0cQlfSpYYRolt+G25giX
- Pjq4+dxzUkdmtju7EWJwH4ksQG4019NT+UMhBKBR5d1CcSgqV4ddqgCzXyG63G4ZN5yG
- rfj2+E41/H+NCa7PzXYtFM7QIbkhb4h5MtWnpxD1xAhSzN6+AtKToyw3ft4DGP05KN1v
- kELG90MeWObEexvWT74khnbgAHVy3/01ovV46ywzRKkbiiGMyhWNATDau6DdmSxCVcaZ
- 5kTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version
- :content-transfer-encoding:subject:to:from:cc;
- bh=HGunqTxsSVrmsqxuAQRNx41lItIocTvSzHu9usFa0ec=;
- b=X8DfpJg+PHcdGCP4tG6eJp14T2Fvnx1UHp6n4OUemld1IpK7r3JVIJzxgkz0lA0pSE
- Q62vn8ezRkcPz8ueLwHdjavDZISri+g7/f9nCYQlBEFcJClGF/o3OA1Os80ROGKGja2O
- xUJVMQSzgFrSfHiEL+njIS1hZvcTptx27vIzhF9NwfbxS81CpE7VG69v6qTBP4yACUJq
- 9y4XTyFGYSDEPJHvYinduEu9DOnZsQfFuKBbj5xNgEnbDn5cg0gE8kgKT0zUSU043ZCM
- UQrm898QKmY2aA80ygaEMjpIhqTXpmISMu67HsU9XaoMdJp+p+8T1p5mFimanAnWLoWw
- 36pw==
-X-Gm-Message-State: APjAAAXm9MzWvtT/gdp80LHzmzuhbW3w8XB3fUvUAQRV4l3A5N9Bj5wP
- CUkh728+FbePgMUJI6/7YSDFQg==
-X-Google-Smtp-Source: APXvYqxvHwtfcRuwAWPYF4jX+cThARsQRa6mXcf9IMifxx+BP/IyrbeuDGKqDEpRqWoAPCya8LiZ0g==
-X-Received: by 2002:adf:e301:: with SMTP id b1mr4336744wrj.280.1574185862662; 
- Tue, 19 Nov 2019 09:51:02 -0800 (PST)
-Received: from [148.251.42.114] ([2a01:4f8:201:9271::2])
- by smtp.gmail.com with ESMTPSA id l13sm3766223wmh.12.2019.11.19.09.51.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2019 09:51:01 -0800 (PST)
-Message-ID: <5dd42b85.1c69fb81.36825.244a@mx.google.com>
-Date: Tue, 19 Nov 2019 09:51:01 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Lab-Name: lab-collabora
-X-Kernelci-Branch: master
-X-Kernelci-Tree: next
-X-Kernelci-Report-Type: bisect
-X-Kernelci-Kernel: next-20191119
-Subject: next/master bisection: boot on peach-pi
-To: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>, tomeu.vizoso@collabora.com,
- guillaume.tucker@collabora.com, mgalka@collabora.com,
- Christoph Hellwig <hch@lst.de>, broonie@kernel.org, matthew.hart@linaro.org,
- khilman@baylibre.com, enric.balletbo@collabora.com,
- Michael Ellerman <mpe@ellerman.id.au>
-From: "kernelci.org bot" <bot@kernelci.org>
-X-Mailman-Approved-At: Wed, 20 Nov 2019 07:38:48 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Hd8q250fzDqZ3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 07:44:09 +1100 (AEDT)
+Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5D13B2068F;
+ Tue, 19 Nov 2019 20:44:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1574196246;
+ bh=tYk3NzkyGFMwfIfw621e64JBWLZbc2P157zpqSHKBfU=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=F7dezTirkHNZxF7r6iTVPjtQ2Gbnu/LKU0RXnzga76cLNAMs/2QcxVsC33X8jJNzH
+ oI7UYI/oLaywEAbINKt2ngiHBiK1DoXioL9Ijnjil8D+Sp/npeg+W2IAQV+IJ+AhP6
+ ci4IOmZuWXhLBr5x71GSi1Uw1czpCbFrPEBd3sr8=
+Date: Tue, 19 Nov 2019 12:44:05 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v6 04/10] mm/memory_hotplug: Don't access uninitialized
+ memmaps in shrink_zone_span()
+Message-Id: <20191119124405.60a1f92f8e1cffed1afa0442@linux-foundation.org>
+In-Reply-To: <8bbbd4f1-e2c9-b654-ab73-aa4314135f21@redhat.com>
+References: <20191006085646.5768-1-david@redhat.com>
+ <20191006085646.5768-5-david@redhat.com>
+ <5a4573de-bd8a-6cd3-55d0-86d503a236fd@redhat.com>
+ <20191014121719.cb9b9efe51a7e9e985b38075@linux-foundation.org>
+ <8bbbd4f1-e2c9-b654-ab73-aa4314135f21@redhat.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,242 +62,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Burton <paulburton@kernel.org>, "kernelci.org bot" <bot@kernelci.org>,
- James Hogan <jhogan@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
- linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
- Paul Mackerras <paulus@samba.org>, Russell King <linux@armlinux.org.uk>,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+ linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-sh@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org,
+ Alexander Duyck <alexander.duyck@gmail.com>, linux-mm@kvack.org,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Toshiki Fukasawa <t-fukasawa@vx.jp.nec.com>,
+ linux-arm-kernel@lists.infradead.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* This automated bisection report was sent to you on the basis  *
-* that you may be involved with the breaking commit it has      *
-* found.  No manual investigation has been done to verify it,   *
-* and the root cause of the problem may be somewhere else.      *
-*                                                               *
-* If you do send a fix, please include this trailer:            *
-*   Reported-by: "kernelci.org bot" <bot@kernelci.org>          *
-*                                                               *
-* Hope this helps!                                              *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+On Tue, 19 Nov 2019 15:16:22 +0100 David Hildenbrand <david@redhat.com> wrote:
 
-next/master bisection: boot on peach-pi
+> On 14.10.19 21:17, Andrew Morton wrote:
+> > On Mon, 14 Oct 2019 11:32:13 +0200 David Hildenbrand <david@redhat.com> wrote:
+> > 
+> >>> Fixes: d0dc12e86b31 ("mm/memory_hotplug: optimize memory hotplug")
+> >>
+> >> @Andrew, can you convert that to
+> >>
+> >> Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded
+> >> memory to zones until online") # visible after d0dc12e86b319
+> >>
+> >> and add
+> >>
+> >> Cc: stable@vger.kernel.org # v4.13+
+> > 
+> > Done, thanks.
+> > 
+> 
+> Just a note that Toshiki reported a BUG (race between delayed
+> initialization of ZONE_DEVICE memmaps without holding the memory
+> hotplug lock and concurrent zone shrinking).
+> 
+> https://lkml.org/lkml/2019/11/14/1040
+> 
+> "Iteration of create and destroy namespace causes the panic as below:
+> 
+> [   41.207694] kernel BUG at mm/page_alloc.c:535!
+> [   41.208109] invalid opcode: 0000 [#1] SMP PTI
+> [   41.208508] CPU: 7 PID: 2766 Comm: ndctl Not tainted 5.4.0-rc4 #6
+> [   41.209064] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.11.0-0-g63451fca13-prebuilt.qemu-project.org 04/01/2014
+> [   41.210175] RIP: 0010:set_pfnblock_flags_mask+0x95/0xf0
+> [   41.210643] Code: 04 41 83 e2 3c 48 8d 04 a8 48 c1 e0 07 48 03 04 dd e0 59 55 bb 48 8b 58 68 48 39 da 73 0e 48 c7 c6 70 ac 11 bb e8 1b b2 fd ff <0f> 0b 48 03 58 78 48 39 da 73 e9 49 01 ca b9 3f 00 00 00 4f 8d 0c
+> [   41.212354] RSP: 0018:ffffac0d41557c80 EFLAGS: 00010246
+> [   41.212821] RAX: 000000000000004a RBX: 0000000000244a00 RCX: 0000000000000000
+> [   41.213459] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffbb1197dc
+> [   41.214100] RBP: 000000000000000c R08: 0000000000000439 R09: 0000000000000059
+> [   41.214736] R10: 0000000000000000 R11: ffffac0d41557b08 R12: ffff8be475ea72b0
+> [   41.215376] R13: 000000000000fa00 R14: 0000000000250000 R15: 00000000fffc0bb5
+> [   41.216008] FS:  00007f30862ab600(0000) GS:ffff8be57bc40000(0000) knlGS:0000000000000000
+> [   41.216771] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   41.217299] CR2: 000055e824d0d508 CR3: 0000000231dac000 CR4: 00000000000006e0
+> [   41.217934] Call Trace:
+> [   41.218225]  memmap_init_zone_device+0x165/0x17c
+> [   41.218642]  memremap_pages+0x4c1/0x540
+> [   41.218989]  devm_memremap_pages+0x1d/0x60
+> [   41.219367]  pmem_attach_disk+0x16b/0x600 [nd_pmem]
+> [   41.219804]  ? devm_nsio_enable+0xb8/0xe0
+> [   41.220172]  nvdimm_bus_probe+0x69/0x1c0
+> [   41.220526]  really_probe+0x1c2/0x3e0
+> [   41.220856]  driver_probe_device+0xb4/0x100
+> [   41.221238]  device_driver_attach+0x4f/0x60
+> [   41.221611]  bind_store+0xc9/0x110
+> [   41.221919]  kernfs_fop_write+0x116/0x190
+> [   41.222326]  vfs_write+0xa5/0x1a0
+> [   41.222626]  ksys_write+0x59/0xd0
+> [   41.222927]  do_syscall_64+0x5b/0x180
+> [   41.223264]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> [   41.223714] RIP: 0033:0x7f30865d0ed8
+> [   41.224037] Code: 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 8d 05 45 78 0d 00 8b 00 85 c0 75 17 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 41 54 49 89 d4 55
+> [   41.225920] RSP: 002b:00007fffe5d30a78 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+> [   41.226608] RAX: ffffffffffffffda RBX: 000055e824d07f40 RCX: 00007f30865d0ed8
+> [   41.227242] RDX: 0000000000000007 RSI: 000055e824d07f40 RDI: 0000000000000004
+> [   41.227870] RBP: 0000000000000007 R08: 0000000000000007 R09: 0000000000000006
+> [   41.228753] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000004
+> [   41.229419] R13: 00007f30862ab528 R14: 0000000000000001 R15: 000055e824d07f40
+> 
+> While creating a namespace and initializing memmap, if you destroy the namespace
+> and shrink the zone, it will initialize the memmap outside the zone and
+> trigger VM_BUG_ON_PAGE(!zone_spans_pfn(page_zone(page), pfn), page) in
+> set_pfnblock_flags_mask()."
+> 
+> 
+> This BUG is also mitigated by this commit, where we for now stop to
+> shrink the ZONE_DEVICE zone until we can do it in a safe and clean
+> way.
+> 
 
-Summary:
-  Start:      5d1131b4d61e Add linux-next specific files for 20191119
-  Details:    https://kernelci.org/boot/id/5dd3cc9559b5147f05cf54d1
-  Plain log:  https://storage.kernelci.org//next/master/next-20191119/arm/e=
-xynos_defconfig/gcc-8/lab-collabora/boot-exynos5800-peach-pi.txt
-  HTML log:   https://storage.kernelci.org//next/master/next-20191119/arm/e=
-xynos_defconfig/gcc-8/lab-collabora/boot-exynos5800-peach-pi.html
-  Result:     b037b220e71d dma-direct: unify the dma_capable definitions
+OK, thanks.  I updated the changelog, added Reported-by:Toshiki and
+shall squeeze this fix into 5.4.
 
-Checks:
-  revert:     PASS
-  verify:     PASS
-
-Parameters:
-  Tree:       next
-  URL:        git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
-.git
-  Branch:     master
-  Target:     peach-pi
-  CPU arch:   arm
-  Lab:        lab-collabora
-  Compiler:   gcc-8
-  Config:     exynos_defconfig
-  Test suite: boot
-
-Breaking commit found:
-
----------------------------------------------------------------------------=
-----
-commit b037b220e71dcbb34cb710e00ffad2ec025b9163
-Author: Christoph Hellwig <hch@lst.de>
-Date:   Tue Nov 12 17:06:04 2019 +0100
-
-    dma-direct: unify the dma_capable definitions
-    =
-
-    Currently each architectures that wants to override dma_to_phys and
-    phys_to_dma also has to provide dma_capable.  But there isn't really
-    any good reason for that.  powerpc and mips just have copies of the
-    generic one minus the latests fix, and the arm one was the inspiration
-    for said fix, but misses the bus_dma_mask handling.
-    Make all architectures use the generic version instead.
-    =
-
-    Signed-off-by: Christoph Hellwig <hch@lst.de>
-    Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-    Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-
-diff --git a/arch/arm/include/asm/dma-direct.h b/arch/arm/include/asm/dma-d=
-irect.h
-index b67e5fc1fe43..7c3001a6a775 100644
---- a/arch/arm/include/asm/dma-direct.h
-+++ b/arch/arm/include/asm/dma-direct.h
-@@ -14,23 +14,4 @@ static inline phys_addr_t __dma_to_phys(struct device *d=
-ev, dma_addr_t dev_addr)
- 	return __pfn_to_phys(dma_to_pfn(dev, dev_addr)) + offset;
- }
- =
-
--static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t=
- size)
--{
--	u64 limit, mask;
--
--	if (!dev->dma_mask)
--		return 0;
--
--	mask =3D *dev->dma_mask;
--
--	limit =3D (mask + 1) & ~mask;
--	if (limit && size > limit)
--		return 0;
--
--	if ((addr | (addr + size - 1)) & ~mask)
--		return 0;
--
--	return 1;
--}
--
- #endif /* ASM_ARM_DMA_DIRECT_H */
-diff --git a/arch/mips/include/asm/dma-direct.h b/arch/mips/include/asm/dma=
--direct.h
-index b5c240806e1b..14e352651ce9 100644
---- a/arch/mips/include/asm/dma-direct.h
-+++ b/arch/mips/include/asm/dma-direct.h
-@@ -2,14 +2,6 @@
- #ifndef _MIPS_DMA_DIRECT_H
- #define _MIPS_DMA_DIRECT_H 1
- =
-
--static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t=
- size)
--{
--	if (!dev->dma_mask)
--		return false;
--
--	return addr + size - 1 <=3D *dev->dma_mask;
--}
--
- dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr);
- phys_addr_t __dma_to_phys(struct device *dev, dma_addr_t daddr);
- =
-
-diff --git a/arch/powerpc/include/asm/dma-direct.h b/arch/powerpc/include/a=
-sm/dma-direct.h
-index a2912b47102c..e29e8a236b8d 100644
---- a/arch/powerpc/include/asm/dma-direct.h
-+++ b/arch/powerpc/include/asm/dma-direct.h
-@@ -2,15 +2,6 @@
- #ifndef ASM_POWERPC_DMA_DIRECT_H
- #define ASM_POWERPC_DMA_DIRECT_H 1
- =
-
--static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t=
- size)
--{
--	if (!dev->dma_mask)
--		return false;
--
--	return addr + size - 1 <=3D
--		min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
--}
--
- static inline dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t pad=
-dr)
- {
- 	if (!dev)
-diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-index 6db863c3eb93..991f8aa2676e 100644
---- a/include/linux/dma-direct.h
-+++ b/include/linux/dma-direct.h
-@@ -24,6 +24,7 @@ static inline phys_addr_t __dma_to_phys(struct device *de=
-v, dma_addr_t dev_addr)
- =
-
- 	return paddr + ((phys_addr_t)dev->dma_pfn_offset << PAGE_SHIFT);
- }
-+#endif /* !CONFIG_ARCH_HAS_PHYS_TO_DMA */
- =
-
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t=
- size)
- {
-@@ -38,7 +39,6 @@ static inline bool dma_capable(struct device *dev, dma_ad=
-dr_t addr, size_t size)
- =
-
- 	return end <=3D min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
- }
--#endif /* !CONFIG_ARCH_HAS_PHYS_TO_DMA */
- =
-
- #ifdef CONFIG_ARCH_HAS_FORCE_DMA_UNENCRYPTED
- bool force_dma_unencrypted(struct device *dev);
----------------------------------------------------------------------------=
-----
-
-
-Git bisection log:
-
----------------------------------------------------------------------------=
-----
-git bisect start
-# good: [af42d3466bdc8f39806b26f593604fdc54140bcb] Linux 5.4-rc8
-git bisect good af42d3466bdc8f39806b26f593604fdc54140bcb
-# bad: [5d1131b4d61e52e5702e0fa4bcbec81ac7d6ef52] Add linux-next specific f=
-iles for 20191119
-git bisect bad 5d1131b4d61e52e5702e0fa4bcbec81ac7d6ef52
-# bad: [c5e9a8e6d8139cfdabb7774c9a39c5589b8d45d0] Merge remote-tracking bra=
-nch 'crypto/master'
-git bisect bad c5e9a8e6d8139cfdabb7774c9a39c5589b8d45d0
-# bad: [cefecf6f6be345ac0e5c4f878e4d29787918adfb] Merge remote-tracking bra=
-nch 'pstore/for-next/pstore'
-git bisect bad cefecf6f6be345ac0e5c4f878e4d29787918adfb
-# bad: [7b46e62e776e6a55199625b511d42518e4b98d8f] Merge remote-tracking bra=
-nch 'reset/reset/next'
-git bisect bad 7b46e62e776e6a55199625b511d42518e4b98d8f
-# good: [5f1f15283419ded3e16617ac0b79abc6f2b73bba] Merge tag 'omap-for-v5.5=
-/dt-late-signed' of git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/li=
-nux-omap into arm/dt
-git bisect good 5f1f15283419ded3e16617ac0b79abc6f2b73bba
-# good: [e1351090dd4a172fb26317ae6fa846ab13c50199] ARM: Document merges
-git bisect good e1351090dd4a172fb26317ae6fa846ab13c50199
-# bad: [9050eefca89eb3853d600a61e249fc9fdd8ba332] Merge remote-tracking bra=
-nch 'arm/for-next'
-git bisect bad 9050eefca89eb3853d600a61e249fc9fdd8ba332
-# good: [0632e899eb046db54d3b1c993811e0b1b7b90b04] Merge remote-tracking br=
-anch 'spdx/spdx-linus'
-git bisect good 0632e899eb046db54d3b1c993811e0b1b7b90b04
-# bad: [13fb7b3bb3e314cadfe6dec3132aac31d06950b5] Merge remote-tracking bra=
-nch 'dma-mapping/for-next'
-git bisect bad 13fb7b3bb3e314cadfe6dec3132aac31d06950b5
-# good: [0241ea8cae19b49fc1b1459f7bbe9a77f4f9cc89] modpost: free ns_deps_bu=
-f.p after writing ns_deps files
-git bisect good 0241ea8cae19b49fc1b1459f7bbe9a77f4f9cc89
-# good: [e380a0394c36a3a878c858418d5dd7f5f195b6fc] x86/PCI: sta2x11: use de=
-fault DMA address translation
-git bisect good e380a0394c36a3a878c858418d5dd7f5f195b6fc
-# good: [fcbb8461fd2376ba3782b5b8bd440c929b8e4980] kbuild: remove header co=
-mpile test
-git bisect good fcbb8461fd2376ba3782b5b8bd440c929b8e4980
-# bad: [e4d2bda544c7df90abed8aaa099b5daf1870bcf8] dma-direct: avoid a forwa=
-rd declaration for phys_to_dma
-git bisect bad e4d2bda544c7df90abed8aaa099b5daf1870bcf8
-# bad: [b037b220e71dcbb34cb710e00ffad2ec025b9163] dma-direct: unify the dma=
-_capable definitions
-git bisect bad b037b220e71dcbb34cb710e00ffad2ec025b9163
-# good: [9f0e56e96c7b2039edb4bda64410216c6e9fe93f] dma-mapping: drop the de=
-v argument to arch_sync_dma_for_*
-git bisect good 9f0e56e96c7b2039edb4bda64410216c6e9fe93f
-# first bad commit: [b037b220e71dcbb34cb710e00ffad2ec025b9163] dma-direct: =
-unify the dma_capable definitions
----------------------------------------------------------------------------=
-----
