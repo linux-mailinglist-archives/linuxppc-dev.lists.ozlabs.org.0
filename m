@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560A310165D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 06:52:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACD41014F3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 06:39:16 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HF4d1CLbzDqf0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:39:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HFNF5NcTzDqWg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:52:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="N3A6S7+F"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="BuQc1BM1"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HF2Q0NVVzDqBj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 16:37:18 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HFKd17wSzDqQN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 16:50:29 +1100 (AEDT)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8A274214DE;
- Tue, 19 Nov 2019 05:37:15 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8136B214D9;
+ Tue, 19 Nov 2019 05:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1574141836;
- bh=tXpvznd+oBOZN2eCbwim3PFiLXJbR9UB2tAzNx1l3vY=;
+ s=default; t=1574142627;
+ bh=yd/2s7NgD5N/H4tCXDGVVAgmUhkj7AtVXMSL9P/ctck=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=N3A6S7+F8kv0/5jvnMOSUbMNIED0b+Ia6fS/jUgXuBISeRnpst9+/GTJQ+xZDMF8B
- Ls3lcRANN07DC4DS8VLHRkT4mhipqKDN7NO5AbW/E/XZEqUGySI/aF1q85YagIqfay
- N9IgHoZ0/daN2YOY++lsl8gNMpaW6oDLsCI6Vww4=
+ b=BuQc1BM1I8/yu19XBJ4e9NwFPz2Etwu7iOf0sPt/oW+xKZ90hVBnV48nUzW8kFmin
+ 0c7SRzTHRoeAUFP646uukjTgWH4xjRlKu/FBdzwEn4bdSVfN22y1NLL/VPj2ZgqbJK
+ 1IxppL7+D6W6jWYWeM6NZmNh48EoG560b5Eoi3uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.19 270/422] libfdt: Ensure INT_MAX is defined in libfdt_env.h
-Date: Tue, 19 Nov 2019 06:17:47 +0100
-Message-Id: <20191119051416.483788543@linuxfoundation.org>
+Subject: [PATCH 4.14 145/239] libfdt: Ensure INT_MAX is defined in libfdt_env.h
+Date: Tue, 19 Nov 2019 06:19:05 +0100
+Message-Id: <20191119051332.226062838@linuxfoundation.org>
 X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191119051400.261610025@linuxfoundation.org>
-References: <20191119051400.261610025@linuxfoundation.org>
+In-Reply-To: <20191119051255.850204959@linuxfoundation.org>
+References: <20191119051255.850204959@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -104,7 +104,7 @@ index 07437816e0986..b36c0289a308e 100644
  typedef __be32 fdt32_t;
  typedef __be64 fdt64_t;
 diff --git a/arch/powerpc/boot/libfdt_env.h b/arch/powerpc/boot/libfdt_env.h
-index 2a0c8b1bf1479..2abc8e83b95e9 100644
+index f52c31b1f48fa..39155d3b2cefa 100644
 --- a/arch/powerpc/boot/libfdt_env.h
 +++ b/arch/powerpc/boot/libfdt_env.h
 @@ -5,6 +5,8 @@
@@ -115,14 +115,14 @@ index 2a0c8b1bf1479..2abc8e83b95e9 100644
 +
  #include "of.h"
  
- typedef unsigned long uintptr_t;
+ typedef u32 uint32_t;
 diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
-index c6ac1fe7ec68a..edb0f0c309044 100644
+index 14997285e53d3..1aa707ab19bbf 100644
 --- a/include/linux/libfdt_env.h
 +++ b/include/linux/libfdt_env.h
 @@ -2,6 +2,7 @@
- #ifndef LIBFDT_ENV_H
- #define LIBFDT_ENV_H
+ #ifndef _LIBFDT_ENV_H
+ #define _LIBFDT_ENV_H
  
 +#include <linux/kernel.h>	/* For INT_MAX */
  #include <linux/string.h>
