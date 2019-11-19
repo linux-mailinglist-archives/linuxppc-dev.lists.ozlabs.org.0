@@ -2,71 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBDF100FAE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 01:06:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7C3101033
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 01:24:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47H5hX1LY8zDqPR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 11:06:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47H65Y3D7yzDqZq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 11:24:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="OwqIclI3"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="kZWTJaB6"; 
  dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47H5fM5s7czDqZl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 11:04:22 +1100 (AEDT)
-Received: by mail-oi1-x242.google.com with SMTP id n14so17122538oie.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 16:04:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ZtbvKjjnscKy4A6MuNeD3a3NFthr68OtKoL8RB+WxNo=;
- b=OwqIclI3keeY7VHTJMp42XcFMnSTpvkqGJgi1VHbv9P05zsqk7I4qEew1vlPCtyxE6
- NtIAzveBsEu4kp70hWM+c+0r8DFE2JfAuqsFbN0yMpKcYrac8GPNaBuUxFR2EypImxtG
- TbR3Gp8qoV/FATMkEKzlAggAnAqeHJJgJMZccBlQX3YSC1H5g1ptRg934gVSvL4odkQm
- wN0l/Z3VtNzyskVviilqa+8hpfN1DGw5KiJZiWyXEP/sX3mSW9PujfWr8BAiH/OJoUMU
- BEXRq1HBY8xK18/ZQAcIxHS4HLunPih16a070i5KPwuvbR2SMnxCy8MdUDiXvgBRovMR
- 2nUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ZtbvKjjnscKy4A6MuNeD3a3NFthr68OtKoL8RB+WxNo=;
- b=rOgBBOk/jpjmiMCgR92qhNnBFq1LI9OTGBE4p/6zzNh98xcU1EAaPoZdrlKZYWrxss
- EKd9+AoJI72ntG0BXGZGVDihdjqLFQXDMzPGMVpBh5EFqa/w5rYz2tD9PjS6yFuDdCyN
- GQFG5OXKQ5fBi2UwmZiIC6mep167C0B3vPkHBWnoUILEMjXqSaXL6i4g9LLJhd1vHOWx
- gAIJqwolJnqPZJxGBufyqIKbfMTj55kHkGHPieCFRixUAmZ9KXT57Yu5mYIqJoe/iCMX
- fLqkJu5uVKX+yOrt74J31RkXKQyYfPcvYHnwPWysR7MAcqQaYyiQ2HC6vhgZd/u4dbaH
- Hfzg==
-X-Gm-Message-State: APjAAAVwCY5VEflxzSLjMJvTYWqcQS0jsfIMTTcRjEcrn9gU6O0U4lQu
- Cl1ke8QROI/Gesiqjkl+HuLNqV7G10PGQLRZ8UGLUA==
-X-Google-Smtp-Source: APXvYqyHTRHOCdWxsyyF+07+0YV81ecwmO5E2eDEN7/DauYrZtLt+iJnkG3Op6xVtOT1jIhYYt8wSLdsK2pfoAPRMRw=
-X-Received: by 2002:aca:ea57:: with SMTP id i84mr1382576oih.73.1574121858711; 
- Mon, 18 Nov 2019 16:04:18 -0800 (PST)
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47H63Y41P3zDqYW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 11:22:49 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dd335d60001>; Mon, 18 Nov 2019 16:22:46 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Mon, 18 Nov 2019 16:22:44 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Mon, 18 Nov 2019 16:22:44 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 19 Nov
+ 2019 00:22:43 +0000
+Subject: Re: [PATCH v5 17/24] mm/gup: track FOLL_PIN pages
+To: Jan Kara <jack@suse.cz>
+References: <20191115055340.1825745-1-jhubbard@nvidia.com>
+ <20191115055340.1825745-18-jhubbard@nvidia.com>
+ <20191118115829.GJ17319@quack2.suse.cz>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <8424f891-271d-5c34-8f7c-ebf3e3aa6664@nvidia.com>
+Date: Mon, 18 Nov 2019 16:22:43 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-References: <20191025044721.16617-1-alastair@au1.ibm.com>
- <20191025044721.16617-9-alastair@au1.ibm.com>
- <8232c1a6-d52a-6c32-6178-de082174a92a@linux.ibm.com>
- <CAPcyv4g9b6PyREurH9NcQf4BO2YcRGJPBZDqGKy-Vz91mBKjew@mail.gmail.com>
- <02374c9a-39fb-5693-3d9c-aa7e7674a6c1@linux.ibm.com>
-In-Reply-To: <02374c9a-39fb-5693-3d9c-aa7e7674a6c1@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 18 Nov 2019 16:04:07 -0800
-Message-ID: <CAPcyv4hDxeJo-i9FG=JBhaK3awjm3cN_MNvdO_7Z=9bJT9wsGw@mail.gmail.com>
-Subject: Re: [PATCH 08/10] nvdimm: Add driver for OpenCAPI Storage Class Memory
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191118115829.GJ17319@quack2.suse.cz>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1574122967; bh=ip2xVJC+jxbL/7d2eWhZjqdIi4kB0uoxgzyWnYDs5q4=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=kZWTJaB6BUYpdW+z0HXxRztjdsBPgYMtIagp6++GXQ1xMYEqmDvkuTu5SJexcfc3Z
+ aqvcG/+YbvfnrntTmKpTzXcCcJ1vacUs8Vt+kkZFmecCKGt5ESA8XOWs62Cbve3dr3
+ XsCtQVKM4yFI8r3EtkYIToV94nBwkk0bzSnRfhI6IY4EfMEr9iYp9o7iElBN+PNDoe
+ GYMLDs4YJjT+MkCB6avfM8/DST4lwWHJbTQrh01mIBzcPCF4cBGDQd1OqtdqCqvly5
+ URQ6TTy1wBAC/IlVtHZs8b+E7d7tANvL2AVJcuHSx7ushKjPgli8Izd92XqBpLulsV
+ NLxmWdrhMpwGw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,54 +76,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
- David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Wei Yang <richard.weiyang@gmail.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Ira Weiny <ira.weiny@intel.com>,
- Dave Jiang <dave.jiang@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Vishal Verma <vishal.l.verma@intel.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- alastair@d-silva.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Qian Cai <cai@lca.pw>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Alastair D'Silva <alastair@au1.ibm.com>, Linux MM <linux-mm@kvack.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 18, 2019 at 3:48 PM Andrew Donnellan <ajd@linux.ibm.com> wrote:
->
-> On 15/11/19 3:35 am, Dan Williams wrote:
-> >> Have you discussed with the directory owner if it's ok to split the
-> >> driver over several files?
-> >
-> > My thought is to establish drivers/opencapi/ and move this and the
-> > existing drivers/misc/ocxl/ bits there.
->
-> Is there any other justification for this we can think of apart from not
-> wanting to put this driver in the nvdimm directory? OpenCAPI drivers
-> aren't really a category of driver unto themselves.
+On 11/18/19 3:58 AM, Jan Kara wrote:
+> On Thu 14-11-19 21:53:33, John Hubbard wrote:
+>> Add tracking of pages that were pinned via FOLL_PIN.
+>>
+>> As mentioned in the FOLL_PIN documentation, callers who effectively set
+>> FOLL_PIN are required to ultimately free such pages via put_user_page().
+>> The effect is similar to FOLL_GET, and may be thought of as "FOLL_GET
+>> for DIO and/or RDMA use".
+>>
+>> Pages that have been pinned via FOLL_PIN are identifiable via a
+>> new function call:
+>>
+>>    bool page_dma_pinned(struct page *page);
+>>
+>> What to do in response to encountering such a page, is left to later
+>> patchsets. There is discussion about this in [1].
+> 						^^ missing this reference
+> in the changelog...
 
-The concern is less about adding to drivers/nvdimm/ and more about the
-proper location to house opencapi specific transport and enumeration
-details. The organization I'm looking for is to group platform
-transport and enumeration code together similar to how drivers/pci/
-exists independent of all pci drivers that use that common core. For
-libnvdimm the enumeration is platform specific and calls into the
-nvdimm core. This is why the x86 platform persistent memory bus driver
-lives under drivers/acpi/nfit/ instead of drivers/nvdimm/. The nfit
-driver is an ACPI extension that translates ACPI details into
-libnvdimm core objects.
+I'll add that.=20
 
-The usage of "ocxl" in the source leads me to think part of this
-driver belongs in a directory that has other opencapi specific
-considerations.
+>=20
+>> This also changes a BUG_ON(), to a WARN_ON(), in follow_page_mask().
+>>
+>> Suggested-by: Jan Kara <jack@suse.cz>
+>> Suggested-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> ---
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 6588d2e02628..db872766480f 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -1054,6 +1054,8 @@ static inline __must_check bool try_get_page(struc=
+t page *page)
+>>  	return true;
+>>  }
+>> =20
+>> +__must_check bool user_page_ref_inc(struct page *page);
+>> +
+>>  static inline void put_page(struct page *page)
+>>  {
+>>  	page =3D compound_head(page);
+>> @@ -1071,29 +1073,70 @@ static inline void put_page(struct page *page)
+>>  		__put_page(page);
+>>  }
+>> =20
+>> -/**
+>> - * put_user_page() - release a gup-pinned page
+>> - * @page:            pointer to page to be released
+>> +/*
+>> + * GUP_PIN_COUNTING_BIAS, and the associated functions that use it, ove=
+rload
+>> + * the page's refcount so that two separate items are tracked: the orig=
+inal page
+>> + * reference count, and also a new count of how many get_user_pages() c=
+alls were
+> 							^^ pin_user_pages()
+>=20
+>> + * made against the page. ("gup-pinned" is another term for the latter)=
+.
+>> + *
+>> + * With this scheme, get_user_pages() becomes special: such pages are m=
+arked
+> 			^^^ pin_user_pages()
+>=20
+>> + * as distinct from normal pages. As such, the put_user_page() call (an=
+d its
+>> + * variants) must be used in order to release gup-pinned pages.
+>> + *
+>> + * Choice of value:
+>>   *
+>> - * Pages that were pinned via pin_user_pages*() must be released via ei=
+ther
+>> - * put_user_page(), or one of the put_user_pages*() routines. This is s=
+o that
+>> - * eventually such pages can be separately tracked and uniquely handled=
+. In
+>> - * particular, interactions with RDMA and filesystems need special hand=
+ling.
+>> + * By making GUP_PIN_COUNTING_BIAS a power of two, debugging of page re=
+ference
+>> + * counts with respect to get_user_pages() and put_user_page() becomes =
+simpler,
+> 				^^^ pin_user_pages()
+>=20
+
+Yes.
+
+>> + * due to the fact that adding an even power of two to the page refcoun=
+t has
+>> + * the effect of using only the upper N bits, for the code that counts =
+up using
+>> + * the bias value. This means that the lower bits are left for the excl=
+usive
+>> + * use of the original code that increments and decrements by one (or a=
+t least,
+>> + * by much smaller values than the bias value).
+>>   *
+>> - * put_user_page() and put_page() are not interchangeable, despite this=
+ early
+>> - * implementation that makes them look the same. put_user_page() calls =
+must
+>> - * be perfectly matched up with pin*() calls.
+>> + * Of course, once the lower bits overflow into the upper bits (and thi=
+s is
+>> + * OK, because subtraction recovers the original values), then visual i=
+nspection
+>> + * no longer suffices to directly view the separate counts. However, fo=
+r normal
+>> + * applications that don't have huge page reference counts, this won't =
+be an
+>> + * issue.
+>> + *
+>> + * Locking: the lockless algorithm described in page_cache_get_speculat=
+ive()
+>> + * and page_cache_gup_pin_speculative() provides safe operation for
+>> + * get_user_pages and page_mkclean and other calls that race to set up =
+page
+>> + * table entries.
+>>   */
+> ...
+>> @@ -2070,9 +2191,16 @@ static int gup_hugepte(pte_t *ptep, unsigned long=
+ sz, unsigned long addr,
+>>  	page =3D head + ((addr & (sz-1)) >> PAGE_SHIFT);
+>>  	refs =3D __record_subpages(page, addr, end, pages + *nr);
+>> =20
+>> -	head =3D try_get_compound_head(head, refs);
+>> -	if (!head)
+>> -		return 0;
+>> +	if (flags & FOLL_PIN) {
+>> +		head =3D page;
+>> +		if (unlikely(!user_page_ref_inc(head)))
+>> +			return 0;
+>> +		head =3D page;
+>=20
+> Why do you assign 'head' twice? Also the refcounting logic is repeated
+> several times so perhaps you can factor it out in to a helper function or
+> even move it to __record_subpages()?
+
+OK.
+
+>=20
+>> +	} else {
+>> +		head =3D try_get_compound_head(head, refs);
+>> +		if (!head)
+>> +			return 0;
+>> +	}
+>> =20
+>>  	if (unlikely(pte_val(pte) !=3D pte_val(*ptep))) {
+>>  		put_compound_head(head, refs);
+>=20
+> So this will do the wrong thing for FOLL_PIN. We took just one "pin"
+> reference there but here we'll release 'refs' normal references AFAICT.
+> Also the fact that you take just one pin reference for each huge page
+> substantially changes how GUP refcounting works in the huge page case.
+> Currently, FOLL_GET users can be completely agnostic of huge pages. So yo=
+u
+> can e.g. GUP whole 2 MB page, submit it as 2 different bios and then
+> drop page references from each bio completion function. With your new
+> FOLL_PIN behavior you cannot do that and I believe it will be a problem f=
+or
+> some users. So I think you have to maintain the behavior that you increas=
+e
+> the head->_refcount by (refs * GUP_PIN_COUNTING_BIAS) here.
+>=20
+
+Yes, completely agreed, this was a (big) oversight. I went through the same
+reasoning and reached your conclusions, in __gup_device_huge(), but then
+did it wrong in these functions. Will fix.
+
+thanks,
+--=20
+John Hubbard
+NVIDIA
