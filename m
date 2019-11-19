@@ -2,90 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516BC1012F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 06:21:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A04810139F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 06:27:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HDgX0Bb1zDq6J
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:20:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HDpT3StTzDqXV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:26:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HDdY3q1XzDqZm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 16:19:13 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HDly5bTQzDqNd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 16:24:45 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAJ5F85u135258
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:19:08 -0500
+ xAJ5N3Tm082841
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:24:42 -0500
 Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2way685ekr-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2wayagxdng-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:19:08 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:24:41 -0500
 Received: from localhost
  by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Tue, 19 Nov 2019 05:19:06 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
+ Tue, 19 Nov 2019 05:24:40 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
  by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 19 Nov 2019 05:19:04 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAJ5J2rY53149948
+ Tue, 19 Nov 2019 05:24:39 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id xAJ5Ob8E28705060
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Nov 2019 05:19:02 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5219A405C;
- Tue, 19 Nov 2019 05:19:02 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52C25A4054;
- Tue, 19 Nov 2019 05:19:02 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 19 Nov 2019 05:19:02 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 381A9A012A;
- Tue, 19 Nov 2019 16:18:58 +1100 (AEDT)
-Subject: Re: [PATCH 08/11] pci/hotplug/pnv-php: Register opencapi slots
-To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
-References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
- <20190909154600.19917-9-fbarrat@linux.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Tue, 19 Nov 2019 16:18:59 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20190909154600.19917-9-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
+ Tue, 19 Nov 2019 05:24:37 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A77774C04E;
+ Tue, 19 Nov 2019 05:24:37 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0A5044C040;
+ Tue, 19 Nov 2019 05:24:37 +0000 (GMT)
+Received: from [9.199.196.79] (unknown [9.199.196.79])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Nov 2019 05:24:36 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [-merge] BUG followed by oops running ndctl tests
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <86aee55a-3968-cf0d-6030-cbc6e63fddc9@linux.ibm.com>
+Date: Tue, 19 Nov 2019 10:54:21 +0530
+Content-Transfer-Encoding: quoted-printable
+References: <B0EBF64C-3B57-4716-BAAF-CBC4CBDF5FBC@linux.vnet.ibm.com>
+ <86aee55a-3968-cf0d-6030-cbc6e63fddc9@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+X-Mailer: Apple Mail (2.3445.104.11)
 X-TM-AS-GCONF: 00
-x-cbid: 19111905-0012-0000-0000-000003679D28
+x-cbid: 19111905-0012-0000-0000-000003679E4A
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111905-0013-0000-0000-000021A3255D
-Message-Id: <8ccc21bc-7154-d8a6-68ec-ac42a21de7ef@linux.ibm.com>
+x-cbparentid: 19111905-0013-0000-0000-000021A32683
+Message-Id: <6D6FA8CC-7FD3-409E-9CB9-1D3DB5353F7A@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-11-18_08:2019-11-15,2019-11-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 adultscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-1911190047
+ phishscore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 spamscore=0 adultscore=0 mlxlogscore=673
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1911190049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,47 +90,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: groug@kaod.org, alastair@au1.ibm.com
+Cc: harish@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/9/19 1:45 am, Frederic Barrat wrote:
-> Add the opencapi PHBs to the list of PHBs being scanned to look for
-> slots.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> ---
->   drivers/pci/hotplug/pnv_php.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-> index 304bdbcdb77c..f0a7360154e7 100644
-> --- a/drivers/pci/hotplug/pnv_php.c
-> +++ b/drivers/pci/hotplug/pnv_php.c
-> @@ -954,7 +954,8 @@ static int __init pnv_php_init(void)
->   	pr_info(DRIVER_DESC " version: " DRIVER_VERSION "\n");
->   	for_each_compatible_node(dn, NULL, "ibm,ioda2-phb")
->   		pnv_php_register(dn);
-> -
-> +	for_each_compatible_node(dn, NULL, "ibm,ioda2-npu2-opencapi-phb")
-> +		pnv_php_register_one(dn);
->   	return 0;
->   }
->   
-> @@ -964,6 +965,8 @@ static void __exit pnv_php_exit(void)
->   
->   	for_each_compatible_node(dn, NULL, "ibm,ioda2-phb")
->   		pnv_php_unregister(dn);
-> +	for_each_compatible_node(dn, NULL, "ibm,ioda2-npu2-opencapi-phb")
-> +		pnv_php_unregister(dn);
->   }
 
 
-Why do we use register_one to register and unregister rather than 
-unregister_one to unregister?
+> On 16-Nov-2019, at 12:25 AM, Aneesh Kumar K.V =
+<aneesh.kumar@linux.ibm.com> wrote:
+>=20
+> On 11/15/19 11:36 AM, Sachin Sant wrote:
+>> Following Oops is seen on latest (commit 3b4852888d) powerpc merge =
+branch
+>> code while running ndctl (test_namespace) tests
+>> 85c5b0984e was good.
+>=20
+>=20
+>=20
+> Are the namespace size created with size that is multiple of 16M size?
+>=20
+> Wondering whether this is related to =
+https://patchwork.kernel.org/patch/11215049/
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+This patch series doesn=E2=80=99t seem to help. I can still recreate the =
+problem with the patches applied.
+
+Thanks
+-Sachin
+>=20
+> -aneesh
 
