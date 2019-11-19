@@ -2,86 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54E4102ADB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 18:34:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17967102AEC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 18:43:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HXyK0zjCzDqgp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 04:34:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HY8W1Ld2zDqYd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 04:43:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HXwB5W09zDqfb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 04:32:58 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAJHIgd2147226
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 12:32:53 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wcf57sxk9-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 12:32:52 -0500
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Tue, 19 Nov 2019 17:32:51 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 19 Nov 2019 17:32:47 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAJHWkOO44564650
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Nov 2019 17:32:46 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 348DAA405B;
- Tue, 19 Nov 2019 17:32:46 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EDC51A4054;
- Tue, 19 Nov 2019 17:32:45 +0000 (GMT)
-Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 19 Nov 2019 17:32:45 +0000 (GMT)
-Subject: Re: [PATCH 04/11] powerpc/powernv/ioda: Release opencapi device
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, linuxppc-dev@lists.ozlabs.org, 
- andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
-References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
- <20190909154600.19917-5-fbarrat@linux.ibm.com>
- <05ebc83c696cd3c5e65d64e76132371af2fb81d5.camel@au1.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 19 Nov 2019 18:32:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47HY6h0QhWzDqYd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 04:42:02 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71A951FB;
+ Tue, 19 Nov 2019 09:42:00 -0800 (PST)
+Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D3FC3F703;
+ Tue, 19 Nov 2019 09:41:59 -0800 (PST)
+From: Robin Murphy <robin.murphy@arm.com>
+Subject: Re: generic DMA bypass flag
+To: Christoph Hellwig <hch@lst.de>
+References: <20191113133731.20870-1-hch@lst.de>
+ <d27b7b29-df78-4904-8002-b697da5cb013@arm.com>
+ <20191114074105.GC26546@lst.de>
+ <9c8f4d7b-43e0-a336-5d93-88aef8aae716@arm.com> <20191116062258.GA8913@lst.de>
+Message-ID: <f2335431-8cd4-e1ab-013d-573d163f4067@arm.com>
+Date: Tue, 19 Nov 2019 17:41:58 +0000
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <05ebc83c696cd3c5e65d64e76132371af2fb81d5.camel@au1.ibm.com>
+In-Reply-To: <20191116062258.GA8913@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111917-0016-0000-0000-000002C898A2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111917-0017-0000-0000-0000332A5197
-Message-Id: <ea0a6f45-4377-0c83-e9b2-785783473bc7@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-19_05:2019-11-15,2019-11-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=999
- suspectscore=2 adultscore=0 clxscore=1015 phishscore=0 bulkscore=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911190149
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,170 +51,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: groug@kaod.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 10/09/2019 à 02:56, Alastair D'Silva a écrit :
-> On Mon, 2019-09-09 at 17:45 +0200, Frederic Barrat wrote:
->> With hotplug, an opencapi device can now go away. It needs to be
->> released, mostly to clean up its PE state. We were previously not
->> defining any device callback. We can reuse the standard PCI release
->> callback, it does a bit too much for an opencapi device, but it's
->> harmless, and only needs minor tuning.
->>
->> Also separate the undo of the PELT-V code in a separate function, it
->> is not needed for NPU devices and it improves a bit the readability
->> of
->> the code.
->>
->> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->> ---
->>   arch/powerpc/platforms/powernv/pci-ioda.c | 59 +++++++++++++++----
->> ----
->>   1 file changed, 39 insertions(+), 20 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c
->> b/arch/powerpc/platforms/powernv/pci-ioda.c
->> index 06ce7ddaa0cf..e5895c05efae 100644
->> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
->> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
->> @@ -188,7 +188,7 @@ static void pnv_ioda_free_pe(struct pnv_ioda_pe
->> *pe)
->>   	unsigned int pe_num = pe->pe_number;
->>   
->>   	WARN_ON(pe->pdev);
->> -	WARN_ON(pe->npucomp); /* NPUs are not supposed to be freed */
->> +	WARN_ON(pe->npucomp); /* NPUs for nvlink are not supposed to be
->> freed */
->>   	kfree(pe->npucomp);
->>   	memset(pe, 0, sizeof(struct pnv_ioda_pe));
->>   	clear_bit(pe_num, phb->ioda.pe_alloc);
->> @@ -777,6 +777,34 @@ static int pnv_ioda_set_peltv(struct pnv_phb
->> *phb,
->>   	return 0;
->>   }
->>   
->> +static void pnv_ioda_unset_peltv(struct pnv_phb *phb,
->> +				 struct pnv_ioda_pe *pe,
->> +				 struct pci_dev *parent)
->> +{
->> +	int64_t rc;
->> +
->> +	while (parent) {
->> +		struct pci_dn *pdn = pci_get_pdn(parent);
->> +
->> +		if (pdn && pdn->pe_number != IODA_INVALID_PE) {
->> +			rc = opal_pci_set_peltv(phb->opal_id, pdn-
->>> pe_number,
->> +						pe->pe_number,
->> +						OPAL_REMOVE_PE_FROM_DOM
->> AIN);
->> +			/* XXX What to do in case of error ? */
+On 16/11/2019 6:22 am, Christoph Hellwig wrote:
+> On Fri, Nov 15, 2019 at 06:12:48PM +0000, Robin Murphy wrote:
+>> And is that any different from where you would choose to "just" set a
+>> generic bypass flag?
 > 
-> Can we take the opportunity to address this comment?
+> Same spots, as intel-iommu moves from the identify to a dma domain when
+> setting a 32-bit mask.  But that means once a 32-bit mask is set we can't
+> ever go back to the 64-bit one.
 
+Is that a problem though? It's not safe in general to rewrite the 
+default domain willy-nilly, so if it's a concern that drivers get stuck 
+having to use a translation domain if they do something dumb like:
 
-Probably like the original author, I'm not sure what we could do better 
-here. We already log a warning below if opal returns an error when 
-dissociating the PE (admittedly not the same thing as the parent). Note 
-that this code is not executed for an opencapi device, so I'm just 
-keeping thing as is.
+	if (!dma_set_mask(DMA_BIT_MASK(32))
+		dma_set_mask(DMA_BIT_MASK(64));
 
-  Fred
+then the simple solution is "don't do that" - note that this doesn't 
+affect overriding of the default 32-bit mask, because we don't use the 
+driver API to initialise those.
 
+>  And we had a couple drivers playing
+> interesting games there.
 
+If the games you're worried about are stuff like:
 
->> +		}
->> +		parent = parent->bus->self;
->> +	}
->> +
->> +	opal_pci_eeh_freeze_clear(phb->opal_id, pe->pe_number,
->> +				  OPAL_EEH_ACTION_CLEAR_FREEZE_ALL);
->> +
->> +	/* Disassociate PE in PELT */
->> +	rc = opal_pci_set_peltv(phb->opal_id, pe->pe_number,
->> +				pe->pe_number,
->> OPAL_REMOVE_PE_FROM_DOMAIN);
->> +	if (rc)
->> +		pe_warn(pe, "OPAL error %lld remove self from PELTV\n",
->> rc);
->> +}
->> +
->>   static int pnv_ioda_deconfigure_pe(struct pnv_phb *phb, struct
->> pnv_ioda_pe *pe)
->>   {
->>   	struct pci_dev *parent;
->> @@ -827,25 +855,13 @@ static int pnv_ioda_deconfigure_pe(struct
->> pnv_phb *phb, struct pnv_ioda_pe *pe)
->>   	for (rid = pe->rid; rid < rid_end; rid++)
->>   		phb->ioda.pe_rmap[rid] = IODA_INVALID_PE;
->>   
->> -	/* Release from all parents PELT-V */
->> -	while (parent) {
->> -		struct pci_dn *pdn = pci_get_pdn(parent);
->> -		if (pdn && pdn->pe_number != IODA_INVALID_PE) {
->> -			rc = opal_pci_set_peltv(phb->opal_id, pdn-
->>> pe_number,
->> -						pe->pe_number,
->> OPAL_REMOVE_PE_FROM_DOMAIN);
->> -			/* XXX What to do in case of error ? */
->> -		}
->> -		parent = parent->bus->self;
->> -	}
->> -
->> -	opal_pci_eeh_freeze_clear(phb->opal_id, pe->pe_number,
->> -				  OPAL_EEH_ACTION_CLEAR_FREEZE_ALL);
->> +	/*
->> +	 * Release from all parents PELT-V. NPUs don't have a PELTV
->> +	 * table
->> +	 */
->> +	if (phb->type != PNV_PHB_NPU_NVLINK && phb->type !=
->> PNV_PHB_NPU_OCAPI)
->> +		pnv_ioda_unset_peltv(phb, pe, parent);
->>   
->> -	/* Disassociate PE in PELT */
->> -	rc = opal_pci_set_peltv(phb->opal_id, pe->pe_number,
->> -				pe->pe_number,
->> OPAL_REMOVE_PE_FROM_DOMAIN);
->> -	if (rc)
->> -		pe_warn(pe, "OPAL error %lld remove self from PELTV\n",
->> rc);
->>   	rc = opal_pci_set_pe(phb->opal_id, pe->pe_number, pe->rid,
->>   			     bcomp, dcomp, fcomp, OPAL_UNMAP_PE);
->>   	if (rc)
->> @@ -3540,6 +3556,8 @@ static void pnv_ioda_release_pe(struct
->> pnv_ioda_pe *pe)
->>   	case PNV_PHB_IODA2:
->>   		pnv_pci_ioda2_release_pe_dma(pe);
->>   		break;
->> +	case PNV_PHB_NPU_OCAPI:
->> +		break;
->>   	default:
->>   		WARN_ON(1);
->>   	}
->> @@ -3592,7 +3610,7 @@ static void pnv_pci_release_device(struct
->> pci_dev *pdev)
->>   	pe = &phb->ioda.pe_array[pdn->pe_number];
->>   	pdn->pe_number = IODA_INVALID_PE;
->>   
->> -	WARN_ON(--pe->device_count < 0);
->> +	WARN_ON((pe->flags != PNV_IODA_PE_DEV) && (--pe->device_count <
->> 0));
->>   	if (pe->device_count == 0)
->>   		pnv_ioda_release_pe(pe);
->>   }
->> @@ -3641,6 +3659,7 @@ static const struct pci_controller_ops
->> pnv_npu_ioda_controller_ops = {
->>   
->>   static const struct pci_controller_ops
->> pnv_npu_ocapi_ioda_controller_ops = {
->>   	.enable_device_hook	= pnv_ocapi_enable_device_hook,
->> +	.release_device		= pnv_pci_release_device,
->>   	.window_alignment	= pnv_pci_window_alignment,
->>   	.reset_secondary_bus	= pnv_pci_reset_secondary_bus,
->>   	.shutdown		= pnv_pci_ioda_shutdown,
+	dma_set_mask(dev, DMA_BIT_MASK(64));
+	high_buf = dma_alloc_coherent(dev, ...);
+	dma_set_mask(dev, DMA_BIT_MASK(32));
+	low_buf = dma_alloc_coherent(dev, ...);
 
+then iommu_need_mapping() already ensures that will end spectacularly 
+badly. Unless we can somehow log when a mask has been "committed" by a 
+mapping operation, I don't think any kind of opportunistic bypass 
+mechanism is ever not going to blow up that case.
+
+>  FYI, this is the current intel-iommu
+> WIP conversion to the dma bypass flag:
+> 
+> http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-bypass
+
+Having thought a bit more, I guess my idea does end up with one slightly 
+ugly corner wherein dma_direct_supported() has to learn to look for an 
+IOMMU default domain and try iommu_dma_supported() before saying no, 
+even if it's clean everywhere else. The bypass flag is more 'balanced' 
+in terms of being equally invasive everywhere and preserving abstraction 
+a bit better. Plus I think it might let us bring back the default 
+assignment of dma_dummy_ops, which I do like the thought of :D
+
+Either way, making sure that the fundamental bypass decision is correct 
+and robust is still far more important than the implementation details.
+
+Robin.
