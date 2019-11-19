@@ -2,51 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2501016B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 06:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB441016FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 06:58:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HFSC32kvzDqLx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:56:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HFWD1cCzzDqNR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:58:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HFP60ZPPzDqBr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 16:53:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="h7/kk6Zt"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 47HFP53LRMzB3vv;
- Tue, 19 Nov 2019 16:53:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1574142809;
- bh=jb7dTqxFpJxsRgcQPIuEXZVSto0BIWmREranK2PFIr0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=h7/kk6ZtFkQRQlA/Ck8jL74zTQ3dP7YYzbWBluWN1D0Vc6khCLw6hNIb3fxTzOppr
- b0s726Vz/6B3Uc8qvoJLQJEpX0/qLY8v2XaG+TlH3mHSI9j8DtyUxvtgveq3KjfdGA
- D692bfxUswq69bu33cti14yfMyw7OSFlzw5uuIO7d6M2BPQ3pvEch/3iWWsTkkwZ1s
- s4XvgCDKSXFdzBZj7ub2HcAQorooC6S5PoueO+7b3qEbUohTko2T5qLgg7+U5/nhOu
- yl5Y09UN70Y+P0pQpdJ8lDVUcEEe0TdxjcbifQcZ1ipZqjI3CzTgO0BO0FB3gkawVC
- PeEu3/tSPr6QQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Chen Wandun <chenwandun@huawei.com>, tyreld@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- mahesh@linux.vnet.ibm.com, paulus@samba.org
-Subject: Re: [PATCH] powerpc/pseries: remove variable 'status' set but not used
-In-Reply-To: <1573873650-62511-1-git-send-email-chenwandun@huawei.com>
-References: <1573873650-62511-1-git-send-email-chenwandun@huawei.com>
-Date: Tue, 19 Nov 2019 16:53:26 +1100
-Message-ID: <87blt8csyx.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HFRK0Cc1zDqbm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 16:55:24 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAJ5oBHm054531
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:55:22 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wayf65ku5-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 00:55:21 -0500
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Tue, 19 Nov 2019 05:55:19 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 19 Nov 2019 05:55:18 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAJ5tGgd51773514
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Nov 2019 05:55:16 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AF0BBA4059;
+ Tue, 19 Nov 2019 05:55:16 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5EC49A404D;
+ Tue, 19 Nov 2019 05:55:16 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Nov 2019 05:55:16 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5C534A012A;
+ Tue, 19 Nov 2019 16:55:12 +1100 (AEDT)
+Subject: Re: [PATCH 02/11] powerpc/powernv/ioda: Protect PE list
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
+References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
+ <20190909154600.19917-3-fbarrat@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Tue, 19 Nov 2019 16:55:13 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20190909154600.19917-3-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19111905-4275-0000-0000-00000381BE98
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19111905-4276-0000-0000-000038953135
+Message-Id: <741b0c16-d9cf-94c8-c98d-8e9cbca61f74@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-19_01:2019-11-15,2019-11-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
+ mlxlogscore=785 priorityscore=1501 spamscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1911190052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,73 +97,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenwandun@huawei.com
+Cc: groug@kaod.org, alastair@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Chen Wandun <chenwandun@huawei.com> writes:
-> Fixes gcc '-Wunused-but-set-variable' warning:
->
-> arch/powerpc/platforms/pseries/ras.c: In function ras_epow_interrupt:
-> arch/powerpc/platforms/pseries/ras.c:319:6: warning: variable status set but not used [-Wunused-but-set-variable]
+On 10/9/19 1:45 am, Frederic Barrat wrote:
+> Protect the PHB's list of PE. Probably not needed as long as it was
+> populated during PHB creation, but it feels right and will become
+> required once we can add/remove opencapi devices on hotplug.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Thanks for the patch.
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-But it almost certainly is wrong to not check the status.
 
-It's calling firmware and just assuming that the call succeeded. It then
-goes on to use the result that should have been written by firmware, but
-is now potentially random junk.
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
-So I'd much rather a patch to change it to check the status. 
-
-> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-> index 1d7f973..4a61d0f 100644
-> --- a/arch/powerpc/platforms/pseries/ras.c
-> +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -316,12 +316,11 @@ static irqreturn_t ras_hotplug_interrupt(int irq, void *dev_id)
->  /* Handle environmental and power warning (EPOW) interrupts. */
->  static irqreturn_t ras_epow_interrupt(int irq, void *dev_id)
->  {
-> -	int status;
->  	int state;
->  	int critical;
->  
-> -	status = rtas_get_sensor_fast(EPOW_SENSOR_TOKEN, EPOW_SENSOR_INDEX,
-> -				      &state);
-> +	rtas_get_sensor_fast(EPOW_SENSOR_TOKEN, EPOW_SENSOR_INDEX,
-> +			     &state);
-
-This is calling a helper which already does some translation of the
-return value, any value < 0 indicates an error.
-
-> @@ -330,12 +329,12 @@ static irqreturn_t ras_epow_interrupt(int irq, void *dev_id)
->  
->  	spin_lock(&ras_log_buf_lock);
->  
-> -	status = rtas_call(ras_check_exception_token, 6, 1, NULL,
-> -			   RTAS_VECTOR_EXTERNAL_INTERRUPT,
-> -			   virq_to_hw(irq),
-> -			   RTAS_EPOW_WARNING,
-> -			   critical, __pa(&ras_log_buf),
-> -				rtas_get_error_log_max());
-> +	rtas_call(ras_check_exception_token, 6, 1, NULL,
-> +		  RTAS_VECTOR_EXTERNAL_INTERRUPT,
-> +		  virq_to_hw(irq),
-> +		  RTAS_EPOW_WARNING,
-> +		  critical, __pa(&ras_log_buf),
-> +		  rtas_get_error_log_max());
-
-This is directly calling firmware.
-
-As documented in LoPAPR, a negative status indicates an error, 0
-indicates a new error log was found (ie. the function should continue),
-or 1 there was no error log (ie. nothing to do).
-
-cheers
-
->  	log_error(ras_log_buf, ERR_TYPE_RTAS_LOG, 0);
->  
-> -- 
-> 2.7.4
