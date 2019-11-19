@@ -2,69 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD93E1019F9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 08:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D003101A12
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 08:11:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HGzY0YCCzDqP1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 18:04:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HH6v5Jd1zDqXg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 18:11:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="OHB+eUp2"; 
- dkim-atps=neutral
-Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HGtg1KsZzDqdb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 18:00:42 +1100 (AEDT)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dd3930f0000>; Mon, 18 Nov 2019 23:00:32 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
- Mon, 18 Nov 2019 23:00:34 -0800
-X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Mon, 18 Nov 2019 23:00:34 -0800
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 19 Nov
- 2019 07:00:34 +0000
-Subject: Re: [PATCH v5 02/24] mm/gup: factor out duplicate code from four
- routines
-To: Jan Kara <jack@suse.cz>
-References: <20191115055340.1825745-1-jhubbard@nvidia.com>
- <20191115055340.1825745-3-jhubbard@nvidia.com>
- <20191118094604.GC17319@quack2.suse.cz>
-X-Nvconfidentiality: public
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <152e2ea9-edd9-f868-7731-ff467d692f5f@nvidia.com>
-Date: Mon, 18 Nov 2019 23:00:33 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HH4T6JkhzDqYP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 18:09:12 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAJ77hlv057153
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 02:09:08 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wayepyt57-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 02:09:08 -0500
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Tue, 19 Nov 2019 07:09:06 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 19 Nov 2019 07:09:04 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id xAJ793vQ46793100
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Nov 2019 07:09:03 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25C0FAE045;
+ Tue, 19 Nov 2019 07:09:02 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D39F0AE058;
+ Tue, 19 Nov 2019 07:09:01 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Nov 2019 07:09:01 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2DE46A012A;
+ Tue, 19 Nov 2019 18:08:59 +1100 (AEDT)
+Subject: Re: [PATCH 04/11] powerpc/powernv/ioda: Release opencapi device
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
+References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
+ <20190909154600.19917-5-fbarrat@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Tue, 19 Nov 2019 18:08:59 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191118094604.GC17319@quack2.suse.cz>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1574146832; bh=u3YCRE77HsuXbqK9BxFmzDLl8JhQHMG9gXXaYRfagTQ=;
- h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=OHB+eUp2jQQmHLrGYBTtAkydhQax1jgPbRIdqXv/zT7mJheOoxm2jC/o00J+31bDd
- psR1uWZTYTlZpkmYbJIlMzoHbpxnwxoe7ZrZ8UMQNDddfR1HU1k+hUj3JCOx3ZRd5b
- XT8Ag7PAkGX6G4pIQ7geJmQblkDOtgu1RTN+An2f8z0fTBevVuF5GINewI0N+iPfcv
- YgagSYh5LQVW6KL8izWZSAMBRDSFlAEl3uHonusWk1CkuRAUgvh73saFcEMPgIKbUo
- 7msrJOumHG3EP3Mzt2Z3Dov3XH2Wq2MWpaj0JPNxYk4UIQaUft9LMOT0FAc0/WGi6i
- OtciRBna4adWA==
+In-Reply-To: <20190909154600.19917-5-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19111907-0020-0000-0000-0000038A45C5
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19111907-0021-0000-0000-000021E07000
+Message-Id: <4939eb42-d0dc-b5b9-cab0-7c59dfbafc3b@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-19_01:2019-11-15,2019-11-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ mlxscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=872 clxscore=1015
+ bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1911190066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,101 +97,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
- LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Christoph Hellwig <hch@lst.de>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, "Aneesh Kumar
- K . V" <aneesh.kumar@linux.ibm.com>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: groug@kaod.org, alastair@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/18/19 1:46 AM, Jan Kara wrote:
-> On Thu 14-11-19 21:53:18, John Hubbard wrote:
->> There are four locations in gup.c that have a fair amount of code
->> duplication. This means that changing one requires making the same
->> changes in four places, not to mention reading the same code four
->> times, and wondering if there are subtle differences.
->>
->> Factor out the common code into static functions, thus reducing the
->> overall line count and the code's complexity.
->>
->> Also, take the opportunity to slightly improve the efficiency of the
->> error cases, by doing a mass subtraction of the refcount, surrounded
->> by get_page()/put_page().
->>
->> Also, further simplify (slightly), by waiting until the the successful
->> end of each routine, to increment *nr.
->>
->> Reviewed-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
->> Cc: Jan Kara <jack@suse.cz>
->> Cc: Ira Weiny <ira.weiny@intel.com>
->> Cc: Christoph Hellwig <hch@lst.de>
->> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
->> ---
->>  mm/gup.c | 95 ++++++++++++++++++++++++--------------------------------
->>  1 file changed, 40 insertions(+), 55 deletions(-)
->>
->> diff --git a/mm/gup.c b/mm/gup.c
->> index 85caf76b3012..858541ea30ce 100644
->> --- a/mm/gup.c
->> +++ b/mm/gup.c
->> @@ -1969,6 +1969,29 @@ static int __gup_device_huge_pud(pud_t pud, pud_t=
- *pudp, unsigned long addr,
->>  }
->>  #endif
->> =20
->> +static int __record_subpages(struct page *page, unsigned long addr,
->> +			     unsigned long end, struct page **pages)
->> +{
->> +	int nr =3D 0;
->> +	int nr_recorded_pages =3D 0;
->> +
->> +	do {
->> +		pages[nr] =3D page;
->> +		nr++;
->> +		page++;
->> +		nr_recorded_pages++;
->> +	} while (addr +=3D PAGE_SIZE, addr !=3D end);
->> +	return nr_recorded_pages;
->=20
-> nr =3D=3D nr_recorded_pages so no need for both... BTW, structuring this =
-as a
-> for loop would be probably more logical and shorter now:
->=20
-> 	for (nr =3D 0; addr !=3D end; addr +=3D PAGE_SIZE)
-> 		pages[nr++] =3D page++;
-> 	return nr;
->=20
+On 10/9/19 1:45 am, Frederic Barrat wrote:
+> With hotplug, an opencapi device can now go away. It needs to be
+> released, mostly to clean up its PE state. We were previously not
+> defining any device callback. We can reuse the standard PCI release
+> callback, it does a bit too much for an opencapi device, but it's
+> harmless, and only needs minor tuning.
+> 
+> Also separate the undo of the PELT-V code in a separate function, it
+> is not needed for NPU devices and it improves a bit the readability of
+> the code.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Nice touch, I've applied it.
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-thanks,
---=20
-John Hubbard
-NVIDIA
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
-
-
-> The rest of the patch looks good to me.
->=20
-> 								Honza
->=20
