@@ -1,87 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79C91027DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 16:17:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HTvr5151zDqcX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 02:17:28 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A4110290B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 17:13:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HW8C31pBzDqhH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:13:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::d44;
+ helo=mail-io1-xd44.google.com; envelope-from=axboe@kernel.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="oGIJW8Hf"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
+ [IPv6:2607:f8b0:4864:20::d44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HTsh3467zDqcR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 02:15:35 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAJF7xYm009457
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 10:15:33 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wbxncdtb8-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 10:15:32 -0500
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Tue, 19 Nov 2019 15:15:30 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 19 Nov 2019 15:15:28 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAJFFREa56164448
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Nov 2019 15:15:27 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 446C3A4064;
- Tue, 19 Nov 2019 15:15:27 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0B706A4054;
- Tue, 19 Nov 2019 15:15:27 +0000 (GMT)
-Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 19 Nov 2019 15:15:26 +0000 (GMT)
-Subject: Re: [PATCH 08/11] pci/hotplug/pnv-php: Register opencapi slots
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
-References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
- <20190909154600.19917-9-fbarrat@linux.ibm.com>
- <8ccc21bc-7154-d8a6-68ec-ac42a21de7ef@linux.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 19 Nov 2019 16:15:26 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HW5g1Lz5zDqZy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 03:11:01 +1100 (AEDT)
+Received: by mail-io1-xd44.google.com with SMTP id k1so23837839ioj.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 08:11:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=yxTg9Jz6CUPbj7hb+zClDPA6shnTNr7Uh8vLjm12KTA=;
+ b=oGIJW8HfkgkobB0o2Qa1NbNfnl9mEqSGpPEO2LkogyZvOuMJQ7TF55da86qlugqMCd
+ 338Wge2YPFXsoEIf9RGDawq7jpCCeV3jwC0W058T6wHLBemhZJS3koszJqUTfQULDiaX
+ 2B6RyRY6HS9AE+8hVENsQBKSpUdhkmyAKNXz0Nm/Cxj0QFJRN/CWS+DE/OAhOnYHg0xk
+ tK1FlPGkzCpUU1kARsuIumFoSGAGKhbP5ourqDXhrP7e5xrJzr7bWyrrGYocI1tJI7bI
+ UgAaDI7OLq1bomHv0lR8zAsfor6M3fEsHwxDtlUp7bVspKwb2e69Lw3GuCnkI9VLqTxF
+ /QFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=yxTg9Jz6CUPbj7hb+zClDPA6shnTNr7Uh8vLjm12KTA=;
+ b=gCTjcXsgkWRMerY+ggn1hkUkjo6xRZ7fhECFboQ+KzvWIezk0AnlApU7mA4rRILxqy
+ lAlc6mH7OZApRqDNL8GAidSemlHWC7bdSI/NnGxKDfGzfWX9L29ecuDSl3bX7X9v2jUr
+ 9vSVl3DzQ5HJLltKKjW5TltctE1/0eXSyVwJ8KbC9MteTVbHe3ZcFn9dY4baYoePsXzQ
+ TffVloj+dTnC2j557Qok+GN5EuD6xqvalmZNTsSFoR2wqibDR3CtjUpmKtfvXccoGgIz
+ 0wHOxUmS0Onv7q0DSa+INfYcI+uNrM28KN3kSjQmBwRcIkmfOYDeBgH/hn5PN8ksFJGH
+ 0MwA==
+X-Gm-Message-State: APjAAAV4f5nZ+ideegb362HKTeG4lKkQn3nUdSBwqA4PSt4I0kTI5Xcr
+ 6GegvCDBlaqwTNesgDv3r397Og==
+X-Google-Smtp-Source: APXvYqw/6l4rejQYc8a+bdmv6/89DOI3Ir5+fK0WCl1y9yQpIdn8Kiz4M9g4FLh+4h0UiHB53RA+ow==
+X-Received: by 2002:a02:140a:: with SMTP id 10mr18915165jag.72.1574179857938; 
+ Tue, 19 Nov 2019 08:10:57 -0800 (PST)
+Received: from [192.168.1.159] ([65.144.74.34])
+ by smtp.gmail.com with ESMTPSA id u6sm5616560ilm.22.2019.11.19.08.10.55
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 19 Nov 2019 08:10:56 -0800 (PST)
+Subject: Re: [PATCH v6 15/24] fs/io_uring: set FOLL_PIN via pin_user_pages()
+To: John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20191119081643.1866232-1-jhubbard@nvidia.com>
+ <20191119081643.1866232-16-jhubbard@nvidia.com>
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <2ae65d1b-a3eb-74ed-afce-c493de5bbfd3@kernel.dk>
+Date: Tue, 19 Nov 2019 09:10:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <8ccc21bc-7154-d8a6-68ec-ac42a21de7ef@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20191119081643.1866232-16-jhubbard@nvidia.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19111915-0020-0000-0000-0000038AE4A8
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19111915-0021-0000-0000-000021E111A2
-Message-Id: <1ac2e3e6-06fe-b94c-98b4-2291256a3b42@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-19_04:2019-11-15,2019-11-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 suspectscore=0 phishscore=0 mlxlogscore=999
- clxscore=1015 adultscore=0 malwarescore=0 spamscore=0 mlxscore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-1911190139
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,52 +86,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: groug@kaod.org, alastair@au1.ibm.com
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, netdev@vger.kernel.org,
+ Alex Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 19/11/2019 à 06:18, Andrew Donnellan a écrit :
-> On 10/9/19 1:45 am, Frederic Barrat wrote:
->> Add the opencapi PHBs to the list of PHBs being scanned to look for
->> slots.
->>
->> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->> ---
->>   drivers/pci/hotplug/pnv_php.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/pci/hotplug/pnv_php.c 
->> b/drivers/pci/hotplug/pnv_php.c
->> index 304bdbcdb77c..f0a7360154e7 100644
->> --- a/drivers/pci/hotplug/pnv_php.c
->> +++ b/drivers/pci/hotplug/pnv_php.c
->> @@ -954,7 +954,8 @@ static int __init pnv_php_init(void)
->>       pr_info(DRIVER_DESC " version: " DRIVER_VERSION "\n");
->>       for_each_compatible_node(dn, NULL, "ibm,ioda2-phb")
->>           pnv_php_register(dn);
->> -
->> +    for_each_compatible_node(dn, NULL, "ibm,ioda2-npu2-opencapi-phb")
->> +        pnv_php_register_one(dn);
->>       return 0;
->>   }
->> @@ -964,6 +965,8 @@ static void __exit pnv_php_exit(void)
->>       for_each_compatible_node(dn, NULL, "ibm,ioda2-phb")
->>           pnv_php_unregister(dn);
->> +    for_each_compatible_node(dn, NULL, "ibm,ioda2-npu2-opencapi-phb")
->> +        pnv_php_unregister(dn);
->>   }
+On 11/19/19 1:16 AM, John Hubbard wrote:
+> Convert fs/io_uring to use the new pin_user_pages() call, which sets
+> FOLL_PIN. Setting FOLL_PIN is now required for code that requires
+> tracking of pinned pages, and therefore for any code that calls
+> put_user_page().
 > 
+> In partial anticipation of this work, the io_uring code was already
+> calling put_user_page() instead of put_page(). Therefore, in order to
+> convert from the get_user_pages()/put_page() model, to the
+> pin_user_pages()/put_user_page() model, the only change required
+> here is to change get_user_pages() to pin_user_pages().
 > 
-> Why do we use register_one to register and unregister rather than 
-> unregister_one to unregister?
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
+You dropped my reviewed-by now... Given the file, you'd probably want
+to keep that.
 
-Good catch! With the above, the slot was not removed. 
-pnv_php_unregister() looks at the children only and was missing the 
-opencapi slot, since it's directly under the PHB.
-
-   Fred
+-- 
+Jens Axboe
 
