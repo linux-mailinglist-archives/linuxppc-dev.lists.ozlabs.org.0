@@ -1,87 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31D3101A89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 08:54:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HJ4L3m2mzDqTM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 18:54:10 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 995DC101D40
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 09:27:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HJpK60LRzDqQj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 19:27:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d41;
- helo=mail-io1-xd41.google.com; envelope-from=prabhakar.pkin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="sifSK6MU"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="WLX/+p3S"; 
  dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HGGl1bS4zDqYK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:32:59 +1100 (AEDT)
-Received: by mail-io1-xd41.google.com with SMTP id 1so21893047iou.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2019 22:32:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
- bh=NXaQYQk0g4GZrnX0H+C5/sQj56d3X20l4tE5DHhQOrA=;
- b=sifSK6MU7G+EcqYvJSuSa2S3hMP9SB6t7e29d7KHAyYYgBX4YqD7x0RtWHSqj7x64T
- UCnhKrr5Oiz+XULwu7eB1ZzOI6VyeAHiAbd+ovtLWxxuyjZjQERBAwrzjvdoMJrtvL2X
- OuCAUcEOqMXV21HuTt3LYU4PJ7a9/zwV0cPSFw8iKelRg6k0kRED6h1IpqHOT34kW5Dv
- V+F06IQt2Mi5Kauqgd6BFTTPOuzVSntsEr/Hz/LVi2r7g9MduWF7OaGr1l12AxH8Pw4y
- IkHXTj8+xHCrm+IKudRyf5hLWkkP4WKgN+znsqikOz7kNlhe0ebhtZo0RHJwK0BSQojS
- kitQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to;
- bh=NXaQYQk0g4GZrnX0H+C5/sQj56d3X20l4tE5DHhQOrA=;
- b=Cn3SCpYmUKrjiWcn7rmGXNUZptY3RdQf7itS0OAJ6PMaUhxCfxBEd8SPUvg8v9t3P+
- NuxWogdg/l4k63dwtJ1fSV1J4gGqXwaPZeCT1IEVpiuRVBpDF/bXBPNqKcCvH27diJYO
- FW00f/koIQ0NK934q3pkBdJy2MT4GuOgtYKcC9ZUOZ9dIWSqJh5FjBhsAl/W6V6bpThZ
- e5nxnuM2UKOsAs2K2YdNMOOIzAVSS53RtEk8qEfo/65mcY37xpfSCXNUwLPLthGuUd0x
- gr5WUYk0PlF1T7dJ1OHxvHTNWy1mBnNpomjzX17pmcguEKVgLXhI5mna+ixTTOY6J0Qt
- rWzw==
-X-Gm-Message-State: APjAAAUeP1ZFlZzEPAn4UpESumEx+OxPKy7hlOYUozauP2r1kjkI9mJi
- 2vZSMfJXDhlWed2ur9MYjmrhi9aPKXHXojdJVq4=
-X-Google-Smtp-Source: APXvYqxsiN2r32tu6Vr3FT387ecd9RsbnxXZTJSYF8E4DcxZPX/OBCeKQumlgww/wRDUDEfuWrt3IfZaSkRqJ6CTjKM=
-X-Received: by 2002:a02:b48:: with SMTP id 69mr17013960jad.25.1574145177173;
- Mon, 18 Nov 2019 22:32:57 -0800 (PST)
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HJZc1sCzzDqP1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 19:16:55 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dd3a4ec0000>; Tue, 19 Nov 2019 00:16:44 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 19 Nov 2019 00:16:47 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Tue, 19 Nov 2019 00:16:47 -0800
+Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 19 Nov
+ 2019 08:16:47 +0000
+Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL109.nvidia.com
+ (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 19 Nov
+ 2019 08:16:47 +0000
+Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via
+ Frontend Transport; Tue, 19 Nov 2019 08:16:46 +0000
+Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
+ rnnvemgw01.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5dd3a4ec0001>; Tue, 19 Nov 2019 00:16:45 -0800
+From: John Hubbard <jhubbard@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v6 00/24] mm/gup: track dma-pinned pages: FOLL_PIN
+Date: Tue, 19 Nov 2019 00:16:19 -0800
+Message-ID: <20191119081643.1866232-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <1573459282-26989-1-git-send-email-bhsharma@redhat.com>
- <20191113063858.GE22427@linaro.org>
- <CACi5LpP54d9DKW63G5W6X4euBjAm2NwkHOiM01dB7g8d60s=4w@mail.gmail.com>
- <20191115015959.GI22427@linaro.org>
-In-Reply-To: <20191115015959.GI22427@linaro.org>
-From: Prabhakar Kushwaha <prabhakar.pkin@gmail.com>
-Date: Tue, 19 Nov 2019 12:02:46 +0530
-Message-ID: <CAJ2QiJJOSspLKRh+jRB_o0o9nmeAsiFKzxGJ8R0pYPRM4iptmw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] Append new variables to vmcoreinfo (TCR_EL1.T1SZ
- for arm64 and MAX_PHYSMEM_BITS for all archs)
-To: AKASHI Takahiro <takahiro.akashi@linaro.org>,
- Bhupesh Sharma <bhsharma@redhat.com>, 
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Bhupesh SHARMA <bhupesh.linux@gmail.com>, 
- Boris Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, 
- Jonathan Corbet <corbet@lwn.net>, James Morse <james.morse@arm.com>, 
- Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
- Steve Capper <steve.capper@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
- Dave Anderson <anderson@redhat.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
- x86@kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- kexec mailing list <kexec@lists.infradead.org>
+X-NVConfidentiality: public
 Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Tue, 19 Nov 2019 18:35:41 +1100
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1574151405; bh=rMiBdWoeixyPDtWYzTmzRQpS8VKDQMxDBjO/y0DQMhU=;
+ h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+ MIME-Version:X-NVConfidentiality:Content-Type:
+ Content-Transfer-Encoding;
+ b=WLX/+p3SX4otno270GjMRoGK72bOSIdvw/i3D4g83XM0LS9h8y4XP2LhAzY4g76Gp
+ kWZvFfADGiBf+iXPFQQkb7jBQqidxAypEusdJNt46S2ncCcywrHVsGhs6ARrhaMHVN
+ b/X6Tnp8pz0yTqBp06pKl60uPMd1NxOX6l06H1gbhqltD9WZpIzjWxQXIkfeOeEHCM
+ LATxCdD2NjDuG+kcZL4WTOj234T35BuFgUuBdLkdJzYN5iUSkBrqyoP3dnHiKd6e/o
+ 5NqK6NinfzY9hRS46/066kwfkiFA7131rcBE/yPFj8CLFasS8xB30iEBlX40MuiOty
+ nBv2ZxwR1HFsg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,55 +74,356 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul
+ Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
+ =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Akashi,
+Hi,
 
-On Fri, Nov 15, 2019 at 7:29 AM AKASHI Takahiro
-<takahiro.akashi@linaro.org> wrote:
->
-> Bhupesh,
->
-> On Fri, Nov 15, 2019 at 01:24:17AM +0530, Bhupesh Sharma wrote:
-> > Hi Akashi,
-> >
-> > On Wed, Nov 13, 2019 at 12:11 PM AKASHI Takahiro
-> > <takahiro.akashi@linaro.org> wrote:
-> > >
-> > > Hi Bhupesh,
-> > >
-> > > Do you have a corresponding patch for userspace tools,
-> > > including crash util and/or makedumpfile?
-> > > Otherwise, we can't verify that a generated core file is
-> > > correctly handled.
-> >
-> > Sure. I am still working on the crash-utility related changes, but you
-> > can find the makedumpfile changes I posted a couple of days ago here
-> > (see [0]) and the github link for the makedumpfile changes can be seen
-> > via [1].
-> >
-> > I will post the crash-util changes shortly as well.
-> > Thanks for having a look at the same.
->
-> Thank you.
-> I have tested my kdump patch with a hacked version of crash
-> where VA_BITS_ACTUAL is calculated from tcr_el1_t1sz in vmcoreinfo.
->
+Christoph Hellwig has a preference to do things a little differently,
+for the devmap cleanup in patch 5 ("mm: devmap: refactor 1-based
+refcounting for ZONE_DEVICE pages"). That came up in a different
+review thread, because the patch is out for review in two locations.
+Here's that review thread:
 
-I also did hack to calculate VA_BITS_ACTUAL is calculated from
-tcr_el1_t1sz in vmcoreinfo. Now i am getting error same as mentioned
-by you in other thread last month.
-https://www.mail-archive.com/crash-utility@redhat.com/msg07385.html
+    https://lore.kernel.org/r/20191118070826.GB3099@infradead.org
 
-how this error was overcome?
+...and I'm hoping that we can defer that request, because otherwise
+it derails this series, which is starting to otherwise look like
+it could be ready for 5.5.
 
-I am using
- - crashkernel: https://github.com/crash-utility/crash.git  commit:
-babd7ae62d4e8fd6f93fd30b88040d9376522aa3
-and
- - Linux: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-commit: af42d3466bdc8f39806b26f593604fdc54140bcb
+There is a git repo and branch, for convenience:
 
---pk
+    git@github.com:johnhubbard/linux.git pin_user_pages_tracking_v6
+
+Changes since v5:
+
+* Fixed the refcounting for huge pages: in most cases, it was
+  only taking one GUP_PIN_COUNTING_BIAS's worth of refs, when it
+  should have been taking one GUP_PIN_COUNTING_BIAS for each subpage.
+
+  (Much thanks to Jan Kara for spotting that one!)
+
+* Renamed user_page_ref_inc() to try_pin_page(), and added a new
+  try_pin_compound_head(). This definitely improves readability.
+
+* Factored out some more duplication in the FOLL_PIN and FOLL_GET
+  cases, in gup.c.
+
+* Fixed up some straggling "get_" --> "pin_" references in the comments.
+
+* Added reviewed-by tags.
+
+Changes since v4:
+
+* Renamed put_user_page*() --> unpin_user_page().
+
+* Removed all pin_longterm_pages*() calls. We will use FOLL_LONGTERM
+  at the call sites. (FOLL_PIN, however, remains an internal gup flag).
+
+  This is very nice: many patches just change three characters now:
+  get_user_pages --> pin_user_pages. I think we've found the right
+  balance of wrapper calls and gup flags, for the call sites.
+
+* Updated a lot of documentation and commit logs to match the above
+  two large changes.
+
+* Changed gup_benchmark tests and run_vmtests, to adapt to one less
+  use case: there is no pin_longterm_pages() call anymore.
+
+* This includes a new devmap cleanup patch from Dan Williams, along
+  with a rebased follow-up: patches 4 and 5, already mentioned above.
+
+* Fixed patch 10 ("mm/gup: introduce pin_user_pages*() and FOLL_PIN"),
+  so as to make pin_user_pages*() calls act as placeholders for the
+  corresponding get_user_pages*() calls, until a later patch fully
+  implements the DMA-pinning functionality.
+
+  Thanks to Jan Kara for noticing that.
+
+* Fixed the implementation of pin_user_pages_remote().
+
+* Further tweaked patch 2 ("mm/gup: factor out duplicate code from four
+  routines"), in response to Jan Kara's feedback.
+
+* Dropped a few reviewed-by tags  due to changes that invalidated
+  them.
+
+
+Changes since v3:
+
+* VFIO fix (patch 8): applied further cleanup: removed a pre-existing,
+  unnecessary release and reacquire of mmap_sem. Moved the DAX vma
+  checks from the vfio call site, to gup internals, and added comments
+  (and commit log) to clarify.
+
+* Due to the above, made a corresponding fix to the
+  pin_longterm_pages_remote(), which was actually calling the wrong
+  gup internal function.
+
+* Changed put_user_page() comments, to refer to pin*() APIs, rather than
+  get_user_pages*() APIs.
+
+* Reverted an accidental whitespace-only change in the IB ODP code.
+
+* Added a few more reviewed-by tags.
+
+
+Changes since v2:
+
+* Added a patch to convert IB/umem from normal gup, to gup_fast(). This
+  is also posted separately, in order to hopefully get some runtime
+  testing.
+
+* Changed the page devmap code to be a little clearer,
+  thanks to Jerome for that.
+
+* Split out the page devmap changes into a separate patch (and moved
+  Ira's Signed-off-by to that patch).
+
+* Fixed my bug in IB: ODP code does not require pin_user_pages()
+  semantics. Therefore, revert the put_user_page() calls to put_page(),
+  and leave the get_user_pages() call as-is.
+
+      * As part of the revert, I am proposing here a change directly
+        from put_user_pages(), to release_pages(). I'd feel better if
+        someone agrees that this is the best way. It uses the more
+        efficient release_pages(), instead of put_page() in a loop,
+        and keep the change to just a few character on one line,
+        but OTOH it is not a pure revert.
+
+* Loosened the FOLL_LONGTERM restrictions in the
+  __get_user_pages_locked() implementation, and used that in order
+  to fix up a VFIO bug. Thanks to Jason for that idea.
+
+    * Note the use of release_pages() in IB: is that OK?
+
+* Added a few more WARN's and clarifying comments nearby.
+
+* Many documentation improvements in various comments.
+
+* Moved the new pin_user_pages.rst from Documentation/vm/ to
+  Documentation/core-api/ .
+
+* Commit descriptions: added clarifying notes to the three patches
+  (drm/via, fs/io_uring, net/xdp) that already had put_user_page()
+  calls in place.
+
+* Collected all pending Reviewed-by and Acked-by tags, from v1 and v2
+  email threads.
+
+* Lot of churn from v2 --> v3, so it's possible that new bugs
+  sneaked in.
+
+NOT DONE: separate patchset is required:
+
+* __get_user_pages_locked(): stop compensating for
+  buggy callers who failed to set FOLL_GET. Instead, assert
+  that FOLL_GET is set (and fail if it's not).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Original cover letter (edited to fix up the patch description numbers)
+
+This applies cleanly to linux-next and mmotm, and also to linux.git if
+linux-next's commit 20cac10710c9 ("mm/gup_benchmark: fix MAP_HUGETLB
+case") is first applied there.
+
+This provides tracking of dma-pinned pages. This is a prerequisite to
+solving the larger problem of proper interactions between file-backed
+pages, and [R]DMA activities, as discussed in [1], [2], [3], and in
+a remarkable number of email threads since about 2017. :)
+
+A new internal gup flag, FOLL_PIN is introduced, and thoroughly
+documented in the last patch's Documentation/vm/pin_user_pages.rst.
+
+I believe that this will provide a good starting point for doing the
+layout lease work that Ira Weiny has been working on. That's because
+these new wrapper functions provide a clean, constrained, systematically
+named set of functionality that, again, is required in order to even
+know if a page is "dma-pinned".
+
+In contrast to earlier approaches, the page tracking can be
+incrementally applied to the kernel call sites that, until now, have
+been simply calling get_user_pages() ("gup"). In other words, opt-in by
+changing from this:
+
+    get_user_pages() (sets FOLL_GET)
+    put_page()
+
+to this:
+    pin_user_pages() (sets FOLL_PIN)
+    put_user_page()
+
+Because there are interdependencies with FOLL_LONGTERM, a similar
+conversion as for FOLL_PIN, was applied. The change was from this:
+
+    get_user_pages(FOLL_LONGTERM) (also sets FOLL_GET)
+    put_page()
+
+to this:
+    pin_longterm_pages() (sets FOLL_PIN | FOLL_LONGTERM)
+    put_user_page()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Patch summary:
+
+* Patches 1-9: refactoring and preparatory cleanup, independent fixes
+
+* Patch 10: introduce pin_user_pages(), FOLL_PIN, but no functional
+           changes yet
+* Patches 11-16: Convert existing put_user_page() callers, to use the
+                 new pin*()
+* Patch 17: Activate tracking of FOLL_PIN pages.
+* Patches 18-20: convert various callers
+* Patches: 21-23: gup_benchmark and run_vmtests support
+* Patch 24: rename put_user_page*() --> unpin_user_page*()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Testing:
+
+* I've done some overall kernel testing (LTP, and a few other goodies),
+  and some directed testing to exercise some of the changes. And as you
+  can see, gup_benchmark is enhanced to exercise this. Basically, I've been
+  able to runtime test the core get_user_pages() and pin_user_pages() and
+  related routines, but not so much on several of the call sites--but those
+  are generally just a couple of lines changed, each.
+
+  Not much of the kernel is actually using this, which on one hand
+  reduces risk quite a lot. But on the other hand, testing coverage
+  is low. So I'd love it if, in particular, the Infiniband and PowerPC
+  folks could do a smoke test of this series for me.
+
+  Also, my runtime testing for the call sites so far is very weak:
+
+    * io_uring: Some directed tests from liburing exercise this, and they p=
+ass.
+    * process_vm_access.c: A small directed test passes.
+    * gup_benchmark: the enhanced version hits the new gup.c code, and pass=
+es.
+    * infiniband (still only have crude "IB pingpong" working, on a
+                  good day: it's not exercising my conversions at runtime..=
+.)
+    * VFIO: compiles (I'm vowing to set up a run time test soon, but it's
+                      not ready just yet)
+    * powerpc: it compiles...
+    * drm/via: compiles...
+    * goldfish: compiles...
+    * net/xdp: compiles...
+    * media/v4l2: compiles...
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Next:
+
+* Get the block/bio_vec sites converted to use pin_user_pages().
+
+* Work with Ira and Dave Chinner to weave this together with the
+  layout lease stuff.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+[1] Some slow progress on get_user_pages() (Apr 2, 2019): https://lwn.net/A=
+rticles/784574/
+[2] DMA and get_user_pages() (LPC: Dec 12, 2018): https://lwn.net/Articles/=
+774411/
+[3] The trouble with get_user_pages() (Apr 30, 2018): https://lwn.net/Artic=
+les/753027/
+
+
+Dan Williams (1):
+  mm: Cleanup __put_devmap_managed_page() vs ->page_free()
+
+John Hubbard (23):
+  mm/gup: pass flags arg to __gup_device_* functions
+  mm/gup: factor out duplicate code from four routines
+  mm/gup: move try_get_compound_head() to top, fix minor issues
+  mm: devmap: refactor 1-based refcounting for ZONE_DEVICE pages
+  goldish_pipe: rename local pin_user_pages() routine
+  IB/umem: use get_user_pages_fast() to pin DMA pages
+  media/v4l2-core: set pages dirty upon releasing DMA buffers
+  vfio, mm: fix get_user_pages_remote() and FOLL_LONGTERM
+  mm/gup: introduce pin_user_pages*() and FOLL_PIN
+  goldish_pipe: convert to pin_user_pages() and put_user_page()
+  IB/{core,hw,umem}: set FOLL_PIN via pin_user_pages*(), fix up ODP
+  mm/process_vm_access: set FOLL_PIN via pin_user_pages_remote()
+  drm/via: set FOLL_PIN via pin_user_pages_fast()
+  fs/io_uring: set FOLL_PIN via pin_user_pages()
+  net/xdp: set FOLL_PIN via pin_user_pages()
+  mm/gup: track FOLL_PIN pages
+  media/v4l2-core: pin_user_pages (FOLL_PIN) and put_user_page()
+    conversion
+  vfio, mm: pin_user_pages (FOLL_PIN) and put_user_page() conversion
+  powerpc: book3s64: convert to pin_user_pages() and put_user_page()
+  mm/gup_benchmark: use proper FOLL_WRITE flags instead of hard-coding
+    "1"
+  mm/gup_benchmark: support pin_user_pages() and related calls
+  selftests/vm: run_vmtests: invoke gup_benchmark with basic FOLL_PIN
+    coverage
+  mm, tree-wide: rename put_user_page*() to unpin_user_page*()
+
+ Documentation/core-api/index.rst            |   1 +
+ Documentation/core-api/pin_user_pages.rst   | 233 +++++++++
+ arch/powerpc/mm/book3s64/iommu_api.c        |  12 +-
+ drivers/gpu/drm/via/via_dmablit.c           |   6 +-
+ drivers/infiniband/core/umem.c              |  19 +-
+ drivers/infiniband/core/umem_odp.c          |  13 +-
+ drivers/infiniband/hw/hfi1/user_pages.c     |   4 +-
+ drivers/infiniband/hw/mthca/mthca_memfree.c |   8 +-
+ drivers/infiniband/hw/qib/qib_user_pages.c  |   4 +-
+ drivers/infiniband/hw/qib/qib_user_sdma.c   |   8 +-
+ drivers/infiniband/hw/usnic/usnic_uiom.c    |   4 +-
+ drivers/infiniband/sw/siw/siw_mem.c         |   4 +-
+ drivers/media/v4l2-core/videobuf-dma-sg.c   |   8 +-
+ drivers/nvdimm/pmem.c                       |   6 -
+ drivers/platform/goldfish/goldfish_pipe.c   |  35 +-
+ drivers/vfio/vfio_iommu_type1.c             |  35 +-
+ fs/io_uring.c                               |   6 +-
+ include/linux/mm.h                          | 168 +++++-
+ include/linux/mmzone.h                      |   2 +
+ include/linux/page_ref.h                    |  10 +
+ mm/gup.c                                    | 548 +++++++++++++++-----
+ mm/gup_benchmark.c                          |  74 ++-
+ mm/huge_memory.c                            |  54 +-
+ mm/hugetlb.c                                |  39 +-
+ mm/memremap.c                               |  76 ++-
+ mm/process_vm_access.c                      |  28 +-
+ mm/vmstat.c                                 |   2 +
+ net/xdp/xdp_umem.c                          |   4 +-
+ tools/testing/selftests/vm/gup_benchmark.c  |  21 +-
+ tools/testing/selftests/vm/run_vmtests      |  22 +
+ 30 files changed, 1104 insertions(+), 350 deletions(-)
+ create mode 100644 Documentation/core-api/pin_user_pages.rst
+
+--=20
+2.24.0
+
