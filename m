@@ -2,46 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2CB102513
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 14:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DCE102551
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2019 14:25:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HQwV1SpdzDqgN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 00:02:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HRQK0p3bzDqgG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 00:25:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
+ helo=mail-io1-xd44.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de;
- envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Vs6DiB6f"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
+ [IPv6:2607:f8b0:4864:20::d44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HQpm0PPKzDqS7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 23:57:51 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 9B69FB1A0;
- Tue, 19 Nov 2019 12:57:47 +0000 (UTC)
-Message-ID: <dd074ef5c23ba56598e92be19e8e25ae31b75f93.camel@suse.de>
-Subject: Re: [PATCH] dma-mapping: treat dev->bus_dma_mask as a DMA limit
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To: Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>,  Peter Zijlstra <peterz@infradead.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>, Rob Herring
- <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Christoph
- Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, Robin
- Murphy <robin.murphy@arm.com>
-Date: Tue, 19 Nov 2019 13:57:43 +0100
-In-Reply-To: <20191113161340.27228-1-nsaenzjulienne@suse.de>
-References: <20191113161340.27228-1-nsaenzjulienne@suse.de>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-KZ1OEZ2plCMDP0ydmpq5"
-User-Agent: Evolution 3.34.1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HRMF6MP7zDqZG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 00:22:32 +1100 (AEDT)
+Received: by mail-io1-xd44.google.com with SMTP id i11so12164572iol.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 05:22:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=QWs+vZ9aE528wO9EG5Wr9V9AoHUEL8WTxMCms8MVv1Q=;
+ b=Vs6DiB6f8mrjTDil94oYUia5e4V3cEkGpwI9D6bRmDn7JxW5BCyL89dYO2UI1vxaKC
+ 0qgiQuNKeJUJfF9bHh2OKOIRJQm6JSbEeXZkMJOkN//kEOEqDdTuQd7QZZoBn2L3gYHl
+ wGWomn7Yd6/1xmLZ/uFDIwlYYAm32urjuPQdJpDXdczkJoKWoUm78joUC9DeTRYjkr+Y
+ PDTs78mlgnvkGKiBoZ0MrSLb/Qc8StdOCGOse/FeBuH3pssr4rGv75dQQDT7RPoZCOe1
+ tKyUBTi7PayngH9ZYuVyyoHaLngvWtkgSYG6wdjsAaD4AYNc7uMW3zWrEf72VobaQdeo
+ cpEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=QWs+vZ9aE528wO9EG5Wr9V9AoHUEL8WTxMCms8MVv1Q=;
+ b=qZuREod9UNegGxBCJGjnl7RUAtGzMCm4i7AannqiBnciEbniP6WblMXUPeAQz+XJuF
+ hLVjvnYTzUyPn3U0d2io+Lp26cQ5Fnm5mH4+45It0t0iPCu74DTzioiVzbs6BHb6jnN3
+ jx53Q5LVI2pLbMTOGNtXTWOtwhMmV71zIrNGFd5LQCDTh9xFkCcYaug9Hv2AO2JW3+nI
+ eQaViL8m1fBUrcRR5jDz6wbfnX7LjDwYmH4PeJEUCHqHWzLO7oWCWugXtoE+FkAO/Hwb
+ JgbM3me9JG1um0Qy4JLMls91PY05w1Wl3rkfXRmM5l0obzQDEkMe7k1LDdgQXyX+qfbU
+ 4YrQ==
+X-Gm-Message-State: APjAAAWEYKesPKo+dGKLy8jvOxAEhK7Fgb+FFjttsT+U+cQMQjK4iN5O
+ 54jplDTmXxW9JeZrAKG4tP/cwzF7BT5hfqBVtLc=
+X-Google-Smtp-Source: APXvYqxGz7cgVcCbkskVmzW4i4LrP+myVRVurUQIA/jnzyoCZQMzhcQAB/aM1eJwdkxZL3QJcL9CWHJxWYXmvCJFAKw=
+X-Received: by 2002:a02:730d:: with SMTP id y13mr18081798jab.124.1574169749754; 
+ Tue, 19 Nov 2019 05:22:29 -0800 (PST)
 MIME-Version: 1.0
+References: <20190909154600.19917-1-fbarrat@linux.ibm.com>
+ <20190909154600.19917-3-fbarrat@linux.ibm.com>
+ <8f5d581d8f1e8defaf8622cd79c40c98f18d3507.camel@au1.ibm.com>
+ <882c0d26-7931-a2e9-c99a-7732d32a6a2f@linux.ibm.com>
+In-Reply-To: <882c0d26-7931-a2e9-c99a-7732d32a6a2f@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 20 Nov 2019 00:22:18 +1100
+Message-ID: <CAOSf1CHstMRhC9dqsuvZnQuRyLwMrQkcuMYFDobq59KvYG1hEQ@mail.gmail.com>
+Subject: Re: [PATCH 02/11] powerpc/powernv/ioda: Protect PE list
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,78 +75,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mips@vger.kernel.org, linux-ide@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter
- Anvin" <hpa@zytor.com>, Paul Burton <paulburton@kernel.org>, x86@kernel.org,
- phil@raspberrypi.org, linux-acpi@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-pci@vger.kernel.org,
- James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
- devicetree@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, iommu@lists.linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Christophe Lombard <clombard@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alastair D'Silva <alastair@au1.ibm.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>, Greg Kurz <groug@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Nov 19, 2019 at 11:57 PM Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+>
+> > Do the other accessors of ioda.pe_list also need mutex protection?
+> > pnv_ioda_setup_bus_PE()
+> > pnv_pci_dma_bus_setup()
+> > pnv_pci_init_ioda_phb()
+> > pnv_pci_ioda_setup_PEs()
+>
+>
+> I think we could also use it there, it wouldn't hurt. Those functions
+> are called when the kernel is building part of the PCI topology, and
+> devices are not really active yet, so I don't think it's absolutely
+> required.
+>
+> I'm actually not sure my patch is needed either. With hotplug, the
+> devices can come and go, whereas the PHB remains. So it feels right to
+> start protecting the list when adding/removing a device. But I don't
+> think we can really have concurrency and have 2 different operations
+> adding/removing devices at the same time under the same PHB, at least
+> for opencapi. Maybe for PCI, if we have multiple slots under the same
+> PHB. Not sure.
 
---=-KZ1OEZ2plCMDP0ydmpq5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, 2019-11-13 at 17:13 +0100, Nicolas Saenz Julienne wrote:
-> Using a mask to represent bus DMA constraints has a set of limitations.
-> The biggest one being it can only hold a power of two (minus one). The
-> DMA mapping code is already aware of this and treats dev->bus_dma_mask
-> as a limit. This quirk is already used by some architectures although
-> still rare.
->=20
-> With the introduction of the Raspberry Pi 4 we've found a new contender
-> for the use of bus DMA limits, as its PCIe bus can only address the
-> lower 3GB of memory (of a total of 4GB). This is impossible to represent
-> with a mask. To make things worse the device-tree code rounds non power
-> of two bus DMA limits to the next power of two, which is unacceptable in
-> this case.
->=20
-> In the light of this, rename dev->bus_dma_mask to dev->bus_dma_limit all
-> over the tree and treat it as such. Note that dev->bus_dma_limit is
-> meant to contain the higher accesible DMA address.
->=20
-> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
->=20
-
-Hi Rob & Christoph,
-do you mind if I append v2 of this into my upcoming v3 RPi4 PCIe support
-series, I didn't do it initially as I thought this was going to be a
-contentious patch.  But as it turned out better than expected, I think it
-should go into the PCIe series. In the end it's the first explicit user of =
-the
-bus DMA limit.
-
-Here's v2 in case you don't know what I'm talking about:
-https://www.spinics.net/lists/arm-kernel/msg768459.html
-
-Regards,
-Nicolas
-
-
---=-KZ1OEZ2plCMDP0ydmpq5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl3T5scACgkQlfZmHno8
-x/7FNgf/TPvrVamDNHipGFKFiSr22YaNYJU4aGZyFuJab0Z9dF35ZbNQqx3sXA83
-gyltGXByQ4c747nqq+LWQTaXLvI4NEMDu/ueQ6T4Vgs0ijtKvI9hVjrjlKU7UVsR
-/v+6HHolAP4q5zxgJbL3PRMlFeJlLs9xRbikBEmGDbc4INP8nBSUiQmk4lrgCAwH
-xV11EcSTA5eKJPS1jpsEP/vKwfu7LQ9ASExtpK5Oud7ZBD8zq1qKQBSVMGXQ1m9L
-l0ok+gqBZtMgwKtigs9mAr0Y09evU1GOVS0ttcncZ854J6/+hr9nuK8eXyhLEm0J
-l/jpo2vtZH0gMy68b+P8LkDtGJisYg==
-=9wOf
------END PGP SIGNATURE-----
-
---=-KZ1OEZ2plCMDP0ydmpq5--
-
+Creation of new pci_dev's is serialised by the global pci rescan and
+remove lock so on the creation side it's not an issue. However, we can
+release IODA PEs in the pci_dev's release function which might be
+called without that lock held. It's pretty hard to hit that case
+though since it require something to be holding a ref to the pci_dev
+even after the driver's ->remove() function has been called.
