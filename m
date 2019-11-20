@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506901031C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:47:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A35901031C7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:50:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HnDM1yH6zDqFM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:47:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HnHM6Lq5zDqpC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:50:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="cuuM6JiG"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Qr7lrTFW"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWV6s35zDqfX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:30:46 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id 207so5114785pge.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:30:46 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWY2rY9zDqgx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:30:49 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id h27so12497672pgn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:30:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=2ZmxxZuhux+fhtBuc/XdE4rABk5WcmVDI+laYAbcCQ4=;
- b=cuuM6JiGOc03w+IAJ6x3S1A4OYqMJzE5cHIcw+jla0ZT38cKbh8p0iXxEXiJopgYyV
- VogFMvJvsQPyqeoYyQS58tA7Q4dRHi/61szslyvwGsFKPyPjqgwqXGk/7aHJzrb6T8JU
- OmEp1+Q2hu53NiTleFz7dc6VEcM98cUDQuSiaV7SAMyrDnZzL9ZuxWjeeb+N8v4YZOCc
- Dy4rZ3KMJ01vLvSXVICbDCJi8dtvoJOgqemvZfthEB5IyNzh67QlffInwhk20QwzGwOC
- ZBtnvo1hU16blJcN0FrSE/ZxmbGOyE80Hzz4P9I0EYmV2FYEC0R/mc4l1dvLhiICJcBt
- /Yhg==
+ bh=FqsuI+IqIXjog8o4iaGRNjE/y0GnVq6BrJwMMJG41Ds=;
+ b=Qr7lrTFWh+tljk6uCLIv8AIhD8ClnVJAtmeY3Uafm1BF3G9LOuciLzWMtEPo/9L3y/
+ HiR7QPtbscCrIzs9xuIkza113Sm0MBCCze8h57Ydy30B/j0Md0O+7JOTVN+YHe1RrK9g
+ s6VLSHSbEJKWmCExGHuJ5yCQ8AkzZOa1A/PRBjWDagaxvbPVYhEcILr/caqYdswlF+rk
+ RY/0tO0WP5snjY+CNhCAoRGMM9OkgUBIvYM3uB8+1qjoxfPHafSU8GUOdfDNUkEa3YGe
+ 9BYi7w86wKxUb2txbEI1kzsyvxKNvjkd3o24dVq8LA2oinqFVdP3m6EznNuR6ho9OFRJ
+ AfbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=2ZmxxZuhux+fhtBuc/XdE4rABk5WcmVDI+laYAbcCQ4=;
- b=YNjO+EiwcjdUdfLY5DUxw+yVSMbPgg8zfulciEDs30L9gm/0ZqRjBJWS3xcyaNXcjI
- NI7zx/sz3jxW0hVo9mQR0yLO4P2BGmihA91CZf9mXAtA2mI2XDaVlzvq7MrKDQ+MRxor
- HYmfdkqNB1ySbGESycSa61A+tpaNh9g3Ix0+uU7np/N7VFhvI1/d6S4ybs01hmB2OeEG
- XTkxa6IEa909Tw+wWia4o3PhLcM+9FwLnlZ7KeLtnxHdR2CLIk6Uv+jt++rX5k/GgpWW
- ooHUsjJDOYLD2aIj7Su0XVbeXYYkf3x7TTzsKdp7fXpnpUNcJT87+MFeJJhKV+cF7tC1
- Ui4g==
-X-Gm-Message-State: APjAAAVFQiJCmLAr/Ab/YIit6CWSDSgt93ZqUPwos+tuFVB0kaFz32Sc
- RdecKM56vqqGYkBoZeFdESq/Qtvd
-X-Google-Smtp-Source: APXvYqzkD74BKlm80E3yjXZMF5vlcQYpj76F+H9aCAm4UavFX0AL9PWMevdkwZmH90i8ND+Fxf2AMQ==
-X-Received: by 2002:a62:7847:: with SMTP id t68mr794552pfc.140.1574213444909; 
- Tue, 19 Nov 2019 17:30:44 -0800 (PST)
+ bh=FqsuI+IqIXjog8o4iaGRNjE/y0GnVq6BrJwMMJG41Ds=;
+ b=mgVAdjkrbMs9D+EGP9Zpz88uP0mXGASfof+TWfSk0G9LUuKx3KeMrsbfpbn00l6Dmx
+ my3ongUkZZbqxYHK7ul8U9RnPJLksP8/ZXHI3nzqNj7B5U+ZpJI5oH8/tROh0SwuYoFY
+ YBOdFl7f1tU4SQaxol3NYFMiLd2ibV5StxdlrbLlFmI0gFsc9s2kH0uBmwhiFBpRFOz8
+ ZV16L6v9esrdfl8nRfj5USZJcs3dw6iEAqUCgC6SRbL9giUvhqEGMT70dXXmdGq8YcKw
+ O42P+1RAR5WCds041AyezUM3JdK6NZO6Y96vitYcBRp9GUw5VLs1boJCevn1ETJ6MAyn
+ XX3w==
+X-Gm-Message-State: APjAAAWRNmNiZNTWGxq5x+S+xYjHF2OorZVHvanbmIKEEDZX8rw7tRWH
+ gYQ23E0ex/MdZsBAs8dRvRweL6VY
+X-Google-Smtp-Source: APXvYqz5c1Ly6OORYf6NF9EBj+NOEDS2xFrhtWoJOu4tfbUlIGN0eRPgz49xfoZtqt9QYbzQX/HxYg==
+X-Received: by 2002:a62:38d8:: with SMTP id f207mr738851pfa.209.1574213447122; 
+ Tue, 19 Nov 2019 17:30:47 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.42
+ by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2019 17:30:44 -0800 (PST)
+ Tue, 19 Nov 2019 17:30:46 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Very RFC 39/46] powernv/npu: Avoid pci_dn when mapping device_node
- to a pci_dev
-Date: Wed, 20 Nov 2019 12:28:52 +1100
-Message-Id: <20191120012859.23300-40-oohall@gmail.com>
+Subject: [Very RFC 40/46] powernv/npu: Don't drop refcount when looking up GPU
+ pci_devs
+Date: Wed, 20 Nov 2019 12:28:53 +1100
+Message-Id: <20191120012859.23300-41-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191120012859.23300-1-oohall@gmail.com>
 References: <20191120012859.23300-1-oohall@gmail.com>
@@ -85,34 +85,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There's no need to use the pci_dn to find a device_node from a pci_dev.
-Just search for the node pointed to by the pci_dev's of_node pointer.
+The comment here implies that we don't need to take a ref to the pci_dev
+because the ioda_pe will always have one. This implies that the current
+expection is that the pci_dev for an NPU device will *never* be torn
+down since the ioda_pe having a ref to the device will prevent the
+release function from being called.
+
+In other words, the desired behaviour here appears to be leaking a ref.
+
+Nice!
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/npu-dma.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/powernv/npu-dma.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-index 68bfaef44862..72d3749da02c 100644
+index 72d3749da02c..2eb6e6d45a98 100644
 --- a/arch/powerpc/platforms/powernv/npu-dma.c
 +++ b/arch/powerpc/platforms/powernv/npu-dma.c
-@@ -21,11 +21,11 @@
- 
- static struct pci_dev *get_pci_dev(struct device_node *dn)
- {
--	struct pci_dn *pdn = PCI_DN(dn);
--	struct pci_dev *pdev;
-+	struct pci_dev *pdev = NULL;
- 
--	pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
--					   pdn->busno, pdn->devfn);
-+	for_each_pci_dev(pdev)
-+		if (pdev->dev.of_node == dn)
-+			break;
+@@ -28,15 +28,10 @@ static struct pci_dev *get_pci_dev(struct device_node *dn)
+ 			break;
  
  	/*
- 	 * pci_get_domain_bus_and_slot() increased the reference count of
+-	 * pci_get_domain_bus_and_slot() increased the reference count of
+-	 * the PCI device, but callers don't need that actually as the PE
+-	 * already holds a reference to the device. Since callers aren't
+-	 * aware of the reference count change, call pci_dev_put() now to
+-	 * avoid leaks.
++	 * NB: for_each_pci_dev() elevates the pci_dev refcount.
++	 * Caller is responsible for dropping the ref when it's
++	 * finished with it.
+ 	 */
+-	if (pdev)
+-		pci_dev_put(pdev);
+-
+ 	return pdev;
+ }
+ 
 -- 
 2.21.0
 
