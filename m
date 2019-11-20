@@ -1,44 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4101046CE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 00:00:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JJ7d71cLzDqw6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 10:00:29 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979B210471C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 00:55:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JKM93fszzDqwV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 10:55:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codethink.co.uk (client-ip=176.9.8.82;
- helo=imap1.codethink.co.uk; envelope-from=ben.hutchings@codethink.co.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=codethink.co.uk
-Received: from imap1.codethink.co.uk (imap1.codethink.co.uk [176.9.8.82])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47JJ1C2MD9zDqs6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 09:54:55 +1100 (AEDT)
-Received: from [167.98.27.226] (helo=xylophone)
- by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
- id 1iXYgs-0006FE-Oe; Wed, 20 Nov 2019 22:43:14 +0000
-Message-ID: <4faa78cd0a86cf5d0aea9bb16d03145c5745450b.camel@codethink.co.uk>
-Subject: Re: [Y2038] [PATCH 07/23] y2038: vdso: powerpc: avoid timespec
- references
-From: Ben Hutchings <ben.hutchings@codethink.co.uk>
-To: Arnd Bergmann <arnd@arndb.de>, y2038@lists.linaro.org, Benjamin
- Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 20 Nov 2019 22:43:13 +0000
-In-Reply-To: <20191108210824.1534248-7-arnd@arndb.de>
-References: <20191108210236.1296047-1-arnd@arndb.de>
- <20191108210824.1534248-7-arnd@arndb.de>
-Organization: Codethink Ltd.
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JKKK599nzDqpL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 10:53:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="JVLjuF/S"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47JKKK06mHz9s7T;
+ Thu, 21 Nov 2019 10:53:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1574294037;
+ bh=Avr3vCyKWpb4v/pcLYJhmBqeo+NhODq/KMRrswR2zHY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=JVLjuF/S6RxwstcV4MiV0rkLUcSrbzi6/3HLbV5yEO4Q5luRffHVDk107fBagN6C+
+ YvO15Bj5IhZn3tunblr98mzlqJsy/PouNaS44wKk/LW39JoccTqYOnodlVanyREXr9
+ sHVAhxU7ISOSw7d0coAQAncZbiwlUE1O9svBY7cThMNuWaeHE3iK2Z6cM4+ycPelc2
+ D9QLvlxqkWXp3pXzGUnWQZvg0HprVKVIXxka93mGJcUxnQJ7zkW4EsJ/cVpF/DKhaE
+ j3kmaQK8LXlwADp9rHyww3eWJq70PPSoxE1w3e2i5Dl06PLOfZOKC2of2c9Z5Dh/eQ
+ TaLowy1ZuzPOw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v3 2/8] powerpc/vdso32: Add support for
+ CLOCK_{REALTIME/MONOTONIC}_COARSE
+In-Reply-To: <20191120161741.Horde.zNDnbMKk_BJpkUOkWeRMsQ1@messagerie.si.c-s.fr>
+References: <cover.1572342582.git.christophe.leroy@c-s.fr>
+ <4644ccc9b4da78639ae9424db878c48711abf05a.1572342582.git.christophe.leroy@c-s.fr>
+ <87eey2btxi.fsf@mpe.ellerman.id.au>
+ <20191120161741.Horde.zNDnbMKk_BJpkUOkWeRMsQ1@messagerie.si.c-s.fr>
+Date: Thu, 21 Nov 2019 10:53:54 +1100
+Message-ID: <87blt6ayul.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,57 +61,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Allison Randal <allison@lohutok.net>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-11-08 at 22:07 +0100, Arnd Bergmann wrote:
-[...]
-> --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-> +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> @@ -15,10 +15,8 @@
->  /* Offset for the low 32-bit part of a field of long type */
->  #if defined(CONFIG_PPC64) && defined(CONFIG_CPU_BIG_ENDIAN)
->  #define LOPART	4
-> -#define TSPEC_TV_SEC	TSPC64_TV_SEC+LOPART
->  #else
->  #define LOPART	0
-> -#define TSPEC_TV_SEC	TSPC32_TV_SEC
->  #endif
->  
->  	.text
-> @@ -192,7 +190,7 @@ V_FUNCTION_BEGIN(__kernel_time)
->  	bl	__get_datapage@local
->  	mr	r9, r3			/* datapage ptr in r9 */
->  
-> -	lwz	r3,STAMP_XTIME+TSPEC_TV_SEC(r9)
-> +	lwz	r3,STAMP_XTIME_SEC+LOWPART(r9)
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> Michael Ellerman <mpe@ellerman.id.au> a =C3=A9crit=C2=A0:
+>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>> This is copied and adapted from commit 5c929885f1bb ("powerpc/vdso64:
+>>> Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
+>>> from Santosh Sivaraj <santosh@fossix.org>
+>>>
+>>> Benchmark from vdsotest-all:
+>>> clock-gettime-realtime: syscall: 3601 nsec/call
+>>> clock-gettime-realtime:    libc: 1072 nsec/call
+>>> clock-gettime-realtime:    vdso: 931 nsec/call
+>>> clock-gettime-monotonic: syscall: 4034 nsec/call
+>>> clock-gettime-monotonic:    libc: 1213 nsec/call
+>>> clock-gettime-monotonic:    vdso: 1076 nsec/call
+>>> clock-gettime-realtime-coarse: syscall: 2722 nsec/call
+>>> clock-gettime-realtime-coarse:    libc: 805 nsec/call
+>>> clock-gettime-realtime-coarse:    vdso: 668 nsec/call
+>>> clock-gettime-monotonic-coarse: syscall: 2949 nsec/call
+>>> clock-gettime-monotonic-coarse:    libc: 882 nsec/call
+>>> clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
+>>>
+>>> Additional test passed with:
+>>> 	vdsotest -d 30 clock-gettime-monotonic-coarse verify
+>>
+>> This broke on 64-bit big endian, which uses the 32-bit VDSO, with errors
+>> like:
+>>
+>>   clock-gettime-monotonic-coarse/verify: 10 failures/inconsistencies=20=
+=20
+>> encountered
+>>   timestamp obtained from libc/vDSO not normalized:
+>>   	[-1574202155, 1061008673]
+>>   timestamp obtained from libc/vDSO predates timestamp
+>>   previously obtained from kernel:
+>>   	[74, 261310747] (kernel)
+>>   	[-1574202155, 1061008673] (vDSO)
+>>   timestamp obtained from libc/vDSO not normalized:
+>>   	[-1574202155, 1061008673]
+>>   timestamp obtained from libc/vDSO predates timestamp
+>>   previously obtained from kernel:
+>>   	[74, 261310747] (kernel)
+>>   	[-1574202155, 1061008673] (vDSO)
+>>   timestamp obtained from libc/vDSO not normalized:
+>>   	[-1574202155, 1061008673]
+>>   timestamp obtained from libc/vDSO predates timestamp
+>>   previously obtained from kernel:
+>>   	[74, 261310747] (kernel)
+>>   	[-1574202155, 1061008673] (vDSO)
+>>   timestamp obtained from libc/vDSO not normalized:
+>>   	[-1574202155, 1061008673]
+>>   timestamp obtained from libc/vDSO predates timestamp
+>>   previously obtained from kernel:
+>>   	[74, 261310747] (kernel)
+>>   	[-1574202155, 1061008673] (vDSO)
+>>   timestamp obtained from libc/vDSO not normalized:
+>>   	[-1574202155, 1061008673]
+>>   timestamp obtained from libc/vDSO predates timestamp
+>>   previously obtained from kernel:
+>>   	[74, 261310747] (kernel)
+>>   	[-1574202155, 1061008673] (vDSO)
+>>   Failure threshold (10) reached; stopping test.
+>>
+>>
+>> The diff below seems to fix it, but I'm not sure it's correct. ie. we
+>> just ignore the top part of the values, how does that work?
+>
+> Your change makes sense, it is consistent with other functions using=20=20
+> STAMP_XTIME.
+>
+> It works because nanoseconds are max 999999999, it fits 32 bits regs.
 
-"LOWPART" should be "LOPART".
+Yeah, but for seconds? I guess this is the whole Y2038 problem, though
+I'm not clear how it's going to work for compat.
 
->  
->  	cmplwi	r11,0			/* check if t is NULL */
->  	beq	2f
-> @@ -268,7 +266,7 @@ __do_get_tspec:
->  	 * as a 32.32 fixed-point number in r3 and r4.
->  	 * Load & add the xtime stamp.
->  	 */
-> -	lwz	r5,STAMP_XTIME+TSPEC_TV_SEC(r9)
-> +	lwz	r5,STAMP_XTIME_SEC+LOWPART(r9)
+Anyway I'll squash that in and get this merged.
 
-Same here.
-
->  	lwz	r6,STAMP_SEC_FRAC(r9)
->  	addc	r4,r4,r6
->  	adde	r3,r3,r5
-[...]
-
--- 
-Ben Hutchings, Software Developer                         Codethink Ltd
-https://www.codethink.co.uk/                 Dale House, 35 Dale Street
-                                     Manchester, M1 2HF, United Kingdom
-
+cheers
