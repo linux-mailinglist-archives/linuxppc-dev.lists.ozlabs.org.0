@@ -1,49 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902C71033F4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 06:39:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DE61033F2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 06:37:35 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Hs0F06BGzDqsD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 16:37:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Hs273X5fzDq9P
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 16:39:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cyphar.com (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HrRr73d3zDqtR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 16:12:54 +1100 (AEDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="ETA60fcE"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mout-p-102.mailbox.org (Postfix) with ESMTPS id 47HrRj6dCfzKmkG;
- Wed, 20 Nov 2019 06:12:49 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter04.heinlein-hosting.de (spamfilter04.heinlein-hosting.de
- [80.241.56.122]) (amavisd-new, port 10030)
- with ESMTP id wcWUwKyK53h8; Wed, 20 Nov 2019 06:12:45 +0100 (CET)
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
- "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
- David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <kafai@fb.com>,
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andriin@fb.com>, Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH RESEND v17 13/13] Documentation: path-lookup: include new
- LOOKUP flags
-Date: Wed, 20 Nov 2019 16:06:31 +1100
-Message-Id: <20191120050631.12816-14-cyphar@cyphar.com>
-In-Reply-To: <20191120050631.12816-1-cyphar@cyphar.com>
-References: <20191120050631.12816-1-cyphar@cyphar.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Hrmf0702zDq5k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 16:27:28 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id p24so13640202pfn.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 21:27:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=keeeAI8Pfb2Kl/duSqjRgQqa9JjQMfYjDPW+Gc6NiSs=;
+ b=ETA60fcELFjS0/dp+tEDXlPTgLHu0VCA+6gi/m26QCLsKVI9NeLreJsiENSgm490K7
+ HenX32cYW4BqKOvK5kA+ikHaaXx+39I9CBeGin2VPl+EbXwqeCpNDEIpIW/ofL5uqOGu
+ cQw8f7NbiEFUkz8iADA8AFhwiHS0850luWSxU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=keeeAI8Pfb2Kl/duSqjRgQqa9JjQMfYjDPW+Gc6NiSs=;
+ b=efFKJhfq1t8wBGsyCUPI0+y74Se5Bb1qhGj03sGleNIVQ0Ax3QwpBhrD/KnQ86uVU/
+ mmtNSS1wHs9MUtqqNLBol+spK1aIMD3HczME9Iai6Sj+ST0uOn8YNWikNpQSQXuMxDa5
+ ggyGUe4u4cNQQBRKhv4cHlih1zL61f3WebVTlkoMsuYOZSGq/+a3P2MjhWdx1tbPGGwv
+ bzChDhq7s4TaBeUWK5wzACduX9MeFZXPQLUJ7/PgZ8+tTqKKjy996jk1RjnCHAXWhdT9
+ ymzis7yZ+7pWnIcLmOHHqNzixeHHLL3jjWisqSwc2BbRh6val103cIyffbnJn4F310e8
+ 3gJg==
+X-Gm-Message-State: APjAAAVIXhOiaefFtTcsfNaqmP6QykDjDbHOEbw1MV1BW11mEYrBizsB
+ zz13wp5DyJOizRl1gyKAkyrYhQ==
+X-Google-Smtp-Source: APXvYqwcRLpDJrGouMn4i7sCtVLz0VNrB2qc7pZkb01u8+Jad37R3CCkjURA8OcbGckvxot+GTdxzA==
+X-Received: by 2002:a65:67c7:: with SMTP id b7mr1058249pgs.339.1574227644988; 
+ Tue, 19 Nov 2019 21:27:24 -0800 (PST)
+Received: from localhost
+ (2001-44b8-1113-6700-9c57-4778-d90c-fd6d.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:9c57:4778:d90c:fd6d])
+ by smtp.gmail.com with ESMTPSA id w15sm22333601pfi.168.2019.11.19.21.27.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Nov 2019 21:27:24 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
+ aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
+ linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com,
+ christophe.leroy@c-s.fr, akpm@linux-foundation.org, urezki@gmail.com
+Subject: [PATCH] update to "kasan: support backing vmalloc space with real
+ shadow memory"
+Date: Wed, 20 Nov 2019 16:27:19 +1100
+Message-Id: <20191120052719.7201-1-dja@axtens.net>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191031093909.9228-2-dja@axtens.net>
+References: <20191031093909.9228-2-dja@axtens.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,165 +81,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-api@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- linux-sh@vger.kernel.org, David Drysdale <drysdale@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- dev@opencontainers.org, Aleksa Sarai <cyphar@cyphar.com>,
- Andy Lutomirski <luto@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christian Brauner <christian@brauner.io>, libc-alpha@sourceware.org,
- linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- netdev@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
- linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- bpf@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: cai@lca.pw, linuxppc-dev@lists.ozlabs.org, gor@linux.ibm.com,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that we have new LOOKUP flags, we should document them in the
-relevant path-walking documentation. And now that we've settled on a
-common name for nd_jump_link() style symlinks ("magic links"), use that
-term where magic-link semantics are described.
+Hi Andrew,
 
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+This is a quick fixup to patch 1 of the "kasan: support backing
+vmalloc space with real shadow memory" series, v11, which you pulled
+in to your mmotm tree.
+
+There are 2 changes:
+
+ - A fixup to the per-cpu allocator path to avoid allocating memory
+   under a spinlock, thanks Qian Cai.
+
+ - Insert flush_cache_vmap() between mapping shadow and poisoning
+   it. This is a no-op on x86 and arm64, but on powerpc it does a
+   ptesync instruction which prevents occasional page faults.
+
+Here are updated benchmark figures for the commit message:
+
+Testing with test_vmalloc.sh on an x86 VM with 2 vCPUs shows that:
+
+ - Turning on KASAN, inline instrumentation, without vmalloc, introuduces
+   a 5.7x-6.4x slowdown in vmalloc operations.
+
+ - Turning this on introduces the following slowdowns over KASAN:
+     * ~1.82x slower single-threaded (test_vmalloc.sh performance)
+     * ~2.11x slower when both cpus are performing operations
+       simultaneously (test_vmalloc.sh sequential_test_order=1)
+
+This is unfortunate, but given that this is a debug feature only, not
+the end of the world.
+
+The full results are:
+
+Performance
+
+                              No KASAN      KASAN original x baseline  KASAN vmalloc x baseline    x KASAN
+
+fix_size_alloc_test             662004            11404956      17.23       19144610      28.92       1.68
+full_fit_alloc_test             710950            12029752      16.92       13184651      18.55       1.10
+long_busy_list_alloc_test      9431875            43990172       4.66       82970178       8.80       1.89
+random_size_alloc_test         5033626            23061762       4.58       47158834       9.37       2.04
+fix_align_alloc_test           1252514            15276910      12.20       31266116      24.96       2.05
+random_size_align_alloc_te     1648501            14578321       8.84       25560052      15.51       1.75
+align_shift_alloc_test             147                 830       5.65           5692      38.72       6.86
+pcpu_alloc_test                  80732              125520       1.55         140864       1.74       1.12
+Total Cycles              119240774314        763211341128       6.40  1390338696894      11.66       1.82
+
+Sequential, 2 cpus
+
+                              No KASAN      KASAN original x baseline  KASAN vmalloc x baseline    x KASAN
+
+fix_size_alloc_test            1423150            14276550      10.03       27733022      19.49       1.94
+full_fit_alloc_test            1754219            14722640       8.39       15030786       8.57       1.02
+long_busy_list_alloc_test     11451858            52154973       4.55      107016027       9.34       2.05
+random_size_alloc_test         5989020            26735276       4.46       68885923      11.50       2.58
+fix_align_alloc_test           2050976            20166900       9.83       50491675      24.62       2.50
+random_size_align_alloc_te     2858229            17971700       6.29       38730225      13.55       2.16
+align_shift_alloc_test             405                6428      15.87          26253      64.82       4.08
+pcpu_alloc_test                 127183              151464       1.19         216263       1.70       1.43
+Total Cycles               54181269392        308723699764       5.70   650772566394      12.01       2.11
+fix_size_alloc_test            1420404            14289308      10.06       27790035      19.56       1.94
+full_fit_alloc_test            1736145            14806234       8.53       15274301       8.80       1.03
+long_busy_list_alloc_test     11404638            52270785       4.58      107550254       9.43       2.06
+random_size_alloc_test         6017006            26650625       4.43       68696127      11.42       2.58
+fix_align_alloc_test           2045504            20280985       9.91       50414862      24.65       2.49
+random_size_align_alloc_te     2845338            17931018       6.30       38510276      13.53       2.15
+align_shift_alloc_test             472                3760       7.97           9656      20.46       2.57
+pcpu_alloc_test                 118643              132732       1.12         146504       1.23       1.10
+Total Cycles               54040011688        309102805492       5.72   651325675652      12.05       2.11
+
+Cc: Qian Cai <cai@lca.pw>
+Signed-off-by: Daniel Axtens <dja@axtens.net>
 ---
- Documentation/filesystems/path-lookup.rst | 68 +++++++++++++++++++++--
- 1 file changed, 62 insertions(+), 6 deletions(-)
+ mm/kasan/common.c | 2 ++
+ mm/vmalloc.c      | 5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/path-lookup.rst b/Documentation/filesystems/path-lookup.rst
-index 434a07b0002b..a3216979298b 100644
---- a/Documentation/filesystems/path-lookup.rst
-+++ b/Documentation/filesystems/path-lookup.rst
-@@ -13,6 +13,7 @@ It has subsequently been updated to reflect changes in the kernel
- including:
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index 6e7bc5d3fa83..df3371d5c572 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -794,6 +794,8 @@ int kasan_populate_vmalloc(unsigned long requested_size, struct vm_struct *area)
+ 	if (ret)
+ 		return ret;
  
- - per-directory parallel name lookup.
-+- ``openat2()`` resolution restriction flags.
++	flush_cache_vmap(shadow_start, shadow_end);
++
+ 	kasan_unpoison_shadow(area->addr, requested_size);
  
- Introduction to pathname lookup
- ===============================
-@@ -235,6 +236,13 @@ renamed.  If ``d_lookup`` finds that a rename happened while it
- unsuccessfully scanned a chain in the hash table, it simply tries
- again.
+ 	area->flags |= VM_KASAN;
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index a4b950a02d0b..bf030516258c 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3417,11 +3417,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
  
-+``rename_lock`` is also used to detect and defend against potential attacks
-+against ``LOOKUP_BENEATH`` and ``LOOKUP_IN_ROOT`` when resolving ".." (where
-+the parent directory is moved outside the root, bypassing the ``path_equal()``
-+check). If ``rename_lock`` is updated during the lookup and the path encounters
-+a "..", a potential attack occurred and ``handle_dots()`` will bail out with
-+``-EAGAIN``.
-+
- inode->i_rwsem
- ~~~~~~~~~~~~~~
+ 		setup_vmalloc_vm_locked(vms[area], vas[area], VM_ALLOC,
+ 				 pcpu_get_vm_areas);
++	}
++	spin_unlock(&vmap_area_lock);
  
-@@ -348,6 +356,13 @@ any changes to any mount points while stepping up.  This locking is
- needed to stabilize the link to the mounted-on dentry, which the
- refcount on the mount itself doesn't ensure.
++	/* populate the shadow space outside of the lock */
++	for (area = 0; area < nr_vms; area++) {
+ 		/* assume success here */
+ 		kasan_populate_vmalloc(sizes[area], vms[area]);
+ 	}
+-	spin_unlock(&vmap_area_lock);
  
-+``mount_lock`` is also used to detect and defend against potential attacks
-+against ``LOOKUP_BENEATH`` and ``LOOKUP_IN_ROOT`` when resolving ".." (where
-+the parent directory is moved outside the root, bypassing the ``path_equal()``
-+check). If ``mount_lock`` is updated during the lookup and the path encounters
-+a "..", a potential attack occurred and ``handle_dots()`` will bail out with
-+``-EAGAIN``.
-+
- RCU
- ~~~
- 
-@@ -405,6 +420,10 @@ is requested.  Keeping a reference in the ``nameidata`` ensures that
- only one root is in effect for the entire path walk, even if it races
- with a ``chroot()`` system call.
- 
-+It should be noted that in the case of ``LOOKUP_IN_ROOT`` or
-+``LOOKUP_BENEATH``, the effective root becomes the directory file descriptor
-+passed to ``openat2()`` (which exposes these ``LOOKUP_`` flags).
-+
- The root is needed when either of two conditions holds: (1) either the
- pathname or a symbolic link starts with a "'/'", or (2) a "``..``"
- component is being handled, since "``..``" from the root must always stay
-@@ -1149,7 +1168,7 @@ so ``NULL`` is returned to indicate that the symlink can be released and
- the stack frame discarded.
- 
- The other case involves things in ``/proc`` that look like symlinks but
--aren't really::
-+aren't really (and are therefore commonly referred to as "magic-links")::
- 
-      $ ls -l /proc/self/fd/1
-      lrwx------ 1 neilb neilb 64 Jun 13 10:19 /proc/self/fd/1 -> /dev/pts/4
-@@ -1286,7 +1305,9 @@ A few flags
- A suitable way to wrap up this tour of pathname walking is to list
- the various flags that can be stored in the ``nameidata`` to guide the
- lookup process.  Many of these are only meaningful on the final
--component, others reflect the current state of the pathname lookup.
-+component, others reflect the current state of the pathname lookup, and some
-+apply restrictions to all path components encountered in the path lookup.
-+
- And then there is ``LOOKUP_EMPTY``, which doesn't fit conceptually with
- the others.  If this is not set, an empty pathname causes an error
- very early on.  If it is set, empty pathnames are not considered to be
-@@ -1310,13 +1331,48 @@ longer needed.
- ``LOOKUP_JUMPED`` means that the current dentry was chosen not because
- it had the right name but for some other reason.  This happens when
- following "``..``", following a symlink to ``/``, crossing a mount point
--or accessing a "``/proc/$PID/fd/$FD``" symlink.  In this case the
--filesystem has not been asked to revalidate the name (with
--``d_revalidate()``).  In such cases the inode may still need to be
--revalidated, so ``d_op->d_weak_revalidate()`` is called if
-+or accessing a "``/proc/$PID/fd/$FD``" symlink (also known as a "magic
-+link"). In this case the filesystem has not been asked to revalidate the
-+name (with ``d_revalidate()``).  In such cases the inode may still need
-+to be revalidated, so ``d_op->d_weak_revalidate()`` is called if
- ``LOOKUP_JUMPED`` is set when the look completes - which may be at the
- final component or, when creating, unlinking, or renaming, at the penultimate component.
- 
-+Resolution-restriction flags
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+In order to allow userspace to protect itself against certain race conditions
-+and attack scenarios involving changing path components, a series of flags are
-+available which apply restrictions to all path components encountered during
-+path lookup. These flags are exposed through ``openat2()``'s ``resolve`` field.
-+
-+``LOOKUP_NO_SYMLINKS`` blocks all symlink traversals (including magic-links).
-+This is distinctly different from ``LOOKUP_FOLLOW``, because the latter only
-+relates to restricting the following of trailing symlinks.
-+
-+``LOOKUP_NO_MAGICLINKS`` blocks all magic-link traversals. Filesystems must
-+ensure that they return errors from ``nd_jump_link()``, because that is how
-+``LOOKUP_NO_MAGICLINKS`` and other magic-link restrictions are implemented.
-+
-+``LOOKUP_NO_XDEV`` blocks all ``vfsmount`` traversals (this includes both
-+bind-mounts and ordinary mounts). Note that the ``vfsmount`` which contains the
-+lookup is determined by the first mountpoint the path lookup reaches --
-+absolute paths start with the ``vfsmount`` of ``/``, and relative paths start
-+with the ``dfd``'s ``vfsmount``. Magic-links are only permitted if the
-+``vfsmount`` of the path is unchanged.
-+
-+``LOOKUP_BENEATH`` blocks any path components which resolve outside the
-+starting point of the resolution. This is done by blocking ``nd_jump_root()``
-+as well as blocking ".." if it would jump outside the starting point.
-+``rename_lock`` and ``mount_lock`` are used to detect attacks against the
-+resolution of "..". Magic-links are also blocked.
-+
-+``LOOKUP_IN_ROOT`` resolves all path components as though the starting point
-+were the filesystem root. ``nd_jump_root()`` brings the resolution back to to
-+the starting point, and ".." at the starting point will act as a no-op. As with
-+``LOOKUP_BENEATH``, ``rename_lock`` and ``mount_lock`` are used to detect
-+attacks against ".." resolution. Magic-links are also blocked.
-+
- Final-component flags
- ~~~~~~~~~~~~~~~~~~~~~
- 
+ 	kfree(vas);
+ 	return vms;
 -- 
-2.24.0
+2.20.1
 
