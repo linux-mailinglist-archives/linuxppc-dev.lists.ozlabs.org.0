@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D363A1031BD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 506901031C3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:47:50 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HnBH0phrzDqfY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:45:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HnDM1yH6zDqFM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:47:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,53 +16,53 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="fdqRRbTj"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="cuuM6JiG"; 
  dkim-atps=neutral
 Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
  [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWT4v0zzDqfX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:30:45 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id z188so12497889pgb.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:30:45 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWV6s35zDqfX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:30:46 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id 207so5114785pge.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:30:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=o2W/QR/Smo6jQ4F9EcWrKCs3+mqduBVzkzvnyfsxrQ0=;
- b=fdqRRbTj8f+8legWESR8F0B1rb/cSFCI6nYwrxDis19I+Th+xPEQEL3+UPvQRdOdNu
- P8v6iTqv19sj+XcvTVEZhIuqH1pDgxyFQGlYddJ7mLsswcDEceAnTYwf75Md/ShGF3zU
- Fsh9I/m1skmLzrl7A5fR4qUiBekN6WyaktttyBJToUgk/hFdmRZh01m+4AwqubNHhp1T
- WgULk+wM4h1rWl6zKI31AmBxXspBw6kKROuJ8GwJpah3bVgZvk5mrza4J/OJXGMC5ZAN
- dStKhNHgW8FIYQ9RUe4eG5+uhhO9opXTKn9uL/7Dgo+IrDxCpdfSt4/jJIX4TuK3Q990
- fVXA==
+ bh=2ZmxxZuhux+fhtBuc/XdE4rABk5WcmVDI+laYAbcCQ4=;
+ b=cuuM6JiGOc03w+IAJ6x3S1A4OYqMJzE5cHIcw+jla0ZT38cKbh8p0iXxEXiJopgYyV
+ VogFMvJvsQPyqeoYyQS58tA7Q4dRHi/61szslyvwGsFKPyPjqgwqXGk/7aHJzrb6T8JU
+ OmEp1+Q2hu53NiTleFz7dc6VEcM98cUDQuSiaV7SAMyrDnZzL9ZuxWjeeb+N8v4YZOCc
+ Dy4rZ3KMJ01vLvSXVICbDCJi8dtvoJOgqemvZfthEB5IyNzh67QlffInwhk20QwzGwOC
+ ZBtnvo1hU16blJcN0FrSE/ZxmbGOyE80Hzz4P9I0EYmV2FYEC0R/mc4l1dvLhiICJcBt
+ /Yhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=o2W/QR/Smo6jQ4F9EcWrKCs3+mqduBVzkzvnyfsxrQ0=;
- b=FlzqsYyUWpHqzocfYA1eVp8L4bueGD9CDQu2U3KIR38MfVsIzYraVddGnJo8ENUpEB
- 2wvKccHTei3xFI9I6lbaDu4f7mzi/Twx8g8qUHmgPAfnm+sQE3tEeqYR6lu4uHmfgYo/
- 5B3XFxJetG9EpzMoM1XGs1OLiS7MEhvVG66xKd8dBZVocIp0GzrUM/iBrYgZfcgLcnJK
- vHNRJuZhSlNuPbKlz14T604lcwXnTS7QiiloK6PMkOdQjhNi/KGFWYBMMIInSZ0njhqL
- GwmMiBQOkSpTmGQLFaALtffUJw+pNlqYdPF7OeElgLB1lKKvZUC7boFD7bWc52GMuSSl
- ZISw==
-X-Gm-Message-State: APjAAAV4dT3wokZABOjnj09gY+dFOEDSY1EV2Qx9I/DIBhncgyLGuusG
- v6nIwvNUIM9nkZKozDf9Aa9H/Yvx
-X-Google-Smtp-Source: APXvYqzolYufg6Sxkix+XFCr5JDADxr/69Hf3NB1hn8oC3B1LEv6Bas/eWXot/i+EH04fYATM5ap7w==
-X-Received: by 2002:a62:1841:: with SMTP id 62mr755427pfy.108.1574213442598;
- Tue, 19 Nov 2019 17:30:42 -0800 (PST)
+ bh=2ZmxxZuhux+fhtBuc/XdE4rABk5WcmVDI+laYAbcCQ4=;
+ b=YNjO+EiwcjdUdfLY5DUxw+yVSMbPgg8zfulciEDs30L9gm/0ZqRjBJWS3xcyaNXcjI
+ NI7zx/sz3jxW0hVo9mQR0yLO4P2BGmihA91CZf9mXAtA2mI2XDaVlzvq7MrKDQ+MRxor
+ HYmfdkqNB1ySbGESycSa61A+tpaNh9g3Ix0+uU7np/N7VFhvI1/d6S4ybs01hmB2OeEG
+ XTkxa6IEa909Tw+wWia4o3PhLcM+9FwLnlZ7KeLtnxHdR2CLIk6Uv+jt++rX5k/GgpWW
+ ooHUsjJDOYLD2aIj7Su0XVbeXYYkf3x7TTzsKdp7fXpnpUNcJT87+MFeJJhKV+cF7tC1
+ Ui4g==
+X-Gm-Message-State: APjAAAVFQiJCmLAr/Ab/YIit6CWSDSgt93ZqUPwos+tuFVB0kaFz32Sc
+ RdecKM56vqqGYkBoZeFdESq/Qtvd
+X-Google-Smtp-Source: APXvYqzkD74BKlm80E3yjXZMF5vlcQYpj76F+H9aCAm4UavFX0AL9PWMevdkwZmH90i8ND+Fxf2AMQ==
+X-Received: by 2002:a62:7847:: with SMTP id t68mr794552pfc.140.1574213444909; 
+ Tue, 19 Nov 2019 17:30:44 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.40
+ by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2019 17:30:42 -0800 (PST)
+ Tue, 19 Nov 2019 17:30:44 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Very RFC 38/46] powerpc/pci-hotplug: Scan the whole bus when using
- PCI_PROBE_NORMAL
-Date: Wed, 20 Nov 2019 12:28:51 +1100
-Message-Id: <20191120012859.23300-39-oohall@gmail.com>
+Subject: [Very RFC 39/46] powernv/npu: Avoid pci_dn when mapping device_node
+ to a pci_dev
+Date: Wed, 20 Nov 2019 12:28:52 +1100
+Message-Id: <20191120012859.23300-40-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191120012859.23300-1-oohall@gmail.com>
 References: <20191120012859.23300-1-oohall@gmail.com>
@@ -85,51 +85,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently when using the normal (i.e not building pci_dev's from the DT
-node) probe method we only scan the devfn corresponding to the first child
-of the bridge's DT node. This doesn't make much sense to me, but it seems
-to have worked so far. At a guess it seems to work because in a PCIe
-environment the first downstream child will be at devfn 00.0.
+There's no need to use the pci_dn to find a device_node from a pci_dev.
+Just search for the node pointed to by the pci_dev's of_node pointer.
 
-In any case it's completely broken when no pci_dn is available. Remove
-the PCI_DN checking and scan each of the device number that might be on
-the downstream bus.
-
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
-I'm not sure we should be using pci_scan_slot() directly here. Maybe
-there's some insane legacy reason for it.
----
- arch/powerpc/kernel/pci-hotplug.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ arch/powerpc/platforms/powernv/npu-dma.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
-index d6a67f814983..85299c769768 100644
---- a/arch/powerpc/kernel/pci-hotplug.c
-+++ b/arch/powerpc/kernel/pci-hotplug.c
-@@ -123,17 +123,10 @@ void pci_hp_add_devices(struct pci_bus *bus)
- 	if (mode == PCI_PROBE_DEVTREE) {
- 		/* use ofdt-based probe */
- 		of_rescan_bus(dn, bus);
--	} else if (mode == PCI_PROBE_NORMAL &&
--		   dn->child && PCI_DN(dn->child)) {
--		/*
--		 * Use legacy probe. In the partial hotplug case, we
--		 * probably have grandchildren devices unplugged. So
--		 * we don't check the return value from pci_scan_slot() in
--		 * order for fully rescan all the way down to pick them up.
--		 * They can have been removed during partial hotplug.
--		 */
--		slotno = PCI_SLOT(PCI_DN(dn->child)->devfn);
--		pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
-+	} else if (mode == PCI_PROBE_NORMAL) {
-+		for (slotno = 0; slotno < 255; slotno += 8)
-+			pci_scan_slot(bus, slotno);
-+
- 		max = bus->busn_res.start;
- 		/*
- 		 * Scan bridges that are already configured. We don't touch
+diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+index 68bfaef44862..72d3749da02c 100644
+--- a/arch/powerpc/platforms/powernv/npu-dma.c
++++ b/arch/powerpc/platforms/powernv/npu-dma.c
+@@ -21,11 +21,11 @@
+ 
+ static struct pci_dev *get_pci_dev(struct device_node *dn)
+ {
+-	struct pci_dn *pdn = PCI_DN(dn);
+-	struct pci_dev *pdev;
++	struct pci_dev *pdev = NULL;
+ 
+-	pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
+-					   pdn->busno, pdn->devfn);
++	for_each_pci_dev(pdev)
++		if (pdev->dev.of_node == dn)
++			break;
+ 
+ 	/*
+ 	 * pci_get_domain_bus_and_slot() increased the reference count of
 -- 
 2.21.0
 
