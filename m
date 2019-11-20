@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F1C10314B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 02:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2343310314D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 02:52:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Hlxq1mwfzDqbv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 12:50:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Hm0G3FjKzDqkJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 12:52:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,53 +16,53 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="rqd+BR8d"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="HD8vvVuF"; 
  dkim-atps=neutral
 Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
  [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HlVB2089zDqhs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:29:38 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id b19so13350679pfd.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:29:38 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HlVD1mbvzDqgr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:29:40 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id p24so13358157pfn.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:29:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=IbwVBLO1A7CVpBUYwoUuowcXxam1frpNK9OKQsnPf5E=;
- b=rqd+BR8dWn/jK3etKsDcicuCqbKmz9cvK6bfp++cxLHwdnkXkvPbP3FRAH3dX/Ohsr
- Dl1vkcXW2++5ENWqmHovDHFgKNG/6cmScv8xa8WAxJgn5tYlMNAJ5jEt6aJAUEgPIJCY
- MExNzaUHm1rWJOtDzC3DekjYIJBausfkI2HqA5UoPL2/2NPWw0zJJ2/SeoUy3Aht9++2
- d4C7tfueug7XrqRYdXv/kcBjKOxtMBHBx2ETdnsjHBL+/HT06/43OvnsjkRIie+SehdC
- 4zCoXoU2KP6AsixgJYqQDGEiguDMyBokYtfCEM4Yfnu+LGFGAm1YoEm9Y3moS/4XGdsM
- G+1A==
+ bh=8J1U7F6iJr1/Ztii/PsYyPiukTK0bPwqh4xoT8ULUTU=;
+ b=HD8vvVuFokQGnHfg30tYnx4aiUlxb+pm7HTnphW/ve4fukOiMvKPwjANm62reU3VqU
+ Jr+oLtpKFjMvPhk8FQhwLkP1gAM3Q3HHg1bEJqn4vjz9C62z/CqNsXKUKWKvNWGhRwgB
+ KDdunOE1qbyhnbKQFPwy+Z+aN9KD/AP/fMCyng9ocnLzA1mdtQr99UiICM4aZsjWGyAN
+ ifeK9sfU+aNcyGwXha8qtoJA9uMXg1to9kKJgyrbtwxTvoKb/+nBDSe/CYPUFkzwgM0A
+ cyrOv7EsPYcmzTP0S3qTxD/YH3TU1h3km/TYHm5RmurqGDm3+0DO/JK/CRUEJrnzdVA8
+ Rlsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=IbwVBLO1A7CVpBUYwoUuowcXxam1frpNK9OKQsnPf5E=;
- b=ZdsrKWaqY39xxEaVPipXmECwQo2CwC5C4RmQQBDnBzPGGq3uoJuOb+a2w23lEVa82H
- gqMqDPdPTNz7tGHOe1snaHpMR1XzVi3kVaQnvOF48j/UvRsjPO/iSouOsVgCTlm1+YbL
- A9e8JS/DMhf7yE5f5LzuftA+CD756OQs97b3F5aGb7/4OpI5zOvFxi6RxbS1HP8UtIea
- 3mjVQUM9qBxoVNHmr3IRm7hDJY+F6GEfmskz3o+EreaEUL77ievc7J7wpBSq4VZgmcAW
- vDZXpfjhaUWVpSjDAXxl9lErvAwnHyim5FadOZ5xvdRoqAPH+zKS9ULgtmRuChI5UoKY
- 6rqA==
-X-Gm-Message-State: APjAAAXnxy3J8qkydr1x01fs1LEFWjcK3xu3DVHotgTvAm0lHrROHrJA
- tq+xbtov4QI1Zz0m1nJJ55ARmOzX
-X-Google-Smtp-Source: APXvYqzeH7AvkqAy6kqYKHj2Msb8Q4mn32GS60UwOfPtvuZPG2353vkv4U+tm5E6HcmGtTXh8zkgzw==
-X-Received: by 2002:a63:e407:: with SMTP id a7mr186939pgi.92.1574213375687;
- Tue, 19 Nov 2019 17:29:35 -0800 (PST)
+ bh=8J1U7F6iJr1/Ztii/PsYyPiukTK0bPwqh4xoT8ULUTU=;
+ b=t2FxuahR4PfbCGh0+wsBmlB/i5ZaA1OQ05pHHXpS6jh+4GTie4eLZqIidlP3otr9Fq
+ 3+Dq5fLwYtdUgYrSzCEWTw8CykoULNpuZim46EypbCV5JnkxJUx0WLiQdQ3eeD2iBkVt
+ /nbN9SixqZl/tnUqHmlrfVLYIYzOoa+SHnl4Gc3fTdEKe/z35WEivp4Y9Ol61X7MAqSH
+ uNh89OgXiCpX0ipM1jtkErpJolW6na6LC2gZoC8OnqTdWTQCjy5OEAajWJrpZW708uAO
+ J1/sZtumit6lWVaoMN0RI62u68Bo5SBhGkLn06COf1zjyStZ4ekQHSQhe9dT9pOkTkzT
+ LwAw==
+X-Gm-Message-State: APjAAAXfm2MpaNTzFLEdKaNkzP5g4KHgDJumV7N3Vjs5hSiG0TlUVIFp
+ T2pgapzNqlBpQZSGeuR74qkhHgcF
+X-Google-Smtp-Source: APXvYqxL8ARS5NvkmBbjOcH/tOq4gOT+qqPioJYACz81eqI8zMW9LYgegJfLTNyXfbzqeOLvPLv41g==
+X-Received: by 2002:a63:a5b:: with SMTP id z27mr176611pgk.416.1574213378097;
+ Tue, 19 Nov 2019 17:29:38 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.29.33
+ by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.29.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2019 17:29:35 -0800 (PST)
+ Tue, 19 Nov 2019 17:29:37 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Very RFC 10/46] powerpc/eeh: Pass eeh_dev to
- eeh_ops->restore_config()
-Date: Wed, 20 Nov 2019 12:28:23 +1100
-Message-Id: <20191120012859.23300-11-oohall@gmail.com>
+Subject: [Very RFC 11/46] powerpc/eeh: Convert various printfs to use edev,
+ not pci_dn
+Date: Wed, 20 Nov 2019 12:28:24 +1100
+Message-Id: <20191120012859.23300-12-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191120012859.23300-1-oohall@gmail.com>
 References: <20191120012859.23300-1-oohall@gmail.com>
@@ -85,111 +85,105 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove another pdn usage.
+We use the pci_dn to retrieve the domain, bus, device, and function numbers for
+an EEH device. We now have that in the eeh_dev so covert the various printk()s
+we have around the place to source that information from the eeh_dev.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/include/asm/eeh.h               |  2 +-
- arch/powerpc/kernel/eeh.c                    |  5 ++---
- arch/powerpc/kernel/eeh_pe.c                 |  6 ++----
- arch/powerpc/platforms/powernv/eeh-powernv.c | 11 +++++------
- 4 files changed, 10 insertions(+), 14 deletions(-)
+ arch/powerpc/kernel/eeh.c    | 14 ++++----------
+ arch/powerpc/kernel/eeh_pe.c | 14 ++++++--------
+ 2 files changed, 10 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
-index 62c4ee44ad2c..67847f8dfe71 100644
---- a/arch/powerpc/include/asm/eeh.h
-+++ b/arch/powerpc/include/asm/eeh.h
-@@ -227,7 +227,7 @@ struct eeh_ops {
- 	int (*read_config)(struct eeh_dev *edev, int where, int size, u32 *val);
- 	int (*write_config)(struct eeh_dev *edev, int where, int size, u32 val);
- 	int (*next_error)(struct eeh_pe **pe);
--	int (*restore_config)(struct pci_dn *pdn);
-+	int (*restore_config)(struct eeh_dev *edev);
- 	int (*notify_resume)(struct pci_dn *pdn);
- };
- 
 diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 7258fa04176d..63500e34e329 100644
+index 63500e34e329..c8039fdb23ba 100644
 --- a/arch/powerpc/kernel/eeh.c
 +++ b/arch/powerpc/kernel/eeh.c
-@@ -726,7 +726,6 @@ static void eeh_disable_and_save_dev_state(struct eeh_dev *edev,
- 
- static void eeh_restore_dev_state(struct eeh_dev *edev, void *userdata)
+@@ -167,23 +167,17 @@ void eeh_show_enabled(void)
+  */
+ static size_t eeh_dump_dev_log(struct eeh_dev *edev, char *buf, size_t len)
  {
 -	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
- 	struct pci_dev *pdev = eeh_dev_to_pci_dev(edev);
- 	struct pci_dev *dev = userdata;
+ 	u32 cfg;
+ 	int cap, i;
+ 	int n = 0, l = 0;
+ 	char buffer[128];
  
-@@ -734,8 +733,8 @@ static void eeh_restore_dev_state(struct eeh_dev *edev, void *userdata)
- 		return;
+-	if (!pdn) {
+-		pr_warn("EEH: Note: No error log for absent device.\n");
+-		return 0;
+-	}
+-
+ 	n += scnprintf(buf+n, len-n, "%04x:%02x:%02x.%01x\n",
+-		       pdn->phb->global_number, pdn->busno,
+-		       PCI_SLOT(pdn->devfn), PCI_FUNC(pdn->devfn));
++			edev->pe->phb->global_number, edev->bdfn >> 8,
++			PCI_SLOT(edev->bdfn), PCI_FUNC(edev->bdfn));
+ 	pr_warn("EEH: of node=%04x:%02x:%02x.%01x\n",
+-		pdn->phb->global_number, pdn->busno,
+-		PCI_SLOT(pdn->devfn), PCI_FUNC(pdn->devfn));
++		edev->pe->phb->global_number, edev->bdfn >> 8,
++		PCI_SLOT(edev->bdfn), PCI_FUNC(edev->bdfn));
  
- 	/* Apply customization from firmware */
--	if (pdn && eeh_ops->restore_config)
--		eeh_ops->restore_config(pdn);
-+	if (eeh_ops->restore_config)
-+		eeh_ops->restore_config(edev);
- 
- 	/* The caller should restore state for the specified device */
- 	if (pdev != dev)
+ 	eeh_ops->read_config(edev, PCI_VENDOR_ID, 4, &cfg);
+ 	n += scnprintf(buf+n, len-n, "dev/vend:%08x\n", cfg);
 diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index e11e0830f125..634963aa4a77 100644
+index 634963aa4a77..831f363f1732 100644
 --- a/arch/powerpc/kernel/eeh_pe.c
 +++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -841,16 +841,14 @@ static void eeh_restore_device_bars(struct eeh_dev *edev)
+@@ -366,9 +366,8 @@ static struct eeh_pe *eeh_pe_get_parent(struct eeh_dev *edev)
   */
- static void eeh_restore_one_device_bars(struct eeh_dev *edev, void *flag)
+ int eeh_add_to_parent_pe(struct eeh_dev *edev)
  {
++	int config_addr = edev->bdfn;
+ 	struct eeh_pe *pe, *parent;
 -	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
--
- 	/* Do special restore for bridges */
- 	if (edev->mode & EEH_DEV_BRIDGE)
- 		eeh_restore_bridge_bars(edev);
- 	else
- 		eeh_restore_device_bars(edev);
- 
--	if (eeh_ops->restore_config && pdn)
--		eeh_ops->restore_config(pdn);
-+	if (eeh_ops->restore_config)
-+		eeh_ops->restore_config(edev);
- }
- 
- /**
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index 54d8ec77aef2..6c5d9f1bc378 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -1644,12 +1644,10 @@ static int pnv_eeh_next_error(struct eeh_pe **pe)
- 	return ret;
- }
- 
--static int pnv_eeh_restore_config(struct pci_dn *pdn)
-+static int pnv_eeh_restore_config(struct eeh_dev *edev)
- {
--	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
- 	struct pnv_phb *phb;
- 	s64 ret = 0;
 -	int config_addr = (pdn->busno << 8) | (pdn->devfn);
  
- 	if (!edev)
- 		return -EEXIST;
-@@ -1658,13 +1656,14 @@ static int pnv_eeh_restore_config(struct pci_dn *pdn)
+ 	/* Check if the PE number is valid */
+ 	if (!eeh_has_flag(EEH_VALID_PE_ZERO) && !edev->pe_config_addr) {
+@@ -382,7 +381,7 @@ int eeh_add_to_parent_pe(struct eeh_dev *edev)
+ 	 * PE should be composed of PCI bus and its subordinate
+ 	 * components.
+ 	 */
+-	pe = eeh_pe_get(pdn->phb, edev->pe_config_addr, config_addr);
++	pe = eeh_pe_get(edev->controller, edev->pe_config_addr, config_addr);
+ 	if (pe) {
+ 		if (pe->type & EEH_PE_INVALID) {
+ 			list_add_tail(&edev->entry, &pe->edevs);
+@@ -416,9 +415,9 @@ int eeh_add_to_parent_pe(struct eeh_dev *edev)
+ 
+ 	/* Create a new EEH PE */
  	if (edev->physfn)
- 		return 0;
- 
--	phb = pdn->phb->private_data;
-+	phb = edev->pe->phb->private_data;
- 	ret = opal_pci_reinit(phb->opal_id,
--			      OPAL_REINIT_PCI_DEV, config_addr);
-+			      OPAL_REINIT_PCI_DEV, edev->bdfn);
- 
-+	ret = opal_pci_reinit(phb->opal_id, OPAL_REINIT_PCI_DEV, edev->bdfn);
- 	if (ret) {
- 		pr_warn("%s: Can't reinit PCI dev 0x%x (%lld)\n",
--			__func__, config_addr, ret);
-+			__func__, edev->bdfn, ret);
- 		return -EIO;
- 	}
- 
+-		pe = eeh_pe_alloc(pdn->phb, EEH_PE_VF);
++		pe = eeh_pe_alloc(edev->controller, EEH_PE_VF);
+ 	else
+-		pe = eeh_pe_alloc(pdn->phb, EEH_PE_DEVICE);
++		pe = eeh_pe_alloc(edev->controller, EEH_PE_DEVICE);
+ 	if (!pe) {
+ 		pr_err("%s: out of memory!\n", __func__);
+ 		return -ENOMEM;
+@@ -434,10 +433,10 @@ int eeh_add_to_parent_pe(struct eeh_dev *edev)
+ 	 */
+ 	parent = eeh_pe_get_parent(edev);
+ 	if (!parent) {
+-		parent = eeh_phb_pe_get(pdn->phb);
++		parent = eeh_phb_pe_get(edev->controller);
+ 		if (!parent) {
+ 			pr_err("%s: No PHB PE is found (PHB Domain=%d)\n",
+-				__func__, pdn->phb->global_number);
++				__func__, edev->controller->global_number);
+ 			edev->pe = NULL;
+ 			kfree(pe);
+ 			return -EEXIST;
+@@ -698,7 +697,6 @@ void eeh_pe_state_clear(struct eeh_pe *root, int state, bool include_passed)
+  */
+ static void eeh_bridge_check_link(struct eeh_dev *edev)
+ {
+-	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
+ 	int cap;
+ 	uint32_t val;
+ 	int timeout = 0;
 -- 
 2.21.0
 
