@@ -1,119 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54259103452
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 07:33:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HtF32pllzDqpR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 17:33:43 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1084B1034CD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 08:04:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Htwz1MPkzDqtv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 18:04:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=samsung.com (client-ip=210.118.77.11;
- helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=samsung.com header.i=@samsung.com header.b="M5JfFEHK"; 
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="aoAjA12T"; 
  dkim-atps=neutral
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com
- [210.118.77.11])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HtCD0VJ4zDqJV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 17:32:05 +1100 (AEDT)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
- by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
- 20191120063200euoutp01a388593fe5f2a09665b29e31282d9855~YyzoSornK1169211692euoutp01S
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 06:32:00 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
- 20191120063200euoutp01a388593fe5f2a09665b29e31282d9855~YyzoSornK1169211692euoutp01S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1574231520;
- bh=VuP+7hLCzIF5CXYFSp9ODDyAE/nkXT9DTt7GKRfI+Rw=;
- h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
- b=M5JfFEHKNIL2wtPWPxH/Kk8umIkRNLdlcF/+aKYVfyX+UxUJkpkrNvs60+jqlY5QD
- 4u5E3/TAl8ATLd+peU5yjBCe3xhL1dQDXlCJzlMyJwRTxLp9BuoeEaNFd2nvvHlI7v
- uMIsMhYB3C6Sk2gmZuu3hwgajz9ZZYy5IRCraAZ8=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
- eucas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20191120063159eucas1p1be157e07933fc702f68a301ca3dfe648~YyzoAWKjk2887928879eucas1p1d;
- Wed, 20 Nov 2019 06:31:59 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
- eusmges1new.samsung.com (EUCPMTA) with SMTP id EF.5C.04469.FDDD4DD5; Wed, 20
- Nov 2019 06:31:59 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
- 20191120063159eucas1p24037006cafb00ad61296f27ecbeec8c7~YyznlA8Ic3093730937eucas1p2Q;
- Wed, 20 Nov 2019 06:31:59 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
- eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
- 20191120063159eusmtrp2efbd68729a55379cdf8b40555fa4c9b9~YyznkTyei0619706197eusmtrp2k;
- Wed, 20 Nov 2019 06:31:59 +0000 (GMT)
-X-AuditID: cbfec7f2-54fff70000001175-d5-5dd4dddfffbb
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
- eusmgms2.samsung.com (EUCPMTA) with SMTP id 13.CD.04117.FDDD4DD5; Wed, 20
- Nov 2019 06:31:59 +0000 (GMT)
-Received: from [106.120.51.15] (unknown [106.120.51.15]) by
- eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20191120063158eusmtip22fb55c7b5e7302cde7487c94d51e3a99~YyznGpBeu0446004460eusmtip2v;
- Wed, 20 Nov 2019 06:31:58 +0000 (GMT)
-Subject: Re: [PATCH 1/3] dma-direct: unify the dma_capable definitions
-To: Christoph Hellwig <hch@lst.de>
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <a05d7d34-0f1c-ee1b-cfe7-bdb5d99ce37c@samsung.com>
-Date: Wed, 20 Nov 2019 07:31:57 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Htv965Z9zDqD5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 18:03:17 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dd4e52b0000>; Tue, 19 Nov 2019 23:03:07 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Tue, 19 Nov 2019 23:03:11 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Tue, 19 Nov 2019 23:03:11 -0800
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 20 Nov
+ 2019 07:03:10 +0000
+Subject: Re: [PATCH v6 15/24] fs/io_uring: set FOLL_PIN via pin_user_pages()
+To: Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>
+References: <20191119081643.1866232-1-jhubbard@nvidia.com>
+ <20191119081643.1866232-16-jhubbard@nvidia.com>
+ <2ae65d1b-a3eb-74ed-afce-c493de5bbfd3@kernel.dk>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <42c80c0a-ad2c-fe74-babd-57680882c7e2@nvidia.com>
+Date: Tue, 19 Nov 2019 23:03:10 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191119164652.GA18983@lst.de>
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrAKsWRmVeSWpSXmKPExsWy7djPc7r3716JNdh+WNNi5eqjTBYL9ltb
- nD+/gd1i0+NrrBadm7YyWsw4v4/J4tDUvYwWv7//Y7XYNms5m8XOOyeYLbo3nGV04Pa4fO0i
- s8emVZ1sHpuX1HtMvrGc0eP8jIWMHrtvNrB5bHy3g8lj8+lqj8+b5AI4o7hsUlJzMstSi/Tt
- ErgypnT9Zy14z1Ix/0Q3SwPjR+YuRk4OCQETia9tD9i7GLk4hARWMEoceL2XCcL5wijxo+Mv
- VOYzo8Sao1OBWjggWjYbQsSXM0rs/t3FDOG8ZZT482gjE8hcYQE3ic39s8F2iAgoSTx9dZYR
- pIhZoIVZYtPyrWBFbAKGEl1vu9hAbF4BO4lvD3+DNbAIqErsWPkfbJuoQKxEx/IMiBJBiZMz
- n7CA2JwCOhKvDlxkBLGZBeQltr+dwwxhi0vcejIf7AUJgbfsEudXz2OHeNRFYtvdySwQtrDE
- q+NboOIyEv93wjQ0M0o8PLeWHcLpYZS43DSDEaLKWuLw8YusIBcxC2hKrN+lDxF2lHjy+AoT
- JFj4JG68FYQ4gk9i0rbp0NDilehoE4KoVpOYdXwd3NqDFy4xT2BUmoXktVlI3pmF5J1ZCHsX
- MLKsYhRPLS3OTU8tNsxLLdcrTswtLs1L10vOz93ECExnp/8d/7SD8eulpEOMAhyMSjy8E65c
- jhViTSwrrsw9xCjBwawkwrvn+pVYId6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzVDA+ihQTSE0tS
- s1NTC1KLYLJMHJxSDYxuYe98YsMmP/d7XO3/US/7aO2FuzcXHuR+ZBT2mnkNMJXdKUo9f8H6
- ep+XQEv4/B/xPbez2sI++bJOTTNd8O6v9GSd9w/mbM9LCVvY37zg4s0zCn90JOcElgTM+bxa
- 9MDl7AeBZiyNTxL+bFtvtqVz9Sutjcs53D2d0wQ+6E47pZ8zUbjqT7cSS3FGoqEWc1FxIgDb
- RYBzYwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrMIsWRmVeSWpSXmKPExsVy+t/xe7r3716JNfg1hd9i5eqjTBYL9ltb
- nD+/gd1i0+NrrBadm7YyWsw4v4/J4tDUvYwWv7//Y7XYNms5m8XOOyeYLbo3nGV04Pa4fO0i
- s8emVZ1sHpuX1HtMvrGc0eP8jIWMHrtvNrB5bHy3g8lj8+lqj8+b5AI4o/RsivJLS1IVMvKL
- S2yVog0tjPQMLS30jEws9QyNzWOtjEyV9O1sUlJzMstSi/TtEvQypnT9Zy14z1Ix/0Q3SwPj
- R+YuRg4OCQETia+bDbsYuTiEBJYySsy+1QYU5wSKy0icnNbACmELS/y51sUGUfSaUeLavmcs
- IAlhATeJzf2zwRpEBJQknr46ywhSxCzQxixx+e9CZoiOX0wSPae+gFWxCRhKdL0FGcXJwStg
- J/Ht4W+wOIuAqsSOlf/BbFGBWInvKz8xQtQISpyc+QRsG6eAjsSrAxfB4swCZhLzNj9khrDl
- Jba/nQNli0vcejKfaQKj0Cwk7bOQtMxC0jILScsCRpZVjCKppcW56bnFRnrFibnFpXnpesn5
- uZsYgRG87djPLTsYu94FH2IU4GBU4uG1uHQ5Vog1say4MvcQowQHs5II757rV2KFeFMSK6tS
- i/Lji0pzUosPMZoCPTeRWUo0OR+YXPJK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5akZqem
- FqQWwfQxcXBKNTCuKUzeemrTzV1nk2dlxRrsle8MXHYv6RCP7OfpzsVKiUar+6OmPb6788+c
- 9b4LjhXG2InzFTGtvqy+uiFzTsiiK8tYF76+lqawe8vMpxfFlmk7nv2aVXV9m/zZhYdnvfgm
- 9I25OlG185IKd0/xxe36kSV2JqyeW54uSOWIm28k8lZRMsM4+esPJZbijERDLeai4kQAyEVB
- VfYCAAA=
-X-CMS-MailID: 20191120063159eucas1p24037006cafb00ad61296f27ecbeec8c7
-X-Msg-Generator: CA
+In-Reply-To: <2ae65d1b-a3eb-74ed-afce-c493de5bbfd3@kernel.dk>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ HQMAIL107.nvidia.com (172.20.187.13)
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20191113073648epcas3p214f97ad5937559bebbc937e507fa54d9
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20191113073648epcas3p214f97ad5937559bebbc937e507fa54d9
-References: <20191113073539.9660-1-hch@lst.de>
- <CGME20191113073648epcas3p214f97ad5937559bebbc937e507fa54d9@epcas3p2.samsung.com>
- <20191113073539.9660-2-hch@lst.de>
- <1c227c91-512c-e871-0e03-a27b2c0435d7@samsung.com>
- <CAJKOXPdM1+x_4PQ1AfoPY6GuV0e9bk3hv_1EfEdHcLjMwwYxgw@mail.gmail.com>
- <a3e2d65b-7270-9555-a251-d7ed0c4fb85c@samsung.com>
- <20191119164652.GA18983@lst.de>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1574233387; bh=ccH+u52vDWCSpx4Mj41DBPFk4Bnr7E1/buLUhbEm50I=;
+ h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=aoAjA12TDjtYHcqzP6KlOL/T+xFannzF2Ut7WBeMCWKWq7l/9YzjhnMxWFHzZfpR5
+ Iws/71eVjdglCRCFx0borbQjrcWdlbhRBVNYLCTSxJhf+kal1fvOFNYQqlhw4wL9J6
+ MFYFTVnA4OaNermjnVJWu68MlONq0QSjgN/vAiaH7Huv88r7BI/N2hl/4JJ3pl29Td
+ suI6xx3hgozM4FOPwAaNkBjGwwYRC1+cHh6/xlUHPqKTdx1Jisq/17DuqUYf/0K2Yd
+ KJ8+BKNAyQOQiWBn8l76F+wCEq0it7z2sVeN/sAFeVR43NYKvAY4EyGL+PsQeLhyI4
+ eAwjKJTXDphsw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -125,33 +75,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vinod Koul <vkoul@kernel.org>,
- Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
- linux-mips@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
- Russell King <linux@armlinux.org.uk>, iommu@lists.linux-foundation.org,
- linux-arm-kernel@lists.infradead.org, Robin Gong <yibin.gong@nxp.com>,
- linuxppc-dev@lists.ozlabs.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ linux-block@vger.kernel.org,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, netdev@vger.kernel.org,
+ Alex Williamson <alex.williamson@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On 11/19/19 8:10 AM, Jens Axboe wrote:
+> On 11/19/19 1:16 AM, John Hubbard wrote:
+>> Convert fs/io_uring to use the new pin_user_pages() call, which sets
+>> FOLL_PIN. Setting FOLL_PIN is now required for code that requires
+>> tracking of pinned pages, and therefore for any code that calls
+>> put_user_page().
+>>
+>> In partial anticipation of this work, the io_uring code was already
+>> calling put_user_page() instead of put_page(). Therefore, in order to
+>> convert from the get_user_pages()/put_page() model, to the
+>> pin_user_pages()/put_user_page() model, the only change required
+>> here is to change get_user_pages() to pin_user_pages().
+>>
+>> Reviewed-by: Jan Kara <jack@suse.cz>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> 
+> You dropped my reviewed-by now... Given the file, you'd probably want
+> to keep that.
 
-On 19.11.2019 17:46, Christoph Hellwig wrote:
-> On Tue, Nov 19, 2019 at 11:26:39AM +0100, Marek Szyprowski wrote:
->> Christoph: Let me know if this is a proper fix for you, then I will send
->> it as a full patch.
-> Besides the point from Robin, which is really older than you patch
-> I'm not a fan of duplicating dma_capable here.  Let me know what you
-> think of the two attached patches.
+Hi Jens,
 
-I'm fine with both patches.
+Yes, I was being too conservative I guess. I changed the patch somewhat
+and dropped the reviewed-by because of those changes...I'm adding it
+back for v7 based on this, thanks!
 
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-
-Best regards
+thanks,
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+John Hubbard
+NVIDIA
+ 
