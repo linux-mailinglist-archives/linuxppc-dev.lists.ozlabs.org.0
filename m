@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BC91031D7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 04:01:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B92D1031D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:59:42 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47HnV363RfzDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:59:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47HnXH5KF8zDqcL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 14:01:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="YIJVGIzt"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="LX/pRLm8"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWp0bydzDqC6
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWp5DhHzDqYC
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:31:02 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id b10so3952870pgd.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:31:01 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id q13so13347475pff.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:31:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=UaidDmEu9Tzprqu5tXP1Zr7LwpY+Irv7mTKxwkM+qbo=;
- b=YIJVGIztPuSpA6R7HNeTQQtxF6JU4VcczqbjK3kC6xqJLwEnlv5pKAgtUnpSL81xMq
- 4bzI/9Uj20vL8UfBUBO9Q3x7+JamM7cqKk9+/wUtQjwZDJG0gKuVpmUXeI8wG+TZTjpr
- igbiZ+DHrL2tHMB/BZ/uHORZwdsI1WYpa43nI3MLqmqfySFLjn7jeJ9WYCNVVBqI1smm
- fwjQkG8uCdkdhg6+VO4bAREU+PC9+qM+d+0M5fuUCxKM4OUeVkt01DSYEUV4Bx9igmku
- KdH9coKbmEYDI/rsrwJMBXrV+wUjSJ8F+nIebaWjWf4UDFVcv25wW5vQjm0NYXcNKEwP
- BDnA==
+ bh=2C0JWQmRvseosXGXzkaURoa7ehBtXNilHtvqRK9Jjxg=;
+ b=LX/pRLm8dk2Y3RlRSy8pdnj5ocTBzkMGXP5PfMKjlakN3D8zBb/jRKB+h7kUmPMQQQ
+ SQptub7AJNmTtIN5kABK3eVB0BgeFg4RavbD5itv+2NBXJaSXPB7gtxC9hXPiPvsAyRR
+ 7LM6ITM9nNy4eOmAX2US7ff1LM4k14vC2oXTvDVhWPtHPPQkp4EaIj8m+Gn/yW+eFYdM
+ vY9w48M46djaFDPgV0vypXOMlYK1j/qLKFIl9UBDQ+Hj7T+S3UvZ9V0d3MIVzKAA8izz
+ WVdumLx3vbrcEVnylV+NGVvAOrDtXB9hl43VPyr7DYmsUOuDtilG4HUG1hosSB33OwuI
+ YH4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=UaidDmEu9Tzprqu5tXP1Zr7LwpY+Irv7mTKxwkM+qbo=;
- b=sazqmfhKhMqxJWxt7dCOhBEOOc1soIFmwguu/e50U5xJzepG4JE+gELPJGW+bDdzAf
- 8Fk+dGFDrgvn31lqLCFm9m/SzgTD0jT4LzM/+hjf7ChMh3xFD8AZH4GZQf/fhie4IRw6
- lJJJH7X6/+SRqsxL3CdzuAo0JMEEHUFHuC5cw3MKAWbnQIvuCoSmPhlObBPxBxyZblG5
- B+xNoeYaHQwVwLQIk30JkQD0WlkEqYziL/jcXjUQmn93DkZTNie8yQoy+c1ZDMzI9k1Z
- 008RopaUXudyrG3YhmGWEeK1zaUpfM/fpB4DNwk0M53BfOJxTzJ8ltqO4vMQGvd7Q/pu
- 1+ug==
-X-Gm-Message-State: APjAAAUJZA9abMn2yPByH2g6vcPDqnKyxvfKeG/g/pABxF5eDFW0BmPd
- bNrbxjF6qw5SSRCKbTMChJwDWacN
-X-Google-Smtp-Source: APXvYqzvpdDUtx6EZ4E3WAVBP39HK4OhWw+XWDckDwt7bRbPJ5xBTAU+AydJSjZ9P9TKN01xrW57Mw==
-X-Received: by 2002:aa7:80d2:: with SMTP id a18mr762511pfn.29.1574213458367;
- Tue, 19 Nov 2019 17:30:58 -0800 (PST)
+ bh=2C0JWQmRvseosXGXzkaURoa7ehBtXNilHtvqRK9Jjxg=;
+ b=V1PyaOMhvCQhAWH22pzTnCdp8LhMExyPdBjcfL4gPrQwvQdtaYpNZ97zodwldAuH8c
+ k3sYTObef7f6Yn/nwMtLTDSEerCt5gT2hVV2FRPWdWLYL9EiWzHvrtyjiYvajIMFWkUc
+ KALeXfeJNUlk1VU1Wq68DEb/kECyrEyPa4A2TnFcB4iaZBMd1hzu4DE0p3arBFBW2sQ0
+ fBW8e1hY5tqO1+iDyA45sEMkdzWWVsf2iOLpS/7Q5f8rD6SxbG1o4QuObYeNTCfhCt7o
+ UHQ4doQSzdjI1JopTPsAVwjto/zyUx2gZb1hI6qFF+fnp7gtEAthL/vDQgQNf/ozrP94
+ 4FeQ==
+X-Gm-Message-State: APjAAAWGqYRVtjpzW96ZwQFfguIT0ruc1U1Rlqs1Q+uyxADELdjFBJRX
+ Agv619O7FX8Qb3XekPIAALrX49y3
+X-Google-Smtp-Source: APXvYqywm9MezI4F/j1nUQdvStrrtzA3Uu2sNVtlZY6X+5XWJ/BNAhsGcf3ewaIA0uqcxNQvWAZk0g==
+X-Received: by 2002:a63:e316:: with SMTP id f22mr191873pgh.102.1574213460592; 
+ Tue, 19 Nov 2019 17:31:00 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.56
+ by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2019 17:30:58 -0800 (PST)
+ Tue, 19 Nov 2019 17:31:00 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Very RFC 45/46] powernv/pci: Remove requirement for a pdn in config
- accessors
-Date: Wed, 20 Nov 2019 12:28:58 +1100
-Message-Id: <20191120012859.23300-46-oohall@gmail.com>
+Subject: [Very RFC 46/46] HACK: prevent pdn's from being created
+Date: Wed, 20 Nov 2019 12:28:59 +1100
+Message-Id: <20191120012859.23300-47-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191120012859.23300-1-oohall@gmail.com>
 References: <20191120012859.23300-1-oohall@gmail.com>
@@ -85,52 +84,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-:toot:
-
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Not-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/pci.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/powerpc/kernel/pci_dn.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-index 0eeea8652426..6383dcfec606 100644
---- a/arch/powerpc/platforms/powernv/pci.c
-+++ b/arch/powerpc/platforms/powernv/pci.c
-@@ -750,17 +750,12 @@ static int pnv_pci_read_config(struct pci_bus *bus,
- 			       unsigned int devfn,
- 			       int where, int size, u32 *val)
- {
--	struct pci_dn *pdn;
- 	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
- 	u16 bdfn = bus->number << 8 | devfn;
+diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+index f790a8d06f50..0e05c1d7633a 100644
+--- a/arch/powerpc/kernel/pci_dn.c
++++ b/arch/powerpc/kernel/pci_dn.c
+@@ -289,6 +289,9 @@ struct pci_dn *pci_add_device_node_info(struct pci_controller *hose,
  	struct eeh_dev *edev;
- 	int ret;
+ #endif
  
- 	*val = 0xFFFFFFFF;
--	pdn = pci_get_pdn_by_devfn(bus, devfn);
--	if (!pdn)
--		return PCIBIOS_DEVICE_NOT_FOUND;
--
- 	edev = pnv_eeh_find_edev(phb, bdfn);
- 	if (!pnv_eeh_pre_cfg_check(edev))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
-@@ -781,16 +776,11 @@ static int pnv_pci_write_config(struct pci_bus *bus,
- 				unsigned int devfn,
- 				int where, int size, u32 val)
- {
--	struct pci_dn *pdn;
- 	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
- 	u16 bdfn = bus->number << 8 | devfn;
- 	struct eeh_dev *edev;
- 	int ret;
- 
--	pdn = pci_get_pdn_by_devfn(bus, devfn);
--	if (!pdn)
--		return PCIBIOS_DEVICE_NOT_FOUND;
--
- 	edev = pnv_eeh_find_edev(phb, bdfn);
- 	if (!pnv_eeh_pre_cfg_check(edev))
- 		return PCIBIOS_DEVICE_NOT_FOUND;
++	pr_err("skipping adding pdn for %pOF\n", dn);
++	return NULL;
++
+ 	pdn = kzalloc(sizeof(*pdn), GFP_KERNEL);
+ 	if (pdn == NULL)
+ 		return NULL;
 -- 
 2.21.0
 
