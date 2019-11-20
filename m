@@ -1,49 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0B51038B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 12:30:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47J0pt0sGkzDqcG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 22:29:58 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D04103A4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:45:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47J2VN4DKqzDqrs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 23:45:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47J0mM1V1FzDqcG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 22:27:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47J2Ql72qvzDqrX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 23:42:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.b="bW6nm99p"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 47J0mL6vvgz9sPc; Wed, 20 Nov 2019 22:27:46 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 47J0mL5x9bz9sPf; Wed, 20 Nov 2019 22:27:46 +1100 (AEDT)
+ header.b="EBZkrwVU"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47J2Qk27HHz9sPV;
+ Wed, 20 Nov 2019 23:42:37 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1574249266;
- bh=Jduwe2SsdV67P5EeS5nGje6t3g/X5IPOQjA2coFz4+k=;
- h=From:To:Cc:Subject:Date:From;
- b=bW6nm99pIXRpwMDjMFq17gWi5zmu6Zwvz91wjIUjb63592//GMMaCZWsipe1xu1y6
- 1lgtRyEPDCmoSsyDB/SGlAlV90jzaO2fBrokmEZHNSOxemoSyGVldvLvJXz6t7Bl+G
- qJqXwdm/IrdDvjyAsUFsUpbx/gvYkhIe6hi//HDHX/+UknJEs9p3kHLDxEoCdqoXQU
- tOhM9gWgwiw5xNjov9Yxe9eWQLu2+PX514DYqDGlx+4N1bAx+t/eRa9Bu/xT7eEx1e
- ZDN32qYHi2TszuyXhyj65YgZAgMyrHnnI1HsNn4gZf63TguP1pm+1r1Nj5ODE0QIEx
- QUa44QqHSJVBA==
+ s=201909; t=1574253758;
+ bh=kcB8hU0HApS87lVWCCHWC6nJNpbOngygsjnom0C++ZU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=EBZkrwVUi4jpHNMaaKB8rHY2iUV/HY5vFnwmddANH5qGJr+iDp4mmSf3jNen0ONcb
+ Y7Zqxv6GkQ+rUYNPL8HncFyFXXL7uVK8L32v3crpLLGVuU27dUBO+LMy0Z1BveYSYN
+ 6+vDpq63rLf8oqAHDm93S9nP9Li3v46hcXzwgtnJyXgN2hHbVO6CNiEHO2gn4ZsaYL
+ znYEep/9PWGWGdbsLAyfsG+R6RWT/Uy6jkUchpi4ZGVUG0dXqHBcm8XaJ4L/9Yc2vG
+ kLj0L8HZWpxaYtg9dE4ga8N0KWfO874d24txUZD/fio9LMJmIevrFcGAocW76EyjW5
+ GWk86pF754YOA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: herbert@gondor.apana.org.au,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH] crypto: vmx - Avoid weird build failures
-Date: Wed, 20 Nov 2019 22:27:38 +1100
-Message-Id: <20191120112738.7031-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v3 2/8] powerpc/vdso32: Add support for
+ CLOCK_{REALTIME/MONOTONIC}_COARSE
+In-Reply-To: <4644ccc9b4da78639ae9424db878c48711abf05a.1572342582.git.christophe.leroy@c-s.fr>
+References: <cover.1572342582.git.christophe.leroy@c-s.fr>
+ <4644ccc9b4da78639ae9424db878c48711abf05a.1572342582.git.christophe.leroy@c-s.fr>
+Date: Wed, 20 Nov 2019 23:42:33 +1100
+Message-ID: <87eey2btxi.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,64 +60,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, yamada.masahiro@socionext.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the vmx crypto Makefile we assign to a variable called TARGET and
-pass that to the aesp8-ppc.pl and ghashp8-ppc.pl scripts.
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> This is copied and adapted from commit 5c929885f1bb ("powerpc/vdso64:
+> Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
+> from Santosh Sivaraj <santosh@fossix.org>
+>
+> Benchmark from vdsotest-all:
+> clock-gettime-realtime: syscall: 3601 nsec/call
+> clock-gettime-realtime:    libc: 1072 nsec/call
+> clock-gettime-realtime:    vdso: 931 nsec/call
+> clock-gettime-monotonic: syscall: 4034 nsec/call
+> clock-gettime-monotonic:    libc: 1213 nsec/call
+> clock-gettime-monotonic:    vdso: 1076 nsec/call
+> clock-gettime-realtime-coarse: syscall: 2722 nsec/call
+> clock-gettime-realtime-coarse:    libc: 805 nsec/call
+> clock-gettime-realtime-coarse:    vdso: 668 nsec/call
+> clock-gettime-monotonic-coarse: syscall: 2949 nsec/call
+> clock-gettime-monotonic-coarse:    libc: 882 nsec/call
+> clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
+>
+> Additional test passed with:
+> 	vdsotest -d 30 clock-gettime-monotonic-coarse verify
 
-The variable is meant to describe what flavour of powerpc we're
-building for, eg. either 32 or 64-bit, and big or little endian.
+This broke on 64-bit big endian, which uses the 32-bit VDSO, with errors
+like:
 
-Unfortunately TARGET is a fairly common name for a make variable, and
-if it happens that TARGET is specified as a command line parameter to
-make, the value specified on the command line will override our value.
+  clock-gettime-monotonic-coarse/verify: 10 failures/inconsistencies encountered
+  timestamp obtained from libc/vDSO not normalized:
+  	[-1574202155, 1061008673]
+  timestamp obtained from libc/vDSO predates timestamp
+  previously obtained from kernel:
+  	[74, 261310747] (kernel)
+  	[-1574202155, 1061008673] (vDSO)
+  timestamp obtained from libc/vDSO not normalized:
+  	[-1574202155, 1061008673]
+  timestamp obtained from libc/vDSO predates timestamp
+  previously obtained from kernel:
+  	[74, 261310747] (kernel)
+  	[-1574202155, 1061008673] (vDSO)
+  timestamp obtained from libc/vDSO not normalized:
+  	[-1574202155, 1061008673]
+  timestamp obtained from libc/vDSO predates timestamp
+  previously obtained from kernel:
+  	[74, 261310747] (kernel)
+  	[-1574202155, 1061008673] (vDSO)
+  timestamp obtained from libc/vDSO not normalized:
+  	[-1574202155, 1061008673]
+  timestamp obtained from libc/vDSO predates timestamp
+  previously obtained from kernel:
+  	[74, 261310747] (kernel)
+  	[-1574202155, 1061008673] (vDSO)
+  timestamp obtained from libc/vDSO not normalized:
+  	[-1574202155, 1061008673]
+  timestamp obtained from libc/vDSO predates timestamp
+  previously obtained from kernel:
+  	[74, 261310747] (kernel)
+  	[-1574202155, 1061008673] (vDSO)
+  Failure threshold (10) reached; stopping test.
 
-In particular this can happen if the kernel Makefile is driven by an
-external Makefile that uses TARGET for something.
 
-This leads to weird build failures, eg:
-  nonsense  at /build/linux/drivers/crypto/vmx/ghashp8-ppc.pl line 45.
-  /linux/drivers/crypto/vmx/Makefile:20: recipe for target 'drivers/crypto/vmx/ghashp8-ppc.S' failed
+The diff below seems to fix it, but I'm not sure it's correct. ie. we
+just ignore the top part of the values, how does that work?
 
-Which shows that we passed an empty value for $(TARGET) to the perl
-script, confirmed with make V=1:
+cheers
 
-  perl /linux/drivers/crypto/vmx/ghashp8-ppc.pl  > drivers/crypto/vmx/ghashp8-ppc.S
 
-We can avoid this confusion by using override, to tell make that we
-don't want anything to override our variable, even a value specified
-on the command line. We can also use a less common name, given the
-script calls it "flavour", let's use that.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- drivers/crypto/vmx/Makefile | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/crypto/vmx/Makefile b/drivers/crypto/vmx/Makefile
-index cab32cfec9c4..709670d2b553 100644
---- a/drivers/crypto/vmx/Makefile
-+++ b/drivers/crypto/vmx/Makefile
-@@ -3,13 +3,13 @@ obj-$(CONFIG_CRYPTO_DEV_VMX_ENCRYPT) += vmx-crypto.o
- vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes_xts.o ghash.o
+diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
+index decd263c16e0..58f7e1124d92 100644
+--- a/arch/powerpc/kernel/vdso32/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
+@@ -16,9 +16,11 @@
+ #ifdef CONFIG_PPC64
+ #define LOPART 4
+ #define TSPEC_TV_SEC   TSPC64_TV_SEC+LOPART
++#define TSPEC_TV_NSEC  TSPC64_TV_NSEC+LOPART
+ #else
+ #define LOPART 0
+ #define TSPEC_TV_SEC   TSPC32_TV_SEC
++#define TSPEC_TV_NSEC  TSPC32_TV_NSEC
+ #endif
  
- ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
--TARGET := linux-ppc64le
-+override flavour := linux-ppc64le
- else
--TARGET := linux-ppc64
-+override flavour := linux-ppc64
- endif
+        .text
+@@ -131,8 +133,8 @@ V_FUNCTION_BEGIN(__kernel_clock_gettime)
+         * CLOCK_REALTIME_COARSE, below values are needed for MONOTONIC_COARSE
+         * too
+         */
+-       lwz     r3,STAMP_XTIME+TSPC32_TV_SEC(r9)
+-       lwz     r4,STAMP_XTIME+TSPC32_TV_NSEC(r9)
++       lwz     r3,STAMP_XTIME+TSPEC_TV_SEC(r9)
++       lwz     r4,STAMP_XTIME+TSPEC_TV_NSEC(r9)
+        bne     cr6,1f
  
- quiet_cmd_perl = PERL $@
--      cmd_perl = $(PERL) $(<) $(TARGET) > $(@)
-+      cmd_perl = $(PERL) $(<) $(flavour) > $(@)
- 
- targets += aesp8-ppc.S ghashp8-ppc.S
- 
--- 
-2.21.0
+        /* CLOCK_MONOTONIC_COARSE */
+
 
