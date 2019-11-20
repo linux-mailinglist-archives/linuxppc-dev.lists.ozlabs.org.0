@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A86E1031B0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:40:11 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Hn3X6ksgzDqWk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:40:08 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F511031B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 03:42:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Hn5q1JPQzDqq8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Nov 2019 13:42:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="EgKLJK0E"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="a3aSVWA2"; 
  dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWL0tjkzDqfc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:30:38 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id ep1so3434527pjb.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:30:38 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47HlWN4vTwzDqg3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 12:30:40 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id s5so13335317pfh.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2019 17:30:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=RlbfbbTXz8uUVdyqhIAHDB23vG2GFDmElD045mucULw=;
- b=EgKLJK0EV4P95j6tbvkCkeoxD0JcnwLXPt8fRnfO6QWZoed3/sxk1iQEzwxATwIeSI
- pIbtCBEQTzwZ7LVneLyGCFupEY59qyOIvZ+L4+fHf6dMuDGO9nXUmxysBm7O4PS+8gOt
- UEFK2rcCsmxhLKI1aLKpOKFknQSp3rsUP55uYPFLZ9Z/qi6XW3gmnpc/43jj4u0QqnB7
- xFY4OJcnn6wg5GeBoIrOJpolv08VISd5G1sfZJxHG+o6mTCYzRT72dyXUfWH9YZ427PV
- H70puVv7DzwdgPxWKVQ2u9aK6WjJziZFR8NJlT3E8vGbaeoxMlxsgVWUgyfCLQzV9Oa4
- iNuA==
+ bh=p440ekzN6TqXWdQ7LLj3Fue1KhAiLu6MRI0SMCG63mM=;
+ b=a3aSVWA2iPezUwWWeB3CMgnytlE8XjHD7+r4QxuTifDcCczZGBMuumvfxyvfJukWMq
+ dGx8LG+O4hgpkHluRszG4F5Ik17rMX5urHk7H122Tp8slPuam4CdwlB1aHYBh5qEFzL0
+ UfJz37XfGtd/a2jL54YOxvDO7Wld32seJfxzDeb36uCFtPHgJexKcdFAdgI5Qad1cLOH
+ V2MlUbmumrn3k/tig+kEUf6V6cLcWwtuEFG3ai4qtC3ZqJRyWkjn5IzERWyLhdoL30O2
+ 9GU3m/xMMM+Jzxj8+Drm0CTs+iIfT+NeqxawyZc7vDABxlJaM7AFGTEqthCNQ/789k2B
+ oNHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=RlbfbbTXz8uUVdyqhIAHDB23vG2GFDmElD045mucULw=;
- b=EVPfLG2d7Y+NpAm8iTmpN7dzT2PjxG2xo8y0NvAlDZ6Hs3lOpZUitmxXAmLlMaQFvh
- fe7LRyZABWmOmdQCg5yQvvdlILUV/bYSgCWjNHe4m/KmdK8uQMBdJw0nfm7qTvtlxmOQ
- v/t6EzCwi/8gCc31FvpF36/p5o9ydsPmEl9eTeC+A/zMhKrmLr1IYBirI+JRpKeVGzlL
- RtHaAeQ4MN/2nITzikXuG79YA9zZrnXhtUBnIozLonuOoPqZeYDmgLPl5N9sXtvCLm1h
- RDndj0LvLMjOBGQHwNb/yx1Nz5JYKil+7wr+4Bc/3s5yYDVm9xIxVj9gthUxTSlElUcN
- SPsg==
-X-Gm-Message-State: APjAAAUPYF7GuhIXwa4ntofSa8XI1jNfV0Y8pxbN7S7xMqmyIjPPMn4B
- BLHFQjWgHzeVV1CzJXhah1ibd3wf
-X-Google-Smtp-Source: APXvYqxp95Joy1XIt6oIdhdU8yfuTVClPclnX9nAjwhMx9oyvrxKEjsAmvWsm209tVDFd+UKXSYbrg==
-X-Received: by 2002:a17:902:a70f:: with SMTP id
- w15mr223626plq.263.1574213435105; 
- Tue, 19 Nov 2019 17:30:35 -0800 (PST)
+ bh=p440ekzN6TqXWdQ7LLj3Fue1KhAiLu6MRI0SMCG63mM=;
+ b=XpYNhWFUHOouLFfrX/pQ/ts05rFKpfdaL3g03zWD2RSf1vVEImIbSBIIRyHWjjRhkI
+ JC2uyXHFKh6SsWIoV3c+7jM/lENwYZVgVxFdEWri3StLQviHXim6KOZFYKclt08Bw37R
+ qjH6Dw6kcN2avF5sT07KQH3OTHdkCRWaCY/fhWNjr1wSwN5ezYf+EKqhbPetPbGlfuy+
+ Tljxyrrwz11VCU7x8vq8RqC/grEgipdjIaGAsT0qg7u5zTepMUMHDHZwC9Mj6kKNkrV/
+ bfB8V/X3VJ8IKaG8GFPZpOLBcUGkfUy2QazSeN/JLXrq7lnY0GWoEQIUKaVvAfzeVQjI
+ kq5w==
+X-Gm-Message-State: APjAAAWQ/wZb9tkW74ltPdUlm9G4wjPlDDjvlwM5/sDSKhpto1rz8lcP
+ MK5iebqrQltBYCTpQ32rmw893Vt2
+X-Google-Smtp-Source: APXvYqwU2ZemD0FtvDPn2HIREBz1vllDtQ2c2zBOiAmV9HCdm3L+9HLcdshUNbAdGvsiqYLdusSnTg==
+X-Received: by 2002:a63:1042:: with SMTP id 2mr174005pgq.59.1574213437609;
+ Tue, 19 Nov 2019 17:30:37 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.33
+ by smtp.gmail.com with ESMTPSA id b24sm26662116pfi.148.2019.11.19.17.30.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Nov 2019 17:30:34 -0800 (PST)
+ Tue, 19 Nov 2019 17:30:37 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Very RFC 35/46] powernv/pci: Remove open-coded PE lookup in
- pnv_pci_release_device
-Date: Wed, 20 Nov 2019 12:28:48 +1100
-Message-Id: <20191120012859.23300-36-oohall@gmail.com>
+Subject: [Very RFC 36/46] powernv/npu: Remove open-coded PE lookup for GPU
+ device
+Date: Wed, 20 Nov 2019 12:28:49 +1100
+Message-Id: <20191120012859.23300-37-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191120012859.23300-1-oohall@gmail.com>
 References: <20191120012859.23300-1-oohall@gmail.com>
@@ -88,38 +87,41 @@ Sender: "Linuxppc-dev"
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/powernv/npu-dma.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 4f38652c7cd7..8525642b1256 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -3562,14 +3562,14 @@ static void pnv_ioda_release_pe(struct pnv_ioda_pe *pe)
- static void pnv_pci_release_device(struct pci_dev *pdev)
+diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+index b95b9e3c4c98..68bfaef44862 100644
+--- a/arch/powerpc/platforms/powernv/npu-dma.c
++++ b/arch/powerpc/platforms/powernv/npu-dma.c
+@@ -97,25 +97,16 @@ EXPORT_SYMBOL(pnv_pci_get_npu_dev);
+ static struct pnv_ioda_pe *get_gpu_pci_dev_and_pe(struct pnv_ioda_pe *npe,
+ 						  struct pci_dev **gpdev)
  {
- 	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
-+	struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
- 	struct pci_dn *pdn = pci_get_pdn(pdev);
--	struct pnv_ioda_pe *pe;
+-	struct pnv_phb *phb;
+-	struct pci_controller *hose;
+ 	struct pci_dev *pdev;
+ 	struct pnv_ioda_pe *pe;
+-	struct pci_dn *pdn;
  
- 	/* The VF PE state is torn down when sriov_disable() is called */
- 	if (pdev->is_virtfn)
- 		return;
+ 	pdev = pnv_pci_get_gpu_dev(npe->pdev);
+ 	if (!pdev)
+ 		return NULL;
  
--	if (!pdn || pdn->pe_number == IODA_INVALID_PE)
-+	if (WARN_ON(!pe))
- 		return;
- 
- 	/*
-@@ -3588,7 +3588,6 @@ static void pnv_pci_release_device(struct pci_dev *pdev)
- 	 * be increased on adding devices. It leads to unbalanced PE's device
- 	 * count and eventually make normal PCI hotplug path broken.
- 	 */
+-	pdn = pci_get_pdn(pdev);
+-	if (WARN_ON(!pdn || pdn->pe_number == IODA_INVALID_PE))
+-		return NULL;
+-
+-	hose = pci_bus_to_host(pdev->bus);
+-	phb = hose->private_data;
 -	pe = &phb->ioda.pe_array[pdn->pe_number];
- 	pdn->pe_number = IODA_INVALID_PE;
++	pe = pnv_ioda_get_pe(pdev);
  
- 	WARN_ON(--pe->device_count < 0);
+-	if (gpdev)
++	if (pe && pdev)
+ 		*gpdev = pdev;
+ 
+ 	return pe;
 -- 
 2.21.0
 
