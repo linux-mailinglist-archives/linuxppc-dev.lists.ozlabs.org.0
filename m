@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0453D104965
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 04:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD4C10496D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 04:52:00 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JQLJ6HRBzDqtG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 14:40:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JQbx1fxszDqp7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 14:51:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="QZhAry7k"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="yo/sLPdc"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47JQJc2f2LzDqnZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 14:38:38 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id h27so877859pgn.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 19:38:38 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JQZF5TRSzDqng
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 14:50:28 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id y21so816335pjn.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 19:50:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=/7JkYiMPEHh03HtLL3M8ZiXc5ntcJb3nHh+ttw88HRU=;
- b=QZhAry7kERxY9ykFCu4SWYPW2SqARJv7wVx+VjXZg6OWTObAXP0vvgXyr9VH9Rij0p
- ZlnL/FBNtKEP48oHZCKwr05jxFiDlGauIS6OBiVtiNYC0iZmLXbkkffcL39O9U4PB4BX
- lyH641hH73QsxgaPDtJqeWnqxyLxSW1f7ESlKhDgyxFyAZfFe/yQ70zC6nlG3vf3/9N8
- ZkAaf140Y43dPoUp5BbIdYgszd1U8LQcoTg6jmPJCNIwO3MjYPON7mfOTp4mrVFsn14d
- fqVptczmrzWLQN8cPWt82VQ6oMK3ndEk0VssGm3QRU2da5r94JwAV04sqf1ys04TvNNc
- 7aHw==
+ bh=STURaD0ixqOxW/ioFF3kk8EoUsTNkbfj5gnfwAGUDtM=;
+ b=yo/sLPdcka+mVr8Y56X2jthlk1a9JsSAyqwU9ETctal/JFUCJxlxc7rXKENH0B+F6I
+ XcO/OAcZSIUYEQIyDLex9KUV4rzr23gRlCyqKmtfKxOF68w7DXts8mtR4NjS+W7tmxdz
+ A2dYZ8I0WszknBt/fs1gJsOWcTbJn7lhe7K4Lri+JmXWlKoOQy1Dmau0ZXb7xNJeTi1a
+ hRc01L41yrN78kty3lQMbnPd3YuQ5CuGpM/tWDdnOnrf2tcJytTlzq7IziLGhPcOhp1Z
+ o5NW54n+jTbRz3IMFq79llQqpkDi07Og3j5iXQPc46LEY37mZ2+NFjbEj8d0/OfqcV3G
+ +fHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=/7JkYiMPEHh03HtLL3M8ZiXc5ntcJb3nHh+ttw88HRU=;
- b=L14cPl8l2IHUKZ/M85HWjsTucptLtgIxU23n8iaBpZEwaoQWVnyw+1tnTtdygrX3v2
- cX1avToNjRjIq4dj6AIQqdXArmtP6ag5Oq4gwVQ78m3d9PCAK9jK7TyXoubhhIZoy0k9
- bCs+3XmbTKVBK6AM5sPN7psGQlX9C5a/dPZXsFgN0cyjJqMpx5Z2eriD5EWLE/11mTQP
- ZCmlhntQPT3qXtHEH4B2DvnweSfPPIJEbOhAzut1rw4/fSZL5iSys0WbKZVAfS/x7/wH
- nY/dJVYCTH0NWjOcypJcEDhhBnAy01KAhMdOurv/xWKBG0sORo6po3H9WUEulD4mVJ7n
- q/YQ==
-X-Gm-Message-State: APjAAAV+TDlVeQ2hRpWUsE08I/lUITx+S2lTDhnHC3B2Ni80eE1r+jC1
- JmFK/65h6d/cecdVjeHDZ5wuQg==
-X-Google-Smtp-Source: APXvYqwhyBRJKdGQrxqBoXr7rfWP0V71KYcMgFisH6QZsiAXbtstumjmcTN2jzx+Q3qEEPhN/gd0FQ==
-X-Received: by 2002:a65:4cc9:: with SMTP id n9mr7281552pgt.426.1574307514661; 
- Wed, 20 Nov 2019 19:38:34 -0800 (PST)
+ bh=STURaD0ixqOxW/ioFF3kk8EoUsTNkbfj5gnfwAGUDtM=;
+ b=j6GstHkv3aqlaRca7T5I1gOLCMXONNWDrzoDn7knbwmNI9++ZgEmoY6OQKS5hvnsOL
+ 9hAyAvrvEPPd4G+to7HG8xKTh/Y59Ahc/FqGgBP1yb3MtrFMx2cPPdPlp6uydYyvv4Pz
+ hHw0k8XyIkP3dYZMBDWRuRTjUUDfMKFm7W8muZ81NSroDn+WaEvVHN/JjChocDRUWVfv
+ ysGq/kKuY0PaCRuefNWAfudBibDFthDxocd3f131HUaqxCDI+Y+9EE3rAINErV0dgi2o
+ 7+3f5Enn8v4M/uQDBUxClzWnH7oHaBiD2VoGNgDH4u3X2klLO1aPjfIjaL9Swf4bO54x
+ x3Fw==
+X-Gm-Message-State: APjAAAXh/BMLecYfidQhD/qIK3vyNj/exUcAVFXX4X3uUPAkLW75KsCf
+ +ylQc2V7vPzqV6g9FQtAYblPKw==
+X-Google-Smtp-Source: APXvYqwwY6LcCdTxXK0MPVzestExAEg1NfH25j/SddklH/1H0kPoLjcJ06XNVPxP0KqnjFv/JG3TfQ==
+X-Received: by 2002:a17:902:202:: with SMTP id 2mr6502458plc.63.1574308225112; 
+ Wed, 20 Nov 2019 19:50:25 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id j126sm935125pfg.4.2019.11.20.19.38.32
+ by smtp.gmail.com with ESMTPSA id q26sm932475pff.143.2019.11.20.19.50.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Nov 2019 19:38:33 -0800 (PST)
-Subject: Re: [Very RFC 01/46] powerpc/eeh: Don't attempt to restore VF config
- space after reset
+ Wed, 20 Nov 2019 19:50:24 -0800 (PST)
+Subject: Re: [Very RFC 37/46] powernv/pci: Use the PHB's rmap for
+ pnv_ioda_to_pe()
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-2-oohall@gmail.com>
+ <20191120012859.23300-38-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -139,12 +139,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <3c3431d7-98ea-b3d1-b815-a020a480db98@ozlabs.ru>
-Date: Thu, 21 Nov 2019 14:38:29 +1100
+Message-ID: <b5d37566-af3f-2fc1-a56d-7cb25c833c05@ozlabs.ru>
+Date: Thu, 21 Nov 2019 14:50:21 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-2-oohall@gmail.com>
+In-Reply-To: <20191120012859.23300-38-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -167,220 +167,47 @@ Sender: "Linuxppc-dev"
 
 
 On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> After resetting a VF we call eeh_restore_vf_config() to restore several
-> registers in the VFs config space. For physical functions this is normally
-> handled by the pci_reinit_device() OPAL call which requests firmware to
-> re-program the device with whatever defaults were set at boot time. We
-> can't use that for VFs since OPAL (being firmware) doesn't know (or care)
-> about VFs.
-> 
-> However, the fields that are restored here are all marked as reserved for
-> VFs in the SR-IOV spec. In other words, eeh_restore_vf_config() doesn't
-> actually do anything.
-> 
-> There is an argument to be made that we should be saving and restoring
-> some of these fields since they are marked as "Reserved, but Preserve"
-> (ResvP) to allow these fields to be used in new versions of the SR-IOV.
-> However, the current code doesn't even do that properly since it assumes
-> they can be set to whatever the EEH core has assumed to be correct. If
-> the fields *are* used in future versions of the SR-IOV spec this code
-> is still broken since it doesn't take into account any changes made
-> by the driver, or the Linux IOV core.
-> Given the above, just delete the code. It's broken, it's mis-leading,
-> and it's getting in the way of doing useful cleanups.
+> Rather than using the pdn->pe_number for a device as an index into the
+> IODA PE array we can use the reverse map. This maps the RID (i.e. bdfn)
+> to the PE number associated with it. Firmware maintains a copy of the
+> rmap which is used by the hardware for determining which PE to use
+> when handling a DMA so this gets us a bit closer to the model used
+> by the HW, which is comprehensible by mortals, rather than... whatever
+
+s/comprensible/comprehensible/ ?
+
+> the hell is going on currently.
 
 
-There is still a prototype for this in arch/powerpc/include/asm/eeh.h,
-and pci_dn::mps as well.
-
-
-With the history of this explained offline,
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
+Merge this into 02/46?
 
 
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 > ---
->  arch/powerpc/kernel/eeh.c                    | 59 --------------------
->  arch/powerpc/platforms/powernv/eeh-powernv.c | 39 +++----------
->  arch/powerpc/platforms/pseries/eeh_pseries.c | 26 +--------
->  3 files changed, 8 insertions(+), 116 deletions(-)
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index ae0a9c421d7b..a3b93db972fc 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -742,65 +742,6 @@ static void eeh_restore_dev_state(struct eeh_dev *edev, void *userdata)
->  		pci_restore_state(pdev);
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index 8525642b1256..d111a50fbe68 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -672,13 +672,9 @@ struct pnv_ioda_pe *__pnv_ioda_get_pe(struct pnv_phb *phb, u16 bdfn)
+>  struct pnv_ioda_pe *pnv_ioda_get_pe(struct pci_dev *dev)
+>  {
+>  	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
+> -	struct pci_dn *pdn = pci_get_pdn(dev);
+> +	u16 bdfn = (dev->bus->number << 8) | dev->devfn;
+>  
+> -	if (!pdn)
+> -		return NULL;
+> -	if (pdn->pe_number == IODA_INVALID_PE)
+> -		return NULL;
+> -	return &phb->ioda.pe_array[pdn->pe_number];
+> +	return __pnv_ioda_get_pe(phb, bdfn);
 >  }
 >  
-> -int eeh_restore_vf_config(struct pci_dn *pdn)
-> -{
-> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
-> -	u32 devctl, cmd, cap2, aer_capctl;
-> -	int old_mps;
-> -
-> -	if (edev->pcie_cap) {
-> -		/* Restore MPS */
-> -		old_mps = (ffs(pdn->mps) - 8) << 5;
-> -		eeh_ops->read_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
-> -				     2, &devctl);
-> -		devctl &= ~PCI_EXP_DEVCTL_PAYLOAD;
-> -		devctl |= old_mps;
-> -		eeh_ops->write_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
-> -				      2, devctl);
-> -
-> -		/* Disable Completion Timeout if possible */
-> -		eeh_ops->read_config(pdn, edev->pcie_cap + PCI_EXP_DEVCAP2,
-> -				     4, &cap2);
-> -		if (cap2 & PCI_EXP_DEVCAP2_COMP_TMOUT_DIS) {
-> -			eeh_ops->read_config(pdn,
-> -					     edev->pcie_cap + PCI_EXP_DEVCTL2,
-> -					     4, &cap2);
-> -			cap2 |= PCI_EXP_DEVCTL2_COMP_TMOUT_DIS;
-> -			eeh_ops->write_config(pdn,
-> -					      edev->pcie_cap + PCI_EXP_DEVCTL2,
-> -					      4, cap2);
-> -		}
-> -	}
-> -
-> -	/* Enable SERR and parity checking */
-> -	eeh_ops->read_config(pdn, PCI_COMMAND, 2, &cmd);
-> -	cmd |= (PCI_COMMAND_PARITY | PCI_COMMAND_SERR);
-> -	eeh_ops->write_config(pdn, PCI_COMMAND, 2, cmd);
-> -
-> -	/* Enable report various errors */
-> -	if (edev->pcie_cap) {
-> -		eeh_ops->read_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
-> -				     2, &devctl);
-> -		devctl &= ~PCI_EXP_DEVCTL_CERE;
-> -		devctl |= (PCI_EXP_DEVCTL_NFERE |
-> -			   PCI_EXP_DEVCTL_FERE |
-> -			   PCI_EXP_DEVCTL_URRE);
-> -		eeh_ops->write_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
-> -				      2, devctl);
-> -	}
-> -
-> -	/* Enable ECRC generation and check */
-> -	if (edev->pcie_cap && edev->aer_cap) {
-> -		eeh_ops->read_config(pdn, edev->aer_cap + PCI_ERR_CAP,
-> -				     4, &aer_capctl);
-> -		aer_capctl |= (PCI_ERR_CAP_ECRC_GENE | PCI_ERR_CAP_ECRC_CHKE);
-> -		eeh_ops->write_config(pdn, edev->aer_cap + PCI_ERR_CAP,
-> -				      4, aer_capctl);
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  /**
->   * pcibios_set_pcie_reset_state - Set PCI-E reset state
->   * @dev: pci device struct
-> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> index ef727ecd99cd..b2ac4130fda7 100644
-> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> @@ -1649,20 +1649,13 @@ static int pnv_eeh_restore_config(struct pci_dn *pdn)
->  	if (!edev)
->  		return -EEXIST;
->  
-> -	/*
-> -	 * We have to restore the PCI config space after reset since the
-> -	 * firmware can't see SRIOV VFs.
-> -	 *
-> -	 * FIXME: The MPS, error routing rules, timeout setting are worthy
-> -	 * to be exported by firmware in extendible way.
-> -	 */
-> -	if (edev->physfn) {
-> -		ret = eeh_restore_vf_config(pdn);
-> -	} else {
-> -		phb = pdn->phb->private_data;
-> -		ret = opal_pci_reinit(phb->opal_id,
-> -				      OPAL_REINIT_PCI_DEV, config_addr);
-> -	}
-> +	/* Nothing to do for VFs */
-> +	if (edev->physfn)
-> +		return 0;
-> +
-> +	phb = pdn->phb->private_data;
-> +	ret = opal_pci_reinit(phb->opal_id,
-> +			      OPAL_REINIT_PCI_DEV, config_addr);
->  
->  	if (ret) {
->  		pr_warn("%s: Can't reinit PCI dev 0x%x (%lld)\n",
-> @@ -1691,24 +1684,6 @@ static struct eeh_ops pnv_eeh_ops = {
->  	.notify_resume		= NULL
->  };
->  
-> -#ifdef CONFIG_PCI_IOV
-> -static void pnv_pci_fixup_vf_mps(struct pci_dev *pdev)
-> -{
-> -	struct pci_dn *pdn = pci_get_pdn(pdev);
-> -	int parent_mps;
-> -
-> -	if (!pdev->is_virtfn)
-> -		return;
-> -
-> -	/* Synchronize MPS for VF and PF */
-> -	parent_mps = pcie_get_mps(pdev->physfn);
-> -	if ((128 << pdev->pcie_mpss) >= parent_mps)
-> -		pcie_set_mps(pdev, parent_mps);
-> -	pdn->mps = pcie_get_mps(pdev);
-> -}
-> -DECLARE_PCI_FIXUP_HEADER(PCI_ANY_ID, PCI_ANY_ID, pnv_pci_fixup_vf_mps);
-> -#endif /* CONFIG_PCI_IOV */
-> -
->  /**
->   * eeh_powernv_init - Register platform dependent EEH operations
->   *
-> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> index 95bbf9102584..fa704d7052ec 100644
-> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> @@ -657,30 +657,6 @@ static int pseries_eeh_write_config(struct pci_dn *pdn, int where, int size, u32
->  	return rtas_write_config(pdn, where, size, val);
->  }
->  
-> -static int pseries_eeh_restore_config(struct pci_dn *pdn)
-> -{
-> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
-> -	s64 ret = 0;
-> -
-> -	if (!edev)
-> -		return -EEXIST;
-> -
-> -	/*
-> -	 * FIXME: The MPS, error routing rules, timeout setting are worthy
-> -	 * to be exported by firmware in extendible way.
-> -	 */
-> -	if (edev->physfn)
-> -		ret = eeh_restore_vf_config(pdn);
-> -
-> -	if (ret) {
-> -		pr_warn("%s: Can't reinit PCI dev 0x%x (%lld)\n",
-> -			__func__, edev->pe_config_addr, ret);
-> -		return -EIO;
-> -	}
-> -
-> -	return ret;
-> -}
-> -
->  #ifdef CONFIG_PCI_IOV
->  int pseries_send_allow_unfreeze(struct pci_dn *pdn,
->  				u16 *vf_pe_array, int cur_vfs)
-> @@ -786,7 +762,7 @@ static struct eeh_ops pseries_eeh_ops = {
->  	.read_config		= pseries_eeh_read_config,
->  	.write_config		= pseries_eeh_write_config,
->  	.next_error		= NULL,
-> -	.restore_config		= pseries_eeh_restore_config,
-> +	.restore_config		= NULL,
->  #ifdef CONFIG_PCI_IOV
->  	.notify_resume		= pseries_notify_resume
->  #endif
+>  static int pnv_ioda_set_one_peltv(struct pnv_phb *phb,
 > 
 
 -- 
