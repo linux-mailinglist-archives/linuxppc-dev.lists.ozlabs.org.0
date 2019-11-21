@@ -2,65 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F295C10523E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 13:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6EE1052EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 14:27:59 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Jdz95dyyzDr3b
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 23:24:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JgNX1VlMzDr5j
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 00:27:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo6-p02-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5302::10;
- helo=mo6-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="OHNp8aBN"; 
- dkim-atps=neutral
-Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de
- [IPv6:2a01:238:20a:202:5302::10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Jdwr6vWDzDr39
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 23:22:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574338933;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=bshxsySaQL89IBapcTw7rIhhAV9yvH+q6m8w6XoYDuE=;
- b=OHNp8aBNwiHomYfi71YcukSfYmVLydFZgAoCl8/NJR5NhDshx3HIHk0Tey+kisnjdQ
- iw/Wej/8acX6YjHViqzV7FvdADwzDO2qr0+rvGhqe86qCN81n3Rg8EsY4j1O4QX7SIYZ
- eN1jRLJ1ivcDfOGVWXabmoeIzGs5P60QMBzAYSTawDs0VMTs3YX3Oga35/ascuO0cbDV
- pFoC5g3QcuWqEGuIsHKR3Ujh/VnOXhfrGhngO4hBdYfKefjtTznZA3SAnY16QVEPYJyI
- vUtQjUiJnTh/QC2r3i4EEgbo5ESsgt1ZAgcouC0Ay84+o8abr6lMX9DMG7JxW/3lRytp
- PJfg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgBcsBrTF1qGB6TwVFx4Pq4s7A="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:bd57:573a:d50f:b5]
- by smtp.strato.de (RZmta 44.29.0 AUTH)
- with ESMTPSA id q007c8vALCLOiWS
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
- 521 ECDH bits, eq. 15360 bits RSA))
- (Client did not present a certificate);
- Thu, 21 Nov 2019 13:21:24 +0100 (CET)
-Subject: Re: Bug 205201 - Booting halts if Dawicontrol DC-2976 UW SCSI board
- installed, unless RAM size limited to 3500M
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Christoph Hellwig <hch@lst.de>
-References: <F1EBB706-73DF-430E-9020-C214EC8ED5DA@xenosoft.de>
- <20191121072943.GA24024@lst.de>
- <dbde2252-035e-6183-7897-43348e60647e@xenosoft.de>
-Message-ID: <6eec5c42-019c-a988-fc2a-cb804194683d@xenosoft.de>
-Date: Thu, 21 Nov 2019 13:21:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JgJZ31NczDr2F
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 00:24:30 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xALDKHsK112587; Thu, 21 Nov 2019 08:24:19 -0500
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wact9fw38-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Nov 2019 08:24:18 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xALDAUl7019567;
+ Thu, 21 Nov 2019 13:24:16 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04wdc.us.ibm.com with ESMTP id 2wa8r7e4kb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Nov 2019 13:24:16 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xALDOFeb34275632
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 Nov 2019 13:24:16 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DE447112064;
+ Thu, 21 Nov 2019 13:24:15 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CC05112061;
+ Thu, 21 Nov 2019 13:24:14 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.198.25])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 21 Nov 2019 13:24:13 +0000 (GMT)
+Message-ID: <b8f93386fe124d2328b6f393845a3435fd3b94fa.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 1/4] powerpc/kvm/book3s: Fixes possible 'use after
+ release' of kvm
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Date: Thu, 21 Nov 2019 10:24:08 -0300
+In-Reply-To: <c792fdc629d87f452d4348d33ab179df01d42017.camel@linux.ibm.com>
+References: <20191107170258.36379-1-leonardo@linux.ibm.com>
+ <20191107170258.36379-2-leonardo@linux.ibm.com>
+ <87mud13d4r.fsf@mpe.ellerman.id.au>
+ <c792fdc629d87f452d4348d33ab179df01d42017.camel@linux.ibm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-jZ/Mz7t2a8V2KVKqQFTu"
+User-Agent: Evolution 3.34.1 (3.34.1-1.fc31) 
 MIME-Version: 1.0
-In-Reply-To: <dbde2252-035e-6183-7897-43348e60647e@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-21_03:2019-11-21,2019-11-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=999 suspectscore=0
+ adultscore=0 mlxscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-1911210123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,46 +87,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net,
- mad skateman <madskateman@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Rob Herring <robh+dt@kernel.org>, paulus@samba.org, rtd2@xtra.co.nz,
- "contact@a-eon.com" <contact@a-eon.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21 November 2019 at 01:16 pm, Christian Zigotzky wrote:
-> On 21 November 2019 at 08:29 am, Christoph Hellwig wrote:
->> On Sat, Nov 16, 2019 at 08:06:05AM +0100, Christian Zigotzky wrote:
->>> /*
->>>   *  DMA addressing mode.
->>>   *
->>>   *  0 : 32 bit addressing for all chips.
->>>   *  1 : 40 bit addressing when supported by chip.
->>>   *  2 : 64 bit addressing when supported by chip,
->>>   *      limited to 16 segments of 4 GB -> 64 GB max.
->>>   */
->>> #define   SYM_CONF_DMA_ADDRESSING_MODE 
->>> CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
->>>
->>> Cyrus config:
->>>
->>> CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=1
->>>
->>> I will configure “0 : 32 bit addressing for all chips” for the RC8. 
->>> Maybe this is the solution.
->> 0 means you are going to do bounce buffering a lot, which seems
->> generally like a bad idea.
->>
->> But why are we talking about the sym53c8xx driver now?  The last issue
->> you reported was about video4linux allocations.
->>
-> Both drivers have the same problem. They don't work if we have more 
-> than 3.5GB RAM. I try to find a solution until you have a good 
-> solution. I have already a solution for V4L but I still need one for 
-> the sym53c8xx driver.
-OK, you mean that "0" is a bad idea but maybe it works until you have a 
-solution. ;-)
+
+--=-jZ/Mz7t2a8V2KVKqQFTu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2019-11-14 at 15:43 -0300, Leonardo Bras wrote:
+> > If the kvm_put_kvm() you've moved actually caused the last
+> > reference
+> > to
+> > be dropped that would mean that our caller had passed us a kvm
+> > struct
+> > without holding a reference to it, and that would be a bug in our
+> > caller.
+> >=20
+>=20
+> So, there is no chance that between this function's kvm_get_kvm()
+> and=20
+> kvm_put_kvm(), another thread can decrease this reference counter?
+
+I am probably missing something here, could you please help me
+understand that?
+
+> > Or put another way, it would mean the mutex_lock() above could
+> > already
+> > be operating on a freed kvm struct.
+> >=20
+> > The kvm_get_kvm() prior to the anon_inode_getfd() is to account for
+> > the
+> > reference that's held by the `stt` struct, and dropped in
+> > kvm_spapr_tce_release().
+> >=20
+> > So although this patch isn't wrong, the explanation is not
+> > accurate.
+> >=20
+> > cheers
+>=20
+> Kind regards
+
+Best regards,
+
+--=-jZ/Mz7t2a8V2KVKqQFTu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl3Wj/gACgkQlQYWtz9S
+ttQQhxAA3MFdSCc3LtKuX3KaXXl0ANgOzVWMrxMN5oUiiwIRPLZT33KNI6g8ugpT
+lWqOESy9bYgPUt8c7dO/kKVMEAgh82MAG1NzLbyFFGuijeClhC9YI6rTl7/3AdFr
+t/ovi/ofIJomu/P5rLXZmFGslc5CbHUHJ6De8ncngwG2ZZ5We7vQDnCmdJa7l+XW
+TTPaTQBNdrOWBDOqV0kVz35pOktKSxHyjQ36myP/wmEzaOmTn4lKmKpz4cv287dD
+8TcoXv2IPgUgEmSWPC1pGF2tyc4cHXL5rzirdNuREr4iKezhdWrOecbp5A1G/+tN
+Y4d65+H073/Ni+DbhsQBrypmAKdskfrSFx8N3e3Kn1DTxlBonHq3xdTB9cmIDfEg
+PNqH79orqQoTzJqiLCGcPQKTAtS9mFKNWJJvi7lhB7JhBDdP0prjUmO5rroiub7f
+TMiAqRKYgvWRkXm+Q+Fnn1CM+j1s/YmwLCnz2hLjyY9h0FNzqHMIB1o4DMDTEn9m
+ysZqENLzZcLZUne36/EPu9Z0J8KJ6GnvxVbkgydiA2CdyIUm4cPkDAaXuPY8B+Qd
+/CcFeXAouKj4jeTYKvxabyJ55XJPbUwt4EuPovqufF3FPyGRr+YiGeJ6VZfLnL4I
+/AmcpHnSqZNKrPcokrZc197LhwuQdHEwI+UJ/s+wDs9KxGdfcqM=
+=y4OU
+-----END PGP SIGNATURE-----
+
+--=-jZ/Mz7t2a8V2KVKqQFTu--
 
