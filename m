@@ -2,59 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD2F104E55
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 09:50:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 316DC104E6D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 09:52:32 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JYCt6T7LzDr4M
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 19:50:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JYGj2kplzDr1F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 19:52:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+b88e8c106c1fb0af7a00+5933+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
+ envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="Mafq4UPz"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47JXLm5fw3zDqxh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 19:10:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=DZddNdyW5FRrAXgTdc6w5huJMr/L+GTDCsXkrpDZQWE=; b=Mafq4UPzuRzO9+6g0idvgtn8y
- WcDSiCT7hQFVoaJkaXestyiwMGnqfYjgbEOz0r27XeQ+Y5KvjD4Nuhy0YaDkgeX1N2nHrE2fymh9/
- Kl6qsPzn8bgO9GwKGkSXLJ6yif29++yxYwWthonAbKTOkkQzaykODs/kBCpIPvEL9IlVjXYjhMRJE
- HObsxeSD97VjwE1Ac50vXPpo12MNChRAcbknrDS9loF08kQwig/wzQVsPl/cwUiTKkHvJYvfDWnFU
- FO6tlhkm1YjoPatb8/UhLvWJuQFmCn5wpi+24IGZ7mIRAGQpgH/fHbaZ8f9hs4dGNlP7WUQjseLo0
- O4T8RJ40Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1iXhXf-0001ki-FW; Thu, 21 Nov 2019 08:10:19 +0000
-Date: Thu, 21 Nov 2019 00:10:19 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v7 09/24] vfio, mm: fix get_user_pages_remote() and
- FOLL_LONGTERM
-Message-ID: <20191121081019.GF30991@infradead.org>
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="qd3vyt4F"; 
+ dkim-atps=neutral
+Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JXkV13QGzDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 19:28:01 +1100 (AEDT)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dd64a8d0000>; Thu, 21 Nov 2019 00:27:58 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Thu, 21 Nov 2019 00:27:56 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Thu, 21 Nov 2019 00:27:56 -0800
+Received: from [10.2.169.101] (172.20.13.39) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 21 Nov
+ 2019 08:27:56 +0000
+Subject: Re: [PATCH v7 01/24] mm/gup: pass flags arg to __gup_device_*
+ functions
+To: Christoph Hellwig <hch@infradead.org>
 References: <20191121071354.456618-1-jhubbard@nvidia.com>
- <20191121071354.456618-10-jhubbard@nvidia.com>
+ <20191121071354.456618-2-jhubbard@nvidia.com>
+ <20191121080644.GA30991@infradead.org>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <72299562-df12-cbe6-b9c8-05d08625d923@nvidia.com>
+Date: Thu, 21 Nov 2019 00:25:08 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191121071354.456618-10-jhubbard@nvidia.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20191121080644.GA30991@infradead.org>
+X-Originating-IP: [172.20.13.39]
+X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1574324878; bh=fBEs8zvhTdiK+GxG6jBbxLF9y/0PajclAlx5MVf68dY=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=qd3vyt4F6HTwKKFCyZDRI1qul9fTK80VD0HOAtpUJsLmp+uOnJP/0/mfORMpRDIWh
+ msa/9tW2R6G3NEV2vxUdIVUrSBPbm+dg7h5ks0ydjI1ZXAilO+KUn3onxdYvYd5yLN
+ th/eVTL36YxBubARAfxgWsMF5jHbNrsWfvpc1zmtToQtEJyTHI9jhj2Fav/Qg69ylO
+ Vy7wGuKCXhdmLuU5+JPthKW1n/P1IS7DJEMqLH2TUUbpLDARMfwqNpDJNlkgiwpB9C
+ 7ZnSeTY/le1R03Z0KIA9sli+2LeQchnYq98ah5HhIRhjwHluG7JOQqaaQVMgGA+5Gr
+ gsPwOYerki+jg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,12 +83,11 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
  linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
  Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jason Gunthorpe <jgg@mellanox.com>, Vlastimil Babka <vbabka@suse.cz>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  linux-block@vger.kernel.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
  Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
  Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
@@ -86,10 +95,29 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S . Miller" <davem@davemloft.net>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
  Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Should this be two patches, one for th core infrastructure and one for
-the user?  These changes also look like another candidate to pre-load.
+On 11/21/19 12:06 AM, Christoph Hellwig wrote:
+> On Wed, Nov 20, 2019 at 11:13:31PM -0800, John Hubbard wrote:
+>> A subsequent patch requires access to gup flags, so
+>> pass the flags argument through to the __gup_device_*
+>> functions.
+> 
+> Looks fine, but why not fold this into the patch using the flags.
+
+Yes, I'll do that.
+
+> 
+> Also you can use up your full 73 chars per line in the commit log.
+> 
+
+OK.
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
