@@ -2,55 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE5010570C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 17:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D46A105729
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 17:37:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JlMm1hqczDq75
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 03:27:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JlbT26ZZzDqYh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 03:37:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::5;
+ helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47JlKT5457zDqxh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 03:25:32 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47JlKK4v2fz9tyYX;
- Thu, 21 Nov 2019 17:25:25 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ZzcxYupBwo2Z; Thu, 21 Nov 2019 17:25:25 +0100 (CET)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47JlKK3y07z9tyYW;
- Thu, 21 Nov 2019 17:25:25 +0100 (CET)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 38943C08; Thu, 21 Nov 2019 17:25:29 +0100 (CET)
-Received: from 37-167-57-154.coucou-networks.fr
- (37-167-57-154.coucou-networks.fr [37.167.57.154]) by messagerie.si.c-s.fr
- (Horde Framework) with HTTP; Thu, 21 Nov 2019 17:25:29 +0100
-Date: Thu, 21 Nov 2019 17:25:29 +0100
-Message-ID: <20191121172529.Horde.0uDMS4xQ-xexjp4a2mIoXQ5@messagerie.si.c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [Y2038] [PATCH 07/23] y2038: vdso: powerpc: avoid timespec
- references
-References: <20191108210236.1296047-1-arnd@arndb.de>
- <20191108210824.1534248-7-arnd@arndb.de>
- <4faa78cd0a86cf5d0aea9bb16d03145c5745450b.camel@codethink.co.uk>
- <CAK8P3a1nRq98ngfKnR2Du+7_vOxSRFD9AyjHyUCsAtk_gLR_Uw@mail.gmail.com>
-In-Reply-To: <CAK8P3a1nRq98ngfKnR2Du+7_vOxSRFD9AyjHyUCsAtk_gLR_Uw@mail.gmail.com>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="Txg4YLXI"; 
+ dkim-atps=neutral
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5301::5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JlYJ6m7dzDqY2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 03:35:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574354140;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=MR6HbPNBWmyhl8iShSyS/i2w9Bm/K5EVySERuVVBGj4=;
+ b=Txg4YLXIaE7cXVO9bnWa240/8p+9us303fDHvRfz87CGXe7HcUQq4BdCbpFgCc+QZ1
+ p7+uX1SxBqr6mGqB6P6PlJ2z6iMrZjYnmN60A2PBj20FERqtxGgCNmNzHkgtldCMRJen
+ KVGMjzaAd+XxhZ6zxgHJC400cLPY4xJwVwHr8eElfFB/X0NoPiBp/yz1pbuMPo+UwB9I
+ i13ZhBf0PahE7gyR2R8k0rqCDROb7Bwo74HO0C8tlfAXbDrVGsx4iJlrJAW2ULEQEv6R
+ c6/v9qyMKaVJVviqIhXQ3PgSGijtDLbA9YBi6HbyYiCffHdFPEQO55XGLyXgOsAoh9tc
+ kCOg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgBcsBrTF1qGB6TwVFx4Pq4s7A="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:bd57:573a:d50f:b5]
+ by smtp.strato.de (RZmta 44.29.0 AUTH)
+ with ESMTPSA id q007c8vALGYnkb1
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
+ 521 ECDH bits, eq. 15360 bits RSA))
+ (Client did not present a certificate);
+ Thu, 21 Nov 2019 17:34:49 +0100 (CET)
+Subject: Re: Bug 205201 - Booting halts if Dawicontrol DC-2976 UW SCSI board
+ installed, unless RAM size limited to 3500M
+To: Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>
+References: <F1EBB706-73DF-430E-9020-C214EC8ED5DA@xenosoft.de>
+ <20191121072943.GA24024@lst.de>
+ <dbde2252-035e-6183-7897-43348e60647e@xenosoft.de>
+ <6eec5c42-019c-a988-fc2a-cb804194683d@xenosoft.de>
+ <d0252d29-7a03-20e1-ccd7-e12d906e4bdf@arm.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <b3217742-2c0b-8447-c9ac-608b93265363@xenosoft.de>
+Date: Thu, 21 Nov 2019 17:34:48 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <d0252d29-7a03-20e1-ccd7-e12d906e4bdf@arm.com>
+Content-Type: multipart/mixed; boundary="------------CA5FBA987424D6E471C8129F"
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,102 +73,290 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ben Hutchings <ben.hutchings@codethink.co.uk>,
- y2038 Mailman List <y2038@lists.linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Allison Randal <allison@lohutok.net>
+Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net, rtd2@xtra.co.nz,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ iommu@lists.linux-foundation.org, Rob Herring <robh+dt@kernel.org>,
+ paulus@samba.org, mad skateman <madskateman@gmail.com>,
+ "contact@a-eon.com" <contact@a-eon.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann <arnd@arndb.de> a =C3=A9crit=C2=A0:
+This is a multi-part message in MIME format.
+--------------CA5FBA987424D6E471C8129F
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> On Wed, Nov 20, 2019 at 11:43 PM Ben Hutchings
-> <ben.hutchings@codethink.co.uk> wrote:
->>
->> On Fri, 2019-11-08 at 22:07 +0100, Arnd Bergmann wrote:
->> [...]
->> > --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
->> > +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
->> > @@ -15,10 +15,8 @@
->> >  /* Offset for the low 32-bit part of a field of long type */
->> >  #if defined(CONFIG_PPC64) && defined(CONFIG_CPU_BIG_ENDIAN)
->> >  #define LOPART       4
->> > -#define TSPEC_TV_SEC TSPC64_TV_SEC+LOPART
->> >  #else
->> >  #define LOPART       0
->> > -#define TSPEC_TV_SEC TSPC32_TV_SEC
->> >  #endif
->> >
->> >       .text
->> > @@ -192,7 +190,7 @@ V_FUNCTION_BEGIN(__kernel_time)
->> >       bl      __get_datapage@local
->> >       mr      r9, r3                  /* datapage ptr in r9 */
->> >
->> > -     lwz     r3,STAMP_XTIME+TSPEC_TV_SEC(r9)
->> > +     lwz     r3,STAMP_XTIME_SEC+LOWPART(r9)
->>
->> "LOWPART" should be "LOPART".
->>
+Am 21.11.19 um 14:33 schrieb Robin Murphy:
+> On 21/11/2019 12:21 pm, Christian Zigotzky wrote:
+>> On 21 November 2019 at 01:16 pm, Christian Zigotzky wrote:
+>>> On 21 November 2019 at 08:29 am, Christoph Hellwig wrote:
+>>>> On Sat, Nov 16, 2019 at 08:06:05AM +0100, Christian Zigotzky wrote:
+>>>>> /*
+>>>>>   *  DMA addressing mode.
+>>>>>   *
+>>>>>   *  0 : 32 bit addressing for all chips.
+>>>>>   *  1 : 40 bit addressing when supported by chip.
+>>>>>   *  2 : 64 bit addressing when supported by chip,
+>>>>>   *      limited to 16 segments of 4 GB -> 64 GB max.
+>>>>>   */
+>>>>> #define   SYM_CONF_DMA_ADDRESSING_MODE 
+>>>>> CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
+>>>>>
+>>>>> Cyrus config:
+>>>>>
+>>>>> CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=1
+>>>>>
+>>>>> I will configure “0 : 32 bit addressing for all chips” for the 
+>>>>> RC8. Maybe this is the solution.
+>>>> 0 means you are going to do bounce buffering a lot, which seems
+>>>> generally like a bad idea.
+>>>>
+>>>> But why are we talking about the sym53c8xx driver now?  The last issue
+>>>> you reported was about video4linux allocations.
+>>>>
+>>> Both drivers have the same problem. They don't work if we have more 
+>>> than 3.5GB RAM. I try to find a solution until you have a good 
+>>> solution. I have already a solution for V4L but I still need one for 
+>>> the sym53c8xx driver.
+>> OK, you mean that "0" is a bad idea but maybe it works until you have 
+>> a solution. ;-)
 >
-> Thanks, fixed both instances in a patch on top now. I considered folding
-> it into the original patch, but as it's close to the merge window I'd
-> rather not rebase it, and this way I also give you credit for=20=20
->=20finding the bug.
+> Is this on the same machine with the funny non-power-of-two 
+> bus_dma_mask as your other report? If so, does Nicolas' latest 
+> patch[1] help at all?
+>
+> Robin.
+>
+> [1] 
+> https://lore.kernel.org/linux-iommu/20191121092646.8449-1-nsaenzjulienne@suse.de/T/#u
+>
+Robin,
 
-Take care, might conflict with=20=20
-https://github.com/linuxppc/linux/commit/5e381d727fe8834ca5a126f510194a7a4a=
-c6dd3a
+I modified the patch and compiled a new RC8 of kernel 5.4 today. (patch 
+attached)
 
-Christophe
+We have to wait to Rolands test results with his SCSI PCI card. I tested 
+it today but my TV card doesn't work with this patch.
 
->
->=20I'm surprised that the 0-day bot did not report this already.
->
-> Thanks fro the careful review!
->
->         Arnd
->
-> commit 1c11ca7a0584ddede5b8c93057b40d31e8a96d3d (HEAD)
-> Author: Arnd Bergmann <arnd@arndb.de>
-> Date:   Thu Nov 21 15:19:49 2019 +0100
->
->     y2038: fix typo in powerpc vdso "LOPART"
->
->     The earlier patch introduced a typo, change LOWPART back to
->     LOPART.
->
->     Fixes: 176ed98c8a76 ("y2038: vdso: powerpc: avoid timespec references=
-")
->     Reported-by: Ben Hutchings <ben.hutchings@codethink.co.uk>
->     Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S
-> b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> index a7180b0f4aa1..c8e6902cb01b 100644
-> --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-> +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> @@ -190,7 +190,7 @@ V_FUNCTION_BEGIN(__kernel_time)
->         bl      __get_datapage@local
->         mr      r9, r3                  /* datapage ptr in r9 */
->
-> -       lwz     r3,STAMP_XTIME_SEC+LOWPART(r9)
-> +       lwz     r3,STAMP_XTIME_SEC+LOPART(r9)
->
->         cmplwi  r11,0                   /* check if t is NULL */
->         beq     2f
-> @@ -266,7 +266,7 @@ __do_get_tspec:
->          * as a 32.32 fixed-point number in r3 and r4.
->          * Load & add the xtime stamp.
->          */
-> -       lwz     r5,STAMP_XTIME_SEC+LOWPART(r9)
-> +       lwz     r5,STAMP_XTIME_SEC+LOPART(r9)
->
->         lwz     r6,STAMP_SEC_FRAC(r9)
->         addc    r4,r4,r6
->         adde    r3,r3,r5
+Thanks
 
+--------------CA5FBA987424D6E471C8129F
+Content-Type: text/x-patch;
+ name="dma-v1.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="dma-v1.patch"
 
+diff -rupN a/arch/powerpc/sysdev/fsl_pci.c b/arch/powerpc/sysdev/fsl_pci.c
+--- a/arch/powerpc/sysdev/fsl_pci.c	2019-11-17 23:47:30.000000000 +0100
++++ b/arch/powerpc/sysdev/fsl_pci.c	2019-11-21 15:32:50.216488955 +0100
+@@ -115,8 +115,8 @@ static void pci_dma_dev_setup_swiotlb(st
+ {
+ 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+ 
+-	pdev->dev.bus_dma_mask =
+-		hose->dma_window_base_cur + hose->dma_window_size;
++	pdev->dev.bus_dma_limit =
++		hose->dma_window_base_cur + hose->dma_window_size - 1;
+ }
+ 
+ static void setup_swiotlb_ops(struct pci_controller *hose)
+@@ -135,7 +135,7 @@ static void fsl_pci_dma_set_mask(struct
+ 	 * mapping that allows addressing any RAM address from across PCI.
+ 	 */
+ 	if (dev_is_pci(dev) && dma_mask >= pci64_dma_offset * 2 - 1) {
+-		dev->bus_dma_mask = 0;
++		dev->bus_dma_limit = 0;
+ 		dev->archdata.dma_offset = pci64_dma_offset;
+ 	}
+ }
+diff -rupN a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+--- a/drivers/iommu/dma-iommu.c	2019-11-17 23:47:30.000000000 +0100
++++ b/drivers/iommu/dma-iommu.c	2019-11-21 15:32:50.216488955 +0100
+@@ -405,8 +405,7 @@ static dma_addr_t iommu_dma_alloc_iova(s
+ 	if (iova_len < (1 << (IOVA_RANGE_CACHE_MAX_SIZE - 1)))
+ 		iova_len = roundup_pow_of_two(iova_len);
+ 
+-	if (dev->bus_dma_mask)
+-		dma_limit &= dev->bus_dma_mask;
++	dma_limit = min_not_zero(dma_limit, dev->bus_dma_limit);
+ 
+ 	if (domain->geometry.force_aperture)
+ 		dma_limit = min(dma_limit, domain->geometry.aperture_end);
+diff -rupN a/drivers/of/device.c b/drivers/of/device.c
+--- a/drivers/of/device.c	2019-11-17 23:47:30.000000000 +0100
++++ b/drivers/of/device.c	2019-11-21 15:32:50.216488955 +0100
+@@ -93,7 +93,7 @@ int of_dma_configure(struct device *dev,
+ 	bool coherent;
+ 	unsigned long offset;
+ 	const struct iommu_ops *iommu;
+-	u64 mask;
++	u64 mask, end;
+ 
+ 	ret = of_dma_get_range(np, &dma_addr, &paddr, &size);
+ 	if (ret < 0) {
+@@ -148,12 +148,13 @@ int of_dma_configure(struct device *dev,
+ 	 * Limit coherent and dma mask based on size and default mask
+ 	 * set by the driver.
+ 	 */
+-	mask = DMA_BIT_MASK(ilog2(dma_addr + size - 1) + 1);
++	end = dma_addr + size - 1;
++	mask = DMA_BIT_MASK(ilog2(end) + 1);
+ 	dev->coherent_dma_mask &= mask;
+ 	*dev->dma_mask &= mask;
+-	/* ...but only set bus mask if we found valid dma-ranges earlier */
++	/* ...but only set bus limit if we found valid dma-ranges earlier */
+ 	if (!ret)
+-		dev->bus_dma_mask = mask;
++		dev->bus_dma_limit = end;
+ 
+ 	coherent = of_dma_is_coherent(np);
+ 	dev_dbg(dev, "device is%sdma coherent\n",
+diff -rupN a/include/linux/device.h b/include/linux/device.h
+--- a/include/linux/device.h	2019-11-17 23:47:30.000000000 +0100
++++ b/include/linux/device.h	2019-11-21 15:32:50.216488955 +0100
+@@ -1186,8 +1186,8 @@ struct dev_links_info {
+  * @coherent_dma_mask: Like dma_mask, but for alloc_coherent mapping as not all
+  * 		hardware supports 64-bit addresses for consistent allocations
+  * 		such descriptors.
+- * @bus_dma_mask: Mask of an upstream bridge or bus which imposes a smaller DMA
+- *		limit than the device itself supports.
++ * @bus_dma_limit: Limit of an upstream bridge or bus which imposes a smaller
++ *		DMA limit than the device itself supports.
+  * @dma_pfn_offset: offset of DMA memory range relatively of RAM
+  * @dma_parms:	A low level driver may set these to teach IOMMU code about
+  * 		segment limitations.
+@@ -1270,7 +1270,7 @@ struct device {
+ 					     not all hardware supports
+ 					     64 bit addresses for consistent
+ 					     allocations such descriptors. */
+-	u64		bus_dma_mask;	/* upstream dma_mask constraint */
++	u64		bus_dma_limit;	/* upstream dma constraint */
+ 	unsigned long	dma_pfn_offset;
+ 
+ 	struct device_dma_parameters *dma_parms;
+diff -rupN a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+--- a/include/linux/dma-direct.h	2019-11-17 23:47:30.000000000 +0100
++++ b/include/linux/dma-direct.h	2019-11-21 15:37:40.091564417 +0100
+@@ -28,7 +28,7 @@ static inline bool dma_capable(struct de
+ 		return false;
+ 
+ 	return addr + size - 1 <=
+-		min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
++		min_not_zero(*dev->dma_mask, dev->bus_dma_limit);
+ }
+ #endif /* !CONFIG_ARCH_HAS_PHYS_TO_DMA */
+ 
+diff -rupN a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+--- a/include/linux/dma-mapping.h	2019-11-17 23:47:30.000000000 +0100
++++ b/include/linux/dma-mapping.h	2019-11-21 15:32:50.220488949 +0100
+@@ -693,7 +693,7 @@ static inline int dma_coerce_mask_and_co
+  */
+ static inline bool dma_addressing_limited(struct device *dev)
+ {
+-	return min_not_zero(dma_get_mask(dev), dev->bus_dma_mask) <
++	return min_not_zero(dma_get_mask(dev), dev->bus_dma_limit) <
+ 			    dma_get_required_mask(dev);
+ }
+ 
+diff -rupN a/kernel/dma/direct.c b/kernel/dma/direct.c
+--- a/kernel/dma/direct.c	2019-11-17 23:47:30.000000000 +0100
++++ b/kernel/dma/direct.c	2019-11-21 15:50:09.570609847 +0100
+@@ -27,10 +27,10 @@ static void report_addr(struct device *d
+ {
+ 	if (!dev->dma_mask) {
+ 		dev_err_once(dev, "DMA map on device without dma_mask\n");
+-	} else if (*dev->dma_mask >= DMA_BIT_MASK(32) || dev->bus_dma_mask) {
++	} else if (*dev->dma_mask >= DMA_BIT_MASK(32) || dev->bus_dma_limit) {
+ 		dev_err_once(dev,
+-			"overflow %pad+%zu of DMA mask %llx bus mask %llx\n",
+-			&dma_addr, size, *dev->dma_mask, dev->bus_dma_mask);
++			"overflow %pad+%zu of DMA mask %llx bus limit %llx\n",
++			&dma_addr, size, *dev->dma_mask, dev->bus_dma_limit);
+ 	}
+ 	WARN_ON_ONCE(1);
+ }
+@@ -51,15 +51,14 @@ u64 dma_direct_get_required_mask(struct
+ }
+ 
+ static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
+-		u64 *phys_mask)
++		u64 *phys_limit)
+ {
+-	if (dev->bus_dma_mask && dev->bus_dma_mask < dma_mask)
+-		dma_mask = dev->bus_dma_mask;
++	u64 dma_limit = min_not_zero(dma_mask, dev->bus_dma_limit);
+ 
+ 	if (force_dma_unencrypted(dev))
+-		*phys_mask = __dma_to_phys(dev, dma_mask);
++		*phys_limit = __dma_to_phys(dev, dma_limit);
+ 	else
+-		*phys_mask = dma_to_phys(dev, dma_mask);
++		*phys_limit = dma_to_phys(dev, dma_limit);
+ 
+ 	/*
+ 	 * Optimistically try the zone that the physical address mask falls
+@@ -69,9 +68,9 @@ static gfp_t __dma_direct_optimal_gfp_ma
+ 	 * Note that GFP_DMA32 and GFP_DMA are no ops without the corresponding
+ 	 * zones.
+ 	 */
+-	if (*phys_mask <= DMA_BIT_MASK(ARCH_ZONE_DMA_BITS))
++	if (*phys_limit <= DMA_BIT_MASK(ARCH_ZONE_DMA_BITS))
+ 		return GFP_DMA;
+-	if (*phys_mask <= DMA_BIT_MASK(32))
++	if (*phys_limit <= DMA_BIT_MASK(32))
+ 		return GFP_DMA32;
+ 	return 0;
+ }
+@@ -79,7 +78,7 @@ static gfp_t __dma_direct_optimal_gfp_ma
+ static bool dma_coherent_ok(struct device *dev, phys_addr_t phys, size_t size)
+ {
+ 	return phys_to_dma_direct(dev, phys) + size - 1 <=
+-			min_not_zero(dev->coherent_dma_mask, dev->bus_dma_mask);
++			min_not_zero(dev->coherent_dma_mask, dev->bus_dma_limit);
+ }
+ 
+ struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+@@ -88,7 +87,7 @@ struct page *__dma_direct_alloc_pages(st
+ 	size_t alloc_size = PAGE_ALIGN(size);
+ 	int node = dev_to_node(dev);
+ 	struct page *page = NULL;
+-	u64 phys_mask;
++	u64 phys_limit;
+ 
+ 	if (attrs & DMA_ATTR_NO_WARN)
+ 		gfp |= __GFP_NOWARN;
+@@ -96,7 +95,7 @@ struct page *__dma_direct_alloc_pages(st
+ 	/* we always manually zero the memory once we are done: */
+ 	gfp &= ~__GFP_ZERO;
+ 	gfp |= __dma_direct_optimal_gfp_mask(dev, dev->coherent_dma_mask,
+-			&phys_mask);
++			&phys_limit);
+ 	page = dma_alloc_contiguous(dev, alloc_size, gfp);
+ 	if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
+ 		dma_free_contiguous(dev, page, alloc_size);
+@@ -110,7 +109,7 @@ again:
+ 		page = NULL;
+ 
+ 		if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
+-		    phys_mask < DMA_BIT_MASK(64) &&
++		    phys_limit < DMA_BIT_MASK(64) &&
+ 		    !(gfp & (GFP_DMA32 | GFP_DMA))) {
+ 			gfp |= GFP_DMA32;
+ 			goto again;
+diff -rupN a/arch/powerpc/include/asm/dma-direct.h b/arch/powerpc/include/asm/dma-direct.h
+--- a/arch/powerpc/include/asm/dma-direct.h	2019-11-17 23:47:30.000000000 +0100
++++ b/arch/powerpc/include/asm/dma-direct.h	2019-11-21 16:18:13.316815445 +0100
+@@ -8,7 +8,7 @@ static inline bool dma_capable(struct de
+ 		return false;
+ 
+ 	return addr + size - 1 <=
+-		min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
++		min_not_zero(*dev->dma_mask, dev->bus_dma_limit);
+ }
+ 
+ static inline dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
+
+--------------CA5FBA987424D6E471C8129F--
