@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028E1105C4D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 22:52:31 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JtZh0dh0zDr6V
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:52:28 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 050D4105C5D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 22:54:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JtdC07K5zDr6w
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:54:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="DnacKCm2"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="KYGZRjKv"; 
  dkim-atps=neutral
-Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47JtXh1mGGzDr5y
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 08:50:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JtZq4Jf2zDr69
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 08:52:35 +1100 (AEDT)
 Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5dd706a70001>; Thu, 21 Nov 2019 13:50:32 -0800
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5dd707210000>; Thu, 21 Nov 2019 13:52:33 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
  by hqpgpgate101.nvidia.com (PGP Universal service);
- Thu, 21 Nov 2019 13:50:35 -0800
+ Thu, 21 Nov 2019 13:52:30 -0800
 X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Thu, 21 Nov 2019 13:50:35 -0800
+ by hqpgpgate101.nvidia.com on Thu, 21 Nov 2019 13:52:30 -0800
 Received: from [10.2.168.213] (10.124.1.5) by HQMAIL107.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 21 Nov
- 2019 21:50:35 +0000
-Subject: Re: [PATCH v7 02/24] mm/gup: factor out duplicate code from four
- routines
-To: Jan Kara <jack@suse.cz>
+ 2019 21:52:28 +0000
+Subject: Re: [PATCH v7 09/24] vfio, mm: fix get_user_pages_remote() and
+ FOLL_LONGTERM
+To: Alex Williamson <alex.williamson@redhat.com>
 References: <20191121071354.456618-1-jhubbard@nvidia.com>
- <20191121071354.456618-3-jhubbard@nvidia.com> <20191121080356.GA24784@lst.de>
- <852f6c27-8b65-547b-89e0-e8f32a4d17b9@nvidia.com>
- <20191121094908.GB18190@quack2.suse.cz>
-X-Nvconfidentiality: public
+ <20191121071354.456618-10-jhubbard@nvidia.com>
+ <20191121143525.50deb72f@x1.home>
 From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <ecd0a178-3890-5fad-2313-11b3df907f9f@nvidia.com>
-Date: Thu, 21 Nov 2019 13:47:47 -0800
+X-Nvconfidentiality: public
+Message-ID: <b5ae788a-58a9-de93-f65e-e4d9c0632dc9@nvidia.com>
+Date: Thu, 21 Nov 2019 13:49:40 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191121094908.GB18190@quack2.suse.cz>
+In-Reply-To: <20191121143525.50deb72f@x1.home>
 X-Originating-IP: [10.124.1.5]
 X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
  HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1574373032; bh=kU5UGk7rYta5qBqyhgDE8hfKXijiGAD2NIzjPl1Hld4=;
- h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+ t=1574373153; bh=oGhbv3cXo8o4GZ8PnxP5Ux4y8AE3jGJR4EeVDVjoVEc=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
  Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
  X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
  Content-Transfer-Encoding;
- b=DnacKCm2GFnxzRow8XHHjnv9A3uMI6LI6SiIGhg9bKcp76MqPQ8kF1M27y/KaRAbw
- xxowc8Q3DyiD2kAcAm0nQ17JpX8GvIrqJ8uSjriDnOLoj/h1UR33AwThcGRh+kdiFs
- sIZ9xwXRicfai3imhi7lfxcAqYrkI8TWeVUm4/7D0SDPmiW6FMWhSFSQx92VV4EoOz
- XFN+VtOdWxZk+dXcyMd50CRCI5bozfozwO/LAtNo36xbQ2gRR/BBiAeTLEx8hKdZSK
- Fx3jsqI8EasMtw1tkRf01vJb8NeCgZkxRIPz/M0TVfxHrLLklLoxP+jEnZwmUVejAC
- k2q6xFFz7w7hA==
+ b=KYGZRjKvtxip9P6ifb3Te8PpgvFSTRruWhwxOgXb0S114oVSZskeO+iOWdCneQvB4
+ NA5CKwViDqqMCzmcEtuXOzx5kWlGm/CdhdbD7x7k9Kx6Vh5kQFWAggEn8hm5nSetjo
+ GsuEs2bguAasb3kn7+569g/s+OYwxg2N/laFgRqUcYIkUaXO+dKZ1vX7QBvKE7iuhN
+ xdX8E7mSGSvk8taZzTl3l1tHACe5K5QgYBxfNvJAXLPet5p3Tx/OKYiHGukBzXFPA8
+ pg/kE+aDZRuWuc8KSGeIQ8zVRFi/6q/Cd2RICjjhHLzCf4ZbZMZG9XJoZELTlTOned
+ 7+K+fSUD3HTWw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,14 +77,14 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Dave Chinner <david@fromorbit.com>, dri-devel@lists.freedesktop.org,
- LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
  Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Christoph Hellwig <hch@lst.de>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Jason Gunthorpe <jgg@mellanox.com>,
  Vlastimil Babka <vbabka@suse.cz>,
  =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
@@ -93,45 +93,69 @@ Cc: Michal Hocko <mhocko@suse.com>, kvm@vger.kernel.org,
  Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
  Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
+ netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
  Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/21/19 1:49 AM, Jan Kara wrote:
-> On Thu 21-11-19 00:29:59, John Hubbard wrote:
->> On 11/21/19 12:03 AM, Christoph Hellwig wrote:
->>> Otherwise this looks fine and might be a worthwhile cleanup to feed
->>> Andrew for 5.5 independent of the gut of the changes.
->>>
->>> Reviewed-by: Christoph Hellwig <hch@lst.de>
->>>
+On 11/21/19 1:35 PM, Alex Williamson wrote:
+> On Wed, 20 Nov 2019 23:13:39 -0800
+> John Hubbard <jhubbard@nvidia.com> wrote:
+> 
+>> As it says in the updated comment in gup.c: current FOLL_LONGTERM
+>> behavior is incompatible with FAULT_FLAG_ALLOW_RETRY because of the
+>> FS DAX check requirement on vmas.
 >>
->> Thanks for the reviews! Say, it sounds like your view here is that this
->> series should be targeted at 5.6 (not 5.5), is that what you have in mind?
->> And get the preparatory patches (1-9, and maybe even 10-16) into 5.5?
+>> However, the corresponding restriction in get_user_pages_remote() was
+>> slightly stricter than is actually required: it forbade all
+>> FOLL_LONGTERM callers, but we can actually allow FOLL_LONGTERM callers
+>> that do not set the "locked" arg.
+>>
+>> Update the code and comments accordingly, and update the VFIO caller
+>> to take advantage of this, fixing a bug as a result: the VFIO caller
+>> is logically a FOLL_LONGTERM user.
+>>
+>> Also, remove an unnessary pair of calls that were releasing and
+>> reacquiring the mmap_sem. There is no need to avoid holding mmap_sem
+>> just in order to call page_to_pfn().
+>>
+>> Also, move the DAX check ("if a VMA is DAX, don't allow long term
+>> pinning") from the VFIO call site, all the way into the internals
+>> of get_user_pages_remote() and __gup_longterm_locked(). That is:
+>> get_user_pages_remote() calls __gup_longterm_locked(), which in turn
+>> calls check_dax_vmas(). It's lightly explained in the comments as well.
+>>
+>> Thanks to Jason Gunthorpe for pointing out a clean way to fix this,
+>> and to Dan Williams for helping clarify the DAX refactoring.
+>>
+>> Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
+>> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+>> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+>> Cc: Dan Williams <dan.j.williams@intel.com>
+>> Cc: Jerome Glisse <jglisse@redhat.com>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> ---
+>>   drivers/vfio/vfio_iommu_type1.c | 30 +++++-------------------------
+>>   mm/gup.c                        | 27 ++++++++++++++++++++++-----
+>>   2 files changed, 27 insertions(+), 30 deletions(-)
 > 
-> Yeah, actually I feel the same. The merge window is going to open on Sunday
-> and the series isn't still fully baked and happily sitting in linux-next
-> (and larger changes should really sit in linux-next for at least a week,
-> preferably two, before the merge window opens to get some reasonable test
-> coverage).  So I'd take out the independent easy patches that are already
-> reviewed, get them merged into Andrew's (or whatever other appropriate
-> tree) now so that they get at least a week of testing in linux-next before
-> going upstream.  And the more involved bits will have to wait for 5.6 -
-> which means let's just continue working on them as we do now because
-> ideally in 4 weeks we should have them ready with all the reviews so that
-> they can be picked up and integrated into linux-next.
+> Tested with device assignment and Intel mdev vGPU assignment with QEMU
+> userspace:
 > 
-> 								Honza
+> Tested-by: Alex Williamson <alex.williamson@redhat.com>
+> Acked-by: Alex Williamson <alex.williamson@redhat.com>
+> 
+> Feel free to include for 19/24 as well.  Thanks,
+> 
+> Alex
 
-OK, thanks for spelling it out. I'll shift over to getting the easy patches
-prepared for 5.5, for now.
+
+Great! Thanks for the testing and ack on those. I'm about to repackage
+(and split up as CH requested) for 5.5, and will keep you on CC, of course.
 
 thanks,
 -- 
