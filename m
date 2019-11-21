@@ -1,47 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E694E10575A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 17:46:18 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JlnL1hMjzDqg1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 03:46:14 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E04C1057A0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 17:56:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Jm0Y4J4fzDr70
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 03:55:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 47JllJ25HPzDqRK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 03:44:26 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4E21328;
- Thu, 21 Nov 2019 08:44:23 -0800 (PST)
-Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D1ED3F52E;
- Thu, 21 Nov 2019 08:44:22 -0800 (PST)
-Subject: Re: generic DMA bypass flag
-To: Christoph Hellwig <hch@lst.de>, Alexey Kardashevskiy <aik@ozlabs.ru>
-References: <20191113133731.20870-1-hch@lst.de>
- <d27b7b29-df78-4904-8002-b697da5cb013@arm.com>
- <20191114074105.GC26546@lst.de>
- <9c8f4d7b-43e0-a336-5d93-88aef8aae716@arm.com> <20191116062258.GA8913@lst.de>
- <f2335431-8cd4-e1ab-013d-573d163f4067@arm.com>
- <20191121073450.GC24024@lst.de>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <fb438be4-edae-8ca3-2eee-ec452f762cd9@arm.com>
-Date: Thu, 21 Nov 2019 16:44:21 +0000
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="nOqy6YqN"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JlyJ53vPzDqQY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 03:54:00 +1100 (AEDT)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id D73BF20658;
+ Thu, 21 Nov 2019 16:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1574355237;
+ bh=U//DMVp98yPH8p7vkS8DG0VecnLBLi0eUqdzTWKCIus=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=nOqy6YqNYkxCxubuh9LZRljCgNKNxAsSy1UZanVKcKNTQ0A+tl9OqDhWF1GMUi4VE
+ qCPF4LWenOgvvV3Mv9FVQsp/jUSvU93wKcKVK4AdA5iMcZwWJuJ7nmsVzYvhYO3Wiz
+ XIGuZedbQKcuRhdrbEVbqndrWgGFUa7vtiqpAiXE=
+Date: Thu, 21 Nov 2019 16:53:48 +0000
+From: Will Deacon <will@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+Message-ID: <20191121165348.GC4905@willie-the-truck>
+References: <20191121092646.8449-1-nsaenzjulienne@suse.de>
+ <20191121152457.GA525@lst.de> <20191121152650.GA651@lst.de>
+ <70359d2a-10c6-09c7-a857-805085affb0a@arm.com>
+ <20191121160217.GA1583@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <20191121073450.GC24024@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191121160217.GA1583@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,25 +59,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Hanjun Guo <guohanjun@huawei.com>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Paul Burton <paulburton@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, linux-acpi@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, James Hogan <jhogan@kernel.org>,
+ Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, iommu@lists.linux-foundation.org,
+ Sudeep Holla <sudeep.holla@arm.com>, Robin Murphy <robin.murphy@arm.com>,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/11/2019 7:34 am, Christoph Hellwig wrote:
-> Robin, does this mean you ACK this series for the powerpc use case?
-
-Yeah, I think we've nailed down sufficient justification now for having 
-a generalised flag, so at that point it makes every bit of sense to 
-convert PPC's private equivalent.
-
-Robin.
-
-> Alexey and other ppc folks: can you take a look?
-> _______________________________________________
-> iommu mailing list
-> iommu@lists.linux-foundation.org
-> https://lists.linuxfoundation.org/mailman/listinfo/iommu
+On Thu, Nov 21, 2019 at 05:02:17PM +0100, Christoph Hellwig wrote:
+> On Thu, Nov 21, 2019 at 03:55:39PM +0000, Robin Murphy wrote:
+> > Hmm, there's no functional dependency though, is there? AFAICS it's 
+> > essentially just a context conflict. Is it worth simply dropping (or 
+> > postponing) the local renaming in __dma_direct_optimal_gfp_mask(), or 
+> > perhaps even cross-merging arm64/for-next/zone-dma into dma/for-next?
 > 
+> I would have no problem with pulling it in.  I'd kinda hate creating
+> the conflict, though.  So if the arm64 maintainers are fine with it
+> I'll pull it in, especially if I get an ACK from Robin.
+
+Please go ahead and pull in our for-next/zone-dma branch if you need it.
+We're not going to rebase it, and I suspect we won't even be queueing
+anything else there at this stage in the game.
+
+Cheers,
+
+Will
