@@ -1,43 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1F010563E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 16:58:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Jkjk4DmXzDr9L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 02:58:02 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C99105644
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 16:59:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Jklk6vFczDqB5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 02:59:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 47JkgB5rtTzDr6S
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 02:55:47 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD340328;
- Thu, 21 Nov 2019 07:55:44 -0800 (PST)
-Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 841A33F52E;
- Thu, 21 Nov 2019 07:55:40 -0800 (PST)
-Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
-To: Christoph Hellwig <hch@lst.de>,
- Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-References: <20191121092646.8449-1-nsaenzjulienne@suse.de>
- <20191121152457.GA525@lst.de> <20191121152650.GA651@lst.de>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <70359d2a-10c6-09c7-a857-805085affb0a@arm.com>
-Date: Thu, 21 Nov 2019 15:55:39 +0000
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=codethink.co.uk (client-ip=176.9.8.82;
+ helo=imap1.codethink.co.uk; envelope-from=ben.hutchings@codethink.co.uk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=codethink.co.uk
+Received: from imap1.codethink.co.uk (imap1.codethink.co.uk [176.9.8.82])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Jkgt1VTmzDqJC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 02:56:24 +1100 (AEDT)
+Received: from [167.98.27.226] (helo=xylophone)
+ by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
+ id 1iXooW-0002pj-Tl; Thu, 21 Nov 2019 15:56:13 +0000
+Message-ID: <58067b19b218600f95dbb9726e63b435d040be1c.camel@codethink.co.uk>
+Subject: Re: [Y2038] [PATCH 3/8] powerpc: fix vdso32 for ppc64le
+From: Ben Hutchings <ben.hutchings@codethink.co.uk>
+To: Arnd Bergmann <arnd@arndb.de>
+Date: Thu, 21 Nov 2019 15:56:12 +0000
+In-Reply-To: <CAK8P3a1eZwCVMdibuPDzbSF6430yBLuoF+o-VZKX_HBWGePCqA@mail.gmail.com>
+References: <20191108203435.112759-1-arnd@arndb.de>
+ <20191108203435.112759-4-arnd@arndb.de>
+ <fdcb510863c801f1f64448e558ee0f8ed20db418.camel@codethink.co.uk>
+ <CAK8P3a3BPhX_NRFj66WyRLQUOCV-FGRjmPCgB7gqxMoK8hfywg@mail.gmail.com>
+ <d82ef7b94b9c3adc4fbb4e62c17b81a868fb32d8.camel@codethink.co.uk>
+ <CAK8P3a1eZwCVMdibuPDzbSF6430yBLuoF+o-VZKX_HBWGePCqA@mail.gmail.com>
+Organization: Codethink Ltd.
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-In-Reply-To: <20191121152650.GA651@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -50,62 +51,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Frank Rowand <frowand.list@gmail.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Paul Burton <paulburton@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- x86@kernel.org, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
- devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, Hanjun Guo <guohanjun@huawei.com>,
- linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
- iommu@lists.linux-foundation.org, Sudeep Holla <sudeep.holla@arm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: y2038 Mailman List <y2038@lists.linaro.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/11/2019 3:26 pm, Christoph Hellwig wrote:
-> On Thu, Nov 21, 2019 at 04:24:57PM +0100, Christoph Hellwig wrote:
->> On Thu, Nov 21, 2019 at 10:26:44AM +0100, Nicolas Saenz Julienne wrote:
->>> Using a mask to represent bus DMA constraints has a set of limitations.
->>> The biggest one being it can only hold a power of two (minus one). The
->>> DMA mapping code is already aware of this and treats dev->bus_dma_mask
->>> as a limit. This quirk is already used by some architectures although
->>> still rare.
->>>
->>> With the introduction of the Raspberry Pi 4 we've found a new contender
->>> for the use of bus DMA limits, as its PCIe bus can only address the
->>> lower 3GB of memory (of a total of 4GB). This is impossible to represent
->>> with a mask. To make things worse the device-tree code rounds non power
->>> of two bus DMA limits to the next power of two, which is unacceptable in
->>> this case.
->>>
->>> In the light of this, rename dev->bus_dma_mask to dev->bus_dma_limit all
->>> over the tree and treat it as such. Note that dev->bus_dma_limit should
->>> contain the higher accesible DMA address.
->>>
->>> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
->>
->> I've tentatively added this patch to the dma-mapping tree based on
->> Robins principal approval of the last version.  That way tomorrows
->> linux-next run should still pick it up.
+On Thu, 2019-11-21 at 11:02 +0100, Arnd Bergmann wrote:
+> On Wed, Nov 20, 2019 at 10:49 PM Ben Hutchings
+> <ben.hutchings@codethink.co.uk> wrote:
+> > On Wed, 2019-11-20 at 20:35 +0100, Arnd Bergmann wrote:
+> > > On Wed, Nov 20, 2019 at 8:13 PM Ben Hutchings
+> > > <ben.hutchings@codethink.co.uk> wrote:
+> > > > On Fri, 2019-11-08 at 21:34 +0100, Arnd Bergmann wrote:
+> > > > > On little-endian 32-bit application running on 64-bit kernels,
+> > > > > the current vdso would read the wrong half of the xtime seconds
+> > > > > field. Change it to return the lower half like it does on
+> > > > > big-endian.
+> > > > 
+> > > > ppc64le doesn't have 32-bit compat so this is only theoretical.
+> > > 
+> > > That is probably true. I only looked at the kernel, which today still
+> > > supports compat mode for ppc64le, but I saw the patches to disable
+> > > it, and I don't think anyone has even attempted building user space
+> > > for it.
+> > 
+> > COMPAT is still enabled for some reason, but VDSO32 isn't (since 4.2).
 > 
-> Actually.  This doesn't apply because the dma-mapping tree doesn't
-> have you zone_dma_bits change.  I guess we'll need to wait for the
-> next merge window, or maybe post rc1 if this happens to fix the
-> powerpc problem that Christian reported.
+> Ok, I had missed that detail. Should I just drop my patch then?
 
-Hmm, there's no functional dependency though, is there? AFAICS it's 
-essentially just a context conflict. Is it worth simply dropping (or 
-postponing) the local renaming in __dma_direct_optimal_gfp_mask(), or 
-perhaps even cross-merging arm64/for-next/zone-dma into dma/for-next?
+I think so.
 
-Robin.
+Ben.
+
+-- 
+Ben Hutchings, Software Developer                         Codethink Ltd
+https://www.codethink.co.uk/                 Dale House, 35 Dale Street
+                                     Manchester, M1 2HF, United Kingdom
+
