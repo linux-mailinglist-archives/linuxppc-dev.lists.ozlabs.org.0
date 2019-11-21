@@ -1,69 +1,153 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1716C1049AA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 05:34:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JRYW2KYyzDqw9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 15:34:55 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6191049AD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 05:36:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JRbb5GdtzDqtj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 15:36:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d32;
- helo=mail-io1-xd32.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="WCP4zdJP"; 
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="rKjFKkIG"; 
  dkim-atps=neutral
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com
- [IPv6:2607:f8b0:4864:20::d32])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47JRWm0JqxzDqs8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 15:33:23 +1100 (AEDT)
-Received: by mail-io1-xd32.google.com with SMTP id i11so1791015iol.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 20:33:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=LDFhZr4xlv9N0Psa36tJ4PxQavrmQWdPfnjAewTWIiU=;
- b=WCP4zdJPcvY/xNzb+Uy5GXJJEUcV3K3MPp00+wksvYABhj6uLx97opgcS6ymFbW9V+
- UBW+1iLjMPgOlS2J1lj0zGkjZ4HcG35R8RD4Y5/7AzdHbypyYnk6YBpKqDr5jxFYJtrA
- sh7O7b4Z70U3uH+Rgn6oYuDWGBY36hARn6xd3BrWltXpm7/3YWJYdDd9Ptzx/gpm/COY
- SY2uuyu/HZUzCIA8OliEB5tGxnkpLpa0UwQX6sangj7rvMmi9QduK5FPWkLeJipnJLKD
- Ubim+317dJx/WVjEJwUtIiDGQNpLRQMQoTqRuZGVgEXg/j4JZ0qUjgG/5+qIk0QvykF8
- N9DA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JRY92S0RzDqtj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 15:34:37 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id k32so935767pgl.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2019 20:34:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=EASiJWZUxa4vXIIoknbPsjhARw+t10Plf3AGTmn6KdA=;
+ b=rKjFKkIG1GuJPrwGlbQJCC36bxiLdF8mF+7gVjKEUSIo4BIB+QMb3M3+nCVKAo+Kzv
+ veMGaf/JggK6i0efCi+BUW5+gOoxYqPpNQl3KHNL6qCrF0/kdya0NJ+huVJktdWzgbxc
+ uJ31teGNtbNE7EfIKHOilYGxqKYeysAYCSDABE6yOTI6XEVByOtGI15AxlXTPiHHomxu
+ tTPGhpewdXnjkooKEzEGYm4aw1GdZPlWPpARWPlauEnTLZNkRWAqJqfgH7XvfOAmNMX1
+ JfICFUwEr5r+DgYheczV9cYeNMWsHTs9/M3CteUnGqe1vmSfQV8eSCPRlrh/2GqcF1ON
+ Ncog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=LDFhZr4xlv9N0Psa36tJ4PxQavrmQWdPfnjAewTWIiU=;
- b=FFVaq/IwArFRCY4MTiAPDfrimEZEtGN1vUWJuKr4zWbzQgZod+tED1DxsCVGCaFnGz
- LvM5QcdLEWcPWKnSpFpBEddwv3czo0QlO4rttc5UC9dCawtEYJ4cI3vHnnIkB/AsVvbW
- ZA47QjWE6RoPvJO6K7C9EkCxxUpGrYpwWF2xnQpwC0LwnUQpLAbQ3UANywqmyt61BIx0
- EjwhcXG9+rX4cKauvOwn9viq8UcW9wH8kdcrc82+adhGlg8r8RJWqUqfhD696ml6h1hh
- bkD+7xlfk2A2Umvn+lDacsRpHNGBL+zDKmImr6WC1isvLh0RXmfF42CEXGxxqqW2cCb3
- ut4Q==
-X-Gm-Message-State: APjAAAVDl/w8RBJ3tTSGY/jv0O6JWDaW4hA04g0rLpY3YeG6buCG+Vmq
- HcxiX7lp+HO9fQW6Jm/y9b1iLJQYaVnA1qvAwOGUdQ==
-X-Google-Smtp-Source: APXvYqyHy7s9CjKzfLcMMTiXtdUEGzde54r+q2hSJSeAoRTNG/jWW15rwx+jZye+YojojpqZSiSpzXD1O6WpysnnXDg=
-X-Received: by 2002:a6b:e315:: with SMTP id u21mr6140417ioc.192.1574310800131; 
- Wed, 20 Nov 2019 20:33:20 -0800 (PST)
-MIME-Version: 1.0
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=EASiJWZUxa4vXIIoknbPsjhARw+t10Plf3AGTmn6KdA=;
+ b=r1Ycn2SwPjUARQsgDHGXQ3zWE4sGPrla67YvfORGSK4NQERkuNOiBJ3woodxwTiy7j
+ E6DofkiQFSkhZhE9uQ5S5sT9a2di+PQAyyUosIKgFT19oM4cJj2GMsA4UwKHK/sXTbA7
+ AGHmdTrwN6P9m0MM9rswOFCamn+QDJY5v8DpTjXJ+qfpQ9nC1CRdSSJ2cBPYNHLHr0OD
+ sKp7mlequMdZNE3OcTqN5xxXPty4lR4TsMphP5xT6weBcaQLhVs7tK/oV89UhGkr4ps0
+ 14TaCuW6J/vLaeDNgM+SA/weqL4FO19Mc8ursm7hE89HVIDKLFgg4PNipaGjgaxhYBhG
+ MrDQ==
+X-Gm-Message-State: APjAAAVlZ4PnvR91aAylCuc/M2i5KVkyDLQjcXzHvib6K+yJGzvoHHob
+ iWDhTJAzQMp2iDXF7uh5owiirQ==
+X-Google-Smtp-Source: APXvYqzasDh4dIUrahyE3R4y/nsdp4h8hiToyRjMAQjq0kczx57YNdEkxTFQjPcCSlbT2ZsP4OfIzg==
+X-Received: by 2002:a63:6882:: with SMTP id d124mr7305053pgc.281.1574310874907; 
+ Wed, 20 Nov 2019 20:34:34 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id c184sm1096099pfc.159.2019.11.20.20.34.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Nov 2019 20:34:34 -0800 (PST)
+Subject: Re: [Very RFC 06/46] powerpc/iov: Move VF pdev fixup into
+ pcibios_fixup_iov()
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-5-oohall@gmail.com>
- <051dac75-af97-04a5-07db-462629614698@ozlabs.ru>
-In-Reply-To: <051dac75-af97-04a5-07db-462629614698@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Thu, 21 Nov 2019 15:33:09 +1100
-Message-ID: <CAOSf1CF0AO1TOh_R9k3vrhodjnS-Wwu=OLCbF63EDy_42zqc6A@mail.gmail.com>
-Subject: Re: [Very RFC 04/46] powernv/pci: Move dma_{dev|bus}_setup into
- pci-ioda.c
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+ <20191120012859.23300-7-oohall@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <31213003-c6c4-001e-74b9-298e584ef58e@ozlabs.ru>
+Date: Thu, 21 Nov 2019 15:34:30 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <20191120012859.23300-7-oohall@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,43 +159,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Cc: alistair@popple.id.au, s.miroshnichenko@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 21, 2019 at 3:02 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->
->
->
-> On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> > These functions are only used from pci-ioda.c. Move them in there and remove
-> > the prototypes from the header files.
->
->
-> Make them static then, or am I missing the point?
 
-I forgot.
 
->
-> With that fixed,
->
->
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->
->
->
-> Also, pci-ioda.c is around 4000 lines long, if anything I'd rather be
-> moving things to a separate new file (pci-ioda-dma.c or whatever). OTOH
-> after everything you've done, pci-ioda.c is 77 lines shorter so I'll
-> shut up now :)
+On 20/11/2019 12:28, Oliver O'Halloran wrote:
+> Move this out of the PHB's dma_dev_setup() callback and into the
+> ppc_md.pcibios_fixup_iov callback. This ensures that the VF PE's
+> pdev pointer is always valid for the whole time the device is
+> added the bus.
 
-IMO pci-ioda and pci.c should probably be folded together since
-there's no clear distinction between the two. We might be able to
-split off the PCI/NPU/OpenCAPI PHB specific functions into separate
-files to slim things down a bit, but I still need to re-work some of
-PHB init code and to make that possible.
+Yeah it would be nice if dma setup did just dma stuff.
 
-Oliver
+> This isn't strictly required, but it's slightly a slightly more logical
+
+s/slightly a slightly/slightly (slightly)/ ? :)
+
+
+> place to do the fixup and it makes dma_dev_setup a bit simpler.
+> 
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ---
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 35 +++++++++++------------
+>  1 file changed, 17 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index 45f974258766..c6ea7a504e04 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -2910,9 +2910,6 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
+>  	struct pci_dn *pdn;
+>  	int mul, total_vfs;
+>  
+> -	if (!pdev->is_physfn || pci_dev_is_added(pdev))
+> -		return;
+> -
+>  	pdn = pci_get_pdn(pdev);
+>  	pdn->vfs_expanded = 0;
+>  	pdn->m64_single_mode = false;
+> @@ -2987,6 +2984,22 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
+>  		res->end = res->start - 1;
+>  	}
+>  }
+> +
+> +static void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
+> +{
+> +	if (WARN_ON(pci_dev_is_added(pdev)))
+> +		return;
+> +
+> +	if (pdev->is_virtfn) {
+> +		/* Fix the VF PE's pdev pointer */
+> +		struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
+> +		pe->pdev = pdev;
+> +
+> +		WARN_ON(!(pe->flags & PNV_IODA_PE_VF));
+
+
+return;
+
+
+> +	} else if (pdev->is_physfn) {
+
+
+
+> +		pnv_pci_ioda_fixup_iov_resources(pdev);
+
+
+and open code pnv_pci_ioda_fixup_iov_resources() right here?
+
+Either way
+
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
+
+
+
+> +	}
+> +}
+>  #endif /* CONFIG_PCI_IOV */
+>  
+>  static void pnv_ioda_setup_pe_res(struct pnv_ioda_pe *pe,
+> @@ -3641,20 +3654,6 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
+>  {
+>  	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+>  	struct pnv_phb *phb = hose->private_data;
+> -#ifdef CONFIG_PCI_IOV
+> -	struct pnv_ioda_pe *pe;
+> -
+> -	/* Fix the VF pdn PE number */
+> -	if (pdev->is_virtfn) {
+> -		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
+> -			if (pe->rid == ((pdev->bus->number << 8) |
+> -			    (pdev->devfn & 0xff))) {
+> -				pe->pdev = pdev;
+> -				break;
+> -			}
+> -		}
+> -	}
+> -#endif /* CONFIG_PCI_IOV */
+>  
+>  	pnv_pci_ioda_dma_dev_setup(phb, pdev);
+>  }
+> @@ -3945,7 +3944,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
+>  	ppc_md.pcibios_default_alignment = pnv_pci_default_alignment;
+>  
+>  #ifdef CONFIG_PCI_IOV
+> -	ppc_md.pcibios_fixup_sriov = pnv_pci_ioda_fixup_iov_resources;
+> +	ppc_md.pcibios_fixup_sriov = pnv_pci_ioda_fixup_iov;
+>  	ppc_md.pcibios_iov_resource_alignment = pnv_pci_iov_resource_alignment;
+>  	ppc_md.pcibios_sriov_enable = pnv_pcibios_sriov_enable;
+>  	ppc_md.pcibios_sriov_disable = pnv_pcibios_sriov_disable;
+> 
+
+-- 
+Alexey
