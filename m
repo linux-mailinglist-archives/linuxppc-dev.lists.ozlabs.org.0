@@ -1,50 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E53F10580C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 18:09:44 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47JmJQ0LZPzDr76
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 04:09:42 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EBE10585A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Nov 2019 18:16:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47JmRn4GFhzDqNy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 04:16:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::844; helo=mail-qt1-x844.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 47JmGX2xpFzDr40
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 04:08:02 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0BA9328;
- Thu, 21 Nov 2019 09:07:59 -0800 (PST)
-Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 937C53F52E;
- Thu, 21 Nov 2019 09:07:55 -0800 (PST)
-Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
-To: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
- Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
-References: <20191121092646.8449-1-nsaenzjulienne@suse.de>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <c407877d-a812-de85-5e8f-e0915f5a517f@arm.com>
-Date: Thu, 21 Nov 2019 17:07:54 +0000
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191121092646.8449-1-nsaenzjulienne@suse.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="GPQL0524"; 
+ dkim-atps=neutral
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
+ [IPv6:2607:f8b0:4864:20::844])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47JmNt6wMrzDqJW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 04:13:32 +1100 (AEDT)
+Received: by mail-qt1-x844.google.com with SMTP id o11so4456344qtr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 09:13:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=ZayFKbpxem7Rx6sqPfGZD/6/mm/I31n5mHZK6Q7q9tU=;
+ b=GPQL0524sl+LtJiva3RSEYipi8YEacJn6/zQYZrWVjhF9s4HrtvymIeZTKgH3MIXFj
+ R8wfKqqLfrgLVm09e6h3BiX+OPV+4bLeFUeZRCNF/gHg7Qm0M0wXl6FF86NAdOi28dY+
+ fyi1KC4P9RV1AoS+WEXiaQpV2BZymq9Gd6avy28yc3h9CXmCf3d8la+Ga5k9v7j/YxIN
+ jvAK7m81QIWOTYLjQ1QCoVeCPQwYo33RmnmIVNTMsUSfMnQitHblRD9NlGDSyXnAG542
+ tR52KaigPuCxD6QqBTWi9mG0zXIucIRWujzS96qwKku/CDsQjAbfbF0IvBP4B+KSx08d
+ i9Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=ZayFKbpxem7Rx6sqPfGZD/6/mm/I31n5mHZK6Q7q9tU=;
+ b=NcaHE/aRwWQWowEECA2Sg52E+bslCHoMH99MJe0ptau6/fcQu0uzoc7qC5FqCP93cd
+ F40GbC7RQNsoIVCSBq/coXr/T8kieoVSn+E04F5iYac5Qzx7WsRfpCcsetIS+9WUCasZ
+ rtRF/hPoNqdlOKiqzPfTjy3cj42IqZfv87KRj0kCEJJoWPJ30ZOQaF+nEb+32N773Gde
+ FVW2QOSzxR1VG2f8F9PIfLSkMjBhhHLJiQCRdmeD2skZq6uihcFFrLcKAiVyTQCmCg2H
+ 7I/a/n89ZeWt0pWiY7fSyCr0VW3Dn6fnjJzWFUyb9jFDgxfZ97K8bJHxXWf5vwSC79lz
+ 8epw==
+X-Gm-Message-State: APjAAAVaIqqp/EgxCJ82vHUpmWK/tF85GjNcuaZmCJDLmtMS5PDFN2w6
+ 27h5vewwu87mEIRA6AhlPVr0+w==
+X-Google-Smtp-Source: APXvYqwEgQaqD3B35v9Mdg0/skLSiCGkKVXAgGMhhURL0L9EnOzRsquRUSLtv+4y/PMPaBJmnDlcOw==
+X-Received: by 2002:ac8:13ca:: with SMTP id i10mr9262795qtj.214.1574356409173; 
+ Thu, 21 Nov 2019 09:13:29 -0800 (PST)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id l12sm530371qtf.93.2019.11.21.09.13.27
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 21 Nov 2019 09:13:28 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3601.0.10\))
+Subject: Re: lockdep warning while booting POWER9 PowerNV
+From: Qian Cai <cai@lca.pw>
+In-Reply-To: <87ef0vpfbc.fsf@mpe.ellerman.id.au>
+Date: Thu, 21 Nov 2019 12:13:27 -0500
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1CAD8EC3-21B3-46BF-82BD-04921126C1B3@lca.pw>
+References: <1567199630.5576.39.camel@lca.pw>
+ <9b8b287a-4ae1-ca9b-cff1-6d93672b6893@acm.org>
+ <87ef0vpfbc.fsf@mpe.ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3601.0.10)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,414 +83,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Paul Burton <paulburton@kernel.org>, x86@kernel.org,
- linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- linux-pci@vger.kernel.org, James Hogan <jhogan@kernel.org>,
- Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
- iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Bart Van Assche <bvanassche@acm.org>,
+ Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/11/2019 9:26 am, Nicolas Saenz Julienne wrote:
-> Using a mask to represent bus DMA constraints has a set of limitations.
-> The biggest one being it can only hold a power of two (minus one). The
-> DMA mapping code is already aware of this and treats dev->bus_dma_mask
-> as a limit. This quirk is already used by some architectures although
-> still rare.
-> 
-> With the introduction of the Raspberry Pi 4 we've found a new contender
-> for the use of bus DMA limits, as its PCIe bus can only address the
-> lower 3GB of memory (of a total of 4GB). This is impossible to represent
-> with a mask. To make things worse the device-tree code rounds non power
-> of two bus DMA limits to the next power of two, which is unacceptable in
-> this case.
-> 
-> In the light of this, rename dev->bus_dma_mask to dev->bus_dma_limit all
-> over the tree and treat it as such. Note that dev->bus_dma_limit should
-> contain the higher accesible DMA address.
 
-^^ super-nit only because I can't not see my editor currently 
-highlighting the typo: "accessible"
 
-Regardless of that though,
+> On Sep 4, 2019, at 11:55 PM, Michael Ellerman <mpe@ellerman.id.au> =
+wrote:
+>=20
+> Bart Van Assche <bvanassche@acm.org> writes:
+>> On 8/30/19 2:13 PM, Qian Cai wrote:
+>>> =
+https://raw.githubusercontent.com/cailca/linux-mm/master/powerpc.config
+>>>=20
+>>> Once in a while, booting an IBM POWER9 PowerNV system (8335-GTH) =
+would generate
+>>> a warning in lockdep_register_key() at,
+>>>=20
+>>> if (WARN_ON_ONCE(static_obj(key)))
+>>>=20
+>>> because
+>>>=20
+>>> key =3D 0xc0000000019ad118
+>>> &_stext =3D 0xc000000000000000
+>>> &_end =3D 0xc0000000049d0000
+>>>=20
+>>> i.e., it will cause static_obj() returns 1.
+>>=20
+>> (back from a trip)
+>>=20
+>> Hi Qian,
+>>=20
+>> Does this mean that on POWER9 it can happen that a dynamically =
+allocated=20
+>> object has an address that falls between &_stext and &_end?
+>=20
+> I thought that was true on all arches due to initmem, but seems not.
+>=20
+> I guess we have the same problem as s390 and we need to define
+> arch_is_kernel_initmem_freed().
+>=20
+> Qian, can you try this:
+>=20
+> diff --git a/arch/powerpc/include/asm/sections.h =
+b/arch/powerpc/include/asm/sections.h
+> index 4a1664a8658d..616b1b7b7e52 100644
+> --- a/arch/powerpc/include/asm/sections.h
+> +++ b/arch/powerpc/include/asm/sections.h
+> @@ -5,8 +5,22 @@
+>=20
+> #include <linux/elf.h>
+> #include <linux/uaccess.h>
+> +
+> +#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
+> +
+> #include <asm-generic/sections.h>
+>=20
+> +extern bool init_mem_is_free;
+> +
+> +static inline int arch_is_kernel_initmem_freed(unsigned long addr)
+> +{
+> +	if (!init_mem_is_free)
+> +		return 0;
+> +
+> +	return addr >=3D (unsigned long)__init_begin &&
+> +		addr < (unsigned long)__init_end;
+> +}
+> +
+> extern char __head_end[];
+>=20
+> #ifdef __powerpc64__
+>=20
 
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Michael, this fix is also needed as it starts to trigger another one of =
+those where the allocated
+memory is from initmem.=20
 
-> Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-> 
-> ---
-> 
-> Changes since v1:
->    - rework ACPI code to avoid divergence with OF's
-> 
->   arch/mips/pci/fixup-sb1250.c  | 16 ++++++++--------
->   arch/powerpc/sysdev/fsl_pci.c |  6 +++---
->   arch/x86/kernel/pci-dma.c     |  2 +-
->   arch/x86/mm/mem_encrypt.c     |  2 +-
->   arch/x86/pci/sta2x11-fixup.c  |  2 +-
->   drivers/acpi/arm64/iort.c     | 20 +++++++-------------
->   drivers/ata/ahci.c            |  2 +-
->   drivers/iommu/dma-iommu.c     |  3 +--
->   drivers/of/device.c           |  9 +++++----
->   include/linux/device.h        |  6 +++---
->   include/linux/dma-direct.h    |  2 +-
->   include/linux/dma-mapping.h   |  2 +-
->   kernel/dma/direct.c           | 27 +++++++++++++--------------
->   13 files changed, 46 insertions(+), 53 deletions(-)
-> 
-> diff --git a/arch/mips/pci/fixup-sb1250.c b/arch/mips/pci/fixup-sb1250.c
-> index 8a41b359cf90..40efc990cdce 100644
-> --- a/arch/mips/pci/fixup-sb1250.c
-> +++ b/arch/mips/pci/fixup-sb1250.c
-> @@ -21,22 +21,22 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SIBYTE, PCI_DEVICE_ID_BCM1250_PCI,
->   
->   /*
->    * The BCM1250, etc. PCI host bridge does not support DAC on its 32-bit
-> - * bus, so we set the bus's DMA mask accordingly.  However the HT link
-> + * bus, so we set the bus's DMA limit accordingly.  However the HT link
->    * down the artificial PCI-HT bridge supports 40-bit addressing and the
->    * SP1011 HT-PCI bridge downstream supports both DAC and a 64-bit bus
->    * width, so we record the PCI-HT bridge's secondary and subordinate bus
-> - * numbers and do not set the mask for devices present in the inclusive
-> + * numbers and do not set the limit for devices present in the inclusive
->    * range of those.
->    */
-> -struct sb1250_bus_dma_mask_exclude {
-> +struct sb1250_bus_dma_limit_exclude {
->   	bool set;
->   	unsigned char start;
->   	unsigned char end;
->   };
->   
-> -static int sb1250_bus_dma_mask(struct pci_dev *dev, void *data)
-> +static int sb1250_bus_dma_limit(struct pci_dev *dev, void *data)
->   {
-> -	struct sb1250_bus_dma_mask_exclude *exclude = data;
-> +	struct sb1250_bus_dma_limit_exclude *exclude = data;
->   	bool exclude_this;
->   	bool ht_bridge;
->   
-> @@ -55,7 +55,7 @@ static int sb1250_bus_dma_mask(struct pci_dev *dev, void *data)
->   			exclude->start, exclude->end);
->   	} else {
->   		dev_dbg(&dev->dev, "disabling DAC for device");
-> -		dev->dev.bus_dma_mask = DMA_BIT_MASK(32);
-> +		dev->dev.bus_dma_limit = DMA_BIT_MASK(32);
->   	}
->   
->   	return 0;
-> @@ -63,9 +63,9 @@ static int sb1250_bus_dma_mask(struct pci_dev *dev, void *data)
->   
->   static void quirk_sb1250_pci_dac(struct pci_dev *dev)
->   {
-> -	struct sb1250_bus_dma_mask_exclude exclude = { .set = false };
-> +	struct sb1250_bus_dma_limit_exclude exclude = { .set = false };
->   
-> -	pci_walk_bus(dev->bus, sb1250_bus_dma_mask, &exclude);
-> +	pci_walk_bus(dev->bus, sb1250_bus_dma_limit, &exclude);
->   }
->   DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_SIBYTE, PCI_DEVICE_ID_BCM1250_PCI,
->   			quirk_sb1250_pci_dac);
-> diff --git a/arch/powerpc/sysdev/fsl_pci.c b/arch/powerpc/sysdev/fsl_pci.c
-> index ff0e2b156cb5..617a443d673d 100644
-> --- a/arch/powerpc/sysdev/fsl_pci.c
-> +++ b/arch/powerpc/sysdev/fsl_pci.c
-> @@ -115,8 +115,8 @@ static void pci_dma_dev_setup_swiotlb(struct pci_dev *pdev)
->   {
->   	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
->   
-> -	pdev->dev.bus_dma_mask =
-> -		hose->dma_window_base_cur + hose->dma_window_size;
-> +	pdev->dev.bus_dma_limit =
-> +		hose->dma_window_base_cur + hose->dma_window_size - 1;
->   }
->   
->   static void setup_swiotlb_ops(struct pci_controller *hose)
-> @@ -135,7 +135,7 @@ static void fsl_pci_dma_set_mask(struct device *dev, u64 dma_mask)
->   	 * mapping that allows addressing any RAM address from across PCI.
->   	 */
->   	if (dev_is_pci(dev) && dma_mask >= pci64_dma_offset * 2 - 1) {
-> -		dev->bus_dma_mask = 0;
-> +		dev->bus_dma_limit = 0;
->   		dev->archdata.dma_offset = pci64_dma_offset;
->   	}
->   }
-> diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
-> index 57de2ebff7e2..5dcedad21dff 100644
-> --- a/arch/x86/kernel/pci-dma.c
-> +++ b/arch/x86/kernel/pci-dma.c
-> @@ -140,7 +140,7 @@ rootfs_initcall(pci_iommu_init);
->   
->   static int via_no_dac_cb(struct pci_dev *pdev, void *data)
->   {
-> -	pdev->dev.bus_dma_mask = DMA_BIT_MASK(32);
-> +	pdev->dev.bus_dma_limit = DMA_BIT_MASK(32);
->   	return 0;
->   }
->   
-> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-> index 9268c12458c8..a03614bd3e1a 100644
-> --- a/arch/x86/mm/mem_encrypt.c
-> +++ b/arch/x86/mm/mem_encrypt.c
-> @@ -367,7 +367,7 @@ bool force_dma_unencrypted(struct device *dev)
->   	if (sme_active()) {
->   		u64 dma_enc_mask = DMA_BIT_MASK(__ffs64(sme_me_mask));
->   		u64 dma_dev_mask = min_not_zero(dev->coherent_dma_mask,
-> -						dev->bus_dma_mask);
-> +						dev->bus_dma_limit);
->   
->   		if (dma_dev_mask <= dma_enc_mask)
->   			return true;
-> diff --git a/arch/x86/pci/sta2x11-fixup.c b/arch/x86/pci/sta2x11-fixup.c
-> index 4a631264b809..c313d784efab 100644
-> --- a/arch/x86/pci/sta2x11-fixup.c
-> +++ b/arch/x86/pci/sta2x11-fixup.c
-> @@ -143,7 +143,7 @@ static void sta2x11_map_ep(struct pci_dev *pdev)
->   
->   	dev->dma_pfn_offset = PFN_DOWN(-amba_base);
->   
-> -	dev->bus_dma_mask = max_amba_addr;
-> +	dev->bus_dma_limit = max_amba_addr;
->   	pci_set_consistent_dma_mask(pdev, max_amba_addr);
->   	pci_set_dma_mask(pdev, max_amba_addr);
->   
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 5a7551d060f2..33f71983e001 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -1057,8 +1057,8 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
->    */
->   void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
->   {
-> -	u64 mask, dmaaddr = 0, size = 0, offset = 0;
-> -	int ret, msb;
-> +	u64 end, mask, dmaaddr = 0, size = 0, offset = 0;
-> +	int ret;
->   
->   	/*
->   	 * If @dev is expected to be DMA-capable then the bus code that created
-> @@ -1085,19 +1085,13 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
->   	}
->   
->   	if (!ret) {
-> -		msb = fls64(dmaaddr + size - 1);
->   		/*
-> -		 * Round-up to the power-of-two mask or set
-> -		 * the mask to the whole 64-bit address space
-> -		 * in case the DMA region covers the full
-> -		 * memory window.
-> +		 * Limit coherent and dma mask based on size retrieved from
-> +		 * firmware.
->   		 */
-> -		mask = msb == 64 ? U64_MAX : (1ULL << msb) - 1;
-> -		/*
-> -		 * Limit coherent and dma mask based on size
-> -		 * retrieved from firmware.
-> -		 */
-> -		dev->bus_dma_mask = mask;
-> +		end = dmaaddr + size - 1;
-> +		mask = DMA_BIT_MASK(ilog2(end) + 1);
-> +		dev->bus_dma_limit = end;
->   		dev->coherent_dma_mask = mask;
->   		*dev->dma_mask = mask;
->   	}
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index ec6c64fce74a..4bfd1b14b390 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -910,7 +910,7 @@ static int ahci_configure_dma_masks(struct pci_dev *pdev, int using_dac)
->   	 * value, don't extend it here. This happens on STA2X11, for example.
->   	 *
->   	 * XXX: manipulating the DMA mask from platform code is completely
-> -	 * bogus, platform code should use dev->bus_dma_mask instead..
-> +	 * bogus, platform code should use dev->bus_dma_limit instead..
->   	 */
->   	if (pdev->dma_mask && pdev->dma_mask < DMA_BIT_MASK(32))
->   		return 0;
-> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-> index 041066f3ec99..0cc702a70a96 100644
-> --- a/drivers/iommu/dma-iommu.c
-> +++ b/drivers/iommu/dma-iommu.c
-> @@ -421,8 +421,7 @@ static dma_addr_t iommu_dma_alloc_iova(struct iommu_domain *domain,
->   	if (iova_len < (1 << (IOVA_RANGE_CACHE_MAX_SIZE - 1)))
->   		iova_len = roundup_pow_of_two(iova_len);
->   
-> -	if (dev->bus_dma_mask)
-> -		dma_limit &= dev->bus_dma_mask;
-> +	dma_limit = min_not_zero(dma_limit, dev->bus_dma_limit);
->   
->   	if (domain->geometry.force_aperture)
->   		dma_limit = min(dma_limit, domain->geometry.aperture_end);
-> diff --git a/drivers/of/device.c b/drivers/of/device.c
-> index da8158392010..e9127db7b067 100644
-> --- a/drivers/of/device.c
-> +++ b/drivers/of/device.c
-> @@ -93,7 +93,7 @@ int of_dma_configure(struct device *dev, struct device_node *np, bool force_dma)
->   	bool coherent;
->   	unsigned long offset;
->   	const struct iommu_ops *iommu;
-> -	u64 mask;
-> +	u64 mask, end;
->   
->   	ret = of_dma_get_range(np, &dma_addr, &paddr, &size);
->   	if (ret < 0) {
-> @@ -148,12 +148,13 @@ int of_dma_configure(struct device *dev, struct device_node *np, bool force_dma)
->   	 * Limit coherent and dma mask based on size and default mask
->   	 * set by the driver.
->   	 */
-> -	mask = DMA_BIT_MASK(ilog2(dma_addr + size - 1) + 1);
-> +	end = dma_addr + size - 1;
-> +	mask = DMA_BIT_MASK(ilog2(end) + 1);
->   	dev->coherent_dma_mask &= mask;
->   	*dev->dma_mask &= mask;
-> -	/* ...but only set bus mask if we found valid dma-ranges earlier */
-> +	/* ...but only set bus limit if we found valid dma-ranges earlier */
->   	if (!ret)
-> -		dev->bus_dma_mask = mask;
-> +		dev->bus_dma_limit = end;
->   
->   	coherent = of_dma_is_coherent(np);
->   	dev_dbg(dev, "device is%sdma coherent\n",
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 99af366db50d..dada6b4bd7e0 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -1214,8 +1214,8 @@ struct dev_links_info {
->    * @coherent_dma_mask: Like dma_mask, but for alloc_coherent mapping as not all
->    * 		hardware supports 64-bit addresses for consistent allocations
->    * 		such descriptors.
-> - * @bus_dma_mask: Mask of an upstream bridge or bus which imposes a smaller DMA
-> - *		limit than the device itself supports.
-> + * @bus_dma_limit: Limit of an upstream bridge or bus which imposes a smaller
-> + *		DMA limit than the device itself supports.
->    * @dma_pfn_offset: offset of DMA memory range relatively of RAM
->    * @dma_parms:	A low level driver may set these to teach IOMMU code about
->    * 		segment limitations.
-> @@ -1301,7 +1301,7 @@ struct device {
->   					     not all hardware supports
->   					     64 bit addresses for consistent
->   					     allocations such descriptors. */
-> -	u64		bus_dma_mask;	/* upstream dma_mask constraint */
-> +	u64		bus_dma_limit;	/* upstream dma constraint */
->   	unsigned long	dma_pfn_offset;
->   
->   	struct device_dma_parameters *dma_parms;
-> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-> index c5c5b5ff2371..aa031cb213c3 100644
-> --- a/include/linux/dma-direct.h
-> +++ b/include/linux/dma-direct.h
-> @@ -62,7 +62,7 @@ static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
->   	    min(addr, end) < phys_to_dma(dev, PFN_PHYS(min_low_pfn)))
->   		return false;
->   
-> -	return end <= min_not_zero(*dev->dma_mask, dev->bus_dma_mask);
-> +	return end <= min_not_zero(*dev->dma_mask, dev->bus_dma_limit);
->   }
->   
->   u64 dma_direct_get_required_mask(struct device *dev);
-> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-> index a4930310d0c7..330ad58fbf4d 100644
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -694,7 +694,7 @@ static inline int dma_coerce_mask_and_coherent(struct device *dev, u64 mask)
->    */
->   static inline bool dma_addressing_limited(struct device *dev)
->   {
-> -	return min_not_zero(dma_get_mask(dev), dev->bus_dma_mask) <
-> +	return min_not_zero(dma_get_mask(dev), dev->bus_dma_limit) <
->   			    dma_get_required_mask(dev);
->   }
->   
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index 84cf8be65078..998d48ddfb07 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -27,10 +27,10 @@ static void report_addr(struct device *dev, dma_addr_t dma_addr, size_t size)
->   {
->   	if (!dev->dma_mask) {
->   		dev_err_once(dev, "DMA map on device without dma_mask\n");
-> -	} else if (*dev->dma_mask >= DMA_BIT_MASK(32) || dev->bus_dma_mask) {
-> +	} else if (*dev->dma_mask >= DMA_BIT_MASK(32) || dev->bus_dma_limit) {
->   		dev_err_once(dev,
-> -			"overflow %pad+%zu of DMA mask %llx bus mask %llx\n",
-> -			&dma_addr, size, *dev->dma_mask, dev->bus_dma_mask);
-> +			"overflow %pad+%zu of DMA mask %llx bus limit %llx\n",
-> +			&dma_addr, size, *dev->dma_mask, dev->bus_dma_limit);
->   	}
->   	WARN_ON_ONCE(1);
->   }
-> @@ -57,15 +57,14 @@ u64 dma_direct_get_required_mask(struct device *dev)
->   }
->   
->   static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
-> -		u64 *phys_mask)
-> +		u64 *phys_limit)
->   {
-> -	if (dev->bus_dma_mask && dev->bus_dma_mask < dma_mask)
-> -		dma_mask = dev->bus_dma_mask;
-> +	u64 dma_limit = min_not_zero(dma_mask, dev->bus_dma_limit);
->   
->   	if (force_dma_unencrypted(dev))
-> -		*phys_mask = __dma_to_phys(dev, dma_mask);
-> +		*phys_limit = __dma_to_phys(dev, dma_limit);
->   	else
-> -		*phys_mask = dma_to_phys(dev, dma_mask);
-> +		*phys_limit = dma_to_phys(dev, dma_limit);
->   
->   	/*
->   	 * Optimistically try the zone that the physical address mask falls
-> @@ -75,9 +74,9 @@ static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
->   	 * Note that GFP_DMA32 and GFP_DMA are no ops without the corresponding
->   	 * zones.
->   	 */
-> -	if (*phys_mask <= DMA_BIT_MASK(zone_dma_bits))
-> +	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
->   		return GFP_DMA;
-> -	if (*phys_mask <= DMA_BIT_MASK(32))
-> +	if (*phys_limit <= DMA_BIT_MASK(32))
->   		return GFP_DMA32;
->   	return 0;
->   }
-> @@ -85,7 +84,7 @@ static gfp_t __dma_direct_optimal_gfp_mask(struct device *dev, u64 dma_mask,
->   static bool dma_coherent_ok(struct device *dev, phys_addr_t phys, size_t size)
->   {
->   	return phys_to_dma_direct(dev, phys) + size - 1 <=
-> -			min_not_zero(dev->coherent_dma_mask, dev->bus_dma_mask);
-> +			min_not_zero(dev->coherent_dma_mask, dev->bus_dma_limit);
->   }
->   
->   struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
-> @@ -94,7 +93,7 @@ struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
->   	size_t alloc_size = PAGE_ALIGN(size);
->   	int node = dev_to_node(dev);
->   	struct page *page = NULL;
-> -	u64 phys_mask;
-> +	u64 phys_limit;
->   
->   	if (attrs & DMA_ATTR_NO_WARN)
->   		gfp |= __GFP_NOWARN;
-> @@ -102,7 +101,7 @@ struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
->   	/* we always manually zero the memory once we are done: */
->   	gfp &= ~__GFP_ZERO;
->   	gfp |= __dma_direct_optimal_gfp_mask(dev, dev->coherent_dma_mask,
-> -			&phys_mask);
-> +			&phys_limit);
->   	page = dma_alloc_contiguous(dev, alloc_size, gfp);
->   	if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
->   		dma_free_contiguous(dev, page, alloc_size);
-> @@ -116,7 +115,7 @@ struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
->   		page = NULL;
->   
->   		if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
-> -		    phys_mask < DMA_BIT_MASK(64) &&
-> +		    phys_limit < DMA_BIT_MASK(64) &&
->   		    !(gfp & (GFP_DMA32 | GFP_DMA))) {
->   			gfp |= GFP_DMA32;
->   			goto again;
-> 
+[   31.326825] key =3D c0000000019049a0
+[   31.326862] stext =3D c000000000000000, end =3D c0000000070e0000
+[   31.326907] init_start =3D c000000000c70000, init_end =3D =
+c0000000020f0000
+
+[   31.325021] WARNING: CPU: 0 PID: 5 at kernel/locking/lockdep.c:1121 =
+lockdep_register_key+0xb4/0x340
+[   31.325061] Modules linked in: tg3(+) ahci(+) libahci libata mdio =
+libphy firmware_class dm_mirror dm_region_hash dm_log dm_mod
+[   31.325128] CPU: 0 PID: 5 Comm: kworker/0:0 Not tainted =
+5.4.0-rc8-next-20191120+ #4
+[   31.325190] Workqueue: events work_for_cpu_fn
+[   31.325215] NIP:  c0000000001a23a4 LR: c00000000075eccc CTR: =
+0000000000000000
+[   31.325257] REGS: c00000002e72f4c0 TRAP: 0700   Not tainted  =
+(5.4.0-rc8-next-20191120+)
+[   31.325320] MSR:  900000000282b033 =
+<SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48000c20  XER: 20040000
+[   31.325392] CFAR: c0000000001a233c IRQMASK: 0=20
+               GPR00: c00000000075eccc c00000002e72f750 c000000002cff500 =
+c0000000070df500=20
+               GPR04: c0000014beb01990 c0000000019042b8 0000000000000000 =
+0000000000000000=20
+               GPR08: 0000000000000000 0000000000000000 c000000000425e28 =
+c00c000004761020=20
+               GPR12: 0000000000000000 c0000000070e0000 c00000002e5214f8 =
+c000001ffca018c8=20
+               GPR16: c000001ffca018e4 c000001ffca01c80 c000001ffca018d0 =
+c00000002e6e3e48=20
+               GPR20: c000000002cbf500 c00000002e520080 c000001ffca05408 =
+c00000002e6e3e00=20
+               GPR24: c0000000007d36d0 0000000000000005 0000000000000005 =
+c000000001904000=20
+               GPR28: c0000000070e0000 c000000000000000 c0000000019049a0 =
+c00000002e72f7f0=20
+[   31.325765] NIP [c0000000001a23a4] lockdep_register_key+0xb4/0x340
+[   31.325809] LR [c00000000075eccc] alloc_netdev_mqs+0x15c/0x500
+[   31.325848] Call Trace:
+[   31.325886] [c00000002e72f750] [0000000000000005] 0x5 (unreliable)
+[   31.325930] [c00000002e72f7f0] [c00000000075eccc] =
+alloc_netdev_mqs+0x15c/0x500
+[   31.325984] [c00000002e72f8d0] [c0000000007d37f0] =
+alloc_etherdev_mqs+0x60/0x90
+[   31.326047] [c00000002e72f910] [c00800000f150110] =
+tg3_init_one+0x108/0x1d00 [tg3]
+[   31.326098] [c00000002e72fac0] [c000000000633b48] =
+local_pci_probe+0x78/0x100
+[   31.326143] [c00000002e72fb50] [c000000000134b60] =
+work_for_cpu_fn+0x40/0x70
+[   31.326190] [c00000002e72fb80] [c00000000013927c] =
+process_one_work+0x3ac/0x710
+[   31.326221] [c00000002e72fc70] [c000000000138d90] =
+process_scheduled_works+0x60/0xa0
+[   31.326274] [c00000002e72fcb0] [c000000000139ba4] =
+worker_thread+0x344/0x4a0
+[   31.326317] [c00000002e72fda0] [c000000000142f68] kthread+0x1b8/0x1e0
+[   31.326363] [c00000002e72fe20] [c00000000000b748] =
+ret_from_kernel_thread+0x5c/0x74
+[   31.326412] Instruction dump:
+[   31.326448] 28230000 418200a0 7fc3f378 48191fd9 60000000 70630001 =
+41810018 7fc3f378=20
+[   31.326510] 4807fe25 60000000 70630001 40810060 <0fe00000> 3c62fffc =
+8883fa2f 70840001=20
+[   31.326573] irq event stamp: 806
+[   31.326617] hardirqs last  enabled at (805): [<c0000000008daa4c>] =
+_raw_write_unlock_irqrestore+0x5c/0xc0
+[   31.326666] hardirqs last disabled at (806): [<c000000000008fbc>] =
+program_check_common+0x21c/0x230
+[   31.326710] softirqs last  enabled at (0): [<c0000000000fa098>] =
+copy_process+0x688/0x1850
+[   31.326752] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[   31.326791] ---[ end trace c9674d7f7d278f30 ]---
+
+
