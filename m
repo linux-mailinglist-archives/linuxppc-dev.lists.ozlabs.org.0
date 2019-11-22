@@ -1,73 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEFD107825
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 20:46:12 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8889910773C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 19:23:51 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47KPvS2xsszDrJB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Nov 2019 05:23:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47KRkV1wvDzDqXK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Nov 2019 06:46:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c41;
- helo=mail-yw1-xc41.google.com; envelope-from=tcminyard@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=acm.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="PkayuhnQ"; 
- dkim-atps=neutral
-Received: from mail-yw1-xc41.google.com (mail-yw1-xc41.google.com
- [IPv6:2607:f8b0:4864:20::c41])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47KPsQ26rFzDrHp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Nov 2019 05:21:59 +1100 (AEDT)
-Received: by mail-yw1-xc41.google.com with SMTP id n82so2726934ywc.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 10:21:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:date:message-id;
- bh=QPiSRimoGyyl9vtfh4vUcgqZC8EZ9fo2lheKdMoYbnk=;
- b=PkayuhnQ8bgpDLx8e1OjkwzXGGYVlSmDAwOsERf1dmZNzyXdBHwRKWKDF4ZzQbiJMJ
- Z3xbdf1PN17CHLMcyvZROd9pZdRGS7bV/IlpwNQzp94lkql8K5O34dBLbDqE7PkHpwlb
- wIDre7REgjUiHNUByio1jFNWLe1VV9DcOJPzS1mwl+bCn2yFYnYs+uA6Gk+LNlmcm4yQ
- EBt2nVchz7Sd1j1AYNsjGRe4TVNTv+j6RIdYAqMLmlBtOBuX7vD+CfSoeFNqF0E/TX68
- 2Wt2F9rVwjv0KNT2aazxpr6tWIFLK6j2047qYyQ2nbIZQIVuDW5L+BsNzz8w3cW4hwUD
- mvlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
- bh=QPiSRimoGyyl9vtfh4vUcgqZC8EZ9fo2lheKdMoYbnk=;
- b=gY7vKyGAsFf44oHegpFa04WY6VCazn2Mw3suINj2mYJ0mssW6jNq9AtIcvzScWWLsn
- RNTFigPXKXIngGUcdgzlrro4L1YbK8F0SPAeBuxBLyVgr3f3QKx8efwaQdz3bvdcOiNT
- eyTyVkqLPUea2LYt6dR5t1mS/x+E6iprrqdaWkXcyaBB5u1uhHAoQIYg2yIXqkdrpWnZ
- ktNFSrcdfdTFKYvYTZXbavLQVEqtAqJ6pgfQsnDKcPGsFURRvaVaPE4ypOotlVQmwOP7
- U4uEFbcsXlHu4pEVPyJjupJqy9wVDbD0yoapuXEeEuLP6fPqbEVqfJj12U8wSDCEsg0B
- N7AA==
-X-Gm-Message-State: APjAAAXMKpmGl3yAeWNKcO36PVTtbp7Pk0xZOPoQRJMgkr9s4cy9i/CX
- K0tLzkgS+n5MisOD5VN9BA==
-X-Google-Smtp-Source: APXvYqxXV/usJSEGZCjag//9I9PjIo2cacoQrlevslbDftpqzmFuIGJScuyiFlPnHjL8FBjKBzFQZw==
-X-Received: by 2002:a81:3c55:: with SMTP id j82mr10687661ywa.163.1574446915355; 
- Fri, 22 Nov 2019 10:21:55 -0800 (PST)
-Received: from serve.minyard.net ([47.184.136.59])
- by smtp.gmail.com with ESMTPSA id u68sm370523ywf.18.2019.11.22.10.21.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Nov 2019 10:21:54 -0800 (PST)
-Received: from t560.mvista.com (unknown [192.168.27.180])
- by serve.minyard.net (Postfix) with ESMTPA id 955D8180059;
- Fri, 22 Nov 2019 18:21:53 +0000 (UTC)
-From: minyard@acm.org
-To: kexec@lists.infradead.org, Dave Young <dyoung@redhat.com>,
- Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
- linuxppc-dev@lists.ozlabs.org,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Fix issue with missing registers in kdump
-Date: Fri, 22 Nov 2019 12:21:44 -0600
-Message-Id: <20191122182144.20633-1-minyard@acm.org>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47KRdl4bbrzDrJB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Nov 2019 06:42:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47KRdl027Zz8sxY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Nov 2019 06:42:03 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47KRdk6p71z9sQp; Sat, 23 Nov 2019 06:42:02 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47KRdk2qwfz9sPW
+ for <linuxppc-dev@ozlabs.org>; Sat, 23 Nov 2019 06:42:01 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAMJWHqR138693; Fri, 22 Nov 2019 14:41:55 -0500
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wdkdg6jn1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Nov 2019 14:41:54 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAMJYvuF021243;
+ Fri, 22 Nov 2019 19:41:54 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 2wa8r7rw4h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Nov 2019 19:41:54 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAMJfqkq61079956
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 22 Nov 2019 19:41:52 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4A7F9C605A;
+ Fri, 22 Nov 2019 19:41:52 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C955C6059;
+ Fri, 22 Nov 2019 19:41:51 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.85.142.37])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 22 Nov 2019 19:41:51 +0000 (GMT)
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+To: netdev@vger.kernel.org
+Subject: [PATCH net 0/4] ibmvnic: Harden device commands and queries
+Date: Fri, 22 Nov 2019 13:41:42 -0600
+Message-Id: <1574451706-19058-1-git-send-email-tlfalcon@linux.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-22_04:2019-11-21,2019-11-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=949
+ adultscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0 impostorscore=0
+ suspectscore=1 malwarescore=0 priorityscore=1501 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1911220162
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,86 +92,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@ozlabs.org,
+ julietk@linux.vnet.ibm.com, Thomas Falcon <tlfalcon@linux.ibm.com>,
+ dnbanerg@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Corey Minyard <cminyard@mvista.com>
+This patch series fixes some shortcomings with the current
+VNIC device command implementation. The first patch fixes
+the initialization of driver completion structures used
+for device commands. Additionally, all waits for device
+commands are bounded with a timeout in the event that the
+device does not respond or becomes inoperable. Finally,
+serialize queries to retain the integrity of device return
+codes.
 
-When powerpc saved the registers on an SMP system, it was doing so
-correctly.  But after the crash, the register information was blank.
-The issue was that the data was still in the CPU caches on the
-CPUs, but once the jump to the crash kernel was done, the data was
-never flushed to main memory, so that data was lost.
+Thomas Falcon (4):
+  ibmvnic: Fix completion structure initialization
+  ibmvnic: Terminate waiting device threads after loss of service
+  ibmvnic: Bound waits for device queries
+  ibmvnic: Serialize device queries
 
-Add a cache flush after the CPU register notes are saved to fix
-the issue.
+ drivers/net/ethernet/ibm/ibmvnic.c | 194 +++++++++++++++++++++++++++++++------
+ drivers/net/ethernet/ibm/ibmvnic.h |   1 +
+ 2 files changed, 168 insertions(+), 27 deletions(-)
 
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
----
-I found this problem on an older (3.10) kernel on a Freescale
-T1042D4RDB system, and I couldn't find any discussion or change that
-dealt with anything like this.  It appears to still be an issue,
-though I'm not sure and I'm not sure this is the right way to fix the
-problem.
-
-I've tried reproducing on end of tree, but I've run into a couple of
-issues.  The file
- /proc/device-tree/soc@ffe000000/fman@400000/fman-firmware/fsl,firmware
-will only return 4096 bytes at a time (apparently it didn't in 3.10),
-but the kexec command tries to read it in one big read in
-kexec/arch/ppc/fs2dt.c:
-
-       if (read(fd, dt, len) != len)
-                die("unrecoverable error: could not read \"%s\": %s\n",
-                    pathname, strerror(errno));
-
-I hacked around that and now it hangs before printing anything in the
-new kernel.  Since the above was broken, I doubt this has been tested
-in a while, so no surprise, I guess.  
-
-So I can't test this out on a current kernel, and I'm not sure what to
-do at this point.  I have it fixed for our current use, but getting a
-fix upstream would be good.
-
- arch/powerpc/kernel/crash.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/arch/powerpc/kernel/crash.c b/arch/powerpc/kernel/crash.c
-index d488311efab1..f6e345b8c33d 100644
---- a/arch/powerpc/kernel/crash.c
-+++ b/arch/powerpc/kernel/crash.c
-@@ -24,6 +24,7 @@
- #include <asm/smp.h>
- #include <asm/setjmp.h>
- #include <asm/debug.h>
-+#include <asm/cacheflush.h>
- 
- /*
-  * The primary CPU waits a while for all secondary CPUs to enter. This is to
-@@ -75,8 +76,21 @@ void crash_ipi_callback(struct pt_regs *regs)
- 
- 	hard_irq_disable();
- 	if (!cpumask_test_cpu(cpu, &cpus_state_saved)) {
-+		char *buf;
-+
- 		crash_save_cpu(regs, cpu);
- 		cpumask_set_cpu(cpu, &cpus_state_saved);
-+
-+		/*
-+		 * Flush the crash note region data, otherwise the
-+		 * data gets left in the CPU cache and then
-+		 * invalidated, so the crashing cpu will never see it
-+		 * in the new kernel.
-+		 */
-+		buf = (char *) per_cpu_ptr(crash_notes, cpu);
-+		if (buf)
-+			flush_dcache_range((unsigned long) buf,
-+				(unsigned long) buf + sizeof(note_buf_t));
- 	}
- 
- 	atomic_inc(&cpus_in_crash);
 -- 
-2.17.1
+2.12.3
 
