@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2BE1065FE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 07:29:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47K62n6my0zDqHb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 17:29:05 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C82BC10667E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 07:32:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47K66Y2bn6zDqGB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 17:32:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="IT+PJ+JM"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="q5z6UGBU"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47K5Ch47t0zDqwp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 16:51:44 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47K5D42Gy6zDqx5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 16:52:04 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E9542207FC;
- Fri, 22 Nov 2019 05:51:41 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id B3FA62071B;
+ Fri, 22 Nov 2019 05:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1574401902;
- bh=j7KbmtmkT44bfLvNzW6tYCDaM4Eo1gsgtSpVmt6J7mM=;
+ s=default; t=1574401921;
+ bh=pSfYKfebvfswSMG9aERDVNa+OxFdxdH6xAe+7HpCZGE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IT+PJ+JM9EkzwJWJNeLnvbLzZCwSgM1WpUBM9U7m6R0XC9qKpwo1y3Y6jF5JRRQtG
- /c+QHlVonyyCO59B86XA3nITVjl8bDGmhwfB46Ud1YB/6IePSCQlzVEr2LXfw+bkkt
- Z60JZJkQ9rPMPMV//BWtva9EHiQVAOTxVkNEn4I8=
+ b=q5z6UGBUfK586y5/CPBQeIGcqnjjNx1txP4ipEA5rkHmZdESi5DIylMWsNhu1Qywc
+ VO0lExIQMvso1W0TqlCT96WhatcrT42ujFW4CSqTCj3CO+X32sVPzKjCt993Ij01OI
+ 9st5WhJXVJdwfomlgG4U33u6rxs+oxi2aHnhMUgc=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 134/219] powerpc: Fix HMIs on big-endian with
- CONFIG_RELOCATABLE=y
-Date: Fri, 22 Nov 2019 00:47:46 -0500
-Message-Id: <20191122054911.1750-127-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 151/219] net/wan/fsl_ucc_hdlc: Avoid double free
+ in ucc_hdlc_probe()
+Date: Fri, 22 Nov 2019 00:48:03 -0500
+Message-Id: <20191122054911.1750-144-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122054911.1750-1-sashal@kernel.org>
 References: <20191122054911.1750-1-sashal@kernel.org>
@@ -60,43 +60,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Peng Hao <peng.hao2@zte.com.cn>,
+ netdev@vger.kernel.org, Wen Yang <wen.yang99@zte.com.cn>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Zhao Qiang <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+From: Wen Yang <wen.yang99@zte.com.cn>
 
-[ Upstream commit 505a314fb28ce122091691c51426fa85c084e115 ]
+[ Upstream commit 40752b3eae29f8ca2378e978a02bd6dbeeb06d16 ]
 
-HMIs will crash the kernel due to
+This patch fixes potential double frees if register_hdlc_device() fails.
 
-	BRANCH_LINK_TO_FAR(hmi_exception_realmode)
-
-Calling into the OPD instead of the actual code.
-
-Fixes: 2337d207288f ("powerpc/64: CONFIG_RELOCATABLE support for hmi interrupts")
-Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-[mpe: Use DOTSYM() rather than #ifdef]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
+Reviewed-by: Peng Hao <peng.hao2@zte.com.cn>
+CC: Zhao Qiang <qiang.zhao@nxp.com>
+CC: "David S. Miller" <davem@davemloft.net>
+CC: netdev@vger.kernel.org
+CC: linuxppc-dev@lists.ozlabs.org
+CC: linux-kernel@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wan/fsl_ucc_hdlc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 90af86f143a91..e1dab9b1e4478 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1123,7 +1123,7 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
- 	EXCEPTION_PROLOG_COMMON_2(PACA_EXGEN)
- 	EXCEPTION_PROLOG_COMMON_3(0xe60)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
--	BRANCH_LINK_TO_FAR(hmi_exception_realmode) /* Function call ABI */
-+	BRANCH_LINK_TO_FAR(DOTSYM(hmi_exception_realmode)) /* Function call ABI */
- 	cmpdi	cr0,r3,0
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index 5f0366a125e26..0212f576a838c 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -1113,7 +1113,6 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
+ 	if (register_hdlc_device(dev)) {
+ 		ret = -ENOBUFS;
+ 		pr_err("ucc_hdlc: unable to register hdlc device\n");
+-		free_netdev(dev);
+ 		goto free_dev;
+ 	}
  
- 	/* Windup the stack. */
 -- 
 2.20.1
 
