@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C9110669F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 07:47:46 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D802106698
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 07:44:36 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47K6Nc6fSxzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 17:44:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47K6SF3Z7SzDrCQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 17:47:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="HkPwLsFu"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="tDRTA5TV"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47K5Kk6qWjzDr1g
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 16:56:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47K5Kl5kWwzDr1g
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 16:56:59 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 237252070A;
- Fri, 22 Nov 2019 05:56:56 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 304D42071B;
+ Fri, 22 Nov 2019 05:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1574402216;
- bh=FN9DNkhjWE4bOqv/LD+u4tQ3YYJgjKGVp+RlCgJQZJ0=;
+ s=default; t=1574402217;
+ bh=AdbyIqRS5cklHI4/34lbBdZESZsUf8IC0zfP30HwNIY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=HkPwLsFuTUDraMoD6A+zJf1C0KeugFZbZ9yOtaMwPTGzfNiwLQww9pxReT4EBBkF3
- xVih6CNznM4KgLnAT3rQv/TXolTU7AvY38cC2ZbC63ETP2fqZtQMwUE62twF2y/ZrL
- jXm/djnaRbVZYy8Kj7zWsrXq33fP4gFtb+nIVUl4=
+ b=tDRTA5TVmmIFNpY9ATJ0SpMsyskGb5Emo3Ea0iXEEfT3GCBNyq+XhfRWfr8qtgccO
+ gV18Abs82siBp9Ik/TFZjCrv0HmOztPVqE2c58iYyN6J+UzdPSou/KHFQnacHfFp8U
+ FBgvOBJA9yZ6CzpGo3X4WqfecbkUrjmQLlq6qWYI=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 064/127] powerpc/perf: Fix unit_sel/cache_sel
- checks
-Date: Fri, 22 Nov 2019 00:54:42 -0500
-Message-Id: <20191122055544.3299-63-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 065/127] powerpc/prom: fix early DEBUG messages
+Date: Fri, 22 Nov 2019 00:54:43 -0500
+Message-Id: <20191122055544.3299-64-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122055544.3299-1-sashal@kernel.org>
 References: <20191122055544.3299-1-sashal@kernel.org>
@@ -60,102 +59,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-[ Upstream commit 2d46d4877b1afd14059393a48bdb8ce27955174c ]
+[ Upstream commit b18f0ae92b0a1db565c3e505fa87b6971ad3b641 ]
 
-Raw event code has couple of fields "unit" and "cache" in it, to capture
-the "unit" to monitor for a given pmcxsel and cache reload qualifier to
-program in MMCR1.
+This patch fixes early DEBUG messages in prom.c:
+- Use %px instead of %p to see the addresses
+- Cast memblock_phys_mem_size() with (unsigned long long) to
+avoid build failure when phys_addr_t is not 64 bits.
 
-isa207_get_constraint() refers "unit" field to update the MMCRC (L2/L3)
-Event bus control fields with "cache" bits of the raw event code.
-These are power8 specific and not supported by PowerISA v3.0 pmu. So wrap
-the checks to be power8 specific. Also, "cache" bit field is referred to
-update MMCR1[16:17] and this check can be power8 specific.
-
-Fixes: 7ffd948fae4cd ('powerpc/perf: factor out power8 pmu functions')
-Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/isa207-common.c | 25 ++++++++++++++++++-------
- arch/powerpc/perf/isa207-common.h |  4 ++--
- 2 files changed, 20 insertions(+), 9 deletions(-)
+ arch/powerpc/kernel/prom.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index cf9c35aa0cf45..7ecea7143e587 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -150,6 +150,14 @@ static bool is_thresh_cmp_valid(u64 event)
- 	return true;
- }
- 
-+static unsigned int dc_ic_rld_quad_l1_sel(u64 event)
-+{
-+	unsigned int cache;
-+
-+	cache = (event >> EVENT_CACHE_SEL_SHIFT) & MMCR1_DC_IC_QUAL_MASK;
-+	return cache;
-+}
-+
- static inline u64 isa207_find_source(u64 idx, u32 sub_idx)
- {
- 	u64 ret = PERF_MEM_NA;
-@@ -290,10 +298,10 @@ int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp)
- 		 * have a cache selector of zero. The bank selector (bit 3) is
- 		 * irrelevant, as long as the rest of the value is 0.
- 		 */
--		if (cache & 0x7)
-+		if (!cpu_has_feature(CPU_FTR_ARCH_300) && (cache & 0x7))
- 			return -1;
- 
--	} else if (event & EVENT_IS_L1) {
-+	} else if (cpu_has_feature(CPU_FTR_ARCH_300) || (event & EVENT_IS_L1)) {
- 		mask  |= CNST_L1_QUAL_MASK;
- 		value |= CNST_L1_QUAL_VAL(cache);
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index f830562974417..d96b284150904 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -128,7 +128,7 @@ static void __init move_device_tree(void)
+ 		p = __va(memblock_alloc(size, PAGE_SIZE));
+ 		memcpy(p, initial_boot_params, size);
+ 		initial_boot_params = p;
+-		DBG("Moved device tree to 0x%p\n", p);
++		DBG("Moved device tree to 0x%px\n", p);
  	}
-@@ -396,11 +404,14 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 		/* In continuous sampling mode, update SDAR on TLB miss */
- 		mmcra_sdar_mode(event[i], &mmcra);
  
--		if (event[i] & EVENT_IS_L1) {
--			cache = event[i] >> EVENT_CACHE_SEL_SHIFT;
--			mmcr1 |= (cache & 1) << MMCR1_IC_QUAL_SHIFT;
--			cache >>= 1;
--			mmcr1 |= (cache & 1) << MMCR1_DC_QUAL_SHIFT;
-+		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+			cache = dc_ic_rld_quad_l1_sel(event[i]);
-+			mmcr1 |= (cache) << MMCR1_DC_IC_QUAL_SHIFT;
-+		} else {
-+			if (event[i] & EVENT_IS_L1) {
-+				cache = dc_ic_rld_quad_l1_sel(event[i]);
-+				mmcr1 |= (cache) << MMCR1_DC_IC_QUAL_SHIFT;
-+			}
- 		}
+ 	DBG("<- move_device_tree\n");
+@@ -662,7 +662,7 @@ void __init early_init_devtree(void *params)
+ {
+ 	phys_addr_t limit;
  
- 		if (is_event_marked(event[i])) {
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 6c737d675792e..493e5cc5fa8a6 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -232,8 +232,8 @@
- #define MMCR1_COMBINE_SHIFT(pmc)	(35 - ((pmc) - 1))
- #define MMCR1_PMCSEL_SHIFT(pmc)		(24 - (((pmc) - 1)) * 8)
- #define MMCR1_FAB_SHIFT			36
--#define MMCR1_DC_QUAL_SHIFT		47
--#define MMCR1_IC_QUAL_SHIFT		46
-+#define MMCR1_DC_IC_QUAL_MASK		0x3
-+#define MMCR1_DC_IC_QUAL_SHIFT		46
+-	DBG(" -> early_init_devtree(%p)\n", params);
++	DBG(" -> early_init_devtree(%px)\n", params);
  
- /* MMCR1 Combine bits macro for power9 */
- #define p9_MMCR1_COMBINE_SHIFT(pmc)	(38 - ((pmc - 1) * 2))
+ 	/* Too early to BUG_ON(), do it by hand */
+ 	if (!early_init_dt_verify(params))
+@@ -722,7 +722,7 @@ void __init early_init_devtree(void *params)
+ 	memblock_allow_resize();
+ 	memblock_dump_all();
+ 
+-	DBG("Phys. mem: %llx\n", memblock_phys_mem_size());
++	DBG("Phys. mem: %llx\n", (unsigned long long)memblock_phys_mem_size());
+ 
+ 	/* We may need to relocate the flat tree, do it now.
+ 	 * FIXME .. and the initrd too? */
 -- 
 2.20.1
 
