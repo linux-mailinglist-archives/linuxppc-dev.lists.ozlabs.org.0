@@ -1,70 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275F6106744
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:47:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C8F106741
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:46:02 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47K7lX0Pz8zDq9S
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:46:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47K7nk3PLmzDqD2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:47:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="XfRnMvzY"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="Zlu0EyPj"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47K5l427wnzDrB4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 17:15:26 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id b1so2835048pgq.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 22:15:26 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47K5nT2pZNzDr97
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 17:17:32 +1100 (AEDT)
+Received: by mail-pl1-x643.google.com with SMTP id w7so2657907plz.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2019 22:17:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=8sP5e9GKVHtTrgMqa5ZbpzLr6YWbxpa9KHSs+DxstTY=;
- b=XfRnMvzYCIiOJx2HLQdYeEGm5v8OF71R6TnwLH4PvVIOovOAw/xrKDtiJpEJHHFqZA
- wF1nw9AVwhtD230Aew3HLjNRaL6or4114gv7FmoaGfo1E97WIv6TpWiYZ/NN6amheBfT
- eSqCI8aZVHomvR5koOcJoATxdyPc8fC2GMtFfGrmABXHsriJaTHbfjuXXVNu8SoVi+iX
- TEWd7/17KB6P8It5acMbLMvuOngkSwqJFoBqpHE/kh3vTotRYkrWGCXUV/jcl1kUE+IR
- sfZAbCGQPuEcg2mE1vyzOCj13eByFxvat8ue285w7WKAFqTti7nT8e0yfo1FWiZIKMhA
- 8Arw==
+ bh=6wvIMs5mCR21OqWrXVH2RSSxKUceO4kMgjVI6mjoUcg=;
+ b=Zlu0EyPj0KMKXD3cUHiHNIbii7AqpiUXEEZ/cShTL1XsIW4ixLZpCop05As1an4rZZ
+ yZ+eLgIsRUqdWnkoi/hvccMBWzT79tbjBFiFAWgZaZxWkAqOI2yGjtR13AoLgFbeF6DQ
+ f88GsrB8ZLBaiRUutnhR9siW5/P49bEG79ejQTg6dw9/MmLWl/MRK1p4dz+PcvlkEjIE
+ CVVNrPU4uP6shKcNl1hQqLxAhFhrG1MCkAgqZ1Ry64lRAfxmav3lNEqcxmMB6+5TygZk
+ buePL+mMO2x+ss+CwO8Uj31qMvyRQ5U5kflxWsZfJzNZxrvKD2D66L8Iq6AYKSesl3l5
+ eIxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=8sP5e9GKVHtTrgMqa5ZbpzLr6YWbxpa9KHSs+DxstTY=;
- b=AkOwW2CDnNakYAUBZuJF+XnwAqul0LD6HpLDwZqdvOfE623zMnUl0FlEAyNLW08yYs
- XV3pzmx/KysEEDEIkET4vBNQkwUS2SEP6ZWdOAlm4TAyHJDHiTfYoiRkOhZsRkguWG6J
- Av21oz/0zHhDfELn8pglQEYDl7fQpUIVrf950CDZalrCu0gNAGQqyqKe4b26Ugx7DvQj
- KgZ9WZFP/E1oHPDbdeXfu1VQUS1k8uHksZlMobw4VbYVCSSH/9P+8TxL1brDVIG+2jl4
- 4dZXkQYbHAseAwLfre3ztB7bKUrxu/uq2AdJQX3sNUIuxamfyDK1hhGbJ0H4O8UDhkdI
- 2IIQ==
-X-Gm-Message-State: APjAAAVjdRyMs5H/GA3XwiiZ/uIQlviDPwdYBf56A41doOqMbJk2rRbL
- n+SB+Zs8zwx1QRj2eK8PKs5HQg==
-X-Google-Smtp-Source: APXvYqyqmkxUBkD/Ke1IS9DE2BSURiTEeP1uJgN/pVAOQNubIUU2WZAdLFkkaAtoDC+yB+wewM8bIQ==
-X-Received: by 2002:aa7:8dcf:: with SMTP id j15mr15963447pfr.233.1574403323364; 
- Thu, 21 Nov 2019 22:15:23 -0800 (PST)
+ bh=6wvIMs5mCR21OqWrXVH2RSSxKUceO4kMgjVI6mjoUcg=;
+ b=amfD1KPagf7OTaKr9n+5RT8OFAA0SY13Q6L0y30iAWff0tyRq1PrAj5IKO1jGCwQMV
+ FE15AHIQGLHHBVjpB+TOfRiIVCK1AG7EtjNVo7nZE7Ik+UivYnQbpwYD8U/Vveqsvx0V
+ doTfMdM2iMVN+yg4HpLkPOglBz9ZVyXUG48KNj0MMaIO8SQ96aPe2n0Pt19cIKQi/IWs
+ krGgk04r+AuFOFR6tVry/ZoN6IqH5s7B/+UplLW7LxpH1rscH5sb1XD3GEJX8n+YM71/
+ S3uqlhONGW69fmwmjRIxkguJsocoxX9IU9nKtWyEGM95mxZv1G9VHilKwNMmQZ+5Ums3
+ 5egw==
+X-Gm-Message-State: APjAAAVBST/K4qVfhvaTBETYr2fHC8Ydgn4vnmHeUScTRf8x26nC/Jal
+ mtyN0+hajAWWOpmYBkj/gzO8XA==
+X-Google-Smtp-Source: APXvYqxUE4ltdt0Ns47aRhurEVk3fM2faCfUAkBhwQY+xPYnFqbfHhJG6gzdWtSk3H+9qsc1whlMPQ==
+X-Received: by 2002:a17:90a:ff04:: with SMTP id
+ ce4mr16712553pjb.133.1574403451108; 
+ Thu, 21 Nov 2019 22:17:31 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 83sm4547432pfv.157.2019.11.21.22.15.21
+ by smtp.gmail.com with ESMTPSA id q199sm5829680pfq.147.2019.11.21.22.17.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Nov 2019 22:15:22 -0800 (PST)
-Subject: Re: [Very RFC 15/46] powernv/eeh: Use pnv_eeh_*_config() for internal
- config ops
+ Thu, 21 Nov 2019 22:17:30 -0800 (PST)
+Subject: Re: [Very RFC 16/46] powernv/eeh: Use eeh_edev_warn() rather than
+ open-coding a BDFN print
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-16-oohall@gmail.com>
+ <20191120012859.23300-17-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -139,12 +140,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <fb2063e3-3e71-a549-0bac-6d054ff7608e@ozlabs.ru>
-Date: Fri, 22 Nov 2019 17:15:19 +1100
+Message-ID: <1e4d5cbf-07e1-bfb8-ad62-15a797d5f04c@ozlabs.ru>
+Date: Fri, 22 Nov 2019 17:17:27 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-16-oohall@gmail.com>
+In-Reply-To: <20191120012859.23300-17-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -167,302 +168,39 @@ Sender: "Linuxppc-dev"
 
 
 On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> Use the pnv_eeh_{read|write}_config() functions that take an edev rather
-> than a pci_dn. This allows us to remove most of the explict uses of pci_dn
-> in the PowerNV EEH backend and localises them into a few functions which we
-> can fix later.
-
-
--ESPELL :)
-
+> Neaten things up a bit and remove a pci_dn use.
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+
+
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+but it also could be merged into some bigger patch, it is hardly useful
+on its own.
+
+
 > ---
->  arch/powerpc/platforms/powernv/eeh-powernv.c | 153 +++++++++----------
->  1 file changed, 70 insertions(+), 83 deletions(-)
+>  arch/powerpc/platforms/powernv/eeh-powernv.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
 > diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> index aa2935a08464..aaccb3768393 100644
+> index aaccb3768393..f58fe6bda46e 100644
 > --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
 > +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> @@ -278,27 +278,73 @@ int pnv_eeh_post_init(void)
->  	return ret;
->  }
->  
-> -static int pnv_eeh_find_cap(struct pci_dn *pdn, int cap)
-> +static inline bool pnv_eeh_cfg_blocked(struct eeh_dev *edev)
-> +{
-> +	if (!edev || !edev->pe)
-> +		return false;
-> +
-> +	/*
-> +	 * We will issue FLR or AF FLR to all VFs, which are contained
-> +	 * in VF PE. It relies on the EEH PCI config accessors. So we
-> +	 * can't block them during the window.
-> +	 */
-> +	if (edev->physfn && (edev->pe->state & EEH_PE_RESET))
-> +		return false;
-> +
-> +	if (edev->pe->state & EEH_PE_CFG_BLOCKED)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +static int pnv_eeh_read_config(struct eeh_dev *edev,
-> +			       int where, int size, u32 *val)
-> +{
-> +	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
-> +
-> +	if (!pdn)
-> +		return PCIBIOS_DEVICE_NOT_FOUND;
-> +
-> +	if (pnv_eeh_cfg_blocked(edev)) {
-> +		*val = 0xFFFFFFFF;
-> +		return PCIBIOS_SET_FAILED;
-> +	}
-> +
-> +	return pnv_pci_cfg_read(pdn, where, size, val);
-> +}
-> +
-> +static int pnv_eeh_write_config(struct eeh_dev *edev,
-> +				int where, int size, u32 val)
-> +{
-> +	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
-> +
-> +	if (!pdn)
-> +		return PCIBIOS_DEVICE_NOT_FOUND;
-> +
-> +	if (pnv_eeh_cfg_blocked(edev))
-> +		return PCIBIOS_SET_FAILED;
-> +
-> +	return pnv_pci_cfg_write(pdn, where, size, val);
-> +}
-> +
-> +static int pnv_eeh_find_cap(struct eeh_dev *edev, int cap)
->  {
->  	int pos = PCI_CAPABILITY_LIST;
->  	int cnt = 48;   /* Maximal number of capabilities */
->  	u32 status, id;
->  
-> -	if (!pdn)
-> -		return 0;
-> -
->  	/* Check if the device supports capabilities */
-> -	pnv_pci_cfg_read(pdn, PCI_STATUS, 2, &status);
-> +	pnv_eeh_read_config(edev, PCI_STATUS, 2, &status);
->  	if (!(status & PCI_STATUS_CAP_LIST))
->  		return 0;
->  
->  	while (cnt--) {
-> -		pnv_pci_cfg_read(pdn, pos, 1, &pos);
-> +		pnv_eeh_read_config(edev, pos, 1, &pos);
->  		if (pos < 0x40)
->  			break;
->  
->  		pos &= ~3;
-> -		pnv_pci_cfg_read(pdn, pos + PCI_CAP_LIST_ID, 1, &id);
-> +		pnv_eeh_read_config(edev, pos + PCI_CAP_LIST_ID, 1, &id);
->  		if (id == 0xff)
->  			break;
->  
-> @@ -313,15 +359,14 @@ static int pnv_eeh_find_cap(struct pci_dn *pdn, int cap)
->  	return 0;
->  }
->  
-> -static int pnv_eeh_find_ecap(struct pci_dn *pdn, int cap)
-> +static int pnv_eeh_find_ecap(struct eeh_dev *edev, int cap)
->  {
-> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
->  	u32 header;
->  	int pos = 256, ttl = (4096 - 256) / 8;
->  
->  	if (!edev || !edev->pcie_cap)
->  		return 0;
-> -	if (pnv_pci_cfg_read(pdn, pos, 4, &header) != PCIBIOS_SUCCESSFUL)
-> +	if (pnv_eeh_read_config(edev, pos, 4, &header) != PCIBIOS_SUCCESSFUL)
->  		return 0;
->  	else if (!header)
->  		return 0;
-> @@ -334,7 +379,7 @@ static int pnv_eeh_find_ecap(struct pci_dn *pdn, int cap)
->  		if (pos < 256)
->  			break;
->  
-> -		if (pnv_pci_cfg_read(pdn, pos, 4, &header) != PCIBIOS_SUCCESSFUL)
-> +		if (pnv_eeh_read_config(edev, pos, 4, &header) != PCIBIOS_SUCCESSFUL)
->  			break;
+> @@ -1001,10 +1001,8 @@ static void pnv_eeh_wait_for_pending(struct eeh_dev *edev, const char *type,
+>  		msleep((1 << i) * 100);
 >  	}
 >  
-> @@ -382,15 +427,14 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
->  
->  	/* Initialize eeh device */
->  	edev->class_code = pdn->class_code;
-> -	edev->mode	&= 0xFFFFFF00;
-
-
-It seems that this should go to 22/46. Thanks,
-
-
-> -	edev->pcix_cap = pnv_eeh_find_cap(pdn, PCI_CAP_ID_PCIX);
-> -	edev->pcie_cap = pnv_eeh_find_cap(pdn, PCI_CAP_ID_EXP);
-> -	edev->af_cap   = pnv_eeh_find_cap(pdn, PCI_CAP_ID_AF);
-> -	edev->aer_cap  = pnv_eeh_find_ecap(pdn, PCI_EXT_CAP_ID_ERR);
-> +	edev->pcix_cap = pnv_eeh_find_cap(edev, PCI_CAP_ID_PCIX);
-> +	edev->pcie_cap = pnv_eeh_find_cap(edev, PCI_CAP_ID_EXP);
-> +	edev->af_cap   = pnv_eeh_find_cap(edev, PCI_CAP_ID_AF);
-> +	edev->aer_cap  = pnv_eeh_find_ecap(edev, PCI_EXT_CAP_ID_ERR);
->  	if ((edev->class_code >> 8) == PCI_CLASS_BRIDGE_PCI) {
->  		edev->mode |= EEH_DEV_BRIDGE;
->  		if (edev->pcie_cap) {
-> -			pnv_pci_cfg_read(pdn, edev->pcie_cap + PCI_EXP_FLAGS,
-> +			pnv_eeh_read_config(edev, edev->pcie_cap + PCI_EXP_FLAGS,
->  					 2, &pcie_flags);
->  			pcie_flags = (pcie_flags & PCI_EXP_FLAGS_TYPE) >> 4;
->  			if (pcie_flags == PCI_EXP_TYPE_ROOT_PORT)
-> @@ -839,8 +883,7 @@ static int pnv_eeh_root_reset(struct pci_controller *hose, int option)
->  
->  static int __pnv_eeh_bridge_reset(struct pci_dev *dev, int option)
->  {
-> -	struct pci_dn *pdn = pci_get_pdn_by_devfn(dev->bus, dev->devfn);
-> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
-> +	struct eeh_dev *edev = pci_dev_to_eeh_dev(dev);
->  	int aer = edev ? edev->aer_cap : 0;
->  	u32 ctrl;
->  
-> @@ -944,10 +987,9 @@ void pnv_pci_reset_secondary_bus(struct pci_dev *dev)
->  	}
+> -	pr_warn("%s: Pending transaction while issuing %sFLR to %04x:%02x:%02x.%01x\n",
+> -		__func__, type,
+> -		pdn->phb->global_number, pdn->busno,
+> -		PCI_SLOT(pdn->devfn), PCI_FUNC(pdn->devfn));
+> +	eeh_edev_warn(edev, "%s: Pending transaction while issuing %sFLR\n",
+> +		__func__, type);
 >  }
 >  
-> -static void pnv_eeh_wait_for_pending(struct pci_dn *pdn, const char *type,
-> +static void pnv_eeh_wait_for_pending(struct eeh_dev *edev, const char *type,
->  				     int pos, u16 mask)
->  {
-> -	struct eeh_dev *edev = pdn->edev;
->  	int i, status = 0;
->  
->  	/* Wait for Transaction Pending bit to be cleared */
-> @@ -965,9 +1007,8 @@ static void pnv_eeh_wait_for_pending(struct pci_dn *pdn, const char *type,
->  		PCI_SLOT(pdn->devfn), PCI_FUNC(pdn->devfn));
->  }
->  
-> -static int pnv_eeh_do_flr(struct pci_dn *pdn, int option)
-> +static int pnv_eeh_do_flr(struct eeh_dev *edev, int option)
->  {
-> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
->  	u32 reg = 0;
->  
->  	if (WARN_ON(!edev->pcie_cap))
-> @@ -980,7 +1021,7 @@ static int pnv_eeh_do_flr(struct pci_dn *pdn, int option)
->  	switch (option) {
->  	case EEH_RESET_HOT:
->  	case EEH_RESET_FUNDAMENTAL:
-> -		pnv_eeh_wait_for_pending(pdn, "",
-> +		pnv_eeh_wait_for_pending(edev, "",
->  					 edev->pcie_cap + PCI_EXP_DEVSTA,
->  					 PCI_EXP_DEVSTA_TRPND);
->  		eeh_ops->read_config(edev, edev->pcie_cap + PCI_EXP_DEVCTL,
-> @@ -1003,9 +1044,8 @@ static int pnv_eeh_do_flr(struct pci_dn *pdn, int option)
->  	return 0;
->  }
->  
-> -static int pnv_eeh_do_af_flr(struct pci_dn *pdn, int option)
-> +static int pnv_eeh_do_af_flr(struct eeh_dev *edev, int option)
->  {
-> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
->  	u32 cap = 0;
->  
->  	if (WARN_ON(!edev->af_cap))
-> @@ -1023,7 +1063,7 @@ static int pnv_eeh_do_af_flr(struct pci_dn *pdn, int option)
->  		 * test is used, so we use the conrol offset rather than status
->  		 * and shift the test bit to match.
->  		 */
-> -		pnv_eeh_wait_for_pending(pdn, "AF",
-> +		pnv_eeh_wait_for_pending(edev, "AF",
->  					 edev->af_cap + PCI_AF_CTRL,
->  					 PCI_AF_STATUS_TP << 8);
->  		eeh_ops->write_config(edev, edev->af_cap + PCI_AF_CTRL,
-> @@ -1042,20 +1082,18 @@ static int pnv_eeh_do_af_flr(struct pci_dn *pdn, int option)
->  static int pnv_eeh_reset_vf_pe(struct eeh_pe *pe, int option)
->  {
->  	struct eeh_dev *edev;
-> -	struct pci_dn *pdn;
->  	int ret;
->  
->  	/* The VF PE should have only one child device */
->  	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
-> -	pdn = eeh_dev_to_pdn(edev);
-> -	if (!pdn)
-> +	if (!edev)
->  		return -ENXIO;
->  
-> -	ret = pnv_eeh_do_flr(pdn, option);
-> +	ret = pnv_eeh_do_flr(edev, option);
->  	if (!ret)
->  		return ret;
->  
-> -	return pnv_eeh_do_af_flr(pdn, option);
-> +	return pnv_eeh_do_af_flr(edev, option);
->  }
->  
->  /**
-> @@ -1244,57 +1282,6 @@ static int pnv_eeh_err_inject(struct eeh_pe *pe, int type, int func,
->  	return 0;
->  }
->  
-> -static inline bool pnv_eeh_cfg_blocked(struct pci_dn *pdn)
-> -{
-> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
-> -
-> -	if (!edev || !edev->pe)
-> -		return false;
-> -
-> -	/*
-> -	 * We will issue FLR or AF FLR to all VFs, which are contained
-> -	 * in VF PE. It relies on the EEH PCI config accessors. So we
-> -	 * can't block them during the window.
-> -	 */
-> -	if (edev->physfn && (edev->pe->state & EEH_PE_RESET))
-> -		return false;
-> -
-> -	if (edev->pe->state & EEH_PE_CFG_BLOCKED)
-> -		return true;
-> -
-> -	return false;
-> -}
-> -
-> -static int pnv_eeh_read_config(struct eeh_dev *edev,
-> -			       int where, int size, u32 *val)
-> -{
-> -	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
-> -
-> -	if (!pdn)
-> -		return PCIBIOS_DEVICE_NOT_FOUND;
-> -
-> -	if (pnv_eeh_cfg_blocked(pdn)) {
-> -		*val = 0xFFFFFFFF;
-> -		return PCIBIOS_SET_FAILED;
-> -	}
-> -
-> -	return pnv_pci_cfg_read(pdn, where, size, val);
-> -}
-> -
-> -static int pnv_eeh_write_config(struct eeh_dev *edev,
-> -				int where, int size, u32 val)
-> -{
-> -	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
-> -
-> -	if (!pdn)
-> -		return PCIBIOS_DEVICE_NOT_FOUND;
-> -
-> -	if (pnv_eeh_cfg_blocked(pdn))
-> -		return PCIBIOS_SET_FAILED;
-> -
-> -	return pnv_pci_cfg_write(pdn, where, size, val);
-> -}
-> -
->  static void pnv_eeh_dump_hub_diag_common(struct OpalIoP7IOCErrorData *data)
->  {
->  	/* GEM */
+>  static int pnv_eeh_do_flr(struct eeh_dev *edev, int option)
 > 
 
 -- 
