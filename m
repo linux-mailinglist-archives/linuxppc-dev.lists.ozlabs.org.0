@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729AD1066E1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:14:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47K73c43ZMzDqTh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:14:52 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AB31066DE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:13:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47K71R6VVXzDrF0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:12:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="XpWjC1Wu"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="bjcDTCLM"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47K5Rl5V4xzDqDm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 17:02:11 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47K5Rm1SvTzDr4D
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 17:02:12 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CE1632070B;
- Fri, 22 Nov 2019 06:02:08 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id DAC7C2068F;
+ Fri, 22 Nov 2019 06:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1574402529;
- bh=c92/BLyGFwnUnlC9RHs4LORE2AeBCegKXnWlVU3xO4I=;
+ s=default; t=1574402530;
+ bh=ET+DFIQMOkHhXcT1P7hHhRmwzDhIgs682udKVkzTbRU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=XpWjC1WuzDOUFUZe8rGRu+XXPoK/UkVS7eX3tWrJcO+s3qDPhFctVa2P1nOriJgl0
- coDD6VqJ9FxiarlLayhR1mU0rvXdJK5ll93LrFu9lLSKxA7A+WLC6dXYMCC/NAxaUd
- 5ni9386uu2qRJwJANqfKbzqLkBFB4nPYnGfhsGdA=
+ b=bjcDTCLMG3sI1fIWov1IdJEku6bUuRnyy0UI7oDVzrslCEfh+WCsZUcohrSwR6XDU
+ W+5264EZQKxl9z2fC+Iw+30sgqzlktkAGE5iQLe9I2gtiL9tQhsoc45hw/jDcj0Axx
+ d6fBHkfzyZvG55S5EjKyCAGfd62soqZwpFQMSbjI=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 37/91] powerpc/book3s/32: fix number of bats in
- p/v_block_mapped()
-Date: Fri, 22 Nov 2019 01:00:35 -0500
-Message-Id: <20191122060129.4239-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 38/91] powerpc/xmon: fix dump_segments()
+Date: Fri, 22 Nov 2019 01:00:36 -0500
+Message-Id: <20191122060129.4239-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122060129.4239-1-sashal@kernel.org>
 References: <20191122060129.4239-1-sashal@kernel.org>
@@ -67,40 +66,31 @@ Sender: "Linuxppc-dev"
 
 From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-[ Upstream commit e93ba1b7eb5b188c749052df7af1c90821c5f320 ]
+[ Upstream commit 32c8c4c621897199e690760c2d57054f8b84b6e6 ]
 
-This patch fixes the loop in p_block_mapped() and v_block_mapped()
-to scan the entire bat_addrs[] array.
+mfsrin() takes segment num from bits 31-28 (IBM bits 0-3).
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+[mpe: Clarify bit numbering]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/ppc_mmu_32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/xmon/xmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/ppc_mmu_32.c b/arch/powerpc/mm/ppc_mmu_32.c
-index 2a049fb8523d5..96c52271e9c2d 100644
---- a/arch/powerpc/mm/ppc_mmu_32.c
-+++ b/arch/powerpc/mm/ppc_mmu_32.c
-@@ -52,7 +52,7 @@ struct batrange {		/* stores address ranges mapped by BATs */
- phys_addr_t v_block_mapped(unsigned long va)
- {
- 	int b;
--	for (b = 0; b < 4; ++b)
-+	for (b = 0; b < ARRAY_SIZE(bat_addrs); ++b)
- 		if (va >= bat_addrs[b].start && va < bat_addrs[b].limit)
- 			return bat_addrs[b].phys + (va - bat_addrs[b].start);
- 	return 0;
-@@ -64,7 +64,7 @@ phys_addr_t v_block_mapped(unsigned long va)
- unsigned long p_block_mapped(phys_addr_t pa)
- {
- 	int b;
--	for (b = 0; b < 4; ++b)
-+	for (b = 0; b < ARRAY_SIZE(bat_addrs); ++b)
- 		if (pa >= bat_addrs[b].phys
- 	    	    && pa < (bat_addrs[b].limit-bat_addrs[b].start)
- 		              +bat_addrs[b].phys)
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 687e8b8bf5c67..899288b71145e 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -3043,7 +3043,7 @@ void dump_segments(void)
+ 
+ 	printf("sr0-15 =");
+ 	for (i = 0; i < 16; ++i)
+-		printf(" %x", mfsrin(i));
++		printf(" %x", mfsrin(i << 28));
+ 	printf("\n");
+ }
+ #endif
 -- 
 2.20.1
 
