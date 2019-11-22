@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD02106706
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:25:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799AA106703
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:23:21 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47K7FL3zsyzDqLK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:23:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47K7Hk3jVYzDrF2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:25:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="0gpQXVMG"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="HBLrEUyH"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47K5S26DyvzDr94
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 17:02:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47K5SB15RXzDr9H
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 17:02:34 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 525B320659;
- Fri, 22 Nov 2019 06:02:24 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4D7672071B;
+ Fri, 22 Nov 2019 06:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1574402545;
- bh=TPBoOGY1A57r86SWMy5IOTPBBr3mVxs/0C9ZC3nG3N8=;
+ s=default; t=1574402552;
+ bh=IRIFf4jSVFyly0lxBpHg7bfrDIjAbhsrihdGmuphs/k=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=0gpQXVMG5M3L5DzMbyyK7qB8eMZRPkNC2rZJrtFLZXzparX80KcKTZro1gkDXK9Jr
- rgUqo18lhoSZpGSPq029kt6J40u8dEb8XWZO0PYkjKEEc9HIqrTtHgYsLAB+szqQK2
- bdU6s1ll3FYq6V2B2iVKY08Ttgi3t5rCrmpOZGbg=
+ b=HBLrEUyHydnB2kD6kJ3cwZSIQR3Fp+4YhwN0eLps7c6VMqR72//2Gu78HYtf6S0Pu
+ y9iAUWkHIKLobDgp42vxbRCY23AC8NEfjU/aswiF0hJYWCPDpPV8stLxxXhreynm0v
+ PVLlP+K5qf0KNQGQ6dsxZp48e3LrKv7EQGV8xic0=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 51/91] powerpc/powernv/eeh/npu: Fix uninitialized
- variables in opal_pci_eeh_freeze_status
-Date: Fri, 22 Nov 2019 01:00:49 -0500
-Message-Id: <20191122060129.4239-50-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 57/91] powerpc/83xx: handle machine check caused
+ by watchdog timer
+Date: Fri, 22 Nov 2019 01:00:55 -0500
+Message-Id: <20191122060129.4239-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122060129.4239-1-sashal@kernel.org>
 References: <20191122060129.4239-1-sashal@kernel.org>
@@ -60,88 +60,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Sam Bobroff <sbobroff@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Cc: Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
+ Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-[ Upstream commit c20577014f85f36d4e137d3d52a1f61225b4a3d2 ]
+[ Upstream commit 0deae39cec6dab3a66794f3e9e83ca4dc30080f1 ]
 
-The current implementation of the OPAL_PCI_EEH_FREEZE_STATUS call in
-skiboot's NPU driver does not touch the pci_error_type parameter so
-it might have garbage but the powernv code analyzes it nevertheless.
+When the watchdog timer is set in interrupt mode, it causes a
+machine check when it times out. The purpose of this mode is to
+ease debugging, not to crash the kernel and reboot the machine.
 
-This initializes pcierr and fstate to zero in all call sites.
+This patch implements a special handling for that, in order to not
+crash the kernel if the watchdog times out while in interrupt or
+within the idle task.
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+[scottwood: added missing #include]
+Signed-off-by: Scott Wood <oss@buserror.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/eeh-powernv.c | 8 ++++----
- arch/powerpc/platforms/powernv/pci-ioda.c    | 4 ++--
- arch/powerpc/platforms/powernv/pci.c         | 4 ++--
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/cputable.h |  1 +
+ arch/powerpc/include/asm/reg.h      |  2 ++
+ arch/powerpc/kernel/cputable.c      | 10 ++++++----
+ arch/powerpc/platforms/83xx/misc.c  | 17 +++++++++++++++++
+ 4 files changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index 2354ea51e8714..6189c4cf56c3f 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -546,8 +546,8 @@ static void pnv_eeh_get_phb_diag(struct eeh_pe *pe)
- static int pnv_eeh_get_phb_state(struct eeh_pe *pe)
- {
- 	struct pnv_phb *phb = pe->phb->private_data;
--	u8 fstate;
--	__be16 pcierr;
-+	u8 fstate = 0;
-+	__be16 pcierr = 0;
- 	s64 rc;
- 	int result = 0;
+diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+index 4e54282c29b44..cf51aea47510c 100644
+--- a/arch/powerpc/include/asm/cputable.h
++++ b/arch/powerpc/include/asm/cputable.h
+@@ -44,6 +44,7 @@ extern int machine_check_e500(struct pt_regs *regs);
+ extern int machine_check_e200(struct pt_regs *regs);
+ extern int machine_check_47x(struct pt_regs *regs);
+ int machine_check_8xx(struct pt_regs *regs);
++int machine_check_83xx(struct pt_regs *regs);
  
-@@ -585,8 +585,8 @@ static int pnv_eeh_get_phb_state(struct eeh_pe *pe)
- static int pnv_eeh_get_pe_state(struct eeh_pe *pe)
- {
- 	struct pnv_phb *phb = pe->phb->private_data;
--	u8 fstate;
--	__be16 pcierr;
-+	u8 fstate = 0;
-+	__be16 pcierr = 0;
- 	s64 rc;
- 	int result;
+ extern void cpu_down_flush_e500v2(void);
+ extern void cpu_down_flush_e500mc(void);
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index ceb168cd3b814..26aeeaad32678 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -663,6 +663,8 @@
+ #define   SRR1_PROGTRAP		0x00020000 /* Trap */
+ #define   SRR1_PROGADDR		0x00010000 /* SRR0 contains subsequent addr */
  
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 8015e40bc7ee4..3ec673b4ca6ce 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -599,8 +599,8 @@ static int pnv_ioda_unfreeze_pe(struct pnv_phb *phb, int pe_no, int opt)
- static int pnv_ioda_get_pe_state(struct pnv_phb *phb, int pe_no)
- {
- 	struct pnv_ioda_pe *slave, *pe;
--	u8 fstate, state;
--	__be16 pcierr;
-+	u8 fstate = 0, state;
-+	__be16 pcierr = 0;
- 	s64 rc;
++#define   SRR1_MCE_MCP		0x00080000 /* Machine check signal caused interrupt */
++
+ #define SPRN_HSRR0	0x13A	/* Save/Restore Register 0 */
+ #define SPRN_HSRR1	0x13B	/* Save/Restore Register 1 */
+ #define   HSRR1_DENORM		0x00100000 /* Denorm exception */
+diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
+index 6a82ef039c509..7471ed48f41fa 100644
+--- a/arch/powerpc/kernel/cputable.c
++++ b/arch/powerpc/kernel/cputable.c
+@@ -1162,6 +1162,7 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc603",
+ 	},
++#ifdef CONFIG_PPC_83xx
+ 	{	/* e300c1 (a 603e core, plus some) on 83xx */
+ 		.pvr_mask		= 0x7fff0000,
+ 		.pvr_value		= 0x00830000,
+@@ -1172,7 +1173,7 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 32,
+ 		.dcache_bsize		= 32,
+ 		.cpu_setup		= __setup_cpu_603,
+-		.machine_check		= machine_check_generic,
++		.machine_check		= machine_check_83xx,
+ 		.platform		= "ppc603",
+ 	},
+ 	{	/* e300c2 (an e300c1 core, plus some, minus FPU) on 83xx */
+@@ -1186,7 +1187,7 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 32,
+ 		.dcache_bsize		= 32,
+ 		.cpu_setup		= __setup_cpu_603,
+-		.machine_check		= machine_check_generic,
++		.machine_check		= machine_check_83xx,
+ 		.platform		= "ppc603",
+ 	},
+ 	{	/* e300c3 (e300c1, plus one IU, half cache size) on 83xx */
+@@ -1200,7 +1201,7 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 32,
+ 		.dcache_bsize		= 32,
+ 		.cpu_setup		= __setup_cpu_603,
+-		.machine_check		= machine_check_generic,
++		.machine_check		= machine_check_83xx,
+ 		.num_pmcs		= 4,
+ 		.oprofile_cpu_type	= "ppc/e300",
+ 		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
+@@ -1217,12 +1218,13 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 32,
+ 		.dcache_bsize		= 32,
+ 		.cpu_setup		= __setup_cpu_603,
+-		.machine_check		= machine_check_generic,
++		.machine_check		= machine_check_83xx,
+ 		.num_pmcs		= 4,
+ 		.oprofile_cpu_type	= "ppc/e300",
+ 		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
+ 		.platform		= "ppc603",
+ 	},
++#endif
+ 	{	/* default match, we assume split I/D cache & TB (non-601)... */
+ 		.pvr_mask		= 0x00000000,
+ 		.pvr_value		= 0x00000000,
+diff --git a/arch/powerpc/platforms/83xx/misc.c b/arch/powerpc/platforms/83xx/misc.c
+index d75c9816a5c92..2b6589fe812dd 100644
+--- a/arch/powerpc/platforms/83xx/misc.c
++++ b/arch/powerpc/platforms/83xx/misc.c
+@@ -14,6 +14,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/pci.h>
  
- 	/* Sanity check on PE number */
-diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-index db7b8020f68ef..98cc8ba07c233 100644
---- a/arch/powerpc/platforms/powernv/pci.c
-+++ b/arch/powerpc/platforms/powernv/pci.c
-@@ -482,8 +482,8 @@ static void pnv_pci_handle_eeh_config(struct pnv_phb *phb, u32 pe_no)
- static void pnv_pci_config_check_eeh(struct pci_dn *pdn)
- {
- 	struct pnv_phb *phb = pdn->phb->private_data;
--	u8	fstate;
--	__be16	pcierr;
-+	u8	fstate = 0;
-+	__be16	pcierr = 0;
- 	unsigned int pe_no;
- 	s64	rc;
++#include <asm/debug.h>
+ #include <asm/io.h>
+ #include <asm/hw_irq.h>
+ #include <asm/ipic.h>
+@@ -150,3 +151,19 @@ void __init mpc83xx_setup_arch(void)
  
+ 	mpc83xx_setup_pci();
+ }
++
++int machine_check_83xx(struct pt_regs *regs)
++{
++	u32 mask = 1 << (31 - IPIC_MCP_WDT);
++
++	if (!(regs->msr & SRR1_MCE_MCP) || !(ipic_get_mcp_status() & mask))
++		return machine_check_generic(regs);
++	ipic_clear_mcp_status(mask);
++
++	if (debugger_fault_handler(regs))
++		return 1;
++
++	die("Watchdog NMI Reset", regs, 0);
++
++	return 1;
++}
 -- 
 2.20.1
 
