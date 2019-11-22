@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE491066CD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:08:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 729AD1066E1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 08:14:55 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47K6vt53YzzDqQQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:08:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47K73c43ZMzDqTh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 18:14:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,36 +15,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="NpQt2H6X"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="XpWjC1Wu"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47K5M65W3VzDr8m
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 16:58:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47K5Rl5V4xzDqDm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 17:02:11 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2BDA9207FA;
- Fri, 22 Nov 2019 05:58:07 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id CE1632070B;
+ Fri, 22 Nov 2019 06:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1574402287;
- bh=5flbKH9/7SuKJsXQ0njpu5dTP+T8KsdOIIJV4h6GRxQ=;
+ s=default; t=1574402529;
+ bh=c92/BLyGFwnUnlC9RHs4LORE2AeBCegKXnWlVU3xO4I=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NpQt2H6XlNjMWmLqSrvUHGl2Ee21NoCVKQwIefMvYIDSwBhdVn/HQoSrHVGh5M6FF
- ve4gCe0o3UC3In6eQbpitfC2wvRWAkB0FbCLGaZlQqcpIvUsu1xwm9EEYUiTF0asjy
- ce0iiNB+3xfRSGm3KP+NaF9PBf+ZiGghYExz48d4=
+ b=XpWjC1WuzDOUFUZe8rGRu+XXPoK/UkVS7eX3tWrJcO+s3qDPhFctVa2P1nOriJgl0
+ coDD6VqJ9FxiarlLayhR1mU0rvXdJK5ll93LrFu9lLSKxA7A+WLC6dXYMCC/NAxaUd
+ 5ni9386uu2qRJwJANqfKbzqLkBFB4nPYnGfhsGdA=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 126/127] powerpc/pseries/dlpar: Fix a missing
- check in dlpar_parse_cc_property()
-Date: Fri, 22 Nov 2019 00:55:43 -0500
-Message-Id: <20191122055544.3299-124-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 37/91] powerpc/book3s/32: fix number of bats in
+ p/v_block_mapped()
+Date: Fri, 22 Nov 2019 01:00:35 -0500
+Message-Id: <20191122060129.4239-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191122055544.3299-1-sashal@kernel.org>
-References: <20191122055544.3299-1-sashal@kernel.org>
+In-Reply-To: <20191122060129.4239-1-sashal@kernel.org>
+References: <20191122060129.4239-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,42 +60,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Gen Zhang <blackgod016574@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Gen Zhang <blackgod016574@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-[ Upstream commit efa9ace68e487ddd29c2b4d6dd23242158f1f607 ]
+[ Upstream commit e93ba1b7eb5b188c749052df7af1c90821c5f320 ]
 
-In dlpar_parse_cc_property(), 'prop->name' is allocated by kstrdup().
-kstrdup() may return NULL, so it should be checked and handle error.
-And prop should be freed if 'prop->name' is NULL.
+This patch fixes the loop in p_block_mapped() and v_block_mapped()
+to scan the entire bat_addrs[] array.
 
-Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/dlpar.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/mm/ppc_mmu_32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index f4e6565dd7a94..fb2876a84fbe6 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -63,6 +63,10 @@ static struct property *dlpar_parse_cc_property(struct cc_workarea *ccwa)
- 
- 	name = (char *)ccwa + be32_to_cpu(ccwa->name_offset);
- 	prop->name = kstrdup(name, GFP_KERNEL);
-+	if (!prop->name) {
-+		dlpar_free_cc_property(prop);
-+		return NULL;
-+	}
- 
- 	prop->length = be32_to_cpu(ccwa->prop_length);
- 	value = (char *)ccwa + be32_to_cpu(ccwa->prop_offset);
+diff --git a/arch/powerpc/mm/ppc_mmu_32.c b/arch/powerpc/mm/ppc_mmu_32.c
+index 2a049fb8523d5..96c52271e9c2d 100644
+--- a/arch/powerpc/mm/ppc_mmu_32.c
++++ b/arch/powerpc/mm/ppc_mmu_32.c
+@@ -52,7 +52,7 @@ struct batrange {		/* stores address ranges mapped by BATs */
+ phys_addr_t v_block_mapped(unsigned long va)
+ {
+ 	int b;
+-	for (b = 0; b < 4; ++b)
++	for (b = 0; b < ARRAY_SIZE(bat_addrs); ++b)
+ 		if (va >= bat_addrs[b].start && va < bat_addrs[b].limit)
+ 			return bat_addrs[b].phys + (va - bat_addrs[b].start);
+ 	return 0;
+@@ -64,7 +64,7 @@ phys_addr_t v_block_mapped(unsigned long va)
+ unsigned long p_block_mapped(phys_addr_t pa)
+ {
+ 	int b;
+-	for (b = 0; b < 4; ++b)
++	for (b = 0; b < ARRAY_SIZE(bat_addrs); ++b)
+ 		if (pa >= bat_addrs[b].phys
+ 	    	    && pa < (bat_addrs[b].limit-bat_addrs[b].start)
+ 		              +bat_addrs[b].phys)
 -- 
 2.20.1
 
