@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA351066B5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 07:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 812711066BF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 07:59:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47K6gH1Wb3zDr8H
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 17:57:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47K6jp5FRZzDr7x
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2019 17:59:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,33 +15,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="jnuZaJvf"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="ZFHVKiwh"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47K5Kr4nw1zDqwP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 16:57:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47K5L11vymzDqMH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2019 16:57:13 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B1C6A207FA;
- Fri, 22 Nov 2019 05:57:01 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0E59E2072E;
+ Fri, 22 Nov 2019 05:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1574402222;
- bh=4+GHqQmqPjorqmdA5wl5NUQh87jDzmSFSFQb4P1qgGs=;
+ s=default; t=1574402231;
+ bh=ezfUYjhGPrhOaDVH+CHLGp4YuChOzTj0T9Bq3EJZaO0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=jnuZaJvfa3++HMkd/WEplYAKOXCi/XsrlAWkv202kw5XNY4gA+Ukaq+0XOY3T2D9T
- nfYV/Q6oLK6j3ikFX+EVq1iMBPdN0XwvrWcXe+WsMhBjikiAlrTwyJW4EozBO6zyTN
- tc0XknRSsEiTG4XUEer8FmIUvog2MFx8KoFw19o8=
+ b=ZFHVKiwher75LG5cgrocvYedqVPJuEu7UCm/O5C7PjWXHkWyQrHf5ZnaeJBHwX/Wi
+ MTk4e3GyYbziZ3RrZWY/5LVq2g2XJIc/t+HKLWWbaVTDELTU/6zezypIlRxYuIruAU
+ jyXK5q0q+mzxPhB2ozKQjtrVD0qzi4hYZJJS7n9E=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 069/127] powerpc/powernv/eeh/npu: Fix
- uninitialized variables in opal_pci_eeh_freeze_status
-Date: Fri, 22 Nov 2019 00:54:47 -0500
-Message-Id: <20191122055544.3299-68-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 077/127] powerpc/pseries: Fix node leak in
+ update_lmb_associativity_index()
+Date: Fri, 22 Nov 2019 00:54:55 -0500
+Message-Id: <20191122055544.3299-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122055544.3299-1-sashal@kernel.org>
 References: <20191122055544.3299-1-sashal@kernel.org>
@@ -60,88 +60,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Sam Bobroff <sbobroff@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit c20577014f85f36d4e137d3d52a1f61225b4a3d2 ]
+[ Upstream commit 47918bc68b7427e961035949cc1501a864578a69 ]
 
-The current implementation of the OPAL_PCI_EEH_FREEZE_STATUS call in
-skiboot's NPU driver does not touch the pci_error_type parameter so
-it might have garbage but the powernv code analyzes it nevertheless.
+In update_lmb_associativity_index() we lookup dr_node using
+of_find_node_by_path() which takes a reference for us. In the
+non-error case we forget to drop the reference. Note that
+find_aa_index() does modify properties of the node, but doesn't need
+an extra reference held once it's returned.
 
-This initializes pcierr and fstate to zero in all call sites.
-
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/eeh-powernv.c | 8 ++++----
- arch/powerpc/platforms/powernv/pci-ioda.c    | 4 ++--
- arch/powerpc/platforms/powernv/pci.c         | 4 ++--
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index 8864065eba227..fa2965c96155b 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -548,8 +548,8 @@ static void pnv_eeh_get_phb_diag(struct eeh_pe *pe)
- static int pnv_eeh_get_phb_state(struct eeh_pe *pe)
- {
- 	struct pnv_phb *phb = pe->phb->private_data;
--	u8 fstate;
--	__be16 pcierr;
-+	u8 fstate = 0;
-+	__be16 pcierr = 0;
- 	s64 rc;
- 	int result = 0;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 93e09f108ca17..b40798c878259 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -295,6 +295,7 @@ static u32 lookup_lmb_associativity_index(struct of_drconf_cell *lmb)
  
-@@ -587,8 +587,8 @@ static int pnv_eeh_get_phb_state(struct eeh_pe *pe)
- static int pnv_eeh_get_pe_state(struct eeh_pe *pe)
- {
- 	struct pnv_phb *phb = pe->phb->private_data;
--	u8 fstate;
--	__be16 pcierr;
-+	u8 fstate = 0;
-+	__be16 pcierr = 0;
- 	s64 rc;
- 	int result;
+ 	aa_index = find_aa_index(dr_node, ala_prop, lmb_assoc);
  
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index ddef22e00ddd7..d3d5796f7df60 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -598,8 +598,8 @@ static int pnv_ioda_unfreeze_pe(struct pnv_phb *phb, int pe_no, int opt)
- static int pnv_ioda_get_pe_state(struct pnv_phb *phb, int pe_no)
- {
- 	struct pnv_ioda_pe *slave, *pe;
--	u8 fstate, state;
--	__be16 pcierr;
-+	u8 fstate = 0, state;
-+	__be16 pcierr = 0;
- 	s64 rc;
- 
- 	/* Sanity check on PE number */
-diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-index 5422f4a6317ca..e2d031a3ec157 100644
---- a/arch/powerpc/platforms/powernv/pci.c
-+++ b/arch/powerpc/platforms/powernv/pci.c
-@@ -600,8 +600,8 @@ static void pnv_pci_handle_eeh_config(struct pnv_phb *phb, u32 pe_no)
- static void pnv_pci_config_check_eeh(struct pci_dn *pdn)
- {
- 	struct pnv_phb *phb = pdn->phb->private_data;
--	u8	fstate;
--	__be16	pcierr;
-+	u8	fstate = 0;
-+	__be16	pcierr = 0;
- 	unsigned int pe_no;
- 	s64	rc;
- 
++	of_node_put(dr_node);
+ 	dlpar_free_cc_nodes(lmb_node);
+ 	return aa_index;
+ }
 -- 
 2.20.1
 
