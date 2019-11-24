@@ -1,81 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562DC108160
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 02:48:35 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7FE1080F7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 00:05:03 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47L85Q2NTjzDqy6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 10:04:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LCk82625zDqwL
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 12:48:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=gwalbon@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47L83g1BgDzDqwh
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 10:03:23 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xANN1wke104948; Sat, 23 Nov 2019 18:02:57 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wf0f59j7c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 23 Nov 2019 18:02:57 -0500
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xANN20J7105051;
- Sat, 23 Nov 2019 18:02:57 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wf0f59j75-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 23 Nov 2019 18:02:57 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xANN0KNF030698;
- Sat, 23 Nov 2019 23:02:56 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma05wdc.us.ibm.com with ESMTP id 2wevd6621f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 23 Nov 2019 23:02:56 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xANN2tB346203274
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 23 Nov 2019 23:02:55 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB582112062;
- Sat, 23 Nov 2019 23:02:55 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B2F1112063;
- Sat, 23 Nov 2019 23:02:55 +0000 (GMT)
-Received: from localhost (unknown [9.80.195.219])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Sat, 23 Nov 2019 23:02:55 +0000 (GMT)
-From: Gustavo Walbon <gwalbon@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH][v2] powerpc: Set right value of Speculation_Store_Bypass in
- /proc/<pid>/status
-Date: Sat, 23 Nov 2019 20:02:35 -0300
-Message-Id: <20191123230235.11888-1-gwalbon@linux.ibm.com>
-X-Mailer: git-send-email 2.19.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LChT5H7HzDqWK
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:47:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=netronome.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=netronome-com.20150623.gappssmtp.com
+ header.i=@netronome-com.20150623.gappssmtp.com header.b="UBeOhOVQ"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47LChT2PTXz8t3K
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:47:05 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47LChT21JBz9sQw; Sun, 24 Nov 2019 12:47:05 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=netronome.com
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=jakub.kicinski@netronome.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=netronome.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=netronome-com.20150623.gappssmtp.com
+ header.i=@netronome-com.20150623.gappssmtp.com header.b="UBeOhOVQ"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47LChS2Gtlz9sPZ
+ for <linuxppc-dev@ozlabs.org>; Sun, 24 Nov 2019 12:47:02 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id z188so5314960pgb.1
+ for <linuxppc-dev@ozlabs.org>; Sat, 23 Nov 2019 17:47:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=netronome-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
+ :organization:mime-version:content-transfer-encoding;
+ bh=yMmdkZWPRNJJFij2NhsWbh6pUoNvkfx10Q4+z88ErM0=;
+ b=UBeOhOVQGRUkz7+Ha9DMWP6dQXEuwXHgZnurqd+/0MrwsSGQWsqAJ0Cd0VOEzd8VQE
+ zRlywA6Fc+Q3pJDm2ui0qc11p4S+uqx9+rJ4ttJBEnJl1aEfktMil0M+Msyhe/fJ5S9i
+ nyIlVLjvk040Tpv6Nla7pRFQkSjBKQG7fC59zfrY8X2LUrnQcrb0BNrvJ1uf/S2rCMEq
+ 9SQ3iDhpMSMrF1wRmcuY1LYwh5D+wNZ5y4gGD8VhReAlzriVkKxPH27IIzHRiQuZjWV5
+ PeSz52jdtL2LzlW6UGKUmLovrSjSuLLQgpdBgyubpMyt5GAN+hIAcD2Pp3YFYK0C1lAL
+ Z8hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+ :references:organization:mime-version:content-transfer-encoding;
+ bh=yMmdkZWPRNJJFij2NhsWbh6pUoNvkfx10Q4+z88ErM0=;
+ b=ULSDzNM1EAyP5VAGdkEqmKTV3kuG9ZwlW2Ihzqs+vltdjjAVHK7SLI8dIHpZRzn0QQ
+ Gk5DDQSYcA9wmYiqdwoHTtW53tWRLbli2QX76AbmWdEb3xKX4L2XTEPZudQwO3SIrH8l
+ CyYX0XFSGmV+JZ0pjOalVSNhQIz7PefM4uI/70iypKdYjmtZSgyA6bOLvX9DoFiWftJd
+ 29fdFB6fG9wjuB/Sdxw9GXCiKAMGW0d0YLHXxzwJgD1wGVoghCss9c16alcMJF7jCelx
+ hd76DZatPd6mAdclisWe/3tHKCifFG0yUSKkZ4BJb6YLRXk6T/QTYLOiCg7uwVpKC24K
+ GC+g==
+X-Gm-Message-State: APjAAAVXQS0aDb67Bd9jFEfROvUtN4PehWITn+N7hRSK6NXcBpgXRov3
+ q/0nM6qGnCB33Y1tJ8L80M8hAQ==
+X-Google-Smtp-Source: APXvYqxnDB6Vj5Fe6vlAlXy44XNkKayLVR9vUlTsn1u0ajlJlGnUZHsww4zNV01AT214QrfKB50gEQ==
+X-Received: by 2002:a63:df09:: with SMTP id u9mr24303463pgg.20.1574560018915; 
+ Sat, 23 Nov 2019 17:46:58 -0800 (PST)
+Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net.
+ [73.202.202.92])
+ by smtp.gmail.com with ESMTPSA id i5sm2920463pfo.52.2019.11.23.17.46.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 23 Nov 2019 17:46:58 -0800 (PST)
+Date: Sat, 23 Nov 2019 17:46:53 -0800
+From: Jakub Kicinski <jakub.kicinski@netronome.com>
+To: Thomas Falcon <tlfalcon@linux.ibm.com>
+Subject: Re: [PATCH net 3/4] ibmvnic: Bound waits for device queries
+Message-ID: <20191123174653.19e37c30@cakuba.netronome.com>
+In-Reply-To: <1574451706-19058-4-git-send-email-tlfalcon@linux.ibm.com>
+References: <1574451706-19058-1-git-send-email-tlfalcon@linux.ibm.com>
+ <1574451706-19058-4-git-send-email-tlfalcon@linux.ibm.com>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-23_05:2019-11-21,2019-11-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- bulkscore=0 spamscore=0 clxscore=1011 mlxlogscore=999 adultscore=0
- phishscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911230198
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,73 +101,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cmr@informatik.wtf, geert+renesas@glider.be, gwalbon@linux.ibm.com,
- jpoimboe@redhat.com, yuehaibing@huawei.com, linux-kernel@vger.kernel.org,
- diana.craciun@nxp.com, paulus@samba.org, jkosina@suse.cz,
- maurosr@linux.ibm.com
+Cc: brking@linux.vnet.ibm.com, netdev@vger.kernel.org,
+ julietk@linux.vnet.ibm.com, dnbanerg@us.ibm.com, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The issue has showed the value of status of Speculation_Store_Bypass in the
-/proc/<pid>/status as `unknown` for PowerPC systems.
+On Fri, 22 Nov 2019 13:41:45 -0600, Thomas Falcon wrote:
+> +static int ibmvnic_wait_for_completion(struct ibmvnic_adapter *adapter,
+> +				       struct completion *comp_done,
+> +				       unsigned long timeout)
+> +{
+> +	struct net_device *netdev = adapter->netdev;
+> +	u8 retry = 5;
+> +
+> +restart_timer:
+> +	if (!adapter->crq.active) {
+> +		netdev_err(netdev, "Device down!\n");
+> +		return -ENODEV;
+> +	}
+> +	/* periodically check that the device is up while waiting for
+> +	 * a response
+> +	 */
+> +	if (!wait_for_completion_timeout(comp_done, timeout / retry)) {
+> +		if (!adapter->crq.active) {
+> +			netdev_err(netdev, "Device down!\n");
+> +			return -ENODEV;
+> +		} else {
+> +			retry--;
+> +			if (retry)
+> +				goto restart_timer;
+> +			netdev_err(netdev, "Operation timing out...\n");
+> +			return -ETIMEDOUT;
 
-The patch fix the checking of the mitigation status of Speculation, and
-can be reported as "not vulnerable", "globally mitigated" or "vulnerable".
+Hm. This is not great. I don't see the need to open code a loop with
+a goto:
 
-Link: https://github.com/linuxppc/issues/issues/255
+while (true) {
+	if (down())
+		return E;
 
-Changelog:
-Rebase on v5.4-rc8
+	if (retry--)
+		break;
 
-Signed-off-by: Gustavo Walbon <gwalbon@linux.ibm.com>
----
- arch/powerpc/kernel/security.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+	if (wait())
+		return 0
+}
 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index 7d4b2080a658..04e566026bbc 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -14,7 +14,7 @@
- #include <asm/debugfs.h>
- #include <asm/security_features.h>
- #include <asm/setup.h>
--
-+#include <linux/prctl.h>
- 
- u64 powerpc_security_features __read_mostly = SEC_FTR_DEFAULT;
- 
-@@ -344,6 +344,29 @@ ssize_t cpu_show_spec_store_bypass(struct device *dev, struct device_attribute *
- 	return sprintf(buf, "Vulnerable\n");
- }
- 
-+static int ssb_prctl_get(struct task_struct *task)
-+{
-+	if (stf_barrier) {
-+		if (stf_enabled_flush_types == STF_BARRIER_NONE)
-+			return PR_SPEC_NOT_AFFECTED;
-+		else
-+			return PR_SPEC_DISABLE;
-+	} else
-+		return PR_SPEC_DISABLE_NOEXEC;
-+
-+	return -EINVAL;
-+}
-+
-+int arch_prctl_spec_ctrl_get(struct task_struct *task, unsigned long which)
-+{
-+	switch (which) {
-+	case PR_SPEC_STORE_BYPASS:
-+		return ssb_prctl_get(task);
-+	default:
-+		return -ENODEV;
-+	}
-+}
-+
- #ifdef CONFIG_DEBUG_FS
- static int stf_barrier_set(void *data, u64 val)
- {
--- 
-2.19.1
+print(time out);
+return E;
 
+The wait_for_completion_timeout() will not be very precise, but I think
+with 5 sleeps it shouldn't drift off too far from the desired 10sec.
+
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
