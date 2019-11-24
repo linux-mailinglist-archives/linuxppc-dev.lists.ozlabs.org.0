@@ -1,94 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DE9108164
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 02:52:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47LCpF55VSzDqwF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 12:52:05 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9FF10818A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 04:26:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LFvf4n40zDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 14:26:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LClK51pYzDqPc
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:49:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=netronome.com
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LFsr6txNzDqpB
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 14:25:20 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=netronome-com.20150623.gappssmtp.com
- header.i=@netronome-com.20150623.gappssmtp.com header.b="i8e+poug"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47LClK25tXz8t3K
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:49:33 +1100 (AEDT)
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.b="BlrN/Mwj"; dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 47LClK0qcBz9sQw; Sun, 24 Nov 2019 12:49:33 +1100 (AEDT)
+ id 47LFsq6kFGz9sQy; Sun, 24 Nov 2019 14:25:19 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=netronome.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=jakub.kicinski@netronome.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=netronome.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=netronome-com.20150623.gappssmtp.com
- header.i=@netronome-com.20150623.gappssmtp.com header.b="i8e+poug"; 
- dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47LClJ5zgsz9sPZ
- for <linuxppc-dev@ozlabs.org>; Sun, 24 Nov 2019 12:49:32 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id d199so870001pfd.11
- for <linuxppc-dev@ozlabs.org>; Sat, 23 Nov 2019 17:49:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=netronome-com.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:in-reply-to:references
- :organization:mime-version:content-transfer-encoding;
- bh=f3cnDtSWrzhlJ/f7hX50pKYLqzfFggDpwt4E1h2xgOA=;
- b=i8e+pougR0WRoeZVP+6L6k6bEB115JqgEECWEo44LDAHBrc9IOkk6hk729t+vvNx6/
- Qi7h9JmYONdyCSYDQ4sa8zq+iz7s9yVRXKv5bvExlkCsY1IR0Mxcg71AcVfyn2WJFk2r
- mnA2dyjf5wXhhnKvjSXn0g0zPEJH7fnzSU2cuF4YZHcLxX/41oTxa44jEcyM67pforLe
- MnKkArTNHl74pUOOeTOZulSzL4sqw+QBIjpqShtw+wdL44U+r3L3aDMLSnoq2uLtvfqz
- IVuFt+GI+NzCH6hofjM6i47gC9SUUgUmiNW1XPZ4ldMWlcbLnKeCibAtBjidHWG/rWIk
- wM1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
- :references:organization:mime-version:content-transfer-encoding;
- bh=f3cnDtSWrzhlJ/f7hX50pKYLqzfFggDpwt4E1h2xgOA=;
- b=Ch4WSgQgPvmcZHyqR1jkYeuFql5w8dUtDtI1Kg7xFPRxhc8AQLaiThmbFwlYmbcnZ3
- IwuPdl2xCfYSmYa8IAKBPXaRnHND55UQIMXoaamV/bbRaRltiwqYKQjLsrPHnAPFc0aF
- T45xFtrWvauJ3fQcYCDUZZSoSAvmgr2yerQinA9EdbKQyrPTa1QJXRgeSa1277VK1IHK
- DKK9qnqQMzyGzweKu6PmULmMf1ekfRZzkBgOXabcqvGcWFOjI96CqLUatVOj7w3LWWE5
- NIwSHfR6I7oFZ7Ul5bf7plKx7/mr7YmBJ/EruOjDBn7GZCn7jxy5UwMoclj91/5L0NVJ
- UXZA==
-X-Gm-Message-State: APjAAAXyfp8UtAan+x6/v3k6vM5yIxwyY3hqSggl+Cg+heZIqE46626y
- 7OsKkH0H7GT7WvkxSPfV9l09+A==
-X-Google-Smtp-Source: APXvYqwRL0J+gKnbkZ67+z3jCjqc9eVJjiIXaUqWYjR3VGNBBClttqrqhls1DcUga2UuguosnC+TBQ==
-X-Received: by 2002:a63:1b5c:: with SMTP id b28mr24303855pgm.69.1574560169449; 
- Sat, 23 Nov 2019 17:49:29 -0800 (PST)
-Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net.
- [73.202.202.92])
- by smtp.gmail.com with ESMTPSA id x190sm2926638pfc.89.2019.11.23.17.49.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 23 Nov 2019 17:49:29 -0800 (PST)
-Date: Sat, 23 Nov 2019 17:49:25 -0800
-From: Jakub Kicinski <jakub.kicinski@netronome.com>
-To: Thomas Falcon <tlfalcon@linux.ibm.com>
-Subject: Re: [PATCH net 0/4] ibmvnic: Harden device commands and queries
-Message-ID: <20191123174925.30b73917@cakuba.netronome.com>
-In-Reply-To: <1574451706-19058-1-git-send-email-tlfalcon@linux.ibm.com>
-References: <1574451706-19058-1-git-send-email-tlfalcon@linux.ibm.com>
-Organization: Netronome Systems, Ltd.
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47LFsp0N58z9sPW;
+ Sun, 24 Nov 2019 14:25:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1574565919;
+ bh=ubSCmS66KKKESIxFDLf0lj/eHA89i005gCLItb6k47c=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=BlrN/MwjAMFE9hQcqp+8JkTyqU9OFemRs41MyR6YELs1DTVYtILBwh2IJmnc6fKQN
+ h5weWSWIZ8RjZGv81n1rfDYw5T4GXkVVrdxJ3ACv0fW+xDsxXO9K2OKIQhJcklLW8G
+ pVcYnIG/hJGL3yUEPyfMllX6tz9hd83EDK9REP0LU5vAeIM5RzrqVuD0pufFjSjlr7
+ TaAjpcQmrvU4R0r+X5EjbSWd1S1ABIBO98Q6Fc5RHxnXQxbauFUhsFJMcLjaSXBVg+
+ jOeKRnqpVIa1IjlY26+doUwSkXwxYIaJHBjYCsoPn45Oj9GNM+agOOv9O/QPR2QFni
+ nkk0+80lVQYsw==
+Date: Sun, 24 Nov 2019 14:25:11 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Dave Miller <davem@davemloft.net>
+Subject: Re: [PATCH v2] powerpc: Add const qual to local_read() parameter
+Message-ID: <20191124142511.529543bf@canb.auug.org.au>
+In-Reply-To: <20191120011451.28168-1-mpe@ellerman.id.au>
+References: <20191120011451.28168-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/HD_8++.mXadlTKPd0aZXGLH";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,26 +60,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.vnet.ibm.com, netdev@vger.kernel.org,
- julietk@linux.vnet.ibm.com, dnbanerg@us.ibm.com, linuxppc-dev@ozlabs.org
+Cc: linuxppc-dev@ozlabs.org, edumazet@google.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 22 Nov 2019 13:41:42 -0600, Thomas Falcon wrote:
-> This patch series fixes some shortcomings with the current
-> VNIC device command implementation. The first patch fixes
-> the initialization of driver completion structures used
-> for device commands. Additionally, all waits for device
-> commands are bounded with a timeout in the event that the
-> device does not respond or becomes inoperable. Finally,
-> serialize queries to retain the integrity of device return
-> codes.
+--Sig_/HD_8++.mXadlTKPd0aZXGLH
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I have minor comments on two patches, but also I think it's
-a little late in the release cycle for putting this in net.
+Hi Dave,
 
-Could you target net-next and repost ASAP so it still makes 
-it into 5.5?
+On Wed, 20 Nov 2019 12:14:51 +1100 Michael Ellerman <mpe@ellerman.id.au> wr=
+ote:
+>
+> From: Eric Dumazet <edumazet@google.com>
+>=20
+> A patch in net-next triggered a compile error on powerpc:
+>=20
+>   include/linux/u64_stats_sync.h: In function 'u64_stats_read':
+>   include/asm-generic/local64.h:30:37: warning: passing argument 1 of 'lo=
+cal_read' discards 'const' qualifier from pointer target type
+>=20
+> This seems reasonable to relax powerpc local_read() requirements.
+>=20
+> Fixes: 316580b69d0a ("u64_stats: provide u64_stats_t type")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/include/asm/local.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> v2: mpe: Update change log with compiler warning, resend to netdev so it =
+appears
+> in the netdev patchwork.
+>=20
+> Dave can you take this in the net tree so the window of the breakage is a=
+s small
+> as possible please?
 
-Thanks.
+I see that you marked this as "Not Applicable" in patchwork.
+
+Michael meant the net-next tree which contains commit
+
+  316580b69d0a ("u64_stats: provide u64_stats_t type")
+
+Please consider applying this patch.
+
+> diff --git a/arch/powerpc/include/asm/local.h b/arch/powerpc/include/asm/=
+local.h
+> index fdd00939270b..bc4bd19b7fc2 100644
+> --- a/arch/powerpc/include/asm/local.h
+> +++ b/arch/powerpc/include/asm/local.h
+> @@ -17,7 +17,7 @@ typedef struct
+> =20
+>  #define LOCAL_INIT(i)	{ (i) }
+> =20
+> -static __inline__ long local_read(local_t *l)
+> +static __inline__ long local_read(const local_t *l)
+>  {
+>  	return READ_ONCE(l->v);
+>  }
+> --=20
+> 2.21.0
+>=20
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/HD_8++.mXadlTKPd0aZXGLH
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl3Z+BcACgkQAVBC80lX
+0GzVvggAidrUoqlfyGMzIYgPyz7jnI4y/46XiGjrX8L+IvWQDPBcspWAAmEvZ/Bx
+lnicYPiVhBq7eMs4hdJMZQ2OW3S/6td1uMLqujGrbl0N79KH1cSbIkymz50PZxP6
+IiGA7D5VgeFLYidH4RMKruYvm0AqKA+N8GxK3lAgoxludsbcCUzbhlR4hAfyAsfB
+LbtxHdLu1sWTqBNXdBCxlUC7wfpGcvYHaKBMm70SUTgL/LaVmvX0WtF+7vOdF19x
+H1f7fNCa7bJlF+u0Osb3O4k5OWKg/JUviXqdstK/4HSKo09onYrrYb0m8Fdka+Lr
+iuX+vJKwH5yUukRNsLeV0IZjtlX3hQ==
+=6WC4
+-----END PGP SIGNATURE-----
+
+--Sig_/HD_8++.mXadlTKPd0aZXGLH--
