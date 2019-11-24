@@ -2,91 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310CB108162
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 02:50:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DE9108164
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 02:52:08 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47LCm95LwPzDqw3
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 12:50:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LCpF55VSzDqwF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2019 12:52:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LChy5yctzDqwb
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:47:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LClK51pYzDqPc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:49:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=netronome.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=netronome-com.20150623.gappssmtp.com
- header.i=@netronome-com.20150623.gappssmtp.com header.b="zWhzw7x5"; 
+ header.i=@netronome-com.20150623.gappssmtp.com header.b="i8e+poug"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47LChy5RtLz8t3K
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:47:30 +1100 (AEDT)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47LClK25tXz8t3K
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 12:49:33 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 47LChy3xk6z9sR1; Sun, 24 Nov 2019 12:47:30 +1100 (AEDT)
+ id 47LClK0qcBz9sQw; Sun, 24 Nov 2019 12:49:33 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=netronome.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
  envelope-from=jakub.kicinski@netronome.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=netronome.com
 Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=netronome-com.20150623.gappssmtp.com
- header.i=@netronome-com.20150623.gappssmtp.com header.b="zWhzw7x5"; 
+ header.i=@netronome-com.20150623.gappssmtp.com header.b="i8e+poug"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47LChy1cr3z9sQw
- for <linuxppc-dev@ozlabs.org>; Sun, 24 Nov 2019 12:47:30 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id b19so5521622pfd.3
- for <linuxppc-dev@ozlabs.org>; Sat, 23 Nov 2019 17:47:30 -0800 (PST)
+ by ozlabs.org (Postfix) with ESMTPS id 47LClJ5zgsz9sPZ
+ for <linuxppc-dev@ozlabs.org>; Sun, 24 Nov 2019 12:49:32 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id d199so870001pfd.11
+ for <linuxppc-dev@ozlabs.org>; Sat, 23 Nov 2019 17:49:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=netronome-com.20150623.gappssmtp.com; s=20150623;
  h=date:from:to:cc:subject:message-id:in-reply-to:references
  :organization:mime-version:content-transfer-encoding;
- bh=3lBSw1FKqUY2XmkojjgeEVuCah7EC3Ab3ESxu/cmir0=;
- b=zWhzw7x5/RJn0C/Oqe6rYfQv+Tq3nuVMPxltU/b4lTxiuPAV9+ArjrPyt0+grcoqfE
- FkISyU4V763zqS2vAgr+htQCrDwW36gISid2swMb3mC9i+AAxE+wo5sgFixtWemSBjMa
- uz3ZtWRrdr43UC/iYbQE2nD9G9qloomONbdtHiEt+lIhII4JiuU/KUnGwiTUA7AgHEu9
- sp/+0/Bj9UrvsRAlrExekywwbCydKN41DniRk7lO4jEtlJZMfFqpXuxmcqI64hTuUkVh
- CmzXdZigAJR5OnVh6LyUaCrSDxy8UscxNHlWB7lqwxrEGhnfqoUTF08CHge0Q+LNd1k8
- S5kQ==
+ bh=f3cnDtSWrzhlJ/f7hX50pKYLqzfFggDpwt4E1h2xgOA=;
+ b=i8e+pougR0WRoeZVP+6L6k6bEB115JqgEECWEo44LDAHBrc9IOkk6hk729t+vvNx6/
+ Qi7h9JmYONdyCSYDQ4sa8zq+iz7s9yVRXKv5bvExlkCsY1IR0Mxcg71AcVfyn2WJFk2r
+ mnA2dyjf5wXhhnKvjSXn0g0zPEJH7fnzSU2cuF4YZHcLxX/41oTxa44jEcyM67pforLe
+ MnKkArTNHl74pUOOeTOZulSzL4sqw+QBIjpqShtw+wdL44U+r3L3aDMLSnoq2uLtvfqz
+ IVuFt+GI+NzCH6hofjM6i47gC9SUUgUmiNW1XPZ4ldMWlcbLnKeCibAtBjidHWG/rWIk
+ wM1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
  :references:organization:mime-version:content-transfer-encoding;
- bh=3lBSw1FKqUY2XmkojjgeEVuCah7EC3Ab3ESxu/cmir0=;
- b=ejY1TIvqsIFZBiynAUQNHf4VwbYsAuTmq4oXz0GeMEHGY2pFc3ChG6VigaYBMc7wn4
- hbF3K069UdumoQmf+Pbcen5MCFA8XDqCALQ8YKUhCB/60PhFDDtrXdW6aP/E9z6btoa9
- sOXGn4VYuiW6Dp1YN7l/sKHqasJbrE/lyfhZ04BuB2o95QHmm/OO2ABoPWNmLNtMzRr5
- NnHUBQg3ETQfAr3Ys3XLt4nTose0PtHJSb8j0dePb0wMRu90EoBVTQiVZUHwMtYu2qe/
- 6W3Lm+yA4RB/KXoVlIju1H2APMpsl00uQ/Ng6YyUMC0NelNTruJ3hgmM+AgA3v3s3g6/
- E1pQ==
-X-Gm-Message-State: APjAAAXA6Zvs6lMrCiO+3JdAgE+fGxUxDcvlWiXEM4JXL4wsuM5MFJ6Q
- Q3y3+gj5SuRmQSDKYg49Xhmzew==
-X-Google-Smtp-Source: APXvYqyapDqAsl68Vz328TZMT25DsQ4nZ9A7WrUonPi+D/3NoDxQYj1dG4ceBc5wvJk9zMsuRtjKuQ==
-X-Received: by 2002:a62:5485:: with SMTP id
- i127mr18879698pfb.186.1574560048001; 
- Sat, 23 Nov 2019 17:47:28 -0800 (PST)
+ bh=f3cnDtSWrzhlJ/f7hX50pKYLqzfFggDpwt4E1h2xgOA=;
+ b=Ch4WSgQgPvmcZHyqR1jkYeuFql5w8dUtDtI1Kg7xFPRxhc8AQLaiThmbFwlYmbcnZ3
+ IwuPdl2xCfYSmYa8IAKBPXaRnHND55UQIMXoaamV/bbRaRltiwqYKQjLsrPHnAPFc0aF
+ T45xFtrWvauJ3fQcYCDUZZSoSAvmgr2yerQinA9EdbKQyrPTa1QJXRgeSa1277VK1IHK
+ DKK9qnqQMzyGzweKu6PmULmMf1ekfRZzkBgOXabcqvGcWFOjI96CqLUatVOj7w3LWWE5
+ NIwSHfR6I7oFZ7Ul5bf7plKx7/mr7YmBJ/EruOjDBn7GZCn7jxy5UwMoclj91/5L0NVJ
+ UXZA==
+X-Gm-Message-State: APjAAAXyfp8UtAan+x6/v3k6vM5yIxwyY3hqSggl+Cg+heZIqE46626y
+ 7OsKkH0H7GT7WvkxSPfV9l09+A==
+X-Google-Smtp-Source: APXvYqwRL0J+gKnbkZ67+z3jCjqc9eVJjiIXaUqWYjR3VGNBBClttqrqhls1DcUga2UuguosnC+TBQ==
+X-Received: by 2002:a63:1b5c:: with SMTP id b28mr24303855pgm.69.1574560169449; 
+ Sat, 23 Nov 2019 17:49:29 -0800 (PST)
 Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net.
  [73.202.202.92])
- by smtp.gmail.com with ESMTPSA id c84sm3042658pfc.112.2019.11.23.17.47.27
+ by smtp.gmail.com with ESMTPSA id x190sm2926638pfc.89.2019.11.23.17.49.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 23 Nov 2019 17:47:27 -0800 (PST)
-Date: Sat, 23 Nov 2019 17:47:23 -0800
+ Sat, 23 Nov 2019 17:49:29 -0800 (PST)
+Date: Sat, 23 Nov 2019 17:49:25 -0800
 From: Jakub Kicinski <jakub.kicinski@netronome.com>
 To: Thomas Falcon <tlfalcon@linux.ibm.com>
-Subject: Re: [PATCH net 4/4] ibmvnic: Serialize device queries
-Message-ID: <20191123174723.2a5d603d@cakuba.netronome.com>
-In-Reply-To: <1574451706-19058-5-git-send-email-tlfalcon@linux.ibm.com>
+Subject: Re: [PATCH net 0/4] ibmvnic: Harden device commands and queries
+Message-ID: <20191123174925.30b73917@cakuba.netronome.com>
+In-Reply-To: <1574451706-19058-1-git-send-email-tlfalcon@linux.ibm.com>
 References: <1574451706-19058-1-git-send-email-tlfalcon@linux.ibm.com>
- <1574451706-19058-5-git-send-email-tlfalcon@linux.ibm.com>
 Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -108,14 +106,20 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 22 Nov 2019 13:41:46 -0600, Thomas Falcon wrote:
-> @@ -5050,6 +5090,7 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
->  			  __ibmvnic_delayed_reset);
->  	INIT_LIST_HEAD(&adapter->rwi_list);
->  	spin_lock_init(&adapter->rwi_lock);
-> +	mutex_init(&adapter->fw_lock);
->  	init_completion(&adapter->init_done);
->  	init_completion(&adapter->fw_done);
->  	init_completion(&adapter->reset_done);
+On Fri, 22 Nov 2019 13:41:42 -0600, Thomas Falcon wrote:
+> This patch series fixes some shortcomings with the current
+> VNIC device command implementation. The first patch fixes
+> the initialization of driver completion structures used
+> for device commands. Additionally, all waits for device
+> commands are bounded with a timeout in the event that the
+> device does not respond or becomes inoperable. Finally,
+> serialize queries to retain the integrity of device return
+> codes.
 
-Could you also add a mutex_destroy() call?
+I have minor comments on two patches, but also I think it's
+a little late in the release cycle for putting this in net.
+
+Could you target net-next and repost ASAP so it still makes 
+it into 5.5?
+
+Thanks.
