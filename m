@@ -1,82 +1,154 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F7F108627
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 01:55:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47LpVR5T6nzDqb5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 11:55:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEAD2108632
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 02:04:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Lphw0RxXzDqbW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 12:04:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::841;
- helo=mail-qt1-x841.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.b="bf4wQj5h"; 
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="PaEJQify"; 
  dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LpSb3JqyzDqZ2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 11:53:49 +1100 (AEDT)
-Received: by mail-qt1-x841.google.com with SMTP id y10so15317749qto.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 16:53:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=W5KvmIUsZXoQMVbzDoxYnt7yT+pQC9oHjmWUHowLIDE=;
- b=bf4wQj5hUYAUJ6J+IG0+hDMiHwo0y37jHBHT8UdhIIsQlzBQ4CxdtIHJrRj51DxlRK
- CKLiYZNarSFFj4FEgRzMNxy+kI0kMWkp2JP+w0At3xJ5awQQfKCflGDMEbLjgI1axJbX
- hAKULgjdId2ND6JafSG19IZ76B47iyKuc//kc4PjYIOLOtUHlwtDFurR95sHJjXvaqXY
- fGrur8LfkpaaQNAoNniODg3+dsAf2S2GrC+6cEhUlICPkA/CU1JiTx+UkO0BkI15CMLp
- 7s5O7Rwk6bHEYMLHf8Cgu9Ix5CmyXm+g4xBp1CqvpB7TPmrxsr5ItFDOP1iwxt6Ai6Gn
- z9sA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LpfK382dzDqZl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 12:02:17 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id w7so5680616plz.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 17:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=7xr7ce7FOK5M4YXuphHyPN1JmLEu5k2i3SlkJ9xII7s=;
+ b=PaEJQifyNcsM234PJXm77cDBovBu12PnlMKg8at1w2sAYhWTXRssGrIgImX1n+VdYk
+ E+MJQczHGZWDzFa3sE1WnbVxC1L0PbakCiVyX+ePaUik0YQGGgiirCE+dGLL/zOOypGl
+ XclK1VnnnFJAVOQbK0v/jADlZ+hSppoI21FxIpE6YjUEA4SrCR78i2PvyOXdKpOOX/wM
+ k7pgiSYcc+2T8kzakb0Z+N/vWyOjjOXkz80+rfLjdGVmtMZRNbKLCDuVRMuLhr6FrZ1M
+ QpkD16HhU3ENr7CO6H1O+05QTgZJA12fVqaDjtp4DjPXJEOVPZub8B99YBk+PM+FKnfd
+ CD/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=W5KvmIUsZXoQMVbzDoxYnt7yT+pQC9oHjmWUHowLIDE=;
- b=aOiyySv5lB73WU8mN483pLMJlQBrnd6nbsCiFAK1baq+76h+ed42o1+r3LRjefQX6b
- G6++dCErGVdulAekC0JBjDRG7iKxIAVMhXWP9tzq3/TU/fuHNEZ2k3OrmOD7HQV490Gf
- 1Ysy8FV6CLGcGozzN9Qrx8fMASwP7BbzXP0Wg72vaSyiahxYDuy5squB5BQqlQwnp3iV
- oj5FvqrXDx6C1Ldop/CBxgXEeTcm99H4b6TbzeYM9bdsOfiPzQJfLaZ016TJb92ULyLb
- hsSdb1NGYPT8273AqfggQdmz0Gs/bPqav/ISNj9zYI/Aqv/oBoFDAlXgevSnHaHyJ4cL
- MUQg==
-X-Gm-Message-State: APjAAAW2WTmKylApdFiCgDwAe4Ycjqa5Z+vY2m8ZZZ9mUxa8FbPixLcD
- sZ0Ur/rEcT72gck9kUSicQT6fg==
-X-Google-Smtp-Source: APXvYqyaLXo5MUyD+I9dO6HiLJFn2uWdH+8xt8jSkZ8bt7a48VQTUuqWsbmWyw/EGV6UxA2EsKJ0Ug==
-X-Received: by 2002:ac8:2209:: with SMTP id o9mr27065091qto.246.1574643226463; 
- Sun, 24 Nov 2019 16:53:46 -0800 (PST)
-Received: from ziepe.ca
- (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [142.162.113.180])
- by smtp.gmail.com with ESMTPSA id o124sm2535273qkf.66.2019.11.24.16.53.45
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 24 Nov 2019 16:53:45 -0800 (PST)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
- (envelope-from <jgg@ziepe.ca>)
- id 1iZ2dH-00020J-3s; Sun, 24 Nov 2019 20:53:39 -0400
-Date: Sun, 24 Nov 2019 20:53:39 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH v7 07/24] IB/umem: use get_user_pages_fast() to pin DMA
- pages
-Message-ID: <20191125005339.GC5634@ziepe.ca>
-References: <20191121071354.456618-1-jhubbard@nvidia.com>
- <20191121071354.456618-8-jhubbard@nvidia.com>
- <20191121080746.GC30991@infradead.org>
- <20191121143643.GC7448@ziepe.ca> <20191124100724.GH136476@unreal>
- <e8319590-a3f0-5ba4-af4c-65213358a742@nvidia.com>
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=7xr7ce7FOK5M4YXuphHyPN1JmLEu5k2i3SlkJ9xII7s=;
+ b=bNbqrDNmYVMvFkqz+OM6LVGx8Tvi25IjtKUA/XjkCV7S7VGkd45CfnT3FRTk8pVBVa
+ KJFGlc3LocDfaxT4jNVUeyRmnT8GZ/SdCU/uC3akL36R0BDOn02I+NoB3DsV0xHJplsX
+ XvHSnEAV/NsDA/GSTqSaGYvn7QUXrzwCfITunVuBAOe4iPBkuIpA4HHVXox02mhFxGRJ
+ GYFZhnZSEBExliPROYahDgvsu73mI3CT2fUEAT3H2lBRvjEQXZ47DqDzMoS1H7Vdml7U
+ BE4LIZrzzWu8mI5SjxfQnyqgEvBJXehfTBqvLE6IOrPYr+5PSnNBTl4FThx1h6Whcuqm
+ 0BmA==
+X-Gm-Message-State: APjAAAXodfgSXMtrPfv69VEgLsXZJmWAvx+ggKkNwnSVBLsXLl+2NtRd
+ LhDnkkUcmrTDNEEzrLau62Yb1g==
+X-Google-Smtp-Source: APXvYqyidx3fRRqH7LXOnHI8gATrNrBZ8r6d3ReuR9JYGHUCTQu+e28S2SjvucRe/AqcseWF9HvFDw==
+X-Received: by 2002:a17:90a:2385:: with SMTP id
+ g5mr35472393pje.117.1574643734501; 
+ Sun, 24 Nov 2019 17:02:14 -0800 (PST)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id r15sm5819192pfh.81.2019.11.24.17.02.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 24 Nov 2019 17:02:14 -0800 (PST)
+Subject: Re: [Very RFC 19/46] powernv/eeh: Use standard PCI capability lookup
+ functions
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20191120012859.23300-1-oohall@gmail.com>
+ <20191120012859.23300-20-oohall@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
+ EePO1JqpVuIow/wGud9xaPA5uvuVgRS1q7RU8otD+7VLDFzPRiRE4Jfr2CW89Ox6BF+q5ZPV
+ /pS4v4G9eOrw1v09lEKHB9WtiBVhhxKK1LnUjPEH3ifkOkgW7jFfoYgTdtB3XaXVgYnNPDFo
+ PTBYsJy+wr89XfyHr2Ev7BB3Xaf7qICXdBF8MEVY8t/UFsesg4wFWOuzCfqxFmKEaPDZlTuR
+ tfLAeVpslNfWCi5ybPlowLx6KJqOsI9R2a9o4qRXWGP7IwiMRAC3iiPyk9cknt8ee6EUIxI6
+ t847eFaVKI/6WcxhszI0R6Cj+N4y+1rHfkGWYWupCiHwj9DjILW9iEAncVgQmkNPpUsZECLT
+ WQzMuVSxjuXW4nJ6f4OFHqL2dU//qR+BM/eJ0TT3OnfLcPqfucGxubhT7n/CXUxEy+mvWwnm
+ s9p4uqVpTfEuzQ0/bE6t7dZdPBua7eYox1AQnk8JQDwC3Rn9kZq2O7u5KuJP5MfludMmQevm
+ pHYEMF4vZuIpWcOrrSctJfIIEyhDoDmR34bCXAZfNJ4p4H6TPqPh671uMQV82CfTxTrMhGFq
+ 8WYU2AH86FrVQfWoH09z1WqhlOm/KZhAV5FndwVjQJs1MRXD8QARAQABtCRBbGV4ZXkgS2Fy
+ ZGFzaGV2c2tpeSA8YWlrQG96bGFicy5ydT6JAjgEEwECACIFAk+rT0sCGwMGCwkIBwMCBhUI
+ AgkKCwQWAgMBAh4BAheAAAoJEIYTPdgrwSC5fAIP/0wf/oSYaCq9PhO0UP9zLSEz66SSZUf7
+ AM9O1rau1lJpT8RoNa0hXFXIVbqPPKPZgorQV8SVmYRLr0oSmPnTiZC82x2dJGOR8x4E01gK
+ TanY53J/Z6+CpYykqcIpOlGsytUTBA+AFOpdaFxnJ9a8p2wA586fhCZHVpV7W6EtUPH1SFTQ
+ q5xvBmr3KkWGjz1FSLH4FeB70zP6uyuf/B2KPmdlPkyuoafl2UrU8LBADi/efc53PZUAREih
+ sm3ch4AxaL4QIWOmlE93S+9nHZSRo9jgGXB1LzAiMRII3/2Leg7O4hBHZ9Nki8/fbDo5///+
+ kD4L7UNbSUM/ACWHhd4m1zkzTbyRzvL8NAVQ3rckLOmju7Eu9whiPueGMi5sihy9VQKHmEOx
+ OMEhxLRQbzj4ypRLS9a+oxk1BMMu9cd/TccNy0uwx2UUjDQw/cXw2rRWTRCxoKmUsQ+eNWEd
+ iYLW6TCfl9CfHlT6A7Zmeqx2DCeFafqEd69DqR9A8W5rx6LQcl0iOlkNqJxxbbW3ddDsLU/Y
+ r4cY20++WwOhSNghhtrroP+gouTOIrNE/tvG16jHs8nrYBZuc02nfX1/gd8eguNfVX/ZTHiR
+ gHBWe40xBKwBEK2UeqSpeVTohYWGBkcd64naGtK9qHdo1zY1P55lHEc5Uhlk743PgAnOi27Q
+ ns5zuQINBE+rT0sBEACnV6GBSm+25ACT+XAE0t6HHAwDy+UKfPNaQBNTTt31GIk5aXb2Kl/p
+ AgwZhQFEjZwDbl9D/f2GtmUHWKcCmWsYd5M/6Ljnbp0Ti5/xi6FyfqnO+G/wD2VhGcKBId1X
+ Em/B5y1kZVbzcGVjgD3HiRTqE63UPld45bgK2XVbi2+x8lFvzuFq56E3ZsJZ+WrXpArQXib2
+ hzNFwQleq/KLBDOqTT7H+NpjPFR09Qzfa7wIU6pMNF2uFg5ihb+KatxgRDHg70+BzQfa6PPA
+ o1xioKXW1eHeRGMmULM0Eweuvpc7/STD3K7EJ5bBq8svoXKuRxoWRkAp9Ll65KTUXgfS+c0x
+ gkzJAn8aTG0z/oEJCKPJ08CtYQ5j7AgWJBIqG+PpYrEkhjzSn+DZ5Yl8r+JnZ2cJlYsUHAB9
+ jwBnWmLCR3gfop65q84zLXRQKWkASRhBp4JK3IS2Zz7Nd/Sqsowwh8x+3/IUxVEIMaVoUaxk
+ Wt8kx40h3VrnLTFRQwQChm/TBtXqVFIuv7/Mhvvcq11xnzKjm2FCnTvCh6T2wJw3de6kYjCO
+ 7wsaQ2y3i1Gkad45S0hzag/AuhQJbieowKecuI7WSeV8AOFVHmgfhKti8t4Ff758Z0tw5Fpc
+ BFDngh6Lty9yR/fKrbkkp6ux1gJ2QncwK1v5kFks82Cgj+DSXK6GUQARAQABiQIfBBgBAgAJ
+ BQJPq09LAhsMAAoJEIYTPdgrwSC5NYEP/2DmcEa7K9A+BT2+G5GXaaiFa098DeDrnjmRvumJ
+ BhA1UdZRdfqICBADmKHlJjj2xYo387sZpS6ABbhrFxM6s37g/pGPvFUFn49C47SqkoGcbeDz
+ Ha7JHyYUC+Tz1dpB8EQDh5xHMXj7t59mRDgsZ2uVBKtXj2ZkbizSHlyoeCfs1gZKQgQE8Ffc
+ F8eWKoqAQtn3j4nE3RXbxzTJJfExjFB53vy2wV48fUBdyoXKwE85fiPglQ8bU++0XdOr9oyy
+ j1llZlB9t3tKVv401JAdX8EN0++ETiOovQdzE1m+6ioDCtKEx84ObZJM0yGSEGEanrWjiwsa
+ nzeK0pJQM9EwoEYi8TBGhHC9ksaAAQipSH7F2OHSYIlYtd91QoiemgclZcSgrxKSJhyFhmLr
+ QEiEILTKn/pqJfhHU/7R7UtlDAmFMUp7ByywB4JLcyD10lTmrEJ0iyRRTVfDrfVP82aMBXgF
+ tKQaCxcmLCaEtrSrYGzd1sSPwJne9ssfq0SE/LM1J7VdCjm6OWV33SwKrfd6rOtvOzgadrG6
+ 3bgUVBw+bsXhWDd8tvuCXmdY4bnUblxF2B6GOwSY43v6suugBttIyW5Bl2tXSTwP+zQisOJo
+ +dpVG2pRr39h+buHB3NY83NEPXm1kUOhduJUA17XUY6QQCAaN4sdwPqHq938S3EmtVhsuQIN
+ BFq54uIBEACtPWrRdrvqfwQF+KMieDAMGdWKGSYSfoEGGJ+iNR8v255IyCMkty+yaHafvzpl
+ PFtBQ/D7Fjv+PoHdFq1BnNTk8u2ngfbre9wd9MvTDsyP/TmpF0wyyTXhhtYvE267Av4X/BQT
+ lT9IXKyAf1fP4BGYdTNgQZmAjrRsVUW0j6gFDrN0rq2J9emkGIPvt9rQt6xGzrd6aXonbg5V
+ j6Uac1F42ESOZkIh5cN6cgnGdqAQb8CgLK92Yc8eiCVCH3cGowtzQ2m6U32qf30cBWmzfSH0
+ HeYmTP9+5L8qSTA9s3z0228vlaY0cFGcXjdodBeVbhqQYseMF9FXiEyRs28uHAJEyvVZwI49
+ CnAgVV/n1eZa5qOBpBL+ZSURm8Ii0vgfvGSijPGbvc32UAeAmBWISm7QOmc6sWa1tobCiVmY
+ SNzj5MCNk8z4cddoKIc7Wt197+X/X5JPUF5nQRvg3SEHvfjkS4uEst9GwQBpsbQYH9MYWq2P
+ PdxZ+xQE6v7cNB/pGGyXqKjYCm6v70JOzJFmheuUq0Ljnfhfs15DmZaLCGSMC0Amr+rtefpA
+ y9FO5KaARgdhVjP2svc1F9KmTUGinSfuFm3quadGcQbJw+lJNYIfM7PMS9fftq6vCUBoGu3L
+ j4xlgA/uQl/LPneu9mcvit8JqcWGS3fO+YeagUOon1TRqQARAQABiQRsBBgBCAAgFiEEZSrP
+ ibrORRTHQ99dhhM92CvBILkFAlq54uICGwICQAkQhhM92CvBILnBdCAEGQEIAB0WIQQIhvWx
+ rCU+BGX+nH3N7sq0YorTbQUCWrni4gAKCRDN7sq0YorTbVVSD/9V1xkVFyUCZfWlRuryBRZm
+ S4GVaNtiV2nfUfcThQBfF0sSW/aFkLP6y+35wlOGJE65Riw1C2Ca9WQYk0xKvcZrmuYkK3DZ
+ 0M9/Ikkj5/2v0vxz5Z5w/9+IaCrnk7pTnHZuZqOh23NeVZGBls/IDIvvLEjpD5UYicH0wxv+
+ X6cl1RoP2Kiyvenf0cS73O22qSEw0Qb9SId8wh0+ClWet2E7hkjWFkQfgJ3hujR/JtwDT/8h
+ 3oCZFR0KuMPHRDsCepaqb/k7VSGTLBjVDOmr6/C9FHSjq0WrVB9LGOkdnr/xcISDZcMIpbRm
+ EkIQ91LkT/HYIImL33ynPB0SmA+1TyMgOMZ4bakFCEn1vxB8Ir8qx5O0lHMOiWMJAp/PAZB2
+ r4XSSHNlXUaWUg1w3SG2CQKMFX7vzA31ZeEiWO8tj/c2ZjQmYjTLlfDK04WpOy1vTeP45LG2
+ wwtMA1pKvQ9UdbYbovz92oyZXHq81+k5Fj/YA1y2PI4MdHO4QobzgREoPGDkn6QlbJUBf4To
+ pEbIGgW5LRPLuFlOPWHmIS/sdXDrllPc29aX2P7zdD/ivHABslHmt7vN3QY+hG0xgsCO1JG5
+ pLORF2N5XpM95zxkZqvYfC5tS/qhKyMcn1kC0fcRySVVeR3tUkU8/caCqxOqeMe2B6yTiU1P
+ aNDq25qYFLeYxg67D/4w/P6BvNxNxk8hx6oQ10TOlnmeWp1q0cuutccblU3ryRFLDJSngTEu
+ ZgnOt5dUFuOZxmMkqXGPHP1iOb+YDznHmC0FYZFG2KAc9pO0WuO7uT70lL6larTQrEneTDxQ
+ CMQLP3qAJ/2aBH6SzHIQ7sfbsxy/63jAiHiT3cOaxAKsWkoV2HQpnmPOJ9u02TPjYmdpeIfa
+ X2tXyeBixa3i/6dWJ4nIp3vGQicQkut1YBwR7dJq67/FCV3Mlj94jI0myHT5PIrCS2S8LtWX
+ ikTJSxWUKmh7OP5mrqhwNe0ezgGiWxxvyNwThOHc5JvpzJLd32VDFilbxgu4Hhnf6LcgZJ2c
+ Zd44XWqUu7FzVOYaSgIvTP0hNrBYm/E6M7yrLbs3JY74fGzPWGRbBUHTZXQEqQnZglXaVB5V
+ ZhSFtHopZnBSCUSNDbB+QGy4B/E++Bb02IBTGl/JxmOwG+kZUnymsPvTtnNIeTLHxN/H/ae0
+ c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
+ DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
+ XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
+Message-ID: <3a324a06-071e-4b72-7939-0d0086ae0d99@ozlabs.ru>
+Date: Mon, 25 Nov 2019 12:02:10 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e8319590-a3f0-5ba4-af4c-65213358a742@nvidia.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20191120012859.23300-20-oohall@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,120 +160,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: alistair@popple.id.au, s.miroshnichenko@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 24, 2019 at 04:05:16PM -0800, John Hubbard wrote:
- 
-> I looked into this, and I believe that the problem is in gup.c. There appears to
-> have been an oversight, in commit 817be129e6f2 ("mm: validate get_user_pages_fast
-> flags"), in filtering out FOLL_FORCE. There is nothing in the _fast() implementation
-> that requires that we avoid writing to the pages.
 
-I think it is too late to be doing these kinds of changes, I will
-revert the patch and this will miss this merge window.
 
-Jason
+On 20/11/2019 12:28, Oliver O'Halloran wrote:
+> We have a pci_dev so we can use the functions provided by the PCI core for
+> looking up capabilities. This should be safe since these are only called
+> when initialising the eeh_dev when the device is first probed and not in
+> the EEH recovery path where config accesses are blocked.
+> 
+> This might cause a problem if an EEH event occured while probing the device,
+> but I'm pretty sure that's going to be broken anyway.
+> 
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ---
+>  arch/powerpc/platforms/powernv/eeh-powernv.c | 67 ++------------------
 
-From ec6cb45292d21d1af9b9d95997b8cf204bbe854c Mon Sep 17 00:00:00 2001
-From: Jason Gunthorpe <jgg@mellanox.com>
-Date: Sun, 24 Nov 2019 20:47:59 -0400
-Subject: [PATCH] Revert "IB/umem: use get_user_pages_fast() to pin DMA pages"
+I like this diffstat :)
 
-This reverts commit c9a7a2ed837c563f9f89743a6db732591cb4035b.
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-This was merged before enough testing was done, and it triggers a WARN_ON()
-in get_user_pages_fast():
 
-  WARNING: CPU: 1 PID: 2557 at mm/gup.c:2404 get_user_pages_fast+0x115/0x180
-  Call Trace:
-   ib_umem_get+0x298/0x550 [ib_uverbs]
-   mlx5_ib_db_map_user+0xad/0x130 [mlx5_ib]
-   mlx5_ib_create_cq+0x1e8/0xaa0 [mlx5_ib]
-   create_cq+0x1c8/0x2d0 [ib_uverbs]
-   ib_uverbs_create_cq+0x70/0xa0 [ib_uverbs]
-   ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0xc2/0xf0 [ib_uverbs]
-   ib_uverbs_cmd_verbs.isra.6+0x5be/0xbe0 [ib_uverbs]
-   ? uverbs_disassociate_api+0xd0/0xd0 [ib_uverbs]
-   ? kvm_clock_get_cycles+0xd/0x10
-   ? kmem_cache_alloc+0x176/0x1c0
-   ? filemap_map_pages+0x18c/0x350
-   ib_uverbs_ioctl+0xc0/0x120 [ib_uverbs]
-   do_vfs_ioctl+0xa1/0x610
-   ksys_ioctl+0x70/0x80
-   __x64_sys_ioctl+0x16/0x20
-   do_syscall_64+0x42/0x110
-   entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-2404         if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM)))
-2405                 return -EINVAL;
+>  1 file changed, 4 insertions(+), 63 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> index a974822c5097..b79aca8368c6 100644
+> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
+> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> @@ -358,65 +358,6 @@ static int pnv_eeh_write_config(struct eeh_dev *edev,
+>  	return pnv_pci_cfg_write(pdn, where, size, val);
+>  }
+>  
+> -static int pnv_eeh_find_cap(struct eeh_dev *edev, int cap)
+> -{
+> -	int pos = PCI_CAPABILITY_LIST;
+> -	int cnt = 48;   /* Maximal number of capabilities */
+> -	u32 status, id;
+> -
+> -	/* Check if the device supports capabilities */
+> -	pnv_eeh_read_config(edev, PCI_STATUS, 2, &status);
+> -	if (!(status & PCI_STATUS_CAP_LIST))
+> -		return 0;
+> -
+> -	while (cnt--) {
+> -		pnv_eeh_read_config(edev, pos, 1, &pos);
+> -		if (pos < 0x40)
+> -			break;
+> -
+> -		pos &= ~3;
+> -		pnv_eeh_read_config(edev, pos + PCI_CAP_LIST_ID, 1, &id);
+> -		if (id == 0xff)
+> -			break;
+> -
+> -		/* Found */
+> -		if (id == cap)
+> -			return pos;
+> -
+> -		/* Next one */
+> -		pos += PCI_CAP_LIST_NEXT;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+> -static int pnv_eeh_find_ecap(struct eeh_dev *edev, int cap)
+> -{
+> -	u32 header;
+> -	int pos = 256, ttl = (4096 - 256) / 8;
+> -
+> -	if (!edev || !edev->pcie_cap)
+> -		return 0;
+> -	if (pnv_eeh_read_config(edev, pos, 4, &header) != PCIBIOS_SUCCESSFUL)
+> -		return 0;
+> -	else if (!header)
+> -		return 0;
+> -
+> -	while (ttl-- > 0) {
+> -		if (PCI_EXT_CAP_ID(header) == cap && pos)
+> -			return pos;
+> -
+> -		pos = PCI_EXT_CAP_NEXT(header);
+> -		if (pos < 256)
+> -			break;
+> -
+> -		if (pnv_eeh_read_config(edev, pos, 4, &header) != PCIBIOS_SUCCESSFUL)
+> -			break;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  /**
+>   * pnv_eeh_probe - Do probe on PCI device
+>   * @pdev: pci_dev to probe
+> @@ -458,10 +399,10 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
+>  
+>  	/* Initialize eeh device */
+>  	edev->class_code = pdn->class_code;
+> -	edev->pcix_cap = pnv_eeh_find_cap(edev, PCI_CAP_ID_PCIX);
+> -	edev->pcie_cap = pnv_eeh_find_cap(edev, PCI_CAP_ID_EXP);
+> -	edev->af_cap   = pnv_eeh_find_cap(edev, PCI_CAP_ID_AF);
+> -	edev->aer_cap  = pnv_eeh_find_ecap(edev, PCI_EXT_CAP_ID_ERR);
+> +	edev->pcix_cap = pci_find_capability(pdev, PCI_CAP_ID_PCIX);
+> +	edev->pcie_cap = pci_find_capability(pdev, PCI_CAP_ID_EXP);
+> +	edev->af_cap   = pci_find_capability(pdev, PCI_CAP_ID_AF);
+> +	edev->aer_cap  = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+>  	if ((edev->class_code >> 8) == PCI_CLASS_BRIDGE_PCI) {
+>  		edev->mode |= EEH_DEV_BRIDGE;
+>  		if (edev->pcie_cap) {
+> 
 
-While we think this WARN_ON is probably bogus, resolving this will have to
-wait.
-
-Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
----
- drivers/infiniband/core/umem.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-index 214e87aa609d6e..7a3b99597eada1 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -266,13 +266,16 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, unsigned long addr,
- 	sg = umem->sg_head.sgl;
- 
- 	while (npages) {
--		ret = get_user_pages_fast(cur_base,
--					  min_t(unsigned long, npages,
--						PAGE_SIZE /
--						sizeof(struct page *)),
--					  gup_flags | FOLL_LONGTERM, page_list);
--		if (ret < 0)
-+		down_read(&mm->mmap_sem);
-+		ret = get_user_pages(cur_base,
-+				     min_t(unsigned long, npages,
-+					   PAGE_SIZE / sizeof (struct page *)),
-+				     gup_flags | FOLL_LONGTERM,
-+				     page_list, NULL);
-+		if (ret < 0) {
-+			up_read(&mm->mmap_sem);
- 			goto umem_release;
-+		}
- 
- 		cur_base += ret * PAGE_SIZE;
- 		npages   -= ret;
-@@ -280,6 +283,8 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, unsigned long addr,
- 		sg = ib_umem_add_sg_table(sg, page_list, ret,
- 			dma_get_max_seg_size(context->device->dma_device),
- 			&umem->sg_nents);
-+
-+		up_read(&mm->mmap_sem);
- 	}
- 
- 	sg_mark_end(sg);
 -- 
-2.24.0
-
+Alexey
