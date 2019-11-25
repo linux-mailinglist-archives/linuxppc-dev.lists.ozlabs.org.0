@@ -2,74 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9924A108E44
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 13:53:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B38A108EDA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 14:27:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47M6R45FtdzDqNj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 23:53:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47M7B25WGvzDqcc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 00:27:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=cyphar.com (client-ip=80.241.56.171; helo=mout-p-201.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="ONC6lkQj"; 
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47M74P0RqZzDqYp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 00:22:25 +1100 (AEDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47M6M42836zDqbv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 23:50:06 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id j12so6468021plt.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 04:50:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=4Dyj3TFAf2a0awBxIC0/58dYWGnIo6wfhRywN+QDFMQ=;
- b=ONC6lkQj3zxvkiT8BAl0ZtYPE2RQWpupKsSqjfd0JT/qhrTqFTrCvq3oko/FbJYxRg
- KHy20N2dQM5C8Pm1VfafoBnw0NqjuX7y6rbporwQnSWUHrA0UE31Md3/CpAzhsyHT6km
- qkcqXt0L5/7o7kfyM84gWC5LPmIjVBtl1xM4U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=4Dyj3TFAf2a0awBxIC0/58dYWGnIo6wfhRywN+QDFMQ=;
- b=He7FTLQe38NGXHsXh1Nj/Ep7QivZczp+1iaimObf+3ISJUXnRo0amGUMD3n8N6gMEz
- YSt4w0a/NKfS3yHUHtFYtRtltYmlmJCKG1bLc7DDQVVNbpFXmICE+ha+LXLAmwXHjojx
- hQ2/cPueePXgme6MvdSqAHOSlCl4qukvwY0BIAYe0deoUcoIXo3kilYxSuksMPPXC69i
- DwKpwa3GAqOnLdRjTDj96pxgCnef41oGsLL/rzKd7r54uQA4XDyndXIxr0/NUNQxM3ms
- 87btvPBnoyQQfRpDly6LGUrKJ3qSnW1nxUFDkwpIEA91bJYYCn3Hv7IsFGUdBgz5GYOC
- r36g==
-X-Gm-Message-State: APjAAAXrjjiBR+5RwsT1YlBo21ZV7A9aLAiFtiMj7OEJcEM3tiUPkHwg
- m7JYWZuWLUZmPMxQ5pEd4uBSnQ==
-X-Google-Smtp-Source: APXvYqx+hG30RzYfSJHZPM5tJ9YTXat/yYcK7hJJWoGFjjL2MnTwx3SjA/GCJdbj/Z0fnE/MlFImcw==
-X-Received: by 2002:a17:90a:c385:: with SMTP id
- h5mr39051342pjt.95.1574686203240; 
- Mon, 25 Nov 2019 04:50:03 -0800 (PST)
-Received: from localhost
- (2001-44b8-1113-6700-f00e-a399-4df8-3035.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:f00e:a399:4df8:3035])
- by smtp.gmail.com with ESMTPSA id q41sm8433576pja.20.2019.11.25.04.50.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2019 04:50:02 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <michael@ellerman.id.au>,
- Michael Ellerman <mpe@ellerman.id.au>, Bart Van Assche <bvanassche@acm.org>,
- Qian Cai <cai@lca.pw>
-Subject: Re: lockdep warning while booting POWER9 PowerNV
-In-Reply-To: <EA225D34-2394-4C77-B989-38C275818590@ellerman.id.au>
-References: <1567199630.5576.39.camel@lca.pw>
- <9b8b287a-4ae1-ca9b-cff1-6d93672b6893@acm.org>
- <87ef0vpfbc.fsf@mpe.ellerman.id.au> <87v9r8g3oe.fsf@dja-thinkpad.axtens.net>
- <EA225D34-2394-4C77-B989-38C275818590@ellerman.id.au>
-Date: Mon, 25 Nov 2019 23:49:57 +1100
-Message-ID: <87lfs4f7d6.fsf@dja-thinkpad.axtens.net>
+ by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47M74C5DCbzQlB7;
+ Mon, 25 Nov 2019 14:22:19 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de
+ [80.241.56.117]) (amavisd-new, port 10030)
+ with ESMTP id IyM7yVp8E5tW; Mon, 25 Nov 2019 14:22:15 +0100 (CET)
+Date: Tue, 26 Nov 2019 00:21:45 +1100
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v17 10/13] namei: LOOKUP_{IN_ROOT,BENEATH}: permit
+ limited ".." resolution
+Message-ID: <20191125132145.btaxuurs2w3ldyxf@yavin.dot.cyphar.com>
+References: <20191117011713.13032-1-cyphar@cyphar.com>
+ <20191117011713.13032-11-cyphar@cyphar.com>
+ <20191125003501.GF4203@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="xfjlpf4rp232ejv4"
+Content-Disposition: inline
+In-Reply-To: <20191125003501.GF4203@ZenIV.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,71 +54,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Song Liu <songliubraving@fb.com>, linux-ia64@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, containers@lists.linux-foundation.org,
+ Christian Brauner <christian.brauner@ubuntu.com>, linux-api@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>,
+ Jiri Olsa <jolsa@redhat.com>, linux-sh@vger.kernel.org,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ Yonghong Song <yhs@fb.com>, linux-mips@vger.kernel.org,
+ Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, dev@opencontainers.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
+ Aleksa Sarai <asarai@suse.de>, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc: define arch_is_kernel_initmem_freed() for lockdep
 
-Under certain circumstances, we hit a warning in lockdep_register_key:
+--xfjlpf4rp232ejv4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-        if (WARN_ON_ONCE(static_obj(key)))
-                return;
+On 2019-11-25, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Sun, Nov 17, 2019 at 12:17:10PM +1100, Aleksa Sarai wrote:
+> > +		if (unlikely(nd->flags & LOOKUP_IS_SCOPED)) {
+> > +			/*
+> > +			 * If there was a racing rename or mount along our
+> > +			 * path, then we can't be sure that ".." hasn't jumped
+> > +			 * above nd->root (and so userspace should retry or use
+> > +			 * some fallback).
+> > +			 */
+> > +			if (unlikely(read_seqretry(&mount_lock, nd->m_seq)))
+> > +				return -EAGAIN;
+> > +			if (unlikely(read_seqretry(&rename_lock, nd->r_seq)))
+> > +				return -EAGAIN;
+> > +		}
+>=20
+> Looks like excessive barriers to me - it's
+> 	rmb
+> 	check mount_lock.sequence
+> 	rmb
+> 	check rename_lock.sequence
 
-This occurs when the key falls into initmem that has since been freed
-and can now be reused. This has been observed on boot, and under memory
-pressure.
+If you like, I can switch this to
 
-Define arch_is_kernel_initmem_freed(), which allows lockdep to correctly
-identify this memory as dynamic.
+	smp_rmb();
+	if (unlikely(__read_seqcount_retry(&mount_lock.seqcount, nd->m_seq)))
+		return -EAGAIN;
+	if (unlikely(__read_seqcount_retry(&rename_lock.seqcount, nd->r_seq)))
+		return -EAGAIN;
 
-This fixes a bug picked up by the powerpc64 syzkaller instance where we
-hit the WARN via alloc_netdev_mqs.
+Though I think it makes it more noisy (and this code-path will only be
+hit for ".." and LOOKUP_IS_SCOPED).
 
-Link: https://github.com/linuxppc/issues/issues/284
-Link: https://lore.kernel.org/linuxppc-dev/87ef0vpfbc.fsf@mpe.ellerman.id.au/
-Reported-by: Qian Cai <cai@lca.pw>
-Reported-by: ppc syzbot c/o Andrew Donnellan <ajd@linux.ibm.com>
-Commit-message-by: Daniel Axtens <dja@axtens.net>
-<mpe signoff here>
+> > @@ -2266,6 +2274,10 @@ static const char *path_init(struct nameidata *n=
+d, unsigned flags)
+> >  	nd->last_type =3D LAST_ROOT; /* if there are only slashes... */
+> >  	nd->flags =3D flags | LOOKUP_JUMPED | LOOKUP_PARENT;
+> >  	nd->depth =3D 0;
+> > +
+> > +	nd->m_seq =3D read_seqbegin(&mount_lock);
+> > +	nd->r_seq =3D read_seqbegin(&rename_lock);
+>=20
+> Same here, pretty much (fetch/rmb/fetch/rmb)
 
----
+Unless I'm mistaken, wouldn't we have to do
+seqcount_lockdep_reader_access() explicitly -- so it would end up
+looking something like:
 
-The ppc64 syzkaller link is probably not stable enough to go into
-the git history forever, but fwiw:
-https://syzkaller-ppc64.appspot.com/bug?id=cfdf75cd985012d0124cd41e6fa095d33e7d0f6b
+	seqcount_lockdep_reader_access(&mount_lock.seqcount);
+	nd->m_seq =3D __read_seqcount_begin(&mount_lock.seqcount);
+	seqcount_lockdep_reader_access(&mount_lock.seqcount);
+	nd->r_seq =3D __read_seqcount_begin(&rename_lock.seqcount);
+	smp_rmb();
 
----
- arch/powerpc/include/asm/sections.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Given this code only runs once at the start of each lookup, I'm not sure
+it makes much sense to expand it like that and make it look uglier.
 
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index 5a9b6eb651b6..d19871763ed4 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -5,8 +5,22 @@
- 
- #include <linux/elf.h>
- #include <linux/uaccess.h>
-+
-+#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
-+
- #include <asm-generic/sections.h>
- 
-+extern bool init_mem_is_free;
-+
-+static inline int arch_is_kernel_initmem_freed(unsigned long addr)
-+{
-+	if (!init_mem_is_free)
-+		return 0;
-+
-+	return addr >= (unsigned long)__init_begin &&
-+		addr < (unsigned long)__init_end;
-+}
-+
- extern char __head_end[];
- 
- #ifdef __powerpc64__
+If you really want to avoid the duplicate memory barriers in the common
+case I could instead gate the rename_lock grab behind LOOKUP_IS_SCOPED
+(since that's the only time it's used).
 
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--xfjlpf4rp232ejv4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXdvVZQAKCRCdlLljIbnQ
+EloCAP9GizB7Q/AkzjQ85bGLdovCLYKdqf/qIT7xsbiqpcFyAgD/QswcZX+n5/jN
+nekkrDU5Lj+ZmT9lPOf3tS+I4Q4wogM=
+=viit
+-----END PGP SIGNATURE-----
+
+--xfjlpf4rp232ejv4--
