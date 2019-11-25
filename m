@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E35108967
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 08:46:22 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C88108955
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 08:41:24 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47LzVm5tKZzDqQG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 18:41:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LzcW4LpwzDqV7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 18:46:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,28 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LzSl0bSPzDqTX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 18:39:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LzZC2FJMzDqDD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 18:44:19 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 0B29A68C65; Mon, 25 Nov 2019 08:39:24 +0100 (CET)
-Date: Mon, 25 Nov 2019 08:39:23 +0100
+ id D394368C4E; Mon, 25 Nov 2019 08:44:12 +0100 (CET)
+Date: Mon, 25 Nov 2019 08:44:12 +0100
 From: Christoph Hellwig <hch@lst.de>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Subject: Re: Bug 205201 - Booting halts if Dawicontrol DC-2976 UW SCSI
- board installed, unless RAM size limited to 3500M
-Message-ID: <20191125073923.GA30168@lst.de>
-References: <F1EBB706-73DF-430E-9020-C214EC8ED5DA@xenosoft.de>
- <20191121072943.GA24024@lst.de>
- <dbde2252-035e-6183-7897-43348e60647e@xenosoft.de>
- <6eec5c42-019c-a988-fc2a-cb804194683d@xenosoft.de>
- <d0252d29-7a03-20e1-ccd7-e12d906e4bdf@arm.com>
- <b3217742-2c0b-8447-c9ac-608b93265363@xenosoft.de>
- <20191121180226.GA3852@lst.de>
- <2fde79cf-875f-94e6-4a1b-f73ebb2e2c32@xenosoft.de>
+To: Nathan Chancellor <natechancellor@gmail.com>
+Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+Message-ID: <20191125074412.GA30595@lst.de>
+References: <20191121092646.8449-1-nsaenzjulienne@suse.de>
+ <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2fde79cf-875f-94e6-4a1b-f73ebb2e2c32@xenosoft.de>
+In-Reply-To: <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -52,43 +45,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net, rtd2@xtra.co.nz,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
- iommu@lists.linux-foundation.org, Rob Herring <robh+dt@kernel.org>,
- paulus@samba.org, mad skateman <madskateman@gmail.com>,
- "contact@a-eon.com" <contact@a-eon.com>, Robin Murphy <robin.murphy@arm.com>,
- nsaenzjulienne@suse.de
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Frank Rowand <frowand.list@gmail.com>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Paul Burton <paulburton@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, linux-acpi@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-pci@vger.kernel.org,
+ James Hogan <jhogan@kernel.org>, Len Brown <lenb@kernel.org>,
+ devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+ linuxppc-dev@lists.ozlabs.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+ iommu@lists.linux-foundation.org, Sudeep Holla <sudeep.holla@arm.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 23, 2019 at 12:42:27PM +0100, Christian Zigotzky wrote:
-> Hello Christoph,
->
-> Please find attached the dmesg of your Git kernel.
+On Sat, Nov 23, 2019 at 09:51:08AM -0700, Nathan Chancellor wrote:
+> Just as an FYI, this introduces a warning on arm32 allyesconfig for me:
 
-Thanks.  It looks like on your platform the swiotlb buffer isn't
-actually addressable based on the bus dma mask limit, which is rather
-interesting.  swiotlb_init uses memblock_alloc_low to allocate the
-buffer, and I'll need some help from Mike and the powerpc maintainers
-to figure out how that select where to allocate the buffer from, and
-how we can move it to a lower address.  My gut feeling would be to try
-to do what arm64 does and define a new ARCH_LOW_ADDRESS_LIMIT, preferably
-without needing too much arch specific magic.
+I think the dma_limit argument to iommu_dma_alloc_iova should be a u64
+and/or we need to use min_t and open code the zero exception.
 
-As a quick hack can you try this patch on top of the tree from Friday?
+Robin, Nicolas - any opinions?
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index f491690d54c6..e3f95c362922 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -344,7 +344,7 @@ static inline int memblock_get_region_node(const struct memblock_region *r)
- #define MEMBLOCK_LOW_LIMIT 0
- 
- #ifndef ARCH_LOW_ADDRESS_LIMIT
--#define ARCH_LOW_ADDRESS_LIMIT  0xffffffffUL
-+#define ARCH_LOW_ADDRESS_LIMIT  0x0fffffffUL
- #endif
- 
- phys_addr_t memblock_phys_alloc_range(phys_addr_t size, phys_addr_t align,
+Also I wonder how this file gets compiled on arm32 given that arm32
+has its own set of iommu dma ops..
