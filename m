@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 088611087E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 05:29:53 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0FC1086F7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 05:19:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Lv2G3MhmzDqV9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 15:19:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LvFp2ptgzDqVW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 15:29:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::144;
- helo=mail-il1-x144.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
+ helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="j09ePQ4C"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="lKesB6ym"; 
  dkim-atps=neutral
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
- [IPv6:2607:f8b0:4864:20::144])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Lv0M1z0tzDqV9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:18:11 +1100 (AEDT)
-Received: by mail-il1-x144.google.com with SMTP id s5so12925857iln.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 20:18:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=1LdY682YPm+mPF1FBvxInHeIx6bxuw6kEf2NFU4E6rQ=;
- b=j09ePQ4COwSWV/1fchVfnu8kN9nQTFbfQ+xdCjcFXgvYjETJEOx4AhpS1X+Xyzswg0
- OpIBX9zLtGQ564aAV9q+xq1jSlz3BycilajJrcV0q9ZEzviBEvYB+ZYjqZAEa3uW2q8H
- 2Cw8SftHiA4uJ1MRSnejop0nxWHulRYumSKTiOxDcViVUb/EpFc28YcI7yXI7rUFUJ91
- OShOxoTEJMEudKdFKdvR8jS0Ogfy1urGdLN5JRjusl/jNJiDX1kUBg7h2e8S0hM7tZ10
- xw37Ry/PgQkBK9aePBAKj+B3s1H+2ecrcodUvARQ5KNO1USd8A9UZ9NsPrES9VmXOkuV
- PP6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=1LdY682YPm+mPF1FBvxInHeIx6bxuw6kEf2NFU4E6rQ=;
- b=rau4zy8GmDvGiGCOzIa4a7i79txItSNPpPKSAzaEviEUzA122LOQ4NbRXLzNu4ZgcA
- D5GA7hFsJNsn0ns76GVuI7oX6vvzPegqNsY34R9Hm7KyyNf70tNeC4eRNrOMqmNbvi48
- flkUKtnaBvQHxsk1JJ99q9JmhbpgCBZGcQx5bvZ/y1iZBpReauiOJCW9XP5gd/JsTeoR
- GTnTVlh+e/3mhZDbhiz+LXbPbf0Lk7ehTN9Xazxlv4r4LWP99+1zfY/xom4dTKZPViPW
- NRh8D0EwEtFV/TFFvX/h9msD4/VmiCpOdMhSeZkXSrxOYZ7EfByiY0Gn5EDFZo/CVBWq
- M75g==
-X-Gm-Message-State: APjAAAWrmTpzEgiHFMJe5jF9nPV2cfGy7mcGHeOEaswgGPY0N7xs2CQs
- R+neHA5yfuL/WFWbI4YjCnsuoXCJ0j/zJm5XLYDyVgPu
-X-Google-Smtp-Source: APXvYqwgwJEDdBwTfMIbw6IDcrxCgGJmIlE9gBer9k8rJA6qlZN6Mf8o/ImTjA+6WZdfFCI+czPqvolQDsaOO+QBgVc=
-X-Received: by 2002:a92:7e18:: with SMTP id z24mr29915869ilc.276.1574655488180; 
- Sun, 24 Nov 2019 20:18:08 -0800 (PST)
+Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Lv2q61M3zDqVD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:20:19 +1100 (AEDT)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
+ hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5ddb56810002>; Sun, 24 Nov 2019 20:20:18 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Sun, 24 Nov 2019 20:20:14 -0800
+X-PGP-Universal: processed;
+ by hqpgpgate102.nvidia.com on Sun, 24 Nov 2019 20:20:14 -0800
+Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 25 Nov
+ 2019 04:20:14 +0000
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL109.nvidia.com
+ (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Mon, 25 Nov 2019 04:20:14 +0000
+Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
+ hqnvemgw03.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5ddb567d000c>; Sun, 24 Nov 2019 20:20:13 -0800
+From: John Hubbard <jhubbard@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 10/19] mm/process_vm_access: set FOLL_PIN via
+ pin_user_pages_remote()
+Date: Sun, 24 Nov 2019 20:20:02 -0800
+Message-ID: <20191125042011.3002372-11-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191125042011.3002372-1-jhubbard@nvidia.com>
+References: <20191125042011.3002372-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
-References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-22-oohall@gmail.com>
- <27e9f3a4-2b44-19f2-70c3-3aadb53ee622@ozlabs.ru>
-In-Reply-To: <27e9f3a4-2b44-19f2-70c3-3aadb53ee622@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Mon, 25 Nov 2019 15:17:57 +1100
-Message-ID: <CAOSf1CHFrfFSiaUiQwEC35=Rckx+CyLL4dZJoSD0h_Z_PpNd8A@mail.gmail.com>
-Subject: Re: [Very RFC 21/46] powernv/eeh: Rework finding an existing edev in
- probe_pdev()
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
+X-NVConfidentiality: public
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1574655618; bh=P8nVR+kV72iD6sM0eEn6ntwngrRbmURGxrL6qNBlbv8=;
+ h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+ In-Reply-To:References:MIME-Version:X-NVConfidentiality:
+ Content-Type:Content-Transfer-Encoding;
+ b=lKesB6ym+xsmH3pzlYoMztJ+yYpmeBfaDdlKbcm+Ov0Oe9me0lSNHUFJ4QprbikOC
+ lfrZrl11HiUBrtbdZMs+LKoi+Rx6l3Ck7oeV8/as0OZFC3m99bu9b6dNykGoGNGYdH
+ g4CW1lvSCC9uYS7u3PjTzS/yu2y3kxiLjI50XfLbt9DiCyC2CPswdMokUj2ZxY1UXS
+ QCkk5wE9DgyI5qHC4UXN52r62eB0umS0CHTNvfAHst68PfMoHzvOWB85QVb6eq5vuU
+ X5qPZJWlwz9ha0xRtwngy4U/T/xLVCOs0dYU5iaDPW30LK6aqCDr2YcR23ic6SgZgg
+ COChY61dWiJQQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,105 +75,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
+ linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
+ =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
+ netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 25, 2019 at 2:20 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->
->
->
-> On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> > Use the pnv_eeh_find_edev() helper to look up the eeh_dev for a device
-> > rather than doing it via the pci_dn.
->
-> This is not what the patch does. I struggle to see what is that thing
-> really.
+Convert process_vm_access to use the new pin_user_pages_remote()
+call, which sets FOLL_PIN. Setting FOLL_PIN is now required for
+code that requires tracking of pinned pages.
 
-Hmm, looks like a rebase screw up. This patch and the following one
-(22/46) used to be one patch, but I thought it was getting a bit large
-and split them.
+Also, release the pages via put_user_page*().
 
-> > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> > ---
-> >  arch/powerpc/platforms/powernv/eeh-powernv.c | 44 ++++++++++++++------
-> >  1 file changed, 31 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> > index 6ba74836a9f8..1cd80b399995 100644
-> > --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-> > +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> > @@ -374,20 +374,40 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
-> >       int ret;
-> >       int config_addr = (pdev->bus->number << 8) | (pdev->devfn);
-> >
-> > +     pci_dbg(pdev, "%s: probing\n", __func__);
-> > +
-> >       /*
-> > -      * When probing the root bridge, which doesn't have any
-> > -      * subordinate PCI devices. We don't have OF node for
-> > -      * the root bridge. So it's not reasonable to continue
-> > -      * the probing.
-> > +      * EEH keeps the eeh_dev alive over a recovery pass even when the
-> > +      * corresponding pci_dev has been torn down. In that case we need
-> > +      * to find the existing eeh_dev and re-bind the two.
-> >        */
-> > -     if (!edev || edev->pe)
-> > -             return NULL;
-> > +     edev = pnv_eeh_find_edev(phb, config_addr);
->
->
-> What was @edev before this line?
+Also, rename "pages" to "pinned_pages", as this makes for
+easier reading of process_vm_rw_single_vec().
 
-22/46 has the following hunk which should probably be in this patch:
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: J=C3=A9r=C3=B4me Glisse <jglisse@redhat.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+---
+ mm/process_vm_access.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c
-b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index 1cd80b3..7aba18e 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -366,10 +366,9 @@ static int pnv_eeh_write_config(struct eeh_dev *edev,
-  */
- static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
- {
--       struct pci_dn *pdn = pci_get_pdn(pdev);
--       struct pci_controller *hose = pdn->phb;
--       struct pnv_phb *phb = hose->private_data;
--       struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
-+       struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
-+       struct pci_controller *hose = phb->hose;
-+       struct eeh_dev *edev;
+diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
+index 357aa7bef6c0..fd20ab675b85 100644
+--- a/mm/process_vm_access.c
++++ b/mm/process_vm_access.c
+@@ -42,12 +42,11 @@ static int process_vm_rw_pages(struct page **pages,
+ 		if (copy > len)
+ 			copy =3D len;
+=20
+-		if (vm_write) {
++		if (vm_write)
+ 			copied =3D copy_page_from_iter(page, offset, copy, iter);
+-			set_page_dirty_lock(page);
+-		} else {
++		else
+ 			copied =3D copy_page_to_iter(page, offset, copy, iter);
+-		}
++
+ 		len -=3D copied;
+ 		if (copied < copy && iov_iter_count(iter))
+ 			return -EFAULT;
+@@ -96,7 +95,7 @@ static int process_vm_rw_single_vec(unsigned long addr,
+ 		flags |=3D FOLL_WRITE;
+=20
+ 	while (!rc && nr_pages && iov_iter_count(iter)) {
+-		int pages =3D min(nr_pages, max_pages_per_loop);
++		int pinned_pages =3D min(nr_pages, max_pages_per_loop);
+ 		int locked =3D 1;
+ 		size_t bytes;
+=20
+@@ -106,14 +105,15 @@ static int process_vm_rw_single_vec(unsigned long add=
+r,
+ 		 * current/current->mm
+ 		 */
+ 		down_read(&mm->mmap_sem);
+-		pages =3D get_user_pages_remote(task, mm, pa, pages, flags,
+-					      process_pages, NULL, &locked);
++		pinned_pages =3D pin_user_pages_remote(task, mm, pa, pinned_pages,
++						     flags, process_pages,
++						     NULL, &locked);
+ 		if (locked)
+ 			up_read(&mm->mmap_sem);
+-		if (pages <=3D 0)
++		if (pinned_pages <=3D 0)
+ 			return -EFAULT;
+=20
+-		bytes =3D pages * PAGE_SIZE - start_offset;
++		bytes =3D pinned_pages * PAGE_SIZE - start_offset;
+ 		if (bytes > len)
+ 			bytes =3D len;
+=20
+@@ -122,10 +122,12 @@ static int process_vm_rw_single_vec(unsigned long add=
+r,
+ 					 vm_write);
+ 		len -=3D bytes;
+ 		start_offset =3D 0;
+-		nr_pages -=3D pages;
+-		pa +=3D pages * PAGE_SIZE;
+-		while (pages)
+-			put_page(process_pages[--pages]);
++		nr_pages -=3D pinned_pages;
++		pa +=3D pinned_pages * PAGE_SIZE;
++
++		/* If vm_write is set, the pages need to be made dirty: */
++		put_user_pages_dirty_lock(process_pages, pinned_pages,
++					  vm_write);
+ 	}
+=20
+ 	return rc;
+--=20
+2.24.0
 
-> > +     if (edev) {
-> > +             eeh_edev_dbg(edev, "Found existing edev!\n");
-> > +
-> > +             /*
-> > +              * XXX: eeh_remove_device() clears pdev so we shouldn't hit this
-> > +              * normally. I've found that screwing around with the pci probe
-> > +              * path can result in eeh_probe_pdev() being called twice. This
-> > +              * is harmless at the moment, but it's pretty strange so emit a
-> > +              * warning to be on the safe side.
-> > +              */
-> > +             if (WARN_ON(edev->pdev))
-> > +                     eeh_edev_dbg(edev, "%s: already bound to a pdev!\n", __func__);
-> > +
-> > +             edev->pdev = pdev;
-> > +
-> > +             /* should we be doing something with REMOVED too? */
-> > +             edev->mode &= EEH_DEV_DISCONNECTED;
-> > +
-> > +             /* update the primary bus if we need to */
-> > +             // XXX: why do we need to do this? is the pci_bus going away? what cleared the flag?
->
-> From just reading this patch alone: if you do not know why we need it,
-
-There's a few comments in here that are essentially notes to myself
-that I thought other people might be able to shed light on. The series
-is tagged "Very RFC" for a reason ;)
-
-> then why did you add it here (it is not cut-n-paste)? Thanks,
-
-dunno lol
