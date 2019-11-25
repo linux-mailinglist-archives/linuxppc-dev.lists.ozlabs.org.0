@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9F91087E4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 05:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FEE91087FB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 05:43:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47LvCq4ldlzDqSj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 15:28:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LvYF6McqzDqX3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 15:43:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,57 +15,51 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="QsLjvCCy"; 
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="AWa8smvs"; 
  dkim-atps=neutral
 Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Lv2q4zNWzDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:20:19 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Lv2x0WwJzDqVJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:20:24 +1100 (AEDT)
+Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
  hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5ddb56810001>; Sun, 24 Nov 2019 20:20:17 -0800
+ id <B5ddb567f0000>; Sun, 24 Nov 2019 20:20:15 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Sun, 24 Nov 2019 20:20:15 -0800
+ by hqpgpgate102.nvidia.com (PGP Universal service);
+ Sun, 24 Nov 2019 20:20:13 -0800
 X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Sun, 24 Nov 2019 20:20:15 -0800
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL107.nvidia.com
+ by hqpgpgate102.nvidia.com on Sun, 24 Nov 2019 20:20:13 -0800
+Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL107.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 25 Nov
- 2019 04:20:15 +0000
-Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 25 Nov
- 2019 04:20:15 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Mon, 25 Nov 2019 04:20:14 +0000
+ 2019 04:20:13 +0000
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Mon, 25 Nov 2019 04:20:13 +0000
 Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
  hqnvemgw03.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5ddb567e000a>; Sun, 24 Nov 2019 20:20:14 -0800
+ id <B5ddb567c0004>; Sun, 24 Nov 2019 20:20:12 -0800
 From: John Hubbard <jhubbard@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 18/19] mm/gup_benchmark: use proper FOLL_WRITE flags instead
- of hard-coding "1"
-Date: Sun, 24 Nov 2019 20:20:10 -0800
-Message-ID: <20191125042011.3002372-19-jhubbard@nvidia.com>
+Subject: [PATCH 00/19] pin_user_pages(): reduced-risk series for Linux 5.5
+Date: Sun, 24 Nov 2019 20:19:52 -0800
+Message-ID: <20191125042011.3002372-1-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191125042011.3002372-1-jhubbard@nvidia.com>
-References: <20191125042011.3002372-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
 X-NVConfidentiality: public
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1574655617; bh=zwwITV4l72pt0LmhAqpHWuQbAhr06rUfgov5x98Cdpc=;
+ t=1574655615; bh=Fa0GcWCGWaf6H8ghJjmadoVQ5H4DM60WuhiwHk9NYQE=;
  h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
- In-Reply-To:References:MIME-Version:X-NVConfidentiality:
- Content-Transfer-Encoding:Content-Type;
- b=QsLjvCCyA99FgCdpqdE+FFJAfmTPdQoq6PoPfUwy70RUa+m7VYVhysxh4JegvDpV/
- GHaGSZHUIFfxoVfuowekN8aCksOQNflAN2q3N4RT1tX5YLIBxOGK3sFAQgUMH5OXIg
- xo6+Y+bDqcFTB5oh9i4uedHdvv1GmxaRIuVBmR22c90IwZLCkGKrDXbVc5d78vC8Z6
- bUonbe11i7NYzMWIHUAgt21dSGpf3Nx9tOhOPKKiYgeOnB3r53cFYmVrlMsxR64lie
- r4nqWpzHKVghz+EA7ycuY74WFITRZB236abWIjJoWWuj8JS8jLl/q8sQNztdAwsNyf
- uqWWisvBJCxxg==
+ MIME-Version:X-NVConfidentiality:Content-Type:
+ Content-Transfer-Encoding;
+ b=AWa8smvs+trFNp2hhl6PxcctFNiNkjEPFnL7k3PRf09kncIE/1QuOINHJt/Mcs+cL
+ q46mTymRrWH5hIMQjSDcsL6l4MZjGcZ8rEBd95QdLk6OBQpItd8SHAKNmI2s8cgL9A
+ TZQx79R+51iPaHlmCxHSrFK4tWN8+/SXha4vPWAk/KUrYtR0z/7ZhQ7IWXBFOwOoWY
+ W0JiJYCm5y2Z/s4+iIPAmR7MUQyE8Vno4We33aI2zVWyTzl8693ZWHPydM0PHA73fx
+ 6y5VYOaw3hqt0dvEDHJk7maQ9GNpqGigBAeOy1HQoT6CNDjnaIYlNwCoCcMA/StzjT
+ GubxucVjrnhAA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,11 +75,11 @@ Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
  dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul
- Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@suse.cz>,
  =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
  linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
  John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
@@ -102,75 +96,126 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the gup benchmark flags to use the symbolic FOLL_WRITE,
-instead of a hard-coded "1" value.
+Hi,
 
-Also, clean up the filtering of gup flags a little, by just doing
-it once before issuing any of the get_user_pages*() calls. This
-makes it harder to overlook, instead of having little "gup_flags & 1"
-phrases in the function calls.
+Here is a set of well-reviewed (expect for one patch), lower-risk  items
+that can go into Linux 5.5. The one patch that wasn't reviewed is the
+powerpc conversion, and it's still at this point a no-op, because
+tracking isn't yet activated.
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- mm/gup_benchmark.c                         | 9 ++++++---
- tools/testing/selftests/vm/gup_benchmark.c | 6 +++++-
- 2 files changed, 11 insertions(+), 4 deletions(-)
+This is based on linux-next: b9d3d01405061bb42358fe53f824e894a1922ced
+("Add linux-next specific files for 20191122").
 
-diff --git a/mm/gup_benchmark.c b/mm/gup_benchmark.c
-index 7dd602d7f8db..7fc44d25eca7 100644
---- a/mm/gup_benchmark.c
-+++ b/mm/gup_benchmark.c
-@@ -48,18 +48,21 @@ static int __gup_benchmark_ioctl(unsigned int cmd,
- 			nr =3D (next - addr) / PAGE_SIZE;
- 		}
-=20
-+		/* Filter out most gup flags: only allow a tiny subset here: */
-+		gup->flags &=3D FOLL_WRITE;
-+
- 		switch (cmd) {
- 		case GUP_FAST_BENCHMARK:
--			nr =3D get_user_pages_fast(addr, nr, gup->flags & 1,
-+			nr =3D get_user_pages_fast(addr, nr, gup->flags,
- 						 pages + i);
- 			break;
- 		case GUP_LONGTERM_BENCHMARK:
- 			nr =3D get_user_pages(addr, nr,
--					    (gup->flags & 1) | FOLL_LONGTERM,
-+					    gup->flags | FOLL_LONGTERM,
- 					    pages + i, NULL);
- 			break;
- 		case GUP_BENCHMARK:
--			nr =3D get_user_pages(addr, nr, gup->flags & 1, pages + i,
-+			nr =3D get_user_pages(addr, nr, gup->flags, pages + i,
- 					    NULL);
- 			break;
- 		default:
-diff --git a/tools/testing/selftests/vm/gup_benchmark.c b/tools/testing/sel=
-ftests/vm/gup_benchmark.c
-index 485cf06ef013..389327e9b30a 100644
---- a/tools/testing/selftests/vm/gup_benchmark.c
-+++ b/tools/testing/selftests/vm/gup_benchmark.c
-@@ -18,6 +18,9 @@
- #define GUP_LONGTERM_BENCHMARK	_IOWR('g', 2, struct gup_benchmark)
- #define GUP_BENCHMARK		_IOWR('g', 3, struct gup_benchmark)
-=20
-+/* Just the flags we need, copied from mm.h: */
-+#define FOLL_WRITE	0x01	/* check pte is writable */
-+
- struct gup_benchmark {
- 	__u64 get_delta_usec;
- 	__u64 put_delta_usec;
-@@ -85,7 +88,8 @@ int main(int argc, char **argv)
- 	}
-=20
- 	gup.nr_pages_per_call =3D nr_pages;
--	gup.flags =3D write;
-+	if (write)
-+		gup.flags |=3D FOLL_WRITE;
-=20
- 	fd =3D open("/sys/kernel/debug/gup_benchmark", O_RDWR);
- 	if (fd =3D=3D -1)
+This is essentially a cut-down v8 of "mm/gup: track dma-pinned pages:
+FOLL_PIN" [1], and with one of the VFIO patches split into two patches.
+The idea here is to get this long list of "noise" checked into 5.5, so
+that the actual, higher-risk "track FOLL_PIN pages" (which is deferred:
+not part of this series) will be a much shorter patchset to review.
+
+For the v4l2-core changes, I've left those here (instead of sending
+them separately to the -media tree), in order to get the name change
+done now (put_user_page --> unpin_user_page). However, I've added a Cc
+stable, as recommended during the last round of reviews.
+
+Here are the relevant notes from the original cover letter, edited to
+match the current situation:
+
+This is a prerequisite to tracking dma-pinned pages. That in turn is a
+prerequisite to solving the larger problem of proper interactions
+between file-backed pages, and [R]DMA activities, as discussed in [1],
+[2], [3], and in a remarkable number of email threads since about
+2017. :)
+
+A new internal gup flag, FOLL_PIN is introduced, and thoroughly
+documented in the last patch's Documentation/vm/pin_user_pages.rst.
+
+I believe that this will provide a good starting point for doing the
+layout lease work that Ira Weiny has been working on. That's because
+these new wrapper functions provide a clean, constrained, systematically
+named set of functionality that, again, is required in order to even
+know if a page is "dma-pinned".
+
+In contrast to earlier approaches, the page tracking can be
+incrementally applied to the kernel call sites that, until now, have
+been simply calling get_user_pages() ("gup"). In other words, opt-in by
+changing from this:
+
+    get_user_pages() (sets FOLL_GET)
+    put_page()
+
+to this:
+    pin_user_pages() (sets FOLL_PIN)
+    put_user_page()
+
+Because there are interdependencies with FOLL_LONGTERM, a similar
+conversion as for FOLL_PIN, was applied. The change was from this:
+
+    get_user_pages(FOLL_LONGTERM) (also sets FOLL_GET)
+    put_page()
+
+to this:
+    pin_longterm_pages() (sets FOLL_PIN | FOLL_LONGTERM)
+    put_user_page()
+
+[1] https://lore.kernel.org/r/20191121071354.456618-1-jhubbard@nvidia.com
+
+thanks,
+John Hubbard
+NVIDIA
+
+
+Dan Williams (1):
+  mm: Cleanup __put_devmap_managed_page() vs ->page_free()
+
+John Hubbard (18):
+  mm/gup: factor out duplicate code from four routines
+  mm/gup: move try_get_compound_head() to top, fix minor issues
+  goldish_pipe: rename local pin_user_pages() routine
+  mm: fix get_user_pages_remote()'s handling of FOLL_LONGTERM
+  vfio: fix FOLL_LONGTERM use, simplify get_user_pages_remote() call
+  mm/gup: introduce pin_user_pages*() and FOLL_PIN
+  goldish_pipe: convert to pin_user_pages() and put_user_page()
+  IB/{core,hw,umem}: set FOLL_PIN via pin_user_pages*(), fix up ODP
+  mm/process_vm_access: set FOLL_PIN via pin_user_pages_remote()
+  drm/via: set FOLL_PIN via pin_user_pages_fast()
+  fs/io_uring: set FOLL_PIN via pin_user_pages()
+  net/xdp: set FOLL_PIN via pin_user_pages()
+  media/v4l2-core: set pages dirty upon releasing DMA buffers
+  media/v4l2-core: pin_user_pages (FOLL_PIN) and put_user_page()
+    conversion
+  vfio, mm: pin_user_pages (FOLL_PIN) and put_user_page() conversion
+  powerpc: book3s64: convert to pin_user_pages() and put_user_page()
+  mm/gup_benchmark: use proper FOLL_WRITE flags instead of hard-coding
+    "1"
+  mm, tree-wide: rename put_user_page*() to unpin_user_page*()
+
+ Documentation/core-api/index.rst            |   1 +
+ Documentation/core-api/pin_user_pages.rst   | 233 ++++++++++++++
+ arch/powerpc/mm/book3s64/iommu_api.c        |  12 +-
+ drivers/gpu/drm/via/via_dmablit.c           |   6 +-
+ drivers/infiniband/core/umem.c              |   4 +-
+ drivers/infiniband/core/umem_odp.c          |  13 +-
+ drivers/infiniband/hw/hfi1/user_pages.c     |   4 +-
+ drivers/infiniband/hw/mthca/mthca_memfree.c |   8 +-
+ drivers/infiniband/hw/qib/qib_user_pages.c  |   4 +-
+ drivers/infiniband/hw/qib/qib_user_sdma.c   |   8 +-
+ drivers/infiniband/hw/usnic/usnic_uiom.c    |   4 +-
+ drivers/infiniband/sw/siw/siw_mem.c         |   4 +-
+ drivers/media/v4l2-core/videobuf-dma-sg.c   |   8 +-
+ drivers/nvdimm/pmem.c                       |   6 -
+ drivers/platform/goldfish/goldfish_pipe.c   |  35 +--
+ drivers/vfio/vfio_iommu_type1.c             |  35 +--
+ fs/io_uring.c                               |   6 +-
+ include/linux/mm.h                          |  77 +++--
+ mm/gup.c                                    | 332 +++++++++++++-------
+ mm/gup_benchmark.c                          |   9 +-
+ mm/memremap.c                               |  80 ++---
+ mm/process_vm_access.c                      |  28 +-
+ net/xdp/xdp_umem.c                          |   4 +-
+ tools/testing/selftests/vm/gup_benchmark.c  |   6 +-
+ 24 files changed, 642 insertions(+), 285 deletions(-)
+ create mode 100644 Documentation/core-api/pin_user_pages.rst
+
 --=20
 2.24.0
 
