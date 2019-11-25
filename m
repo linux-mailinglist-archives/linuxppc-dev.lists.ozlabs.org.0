@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F50108813
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 06:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ECB10881B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 06:04:42 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47LvxS6rSfzDqHP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 16:00:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Lw2014mZzDqJN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 16:04:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::142;
+ helo=mail-il1-x142.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="pKXQBq2x"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="ruvdO8Kv"; 
  dkim-atps=neutral
-Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Lv340k5czDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:20:31 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5ddb567b0000>; Sun, 24 Nov 2019 20:20:11 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Sun, 24 Nov 2019 20:20:16 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Sun, 24 Nov 2019 20:20:16 -0800
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 25 Nov
- 2019 04:20:13 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Mon, 25 Nov 2019 04:20:13 +0000
-Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by
- hqnvemgw03.nvidia.com with Trustwave SEG (v7, 5, 8, 10121)
- id <B5ddb567d000b>; Sun, 24 Nov 2019 20:20:13 -0800
-From: John Hubbard <jhubbard@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 09/19] IB/{core, hw, umem}: set FOLL_PIN via pin_user_pages*(),
- fix up ODP
-Date: Sun, 24 Nov 2019 20:20:01 -0800
-Message-ID: <20191125042011.3002372-10-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191125042011.3002372-1-jhubbard@nvidia.com>
-References: <20191125042011.3002372-1-jhubbard@nvidia.com>
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com
+ [IPv6:2607:f8b0:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LvBg02nwzDqVT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:27:06 +1100 (AEDT)
+Received: by mail-il1-x142.google.com with SMTP id v17so9063185ilg.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 20:27:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=jfC3OQNifs9t/eB38l7Wn1nVSOa8PuYaK6Vwbni4I3k=;
+ b=ruvdO8KvAoEtezFgCb1Msln+nbHdbnmuo7/U5NcFAI25FNg2yXCI9Ss6NsJ+/dCKp5
+ abzV3F67VNoQMqMFkVgPIThAop+1ROckAjPgFVg4lin/ruRamSgNmwqOTMQ8LLWqTcPX
+ 1v61MzOC6qYSL6UnKEhyxKljAZvfHb6ry5bNP6rExclFlLFB+FzJcYuA9M8EorqC1T0W
+ p1KDvdCTNTjwk7YUffr/3oybDy7xLfqK8I57v2gjaaUD7iYmHTAyyoXzPQWJBhLmKD46
+ eQr/DxX9ghFjSB5r2Mq4MYr+eASS18GA4T9pbla55ZCZyg3GwRgDtVlXmSj4GMcuVGf/
+ sDVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jfC3OQNifs9t/eB38l7Wn1nVSOa8PuYaK6Vwbni4I3k=;
+ b=cUxRVXK7SzLyKUnApS3DsB8LDpt9+WRkVZUbcR18vmPIItCUWOYoccRz3MhSjdtJpm
+ Y/tWc83Zmy3XUN+vDOdze04rR3upUJKRjvARObPVrW1Kaq1jHbAu2P+OJ9r/obyYGwby
+ +2Oozqmig6a8Rba8XrHG0C4fdSCudxUGytMeOk+XPrmUDwDhAl2yd9ST15XC9Md8Qi6w
+ 5OhKcOyIxESNmzBXzlfxdxLoBEQg/Tda+o9sGAD2mVhOQKwNOBWrt9qnnoakOhf/OG0m
+ zO8OKh4Zk0e8PIvueTjzC1ZY2fhWpso+1vCrWIVsQV3BhF6lqLWdf9LxTFAfZvbys+uw
+ fSJg==
+X-Gm-Message-State: APjAAAXGAO27xslP+Fs0HyODdkiP1+uWvjAiDJh0S1FuUyF4877HbOJf
+ qfGRFe1cxKSeg4Hj2TZl6fan+HfTIg4lLffXmYo=
+X-Google-Smtp-Source: APXvYqyjh0EqasFgxWH33sb4NcCIpSBy28K7JR2yK0w/f2S0qQatdecFxCAq2RXRnNon4xFncgCjOkdJvfmJPdAAwuA=
+X-Received: by 2002:a92:3943:: with SMTP id g64mr15395088ila.298.1574656022939; 
+ Sun, 24 Nov 2019 20:27:02 -0800 (PST)
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1574655611; bh=F5LoLh4kW0VgIVuupouosvzq/0ORLXJ24SyIGBNyaiY=;
- h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
- In-Reply-To:References:MIME-Version:X-NVConfidentiality:
- Content-Transfer-Encoding:Content-Type;
- b=pKXQBq2xFNosSHMxDGBCax7XdfIYB/U7NFfgYUWqEQriuv4x/Ruvetfkp4QHGiDA1
- vbeUKUbk6kOYGLHm0gCZ3qJ9H1EVY93WYcedgBCVfw5M3EFBLyq/2JXwKKTV71UzHF
- rqlcaebwmLkTX2Vp6HOGYigxVEcULGtlda+dD/xouAIldGc3F/+2ZTuOT8guh6mwq7
- 41CilFdOkcbx0WqJUzg6kg8HHtrRZFawSX1Hdl/moSERPg73t4Ka+ntBOYY26elngm
- mJkt9jzcnkowOi3JANxBUksjvp0PbCTJpSgJq4ha4hIPzyssqUbjUbIJLPlth2Efyy
- KPGtXay/D+g0A==
+References: <20191120012859.23300-1-oohall@gmail.com>
+ <20191120012859.23300-23-oohall@gmail.com>
+ <f150f51d-e2da-f77a-5e8b-b735801d12da@ozlabs.ru>
+In-Reply-To: <f150f51d-e2da-f77a-5e8b-b735801d12da@ozlabs.ru>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Mon, 25 Nov 2019 15:26:51 +1100
+Message-ID: <CAOSf1CG6X-KzO_sf+s9YSTkH-FYaiwmB36YFK-okx45kYUjxAQ@mail.gmail.com>
+Subject: Re: [Very RFC 22/46] powernv/eeh: Allocate eeh_dev's when needed
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,214 +74,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Paul
- Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-rdma@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Jason
- Gunthorpe <jgg@mellanox.com>, Vlastimil Babka <vbabka@suse.cz>,
- =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- John Hubbard <jhubbard@nvidia.com>, linux-block@vger.kernel.org,
- =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Alistair Popple <alistair@popple.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Convert infiniband to use the new pin_user_pages*() calls.
+On Mon, Nov 25, 2019 at 2:27 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>
+>
+>
+> On 20/11/2019 12:28, Oliver O'Halloran wrote:
+> > Have the PowerNV EEH backend allocate the eeh_dev if needed rather than using
+> > the one attached to the pci_dn.
+>
+> So that pci_dn attached one is leaked then?
 
-Also, revert earlier changes to Infiniband ODP that had it using
-put_user_page(). ODP is "Case 3" in
-Documentation/core-api/pin_user_pages.rst, which is to say, normal
-get_user_pages() and put_page() is the API to use there.
+Sorta, the eeh_dev attached to the pci_dn is supposed to have the same
+lifetime as the pci_dn it's attached to. Whatever frees the pci_dn
+should also be freeing the eeh_dev, but I'm pretty sure the only
+situation where that actually happens is when removing the pci_dn for
+VFs. It's bad.
 
-The new pin_user_pages*() calls replace corresponding get_user_pages*()
-calls, and set the FOLL_PIN flag. The FOLL_PIN flag requires that the
-caller must return the pages via put_user_page*() calls, but infiniband
-was already doing that as part of an earlier commit.
+> > This gets us most of the way towards decoupling
+> > pci_dn from the PowerNV EEH code.
+> >
+> > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> > ---
+> > We should probably be free()ing the eeh_dev somewhere. The pci_dev release
+> > function is the right place for it.
+> > ---
+> >  arch/powerpc/platforms/powernv/eeh-powernv.c | 22 ++++++++++++++++----
+> >  1 file changed, 18 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> > index 1cd80b399995..7aba18e08996 100644
+> > --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
+> > +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> > @@ -366,10 +366,9 @@ static int pnv_eeh_write_config(struct eeh_dev *edev,
+> >   */
+> >  static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
+> >  {
+> > -     struct pci_dn *pdn = pci_get_pdn(pdev);
+> > -     struct pci_controller *hose = pdn->phb;
+> > -     struct pnv_phb *phb = hose->private_data;
+> > -     struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
+> > +     struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+> > +     struct pci_controller *hose = phb->hose;
+> > +     struct eeh_dev *edev;
+> >       uint32_t pcie_flags;
+> >       int ret;
+> >       int config_addr = (pdev->bus->number << 8) | (pdev->devfn);
+> > @@ -415,12 +414,27 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
+> >       if ((pdev->class >> 8) == PCI_CLASS_BRIDGE_ISA)
+> >               return NULL;
+> >
+> > +     /* otherwise allocate and initialise a new eeh_dev */
+> > +     edev = kzalloc(sizeof(*edev), GFP_KERNEL);
+> > +     if (!edev) {
+> > +             pr_err("%s: out of memory lol\n", __func__);
+>
+> "lol"?
 
-Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- drivers/infiniband/core/umem.c              |  2 +-
- drivers/infiniband/core/umem_odp.c          | 13 ++++++-------
- drivers/infiniband/hw/hfi1/user_pages.c     |  2 +-
- drivers/infiniband/hw/mthca/mthca_memfree.c |  2 +-
- drivers/infiniband/hw/qib/qib_user_pages.c  |  2 +-
- drivers/infiniband/hw/qib/qib_user_sdma.c   |  2 +-
- drivers/infiniband/hw/usnic/usnic_uiom.c    |  2 +-
- drivers/infiniband/sw/siw/siw_mem.c         |  2 +-
- 8 files changed, 13 insertions(+), 14 deletions(-)
+yeah lol
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.=
-c
-index 7a3b99597ead..39a1542e6707 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -267,7 +267,7 @@ struct ib_umem *ib_umem_get(struct ib_udata *udata, uns=
-igned long addr,
-=20
- 	while (npages) {
- 		down_read(&mm->mmap_sem);
--		ret =3D get_user_pages(cur_base,
-+		ret =3D pin_user_pages(cur_base,
- 				     min_t(unsigned long, npages,
- 					   PAGE_SIZE / sizeof (struct page *)),
- 				     gup_flags | FOLL_LONGTERM,
-diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/u=
-mem_odp.c
-index e42d44e501fd..abc3bb6578cc 100644
---- a/drivers/infiniband/core/umem_odp.c
-+++ b/drivers/infiniband/core/umem_odp.c
-@@ -308,9 +308,8 @@ EXPORT_SYMBOL(ib_umem_odp_release);
-  * The function returns -EFAULT if the DMA mapping operation fails. It ret=
-urns
-  * -EAGAIN if a concurrent invalidation prevents us from updating the page=
-.
-  *
-- * The page is released via put_user_page even if the operation failed. Fo=
-r
-- * on-demand pinning, the page is released whenever it isn't stored in the
-- * umem.
-+ * The page is released via put_page even if the operation failed. For on-=
-demand
-+ * pinning, the page is released whenever it isn't stored in the umem.
-  */
- static int ib_umem_odp_map_dma_single_page(
- 		struct ib_umem_odp *umem_odp,
-@@ -363,7 +362,7 @@ static int ib_umem_odp_map_dma_single_page(
- 	}
-=20
- out:
--	put_user_page(page);
-+	put_page(page);
- 	return ret;
- }
-=20
-@@ -473,7 +472,7 @@ int ib_umem_odp_map_dma_pages(struct ib_umem_odp *umem_=
-odp, u64 user_virt,
- 					ret =3D -EFAULT;
- 					break;
- 				}
--				put_user_page(local_page_list[j]);
-+				put_page(local_page_list[j]);
- 				continue;
- 			}
-=20
-@@ -500,8 +499,8 @@ int ib_umem_odp_map_dma_pages(struct ib_umem_odp *umem_=
-odp, u64 user_virt,
- 			 * ib_umem_odp_map_dma_single_page().
- 			 */
- 			if (npages - (j + 1) > 0)
--				put_user_pages(&local_page_list[j+1],
--					       npages - (j + 1));
-+				release_pages(&local_page_list[j+1],
-+					      npages - (j + 1));
- 			break;
- 		}
- 	}
-diff --git a/drivers/infiniband/hw/hfi1/user_pages.c b/drivers/infiniband/h=
-w/hfi1/user_pages.c
-index 469acb961fbd..9a94761765c0 100644
---- a/drivers/infiniband/hw/hfi1/user_pages.c
-+++ b/drivers/infiniband/hw/hfi1/user_pages.c
-@@ -106,7 +106,7 @@ int hfi1_acquire_user_pages(struct mm_struct *mm, unsig=
-ned long vaddr, size_t np
- 	int ret;
- 	unsigned int gup_flags =3D FOLL_LONGTERM | (writable ? FOLL_WRITE : 0);
-=20
--	ret =3D get_user_pages_fast(vaddr, npages, gup_flags, pages);
-+	ret =3D pin_user_pages_fast(vaddr, npages, gup_flags, pages);
- 	if (ret < 0)
- 		return ret;
-=20
-diff --git a/drivers/infiniband/hw/mthca/mthca_memfree.c b/drivers/infiniba=
-nd/hw/mthca/mthca_memfree.c
-index edccfd6e178f..8269ab040c21 100644
---- a/drivers/infiniband/hw/mthca/mthca_memfree.c
-+++ b/drivers/infiniband/hw/mthca/mthca_memfree.c
-@@ -472,7 +472,7 @@ int mthca_map_user_db(struct mthca_dev *dev, struct mth=
-ca_uar *uar,
- 		goto out;
- 	}
-=20
--	ret =3D get_user_pages_fast(uaddr & PAGE_MASK, 1,
-+	ret =3D pin_user_pages_fast(uaddr & PAGE_MASK, 1,
- 				  FOLL_WRITE | FOLL_LONGTERM, pages);
- 	if (ret < 0)
- 		goto out;
-diff --git a/drivers/infiniband/hw/qib/qib_user_pages.c b/drivers/infiniban=
-d/hw/qib/qib_user_pages.c
-index 6bf764e41891..7fc4b5f81fcd 100644
---- a/drivers/infiniband/hw/qib/qib_user_pages.c
-+++ b/drivers/infiniband/hw/qib/qib_user_pages.c
-@@ -108,7 +108,7 @@ int qib_get_user_pages(unsigned long start_page, size_t=
- num_pages,
-=20
- 	down_read(&current->mm->mmap_sem);
- 	for (got =3D 0; got < num_pages; got +=3D ret) {
--		ret =3D get_user_pages(start_page + got * PAGE_SIZE,
-+		ret =3D pin_user_pages(start_page + got * PAGE_SIZE,
- 				     num_pages - got,
- 				     FOLL_LONGTERM | FOLL_WRITE | FOLL_FORCE,
- 				     p + got, NULL);
-diff --git a/drivers/infiniband/hw/qib/qib_user_sdma.c b/drivers/infiniband=
-/hw/qib/qib_user_sdma.c
-index 05190edc2611..1a3cc2957e3a 100644
---- a/drivers/infiniband/hw/qib/qib_user_sdma.c
-+++ b/drivers/infiniband/hw/qib/qib_user_sdma.c
-@@ -670,7 +670,7 @@ static int qib_user_sdma_pin_pages(const struct qib_dev=
-data *dd,
- 		else
- 			j =3D npages;
-=20
--		ret =3D get_user_pages_fast(addr, j, FOLL_LONGTERM, pages);
-+		ret =3D pin_user_pages_fast(addr, j, FOLL_LONGTERM, pages);
- 		if (ret !=3D j) {
- 			i =3D 0;
- 			j =3D ret;
-diff --git a/drivers/infiniband/hw/usnic/usnic_uiom.c b/drivers/infiniband/=
-hw/usnic/usnic_uiom.c
-index 62e6ffa9ad78..600896727d34 100644
---- a/drivers/infiniband/hw/usnic/usnic_uiom.c
-+++ b/drivers/infiniband/hw/usnic/usnic_uiom.c
-@@ -141,7 +141,7 @@ static int usnic_uiom_get_pages(unsigned long addr, siz=
-e_t size, int writable,
- 	ret =3D 0;
-=20
- 	while (npages) {
--		ret =3D get_user_pages(cur_base,
-+		ret =3D pin_user_pages(cur_base,
- 				     min_t(unsigned long, npages,
- 				     PAGE_SIZE / sizeof(struct page *)),
- 				     gup_flags | FOLL_LONGTERM,
-diff --git a/drivers/infiniband/sw/siw/siw_mem.c b/drivers/infiniband/sw/si=
-w/siw_mem.c
-index e99983f07663..e53b07dcfed5 100644
---- a/drivers/infiniband/sw/siw/siw_mem.c
-+++ b/drivers/infiniband/sw/siw/siw_mem.c
-@@ -426,7 +426,7 @@ struct siw_umem *siw_umem_get(u64 start, u64 len, bool =
-writable)
- 		while (nents) {
- 			struct page **plist =3D &umem->page_chunk[i].plist[got];
-=20
--			rv =3D get_user_pages(first_page_va, nents,
-+			rv =3D pin_user_pages(first_page_va, nents,
- 					    foll_flags | FOLL_LONGTERM,
- 					    plist, NULL);
- 			if (rv < 0)
---=20
-2.24.0
+I am pretty sure we do not have to print anything if alloc failed
+> as alloc prints an error anyway. Thanks,
 
+It does? Neat.
