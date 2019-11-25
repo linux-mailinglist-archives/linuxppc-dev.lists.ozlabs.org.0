@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3327B1085FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 01:39:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C799D108600
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 01:41:27 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Lp862ggPzDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 11:39:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LpBD5VzczDqZB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 11:41:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,21 +19,20 @@ Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Lp6M50bzzDqXB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 11:38:03 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Lp8L3n2xzDqZB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 11:39:46 +1100 (AEDT)
 Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1iZ2NY-0003dl-RU; Mon, 25 Nov 2019 00:37:24 +0000
-Date: Mon, 25 Nov 2019 00:37:24 +0000
+ Linux)) id 1iZ2PF-0003h1-PI; Mon, 25 Nov 2019 00:39:10 +0000
+Date: Mon, 25 Nov 2019 00:39:09 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v17 11/13] open: introduce openat2(2) syscall
-Message-ID: <20191125003724.GG4203@ZenIV.linux.org.uk>
+Subject: Re: [PATCH v17 00/13] open: introduce openat2(2) syscall
+Message-ID: <20191125003909.GH4203@ZenIV.linux.org.uk>
 References: <20191117011713.13032-1-cyphar@cyphar.com>
- <20191117011713.13032-12-cyphar@cyphar.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191117011713.13032-12-cyphar@cyphar.com>
+In-Reply-To: <20191117011713.13032-1-cyphar@cyphar.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,11 +78,5 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 17, 2019 at 12:17:11PM +1100, Aleksa Sarai wrote:
-
-> +/* how->upgrade flags for openat2(2). */
-> +/* First bit is reserved for a future UPGRADE_NOEXEC flag. */
-> +#define UPGRADE_NOREAD		0x02 /* Block re-opening with MAY_READ. */
-> +#define UPGRADE_NOWRITE		0x04 /* Block re-opening with MAY_WRITE. */
-
-I'd drop that chunk, for the lack of ->upgrade...
+	Generally I can live with that - the only serious issue is
+with that WARN_ON() and the logics of the check in it.
