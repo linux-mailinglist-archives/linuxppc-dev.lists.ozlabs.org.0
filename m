@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951761085FA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 01:37:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Lp5k5qGMzDqXC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 11:37:30 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3327B1085FF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 01:39:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Lp862ggPzDqXB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 11:39:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,22 +19,21 @@ Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Lp3w0yc5zDqHG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 11:35:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Lp6M50bzzDqXB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 11:38:03 +1100 (AEDT)
 Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1iZ2LF-0003Zh-4M; Mon, 25 Nov 2019 00:35:01 +0000
-Date: Mon, 25 Nov 2019 00:35:01 +0000
+ Linux)) id 1iZ2NY-0003dl-RU; Mon, 25 Nov 2019 00:37:24 +0000
+Date: Mon, 25 Nov 2019 00:37:24 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v17 10/13] namei: LOOKUP_{IN_ROOT,BENEATH}: permit
- limited ".." resolution
-Message-ID: <20191125003501.GF4203@ZenIV.linux.org.uk>
+Subject: Re: [PATCH v17 11/13] open: introduce openat2(2) syscall
+Message-ID: <20191125003724.GG4203@ZenIV.linux.org.uk>
 References: <20191117011713.13032-1-cyphar@cyphar.com>
- <20191117011713.13032-11-cyphar@cyphar.com>
+ <20191117011713.13032-12-cyphar@cyphar.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191117011713.13032-11-cyphar@cyphar.com>
+In-Reply-To: <20191117011713.13032-12-cyphar@cyphar.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -53,11 +52,11 @@ Cc: Song Liu <songliubraving@fb.com>, linux-ia64@vger.kernel.org,
  Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
  David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
  sparclinux@vger.kernel.org, containers@lists.linux-foundation.org,
- Christian Brauner <christian.brauner@ubuntu.com>, linux-api@vger.kernel.org,
- Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
- Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>,
- Jiri Olsa <jolsa@redhat.com>, linux-sh@vger.kernel.org,
+ linux-api@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jonathan Corbet <corbet@lwn.net>, Jiri Olsa <jolsa@redhat.com>,
+ linux-sh@vger.kernel.org,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
  Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
  Yonghong Song <yhs@fb.com>, linux-mips@vger.kernel.org,
@@ -80,32 +79,11 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 17, 2019 at 12:17:10PM +1100, Aleksa Sarai wrote:
-> +		if (unlikely(nd->flags & LOOKUP_IS_SCOPED)) {
-> +			/*
-> +			 * If there was a racing rename or mount along our
-> +			 * path, then we can't be sure that ".." hasn't jumped
-> +			 * above nd->root (and so userspace should retry or use
-> +			 * some fallback).
-> +			 */
-> +			if (unlikely(read_seqretry(&mount_lock, nd->m_seq)))
-> +				return -EAGAIN;
-> +			if (unlikely(read_seqretry(&rename_lock, nd->r_seq)))
-> +				return -EAGAIN;
-> +		}
+On Sun, Nov 17, 2019 at 12:17:11PM +1100, Aleksa Sarai wrote:
 
-Looks like excessive barriers to me - it's
-	rmb
-	check mount_lock.sequence
-	rmb
-	check rename_lock.sequence
+> +/* how->upgrade flags for openat2(2). */
+> +/* First bit is reserved for a future UPGRADE_NOEXEC flag. */
+> +#define UPGRADE_NOREAD		0x02 /* Block re-opening with MAY_READ. */
+> +#define UPGRADE_NOWRITE		0x04 /* Block re-opening with MAY_WRITE. */
 
-> @@ -2266,6 +2274,10 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
->  	nd->last_type = LAST_ROOT; /* if there are only slashes... */
->  	nd->flags = flags | LOOKUP_JUMPED | LOOKUP_PARENT;
->  	nd->depth = 0;
-> +
-> +	nd->m_seq = read_seqbegin(&mount_lock);
-> +	nd->r_seq = read_seqbegin(&rename_lock);
-
-Same here, pretty much (fetch/rmb/fetch/rmb)
+I'd drop that chunk, for the lack of ->upgrade...
