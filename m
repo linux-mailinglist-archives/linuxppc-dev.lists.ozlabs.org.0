@@ -1,65 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4751086BA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 04:08:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5744D108668
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 02:38:14 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47LqRk1XqLzDqK3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 12:38:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47LsS645G9zDqKL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 14:08:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=socionext.com (client-ip=210.131.2.83;
- helo=conssluserg-04.nifty.com; envelope-from=yamada.masahiro@socionext.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="R1fYDaTv"; 
- dkim-atps=neutral
-Received: from conssluserg-04.nifty.com (conssluserg-04.nifty.com
- [210.131.2.83])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LqPV0ckgzDq7F
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 12:36:12 +1100 (AEDT)
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com
- [209.85.217.49]) (authenticated)
- by conssluserg-04.nifty.com with ESMTP id xAP1ZumK005605
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 10:35:57 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com xAP1ZumK005605
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1574645757;
- bh=4zS9ONB1lX0XUDCYAcZW6UgeXuejST5UVyfhFO/g8d8=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=R1fYDaTvWZSIXPD0BXg/G6ZmTOZMjjFenSgrGicPFQT+3Y3g/m/ZrhOyG2ZLObk9H
- jSDKaIdbzPFBTfl1xJZMsZJ81783Qg75CmGSqzoPciMOvaYC3saanAxYYIjtyXFHC5
- XpMkLxiVblDfIwKlBHkAczgogRU8wVT/JOwppExseIgxtiiL6HSRfwU+JnROtKzXCB
- 0majHYE5wni9B61LcBG+CKkDMhKnKSmaJuTncJPy2oI75R0i2izRD9kV1YGyZXqnXf
- k9MTvxkdR0dxuhxT8t1KHwfECJzy7sfW/CyqMeI3qoUrxjTmPVy291lkq65GHgy3ml
- OF0e3gT7gcnCw==
-X-Nifty-SrcIP: [209.85.217.49]
-Received: by mail-vs1-f49.google.com with SMTP id m9so8929956vsq.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 17:35:57 -0800 (PST)
-X-Gm-Message-State: APjAAAX6NaJFUG8bQuOVBa0pm1ABJfqNKyiZbE+gbSWb3ow0PewxdFFl
- v75HS3sumEkc5vkJrd3SiMlwwixd6ZIyAkdYsnk=
-X-Google-Smtp-Source: APXvYqzsFOr3V5Ucu7w0+x7MvZdRFWrrwm3B2vqt1VuyZEdFouFkB+5X8be1VVTCyuUplwtsLKcFkuk0UX620+G6KNg=
-X-Received: by 2002:a05:6102:726:: with SMTP id
- u6mr17181884vsg.179.1574645756005; 
- Sun, 24 Nov 2019 17:35:56 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LsQ075jpzDqH4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 14:06:47 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAP31vL7128352
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 22:06:43 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wfk9a16b6-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 22:06:43 -0500
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Mon, 25 Nov 2019 03:06:41 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 25 Nov 2019 03:06:38 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAP36atT46596332
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 25 Nov 2019 03:06:36 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6ACD34C046;
+ Mon, 25 Nov 2019 03:06:36 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FA1E4C044;
+ Mon, 25 Nov 2019 03:06:34 +0000 (GMT)
+Received: from bharata.in.ibm.com (unknown [9.124.35.39])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 25 Nov 2019 03:06:34 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v11 0/7] KVM: PPC: Driver to manage pages of secure guest
+Date: Mon, 25 Nov 2019 08:36:24 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20191113071202.11287-1-yamada.masahiro@socionext.com>
-In-Reply-To: <20191113071202.11287-1-yamada.masahiro@socionext.com>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Mon, 25 Nov 2019 10:35:19 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARSSSORFCrTt0abgiyUffnTtgFFh8XbVNvbkxZ=NbcX_A@mail.gmail.com>
-Message-ID: <CAK7LNARSSSORFCrTt0abgiyUffnTtgFFh8XbVNvbkxZ=NbcX_A@mail.gmail.com>
-Subject: Re: [PATCH v3] libfdt: define INT32_MAX and UINT32_MAX in libfdt_env.h
-To: DTML <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19112503-0008-0000-0000-000003371ECD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19112503-0009-0000-0000-00004A5651D5
+Message-Id: <20191125030631.7716-1-bharata@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-24_04:2019-11-21,2019-11-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=2
+ impostorscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
+ mlxlogscore=815 phishscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1911250026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,124 +85,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Russell King <linux@armlinux.org.uk>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com,
+ Bharata B Rao <bharata@linux.ibm.com>, jglisse@redhat.com,
+ aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
+ sukadev@linux.vnet.ibm.com, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 13, 2019 at 4:13 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
->
-> The DTC v1.5.1 added references to (U)INT32_MAX.
->
-> This is no problem for user-space programs since <stdint.h> defines
-> (U)INT32_MAX along with (u)int32_t.
->
-> For the kernel space, libfdt_env.h needs to be adjusted before we
-> pull in the changes.
->
-> In the kernel, we usually use s/u32 instead of (u)int32_t for the
-> fixed-width types.
->
-> Accordingly, we already have S/U32_MAX for their max values.
-> So, we should not add (U)INT32_MAX to <linux/limits.h> any more.
->
-> Instead, add them to the in-kernel libfdt_env.h to compile the
-> latest libfdt.
->
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
+Hi,
 
-Please let me ping this
-in case this is useful for future resync.
+This is the next version of the patchset that adds required support
+in the KVM hypervisor to run secure guests on PEF-enabled POWER platforms.
 
+This version includes the following changes:
 
+- Ensure that any malicious calls to the 4 hcalls (init_start, init_done,
+  page_in and page_out) are handled safely by returning appropriate
+  errors (Paul Mackerras)
+- init_start hcall should work for only radix guests.
+- Fix the page-size-order argument in uv_page_inval (Ram Pai)
+- Don't free up partition scoped page tables in HV when guest
+  becomes secure (Paul Mackerras)
+- During guest reset, when we unpin VPA pages, make sure that no vcpu
+  is running and fail the SVM_OFF ioctl if any are running (Paul Mackerras)
+- Dropped the patch that implemented init_abort hcall as it still has
+  unresolved questions.
 
+Anshuman Khandual (1):
+  KVM: PPC: Ultravisor: Add PPC_UV config option
 
->
-> My initial plan was to change this in a series of 3 patches
-> since it is clean, and reduces the code.
->
-> [1/3] https://lore.kernel.org/patchwork/patch/1147095/
-> [2/3] https://lore.kernel.org/patchwork/patch/1147096/
-> [3/3] https://lore.kernel.org/patchwork/patch/1147097/
->
-> 1/3 is stuck in the license bikeshed.
->
-> For 2/3, I have not been able to get Ack from Russell.
->
-> So, I chose a straight-forward fixup.
->
->
-> Changes in v3:
->  - Resend as a single patch
->
->  arch/arm/boot/compressed/libfdt_env.h | 4 +++-
->  arch/powerpc/boot/libfdt_env.h        | 2 ++
->  include/linux/libfdt_env.h            | 3 +++
->  3 files changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm/boot/compressed/libfdt_env.h b/arch/arm/boot/compressed/libfdt_env.h
-> index b36c0289a308..6a0f1f524466 100644
-> --- a/arch/arm/boot/compressed/libfdt_env.h
-> +++ b/arch/arm/boot/compressed/libfdt_env.h
-> @@ -2,11 +2,13 @@
->  #ifndef _ARM_LIBFDT_ENV_H
->  #define _ARM_LIBFDT_ENV_H
->
-> +#include <linux/limits.h>
->  #include <linux/types.h>
->  #include <linux/string.h>
->  #include <asm/byteorder.h>
->
-> -#define INT_MAX                        ((int)(~0U>>1))
-> +#define INT32_MAX      S32_MAX
-> +#define UINT32_MAX     U32_MAX
->
->  typedef __be16 fdt16_t;
->  typedef __be32 fdt32_t;
-> diff --git a/arch/powerpc/boot/libfdt_env.h b/arch/powerpc/boot/libfdt_env.h
-> index 2abc8e83b95e..9757d4f6331e 100644
-> --- a/arch/powerpc/boot/libfdt_env.h
-> +++ b/arch/powerpc/boot/libfdt_env.h
-> @@ -6,6 +6,8 @@
->  #include <string.h>
->
->  #define INT_MAX                        ((int)(~0U>>1))
-> +#define UINT32_MAX             ((u32)~0U)
-> +#define INT32_MAX              ((s32)(UINT32_MAX >> 1))
->
->  #include "of.h"
->
-> diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
-> index edb0f0c30904..1adf54aad2df 100644
-> --- a/include/linux/libfdt_env.h
-> +++ b/include/linux/libfdt_env.h
-> @@ -7,6 +7,9 @@
->
->  #include <asm/byteorder.h>
->
-> +#define INT32_MAX      S32_MAX
-> +#define UINT32_MAX     U32_MAX
-> +
->  typedef __be16 fdt16_t;
->  typedef __be32 fdt32_t;
->  typedef __be64 fdt64_t;
-> --
-> 2.17.1
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Bharata B Rao (6):
+  mm: ksm: Export ksm_madvise()
+  KVM: PPC: Support for running secure guests
+  KVM: PPC: Shared pages support for secure guests
+  KVM: PPC: Radix changes for secure guest
+  KVM: PPC: Handle memory plug/unplug to secure VM
+  KVM: PPC: Support reset of secure guest
 
-
+ Documentation/virt/kvm/api.txt              |  18 +
+ arch/powerpc/Kconfig                        |  17 +
+ arch/powerpc/include/asm/hvcall.h           |   9 +
+ arch/powerpc/include/asm/kvm_book3s_uvmem.h |  74 ++
+ arch/powerpc/include/asm/kvm_host.h         |   6 +
+ arch/powerpc/include/asm/kvm_ppc.h          |   1 +
+ arch/powerpc/include/asm/ultravisor-api.h   |   6 +
+ arch/powerpc/include/asm/ultravisor.h       |  36 +
+ arch/powerpc/kvm/Makefile                   |   3 +
+ arch/powerpc/kvm/book3s_64_mmu_radix.c      |  25 +
+ arch/powerpc/kvm/book3s_hv.c                | 143 ++++
+ arch/powerpc/kvm/book3s_hv_uvmem.c          | 774 ++++++++++++++++++++
+ arch/powerpc/kvm/powerpc.c                  |  12 +
+ include/uapi/linux/kvm.h                    |   1 +
+ mm/ksm.c                                    |   1 +
+ 15 files changed, 1126 insertions(+)
+ create mode 100644 arch/powerpc/include/asm/kvm_book3s_uvmem.h
+ create mode 100644 arch/powerpc/kvm/book3s_hv_uvmem.c
 
 -- 
-Best Regards
-Masahiro Yamada
+2.21.0
+
