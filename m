@@ -1,43 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021CA10881D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 06:08:57 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F25110881C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 06:07:02 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Lw4g1D8RzDqYC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 16:06:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Lw6t552WzDqCq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 16:08:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::143;
+ helo=mail-il1-x143.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 47LvCL2M3BzDqQm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:27:40 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 948E431B;
- Sun, 24 Nov 2019 20:27:36 -0800 (PST)
-Received: from [192.168.0.10] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03E013F6C4;
- Sun, 24 Nov 2019 20:27:21 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V10] mm/debug: Add tests validating architecture page
- table helpers
-To: linux-mm@kvack.org
-References: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
-Message-ID: <d20b95b2-369c-bcb8-3bf0-f7ce32d0fb12@arm.com>
-Date: Mon, 25 Nov 2019 09:58:06 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="gzgjf+15"; 
+ dkim-atps=neutral
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com
+ [IPv6:2607:f8b0:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LvTL5drqzDqXT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:39:50 +1100 (AEDT)
+Received: by mail-il1-x143.google.com with SMTP id s5so12958118iln.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 20:39:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=eCYFT6TGZD0y/qQ6ga3jz2EXsTuOpcRjvnAzBbU9vZc=;
+ b=gzgjf+15qsDZepOBOZlYG68Sk1m+yceYLeTmQl6CC3X6n0CXOo2cSAGp5qdc3TPxVU
+ IfmgTP5LcSpuQjkAXZ5T+QTMjizd4Olz0Kbzv4+egjBRysywzmg8G0pseus9M3PQWllb
+ 1sxfUGL9OdsHsVFVTlEa8ZqyI21eWWitTu62pwO4M/T+3bCOypUywZDiErZDeEpwW9nw
+ eyEmccPY/NNqGXhv3hfaW2morr2mdOgdCPO7MurvfSDktd8cbTgTpfvRHL+9xRcCYiXq
+ xeg91vhSDo+bRG+96SnnrLH1OF10o4/Sa2Qs/dOuBf+HPbErIip38nKC62uNssMNgt3h
+ mVxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=eCYFT6TGZD0y/qQ6ga3jz2EXsTuOpcRjvnAzBbU9vZc=;
+ b=RePnvuYB1mjU3blrls3LiA85Rx0FDG1ws6jZlFCAnKGwAs7J804D8QaDlCwXISjEFV
+ O7yKEoun9AiZiczyZQgUpEQNfwMS3T7xdW4iC4kifqC06N/G5uvgHgsOhEHBt3wJEYfL
+ n3rmfWkPVF6Mj+SKWFI/OluQNhmY9xT6jkriIlz4t3htLLV1G//9zaHRRChWyhtEsEY9
+ B5/n8rXUWrdiCU7L0n32ln1Eq8jHGoYAzuRMm3N1UZGpMLG31iyPPDMjnUT5cRbGFVzF
+ 9ah0HPiYXQ9iqhIzkDMxbgNsbGxX4tl9drocYehzuw4WWXmnAd00yfo4Dvj9yLZm04UC
+ yvnw==
+X-Gm-Message-State: APjAAAWSiXXrvplDXLRmsieZJkvewC/e+9Gm5QhzMTvjeqandHi2OsoQ
+ AN6VsxWjcN3SZSpw/okpCK/pXiHSXO5HdtTgrH8=
+X-Google-Smtp-Source: APXvYqzw3XgnbeAo8GOX3zjnouDOdCk9h29fAaJqcnsEwBh4/yPch4WCdmPQxy+okTsEIYozAGzlpHztxgPjuGEEzhw=
+X-Received: by 2002:a92:3943:: with SMTP id g64mr15429932ila.298.1574656787336; 
+ Sun, 24 Nov 2019 20:39:47 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20191120012859.23300-1-oohall@gmail.com>
+ <20191120012859.23300-7-oohall@gmail.com>
+ <20191121074855.GC17209@infradead.org>
+In-Reply-To: <20191121074855.GC17209@infradead.org>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Mon, 25 Nov 2019 15:39:36 +1100
+Message-ID: <CAOSf1CGDPF1G763494hBLW+ok9wQ3rsnu946j32zo4-Crk4yqw@mail.gmail.com>
+Subject: Re: [Very RFC 06/46] powerpc/iov: Move VF pdev fixup into
+ pcibios_fixup_iov()
+To: Christoph Hellwig <hch@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,138 +75,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Alistair Popple <alistair@popple.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/20/2019 11:01 AM, Anshuman Khandual wrote:
-> This adds tests which will validate architecture page table helpers and
-> other accessors in their compliance with expected generic MM semantics.
-> This will help various architectures in validating changes to existing
-> page table helpers or addition of new ones.
-> 
-> This test covers basic page table entry transformations including but not
-> limited to old, young, dirty, clean, write, write protect etc at various
-> level along with populating intermediate entries with next page table page
-> and validating them.
-> 
-> Test page table pages are allocated from system memory with required size
-> and alignments. The mapped pfns at page table levels are derived from a
-> real pfn representing a valid kernel text symbol. This test gets called
-> right after page_alloc_init_late().
-> 
-> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
-> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
-> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
-> arm64. Going forward, other architectures too can enable this after fixing
-> build or runtime problems (if any) with their page table helpers.
-> 
-> Folks interested in making sure that a given platform's page table helpers
-> conform to expected generic MM semantics should enable the above config
-> which will just trigger this test during boot. Any non conformity here will
-> be reported as an warning which would need to be fixed. This test will help
-> catch any changes to the agreed upon semantics expected from generic MM and
-> enable platforms to accommodate it thereafter.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Steven Price <Steven.Price@arm.com>
-> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: Paul Burton <paul.burton@mips.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Kirill A. Shutemov <kirill@shutemov.name>
-> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: x86@kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> 
-> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
-> Reviewed-by: Ingo Molnar <mingo@kernel.org>
-> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> This adds a test validation for architecture exported page table helpers.
-> Patch adds basic transformation tests at various levels of the page table.
-> 
-> This test was originally suggested by Catalin during arm64 THP migration
-> RFC discussion earlier. Going forward it can include more specific tests
-> with respect to various generic MM functions like THP, HugeTLB etc and
-> platform specific tests.
-> 
-> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
-> 
-> Needs to be applied on linux-next (next-20191108).
-> 
-> Changes in V10:
-> 
-> - Always enable DEBUG_VM_PGTABLE when DEBUG_VM is enabled per Ingo
-> - Added tags from Ingo
+On Thu, Nov 21, 2019 at 6:48 PM Christoph Hellwig <hch@infradead.org> wrote:
+>
+> On Wed, Nov 20, 2019 at 12:28:19PM +1100, Oliver O'Halloran wrote:
+> > Move this out of the PHB's dma_dev_setup() callback and into the
+> > ppc_md.pcibios_fixup_iov callback. This ensures that the VF PE's
+> > pdev pointer is always valid for the whole time the device is
+> > added the bus.
+> >
+> > This isn't strictly required, but it's slightly a slightly more logical
+> > place to do the fixup and it makes dma_dev_setup a bit simpler.
+>
+> Ok, this removes the code I commented on earlier, so I take my
+> comment there back.
 
-Hello Andrew,
+It is a bit weird. I'll re-order the two patches so we're not
+shovelling around the fixup junk.
 
-There has not been any further comments on the previous version (V9) or this version
-(V10) of the patch which accommodated a comment from Ingo Molnar regarding making
-DEBUG_VM_PGTABLE always enabled when DEBUG_VM is selected. If this version looks okay,
-then would you please consider merging ? But if there is anything which still needs
-to be improved, please do let me know. I will try to incorporate that. Thank you.
+> > +     if (pdev->is_virtfn) {
+> > +             /* Fix the VF PE's pdev pointer */
+> > +             struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
+> > +             pe->pdev = pdev;
+>
+> Maybe add an empty line after the variable declaration?
 
-- Anshuman
+ok
+
+> > @@ -3641,20 +3654,6 @@ void pnv_pci_dma_dev_setup(struct pci_dev *pdev)
+> >  {
+> >       struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> >       struct pnv_phb *phb = hose->private_data;
+> >
+> >       pnv_pci_ioda_dma_dev_setup(phb, pdev);
+> >  }
+>
+> Can you just merge pnv_pci_dma_dev_setup and pnv_pci_ioda_dma_dev_setup
+> now?
+
+Oh cool, looks like we can. I'll do that.
