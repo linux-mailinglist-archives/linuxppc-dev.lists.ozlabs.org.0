@@ -2,67 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8ECB10881B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 06:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F25110881C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 06:07:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Lw2014mZzDqJN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 16:04:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Lw4g1D8RzDqYC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 16:06:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::142;
- helo=mail-il1-x142.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="ruvdO8Kv"; 
- dkim-atps=neutral
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LvBg02nwzDqVT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:27:06 +1100 (AEDT)
-Received: by mail-il1-x142.google.com with SMTP id v17so9063185ilg.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 20:27:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=jfC3OQNifs9t/eB38l7Wn1nVSOa8PuYaK6Vwbni4I3k=;
- b=ruvdO8KvAoEtezFgCb1Msln+nbHdbnmuo7/U5NcFAI25FNg2yXCI9Ss6NsJ+/dCKp5
- abzV3F67VNoQMqMFkVgPIThAop+1ROckAjPgFVg4lin/ruRamSgNmwqOTMQ8LLWqTcPX
- 1v61MzOC6qYSL6UnKEhyxKljAZvfHb6ry5bNP6rExclFlLFB+FzJcYuA9M8EorqC1T0W
- p1KDvdCTNTjwk7YUffr/3oybDy7xLfqK8I57v2gjaaUD7iYmHTAyyoXzPQWJBhLmKD46
- eQr/DxX9ghFjSB5r2Mq4MYr+eASS18GA4T9pbla55ZCZyg3GwRgDtVlXmSj4GMcuVGf/
- sDVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=jfC3OQNifs9t/eB38l7Wn1nVSOa8PuYaK6Vwbni4I3k=;
- b=cUxRVXK7SzLyKUnApS3DsB8LDpt9+WRkVZUbcR18vmPIItCUWOYoccRz3MhSjdtJpm
- Y/tWc83Zmy3XUN+vDOdze04rR3upUJKRjvARObPVrW1Kaq1jHbAu2P+OJ9r/obyYGwby
- +2Oozqmig6a8Rba8XrHG0C4fdSCudxUGytMeOk+XPrmUDwDhAl2yd9ST15XC9Md8Qi6w
- 5OhKcOyIxESNmzBXzlfxdxLoBEQg/Tda+o9sGAD2mVhOQKwNOBWrt9qnnoakOhf/OG0m
- zO8OKh4Zk0e8PIvueTjzC1ZY2fhWpso+1vCrWIVsQV3BhF6lqLWdf9LxTFAfZvbys+uw
- fSJg==
-X-Gm-Message-State: APjAAAXGAO27xslP+Fs0HyODdkiP1+uWvjAiDJh0S1FuUyF4877HbOJf
- qfGRFe1cxKSeg4Hj2TZl6fan+HfTIg4lLffXmYo=
-X-Google-Smtp-Source: APXvYqyjh0EqasFgxWH33sb4NcCIpSBy28K7JR2yK0w/f2S0qQatdecFxCAq2RXRnNon4xFncgCjOkdJvfmJPdAAwuA=
-X-Received: by 2002:a92:3943:: with SMTP id g64mr15395088ila.298.1574656022939; 
- Sun, 24 Nov 2019 20:27:02 -0800 (PST)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 47LvCL2M3BzDqQm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 15:27:40 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 948E431B;
+ Sun, 24 Nov 2019 20:27:36 -0800 (PST)
+Received: from [192.168.0.10] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03E013F6C4;
+ Sun, 24 Nov 2019 20:27:21 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V10] mm/debug: Add tests validating architecture page
+ table helpers
+To: linux-mm@kvack.org
+References: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
+Message-ID: <d20b95b2-369c-bcb8-3bf0-f7ce32d0fb12@arm.com>
+Date: Mon, 25 Nov 2019 09:58:06 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-23-oohall@gmail.com>
- <f150f51d-e2da-f77a-5e8b-b735801d12da@ozlabs.ru>
-In-Reply-To: <f150f51d-e2da-f77a-5e8b-b735801d12da@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Mon, 25 Nov 2019 15:26:51 +1100
-Message-ID: <CAOSf1CG6X-KzO_sf+s9YSTkH-FYaiwmB36YFK-okx45kYUjxAQ@mail.gmail.com>
-Subject: Re: [Very RFC 22/46] powernv/eeh: Allocate eeh_dev's when needed
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,72 +49,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Michal Hocko <mhocko@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, Steven Price <Steven.Price@arm.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mark Brown <broonie@kernel.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Sri Krishna chowdary <schowdary@nvidia.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 25, 2019 at 2:27 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->
->
->
-> On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> > Have the PowerNV EEH backend allocate the eeh_dev if needed rather than using
-> > the one attached to the pci_dn.
->
-> So that pci_dn attached one is leaked then?
+On 11/20/2019 11:01 AM, Anshuman Khandual wrote:
+> This adds tests which will validate architecture page table helpers and
+> other accessors in their compliance with expected generic MM semantics.
+> This will help various architectures in validating changes to existing
+> page table helpers or addition of new ones.
+> 
+> This test covers basic page table entry transformations including but not
+> limited to old, young, dirty, clean, write, write protect etc at various
+> level along with populating intermediate entries with next page table page
+> and validating them.
+> 
+> Test page table pages are allocated from system memory with required size
+> and alignments. The mapped pfns at page table levels are derived from a
+> real pfn representing a valid kernel text symbol. This test gets called
+> right after page_alloc_init_late().
+> 
+> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+> arm64. Going forward, other architectures too can enable this after fixing
+> build or runtime problems (if any) with their page table helpers.
+> 
+> Folks interested in making sure that a given platform's page table helpers
+> conform to expected generic MM semantics should enable the above config
+> which will just trigger this test during boot. Any non conformity here will
+> be reported as an warning which would need to be fixed. This test will help
+> catch any changes to the agreed upon semantics expected from generic MM and
+> enable platforms to accommodate it thereafter.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Steven Price <Steven.Price@arm.com>
+> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+> Cc: Dave Hansen <dave.hansen@intel.com>
+> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: x86@kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> 
+> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
+> Reviewed-by: Ingo Molnar <mingo@kernel.org>
+> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> This adds a test validation for architecture exported page table helpers.
+> Patch adds basic transformation tests at various levels of the page table.
+> 
+> This test was originally suggested by Catalin during arm64 THP migration
+> RFC discussion earlier. Going forward it can include more specific tests
+> with respect to various generic MM functions like THP, HugeTLB etc and
+> platform specific tests.
+> 
+> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
+> 
+> Needs to be applied on linux-next (next-20191108).
+> 
+> Changes in V10:
+> 
+> - Always enable DEBUG_VM_PGTABLE when DEBUG_VM is enabled per Ingo
+> - Added tags from Ingo
 
-Sorta, the eeh_dev attached to the pci_dn is supposed to have the same
-lifetime as the pci_dn it's attached to. Whatever frees the pci_dn
-should also be freeing the eeh_dev, but I'm pretty sure the only
-situation where that actually happens is when removing the pci_dn for
-VFs. It's bad.
+Hello Andrew,
 
-> > This gets us most of the way towards decoupling
-> > pci_dn from the PowerNV EEH code.
-> >
-> > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> > ---
-> > We should probably be free()ing the eeh_dev somewhere. The pci_dev release
-> > function is the right place for it.
-> > ---
-> >  arch/powerpc/platforms/powernv/eeh-powernv.c | 22 ++++++++++++++++----
-> >  1 file changed, 18 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> > index 1cd80b399995..7aba18e08996 100644
-> > --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-> > +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> > @@ -366,10 +366,9 @@ static int pnv_eeh_write_config(struct eeh_dev *edev,
-> >   */
-> >  static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
-> >  {
-> > -     struct pci_dn *pdn = pci_get_pdn(pdev);
-> > -     struct pci_controller *hose = pdn->phb;
-> > -     struct pnv_phb *phb = hose->private_data;
-> > -     struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
-> > +     struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
-> > +     struct pci_controller *hose = phb->hose;
-> > +     struct eeh_dev *edev;
-> >       uint32_t pcie_flags;
-> >       int ret;
-> >       int config_addr = (pdev->bus->number << 8) | (pdev->devfn);
-> > @@ -415,12 +414,27 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
-> >       if ((pdev->class >> 8) == PCI_CLASS_BRIDGE_ISA)
-> >               return NULL;
-> >
-> > +     /* otherwise allocate and initialise a new eeh_dev */
-> > +     edev = kzalloc(sizeof(*edev), GFP_KERNEL);
-> > +     if (!edev) {
-> > +             pr_err("%s: out of memory lol\n", __func__);
->
-> "lol"?
+There has not been any further comments on the previous version (V9) or this version
+(V10) of the patch which accommodated a comment from Ingo Molnar regarding making
+DEBUG_VM_PGTABLE always enabled when DEBUG_VM is selected. If this version looks okay,
+then would you please consider merging ? But if there is anything which still needs
+to be improved, please do let me know. I will try to incorporate that. Thank you.
 
-yeah lol
-
-I am pretty sure we do not have to print anything if alloc failed
-> as alloc prints an error anyway. Thanks,
-
-It does? Neat.
+- Anshuman
