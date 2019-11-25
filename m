@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D047A1086C6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 04:16:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACA51086C8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 04:17:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Lscq5sg3zDqCx
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 14:16:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Lsfd4SJwzDqMg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 14:17:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,63 +19,63 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LsQ64FDWzDqH4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 14:06:54 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47LsQ93G9MzDqMd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 14:06:57 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAP3206s093067
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 22:06:51 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2wfjwk1rn9-1
+ xAP31xsG105854
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 22:06:55 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2wfjqxj6st-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 22:06:51 -0500
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 22:06:55 -0500
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Mon, 25 Nov 2019 03:06:48 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Mon, 25 Nov 2019 03:06:52 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 25 Nov 2019 03:06:47 -0000
+ Mon, 25 Nov 2019 03:06:49 -0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAP36jCq47841484
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAP36mPQ65470570
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 25 Nov 2019 03:06:45 GMT
+ Mon, 25 Nov 2019 03:06:48 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BED444C050;
- Mon, 25 Nov 2019 03:06:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id EBB204C059;
+ Mon, 25 Nov 2019 03:06:47 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CDDB74C046;
- Mon, 25 Nov 2019 03:06:43 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0FD6F4C044;
+ Mon, 25 Nov 2019 03:06:46 +0000 (GMT)
 Received: from bharata.in.ibm.com (unknown [9.124.35.39])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 25 Nov 2019 03:06:43 +0000 (GMT)
+ Mon, 25 Nov 2019 03:06:45 +0000 (GMT)
 From: Bharata B Rao <bharata@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v11 4/7] KVM: PPC: Radix changes for secure guest
-Date: Mon, 25 Nov 2019 08:36:28 +0530
+Subject: [PATCH v11 5/7] KVM: PPC: Handle memory plug/unplug to secure VM
+Date: Mon, 25 Nov 2019 08:36:29 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191125030631.7716-1-bharata@linux.ibm.com>
 References: <20191125030631.7716-1-bharata@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19112503-0028-0000-0000-000003BF0222
+x-cbid: 19112503-0016-0000-0000-000002CBC899
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19112503-0029-0000-0000-00002482341C
-Message-Id: <20191125030631.7716-5-bharata@linux.ibm.com>
+x-cbparentid: 19112503-0017-0000-0000-0000332D999F
+Message-Id: <20191125030631.7716-6-bharata@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-11-24_04:2019-11-21,2019-11-24 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0
- clxscore=1015 impostorscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-1911250026
+ malwarescore=0 suspectscore=2
+ bulkscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0 mlxscore=0
+ clxscore=1015 mlxlogscore=999 spamscore=0 phishscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1911250026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,196 +95,175 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-- After the guest becomes secure, when we handle a page fault of a page
-  belonging to SVM in HV, send that page to UV via UV_PAGE_IN.
-- Whenever a page is unmapped on the HV side, inform UV via UV_PAGE_INVAL.
-- Ensure all those routines that walk the secondary page tables of
-  the guest don't do so in case of secure VM. For secure guest, the
-  active secondary page tables are in secure memory and the secondary
-  page tables in HV are freed when guest becomes secure.
+Register the new memslot with UV during plug and unregister
+the memslot during unplug. In addition, release all the
+device pages during unplug.
 
 Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
 ---
  arch/powerpc/include/asm/kvm_book3s_uvmem.h |  6 ++++
  arch/powerpc/include/asm/ultravisor-api.h   |  1 +
- arch/powerpc/include/asm/ultravisor.h       |  5 ++++
- arch/powerpc/kvm/book3s_64_mmu_radix.c      | 22 ++++++++++++++
- arch/powerpc/kvm/book3s_hv_uvmem.c          | 32 +++++++++++++++++++++
- 5 files changed, 66 insertions(+)
+ arch/powerpc/include/asm/ultravisor.h       |  5 +++
+ arch/powerpc/kvm/book3s_64_mmu_radix.c      |  3 ++
+ arch/powerpc/kvm/book3s_hv.c                | 24 +++++++++++++
+ arch/powerpc/kvm/book3s_hv_uvmem.c          | 37 +++++++++++++++++++++
+ 6 files changed, 76 insertions(+)
 
 diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-index 95f389c2937b..3033a9585b43 100644
+index 3033a9585b43..50204e228f16 100644
 --- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
 +++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-@@ -18,6 +18,7 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
- 				    unsigned long page_shift);
+@@ -19,6 +19,8 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
  unsigned long kvmppc_h_svm_init_start(struct kvm *kvm);
  unsigned long kvmppc_h_svm_init_done(struct kvm *kvm);
-+int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn);
+ int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn);
++void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
++			     struct kvm *kvm);
  #else
  static inline int kvmppc_uvmem_init(void)
  {
-@@ -58,5 +59,10 @@ static inline unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
+@@ -64,5 +66,9 @@ static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
  {
- 	return H_UNSUPPORTED;
+ 	return -EFAULT;
  }
 +
-+static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
-+{
-+	return -EFAULT;
-+}
++static inline void
++kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
++			struct kvm *kvm) { }
  #endif /* CONFIG_PPC_UV */
  #endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
 diff --git a/arch/powerpc/include/asm/ultravisor-api.h b/arch/powerpc/include/asm/ultravisor-api.h
-index 2483f15bd71a..e774274ab30e 100644
+index e774274ab30e..4b0d044caa2a 100644
 --- a/arch/powerpc/include/asm/ultravisor-api.h
 +++ b/arch/powerpc/include/asm/ultravisor-api.h
-@@ -32,5 +32,6 @@
+@@ -27,6 +27,7 @@
+ #define UV_RETURN			0xF11C
+ #define UV_ESM				0xF110
+ #define UV_REGISTER_MEM_SLOT		0xF120
++#define UV_UNREGISTER_MEM_SLOT		0xF124
+ #define UV_PAGE_IN			0xF128
+ #define UV_PAGE_OUT			0xF12C
  #define UV_SHARE_PAGE			0xF130
- #define UV_UNSHARE_PAGE			0xF134
- #define UV_UNSHARE_ALL_PAGES		0xF140
-+#define UV_PAGE_INVAL			0xF138
- 
- #endif /* _ASM_POWERPC_ULTRAVISOR_API_H */
 diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
-index 79bb005e8ee9..40cc8bace654 100644
+index 40cc8bace654..b8e59b7b4ac8 100644
 --- a/arch/powerpc/include/asm/ultravisor.h
 +++ b/arch/powerpc/include/asm/ultravisor.h
-@@ -67,4 +67,9 @@ static inline int uv_register_mem_slot(u64 lpid, u64 start_gpa, u64 size,
+@@ -67,6 +67,11 @@ static inline int uv_register_mem_slot(u64 lpid, u64 start_gpa, u64 size,
  			    size, flags, slotid);
  }
  
-+static inline int uv_page_inval(u64 lpid, u64 gpa, u64 page_shift)
++static inline int uv_unregister_mem_slot(u64 lpid, u64 slotid)
 +{
-+	return ucall_norets(UV_PAGE_INVAL, lpid, gpa, page_shift);
++	return ucall_norets(UV_UNREGISTER_MEM_SLOT, lpid, slotid);
 +}
 +
- #endif	/* _ASM_POWERPC_ULTRAVISOR_H */
+ static inline int uv_page_inval(u64 lpid, u64 gpa, u64 page_shift)
+ {
+ 	return ucall_norets(UV_PAGE_INVAL, lpid, gpa, page_shift);
 diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index 2d415c36a61d..9f6ba113ffe3 100644
+index 9f6ba113ffe3..da857c8ba6e4 100644
 --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
 +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -19,6 +19,8 @@
- #include <asm/pgtable.h>
- #include <asm/pgalloc.h>
- #include <asm/pte-walk.h>
-+#include <asm/ultravisor.h>
-+#include <asm/kvm_book3s_uvmem.h>
- 
- /*
-  * Supported radix tree geometry.
-@@ -915,6 +917,9 @@ int kvmppc_book3s_radix_page_fault(struct kvm_run *run, struct kvm_vcpu *vcpu,
- 	if (!(dsisr & DSISR_PRTABLE_FAULT))
- 		gpa |= ea & 0xfff;
- 
-+	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
-+		return kvmppc_send_page_to_uv(kvm, gfn);
-+
- 	/* Get the corresponding memslot */
- 	memslot = gfn_to_memslot(kvm, gfn);
- 
-@@ -972,6 +977,11 @@ int kvm_unmap_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 	unsigned long gpa = gfn << PAGE_SHIFT;
- 	unsigned int shift;
- 
-+	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE) {
-+		uv_page_inval(kvm->arch.lpid, gpa, PAGE_SHIFT);
-+		return 0;
-+	}
-+
- 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
- 	if (ptep && pte_present(*ptep))
- 		kvmppc_unmap_pte(kvm, ptep, gpa, shift, memslot,
-@@ -989,6 +999,9 @@ int kvm_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 	int ref = 0;
- 	unsigned long old, *rmapp;
- 
-+	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
-+		return ref;
-+
- 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
- 	if (ptep && pte_present(*ptep) && pte_young(*ptep)) {
- 		old = kvmppc_radix_update_pte(kvm, ptep, _PAGE_ACCESSED, 0,
-@@ -1013,6 +1026,9 @@ int kvm_test_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
- 	unsigned int shift;
- 	int ref = 0;
- 
-+	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
-+		return ref;
-+
- 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
- 	if (ptep && pte_present(*ptep) && pte_young(*ptep))
- 		ref = 1;
-@@ -1030,6 +1046,9 @@ static int kvm_radix_test_clear_dirty(struct kvm *kvm,
- 	int ret = 0;
- 	unsigned long old, *rmapp;
- 
-+	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
-+		return ret;
-+
- 	ptep = __find_linux_pte(kvm->arch.pgtable, gpa, NULL, &shift);
- 	if (ptep && pte_present(*ptep) && pte_dirty(*ptep)) {
- 		ret = 1;
-@@ -1082,6 +1101,9 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
+@@ -1101,6 +1101,9 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
  	unsigned long gpa;
  	unsigned int shift;
  
-+	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
++	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START)
++		kvmppc_uvmem_drop_pages(memslot, kvm);
++
+ 	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
+ 		return;
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 80e84277d11f..cb7ae1e9e4f2 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -74,6 +74,7 @@
+ #include <asm/hw_breakpoint.h>
+ #include <asm/kvm_host.h>
+ #include <asm/kvm_book3s_uvmem.h>
++#include <asm/ultravisor.h>
+ 
+ #include "book3s.h"
+ 
+@@ -4532,6 +4533,29 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
+ 	if (change == KVM_MR_FLAGS_ONLY && kvm_is_radix(kvm) &&
+ 	    ((new->flags ^ old->flags) & KVM_MEM_LOG_DIRTY_PAGES))
+ 		kvmppc_radix_flush_memslot(kvm, old);
++	/*
++	 * If UV hasn't yet called H_SVM_INIT_START, don't register memslots.
++	 */
++	if (!kvm->arch.secure_guest)
 +		return;
 +
- 	gpa = memslot->base_gfn << PAGE_SHIFT;
- 	spin_lock(&kvm->mmu_lock);
- 	for (n = memslot->npages; n; --n) {
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 51f094db43f8..9266ed53cf7a 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -70,6 +70,17 @@
-  * Shared pages: Whenever guest shares a secure page, UV will split and
-  * remap the 2MB page if required and issue H_SVM_PAGE_IN with 64K page size.
-  *
-+ * HV invalidating a page: When a regular page belonging to secure
-+ * guest gets unmapped, HV informs UV with UV_PAGE_INVAL of 64K
-+ * page size. Using 64K page size is correct here because any non-secure
-+ * page will essentially be of 64K page size. Splitting by UV during sharing
-+ * and page-out ensures this.
-+ *
-+ * Page fault handling: When HV handles page fault of a page belonging
-+ * to secure guest, it sends that to UV with a 64K UV_PAGE_IN request.
-+ * Using 64K size is correct here too as UV would have split the 2MB page
-+ * into 64k mappings and would have done page-outs earlier.
-+ *
-  * In summary, the current secure pages handling code in HV assumes
-  * 64K page size and in fact fails any page-in/page-out requests of
-  * non-64K size upfront. If and when UV starts supporting multiple
-@@ -619,6 +630,27 @@ kvmppc_h_svm_page_out(struct kvm *kvm, unsigned long gpa,
- 	return ret;
++	switch (change) {
++	case KVM_MR_CREATE:
++		if (kvmppc_uvmem_slot_init(kvm, new))
++			return;
++		uv_register_mem_slot(kvm->arch.lpid,
++				     new->base_gfn << PAGE_SHIFT,
++				     new->npages * PAGE_SIZE,
++				     0, new->id);
++		break;
++	case KVM_MR_DELETE:
++		uv_unregister_mem_slot(kvm->arch.lpid, old->id);
++		kvmppc_uvmem_slot_free(kvm, old);
++		break;
++	default:
++		/* TODO: Handle KVM_MR_MOVE */
++		break;
++	}
  }
  
-+int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
+ /*
+diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+index 9266ed53cf7a..f24ac3cfb34c 100644
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -250,6 +250,43 @@ unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
+ 	return H_SUCCESS;
+ }
+ 
++/*
++ * Drop device pages that we maintain for the secure guest
++ *
++ * We first mark the pages to be skipped from UV_PAGE_OUT when there
++ * is HV side fault on these pages. Next we *get* these pages, forcing
++ * fault on them, do fault time migration to replace the device PTEs in
++ * QEMU page table with normal PTEs from newly allocated pages.
++ */
++void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
++			     struct kvm *kvm)
 +{
-+	unsigned long pfn;
-+	int ret = U_SUCCESS;
++	int i;
++	struct kvmppc_uvmem_page_pvt *pvt;
++	unsigned long pfn, uvmem_pfn;
++	unsigned long gfn = free->base_gfn;
 +
-+	pfn = gfn_to_pfn(kvm, gfn);
-+	if (is_error_noslot_pfn(pfn))
-+		return -EFAULT;
++	for (i = free->npages; i; --i, ++gfn) {
++		struct page *uvmem_page;
 +
-+	mutex_lock(&kvm->arch.uvmem_lock);
-+	if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, NULL))
-+		goto out;
++		mutex_lock(&kvm->arch.uvmem_lock);
++		if (!kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
++			mutex_unlock(&kvm->arch.uvmem_lock);
++			continue;
++		}
 +
-+	ret = uv_page_in(kvm->arch.lpid, pfn << PAGE_SHIFT, gfn << PAGE_SHIFT,
-+			 0, PAGE_SHIFT);
-+out:
-+	kvm_release_pfn_clean(pfn);
-+	mutex_unlock(&kvm->arch.uvmem_lock);
-+	return (ret == U_SUCCESS) ? RESUME_GUEST : -EFAULT;
++		uvmem_page = pfn_to_page(uvmem_pfn);
++		pvt = uvmem_page->zone_device_data;
++		pvt->skip_page_out = true;
++		mutex_unlock(&kvm->arch.uvmem_lock);
++
++		pfn = gfn_to_pfn(kvm, gfn);
++		if (is_error_noslot_pfn(pfn))
++			continue;
++		kvm_release_pfn_clean(pfn);
++	}
 +}
 +
- static u64 kvmppc_get_secmem_size(void)
- {
- 	struct device_node *np;
+ /*
+  * Get a free device PFN from the pool
+  *
 -- 
 2.21.0
 
