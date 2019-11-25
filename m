@@ -2,70 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2721086D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 04:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F28F91086D5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 04:29:10 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Lsrg0zRNzDq77
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 14:26:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Lsvm2yLVzDq7k
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 14:29:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="J/eH7Gr8"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="I09sZyCl"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47LskB2Fv9zDqJh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 14:20:50 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id 6so1931258pgk.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 19:20:50 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Lssz5g9RzDq7k
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 14:27:35 +1100 (AEDT)
+Received: by mail-pf1-x441.google.com with SMTP id s5so6653168pfh.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2019 19:27:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Lk843SC7TOqo5mBkp1OQusOCkrq2jT0KUhiTG8om6Yw=;
- b=J/eH7Gr8YqsWStuxOWCDRxfKFe8aeoQmdxuDC9SznObspGJ41/FlgGvu8J8taIw77L
- yK98YFrNGdVDOWZHXz1idlWKlN7Jlcmp7M7qHKOP87JUMx0Qny1ouC2ch+Tv6HyVM6tD
- 3Enmis+SQGplXCPyzoiuHCN8Oo0VQOPM3sXv4EqTxltoYczIyUnUrxBxYcIOHnEEW53y
- 7853Bjh29MGSndCPi1AJngHS1epVQr0YWNwQ1Obs7LLNQGq1VpzWI535kY4byBfObp3z
- ebbFcWrkMHO13Vp1yYaeW7TQjbzDWkHKVl5ZXQhOeBWBXVc+PX6X785MEZunUEp7OOtm
- vHzQ==
+ bh=OaG7pN211SUucprk2tkdLebSNhBp4FvOqjHK97YTjvQ=;
+ b=I09sZyCle06MDT3n+RW3IByFmaIGaFlLCgFr6q7KXa+xcTN0Ef1VyMrsqbj2oSExju
+ cEseD9/w+qd3fAy8BiK9UymyaajIIAe0TH9RX/Q+V40ZotdZY3209ql4BiB7yoLojOQN
+ b9tYxCR8x3xl2+QNA/dcknVb6bc9XecIf8UyS2u4nx7qqrxCaa6WcBy+yPE2mR1+ZQTv
+ S/+JWY7mfLLfo0votvARw3V1lS++Doftm4w4YGo8lKegVYazPRpRRSCs9I/JwFhh6bP5
+ A2XMobngEWFPMpB785xlnvsQCsCGpLz+2Xb8QTQFhTPGOkxGKLODkaDWAj1HFt35AadV
+ v95Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=Lk843SC7TOqo5mBkp1OQusOCkrq2jT0KUhiTG8om6Yw=;
- b=jVkGsnSgsrOKUeUqzYo2ncUiWfpw6hd0yxBXTexOO+WLVO+KWLsr6C1JKN38X+vg+d
- 8eSX5NjignzmHdY9a7VagedLoVH/Nj4a+NjB+O7PeNq1P5sHsXfab5ElFvR9+tA/3y2+
- KLUAc5T6BPdW74Cv1nWyjXuwotKiG3EPvNuPFq5n5jSO5LCFwFUpfqBhOf0ya6zCFL4s
- R050ZyR8O7m20mPbMfCYc80ugl729+y1HnwbkZyW7z0aIVqQ3+FskPKtQO6AjuI+Q3VD
- DO8ohyJol774MOwIcPxEQiXsSL7ewmueynpYsN/T0+dnd4uWpVOW3n+K4XPyv6Iltct0
- iMwQ==
-X-Gm-Message-State: APjAAAUqapr778/JU+483kv1z9PuwduogjYY1GnYn4nDPeecHA2iiCb4
- M5MC3JyXDetiIsGCC1pa6yOXFQ==
-X-Google-Smtp-Source: APXvYqxzD0zFYeKDa5ySn+i6OyH78G4M5e8C9hxVn+2I8CeCbVPnwyNpqHqgmrnIMoMUf4264ssvUg==
-X-Received: by 2002:a62:4ec4:: with SMTP id
- c187mr32002836pfb.113.1574652046711; 
- Sun, 24 Nov 2019 19:20:46 -0800 (PST)
+ bh=OaG7pN211SUucprk2tkdLebSNhBp4FvOqjHK97YTjvQ=;
+ b=ndIW6qVN1dLagrWnhgm42QgCyr74jXJRITq1cEbi6FmtIQYeehtQspFMNi9int5xuY
+ Q+ikaOzuEWhBsjsIGOEAEOA1oxclmzZFiBB0OYjQDcCksYOozNXMCTzPiI805g4a/j62
+ kMqBdzOafXTf8qSsG7dAYfkKahzM2oBcRCmQTh8udZjN42IWcHhORzKJr055lcjMKF+c
+ ygrd9bCYvEAJa4/67DiaZp1BbQ3bf1S4WkFCdDTD7FSzGois9vaJLU7zrGtPEuhgq4ds
+ M4kbvpSCCr8qOaYpT21V5JIPJKTznnmuULTdaVjKb41coVFwoPybYH3kEZRUz8ZgDQ2l
+ cGgQ==
+X-Gm-Message-State: APjAAAUOfKtTQ4cuYPFDedZUFJGJjdvqcdW/NIuWidt5cFH5V8mGREjA
+ +Il3NgcsABNcesBPNc+pVEGx7A==
+X-Google-Smtp-Source: APXvYqzdTQ9BZVciCbIRa76bSU5bDV1AokC62JhjArMYvs0G/XW+a66aoxpzvKvDS3E+Ct8AxaZJ+A==
+X-Received: by 2002:a62:7847:: with SMTP id t68mr32723379pfc.140.1574652451872; 
+ Sun, 24 Nov 2019 19:27:31 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id b26sm5817837pfo.158.2019.11.24.19.20.44
+ by smtp.gmail.com with ESMTPSA id t8sm5770706pjr.25.2019.11.24.19.27.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 24 Nov 2019 19:20:45 -0800 (PST)
-Subject: Re: [Very RFC 21/46] powernv/eeh: Rework finding an existing edev in
- probe_pdev()
+ Sun, 24 Nov 2019 19:27:31 -0800 (PST)
+Subject: Re: [Very RFC 22/46] powernv/eeh: Allocate eeh_dev's when needed
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-22-oohall@gmail.com>
+ <20191120012859.23300-23-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +138,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <27e9f3a4-2b44-19f2-70c3-3aadb53ee622@ozlabs.ru>
-Date: Mon, 25 Nov 2019 14:20:42 +1100
+Message-ID: <f150f51d-e2da-f77a-5e8b-b735801d12da@ozlabs.ru>
+Date: Mon, 25 Nov 2019 14:27:28 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-22-oohall@gmail.com>
+In-Reply-To: <20191120012859.23300-23-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -168,95 +166,74 @@ Sender: "Linuxppc-dev"
 
 
 On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> Use the pnv_eeh_find_edev() helper to look up the eeh_dev for a device
-> rather than doing it via the pci_dn.
+> Have the PowerNV EEH backend allocate the eeh_dev if needed rather than using
+> the one attached to the pci_dn. 
 
-This is not what the patch does. I struggle to see what is that thing
-really.
+So that pci_dn attached one is leaked then?
 
 
+> This gets us most of the way towards decoupling
+> pci_dn from the PowerNV EEH code.
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 > ---
->  arch/powerpc/platforms/powernv/eeh-powernv.c | 44 ++++++++++++++------
->  1 file changed, 31 insertions(+), 13 deletions(-)
+> We should probably be free()ing the eeh_dev somewhere. The pci_dev release
+> function is the right place for it.
+> ---
+>  arch/powerpc/platforms/powernv/eeh-powernv.c | 22 ++++++++++++++++----
+>  1 file changed, 18 insertions(+), 4 deletions(-)
 > 
 > diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> index 6ba74836a9f8..1cd80b399995 100644
+> index 1cd80b399995..7aba18e08996 100644
 > --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
 > +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> @@ -374,20 +374,40 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
+> @@ -366,10 +366,9 @@ static int pnv_eeh_write_config(struct eeh_dev *edev,
+>   */
+>  static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
+>  {
+> -	struct pci_dn *pdn = pci_get_pdn(pdev);
+> -	struct pci_controller *hose = pdn->phb;
+> -	struct pnv_phb *phb = hose->private_data;
+> -	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
+> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+> +	struct pci_controller *hose = phb->hose;
+> +	struct eeh_dev *edev;
+>  	uint32_t pcie_flags;
 >  	int ret;
 >  	int config_addr = (pdev->bus->number << 8) | (pdev->devfn);
->  
-> +	pci_dbg(pdev, "%s: probing\n", __func__);
-> +
->  	/*
-> -	 * When probing the root bridge, which doesn't have any
-> -	 * subordinate PCI devices. We don't have OF node for
-> -	 * the root bridge. So it's not reasonable to continue
-> -	 * the probing.
-> +	 * EEH keeps the eeh_dev alive over a recovery pass even when the
-> +	 * corresponding pci_dev has been torn down. In that case we need
-> +	 * to find the existing eeh_dev and re-bind the two.
->  	 */
-> -	if (!edev || edev->pe)
-> -		return NULL;
-> +	edev = pnv_eeh_find_edev(phb, config_addr);
-
-
-What was @edev before this line?
-
-
-> +	if (edev) {
-> +		eeh_edev_dbg(edev, "Found existing edev!\n");
-> +
-> +		/*
-> +		 * XXX: eeh_remove_device() clears pdev so we shouldn't hit this
-> +		 * normally. I've found that screwing around with the pci probe
-> +		 * path can result in eeh_probe_pdev() being called twice. This
-> +		 * is harmless at the moment, but it's pretty strange so emit a
-> +		 * warning to be on the safe side.
-> +		 */
-> +		if (WARN_ON(edev->pdev))
-> +			eeh_edev_dbg(edev, "%s: already bound to a pdev!\n", __func__);
-> +
-> +		edev->pdev = pdev;
-> +
-> +		/* should we be doing something with REMOVED too? */
-> +		edev->mode &= EEH_DEV_DISCONNECTED;
-> +
-> +		/* update the primary bus if we need to */
-> +		// XXX: why do we need to do this? is the pci_bus going away? what cleared the flag?
-
-From just reading this patch alone: if you do not know why we need it,
-then why did you add it here (it is not cut-n-paste)? Thanks,
-
-
-
-> +		if (!(edev->pe->state & EEH_PE_PRI_BUS)) {
-> +			edev->pe->bus = pdev->bus;
-> +			if (edev->pe->bus)
-> +				edev->pe->state |= EEH_PE_PRI_BUS;
-> +		}
->  
-> -	/* already configured? */
-> -	if (edev->pdev) {
-> -		pr_debug("%s: found existing edev for %04x:%02x:%02x.%01x\n",
-> -			__func__, hose->global_number, config_addr >> 8,
-> -			PCI_SLOT(config_addr), PCI_FUNC(config_addr));
->  		return edev;
->  	}
->  
-> @@ -395,8 +415,6 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
+> @@ -415,12 +414,27 @@ static struct eeh_dev *pnv_eeh_probe_pdev(struct pci_dev *pdev)
 >  	if ((pdev->class >> 8) == PCI_CLASS_BRIDGE_ISA)
 >  		return NULL;
 >  
-> -	eeh_edev_dbg(edev, "Probing device\n");
-> -
+> +	/* otherwise allocate and initialise a new eeh_dev */
+> +	edev = kzalloc(sizeof(*edev), GFP_KERNEL);
+> +	if (!edev) {
+> +		pr_err("%s: out of memory lol\n", __func__);
+
+"lol"? I am pretty sure we do not have to print anything if alloc failed
+as alloc prints an error anyway. Thanks,
+
+
+> +		return NULL;
+> +	}
+> +
 >  	/* Initialize eeh device */
+> +	edev->bdfn       = config_addr;
+> +	edev->controller = phb->hose;
+> +
 >  	edev->class_code = pdev->class;
 >  	edev->pcix_cap = pci_find_capability(pdev, PCI_CAP_ID_PCIX);
+>  	edev->pcie_cap = pci_find_capability(pdev, PCI_CAP_ID_EXP);
+>  	edev->af_cap   = pci_find_capability(pdev, PCI_CAP_ID_AF);
+>  	edev->aer_cap  = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+> +
+> +	/* TODO: stash the vf_index in here? */
+> +	if (pdev->is_virtfn)
+> +		edev->physfn = pdev->physfn;
+> +
+>  	if ((pdev->class >> 8) == PCI_CLASS_BRIDGE_PCI) {
+>  		edev->mode |= EEH_DEV_BRIDGE;
+>  		if (edev->pcie_cap) {
 > 
 
 -- 
