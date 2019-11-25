@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48D0109499
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 21:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3D91094A0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2019 21:24:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MJFH75TqzDqXs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 07:15:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MJR42cGMzDqZl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 07:24:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqemgate14.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="nLQ5e77g"; 
+ unprotected) header.d=google.com header.i=@google.com header.b="Tvfmu6fN"; 
  dkim-atps=neutral
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MJCF6hXTzDqXs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 07:14:01 +1100 (AEDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5ddc36070000>; Mon, 25 Nov 2019 12:14:00 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Mon, 25 Nov 2019 12:13:56 -0800
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Mon, 25 Nov 2019 12:13:56 -0800
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 25 Nov
- 2019 20:13:55 +0000
-Subject: Re: [PATCH 07/19] mm/gup: introduce pin_user_pages*() and FOLL_PIN
-To: kbuild test robot <lkp@intel.com>
-References: <20191125042011.3002372-8-jhubbard@nvidia.com>
- <201911251639.UWS3hE3Y%lkp@intel.com>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <3989f406-c333-59f8-027a-e3506af59028@nvidia.com>
-Date: Mon, 25 Nov 2019 12:13:55 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47MJPK5PH0zDqZL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 07:22:45 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id f9so6998069plr.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 12:22:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=XE60qzqDDu/QSjZjM0/sTKyHZau5FHQqXZ2FkpPYMQ4=;
+ b=Tvfmu6fNo0X7N2hDoy1ZSL5LaOeluQOOtwT+s5EGjVd6BOcRLYs4xGowdfCdk51tO6
+ AhMuMoJNLGPjiTx3JdosGUR4BFsD3dbMLWPgodWZYMtGvgXPtNVnwQH/VbpyP6sA3GqC
+ skb5v6u+BoD56WLQ2UhJ0lzRcKLqv+uvyd553G3k7VZO8xO3IH81VyVziblEBh8hsyRW
+ fBl0mYMeRIVesm+JZZB8iL8n1sr/ASSIuhO5/p2vPmUdO+g4TO0ypBpnF1vuKC90i+IG
+ RkPNLrs5bZrJRNBh8fjBNm2oH4mnKvMyBLhpLH6pDqhZ34I3eubl5ETq0//t7QdHOgNE
+ xGWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=XE60qzqDDu/QSjZjM0/sTKyHZau5FHQqXZ2FkpPYMQ4=;
+ b=inpZnmnt2klCKc4a6hdHEOGIRSsWkZmdmpmh0wBTnP3BLOcl1gNuOAE2NUi/USSUlb
+ EfEoPq5/ysnGb2s/oG9IzFnNeg5Vc7+IDUnwFx8Kc88V3n51oHDLbMmR7regiHzkvgq3
+ Ay78RG9o/WMcZxD93g7QoHu3woW2yksagZAAnOzeLWPQUqGTR9UP719h0tfH91fOMN/0
+ uBiJWQepKyXI7VyKY+CsWjFEt0JBCLZIFYg8Zi0SowzZr0bh/WCc4APCkAwkZLR59CvV
+ AVXHfxIbJSDgyUQDNqxE4ZAqZ0vlTVrLOHZFL92Uo82RTXR1M/J0yexxVmRlqdfqnkt9
+ TyMA==
+X-Gm-Message-State: APjAAAXWFQJoFlczxA/qncCocNdou+NnYS3wSZe/+3SQeAeFjthfL7PX
+ GNIpqh71NG39k8gf+ruxNyJsbFQ9rpYyLzSo39uCRw==
+X-Google-Smtp-Source: APXvYqwZYrafkMC3y4LZBHlZmLbkinEnmRRGqd2iB0KYH6aoz+ch5bNaghIA+nnyiYgF9bK/LY57MupABQMOzzPNfv0=
+X-Received: by 2002:a17:90a:be05:: with SMTP id
+ a5mr1039257pjs.73.1574712928322; 
+ Mon, 25 Nov 2019 12:15:28 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <201911251639.UWS3hE3Y%lkp@intel.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="windows-1252"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1574712840; bh=xIrvhzi9FQlGBM90SU8S2M4hsd9JLL89vrPzYePQebc=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=nLQ5e77gFGxdvd47gRiRGHQbc1wVG8bwNbuGbyST1Q+jBowT4WflUsZ9otzD54lLB
- J2wcW1AWxZ1vtAVadAvnnzHYEB9/RMQVx2Q02xRhkx6jKeVYJqp1Vzd24M3MZT/KvC
- 2r/IXfhmoHhQNFs1s+Ijlm3sbCcfcCTqQLXfh/u6EJodBjYv13WjZ+5uA/qpRqF5KJ
- cgfhkSAYwIIVs+guU8WDjo4g7p8fk0VqKWKusesTvojs5xnlpb4TJcK/V2onbK8LWW
- ksqnqfXGTA8sAX8XklRUC+OhMkFBYvdHQY7BxmxtkVVkFbYIpBRqVJEp1i5QjV+FwU
- IkbF7UmcnHQ6g==
+References: <20191014025101.18567-1-natechancellor@gmail.com>
+ <20191119045712.39633-1-natechancellor@gmail.com>
+In-Reply-To: <20191119045712.39633-1-natechancellor@gmail.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Mon, 25 Nov 2019 12:15:17 -0800
+Message-ID: <CAKwvOd=3Ok8A8V30fccK5UzWFZ7zwG_zvGQV44S2BK4o2akbgw@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] LLVM/Clang fixes for a few defconfigs
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,69 +74,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Dave Chinner <david@fromorbit.com>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Alex Williamson <alex.williamson@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-rdma@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, Christoph Hellwig <hch@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Magnus Karlsson <magnus.karlsson@intel.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
- linux-media@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-block@vger.kernel.org,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, bpf@vger.kernel.org,
- Vlastimil Babka <vbabka@suse.cz>, Jens Axboe <axboe@kernel.dk>,
- kbuild-all@lists.01.org, netdev@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/25/19 12:44 AM, kbuild test robot wrote:
-> Hi John,
-> 
-> Thank you for the patch! Yet something to improve:
-> 
-> [auto build test ERROR on rdma/for-next]
-> [cannot apply to v5.4 next-20191122]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-> 
-> url:    https://github.com/0day-ci/linux/commits/John-Hubbard/pin_user_pages-reduced-risk-series-for-Linux-5-5/20191125-125637
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma.git for-next
-> config: arm-randconfig-a001-20191125 (attached as .config)
-> compiler: arm-linux-gnueabi-gcc (GCC) 7.4.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         GCC_VERSION=7.4.0 make.cross ARCH=arm 
-> 
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->    mm/gup.o: In function `pin_user_pages_remote':
->>> mm/gup.c:2528: undefined reference to `get_user_pages_remote'
-> 
-> vim +2528 mm/gup.c
+Hi Michael,
+Do you have feedback for Nathan? Rebasing these patches is becoming a
+nuisance for our CI, and we would like to keep building PPC w/ Clang.
+
+On Mon, Nov 18, 2019 at 8:57 PM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
+>
+> Hi all,
+>
+> This series includes a set of fixes for LLVM/Clang when building
+> a few defconfigs (powernv, ppc44x, and pseries are the ones that our
+> CI configuration tests [1]). The first patch fixes pseries_defconfig,
+> which has never worked in mainline. The second and third patches fixes
+> issues with all of these configs due to internal changes to LLVM, which
+> point out issues with the kernel.
+>
+> These have been broken since July/August, it would be nice to get these
+> reviewed and applied. Please let me know what I can do to get these
+> applied soon so we can stop applying them out of tree.
+>
+> [1]: https://github.com/ClangBuiltLinux/continuous-integration
+>
+> Previous versions:
+>
+> v3: https://lore.kernel.org/lkml/20190911182049.77853-1-natechancellor@gmail.com/
+>
+> v4: https://lore.kernel.org/lkml/20191014025101.18567-1-natechancellor@gmail.com/
+>
+> Cheers,
+> Nathan
+>
+>
 
 
-This, and the other (sh) report, is due to !CONFIG_MMU lacking a get_user_pages_remote(), 
-but pin_user_pages_remote() needs it for a (temporary) implementation. I'll post the fix, 
-in v2.
-
-
-thanks,
 -- 
-John Hubbard
-NVIDIA
+Thanks,
+~Nick Desaulniers
