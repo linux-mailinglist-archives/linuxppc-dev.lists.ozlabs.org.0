@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235521098E5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 06:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 372A91098E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 06:40:09 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MXkH41TDzDqSD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 16:38:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MXmQ5MKJzDqMF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 16:40:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="cFbS7Vhy"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="rNKROW1e"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MXNN0xSZzDqc3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 16:22:44 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id b10so8373599pgd.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 21:22:44 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47MXNQ5vWJzDqfV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 16:22:46 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id z4so8554821pfn.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 21:22:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ipeVQjXaasu7Gw62UCM6TXL1mCVprbwKX5A93z2JntE=;
- b=cFbS7Vhy59C62qRHkoZdXhVjig1cLunV0Z2JevkyQU2mGPXJt/D3LRe32oDWsj1hrA
- uowub6aWp5dK/yOBCrXYP2rPcT9KJPmTf4+vaJvb4DG5g3BjKF4jIbzgrTpkchrM3MLb
- IPOOeSxK6dWBJK5lZFQZbnhJXVtAfxiB70MxplyD5uY7Bv7IBC6VJEjUtDdMklfhGCR8
- Qwq+6dTK4K3GZ/xika6dWhokL0UAgQiP4ITyVEoBiO0EXgvcJqTKOqHjLnyAnpA+Ua/x
- mDmfLih6L8SMaXIaPVahxV6ULLLqtvrQJUhjsKDx9IcJNQ+piduzy4Msk8oRsELFV8rA
- 0wUA==
+ bh=Qq980Dg23z1tM9wzkmlvaj65OZbnhvEi8J9D42yWmOk=;
+ b=rNKROW1emnMEGAg9jit8aXrCY4LJ3g+Iqwz3FSyT+N1VGvbfxjkf02gOthh5tjFgrJ
+ v/oHTdobcOV5tVSQM2lybDGDknbMm9WOJemNzh/MKHVlr/yhWfmJhQ1BKfpGgUl/M5tq
+ bCSvVAswqlqKKrjgWxlyOApmCBhYLiCj3MzApJzgoua+1C6d/GvLaUjyrl+zDlLZzpip
+ Due69Ji9P58m2T5H4uxirn0YLokMnlhZFsYu7pvV5/R6E1i0BWitrl4UMhIGIPXTUp6W
+ 7rAPLqmrUc7xUkrsBzgdEx66w6gWlreC5RNYHIu36PeSkapWVmIL6jU6ccVvjxT8LXjS
+ +h5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ipeVQjXaasu7Gw62UCM6TXL1mCVprbwKX5A93z2JntE=;
- b=eTy3SDoq3t6JWpobV5ohPfW78x48m1OE7z40KHzgnFLRVu3Fthowbbn7IW18YRFbuH
- o2mtfLJJvEqLa+AYZN/bpSikmvpPv5Gk7k3MTDVc9SBmoXevB2w9jjXNEw52GFexgcvc
- Ye+vLbk2gKmyKs8CooBx1q3jtEhWRCrKXVCIkOweMDGNFDHqr9nJCTDdDzumm4CyoTfy
- 59lvo75svMuDaFyYUQc2CgLly1+96WS0hCL+4aJPTEqQib65XVABRXrWf/5WukiKNJs3
- 0I4YpP6QhJxzZ4XgvzDsoGj41Eo5tlcNBAdxy5LoOlAdZZ1+wkD5xBNXq1JMdPVrflqx
- i0uA==
-X-Gm-Message-State: APjAAAUYqWDWL8Zfr40FPMyQwlzqgANB6JjPFzpFLPpQ6jW0EM3HTVcn
- a3E7F5UqQIX9mdTbDIghrLPjNYTY
-X-Google-Smtp-Source: APXvYqwOBaBfF/tAbVFqzwPCUD1Ff5YyzyzSN14j2LQhDAh1dDT+9c+stFkdbFcjLO7eh4cQCeNGrw==
-X-Received: by 2002:a63:e0a:: with SMTP id d10mr23923803pgl.124.1574745761719; 
- Mon, 25 Nov 2019 21:22:41 -0800 (PST)
+ bh=Qq980Dg23z1tM9wzkmlvaj65OZbnhvEi8J9D42yWmOk=;
+ b=kwfBQpf/GI0gRaWzkV2j2hVfl9cGRgXJV1ytlbB7QtL0fyH6pd0A3gL4ITkyJ5ohNR
+ 0oOA6UgQdMeaBRbW9RGqsxN7fBKFZWa9mVkxcwbsFEDQI3yh7PaK2P6vIXsqWlyl2sRk
+ aBfDbfWkQgRdooR4GEmpG6cwAXoWNp74PATwFcBl83l/PKOgzpaXR6L0IdmvbpTm1LyI
+ 4hQP2jUu4Ij1nK9Uz5oDIItUIp2rQJQRCfIEwfqfvTcHVXuR5KoYr6zOHpNaGJG7T6s8
+ Teea87s9UgB8ysa7i5JTaj4LYIhe72sIRQMCY/J/9Bz6HH9VK5twxygJ1+LU+AuIcDja
+ RX+w==
+X-Gm-Message-State: APjAAAWuUfe/F9OTpmDexRIaalh6+NFALpLXEDQ2x4EwyfUuUDH8lz+D
+ uXKpuEU+1QQKRL8uofIUZdeJ57RR
+X-Google-Smtp-Source: APXvYqzJuFZr/j6lQPcELlke3RLJElNewMWAq7WMyjB70l6yGe/1moavs73YwxQ8zgxAyeLy/oYsiQ==
+X-Received: by 2002:aa7:868c:: with SMTP id d12mr39682427pfo.189.1574745763905; 
+ Mon, 25 Nov 2019 21:22:43 -0800 (PST)
 Received: from sol.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id t27sm10657920pfq.169.2019.11.25.21.22.39
+ by smtp.gmail.com with ESMTPSA id t27sm10657920pfq.169.2019.11.25.21.22.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2019 21:22:41 -0800 (PST)
+ Mon, 25 Nov 2019 21:22:43 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 07/18] powerpc sstep: Add support for prefixed floating-point
- load/stores
-Date: Tue, 26 Nov 2019 16:21:30 +1100
-Message-Id: <20191126052141.28009-8-jniethe5@gmail.com>
+Subject: [PATCH 08/18] powerpc sstep: Add support for prefixed VSX load/stores
+Date: Tue, 26 Nov 2019 16:21:31 +1100
+Message-Id: <20191126052141.28009-9-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191126052141.28009-1-jniethe5@gmail.com>
 References: <20191126052141.28009-1-jniethe5@gmail.com>
@@ -84,41 +83,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds emulation support for the follow prefixed floating-point
-load/stores:
-  * Prefixed Load Floating-Point Single (plfs)
-  * Prefixed Load Floating-Point Double (plfd)
-  * Prefixed Store Floating-Point Single (pstfs)
-  * Prefixed Store Floating-Point Double (pstfd)
+This adds emulation support for the following prefixed VSX load/stores:
+  * Prefixed Load VSX Scalar Doubleword (plxsd)
+  * Prefixed Load VSX Scalar Single-Precision (plxssp)
+  * Prefixed Load VSX Vector [0|1]  (plxv, plxv0, plxv1)
+  * Prefixed Store VSX Scalar Doubleword (pstxsd)
+  * Prefixed Store VSX Scalar Single-Precision (pstxssp)
+  * Prefixed Store VSX Vector [0|1] (pstxv, pstxv0, pstxv1)
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/lib/sstep.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/powerpc/lib/sstep.c | 42 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
 diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 4f5ad1f602d8..9113b9a21ae9 100644
+index 9113b9a21ae9..9ae8d177b67f 100644
 --- a/arch/powerpc/lib/sstep.c
 +++ b/arch/powerpc/lib/sstep.c
-@@ -2755,6 +2755,18 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			case 44:	/* psth */
- 				op->type = MKOP(STORE, PREFIXED, 2);
+@@ -2713,6 +2713,48 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			case 41:	/* plwa */
+ 				op->type = MKOP(LOAD, PREFIXED | SIGNEXT, 4);
  				break;
-+			case 48:        /* plfs */
-+				op->type = MKOP(LOAD_FP, PREFIXED | FPCONV, 4);
++			case 42:        /* plxsd */
++				op->reg = rd + 32;
++				op->type = MKOP(LOAD_VSX, PREFIXED, 8);
++				op->element_size = 8;
++				op->vsx_flags = VSX_CHECK_VEC;
 +				break;
-+			case 50:        /* plfd */
-+				op->type = MKOP(LOAD_FP, PREFIXED, 8);
++			case 43:	/* plxssp */
++				op->reg = rd + 32;
++				op->type = MKOP(LOAD_VSX, PREFIXED, 4);
++				op->element_size = 8;
++				op->vsx_flags = VSX_FPCONV | VSX_CHECK_VEC;
 +				break;
-+			case 52:        /* pstfs */
-+				op->type = MKOP(STORE_FP, PREFIXED | FPCONV, 4);
++			case 46:	/* pstxsd */
++				op->reg = rd + 32;
++				op->type = MKOP(STORE_VSX, PREFIXED, 8);
++				op->element_size = 8;
++				op->vsx_flags = VSX_CHECK_VEC;
 +				break;
-+			case 54:        /* pstfd */
-+				op->type = MKOP(STORE_FP, PREFIXED, 8);
++			case 47:	/* pstxssp */
++				op->reg = rd + 32;
++				op->type = MKOP(STORE_VSX, PREFIXED, 4);
++				op->element_size = 8;
++				op->vsx_flags = VSX_FPCONV | VSX_CHECK_VEC;
 +				break;
- 			}
- 			break;
- 		case 3: /* Type 11 Modified Register-to-Register */
++			case 51:	/* plxv1 */
++				op->reg += 32;
++
++				/* fallthru */
++			case 50:	/* plxv0 */
++				op->type = MKOP(LOAD_VSX, PREFIXED, 16);
++				op->element_size = 16;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
++			case 55:	/* pstxv1 */
++				op->reg = rd + 32;
++
++				/* fallthru */
++			case 54:	/* pstxv0 */
++				op->type = MKOP(STORE_VSX, PREFIXED, 16);
++				op->element_size = 16;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
+ 			case 56:        /* plq */
+ 				op->type = MKOP(LOAD, PREFIXED, 16);
+ 				break;
 -- 
 2.20.1
 
