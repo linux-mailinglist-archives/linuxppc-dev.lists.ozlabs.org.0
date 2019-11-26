@@ -2,60 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E23510A60D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 22:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D08FC10A626
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 22:46:45 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Mxy565zXzDqmb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 08:34:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MyCk6dN5zDqdd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 08:46:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=luc.vanoostenryck@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eDw8REuP"; 
+ dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Mxcv0lX6zDqlR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 08:19:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=davemloft.net
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47Mxct6M0rz8t0Q
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 08:19:58 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47Mxct5JgFz9sRQ; Wed, 27 Nov 2019 08:19:58 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=davemloft.net
- (client-ip=2620:137:e000::1:9; helo=shards.monkeyblade.net;
- envelope-from=davem@davemloft.net; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=davemloft.net
-Received: from shards.monkeyblade.net (shards.monkeyblade.net
- [IPv6:2620:137:e000::1:9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47Mxct2q7Tz9sRH
- for <linuxppc-dev@ozlabs.org>; Wed, 27 Nov 2019 08:19:55 +1100 (AEDT)
-Received: from localhost (c-73-35-209-67.hsd1.wa.comcast.net [73.35.209.67])
- (using TLSv1 with cipher AES256-SHA (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: davem-davemloft)
- by shards.monkeyblade.net (Postfix) with ESMTPSA id D9EF914CED4B3;
- Tue, 26 Nov 2019 13:19:45 -0800 (PST)
-Date: Tue, 26 Nov 2019 13:19:45 -0800 (PST)
-Message-Id: <20191126.131945.1705488455872187863.davem@davemloft.net>
-To: tlfalcon@linux.ibm.com
-Subject: Re: [PATCH net v2 0/4] ibmvnic: Harden device commands and queries
-From: David Miller <davem@davemloft.net>
-In-Reply-To: <1574723576-27553-1-git-send-email-tlfalcon@linux.ibm.com>
-References: <20191125112359.7a468352@cakuba.hsd1.ca.comcast.net>
- <1574723576-27553-1-git-send-email-tlfalcon@linux.ibm.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12
- (shards.monkeyblade.net [149.20.54.216]);
- Tue, 26 Nov 2019 13:19:46 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47My9Y6Wg8zDqlJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 08:44:49 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id u18so4866697wmc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 13:44:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=3TCvikHiROllDrcma+CvPeIZvgOAa0DLqL9aOfiW+v0=;
+ b=eDw8REuPwOPqWU2sJ0BdoRVPWKUzTj0YbRhRQicf7aRtg+PGgtxw8sQrt+ehKPldab
+ 5Dwy2fhc9u1vkpmctrriVLMl8oM14lEykl7FUpFaq7z8DZyPiTAQ15aQY/539wKteIsr
+ PisqlDWBEUmELtSDpWswAvRPvWzb8PxcFGyB2YSldaUc/KJNZJ5xSrFXBExtlQZTtnbi
+ yVA2wl3bFw8rtMJHYIgKpbAr6viP0/SLeXLVyjJVpba+oUcFvxhU8axe3RmrwZPRAH1E
+ jeSYxPlmbTqb3sH23BN2jiUb/FCQyeEIIuvJJsNlYeo/G+mKIf/K+yryI7MdWHcPfB6w
+ 86kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=3TCvikHiROllDrcma+CvPeIZvgOAa0DLqL9aOfiW+v0=;
+ b=tPfPP4VCsyBxzSxcPtBYwlGlZksF/A+0j0SKgdamIOPSxi0jIIVeftZN8uiGPR8kpA
+ /j1Sx1oqHxuePvzYhuZVVTTdyKidoZR9jkGwAYWfatad03Y6M2J+laM/l+CNIQHwSCMH
+ I4IAHL6Ihj3qMTnUN357+/udEANIkssca1sxgEga6kZn3kcwFTBrXTJEKZNlO3MOYSEl
+ iFCa2AcpFVknd4tmTvUXjqdr/FySU6cBt8ZzHKXm+bQFYPPRCQYFOu1sM9Kupgih7pYF
+ 8ziaeuO3z8iqypdvcgmIcbTwpzhRdy5CiJppm1UY6jjlJhN5EkNTX7gmyWLMpJItEMGF
+ eAgg==
+X-Gm-Message-State: APjAAAXrrtymKRNvvhkhq9InayRAejeKqgwTVccYOkTPLOi3v1K2HEa5
+ FKWAr6HBHpGlGizznTe+Uds=
+X-Google-Smtp-Source: APXvYqzKuSB3cAu0EuiMT+9vrB+n7dd0HVpAtyzd2Elni0TH64QZnLUu2tuPSqhTHT8AOVtai1OAWg==
+X-Received: by 2002:a1c:f20c:: with SMTP id s12mr999955wmc.37.1574804683968;
+ Tue, 26 Nov 2019 13:44:43 -0800 (PST)
+Received: from ltop.local ([2a02:a03f:404e:f500:ac14:4c10:6104:457f])
+ by smtp.gmail.com with ESMTPSA id x10sm16353061wrp.58.2019.11.26.13.44.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Nov 2019 13:44:43 -0800 (PST)
+Date: Tue, 26 Nov 2019 22:44:41 +0100
+From: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+To: Michal Suchanek <msuchanek@suse.de>
+Subject: Re: [PATCH v2 26/35] powerpc/64: system call: Fix sparse warning
+ about missing declaration
+Message-ID: <20191126214441.4wziibsax2mvpl3p@ltop.local>
+References: <cover.1574798487.git.msuchanek@suse.de>
+ <d0a6b5235c4e1544f4c253724a5b8f2106cc43bd.1574798487.git.msuchanek@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d0a6b5235c4e1544f4c253724a5b8f2106cc43bd.1574798487.git.msuchanek@suse.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,33 +80,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jakub.kicinski@netronome.com, julietk@linux.vnet.ibm.com,
- netdev@vger.kernel.org, dnbanerg@us.ibm.com, linuxppc-dev@ozlabs.org,
- brking@linux.vnet.ibm.com
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>, Christian Brauner <christian@brauner.io>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Nicolai Stange <nstange@suse.de>, Diana Craciun <diana.craciun@nxp.com>,
+ Firoz Khan <firoz.khan@linaro.org>, Dmitry Vyukov <dvyukov@google.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Jagadeesh Pagadala <jagdsh.linux@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Allison Randal <allison@lohutok.net>, Daniel Axtens <dja@axtens.net>,
+ Gustavo Romero <gromero@linux.ibm.com>, Mathieu Malaterre <malat@debian.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Brajeswar Ghosh <brajeswar.linux@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Date: Mon, 25 Nov 2019 17:12:52 -0600
-
-> This patch series fixes some shortcomings with the current
-> VNIC device command implementation. The first patch fixes
-> the initialization of driver completion structures used
-> for device commands. Additionally, all waits for device
-> commands are bounded with a timeout in the event that the
-> device does not respond or becomes inoperable. Finally,
-> serialize queries to retain the integrity of device return
-> codes.
+On Tue, Nov 26, 2019 at 09:13:40PM +0100, Michal Suchanek wrote:
+> Sparse warns about missing declarations for these functions:
 > 
-> Changes in v2:
+> +arch/powerpc/kernel/syscall_64.c:108:23: warning: symbol 'syscall_exit_prepare' was not declared. Should it be static?
+> +arch/powerpc/kernel/syscall_64.c:18:6: warning: symbol 'system_call_exception' was not declared. Should it be static?
+> +arch/powerpc/kernel/syscall_64.c:200:23: warning: symbol 'interrupt_exit_user_prepare' was not declared. Should it be static?
+> +arch/powerpc/kernel/syscall_64.c:288:23: warning: symbol 'interrupt_exit_kernel_prepare' was not declared. Should it be static?
 > 
->  - included header comment for ibmvnic_wait_for_completion
->  - removed open-coded loop in patch 3/4, suggested by Jakub
->  - ibmvnic_wait_for_completion accepts timeout value in milliseconds
->    instead of jiffies
->  - timeout calculations cleaned up and completed before wait loop
->  - included missing mutex_destroy calls, suggested by Jakub
->  - included comment before mutex declaration
+> Add declaration for them.
 
-Series applied, thanks.
+I'm fine with this patch but, just FYI, lately people seems to
+prefer to add '__visible' to the function definition instead
+of creating such header files.
+
+Best regards,
+-- Luc Van Oostenryck
