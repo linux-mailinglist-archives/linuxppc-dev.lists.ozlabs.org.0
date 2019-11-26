@@ -1,75 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EF0109AA7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 10:03:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MdH368phzDqYb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 20:03:27 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F255109D04
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 12:31:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MhYB1xywzDqZ3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 22:30:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo6-p01-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5301::5;
+ helo=mo6-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="SWnUau61"; 
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="ISxc3Vqe"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MdDn21hnzDqB4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 20:01:27 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47MdDf6sVfz9tycG;
- Tue, 26 Nov 2019 10:01:22 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=SWnUau61; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id QxTVwnd9ys7n; Tue, 26 Nov 2019 10:01:22 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47MdDf5pKzz9tycC;
- Tue, 26 Nov 2019 10:01:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1574758882; bh=U9V+RbsOlne0cDu4/Cs4Z/0IfVOfKQcJt4tUL3ne7Ao=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=SWnUau61xntSe6pletc1YrYHkkny/RR6BAJeY++1dikgh8DEpCAKFsozUypRHeMKt
- fQLOIrTW/PHNIGVQgEDT2gPF/x5D04qbOft8iuQzLtW4wjibrAZx8t0dlIQmff5Ehk
- pkUZYWIjK7WQEO04FO0PSx0bgQKnaKTtn6vQzfDc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A9FEB8B7E6;
- Tue, 26 Nov 2019 10:01:23 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id IBBgv0SfDZqq; Tue, 26 Nov 2019 10:01:23 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 22A0F8B7E5;
- Tue, 26 Nov 2019 10:01:23 +0100 (CET)
-Subject: Re: [PATCH v3 15/15] powerpc/32s: Activate CONFIG_VMAP_STACK
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com, dja@axtens.net
-References: <cover.1568106758.git.christophe.leroy@c-s.fr>
- <a99bdfb64e287b16b8cd3f7ec1abfdfb50c7cc64.1568106758.git.christophe.leroy@c-s.fr>
- <875zjgcpyx.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <f3074852-ef83-5426-9928-f0201f704b49@c-s.fr>
-Date: Tue, 26 Nov 2019 10:01:22 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5301::5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47MhTG3hJBzDqNN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 22:27:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574767641;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=XMLW3ZOSKguCOTt53NHCRHDrLj4NFW5PozSyNNqJ0vs=;
+ b=ISxc3VqelFXRdpV5RV1vK9hqPD+P7jZeMBPb+ujq5LPUW3Zez77LOjTWz3LrQ9Ag0M
+ 4tHmnL4zFulSe6LHwcAg/J0dJRaUn/gx53K8JgJWSUERfjVOfhdaq/1+ZSTXjUfqRFas
+ ysivGtIwrGv/mB9Sdd+YQqvMgQznUjDtMt2SddqJwMQHm5mxdYUfN2lXtsDv5WVZ+x2f
+ mlDjqhiV1MsH5R8IosGfUmm+X2YQ7S9R0G0GcgjTgkio+8izc0YsbhBxzVVqIGDVqoUE
+ g474OANnCPMo7CyVvnaI7ToWRBwE4aTCzODwJ1IO/H9XExiq5dZmL1EwHzKtBFMYhDkB
+ lZzA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSIh0PhkEvMsMre1rbZ/xz+jsR"
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:14bb:b5af:17db:dc1]
+ by smtp.strato.de (RZmta 45.0.2 AUTH) with ESMTPSA id x0678cvAQBQc8Vv
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
+ 521 ECDH bits, eq. 15360 bits RSA))
+ (Client did not present a certificate);
+ Tue, 26 Nov 2019 12:26:38 +0100 (CET)
+Subject: Re: Bug 205201 - Booting halts if Dawicontrol DC-2976 UW SCSI board
+ installed, unless RAM size limited to 3500M
+To: Christoph Hellwig <hch@lst.de>
+References: <F1EBB706-73DF-430E-9020-C214EC8ED5DA@xenosoft.de>
+ <20191121072943.GA24024@lst.de>
+ <dbde2252-035e-6183-7897-43348e60647e@xenosoft.de>
+ <6eec5c42-019c-a988-fc2a-cb804194683d@xenosoft.de>
+ <d0252d29-7a03-20e1-ccd7-e12d906e4bdf@arm.com>
+ <b3217742-2c0b-8447-c9ac-608b93265363@xenosoft.de>
+ <20191121180226.GA3852@lst.de>
+ <2fde79cf-875f-94e6-4a1b-f73ebb2e2c32@xenosoft.de>
+ <20191125073923.GA30168@lst.de>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <4681f5fe-c095-15f5-9221-4b55e940bafc@xenosoft.de>
+Date: Tue, 26 Nov 2019 12:26:38 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <875zjgcpyx.fsf@mpe.ellerman.id.au>
+In-Reply-To: <20191125073923.GA30168@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,47 +77,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, darren@stevens-zone.net, rtd2@xtra.co.nz,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
+ iommu@lists.linux-foundation.org, Rob Herring <robh+dt@kernel.org>,
+ paulus@samba.org, mad skateman <madskateman@gmail.com>,
+ "contact@a-eon.com" <contact@a-eon.com>, Robin Murphy <robin.murphy@arm.com>,
+ nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 19/11/2019 à 07:58, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> A few changes to retrieve DAR and DSISR from struct regs
->> instead of retrieving them directly, as they may have
->> changed due to a TLB miss.
+On 25 November 2019 at 08:39 am, Christoph Hellwig wrote:
+> On Sat, Nov 23, 2019 at 12:42:27PM +0100, Christian Zigotzky wrote:
+>> Hello Christoph,
 >>
->> Also modifies hash_page() and friends to work with virtual
->> data addresses instead of physical ones.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/kernel/entry_32.S         |  4 +++
->>   arch/powerpc/kernel/head_32.S          | 19 +++++++++++---
->>   arch/powerpc/kernel/head_32.h          |  4 ++-
->>   arch/powerpc/mm/book3s32/hash_low.S    | 46 +++++++++++++++++++++-------------
->>   arch/powerpc/mm/book3s32/mmu.c         |  9 +++++--
->>   arch/powerpc/platforms/Kconfig.cputype |  2 ++
->>   6 files changed, 61 insertions(+), 23 deletions(-)
-> 
-> This is faulting with qemu mac99 model:
-> 
->    Key type id_resolver registered
->    Key type id_legacy registered
->    BUG: Unable to handle kernel data access on read at 0x2f0db684
->    Faulting instruction address: 0x00004130
->    Oops: Kernel access of bad area, sig: 11 [#1]
->    BE PAGE_SIZE=4K MMU=Hash PowerMac
->    Modules linked in:
->    CPU: 0 PID: 65 Comm: modprobe Not tainted 5.4.0-rc2-gcc49+ #63
->    NIP:  00004130 LR: 000008c8 CTR: b7eb86e0
+>> Please find attached the dmesg of your Git kernel.
+> Thanks.  It looks like on your platform the swiotlb buffer isn't
+> actually addressable based on the bus dma mask limit, which is rather
+> interesting.  swiotlb_init uses memblock_alloc_low to allocate the
+> buffer, and I'll need some help from Mike and the powerpc maintainers
+> to figure out how that select where to allocate the buffer from, and
+> how we can move it to a lower address.  My gut feeling would be to try
+> to do what arm64 does and define a new ARCH_LOW_ADDRESS_LIMIT, preferably
+> without needing too much arch specific magic.
+>
+> As a quick hack can you try this patch on top of the tree from Friday?
+>
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index f491690d54c6..e3f95c362922 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -344,7 +344,7 @@ static inline int memblock_get_region_node(const struct memblock_region *r)
+>   #define MEMBLOCK_LOW_LIMIT 0
+>   
+>   #ifndef ARCH_LOW_ADDRESS_LIMIT
+> -#define ARCH_LOW_ADDRESS_LIMIT  0xffffffffUL
+> +#define ARCH_LOW_ADDRESS_LIMIT  0x0fffffffUL
+>   #endif
+>   
+>   phys_addr_t memblock_phys_alloc_range(phys_addr_t size, phys_addr_t align,
+>
+Hello Christoph,
 
-Problem found, that's in load_up_fpu(), have to apply tovirt() to the 
-address read from SPRN_SPRG_THREAD. Same problem in load_up_altivec().
-I'll fix that in v4 today.
+The PCI TV card works with your patch! I was able to patch your Git 
+kernel with the patch above.
 
-Christophe
+I haven't found any error messages in the dmesg yet.
+
+Thank you!
+
+Cheers,
+Christian
