@@ -2,74 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2129110A471
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 20:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C3610A555
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 21:18:30 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Mv4r1FQdzDqW4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 06:25:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MwFt5tlRzDqZn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 07:18:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Mv2l5MKBzDqW4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 06:23:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 47Mv2k4WvFz8t2S
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 06:23:42 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 47Mv2k4Cg5z9sPj; Wed, 27 Nov 2019 06:23:42 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.194;
- helo=mail-il1-f194.google.com; envelope-from=robherring2@gmail.com;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-il1-f194.google.com (mail-il1-f194.google.com
- [209.85.166.194])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 47Mv2k0y2Lz9sPZ
- for <linuxppc-dev@ozlabs.org>; Wed, 27 Nov 2019 06:23:41 +1100 (AEDT)
-Received: by mail-il1-f194.google.com with SMTP id g12so9258874ild.2
- for <linuxppc-dev@ozlabs.org>; Tue, 26 Nov 2019 11:23:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=5HQvc+ebgeUpvGjHDXPpgN7hbbmKJO3hU3E3sjzKKD4=;
- b=NnSvx3449OrkrMNnfVZcQ+KjvqQ5e57yBHEngLZdMQrxPLBs7cfTPBgYPK3r7fts/n
- VN3cMJrP1DSDNI/UbVeMC0+3wptmmX7GXWj59O5aLt7lTGWkjeuz7SdAjKIgw/EEZ8J3
- hQF2Q3O/EbjlkT+3Jg/RU8pxYoAeqtF+VwojXbTHzwiynJ1N0USZfQScS6vDxeNb/TAQ
- VBvV2W5HotkLNCjkGVRNr6IsPuYEFe5SuMdrQZ2TvrtBQGEQ2Y5iyToHBU5Z3lfMujP0
- xRgVQKk5zhnZy/lOlF51qbs+UpJXOSGd17Vpv8c+yUTIcuiHnOv/Qeqohs3jB3N1IBn7
- 2SjA==
-X-Gm-Message-State: APjAAAVg3mXLWp2M/DEK28H3BrHl6INvBZwnmUub8jxWHdbctUvCKJ6J
- V9EVkd8iU/eKU53ZOxlIFQ==
-X-Google-Smtp-Source: APXvYqxLi2BPHhib7tuA5K/dBdXW6V5zjrGNxJcK95S9arb/wV5mxmiHCV0Wk/se2VVXlbX81tL0FA==
-X-Received: by 2002:a92:6406:: with SMTP id y6mr41484371ilb.70.1574796219273; 
- Tue, 26 Nov 2019 11:23:39 -0800 (PST)
-Received: from localhost ([64.188.179.253])
- by smtp.gmail.com with ESMTPSA id q9sm2846876iod.79.2019.11.26.11.23.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Nov 2019 11:23:38 -0800 (PST)
-Date: Tue, 26 Nov 2019 12:23:37 -0700
-From: Rob Herring <robh@kernel.org>
-To: Erhard Furtner <erhard_f@mailbox.org>
-Subject: Re: [PATCH v2] of: unittest: fix memory leak in
- attach_node_and_children
-Message-ID: <20191126192337.GA13881@bogus>
-References: <20191126014804.28267-1-erhard_f@mailbox.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Mw8r23rmzDqWn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 07:14:03 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 39C4BAAD0;
+ Tue, 26 Nov 2019 20:13:59 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/35] exception cleanup, syscall in C and !COMPAT
+Date: Tue, 26 Nov 2019 21:13:14 +0100
+Message-Id: <cover.1574798487.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191126014804.28267-1-erhard_f@mailbox.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,35 +43,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Erhard Furtner <erhard_f@mailbox.org>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, robh+dt@kernel.org,
- Tyrel Datwyler <tyreld@linux.ibm.com>, frowand.list@gmail.com
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>, Christian Brauner <christian@brauner.io>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Nicolai Stange <nstange@suse.de>, Diana Craciun <diana.craciun@nxp.com>,
+ Firoz Khan <firoz.khan@linaro.org>, Allison Randal <allison@lohutok.net>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michal Suchanek <msuchanek@suse.de>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Jagadeesh Pagadala <jagdsh.linux@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>,
+ Gustavo Romero <gromero@linux.ibm.com>, Mathieu Malaterre <malat@debian.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Brajeswar Ghosh <brajeswar.linux@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 26 Nov 2019 02:48:04 +0100, Erhard Furtner wrote:
-> In attach_node_and_children memory is allocated for full_name via
-> kasprintf. If the condition of the 1st if is not met the function
-> returns early without freeing the memory. Add a kfree() to fix that.
-> 
-> This has been detected with kmemleak:
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=205327
-> 
-> It looks like the leak was introduced by this commit:
-> Fixes: 5babefb7f7ab ("of: unittest: allow base devicetree to have symbol metadata")
-> 
-> Signed-off-by: Erhard Furtner <erhard_f@mailbox.org>
-> Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
-> Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-> ---
-> Changes in v2:
->   - Make the commit message more clearer.
-> 
->  drivers/of/unittest.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
+Hello,
 
-Applied, thanks.
+This is merge of https://patchwork.ozlabs.org/cover/1162376/ (except two
+last experimental patches) and
+https://patchwork.ozlabs.org/patch/1162079/ rebased on top of master.
 
-Rob
+There was minor conflict in Makefile in the latter series.
+
+Refreshed the patchset to fix build error on ppc32 and ppc64e.
+
+Thanks
+
+Michal
+
+Michal Suchanek (10):
+  powerpc/64: system call: Fix sparse warning about missing declaration
+  powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
+  powerpc: move common register copy functions from signal_32.c to
+    signal.c
+  powerpc/perf: remove current_is_64bit()
+  powerpc/perf: consolidate read_user_stack_32
+  powerpc/perf: consolidate valid_user_sp
+  powerpc/64: make buildable without CONFIG_COMPAT
+  powerpc/64: Make COMPAT user-selectable disabled on littleendian by
+    default.
+  powerpc/perf: split callchain.c by bitness
+  MAINTAINERS: perf: Add pattern that matches ppc perf to the perf
+    entry.
+
+Nicholas Piggin (25):
+  powerpc/64s/exception: Introduce INT_DEFINE parameter block for code
+    generation
+  powerpc/64s/exception: Add GEN_COMMON macro that uses INT_DEFINE
+    parameters
+  powerpc/64s/exception: Add GEN_KVM macro that uses INT_DEFINE
+    parameters
+  powerpc/64s/exception: Expand EXC_COMMON and EXC_COMMON_ASYNC macros
+  powerpc/64s/exception: Move all interrupt handlers to new style code
+    gen macros
+  powerpc/64s/exception: Remove old INT_ENTRY macro
+  powerpc/64s/exception: Remove old INT_COMMON macro
+  powerpc/64s/exception: Remove old INT_KVM_HANDLER
+  powerpc/64s/exception: Add ISIDE option
+  powerpc/64s/exception: move real->virt switch into the common handler
+  powerpc/64s/exception: move soft-mask test to common code
+  powerpc/64s/exception: move KVM test to common code
+  powerpc/64s/exception: remove confusing IEARLY option
+  powerpc/64s/exception: remove the SPR saving patch code macros
+  powerpc/64s/exception: trim unused arguments from KVMTEST macro
+  powerpc/64s/exception: hdecrementer avoid touching the stack
+  powerpc/64s/exception: re-inline some handlers
+  powerpc/64s/exception: Clean up SRR specifiers
+  powerpc/64s/exception: add more comments for interrupt handlers
+  powerpc/64s/exception: only test KVM in SRR interrupts when PR KVM is
+    supported
+  powerpc/64s/exception: soft nmi interrupt should not use
+    ret_from_except
+  powerpc/64: system call remove non-volatile GPR save optimisation
+  powerpc/64: system call implement the bulk of the logic in C
+  powerpc/64s: interrupt return in C
+  powerpc/64s/exception: remove lite interrupt return
+
+ MAINTAINERS                                   |    2 +
+ arch/powerpc/Kconfig                          |    5 +-
+ arch/powerpc/include/asm/asm-prototypes.h     |   17 +-
+ .../powerpc/include/asm/book3s/64/kup-radix.h |   24 +-
+ arch/powerpc/include/asm/cputime.h            |   24 +
+ arch/powerpc/include/asm/exception-64s.h      |    4 -
+ arch/powerpc/include/asm/hw_irq.h             |    4 +
+ arch/powerpc/include/asm/ptrace.h             |    3 +
+ arch/powerpc/include/asm/signal.h             |    3 +
+ arch/powerpc/include/asm/switch_to.h          |   11 +
+ arch/powerpc/include/asm/thread_info.h        |    4 +-
+ arch/powerpc/include/asm/time.h               |    4 +-
+ arch/powerpc/include/asm/unistd.h             |    1 +
+ arch/powerpc/kernel/Makefile                  |    9 +-
+ arch/powerpc/kernel/entry_64.S                |  880 ++------
+ arch/powerpc/kernel/exceptions-64e.S          |  255 ++-
+ arch/powerpc/kernel/exceptions-64s.S          | 1937 ++++++++++++-----
+ arch/powerpc/kernel/process.c                 |   89 +-
+ arch/powerpc/kernel/signal.c                  |  144 +-
+ arch/powerpc/kernel/signal.h                  |    2 -
+ arch/powerpc/kernel/signal_32.c               |  140 --
+ arch/powerpc/kernel/syscall_64.c              |  349 +++
+ arch/powerpc/kernel/syscalls/syscall.tbl      |   22 +-
+ arch/powerpc/kernel/systbl.S                  |    9 +-
+ arch/powerpc/kernel/time.c                    |    9 -
+ arch/powerpc/kernel/vdso.c                    |    3 +-
+ arch/powerpc/kernel/vector.S                  |    2 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S       |   11 -
+ arch/powerpc/kvm/book3s_segment.S             |    7 -
+ arch/powerpc/perf/Makefile                    |    5 +-
+ arch/powerpc/perf/callchain.c                 |  387 +---
+ arch/powerpc/perf/callchain.h                 |   20 +
+ arch/powerpc/perf/callchain_32.c              |  197 ++
+ arch/powerpc/perf/callchain_64.c              |  178 ++
+ fs/read_write.c                               |    3 +-
+ 35 files changed, 2799 insertions(+), 1965 deletions(-)
+ create mode 100644 arch/powerpc/kernel/syscall_64.c
+ create mode 100644 arch/powerpc/perf/callchain.h
+ create mode 100644 arch/powerpc/perf/callchain_32.c
+ create mode 100644 arch/powerpc/perf/callchain_64.c
+
+-- 
+2.23.0
+
