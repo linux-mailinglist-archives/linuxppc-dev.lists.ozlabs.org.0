@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123B71099E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 09:03:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29BE3109A0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 09:15:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Mbxv2SjPzDqgB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 19:03:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47McCT3r3NzDqKw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 19:15:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,59 +16,61 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="eiNhmX/3"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="MPkfXtz+"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MbvQ58T0zDqCw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 19:01:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Mc9T3ZlnzDq75
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 19:13:33 +1100 (AEDT)
 Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47MbvF4RBrz9txbj;
- Tue, 26 Nov 2019 09:01:13 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 47Mc9N6dNWz9tybD;
+ Tue, 26 Nov 2019 09:13:28 +0100 (CET)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=eiNhmX/3; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=MPkfXtz+; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id KmC-aZ693UsB; Tue, 26 Nov 2019 09:01:13 +0100 (CET)
+ with ESMTP id CKxTymBTLFVX; Tue, 26 Nov 2019 09:13:28 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47MbvF2TGnz9txbg;
- Tue, 26 Nov 2019 09:01:13 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47Mc9N5GFMz9tybB;
+ Tue, 26 Nov 2019 09:13:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1574755273; bh=Yl4+kZ1p5Cyb6s3+0jQVbC3UJyF9FtAmAp/UXPPoPNo=;
+ t=1574756008; bh=lP+6ufsqX2zuMN9m3nNVIMGpzbr9PeIQSzO4jLnYSZc=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=eiNhmX/3p1JSMZxMYYU53b3Uvj/rLBVVA1ZgG4CV7ArQenXRfe5Mjcmpel0LxhRo9
- PBCT/b4XU75Inbcs/D4NpzEKL6FDQFfbtBjKScGeZtPHcfq3AC+OCTURoNKjyVVviS
- BZNDVGsocwry4drv/vSThNE9hEkl9aWVnaJNzShI=
+ b=MPkfXtz+Y69nLJpN/cUXRuJf5EPEpua/aPXkACaUsgScQaD5mPUqXrTh/7EZ8kc1A
+ HvU+y05BQTgqEB3uzK9+WcEGoCZRgPnIWv60i5IPxnKhfo4oRxiCA2p0Uep0TiBDKT
+ IqSPWW+Nk3jMlPC4KY3P5vcLVYaiymS4X9Ede7k4=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4CBC28B7D8;
- Tue, 26 Nov 2019 09:01:14 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B02688B7D8;
+ Tue, 26 Nov 2019 09:13:29 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VvPLu6ECgQep; Tue, 26 Nov 2019 09:01:14 +0100 (CET)
-Received: from po16098vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EAFB88B771;
- Tue, 26 Nov 2019 09:01:13 +0100 (CET)
-Subject: Re: [PATCH] powerpc/8xx: Fix permanently mapped IMMR region.
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <ad9d45119a48a92bf122781d0c79c9407baa12d7.1566554026.git.christophe.leroy@c-s.fr>
- <87sgmlcu1x.fsf@mpe.ellerman.id.au>
+ with ESMTP id 0-ZfisYBtVh2; Tue, 26 Nov 2019 09:13:29 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C4D198B771;
+ Tue, 26 Nov 2019 09:13:28 +0100 (CET)
+Subject: =?UTF-8?B?UmU6IOetlOWkjTog562U5aSNOiBsb29wIG5lc3RpbmcgaW4gYWxpZ25t?=
+ =?UTF-8?Q?ent_exception_and_machine_check?=
+To: "Wangshaobo (bobo)" <bobo.shaobowang@huawei.com>
+References: <D44062DC474617438D5181ADFE2B2C21016DE42A@dggemi529-mbs.china.huawei.com>
+ <8215aeb3-57dd-223a-29d3-45ca22b0543c@c-s.fr>
+ <D44062DC474617438D5181ADFE2B2C21016E9EAA@dggemi529-mbs.china.huawei.com>
+ <ef93fa2f-d98f-2e94-322e-0ae095626e75@c-s.fr>
+ <D44062DC474617438D5181ADFE2B2C21016ED78D@dggemi529-mbs.china.huawei.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <d22ac38c-0b03-fbc0-88d1-899e356fa487@c-s.fr>
-Date: Tue, 26 Nov 2019 08:01:13 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+Message-ID: <a77f2266-b654-087c-7af8-78c745a52b37@c-s.fr>
+Date: Tue, 26 Nov 2019 09:13:28 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-In-Reply-To: <87sgmlcu1x.fsf@mpe.ellerman.id.au>
+In-Reply-To: <D44062DC474617438D5181ADFE2B2C21016ED78D@dggemi529-mbs.china.huawei.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,63 +82,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "chengjian \(D\)" <cj.chengjian@huawei.com>, Xiexiuqi <xiexiuqi@huawei.com>,
+ "alistair@popple.id.au" <alistair@popple.id.au>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "oss@buserror.net" <oss@buserror.net>, "paulus@samba.org" <paulus@samba.org>,
+ "Libin \(Huawei\)" <huawei.libin@huawei.com>, "agust@denx.de" <agust@denx.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
 
-
-On 11/18/2019 11:17 AM, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> When not using large TLBs, the IMMR region is still
->> mapped as a whole block in the FIXMAP area.
->>
->> Do not remove pages mapped in the FIXMAP region when
->> initialising paging.
->>
->> Properly report that the IMMR region is block-mapped even
->> when not using large TLBs.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/mm/mem.c        |  8 --------
->>   arch/powerpc/mm/nohash/8xx.c | 13 +++++++------
->>   2 files changed, 7 insertions(+), 14 deletions(-)
+Le 01/11/2019 à 02:57, Wangshaobo (bobo) a écrit :
+> Hi, Christophe
 > 
-> This blows up pmac32_defconfig + qemu mac99 for me with:
-> 
->    NET: Registered protocol family 1
->    RPC: Registered named UNIX socket transport module.
->    RPC: Registered udp transport module.
->    RPC: Registered tcp transport module.
->    RPC: Registered tcp NFSv4.1 backchannel transport module.
->    PCI: CLS 0 bytes, default 32
->    Trying to unpack rootfs image as initramfs...
->    BUG: Unable to handle kernel data access on write at 0xfffdf000
+> 	I am sorry that we are in some troubles for some unpredictable problems when we replay and haven't given you a quick reply.
+> 	
+> 	I also want to ask does the phenomeon(use memcpy_toio when copy ioremap_address) only occurs in powerpc ? does any other
+> arch also has the same problem ? we are in persuit of asking why this phenomenon happened. Our linux kernel version is 4.4.
 
-I tested it with pmac32_defconfig and qemu mac99 and don't get the problem:
+It's not a problem ... it's a feature.
 
-NET: Registered protocol family 1
-RPC: Registered named UNIX socket transport module.
-RPC: Registered udp transport module.
-RPC: Registered tcp transport module.
-RPC: Registered tcp NFSv4.1 backchannel transport module.
-PCI: CLS 0 bytes, default 32
-Initialise system trusted keyrings
-workingset: timestamp_bits=30 max_order=15 bucket_order=0
-NFS: Registering the id_resolver key type
-Key type id_resolver registered
-...
-
-Looks like I don't get that 'Trying to unpack rootfs image as 
-initramfs...', do you change anything to pmac32_defconfig ?
-
-Anyway, when rebasing this patch on next branch, only the 
-arch/powerpc/mm/nohash/8xx.c change remains. The other part is already 
-applied through another patch.
-
-So I believe the remaining part is safe to apply
+I have no idea whether the same kind of issue can happen on other 
+arches, sorry.
 
 Christophe
 
+> 	
+> 	thanks very much.
+> 
+> -----邮件原件-----
+> 发件人: Christophe Leroy [mailto:christophe.leroy@c-s.fr]
+> 发送时间: 2019年10月31日 19:13
+> 收件人: Wangshaobo (bobo) <bobo.shaobowang@huawei.com>
+> 抄送: chengjian (D) <cj.chengjian@huawei.com>; Libin (Huawei) <huawei.libin@huawei.com>; Xiexiuqi <xiexiuqi@huawei.com>; zhangyi (F) <yi.zhang@huawei.com>
+> 主题: Re: 答复: loop nesting in alignment exception and machine check
+> 
+> Hi,
+> 
+> Did you try ? Does it work ?
+> 
+> Christophe
+> 
+> Le 28/10/2019 à 06:57, Wangshaobo (bobo) a écrit :
+>> Hi,Christophe
+>>
+>> Thank you for your quick reply. I will try to use memcpy_toio() instead of memcpy().
+>>
+>> -----邮件原件-----
+>> 发件人: Christophe Leroy [mailto:christophe.leroy@c-s.fr]
+>> 发送时间: 2019年10月26日 19:20
+>> 收件人: Wangshaobo (bobo) <bobo.shaobowang@huawei.com>
+>> 抄送: linux-arch@vger.kernel.org; alistair@popple.id.au; chengjian (D)
+>> <cj.chengjian@huawei.com>; Xiexiuqi <xiexiuqi@huawei.com>;
+>> linux-kernel@vger.kernel.org; oss@buserror.net; paulus@samba.org;
+>> Libin (Huawei) <huawei.libin@huawei.com>; agust@denx.de;
+>> linuxppc-dev@lists.ozlabs.org
+>> 主题: Re: loop nesting in alignment exception and machine check
+>>
+>> Hi,
+>>
+>> Le 26/10/2019 à 09:23, Wangshaobo (bobo) a écrit :
+>>> Hi,
+>>>
+>>> I encountered a problem about a loop nesting occurred in
+>>> manufacturing the alignment exception in machine check, trigger background is :
+>>>
+>>> problem:
+>>>
+>>> machine checkout or critical interrupt ->…->kbox_write[for recording
+>>> last words] -> memcpy(irremap_addr, src,size):_GLOBAL(memcpy)…
+>>>
+>>> when we enter memcpy,a command ‘dcbz r11,r6’ will cause a alignment
+>>> exception, in this situation,r11 loads the ioremap address,which
+>>> leads to the alignment exception,
+>>
+>> You can't use memcpy() on something else than memory.
+>>
+>> For an ioremapped area, you have to use memcpy_toio()
+>>
+>> Christophe
+>>
+>>>
+>>> then the command can not be process successfully,as we still in
+>>> machine check.at the end ,it triggers a new irq machine check in irq
+>>> handler function,a loop nesting begins.
+>>>
+>>> analysis:
+>>>
+>>> We have analysed a lot,but it still can not come to a reasonable
+>>> description,in common,the alignment triggered in machine check
+>>> context can still be collected into the Kbox
+>>>
+>>> after alignment exception be handled by handler function, but how
+>>> does the machine checkout can be triggered in the handler fucntion
+>>> for any causes? We print relevant registers
+>>>
+>>> as follow when first enter machine check and alignment exception
+>>> handler
+>>> function:
+>>>
+>>>             MSR:0x2      MSR:0x0
+>>>
+>>>             SRR1:0x2      SRR1:0x21002
+>>>
+>>>             But the manual says SRR1 should be set to MSR(0x2),why
+>>> that happened ?
+>>>
+>>>             Then a branch in handler function copy the SRR1 to
+>>> MSR,this enble MSR[ME] and MSR[CE],system collapses.
+>>>
+>>> Conclusion:
+>>>
+>>>             1)  why the alignment exception can not be handled in
+>>> machine check ?
+>>>
+>>>             2)  besides memcpy,any other function can cause the
+>>> alignment exception ?
+>>>
+>>> We still recurrent it, the line as follows:
+>>>
+>>>             Cpu dead lock->watch log->trigger
+>>> fiq->kbox_write->memcpy->alignment exception->print last words.
+>>>
+>>>             but for those problems as below,what the kbox printed is empty.
+>>>
+>>> ------------------kbox restart:[   10.147594]----------------
+>>>
+>>> kbox verify fs magic fail
+>>>
+>>> kbox mem mabye destroyed, format it
+>>>
+>>> kbox: load OK
+>>>
+>>> lock-task: major[249] minor[0]
+>>>
+>>> -----start show_destroyed_kbox_mem_head----
+>>>
+>>> 00000000: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000010: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000020: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000030: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000040: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000050: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000060: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000070: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000080: 00000000 00000000 00000000 00000000  ................
+>>>
+>>> 00000090: 00000000 00000000 00000000 00000000  ................
+>>>
