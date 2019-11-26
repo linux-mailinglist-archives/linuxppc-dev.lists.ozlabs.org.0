@@ -2,67 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71931098AB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 06:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A401098AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 06:28:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MXSS00hfzDqBs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 16:26:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MXVV09mKzDqcQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 16:28:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536;
- helo=mail-pg1-x536.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="inamUJ8I"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="stmr0UvD"; 
  dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
- [IPv6:2607:f8b0:4864:20::536])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MXN97545zDqBs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 16:22:30 +1100 (AEDT)
-Received: by mail-pg1-x536.google.com with SMTP id z188so8373154pgb.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 21:22:30 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47MXNB34yTzDqM0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 16:22:31 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id i5so96536pgj.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 21:22:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=lkZ6ivCZqkKAehepgllab1ym8y1J5g593ht8YeOUxgA=;
- b=inamUJ8IF21aY5kjykIjaZDpMzJeA/qd1eh1ymocoqjpSwcmpjUbLMcy9z+8O1xXTf
- U/jck0lmVK8Be4D60F5akgpOiANcnI5ZK7znydzG2dNY/kcVcsNW7QTt64TKxyM6VvEt
- NyqSq6faEeHSchGR+UzPUkt6BFREzyPZLsx+cVQBd3+//KIar0wsVpnEQ5HUc416HctO
- bQw6Pjxyqh6Y7Zx8A9kjFEVM1tUPaPBi90qg7wL6QPitdPnTN+a0wcOp29ngWMBLOyZq
- Kpr7yyJjpiC8zL7kJ/m+4xKypO4/ijLJdfA7JHvjnetQHHhbjO8Se7ahm2cervw/CSGy
- rgbg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=9vaEnIFydpWGUt2gCvjobhLUYq+2RwtIThBZhNcFat8=;
+ b=stmr0UvDQdGo3mfQW62N9i6S5bTC5jUUP+GxEPUSfVzE6szhM6fgZnEjvPUARpzjaY
+ MxGerHMselfhvKIGYFYPdGFYVEpC1PNabRuXKIMKLC6+sQhZUW9hdf3Ec3U7URsGdsVP
+ hLPGviwlYhsGJtsLG7n6p+D6imhPIPzE88I72+Dc/DEpcdAgwYnxeXbPkm34yT4WkGe3
+ 464iFpRAr+pblxK+sdESXt4Kg0dBlNIzWKo8bnW6szbPylixgdg17FkmSBenUJo3bD34
+ Dm8T/5UNI5lv2sWc8ThUOCTSahSrTXVHK8Ho29rrS+0QkjtK5+tnxzRPwiZhcOHThL3z
+ 2aOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=lkZ6ivCZqkKAehepgllab1ym8y1J5g593ht8YeOUxgA=;
- b=aDOqcjGKHL6wT9dRTOcCcXhyGVeYRi0JP64PUxn+5MxdArAS13lLtRfbrMISXFubWA
- n6DOM/5QyzuIrCwvvw98c2ZS3Qt05PLMuemHauvR2tlyPo09UO5vFun3eDkAiWcr61bv
- uG2kU/SFLQ3jf9A4MrOOFvPX/PjwXEYjmUh7Ae8knv1LqDoh8S17b6hy5QQ1jLpGbCem
- lmWNhsL3qaacZ59FGVKgy7ZCB2KkFMOuaa9rWE0Nk4hCHW+eVMCwdedGBekQtCE0Cp5+
- jbmjpt5lVw7EOaqmqRBAd1DoxODqGMRl+Yu4YIR+Olif8I3Qy6CoWOF0zhPFt5GXv6of
- B0nQ==
-X-Gm-Message-State: APjAAAW1fg+wXY4U7xMoIFkv9SZebHOXma0mmzmCDNoqe+B5n/8Em3yz
- L6LbHeIxZH2m0Jv006BI0cpIuTRt
-X-Google-Smtp-Source: APXvYqwAI0QsffSnbLJVl+GoEctZLkcyQVjUzVi6gfOrffl0VeExYmueIV1GyIXS+09BIWXhn3NBQA==
-X-Received: by 2002:a63:fb15:: with SMTP id o21mr36232597pgh.193.1574745746766; 
- Mon, 25 Nov 2019 21:22:26 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=9vaEnIFydpWGUt2gCvjobhLUYq+2RwtIThBZhNcFat8=;
+ b=qYKOhy5jjzzyWxqgHq3TWsOo2cRMwV0mHqAXSjjf2veJJXjx+PFI+vZ7yHDfzZ/axD
+ 1wVTrMzrSr6cUANaT34auZ1D2mF9zz3ahpOnZMDf4r1dVOI9js0wAf+4LQ0TGDXRBHMV
+ gqBLR9H+pStAij0dOdKsgIPwgiCq9gI/VuWZG713YWQWqRQMyaKqFX0xWQYEyG1RjcGJ
+ V3F1iaBCzHL1/gsAjNYJqdDCeNDc7SlVpxlIFsIG6y5lAr8WTUKQcJ/3w726GEMZKxDQ
+ syAd9fvZGl9N4F+zVREGPjR2PIqSd+4itghei4OJXfZeVJ2UYhul8NrP5qK2NbpjHvXf
+ 5myA==
+X-Gm-Message-State: APjAAAXgJFFvjK+yG7SSdVfq4qYbPgqQU4e7EMLLHg6GO/2mal05/OuJ
+ /dWB6FmSEHJuhOuPfOcckTRif/a4
+X-Google-Smtp-Source: APXvYqx6wikg6lzmTtvR/sOIOsuWvZVZqSe2sw5SNxU09g7PhDfyDfLOxUOkCVYAt9CPETvHYLpRIA==
+X-Received: by 2002:a63:4547:: with SMTP id u7mr27438418pgk.423.1574745748663; 
+ Mon, 25 Nov 2019 21:22:28 -0800 (PST)
 Received: from sol.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id t27sm10657920pfq.169.2019.11.25.21.22.24
+ by smtp.gmail.com with ESMTPSA id t27sm10657920pfq.169.2019.11.25.21.22.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2019 21:22:26 -0800 (PST)
+ Mon, 25 Nov 2019 21:22:28 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 00/18] Initial Prefixed Instruction support
-Date: Tue, 26 Nov 2019 16:21:23 +1100
-Message-Id: <20191126052141.28009-1-jniethe5@gmail.com>
+Subject: [PATCH 01/18] powerpc: Enable Prefixed Instructions
+Date: Tue, 26 Nov 2019 16:21:24 +1100
+Message-Id: <20191126052141.28009-2-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191126052141.28009-1-jniethe5@gmail.com>
+References: <20191126052141.28009-1-jniethe5@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,80 +78,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, Jordan Niethe <jniethe5@gmail.com>
+Cc: alistair@popple.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A future revision of the ISA will introduce prefixed instructions. A
-prefixed instruction is composed of a 4-byte prefix followed by a
-4-byte suffix.
+From: Alistair Popple <alistair@popple.id.au>
 
-All prefixes have the major opcode 1. A prefix will never be a valid
-word instruction. A suffix may be an existing word instruction or a new
-instruction.
+Prefix instructions have their own FSCR bit which needs to enabled via
+a CPU feature. The kernel will save the FSCR for problem state but it
+needs to be enabled initially.
 
-The new instruction formats are:
-    * Eight-Byte Load/Store Instructions
-    * Eight-Byte Register-to-Register Instructions
-    * Modified Load/Store Instructions
-    * Modified Register-to-Register Instructions
+Signed-off-by: Alistair Popple <alistair@popple.id.au>
+---
+ arch/powerpc/include/asm/reg.h    |  3 +++
+ arch/powerpc/kernel/dt_cpu_ftrs.c | 23 +++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-This series enables prefixed instructions and extends the instruction
-emulation to support them. Then the places where prefixed instructions
-might need to be emulated are updated.
-
-A future series will add prefixed instruction support to guests running
-in KVM.
-
-Alistair Popple (1):
-  powerpc: Enable Prefixed Instructions
-
-Jordan Niethe (17):
-  powerpc: Add BOUNDARY SRR1 bit for future ISA version
-  powerpc: Add PREFIXED SRR1 bit for future ISA version
-  powerpc: Rename Bit 35 of SRR1 to indicate new purpose
-  powerpc sstep: Prepare to support prefixed instructions
-  powerpc sstep: Add support for prefixed integer load/stores
-  powerpc sstep: Add support for prefixed floating-point load/stores
-  powerpc sstep: Add support for prefixed VSX load/stores
-  powerpc sstep: Add support for prefixed fixed-point arithmetic
-  powerpc: Support prefixed instructions in alignment handler
-  powerpc/traps: Check for prefixed instructions in
-    facility_unavailable_exception()
-  powerpc/xmon: Add initial support for prefixed instructions
-  powerpc/xmon: Dump prefixed instructions
-  powerpc/kprobes: Support kprobes on prefixed instructions
-  powerpc/uprobes: Add support for prefixed instructions
-  powerpc/hw_breakpoints: Initial support for prefixed instructions
-  powerpc: Add prefix support to mce_find_instr_ea_and_pfn()
-  powerpc/fault: Use analyse_instr() to check for store with updates to
-    sp
-
- arch/powerpc/include/asm/kprobes.h    |   5 +-
- arch/powerpc/include/asm/ppc-opcode.h |   3 +
- arch/powerpc/include/asm/reg.h        |   7 +-
- arch/powerpc/include/asm/sstep.h      |   8 +-
- arch/powerpc/include/asm/uaccess.h    |  30 +++++
- arch/powerpc/include/asm/uprobes.h    |  18 ++-
- arch/powerpc/kernel/align.c           |   8 +-
- arch/powerpc/kernel/dt_cpu_ftrs.c     |  23 ++++
- arch/powerpc/kernel/hw_breakpoint.c   |   8 +-
- arch/powerpc/kernel/kprobes.c         |  46 +++++--
- arch/powerpc/kernel/mce_power.c       |   6 +-
- arch/powerpc/kernel/optprobes.c       |  31 +++--
- arch/powerpc/kernel/optprobes_head.S  |   6 +
- arch/powerpc/kernel/traps.c           |  18 ++-
- arch/powerpc/kernel/uprobes.c         |   4 +-
- arch/powerpc/kvm/book3s_hv_nested.c   |   2 +-
- arch/powerpc/kvm/book3s_hv_rm_mmu.c   |   2 +-
- arch/powerpc/kvm/emulate_loadstore.c  |   2 +-
- arch/powerpc/lib/sstep.c              | 180 +++++++++++++++++++++++++-
- arch/powerpc/lib/test_emulate_step.c  |  30 ++---
- arch/powerpc/mm/fault.c               |  39 ++----
- arch/powerpc/xmon/xmon.c              | 132 +++++++++++++++----
- 22 files changed, 490 insertions(+), 118 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 0b7900f194c8..521ecbe35507 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -397,6 +397,7 @@
+ #define SPRN_RWMR	0x375	/* Region-Weighting Mode Register */
+ 
+ /* HFSCR and FSCR bit numbers are the same */
++#define FSCR_PREFIX_LG	13	/* Enable Prefix Instructions */
+ #define FSCR_SCV_LG	12	/* Enable System Call Vectored */
+ #define FSCR_MSGP_LG	10	/* Enable MSGP */
+ #define FSCR_TAR_LG	8	/* Enable Target Address Register */
+@@ -408,11 +409,13 @@
+ #define FSCR_VECVSX_LG	1	/* Enable VMX/VSX  */
+ #define FSCR_FP_LG	0	/* Enable Floating Point */
+ #define SPRN_FSCR	0x099	/* Facility Status & Control Register */
++#define   FSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
+ #define   FSCR_SCV	__MASK(FSCR_SCV_LG)
+ #define   FSCR_TAR	__MASK(FSCR_TAR_LG)
+ #define   FSCR_EBB	__MASK(FSCR_EBB_LG)
+ #define   FSCR_DSCR	__MASK(FSCR_DSCR_LG)
+ #define SPRN_HFSCR	0xbe	/* HV=1 Facility Status & Control Register */
++#define   HFSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
+ #define   HFSCR_MSGP	__MASK(FSCR_MSGP_LG)
+ #define   HFSCR_TAR	__MASK(FSCR_TAR_LG)
+ #define   HFSCR_EBB	__MASK(FSCR_EBB_LG)
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 180b3a5d1001..f5ca7dd8fbaf 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -553,6 +553,28 @@ static int __init feat_enable_large_ci(struct dt_cpu_feature *f)
+ 	return 1;
+ }
+ 
++static int __init feat_enable_prefix(struct dt_cpu_feature *f)
++{
++	u64 fscr, hfscr;
++
++	if (f->usable_privilege & USABLE_HV) {
++		hfscr = mfspr(SPRN_HFSCR);
++		hfscr |= HFSCR_PREFIX;
++		mtspr(SPRN_HFSCR, hfscr);
++	}
++
++	if (f->usable_privilege & USABLE_OS) {
++		fscr = mfspr(SPRN_FSCR);
++		fscr |= FSCR_PREFIX;
++		mtspr(SPRN_FSCR, fscr);
++
++		if (f->usable_privilege & USABLE_PR)
++			current->thread.fscr |= FSCR_PREFIX;
++	}
++
++	return 1;
++}
++
+ struct dt_cpu_feature_match {
+ 	const char *name;
+ 	int (*enable)(struct dt_cpu_feature *f);
+@@ -626,6 +648,7 @@ static struct dt_cpu_feature_match __initdata
+ 	{"vector-binary128", feat_enable, 0},
+ 	{"vector-binary16", feat_enable, 0},
+ 	{"wait-v3", feat_enable, 0},
++	{"prefix-instructions", feat_enable_prefix, 0},
+ };
+ 
+ static bool __initdata using_dt_cpu_ftrs;
 -- 
 2.20.1
 
