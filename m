@@ -2,39 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563C410A5FB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 22:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0221710A607
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 22:32:41 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MxpG02ryzDqld
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 08:28:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MxvT74NFzDqkx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 08:32:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.65; helo=mail-io1-f65.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-io1-f65.google.com (mail-io1-f65.google.com
+ [209.85.166.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Mw9p63rzzDqXw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 07:14:54 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id CD258B2B7;
- Tue, 26 Nov 2019 20:14:51 +0000 (UTC)
-From: Michal Suchanek <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 35/35] MAINTAINERS: perf: Add pattern that matches ppc perf
- to the perf entry.
-Date: Tue, 26 Nov 2019 21:13:49 +0100
-Message-Id: <162e074f40d974d49bad6001ea88a2033f029b2d.1574798487.git.msuchanek@suse.de>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1574798487.git.msuchanek@suse.de>
-References: <cover.1574798487.git.msuchanek@suse.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Mwcm06DxzDqPN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 07:34:47 +1100 (AEDT)
+Received: by mail-io1-f65.google.com with SMTP id p12so14821000iog.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 12:34:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=eCiyINJIqZQ9+c/j9O3wV96E5XzkXxVGgIEzTJ6ccpU=;
+ b=cPkNI+weP8gWC6JmSbYZigV7en69JYu70cprwJqdzzpoQ+uEjs5Pz0B5KPh2HUxsLY
+ 8X5kXzyaY1S409KyZwIDzEimuZcb288JQY7nX5tnQpbTVEhfLINSCLwOAYagzb0uoZ99
+ LOTJWB6TC9g7kTCR1pUe97bLy0AjWGvGHAw5ZRuBWc9xhvHZuCoxYv5pVRxeznR2o0Zo
+ mJgnO3ZzUMo9AmQLh0Z2VPPiJSyy+I47CmOUaWfKNEGe9DOJ4CVHo3XuT1AQLMA8AxWT
+ bcnoDkpgZ/9RLrWwQJUwvhRToWG8GXNJw/KHNkNrrvlkDGUWCK42yqM0SytZ3yHoZJqK
+ AGCA==
+X-Gm-Message-State: APjAAAUudNiTTXyz4AEmekK/h4gaV4R0ORSFmcveYQHiufrZ4udG/vzO
+ mGs9FjOAuZg8iap8tXSTkw==
+X-Google-Smtp-Source: APXvYqyNLRbXmRMw2om5THIIvUDL/2IP2aEwIaLwJGNOkUm6TYCHlgggxCi3KYF+cIwCDLGz2FM3sA==
+X-Received: by 2002:a6b:f317:: with SMTP id m23mr17361728ioh.303.1574800484514; 
+ Tue, 26 Nov 2019 12:34:44 -0800 (PST)
+Received: from localhost ([64.188.179.253])
+ by smtp.gmail.com with ESMTPSA id k22sm2923474iot.34.2019.11.26.12.34.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Nov 2019 12:34:43 -0800 (PST)
+Date: Tue, 26 Nov 2019 13:34:42 -0700
+From: Rob Herring <robh@kernel.org>
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: Re: [PATCH v3] libfdt: define INT32_MAX and UINT32_MAX in libfdt_env.h
+Message-ID: <20191126203442.GA20537@bogus>
+References: <20191113071202.11287-1-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191113071202.11287-1-yamada.masahiro@socionext.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,54 +65,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, David Howells <dhowells@redhat.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, Christian Brauner <christian@brauner.io>,
- Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
- Nicolai Stange <nstange@suse.de>, Diana Craciun <diana.craciun@nxp.com>,
- Firoz Khan <firoz.khan@linaro.org>, Allison Randal <allison@lohutok.net>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Michal Suchanek <msuchanek@suse.de>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Jagadeesh Pagadala <jagdsh.linux@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
- Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>,
- Gustavo Romero <gromero@linux.ibm.com>, Mathieu Malaterre <malat@debian.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
- Brajeswar Ghosh <brajeswar.linux@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Frank Rowand <frowand.list@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+On Wed, Nov 13, 2019 at 04:12:02PM +0900, Masahiro Yamada wrote:
+> The DTC v1.5.1 added references to (U)INT32_MAX.
+> 
+> This is no problem for user-space programs since <stdint.h> defines
+> (U)INT32_MAX along with (u)int32_t.
+> 
+> For the kernel space, libfdt_env.h needs to be adjusted before we
+> pull in the changes.
+> 
+> In the kernel, we usually use s/u32 instead of (u)int32_t for the
+> fixed-width types.
+> 
+> Accordingly, we already have S/U32_MAX for their max values.
+> So, we should not add (U)INT32_MAX to <linux/limits.h> any more.
+> 
+> Instead, add them to the in-kernel libfdt_env.h to compile the
+> latest libfdt.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+> 
+> My initial plan was to change this in a series of 3 patches
+> since it is clean, and reduces the code.
+> 
+> [1/3] https://lore.kernel.org/patchwork/patch/1147095/
+> [2/3] https://lore.kernel.org/patchwork/patch/1147096/
+> [3/3] https://lore.kernel.org/patchwork/patch/1147097/
+> 
+> 1/3 is stuck in the license bikeshed.
+> 
+> For 2/3, I have not been able to get Ack from Russell.
+> 
+> So, I chose a straight-forward fixup.
+> 
+> 
+> Changes in v3:
+>  - Resend as a single patch
+> 
+>  arch/arm/boot/compressed/libfdt_env.h | 4 +++-
+>  arch/powerpc/boot/libfdt_env.h        | 2 ++
+>  include/linux/libfdt_env.h            | 3 +++
+>  3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 66cc549ac327..853690adb36f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12842,6 +12842,8 @@ F:	arch/*/kernel/*/perf_event*.c
- F:	arch/*/kernel/*/*/perf_event*.c
- F:	arch/*/include/asm/perf_event.h
- F:	arch/*/kernel/perf_callchain.c
-+F:	arch/*/perf/*
-+F:	arch/*/perf/*/*
- F:	arch/*/events/*
- F:	arch/*/events/*/*
- F:	tools/perf/
--- 
-2.23.0
+Applied.
 
+Rob
