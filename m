@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D73E1098FB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 06:52:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D301098FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 06:54:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MY2j5gbMzDqjN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 16:52:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MY4v2tmDzDqgd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 16:54:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="monN4bhp"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="HaA15aob"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MXNg3kMlzDqfK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 16:22:59 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id w7so7556425plz.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 21:22:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47MXNk0rkYzDqc8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 16:23:01 +1100 (AEDT)
+Received: by mail-pj1-x1044.google.com with SMTP id m71so7688137pjb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 21:23:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=+mCOnCj6lbCOAH9O0N2SL9baOvr8E8EBaEhvQGlONNc=;
- b=monN4bhpPlZG3xMF3aoYutUfyNGg3rmLrwSixdwBz2gahrl2vhSxw8gDm+OvEEZdv0
- zRiT0AHcG6KA/NHHPrsVaHx7aveouWD7Bexc755alPBFCP3nqwD2reuUT+vzGb2RSs7K
- EW66gNWVhLfK3F6IaZZqN3XbVHRJvk5FV4eIX2PvRKdOJYQ7V5GwFMDDB9N6ZEmKwQf2
- P4C+r3Cwq0e10w79+wcxM49pRQsaQAXgmXmSLdPE7tQocFu/z5888PC+y6YF5AxWTpVB
- 3tMLRARG04U0NyFfCMBtLxIXKJlWSjFp4uznM6p8qoskYzfrzduhFpdIAWHBISnYAOi2
- 8B5A==
+ bh=7YWiEuagooo0tKSWswStiXInYIzuax8NfizCzsN2DXo=;
+ b=HaA15aobgNVTYoPqkKSWTZ6lLR2im7FsOB+gLhsPvONl6XAYiK1CHF0l3fKpv7DfyD
+ gifL+NJnEyWA/QZ+zDQQrBr66bb4aCRLIL02jvYIp3NvvW9bx0IfAD7Y9YW6rf2EES8S
+ NzEDSLkPqdFy3Jcppqezv4LXTT2/BqwfCRRXiKekGx2CSREzlGVDFU9RQANAPL4mQGbk
+ TBI8H+h9QfYJ0aXzbYXQOq4UTPjwQ4nTzPfV4llvf0RElmuDBqksBR370l+ooe+T7oGE
+ 56SFtbLvaLfbpGreAz7KdfmLWgtbLRQOD8JY5g6ruNqf6WUGdsGW1QKzld5UcZgXFrWI
+ NFsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=+mCOnCj6lbCOAH9O0N2SL9baOvr8E8EBaEhvQGlONNc=;
- b=CfvF+5+nm/Un7Tl4vW5OLuJ76Uok2TvQvEbko4eoSFmkq+R3igLaGHSg456c6rwbnm
- 98IAlRv8tU2OFwYa1WCsnaH0j6JPrWz4iHdhvspqtlO2pKFdMAppQhF/V4ITs0CNs4xc
- AlCpsUPeTZawOaHD+COFAIqLDxj24aG5HVAP1JetEPVLdft7F1XoXQkJHb+8Ybj41n4S
- vo2nIaCNfyY8OnhtunDl7Uy/ENDT8wqpvA7yRWNDaMOM/L8Aqx08u37kNUkmvGuYpoY7
- zqlNHmqkpfzl+lqTKy29i181pN+VxtVaoc3hXFafgRUd+nnXMxny0bIsrU+dfg1+i1ld
- /fHw==
-X-Gm-Message-State: APjAAAU+6Tgw+j9m/9+jPdXFJpl3Bj+p6XOOY5vMSiRkOQJSH1vyC8/Q
- zLQNhui/u/Thub/tBkVIcaVFW/ss
-X-Google-Smtp-Source: APXvYqw4Z2fbTl42KmaAgn86wNvF2R0p2wJOj8GHU50WkzGHl2v30MTgy9tykSTSFYbrRgwkxhPm3w==
-X-Received: by 2002:a17:902:6903:: with SMTP id
- j3mr30707822plk.231.1574745777215; 
- Mon, 25 Nov 2019 21:22:57 -0800 (PST)
+ bh=7YWiEuagooo0tKSWswStiXInYIzuax8NfizCzsN2DXo=;
+ b=LgVKbPwLvIhzaHmCHKTMhK50Vwx7enV36MxUAl392C55GVfzFhyN9Ci20Lc+rXtfvk
+ aKidJZi8Hn6LVVdGumXc/L/sWIVcdhYNko+bK+vZfOARK66m54khJidyqSpszWYxu7GC
+ TUQOT2hl+wTYWTBY7S2a0+yK7mZm4ptw8McIQrCCoLI7ncjYbSeIONnk4H3JQr5T93do
+ l+QUz0rVn0j/4+WRY2UIhBlPDEkXm6c8JgTwpRzWQdZ2tdKsi0Den4MLmV/WnsE/6AqD
+ Zd9t4VwrSFMZZX7gEUP0WoED1Vwthk1gy2HYBf/KGTY83iklGD57JVrqt/GRpR4XV7uR
+ zMWg==
+X-Gm-Message-State: APjAAAUvMWkzOlCRjDcm+V8RCzUcOHFKAuj989rGerQGeNbLdoo+NH0V
+ XUgM8gaSR0SUZ7F78jqYd71Hv0Lr
+X-Google-Smtp-Source: APXvYqxgGdGKn0EmFevgNBGenXXhJshdXBh1BvkNJ+2xT7mPGubLcNXvi/R9Z8STCJX26keJVg48jA==
+X-Received: by 2002:a17:902:ba8c:: with SMTP id
+ k12mr3261494pls.310.1574745779336; 
+ Mon, 25 Nov 2019 21:22:59 -0800 (PST)
 Received: from sol.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id t27sm10657920pfq.169.2019.11.25.21.22.55
+ by smtp.gmail.com with ESMTPSA id t27sm10657920pfq.169.2019.11.25.21.22.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2019 21:22:56 -0800 (PST)
+ Mon, 25 Nov 2019 21:22:58 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 14/18] powerpc/kprobes: Support kprobes on prefixed
- instructions
-Date: Tue, 26 Nov 2019 16:21:37 +1100
-Message-Id: <20191126052141.28009-15-jniethe5@gmail.com>
+Subject: [PATCH 15/18] powerpc/uprobes: Add support for prefixed instructions
+Date: Tue, 26 Nov 2019 16:21:38 +1100
+Message-Id: <20191126052141.28009-16-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191126052141.28009-1-jniethe5@gmail.com>
 References: <20191126052141.28009-1-jniethe5@gmail.com>
@@ -85,275 +84,75 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A prefixed instruction is composed of a word prefix followed by a word
-suffix. It does not make sense to be able to have a kprobe on the suffix
-of a prefixed instruction, so make this impossible.
-
-Kprobes work by replacing an instruction with a trap and saving that
-instruction to be single stepped out of place later. Currently there is
-not enough space allocated to keep a prefixed instruction for single
-stepping. Increase the amount of space allocated for holding the
-instruction copy.
-
-kprobe_post_handler() expects all instructions to be 4 bytes long which
-means that it does not function correctly for prefixed instructions.
-Add checks for prefixed instructions which will use a length of 8 bytes
-instead.
-
-For optprobes we normally patch in loading the instruction we put a
-probe on into r4 before calling emulate_step(). We now make space and
-patch in loading the suffix into r5 as well.
+Uprobes can execute instructions out of line. Increase the size of the
+buffer used  for this so that this works for prefixed instructions. Take
+into account the length of prefixed instructions when fixing up the nip.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/include/asm/kprobes.h   |  5 +--
- arch/powerpc/kernel/kprobes.c        | 46 +++++++++++++++++++++-------
- arch/powerpc/kernel/optprobes.c      | 31 +++++++++++--------
- arch/powerpc/kernel/optprobes_head.S |  6 ++++
- 4 files changed, 62 insertions(+), 26 deletions(-)
+ arch/powerpc/include/asm/uprobes.h | 18 ++++++++++++++----
+ arch/powerpc/kernel/uprobes.c      |  4 ++--
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kprobes.h b/arch/powerpc/include/asm/kprobes.h
-index 66b3f2983b22..1f03a1cacb1e 100644
---- a/arch/powerpc/include/asm/kprobes.h
-+++ b/arch/powerpc/include/asm/kprobes.h
-@@ -38,12 +38,13 @@ extern kprobe_opcode_t optprobe_template_entry[];
- extern kprobe_opcode_t optprobe_template_op_address[];
- extern kprobe_opcode_t optprobe_template_call_handler[];
- extern kprobe_opcode_t optprobe_template_insn[];
-+extern kprobe_opcode_t optprobe_template_sufx[];
- extern kprobe_opcode_t optprobe_template_call_emulate[];
- extern kprobe_opcode_t optprobe_template_ret[];
- extern kprobe_opcode_t optprobe_template_end[];
+diff --git a/arch/powerpc/include/asm/uprobes.h b/arch/powerpc/include/asm/uprobes.h
+index 2bbdf27d09b5..5b5e8a3d2f55 100644
+--- a/arch/powerpc/include/asm/uprobes.h
++++ b/arch/powerpc/include/asm/uprobes.h
+@@ -14,18 +14,28 @@
  
--/* Fixed instruction size for powerpc */
--#define MAX_INSN_SIZE		1
-+/* Prefixed instructions are two words */
-+#define MAX_INSN_SIZE		2
- #define MAX_OPTIMIZED_LENGTH	sizeof(kprobe_opcode_t)	/* 4 bytes */
- #define MAX_OPTINSN_SIZE	(optprobe_template_end - optprobe_template_entry)
- #define RELATIVEJUMP_SIZE	sizeof(kprobe_opcode_t)	/* 4 bytes */
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index 7303fe3856cc..aa15b3480385 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -104,17 +104,30 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
+ typedef ppc_opcode_t uprobe_opcode_t;
  
- int arch_prepare_kprobe(struct kprobe *p)
- {
-+	int len;
- 	int ret = 0;
-+	struct kprobe *prev;
- 	kprobe_opcode_t insn = *p->addr;
-+	kprobe_opcode_t prfx = *(p->addr - 1);
++/*
++ * We have to ensure we have enought space for prefixed instructions, which
++ * are double the size of a word instruction, i.e. 8 bytes. However,
++ * sometimes it is simpler to treat a prefixed instruction like 2 word
++ * instructions.
++ */
+ #define MAX_UINSN_BYTES		4
+-#define UPROBE_XOL_SLOT_BYTES	(MAX_UINSN_BYTES)
++#define UPROBE_XOL_SLOT_BYTES	(2 * MAX_UINSN_BYTES)
  
-+	preempt_disable();
- 	if ((unsigned long)p->addr & 0x03) {
- 		printk("Attempt to register kprobe at an unaligned address\n");
- 		ret = -EINVAL;
- 	} else if (IS_MTMSRD(insn) || IS_RFID(insn) || IS_RFI(insn)) {
- 		printk("Cannot register a kprobe on rfi/rfid or mtmsr[d]\n");
- 		ret = -EINVAL;
-+	} else if (IS_PREFIX(prfx)) {
-+		printk("Cannot register a kprobe on the second word of prefixed instruction\n");
-+		ret = -EINVAL;
-+	}
-+	prev = get_kprobe(p->addr - 1);
-+	if (prev && IS_PREFIX(*prev->ainsn.insn)) {
-+		printk("Cannot register a kprobe on the second word of prefixed instruction\n");
-+		ret = -EINVAL;
- 	}
+ /* The following alias is needed for reference from arch-agnostic code */
+ #define UPROBE_SWBP_INSN	BREAKPOINT_INSTRUCTION
+ #define UPROBE_SWBP_INSN_SIZE	4 /* swbp insn size in bytes */
  
-+
- 	/* insn must be on a special executable page on ppc64.  This is
- 	 * not explicitly required on ppc32 (right now), but it doesn't hurt */
- 	if (!ret) {
-@@ -124,14 +137,18 @@ int arch_prepare_kprobe(struct kprobe *p)
- 	}
+ struct arch_uprobe {
++	 /*
++	  * Ensure there is enough space for prefixed instructions. Prefixed
++	  * instructions must not cross 64-byte boundaries.
++	  */
+ 	union {
+-		u32	insn;
+-		u32	ixol;
+-	};
++		uprobe_opcode_t	insn[2];
++		uprobe_opcode_t	ixol[2];
++	} __aligned(64);
+ };
  
- 	if (!ret) {
--		memcpy(p->ainsn.insn, p->addr,
--				MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
-+		if (IS_PREFIX(insn))
-+			len = MAX_INSN_SIZE * sizeof(kprobe_opcode_t);
-+		else
-+			len = sizeof(kprobe_opcode_t);
-+		memcpy(p->ainsn.insn, p->addr, len);
- 		p->opcode = *p->addr;
- 		flush_icache_range((unsigned long)p->ainsn.insn,
- 			(unsigned long)p->ainsn.insn + sizeof(kprobe_opcode_t));
- 	}
- 
- 	p->ainsn.boostable = 0;
-+	preempt_enable_no_resched();
- 	return ret;
- }
- NOKPROBE_SYMBOL(arch_prepare_kprobe);
-@@ -216,10 +233,11 @@ NOKPROBE_SYMBOL(arch_prepare_kretprobe);
- static int try_to_emulate(struct kprobe *p, struct pt_regs *regs)
- {
- 	int ret;
--	unsigned int insn = *p->ainsn.insn;
-+	unsigned int insn = p->ainsn.insn[0];
-+	unsigned int sufx = p->ainsn.insn[1];
- 
- 	/* regs->nip is also adjusted if emulate_step returns 1 */
--	ret = emulate_step(regs, insn, 0);
-+	ret = emulate_step(regs, insn, sufx);
- 	if (ret > 0) {
- 		/*
- 		 * Once this instruction has been boosted
-@@ -233,7 +251,10 @@ static int try_to_emulate(struct kprobe *p, struct pt_regs *regs)
- 		 * So, we should never get here... but, its still
- 		 * good to catch them, just in case...
- 		 */
--		printk("Can't step on instruction %x\n", insn);
-+		if (!IS_PREFIX(insn))
-+			printk("Can't step on instruction %x\n", insn);
-+		else
-+			printk("Can't step on instruction %x %x\n", insn, sufx);
- 		BUG();
- 	} else {
- 		/*
-@@ -275,7 +296,7 @@ int kprobe_handler(struct pt_regs *regs)
- 	if (kprobe_running()) {
- 		p = get_kprobe(addr);
- 		if (p) {
--			kprobe_opcode_t insn = *p->ainsn.insn;
-+			kprobe_opcode_t insn = p->ainsn.insn[0];
- 			if (kcb->kprobe_status == KPROBE_HIT_SS &&
- 					is_trap(insn)) {
- 				/* Turn off 'trace' bits */
-@@ -448,9 +469,10 @@ static int trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
- 	 * the link register properly so that the subsequent 'blr' in
- 	 * kretprobe_trampoline jumps back to the right instruction.
- 	 *
--	 * For nip, we should set the address to the previous instruction since
--	 * we end up emulating it in kprobe_handler(), which increments the nip
--	 * again.
-+	 * To keep the nip at the correct address we need to counter the
-+	 * increment that happens when we emulate the kretprobe_trampoline noop
-+	 * in kprobe_handler(). We do this by decrementing the address by the
-+	 * length of the noop which is always 4 bytes.
+ struct arch_uprobe_task {
+diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+index ab1077dc6148..cfcea6946f8b 100644
+--- a/arch/powerpc/kernel/uprobes.c
++++ b/arch/powerpc/kernel/uprobes.c
+@@ -111,7 +111,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ 	 * support doesn't exist and have to fix-up the next instruction
+ 	 * to be executed.
  	 */
- 	regs->nip = orig_ret_address - 4;
- 	regs->link = orig_ret_address;
-@@ -478,12 +500,14 @@ int kprobe_post_handler(struct pt_regs *regs)
- {
- 	struct kprobe *cur = kprobe_running();
- 	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
-+	kprobe_opcode_t insn;
+-	regs->nip = utask->vaddr + MAX_UINSN_BYTES;
++	regs->nip = utask->vaddr + ((IS_PREFIX(auprobe->insn[0])) ? 8 : 4);
  
- 	if (!cur || user_mode(regs))
- 		return 0;
- 
-+	insn = *cur->ainsn.insn;
- 	/* make sure we got here for instruction we have a kprobe on */
--	if (((unsigned long)cur->ainsn.insn + 4) != regs->nip)
-+	if (((unsigned long)cur->ainsn.insn + (IS_PREFIX(insn) ? 8 : 4)) != regs->nip)
- 		return 0;
- 
- 	if ((kcb->kprobe_status != KPROBE_REENTER) && cur->post_handler) {
-@@ -492,7 +516,7 @@ int kprobe_post_handler(struct pt_regs *regs)
- 	}
- 
- 	/* Adjust nip to after the single-stepped instruction */
--	regs->nip = (unsigned long)cur->addr + 4;
-+	regs->nip = (unsigned long)cur->addr + (IS_PREFIX(insn) ? 8 : 4);
- 	regs->msr |= kcb->kprobe_saved_msr;
- 
- 	/*Restore back the original saved kprobes variables and continue. */
-diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-index 82dc8a589c87..b2aef27bac27 100644
---- a/arch/powerpc/kernel/optprobes.c
-+++ b/arch/powerpc/kernel/optprobes.c
-@@ -27,6 +27,8 @@
- 	(optprobe_template_op_address - optprobe_template_entry)
- #define TMPL_INSN_IDX		\
- 	(optprobe_template_insn - optprobe_template_entry)
-+#define TMPL_SUFX_IDX		\
-+	(optprobe_template_sufx - optprobe_template_entry)
- #define TMPL_END_IDX		\
- 	(optprobe_template_end - optprobe_template_entry)
- 
-@@ -100,7 +102,8 @@ static unsigned long can_optimize(struct kprobe *p)
- 	 * and that can be emulated.
+ 	user_disable_single_step(current);
+ 	return 0;
+@@ -173,7 +173,7 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ 	 * emulate_step() returns 1 if the insn was successfully emulated.
+ 	 * For all other cases, we need to single-step in hardware.
  	 */
- 	if (!is_conditional_branch(*p->ainsn.insn) &&
--			analyse_instr(&op, &regs, *p->ainsn.insn, 0) == 1) {
-+			analyse_instr(&op, &regs, p->ainsn.insn[0],
-+				      p->ainsn.insn[1]) == 1) {
- 		emulate_update_regs(&regs, &op);
- 		nip = regs.nip;
- 	}
-@@ -140,27 +143,27 @@ void arch_remove_optimized_kprobe(struct optimized_kprobe *op)
- }
+-	ret = emulate_step(regs, auprobe->insn, 0);
++	ret = emulate_step(regs, auprobe->insn[0], auprobe->insn[1]);
+ 	if (ret > 0)
+ 		return true;
  
- /*
-- * emulate_step() requires insn to be emulated as
-- * second parameter. Load register 'r4' with the
-- * instruction.
-+ * emulate_step() requires insn to be emulated as second parameter, and the
-+ * suffix as the third parameter. Load these into registers.
-  */
--void patch_imm32_load_insns(unsigned int val, kprobe_opcode_t *addr)
-+static void patch_imm32_load_insns(int reg, unsigned int val,
-+				   kprobe_opcode_t *addr)
- {
--	/* addis r4,0,(insn)@h */
--	patch_instruction(addr, PPC_INST_ADDIS | ___PPC_RT(4) |
-+	/* addis reg,0,(insn)@h */
-+	patch_instruction(addr, PPC_INST_ADDIS | ___PPC_RT(reg) |
- 			  ((val >> 16) & 0xffff));
- 	addr++;
- 
--	/* ori r4,r4,(insn)@l */
--	patch_instruction(addr, PPC_INST_ORI | ___PPC_RA(4) |
--			  ___PPC_RS(4) | (val & 0xffff));
-+	/* ori reg,reg,(insn)@l */
-+	patch_instruction(addr, PPC_INST_ORI | ___PPC_RA(reg) |
-+			  ___PPC_RS(reg) | (val & 0xffff));
- }
- 
- /*
-  * Generate instructions to load provided immediate 64-bit value
-  * to register 'r3' and patch these instructions at 'addr'.
-  */
--void patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
-+static void patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
- {
- 	/* lis r3,(op)@highest */
- 	patch_instruction(addr, PPC_INST_ADDIS | ___PPC_RT(3) |
-@@ -266,9 +269,11 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	patch_instruction(buff + TMPL_EMULATE_IDX, branch_emulate_step);
- 
- 	/*
--	 * 3. load instruction to be emulated into relevant register, and
-+	 * 3. load instruction and suffix to be emulated into the relevant
-+	 * registers, and
- 	 */
--	patch_imm32_load_insns(*p->ainsn.insn, buff + TMPL_INSN_IDX);
-+	patch_imm32_load_insns(4, p->ainsn.insn[0], buff + TMPL_INSN_IDX);
-+	patch_imm32_load_insns(5, p->ainsn.insn[1], buff + TMPL_SUFX_IDX);
- 
- 	/*
- 	 * 4. branch back from trampoline
-diff --git a/arch/powerpc/kernel/optprobes_head.S b/arch/powerpc/kernel/optprobes_head.S
-index cf383520843f..998359ae44ec 100644
---- a/arch/powerpc/kernel/optprobes_head.S
-+++ b/arch/powerpc/kernel/optprobes_head.S
-@@ -95,6 +95,12 @@ optprobe_template_insn:
- 	nop
- 	nop
- 
-+	.global optprobe_template_sufx
-+optprobe_template_sufx:
-+	/* Pass suffix to be emulated in r5 */
-+	nop
-+	nop
-+
- 	.global optprobe_template_call_emulate
- optprobe_template_call_emulate:
- 	/* Branch to emulate_step()  */
 -- 
 2.20.1
 
