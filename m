@@ -2,46 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30CD410A402
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 19:18:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C51D410A43C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 19:54:05 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MsbY43bszDqYY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 05:18:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47MtNV4ZSCzDqVD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 05:54:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=sean.j.christopherson@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de;
+ envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MsVW30WGzDqMd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 05:14:09 +1100 (AEDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 26 Nov 2019 10:14:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,246,1571727600"; d="scan'208";a="211493575"
-Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com)
- ([10.54.74.41])
- by orsmga006.jf.intel.com with ESMTP; 26 Nov 2019 10:14:06 -0800
-Date: Tue, 26 Nov 2019 10:14:06 -0800
-From: Sean Christopherson <sean.j.christopherson@intel.com>
-To: Leonardo Bras <leonardo@linux.ibm.com>
-Subject: Re: [PATCH 1/1] powerpc/kvm/book3s: Fixes possible 'use after
- release' of kvm
-Message-ID: <20191126181406.GC22233@linux.intel.com>
-References: <20191126175212.377171-1-leonardo@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47MtLR1zZXzDqVD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 05:52:13 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 38C30ABD6;
+ Tue, 26 Nov 2019 18:52:08 +0000 (UTC)
+Message-ID: <45feed391bbd95c46f64b31cf8817d4f773c8da1.camel@suse.de>
+Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
+From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To: Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
+ Nathan Chancellor <natechancellor@gmail.com>
+Date: Tue, 26 Nov 2019 19:51:59 +0100
+In-Reply-To: <0b851d0e-37c7-062e-c287-05f8c8a54c16@arm.com>
+References: <20191121092646.8449-1-nsaenzjulienne@suse.de>
+ <20191123165108.GA15306@ubuntu-x2-xlarge-x86>
+ <20191125074412.GA30595@lst.de>
+ <0b851d0e-37c7-062e-c287-05f8c8a54c16@arm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-B9dp7hYRMOcivm0VMcWv"
+User-Agent: Evolution 3.34.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191126175212.377171-1-leonardo@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,102 +50,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ linux-ide@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Frank Rowand <frowand.list@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Paul Burton <paulburton@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ x86@kernel.org, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-pci@vger.kernel.org, James Hogan <jhogan@kernel.org>,
+ Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Jens Axboe <axboe@kernel.dk>, "Rafael J.
+ Wysocki" <rjw@rjwysocki.net>, Hanjun Guo <guohanjun@huawei.com>,
+ linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+ iommu@lists.linux-foundation.org, Sudeep Holla <sudeep.holla@arm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 26, 2019 at 02:52:12PM -0300, Leonardo Bras wrote:
-> Fixes a possible 'use after free' of kvm variable.
-> It does use mutex_unlock(&kvm->lock) after possible freeing a variable
-> with kvm_put_kvm(kvm).
 
-Moving the calls to kvm_put_kvm() to the end of the functions doesn't
-actually fix a use-after-free.  In these flows, the reference being
-released is a borrowed reference that KVM takes on behalf of the entity it
-is creating, e.g. device, vcpu, or spapr tce.  The caller of these create
-helpers must also hold its own reference to @kvm on top of the borrowed
-reference, i.e. these kvm_put_kvm() calls will never free @kvm (assuming
-there are no refcounting bugs elsewhere in KVM).
+--=-B9dp7hYRMOcivm0VMcWv
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If one these kvm_put_kvm() calls did unexpectedly free @kvm (due to a bug
-somewhere else), KVM would still hit a use-after-free scenario as the
-caller still thinks @kvm is valid.  Currently, this would only happen on a
-subsequent ioctl() on the caller's file descriptor (which holds a pointer
-to @kvm), as the callers of these functions don't directly dereference
-@kvm after the functions return.  But, not deferencing @kvm isn't deliberate
-or functionally required, it's just how the code happens to be written.
+On Mon, 2019-11-25 at 16:33 +0000, Robin Murphy wrote:
+> On 25/11/2019 7:44 am, Christoph Hellwig wrote:
+> > On Sat, Nov 23, 2019 at 09:51:08AM -0700, Nathan Chancellor wrote:
+> > > Just as an FYI, this introduces a warning on arm32 allyesconfig for m=
+e:
+> >=20
+> > I think the dma_limit argument to iommu_dma_alloc_iova should be a u64
+> > and/or we need to use min_t and open code the zero exception.
+> >=20
+> > Robin, Nicolas - any opinions?
+>=20
+> Yeah, given that it's always held a mask I'm not entirely sure why it=20
+> was ever a dma_addr_t rather than a u64. Unless anyone else is desperate=
+=20
+> to do it I'll get a cleanup patch ready for rc1.
 
-The intent of adding kvm_put_kvm_no_destroy() was primarily to document
-that under no circumstance should the to-be-put reference be the *last*
-reference to @kvm.  Moving the call to kvm_put_kvm{_no_destroy}() doesn't
-change that
+Sounds good to me too
 
-> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-> ---
->  arch/powerpc/kvm/book3s_64_vio.c | 3 +--
->  virt/kvm/kvm_main.c              | 8 ++++----
->  2 files changed, 5 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-> index 5834db0a54c6..a402ead833b6 100644
-> --- a/arch/powerpc/kvm/book3s_64_vio.c
-> +++ b/arch/powerpc/kvm/book3s_64_vio.c
-> @@ -316,14 +316,13 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
->  
->  	if (ret >= 0)
->  		list_add_rcu(&stt->list, &kvm->arch.spapr_tce_tables);
-> -	else
-> -		kvm_put_kvm(kvm);
->  
->  	mutex_unlock(&kvm->lock);
->  
->  	if (ret >= 0)
->  		return ret;
->  
-> +	kvm_put_kvm(kvm);
->  	kfree(stt);
->   fail_acct:
->  	account_locked_vm(current->mm, kvmppc_stt_pages(npages), false);
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 13efc291b1c7..f37089b60d09 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2744,10 +2744,8 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
->  	/* Now it's all set up, let userspace reach it */
->  	kvm_get_kvm(kvm);
->  	r = create_vcpu_fd(vcpu);
-> -	if (r < 0) {
-> -		kvm_put_kvm(kvm);
-> +	if (r < 0)
->  		goto unlock_vcpu_destroy;
-> -	}
->  
->  	kvm->vcpus[atomic_read(&kvm->online_vcpus)] = vcpu;
->  
-> @@ -2771,6 +2769,8 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
->  	mutex_lock(&kvm->lock);
->  	kvm->created_vcpus--;
->  	mutex_unlock(&kvm->lock);
-> +	if (r < 0)
-> +		kvm_put_kvm(kvm);
->  	return r;
->  }
->  
-> @@ -3183,10 +3183,10 @@ static int kvm_ioctl_create_device(struct kvm *kvm,
->  	kvm_get_kvm(kvm);
->  	ret = anon_inode_getfd(ops->name, &kvm_device_fops, dev, O_RDWR | O_CLOEXEC);
->  	if (ret < 0) {
-> -		kvm_put_kvm(kvm);
->  		mutex_lock(&kvm->lock);
->  		list_del(&dev->vm_node);
->  		mutex_unlock(&kvm->lock);
-> +		kvm_put_kvm(kvm);
->  		ops->destroy(dev);
->  		return ret;
->  	}
-> -- 
-> 2.23.0
-> 
+Robin, since I started the mess, I'll be happy to do it if it helps offload=
+ing
+some work from you.
+
+Regards,
+Nicolas
+
+
+--=-B9dp7hYRMOcivm0VMcWv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl3ddE8ACgkQlfZmHno8
+x/5fVwgAnN7cpWXNHEbGgqyZcMqmBWCtR0bMa/xIu1xNgr/CAwMMZj0Z3/+6d18p
+mlU5N6AqlkTxefP9mV5ZxBzugcsriGR4+qJ05kZZAMxAeG625qDkfhSEl0FmUZRT
+WmEv98IN0aFzHEjZJAyPDNV8Ff1a3JpoHKQmnYs5z438rMZt49CPBC0jNPFdaEuj
+v9ry1DkR+cGYuD1WRyBQJjtze14XoG7ZCu0o9Htc02GZHq3OuabxDikuTC+UJ1jR
+BZX4ak4qGpJUGYT8fQA7IOA94Sd/N/CHMrDp8yv5f/kRcprKqgGX8PnMCUOPf4ns
+PsCZZGhEKvVwZy3/+QzWSYQ7q20O8w==
+=WYKI
+-----END PGP SIGNATURE-----
+
+--=-B9dp7hYRMOcivm0VMcWv--
+
