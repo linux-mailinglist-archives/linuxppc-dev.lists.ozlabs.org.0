@@ -2,72 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5881B10990A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 07:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123B71099E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 09:03:35 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47MYCl42SRzDqDl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 17:00:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Mbxv2SjPzDqgB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2019 19:03:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="bzQUHlmh"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="eiNhmX/3"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47MXNr6jQgzDqfp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 16:23:08 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id p24so8569488pfn.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2019 21:23:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=XVZD/4TIX9uKxlCcdJJviukty6/xASQ2Nne5Q5s+0Gs=;
- b=bzQUHlmhuDEhFWOVBwTlEi/mxL+h1BR7GYXY1dI8bdXXHYKLz/lleuEQLTQqs31g5g
- TusI8YXaPWn2T5HVXdSMZVhMwAlpsfM54odgfeUx74X9XwmwE0ByC5aZ5w88kltzbBTO
- fn+xOTHlbRcracCLG7P6qDB6J/dO9ChwHOnwR4/Sbdkd+hXcbj8HdjkIV09ZyBBWjJ4E
- lSobZEfjRYJq0GKeeJEwrRerLcmN9r51GxNk7LHFVDjqau24ndGygd/A+xcio+he4dsr
- 2uxyfEl4Byp7uygTfg4TOilDLHZpQI4dmnLLEatCLtsIGeEfCg5eIkUOp3zZCzhRH+S0
- sfMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=XVZD/4TIX9uKxlCcdJJviukty6/xASQ2Nne5Q5s+0Gs=;
- b=alsi8wE7HzQKjMfCzPvD1O9FaE4C19SXEqYAVq0Q7zjA24KDNKo33xg0DuSqLAWiUP
- 18SFGEqqsOVD8H0sWLh9zIE8q/SPZHPpCAA5cKna8sIh633S+0j0wD5yhZPB+G2uZYtR
- p/b4kr/MTBP07/ZsMCNu6l3UxqlrQDWCqYUQ2rXB229tXXOoH9ZhwsMky9nxwWpayTXH
- jsmPkWnIQPF/ZalGkrqiUKsJ6Wy5ep9KyLHDf/8j3K+4F+fnphULaLic2cmycwSzYIVL
- fbF/DcJyMC6USDloGlyT/gPGQuoUa3XvG0Rb6Ok6O3mZ7F3B9d9fb0sMP7mcE+ob9HGh
- kpWw==
-X-Gm-Message-State: APjAAAUwD7qVHbB8RXjz+a+zdXeTZIkU6O4+qH4o5e/sCreIsQ33NmDZ
- ueIXbgetSwwu7+u1GYDHFW5Vij9k
-X-Google-Smtp-Source: APXvYqz+S2y2GoTmK7jh2qdXIUoEoElvpG9PXeYjLRCyneT9J9bad8uOPuJGWeAG8sjLw4rDKNj29w==
-X-Received: by 2002:a65:4085:: with SMTP id t5mr37193330pgp.335.1574745785848; 
- Mon, 25 Nov 2019 21:23:05 -0800 (PST)
-Received: from sol.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id t27sm10657920pfq.169.2019.11.25.21.23.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Nov 2019 21:23:05 -0800 (PST)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 18/18] powerpc/fault: Use analyse_instr() to check for store
- with updates to sp
-Date: Tue, 26 Nov 2019 16:21:41 +1100
-Message-Id: <20191126052141.28009-19-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191126052141.28009-1-jniethe5@gmail.com>
-References: <20191126052141.28009-1-jniethe5@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47MbvQ58T0zDqCw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 19:01:19 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47MbvF4RBrz9txbj;
+ Tue, 26 Nov 2019 09:01:13 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=eiNhmX/3; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id KmC-aZ693UsB; Tue, 26 Nov 2019 09:01:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47MbvF2TGnz9txbg;
+ Tue, 26 Nov 2019 09:01:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1574755273; bh=Yl4+kZ1p5Cyb6s3+0jQVbC3UJyF9FtAmAp/UXPPoPNo=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=eiNhmX/3p1JSMZxMYYU53b3Uvj/rLBVVA1ZgG4CV7ArQenXRfe5Mjcmpel0LxhRo9
+ PBCT/b4XU75Inbcs/D4NpzEKL6FDQFfbtBjKScGeZtPHcfq3AC+OCTURoNKjyVVviS
+ BZNDVGsocwry4drv/vSThNE9hEkl9aWVnaJNzShI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4CBC28B7D8;
+ Tue, 26 Nov 2019 09:01:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id VvPLu6ECgQep; Tue, 26 Nov 2019 09:01:14 +0100 (CET)
+Received: from po16098vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EAFB88B771;
+ Tue, 26 Nov 2019 09:01:13 +0100 (CET)
+Subject: Re: [PATCH] powerpc/8xx: Fix permanently mapped IMMR region.
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <ad9d45119a48a92bf122781d0c79c9407baa12d7.1566554026.git.christophe.leroy@c-s.fr>
+ <87sgmlcu1x.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <d22ac38c-0b03-fbc0-88d1-899e356fa487@c-s.fr>
+Date: Tue, 26 Nov 2019 08:01:13 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87sgmlcu1x.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,98 +80,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, Jordan Niethe <jniethe5@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A user-mode access to an address a long way below the stack pointer is
-only valid if the instruction is one that would update the stack pointer
-to the address accessed. This is checked by directly looking at the
-instructions op-code. As a result is does not take into account prefixed
-instructions. Instead of looking at the instruction our self, use
-analyse_instr() determine if this a store instruction that will update
-the stack pointer.
 
-Something to note is that there currently are not any store with update
-prefixed instructions. Actually there is no plan for prefixed
-update-form loads and stores. So this patch is probably not needed but
-it might be preferable to use analyse_instr() rather than open coding
-the test anyway.
 
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
- arch/powerpc/mm/fault.c | 39 +++++++++++----------------------------
- 1 file changed, 11 insertions(+), 28 deletions(-)
+On 11/18/2019 11:17 AM, Michael Ellerman wrote:
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>> When not using large TLBs, the IMMR region is still
+>> mapped as a whole block in the FIXMAP area.
+>>
+>> Do not remove pages mapped in the FIXMAP region when
+>> initialising paging.
+>>
+>> Properly report that the IMMR region is block-mapped even
+>> when not using large TLBs.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>> ---
+>>   arch/powerpc/mm/mem.c        |  8 --------
+>>   arch/powerpc/mm/nohash/8xx.c | 13 +++++++------
+>>   2 files changed, 7 insertions(+), 14 deletions(-)
+> 
+> This blows up pmac32_defconfig + qemu mac99 for me with:
+> 
+>    NET: Registered protocol family 1
+>    RPC: Registered named UNIX socket transport module.
+>    RPC: Registered udp transport module.
+>    RPC: Registered tcp transport module.
+>    RPC: Registered tcp NFSv4.1 backchannel transport module.
+>    PCI: CLS 0 bytes, default 32
+>    Trying to unpack rootfs image as initramfs...
+>    BUG: Unable to handle kernel data access on write at 0xfffdf000
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index b5047f9b5dec..cb78b3ca1800 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -41,37 +41,17 @@
- #include <asm/siginfo.h>
- #include <asm/debug.h>
- #include <asm/kup.h>
-+#include <asm/sstep.h>
- 
- /*
-  * Check whether the instruction inst is a store using
-  * an update addressing form which will update r1.
-  */
--static bool store_updates_sp(unsigned int inst)
-+static bool store_updates_sp(struct instruction_op *op)
- {
--	/* check for 1 in the rA field */
--	if (((inst >> 16) & 0x1f) != 1)
--		return false;
--	/* check major opcode */
--	switch (inst >> 26) {
--	case OP_STWU:
--	case OP_STBU:
--	case OP_STHU:
--	case OP_STFSU:
--	case OP_STFDU:
--		return true;
--	case OP_STD:	/* std or stdu */
--		return (inst & 3) == 1;
--	case OP_31:
--		/* check minor opcode */
--		switch ((inst >> 1) & 0x3ff) {
--		case OP_31_XOP_STDUX:
--		case OP_31_XOP_STWUX:
--		case OP_31_XOP_STBUX:
--		case OP_31_XOP_STHUX:
--		case OP_31_XOP_STFSUX:
--		case OP_31_XOP_STFDUX:
-+	if (GETTYPE(op->type) == STORE) {
-+		if ((op->type & UPDATE) && (op->update_reg == 1))
- 			return true;
--		}
- 	}
- 	return false;
- }
-@@ -278,14 +258,17 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
- 
- 		if ((flags & FAULT_FLAG_WRITE) && (flags & FAULT_FLAG_USER) &&
- 		    access_ok(nip, sizeof(*nip))) {
--			unsigned int inst;
-+			unsigned int inst, sufx;
-+			struct instruction_op op;
- 			int res;
- 
- 			pagefault_disable();
--			res = __get_user_inatomic(inst, nip);
-+			res = __get_user_instr_inatomic(inst, sufx, nip);
- 			pagefault_enable();
--			if (!res)
--				return !store_updates_sp(inst);
-+			if (!res) {
-+				analyse_instr(&op, uregs, inst, sufx);
-+				return !store_updates_sp(&op);
-+			}
- 			*must_retry = true;
- 		}
- 		return true;
--- 
-2.20.1
+I tested it with pmac32_defconfig and qemu mac99 and don't get the problem:
+
+NET: Registered protocol family 1
+RPC: Registered named UNIX socket transport module.
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+PCI: CLS 0 bytes, default 32
+Initialise system trusted keyrings
+workingset: timestamp_bits=30 max_order=15 bucket_order=0
+NFS: Registering the id_resolver key type
+Key type id_resolver registered
+...
+
+Looks like I don't get that 'Trying to unpack rootfs image as 
+initramfs...', do you change anything to pmac32_defconfig ?
+
+Anyway, when rebasing this patch on next branch, only the 
+arch/powerpc/mm/nohash/8xx.c change remains. The other part is already 
+applied through another patch.
+
+So I believe the remaining part is safe to apply
+
+Christophe
 
