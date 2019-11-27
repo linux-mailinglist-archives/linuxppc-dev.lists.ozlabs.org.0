@@ -1,71 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B7310A8AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 03:18:16 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47N4F03f1MzDqrC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 13:18:12 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 784D310A8FA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 04:02:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47N5DN0cFzzDqnl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 14:02:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="NxYjiBXk"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="CVwUqZ0F"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47N4CC1NmZzDqft
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 13:16:38 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id j12so9025116plt.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 18:16:38 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47N5BK0GjbzDqlS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 14:00:53 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id 207so10029514pge.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 19:00:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=h3ltnqLL7NqD5hgut0BLqf6QHfXXC286r9KUfynNsi0=;
- b=NxYjiBXkzGqu0szgHOLq/kZF55VwdEoHoXfu6qZCzVLuxc+kR4j28rdYvst4CV49mu
- 101cV5f5T1xnnluf7qWKcNoP1TR7kj3F/7xL9Ec4QKqnu5ixNrNJdQni5lYOo2KHQXl7
- cIia3ZqpWpUo4ExZsLkZ5plrHJb1CCF34ovnBcjKSvAv/G6HP7EQNUjyTi0bxX0hqhr2
- V/T+wS7uLALebNmcH63pCT6/Y9M6cokoslG0Hw33ZIWXscUErI0L112AHd9JmRBzBEKK
- +3JHYBky1G/LU3uN7ZOOubbLUjfPX2uVL9b2FfmZO2W68j95NjhZeZNW7Ku3SzxqX4c3
- OZSQ==
+ bh=WTivQ+ikl/VpNlgxjbeRySRLAOJPmPRN/gI3Fe2D+Gw=;
+ b=CVwUqZ0FgX4STT4t4zHrEpIHGAdmOOFJHFZSGgD1bp1gZemjpk9p3Cm+Ns4OaaOKB0
+ M1UNT4C64mGtCn/fcqxHhuhpb8No1iUBkOMI5t4KS3ghIkD2V5w44c8rcpdkCENEBVpM
+ coe52QzxIeHgUJmTP3Sx1iwI/RJ2HYddJr2LwXHZpzMXkfEID3NAyctetpBCHVmA8xFA
+ TQhPm6oxwSy12rswV1tX6Wf0nTXpEqA71nrInvlkby20MVa9dOa53VhMhF1gfPEeI2+g
+ y9J3SqOOQfxMW61c90J/U2e8iObQ7JlXHp86Hy+PFXeAn1XHyLWYagL84D5qeO7gIoB4
+ Eixg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=h3ltnqLL7NqD5hgut0BLqf6QHfXXC286r9KUfynNsi0=;
- b=lrOG0DvvCB6nTtu8PBrHRPuNcBcnXCSZjdSByMXRd6qhV0JvVksv5gMMu1OwbMOMwO
- 1yHk4PQSe2JNRIYFbl3PVfjM1j93XvN7PqQlGlLRlwHchvr2bsd95+DwsP3/zqRgkbMf
- wx5Uty1dn7h/tC19DXvYJ/f2xkRHAPELPcVuLqFgfP/Sj66ofuCHyFgpVxNbYlBWz1q1
- v0Zqzs4SOZXxMnXYYvpecQXGw5P4As4jHqp2NOFFa9wruRND1D+8G+PRJqv99+e6aW2A
- PQuWA8PCAdeJwNeonxCFM2T9DPTVhoTJ8a08f0rKl7XNfyraQ9nJxFx1tcZGozY9gHYS
- fZkw==
-X-Gm-Message-State: APjAAAViI6/Y2GsA+s/sDhoX1flDMbc22xQVuSdzIeuRR2uZGXy2H4xZ
- 1tTcbllBJ1En0dRc4hVm4wCa7eUDP/8=
-X-Google-Smtp-Source: APXvYqwILRQsTLfwjZMiB8XQTRUb5EqtSKgc/ogllEix1oTkVtQed6awPq/VnLECXM8sMH9SMcnIzQ==
-X-Received: by 2002:a17:90a:5895:: with SMTP id
- j21mr2926067pji.129.1574820996715; 
- Tue, 26 Nov 2019 18:16:36 -0800 (PST)
+ bh=WTivQ+ikl/VpNlgxjbeRySRLAOJPmPRN/gI3Fe2D+Gw=;
+ b=p97pC3173nEAv/DhA+N70GBSR8ObidnjjIIgG/htO496rt79uWcBLGuhNuf5ozxVV/
+ ZN12K8NrF5AprGpVznMHRF3Vcw+tlpqHAEGNLpiO7ikRUEChNXScrfUvOpsSBGZjm9b3
+ O7j0JZFpLtfv6yJMt2vw3ln4+81WjfOOgxxrsA1PrJ3BAXfEpTUn8JhuoPLnx3QVZ2No
+ HmYcR8cJ7S+8BhMCUBhv+IqWWHa14hdKX3B0wxmgfTNPqJkNZC2iAae5KUY8tq/ATvDo
+ b46WVDc4dORlPUvEU43uLK1Vkrg4ausIG9oMSdbG7C7RiqybmYHIP4Dri66x9HGTe6q8
+ FXTQ==
+X-Gm-Message-State: APjAAAXYwFVNRA8AxzngpkQZrGC52Z8FIDmmViRWHLnxUgIQW0WSqsbo
+ D5OdHFqFZXUw/Deunxx3X/ZYHg==
+X-Google-Smtp-Source: APXvYqxJpfn2++u+w0qnmlzo3BJbjfAlxt0ff8GTgnzX5Tdo6Sspc/ib5wCbR6eyUxRc2ZWRyqp5xw==
+X-Received: by 2002:a63:3f4f:: with SMTP id m76mr2039188pga.353.1574823650238; 
+ Tue, 26 Nov 2019 19:00:50 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id v15sm13805911pfe.44.2019.11.26.18.16.34
+ by smtp.gmail.com with ESMTPSA id q184sm14144338pfc.111.2019.11.26.19.00.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Nov 2019 18:16:36 -0800 (PST)
-Subject: Re: [Very RFC 26/46] powernv/pci: Remove pdn from
- pnv_pci_cfg_{read|write}
+ Tue, 26 Nov 2019 19:00:49 -0800 (PST)
+Subject: Re: [Very RFC 27/46] powernv/pci: Clear reserved PE freezes
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-27-oohall@gmail.com>
+ <20191120012859.23300-28-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +138,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <523dfd77-7401-6fa7-e9a4-7ab99b483b51@ozlabs.ru>
-Date: Wed, 27 Nov 2019 13:16:32 +1100
+Message-ID: <5c6afd6e-4381-104f-0887-c8ec9fae16f7@ozlabs.ru>
+Date: Wed, 27 Nov 2019 14:00:46 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-27-oohall@gmail.com>
+In-Reply-To: <20191120012859.23300-28-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -168,163 +166,47 @@ Sender: "Linuxppc-dev"
 
 
 On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> Remove the use of pci_dn from the low-level config space access functions.
-> These are used by the eeh's config ops and the bus config ops that we
-> provide to the PCI core.
+> When we scan an empty slot the PHB gets an Unsupported Request from the
+> downstream bridge when there's no device present at that BDFN.  Some older
+> PHBs (p7-IOC) don't allow further config space accesses while the PE is
+> frozen, so clear it here without bothering with the diagnostic log.
+
+
+This executes when EEH is not enabled (rather unsupported case) and the
+patch allegedly extends support of some P7 none of which was ever
+supported by the powernv platform, or was/is it? Thanks,
+
+
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 > ---
->  arch/powerpc/platforms/powernv/eeh-powernv.c | 14 +++--------
->  arch/powerpc/platforms/powernv/pci.c         | 26 ++++++++------------
->  arch/powerpc/platforms/powernv/pci.h         |  6 ++---
->  3 files changed, 16 insertions(+), 30 deletions(-)
+>  arch/powerpc/platforms/powernv/pci.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
-> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> index 49a932ff092a..8a73bc7517c5 100644
-> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-> @@ -331,31 +331,25 @@ static inline bool pnv_eeh_cfg_blocked(struct eeh_dev *edev)
->  static int pnv_eeh_read_config(struct eeh_dev *edev,
->  			       int where, int size, u32 *val)
->  {
-> -	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
-> -
-> -	if (!pdn)
-> -		return PCIBIOS_DEVICE_NOT_FOUND;
-> +	struct pnv_phb *phb = edev->controller->private_data;
->  
->  	if (pnv_eeh_cfg_blocked(edev)) {
->  		*val = 0xFFFFFFFF;
->  		return PCIBIOS_SET_FAILED;
->  	}
->  
-> -	return pnv_pci_cfg_read(pdn, where, size, val);
-> +	return pnv_pci_cfg_read(phb, edev->bdfn, where, size, val);
->  }
->  
->  static int pnv_eeh_write_config(struct eeh_dev *edev,
->  				int where, int size, u32 val)
->  {
-> -	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
-> -
-> -	if (!pdn)
-> -		return PCIBIOS_DEVICE_NOT_FOUND;
-> +	struct pnv_phb *phb = edev->controller->private_data;
->  
->  	if (pnv_eeh_cfg_blocked(edev))
->  		return PCIBIOS_SET_FAILED;
->  
-> -	return pnv_pci_cfg_write(pdn, where, size, val);
-> +	return pnv_pci_cfg_write(phb, edev->bdfn, where, size, val);
->  }
->  
->  static struct eeh_pe *pnv_eeh_pe_get_parent(struct pci_dev *pdev)
 > diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-> index 50142ff045ac..36eea4bb514c 100644
+> index 36eea4bb514c..5b1f4677cdce 100644
 > --- a/arch/powerpc/platforms/powernv/pci.c
 > +++ b/arch/powerpc/platforms/powernv/pci.c
-> @@ -654,11 +654,9 @@ static void pnv_pci_config_check_eeh(struct pnv_phb *phb, u16 bdfn)
->  	}
->  }
->  
-> -int pnv_pci_cfg_read(struct pci_dn *pdn,
-> +int pnv_pci_cfg_read(struct pnv_phb *phb, u16 bdfn,
->  		     int where, int size, u32 *val)
->  {
-> -	struct pnv_phb *phb = pdn->phb->private_data;
-> -	u32 bdfn = (pdn->busno << 8) | pdn->devfn;
->  	s64 rc;
->  
->  	switch (size) {
-> @@ -685,19 +683,16 @@ int pnv_pci_cfg_read(struct pci_dn *pdn,
->  		return PCIBIOS_FUNC_NOT_SUPPORTED;
->  	}
->  
-> -	pr_devel("%s: bus: %x devfn: %x +%x/%x -> %08x\n",
-> -		 __func__, pdn->busno, pdn->devfn, where, size, *val);
-> +	pr_devel("%s: bdfn: %x  +%x/%x -> %08x\n",
-> +		 __func__, bdfn, where, size, *val);
->  	return PCIBIOS_SUCCESSFUL;
->  }
->  
-> -int pnv_pci_cfg_write(struct pci_dn *pdn,
-> +int pnv_pci_cfg_write(struct pnv_phb *phb, u16 bdfn,
->  		      int where, int size, u32 val)
->  {
-> -	struct pnv_phb *phb = pdn->phb->private_data;
-> -	u32 bdfn = (pdn->busno << 8) | pdn->devfn;
-> -
-> -	pr_devel("%s: bus: %x devfn: %x +%x/%x -> %08x\n",
-> -		 __func__, pdn->busno, pdn->devfn, where, size, val);
-> +	pr_devel("%s: bdfn: %x +%x/%x -> %08x\n",
-> +		 __func__, bdfn, where, size, val);
->  	switch (size) {
->  	case 1:
->  		opal_pci_config_write_byte(phb->opal_id, bdfn, where, val);
-> @@ -753,12 +748,11 @@ static int pnv_pci_read_config(struct pci_bus *bus,
->  	if (!pdn)
->  		return PCIBIOS_DEVICE_NOT_FOUND;
->  
-> -	edev = pdn_to_eeh_dev(pdn);
-> +	edev = pnv_eeh_find_edev(phb, bdfn);
->  	if (!pnv_eeh_pre_cfg_check(edev))
->  		return PCIBIOS_DEVICE_NOT_FOUND;
->  
-> -	ret = pnv_pci_cfg_read(pdn, where, size, val);
-> -	phb = pdn->phb->private_data;
-> +	ret = pnv_pci_cfg_read(phb, bdfn, where, size, val);
->  	if (phb->flags & PNV_PHB_FLAG_EEH && edev) {
->  		if (*val == EEH_IO_ERROR_VALUE(size) &&
->  		    eeh_dev_check_failure(edev))
-> @@ -784,11 +778,11 @@ static int pnv_pci_write_config(struct pci_bus *bus,
->  	if (!pdn)
->  		return PCIBIOS_DEVICE_NOT_FOUND;
->  
-> -	edev = pdn_to_eeh_dev(pdn);
-> +	edev = pnv_eeh_find_edev(phb, bdfn);
->  	if (!pnv_eeh_pre_cfg_check(edev))
->  		return PCIBIOS_DEVICE_NOT_FOUND;
->  
-> -	ret = pnv_pci_cfg_write(pdn, where, size, val);
-> +	ret = pnv_pci_cfg_write(phb, bdfn, where, size, val);
->  
->  	if (!(phb->flags & PNV_PHB_FLAG_EEH))
->  		pnv_pci_config_check_eeh(phb, bdfn);
-> diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-> index be435a810d19..52dc4d05eaca 100644
-> --- a/arch/powerpc/platforms/powernv/pci.h
-> +++ b/arch/powerpc/platforms/powernv/pci.h
-> @@ -7,8 +7,6 @@
->  #include <asm/iommu.h>
->  #include <asm/msi_bitmap.h>
->  
-> -struct pci_dn;
-> -
-
-
-This is the best bit :)
-
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-
->  enum pnv_phb_type {
->  	PNV_PHB_IODA1		= 0,
->  	PNV_PHB_IODA2		= 1,
-> @@ -174,9 +172,9 @@ extern struct pci_ops pnv_pci_ops;
->  
->  void pnv_pci_dump_phb_diag_data(struct pci_controller *hose,
->  				unsigned char *log_buff);
-> -int pnv_pci_cfg_read(struct pci_dn *pdn,
-> +int pnv_pci_cfg_read(struct pnv_phb *phb, u16 bdfn,
->  		     int where, int size, u32 *val);
-> -int pnv_pci_cfg_write(struct pci_dn *pdn,
-> +int pnv_pci_cfg_write(struct pnv_phb *phb, u16 bdfn,
->  		      int where, int size, u32 val);
->  extern struct iommu_table *pnv_pci_table_alloc(int nid);
->  
+> @@ -642,6 +642,19 @@ static void pnv_pci_config_check_eeh(struct pnv_phb *phb, u16 bdfn)
+>  	if (fstate == OPAL_EEH_STOPPED_MMIO_FREEZE ||
+>  	    fstate == OPAL_EEH_STOPPED_DMA_FREEZE  ||
+>  	    fstate == OPAL_EEH_STOPPED_MMIO_DMA_FREEZE) {
+> +
+> +		/*
+> +		 * Scanning an empty slot will result in a freeze on the reserved PE.
+> +		 *
+> +		 * Some old and bad PHBs block config space access to frozen PEs in
+> +		 * addition to MMIOs, so unfreeze it here.
+> +		 */
+> +		if (pe_no == phb->ioda.reserved_pe_idx) {
+> +			phb->unfreeze_pe(phb, phb->ioda.reserved_pe_idx,
+> +					 OPAL_EEH_ACTION_CLEAR_FREEZE_ALL);
+> +			return;
+> +		}
+> +
+>  		/*
+>  		 * If PHB supports compound PE, freeze it for
+>  		 * consistency.
 > 
 
 -- 
