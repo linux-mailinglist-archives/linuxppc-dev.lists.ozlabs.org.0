@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42ECD10A9DC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 06:13:38 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4EC10A9D5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 06:11:42 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47N8576QWNzDqmC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 16:11:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47N87M2QGvzDqkq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 16:13:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="OD2LpEj1"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="eTpcFgtL"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47N82y29k0zDqmC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 16:09:45 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id e6so10165184pgi.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 21:09:45 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47N82z4SCHzDqnD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 16:09:47 +1100 (AEDT)
+Received: by mail-pj1-x1043.google.com with SMTP id r67so1601933pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 21:09:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=iw1F+Dka0jd5iqzW2tinvU3KpOobgKMbIKGSIV4cFX4=;
- b=OD2LpEj1fdm36gR4FEh78q3OXRTrANzHZPdPZS1MXm/CWdhpSDHSJWkh1ZaT+Yd+Ym
- W6Azgaar41pXe2XYesQijgIhFHSNjIbWcWSCpNm1tlF2j3GU0t5fUpHAEFmxZmI2HYwy
- tsTletc5luv+qP5dOBQz3DX7WnVhkitG79YhQ9OKF3/wEWUyEXKRG1cctlxTB1horBeP
- VSDVjbWga05pBzI4OheWvAQJ1LIEL5q6QbhwSA3cXTzrJWaSWtUxiKK7+bpGc0pTAV1b
- pTU5a34LhkND6NhF8QoCy8t+Bp3f1d8vrWY01DAz5z4Qt592dlzdHsvklartWccuEEna
- ujUQ==
+ bh=gq5RirvvBgDiO4UfrVaPTE9RR6ISlAUBTI3318yo8HU=;
+ b=eTpcFgtLLUrf/HHWrhQy3KGyUwGBnPi1VQP0qR4aqnVZQ14/qSg1g1BQdO8ocRq6d1
+ yRp3uAPKJwqHYkfl0oUqysBYsR20qF0Rp0Sb1Je53jUFTdYsNgly2zoOSYJDxM1g17en
+ Bv7yOMaDegcjdFv7lA3n3Yey0nvuNmjMfJ6F/wZH1FjEscQ6/nA0wmlqdoKoImB+aPq/
+ zJmKyCba7D7/lPbuw9b8JzyQV82oA4GPGMMYumSIYaSxLiWOalC6jhrOZ4tAA8bDNtlk
+ m7DyyS6/WMcQupfs5ppoC8m1HcLr5cOo0QCDaTWG0KQeoZ1CRBOd00kuxRYaZMVdbMVJ
+ X6sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=iw1F+Dka0jd5iqzW2tinvU3KpOobgKMbIKGSIV4cFX4=;
- b=I8Ld7LmMHLURTIq0LBmBfdXlS7G9DwVF5W6qi6fcbM/9IzgAOTFKlt8xPnBg5WDlLq
- TrMo2FrZ+Uc4nuieiKln6K1JxAP5/ss4V5f9eGDSsfyeIgVETE7k6HnfveZwRRtJ+/pM
- uN8Geybvcne315mhV+kcf0bWJ22fDGqQ1Fm8k28FJcXkpB8MOnMsNENIYBRqqdXgwsaX
- T5hD8heqNN8nabTTvILuizRw4XodYWhD+e70UZpW3s9eD1HIoo/W7qGBD2vz0QW1/tKg
- 01CcM7IpZj7O4FZ6ZazquuuHyFiie2NXjTIphSCPRW17aaSVigcjaCOaIx2uo6KV5sSV
- M9Uw==
-X-Gm-Message-State: APjAAAWfxUywHF+cqF0/Yc9fZUAGpqVq5a8FB0MiV2fZNdCAgUvVG+Cw
- K0a51sqxs3acpZUYOTgG9FJETk8+/QY=
-X-Google-Smtp-Source: APXvYqyPJwDk3seRoJ3dIoNo9A80v3M50/fsbzP2OVbSyu1j7sUv6vch/vtpnSxRn+HTP6wBn0nzHw==
-X-Received: by 2002:a62:31c1:: with SMTP id
- x184mr46011823pfx.255.1574831382473; 
- Tue, 26 Nov 2019 21:09:42 -0800 (PST)
+ bh=gq5RirvvBgDiO4UfrVaPTE9RR6ISlAUBTI3318yo8HU=;
+ b=E6+3WH+g/tGXlY1J6/AhLHwEplu/hC/pglKzLpvb+NrHDdDE2qBczdCTmV5u/icDup
+ 41pMjAgATPHxsbzHGDONWFOJod3I7ihaornMz0UdZkr6uqVU1D2VDX9GhAQ5f/5Z6atK
+ 3hTjcxGIdTFNzXBrz9DDIw77nL0j1R6tUIJUQh3tFtX/rw+ExS8yw99zFRWQStFtNEgm
+ 1ipili8UVr3zzXrdHL216ZOrQvrqlvTKTw0myMPbkS377r+8BBCcMt17djOtzcIiOmoJ
+ A68Sc3W2P6aXvSVs49p/CcD84QVxHE5WMZSrZ2PhLNVm8KQA3Fe28M8pvi9/wvcY+Aim
+ SviQ==
+X-Gm-Message-State: APjAAAUn0mCGftdp4ruQPaGXSn+VS194XFYhT3Nu2OQfOKWAyNaY249C
+ gPOyhoxFNPHg2ZHR7zJ2FeCUCw==
+X-Google-Smtp-Source: APXvYqyt5J9tnVA/7yrnUECeNnKOMwGqnkOFjxHRoDnh63cgKwqbcAUj9/Rc7cs4zaGdTVyIOoH6EA==
+X-Received: by 2002:a17:90a:a898:: with SMTP id
+ h24mr3669899pjq.48.1574831384657; 
+ Tue, 26 Nov 2019 21:09:44 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 64sm14771132pfe.147.2019.11.26.21.09.40
+ by smtp.gmail.com with ESMTPSA id 67sm4282264pfw.82.2019.11.26.21.09.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Nov 2019 21:09:42 -0800 (PST)
-Subject: Re: [Very RFC 32/46] powernv/pci: Remove open-coded PE lookup in
- iommu_bypass_supported()
+ Tue, 26 Nov 2019 21:09:44 -0800 (PST)
+Subject: Re: [Very RFC 33/46] powernv/pci: Remove open-coded PE lookup in
+ iommu notifier
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-33-oohall@gmail.com>
+ <20191120012859.23300-34-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +140,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <4e9d6122-30c8-00fd-a680-12f54bffbb78@ozlabs.ru>
-Date: Wed, 27 Nov 2019 16:09:38 +1100
+Message-ID: <a1bb4a79-ebdf-5ddf-72b5-ab82f76446ad@ozlabs.ru>
+Date: Wed, 27 Nov 2019 16:09:41 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-33-oohall@gmail.com>
+In-Reply-To: <20191120012859.23300-34-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -169,38 +169,47 @@ Sender: "Linuxppc-dev"
 
 On 20/11/2019 12:28, Oliver O'Halloran wrote:
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-
-
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-but honestly can be squashed into 31/46 or/and 33/46 or other similar
-patches.
-
 > ---
->  arch/powerpc/platforms/powernv/pci-ioda.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  arch/powerpc/platforms/powernv/pci.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 98d858999a2d..7e88de18ead6 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1801,13 +1801,11 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
->  		u64 dma_mask)
+> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+> index 5b1f4677cdce..0eeea8652426 100644
+> --- a/arch/powerpc/platforms/powernv/pci.c
+> +++ b/arch/powerpc/platforms/powernv/pci.c
+> @@ -943,23 +943,22 @@ static int pnv_tce_iommu_bus_notifier(struct notifier_block *nb,
 >  {
->  	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
-> -	struct pci_dn *pdn = pci_get_pdn(pdev);
-> -	struct pnv_ioda_pe *pe;
-> +	struct pnv_ioda_pe *pe = pnv_ioda_get_pe(pdev);
+>  	struct device *dev = data;
+>  	struct pci_dev *pdev;
+> -	struct pci_dn *pdn;
+>  	struct pnv_ioda_pe *pe;
+>  	struct pnv_phb *phb;
 >  
-> -	if (WARN_ON(!pdn || pdn->pe_number == IODA_INVALID_PE))
-> +	if (WARN_ON(!pe))
->  		return false;
+>  	switch (action) {
+>  	case BUS_NOTIFY_ADD_DEVICE:
+>  		pdev = to_pci_dev(dev);
+> -		pdn = pci_get_pdn(pdev);
+>  		phb = pci_bus_to_pnvhb(pdev->bus);
 >  
-> -	pe = &phb->ioda.pe_array[pdn->pe_number];
->  	if (pe->tce_bypass_enabled) {
->  		u64 top = pe->tce_bypass_base + memblock_end_of_DRAM() - 1;
->  		if (dma_mask >= top)
+>  		WARN_ON_ONCE(!phb);
+> -		if (!pdn || pdn->pe_number == IODA_INVALID_PE || !phb)
+> +		if (!phb)
+>  			return 0;
+
+This check is weird - the function does not use @phb anymore, it would
+make more sense if pnv_ioda_get_pe() checked phb!=NULL.
+
+
+>  
+> -		pe = &phb->ioda.pe_array[pdn->pe_number];
+> -		if (!pe->table_group.group)
+> +		pe = pnv_ioda_get_pe(pdev);
+> +		if (!pe || !pe->table_group.group)
+>  			return 0;
+> +
+>  		iommu_add_device(&pe->table_group, dev);
+>  		return 0;
+>  	case BUS_NOTIFY_DEL_DEVICE:
 > 
 
 -- 
