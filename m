@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A7C10AEE2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 12:47:34 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NJst2lj5zDqWj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 22:47:30 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E25C10AEFE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 12:50:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NJxY2jc9zDqMm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 22:50:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,18 +18,18 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NHN00kSKzDqfW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 21:40:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NHN21Xc5zDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 21:40:01 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id B0279B473;
- Wed, 27 Nov 2019 10:39:56 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 34605B47B;
+ Wed, 27 Nov 2019 10:39:58 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 rebase 25/34] powerpc/64s/exception: remove lite interrupt
- return
-Date: Wed, 27 Nov 2019 11:39:01 +0100
-Message-Id: <b9834e87b23de901af0557bfc012df0e231e170f.1574803685.git.msuchanek@suse.de>
+Subject: [PATCH v2 rebase 26/34] powerpc/64: system call: Fix sparse warning
+ about missing declaration
+Date: Wed, 27 Nov 2019 11:39:02 +0100
+Message-Id: <f45bdb3ccb7c6a0c7ee5ff0612a80bce2f44dc0b.1574803685.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1574803684.git.msuchanek@suse.de>
 References: <cover.1574803684.git.msuchanek@suse.de>
@@ -76,129 +76,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+Sparse warns about missing declarations for these functions:
 
-The difference between lite and regular returns is that the lite case
-restores all NVGPRs, whereas lite skips that. This is quite clumsy
-though, most interrupts want the NVGPRs saved for debugging, not to
-modify in the caller, so the NVGPRs restore is not necessary most of
-the time. Restore NVGPRs explicitly for one case that requires it,
-and move everything else over to avoiding the restore unless the
-interrupt return demands it (e.g., handling a signal).
++arch/powerpc/kernel/syscall_64.c:108:23: warning: symbol 'syscall_exit_prepare' was not declared. Should it be static?
++arch/powerpc/kernel/syscall_64.c:18:6: warning: symbol 'system_call_exception' was not declared. Should it be static?
++arch/powerpc/kernel/syscall_64.c:200:23: warning: symbol 'interrupt_exit_user_prepare' was not declared. Should it be static?
++arch/powerpc/kernel/syscall_64.c:288:23: warning: symbol 'interrupt_exit_kernel_prepare' was not declared. Should it be static?
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Add declaration for them.
+
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 ---
- arch/powerpc/kernel/entry_64.S       |  4 ----
- arch/powerpc/kernel/exceptions-64s.S | 21 +++++++++++----------
- 2 files changed, 11 insertions(+), 14 deletions(-)
+ arch/powerpc/include/asm/asm-prototypes.h | 6 ++++++
+ arch/powerpc/kernel/syscall_64.c          | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index b2e68f5ca8f7..00173cc904ef 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -452,10 +452,6 @@ _GLOBAL(fast_interrupt_return)
- 
- 	.balign IFETCH_ALIGN_BYTES
- _GLOBAL(interrupt_return)
--	REST_NVGPRS(r1)
--
--	.balign IFETCH_ALIGN_BYTES
--_GLOBAL(interrupt_return_lite)
- 	ld	r4,_MSR(r1)
- 	andi.	r0,r4,MSR_PR
- 	beq	kernel_interrupt_return
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 269edd1460be..1bccc869ebd3 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1507,7 +1507,7 @@ EXC_COMMON_BEGIN(hardware_interrupt_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM hardware_interrupt
- 
-@@ -1694,7 +1694,7 @@ EXC_COMMON_BEGIN(decrementer_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	timer_interrupt
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM decrementer
- 
-@@ -1785,7 +1785,7 @@ EXC_COMMON_BEGIN(doorbell_super_common)
- #else
- 	bl	unknown_exception
+diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+index 399ca63196e4..841746357833 100644
+--- a/arch/powerpc/include/asm/asm-prototypes.h
++++ b/arch/powerpc/include/asm/asm-prototypes.h
+@@ -96,6 +96,12 @@ ppc_select(int n, fd_set __user *inp, fd_set __user *outp, fd_set __user *exp, s
+ unsigned long __init early_init(unsigned long dt_ptr);
+ void __init machine_init(u64 dt_ptr);
  #endif
--	b	interrupt_return_lite
-+	b	interrupt_return
++#ifdef CONFIG_PPC64
++long system_call_exception(long r3, long r4, long r5, long r6, long r7, long r8, unsigned long r0, struct pt_regs *regs);
++notrace unsigned long syscall_exit_prepare(unsigned long r3, struct pt_regs *regs);
++notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr);
++notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsigned long msr);
++#endif
  
- 	GEN_KVM doorbell_super
- 
-@@ -2183,7 +2183,7 @@ EXC_COMMON_BEGIN(h_doorbell_common)
- #else
- 	bl	unknown_exception
- #endif
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM h_doorbell
- 
-@@ -2213,7 +2213,7 @@ EXC_COMMON_BEGIN(h_virt_irq_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM h_virt_irq
- 
-@@ -2260,7 +2260,7 @@ EXC_COMMON_BEGIN(performance_monitor_common)
- 	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	performance_monitor_exception
--	b	interrupt_return_lite
-+	b	interrupt_return
- 
- 	GEN_KVM performance_monitor
- 
-@@ -3013,7 +3013,7 @@ do_hash_page:
-         cmpdi	r3,0			/* see if __hash_page succeeded */
- 
- 	/* Success */
--	beq	interrupt_return_lite	/* Return from exception on success */
-+	beq	interrupt_return	/* Return from exception on success */
- 
- 	/* Error */
- 	blt-	13f
-@@ -3027,10 +3027,11 @@ do_hash_page:
- handle_page_fault:
- 11:	andis.  r0,r5,DSISR_DABRMATCH@h
- 	bne-    handle_dabr_fault
-+	bl	save_nvgprs
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_page_fault
- 	cmpdi	r3,0
--	beq+	interrupt_return_lite
-+	beq+	interrupt_return
- 	mr	r5,r3
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	ld	r4,_DAR(r1)
-@@ -3045,9 +3046,9 @@ handle_dabr_fault:
- 	bl      do_break
- 	/*
- 	 * do_break() may have changed the NV GPRS while handling a breakpoint.
--	 * If so, we need to restore them with their updated values. Don't use
--	 * interrupt_return_lite here.
-+	 * If so, we need to restore them with their updated values.
- 	 */
-+	REST_NVGPRS(r1)
- 	b       interrupt_return
- 
- 
+ long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_low,
+ 		      u32 len_high, u32 len_low);
+diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+index d00cfc4a39a9..62f44c3072f3 100644
+--- a/arch/powerpc/kernel/syscall_64.c
++++ b/arch/powerpc/kernel/syscall_64.c
+@@ -1,4 +1,5 @@
+ #include <linux/err.h>
++#include <asm/asm-prototypes.h>
+ #include <asm/book3s/64/kup-radix.h>
+ #include <asm/cputime.h>
+ #include <asm/hw_irq.h>
 -- 
 2.23.0
 
