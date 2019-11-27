@@ -1,90 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFBF10ACEB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 10:52:21 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D503310ACE5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 10:50:17 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NGGZ5KnvzDqgD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 20:50:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NGJw5QbYzDqgq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 20:52:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NGD044T4zDqg3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 20:47:59 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAR9lKWP081723
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 04:47:56 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2whcxf1eyw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 04:47:54 -0500
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Wed, 27 Nov 2019 09:47:49 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 27 Nov 2019 09:47:47 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAR9lkum53805106
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 Nov 2019 09:47:46 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 51474A4051;
- Wed, 27 Nov 2019 09:47:46 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 16C36A4040;
- Wed, 27 Nov 2019 09:47:46 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.40.227])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 27 Nov 2019 09:47:46 +0000 (GMT)
-Subject: Re: [Very RFC 40/46] powernv/npu: Don't drop refcount when looking up
- GPU pci_devs
-To: Greg Kurz <groug@kaod.org>
-References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-41-oohall@gmail.com>
- <6bb90911-54fa-9f26-ec4d-7538f3303475@ozlabs.ru>
- <20191127092408.5a996f41@bahia.w3ibm.bluemix.net>
- <851d7f28-8698-ec0b-7732-423c0926ce94@linux.ibm.com>
- <20191127103354.0758b079@bahia.w3ibm.bluemix.net>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Wed, 27 Nov 2019 10:47:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NGFM6sgjzDqkd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 20:49:11 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 42736B1DF;
+ Wed, 27 Nov 2019 09:49:06 +0000 (UTC)
+Date: Wed, 27 Nov 2019 10:49:00 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v2 29/35] powerpc/perf: remove current_is_64bit()
+Message-ID: <20191127094900.GA11661@kitsune.suse.cz>
+References: <cover.1574798487.git.msuchanek@suse.de>
+ <83795e9690ad8b51a2d991919bc102351a3bbb20.1574798487.git.msuchanek@suse.de>
+ <ecceebf5-391a-c75d-28a7-44623adc06e8@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <20191127103354.0758b079@bahia.w3ibm.bluemix.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19112709-0012-0000-0000-0000036CDCBC
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19112709-0013-0000-0000-000021A8851D
-Message-Id: <e5b52a32-f53e-7a34-01e4-90f8bae9a44c@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-27_02:2019-11-27,2019-11-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 suspectscore=1 adultscore=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1911270084
+In-Reply-To: <ecceebf5-391a-c75d-28a7-44623adc06e8@c-s.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,123 +49,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- Oliver O'Halloran <oohall@gmail.com>, s.miroshnichenko@yadro.com,
- alistair@popple.id.au
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>, Christian Brauner <christian@brauner.io>,
+ Breno Leitao <leitao@debian.org>, Michael Neuling <mikey@neuling.org>,
+ Nicolai Stange <nstange@suse.de>, Diana Craciun <diana.craciun@nxp.com>,
+ Firoz Khan <firoz.khan@linaro.org>, Allison Randal <allison@lohutok.net>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Jagadeesh Pagadala <jagdsh.linux@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>,
+ Gustavo Romero <gromero@linux.ibm.com>, Mathieu Malaterre <malat@debian.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Brajeswar Ghosh <brajeswar.linux@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 27/11/2019 à 10:33, Greg Kurz a écrit :
-> On Wed, 27 Nov 2019 10:10:13 +0100
-> Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+On Wed, Nov 27, 2019 at 06:41:09AM +0100, Christophe Leroy wrote:
 > 
->>
->>
->> Le 27/11/2019 à 09:24, Greg Kurz a écrit :
->>> On Wed, 27 Nov 2019 18:09:40 +1100
->>> Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->>>
->>>>
->>>>
->>>> On 20/11/2019 12:28, Oliver O'Halloran wrote:
->>>>> The comment here implies that we don't need to take a ref to the pci_dev
->>>>> because the ioda_pe will always have one. This implies that the current
->>>>> expection is that the pci_dev for an NPU device will *never* be torn
->>>>> down since the ioda_pe having a ref to the device will prevent the
->>>>> release function from being called.
->>>>>
->>>>> In other words, the desired behaviour here appears to be leaking a ref.
->>>>>
->>>>> Nice!
->>>>
->>>>
->>>> There is a history: https://patchwork.ozlabs.org/patch/1088078/
->>>>
->>>> We did not fix anything in particular then, we do not seem to be fixing
->>>> anything now (in other words - we cannot test it in a normal natural
->>>> way). I'd drop this one.
->>>>
->>>
->>> Yeah, I didn't fix anything at the time. Just reverted to the ref
->>> count behavior we had before:
->>>
->>> https://patchwork.ozlabs.org/patch/829172/
->>>
->>> Frederic recently posted his take on the same topic from the OpenCAPI
->>> point of view:
->>>
->>> http://patchwork.ozlabs.org/patch/1198947/
->>>
->>> He seems to indicate the NPU devices as the real culprit because
->>> nobody ever cared for them to be removable. Fixing that seems be
->>> a chore nobody really wants to address obviously... :-\
->>
->>
->> I had taken a stab at not leaking a ref for the nvlink devices and do
->> the proper thing regarding ref counting (i.e. fixing all the callers of
->> get_pci_dev() to drop the reference when they were done). With that, I
->> could see that the ref count of the nvlink devices could drop to 0
->> (calling remove for the device in /sys) and that the devices could go away.
->>
->> But then, I realized it's not necessarily desirable at this point. There
->> are several comments in the code saying the npu devices (for nvlink)
->> don't go away, there's no device release callback defined when it seems
->> there should be, at least to handle releasing PEs.... All in all, it
->> seems that some work would be needed. And if it hasn't been required by
->> now...
->>
 > 
-> If everyone is ok with leaking a reference in the NPU case, I guess
-> this isn't a problem. But if we move forward with Oliver's patch, a
-> pci_dev_put() would be needed for OpenCAPI, correct ?
-
-
-No, these code paths are nvlink-only.
-
-   Fred
-
-
-
->>     Fred
->>
->>
->>>>
->>>>
->>>>>
->>>>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
->>>>> ---
->>>>>    arch/powerpc/platforms/powernv/npu-dma.c | 11 +++--------
->>>>>    1 file changed, 3 insertions(+), 8 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
->>>>> index 72d3749da02c..2eb6e6d45a98 100644
->>>>> --- a/arch/powerpc/platforms/powernv/npu-dma.c
->>>>> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
->>>>> @@ -28,15 +28,10 @@ static struct pci_dev *get_pci_dev(struct device_node *dn)
->>>>>    			break;
->>>>>    
->>>>>    	/*
->>>>> -	 * pci_get_domain_bus_and_slot() increased the reference count of
->>>>> -	 * the PCI device, but callers don't need that actually as the PE
->>>>> -	 * already holds a reference to the device. Since callers aren't
->>>>> -	 * aware of the reference count change, call pci_dev_put() now to
->>>>> -	 * avoid leaks.
->>>>> +	 * NB: for_each_pci_dev() elevates the pci_dev refcount.
->>>>> +	 * Caller is responsible for dropping the ref when it's
->>>>> +	 * finished with it.
->>>>>    	 */
->>>>> -	if (pdev)
->>>>> -		pci_dev_put(pdev);
->>>>> -
->>>>>    	return pdev;
->>>>>    }
->>>>>    
->>>>>
->>>>
->>>
->>
+> Le 26/11/2019 � 21:13, Michal Suchanek a �crit�:
+> > Since commit ed1cd6deb013 ("powerpc: Activate CONFIG_THREAD_INFO_IN_TASK")
+> > current_is_64bit() is quivalent to !is_32bit_task().
+> > Remove the redundant function.
+> > 
+> > Link: https://github.com/linuxppc/issues/issues/275
+> > Link: https://lkml.org/lkml/2019/9/12/540
+> > 
+> > Fixes: linuxppc#275
+> > Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 > 
+> This change is already in powerpc/next, see https://github.com/linuxppc/linux/commit/42484d2c0f82b666292faf6668c77b49a3a04bc0
 
+Right, needs rebase.
+
+Thanks
+
+Michal
+> 
+> Christophe
+> 
+> > ---
+> >   arch/powerpc/perf/callchain.c | 17 +----------------
+> >   1 file changed, 1 insertion(+), 16 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
+> > index c84bbd4298a0..35d542515faf 100644
+> > --- a/arch/powerpc/perf/callchain.c
+> > +++ b/arch/powerpc/perf/callchain.c
+> > @@ -284,16 +284,6 @@ static void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+> >   	}
+> >   }
+> > -static inline int current_is_64bit(void)
+> > -{
+> > -	/*
+> > -	 * We can't use test_thread_flag() here because we may be on an
+> > -	 * interrupt stack, and the thread flags don't get copied over
+> > -	 * from the thread_info on the main stack to the interrupt stack.
+> > -	 */
+> > -	return !test_ti_thread_flag(task_thread_info(current), TIF_32BIT);
+> > -}
+> > -
+> >   #else  /* CONFIG_PPC64 */
+> >   /*
+> >    * On 32-bit we just access the address and let hash_page create a
+> > @@ -321,11 +311,6 @@ static inline void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry
+> >   {
+> >   }
+> > -static inline int current_is_64bit(void)
+> > -{
+> > -	return 0;
+> > -}
+> > -
+> >   static inline int valid_user_sp(unsigned long sp, int is_64)
+> >   {
+> >   	if (!sp || (sp & 7) || sp > TASK_SIZE - 32)
+> > @@ -486,7 +471,7 @@ static void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+> >   void
+> >   perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
+> >   {
+> > -	if (current_is_64bit())
+> > +	if (!is_32bit_task())
+> >   		perf_callchain_user_64(entry, regs);
+> >   	else
+> >   		perf_callchain_user_32(entry, regs);
+> > 
