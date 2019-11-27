@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D381010AE65
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 12:02:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NHsb0kq1zDqmf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 22:02:11 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4756310AE6D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 12:04:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NHwF0T2CzDqrj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 22:04:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,18 +18,17 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NHMT5flPzDqkV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 21:39:33 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NHMW6sz7zDqb5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 21:39:35 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id A4F5CB44B;
- Wed, 27 Nov 2019 10:39:30 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 31D0FB43A;
+ Wed, 27 Nov 2019 10:39:32 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 rebase 08/34] powerpc/64s/exception: Remove old
- INT_KVM_HANDLER
-Date: Wed, 27 Nov 2019 11:38:44 +0100
-Message-Id: <30a4962a03cebc03f0e2100e39b1cadd749174c1.1574803684.git.msuchanek@suse.de>
+Subject: [PATCH v2 rebase 09/34] powerpc/64s/exception: Add ISIDE option
+Date: Wed, 27 Nov 2019 11:38:45 +0100
+Message-Id: <394222e2e9c85eaffd004a52750e45d3aea74a9a.1574803685.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1574803684.git.msuchanek@suse.de>
 References: <cover.1574803684.git.msuchanek@suse.de>
@@ -78,141 +77,104 @@ Sender: "Linuxppc-dev"
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
+Rather than using DAR=2 to select the i-side registers, add an
+explicit option.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 55 +++++++++++++---------------
- 1 file changed, 26 insertions(+), 29 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index f318869607db..bef0c2eee7dc 100644
+index bef0c2eee7dc..b8588618cdc3 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -266,15 +266,6 @@ do_define_int n
+@@ -199,6 +199,7 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ #define IVEC		.L_IVEC_\name\()
+ #define IHSRR		.L_IHSRR_\name\()
+ #define IAREA		.L_IAREA_\name\()
++#define IISIDE		.L_IISIDE_\name\()
+ #define IDAR		.L_IDAR_\name\()
+ #define IDSISR		.L_IDSISR_\name\()
+ #define ISET_RI		.L_ISET_RI_\name\()
+@@ -231,6 +232,9 @@ do_define_int n
+ 	.ifndef IAREA
+ 		IAREA=PACA_EXGEN
  	.endif
- .endm
- 
--.macro INT_KVM_HANDLER name, vec, hsrr, area, skip
--	TRAMP_KVM_BEGIN(\name\()_kvm)
--	KVM_HANDLER \vec, \hsrr, \area, \skip
--.endm
--
--.macro GEN_KVM name
--	KVM_HANDLER IVEC, IHSRR, IAREA, IKVM_SKIP
--.endm
--
- #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
- /*
-@@ -293,35 +284,35 @@ do_define_int n
- 	bne	\name\()_kvm
- .endm
- 
--.macro KVM_HANDLER vec, hsrr, area, skip
--	.if \skip
-+.macro GEN_KVM name
-+	.if IKVM_SKIP
- 	cmpwi	r10,KVM_GUEST_MODE_SKIP
- 	beq	89f
- 	.else
- BEGIN_FTR_SECTION_NESTED(947)
--	ld	r10,\area+EX_CFAR(r13)
-+	ld	r10,IAREA+EX_CFAR(r13)
- 	std	r10,HSTATE_CFAR(r13)
- END_FTR_SECTION_NESTED(CPU_FTR_CFAR,CPU_FTR_CFAR,947)
++	.ifndef IISIDE
++		IISIDE=0
++	.endif
+ 	.ifndef IDAR
+ 		IDAR=0
  	.endif
- 
- BEGIN_FTR_SECTION_NESTED(948)
--	ld	r10,\area+EX_PPR(r13)
-+	ld	r10,IAREA+EX_PPR(r13)
- 	std	r10,HSTATE_PPR(r13)
- END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
--	ld	r10,\area+EX_R10(r13)
-+	ld	r10,IAREA+EX_R10(r13)
- 	std	r12,HSTATE_SCRATCH0(r13)
- 	sldi	r12,r9,32
- 	/* HSRR variants have the 0x2 bit added to their trap number */
--	.if \hsrr == EXC_HV_OR_STD
-+	.if IHSRR == EXC_HV_OR_STD
- 	BEGIN_FTR_SECTION
--	ori	r12,r12,(\vec + 0x2)
-+	ori	r12,r12,(IVEC + 0x2)
- 	FTR_SECTION_ELSE
--	ori	r12,r12,(\vec)
-+	ori	r12,r12,(IVEC)
- 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--	.elseif \hsrr
--	ori	r12,r12,(\vec + 0x2)
-+	.elseif IHSRR
-+	ori	r12,r12,(IVEC+ 0x2)
+@@ -542,7 +546,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	 */
+ 	GET_SCRATCH0(r10)
+ 	std	r10,IAREA+EX_R13(r13)
+-	.if IDAR == 1
++	.if IDAR && !IISIDE
+ 	.if IHSRR
+ 	mfspr	r10,SPRN_HDAR
  	.else
--	ori	r12,r12,(\vec)
-+	ori	r12,r12,(IVEC)
+@@ -550,7 +554,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
  	.endif
- 
- #ifdef CONFIG_RELOCATABLE
-@@ -334,25 +325,25 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	std	r9,HSTATE_SCRATCH1(r13)
- 	__LOAD_FAR_HANDLER(r9, kvmppc_interrupt)
- 	mtctr	r9
--	ld	r9,\area+EX_R9(r13)
-+	ld	r9,IAREA+EX_R9(r13)
- 	bctr
- #else
--	ld	r9,\area+EX_R9(r13)
-+	ld	r9,IAREA+EX_R9(r13)
- 	b	kvmppc_interrupt
- #endif
- 
- 
--	.if \skip
-+	.if IKVM_SKIP
- 89:	mtocrf	0x80,r9
--	ld	r9,\area+EX_R9(r13)
--	ld	r10,\area+EX_R10(r13)
--	.if \hsrr == EXC_HV_OR_STD
-+	ld	r9,IAREA+EX_R9(r13)
-+	ld	r10,IAREA+EX_R10(r13)
-+	.if IHSRR == EXC_HV_OR_STD
- 	BEGIN_FTR_SECTION
- 	b	kvmppc_skip_Hinterrupt
- 	FTR_SECTION_ELSE
- 	b	kvmppc_skip_interrupt
- 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--	.elseif \hsrr
-+	.elseif IHSRR
- 	b	kvmppc_skip_Hinterrupt
+ 	std	r10,IAREA+EX_DAR(r13)
+ 	.endif
+-	.if IDSISR == 1
++	.if IDSISR && !IISIDE
+ 	.if IHSRR
+ 	mfspr	r10,SPRN_HDSISR
  	.else
- 	b	kvmppc_skip_interrupt
-@@ -363,7 +354,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- #else
- .macro KVMTEST name, hsrr, n
- .endm
--.macro KVM_HANDLER name, vec, hsrr, area, skip
-+.macro GEN_KVM name
- .endm
- #endif
- 
-@@ -1640,6 +1631,12 @@ EXC_VIRT_NONE(0x4b00, 0x100)
-  * without saving, though xer is not a good idea to use, as hardware may
-  * interpret some bits so it may be costly to change them.
-  */
-+INT_DEFINE_BEGIN(system_call)
-+	IVEC=0xc00
-+	IKVM_REAL=1
-+	IKVM_VIRT=1
-+INT_DEFINE_END(system_call)
+@@ -625,16 +629,18 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	std	r9,GPR11(r1)
+ 	std	r10,GPR12(r1)
+ 	std	r11,GPR13(r1)
 +
- .macro SYSTEM_CALL virt
- #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
- 	/*
-@@ -1733,7 +1730,7 @@ TRAMP_KVM_BEGIN(system_call_kvm)
- 	SET_SCRATCH0(r10)
- 	std	r9,PACA_EXGEN+EX_R9(r13)
- 	mfcr	r9
--	KVM_HANDLER 0xc00, EXC_STD, PACA_EXGEN, 0
-+	GEN_KVM system_call
- #endif
+ 	.if IDAR
+-	.if IDAR == 2
++	.if IISIDE
+ 	ld	r10,_NIP(r1)
+ 	.else
+ 	ld	r10,IAREA+EX_DAR(r13)
+ 	.endif
+ 	std	r10,_DAR(r1)
+ 	.endif
++
+ 	.if IDSISR
+-	.if IDSISR == 2
++	.if IISIDE
+ 	ld	r10,_MSR(r1)
+ 	lis	r11,DSISR_SRR1_MATCH_64S@h
+ 	and	r10,r10,r11
+@@ -643,6 +649,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	.endif
+ 	std	r10,_DSISR(r1)
+ 	.endif
++
+ BEGIN_FTR_SECTION_NESTED(66)
+ 	ld	r10,IAREA+EX_CFAR(r13)
+ 	std	r10,ORIG_GPR3(r1)
+@@ -1311,8 +1318,9 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
  
+ INT_DEFINE_BEGIN(instruction_access)
+ 	IVEC=0x400
+-	IDAR=2
+-	IDSISR=2
++	IISIDE=1
++	IDAR=1
++	IDSISR=1
+ 	IKVM_REAL=1
+ INT_DEFINE_END(instruction_access)
+ 
+@@ -1341,7 +1349,8 @@ INT_DEFINE_BEGIN(instruction_access_slb)
+ 	IVEC=0x480
+ 	IAREA=PACA_EXSLB
+ 	IRECONCILE=0
+-	IDAR=2
++	IISIDE=1
++	IDAR=1
+ 	IKVM_REAL=1
+ INT_DEFINE_END(instruction_access_slb)
  
 -- 
 2.23.0
