@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098C210AE2D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 11:49:01 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889AC10AE02
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 11:43:32 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NHS10jw3zDqkw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 21:43:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NHZK5Cb2zDq9J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 21:48:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,18 +18,18 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NHMG6pGvzDqb5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 21:39:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NHMJ3kZCzDqb5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 21:39:24 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id A6830B31C;
- Wed, 27 Nov 2019 10:39:19 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 365ABB40D;
+ Wed, 27 Nov 2019 10:39:21 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 rebase 01/34] powerpc/64s/exception: Introduce INT_DEFINE
- parameter block for code generation
-Date: Wed, 27 Nov 2019 11:38:37 +0100
-Message-Id: <1183b3557ef23d7b8d00243f0b828e47ba40a013.1574803684.git.msuchanek@suse.de>
+Subject: [PATCH v2 rebase 02/34] powerpc/64s/exception: Add GEN_COMMON macro
+ that uses INT_DEFINE parameters
+Date: Wed, 27 Nov 2019 11:38:38 +0100
+Message-Id: <81e78969c76122dbe0b170f1f8c4abb6bfaf7c7e.1574803684.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1574803684.git.msuchanek@suse.de>
 References: <cover.1574803684.git.msuchanek@suse.de>
@@ -78,143 +78,69 @@ Sender: "Linuxppc-dev"
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The code generation macro arguments are difficult to read, and
-defaults can't easily be used.
-
-This introduces a block where parameters can be set for interrupt
-handler code generation by the subsequent macros, and adds the first
-generation macro for interrupt entry.
-
-One interrupt handler is converted to the new macros to demonstrate
-the change, the rest will be coverted all at once.
-
 No generated code change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 77 ++++++++++++++++++++++++++--
- 1 file changed, 73 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 46508b148e16..0be6d8c34536 100644
+index 0be6d8c34536..595e215515e9 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -193,6 +193,61 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- 	mtctr	reg;							\
- 	bctr
+@@ -206,6 +206,9 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ #define IMASK		.L_IMASK_\name\()
+ #define IKVM_REAL	.L_IKVM_REAL_\name\()
+ #define IKVM_VIRT	.L_IKVM_VIRT_\name\()
++#define ISTACK		.L_ISTACK_\name\()
++#define IRECONCILE	.L_IRECONCILE_\name\()
++#define IKUAP		.L_IKUAP_\name\()
  
-+/*
-+ * Interrupt code generation macros
-+ */
-+#define IVEC		.L_IVEC_\name\()
-+#define IHSRR		.L_IHSRR_\name\()
-+#define IAREA		.L_IAREA_\name\()
-+#define IDAR		.L_IDAR_\name\()
-+#define IDSISR		.L_IDSISR_\name\()
-+#define ISET_RI		.L_ISET_RI_\name\()
-+#define IEARLY		.L_IEARLY_\name\()
-+#define IMASK		.L_IMASK_\name\()
-+#define IKVM_REAL	.L_IKVM_REAL_\name\()
-+#define IKVM_VIRT	.L_IKVM_VIRT_\name\()
-+
-+#define INT_DEFINE_BEGIN(n)						\
-+.macro int_define_ ## n name
-+
-+#define INT_DEFINE_END(n)						\
-+.endm ;									\
-+int_define_ ## n n ;							\
-+do_define_int n
-+
-+.macro do_define_int name
-+	.ifndef IVEC
-+		.error "IVEC not defined"
+ #define INT_DEFINE_BEGIN(n)						\
+ .macro int_define_ ## n name
+@@ -246,6 +249,15 @@ do_define_int n
+ 	.ifndef IKVM_VIRT
+ 		IKVM_VIRT=0
+ 	.endif
++	.ifndef ISTACK
++		ISTACK=1
 +	.endif
-+	.ifndef IHSRR
-+		IHSRR=EXC_STD
++	.ifndef IRECONCILE
++		IRECONCILE=1
 +	.endif
-+	.ifndef IAREA
-+		IAREA=PACA_EXGEN
++	.ifndef IKUAP
++		IKUAP=1
 +	.endif
-+	.ifndef IDAR
-+		IDAR=0
-+	.endif
-+	.ifndef IDSISR
-+		IDSISR=0
-+	.endif
-+	.ifndef ISET_RI
-+		ISET_RI=1
-+	.endif
-+	.ifndef IEARLY
-+		IEARLY=0
-+	.endif
-+	.ifndef IMASK
-+		IMASK=0
-+	.endif
-+	.ifndef IKVM_REAL
-+		IKVM_REAL=0
-+	.endif
-+	.ifndef IKVM_VIRT
-+		IKVM_VIRT=0
-+	.endif
-+.endm
-+
+ .endm
+ 
  .macro INT_KVM_HANDLER name, vec, hsrr, area, skip
- 	TRAMP_KVM_BEGIN(\name\()_kvm)
- 	KVM_HANDLER \vec, \hsrr, \area, \skip
-@@ -474,7 +529,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	 */
- 	GET_SCRATCH0(r10)
- 	std	r10,\area\()+EX_R13(r13)
--	.if \dar
-+	.if \dar == 1
- 	.if \hsrr
- 	mfspr	r10,SPRN_HDAR
- 	.else
-@@ -482,7 +537,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	.endif
- 	std	r10,\area\()+EX_DAR(r13)
- 	.endif
--	.if \dsisr
-+	.if \dsisr == 1
- 	.if \hsrr
- 	mfspr	r10,SPRN_HDSISR
- 	.else
-@@ -506,6 +561,14 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+@@ -670,6 +682,10 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66)
  	.endif
  .endm
  
-+.macro GEN_INT_ENTRY name, virt, ool=0
-+	.if ! \virt
-+		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_REAL
-+	.else
-+		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_VIRT
-+	.endif
++.macro GEN_COMMON name
++	INT_COMMON IVEC, IAREA, ISTACK, IKUAP, IRECONCILE, IDAR, IDSISR
 +.endm
 +
  /*
-  * On entry r13 points to the paca, r9-r13 are saved in the paca,
-  * r9 contains the saved CR, r11 and r12 contain the saved SRR0 and
-@@ -1143,12 +1206,18 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	bl	unrecoverable_exception
- 	b	.
- 
-+INT_DEFINE_BEGIN(data_access)
-+	IVEC=0x300
-+	IDAR=1
-+	IDSISR=1
-+	IKVM_REAL=1
-+INT_DEFINE_END(data_access)
- 
- EXC_REAL_BEGIN(data_access, 0x300, 0x80)
--	INT_HANDLER data_access, 0x300, ool=1, dar=1, dsisr=1, kvm=1
-+	GEN_INT_ENTRY data_access, virt=0, ool=1
- EXC_REAL_END(data_access, 0x300, 0x80)
- EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
--	INT_HANDLER data_access, 0x300, virt=1, dar=1, dsisr=1
-+	GEN_INT_ENTRY data_access, virt=1
+  * Restore all registers including H/SRR0/1 saved in a stack frame of a
+  * standard exception.
+@@ -1221,13 +1237,7 @@ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
  EXC_VIRT_END(data_access, 0x4300, 0x80)
  INT_KVM_HANDLER data_access, 0x300, EXC_STD, PACA_EXGEN, 1
  EXC_COMMON_BEGIN(data_access_common)
+-	/*
+-	 * Here r13 points to the paca, r9 contains the saved CR,
+-	 * SRR0 and SRR1 are saved in r11 and r12,
+-	 * r9 - r13 are saved in paca->exgen.
+-	 * EX_DAR and EX_DSISR have saved DAR/DSISR
+-	 */
+-	INT_COMMON 0x300, PACA_EXGEN, 1, 1, 1, 1, 1
++	GEN_COMMON data_access
+ 	ld	r4,_DAR(r1)
+ 	ld	r5,_DSISR(r1)
+ BEGIN_MMU_FTR_SECTION
 -- 
 2.23.0
 
