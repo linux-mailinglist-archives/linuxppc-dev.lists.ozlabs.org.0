@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283FE10C05E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 23:51:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Nbbm2Z9WzDqG0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 09:51:16 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9763510C069
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 23:56:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NbkH3fldzDqZ1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 09:56:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="YtAZQriS"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="guEJ51nN"; 
  dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NbYj5k96zDqx1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 09:49:28 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id h13so10577334plr.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 14:49:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Nbgr02hTzDq8B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 09:54:46 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id i5so3481073pgj.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 14:54:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=8K7dAK3AMe/WCykmziewP+TFMOTPYeNxcc7zjYltoWM=;
- b=YtAZQriSsbuDEwjARPaS9pFtnHDe8IROBCt1yM5RiAN/4EC4MYo5vekS39PRapMCcV
- IHm55AG2Wwvj4tMW/0oUfKqMhbp3imbU6QuPdP7U6Wcw8uGFiBf+3Pvq8nXVr5VTPu68
- emAljWkvzf1SEojfhonHmpLXWOZFUmoE4lnVGcFOqYFYjirHQf1mv90uAfB1zNqoSG5g
- ZFxRhQFC/EsWT/qiBDSubGrRktUeQaZUDMOV1IAoQvbAtHgApMnEn9phE0paka5Xlj2c
- eiPdTzeQ1RZiOjL+4bhPUDMzXKHOLd5l5LN/S9iZfJWe60KyOeNlcENVtcujwSCvgddT
- RLOQ==
+ bh=se/dUPyWiVGmAK86/p8VxVgZCtfa6BQ6B4DpYEBzAqY=;
+ b=guEJ51nNRNqWOZHexfeE73GyuIv+TJDbqZrixtj+4+Ec7ZwmGEH09ff8arHm9CtDVf
+ tDpKlnE+63HKGZhWmXx66SMuzGlyoGKmByGO/D7QhDu6n2NWqb5JstglaNGk6q08XUea
+ /2DGujE84QxtHvNzTbSUIPoAP9Hm3pzo8pl/FDwkXV8g75MOayXyMl6d4UNlJuu2VjaU
+ 1vhz11D/sPlZTTZzrzQzuymE650doIVCW5vDIE8WfCtJS5oWWQQr7Y+RDwc+RzpLq7QS
+ zh/oxEuAarVqk80B5FSaoz1oHh2hbr9/J7BOARl/+TPlRc3YQ+zEPi3j8IYSXY6t0cS2
+ UdLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=8K7dAK3AMe/WCykmziewP+TFMOTPYeNxcc7zjYltoWM=;
- b=XskTPdPe9I8m9bPzfq/TuHUQevm1O/2wAMchr/aqudC8/WHLgVhrhzaevXctrO7UAZ
- TFWn78Sbu+pMyNU+ATa7pP4g9HknH6fxek1WPMDYYfZjVbFINq43cADuHsPidDqHWm1G
- o8k6N1k+h84Q94O1TK4NSdknW9spM2ovYIw7ejESySQqDqF7lx2NCvW+k3wD9aIjC7/p
- acM4HtJNPZfFLOnXiESg9TTTDy45WYeNnNvn4WS4AIzxbrFBVpXL57S8mAQsOUiFcWb/
- h9gz1jjLj0bhSttBM/B5ylvn9Ydn6seI1POZASXeVgh7egjTLEsoP5/zEj6vWGtQqdKT
- ZQXg==
-X-Gm-Message-State: APjAAAUm75HOAVu4EddmJugfMoT7U1PsSf7iIuj+zUKJ5rxPHvx5E1Ns
- FoFsQvMgOgSp/JAm9/mg2Jye4w==
-X-Google-Smtp-Source: APXvYqyHI4mT0guWoUS5ZE34OB2Y8btf9hKpyEH46xntF7dg7ciMjtLGNrERb49NnbPGE+sR2lKXog==
-X-Received: by 2002:a17:90b:30ca:: with SMTP id
- hi10mr8946694pjb.143.1574894965274; 
- Wed, 27 Nov 2019 14:49:25 -0800 (PST)
+ bh=se/dUPyWiVGmAK86/p8VxVgZCtfa6BQ6B4DpYEBzAqY=;
+ b=QI80lM13NE1FDJLR7gNJM2xIyHN0225Whh9NRj1Cp2WiKhaTHWeA9dxOcAQTZgX0If
+ KBBOC++L1NB9SYAKcemKiEXw+NAwcge+/nusUo+P+JL1tQLwDhf/Aitx6IDsxGB/3/eS
+ BNMsptipWudPjQqIgHPWeUSosiwKz9085kpCZA1mUO6NY2fUiYl2UUdFmczWh4wH4ZyO
+ CcJPpJE7ZPYd2LKIl1TDQqDtWEIy38NYAfffx4fCDwrbvASmBYntEMr/ixkA9zCkDfE7
+ i5DJXIkIcvvuuLKGUXfzZnz61fq5PEX1I09upTvM9G1Km5ZHSU3BhHW9HHc1vfRco6S3
+ awAg==
+X-Gm-Message-State: APjAAAVlX9OoxyRKbwyTeTS0O0QwdLpLsmmg0UkmZQIGPNlgPpOKB6Ay
+ ztWHeZQ+Wip3qvLIKmiyr8E7Zw==
+X-Google-Smtp-Source: APXvYqxfAI+sk3WyWE5lUc2veoV0wqxsAPcpOAeGto6va48RXf7SdChuAa45/yLQvEnLbcskjoFFqg==
+X-Received: by 2002:a63:5715:: with SMTP id l21mr7629247pgb.266.1574895283815; 
+ Wed, 27 Nov 2019 14:54:43 -0800 (PST)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id e7sm17161650pfi.29.2019.11.27.14.49.22
+ by smtp.gmail.com with ESMTPSA id k6sm16781011pfi.119.2019.11.27.14.54.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Nov 2019 14:49:24 -0800 (PST)
-Subject: Re: [Very RFC 43/46] powernv/pci: Do not set pdn->pe_number for
- NPU/CAPI devices
+ Wed, 27 Nov 2019 14:54:43 -0800 (PST)
+Subject: Re: [Very RFC 44/46] powerpc/pci: Don't set pdn->pe_number when
+ applying the weird P8 NVLink PE hack
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-44-oohall@gmail.com>
+ <20191120012859.23300-45-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +139,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <bac7061b-ce43-7ff0-05ed-9458842a4e30@ozlabs.ru>
-Date: Thu, 28 Nov 2019 09:49:20 +1100
+Message-ID: <b161388f-2093-5349-673f-3cc8bbe685e3@ozlabs.ru>
+Date: Thu, 28 Nov 2019 09:54:39 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-44-oohall@gmail.com>
+In-Reply-To: <20191120012859.23300-45-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -160,89 +159,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, s.miroshnichenko@yadro.com,
- Greg Kurz <groug@kaod.org>
+Cc: alistair@popple.id.au, s.miroshnichenko@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-cc: Greg.
 
 
 On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> The only thing we need the pdn for in this function is setting the pe_number
-> field, which we don't use anymore. Fix the weird refcounting behaviour while
-> we're here.
+> P8 needs to shove four GPUs into three PEs for $reasons. Remove the
+> pdn->pe_assignment done there since we just use the pe_rmap[] now.
+
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
+
+
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 > ---
-> Either Fred, or Reza also fixed this in some patch lately and that'll probably get
-> merged before this one does.
-> ---
->  arch/powerpc/platforms/powernv/pci-ioda.c | 27 +++++++++--------------
->  1 file changed, 10 insertions(+), 17 deletions(-)
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
 > diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 45d940730c30..2a9201306543 100644
+> index 2a9201306543..eceff27357e5 100644
 > --- a/arch/powerpc/platforms/powernv/pci-ioda.c
 > +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1066,16 +1066,13 @@ static int pnv_pci_vf_resource_shift(struct pci_dev *dev, int offset)
->  static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->  {
->  	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
-> -	struct pci_dn *pdn = pci_get_pdn(dev);
-> -	struct pnv_ioda_pe *pe;
-> +	struct pnv_ioda_pe *pe = pnv_ioda_get_pe(dev);
+> @@ -1183,7 +1183,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
+>  	long rid;
+>  	struct pnv_ioda_pe *pe;
+>  	struct pci_dev *gpu_pdev;
+> -	struct pci_dn *npu_pdn;
+>  	struct pnv_phb *phb = pci_bus_to_pnvhb(npu_pdev->bus);
 >  
-> -	if (!pdn) {
-> -		pr_err("%s: Device tree node not associated properly\n",
-> -			   pci_name(dev));
-> +	/* Already has a PE assigned? huh? */
-> +	if (pe) {
-> +		WARN_ON(1);
->  		return NULL;
->  	}
-> -	if (pdn->pe_number != IODA_INVALID_PE)
-> -		return NULL;
+>  	/*
+> @@ -1210,9 +1209,8 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
+>  			dev_info(&npu_pdev->dev,
+>  				"Associating to existing PE %x\n", pe_num);
+>  			pci_dev_get(npu_pdev);
+> -			npu_pdn = pci_get_pdn(npu_pdev);
+> -			rid = npu_pdev->bus->number << 8 | npu_pdn->devfn;
+> -			npu_pdn->pe_number = pe_num;
+> +
+> +			rid = npu_pdev->bus->number << 8 | npu_pdev->devfn;
+>  			phb->ioda.pe_rmap[rid] = pe->pe_number;
 >  
->  	pe = pnv_ioda_alloc_pe(phb);
->  	if (!pe) {
-> @@ -1084,29 +1081,25 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->  		return NULL;
->  	}
->  
-> -	/* NOTE: We get only one ref to the pci_dev for the pdn, not for the
-> -	 * pointer in the PE data structure, both should be destroyed at the
-> -	 * same time. However, this needs to be looked at more closely again
-> -	 * once we actually start removing things (Hotplug, SR-IOV, ...)
-> +	/*
-> +	 * NB: We **do not** hold a pci_dev ref for pe->pdev.
->  	 *
-> -	 * At some point we want to remove the PDN completely anyways
-> +	 * The pci_dev's release function cleans up the ioda_pe state, so:
-> +	 *  a) We can't take a ref otherwise the release function is never called
-> +	 *  b) The pe->pdev pointer will always point to valid pci_dev (or NULL)
->  	 */
-> -	pci_dev_get(dev);
-> -	pdn->pe_number = pe->pe_number;
->  	pe->flags = PNV_IODA_PE_DEV;
->  	pe->pdev = dev;
->  	pe->pbus = NULL;
->  	pe->mve_number = -1;
-> -	pe->rid = dev->bus->number << 8 | pdn->devfn;
-> +	pe->rid = dev->bus->number << 8 | dev->devfn;
->  
->  	pe_info(pe, "Associated device to PE\n");
->  
->  	if (pnv_ioda_configure_pe(phb, pe)) {
->  		/* XXX What do we do here ? */
->  		pnv_ioda_free_pe(pe);
-> -		pdn->pe_number = IODA_INVALID_PE;
->  		pe->pdev = NULL;
-> -		pci_dev_put(dev);
->  		return NULL;
->  	}
->  
+>  			/* Map the PE to this link */
 > 
 
 -- 
