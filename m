@@ -2,71 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9025910A7E6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 02:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0CF10A7E7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 02:24:48 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47N31L6P8KzDqhD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 12:23:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47N33L29gdzDqQc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 12:24:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47N2m60HdGzDqGv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 12:11:33 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAR17SVo065353; Tue, 26 Nov 2019 20:11:27 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47N2nT4dsJzDqkX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 12:12:45 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAR1CC7F083594; Tue, 26 Nov 2019 20:12:34 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2whcxq3vay-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2whcy73m6a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 Nov 2019 20:11:27 -0500
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xAR17rSF070605;
- Tue, 26 Nov 2019 20:11:26 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2whcxq3van-1
+ Tue, 26 Nov 2019 20:12:34 -0500
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xAR1CYXp084414;
+ Tue, 26 Nov 2019 20:12:34 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2whcy73m60-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 Nov 2019 20:11:26 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAR1A3Pb029477;
- Wed, 27 Nov 2019 01:11:25 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 2wevd6rbyv-1
+ Tue, 26 Nov 2019 20:12:34 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAR1A8n6004319;
+ Wed, 27 Nov 2019 01:12:38 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 2wevd689ge-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 27 Nov 2019 01:11:25 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xAR1BPEO11338298
+ Wed, 27 Nov 2019 01:12:38 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAR1CXOO42074590
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 Nov 2019 01:11:25 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1BEE2AE060;
- Wed, 27 Nov 2019 01:11:25 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D17AAE05F;
- Wed, 27 Nov 2019 01:11:24 +0000 (GMT)
+ Wed, 27 Nov 2019 01:12:33 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5550D124058;
+ Wed, 27 Nov 2019 01:12:33 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9812C124053;
+ Wed, 27 Nov 2019 01:12:32 +0000 (GMT)
 Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 27 Nov 2019 01:11:24 +0000 (GMT)
-Subject: [PATCH 08/14] powerpc/vas: Take reference to PID and mm for user
- space windows
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 27 Nov 2019 01:12:32 +0000 (GMT)
+Subject: [PATCH 09/14] powerpc/vas: Update CSB and notify process for fault
+ CRBs
 From: Haren Myneni <haren@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org,
  mpe@ellerman.id.au, npiggin@gmail.com, mikey@neuling.org,
  herbert@gondor.apana.org.au
 Content-Type: text/plain; charset="UTF-8"
-Date: Tue, 26 Nov 2019 17:10:05 -0800
-Message-ID: <1574817005.13250.14.camel@hbabu-laptop>
+Date: Tue, 26 Nov 2019 17:11:14 -0800
+Message-ID: <1574817074.13250.16.camel@hbabu-laptop>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
@@ -74,11 +74,11 @@ X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-11-26_08:2019-11-26,2019-11-26 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015
- impostorscore=0 mlxlogscore=916 suspectscore=2 priorityscore=1501
- spamscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911270007
+ mlxscore=0 bulkscore=0
+ spamscore=0 mlxlogscore=542 impostorscore=0 malwarescore=0 adultscore=0
+ priorityscore=1501 phishscore=0 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1911270008
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,156 +96,163 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Process close windows after its requests are completed. In multi-thread
-applications, child can open a window but release FD will not be called
-upon its exit. Parent thread will be closing it later upon its exit.
+For each fault CRB, update fault address in CRB (fault_storage_addr)
+and translation error status in CSB so that user space touch the
+fault address and resend the request. If the user space passed invalid
+CSB address send signal to process with SIGSEGV.
 
-The parent can also send NX requests with this window and NX can
-generate page faults. After kernel handles the page fault, send
-signal to process by using PID if CSB address is invalid. Parent
-thread will not receive signal since its PID is different from the one
-saved in vas_window. So use tgid in case if the task for the pid saved
-in window is not running and send signal to its parent.
-
-To prevent reusing the pid until the window closed, take reference to
-pid and task mm.
-
+Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
 Signed-off-by: Haren Myneni <haren@us.ibm.com>
 ---
- arch/powerpc/platforms/powernv/vas-debug.c  |  2 +-
- arch/powerpc/platforms/powernv/vas-window.c | 44 ++++++++++++++++++++++++++---
- arch/powerpc/platforms/powernv/vas.h        | 14 ++++++++-
- 3 files changed, 54 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/powernv/vas-fault.c | 121 ++++++++++++++++++++++++++++-
+ 1 file changed, 120 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powernv/vas-debug.c b/arch/powerpc/platforms/powernv/vas-debug.c
-index 09e63df..ef9a717 100644
---- a/arch/powerpc/platforms/powernv/vas-debug.c
-+++ b/arch/powerpc/platforms/powernv/vas-debug.c
-@@ -38,7 +38,7 @@ static int info_show(struct seq_file *s, void *private)
+diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
+index 7a8b2b5..dd27649 100644
+--- a/arch/powerpc/platforms/powernv/vas-fault.c
++++ b/arch/powerpc/platforms/powernv/vas-fault.c
+@@ -36,6 +36,124 @@ void vas_wakeup_fault_handler(int virq, void *arg)
+ 	wake_up(&vinst->fault_wq);
+ }
  
- 	seq_printf(s, "Type: %s, %s\n", cop_to_str(window->cop),
- 					window->tx_win ? "Send" : "Receive");
--	seq_printf(s, "Pid : %d\n", window->pid);
-+	seq_printf(s, "Pid : %d\n", vas_window_pid(window));
- 
- unlock:
- 	mutex_unlock(&vas_mutex);
-diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-index 7fc1542..ad3104c 100644
---- a/arch/powerpc/platforms/powernv/vas-window.c
-+++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -12,6 +12,8 @@
- #include <linux/log2.h>
- #include <linux/rcupdate.h>
- #include <linux/cred.h>
-+#include <linux/sched/mm.h>
-+#include <linux/mmu_context.h>
- #include <asm/switch_to.h>
- #include <asm/ppc-opcode.h>
- #include "vas.h"
-@@ -887,8 +889,6 @@ struct vas_window *vas_rx_win_open(int vasid, enum vas_cop_type cop,
- 	rxwin->user_win = rxattr->user_win;
- 	rxwin->cop = cop;
- 	rxwin->wcreds_max = rxattr->wcreds_max ?: VAS_WCREDS_DEFAULT;
--	if (rxattr->user_win)
--		rxwin->pid = task_pid_vnr(current);
- 
- 	init_winctx_for_rxwin(rxwin, rxattr, &winctx);
- 	init_winctx_regs(rxwin, &winctx);
-@@ -1037,7 +1037,6 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
- 	txwin->tx_win = 1;
- 	txwin->rxwin = rxwin;
- 	txwin->nx_win = txwin->rxwin->nx_win;
--	txwin->pid = attr->pid;
- 	txwin->user_win = attr->user_win;
- 	txwin->wcreds_max = attr->wcreds_max ?: VAS_WCREDS_DEFAULT;
- 
-@@ -1079,6 +1078,34 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
- 			goto free_window;
- 	}
- 
-+	if (txwin->user_win) {
-+		/*
-+		 * Window opened by child thread may not be closed when
-+		 * it exits. So take reference to its pid and release it
-+		 * when the window is free by parent thread.
-+		 * Acquire a reference to the task's pid to make sure
-+		 * pid will not be re-used.
-+		 */
-+		txwin->pid = get_task_pid(current, PIDTYPE_PID);
-+		/*
-+		 * Acquire a reference to the task's mm.
-+		 */
-+		txwin->mm = get_task_mm(current);
-+
-+		if (txwin->mm) {
-+			mmput(txwin->mm);
-+			mmgrab(txwin->mm);
-+			mm_context_add_copro(txwin->mm);
-+		} else {
-+			put_pid(txwin->pid);
-+			pr_err("VAS: pid(%d): mm_struct is not found\n",
-+					current->pid);
-+			rc = -EPERM;
-+			goto free_window;
-+		}
-+		txwin->tgid = task_tgid_vnr(current);
-+	}
-+
- 	set_vinst_win(vinst, txwin);
- 
- 	return txwin;
-@@ -1277,8 +1304,17 @@ int vas_win_close(struct vas_window *window)
- 	poll_window_castout(window);
- 
- 	/* if send window, drop reference to matching receive window */
--	if (window->tx_win)
-+	if (window->tx_win) {
-+		if (window->user_win) {
-+			/* Drop references to pid and mm */
-+			put_pid(window->pid);
-+			if (window->mm) {
-+				mmdrop(window->mm);
-+				mm_context_remove_copro(window->mm);
-+			}
-+		}
- 		put_rx_win(window->rxwin);
-+	}
- 
- 	vas_window_free(window);
- 
-diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-index eb929c7..03a1c9f 100644
---- a/arch/powerpc/platforms/powernv/vas.h
-+++ b/arch/powerpc/platforms/powernv/vas.h
-@@ -343,7 +343,9 @@ struct vas_window {
- 	bool user_win;		/* True if user space window */
- 	void *hvwc_map;		/* HV window context */
- 	void *uwc_map;		/* OS/User window context */
--	pid_t pid;		/* Linux process id of owner */
-+	struct pid *pid;	/* Linux process id of owner */
-+	pid_t tgid;		/* Thread group ID of owner */
-+	struct mm_struct *mm;	/* Linux process mm_struct */
- 	int wcreds_max;		/* Window credits */
- 
- 	char *dbgname;
-@@ -424,6 +426,16 @@ struct vas_winctx {
- extern struct vas_window *vas_pswid_to_window(struct vas_instance *vinst,
- 						uint32_t pswid);
- 
-+static inline int vas_window_pid(struct vas_window *window)
++static void notify_process(pid_t pid, u64 fault_addr)
 +{
-+	return pid_vnr(window->pid);
++	int rc;
++	struct kernel_siginfo info;
++
++	memset(&info, 0, sizeof(info));
++
++	info.si_signo = SIGSEGV;
++	info.si_errno = EFAULT;
++	info.si_code = SEGV_MAPERR;
++
++	info.si_addr = (void *)fault_addr;
++	rcu_read_lock();
++	rc = kill_pid_info(SIGSEGV, &info, find_vpid(pid));
++	rcu_read_unlock();
++
++	pr_devel("%s(): pid %d kill_proc_info() rc %d\n", __func__, pid, rc);
 +}
 +
-+static inline int vas_window_tgid(struct vas_window *window)
++/*
++ * Update the CSB to indicate a translation error.
++ *
++ * If the fault is in the CSB address itself or if we are unable to
++ * update the CSB, send a signal to the process, because we have no
++ * other way of notifying the user process.
++ *
++ * Remaining settings in the CSB are based on wait_for_csb() of
++ * NX-GZIP.
++ */
++static void update_csb(struct vas_window *window,
++			struct coprocessor_request_block *crb)
 +{
-+	return window->tgid;
++	int rc;
++	pid_t pid;
++	int task_exit = 0;
++	void __user *csb_addr;
++	struct task_struct *tsk;
++	struct coprocessor_status_block csb;
++
++	/*
++	 * NX user space windows can not be opened for task->mm=NULL
++	 * and faults will not be generated for kernel requests.
++	 */
++	if (!window->mm || !window->user_win)
++		return;
++
++	csb_addr = (void *)__be64_to_cpu(crb->csb_addr);
++
++	csb.cc = CSB_CC_TRANSLATION;
++	csb.ce = CSB_CE_TERMINATION;
++	csb.cs = 0;
++	csb.count = 0;
++
++	/*
++	 * Returns the fault address in CPU format since it is passed with
++	 * signal. But if the user space expects BE format, need changes.
++	 * i.e either kernel (here) or user should convert to CPU format.
++	 * Not both!
++	 */
++	csb.address = crb_nx_fault_addr(crb);
++	csb.flags = 0;
++
++	use_mm(window->mm);
++	rc = copy_to_user(csb_addr, &csb, sizeof(csb));
++	/*
++	 * User space polls on csb.flags (first byte). So add barrier
++	 * then copy first byte with csb flags update.
++	 */
++	smp_mb();
++	if (!rc) {
++		csb.flags = CSB_V;
++		rc = copy_to_user(csb_addr, &csb, sizeof(u8));
++	}
++	unuse_mm(window->mm);
++
++	/* Success */
++	if (!rc)
++		return;
++
++	/*
++	 * User space passed invalid CSB address, Notify process with
++	 * SEGV signal.
++	 */
++	tsk = get_pid_task(window->pid, PIDTYPE_PID);
++	/*
++	 * Send window will be closed after processing all NX requests
++	 * and process exits after closing all windows. In multi-thread
++	 * applications, thread may not exists, but does not close FD
++	 * (means send window) upon exit. Parent thread (tgid) can use
++	 * and close the window later.
++	 */
++	if (tsk) {
++		if (tsk->flags & PF_EXITING)
++			task_exit = 1;
++		put_task_struct(tsk);
++		pid = vas_window_pid(window);
++	} else {
++		pid = vas_window_tgid(window);
++
++		rcu_read_lock();
++		tsk = find_task_by_vpid(pid);
++		if (!tsk) {
++			rcu_read_unlock();
++			return;
++		}
++		if (tsk->flags & PF_EXITING)
++			task_exit = 1;
++		rcu_read_unlock();
++	}
++
++	/* Do not notify if the task is exiting. */
++	if (!task_exit) {
++		pr_err("Invalid CSB address 0x%p signalling pid(%d)\n",
++				csb_addr, pid);
++		notify_process(pid, (u64)csb_addr);
++	}
 +}
 +
- static inline void vas_log_write(struct vas_window *win, char *name,
- 			void *regptr, u64 val)
- {
+ /*
+  * Process CRBs that we receive on the fault window.
+  */
+@@ -97,7 +215,7 @@ static void process_fault_crbs(struct vas_instance *vinst)
+ 
+ 		if (IS_ERR(window)) {
+ 			/*
+-			 * What now? We got an interrupt about a specific send
++			 * We got an interrupt about a specific send
+ 			 * window but we can't find that window and we can't
+ 			 * even clean it up (return credit).
+ 			 * But we should not get here.
+@@ -111,6 +229,7 @@ static void process_fault_crbs(struct vas_instance *vinst)
+ 			return;
+ 		}
+ 
++		update_csb(window, crb);
+ 	} while (true);
+ }
+ 
 -- 
 1.8.3.1
 
