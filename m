@@ -1,72 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EE310ACC0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 10:42:40 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NG5n0s8PzDqmf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 20:42:37 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D503310ACE5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 10:50:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NGGZ5KnvzDqgD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 20:50:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::143;
- helo=mail-il1-x143.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="rP1Ytycb"; 
- dkim-atps=neutral
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com
- [IPv6:2607:f8b0:4864:20::143])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NG331TGkzDqk9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 20:40:14 +1100 (AEDT)
-Received: by mail-il1-x143.google.com with SMTP id r9so20398236ilq.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 01:40:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=NG5PPYHCXoD4PMsdjH9Xjb7nCaC1xI2QRc5PwXvFgog=;
- b=rP1YtycbL0HYJLf2occBphPeth6v1OW4+WEB+HHKa5qWX8VWbNdZNP5O8niSyTMSR5
- QH68xYkDt072ILeY7Hg0r7S5t/OuFO+2gUJRbjac5bmuZJAoBsqu/4CMFLlW4uwU8ga8
- B6H2BiivWpbjBMXUTpmLI3ce+qkt+ZFapvnCFWWdkQYOwzMDAdzTnT/zdMV6W5anR7cx
- QrjGIBTEe1jo0758aUAFc89ZjG2B+B3Uwl9zVougx+VNKKva9Z6t7d+sfxX/iv2im6/b
- QHGflsmC7MKwUZfEug58Mq4Wh0veuSuP0Z4Db9yffKrfQQtnvfzMDqVKou3wKFvXHWDv
- 0ULg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=NG5PPYHCXoD4PMsdjH9Xjb7nCaC1xI2QRc5PwXvFgog=;
- b=hwKF7vZ9cTfIia4X1zq5oPxzH6Q+2MiIOwR7P6mwVwjxWjZKqK2kEWcUzaw4LYQS+f
- OBvFZBUHabkOYMBwFqg5n162/pFe5VofWWOXy/opI/DJWTCRnD917vELEeaoTjo47H8X
- drfvpL/xylEzSRMcMmjeMBdf1G1eoRH5TRbG+eUv+R5qUdHTTnjy36mj8Tk+oRdPWvtZ
- Sl9xqDPh6DINPVGrXemrTdjc+6MzW/fr9dlmHckTN/fBimk5Bm3rIyebpW7khYqYsgDe
- qEBUvnSlegu6/nhnG0nr+WctR2lY3IZVggIxpbQxRlyGJzV5wN1lTPp+xQytxvDxopbk
- 6cSw==
-X-Gm-Message-State: APjAAAWMYMYxhYM1pLwb31pZZEQAkp/cxWmRLIBPOtM0+pa8bKqNeWUk
- VB9Goylv+5eW3Tw13qjyb9QkbF2jCBxr912udvle2A==
-X-Google-Smtp-Source: APXvYqxMcbZ/UcmO1RP4Y7bzSz8DiOmfghw8icvRjwqKvalu/qxZ6wCdRn5nw0aFAij+uc/ZxVvN8QHn4MvUj2UH+gE=
-X-Received: by 2002:a92:1711:: with SMTP id u17mr45711804ill.192.1574847611536; 
- Wed, 27 Nov 2019 01:40:11 -0800 (PST)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NGD044T4zDqg3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 20:47:59 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAR9lKWP081723
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 04:47:56 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2whcxf1eyw-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 04:47:54 -0500
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 27 Nov 2019 09:47:49 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 27 Nov 2019 09:47:47 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAR9lkum53805106
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Nov 2019 09:47:46 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 51474A4051;
+ Wed, 27 Nov 2019 09:47:46 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 16C36A4040;
+ Wed, 27 Nov 2019 09:47:46 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.40.227])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 27 Nov 2019 09:47:46 +0000 (GMT)
+Subject: Re: [Very RFC 40/46] powernv/npu: Don't drop refcount when looking up
+ GPU pci_devs
+To: Greg Kurz <groug@kaod.org>
 References: <20191120012859.23300-1-oohall@gmail.com>
  <20191120012859.23300-41-oohall@gmail.com>
  <6bb90911-54fa-9f26-ec4d-7538f3303475@ozlabs.ru>
  <20191127092408.5a996f41@bahia.w3ibm.bluemix.net>
  <851d7f28-8698-ec0b-7732-423c0926ce94@linux.ibm.com>
  <20191127103354.0758b079@bahia.w3ibm.bluemix.net>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 27 Nov 2019 10:47:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
+MIME-Version: 1.0
 In-Reply-To: <20191127103354.0758b079@bahia.w3ibm.bluemix.net>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 27 Nov 2019 20:40:00 +1100
-Message-ID: <CAOSf1CGjyqOezi0aeyUc3C7mKNtu6WdW1g99nRwDHfDKqt_aHQ@mail.gmail.com>
-Subject: Re: [Very RFC 40/46] powernv/npu: Don't drop refcount when looking up
- GPU pci_devs
-To: Greg Kurz <groug@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19112709-0012-0000-0000-0000036CDCBC
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19112709-0013-0000-0000-000021A8851D
+Message-Id: <e5b52a32-f53e-7a34-01e4-90f8bae9a44c@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-27_02:2019-11-27,2019-11-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 suspectscore=1 adultscore=0 priorityscore=1501
+ phishscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-1911270084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,26 +96,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sergey Miroshnichenko <s.miroshnichenko@yadro.com>,
- Alistair Popple <alistair@popple.id.au>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ Oliver O'Halloran <oohall@gmail.com>, s.miroshnichenko@yadro.com,
+ alistair@popple.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 27, 2019 at 8:34 PM Greg Kurz <groug@kaod.org> wrote:
->
->
+
+
+Le 27/11/2019 à 10:33, Greg Kurz a écrit :
+> On Wed, 27 Nov 2019 10:10:13 +0100
+> Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+> 
+>>
+>>
+>> Le 27/11/2019 à 09:24, Greg Kurz a écrit :
+>>> On Wed, 27 Nov 2019 18:09:40 +1100
+>>> Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>>>
+>>>>
+>>>>
+>>>> On 20/11/2019 12:28, Oliver O'Halloran wrote:
+>>>>> The comment here implies that we don't need to take a ref to the pci_dev
+>>>>> because the ioda_pe will always have one. This implies that the current
+>>>>> expection is that the pci_dev for an NPU device will *never* be torn
+>>>>> down since the ioda_pe having a ref to the device will prevent the
+>>>>> release function from being called.
+>>>>>
+>>>>> In other words, the desired behaviour here appears to be leaking a ref.
+>>>>>
+>>>>> Nice!
+>>>>
+>>>>
+>>>> There is a history: https://patchwork.ozlabs.org/patch/1088078/
+>>>>
+>>>> We did not fix anything in particular then, we do not seem to be fixing
+>>>> anything now (in other words - we cannot test it in a normal natural
+>>>> way). I'd drop this one.
+>>>>
+>>>
+>>> Yeah, I didn't fix anything at the time. Just reverted to the ref
+>>> count behavior we had before:
+>>>
+>>> https://patchwork.ozlabs.org/patch/829172/
+>>>
+>>> Frederic recently posted his take on the same topic from the OpenCAPI
+>>> point of view:
+>>>
+>>> http://patchwork.ozlabs.org/patch/1198947/
+>>>
+>>> He seems to indicate the NPU devices as the real culprit because
+>>> nobody ever cared for them to be removable. Fixing that seems be
+>>> a chore nobody really wants to address obviously... :-\
+>>
+>>
+>> I had taken a stab at not leaking a ref for the nvlink devices and do
+>> the proper thing regarding ref counting (i.e. fixing all the callers of
+>> get_pci_dev() to drop the reference when they were done). With that, I
+>> could see that the ref count of the nvlink devices could drop to 0
+>> (calling remove for the device in /sys) and that the devices could go away.
+>>
+>> But then, I realized it's not necessarily desirable at this point. There
+>> are several comments in the code saying the npu devices (for nvlink)
+>> don't go away, there's no device release callback defined when it seems
+>> there should be, at least to handle releasing PEs.... All in all, it
+>> seems that some work would be needed. And if it hasn't been required by
+>> now...
+>>
+> 
 > If everyone is ok with leaking a reference in the NPU case, I guess
 > this isn't a problem. But if we move forward with Oliver's patch, a
 > pci_dev_put() would be needed for OpenCAPI, correct ?
 
-Yes, but I think that's fair enough. By convention it's the callers
-responsibility to drop the ref when it calls a function that returns a
-refcounted object. Doing anything else creates a race condition since
-the object's count could drop to zero before the caller starts using
-it.
 
-Oliver
+No, these code paths are nvlink-only.
+
+   Fred
+
+
+
+>>     Fred
+>>
+>>
+>>>>
+>>>>
+>>>>>
+>>>>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+>>>>> ---
+>>>>>    arch/powerpc/platforms/powernv/npu-dma.c | 11 +++--------
+>>>>>    1 file changed, 3 insertions(+), 8 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+>>>>> index 72d3749da02c..2eb6e6d45a98 100644
+>>>>> --- a/arch/powerpc/platforms/powernv/npu-dma.c
+>>>>> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
+>>>>> @@ -28,15 +28,10 @@ static struct pci_dev *get_pci_dev(struct device_node *dn)
+>>>>>    			break;
+>>>>>    
+>>>>>    	/*
+>>>>> -	 * pci_get_domain_bus_and_slot() increased the reference count of
+>>>>> -	 * the PCI device, but callers don't need that actually as the PE
+>>>>> -	 * already holds a reference to the device. Since callers aren't
+>>>>> -	 * aware of the reference count change, call pci_dev_put() now to
+>>>>> -	 * avoid leaks.
+>>>>> +	 * NB: for_each_pci_dev() elevates the pci_dev refcount.
+>>>>> +	 * Caller is responsible for dropping the ref when it's
+>>>>> +	 * finished with it.
+>>>>>    	 */
+>>>>> -	if (pdev)
+>>>>> -		pci_dev_put(pdev);
+>>>>> -
+>>>>>    	return pdev;
+>>>>>    }
+>>>>>    
+>>>>>
+>>>>
+>>>
+>>
+> 
+
