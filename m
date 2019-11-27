@@ -1,154 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B90E10A985
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 05:57:25 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AED10A97C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 05:54:59 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47N7js0FvYzDqqW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 15:54:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47N7mg02shzDqkW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 15:57:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="1Cogm+pQ"; 
- dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47N7h20N1FzDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 15:53:20 +1100 (AEDT)
-Received: by mail-pj1-x1041.google.com with SMTP id gc1so9346426pjb.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2019 20:53:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=n8ckhKcseOJo3XFba4EPp1zjyDXOqNA5iTp3dwVuJAw=;
- b=1Cogm+pQjFWZMCkWK+6BGm3tvFPG84Fv3u9+D/7sw22wmEYvbAxJhG5Ma1wVpabKon
- g6BBdCR0kv8dXQJaMMN96jD/t4JvDq1+mYS9jtDRRGD+sYrz2WBjRVRpdl6cE6rL4PYZ
- TVOl8HlRYVMv8nBLfTb/LzcLCodlaEa/yN0WdrcosREBZsSKoxw5Z4gfsJeWRoRyqTu9
- hZlLlV9FxAv/niaTq9ND/ixKvaFCJ7/Hyq8GRdfKnxS1lzGx8w8ybO7wdtMIvInwlly/
- IbkF3sHaQnmlECKOrCIf+OCBJe4cnvUM5/uRx11Q82WCHu2iUQ4tVHHPFu79zDbgchBI
- JFtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=n8ckhKcseOJo3XFba4EPp1zjyDXOqNA5iTp3dwVuJAw=;
- b=fueUZqHepQZn41WXO8uDzRwiAm/MWAvjNA+QMqyULCvJX9HQBYR6Mk+8cJzr6PlvAS
- tRLzColuVceGxGuJ4kLj6dFkzYyBaNvJFtQcCAXdZsF30FRrIIjT9olmIMIrqsz8xoJJ
- 7dJHu3q53jCbLgI60Y9IvcV7Tpgz5knnqmNfANMGtE71Z3n0QGC4IZ7dEma/f27QeqbM
- PPNTy+jRuc3tguK5TGDoYNfffpDU5QbjAbzQ3TKLJnM5Xg8G122DqnzABGPexpPUvMH7
- jvjaamchiF/0wB8VsdofXxOmuvW75bWsYvPTW4xcaHNcvL8Z6IA/MTd/sDjOHajDSfMy
- R/rw==
-X-Gm-Message-State: APjAAAVvMU7A5gzU2KL2Y3s3TEssC8Fz9HgBh1wilGKqDIHif1Avrs8a
- uOS8ybU+ZumujfX4cihX+co3+A==
-X-Google-Smtp-Source: APXvYqyiNtAnjJQaNvbaNvqHM/TMByNCnnpnECGP3AT5/7K1Jf69ihu7isFFuzMZkY1z4GwaiKUxjg==
-X-Received: by 2002:a17:90a:ff02:: with SMTP id
- ce2mr3510290pjb.117.1574830398915; 
- Tue, 26 Nov 2019 20:53:18 -0800 (PST)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id w10sm14081507pgi.47.2019.11.26.20.53.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Nov 2019 20:53:18 -0800 (PST)
-Subject: Re: [Very RFC 31/46] powernv/pci: Remove open-coded PE lookup in
- pnv_pci_ioda_dma_dev_setup()
-To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-32-oohall@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
- EePO1JqpVuIow/wGud9xaPA5uvuVgRS1q7RU8otD+7VLDFzPRiRE4Jfr2CW89Ox6BF+q5ZPV
- /pS4v4G9eOrw1v09lEKHB9WtiBVhhxKK1LnUjPEH3ifkOkgW7jFfoYgTdtB3XaXVgYnNPDFo
- PTBYsJy+wr89XfyHr2Ev7BB3Xaf7qICXdBF8MEVY8t/UFsesg4wFWOuzCfqxFmKEaPDZlTuR
- tfLAeVpslNfWCi5ybPlowLx6KJqOsI9R2a9o4qRXWGP7IwiMRAC3iiPyk9cknt8ee6EUIxI6
- t847eFaVKI/6WcxhszI0R6Cj+N4y+1rHfkGWYWupCiHwj9DjILW9iEAncVgQmkNPpUsZECLT
- WQzMuVSxjuXW4nJ6f4OFHqL2dU//qR+BM/eJ0TT3OnfLcPqfucGxubhT7n/CXUxEy+mvWwnm
- s9p4uqVpTfEuzQ0/bE6t7dZdPBua7eYox1AQnk8JQDwC3Rn9kZq2O7u5KuJP5MfludMmQevm
- pHYEMF4vZuIpWcOrrSctJfIIEyhDoDmR34bCXAZfNJ4p4H6TPqPh671uMQV82CfTxTrMhGFq
- 8WYU2AH86FrVQfWoH09z1WqhlOm/KZhAV5FndwVjQJs1MRXD8QARAQABtCRBbGV4ZXkgS2Fy
- ZGFzaGV2c2tpeSA8YWlrQG96bGFicy5ydT6JAjgEEwECACIFAk+rT0sCGwMGCwkIBwMCBhUI
- AgkKCwQWAgMBAh4BAheAAAoJEIYTPdgrwSC5fAIP/0wf/oSYaCq9PhO0UP9zLSEz66SSZUf7
- AM9O1rau1lJpT8RoNa0hXFXIVbqPPKPZgorQV8SVmYRLr0oSmPnTiZC82x2dJGOR8x4E01gK
- TanY53J/Z6+CpYykqcIpOlGsytUTBA+AFOpdaFxnJ9a8p2wA586fhCZHVpV7W6EtUPH1SFTQ
- q5xvBmr3KkWGjz1FSLH4FeB70zP6uyuf/B2KPmdlPkyuoafl2UrU8LBADi/efc53PZUAREih
- sm3ch4AxaL4QIWOmlE93S+9nHZSRo9jgGXB1LzAiMRII3/2Leg7O4hBHZ9Nki8/fbDo5///+
- kD4L7UNbSUM/ACWHhd4m1zkzTbyRzvL8NAVQ3rckLOmju7Eu9whiPueGMi5sihy9VQKHmEOx
- OMEhxLRQbzj4ypRLS9a+oxk1BMMu9cd/TccNy0uwx2UUjDQw/cXw2rRWTRCxoKmUsQ+eNWEd
- iYLW6TCfl9CfHlT6A7Zmeqx2DCeFafqEd69DqR9A8W5rx6LQcl0iOlkNqJxxbbW3ddDsLU/Y
- r4cY20++WwOhSNghhtrroP+gouTOIrNE/tvG16jHs8nrYBZuc02nfX1/gd8eguNfVX/ZTHiR
- gHBWe40xBKwBEK2UeqSpeVTohYWGBkcd64naGtK9qHdo1zY1P55lHEc5Uhlk743PgAnOi27Q
- ns5zuQINBE+rT0sBEACnV6GBSm+25ACT+XAE0t6HHAwDy+UKfPNaQBNTTt31GIk5aXb2Kl/p
- AgwZhQFEjZwDbl9D/f2GtmUHWKcCmWsYd5M/6Ljnbp0Ti5/xi6FyfqnO+G/wD2VhGcKBId1X
- Em/B5y1kZVbzcGVjgD3HiRTqE63UPld45bgK2XVbi2+x8lFvzuFq56E3ZsJZ+WrXpArQXib2
- hzNFwQleq/KLBDOqTT7H+NpjPFR09Qzfa7wIU6pMNF2uFg5ihb+KatxgRDHg70+BzQfa6PPA
- o1xioKXW1eHeRGMmULM0Eweuvpc7/STD3K7EJ5bBq8svoXKuRxoWRkAp9Ll65KTUXgfS+c0x
- gkzJAn8aTG0z/oEJCKPJ08CtYQ5j7AgWJBIqG+PpYrEkhjzSn+DZ5Yl8r+JnZ2cJlYsUHAB9
- jwBnWmLCR3gfop65q84zLXRQKWkASRhBp4JK3IS2Zz7Nd/Sqsowwh8x+3/IUxVEIMaVoUaxk
- Wt8kx40h3VrnLTFRQwQChm/TBtXqVFIuv7/Mhvvcq11xnzKjm2FCnTvCh6T2wJw3de6kYjCO
- 7wsaQ2y3i1Gkad45S0hzag/AuhQJbieowKecuI7WSeV8AOFVHmgfhKti8t4Ff758Z0tw5Fpc
- BFDngh6Lty9yR/fKrbkkp6ux1gJ2QncwK1v5kFks82Cgj+DSXK6GUQARAQABiQIfBBgBAgAJ
- BQJPq09LAhsMAAoJEIYTPdgrwSC5NYEP/2DmcEa7K9A+BT2+G5GXaaiFa098DeDrnjmRvumJ
- BhA1UdZRdfqICBADmKHlJjj2xYo387sZpS6ABbhrFxM6s37g/pGPvFUFn49C47SqkoGcbeDz
- Ha7JHyYUC+Tz1dpB8EQDh5xHMXj7t59mRDgsZ2uVBKtXj2ZkbizSHlyoeCfs1gZKQgQE8Ffc
- F8eWKoqAQtn3j4nE3RXbxzTJJfExjFB53vy2wV48fUBdyoXKwE85fiPglQ8bU++0XdOr9oyy
- j1llZlB9t3tKVv401JAdX8EN0++ETiOovQdzE1m+6ioDCtKEx84ObZJM0yGSEGEanrWjiwsa
- nzeK0pJQM9EwoEYi8TBGhHC9ksaAAQipSH7F2OHSYIlYtd91QoiemgclZcSgrxKSJhyFhmLr
- QEiEILTKn/pqJfhHU/7R7UtlDAmFMUp7ByywB4JLcyD10lTmrEJ0iyRRTVfDrfVP82aMBXgF
- tKQaCxcmLCaEtrSrYGzd1sSPwJne9ssfq0SE/LM1J7VdCjm6OWV33SwKrfd6rOtvOzgadrG6
- 3bgUVBw+bsXhWDd8tvuCXmdY4bnUblxF2B6GOwSY43v6suugBttIyW5Bl2tXSTwP+zQisOJo
- +dpVG2pRr39h+buHB3NY83NEPXm1kUOhduJUA17XUY6QQCAaN4sdwPqHq938S3EmtVhsuQIN
- BFq54uIBEACtPWrRdrvqfwQF+KMieDAMGdWKGSYSfoEGGJ+iNR8v255IyCMkty+yaHafvzpl
- PFtBQ/D7Fjv+PoHdFq1BnNTk8u2ngfbre9wd9MvTDsyP/TmpF0wyyTXhhtYvE267Av4X/BQT
- lT9IXKyAf1fP4BGYdTNgQZmAjrRsVUW0j6gFDrN0rq2J9emkGIPvt9rQt6xGzrd6aXonbg5V
- j6Uac1F42ESOZkIh5cN6cgnGdqAQb8CgLK92Yc8eiCVCH3cGowtzQ2m6U32qf30cBWmzfSH0
- HeYmTP9+5L8qSTA9s3z0228vlaY0cFGcXjdodBeVbhqQYseMF9FXiEyRs28uHAJEyvVZwI49
- CnAgVV/n1eZa5qOBpBL+ZSURm8Ii0vgfvGSijPGbvc32UAeAmBWISm7QOmc6sWa1tobCiVmY
- SNzj5MCNk8z4cddoKIc7Wt197+X/X5JPUF5nQRvg3SEHvfjkS4uEst9GwQBpsbQYH9MYWq2P
- PdxZ+xQE6v7cNB/pGGyXqKjYCm6v70JOzJFmheuUq0Ljnfhfs15DmZaLCGSMC0Amr+rtefpA
- y9FO5KaARgdhVjP2svc1F9KmTUGinSfuFm3quadGcQbJw+lJNYIfM7PMS9fftq6vCUBoGu3L
- j4xlgA/uQl/LPneu9mcvit8JqcWGS3fO+YeagUOon1TRqQARAQABiQRsBBgBCAAgFiEEZSrP
- ibrORRTHQ99dhhM92CvBILkFAlq54uICGwICQAkQhhM92CvBILnBdCAEGQEIAB0WIQQIhvWx
- rCU+BGX+nH3N7sq0YorTbQUCWrni4gAKCRDN7sq0YorTbVVSD/9V1xkVFyUCZfWlRuryBRZm
- S4GVaNtiV2nfUfcThQBfF0sSW/aFkLP6y+35wlOGJE65Riw1C2Ca9WQYk0xKvcZrmuYkK3DZ
- 0M9/Ikkj5/2v0vxz5Z5w/9+IaCrnk7pTnHZuZqOh23NeVZGBls/IDIvvLEjpD5UYicH0wxv+
- X6cl1RoP2Kiyvenf0cS73O22qSEw0Qb9SId8wh0+ClWet2E7hkjWFkQfgJ3hujR/JtwDT/8h
- 3oCZFR0KuMPHRDsCepaqb/k7VSGTLBjVDOmr6/C9FHSjq0WrVB9LGOkdnr/xcISDZcMIpbRm
- EkIQ91LkT/HYIImL33ynPB0SmA+1TyMgOMZ4bakFCEn1vxB8Ir8qx5O0lHMOiWMJAp/PAZB2
- r4XSSHNlXUaWUg1w3SG2CQKMFX7vzA31ZeEiWO8tj/c2ZjQmYjTLlfDK04WpOy1vTeP45LG2
- wwtMA1pKvQ9UdbYbovz92oyZXHq81+k5Fj/YA1y2PI4MdHO4QobzgREoPGDkn6QlbJUBf4To
- pEbIGgW5LRPLuFlOPWHmIS/sdXDrllPc29aX2P7zdD/ivHABslHmt7vN3QY+hG0xgsCO1JG5
- pLORF2N5XpM95zxkZqvYfC5tS/qhKyMcn1kC0fcRySVVeR3tUkU8/caCqxOqeMe2B6yTiU1P
- aNDq25qYFLeYxg67D/4w/P6BvNxNxk8hx6oQ10TOlnmeWp1q0cuutccblU3ryRFLDJSngTEu
- ZgnOt5dUFuOZxmMkqXGPHP1iOb+YDznHmC0FYZFG2KAc9pO0WuO7uT70lL6larTQrEneTDxQ
- CMQLP3qAJ/2aBH6SzHIQ7sfbsxy/63jAiHiT3cOaxAKsWkoV2HQpnmPOJ9u02TPjYmdpeIfa
- X2tXyeBixa3i/6dWJ4nIp3vGQicQkut1YBwR7dJq67/FCV3Mlj94jI0myHT5PIrCS2S8LtWX
- ikTJSxWUKmh7OP5mrqhwNe0ezgGiWxxvyNwThOHc5JvpzJLd32VDFilbxgu4Hhnf6LcgZJ2c
- Zd44XWqUu7FzVOYaSgIvTP0hNrBYm/E6M7yrLbs3JY74fGzPWGRbBUHTZXQEqQnZglXaVB5V
- ZhSFtHopZnBSCUSNDbB+QGy4B/E++Bb02IBTGl/JxmOwG+kZUnymsPvTtnNIeTLHxN/H/ae0
- c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
- DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
- XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <a22da5b7-6547-2455-68c3-793a1b1c192d@ozlabs.ru>
-Date: Wed, 27 Nov 2019 15:53:15 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47N7j55hy8zDqkT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 15:54:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 47N7j534VQz8t4D
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 15:54:17 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 47N7j51g98z9sSr; Wed, 27 Nov 2019 15:54:17 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 47N7j447VMz9sSp
+ for <linuxppc-dev@ozlabs.org>; Wed, 27 Nov 2019 15:54:15 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ xAR4ljTv101405
+ for <linuxppc-dev@ozlabs.org>; Tue, 26 Nov 2019 23:54:13 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2whcxhgqp4-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 26 Nov 2019 23:54:12 -0500
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <sourabhjain@linux.ibm.com>;
+ Wed, 27 Nov 2019 04:54:11 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 27 Nov 2019 04:54:09 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ xAR4s8vJ37945446
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Nov 2019 04:54:08 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4C4D15207A;
+ Wed, 27 Nov 2019 04:54:08 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.35.154])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 20BB952050;
+ Wed, 27 Nov 2019 04:54:06 +0000 (GMT)
+Subject: Re: [PATCH v3 2/4] powerpc/fadump: reorganize /sys/kernel/fadump_*
+ sysfs files
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+References: <20191109122339.20484-1-sourabhjain@linux.ibm.com>
+ <20191109122339.20484-3-sourabhjain@linux.ibm.com>
+ <20191109125933.GF1384@kitsune.suse.cz>
+ <8c1ec297-0c34-12de-2528-be436697215a@linux.ibm.com>
+ <20191124184059.GP11661@kitsune.suse.cz>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+Date: Wed, 27 Nov 2019 10:24:06 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.4.0
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-32-oohall@gmail.com>
+In-Reply-To: <20191124184059.GP11661@kitsune.suse.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19112704-0028-0000-0000-000003C07E12
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19112704-0029-0000-0000-0000248382FB
+Message-Id: <ea97b5e3-e1e2-2aff-8227-7cfb551c8ebc@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-26_08:2019-11-26,2019-11-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
+ malwarescore=0 adultscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1911270037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -160,47 +106,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, s.miroshnichenko@yadro.com
+Cc: linux-doc@vger.kernel.org, mahesh@linux.vnet.ibm.com, corbet@lwn.net,
+ linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> Use the helper to look up the pnv_ioda_pe for the device we're configuring DMA
-> for. In the VF case there's no need set pdn->pe_number since nothing looks at
-> it any more.
+On 11/25/19 12:10 AM, Michal Suchánek wrote:
+> On Sat, Nov 16, 2019 at 08:07:29PM +0530, Sourabh Jain wrote:
+>>
+>>
+>> On 11/9/19 6:29 PM, Michal Suchánek wrote:
+>>> On Sat, Nov 09, 2019 at 05:53:37PM +0530, Sourabh Jain wrote:
+>>>> As the number of FADump sysfs files increases it is hard to manage all of
+>>>> them inside /sys/kernel directory. It's better to have all the FADump
+>>>> related sysfs files in a dedicated directory /sys/kernel/fadump. But in
+>>>> order to maintain the backward compatibility the /sys/kernel/fadump_*
+>>>> sysfs files are replicated inside /sys/kernel/fadump/ and eventually get
+>>>> removed in future.
+>>>>
+>>>> As the FADump sysfs files are now part of dedicated directory there is no
+>>>> need to prefix their name with fadump_, hence sysfs file names are also
+>>>> updated. For example fadump_enabled sysfs file is now referred as enabled.
+>>>>
+>>>> Also consolidate ABI documentation for all the FADump sysfs files in a
+>>>> single file Documentation/ABI/testing/sysfs-kernel-fadump.
+>>>>
+>>>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>>>> ---
+>>>>  Documentation/ABI/testing/sysfs-kernel-fadump | 41 +++++++++++++++++++
+>>>>  arch/powerpc/kernel/fadump.c                  | 38 +++++++++++++++++
+>>>>  arch/powerpc/platforms/powernv/opal-core.c    | 10 +++--
+>>>>  3 files changed, 86 insertions(+), 3 deletions(-)
+>>>>  create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump
+>>>>
+>>>> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
+>>>> new file mode 100644
+>>>> index 000000000000..a77f1a5ba389
+>>>> --- /dev/null
+>>>> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump
+>>>> @@ -0,0 +1,41 @@
+>>>> +What:		/sys/kernel/fadump/*
+>>>> +Date:		Nov 2019
+>>>> +Contact:	linuxppc-dev@lists.ozlabs.org
+>>>> +Description:
+>>>> +		The /sys/kernel/fadump/* is a collection of FADump sysfs
+>>>> +		file provide information about the configuration status
+>>>> +		of Firmware Assisted Dump (FADump).
+>>>> +
+>>>> +What:		/sys/kernel/fadump/enabled
+>>>> +Date:		Nov 2019
+>>>> +Contact:	linuxppc-dev@lists.ozlabs.org
+>>>> +Description:	read only
+>>>> +		Primarily used to identify whether the FADump is enabled in
+>>>> +		the kernel or not.
+>>>> +User:		Kdump service
+>>>> +
+>>>> +What:		/sys/kernel/fadump/registered
+>>>> +Date:		Nov 2019
+>>>> +Contact:	linuxppc-dev@lists.ozlabs.org
+>>>> +Description:	read/write
+>>>> +		Helps to control the dump collect feature from userspace.
+>>>> +		Setting 1 to this file enables the system to collect the
+>>>> +		dump and 0 to disable it.
+>>>> +User:		Kdump service
+>>>> +
+>>>> +What:		/sys/kernel/fadump/release_mem
+>>>> +Date:		Nov 2019
+>>>> +Contact:	linuxppc-dev@lists.ozlabs.org
+>>>> +Description:	write only
+>>>> +		This is a special sysfs file and only available when
+>>>> +		the system is booted to capture the vmcore using FADump.
+>>>> +		It is used to release the memory reserved by FADump to
+>>>> +		save the crash dump.
+>>>> +
+>>>> +What:		/sys/kernel/fadump/release_opalcore
+>>>> +Date:		Nov 2019
+>>>> +Contact:	linuxppc-dev@lists.ozlabs.org
+>>>> +Description:	write only
+>>>> +		The sysfs file is available when the system is booted to
+>>>> +		collect the dump on OPAL based machine. It used to release
+>>>> +		the memory used to collect the opalcore.
+>>>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+>>>> index ed59855430b9..a9591def0c84 100644
+>>>> --- a/arch/powerpc/kernel/fadump.c
+>>>> +++ b/arch/powerpc/kernel/fadump.c
+>>>> @@ -1418,6 +1418,9 @@ static int fadump_region_show(struct seq_file *m, void *private)
+>>>>  	return 0;
+>>>>  }
+>>>>  
+>>>> +struct kobject *fadump_kobj;
+>>>> +EXPORT_SYMBOL_GPL(fadump_kobj);
+>>>> +
+>>>>  static struct kobj_attribute fadump_release_attr = __ATTR(fadump_release_mem,
+>>>>  						0200, NULL,
+>>>>  						fadump_release_memory_store);
+>>>> @@ -1428,6 +1431,16 @@ static struct kobj_attribute fadump_register_attr = __ATTR(fadump_registered,
+>>>>  						0644, fadump_register_show,
+>>>>  						fadump_register_store);
+>>>>  
+>>>> +static struct kobj_attribute release_attr = __ATTR(release_mem,
+>>>> +						0200, NULL,
+>>>> +						fadump_release_memory_store);
+>>>> +static struct kobj_attribute enable_attr = __ATTR(enabled,
+>>>> +						0444, fadump_enabled_show,
+>>>> +						NULL);
+>>>> +static struct kobj_attribute register_attr = __ATTR(registered,
+>>>> +						0644, fadump_register_show,
+>>>> +						fadump_register_store);
+>>>> +
+>>>>  DEFINE_SHOW_ATTRIBUTE(fadump_region);
+>>>>  
+>>>>  static void fadump_init_files(void)
+>>>> @@ -1435,6 +1448,11 @@ static void fadump_init_files(void)
+>>>>  	struct dentry *debugfs_file;
+>>>>  	int rc = 0;
+>>>>  
+>>>> +	fadump_kobj = kobject_create_and_add("fadump", kernel_kobj);
+>>>> +	if (!fadump_kobj) {
+>>>> +		pr_err("failed to create fadump kobject\n");
+>>>> +		return;
+>>>> +	}
+>>>>  	rc = sysfs_create_file(kernel_kobj, &fadump_attr.attr);
+>>>>  	if (rc)
+>>>>  		printk(KERN_ERR "fadump: unable to create sysfs file"
+>>>> @@ -1458,6 +1476,26 @@ static void fadump_init_files(void)
+>>>>  			printk(KERN_ERR "fadump: unable to create sysfs file"
+>>>>  				" fadump_release_mem (%d)\n", rc);
+>>>>  	}
+>>>> +	/* Replicating the following sysfs attributes under FADump kobject.
+>>>> +	 *
+>>>> +	 *	- fadump_enabled -> enabled
+>>>> +	 *	- fadump_registered -> registered
+>>>> +	 *	- fadump_release_mem -> release_mem
+>>>> +	 */
+>>>> +	rc = sysfs_create_file(fadump_kobj, &enable_attr.attr);
+>>>> +	if (rc)
+>>>> +		pr_err("unable to create enabled sysfs file (%d)\n",
+>>>> +		       rc);
+>>>> +	rc = sysfs_create_file(fadump_kobj, &register_attr.attr);
+>>>> +	if (rc)
+>>>> +		pr_err("unable to create registered sysfs file (%d)\n",
+>>>> +		       rc);
+>>>> +	if (fw_dump.dump_active) {
+>>>> +		rc = sysfs_create_file(fadump_kobj, &release_attr.attr);
+>>>> +		if (rc)
+>>>> +			pr_err("unable to create release_mem sysfs file (%d)\n",
+>>>> +			       rc);
+>>>> +	}
+>>>>  	return;
+>>>>  }
+>>> Hello,
+>>>
+>>
+>> I’m so sorry for taking this long to write you back. 
+>>
+>>> wouldn't it make more sense to create the files in the new location and
+>>> add a symlink at the old location?
+>>
+>> There are APIs which allow to create a symlink for an entire kobject but
+>> I did not find a way to create symlink of an individual sysfs file.
+>>
+>> Do you have any approach in mind to achieve the same?
 > 
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-
-
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-> ---
->  arch/powerpc/platforms/powernv/pci-ioda.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> There is at least one example of plain symlink:
 > 
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index d4b5ee926222..98d858999a2d 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1709,10 +1709,9 @@ int pnv_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  
->  static void pnv_pci_ioda_dma_dev_setup(struct pnv_phb *phb, struct pci_dev *pdev)
->  {
-> -	struct pci_dn *pdn = pci_get_pdn(pdev);
->  	struct pnv_ioda_pe *pe;
->  
-> -	pe = &phb->ioda.pe_array[pdn->pe_number];
-> +	pe = pnv_ioda_get_pe(pdev);
->  	WARN_ON(get_dma_ops(&pdev->dev) != &dma_iommu_ops);
->  	pdev->dev.archdata.dma_offset = pe->tce_bypass_base;
->  	set_iommu_table_base(&pdev->dev, pe->table_group.tables[0]);
-> 
+> find /sys -type l -xtype f
+> /sys/kernel/security/evm
 
--- 
-Alexey
+Yes, there are APIs available in debugfs and securityfs that allow creatinga symlink of sysfs files. But I did not find a generic API at sysfs level tocreate symlink.
+
+Let's wait for others to put in their view on this. Meanwhile, I'll start
+exploring how we can replace the older FADump sysfs files with symlink.
+
+Thanks,
+Sourabh Jain
+
