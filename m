@@ -1,56 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DBE10B019
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 14:23:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NM0y4XfMzDqvr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 00:23:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B7510B077
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 14:42:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NMQ75Hk9zDqSj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 00:42:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.98.231; helo=19.mo3.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 2398 seconds by postgrey-1.36 at bilbo;
- Thu, 28 Nov 2019 00:20:24 AEDT
-Received: from 19.mo3.mail-out.ovh.net (19.mo3.mail-out.ovh.net
- [178.32.98.231])
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.73; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NLx46rPqzDqtN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 00:20:19 +1100 (AEDT)
-Received: from player157.ha.ovh.net (unknown [10.108.1.112])
- by mo3.mail-out.ovh.net (Postfix) with ESMTP id 1C9CE233C12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 13:03:33 +0100 (CET)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player157.ha.ovh.net (Postfix) with ESMTPSA id 382ECC8AFE38;
- Wed, 27 Nov 2019 12:03:27 +0000 (UTC)
-Date: Wed, 27 Nov 2019 13:03:25 +0100
-From: Greg Kurz <groug@kaod.org>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: Re: [Very RFC 40/46] powernv/npu: Don't drop refcount when looking
- up GPU pci_devs
-Message-ID: <20191127130325.7496523b@bahia.w3ibm.bluemix.net>
-In-Reply-To: <e5b52a32-f53e-7a34-01e4-90f8bae9a44c@linux.ibm.com>
-References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-41-oohall@gmail.com>
- <6bb90911-54fa-9f26-ec4d-7538f3303475@ozlabs.ru>
- <20191127092408.5a996f41@bahia.w3ibm.bluemix.net>
- <851d7f28-8698-ec0b-7732-423c0926ce94@linux.ibm.com>
- <20191127103354.0758b079@bahia.w3ibm.bluemix.net>
- <e5b52a32-f53e-7a34-01e4-90f8bae9a44c@linux.ibm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NMHz01xMzDqvR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 00:36:43 +1100 (AEDT)
+Received: from mail-qv1-f43.google.com ([209.85.219.43]) by
+ mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1M3UhQ-1iZPGK3iIE-000Ykh for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov
+ 2019 14:36:35 +0100
+Received: by mail-qv1-f43.google.com with SMTP id n4so8861878qvq.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 05:36:33 -0800 (PST)
+X-Gm-Message-State: APjAAAUO4rePnRYOY1twRAP5pFDQwNN4GhYePE9DyjMIvDHj6sRpzqfe
+ MoZEdmBhwJ8bqZj0UjAK55ofOQq9BQ+zIHqzyMk=
+X-Google-Smtp-Source: APXvYqwUVmlbP6tTKdotoXt7sMSzYysgUm0qCCKzhXxwlbPreRA7jD6rjDUldB+HlyZ0ZqvnSdV20QuuMxN452E7DOw=
+X-Received: by 2002:ad4:404e:: with SMTP id r14mr4979402qvp.4.1574861792782;
+ Wed, 27 Nov 2019 05:36:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Ovh-Tracer-Id: 7355785567712876901
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrudeihedgfeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdqfffguegfifdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpkedvrddvheefrddvtdekrddvgeeknecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhduheejrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghenucevlhhushhtvghrufhiiigvpedt
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 27 Nov 2019 14:36:16 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a38Q_yhiyODpFd6ZqLv=QyKRmCm8FOMuSr4RPvGtWNPYw@mail.gmail.com>
+Message-ID: <CAK8P3a38Q_yhiyODpFd6ZqLv=QyKRmCm8FOMuSr4RPvGtWNPYw@mail.gmail.com>
+Subject: [GIT PULL] y2038: syscall implementation cleanups
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:+AYaEvSiOZwvG+XHD/igs5zYIG5iAmqWOxNFZ0PeYSZ58cp9Qbt
+ Qlu39axOWq8Mw03FNT7GdSNlDPx19DG4+jnacMFcyQptDEH0zan6tlv7g3jz6zT57DAr7Mo
+ zjqU7jyGx/vBCInK/sJzCVb9yIgRkLvWFa3O73zlT5azBQalev8IZSCZKRdQ4HWi6JKcOOh
+ k13ML1wZGdB7PvWBgxh1g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OpPHJCCaqPU=:0z5ddDa5euFa4mXmnKD8Au
+ ZH3vsfqL7cwxnPU+dpXU1DUtx+qHl6oARthMnoQrA81YKHniwCWqG2Q1WOEeHtgsz0jzJF0oX
+ iKO4PaC6DVftvIdiG8djVZvYlM9sIuZfI9hNS3ny87x0JkcWbCtI2qRmDpChff+uE/yY69jG1
+ dlJPNgooJG0Vp8ODtxV2Luel0SR2SAUsc3GsX2IE6QG8LYnc2xAZbAhzWqFLBL94vsKEzlkIw
+ gw7jy95miVl0iQFmiHY+LdahL8VORNgE8lRP7qrsc5OdeRu0Lvt7veTZxDl+xEmjHt2Uscpi5
+ LtJcUDf/kTcrdhl/OO0578SpnhIhrfnPsfDUZVgTRgtylEVZTpfZ0mBIyH6T1cDQ1OKDUb8dZ
+ xVToIXQYtuR2gxLbLgpxWuCxTOfpx3KeJVeH/gtTmUzAxHhsuzR+fjxXSTaEFEkzssaZiDjWg
+ svgdoFoySWmlWk0REwHYzB9Aw87QURJazmd/VlcpYbhrhgbRzKZlu49r9fzukZVaZYM84QGPP
+ gaFh5McMC4CTCyn+f5GXVN5b3UXIzHKSnrN+jp/A+eTEjr1jPJcbVtGX7HZ2PuSoIrg/PciwF
+ 9JH2H9IWaUMJ/SZwvXN9drHCOYrPERU04FkDDa8UdpTHO5jlAdVkr8W5v0aVuknITwvVMmNpS
+ +zeH3O37eaVwfLcixj6yYRgZk3UvC9OJgy/ll21Xec7vbV4e5KLD0jit0NxgJdf0SN8jgRY/7
+ nwzJvGlaJDWZUA2HrrxG1D6b+DbldxFzksFVB1sSFO9eyYKDeaGnut/dFkjL4BKJEuE9cyHTJ
+ C/nre7bdgQupyjUH8RXdwNxeseGysTujTcHiWIDE1Gzsn2OzAolgAfmSGm3TcWQkyuHaAu+a3
+ upi4TNn7G7uQaIhPzlhA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,138 +69,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- Oliver O'Halloran <oohall@gmail.com>, s.miroshnichenko@yadro.com,
- alistair@popple.id.au
+Cc: y2038 Mailman List <y2038@lists.linaro.org>,
+ Linux API <linux-api@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Nov 2019 10:47:45 +0100
-Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+The following changes since commit a99d8080aaf358d5d23581244e5da23b35e340b9:
 
->=20
->=20
-> Le 27/11/2019 =C3=A0 10:33, Greg Kurz a =C3=A9crit=C2=A0:
-> > On Wed, 27 Nov 2019 10:10:13 +0100
-> > Frederic Barrat <fbarrat@linux.ibm.com> wrote:
-> >=20
-> >>
-> >>
-> >> Le 27/11/2019 =C3=A0 09:24, Greg Kurz a =C3=A9crit=C2=A0:
-> >>> On Wed, 27 Nov 2019 18:09:40 +1100
-> >>> Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
-> >>>
-> >>>>
-> >>>>
-> >>>> On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> >>>>> The comment here implies that we don't need to take a ref to the pc=
-i_dev
-> >>>>> because the ioda_pe will always have one. This implies that the cur=
-rent
-> >>>>> expection is that the pci_dev for an NPU device will *never* be torn
-> >>>>> down since the ioda_pe having a ref to the device will prevent the
-> >>>>> release function from being called.
-> >>>>>
-> >>>>> In other words, the desired behaviour here appears to be leaking a =
-ref.
-> >>>>>
-> >>>>> Nice!
-> >>>>
-> >>>>
-> >>>> There is a history: https://patchwork.ozlabs.org/patch/1088078/
-> >>>>
-> >>>> We did not fix anything in particular then, we do not seem to be fix=
-ing
-> >>>> anything now (in other words - we cannot test it in a normal natural
-> >>>> way). I'd drop this one.
-> >>>>
-> >>>
-> >>> Yeah, I didn't fix anything at the time. Just reverted to the ref
-> >>> count behavior we had before:
-> >>>
-> >>> https://patchwork.ozlabs.org/patch/829172/
-> >>>
-> >>> Frederic recently posted his take on the same topic from the OpenCAPI
-> >>> point of view:
-> >>>
-> >>> http://patchwork.ozlabs.org/patch/1198947/
-> >>>
-> >>> He seems to indicate the NPU devices as the real culprit because
-> >>> nobody ever cared for them to be removable. Fixing that seems be
-> >>> a chore nobody really wants to address obviously... :-\
-> >>
-> >>
-> >> I had taken a stab at not leaking a ref for the nvlink devices and do
-> >> the proper thing regarding ref counting (i.e. fixing all the callers of
-> >> get_pci_dev() to drop the reference when they were done). With that, I
-> >> could see that the ref count of the nvlink devices could drop to 0
-> >> (calling remove for the device in /sys) and that the devices could go =
-away.
-> >>
-> >> But then, I realized it's not necessarily desirable at this point. The=
-re
-> >> are several comments in the code saying the npu devices (for nvlink)
-> >> don't go away, there's no device release callback defined when it seems
-> >> there should be, at least to handle releasing PEs.... All in all, it
-> >> seems that some work would be needed. And if it hasn't been required by
-> >> now...
-> >>
-> >=20
-> > If everyone is ok with leaking a reference in the NPU case, I guess
-> > this isn't a problem. But if we move forward with Oliver's patch, a
-> > pci_dev_put() would be needed for OpenCAPI, correct ?
->=20
->=20
-> No, these code paths are nvlink-only.
->=20
+  Linux 5.4-rc6 (2019-11-03 14:07:26 -0800)
 
-Oh yes indeed. Then this patch and yours fit well together :)
+are available in the Git repository at:
 
->    Fred
->=20
->=20
->=20
-> >>     Fred
-> >>
-> >>
-> >>>>
-> >>>>
-> >>>>>
-> >>>>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> >>>>> ---
-> >>>>>    arch/powerpc/platforms/powernv/npu-dma.c | 11 +++--------
-> >>>>>    1 file changed, 3 insertions(+), 8 deletions(-)
-> >>>>>
-> >>>>> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerp=
-c/platforms/powernv/npu-dma.c
-> >>>>> index 72d3749da02c..2eb6e6d45a98 100644
-> >>>>> --- a/arch/powerpc/platforms/powernv/npu-dma.c
-> >>>>> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
-> >>>>> @@ -28,15 +28,10 @@ static struct pci_dev *get_pci_dev(struct devic=
-e_node *dn)
-> >>>>>    			break;
-> >>>>>   =20
-> >>>>>    	/*
-> >>>>> -	 * pci_get_domain_bus_and_slot() increased the reference count of
-> >>>>> -	 * the PCI device, but callers don't need that actually as the PE
-> >>>>> -	 * already holds a reference to the device. Since callers aren't
-> >>>>> -	 * aware of the reference count change, call pci_dev_put() now to
-> >>>>> -	 * avoid leaks.
-> >>>>> +	 * NB: for_each_pci_dev() elevates the pci_dev refcount.
-> >>>>> +	 * Caller is responsible for dropping the ref when it's
-> >>>>> +	 * finished with it.
-> >>>>>    	 */
-> >>>>> -	if (pdev)
-> >>>>> -		pci_dev_put(pdev);
-> >>>>> -
-> >>>>>    	return pdev;
-> >>>>>    }
-> >>>>>   =20
-> >>>>>
-> >>>>
-> >>>
-> >>
-> >=20
->=20
+  git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git
+tags/y2038-cleanups-5.5
 
+for you to fetch changes up to b111df8447acdeb4b9220f99d5d4b28f83eb56ad:
+
+  y2038: alarm: fix half-second cut-off (2019-11-25 21:52:35 +0100)
+
+----------------------------------------------------------------
+y2038: syscall implementation cleanups
+
+This is a series of cleanups for the y2038 work, mostly intended
+for namespace cleaning: the kernel defines the traditional
+time_t, timeval and timespec types that often lead to y2038-unsafe
+code. Even though the unsafe usage is mostly gone from the kernel,
+having the types and associated functions around means that we
+can still grow new users, and that we may be missing conversions
+to safe types that actually matter.
+
+There are still a number of driver specific patches needed to
+get the last users of these types removed, those have been
+submitted to the respective maintainers.
+
+Link: https://lore.kernel.org/lkml/20191108210236.1296047-1-arnd@arndb.de/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+----------------------------------------------------------------
+Arnd Bergmann (26):
+      y2038: remove CONFIG_64BIT_TIME
+      y2038: add __kernel_old_timespec and __kernel_old_time_t
+      y2038: vdso: change timeval to __kernel_old_timeval
+      y2038: vdso: change timespec to __kernel_old_timespec
+      y2038: vdso: change time_t to __kernel_old_time_t
+      y2038: vdso: nds32: open-code timespec_add_ns()
+      y2038: vdso: powerpc: avoid timespec references
+      y2038: ipc: remove __kernel_time_t reference from headers
+      y2038: stat: avoid 'time_t' in 'struct stat'
+      y2038: uapi: change __kernel_time_t to __kernel_old_time_t
+      y2038: rusage: use __kernel_old_timeval
+      y2038: syscalls: change remaining timeval to __kernel_old_timeval
+      y2038: socket: remove timespec reference in timestamping
+      y2038: socket: use __kernel_old_timespec instead of timespec
+      y2038: make ns_to_compat_timeval use __kernel_old_timeval
+      y2038: elfcore: Use __kernel_old_timeval for process times
+      y2038: timerfd: Use timespec64 internally
+      y2038: time: avoid timespec usage in settimeofday()
+      y2038: itimer: compat handling to itimer.c
+      y2038: use compat_{get,set}_itimer on alpha
+      y2038: move itimer reset into itimer.c
+      y2038: itimer: change implementation to timespec64
+      y2038: allow disabling time32 system calls
+      y2038: fix typo in powerpc vdso "LOPART"
+      y2038: ipc: fix x32 ABI breakage
+      y2038: alarm: fix half-second cut-off
+
+ arch/Kconfig                              |  11 +-
+ arch/alpha/kernel/osf_sys.c               |  67 +----------
+ arch/alpha/kernel/syscalls/syscall.tbl    |   4 +-
+ arch/ia64/kernel/asm-offsets.c            |   2 +-
+ arch/mips/include/uapi/asm/msgbuf.h       |   6 +-
+ arch/mips/include/uapi/asm/sembuf.h       |   4 +-
+ arch/mips/include/uapi/asm/shmbuf.h       |   6 +-
+ arch/mips/include/uapi/asm/stat.h         |  16 +--
+ arch/mips/kernel/binfmt_elfn32.c          |   4 +-
+ arch/mips/kernel/binfmt_elfo32.c          |   4 +-
+ arch/nds32/kernel/vdso/gettimeofday.c     |  61 +++++-----
+ arch/parisc/include/uapi/asm/msgbuf.h     |   6 +-
+ arch/parisc/include/uapi/asm/sembuf.h     |   4 +-
+ arch/parisc/include/uapi/asm/shmbuf.h     |   6 +-
+ arch/powerpc/include/asm/asm-prototypes.h |   3 +-
+ arch/powerpc/include/asm/vdso_datapage.h  |   6 +-
+ arch/powerpc/include/uapi/asm/msgbuf.h    |   6 +-
+ arch/powerpc/include/uapi/asm/sembuf.h    |   4 +-
+ arch/powerpc/include/uapi/asm/shmbuf.h    |   6 +-
+ arch/powerpc/include/uapi/asm/stat.h      |   2 +-
+ arch/powerpc/kernel/asm-offsets.c         |  18 ++-
+ arch/powerpc/kernel/syscalls.c            |   4 +-
+ arch/powerpc/kernel/time.c                |   5 +-
+ arch/powerpc/kernel/vdso32/gettimeofday.S |   6 +-
+ arch/powerpc/kernel/vdso64/gettimeofday.S |   8 +-
+ arch/sparc/include/uapi/asm/msgbuf.h      |   6 +-
+ arch/sparc/include/uapi/asm/sembuf.h      |   4 +-
+ arch/sparc/include/uapi/asm/shmbuf.h      |   6 +-
+ arch/sparc/include/uapi/asm/stat.h        |  24 ++--
+ arch/sparc/vdso/vclock_gettime.c          |  36 +++---
+ arch/x86/entry/vdso/vclock_gettime.c      |   6 +-
+ arch/x86/entry/vsyscall/vsyscall_64.c     |   4 +-
+ arch/x86/include/uapi/asm/msgbuf.h        |   6 +-
+ arch/x86/include/uapi/asm/sembuf.h        |   4 +-
+ arch/x86/include/uapi/asm/shmbuf.h        |   6 +-
+ arch/x86/um/vdso/um_vdso.c                |  12 +-
+ fs/aio.c                                  |   2 +-
+ fs/binfmt_elf.c                           |  12 +-
+ fs/binfmt_elf_fdpic.c                     |  12 +-
+ fs/compat_binfmt_elf.c                    |   4 +-
+ fs/select.c                               |  10 +-
+ fs/timerfd.c                              |  14 +--
+ fs/utimes.c                               |   8 +-
+ include/linux/compat.h                    |  19 +--
+ include/linux/skbuff.h                    |   7 +-
+ include/linux/syscalls.h                  |  16 +--
+ include/linux/time.h                      |   9 +-
+ include/linux/time32.h                    |   2 +-
+ include/linux/types.h                     |   2 +-
+ include/trace/events/timer.h              |  16 +--
+ include/uapi/asm-generic/msgbuf.h         |  12 +-
+ include/uapi/asm-generic/posix_types.h    |   1 +
+ include/uapi/asm-generic/sembuf.h         |   7 +-
+ include/uapi/asm-generic/shmbuf.h         |  12 +-
+ include/uapi/linux/cyclades.h             |   6 +-
+ include/uapi/linux/elfcore.h              |   8 +-
+ include/uapi/linux/errqueue.h             |   7 ++
+ include/uapi/linux/msg.h                  |   6 +-
+ include/uapi/linux/ppp_defs.h             |   4 +-
+ include/uapi/linux/resource.h             |   4 +-
+ include/uapi/linux/sem.h                  |   4 +-
+ include/uapi/linux/shm.h                  |   6 +-
+ include/uapi/linux/time.h                 |   6 +-
+ include/uapi/linux/time_types.h           |   5 +
+ include/uapi/linux/utime.h                |   4 +-
+ ipc/syscall.c                             |   2 +-
+ kernel/compat.c                           |  24 ----
+ kernel/power/power.h                      |   2 +-
+ kernel/sys.c                              |   4 +-
+ kernel/sys_ni.c                           |  23 ++++
+ kernel/time/hrtimer.c                     |   2 +-
+ kernel/time/itimer.c                      | 189 +++++++++++++++++++++---------
+ kernel/time/time.c                        |  32 +++--
+ lib/vdso/gettimeofday.c                   |   4 +-
+ net/compat.c                              |   2 +-
+ net/core/scm.c                            |   6 +-
+ net/ipv4/tcp.c                            |  28 +++--
+ net/socket.c                              |   4 +-
+ security/selinux/hooks.c                  |  10 +-
+ 79 files changed, 472 insertions(+), 468 deletions(-)
