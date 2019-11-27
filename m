@@ -1,81 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D1310AFFA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 14:13:58 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443BB10AF98
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 13:34:08 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NKvd2FTWzDqvt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 23:34:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NLnZ5kPbzDqwL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 00:13:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=46.105.75.45; helo=9.mo178.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from 9.mo178.mail-out.ovh.net (9.mo178.mail-out.ovh.net
+ [46.105.75.45])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NKBQ0nP1zDqg4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 23:01:49 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xARBrFJH135003; Wed, 27 Nov 2019 07:01:40 -0500
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2whcy7pbv3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 27 Nov 2019 07:01:40 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xARC070S002618;
- Wed, 27 Nov 2019 12:01:40 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 2wevd6we36-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 27 Nov 2019 12:01:39 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- xARC1cbL30999034
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 Nov 2019 12:01:38 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 573F4C605D;
- Wed, 27 Nov 2019 12:01:38 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11B83C605B;
- Wed, 27 Nov 2019 12:01:38 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.124.35.209])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 27 Nov 2019 12:01:38 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 6B1732E2ED5; Wed, 27 Nov 2019 17:31:35 +0530 (IST)
-From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- Nathan Lynch <nathanl@linux.ibm.com>,
- Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: [PATCH 1/3] powerpc/pseries: Account for SPURR ticks on idle CPUs
-Date: Wed, 27 Nov 2019 17:31:10 +0530
-Message-Id: <1574856072-30972-2-git-send-email-ego@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
-References: <1574856072-30972-1-git-send-email-ego@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-27_02:2019-11-27,2019-11-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- spamscore=0 mlxlogscore=999 impostorscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 phishscore=0 suspectscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911270104
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NLj72DCZzDqts
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 00:09:59 +1100 (AEDT)
+Received: from player692.ha.ovh.net (unknown [10.109.146.163])
+ by mo178.mail-out.ovh.net (Postfix) with ESMTP id E479883EB8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 10:34:02 +0100 (CET)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player692.ha.ovh.net (Postfix) with ESMTPSA id 61949C796169;
+ Wed, 27 Nov 2019 09:33:56 +0000 (UTC)
+Date: Wed, 27 Nov 2019 10:33:54 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: Re: [Very RFC 40/46] powernv/npu: Don't drop refcount when looking
+ up GPU pci_devs
+Message-ID: <20191127103354.0758b079@bahia.w3ibm.bluemix.net>
+In-Reply-To: <851d7f28-8698-ec0b-7732-423c0926ce94@linux.ibm.com>
+References: <20191120012859.23300-1-oohall@gmail.com>
+ <20191120012859.23300-41-oohall@gmail.com>
+ <6bb90911-54fa-9f26-ec4d-7538f3303475@ozlabs.ru>
+ <20191127092408.5a996f41@bahia.w3ibm.bluemix.net>
+ <851d7f28-8698-ec0b-7732-423c0926ce94@linux.ibm.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Ovh-Tracer-Id: 4830673552944699749
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrudeihedgtdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdqfffguegfifdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpkedvrddvheefrddvtdekrddvgeeknecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheiledvrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghenucevlhhushhtvghrufhiiigvpedt
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,144 +58,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ Oliver O'Halloran <oohall@gmail.com>, s.miroshnichenko@yadro.com,
+ alistair@popple.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+On Wed, 27 Nov 2019 10:10:13 +0100
+Frederic Barrat <fbarrat@linux.ibm.com> wrote:
 
-On PSeries LPARs, to compute the utilization, tools such as lparstat
-need to know the [S]PURR ticks when the CPUs were busy or idle.
+>=20
+>=20
+> Le 27/11/2019 =C3=A0 09:24, Greg Kurz a =C3=A9crit=C2=A0:
+> > On Wed, 27 Nov 2019 18:09:40 +1100
+> > Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+> >=20
+> >>
+> >>
+> >> On 20/11/2019 12:28, Oliver O'Halloran wrote:
+> >>> The comment here implies that we don't need to take a ref to the pci_=
+dev
+> >>> because the ioda_pe will always have one. This implies that the curre=
+nt
+> >>> expection is that the pci_dev for an NPU device will *never* be torn
+> >>> down since the ioda_pe having a ref to the device will prevent the
+> >>> release function from being called.
+> >>>
+> >>> In other words, the desired behaviour here appears to be leaking a re=
+f.
+> >>>
+> >>> Nice!
+> >>
+> >>
+> >> There is a history: https://patchwork.ozlabs.org/patch/1088078/
+> >>
+> >> We did not fix anything in particular then, we do not seem to be fixing
+> >> anything now (in other words - we cannot test it in a normal natural
+> >> way). I'd drop this one.
+> >>
+> >=20
+> > Yeah, I didn't fix anything at the time. Just reverted to the ref
+> > count behavior we had before:
+> >=20
+> > https://patchwork.ozlabs.org/patch/829172/
+> >=20
+> > Frederic recently posted his take on the same topic from the OpenCAPI
+> > point of view:
+> >=20
+> > http://patchwork.ozlabs.org/patch/1198947/
+> >=20
+> > He seems to indicate the NPU devices as the real culprit because
+> > nobody ever cared for them to be removable. Fixing that seems be
+> > a chore nobody really wants to address obviously... :-\
+>=20
+>=20
+> I had taken a stab at not leaking a ref for the nvlink devices and do=20
+> the proper thing regarding ref counting (i.e. fixing all the callers of=20
+> get_pci_dev() to drop the reference when they were done). With that, I=20
+> could see that the ref count of the nvlink devices could drop to 0=20
+> (calling remove for the device in /sys) and that the devices could go awa=
+y.
+>=20
+> But then, I realized it's not necessarily desirable at this point. There=
+=20
+> are several comments in the code saying the npu devices (for nvlink)=20
+> don't go away, there's no device release callback defined when it seems=20
+> there should be, at least to handle releasing PEs.... All in all, it=20
+> seems that some work would be needed. And if it hasn't been required by=20
+> now...
+>=20
 
-In the pseries cpuidle driver, we keep track of the idle PURR ticks in
-the VPA variable "wait_state_cycles". This patch extends the support
-to account for the idle SPURR ticks.
+If everyone is ok with leaking a reference in the NPU case, I guess
+this isn't a problem. But if we move forward with Oliver's patch, a
+pci_dev_put() would be needed for OpenCAPI, correct ?
 
-Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/idle.c        |  2 ++
- drivers/cpuidle/cpuidle-pseries.c | 28 +++++++++++++++++-----------
- 2 files changed, 19 insertions(+), 11 deletions(-)
-
-diff --git a/arch/powerpc/kernel/idle.c b/arch/powerpc/kernel/idle.c
-index a36fd05..708ec68 100644
---- a/arch/powerpc/kernel/idle.c
-+++ b/arch/powerpc/kernel/idle.c
-@@ -33,6 +33,8 @@
- unsigned long cpuidle_disable = IDLE_NO_OVERRIDE;
- EXPORT_SYMBOL(cpuidle_disable);
- 
-+DEFINE_PER_CPU(u64, idle_spurr_cycles);
-+
- static int __init powersave_off(char *arg)
- {
- 	ppc_md.power_save = NULL;
-diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
-index 74c2479..45e2be4 100644
---- a/drivers/cpuidle/cpuidle-pseries.c
-+++ b/drivers/cpuidle/cpuidle-pseries.c
-@@ -30,11 +30,14 @@ struct cpuidle_driver pseries_idle_driver = {
- static struct cpuidle_state *cpuidle_state_table __read_mostly;
- static u64 snooze_timeout __read_mostly;
- static bool snooze_timeout_en __read_mostly;
-+DECLARE_PER_CPU(u64, idle_spurr_cycles);
- 
--static inline void idle_loop_prolog(unsigned long *in_purr)
-+static inline void idle_loop_prolog(unsigned long *in_purr,
-+				    unsigned long *in_spurr)
- {
- 	ppc64_runlatch_off();
- 	*in_purr = mfspr(SPRN_PURR);
-+	*in_spurr = mfspr(SPRN_SPURR);
- 	/*
- 	 * Indicate to the HV that we are idle. Now would be
- 	 * a good time to find other work to dispatch.
-@@ -42,13 +45,16 @@ static inline void idle_loop_prolog(unsigned long *in_purr)
- 	get_lppaca()->idle = 1;
- }
- 
--static inline void idle_loop_epilog(unsigned long in_purr)
-+static inline void idle_loop_epilog(unsigned long in_purr,
-+				    unsigned long in_spurr)
- {
- 	u64 wait_cycles;
-+	u64 *idle_spurr_cycles_ptr = this_cpu_ptr(&idle_spurr_cycles);
- 
- 	wait_cycles = be64_to_cpu(get_lppaca()->wait_state_cycles);
- 	wait_cycles += mfspr(SPRN_PURR) - in_purr;
- 	get_lppaca()->wait_state_cycles = cpu_to_be64(wait_cycles);
-+	*idle_spurr_cycles_ptr += mfspr(SPRN_SPURR) - in_spurr;
- 	get_lppaca()->idle = 0;
- 
- 	ppc64_runlatch_on();
-@@ -58,12 +64,12 @@ static int snooze_loop(struct cpuidle_device *dev,
- 			struct cpuidle_driver *drv,
- 			int index)
- {
--	unsigned long in_purr;
-+	unsigned long in_purr, in_spurr;
- 	u64 snooze_exit_time;
- 
- 	set_thread_flag(TIF_POLLING_NRFLAG);
- 
--	idle_loop_prolog(&in_purr);
-+	idle_loop_prolog(&in_purr, &in_spurr);
- 	local_irq_enable();
- 	snooze_exit_time = get_tb() + snooze_timeout;
- 
-@@ -87,7 +93,7 @@ static int snooze_loop(struct cpuidle_device *dev,
- 
- 	local_irq_disable();
- 
--	idle_loop_epilog(in_purr);
-+	idle_loop_epilog(in_purr, in_spurr);
- 
- 	return index;
- }
-@@ -113,9 +119,9 @@ static int dedicated_cede_loop(struct cpuidle_device *dev,
- 				struct cpuidle_driver *drv,
- 				int index)
- {
--	unsigned long in_purr;
-+	unsigned long in_purr, in_spurr;
- 
--	idle_loop_prolog(&in_purr);
-+	idle_loop_prolog(&in_purr, &in_spurr);
- 	get_lppaca()->donate_dedicated_cpu = 1;
- 
- 	HMT_medium();
-@@ -124,7 +130,7 @@ static int dedicated_cede_loop(struct cpuidle_device *dev,
- 	local_irq_disable();
- 	get_lppaca()->donate_dedicated_cpu = 0;
- 
--	idle_loop_epilog(in_purr);
-+	idle_loop_epilog(in_purr, in_spurr);
- 
- 	return index;
- }
-@@ -133,9 +139,9 @@ static int shared_cede_loop(struct cpuidle_device *dev,
- 			struct cpuidle_driver *drv,
- 			int index)
- {
--	unsigned long in_purr;
-+	unsigned long in_purr, in_spurr;
- 
--	idle_loop_prolog(&in_purr);
-+	idle_loop_prolog(&in_purr, &in_spurr);
- 
- 	/*
- 	 * Yield the processor to the hypervisor.  We return if
-@@ -147,7 +153,7 @@ static int shared_cede_loop(struct cpuidle_device *dev,
- 	check_and_cede_processor();
- 
- 	local_irq_disable();
--	idle_loop_epilog(in_purr);
-+	idle_loop_epilog(in_purr, in_spurr);
- 
- 	return index;
- }
--- 
-1.9.4
+>    Fred
+>=20
+>=20
+> >>
+> >>
+> >>>
+> >>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> >>> ---
+> >>>   arch/powerpc/platforms/powernv/npu-dma.c | 11 +++--------
+> >>>   1 file changed, 3 insertions(+), 8 deletions(-)
+> >>>
+> >>> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/=
+platforms/powernv/npu-dma.c
+> >>> index 72d3749da02c..2eb6e6d45a98 100644
+> >>> --- a/arch/powerpc/platforms/powernv/npu-dma.c
+> >>> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
+> >>> @@ -28,15 +28,10 @@ static struct pci_dev *get_pci_dev(struct device_=
+node *dn)
+> >>>   			break;
+> >>>  =20
+> >>>   	/*
+> >>> -	 * pci_get_domain_bus_and_slot() increased the reference count of
+> >>> -	 * the PCI device, but callers don't need that actually as the PE
+> >>> -	 * already holds a reference to the device. Since callers aren't
+> >>> -	 * aware of the reference count change, call pci_dev_put() now to
+> >>> -	 * avoid leaks.
+> >>> +	 * NB: for_each_pci_dev() elevates the pci_dev refcount.
+> >>> +	 * Caller is responsible for dropping the ref when it's
+> >>> +	 * finished with it.
+> >>>   	 */
+> >>> -	if (pdev)
+> >>> -		pci_dev_put(pdev);
+> >>> -
+> >>>   	return pdev;
+> >>>   }
+> >>>  =20
+> >>>
+> >>
+> >=20
+>=20
 
