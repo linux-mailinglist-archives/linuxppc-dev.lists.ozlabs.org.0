@@ -2,87 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAE810AC6F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 10:12:24 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NFQs5tbxzDqlY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 20:12:21 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C7710ACA1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 10:33:24 +0100 (CET)
+Received: from lists.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NFv53ygvzDqdb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2019 20:33:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+230b1395c146a7dc824f+5939+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="f0sHLJDF"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NFNd16bDzDqjy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 20:10:24 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAR92PWV026036
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 04:10:20 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2whhgc99cs-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 04:10:20 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Wed, 27 Nov 2019 09:10:18 -0000
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 27 Nov 2019 09:10:14 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xAR9ADe839911696
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 Nov 2019 09:10:13 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C73DDA4057;
- Wed, 27 Nov 2019 09:10:13 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8DAE9A4051;
- Wed, 27 Nov 2019 09:10:13 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.40.227])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 27 Nov 2019 09:10:13 +0000 (GMT)
-Subject: Re: [Very RFC 40/46] powernv/npu: Don't drop refcount when looking up
- GPU pci_devs
-To: Greg Kurz <groug@kaod.org>, Alexey Kardashevskiy <aik@ozlabs.ru>
-References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-41-oohall@gmail.com>
- <6bb90911-54fa-9f26-ec4d-7538f3303475@ozlabs.ru>
- <20191127092408.5a996f41@bahia.w3ibm.bluemix.net>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Wed, 27 Nov 2019 10:10:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NFrq1VdwzDqdb;
+ Wed, 27 Nov 2019 20:31:20 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=cArTQIBcelCpnlJ0+Dvnp+KYI2DLSwY3hnmMKGiD2ZA=; b=f0sHLJDFVuqrXrSn60GR/TykB
+ g0oJhOhjarhTssfVFdTxH9z+5dsOnSpvuYnj4P5U+RDEVy+ezBhb5JBnzurAiIuQCIAqlCUFt0Zrp
+ NZ3I73IclRB+MkDRImn4TsK9sgHy6NElSANsfLdNh1K6wRQKWbNretq9jIMGnangWxCasTpgfmoZ3
+ 3+7IsRHJEEb7m/qqJwXghCaLQFIgyldmSDGBFGGI+2Uv1cVUsTk9IkIewstA8c0JXOiiJPb1Oamey
+ AptQz0HuwD8ESvXAPB/JJ5zzqOhYmfzBP8CTNB20BgFR+14S4eEM55MtwhgS+UoTrSw0eb8058y9T
+ qyKTZpNjg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1iZtfE-0001CA-KX; Wed, 27 Nov 2019 09:31:12 +0000
+Date: Wed, 27 Nov 2019 01:31:12 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Haren Myneni <hbabu@us.ibm.com>
+Subject: Re: [PATCH 02/14] Revert "powerpc/powernv: remove the unused
+ vas_win_paste_addr and vas_win_id functions"
+Message-ID: <20191127093112.GA4485@infradead.org>
+References: <1574816607.13250.6.camel@hbabu-laptop>
+ <20191127082810.GA17097@infradead.org>
+ <OF14D260BC.48F4C927-ON002584BF.00332A80-882584BF.00335313@notes.na.collabserv.com>
 MIME-Version: 1.0
-In-Reply-To: <20191127092408.5a996f41@bahia.w3ibm.bluemix.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19112709-0028-0000-0000-000003C09286
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19112709-0029-0000-0000-00002483982C
-Message-Id: <851d7f28-8698-ec0b-7732-423c0926ce94@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-27_02:2019-11-27,2019-11-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 malwarescore=0
- adultscore=0 impostorscore=0 suspectscore=1 spamscore=0 phishscore=0
- mlxlogscore=986 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911270077
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <OF14D260BC.48F4C927-ON002584BF.00332A80-882584BF.00335313@notes.na.collabserv.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,102 +67,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>,
- s.miroshnichenko@yadro.com, alistair@popple.id.au
+Cc: devicetree@vger.kernel.org, mikey@neuling.org,
+ Linuxppc-dev <linuxppc-dev-bounces+hbabu=us.ibm.com@lists.ozlabs.org>,
+ herbert@gondor.apana.org.au, npiggin@gmail.com,
+ Christoph Hellwig <hch@infradead.org>, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, Haren Myneni <haren@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Nov 27, 2019 at 01:20:36AM -0800, Haren Myneni wrote:
+> Thanks for the review.
+> vas_win_paste_addr() will be used in NX compression driver and planning to
+> post this series soon. Can I add this change later as part of this series?
 
-
-Le 27/11/2019 à 09:24, Greg Kurz a écrit :
-> On Wed, 27 Nov 2019 18:09:40 +1100
-> Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
-> 
->>
->>
->> On 20/11/2019 12:28, Oliver O'Halloran wrote:
->>> The comment here implies that we don't need to take a ref to the pci_dev
->>> because the ioda_pe will always have one. This implies that the current
->>> expection is that the pci_dev for an NPU device will *never* be torn
->>> down since the ioda_pe having a ref to the device will prevent the
->>> release function from being called.
->>>
->>> In other words, the desired behaviour here appears to be leaking a ref.
->>>
->>> Nice!
->>
->>
->> There is a history: https://patchwork.ozlabs.org/patch/1088078/
->>
->> We did not fix anything in particular then, we do not seem to be fixing
->> anything now (in other words - we cannot test it in a normal natural
->> way). I'd drop this one.
->>
-> 
-> Yeah, I didn't fix anything at the time. Just reverted to the ref
-> count behavior we had before:
-> 
-> https://patchwork.ozlabs.org/patch/829172/
-> 
-> Frederic recently posted his take on the same topic from the OpenCAPI
-> point of view:
-> 
-> http://patchwork.ozlabs.org/patch/1198947/
-> 
-> He seems to indicate the NPU devices as the real culprit because
-> nobody ever cared for them to be removable. Fixing that seems be
-> a chore nobody really wants to address obviously... :-\
-
-
-I had taken a stab at not leaking a ref for the nvlink devices and do 
-the proper thing regarding ref counting (i.e. fixing all the callers of 
-get_pci_dev() to drop the reference when they were done). With that, I 
-could see that the ref count of the nvlink devices could drop to 0 
-(calling remove for the device in /sys) and that the devices could go away.
-
-But then, I realized it's not necessarily desirable at this point. There 
-are several comments in the code saying the npu devices (for nvlink) 
-don't go away, there's no device release callback defined when it seems 
-there should be, at least to handle releasing PEs.... All in all, it 
-seems that some work would be needed. And if it hasn't been required by 
-now...
-
-   Fred
-
-
->>
->>
->>>
->>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
->>> ---
->>>   arch/powerpc/platforms/powernv/npu-dma.c | 11 +++--------
->>>   1 file changed, 3 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
->>> index 72d3749da02c..2eb6e6d45a98 100644
->>> --- a/arch/powerpc/platforms/powernv/npu-dma.c
->>> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
->>> @@ -28,15 +28,10 @@ static struct pci_dev *get_pci_dev(struct device_node *dn)
->>>   			break;
->>>   
->>>   	/*
->>> -	 * pci_get_domain_bus_and_slot() increased the reference count of
->>> -	 * the PCI device, but callers don't need that actually as the PE
->>> -	 * already holds a reference to the device. Since callers aren't
->>> -	 * aware of the reference count change, call pci_dev_put() now to
->>> -	 * avoid leaks.
->>> +	 * NB: for_each_pci_dev() elevates the pci_dev refcount.
->>> +	 * Caller is responsible for dropping the ref when it's
->>> +	 * finished with it.
->>>   	 */
->>> -	if (pdev)
->>> -		pci_dev_put(pdev);
->>> -
->>>   	return pdev;
->>>   }
->>>   
->>>
->>
-> 
-
+Please only add core functionality and exports with the actual users.
