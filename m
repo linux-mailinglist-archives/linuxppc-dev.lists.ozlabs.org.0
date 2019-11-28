@@ -1,77 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2218110C4AA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 09:01:26 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0844E10C484
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 08:47:30 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NqVQ39LwzDqM6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 18:47:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NqpW3LBbzDr0X
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 19:01:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::244;
- helo=mail-oi1-x244.google.com; envelope-from=natechancellor@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="ak2QGyGq"; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="h88ZzfyI"; 
  dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NqRr0bqVzDqyB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 18:45:09 +1100 (AEDT)
-Received: by mail-oi1-x244.google.com with SMTP id d22so22521034oic.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 23:45:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=8kiJRE/B/wxbSXxZog9CBfpnC1pt1UKvSf8bBaqAJYE=;
- b=ak2QGyGqDHCjy7nbxkPXZde6Lx0OpuNAOr4gm0HSsjNPc657oJGqKn6WEwgB4ajJ/I
- Fqb1vZbxmKjobjecJ+hpBwzIVooddcrgVbGa6Y0FWnKkrH8FX9KX9yyahyWSm2hbnQKG
- iSFbL9EeJKB8SPQ8xn1Y3SbzzW6suYeWoTil2XA6Mo3xJKKnOwJFOI13NtgXbcdXUfcF
- w2MQB0nzU2xEV0niOetqUjL7jPw/1XB054wyc8G5L7vOZVnKKnymX9kmjcQCCP5APHbi
- CEkVMlgisgiCZ028mcD+Pvg/P2QGAE/n4zJajeimCa07k6dUcbMNPj7eA2MRd+gTfTxf
- uvSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=8kiJRE/B/wxbSXxZog9CBfpnC1pt1UKvSf8bBaqAJYE=;
- b=O9EvzHBAZe8Bm73j91vTxAgERZiHr+oXpYKxGiMlRX2bRYFtHhnqRD2orP1uAkAl3z
- bLJ5LSnlmlvXW6y+etdNL9fN+o/cyLzlt0fnlxDtVxPYow72h/ge+AZf7Te10EOEjco4
- rprzyj/gsDQaVsZc9zvvoz8TELsxsjE8HWC+dQPrs09TsJ62XOdl95jcr7cdXwra/piA
- nYmPpNtC64fx7DUA76svYhGdFNv0cN8SXuQR9lW3Gt8ABPEAzV3vg1XCGN+a0fhs7UF5
- IXKsg0OEUVdbE8/4Wk+jAY6/fD2s5DIKrfb9EwJCPE85kb+G8tt7Bjg8VeavFVGW8Qfl
- RxWg==
-X-Gm-Message-State: APjAAAVE86rbmBk6/iFu0X0fFIW4JZNChTuj/Hubwy3ar/zH2Qbl/YRs
- NbQVTEv81rZHN4sRdC8G5Jk=
-X-Google-Smtp-Source: APXvYqzaD4ywu4vxa6MdhVQTJ1iRNw5fZuuhJQbHb3CLlD4zmMqcmTlyzdF1HhQzEf3yeKQW+1/uzw==
-X-Received: by 2002:a05:6808:6ce:: with SMTP id
- m14mr4510556oih.27.1574927105893; 
- Wed, 27 Nov 2019 23:45:05 -0800 (PST)
-Received: from ubuntu-x2-xlarge-x86 ([2604:1380:4111:8b00::7])
- by smtp.gmail.com with ESMTPSA id w2sm2657096otp.55.2019.11.27.23.45.05
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 27 Nov 2019 23:45:05 -0800 (PST)
-Date: Thu, 28 Nov 2019 00:45:03 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v5 0/3] LLVM/Clang fixes for a few defconfigs
-Message-ID: <20191128074503.GA37339@ubuntu-x2-xlarge-x86>
-References: <20191014025101.18567-1-natechancellor@gmail.com>
- <20191119045712.39633-1-natechancellor@gmail.com>
- <CAKwvOd=3Ok8A8V30fccK5UzWFZ7zwG_zvGQV44S2BK4o2akbgw@mail.gmail.com>
- <87v9r4zjdw.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87v9r4zjdw.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NqmL3lSKzDqtG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 18:59:29 +1100 (AEDT)
+Received: from localhost (mailhub1-ext [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 47NqmB61v1z9ty0T;
+ Thu, 28 Nov 2019 08:59:22 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=h88ZzfyI; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id meBSBU5K6WRx; Thu, 28 Nov 2019 08:59:22 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 47NqmB4d1Yz9ty0S;
+ Thu, 28 Nov 2019 08:59:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1574927962; bh=bXxBztW5NEcHfvFNCgqAzNMfqGx5TH9U7oF6whJQF44=;
+ h=From:Subject:To:Cc:Date:From;
+ b=h88ZzfyIM3y2pWCdwKDLZXeCeqTWRUg/ucdcwBiNtflSw4vAx0L/7nCQeIsm4pOUR
+ TVGilhkXGftoi+AQt7TR8rpSrtlRmzskFP7OSitGbN5xWW/oZCJjBzCsQVbqmd5RMQ
+ 7p6Nrb5VcZiQm5HmRUcnyKX72wZd8XpwOAX1/Oak=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 605FA8B877;
+ Thu, 28 Nov 2019 08:59:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Sln_taC7m6WY; Thu, 28 Nov 2019 08:59:23 +0100 (CET)
+Received: from po16098vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.103])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 468028B767;
+ Thu, 28 Nov 2019 08:59:23 +0100 (CET)
+Received: by po16098vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 0F69C6B81B; Thu, 28 Nov 2019 07:59:22 +0000 (UTC)
+Message-Id: <d42fa9747df5afa41e67b08e374c98d3b40529c9.1574927918.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/fixmap: fix crash with HIGHMEM
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu, 28 Nov 2019 07:59:22 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,28 +73,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>,
- LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 28, 2019 at 03:59:07PM +1100, Michael Ellerman wrote:
-> Nick Desaulniers <ndesaulniers@google.com> writes:
-> > Hi Michael,
-> > Do you have feedback for Nathan? Rebasing these patches is becoming a
-> > nuisance for our CI, and we would like to keep building PPC w/ Clang.
-> 
-> Sorry just lost in the flood of patches.
-> 
-> Merged now.
-> 
-> cheers
+Commit f2bb86937d86 ("powerpc/fixmap: don't clear fixmap area in
+paging_init()") removed the clearing of fixmap area in order to
+avoid clearing fixmapped areas set earlier.
 
-Thank you very much for picking them up :)
+However unlike all other users of fixmap which use __set_fixmap(),
+HIGHMEM functions directly use __set_pte_at(). This means
+the page table must pre-exist, otherwise the following crash
+can be encoutered due to the lack of entry in the PGD.
 
-Cheers,
-Nathan
+Oops: Kernel access of bad area, sig: 11 [#1]
+BE PAGE_SIZE=4K MMU=Hash PowerMac
+Modules linked in:
+CPU: 0 PID: 1 Comm: swapper Not tainted 5.4.0+ #2528
+NIP:  c0144ce8 LR: c0144ccc CTR: 00000080
+REGS: ef0b5aa0 TRAP: 0300   Not tainted  (5.4.0+)
+MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 44282842  XER: 00000000
+DAR: fffdf000 DSISR: 42000000
+GPR00: c0144ccc ef0b5b58 ef0b0000 fffdf000 fffdf000 00000000 c0000f7c 00000000
+GPR08: c0833000 fffdf000 00000000 ef1c53c9 24042842 00000000 00000000 00000000
+GPR16: 00000000 00000000 ef7e7358 effe8160 00000000 c08a9660 c0851644 00000004
+GPR24: c08c70a8 00002dc2 00000000 00000001 00000201 effe8160 effe8160 00000000
+NIP [c0144ce8] prep_new_page+0x138/0x178
+LR [c0144ccc] prep_new_page+0x11c/0x178
+Call Trace:
+[ef0b5b58] [c0144ccc] prep_new_page+0x11c/0x178 (unreliable)
+[ef0b5b88] [c0147218] get_page_from_freelist+0x1fc/0xd88
+[ef0b5c38] [c0148328] __alloc_pages_nodemask+0xd4/0xbb4
+[ef0b5cf8] [c0142ba8] __vmalloc_node_range+0x1b4/0x2e0
+[ef0b5d38] [c0142dd0] vzalloc+0x48/0x58
+[ef0b5d58] [c0301c8c] check_partition+0x58/0x244
+[ef0b5d78] [c02ffe80] blk_add_partitions+0x44/0x2cc
+[ef0b5db8] [c01a32d8] bdev_disk_changed+0x68/0xfc
+[ef0b5de8] [c01a4494] __blkdev_get+0x290/0x460
+[ef0b5e28] [c02fdd40] __device_add_disk+0x480/0x4d8
+[ef0b5e68] [c0810688] brd_init+0xc0/0x188
+[ef0b5e88] [c0005194] do_one_initcall+0x40/0x19c
+[ef0b5ee8] [c07dd4dc] kernel_init_freeable+0x164/0x230
+[ef0b5f28] [c0005408] kernel_init+0x18/0x10c
+[ef0b5f38] [c0014274] ret_from_kernel_thread+0x14/0x1c
+
+Partially revert that commit to still clear the fixmap area dedicated
+to HIGHMEM.
+
+Fixes: f2bb86937d86 ("powerpc/fixmap: don't clear fixmap area in paging_init()")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/mm/mem.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index a39e6408bbc5..ad299e72ec30 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -239,6 +239,12 @@ void __init paging_init(void)
+ 	phys_addr_t top_of_ram = memblock_end_of_DRAM();
+ 
+ #ifdef CONFIG_HIGHMEM
++	unsigned long v = __fix_to_virt(FIX_KMAP_END);
++	unsigned long end = __fix_to_virt(FIX_KMAP_BEGIN);
++
++	for (; v < end; v += PAGE_SIZE)
++		map_kernel_page(v, 0, __pgprot(0)); /* XXX gross */
++
+ 	map_kernel_page(PKMAP_BASE, 0, __pgprot(0));	/* XXX gross */
+ 	pkmap_page_table = virt_to_kpte(PKMAP_BASE);
+ 
+-- 
+2.13.3
+
