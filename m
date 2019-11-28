@@ -1,153 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DC710C352
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 06:01:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321CD10C07F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 00:02:14 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NbrM32NMzDqyS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 10:02:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NlpS6Jk9zDqyq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 16:01:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="ivVNCUAs"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Nbp76mWmzDqBb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 10:00:15 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id k1so3403983pga.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Nov 2019 15:00:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=/BS8DejWFZvRzlOlkno27hYJFbuu9tay08R3NHs710M=;
- b=ivVNCUAsvn0OCc91oxT1N3wnx8VzkYPg5Tq2LOr/mgSGDraHAZzYIVCfNbQt5lQnE5
- HBM8xkqBThrBSbu3mFIluf1HtgCGUmqhdkPD46Bv8kw3lnd5ComoNkSPtHfLF80fsBG0
- SE4xG4xkK9Rb1QeBKtnLtfOWmTSw9t4aq1ezo5bCbmc08THkhOHLB41vH/p5NXJWp7Vn
- He/zErkBH/Hjcuy6BQJrA4QJi7SYQLea//dOmDM4LtAxa9jEtPeJCg6H4CFf7TClby31
- vRDvaP1qtB3s5Z5+R+OiqLlq7YtjaGmvQHUjT9hZk7H0DxRb4fruFQdP2TchWN9o1HAW
- RhKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=/BS8DejWFZvRzlOlkno27hYJFbuu9tay08R3NHs710M=;
- b=TcwgecWsRVgvbT53yJkhRczX2vNp88HFy7GJ1Kufg/2+sGHQX72NITVmeK66paZn8P
- Yikq9FP08n8sjdvgfaPVedx+xujsMyCGe5UIacJhY+iG9HKk40/5Xek0qocwdiWdLUQo
- QAQ0ACx8pfMCV49OyRZDJ21sIPXkwXpF/gnEN5/kw+S3Emqo8qWbQRNeYC3qt/gZevcm
- 1aRp7WeAoPZ8KMX9UUW8H64o6jIvrXXUVE3iq3kCgeVy4f+MOC+YrmOCWQMXZrTy6Ari
- xsdwbKn2IKb3Lt4yqGqjx0ziTbft+IV3VbJM1tRut7jLAwu8aZ4qO+65KlBlz8frJON+
- ezxg==
-X-Gm-Message-State: APjAAAWy25EGdKdZH19ko/mORdOuJgkWQoDmLHZ3cdFX4jmguNpq6eKM
- M2ZXtjkQ6m6yOMxXIK9P50HB7Rwlqts=
-X-Google-Smtp-Source: APXvYqz6JVafVvB5qNngASp9Ga1Ls3gt2QrQFCY68voON+77pbMkHj0rrZvVTtBX3ja94A0AYLB6Vg==
-X-Received: by 2002:a63:c346:: with SMTP id e6mr6479944pgd.11.1574895613540;
- Wed, 27 Nov 2019 15:00:13 -0800 (PST)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id q10sm6690183pfh.103.2019.11.27.15.00.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Nov 2019 15:00:13 -0800 (PST)
-Subject: Re: [Very RFC 45/46] powernv/pci: Remove requirement for a pdn in
- config accessors
-To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20191120012859.23300-1-oohall@gmail.com>
- <20191120012859.23300-46-oohall@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <fe130ecf-4bb3-3d01-74b5-0e8cfbb4e433@ozlabs.ru>
-Date: Thu, 28 Nov 2019 10:00:09 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NlmJ08DpzDqxd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 15:59:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="Ssvgjrk/"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47NlmG4J8Vz9sPK;
+ Thu, 28 Nov 2019 15:59:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1574917151;
+ bh=UoM1p2I0xAHcGr6mKwAQtqM+WSIgrcRigkz6MWIzVVU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Ssvgjrk/BnOGo2u2AxzaIu+BZcSJTJ9zlWYiOKL8ssK/CWox8pOXKYQEIK3vOTEdz
+ j+T42QQAWRRTtA/ROsQVAGUYyI7d3IjKrJslmlk9o3AwBoE7X/OOonjdTwNG2AcqsV
+ MQXpIthMYrBlJpAr08gDsfsjDYtVza+yZPCwTbv9Kad7pMWeQdgEadhgnEj6wTVEJv
+ h0zKnBKXmvtKeyD+tg3AYu0i7B0kXMza7RQ62CYkqi8CnFpQdTQ2L6PWsN0Dhfo4kK
+ vhVujwN8yD5cRQ75YsN7RtQwk3gJTHK1FbMVmcU0VZWL99ZmPX9RKmgvX7AvW10W/w
+ h2jwGUfD5xHVg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH v5 0/3] LLVM/Clang fixes for a few defconfigs
+In-Reply-To: <CAKwvOd=3Ok8A8V30fccK5UzWFZ7zwG_zvGQV44S2BK4o2akbgw@mail.gmail.com>
+References: <20191014025101.18567-1-natechancellor@gmail.com>
+ <20191119045712.39633-1-natechancellor@gmail.com>
+ <CAKwvOd=3Ok8A8V30fccK5UzWFZ7zwG_zvGQV44S2BK4o2akbgw@mail.gmail.com>
+Date: Thu, 28 Nov 2019 15:59:07 +1100
+Message-ID: <87v9r4zjdw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20191120012859.23300-46-oohall@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -159,67 +58,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, s.miroshnichenko@yadro.com
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nick Desaulniers <ndesaulniers@google.com> writes:
+> Hi Michael,
+> Do you have feedback for Nathan? Rebasing these patches is becoming a
+> nuisance for our CI, and we would like to keep building PPC w/ Clang.
 
+Sorry just lost in the flood of patches.
 
-On 20/11/2019 12:28, Oliver O'Halloran wrote:
-> :toot:
-> 
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Merged now.
 
+cheers
 
-Squash it into 26/46 "powernv/pci: Remove pdn from
-pnv_pci_cfg_{read|write}". Thanks,
-
-
-> ---
->  arch/powerpc/platforms/powernv/pci.c | 10 ----------
->  1 file changed, 10 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-> index 0eeea8652426..6383dcfec606 100644
-> --- a/arch/powerpc/platforms/powernv/pci.c
-> +++ b/arch/powerpc/platforms/powernv/pci.c
-> @@ -750,17 +750,12 @@ static int pnv_pci_read_config(struct pci_bus *bus,
->  			       unsigned int devfn,
->  			       int where, int size, u32 *val)
->  {
-> -	struct pci_dn *pdn;
->  	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
->  	u16 bdfn = bus->number << 8 | devfn;
->  	struct eeh_dev *edev;
->  	int ret;
->  
->  	*val = 0xFFFFFFFF;
-> -	pdn = pci_get_pdn_by_devfn(bus, devfn);
-> -	if (!pdn)
-> -		return PCIBIOS_DEVICE_NOT_FOUND;
-> -
->  	edev = pnv_eeh_find_edev(phb, bdfn);
->  	if (!pnv_eeh_pre_cfg_check(edev))
->  		return PCIBIOS_DEVICE_NOT_FOUND;
-> @@ -781,16 +776,11 @@ static int pnv_pci_write_config(struct pci_bus *bus,
->  				unsigned int devfn,
->  				int where, int size, u32 val)
->  {
-> -	struct pci_dn *pdn;
->  	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
->  	u16 bdfn = bus->number << 8 | devfn;
->  	struct eeh_dev *edev;
->  	int ret;
->  
-> -	pdn = pci_get_pdn_by_devfn(bus, devfn);
-> -	if (!pdn)
-> -		return PCIBIOS_DEVICE_NOT_FOUND;
-> -
->  	edev = pnv_eeh_find_edev(phb, bdfn);
->  	if (!pnv_eeh_pre_cfg_check(edev))
->  		return PCIBIOS_DEVICE_NOT_FOUND;
-> 
-
--- 
-Alexey
+> On Mon, Nov 18, 2019 at 8:57 PM Nathan Chancellor
+> <natechancellor@gmail.com> wrote:
+>>
+>> Hi all,
+>>
+>> This series includes a set of fixes for LLVM/Clang when building
+>> a few defconfigs (powernv, ppc44x, and pseries are the ones that our
+>> CI configuration tests [1]). The first patch fixes pseries_defconfig,
+>> which has never worked in mainline. The second and third patches fixes
+>> issues with all of these configs due to internal changes to LLVM, which
+>> point out issues with the kernel.
+>>
+>> These have been broken since July/August, it would be nice to get these
+>> reviewed and applied. Please let me know what I can do to get these
+>> applied soon so we can stop applying them out of tree.
+>>
+>> [1]: https://github.com/ClangBuiltLinux/continuous-integration
+>>
+>> Previous versions:
+>>
+>> v3: https://lore.kernel.org/lkml/20190911182049.77853-1-natechancellor@gmail.com/
+>>
+>> v4: https://lore.kernel.org/lkml/20191014025101.18567-1-natechancellor@gmail.com/
+>>
+>> Cheers,
+>> Nathan
+>>
+>>
+>
+>
+> -- 
+> Thanks,
+> ~Nick Desaulniers
