@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BD510CB5B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 16:09:19 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47P1JF13qqzDqLJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 02:09:17 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id F405010CB68
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 16:11:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47P1M70w0DzDr1V
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 02:11:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::144;
- helo=mail-lf1-x144.google.com; envelope-from=linux@rasmusvillemoes.dk;
+ smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::244;
+ helo=mail-lj1-x244.google.com; envelope-from=linux@rasmusvillemoes.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="LBLkpB93"; dkim-atps=neutral
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
- [IPv6:2a00:1450:4864:20::144])
+ header.b="LWSeFBBM"; dkim-atps=neutral
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47P12G05jTzDqn4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 01:57:09 +1100 (AEDT)
-Received: by mail-lf1-x144.google.com with SMTP id 203so20232598lfa.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 06:57:09 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47P12H6VFhzDqmh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 01:57:11 +1100 (AEDT)
+Received: by mail-lj1-x244.google.com with SMTP id e10so19656727ljj.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 06:57:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=rasmusvillemoes.dk; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=xuBpN3zboz9lWIykWwJc5jpgUtQnVYVpKGpTSAHe1mY=;
- b=LBLkpB93pVGXgxOwmejvEDGNQ0wTX3sXVZAnOcyd8gmKFnbh6jMBjoDwjyb6YvDm4M
- XHCCmFN2eUGOVTINPAhI11+JlyAosCHBv2LK/vtsY+G2dWLFaEQSZ4Exo/mFOK5UMZLJ
- 2LQB98mHBLqEsF/KxdOGUYnhPx8t8XlV/3yeA=
+ bh=AiGMJuBYK7a9OjqplEnlhTed0vj3Z2tvo3Sm0/6smWk=;
+ b=LWSeFBBM1EDIZG6BRK7BzXkMhomfAGPxWZw5tbDhgh3j0xwb1HqC6ORUdqAUR5hYkz
+ tbFM6GCvupYGGSa1wW3LvEjbWfoc5kdkGYD4XmkX+Hmxi8jZ2xrI5mbIBgUADs+agsCg
+ Sgeh5ezUo/C4MaGgCfg+Rdd5Xt0dYaqfP4JhY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=xuBpN3zboz9lWIykWwJc5jpgUtQnVYVpKGpTSAHe1mY=;
- b=Bfj2Bt+5BioQmwz27qa9fU77UQRL4hox8Zd8ik8ZxqoU1hQzF1b3CSmBHOrZB25yGC
- mcxMbr+l6WsXlNlvq6vQkLwJCDmI1s5oGALKLkTV65KLKxfuLlGTe8Uro65XpMLgDOV9
- gsP3f7fO9YuK8lak7OCm0yLeuUIEztbOJp8fuLAnab5/t3HlUi7G7wCUty4DFKC51hMC
- mf+k0jo6ju5NtKLn+gGXAxgN9Yl6y9XONJ7X84HywnyPLbonWTfzRIYw4yqTffogaGLF
- YE8G82ox+wUAJplT+d7q/2OqIEVCV/2lFnFBCM8fr/k3ZGKZz4pMyjsXhZO7J0GhF5c8
- P1Ow==
-X-Gm-Message-State: APjAAAWoM8rAa2LO7yiZ/Jcl4LbeV9jkEZ/VaMcEn/OSoHxTwijyfHYB
- 6cKZQ6Y2Q7G0JkuMIEhvnREnxg==
-X-Google-Smtp-Source: APXvYqwT0EuyApqITA3lCeK5EuUs0sPJJq6so9cNaQVKnIZ5SJX2OXNZKYrUelwYNc4RA25bHCTp7w==
-X-Received: by 2002:a19:e20b:: with SMTP id z11mr32438202lfg.171.1574953026680; 
- Thu, 28 Nov 2019 06:57:06 -0800 (PST)
+ bh=AiGMJuBYK7a9OjqplEnlhTed0vj3Z2tvo3Sm0/6smWk=;
+ b=nL82wF1XUndCDMFk1s0oPY4z6fitUpRrl0d8hRB1jTG9hrZijXYFbbvplZMm87mCnm
+ WtBE976Hyn2k4RcBhFFKrowoQqtf1rt3bXHcBiWfECAgpWnx2EOExiHHB5QBGfH+Mr1b
+ 2VvEFVIoCxswtpOXz/phNAb+QPJcTpKZdRj9iKECZsUrwXsnRLN6Q7tSpgizfpR1h7WM
+ Nen3vQRAPtCFmPkBiAvX+MQ6MRoYbXVQjpbQ7MPnxTIaHODPBZYgYQMisFEs2S76XYQk
+ loVQy79m9yzYmoBT9T1R0PqKm7cNwfClVdScvfD8bPRtRCQkUrMhWbfK4QWmMdPUEhiT
+ HKUA==
+X-Gm-Message-State: APjAAAXt72L4a+30mGvQBNm1mkfApNwnnjXAhKU9klfVWx0adEucIIHW
+ ilHF43MjOwTKVmOyvebdcRAAmg==
+X-Google-Smtp-Source: APXvYqx9GR/tD/ww+OOOfAVWnvsvJ//206lu0T8p7Qzhyj4S2WuGGXqlvt2C1ggQ9Sclp3pDaGgXSg==
+X-Received: by 2002:a2e:8855:: with SMTP id z21mr36008857ljj.212.1574953028055; 
+ Thu, 28 Nov 2019 06:57:08 -0800 (PST)
 Received: from prevas-ravi.prevas.se ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id u2sm2456803lfl.18.2019.11.28.06.57.05
+ by smtp.gmail.com with ESMTPSA id u2sm2456803lfl.18.2019.11.28.06.57.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Nov 2019 06:57:06 -0800 (PST)
+ Thu, 28 Nov 2019 06:57:07 -0800 (PST)
 From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 To: Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v6 02/49] soc: fsl: qe: drop volatile qualifier of struct
- qe_ic::regs
-Date: Thu, 28 Nov 2019 15:55:07 +0100
-Message-Id: <20191128145554.1297-3-linux@rasmusvillemoes.dk>
+Subject: [PATCH v6 03/49] soc: fsl: qe: rename qe_(clr/set/clrset)bit* helpers
+Date: Thu, 28 Nov 2019 15:55:08 +0100
+Message-Id: <20191128145554.1297-4-linux@rasmusvillemoes.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191128145554.1297-1-linux@rasmusvillemoes.dk>
 References: <20191128145554.1297-1-linux@rasmusvillemoes.dk>
@@ -78,57 +77,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Timur Tabi <timur@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Timur Tabi <timur@kernel.org>, netdev@vger.kernel.org,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
+ Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The actual io accessors (e.g. in_be32) implicitly add a volatile
-qualifier to their address argument. Remove volatile from the struct
-definition and the qe_ic_(read/write) helpers, in preparation for
-switching from the ppc-specific io accessors to generic ones.
+Make it clear that these operate on big-endian registers (i.e. use the
+iowrite*be primitives) before we introduce more uses of them and allow
+the QE drivers to be built for platforms other than ppc32.
 
 Reviewed-by: Timur Tabi <timur@kernel.org>
 Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
- drivers/soc/fsl/qe/qe_ic.c | 4 ++--
- drivers/soc/fsl/qe/qe_ic.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wan/fsl_ucc_hdlc.c |  4 ++--
+ drivers/soc/fsl/qe/ucc.c       | 10 +++++-----
+ include/soc/fsl/qe/qe.h        | 18 +++++++++---------
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
-index 9bac546998d3..791adcd121d1 100644
---- a/drivers/soc/fsl/qe/qe_ic.c
-+++ b/drivers/soc/fsl/qe/qe_ic.c
-@@ -171,12 +171,12 @@ static struct qe_ic_info qe_ic_info[] = {
- 		},
- };
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index ca0f3be2b6bf..ce6af7d5380f 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -623,8 +623,8 @@ static int ucc_hdlc_poll(struct napi_struct *napi, int budget)
  
--static inline u32 qe_ic_read(volatile __be32  __iomem * base, unsigned int reg)
-+static inline u32 qe_ic_read(__be32  __iomem *base, unsigned int reg)
- {
- 	return in_be32(base + (reg >> 2));
+ 	if (howmany < budget) {
+ 		napi_complete_done(napi, howmany);
+-		qe_setbits32(priv->uccf->p_uccm,
+-			     (UCCE_HDLC_RX_EVENTS | UCCE_HDLC_TX_EVENTS) << 16);
++		qe_setbits_be32(priv->uccf->p_uccm,
++				(UCCE_HDLC_RX_EVENTS | UCCE_HDLC_TX_EVENTS) << 16);
+ 	}
+ 
+ 	return howmany;
+diff --git a/drivers/soc/fsl/qe/ucc.c b/drivers/soc/fsl/qe/ucc.c
+index 024d239ac1e1..ae9f2cf560cb 100644
+--- a/drivers/soc/fsl/qe/ucc.c
++++ b/drivers/soc/fsl/qe/ucc.c
+@@ -540,8 +540,8 @@ int ucc_set_tdm_rxtx_clk(u32 tdm_num, enum qe_clock clock,
+ 	cmxs1cr = (tdm_num < 4) ? &qe_mux_reg->cmxsi1cr_l :
+ 				  &qe_mux_reg->cmxsi1cr_h;
+ 
+-	qe_clrsetbits32(cmxs1cr, QE_CMXUCR_TX_CLK_SRC_MASK << shift,
+-			clock_bits << shift);
++	qe_clrsetbits_be32(cmxs1cr, QE_CMXUCR_TX_CLK_SRC_MASK << shift,
++			   clock_bits << shift);
+ 
+ 	return 0;
  }
+@@ -650,9 +650,9 @@ int ucc_set_tdm_rxtx_sync(u32 tdm_num, enum qe_clock clock,
  
--static inline void qe_ic_write(volatile __be32  __iomem * base, unsigned int reg,
-+static inline void qe_ic_write(__be32  __iomem *base, unsigned int reg,
- 			       u32 value)
- {
- 	out_be32(base + (reg >> 2), value);
-diff --git a/drivers/soc/fsl/qe/qe_ic.h b/drivers/soc/fsl/qe/qe_ic.h
-index 08c695672a03..9420378d9b6b 100644
---- a/drivers/soc/fsl/qe/qe_ic.h
-+++ b/drivers/soc/fsl/qe/qe_ic.h
-@@ -72,7 +72,7 @@
+ 	shift = ucc_get_tdm_sync_shift(mode, tdm_num);
  
- struct qe_ic {
- 	/* Control registers offset */
--	volatile u32 __iomem *regs;
-+	u32 __iomem *regs;
+-	qe_clrsetbits32(&qe_mux_reg->cmxsi1syr,
+-			QE_CMXUCR_TX_CLK_SRC_MASK << shift,
+-			source << shift);
++	qe_clrsetbits_be32(&qe_mux_reg->cmxsi1syr,
++			   QE_CMXUCR_TX_CLK_SRC_MASK << shift,
++			   source << shift);
  
- 	/* The remapper for this QEIC */
- 	struct irq_domain *irqhost;
+ 	return 0;
+ }
+diff --git a/include/soc/fsl/qe/qe.h b/include/soc/fsl/qe/qe.h
+index c1036d16ed03..a1aa4eb28f0c 100644
+--- a/include/soc/fsl/qe/qe.h
++++ b/include/soc/fsl/qe/qe.h
+@@ -241,20 +241,20 @@ static inline int qe_alive_during_sleep(void)
+ #define qe_muram_offset cpm_muram_offset
+ #define qe_muram_dma cpm_muram_dma
+ 
+-#define qe_setbits32(_addr, _v) iowrite32be(ioread32be(_addr) |  (_v), (_addr))
+-#define qe_clrbits32(_addr, _v) iowrite32be(ioread32be(_addr) & ~(_v), (_addr))
++#define qe_setbits_be32(_addr, _v) iowrite32be(ioread32be(_addr) |  (_v), (_addr))
++#define qe_clrbits_be32(_addr, _v) iowrite32be(ioread32be(_addr) & ~(_v), (_addr))
+ 
+-#define qe_setbits16(_addr, _v) iowrite16be(ioread16be(_addr) |  (_v), (_addr))
+-#define qe_clrbits16(_addr, _v) iowrite16be(ioread16be(_addr) & ~(_v), (_addr))
++#define qe_setbits_be16(_addr, _v) iowrite16be(ioread16be(_addr) |  (_v), (_addr))
++#define qe_clrbits_be16(_addr, _v) iowrite16be(ioread16be(_addr) & ~(_v), (_addr))
+ 
+-#define qe_setbits8(_addr, _v) iowrite8(ioread8(_addr) |  (_v), (_addr))
+-#define qe_clrbits8(_addr, _v) iowrite8(ioread8(_addr) & ~(_v), (_addr))
++#define qe_setbits_8(_addr, _v) iowrite8(ioread8(_addr) |  (_v), (_addr))
++#define qe_clrbits_8(_addr, _v) iowrite8(ioread8(_addr) & ~(_v), (_addr))
+ 
+-#define qe_clrsetbits32(addr, clear, set) \
++#define qe_clrsetbits_be32(addr, clear, set) \
+ 	iowrite32be((ioread32be(addr) & ~(clear)) | (set), (addr))
+-#define qe_clrsetbits16(addr, clear, set) \
++#define qe_clrsetbits_be16(addr, clear, set) \
+ 	iowrite16be((ioread16be(addr) & ~(clear)) | (set), (addr))
+-#define qe_clrsetbits8(addr, clear, set) \
++#define qe_clrsetbits_8(addr, clear, set) \
+ 	iowrite8((ioread8(addr) & ~(clear)) | (set), (addr))
+ 
+ /* Structure that defines QE firmware binary files.
 -- 
 2.23.0
 
