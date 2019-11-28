@@ -1,75 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F6C10C4B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 09:09:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47NqzH1mz0zDqkX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 19:08:59 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D44B10C676
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 11:13:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Ntl63T8mzDr0X
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 21:13:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=cyphar.com (client-ip=80.241.56.151; helo=mout-p-101.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="dyDBE4cz"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NthP6X7lzDqy1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 21:11:14 +1100 (AEDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Nqww27MnzDqSw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 19:06:56 +1100 (AEDT)
-Received: from localhost (mailhub1-ext [192.168.12.233])
- by localhost (Postfix) with ESMTP id 47Nqwq3STlz9ty0Y;
- Thu, 28 Nov 2019 09:06:51 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=dyDBE4cz; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id mgpN2mQI7JlB; Thu, 28 Nov 2019 09:06:51 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 47Nqwq2FZrz9ty0T;
- Thu, 28 Nov 2019 09:06:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1574928411; bh=r0UjyHYvteSzLuUih/qEKzzmGw4ED7wqOOic8C4w5SA=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=dyDBE4czf+EVa7HddAfrip5wNrdAXpxfQppTvkKZyv4sMXgEaMYcWNXHWKi0ttugQ
- 0Dpwk6SvIFZ+81slLnonUt1xeydEFkqqtVamutMVtyiFLsrpP7zWzfliuQTw5OurYG
- USk2sUpqVviGeSmwEBSlYaNiEcG53eDCKpSWMb0M=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 40CA28B787;
- Thu, 28 Nov 2019 09:06:52 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TDIdejapCBoz; Thu, 28 Nov 2019 09:06:52 +0100 (CET)
-Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1CD438B767;
- Thu, 28 Nov 2019 09:06:52 +0100 (CET)
-Subject: Re: [PATCH v1 1/4] powerpc/fixmap: don't clear fixmap area in
- paging_init()
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com, hch@infradead.org
-References: <47MQrc6TCxz9sPV@ozlabs.org>
- <bedbd52f-9eea-7253-e28b-68e01a848405@c-s.fr>
-Message-ID: <51c97c23-251d-90d9-0c52-41ef55c9f4c9@c-s.fr>
-Date: Thu, 28 Nov 2019 09:06:52 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ by mout-p-101.mailbox.org (Postfix) with ESMTPS id 47NthB5RWjzKmgJ;
+ Thu, 28 Nov 2019 11:11:06 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de
+ [80.241.56.125]) (amavisd-new, port 10030)
+ with ESMTP id oN9FEqYs1Rbm; Thu, 28 Nov 2019 11:10:57 +0100 (CET)
+Date: Thu, 28 Nov 2019 21:10:23 +1100
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v17 10/13] namei: LOOKUP_{IN_ROOT,BENEATH}: permit
+ limited ".." resolution
+Message-ID: <20191128101023.zozsfq4kbhjyethg@yavin.dot.cyphar.com>
+References: <20191117011713.13032-1-cyphar@cyphar.com>
+ <20191117011713.13032-11-cyphar@cyphar.com>
+ <20191125003501.GF4203@ZenIV.linux.org.uk>
+ <20191125132145.btaxuurs2w3ldyxf@yavin.dot.cyphar.com>
 MIME-Version: 1.0
-In-Reply-To: <bedbd52f-9eea-7253-e28b-68e01a848405@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="cht5i7oy766zupq7"
+Content-Disposition: inline
+In-Reply-To: <20191125132145.btaxuurs2w3ldyxf@yavin.dot.cyphar.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,46 +55,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Song Liu <songliubraving@fb.com>, linux-ia64@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, containers@lists.linux-foundation.org,
+ Christian Brauner <christian.brauner@ubuntu.com>, linux-api@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Tycho Andersen <tycho@tycho.ws>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jonathan Corbet <corbet@lwn.net>,
+ Jiri Olsa <jolsa@redhat.com>, linux-sh@vger.kernel.org,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ Yonghong Song <yhs@fb.com>, linux-mips@vger.kernel.org,
+ Andrii Nakryiko <andriin@fb.com>, bpf@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, dev@opencontainers.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Namhyung Kim <namhyung@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, libc-alpha@sourceware.org,
+ Aleksa Sarai <asarai@suse.de>, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--cht5i7oy766zupq7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Le 27/11/2019 à 15:43, Christophe Leroy a écrit :
-> 
-> 
-> Le 26/11/2019 à 02:13, Michael Ellerman a écrit :
->> On Thu, 2019-09-12 at 13:49:41 UTC, Christophe Leroy wrote:
->>> fixmap is intended to map things permanently like the IMMR region on
->>> FSL SOC (8xx, 83xx, ...), so don't clear it when initialising paging()
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>
->> Applied to powerpc next, thanks.
->>
->> https://git.kernel.org/powerpc/c/f2bb86937d86ebcb0e52f95b6d19aba1d850e601
->>
-> 
-> Hi,
-> 
-> What happened ?
-> 
-> It looks like it is gone in today's powerpc next.
-> 
+On 2019-11-26, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> On 2019-11-25, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > On Sun, Nov 17, 2019 at 12:17:10PM +1100, Aleksa Sarai wrote:
+> > > +		if (unlikely(nd->flags & LOOKUP_IS_SCOPED)) {
+> > > +			/*
+> > > +			 * If there was a racing rename or mount along our
+> > > +			 * path, then we can't be sure that ".." hasn't jumped
+> > > +			 * above nd->root (and so userspace should retry or use
+> > > +			 * some fallback).
+> > > +			 */
+> > > +			if (unlikely(read_seqretry(&mount_lock, nd->m_seq)))
+> > > +				return -EAGAIN;
+> > > +			if (unlikely(read_seqretry(&rename_lock, nd->r_seq)))
+> > > +				return -EAGAIN;
+> > > +		}
+> >=20
+> > Looks like excessive barriers to me - it's
+> > 	rmb
+> > 	check mount_lock.sequence
+> > 	rmb
+> > 	check rename_lock.sequence
+>=20
+> If you like, I can switch this to
+>=20
+> 	smp_rmb();
+> 	if (unlikely(__read_seqcount_retry(&mount_lock.seqcount, nd->m_seq)))
+> 		return -EAGAIN;
+> 	if (unlikely(__read_seqcount_retry(&rename_lock.seqcount, nd->r_seq)))
+> 		return -EAGAIN;
+>=20
+> Though I think it makes it more noisy (and this code-path will only be
+> hit for ".." and LOOKUP_IS_SCOPED).
+>=20
+> > > @@ -2266,6 +2274,10 @@ static const char *path_init(struct nameidata =
+*nd, unsigned flags)
+> > >  	nd->last_type =3D LAST_ROOT; /* if there are only slashes... */
+> > >  	nd->flags =3D flags | LOOKUP_JUMPED | LOOKUP_PARENT;
+> > >  	nd->depth =3D 0;
+> > > +
+> > > +	nd->m_seq =3D read_seqbegin(&mount_lock);
+> > > +	nd->r_seq =3D read_seqbegin(&rename_lock);
+> >=20
+> > Same here, pretty much (fetch/rmb/fetch/rmb)
+>=20
+> Unless I'm mistaken, wouldn't we have to do
+> seqcount_lockdep_reader_access() explicitly -- so it would end up
+> looking something like:
+>=20
+> 	seqcount_lockdep_reader_access(&mount_lock.seqcount);
+> 	nd->m_seq =3D __read_seqcount_begin(&mount_lock.seqcount);
+> 	seqcount_lockdep_reader_access(&mount_lock.seqcount);
+> 	nd->r_seq =3D __read_seqcount_begin(&rename_lock.seqcount);
+> 	smp_rmb();
 
-I see it back today in powerpc/merge, thanks.
+Actually, looking it again (unless I'm mistaken) the following should be
+acceptable and it also avoids the extra fetch+rmb of mount_lock for
+LOOKUP_ROOT. The only downside is that we don't get lockdep information
+but path_init() already ignores lockdep when grabbing d_seq.
 
-The issue is it is crashing with HIGHMEM, indeed exactly the same as you 
-saw with "[PATCH] powerpc/8xx: Fix permanently mapped IMMR region.", 
-since that was exactly the same code.
+I will include the following in v18, but let me know if I'm missing
+something obvious:
 
-I sent a fix for it, and I also rebased "[PATCH] powerpc/8xx: Fix 
-permanently mapped IMMR region." into v2 to exclude from it the already 
-merged part.
+ >>	nd->m_seq =3D __read_seqcount_begin(&mount_lock);
+ >>	nd->r_seq =3D __read_seqcount_begin(&rename_lock);
+ >>	smp_rmb();
 
-It would be wise if you could merge both.
+	if (flags & LOOKUP_ROOT) {
+		struct dentry *root =3D nd->root.dentry;
+		struct inode *inode =3D root->d_inode;
+		if (*s && unlikely(!d_can_lookup(root)))
+			return ERR_PTR(-ENOTDIR);
+		nd->path =3D nd->root;
+		nd->inode =3D inode;
+		if (flags & LOOKUP_RCU) {
+ >>			nd->seq =3D raw_read_seqcount_begin(&nd->path.dentry->d_seq);
+			nd->root_seq =3D nd->seq;
+		} else {
+			path_get(&nd->path);
+		}
+		return s;
+	}
 
-Thanks
-Christophe
+I could also move the smp_rmb() to after LOOKUP_ROOT (and add an
+smp_rmb() at the end of LOOKUP_ROOT) which would avoid a double-rmb for
+LOOKUP_ROOT -- but it makes it harder to read IMHO.
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--cht5i7oy766zupq7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXd+dDAAKCRCdlLljIbnQ
+EreMAP9MQFDKw7S61GLLYRtaPZcDlVuOaaxmgShfXuqNXAGMGwD9EZ9ag0BaUOMg
+K4PtLhUUkb1jF+Ff2LBWG3EOxsSD2AY=
+=bnEH
+-----END PGP SIGNATURE-----
+
+--cht5i7oy766zupq7--
