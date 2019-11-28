@@ -2,81 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B0710C35B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 06:06:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BA110C3BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 06:33:17 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47Nlwf05f0zDqBP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 16:06:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47NmWZ4DyjzDqyP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2019 16:33:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47NltM31khzDqT7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 16:04:26 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- xAS50bmm020219
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 00:04:21 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2whcxrm8eh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 00:04:21 -0500
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Thu, 28 Nov 2019 05:04:19 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 28 Nov 2019 05:04:17 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id xAS53agB30736702
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Nov 2019 05:03:36 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 579EBA4062;
- Thu, 28 Nov 2019 05:04:15 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5E6A5A4065;
- Thu, 28 Nov 2019 05:04:13 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.199.59.121])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu, 28 Nov 2019 05:04:13 +0000 (GMT)
-Date: Thu, 28 Nov 2019 10:34:11 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v11 0/7] KVM: PPC: Driver to manage pages of secure guest
-References: <20191125030631.7716-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47NmTb3qrFzDqxt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2019 16:31:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.b="XngVSCZN"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 47NmTZ1fn6z9sP3;
+ Thu, 28 Nov 2019 16:31:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1574919090;
+ bh=ZPov+v3E1/if62cEwMcoaXP+xa0mA1xp0953REZRHZU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=XngVSCZN8JLigCgG1Xqra6cXB+GhAo/bpStfTmekNAxNXYBSmC+glmd8ZG+wl/uuh
+ AMmUt93vc4zORMGddjKK71657Z5vnMihzgNiGkO1O5M5SYq1CgpcngvRDXHlte5Ma8
+ b9ra29w2CAda48twEpVFUN3ukSOUTtdQKNT67nrOhjOi76yXQ2I7O5O2z5b0eF98rJ
+ TTaCkO/elH18c64gJAyVcpYAGsRxF1+EHnJJgFJU+uv2c7imJM9hS1co6Bs+hxtZrK
+ bFh+yV8ZdFrBaGbNGnrNMpbagr+GUqjCnQuQJFapxFm4Xmot5Fb126mHrdGam11JO2
+ sFOmDnJ54fSzw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v3 4/8] powerpc/vdso32: inline __get_datapage()
+In-Reply-To: <dd5e359b-5864-f8e3-876a-ec606b51eb65@c-s.fr>
+References: <cover.1572342582.git.christophe.leroy@c-s.fr>
+ <9c9fe32df8633e6ba8e670274dc3eef82a1b5a65.1572342582.git.christophe.leroy@c-s.fr>
+ <874kywbrjv.fsf@mpe.ellerman.id.au> <871ru0beke.fsf@mpe.ellerman.id.au>
+ <dd5e359b-5864-f8e3-876a-ec606b51eb65@c-s.fr>
+Date: Thu, 28 Nov 2019 16:31:27 +1100
+Message-ID: <87sgm8zhw0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191125030631.7716-1-bharata@linux.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 19112805-0028-0000-0000-000003C0F216
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19112805-0029-0000-0000-00002483FB30
-Message-Id: <20191128050411.GF23438@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-27_07:2019-11-27,2019-11-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- mlxlogscore=999 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- mlxscore=0 malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911280042
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,122 +62,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: Hugh Dickins <hughd@google.com>, linuxram@us.ibm.com,
- cclaudio@linux.ibm.com, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
- paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, hch@lst.de
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 25, 2019 at 08:36:24AM +0530, Bharata B Rao wrote:
-> Hi,
-> 
-> This is the next version of the patchset that adds required support
-> in the KVM hypervisor to run secure guests on PEF-enabled POWER platforms.
-> 
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> Le 22/11/2019 =C3=A0 07:38, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>>> __get_datapage() is only a few instructions to retrieve the
+>>>> address of the page where the kernel stores data to the VDSO.
+>>>>
+>>>> By inlining this function into its users, a bl/blr pair and
+>>>> a mflr/mtlr pair is avoided, plus a few reg moves.
+>>>>
+>>>> The improvement is noticeable (about 55 nsec/call on an 8xx)
+>>>>
+>>>> vdsotest before the patch:
+>>>> gettimeofday:    vdso: 731 nsec/call
+>>>> clock-gettime-realtime-coarse:    vdso: 668 nsec/call
+>>>> clock-gettime-monotonic-coarse:    vdso: 745 nsec/call
+>>>>
+>>>> vdsotest after the patch:
+>>>> gettimeofday:    vdso: 677 nsec/call
+>>>> clock-gettime-realtime-coarse:    vdso: 613 nsec/call
+>>>> clock-gettime-monotonic-coarse:    vdso: 690 nsec/call
+>>>>
+>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>>
+>>> This doesn't build with gcc 4.6.3:
+>>>
+>>>    /linux/arch/powerpc/kernel/vdso32/gettimeofday.S: Assembler messages:
+>>>    /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:41: Error: unsuppor=
+ted relocation against __kernel_datapage_offset
+>>>    /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:86: Error: unsuppor=
+ted relocation against __kernel_datapage_offset
+>>>    /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:213: Error: unsuppo=
+rted relocation against __kernel_datapage_offset
+>>>    /linux/arch/powerpc/kernel/vdso32/gettimeofday.S:247: Error: unsuppo=
+rted relocation against __kernel_datapage_offset
+>>>    make[4]: *** [arch/powerpc/kernel/vdso32/gettimeofday.o] Error 1
+>>=20
+>> Actually I guess it's binutils, which is v2.22 in this case.
+>>=20
+>> Needed this:
+>>=20
+>> diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/inc=
+lude/asm/vdso_datapage.h
+>> index 12785f72f17d..0048db347ddf 100644
+>> --- a/arch/powerpc/include/asm/vdso_datapage.h
+>> +++ b/arch/powerpc/include/asm/vdso_datapage.h
+>> @@ -117,7 +117,7 @@ extern struct vdso_data *vdso_data;
+>>   .macro get_datapage ptr, tmp
+>>   	bcl	20, 31, .+4
+>>   	mflr	\ptr
+>> -	addi	\ptr, \ptr, __kernel_datapage_offset - (.-4)
+>> +	addi	\ptr, \ptr, (__kernel_datapage_offset - (.-4))@l
+>>   	lwz	\tmp, 0(\ptr)
+>>   	add	\ptr, \tmp, \ptr
+>>   .endm
+>>=20
+>
+> Are you still planning to getting this series merged ? Do you need any=20
+> help / rebase / re-spin ?
 
-Here is a fix for the issue Hugh identified with the usage of ksm_madvise()
-in this patchset. It applies on top of this patchset.
-----
+Not sure. I'll possibly send a 2nd pull request next week with it
+included.
 
-From 8a4d769bf4c61f921c79ce68923be3c403bd5862 Mon Sep 17 00:00:00 2001
-From: Bharata B Rao <bharata@linux.ibm.com>
-Date: Thu, 28 Nov 2019 09:31:54 +0530
-Subject: [PATCH 1/1] KVM: PPC: Book3S HV: Take write mmap_sem when calling
- ksm_madvise
-
-In order to prevent the device private pages (that correspond to
-pages of secure guest) from participating in KSM merging, H_SVM_PAGE_IN
-calls ksm_madvise() under read version of mmap_sem. However ksm_madvise()
-needs to be under write lock, fix this.
-
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv_uvmem.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index f24ac3cfb34c..2de264fc3156 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -46,11 +46,10 @@
-  *
-  * Locking order
-  *
-- * 1. srcu_read_lock(&kvm->srcu) - Protects KVM memslots
-- * 2. down_read(&kvm->mm->mmap_sem) - find_vma, migrate_vma_pages and helpers
-- * 3. mutex_lock(&kvm->arch.uvmem_lock) - protects read/writes to uvmem slots
-- *					  thus acting as sync-points
-- *					  for page-in/out
-+ * 1. kvm->srcu - Protects KVM memslots
-+ * 2. kvm->mm->mmap_sem - find_vma, migrate_vma_pages and helpers, ksm_madvise
-+ * 3. kvm->arch.uvmem_lock - protects read/writes to uvmem slots thus acting
-+ *			     as sync-points for page-in/out
-  */
- 
- /*
-@@ -344,7 +343,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
- static int
- kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
- 		   unsigned long end, unsigned long gpa, struct kvm *kvm,
--		   unsigned long page_shift)
-+		   unsigned long page_shift, bool *downgrade)
- {
- 	unsigned long src_pfn, dst_pfn = 0;
- 	struct migrate_vma mig;
-@@ -360,8 +359,15 @@ kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
- 	mig.src = &src_pfn;
- 	mig.dst = &dst_pfn;
- 
-+	/*
-+	 * We come here with mmap_sem write lock held just for
-+	 * ksm_madvise(), otherwise we only need read mmap_sem.
-+	 * Hence downgrade to read lock once ksm_madvise() is done.
-+	 */
- 	ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
- 			  MADV_UNMERGEABLE, &vma->vm_flags);
-+	downgrade_write(&kvm->mm->mmap_sem);
-+	*downgrade = true;
- 	if (ret)
- 		return ret;
- 
-@@ -456,6 +462,7 @@ unsigned long
- kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 		     unsigned long flags, unsigned long page_shift)
- {
-+	bool downgrade = false;
- 	unsigned long start, end;
- 	struct vm_area_struct *vma;
- 	int srcu_idx;
-@@ -476,7 +483,7 @@ kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 
- 	ret = H_PARAMETER;
- 	srcu_idx = srcu_read_lock(&kvm->srcu);
--	down_read(&kvm->mm->mmap_sem);
-+	down_write(&kvm->mm->mmap_sem);
- 
- 	start = gfn_to_hva(kvm, gfn);
- 	if (kvm_is_error_hva(start))
-@@ -492,12 +499,16 @@ kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 	if (!vma || vma->vm_start > start || vma->vm_end < end)
- 		goto out_unlock;
- 
--	if (!kvmppc_svm_page_in(vma, start, end, gpa, kvm, page_shift))
-+	if (!kvmppc_svm_page_in(vma, start, end, gpa, kvm, page_shift,
-+				&downgrade))
- 		ret = H_SUCCESS;
- out_unlock:
- 	mutex_unlock(&kvm->arch.uvmem_lock);
- out:
--	up_read(&kvm->mm->mmap_sem);
-+	if (downgrade)
-+		up_read(&kvm->mm->mmap_sem);
-+	else
-+		up_write(&kvm->mm->mmap_sem);
- 	srcu_read_unlock(&kvm->srcu, srcu_idx);
- 	return ret;
- }
--- 
-2.21.0
-
+cheers
