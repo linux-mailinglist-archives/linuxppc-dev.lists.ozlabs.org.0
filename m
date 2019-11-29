@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC3910DA77
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 21:10:33 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47PlxM1VddzDrFr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 07:10:31 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6BCB10DA7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 21:13:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47Pm096wcPzDqvw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 07:12:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,64 +16,64 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.b="B8Qyy3Zw"; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.b="Xn5WL/5f"; 
  dkim-atps=neutral
 Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
  [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47Plj16CtgzDrDN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 06:59:49 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47Plj516wnzDrDN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 06:59:52 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1575057587;
+ s=mimecast20190719; t=1575057590;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2FRKI5+6EDUKwn2QzAstv2u6dW0Q8/ilQLcz5atGxuE=;
- b=B8Qyy3ZwqX1aKoo9QY+0r/F4xriA8glP+aBdWc4fGEKWl7zFQP9mtmf1bQ1TCkZaKATqgF
- UG3gBc0yRgdaoXAYJy9C2UigbTFr0MlMjndq11X/gZW+wFDvV0LJoqJqOpidQ23+niT2fZ
- pyed1rdA0fF4UCSBEop9ba9XcK0Qf7A=
+ bh=yNq9Cl1u8a4Res9gMqZVglO/lwiENzme0qL73M9MY10=;
+ b=Xn5WL/5fcfHfHYGqaCb56Nms5mGTDrFImjM5lMm9SPXQiMR8avov3MQm2U377R69ly1Wy9
+ MdemmGd+QMX7FJ0PDFZXUte1tfpdJIyVAQA55VJxFVRlm6gKm+RWhumSwxDngartSAHXsA
+ 7ngXgIAdFVzheLr4v9LmUhyKoV3PdIU=
 Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
  [209.85.215.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-139-a83V2uh9Mn6gXcEMkXHJQQ-1; Fri, 29 Nov 2019 14:59:45 -0500
-Received: by mail-pg1-f199.google.com with SMTP id e16so17050039pgi.22
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 11:59:45 -0800 (PST)
+ us-mta-335-2ch9DHyGMeiNC7BcN5_3kw-1; Fri, 29 Nov 2019 14:59:49 -0500
+Received: by mail-pg1-f199.google.com with SMTP id f18so17058106pgh.18
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 11:59:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=BgAr5VVOQXh1yien5qVgdgmIL5RHbScoYGF2ala0/ak=;
- b=KTCjOD0Jk/OxxkgvAXDOOzbznZxhtf5PhWKSaGV9YZhPBxTrK60g43yp/k1Fc4DEXu
- 7ngLpcOrCJq2Pta5LnIalMybVsz1s9f/evwYKTKncHHRM8QOKtzNmXZ0T30bIdHjPpew
- hVkxGaE2Exm31D6Crq+iA76QYDZ8JYThDXFCX4wi97z/ATAUZB0KasMH/UUCCWQEcNSE
- lPMh16lGhEeEJtJ0K8qUUbJHFGZ+xjjODV7dvADi5HP7bXpo8HZZjK51S7QrH8oF5T1z
- Q7Qj6ttPC0hgE/99mgDL3qnEc6JgY+3n6YSSKMmDzq1RZrhEs1sCZVOP6PRh3zYOzspM
- 8GfA==
-X-Gm-Message-State: APjAAAWmHnNKsWDDxzd83SI1OhFpctQBj+RRDUzW5KWmbFAVnsWFaW0w
- ioLKgFIcgaz7mArE9S3EX0/NF3H+WhpeVkuDhPNReeIl97aHG4yOPheewPNvrwVP+84Glfd9Zc8
- A1CGgpq9tRXVqDYhq0XL/Xuy98g==
-X-Received: by 2002:a17:90a:fb53:: with SMTP id
- iq19mr20314629pjb.138.1575057584293; 
- Fri, 29 Nov 2019 11:59:44 -0800 (PST)
-X-Google-Smtp-Source: APXvYqz4gnI9c2bYrtjkLwMhPYvWHvZw+YasEX6lAkryf7HpqeVi2n8s5GR/Ai2re8lnbcSS3E4aLw==
-X-Received: by 2002:a17:90a:fb53:: with SMTP id
- iq19mr20314608pjb.138.1575057584113; 
- Fri, 29 Nov 2019 11:59:44 -0800 (PST)
+ bh=EGXp9xk2iujKm5hWzUI7x5fii/ZV0bMMwslmLu+YaOk=;
+ b=I9xCNn+iPtyYgdMQj46GrXhse15SBXVqgGcEZ/nGxR/CvZxOrPacKGym2G1ErBmAJZ
+ LNZASwYWlpY1Jlu/jerpSr+IBWRnTbYs/+/fnWqNBNt02oeYdY0oppNWaeKPhN2eA3g/
+ Y9MO+SDgeIdlvqo4YRmLcHjMsNQpFr69mn7D4F67+THxsCdfTBwKxEZ9Jc6esJvIJFYr
+ o/J/abph3g7xqs70eZNWRBIGEn7s2dwq9niMsKE0tEQWu+CKEuvilYJa2Pp/tNrcb+0N
+ My/b9fum6IRoKlYi//SvrAcUnuvqj33mzn2We0aR/jCLQ9MhKqhidRhq/NiGzZlH8sf/
+ qbvA==
+X-Gm-Message-State: APjAAAVX4ky4JDDKmkC5087WLGz762kIHGP1VdMrrfNJ19RtsrhV63Js
+ GUCYRTFgaOcidgaTPn1lX0Iq66T8y/6H2JnxWml+NB0EFn2BC62xm+x22c0dTDhNCBdl/KxixUa
+ 7aK3gQ+R6XO5V5PxjQv49l6R8Fw==
+X-Received: by 2002:a17:90a:dc81:: with SMTP id
+ j1mr3729520pjv.29.1575057588119; 
+ Fri, 29 Nov 2019 11:59:48 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxPVcE/XW8sUFbfhtiOj/O3Z62tRbLgdRo5GLkRP1HykyImTD8scVfMGcKn/WmLBQBtuJQ40Q==
+X-Received: by 2002:a17:90a:dc81:: with SMTP id
+ j1mr3729508pjv.29.1575057587944; 
+ Fri, 29 Nov 2019 11:59:47 -0800 (PST)
 Received: from localhost ([122.177.85.74])
- by smtp.gmail.com with ESMTPSA id 67sm15725427pfw.82.2019.11.29.11.59.42
+ by smtp.gmail.com with ESMTPSA id 67sm15725516pfw.82.2019.11.29.11.59.46
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 29 Nov 2019 11:59:43 -0800 (PST)
+ Fri, 29 Nov 2019 11:59:47 -0800 (PST)
 From: Bhupesh Sharma <bhsharma@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH v5 3/5] Documentation/arm64: Fix a simple typo in
- memory.rst
-Date: Sat, 30 Nov 2019 01:29:17 +0530
-Message-Id: <1575057559-25496-4-git-send-email-bhsharma@redhat.com>
+Subject: [RESEND PATCH v5 4/5] Documentation/vmcoreinfo: Add documentation for
+ 'MAX_PHYSMEM_BITS'
+Date: Sat, 30 Nov 2019 01:29:18 +0530
+Message-Id: <1575057559-25496-5-git-send-email-bhsharma@redhat.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
 References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
-X-MC-Unique: a83V2uh9Mn6gXcEMkXHJQQ-1
+X-MC-Unique: 2ch9DHyGMeiNC7BcN5_3kw-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
@@ -88,48 +88,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Corbet <corbet@lwn.net>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-doc@vger.kernel.org,
- Will Deacon <will@kernel.org>, bhsharma@redhat.com, x86@kernel.org,
- kexec@lists.infradead.org, James Morse <james.morse@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, bhupesh.linux@gmail.com,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- Steve Capper <steve.capper@arm.com>
+Cc: Kazuhito Hagio <k-hagio@ab.jp.nec.com>, linux-doc@vger.kernel.org,
+ Will Deacon <will.deacon@arm.com>, bhsharma@redhat.com, x86@kernel.org,
+ kexec@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ Boris Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, bhupesh.linux@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Dave Anderson <anderson@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix a simple typo in arm64/memory.rst
+Add documentation for 'MAX_PHYSMEM_BITS' variable being added to
+vmcoreinfo.
 
-Cc: Jonathan Corbet <corbet@lwn.net>
+'MAX_PHYSMEM_BITS' defines the maximum supported physical address
+space memory.
+
+Cc: Boris Petkov <bp@alien8.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: James Morse <james.morse@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Steve Capper <steve.capper@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Dave Anderson <anderson@redhat.com>
+Cc: Kazuhito Hagio <k-hagio@ab.jp.nec.com>
+Cc: x86@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org
 Signed-off-by: Bhupesh Sharma <bhsharma@redhat.com>
 ---
- Documentation/arm64/memory.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/kdump/vmcoreinfo.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/arm64/memory.rst b/Documentation/arm64/memory.rs=
-t
-index 02e02175e6f5..cf03b3290800 100644
---- a/Documentation/arm64/memory.rst
-+++ b/Documentation/arm64/memory.rst
-@@ -129,7 +129,7 @@ this logic.
+diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Documentation=
+/admin-guide/kdump/vmcoreinfo.rst
+index 007a6b86e0ee..447b64314f56 100644
+--- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
++++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+@@ -93,6 +93,11 @@ It exists in the sparse memory mapping model, and it is =
+also somewhat
+ similar to the mem_map variable, both of them are used to translate an
+ address.
 =20
- As a single binary will need to support both 48-bit and 52-bit VA
- spaces, the VMEMMAP must be sized large enough for 52-bit VAs and
--also must be sized large enought to accommodate a fixed PAGE_OFFSET.
-+also must be sized large enough to accommodate a fixed PAGE_OFFSET.
++MAX_PHYSMEM_BITS
++----------------
++
++Defines the maximum supported physical address space memory.
++
+ page
+ ----
 =20
- Most code in the kernel should not need to consider the VA_BITS, for
- code that does need to know the VA size the variables are
 --=20
 2.7.4
 
