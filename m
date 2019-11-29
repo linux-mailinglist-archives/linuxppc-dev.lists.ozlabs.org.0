@@ -1,37 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433E310D800
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 16:41:51 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47PdzJ3tLSzDr1R
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 02:41:48 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575F710D81F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 16:54:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 47PfGN1MBGzDrCG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 02:54:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=bigeasy@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="lUT1A0bJ"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47PdwY3rBZzDr68
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 02:39:25 +1100 (AEDT)
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
- (envelope-from <bigeasy@linutronix.de>)
- id 1iahv6-0000aO-4d; Fri, 29 Nov 2019 16:10:56 +0100
-Date: Fri, 29 Nov 2019 16:10:56 +0100
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC] Efficiency of the phandle_cache on ppc64/SLOF
-Message-ID: <20191129151056.o5c44lm5lb4wsr4r@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47PfDM25zHzDr70
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 02:50:50 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id q13so14791568pff.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 07:50:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=zqzmkmsTqqNqAEU6sqwGU4uvEVY7myANFxGbhNa8Thk=;
+ b=lUT1A0bJvuFzw968HjdP/fl9rNWARwc0PM4vYA/8yJCbJ/uaimus9hTdblQmfxlQKV
+ Hk3pTRvXK/sBwKVtqmUD9m1Hj5DCnk2axhfyw3w3c/3Smxd9sx0XjgiViLi9GAWsZgST
+ ImILVq57QBkrCOTfxSwjUOt8pRnJQmvRe1mYU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=zqzmkmsTqqNqAEU6sqwGU4uvEVY7myANFxGbhNa8Thk=;
+ b=KY9FCK/fCkUNXjPm1w+jaaZGRNX/CG5G+wwymb1QrWpDJV7Tp2BqlxM5nHdVZgc4Av
+ ttKgSsS87lxhmIc9kU9mO8/qKWTpAEh/wp9LNBGvutPvls2HYRxdwLC3lX9Mf+4Zhf2K
+ Bf55dt6ZIKLGtm+D9M5yv2fsEBt/iUEQJJcypKHBGA/NzOTE7eRY1SLCaYNiwn4kQrIs
+ 1lrpABi2zeeEnG96kgnGPtt8bqYfsusIu+vIoO6JEicSmLh/5zECE9dhW5rdMgT9JOsm
+ R6eGkmaG9LRufpgrUnu3wTqcmSLv7oj3MmxH6PnWYle8mR16DAPRt6+zyeHYxTkd1HA0
+ qqPw==
+X-Gm-Message-State: APjAAAUyOOrtRpyWlLE3/x4XzBf8C0RrPPG16zU3jGpwmlZZM3eyY8j/
+ NTKyXK3erHLo/eHuLnpKWub+bg==
+X-Google-Smtp-Source: APXvYqyyUukfPuCBk8nUZGZ0bnjEmJYzBWHD+mlTLp6d97G4LvWRCazYGdcctIJCVgDXHXDcuWz1Gg==
+X-Received: by 2002:aa7:93a7:: with SMTP id x7mr57797282pff.36.1575042647113; 
+ Fri, 29 Nov 2019 07:50:47 -0800 (PST)
+Received: from localhost
+ (2001-44b8-111e-5c00-4092-39f5-bb9d-b59a.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:4092:39f5:bb9d:b59a])
+ by smtp.gmail.com with ESMTPSA id a22sm1465829pfk.108.2019.11.29.07.50.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Nov 2019 07:50:46 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Qian Cai <cai@lca.pw>
+Subject: Re: XFS check crash (WAS Re: [PATCH v11 1/4] kasan: support backing
+ vmalloc space with real shadow memory)
+In-Reply-To: <27B18BF6-757C-4CA3-A852-1EE20D4D10A9@lca.pw>
+References: <20191031093909.9228-1-dja@axtens.net>
+ <20191031093909.9228-2-dja@axtens.net> <1573835765.5937.130.camel@lca.pw>
+ <871ru5hnfh.fsf@dja-thinkpad.axtens.net>
+ <952ec26a-9492-6f71-bab1-c1def887e528@virtuozzo.com>
+ <CACT4Y+ZGO8b88fUyFe-WtV3Ubr11ChLY2mqk8YKWN9o0meNtXA@mail.gmail.com>
+ <CACT4Y+Z+VhfVpkfg-WFq_kFMY=DE+9b_DCi-mCSPK-udaf_Arg@mail.gmail.com>
+ <CACT4Y+Yog=PHF1SsLuoehr2rcbmfvLUW+dv7Vo+1RfdTOx7AUA@mail.gmail.com>
+ <2297c356-0863-69ce-85b6-8608081295ed@virtuozzo.com>
+ <CACT4Y+ZNAfkrE0M=eCHcmy2LhPG_kKbg4mOh54YN6Bgb4b3F5w@mail.gmail.com>
+ <56cf8aab-c61b-156c-f681-d2354aed22bb@virtuozzo.com>
+ <871rtqg91q.fsf@dja-thinkpad.axtens.net>
+ <27B18BF6-757C-4CA3-A852-1EE20D4D10A9@lca.pw>
+Date: Sat, 30 Nov 2019 02:50:43 +1100
+Message-ID: <87y2vyel64.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,118 +87,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ "Darrick J. Wong" <darrick.wong@oracle.com>,
+ the arch/x86 maintainers <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ kasan-dev <kasan-dev@googlegroups.com>, linux-xfs@vger.kernel.org,
+ Linux-MM <linux-mm@kvack.org>, Alexander Potapenko <glider@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I've been looking at phandle_cache and noticed the following: The raw
-phandle value as generated by dtc starts at zero and is incremented by
-one for each phandle entry. The qemu pSeries model is using Slof (which
-is probably the same thing as used on real hardware) and this looks like
-a poiner value for the phandle.
-With
-	qemu-system-ppc64le -m 16G -machine pseries -smp 8 
+>>>>> 
+>>>>> Nope, it's vm_map_ram() not being handled
+>>>> 
+>>>> 
+>>>> Another suspicious one. Related to kasan/vmalloc?
+>>> 
+>>> Very likely the same as with ion:
+>>> 
+>>> # git grep vm_map_ram|grep xfs
+>>> fs/xfs/xfs_buf.c:                * vm_map_ram() will allocate auxiliary structures (e.g.
+>>> fs/xfs/xfs_buf.c:                       bp->b_addr = vm_map_ram(bp->b_pages, bp->b_page_count,
+>> 
+>> Aaargh, that's an embarassing miss.
+>> 
+>> It's a bit intricate because kasan_vmalloc_populate function is
+>> currently set up to take a vm_struct not a vmap_area, but I'll see if I
+>> can get something simple out this evening - I'm away for the first part
+>> of next week.
 
-I got the following output:
-| entries: 64
-| phandle 7e732468 slot 28 hash c
-| phandle 7e732ad0 slot 10 hash 27
-| phandle 7e732ee8 slot 28 hash 3a
-| phandle 7e734160 slot 20 hash 36
-| phandle 7e734318 slot 18 hash 3a
-| phandle 7e734428 slot 28 hash 33
-| phandle 7e734538 slot 38 hash 2c
-| phandle 7e734850 slot 10 hash e
-| phandle 7e735220 slot 20 hash 2d
-| phandle 7e735bf0 slot 30 hash d
-| phandle 7e7365c0 slot 0 hash 2d
-| phandle 7e736f90 slot 10 hash d
-| phandle 7e737960 slot 20 hash 2d
-| phandle 7e738330 slot 30 hash d
-| phandle 7e738d00 slot 0 hash 2d
-| phandle 7e739730 slot 30 hash 38
-| phandle 7e73bd08 slot 8 hash 17
-| phandle 7e73c2e0 slot 20 hash 32
-| phandle 7e73c7f8 slot 38 hash 37
-| phandle 7e782420 slot 20 hash 13
-| phandle 7e782ed8 slot 18 hash 1b
-| phandle 7e73ce28 slot 28 hash 39
-| phandle 7e73d390 slot 10 hash 22
-| phandle 7e73d9a8 slot 28 hash 1a
-| phandle 7e73dc28 slot 28 hash 37
-| phandle 7e73de00 slot 0 hash a
-| phandle 7e73e028 slot 28 hash 0
-| phandle 7e7621a8 slot 28 hash 36
-| phandle 7e73e458 slot 18 hash 1e
-| phandle 7e73e608 slot 8 hash 1e
-| phandle 7e740078 slot 38 hash 28
-| phandle 7e740180 slot 0 hash 1d
-| phandle 7e740240 slot 0 hash 33
-| phandle 7e740348 slot 8 hash 29
-| phandle 7e740410 slot 10 hash 2
-| phandle 7e740eb0 slot 30 hash 3e
-| phandle 7e745390 slot 10 hash 33
-| phandle 7e747b08 slot 8 hash c
-| phandle 7e748528 slot 28 hash f
-| phandle 7e74a6e0 slot 20 hash 18
-| phandle 7e74aab0 slot 30 hash b
-| phandle 7e74f788 slot 8 hash d
-| Used entries: 8, hashed: 29
+For crashes in XFS, binder etc that implicate vm_map_ram, see:
+https://lore.kernel.org/linux-mm/20191129154519.30964-1-dja@axtens.net/
 
-So the hash array has 64 entries out which only 8 are populated. Using
-hash_32() populates 29 entries.
-Could someone with real hardware verify this?
-I'm not sure how important this performance wise, it looks just like a
-waste using only 1/8 of the array.
+The easiest way I found to repro the bug is
+sudo modprobe i915 mock_selftest=-1
 
-The patch used for testing:
+For lock warns, one that goes through the percpu alloc path, the patch
+is already queued in mmots.
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 1d667eb730e19..2640d4bc81a9a 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -197,6 +197,7 @@ void of_populate_phandle_cache(void)
- 	u32 cache_entries;
- 	struct device_node *np;
- 	u32 phandles = 0;
-+	struct device_node **cache2;
- 
- 	raw_spin_lock_irqsave(&devtree_lock, flags);
- 
-@@ -214,14 +215,32 @@ void of_populate_phandle_cache(void)
- 
- 	phandle_cache = kcalloc(cache_entries, sizeof(*phandle_cache),
- 				GFP_ATOMIC);
-+	cache2 = kcalloc(cache_entries, sizeof(*phandle_cache), GFP_ATOMIC);
- 	if (!phandle_cache)
- 		goto out;
- 
-+	pr_err("%s(%d) entries: %d\n", __func__, __LINE__, cache_entries);
- 	for_each_of_allnodes(np)
- 		if (np->phandle && np->phandle != OF_PHANDLE_ILLEGAL) {
-+			int slot;
- 			of_node_get(np);
- 			phandle_cache[np->phandle & phandle_cache_mask] = np;
-+			slot = hash_32(np->phandle, __ffs(cache_entries));
-+			cache2[slot] = np;
-+			pr_err("%s(%d) phandle %x slot %x hash %x\n", __func__, __LINE__,
-+			       np->phandle, np->phandle & phandle_cache_mask, slot);
- 		}
-+	{
-+		int i, filled = 0, filled_hash = 0;
-+
-+		for (i = 0; i < cache_entries; i++) {
-+			if (phandle_cache[i])
-+				filled++;
-+			if (cache2[i])
-+				filled_hash++;
-+		}
-+		pr_err("%s(%d) Used entries: %d, hashed: %d\n", __func__, __LINE__, filled, filled_hash);
-+	}
- 
- out:
- 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+For Dmitry's latest one where there's an allocation in the
+purge_vmap_area_lazy path that triggers a locking warning, you'll have
+to wait until next week, sorry.
 
-Sebastian
+Regards,
+Daniel
