@@ -2,80 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575F710D81F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 16:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 340DF10D833
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2019 17:06:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 47PfGN1MBGzDrCG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 02:54:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 47PfWk0DfGzDqvj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Nov 2019 03:06:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::102c;
+ helo=mail-pj1-x102c.google.com; envelope-from=axboe@kernel.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="lUT1A0bJ"; 
+ dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.b="ixA6CFkE"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 47PfDM25zHzDr70
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 02:50:50 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id q13so14791568pff.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 07:50:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=zqzmkmsTqqNqAEU6sqwGU4uvEVY7myANFxGbhNa8Thk=;
- b=lUT1A0bJvuFzw968HjdP/fl9rNWARwc0PM4vYA/8yJCbJ/uaimus9hTdblQmfxlQKV
- Hk3pTRvXK/sBwKVtqmUD9m1Hj5DCnk2axhfyw3w3c/3Smxd9sx0XjgiViLi9GAWsZgST
- ImILVq57QBkrCOTfxSwjUOt8pRnJQmvRe1mYU=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 47PfTD6xpzzDr8r
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2019 03:04:13 +1100 (AEDT)
+Received: by mail-pj1-x102c.google.com with SMTP id y21so13428008pjn.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Nov 2019 08:04:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=55yYEkm6RHJrPbGEbz5YaTrG6Snd2G6eoPVI+U2I9sw=;
+ b=ixA6CFkEosFzfEFCuAMfiMcqA4yRfzWdPkgAQy+nlXnxzy72RoRXy12bxu7vVQRGW4
+ q2Urr/WgXBsoiltbaiFdJaW+2Ic6va6kdHryTK502qDrAKETHoB0ztHiluS9AhqYclxX
+ ftLioSXEjsN+i39I0lBJtS40Xs7f7kdq2eGx4xJL4uq3bMnocnEaf0kNUylJUjVZ68wo
+ 2gt9Bp68qEiH2AuFun6lNbK3qj9MugJ+4QALqXdBC9vvd9wljCgh85MKJK0cGK+PmaKZ
+ 4+wUSu9VMHM2G8xjmQL/g6EqfZX3IavR0EP16J317lBJzIRC88cftXSovW1ooylDjU1+
+ DPVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=zqzmkmsTqqNqAEU6sqwGU4uvEVY7myANFxGbhNa8Thk=;
- b=KY9FCK/fCkUNXjPm1w+jaaZGRNX/CG5G+wwymb1QrWpDJV7Tp2BqlxM5nHdVZgc4Av
- ttKgSsS87lxhmIc9kU9mO8/qKWTpAEh/wp9LNBGvutPvls2HYRxdwLC3lX9Mf+4Zhf2K
- Bf55dt6ZIKLGtm+D9M5yv2fsEBt/iUEQJJcypKHBGA/NzOTE7eRY1SLCaYNiwn4kQrIs
- 1lrpABi2zeeEnG96kgnGPtt8bqYfsusIu+vIoO6JEicSmLh/5zECE9dhW5rdMgT9JOsm
- R6eGkmaG9LRufpgrUnu3wTqcmSLv7oj3MmxH6PnWYle8mR16DAPRt6+zyeHYxTkd1HA0
- qqPw==
-X-Gm-Message-State: APjAAAUyOOrtRpyWlLE3/x4XzBf8C0RrPPG16zU3jGpwmlZZM3eyY8j/
- NTKyXK3erHLo/eHuLnpKWub+bg==
-X-Google-Smtp-Source: APXvYqyyUukfPuCBk8nUZGZ0bnjEmJYzBWHD+mlTLp6d97G4LvWRCazYGdcctIJCVgDXHXDcuWz1Gg==
-X-Received: by 2002:aa7:93a7:: with SMTP id x7mr57797282pff.36.1575042647113; 
- Fri, 29 Nov 2019 07:50:47 -0800 (PST)
-Received: from localhost
- (2001-44b8-111e-5c00-4092-39f5-bb9d-b59a.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:4092:39f5:bb9d:b59a])
- by smtp.gmail.com with ESMTPSA id a22sm1465829pfk.108.2019.11.29.07.50.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Nov 2019 07:50:46 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: XFS check crash (WAS Re: [PATCH v11 1/4] kasan: support backing
- vmalloc space with real shadow memory)
-In-Reply-To: <27B18BF6-757C-4CA3-A852-1EE20D4D10A9@lca.pw>
-References: <20191031093909.9228-1-dja@axtens.net>
- <20191031093909.9228-2-dja@axtens.net> <1573835765.5937.130.camel@lca.pw>
- <871ru5hnfh.fsf@dja-thinkpad.axtens.net>
- <952ec26a-9492-6f71-bab1-c1def887e528@virtuozzo.com>
- <CACT4Y+ZGO8b88fUyFe-WtV3Ubr11ChLY2mqk8YKWN9o0meNtXA@mail.gmail.com>
- <CACT4Y+Z+VhfVpkfg-WFq_kFMY=DE+9b_DCi-mCSPK-udaf_Arg@mail.gmail.com>
- <CACT4Y+Yog=PHF1SsLuoehr2rcbmfvLUW+dv7Vo+1RfdTOx7AUA@mail.gmail.com>
- <2297c356-0863-69ce-85b6-8608081295ed@virtuozzo.com>
- <CACT4Y+ZNAfkrE0M=eCHcmy2LhPG_kKbg4mOh54YN6Bgb4b3F5w@mail.gmail.com>
- <56cf8aab-c61b-156c-f681-d2354aed22bb@virtuozzo.com>
- <871rtqg91q.fsf@dja-thinkpad.axtens.net>
- <27B18BF6-757C-4CA3-A852-1EE20D4D10A9@lca.pw>
-Date: Sat, 30 Nov 2019 02:50:43 +1100
-Message-ID: <87y2vyel64.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=55yYEkm6RHJrPbGEbz5YaTrG6Snd2G6eoPVI+U2I9sw=;
+ b=JqVVWoDKuXAQHERk8BM02Al9XgYjSjid5zhV4XPcluUgfMvkEx842pbmow+ucneI8k
+ mfb7xLtkfIpg4pZI//HpmdcM3tKYIJYkglMnKrNYP0weGl1j9U92r+IrD/X1iz/sStBp
+ 77jw1Ysz7I/Dk2aZQaL3fkdRZPBy6PHLQ3rlqDzUusUn30rbXTZAmj6n+fwbsaH8GZST
+ kuljZzdulTZvr/d+qvay8N/+HCX5E8n65bFiZ7yKlzHUfSS9NiQKWFt0q07y+2R6lifI
+ vQTbSywmAEx69dKYDY73EG5/3utrJw7SDMFoj2mS1wChhKIK7yei5/QcVoMJArOxTfi5
+ DBBw==
+X-Gm-Message-State: APjAAAUVn83PpxGs13bwdjOpHN1OqdY+Di8JWs2Qi8djQ9tTwi9QSAoH
+ rhDIWGgIHD6+uLwPE74ZyUkoPQ==
+X-Google-Smtp-Source: APXvYqzLZT3KWZYjNqWSQy2mj7zlWghNfW8U+ubCCK8iIBbW4a8KCTN325YznK1PmfsXvxdONXDJng==
+X-Received: by 2002:a17:902:b90a:: with SMTP id
+ bf10mr15393104plb.45.1575043450234; 
+ Fri, 29 Nov 2019 08:04:10 -0800 (PST)
+Received: from ?IPv6:2605:e000:100e:8c61:99f0:a6fb:215a:45a7?
+ ([2605:e000:100e:8c61:99f0:a6fb:215a:45a7])
+ by smtp.gmail.com with ESMTPSA id ay16sm13351352pjb.2.2019.11.29.08.04.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Nov 2019 08:04:08 -0800 (PST)
+Subject: Re: Build failure on latest powerpc/merge (311ae9e159d8 io_uring: fix
+ dead-hung for non-iter fixed rw)
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Pavel Begunkov <asml.silence@gmail.com>
+References: <71cf82d5-5986-43b7-cf1c-acba429a89d6@c-s.fr>
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <3a95d445-1f5c-7750-f0de-ddc427800b3b@kernel.dk>
+Date: Fri, 29 Nov 2019 08:04:06 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <71cf82d5-5986-43b7-cf1c-acba429a89d6@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,49 +89,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "Darrick J. Wong" <darrick.wong@oracle.com>,
- the arch/x86 maintainers <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- kasan-dev <kasan-dev@googlegroups.com>, linux-xfs@vger.kernel.org,
- Linux-MM <linux-mm@kvack.org>, Alexander Potapenko <glider@google.com>,
- Andy Lutomirski <luto@kernel.org>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Dmitry Vyukov <dvyukov@google.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->>>>> 
->>>>> Nope, it's vm_map_ram() not being handled
->>>> 
->>>> 
->>>> Another suspicious one. Related to kasan/vmalloc?
->>> 
->>> Very likely the same as with ion:
->>> 
->>> # git grep vm_map_ram|grep xfs
->>> fs/xfs/xfs_buf.c:                * vm_map_ram() will allocate auxiliary structures (e.g.
->>> fs/xfs/xfs_buf.c:                       bp->b_addr = vm_map_ram(bp->b_pages, bp->b_page_count,
->> 
->> Aaargh, that's an embarassing miss.
->> 
->> It's a bit intricate because kasan_vmalloc_populate function is
->> currently set up to take a vm_struct not a vmap_area, but I'll see if I
->> can get something simple out this evening - I'm away for the first part
->> of next week.
+On 11/29/19 6:53 AM, Christophe Leroy wrote:
+>     CC      fs/io_uring.o
+> fs/io_uring.c: In function ‘loop_rw_iter’:
+> fs/io_uring.c:1628:21: error: implicit declaration of function ‘kmap’
+> [-Werror=implicit-function-declaration]
+>       iovec.iov_base = kmap(iter->bvec->bv_page)
+>                        ^
+> fs/io_uring.c:1628:19: warning: assignment makes pointer from integer
+> without a cast [-Wint-conversion]
+>       iovec.iov_base = kmap(iter->bvec->bv_page)
+>                      ^
+> fs/io_uring.c:1643:4: error: implicit declaration of function ‘kunmap’
+> [-Werror=implicit-function-declaration]
+>       kunmap(iter->bvec->bv_page);
+>       ^
+> 
+> 
+> Reverting commit 311ae9e159d8 ("io_uring: fix dead-hung for non-iter
+> fixed rw") clears the failure.
+> 
+> Most likely an #include is missing.
 
-For crashes in XFS, binder etc that implicate vm_map_ram, see:
-https://lore.kernel.org/linux-mm/20191129154519.30964-1-dja@axtens.net/
+Huh weird how the build bots didn't catch that. Does the below work?
 
-The easiest way I found to repro the bug is
-sudo modprobe i915 mock_selftest=-1
 
-For lock warns, one that goes through the percpu alloc path, the patch
-is already queued in mmots.
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index 2c2e8c25da01..745eb005fefe 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -69,6 +69,7 @@
+  #include <linux/nospec.h>
+  #include <linux/sizes.h>
+  #include <linux/hugetlb.h>
++#include <linux/highmem.h>
+  
+  #define CREATE_TRACE_POINTS
+  #include <trace/events/io_uring.h>
 
-For Dmitry's latest one where there's an allocation in the
-purge_vmap_area_lazy path that triggers a locking warning, you'll have
-to wait until next week, sorry.
+-- 
+Jens Axboe
 
-Regards,
-Daniel
